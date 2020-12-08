@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
     handleSigninCallback,
@@ -20,12 +20,12 @@ const AuthenticationRouter = ({
     userManager,
     signInCallbackError,
     dispatch,
-    history,
+    navigate,
     location,
 }) => {
     const handleSigninCallbackClosure = useCallback(
-        () => handleSigninCallback(dispatch, history, userManager.instance),
-        [dispatch, history, userManager.instance]
+        () => handleSigninCallback(dispatch, navigate, userManager.instance),
+        [dispatch, navigate, userManager.instance]
     );
     const handleSilentRenewCallbackClosure = useCallback(
         () => handleSilentRenewCallback(userManager.instance),
@@ -41,14 +41,14 @@ const AuthenticationRouter = ({
                     Error : SignIn Callback Error; {signInCallbackError.message}
                 </h1>
             )}
-            <Switch>
-                <Route exact path="/sign-in-callback">
+            <Routes>
+                <Route path="/sign-in-callback">
                     <SignInCallbackHandler
                         userManager={userManager.instance}
                         handleSignInCallback={handleSigninCallbackClosure}
                     />
                 </Route>
-                <Route exact path="/silent-renew-callback">
+                <Route path="/silent-renew-callback">
                     <SilentRenewCallbackHandler
                         userManager={userManager.instance}
                         handleSilentRenewCallback={
@@ -56,8 +56,8 @@ const AuthenticationRouter = ({
                         }
                     />
                 </Route>
-                <Route exact path="/logout-callback">
-                    <Redirect to="/" />
+                <Route path="/logout-callback">
+                    <Navigate to="/" />
                 </Route>
                 <Route>
                     {userManager.error === null && (
@@ -69,7 +69,7 @@ const AuthenticationRouter = ({
                         />
                     )}
                 </Route>
-            </Switch>
+            </Routes>
         </React.Fragment>
     );
 };
