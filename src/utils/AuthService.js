@@ -102,13 +102,13 @@ function getPreLoginPath() {
     return sessionStorage.getItem(pathKey);
 }
 
-function handleSigninCallback(dispatch, history, userManagerInstance) {
+function handleSigninCallback(dispatch, navigate, userManagerInstance) {
     userManagerInstance
         .signinRedirectCallback()
         .then(function () {
             dispatch(setSignInCallbackError(null));
             const previousPath = getPreLoginPath();
-            history.replace(previousPath);
+            navigate(previousPath);
         })
         .catch(function (e) {
             dispatch(setSignInCallbackError(e));
