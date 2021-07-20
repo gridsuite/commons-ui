@@ -4,8 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import React from 'react';
+import React, { memo } from 'react';
 import { useIntl } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
@@ -33,7 +32,7 @@ const styles = (theme) => ({
 
 const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
-export const LogTable = ({ logs }) => {
+const LogTable = ({ logs }) => {
     const intl = useIntl();
 
     const severityCellRender = (cellData) => {
@@ -55,14 +54,18 @@ export const LogTable = ({ logs }) => {
 
     const COLUMNS_DEFINITIONS = [
         {
-            label: intl.formatMessage({ id: 'severity' }).toUpperCase(),
+            label: intl
+                .formatMessage({ id: 'report_viewer/severity' })
+                .toUpperCase(),
             id: 'severity',
             dataKey: 'severity',
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
         },
         {
-            label: intl.formatMessage({ id: 'message' }).toUpperCase(),
+            label: intl
+                .formatMessage({ id: 'report_viewer/message' })
+                .toUpperCase(),
             id: 'message',
             dataKey: 'message',
         },
@@ -92,3 +95,5 @@ export const LogTable = ({ logs }) => {
         />
     );
 };
+
+export default memo(LogTable);

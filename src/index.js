@@ -3,6 +3,7 @@ export SnackbarProvider from './components/SnackbarProvider';
 export AuthenticationRouter from './components/AuthenticationRouter';
 export MuiVirtualizedTable from './components/MuiVirtualizedTable';
 export ReportViewer from './components/ReportViewer';
+export ReportViewerDialog from './components/ReportViewerDialog';
 
 export {
     initializeAuthenticationDev,
@@ -31,6 +32,8 @@ export {
     SIGNIN_CALLBACK_ERROR,
     setSignInCallbackError,
 } from './utils/actions';
+export report_viewer_en from './components/translations/report-viewer-en';
+export report_viewer_fr from './components/translations/report-viewer-fr';
 export login_en from './components/translations/login-en';
 export login_fr from './components/translations/login-fr';
 export top_bar_en from './components/translations/top-bar-en';

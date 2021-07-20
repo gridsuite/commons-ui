@@ -18,16 +18,24 @@ import {
 } from '@material-ui/core/styles';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import {
+    DEFAULT_CELL_PADDING,
     initializeAuthenticationDev,
     logout,
-} from '../../src/utils/AuthService';
+} from '../../src';
 import { useRouteMatch } from 'react-router';
 import { IntlProvider } from 'react-intl';
 
 import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 
-import { top_bar_en, top_bar_fr, login_fr, login_en } from '../../src/index';
+import {
+    report_viewer_en,
+    report_viewer_fr,
+    top_bar_en,
+    top_bar_fr,
+    login_fr,
+    login_en,
+} from '../../src/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
@@ -35,20 +43,15 @@ import Button from '@material-ui/core/Button';
 
 import PowsyblLogo from '-!@svgr/webpack!../images/powsybl_logo.svg';
 
-import {
-    LIGHT_THEME,
-    LANG_SYSTEM,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-} from '../../src/components/TopBar/TopBar';
+import { LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from '../../src';
 import MuiVirtualizedTable from '../../src/components/MuiVirtualizedTable';
-import { DEFAULT_CELL_PADDING } from '../../src/components/MuiVirtualizedTable/MuiVirtualizedTable';
-import ReportViewer from '../../src/components/ReportViewer/report-viewer';
 import { LOGS_JSON } from './constants';
 
+import ReportViewerDialog from '../../src/components/ReportViewerDialog';
+
 const messages = {
-    en: { ...login_en, ...top_bar_en },
-    fr: { ...login_fr, ...top_bar_fr },
+    en: { ...report_viewer_en, ...login_en, ...top_bar_en },
+    fr: { ...report_viewer_fr, ...login_fr, ...top_bar_fr },
 };
 
 const lightTheme = createMuiTheme({
@@ -251,7 +254,7 @@ const AppContent = () => {
                     <TopBar
                         appName="Demo"
                         appColor="#808080"
-                        appLogo=<PowsyblLogo />
+                        appLogo={<PowsyblLogo />}
                         onParametersClick={() => console.log('settings')}
                         onLogoutClick={() =>
                             logout(dispatch, userManager.instance)
@@ -272,7 +275,7 @@ const AppContent = () => {
                         <div style={{ paddingLeft: 10, paddingRight: 10 }}>
                             foobar-bazfoobar
                         </div>
-                        <div style={{ flexGrow: 1 }}></div>
+                        <div style={{ flexGrow: 1 }} />
                         <div>baz</div>
                     </TopBar>
                     {user !== null ? (
@@ -328,7 +331,7 @@ const AppContent = () => {
                     >
                         Logs
                     </Button>
-                    <ReportViewer
+                    <ReportViewerDialog
                         title={'Logs test'}
                         open={openReportViewer}
                         onClose={() => setOpenReportViewer(false)}

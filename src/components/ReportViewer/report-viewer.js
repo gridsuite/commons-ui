@@ -5,23 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
-import Label from '@material-ui/icons/Label';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import FullscreenExitIcon from '@material-ui/icons/FullscreenExit';
-import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogContent } from '@material-ui/core';
 import ReportItem from './report-item';
 import LogReport from './log-report';
-import { LogTable } from './log-table';
 import Grid from '@material-ui/core/Grid';
+import LogTable from './log-table';
+
+const MAX_SUB_REPORTS = 500;
 
 const useStyles = makeStyles({
     treeView: {
@@ -31,114 +25,108 @@ const useStyles = makeStyles({
     treeItem: {
         whiteSpace: 'nowrap',
     },
-    fullScreenIcon: {
-        cursor: 'pointer',
-    },
-    paperFullWidth: {
-        height: '100%',
-    },
 });
 
-export default function ReportViewer(props) {
+export default function ReportViewer({
+    jsonReport,
+    maxSubReports = MAX_SUB_REPORTS,
+}) {
     const classes = useStyles();
-    const { title, open, onClose, jsonReport } = props;
 
-    const [fullScreen, setFullScreen] = useState(false);
+    const [selectedNode, setSelectedNode] = useState(null);
+    const [expandedNodes, setExpandedNodes] = useState([]);
+    const [logs, setLogs] = useState(null);
 
-    const rootReport = useRef(new LogReport(jsonReport));
-
-    const [logs, setLogs] = useState(rootReport.current.getAllLogs());
-
+    const rootReport = useRef(null);
     const allReports = useRef({});
+    const treeView = useRef(null);
 
-    const createReporterItem = (logReport) => {
-        allReports.current[logReport.getId()] = logReport;
-        return (
-            <ReportItem
-                key={logReport.getId().toString()}
-                className={classes.treeItem}
-                nodeId={logReport.getId().toString()}
-                labelIcon={Label}
-                labelIconColor={logReport.getHighestSeverity().color}
-                labelText={logReport.getTitle()}
-            >
-                {logReport
-                    .getSubReports()
-                    .map((value) => createReporterItem(value))}
-            </ReportItem>
-        );
+    const createReporterItem = useCallback(
+        (logReport) => {
+            allReports.current[logReport.getId()] = logReport;
+            if (logReport.getSubReports().length > maxSubReports) {
+                console.warn(
+                    'The number (%s) being greater than %s only the first %s subreports will be displayed',
+                    logReport.getSubReports().length,
+                    maxSubReports,
+                    maxSubReports
+                );
+            }
+            return (
+                <ReportItem
+                    labelText={logReport.getTitle()}
+                    labelIconColor={logReport.getHighestSeverity().color}
+                    key={logReport.getId().toString()}
+                    className={classes.treeItem}
+                    nodeId={logReport.getId().toString()}
+                >
+                    {logReport
+                        .getSubReports()
+                        .slice(0, maxSubReports)
+                        .map((value) => createReporterItem(value))}
+                </ReportItem>
+            );
+        },
+        [maxSubReports, classes.treeItem]
+    );
+
+    useEffect(() => {
+        rootReport.current = new LogReport(jsonReport);
+        let rootId = rootReport.current.getId().toString();
+        treeView.current = createReporterItem(rootReport.current);
+        setSelectedNode(rootId);
+        setExpandedNodes([rootId]);
+        setLogs(rootReport.current.getAllLogs());
+    }, [jsonReport, createReporterItem]);
+
+    const handleToggleNode = (event, nodeIds) => {
+        event.persist();
+        let iconClicked = event.target.closest('.MuiTreeItem-iconContainer');
+        if (iconClicked) {
+            setExpandedNodes(nodeIds);
+        }
     };
 
-    const showFullScreen = () => {
-        setFullScreen(true);
+    const handleSelectNode = (event, nodeId) => {
+        selectNode(nodeId);
     };
 
-    const hideFullScreen = () => {
-        setFullScreen(false);
-    };
-
-    const onNodeSelection = (event, nodeId) => {
-        setLogs(allReports.current[nodeId].getAllLogs());
+    const selectNode = (nodeId) => {
+        if (selectedNode !== nodeId) {
+            setSelectedNode(nodeId);
+            setLogs(allReports.current[nodeId].getAllLogs());
+        }
     };
 
     return (
-        <Dialog
-            open={open}
-            onClose={() => onClose()}
-            fullScreen={fullScreen}
-            aria-labelledby="dialog-title-report"
-            fullWidth={true}
-            maxWidth="lg"
-            classes={{
-                paperFullWidth: classes.paperFullWidth,
-            }}
-        >
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent dividers={true}>
-                <Grid container style={{ height: '100%' }}>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={3}
-                        style={{
-                            height: '100%',
-                            borderRight: '1px solid rgba(81, 81, 81, 1)',
-                        }}
+        rootReport.current && (
+            <Grid container style={{ height: '100%' }}>
+                <Grid
+                    item
+                    xs={12}
+                    sm={3}
+                    style={{
+                        height: '100%',
+                        borderRight: '1px solid rgba(81, 81, 81, 1)',
+                    }}
+                >
+                    <TreeView
+                        className={classes.treeView}
+                        defaultCollapseIcon={<ArrowDropDownIcon />}
+                        defaultExpandIcon={<ArrowRightIcon />}
+                        defaultEndIcon={<div style={{ width: 24 }} />}
+                        onNodeToggle={handleToggleNode}
+                        onNodeSelect={handleSelectNode}
+                        selected={selectedNode}
+                        expanded={expandedNodes}
                     >
-                        <TreeView
-                            className={classes.treeView}
-                            defaultCollapseIcon={<ArrowDropDownIcon />}
-                            defaultExpandIcon={<ArrowRightIcon />}
-                            defaultEndIcon={<div style={{ width: 24 }} />}
-                            onNodeSelect={onNodeSelection}
-                            defaultExpanded={[
-                                rootReport.current.getId().toString(),
-                            ]}
-                        >
-                            {createReporterItem(rootReport.current)}
-                        </TreeView>
-                    </Grid>
-                    <Grid item xs={12} sm={9} style={{ height: '100%' }}>
-                        <LogTable logs={logs} />
-                    </Grid>
+                        {treeView.current}
+                    </TreeView>
                 </Grid>
-            </DialogContent>
-            <DialogActions>
-                {fullScreen ? (
-                    <FullscreenExitIcon
-                        onClick={hideFullScreen}
-                        className={classes.fullScreenIcon}
-                    />
-                ) : (
-                    <FullscreenIcon
-                        onClick={showFullScreen}
-                        className={classes.fullScreenIcon}
-                    />
-                )}
-                <Button onClick={() => onClose()} variant="text">
-                    <FormattedMessage id="close" />
-                </Button>
-            </DialogActions>
-        </Dialog>
+                <Grid item xs={12} sm={9} style={{ height: '100%' }}>
+                    <LogTable logs={logs} />
+                </Grid>
+            </Grid>
+        )
     );
 }
