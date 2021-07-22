@@ -1,7 +1,7 @@
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TableCell from '@material-ui/core/TableCell';
@@ -34,7 +34,39 @@ class MuiVirtualizedTable extends React.PureComponent {
     state = {
         key: undefined,
         direction: 'asc',
+        headerHeight: this.props.headerHeight,
     };
+
+    constructor(props, context) {
+        super(props, context);
+        this._computeHeaderSize = this._computeHeaderSize.bind(this);
+        this._registerHeader = this._registerHeader.bind(this);
+        this._registerObserver = this._registerObserver.bind(this);
+        this.headers = createRef();
+        this.headers.current = {};
+        let options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1,
+        };
+
+        this.observer = new IntersectionObserver(
+            this._computeHeaderSize,
+            options
+        );
+    }
+
+    _registerHeader(label, header) {
+        if (header !== null) {
+            this.headers.current[label] = header;
+        }
+    }
+
+    _registerObserver(element) {
+        if (element !== null) {
+            this.observer.observe(element);
+        }
+    }
 
     reorderIndex = memoize((key, direction, filter, rows) => {
         if (!rows) return [];
@@ -100,7 +132,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     });
 
     sortableHeader = ({ label, columnIndex, width }) => {
-        const { headerHeight, columns, classes } = this.props;
+        const { columns, classes } = this.props;
         return (
             <TableSortLabel
                 component="div"
@@ -111,10 +143,10 @@ class MuiVirtualizedTable extends React.PureComponent {
                 )}
                 active={columnIndex === this.state.key}
                 style={{
-                    height: headerHeight,
                     justifyContent: columns[columnIndex].numeric
                         ? 'flex-end'
                         : 'baseline',
+                    height: this.state.headerHeight,
                 }}
                 direction={this.state.direction}
                 onClick={() => {
@@ -131,8 +163,21 @@ class MuiVirtualizedTable extends React.PureComponent {
                     });
                 }}
                 width={width}
+                ref={(e) => this._registerObserver(e)}
             >
-                <span>{label}</span>
+                <div
+                    style={{
+                        minHeight: this.props.headerHeight,
+                        display: 'flex',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                    }}
+                    ref={(element) => {
+                        this._registerHeader(label, element);
+                    }}
+                >
+                    {label}
+                </div>
             </TableSortLabel>
         );
     };
@@ -181,7 +226,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         ? 'right'
                         : 'left'
                 }
-                onClick={(e) => {
+                onClick={() => {
                     if (onCellClick) {
                         onCellClick(rows[rowIndex], columns[columnIndex]);
                     }
@@ -221,8 +266,7 @@ class MuiVirtualizedTable extends React.PureComponent {
     }
 
     headerRenderer = ({ label, columnIndex }) => {
-        const { headerHeight, columns, classes } = this.props;
-
+        const { columns, classes } = this.props;
         return (
             <TableCell
                 component="div"
@@ -233,13 +277,57 @@ class MuiVirtualizedTable extends React.PureComponent {
                     classes.header
                 )}
                 variant="head"
-                style={{ height: headerHeight }}
+                style={{ height: this.state.headerHeight }}
                 align={columns[columnIndex].numeric || false ? 'right' : 'left'}
+                ref={(e) => this._registerObserver(e)}
             >
-                <span>{label}</span>
+                <div
+                    style={{
+                        minHeight: this.props.headerHeight,
+                        display: 'flex',
+                        alignItems: 'center',
+                        height: '100%',
+                    }}
+                    ref={(element) => {
+                        this._registerHeader(label, element);
+                    }}
+                >
+                    {label}
+                </div>
             </TableCell>
         );
     };
+
+    _computeHeaderSize() {
+        console.debug('recompute header size');
+        const headers = Object.values(this.headers.current);
+        if (headers.length === 0) return;
+        let headerHeight = this.props.headerHeight;
+        headers.forEach((h) => {
+            // https://developer.mozilla.org/fr/docs/Web/API/Element/scrollHeight
+            // The scrollHeight value is equal to the minimum height the element
+            // would require in order to fit all the content in the viewport
+            // without using a vertical scrollbar.
+            headerHeight = Math.max(
+                h.scrollHeight + DEFAULT_CELL_PADDING,
+                headerHeight
+            );
+        });
+        if (headerHeight !== this.state.headerHeight) {
+            this.setState({
+                headerHeight: headerHeight,
+            });
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this._computeHeaderSize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this._computeHeaderSize);
+        this.observer.disconnect();
+    }
 
     render() {
         const {
@@ -281,7 +369,7 @@ class MuiVirtualizedTable extends React.PureComponent {
                         gridStyle={{
                             direction: 'inherit',
                         }}
-                        headerHeight={headerHeight}
+                        headerHeight={this.state.headerHeight}
                         className={classes.table}
                         {...tableProps}
                         rowCount={reorderedIndex.length}

@@ -301,7 +301,7 @@ const AppContent = () => {
                                             dataKey: 'key2',
                                         },
                                         {
-                                            label: 'header3',
+                                            label: 'header3 and some text',
                                             dataKey: 'key3',
                                         },
                                     ]}
