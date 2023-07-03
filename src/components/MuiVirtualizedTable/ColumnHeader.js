@@ -15,10 +15,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 const useStyles = makeStyles((theme) => ({
-    label: {
-        fontWeight: 'bold',
-        fontSize: '0.875rem', // to mimic TableCellRoot 'binding'
-    },
+    label: {},
     divFlex: {
         display: 'flex',
         flexDirection: 'row',

@@ -63,7 +63,7 @@ const styles = (theme) => ({
     header: {
         backgroundColor: theme.palette.info.light,
         color: theme.palette.primary.contrastText,
-        fontWeight: 'bold',
+        fontWeight: 'bolder',
     },
     rowBackgroundDark: {
         backgroundColor: theme.palette.info.dark,
@@ -85,8 +85,9 @@ export const TableTab = () => {
     const columns = useMemo(
         () => [
             {
-                label: 'header1',
+                label: 'header1 (clickable cells in column)',
                 dataKey: 'key1',
+                clickable: true,
             },
             {
                 label: 'header2',
@@ -110,7 +111,13 @@ export const TableTab = () => {
     const rows = useMemo(
         () => [
             { key1: 'group2', key2: 'val2', key3: 1, key4: 2.35 },
-            { key1: 'group1', key2: 'val1', key3: 2, key4: 5.32 },
+            {
+                key1: 'group1 (not clickable line)',
+                key2: 'val1',
+                key3: 2,
+                key4: 5.32,
+                notClickable: true,
+            },
             { key1: 'group2', key2: 'val4', key3: 3, key4: 23.5 },
             { key1: 'group1', key2: 'val3', key3: 4, key4: 52.3 },
             { key1: 'group3', key2: 'val3', key3: 5, key4: 2.53 },

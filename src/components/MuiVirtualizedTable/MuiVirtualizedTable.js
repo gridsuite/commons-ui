@@ -444,9 +444,7 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    sortClickHandler = (evt, name, columnIndex) => {
-        const colKey = this.props.columns[columnIndex].dataKey;
-
+    sortClickHandler = (evt, name, colKey) => {
         if (evt.altKey) {
             this.openPopover(evt.target, colKey);
             return;
@@ -468,21 +466,18 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     };
 
-    filterClickHandler = (evt, target, columnIndex) => {
+    filterClickHandler = (evt, target, colKey) => {
         // ColumnHeader to (header) TableCell
         const retargeted = target.parentNode ?? target;
-
-        const colKey = this.props.columns[columnIndex].dataKey;
         this.openPopover(retargeted, colKey);
     };
 
-    sortableHeader = ({ label, columnIndex }) => {
+    sortableHeader = ({ label, dataKey, columnData }) => {
         const { columns } = this.props;
         const indexer = this.state.indexer;
-        const colKey = columns[columnIndex].dataKey;
+        const colKey = dataKey;
         const signedRank = indexer.columnSortingSignedRank(colKey);
         const userParams = indexer.getColFilterUserParams(colKey);
-        const numeric = columns[columnIndex].numeric;
 
         const prefiltered = preFilterData(
             columns,
@@ -507,10 +502,10 @@ class MuiVirtualizedTable extends React.PureComponent {
         //  - a cellRenderer is defined, as we have no simple way to match for chosen value(s)
         //  - using an external sort, because it would hardly know about the indexer filtering
         const onFilterClick =
-            numeric || this.props.sort || columns[columnIndex].cellRenderer
+            columnData.numeric || this.props.sort || columnData.cellRenderer
                 ? undefined
                 : (ev, retargeted) => {
-                      this.filterClickHandler(ev, retargeted, columnIndex);
+                      this.filterClickHandler(ev, retargeted, colKey);
                   };
         return (
             <ColumnHeader
@@ -518,9 +513,9 @@ class MuiVirtualizedTable extends React.PureComponent {
                 ref={(e) => this._registerHeader(label, e)}
                 sortSignedRank={signedRank}
                 filterLevel={filterLevel}
-                numeric={numeric}
+                numeric={columnData.numeric}
                 onSortClick={(ev, name) => {
-                    this.sortClickHandler(ev, name, columnIndex);
+                    this.sortClickHandler(ev, name, colKey);
                 }}
                 onFilterClick={onFilterClick}
             />
@@ -559,13 +554,9 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     };
 
-    cellRenderer = ({ cellData, columnIndex, rowIndex }) => {
-        const { columns, classes, rowHeight, onCellClick, rows } = this.props;
-
-        let displayedValue = this.getDisplayValue(
-            columns[columnIndex],
-            cellData
-        );
+    cellRenderer = ({ cellData, columnData, rowData }) => {
+        const { classes, rowHeight, onCellClick } = this.props;
+        let displayedValue = this.getDisplayValue(columnData, cellData);
 
         return (
             <TableCell
@@ -573,33 +564,32 @@ class MuiVirtualizedTable extends React.PureComponent {
                 className={clsx(classes.tableCell, classes.flexContainer, {
                     [classes.noClick]:
                         displayedValue === undefined ||
-                        rows[rowIndex]?.notClickable === true ||
+                        rowData?.notClickable === true ||
                         onCellClick == null ||
-                        columns[columnIndex].clickable === undefined ||
-                        !columns[columnIndex].clickable,
+                        columnData.clickable === undefined ||
+                        !columnData.clickable,
                     [classes.tableCellColor]:
                         displayedValue === undefined ||
                         (onCellClick !== null &&
-                            !rows[rowIndex]?.notClickable === true &&
-                            columns[columnIndex].clickable !== undefined &&
-                            columns[columnIndex].clickable),
+                            !rowData?.notClickable === true &&
+                            columnData.clickable !== undefined &&
+                            columnData.clickable),
                 })}
                 variant="body"
                 style={{ height: rowHeight, width: '100%' }}
                 align={
-                    (columnIndex != null && columns[columnIndex].numeric) ||
-                    false
+                    (columnData != null && columnData.numeric) || false
                         ? 'right'
                         : 'left'
                 }
                 onClick={() => {
                     if (
                         onCellClick &&
-                        columns[columnIndex].clickable !== undefined &&
-                        !rows[rowIndex]?.notClickable === true &&
-                        columns[columnIndex].clickable
+                        columnData.clickable !== undefined &&
+                        !rowData?.notClickable === true &&
+                        columnData.clickable
                     ) {
-                        onCellClick(rows[rowIndex], columns[columnIndex]);
+                        onCellClick(rowData, columnData);
                     }
                 }}
             >
@@ -654,38 +644,30 @@ class MuiVirtualizedTable extends React.PureComponent {
         }
     }
 
-    makeHeaderRenderer(dataKey, columnIndex) {
-        const { columns, classes } = this.props;
-        return (headerProps) => {
-            return (
-                <TableCell
-                    component="div"
-                    className={clsx(
-                        classes.tableCell,
-                        classes.flexContainer,
-                        classes.noClick,
-                        classes.header
-                    )}
-                    variant="head"
-                    style={{ height: this.state.headerHeight }}
-                    align={
-                        columns[columnIndex].numeric || false ? 'right' : 'left'
-                    }
-                    ref={(e) => this._registerObserver(e)}
-                >
-                    {this.props.sortable && this.state.indexer
-                        ? this.sortableHeader({
-                              ...headerProps,
-                              columnIndex,
-                              key: { dataKey },
-                          })
-                        : this.simpleHeaderRenderer({
-                              ...headerProps,
-                          })}
-                </TableCell>
-            );
-        };
-    }
+    headerRenderer = (headerData) => {
+        const { classes } = this.props;
+        return (
+            <TableCell
+                component="div"
+                className={clsx(
+                    classes.tableCell,
+                    classes.flexContainer,
+                    classes.noClick,
+                    classes.header
+                )}
+                variant="head"
+                style={{ height: this.state.headerHeight }}
+                align={
+                    headerData.columnData.numeric || false ? 'right' : 'left'
+                }
+                ref={(e) => this._registerObserver(e)}
+            >
+                {this.props.sortable && this.state.indexer
+                    ? this.sortableHeader(headerData)
+                    : this.simpleHeaderRenderer(headerData)}
+            </TableCell>
+        );
+    };
 
     makeSizedTable = (height, width, sizes, reorderedIndex, rowGetter) => {
         const { sort, ...otherProps } = this.props;
@@ -710,20 +692,19 @@ class MuiVirtualizedTable extends React.PureComponent {
                 }
                 rowGetter={({ index }) => rowGetter(index)}
             >
-                {otherProps.columns.map(({ dataKey, ...other }, index) => {
+                {otherProps.columns.map((columnData, index) => {
+                    const { dataKey, ...others } = columnData;
                     return (
                         <Column
                             key={dataKey}
-                            headerRenderer={this.makeHeaderRenderer(
-                                dataKey,
-                                index
-                            )}
+                            headerRenderer={this.headerRenderer}
                             className={otherProps.classes.flexContainer}
                             cellRenderer={this.cellRenderer}
                             dataKey={dataKey}
                             flexGrow={1}
                             width={sizes[dataKey]}
-                            {...other}
+                            columnData={columnData}
+                            {...others}
                         />
                     );
                 })}
