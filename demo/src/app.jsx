@@ -45,8 +45,7 @@ import {
     Typography,
 } from '@mui/material';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import { makeStyles, withStyles } from '@mui/styles';
-import { styled } from '@mui/system';
+import { makeStyles, styled, withStyles } from '@mui/material/styles';
 
 import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
