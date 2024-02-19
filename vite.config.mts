@@ -23,7 +23,8 @@ export default defineConfig({
         svgr({ include: '**/*.svg' }), // default is { include: "**/*.svg?react" }
         reactVirtualized(),
         externalizeDeps({
-            include: [/^react-is(?:\/.*)?$/, /^@mui(?:\/.*)?$/],
+            devDeps: true,
+            include: [/^react-is(?:\/.+)?$/, /^@.+/],
         }),
     ],
 
