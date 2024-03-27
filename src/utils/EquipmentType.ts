@@ -4,7 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 import { LIGHT_THEME } from '../components/TopBar/TopBar';
+import { Theme } from '@mui/material';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -19,12 +21,17 @@ export const equipmentStyles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    equipmentTag: (theme: string) => ({
+    equipmentTag: (theme: string | Theme) => ({
         borderRadius: '10px',
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
-        color: theme === LIGHT_THEME ? 'inherit' : 'black',
+        color:
+            //TODO remove first condition when gridstudy is updated
+            theme === LIGHT_THEME ||
+            (typeof theme !== 'string' && theme?.palette?.mode === 'light')
+                ? 'inherit'
+                : 'black',
     }),
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,

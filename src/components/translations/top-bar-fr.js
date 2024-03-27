@@ -16,7 +16,6 @@ const top_bar_fr = {
     'top-bar/id': 'Id',
     'top-bar/name': 'Nom',
     'top-bar/language': 'Langue',
-    'top-bar/customTheme': 'Choix de theme',
 
     'about-dialog/title': 'À propos',
     'about-dialog/version': 'Version {version}',

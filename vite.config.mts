@@ -6,7 +6,8 @@
  */
 
 import react from '@vitejs/plugin-react';
-import { defineConfig, PluginOption } from 'vite';
+import { defineConfig } from 'vite';
+import type { PluginOption } from 'vite'; // eslint-disable-line no-unused-vars
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
