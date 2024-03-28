@@ -16,7 +16,7 @@ import { getFileIcon } from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
 import { useSnackMessage } from '../../hooks/useSnackMessage.js';
 import TreeViewFinder from '../TreeViewFinder';
-import { Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
 
 const styles = {
@@ -97,7 +97,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 id: e.elementUuid,
                 name: e.elementName,
                 specificMetadata: e.specificMetadata,
-                icon: getFileIcon(e.type, styles.icon),
+                icon: getFileIcon(e.type, styles.icon as SxProps),
                 children:
                     e.type === ElementType.DIRECTORY
                         ? convertChildren(e.children)
@@ -116,7 +116,7 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 return {
                     id: e.elementUuid,
                     name: e.elementName,
-                    icon: getFileIcon(e.type, styles.icon),
+                    icon: getFileIcon(e.type, styles.icon as SxProps),
                     children:
                         e.type === ElementType.DIRECTORY
                             ? convertChildren(

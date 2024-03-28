@@ -7,6 +7,7 @@
 
 import { useMemo, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from './topBarConstants';
 
 import {
     AppBar,
@@ -146,9 +147,6 @@ const CustomListItemIcon = styled(ListItemIcon)({
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
-export const LANG_SYSTEM = 'sys';
-export const LANG_ENGLISH = 'en';
-export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
 

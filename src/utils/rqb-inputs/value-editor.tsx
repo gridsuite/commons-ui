@@ -1,0 +1,69 @@
+/**
+ * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { ValueEditorProps } from 'react-querybuilder';
+import { MaterialValueEditor } from '@react-querybuilder/material';
+import {
+    FieldType,
+    OperatorType,
+} from '../../components/filter/expert/expert-filter.type';
+import CountryValueEditor from './country-value-editor';
+import TranslatedValueEditor from './translated-value-editor';
+import TextValueEditor from './text-value-editor';
+import Box from '@mui/material/Box';
+
+const styles = {
+    noArrows: {
+        '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button':
+            {
+                display: 'none',
+            },
+        '& input[type=number]': {
+            MozAppearance: 'textfield',
+        },
+    },
+};
+
+const ValueEditor = (props: ValueEditorProps) => {
+    if (props.operator === OperatorType.EXISTS) {
+        // No value needed for this operator
+        return null;
+    }
+    if (
+        [FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(
+            props.field as FieldType
+        )
+    ) {
+        return (
+            <CountryValueEditor
+                paramGlobalState={undefined}
+                updateParam={function (param: unknown): Promise<unknown> {
+                    throw new Error('Function not implemented.');
+                }}
+                {...props}
+            />
+        );
+    }
+    if (
+        props.field === FieldType.ENERGY_SOURCE ||
+        props.field === FieldType.SHUNT_COMPENSATOR_TYPE
+    ) {
+        return <TranslatedValueEditor {...props} />;
+    }
+    if (props.field === FieldType.ID || props.field === FieldType.NAME) {
+        return <TextValueEditor {...props} />;
+    }
+    return (
+        <Box sx={props.inputType === 'number' ? styles.noArrows : undefined}>
+            <MaterialValueEditor
+                {...props}
+                title={undefined} // disable the tooltip
+            />
+        </Box>
+    );
+};
+export default ValueEditor;

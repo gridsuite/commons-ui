@@ -36,7 +36,7 @@
         "react-csv-downloader": "^2.7.0",
         "react-request-fullscreen": "^1.1.2",
         "react-virtualized": "^9.22.5",
-        "uuid": "^3.4.0"
+        "uuid": "^9.0.1"
     },
     "peerDependencies": {
         "@emotion/react": "^11.8.1",
@@ -63,6 +63,8 @@
         "@mui/lab": "^5.0.0-alpha.72",
         "@mui/material": "^5.5.0",
         "@mui/styles": "^5.5.0",
+        "@react-querybuilder/dnd": "^6.5.4",
+        "@react-querybuilder/material": "^6.5.1",
         "@hookform/resolvers": "^3.0.0",
         "@babel/helper-builder-react-jsx": "7.15.4",
         "@types/react": "^18.2.56",
@@ -70,6 +72,9 @@
         "@typescript-eslint/eslint-plugin": "5.62.0",
         "@typescript-eslint/parser": "5.62.0",
         "@vitejs/plugin-react": "^4.2.1",
+        "@types/uuid": "^9.0.6",
+        "ag-grid-community": "^29.0.0",
+        "ag-grid-react": "^29.0.0",
         "babel-eslint": "^10.1.0",
         "bufferutil": "^4.0.1",
         "eslint": "^7.9.0",
@@ -92,6 +97,10 @@
         "react-intl": "^6.0.0",
         "react-hook-form": "^7.41.0",
         "react-router-dom": "^6.0.0",
+        "react-querybuilder": "^6.5.1",
+        "react-dnd": "^16.0.1",
+        "react-dnd-html5-backend": "^16.0.1",
+        "react-papaparse": "^4.1.0",
         "ts-node": "^10.9.2",
         "type-fest": "^2.0.0",
         "typescript": "5.1.6",

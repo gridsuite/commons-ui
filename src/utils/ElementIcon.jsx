@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import {
     Article as ArticleIcon,
     PhotoLibrary as PhotoLibraryIcon,
@@ -13,9 +12,10 @@ import {
     Settings as SettingsIcon,
     NoteAlt as NoteAltIcon,
 } from '@mui/icons-material';
+import { SxProps } from '@mui/material';
 import { ElementType } from './ElementType';
 
-export function getFileIcon(type, style) {
+export function getFileIcon(type: ElementType, style: SxProps) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;

@@ -47,13 +47,14 @@ export {
     DEFAULT_ROW_HEIGHT,
 } from './components/MuiVirtualizedTable/MuiVirtualizedTable';
 
+export { DARK_THEME, LIGHT_THEME } from './components/TopBar/TopBar';
+
 export {
-    DARK_THEME,
-    LIGHT_THEME,
     LANG_SYSTEM,
     LANG_ENGLISH,
     LANG_FRENCH,
-} from './components/TopBar/TopBar';
+} from './components/TopBar/topBarConstants';
+
 export {
     USER,
     setLoggedUser,
@@ -122,4 +123,31 @@ export {
 export { default as DirectoryItemsInput } from './components/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-input';
+
+export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
+export { default as ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
+export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
+export {
+    saveExplicitNamingFilter,
+    saveCriteriaBasedFilter,
+    saveExpertFilter,
+} from './components/filter/filters-utils';
+export {
+    default as RangeInput,
+    DEFAULT_RANGE_VALUE,
+    getRangeInputDataForm,
+    getRangeInputSchema,
+} from './utils/rhf-inputs/range-input';
+export { default as InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
+export { default as MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
+export {
+    default as CountriesInput,
+    PARAM_LANGUAGE,
+    getSystemLanguage,
+    getComputedLanguage,
+} from './utils/rhf-inputs/select-inputs/countries-input';
+export { default as MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
+export { default as CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { UniqueNameInput } from './components/commons/unique-name-input';
 export { UserManagerMock } from './utils/UserManagerMock';

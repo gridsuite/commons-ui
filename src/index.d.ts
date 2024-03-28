@@ -6,7 +6,6 @@
  */
 
 import type { FunctionComponent, ReactElement } from 'react';
-import type { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 import type {
     ButtonProps,
     SwitchProps,
@@ -15,6 +14,9 @@ import type {
     SxProps,
     TextFieldProps,
 } from '@mui/material';
+import { UseSnackMessageReturn } from './hooks/useSnackMessage';
+import { AutocompleteInputProps } from './components/react-hook-form/autocomplete-input';
+import { ErrorInputProps } from './components/react-hook-form/error-management/error-input';
 
 /**
  * Section to export generated type declarations
@@ -118,6 +120,37 @@ export { RawReadOnlyInput } from './components/react-hook-form/raw-read-only-inp
 export { UserManagerMock } from './utils/UserManagerMock';
 
 export {
+    DirectoryItemSelectorProps,
+    DirectoryItemSelector,
+} from './components/DirectoryItemSelector/directory-item-selector';
+export { FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export { ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
+export { ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
+export { CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
+export { ElementType, getFileIcon } from './utils/ElementType';
+export {
+    saveExplicitNamingFilter,
+    saveCriteriaBasedFilter,
+    saveExpertFilter,
+} from './components/filter/filters-utils';
+export {
+    RangeInput,
+    DEFAULT_RANGE_VALUE,
+    getRangeInputDataForm,
+    getRangeInputSchema,
+} from './utils/rhf-inputs/range-input';
+export { InputWithPopupConfirmation } from './utils/rhf-inputs/select-inputs/input-with-popup-confirmation';
+export { MuiSelectInput } from './utils/rhf-inputs/select-inputs/mui-select-input';
+export {
+    CountriesInput,
+    PARAM_LANGUAGE,
+    getSystemLanguage,
+    getComputedLanguage,
+} from './utils/rhf-inputs/select-inputs/countries-input';
+export { MultipleAutocompleteInput } from './utils/rhf-inputs/autocomplete-inputs/multiple-autocomplete-input';
+export { CsvUploader } from './utils/rhf-inputs/ag-grid-table-rhf/csv-uploader/csv-uploader';
+export { UniqueNameInput } from './components/commons/unique-name-input';
+export {
     ExpandingTextFieldProps,
     ExpandingTextField,
 } from './components/react-hook-form/expanding-text-field';
@@ -137,6 +170,9 @@ export function logout(
     userManagerInstance: any
 ): Promise<any | undefined>;
 
+export const DARK_THEME: string, LIGHT_THEME: string;
+
+type Input = string | number;
 interface SnackInputs {
     messageTxt?: string;
     messageId?: string;
@@ -154,50 +190,11 @@ interface UseSnackMessageReturn {
 
 export function useSnackMessage(): UseSnackMessageReturn;
 
-type Input = string | number;
-type Option = string | { id: string; label: string };
-
-interface AutocompleteInputProps
-    extends Omit<
-        AutocompleteProps<
-            Option,
-            boolean | undefined,
-            boolean | undefined,
-            boolean | undefined
-        >,
-        // we already defined them in our custom Autocomplete
-        'value' | 'onChange' | 'renderInput'
-    > {
-    name: string;
-    options: Option[];
-    label?: string;
-    outputTransform?: (value: Option) => Option;
-    inputTransform?: (value: Option) => Option;
-    readOnly?: boolean;
-    previousValue?: string;
-    allowNewValue?: boolean;
-    onChangeCallback?: () => void;
-    formProps?: Omit<
-        TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
-}
-
 export const AutocompleteInput: FunctionComponent<AutocompleteInputProps>;
-
-interface ErrorInputProps {
-    name: string;
-    InputField?: FunctionComponent;
-}
 
 export const ErrorInput: FunctionComponent<ErrorInputProps>;
 
-export const SelectInput: FunctionComponent<
-    Omit<
-        AutocompleteInputProps,
-        'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
-    >
->;
+export const SelectInput: FunctionComponent<SelectInputProps>;
 
 export const MidFormError: FunctionComponent;
 
