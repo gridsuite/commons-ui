@@ -15,7 +15,7 @@ import {
     resetAuthenticationRouterError,
     setShowAuthenticationRouterLogin,
 } from './actions';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 // set as a global variable to allow log level configuration at runtime
 window.OIDCLog = Log;

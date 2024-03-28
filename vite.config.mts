@@ -6,7 +6,7 @@
  */
 
 import react from '@vitejs/plugin-react';
-import { defineConfig, PluginOption } from 'vite';
+import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
@@ -72,7 +72,7 @@ export default defineConfig((config) => ({
 
 // Workaround for react-virtualized with vite
 // https://github.com/bvaughn/react-virtualized/issues/1632#issuecomment-1483966063
-function reactVirtualized(): PluginOption {
+function reactVirtualized() {
     const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
     return {
         name: 'flat:react-virtualized',

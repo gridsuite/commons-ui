@@ -322,9 +322,8 @@ export class KeyedColumnsRowIndexer {
                 } else if (wasAtIdx !== keyAndDirections.length - 1) {
                     return false;
                 } else if (!(this.isThreeState && wasSignDir === -1)) {
-                    this.sortingState[wasAtIdx][1] = canonicalForSign(
-                        -wasSignDir
-                    );
+                    this.sortingState[wasAtIdx][1] =
+                        canonicalForSign(-wasSignDir);
                 } else {
                     this.sortingState.splice(wasAtIdx, 1);
                 }
@@ -340,9 +339,8 @@ export class KeyedColumnsRowIndexer {
                         ]);
                     }
                 } else if (!(this.isThreeState && wasSignDir === -1)) {
-                    this.sortingState[wasAtIdx][1] = canonicalForSign(
-                        -wasSignDir
-                    );
+                    this.sortingState[wasAtIdx][1] =
+                        canonicalForSign(-wasSignDir);
                 } else {
                     this.lastUsedRank = wasAtIdx + 1;
                     this.sortingState.splice(wasAtIdx, 1);

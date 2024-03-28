@@ -6,7 +6,6 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { TreeView } from '@mui/lab';
 import {
     ArrowDropDown as ArrowDropDownIcon,
     ArrowRight as ArrowRightIcon,
@@ -17,6 +16,7 @@ import { Grid } from '@mui/material';
 import LogTable from './log-table';
 import ReportTreeViewContext from './report-tree-view-context';
 import LogReportItem from './log-report-item';
+import { TreeView } from '@mui/x-tree-view';
 
 const MAX_SUB_REPORTS = 500;
 

@@ -536,8 +536,8 @@ const AppContent = ({ language, onLanguageClick }) => {
         stylesProvider === 'emotion'
             ? CustomTreeViewFinderEmotion
             : stylesProvider === 'jss'
-            ? CustomTreeViewFinderJss
-            : undefined;
+              ? CustomTreeViewFinderJss
+              : undefined;
 
     const defaultTab = (
         <div>

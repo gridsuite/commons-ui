@@ -98,8 +98,8 @@ export const TableTab = ({ stylesProvider }) => {
         stylesProvider === 'emotion'
             ? StyledVirtualizedTableEmotion
             : stylesProvider === 'jss'
-            ? StyledVirtualizedTableJss
-            : undefined;
+              ? StyledVirtualizedTableJss
+              : undefined;
 
     const VirtualizedTable = usesCustomStyles
         ? StyledVirtualizedTable

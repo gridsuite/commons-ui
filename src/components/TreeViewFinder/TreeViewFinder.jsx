@@ -25,7 +25,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { TreeItem, TreeView } from '@mui/lab';
+import { TreeView, TreeItem } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
