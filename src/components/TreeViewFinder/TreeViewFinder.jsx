@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import {
@@ -101,6 +101,8 @@ const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
  * @param {Boolean}         [multiselect=false] - Allow/Forbid multiselection on Tree
  * @param {Object}          [cancelButtonProps] - The cancel button props
+ * @param {Object}          [selected = []] - ids of selected items
+ * @param {Array}           [expanded = []] - ids of the expanded items
  */
 const TreeViewFinder = (props) => {
     const intl = useIntl();
@@ -120,6 +122,8 @@ const TreeViewFinder = (props) => {
         sortMethod,
         className,
         cancelButtonProps,
+        selected: selectedProp,
+        expanded: expandedProp,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState({});
@@ -128,6 +132,8 @@ const TreeViewFinder = (props) => {
     const [expanded, setExpanded] = useState(defaultExpanded);
     // Controlled selected for TreeView
     const [selected, setSelected] = useState(defaultSelected);
+
+    const scrollRef = useRef([]);
 
     /* Utilities */
     const isSelectable = (node) => {
@@ -187,6 +193,45 @@ const TreeViewFinder = (props) => {
         // will proc onNodeSelect then ...
     };
 
+    useEffect(() => {
+        if (selectedProp?.length > 0) {
+            setSelected((oldSelectedNodes) => [
+                ...oldSelectedNodes,
+                ...selectedProp,
+            ]);
+        }
+    }, [selectedProp]);
+
+    useEffect(() => {
+        if (expandedProp?.length > 0) {
+            setExpanded((oldExpandedNodes) => [
+                ...oldExpandedNodes,
+                ...expandedProp,
+            ]);
+        }
+    }, [expandedProp]);
+
+    useEffect(() => {
+        // if we have selected elements by default, we scroll to it
+        if (selectedProp?.length > 0) {
+            // we check if all expanded nodes by default all already expanded first
+            const isNodeExpanded = expandedProp.every((nodeId) =>
+                expanded.includes(nodeId)
+            );
+
+            // we got the last element that we suppose to scroll to
+            const lastScrollRef =
+                scrollRef.current[scrollRef.current.length - 1];
+            if (isNodeExpanded && lastScrollRef) {
+                lastScrollRef.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                });
+            }
+        }
+    }, [expanded, selectedProp, expandedProp, data]);
+
     /* User Interaction management */
     const handleNodeSelect = (e, values) => {
         // Default management
@@ -211,8 +256,12 @@ const TreeViewFinder = (props) => {
         if (validationButtonText) {
             return validationButtonText;
         } else {
+            const buttonLabelId =
+                selectedProp?.length > 0
+                    ? 'treeview_finder/replaceElementsValidation'
+                    : 'treeview_finder/addElementsValidation';
             return intl.formatMessage(
-                { id: 'treeview_finder/addElementsValidation' },
+                { id: buttonLabelId },
                 {
                     nbElements: selected.length,
                 }
@@ -286,6 +335,11 @@ const TreeViewFinder = (props) => {
                         />
                     ) : null
                 }
+                ref={(element) => {
+                    if (selectedProp.includes(node.id)) {
+                        scrollRef.current.push(element);
+                    }
+                }}
             >
                 {Array.isArray(node.children)
                     ? node.children.length
@@ -364,7 +418,13 @@ const TreeViewFinder = (props) => {
                         onClose(computeSelectedNodes());
                         setSelected([]);
                     }}
-                    disabled={selected.length === 0}
+                    disabled={
+                        selected.length === 0 ||
+                        (selected.length === selectedProp.length &&
+                            selected.every((nodeId) =>
+                                selectedProp.includes(nodeId)
+                            ))
+                    }
                 >
                     {getValidationButtonText()}
                 </Button>
@@ -398,6 +458,8 @@ TreeViewFinder.propTypes = {
     sortMethod: PropTypes.func,
     cancelButtonProps: PropTypes.object,
     className: PropTypes.string,
+    selected: PropTypes.arrayOf(PropTypes.string),
+    expanded: PropTypes.arrayOf(PropTypes.string),
 };
 
 /* TreeViewFinder props default values */

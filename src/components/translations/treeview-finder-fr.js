@@ -16,6 +16,8 @@ const treeview_finder_fr = {
         '{multiselect, select, true {Veuillez choisir un ou plusieurs éléments.} false {Veuillez choisir un élément.} other {}}',
     'treeview_finder/addElementsValidation':
         '{nbElements, plural, =0 {Veuillez sélectionner un élément} =1 {Ajouter cet élément} other {Ajouter # éléments}}',
+    'treeview_finder/replaceElementsValidation':
+        '{nbElements, plural, =0 {Veuillez sélectionner un élément} =1 {Remplacer par cet élément} other {Remplacer par # éléments}}',
 };
 
 export default treeview_finder_fr;

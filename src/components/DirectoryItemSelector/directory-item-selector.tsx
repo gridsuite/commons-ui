@@ -53,6 +53,8 @@ interface DirectoryItemSelectorProps {
     cancelButtonProps?: any;
     onlyLeaves?: boolean;
     multiselect?: boolean;
+    selected?: UUID[];
+    expanded?: UUID[];
 }
 
 const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
@@ -74,6 +76,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
     cancelButtonProps,
     onlyLeaves = true,
     multiselect = true,
+    selected,
+    expanded,
 }) => {
     const [data, setData] = useState<any[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
@@ -169,12 +173,6 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
             });
     }, [convertRoots, types, snackError, fetchRootFolders]);
 
-    useEffect(() => {
-        if (open) {
-            updateRootDirectories();
-        }
-    }, [open, updateRootDirectories]);
-
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
             fetchDirectoryContent(nodeId, types)
@@ -228,6 +226,17 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
         ]
     );
 
+    useEffect(() => {
+        if (open) {
+            updateRootDirectories();
+            if (expanded) {
+                expanded.forEach((nodeId) => {
+                    fetchDirectory(nodeId);
+                });
+            }
+        }
+    }, [open, updateRootDirectories, expanded, fetchDirectory]);
+
     function sortHandlingDirectories(a: any, b: any): number {
         //If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
         if (a.children && !b.children) {
@@ -256,6 +265,8 @@ const DirectoryItemSelector: FunctionComponent<DirectoryItemSelectorProps> = ({
                 validationButtonText={validationButtonText}
                 className={className}
                 cancelButtonProps={cancelButtonProps}
+                selected={selected}
+                expanded={expanded}
             />
         </>
     );
