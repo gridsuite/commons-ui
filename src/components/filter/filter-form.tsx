@@ -68,6 +68,7 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
                         <ExpandableGroup renderHeader={'Description'}>
                             <ExpandingTextField
                                 name={FieldConstants.DESCRIPTION}
+                                label={'descriptionProperty'}
                                 minRows={3}
                                 rows={5}
                             />
