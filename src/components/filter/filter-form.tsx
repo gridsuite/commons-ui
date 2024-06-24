@@ -17,7 +17,7 @@ import { ElementType } from '../../utils/ElementType';
 import { UUID } from 'crypto';
 import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from './constants/filter-constants';
-import ExpendableGroup from '../ExpendableGroup';
+import ExpandableGroup from '../ExpandableGroup';
 import RadioInput from '../inputs/react-hook-form/radio-input';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
 
@@ -65,13 +65,13 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
             {props.creation && (
                 <>
                     <Grid item xs={12}>
-                        <ExpendableGroup renderHeader={'Description'}>
+                        <ExpandableGroup renderHeader={'Description'}>
                             <ExpandingTextField
                                 name={FieldConstants.DESCRIPTION}
                                 minRows={3}
                                 rows={5}
                             />
-                        </ExpendableGroup>
+                        </ExpandableGroup>
                     </Grid>
                     {!props.sourceFilterForExplicitNamingConversion && (
                         <Grid item>
