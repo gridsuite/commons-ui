@@ -294,7 +294,7 @@ const AboutDialog = ({
                 <Box sx={styles.mainSection}>
                     <Box sx={styles.logoSection}>
                         <LogoText
-                            appName="Suite"
+                            appName={appName === 'Capa' ? 'Capa' : 'Suite'}
                             appColor={theme.palette.grey['500']}
                         />
                     </Box>
