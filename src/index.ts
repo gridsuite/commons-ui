@@ -141,6 +141,7 @@ export {
     ElementSearchInput,
     useElementSearch,
 } from './components/ElementSearchDialog';
+export type { TagRendererProps } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
