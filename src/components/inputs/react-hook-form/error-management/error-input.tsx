@@ -40,8 +40,7 @@ function ErrorInput({ name, InputField }: Readonly<ErrorInputProps>) {
             return {
                 id: errorMsg,
             };
-        }
-        if (typeof errorMsg === 'object') {
+        } else if (typeof errorMsg === 'object') {
             return {
                 id: errorMsg.id,
                 values: {
