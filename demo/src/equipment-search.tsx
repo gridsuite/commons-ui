@@ -38,7 +38,8 @@ const equipmentsToReturn: AnyElementInterface[] = [
     },
 ];
 
-const searchEquipmentPromise = () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const searchEquipmentPromise = (term: string) => {
     return new Promise<AnyElementInterface[]>((resolve) => {
         setTimeout(() => {
             resolve(equipmentsToReturn);

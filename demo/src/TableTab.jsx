@@ -191,7 +191,8 @@ export function TableTab() {
                     filtered = filtered.reverse();
                 }
             }
-            return filtered.map(([j]) => j);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return filtered.map(([_, j]) => j);
         },
         [rows, filter]
     );

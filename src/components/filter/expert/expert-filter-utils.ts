@@ -399,14 +399,12 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             if ('rules' in ruleOrGroup) {
                 // a composite group => aggregate into a composite rule
                 if ('field' in ruleOrGroup && 'operator' in ruleOrGroup) {
-                    return transformCompositeGroup(
-                        ruleOrGroup as RuleGroupTypeExport
-                    );
+                    return transformCompositeGroup(ruleOrGroup);
                 }
                 // a normal group
-                return transformGroup(ruleOrGroup as RuleGroupTypeExport);
+                return transformGroup(ruleOrGroup);
             }
-            return transformRule(ruleOrGroup as RuleTypeExport);
+            return transformRule(ruleOrGroup);
         });
 
         return {

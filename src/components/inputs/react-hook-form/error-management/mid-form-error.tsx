@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
 // component to display error message in the middle of dialog
-function MidFormError({ message }: { message: string | ReactNode }) {
+function MidFormError({ message }: Readonly<{ message: string | ReactNode }>) {
     return (
         <Box
             sx={(theme) => ({

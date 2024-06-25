@@ -366,7 +366,8 @@ function AboutDialog({
             )
                 .then(
                     (values) => (Array.isArray(values) ? values : []),
-                    () => []
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    (reason) => []
                 )
                 .then((values) => {
                     setModules([currentApp, ...values]);
@@ -399,7 +400,8 @@ function AboutDialog({
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             TransitionProps={{
-                onExited: () => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                onExited: (node) => {
                     setModules(null);
                     setActualGlobalVersion(null);
                 },
@@ -450,7 +452,8 @@ function AboutDialog({
                             in={loadingGlobalVersion}
                             appear
                             unmountOnExit
-                            onExited={() => setShowGlobalVersion(true)}
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            onExited={(node) => setShowGlobalVersion(true)}
                         >
                             <CircularProgress />
                         </Fade>

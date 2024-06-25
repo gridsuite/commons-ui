@@ -22,7 +22,7 @@ const styles = {
     }),
 };
 
-function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
+function GroupValueEditor(props: Readonly<ValueEditorProps<CompositeField>>) {
     const {
         fieldData: { combinator, children },
         value,

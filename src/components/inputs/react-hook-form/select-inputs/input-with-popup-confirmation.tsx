@@ -35,9 +35,7 @@ function InputWithPopupConfirmation({
     };
 
     const handlePopupConfirmation = () => {
-        if (resetOnConfirmation) {
-            resetOnConfirmation();
-        }
+        resetOnConfirmation?.();
         onChange(newValue);
         setOpenPopup(false);
     };
