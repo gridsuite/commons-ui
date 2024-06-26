@@ -21,7 +21,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { UrlString } from './types';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
-type IdpSettingsGetter = () => Promise<IdpSettings>;
+type IdpSettingsGetter = () => Promise<IdpSettings | Response>;
 
 export type IdpSettings = {
     authority: UrlString;
@@ -47,7 +47,7 @@ const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
 
-function isIssuerErrorForCodeFlow(error: Error) {
+function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
 }
 
@@ -87,8 +87,7 @@ function handleSigninSilent(
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error: Error) => {
                 dispatch(setShowAuthenticationRouterLogin(true));
-                if (isIssuerErrorForCodeFlow(error)) {
-                    // Replacing authority for code flow only because it's done in the hash for implicit flow
+                if (isIssuerError(error)) {
                     extractIssuerToSessionStorage(error);
                     reload();
                 }
@@ -124,7 +123,12 @@ export async function initializeAuthenticationProd(
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
-    const idpSettings = await idpSettingsFetcher();
+    const idpSettings = await idpSettingsFetcher().then((r) =>
+        // backward compatibility with old callers
+        Object.prototype.toString.call(r) !== '[object Response]'
+            ? r
+            : (r as Response).json()
+    );
     try {
         const settings = {
             authority:
@@ -322,7 +326,7 @@ export function handleSigninCallback(
     userManagerInstance
         .signinRedirectCallback()
         .catch(function (e) {
-            if (isIssuerErrorForCodeFlow(e)) {
+            if (isIssuerError(e)) {
                 // Replacing authority for code flow only because it's done in the hash for implicit flow
                 extractIssuerToSessionStorage(e);
                 // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
