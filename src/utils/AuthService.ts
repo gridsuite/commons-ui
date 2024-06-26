@@ -18,17 +18,17 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import { Url } from '../services';
+import { UrlString } from './types';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
 
 export type IdpSettings = {
-    authority: Url;
+    authority: UrlString;
     client_id: string;
-    redirect_uri: Url;
-    post_logout_redirect_uri: Url;
-    silent_redirect_uri: Url;
+    redirect_uri: UrlString;
+    post_logout_redirect_uri: UrlString;
+    silent_redirect_uri: UrlString;
     scope: string;
     maxExpiresIn?: number;
 };
@@ -129,11 +129,10 @@ export async function initializeAuthenticationProd(
         const settings = {
             authority:
                 sessionStorage.getItem(hackAuthorityKey) ||
-                idpSettings.authority?.toString(),
+                idpSettings.authority,
             client_id: idpSettings.client_id,
-            redirect_uri: idpSettings.redirect_uri?.toString(),
-            post_logout_redirect_uri:
-                idpSettings.post_logout_redirect_uri?.toString(),
+            redirect_uri: idpSettings.redirect_uri,
+            post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
             silent_redirect_uri: idpSettings.silent_redirect_uri,
             scope: idpSettings.scope,
             automaticSilentRenew: !isSilentRenew,
@@ -151,7 +150,7 @@ export async function initializeAuthenticationProd(
             }
         }
         return userManager;
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.debug('error when importing the idp settings', error);
         dispatch(setShowAuthenticationRouterLogin(true));
         throw error;
