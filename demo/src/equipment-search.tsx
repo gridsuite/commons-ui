@@ -5,24 +5,56 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useState } from 'react';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import {
     ElementSearchDialog,
     EquipmentItem,
     equipmentStyles,
     EquipmentType,
+    useElementSearch,
 } from '../../src/index';
+import { Search } from '@mui/icons-material';
+import { useIntl } from 'react-intl';
+
+interface AnyElementInterface {
+    id: string;
+    key: string;
+    label: string;
+    type: EquipmentType;
+}
+
+const equipmentsToReturn: AnyElementInterface[] = [
+    {
+        id: 'test1',
+        key: 'test1',
+        label: 'label1',
+        type: EquipmentType.LINE,
+    },
+    {
+        id: 'test2',
+        key: 'test2',
+        label: 'label2',
+        type: EquipmentType.GENERATOR,
+    },
+];
+
+const searchEquipmentPromise = (term: string) => {
+    return new Promise<AnyElementInterface[]>((resolve) => {
+        setTimeout(() => {
+            resolve(equipmentsToReturn);
+        }, 300);
+    });
+};
 
 export const EquipmentSearchDialog = () => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
 
-    const updateSearchTerm = (newSearchTerm: string) => {
-        setIsLoading(true);
-        setSearchTerm(newSearchTerm);
-        setTimeout(() => setIsLoading(false), 1000);
-    };
+    const { elementsFound, isLoading, searchTerm, updateSearchTerm } =
+        useElementSearch({
+            fetchElements: searchEquipmentPromise,
+        });
+
+    const intl = useIntl();
 
     return (
         <>
@@ -30,29 +62,11 @@ export const EquipmentSearchDialog = () => {
             <ElementSearchDialog
                 open={isSearchOpen}
                 onClose={() => setIsSearchOpen(false)}
-                searchingLabel={'testSearch'}
                 onSearchTermChange={updateSearchTerm}
                 onSelectionChange={(element: any) => {
                     console.log(element);
                 }}
-                elementsFound={
-                    searchTerm
-                        ? [
-                              {
-                                  id: 'test1',
-                                  key: 'test1',
-                                  label: 'label1',
-                                  type: EquipmentType.LINE,
-                              },
-                              {
-                                  id: 'test2',
-                                  key: 'test2',
-                                  label: 'label2',
-                                  type: EquipmentType.GENERATOR,
-                              },
-                          ]
-                        : []
-                }
+                elementsFound={elementsFound}
                 renderElement={(props: any) => (
                     <EquipmentItem
                         styles={equipmentStyles}
@@ -61,7 +75,25 @@ export const EquipmentSearchDialog = () => {
                     />
                 )}
                 searchTerm={searchTerm}
-                isLoading={isLoading}
+                loading={isLoading}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option1, option2) =>
+                    option1.id === option2.id
+                }
+                renderInput={(displayedValue, params) => (
+                    <TextField
+                        autoFocus={true}
+                        {...params}
+                        label={intl.formatMessage({
+                            id: 'element_search/label',
+                        })}
+                        InputProps={{
+                            ...params.InputProps,
+                            startAdornment: <Search color="disabled" />,
+                        }}
+                        value={displayedValue}
+                    />
+                )}
             />
         </>
     );

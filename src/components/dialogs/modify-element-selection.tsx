@@ -45,7 +45,6 @@ const ModifyElementSelection: React.FunctionComponent<
                 setActiveDirectoryName(
                     res
                         .map((element: any) => element.elementName.trim())
-                        .reverse()
                         .join('/')
                 );
             });

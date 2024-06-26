@@ -8,7 +8,7 @@ import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
 import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
 import { mergeSx } from '../../utils/styles';
-import { SxProps } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 
 interface TagRendererProps {
     props: {
@@ -17,8 +17,8 @@ interface TagRendererProps {
             equipmentVlTag?: string;
         };
         styles?: {
-            equipmentTag?: SxProps;
-            equipmentVlTag?: SxProps;
+            equipmentTag?: SxProps<Theme>;
+            equipmentVlTag?: SxProps<Theme>;
         };
     };
     element: {

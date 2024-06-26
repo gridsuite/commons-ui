@@ -20,6 +20,7 @@ export { default as ReportViewerDialog } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
 export { default as ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
+export { default as ExpandableGroup } from './components/ExpandableGroup';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
@@ -63,7 +64,7 @@ export {
 } from './utils/conversion-utils';
 
 export { ElementType } from './utils/ElementType';
-export type { ElementAttributes, Option } from './utils/types';
+export type { ElementAttributes, Option, Equipment } from './utils/types';
 
 export {
     EQUIPMENT_TYPE,
@@ -136,7 +137,11 @@ export { default as common_button_fr } from './components/translations/common-bu
 export { default as directory_items_input_en } from './components/translations/directory-items-input-en';
 export { default as directory_items_input_fr } from './components/translations/directory-items-input-fr';
 
-export { TagRenderer } from './components/ElementSearchDialog';
+export {
+    TagRenderer,
+    ElementSearchInput,
+    useElementSearch,
+} from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';

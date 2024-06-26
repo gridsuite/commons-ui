@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { SxProps } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 
 //TODO do we need to export this to clients (index.ts) ?
 
@@ -28,12 +28,12 @@ export const toNestedGlobalSelectors = (
         ])
     );
 
-const isSxProps = (sx: SxProps | undefined): sx is SxProps => {
+const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
     return sx !== undefined;
 };
 
 // https://mui.com/system/getting-started/the-sx-prop/#passing-the-sx-prop
 // You cannot spread or concat directly because `SxProps` (typeof sx) can be an array. */
 // same as [{}, ...(Array.isArray(sx) ? sx : [sx])]
-export const mergeSx = (...allSx: (SxProps | undefined)[]) =>
+export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) =>
     allSx.filter(isSxProps).flat();

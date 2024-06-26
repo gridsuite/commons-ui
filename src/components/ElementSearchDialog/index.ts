@@ -6,3 +6,5 @@
  */
 export { default } from './element-search-dialog';
 export { TagRenderer } from './tag-renderer';
+export { ElementSearchInput } from './element-search-input';
+export { useElementSearch } from './use-element-search';
