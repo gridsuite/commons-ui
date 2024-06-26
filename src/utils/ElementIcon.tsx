@@ -31,6 +31,7 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
         case ElementType.SECURITY_ANALYSIS_PARAMETERS:
         case ElementType.LOADFLOW_PARAMETERS:
         case ElementType.SENSITIVITY_PARAMETERS:
+        case ElementType.SHORT_CIRCUIT_PARAMETERS:
             return <SettingsIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
