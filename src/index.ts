@@ -58,7 +58,10 @@ export {
     expertFilterSchema as EXPERT_FILTER_SCHEMA,
     getExpertFilterEmptyFormData,
 } from './components/filter/expert/expert-filter-form';
-export { importExpertRules } from './components/filter/expert/expert-filter-utils';
+export {
+    importExpertRules,
+    exportExpertRules,
+} from './components/filter/expert/expert-filter-utils';
 
 export { default as yup } from './utils/yup-config';
 
@@ -157,6 +160,7 @@ export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { useDebounce } from './hooks/useDebounce';
+export { usePrevious } from './hooks/usePrevious';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export { useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
