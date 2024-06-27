@@ -241,7 +241,9 @@ const ExplicitNamingFilterForm: FunctionComponent<
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={sourceFilterForExplicitNamingConversion}
+                    disabled={
+                        sourceFilterForExplicitNamingConversion !== undefined
+                    }
                     label={'equipmentType'}
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
