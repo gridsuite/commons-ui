@@ -20,7 +20,7 @@ const FieldLabel = ({
     return (
         <>
             <FormattedMessage id={label} values={values} />
-            {optional && <FormattedMessage id="Optional" />}
+            {optional && <FormattedMessage id="inputs/optional" />}
         </>
     );
 };

@@ -6,22 +6,9 @@
  */
 
 const inputs_en = {
-    'inputs/kiki': 'Kylian Mbappe',
-    'inputs/ney': 'Neymar',
-    'inputs/lapulga': 'Lionel Messi',
-    'inputs/ibra': 'Zlatan Ibrahimovic',
-    'inputs/float': 'Float',
-    'inputs/integer': 'Integer',
-    'inputs/radio': 'Radio',
-    'inputs/select': 'Select',
-    'inputs/slider': 'Slider',
-    'inputs/text': 'Text',
     'inputs/description': 'Description',
-    'inputs/autocomplete': 'Autocomplete',
-    'inputs/boolean': 'Boolean',
-    'inputs/checkbox': 'Checkbox',
-    'inputs/switch': 'Switch',
-    Optional: 'Optional',
+    'inputs/descriptionProperty': 'Description (optional)',
+    'inputs/optional': 'Optional',
 };
 
 export default inputs_en;

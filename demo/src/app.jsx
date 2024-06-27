@@ -72,6 +72,8 @@ import {
     top_bar_fr,
     treeview_finder_en,
     treeview_finder_fr,
+    inputs_en,
+    inputs_fr,
 } from '../../src/index';
 import translations from './demo_intl';
 
@@ -103,8 +105,8 @@ import { FlatParametersTab } from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import { InputsTab } from './InputsTab';
-import inputs_en from '../../src/components/translations/inputs-en';
-import inputs_fr from '../../src/components/translations/inputs-fr';
+import demo_inputs_en from './components/translations/demo-inputs-en';
+import demo_inputs_fr from './components/translations/demo-inputs-fr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 
@@ -123,6 +125,7 @@ const messages = {
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
         ...inputs_en,
+        ...demo_inputs_en,
         ...translations.en,
     },
     fr: {
@@ -139,6 +142,7 @@ const messages = {
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
         ...inputs_fr,
+        ...demo_inputs_fr,
         ...translations.fr,
     },
 };
