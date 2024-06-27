@@ -21,7 +21,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { UrlString } from './types';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
-type IdpSettingsGetter = () => Promise<IdpSettings | Response>;
+type IdpSettingsGetter = () => Promise<IdpSettings>;
 
 export type IdpSettings = {
     authority: UrlString;
@@ -123,12 +123,7 @@ export async function initializeAuthenticationProd(
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
-    const idpSettings = await idpSettingsFetcher().then((r) =>
-        // backward compatibility with old callers
-        Object.prototype.toString.call(r) !== '[object Response]'
-            ? r
-            : (r as Response).json()
-    );
+    const idpSettings = await idpSettingsFetcher();
     try {
         const settings = {
             authority:
