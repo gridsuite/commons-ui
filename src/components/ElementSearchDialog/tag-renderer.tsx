@@ -6,11 +6,11 @@
  */
 import OverflowableText from '../OverflowableText';
 import clsx from 'clsx';
-import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
+import { EQUIPMENT_TYPE, EquipmentInfos } from '../../utils/EquipmentType';
 import { mergeSx } from '../../utils/styles';
 import { SxProps, Theme } from '@mui/material';
 
-interface TagRendererProps {
+export interface TagRendererProps {
     props: {
         classes?: {
             equipmentTag?: string;
@@ -21,10 +21,7 @@ interface TagRendererProps {
             equipmentVlTag?: SxProps<Theme>;
         };
     };
-    element: {
-        type: EquipmentType;
-        voltageLevelLabel?: string;
-    };
+    element: EquipmentInfos;
 }
 
 export const TagRenderer = ({ props, element }: TagRendererProps) => {
