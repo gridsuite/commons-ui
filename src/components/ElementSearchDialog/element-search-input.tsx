@@ -20,7 +20,12 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
 export interface ElementSearchInputProps<T>
     extends Pick<
         AutocompleteProps<T, false, boolean, true>,
-        'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable'
+        | 'sx'
+        | 'size'
+        | 'loadingText'
+        | 'loading'
+        | 'disableClearable'
+        | 'getOptionDisabled'
     > {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
