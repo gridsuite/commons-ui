@@ -20,6 +20,7 @@ export { default as ReportViewerDialog } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
 export { default as ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
+export { default as ExpandableGroup } from './components/ExpandableGroup';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
@@ -155,6 +156,7 @@ export {
     ElementSearchInput,
     useElementSearch,
 } from './components/ElementSearchDialog';
+export type { TagRendererProps } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { useIntlRef } from './hooks/useIntlRef';
