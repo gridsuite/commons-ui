@@ -8,7 +8,7 @@
 import { PropsWithChildren, ReactNode, useContext } from 'react';
 import { Box, Theme, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/system';
-import { TreeItem, TreeItemProps } from '@mui/lab';
+import { TreeItem, TreeItemProps } from '@mui/x-tree-view';
 import { Label } from '@mui/icons-material';
 import ReportTreeViewContext from './report-tree-view-context';
 
@@ -81,7 +81,6 @@ const styles = {
 };
 
 export interface ReportItemProps extends TreeItemProps {
-    nodeId: string;
     labelText: ReactNode;
     labelIconColor: string;
     className?: any;
@@ -91,7 +90,7 @@ const ReportItem = (props: PropsWithChildren<ReportItemProps>) => {
     // using a context because TreeItem uses useMemo on this. See report-viewer.js for the provider
     const { isHighlighted } = useContext(ReportTreeViewContext);
 
-    const highlighted = isHighlighted ? isHighlighted(props.nodeId) : false;
+    const highlighted = isHighlighted ? isHighlighted(props.itemId) : false;
 
     const { labelText, labelIconColor, className, ...other } = props;
 

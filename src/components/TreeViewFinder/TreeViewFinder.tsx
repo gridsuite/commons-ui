@@ -32,7 +32,11 @@ import {
     ModalProps,
 } from '@mui/material';
 
-import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
+import {
+    TreeItem,
+    SimpleTreeView,
+    SimpleTreeViewClasses,
+} from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
@@ -95,7 +99,7 @@ export interface TreeViewFinderProps {
     selected?: string[];
     expanded?: string[];
     multiSelect?: boolean;
-    classes?: Partial<TreeViewClasses>;
+    classes?: Partial<SimpleTreeViewClasses>;
     className?: string;
 
     // dialog props
@@ -299,7 +303,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
     /* User Interaction management */
     const handleNodeSelect = (
         _e: React.SyntheticEvent,
-        values: string | string[]
+        values: string | string[] | null
     ) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
@@ -309,7 +313,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         } else {
             if (!Array.isArray(values)) {
                 // Toggle selection to allow unselection
-                if (selected?.includes(values)) {
+                if (!values || selected?.includes(values)) {
                     setSelected([]);
                 } else {
                     setSelected(
@@ -396,22 +400,24 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         return (
             <TreeItem
                 key={node.id}
-                nodeId={node.id}
+                itemId={node.id}
                 label={renderTreeItemLabel(node)}
-                expandIcon={
-                    showChevron(node) ? (
-                        <ChevronRightIcon
-                            className={composeClasses(classes, cssIcon)}
-                        />
-                    ) : null
-                }
-                collapseIcon={
-                    showChevron(node) ? (
-                        <ExpandMoreIcon
-                            className={composeClasses(classes, cssIcon)}
-                        />
-                    ) : null
-                }
+                slots={{
+                    expandIcon: showChevron(node)
+                        ? ChevronRightIcon
+                        : undefined,
+                    collapseIcon: showChevron(node)
+                        ? ExpandMoreIcon
+                        : undefined,
+                }}
+                slotProps={{
+                    expandIcon: {
+                        className: composeClasses(classes, cssIcon),
+                    },
+                    collapseIcon: {
+                        className: composeClasses(classes, cssIcon),
+                    },
+                }}
                 ref={(element) => {
                     if (selectedProp?.includes(node.id)) {
                         scrollRef.current.push(element);
@@ -433,12 +439,13 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         if (!multiSelect) {
             return {
                 multiSelect: false as const,
-                selected: selected && selected.length > 0 ? selected.at(0) : '',
+                selectedItems:
+                    selected && selected.length > 0 ? selected.at(0) : '',
             };
         }
         return {
             multiSelect: true as const,
-            selected: selected ?? [],
+            selectedItems: selected ?? [],
         };
     };
 
@@ -475,12 +482,12 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
                           )}
                 </DialogContentText>
 
-                <TreeView
+                <SimpleTreeView
                     // Controlled props
-                    expanded={expanded}
+                    expandedItems={expanded}
                     // events
-                    onNodeToggle={handleNodeToggle}
-                    onNodeSelect={handleNodeSelect}
+                    onExpandedItemsChange={handleNodeToggle}
+                    onSelectedItemsChange={handleNodeSelect}
                     // Uncontrolled props
                     {...getTreeViewSelectionProps()}
                 >
@@ -489,7 +496,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
                               .sort(sortMethod)
                               .map((child) => renderTree(child))
                         : null}
-                </TreeView>
+                </SimpleTreeView>
             </DialogContent>
             <DialogActions>
                 <CancelButton

@@ -24,7 +24,7 @@ import { Grid } from '@mui/material';
 import LogTable from './log-table';
 import ReportTreeViewContext from './report-tree-view-context';
 import LogReportItem from './log-report-item';
-import { TreeView } from '@mui/x-tree-view';
+import { SimpleTreeView } from '@mui/x-tree-view';
 import { Report } from './report.type';
 import { LogSeverities } from './log-severity';
 
@@ -39,6 +39,10 @@ const styles = {
         whiteSpace: 'nowrap',
     },
 };
+
+function EmptyIcon() {
+    return <div style={{ width: 24 }} />;
+}
 
 export interface ReportViewerProps {
     jsonReport: Report;
@@ -90,7 +94,7 @@ export default function ReportViewer({
                     labelIconColor={logReport.getHighestSeverity().colorName}
                     key={logReport.getId().toString()}
                     sx={styles.treeItem}
-                    nodeId={logReport.getId().toString()}
+                    itemId={logReport.getId().toString()}
                 >
                     {logReport
                         .getSubReports()
@@ -121,14 +125,14 @@ export default function ReportViewer({
         }
     };
 
-    const handleSelectNode = (event: SyntheticEvent, nodeId: string) => {
+    const handleSelectNode = (event: SyntheticEvent, nodeId: string | null) => {
         selectNode(nodeId);
     };
 
-    const selectNode = (nodeId: string) => {
+    const selectNode = (nodeId: string | null) => {
         if (selectedNode !== nodeId) {
             setSelectedNode(nodeId);
-            setLogs(allReports.current[nodeId].getAllLogs());
+            nodeId && setLogs(allReports.current[nodeId].getAllLogs());
             setHighlightedReportId(null);
         }
     };
@@ -186,18 +190,20 @@ export default function ReportViewer({
                     accordingly */}
                     <ReportTreeViewContext.Provider value={isHighlighted}>
                         {/*TODO do we need to useMemo/useCallback these props to avoid rerenders ?*/}
-                        <TreeView
+                        <SimpleTreeView
                             sx={styles.treeView}
-                            defaultCollapseIcon={<ArrowDropDownIcon />}
-                            defaultExpandIcon={<ArrowRightIcon />}
-                            defaultEndIcon={<div style={{ width: 24 }} />}
-                            onNodeToggle={handleToggleNode}
-                            onNodeSelect={handleSelectNode}
-                            selected={selectedNode}
-                            expanded={expandedNodes}
+                            slots={{
+                                expandIcon: ArrowRightIcon,
+                                collapseIcon: ArrowDropDownIcon,
+                                endIcon: EmptyIcon,
+                            }}
+                            onExpandedItemsChange={handleToggleNode}
+                            onSelectedItemsChange={handleSelectNode}
+                            selectedItems={selectedNode}
+                            expandedItems={expandedNodes}
                         >
                             {treeView.current}
-                        </TreeView>
+                        </SimpleTreeView>
                     </ReportTreeViewContext.Provider>
                 </Grid>
                 <Grid item xs={12} sm={9} style={{ height: '95%' }}>
