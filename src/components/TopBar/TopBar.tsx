@@ -663,7 +663,11 @@ const TopBar = ({
                     appLicense={appLicense}
                     globalVersionPromise={globalVersionPromise}
                     additionalModulesPromise={additionalModulesPromise}
-                    logo={logoAboutDialog}
+                    logo={
+                        logoAboutDialog === null
+                            ? logo_clickable
+                            : logoAboutDialog
+                    }
                 />
             </Toolbar>
         </AppBar>

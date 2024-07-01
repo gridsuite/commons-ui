@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -204,18 +204,15 @@ const AboutDialog = ({
     const [loadingAdditionalModules, setLoadingAdditionalModules] =
         useState(false);
     const [modules, setModules] = useState<GridSuiteModule[] | null>(null);
-    const currentApp: GridSuiteModule = useMemo(
-        () => ({
-            name: (!!logo && appName) || `Grid${appName}`,
-            type: 'app',
-            version: appVersion,
-            gitTag: appGitTag,
-            license: appLicense,
-        }),
-        [logo, appName, appVersion, appGitTag, appLicense]
-    );
     useEffect(() => {
         if (open) {
+            const currentApp: GridSuiteModule = {
+                name: `Grid${appName}`,
+                type: 'app',
+                version: appVersion,
+                gitTag: appGitTag,
+                license: appLicense,
+            };
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
                       additionalModulesPromise()
@@ -231,7 +228,14 @@ const AboutDialog = ({
                 })
                 .finally(() => setLoadingAdditionalModules(false));
         }
-    }, [open, additionalModulesPromise, currentApp]);
+    }, [
+        open,
+        additionalModulesPromise,
+        appName,
+        appVersion,
+        appGitTag,
+        appLicense,
+    ]);
 
     const handleClose = useCallback(() => {
         if (onClose) {
