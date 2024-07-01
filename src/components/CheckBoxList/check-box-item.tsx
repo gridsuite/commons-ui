@@ -10,16 +10,17 @@ export interface HasId {
 }
 
 export interface CheckBoxItemProps {
-    item: HasId;
+    item: any;
     checkBoxIconSx?: SxProps;
     labelSx?: SxProps;
     checked: boolean;
-    getLabel: (item: HasId) => string;
+    label: string;
     onClick: (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
         id: HasId
     ) => void;
     secondaryAction?: React.ReactElement | undefined;
+    disabled: boolean | undefined;
 }
 
 const CheckBoxItem: FunctionComponent<CheckBoxItemProps> = ({
@@ -27,8 +28,9 @@ const CheckBoxItem: FunctionComponent<CheckBoxItemProps> = ({
     checkBoxIconSx,
     checked,
     labelSx,
-    getLabel = (item: HasId) => item.id,
+    label,
     onClick,
+    disabled = false,
     secondaryAction,
     ...props
 }) => {
@@ -41,10 +43,11 @@ const CheckBoxItem: FunctionComponent<CheckBoxItemProps> = ({
                     checked={checked}
                     onClick={(event) => onClick(event, item)}
                     disableRipple
+                    disabled={disabled}
                     {...props}
                 />
             </ListItemIcon>
-            <OverflowableText sx={labelSx} text={getLabel(item)} />
+            <OverflowableText sx={labelSx} text={label} />
             {secondaryAction && secondaryAction}
         </>
     );

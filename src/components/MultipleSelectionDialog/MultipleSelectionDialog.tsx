@@ -14,10 +14,10 @@ import {
     DialogTitle,
     FormControlLabel,
     Grid,
-    List,
 } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
+import CheckboxList from '../CheckBoxList/check-box-list';
 
 export interface MultipleSelectionDialogProps {
     options: string[];
@@ -46,15 +46,9 @@ const MultipleSelectionDialog = ({
             setSelectedIds([]);
         }
     };
-    const handleOptionSelection = (option: string) => {
-        setSelectedIds((oldValues) => {
-            if (oldValues.includes(option)) {
-                return oldValues.filter((o) => o !== option);
-            }
-            return [...oldValues, option];
-        });
-    };
 
+    const [isAllSelected, setIsAllSelected] = useState(false);
+    const [isAnySelected, setIsAnySelected] = useState(false);
     return (
         <Dialog open={open}>
             <DialogTitle>{titleId}</DialogTitle>
@@ -69,44 +63,23 @@ const MultipleSelectionDialog = ({
                             }
                             control={
                                 <Checkbox
-                                    checked={
-                                        selectedIds.length === options.length
-                                    }
-                                    indeterminate={
-                                        !!selectedIds.length &&
-                                        selectedIds.length !== options.length
-                                    }
+                                    checked={isAllSelected}
+                                    indeterminate={isAnySelected}
                                     onChange={handleSelectAll}
                                 />
                             }
                         />
                     </Grid>
                     <Grid item>
-                        <List>
-                            {options.map((option) => {
-                                const optionId = option;
-                                const label = getOptionLabel(option);
-                                return (
-                                    <Grid item key={optionId}>
-                                        <FormControlLabel
-                                            label={label}
-                                            control={
-                                                <Checkbox
-                                                    checked={selectedIds.includes(
-                                                        optionId
-                                                    )}
-                                                    onChange={() =>
-                                                        handleOptionSelection(
-                                                            optionId
-                                                        )
-                                                    }
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                );
-                            })}
-                        </List>
+                        <CheckboxList
+                            values={options}
+                            isAllSelected={isAllSelected}
+                            setIsAllSelected={setIsAllSelected}
+                            setIsPartiallySelected={setIsAnySelected}
+                            getValueId={(v) => v}
+                            defaultSelected={selectedOptions}
+                            getValueLabel={getOptionLabel}
+                        />
                     </Grid>
                 </Grid>
             </DialogContent>
