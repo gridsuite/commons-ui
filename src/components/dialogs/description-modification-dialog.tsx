@@ -83,7 +83,7 @@ const DescriptionModificationDialog: FunctionComponent<
             <Box paddingTop={1}>
                 <ExpandingTextField
                     name={FieldConstants.DESCRIPTION}
-                    label={'descriptionProperty'}
+                    label={'inputs/descriptionProperty'}
                     minRows={3}
                     rows={5}
                 ></ExpandingTextField>

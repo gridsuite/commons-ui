@@ -136,6 +136,8 @@ export { default as common_button_en } from './components/translations/common-bu
 export { default as common_button_fr } from './components/translations/common-button-fr';
 export { default as directory_items_input_en } from './components/translations/directory-items-input-en';
 export { default as directory_items_input_fr } from './components/translations/directory-items-input-fr';
+export { default as inputs_en } from './components/translations/inputs-en';
+export { default as inputs_fr } from './components/translations/inputs-fr';
 
 export {
     TagRenderer,
