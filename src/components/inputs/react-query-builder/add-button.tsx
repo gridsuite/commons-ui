@@ -15,7 +15,7 @@ interface ActionWithRulesAndAddersWithLabelProps
     label: string;
 }
 
-function AddButton(props: Readonly<ActionWithRulesAndAddersWithLabelProps>) {
+function AddButton(props: ActionWithRulesAndAddersWithLabelProps) {
     const { label, handleOnClick } = props;
     return (
         <span>

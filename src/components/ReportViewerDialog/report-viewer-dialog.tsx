@@ -37,9 +37,7 @@ export interface ReportViewerDialogProps {
     jsonReport: Report;
 }
 
-export default function ReportViewerDialog(
-    props: Readonly<ReportViewerDialogProps>
-) {
+export default function ReportViewerDialog(props: ReportViewerDialogProps) {
     const { title, open, onClose, jsonReport } = props;
 
     const [fullScreen, setFullScreen] = useState(false);

@@ -72,7 +72,7 @@ interface RangeInputProps {
     label: string;
 }
 
-function RangeInput({ name, label }: Readonly<RangeInputProps>) {
+function RangeInput({ name, label }: RangeInputProps) {
     const watchOperationType = useWatch({
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });

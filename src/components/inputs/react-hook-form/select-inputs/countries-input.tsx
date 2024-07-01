@@ -16,7 +16,7 @@ interface CountryInputProps {
     label: string;
 }
 
-function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
+function CountriesInput({ name, label }: CountryInputProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
 

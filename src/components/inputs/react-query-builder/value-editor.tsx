@@ -36,7 +36,7 @@ const styles = {
     },
 };
 
-function ValueEditor(props: Readonly<ValueEditorProps>) {
+function ValueEditor(props: ValueEditorProps) {
     const {
         field,
         operator,

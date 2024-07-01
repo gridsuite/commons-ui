@@ -16,7 +16,7 @@ export interface SignInCallbackHandlerProps {
 function SignInCallbackHandler({
     userManager,
     handleSignInCallback,
-}: Readonly<SignInCallbackHandlerProps>) {
+}: SignInCallbackHandlerProps) {
     useEffect(() => {
         if (userManager !== null) {
             handleSignInCallback();

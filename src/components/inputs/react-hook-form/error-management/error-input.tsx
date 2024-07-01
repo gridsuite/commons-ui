@@ -25,7 +25,7 @@ export interface ErrorInputProps {
     }) => React.ReactNode;
 }
 
-function ErrorInput({ name, InputField }: Readonly<ErrorInputProps>) {
+function ErrorInput({ name, InputField }: ErrorInputProps) {
     const {
         fieldState: { error },
         formState: { isSubmitting },

@@ -45,7 +45,7 @@ export function MultiSelectList({
     handleChange,
     handleClose,
     anchor,
-}: Readonly<MultiSelectListProps>) {
+}: MultiSelectListProps) {
     const open = Boolean(anchor);
     return (
         <Menu open={open} onClose={handleClose} anchorEl={anchor}>

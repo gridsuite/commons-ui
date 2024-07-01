@@ -11,7 +11,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 
-function TextValueEditor(props: Readonly<ValueEditorProps>) {
+function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
 
     const valid = useValid(props);

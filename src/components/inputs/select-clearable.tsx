@@ -22,7 +22,7 @@ interface SelectClearableProps
     label?: string;
 }
 
-function SelectClearable(props: Readonly<SelectClearableProps>) {
+function SelectClearable(props: SelectClearableProps) {
     const { value, onChange, label, options, ...otherProps } = props;
 
     const intl = useIntl();

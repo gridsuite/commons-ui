@@ -13,7 +13,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 
-function TranslatedValueEditor(props: Readonly<ValueEditorProps>) {
+function TranslatedValueEditor(props: ValueEditorProps) {
     const intl = useIntl();
     const { values, value, handleOnChange } = props;
 

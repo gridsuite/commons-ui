@@ -10,7 +10,7 @@ import { useCallback, useState } from 'react';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 import PopupConfirmationDialog from '../../dialogs/popup-confirmation-dialog';
 
-function CombinatorSelector(props: Readonly<CombinatorSelectorProps>) {
+function CombinatorSelector(props: CombinatorSelectorProps) {
     const { value, handleOnChange } = props;
     const [tempCombinator, setTempCombinator] = useState(value);
     const [openPopup, setOpenPopup] = useState(false);

@@ -22,7 +22,7 @@ interface ElementValueEditorProps {
     defaultValue?: any;
 }
 
-function ElementValueEditor(props: Readonly<ElementValueEditorProps>) {
+function ElementValueEditor(props: ElementValueEditorProps) {
     const {
         defaultValue,
         name,

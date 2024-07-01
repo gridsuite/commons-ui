@@ -65,7 +65,7 @@ function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: Readonly<ExplicitNamingFilterEditionDialogProps>) {
+}: ExplicitNamingFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

@@ -24,7 +24,7 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
-function TextFieldWithAdornment(props: Readonly<TextFieldWithAdornmentProps>) {
+function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const {
         adornmentPosition,
         adornmentText,

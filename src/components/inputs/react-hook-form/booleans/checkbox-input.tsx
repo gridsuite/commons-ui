@@ -14,11 +14,7 @@ export interface CheckboxInputProps {
     formProps?: CheckboxProps;
 }
 
-function CheckboxInput({
-    name,
-    label,
-    formProps,
-}: Readonly<CheckboxInputProps>) {
+function CheckboxInput({ name, label, formProps }: CheckboxInputProps) {
     return (
         <BooleanInput
             name={name}

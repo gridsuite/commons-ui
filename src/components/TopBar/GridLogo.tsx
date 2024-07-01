@@ -35,7 +35,7 @@ export function LogoText({
     appColor,
     style,
     onClick,
-}: Readonly<Partial<LogoTextProps>>) {
+}: Partial<LogoTextProps>) {
     return (
         <Typography
             variant="h4"
@@ -53,7 +53,7 @@ function GridLogo({
     appName,
     appColor,
     onClick,
-}: Readonly<Partial<GridLogoProps>>) {
+}: Partial<GridLogoProps>) {
     return (
         <>
             <Box

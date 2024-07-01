@@ -61,7 +61,7 @@ function ExpertFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: Readonly<ExpertFilterEditionDialogProps>) {
+}: ExpertFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

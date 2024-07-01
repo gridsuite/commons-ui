@@ -46,7 +46,7 @@ function CsvUploader({
     validateData = () => true,
     getDataFromCsv,
     useFieldArrayOutput,
-}: Readonly<CsvUploaderProps>) {
+}: CsvUploaderProps) {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
     const [createError, setCreateError] = React.useState('');

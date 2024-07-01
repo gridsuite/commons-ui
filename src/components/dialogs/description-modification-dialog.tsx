@@ -38,7 +38,7 @@ function DescriptionModificationDialog({
     open,
     onClose,
     updateElement,
-}: Readonly<IDescriptionModificationDialog>) {
+}: IDescriptionModificationDialog) {
     const { snackError } = useSnackMessage();
 
     const emptyFormData = {

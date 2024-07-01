@@ -45,7 +45,7 @@ export interface FilterButtonProps {
 export function FilterButton({
     selectedItems,
     setSelectedItems,
-}: Readonly<FilterButtonProps>) {
+}: FilterButtonProps) {
     const [initialState] = useState(selectedItems);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 

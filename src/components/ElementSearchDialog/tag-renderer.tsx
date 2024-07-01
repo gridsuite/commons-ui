@@ -11,23 +11,21 @@ import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
 import { mergeSx } from '../../utils/styles';
 
 interface TagRendererProps {
-    props: {
-        classes?: {
-            equipmentTag?: string;
-            equipmentVlTag?: string;
-        };
-        styles?: {
-            equipmentTag?: SxProps<Theme>;
-            equipmentVlTag?: SxProps<Theme>;
-        };
-    };
     element: {
         type: EquipmentType;
         voltageLevelLabel?: string;
     };
+    classes?: {
+        equipmentTag?: string;
+        equipmentVlTag?: string;
+    };
+    styles?: {
+        equipmentTag?: SxProps<Theme>;
+        equipmentVlTag?: SxProps<Theme>;
+    };
 }
 
-function TagRenderer({ props, element }: Readonly<TagRendererProps>) {
+function TagRenderer({ element, ...props }: TagRendererProps) {
     if (
         element.type !== EQUIPMENT_TYPE.SUBSTATION?.name &&
         element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name

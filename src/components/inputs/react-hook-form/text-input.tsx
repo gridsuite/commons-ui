@@ -62,7 +62,7 @@ function TextInput({
     previousValue,
     clearable,
     formProps,
-}: Readonly<TextInputProps>) {
+}: TextInputProps) {
     const { validationSchema, getValues, removeOptional } =
         useCustomFormContext();
     const {

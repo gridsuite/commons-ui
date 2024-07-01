@@ -15,7 +15,7 @@ import {
 } from 'notistack';
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
-function SnackbarProvider(props: Readonly<SnackbarProviderProps>) {
+function SnackbarProvider(props: SnackbarProviderProps) {
     const ref = useRef<OrigSnackbarProvider>(null);
 
     const action = (key: SnackbarKey) => (

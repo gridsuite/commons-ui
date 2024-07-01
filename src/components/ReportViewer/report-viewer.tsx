@@ -48,7 +48,7 @@ export interface ReportViewerProps {
 export default function ReportViewer({
     jsonReport,
     maxSubReports = MAX_SUB_REPORTS,
-}: Readonly<ReportViewerProps>) {
+}: ReportViewerProps) {
     const [selectedNode, setSelectedNode] = useState<string | null>(null);
     const [expandedNodes, setExpandedNodes] = useState<string[]>([]);
     const [logs, setLogs] = useState<LogReportItem[]>([]);

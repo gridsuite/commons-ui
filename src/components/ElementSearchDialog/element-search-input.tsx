@@ -38,9 +38,7 @@ export interface ElementSearchInputProps<T>
     showResults?: boolean;
 }
 
-export function ElementSearchInput<T>(
-    props: Readonly<ElementSearchInputProps<T>>
-) {
+export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
     const {
         elementsFound,
         loading,

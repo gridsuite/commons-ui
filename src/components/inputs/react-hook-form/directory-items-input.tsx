@@ -87,7 +87,7 @@ function DirectoryItemsInput({
     onChange,
     disable = false,
     labelRequiredFromContext = true,
-}: Readonly<DirectoryItemsInputProps>) {
+}: DirectoryItemsInputProps) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);

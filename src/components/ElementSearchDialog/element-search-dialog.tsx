@@ -18,9 +18,7 @@ export interface ElementSearchDialogProps<T>
     open: boolean;
 }
 
-export function ElementSearchDialog<T>(
-    props: Readonly<ElementSearchDialogProps<T>>
-) {
+export function ElementSearchDialog<T>(props: ElementSearchDialogProps<T>) {
     const { open, onClose, onSearchTermChange, ...rest } = props;
 
     const handleClose = useCallback(() => {

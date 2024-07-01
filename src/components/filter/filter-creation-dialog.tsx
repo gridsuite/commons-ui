@@ -81,7 +81,7 @@ function FilterCreationDialog({
     elementExists,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
-}: Readonly<FilterCreationDialogProps>) {
+}: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({

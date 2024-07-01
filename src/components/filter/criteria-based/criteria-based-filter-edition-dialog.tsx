@@ -84,7 +84,7 @@ function CriteriaBasedFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: Readonly<CriteriaBasedFilterEditionDialogProps>) {
+}: CriteriaBasedFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

@@ -182,7 +182,7 @@ function DirectoryItemSelector({
     itemFilter,
     expanded,
     ...otherTreeViewFinderProps
-}: Readonly<DirectoryItemSelectorProps>) {
+}: DirectoryItemSelectorProps) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
     const nodeMap = useRef<any>({});

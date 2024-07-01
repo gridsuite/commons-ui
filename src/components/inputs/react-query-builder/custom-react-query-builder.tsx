@@ -40,17 +40,15 @@ interface CustomReactQueryBuilderProps {
     fields: Field[];
 }
 
-function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
+function RuleAddButton(props: ActionWithRulesAndAddersProps) {
     return <AddButton {...props} label="rule" />;
 }
 
-function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
+function GroupAddButton(props: ActionWithRulesAndAddersProps) {
     return <AddButton {...props} label="subGroup" />;
 }
 
-function CustomReactQueryBuilder(
-    props: Readonly<CustomReactQueryBuilderProps>
-) {
+function CustomReactQueryBuilder(props: CustomReactQueryBuilderProps) {
     const { name, fields } = props;
     const {
         getValues,

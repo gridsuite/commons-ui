@@ -20,7 +20,7 @@ export interface CriteriaBasedFormProps {
 function CriteriaBasedForm({
     equipments,
     defaultValues,
-}: Readonly<CriteriaBasedFormProps>) {
+}: CriteriaBasedFormProps) {
     const { getValues, setValue } = useFormContext();
 
     const watchEquipmentType = useWatch({

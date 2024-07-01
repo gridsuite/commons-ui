@@ -75,7 +75,7 @@ interface SortButtonProps {
 // in the same direction as it will get if clicked (once).
 // signedRank > 0 means sorted by ascending value from lower indices to higher indices
 // so lesser values are at top, so the upward arrow
-function SortButton({ signedRank = 0, ...props }: Readonly<SortButtonProps>) {
+function SortButton({ signedRank = 0, ...props }: SortButtonProps) {
     const sortRank = Math.abs(signedRank);
     const visibilityStyle =
         (!signedRank || undefined) &&
@@ -98,7 +98,7 @@ interface FilterButtonProps {
     onClick: ComponentProps<typeof FilterAltOutlinedIcon>['onClick'];
 }
 
-function FilterButton(props: Readonly<FilterButtonProps>) {
+function FilterButton(props: FilterButtonProps) {
     const { filterLevel, headerHovered, onClick } = props;
     const visibilityStyle =
         !filterLevel && (headerHovered ? styles.hovered : styles.transparent);

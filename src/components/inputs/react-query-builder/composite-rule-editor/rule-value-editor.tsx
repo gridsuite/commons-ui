@@ -25,7 +25,7 @@ type RuleValueEditorProps = ValueEditorProps & {
     handleOnChangeRule: (rule: CompositeRule) => void;
 };
 
-function RuleValueEditor(props: Readonly<RuleValueEditorProps>) {
+function RuleValueEditor(props: RuleValueEditorProps) {
     const {
         schema: {
             controls: { valueEditor: ValueEditorControlElement },

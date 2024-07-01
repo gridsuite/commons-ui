@@ -36,7 +36,7 @@ interface FilterFreePropertiesProps {
 function FilterFreeProperties({
     freePropertiesType,
     predefined,
-}: Readonly<FilterFreePropertiesProps>) {
+}: FilterFreePropertiesProps) {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });

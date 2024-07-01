@@ -49,7 +49,7 @@ function UniqueNameInput({
     formProps,
     activeDirectory,
     elementExists,
-}: Readonly<UniqueNameInputProps>) {
+}: UniqueNameInputProps) {
     const {
         field: { onChange, onBlur, value, ref },
         fieldState: { error, isDirty },

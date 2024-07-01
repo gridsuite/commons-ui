@@ -25,7 +25,7 @@ export interface ModifyElementSelectionProps {
     onElementValidated?: (elementId: UUID) => void;
 }
 
-function ModifyElementSelection(props: Readonly<ModifyElementSelectionProps>) {
+function ModifyElementSelection(props: ModifyElementSelectionProps) {
     const intl = useIntl();
     const {
         elementType,

@@ -28,7 +28,7 @@ function PopupConfirmationDialog({
     openConfirmationPopup,
     setOpenConfirmationPopup,
     handlePopupConfirmation,
-}: Readonly<PopupConfirmationDialogProps>) {
+}: PopupConfirmationDialogProps) {
     return (
         <Dialog
             open={openConfirmationPopup}

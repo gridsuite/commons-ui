@@ -26,7 +26,7 @@ import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/ElementType';
 import ModifyElementSelection from '../../dialogs/modify-element-selection';
-import exportFilter from '../../../services/study';
+import { exportFilter } from '../../../services/study';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 
@@ -122,7 +122,7 @@ interface ExplicitNamingFilterFormProps {
 
 function ExplicitNamingFilterForm({
     sourceFilterForExplicitNamingConversion,
-}: Readonly<ExplicitNamingFilterFormProps>) {
+}: ExplicitNamingFilterFormProps) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 

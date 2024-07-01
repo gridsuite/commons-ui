@@ -30,13 +30,7 @@ interface RadioInputProps {
     formProps?: Omit<RadioGroupProps, 'value'>;
 }
 
-function RadioInput({
-    name,
-    label,
-    id,
-    options,
-    formProps,
-}: Readonly<RadioInputProps>) {
+function RadioInput({ name, label, id, options, formProps }: RadioInputProps) {
     const {
         field: { onChange, value },
     } = useController({ name });

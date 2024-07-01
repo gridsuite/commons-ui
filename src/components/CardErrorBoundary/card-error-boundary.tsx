@@ -47,7 +47,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 // Extracted from https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries/ for types
 
 interface Props {
-    // eslint-disable-next-line react/require-default-props
     children?: ReactNode;
 }
 

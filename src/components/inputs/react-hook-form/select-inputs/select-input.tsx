@@ -19,7 +19,7 @@ export interface SelectInputProps
     options: Option[];
 }
 
-function SelectInput(props: Readonly<SelectInputProps>) {
+function SelectInput(props: SelectInputProps) {
     const intl = useIntl();
     const { options } = props;
     const inputTransform = (value: Option | null) => {

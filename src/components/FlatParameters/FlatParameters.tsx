@@ -127,7 +127,7 @@ export function FlatParameters({
     variant = 'outlined',
     showSeparator = false,
     selectionWithDialog = () => false,
-}: Readonly<FlatParametersProps>) {
+}: FlatParametersProps) {
     const intl = useIntl();
 
     const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));

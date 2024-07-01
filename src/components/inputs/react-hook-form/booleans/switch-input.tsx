@@ -14,7 +14,7 @@ export interface SwitchInputProps {
     formProps?: SwitchProps;
 }
 
-function SwitchInput({ name, label, formProps }: Readonly<SwitchInputProps>) {
+function SwitchInput({ name, label, formProps }: SwitchInputProps) {
     return (
         <BooleanInput
             name={name}

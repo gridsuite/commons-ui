@@ -30,7 +30,7 @@ function ExpandingTextField({
     label,
     textFieldFormProps,
     ...otherTexFieldProps
-}: Readonly<ExpandingTextFieldProps>) {
+}: ExpandingTextFieldProps) {
     const [isFocused, setIsFocused] = useState(false);
     const { control } = useCustomFormContext();
     const descriptionWatch = useWatch({

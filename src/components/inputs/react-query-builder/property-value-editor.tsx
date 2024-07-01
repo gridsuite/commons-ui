@@ -23,7 +23,7 @@ interface ExpertFilterPropertyProps {
     valueEditorProps: ValueEditorProps;
 }
 
-function PropertyValueEditor(props: Readonly<ExpertFilterPropertyProps>) {
+function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();

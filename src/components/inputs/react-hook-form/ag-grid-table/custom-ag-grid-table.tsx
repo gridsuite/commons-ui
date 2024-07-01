@@ -115,7 +115,7 @@ function CustomAgGridTable({
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}: Readonly<CustomAgGridTableProps>) {
+}: CustomAgGridTableProps) {
     const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);

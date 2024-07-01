@@ -144,7 +144,7 @@ export interface TreeViewFinderProps {
  * @param {Object}          [selected] - ids of selected items
  * @param {Array}           [expanded] - ids of the expanded items
  */
-function TreeViewFinder(props: Readonly<TreeViewFinderProps>) {
+function TreeViewFinder(props: TreeViewFinderProps) {
     const intl = useIntl();
     const {
         classes = {},

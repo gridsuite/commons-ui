@@ -21,7 +21,7 @@ function SliderInput({
     step,
     size = 'small',
     onValueChanged = identity,
-}: Readonly<SliderInputProps>) {
+}: SliderInputProps) {
     const {
         field: { onChange, value },
     } = useController({ name });

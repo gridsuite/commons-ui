@@ -17,7 +17,7 @@ import {
 
 const EXPERT_FILTER_QUERY = 'rules';
 
-function RemoveButton(props: Readonly<ActionWithRulesProps>) {
+function RemoveButton(props: ActionWithRulesProps) {
     const { path, className } = props;
     const {
         field: { value: query, onChange },

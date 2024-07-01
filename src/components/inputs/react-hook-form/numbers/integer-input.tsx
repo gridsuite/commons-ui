@@ -7,7 +7,7 @@
 import TextInput, { TextInputProps } from '../text-input';
 import { isIntegerNumber } from './utils';
 
-function IntegerInput(props: Readonly<TextInputProps>) {
+function IntegerInput(props: TextInputProps) {
     const inputTransform = (value: string | number | null) => {
         if (value === '-') {
             return value;

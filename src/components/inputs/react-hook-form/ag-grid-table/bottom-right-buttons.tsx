@@ -47,7 +47,7 @@ function BottomRightButtons({
     handleMoveRowDown,
     useFieldArrayOutput,
     csvProps,
-}: Readonly<BottomRightButtonsProps>) {
+}: BottomRightButtonsProps) {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
 

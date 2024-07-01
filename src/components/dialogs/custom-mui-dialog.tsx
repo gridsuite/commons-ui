@@ -63,7 +63,7 @@ function CustomMuiDialog({
     onCancel,
     children,
     language,
-}: Readonly<ICustomMuiDialog>) {
+}: ICustomMuiDialog) {
     const { handleSubmit } = formMethods;
 
     const handleCancel = (event: React.MouseEvent) => {

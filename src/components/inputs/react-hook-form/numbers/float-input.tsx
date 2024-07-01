@@ -37,7 +37,7 @@ const normalizeFixed = (number: number) => {
     });
 };
 
-function FloatInput(props: Readonly<FloatInputProps>) {
+function FloatInput(props: FloatInputProps) {
     const inputTransform = (value: Input) => {
         if (typeof value === 'number' && !Number.isNaN(value)) {
             // if we have a parsed real number, normalize like we do after each

@@ -196,7 +196,7 @@ function TopBar({
     equipmentLabelling,
     onLanguageClick,
     language,
-}: Readonly<PropsWithChildren<TopBarProps>>) {
+}: PropsWithChildren<TopBarProps>) {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
         useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(

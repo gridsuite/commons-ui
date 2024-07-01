@@ -29,7 +29,7 @@ interface FilterFormProps {
     };
 }
 
-function FilterForm(props: Readonly<FilterFormProps>) {
+function FilterForm(props: FilterFormProps) {
     const {
         sourceFilterForExplicitNamingConversion,
         creation,

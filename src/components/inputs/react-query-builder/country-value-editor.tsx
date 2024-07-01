@@ -14,7 +14,7 @@ import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
 
-function CountryValueEditor(props: Readonly<ValueEditorProps>) {
+function CountryValueEditor(props: ValueEditorProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
     const { value, handleOnChange } = props;

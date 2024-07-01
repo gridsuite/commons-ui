@@ -28,7 +28,7 @@ interface FilterPropertyProps {
     propertyType: string;
 }
 
-function FilterProperty(props: Readonly<FilterPropertyProps>) {
+function FilterProperty(props: FilterPropertyProps) {
     const { propertyType, index, predefined, valuesFields, handleDelete } =
         props;
     const { setValue } = useFormContext();

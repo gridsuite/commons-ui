@@ -37,7 +37,7 @@ function MultipleSelectionDialog({
     handleClose,
     handleValidate,
     titleId,
-}: Readonly<MultipleSelectionDialogProps>) {
+}: MultipleSelectionDialogProps) {
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
     const handleSelectAll = () => {
         if (selectedIds.length !== options.length) {

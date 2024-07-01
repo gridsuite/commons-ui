@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import {
     Avatar,
     Box,
@@ -43,7 +42,7 @@ export interface LoginProps {
     disabled: boolean;
 }
 
-function Login({ onLoginClick, disabled }: Readonly<LoginProps>) {
+function Login({ onLoginClick, disabled }: LoginProps) {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -75,7 +74,8 @@ function Login({ onLoginClick, disabled }: Readonly<LoginProps>) {
                     align="center"
                 >
                     {'Copyright © '}
-                    <Link color="inherit" href="#">
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <Link color="inherit" href="/some-valid-url">
                         GridSuite
                     </Link>{' '}
                     {new Date().getFullYear()}.

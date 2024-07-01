@@ -48,7 +48,7 @@ function AuthenticationRouter({
     dispatch,
     navigate,
     location,
-}: Readonly<AuthenticationRouterProps>) {
+}: AuthenticationRouterProps) {
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]

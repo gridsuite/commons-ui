@@ -36,7 +36,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     }
 };
 
-const CustomAGGrid = React.forwardRef<AgGridReact, Readonly<CustomAGGridProps>>(
+const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>(
     (props, ref) => {
         const {
             shouldHidePinnedHeaderRightBorder = false,

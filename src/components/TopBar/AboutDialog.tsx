@@ -139,7 +139,6 @@ type GridSuiteModule = {
     type: ModuleType;
     version?: string;
     gitTag?: string;
-    license?: string;
 };
 
 export interface AboutDialogProps {
@@ -221,7 +220,7 @@ function tooltipTypeLabel(type: string) {
     return 'about-dialog/module-tooltip-other';
 }
 
-function Module({ type, name, version, gitTag }: Readonly<GridSuiteModule>) {
+function Module({ type, name, version, gitTag }: GridSuiteModule) {
     return (
         <Grid
             item
@@ -310,7 +309,7 @@ function AboutDialog({
     appGitTag,
     appLicense,
     additionalModulesPromise,
-}: Readonly<AboutDialogProps>) {
+}: AboutDialogProps) {
     const theme = useTheme();
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
@@ -356,7 +355,6 @@ function AboutDialog({
                 type: 'app',
                 version: appVersion,
                 gitTag: appGitTag,
-                license: appLicense,
             };
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
@@ -545,7 +543,6 @@ function AboutDialog({
                                                         name={module.name}
                                                         version={module.version}
                                                         gitTag={module.gitTag}
-                                                        license={module.license}
                                                     />
                                                 ))}
                                         </>

@@ -16,7 +16,7 @@ function FieldLabel({
     label,
     optional = false,
     values = undefined,
-}: Readonly<FieldLabelProps>) {
+}: FieldLabelProps) {
     return (
         <>
             <FormattedMessage id={label} values={values} />

@@ -51,7 +51,7 @@ function Copyright() {
     );
 }
 
-function Logout({ onLogoutClick, disabled }: Readonly<LogoutProps>) {
+function Logout({ onLogoutClick, disabled }: LogoutProps) {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
