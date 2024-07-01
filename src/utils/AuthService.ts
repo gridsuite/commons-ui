@@ -322,7 +322,6 @@ export function handleSigninCallback(
         .signinRedirectCallback()
         .catch(function (e) {
             if (isIssuerError(e)) {
-                // Replacing authority for code flow only because it's done in the hash for implicit flow
                 extractIssuerToSessionStorage(e);
                 // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
                 // It will reload the user manager based on hacked authority at initialization with the new authority
