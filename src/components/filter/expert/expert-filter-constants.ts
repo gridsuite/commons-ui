@@ -80,8 +80,8 @@ export const LOAD_TYPE_OPTIONS = [
 ];
 
 export const RATIO_REGULATION_MODE_OPTIONS = [
-    { name: 'VOLTAGE', label: 'Voltage' },
-    { name: 'REACTIVE_POWER', label: 'ReactivePower' },
+    { name: 'VOLTAGE_REGULATION', label: 'VoltageRegulation' },
+    { name: 'FIXED_RATIO', label: 'FixedRatio' },
 ];
 
 export const PHASE_REGULATION_MODE_OPTIONS = [
@@ -494,12 +494,6 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.BOOLEAN,
         valueEditorType: 'switch',
     },
-    RATIO_REGULATING: {
-        name: FieldType.RATIO_REGULATING,
-        label: 'regulatingRatio',
-        dataType: DataType.BOOLEAN,
-        valueEditorType: 'switch',
-    },
     LOAD_TAP_CHANGING_CAPABILITIES: {
         name: FieldType.LOAD_TAP_CHANGING_CAPABILITIES,
         label: 'loadTapChangingCapabilities',
@@ -512,7 +506,7 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.ENUM,
         values: RATIO_REGULATION_MODE_OPTIONS,
         valueEditorType: 'select',
-        defaultValue: 'VOLTAGE',
+        defaultValue: 'VOLTAGE_REGULATION',
     },
     RATIO_TARGET_V: {
         name: FieldType.RATIO_TARGET_V,
@@ -523,12 +517,6 @@ export const FIELDS_OPTIONS = {
     HAS_PHASE_TAP_CHANGER: {
         name: FieldType.HAS_PHASE_TAP_CHANGER,
         label: 'hasPhaseTapChanger',
-        dataType: DataType.BOOLEAN,
-        valueEditorType: 'switch',
-    },
-    PHASE_REGULATING: {
-        name: FieldType.PHASE_REGULATING,
-        label: 'phaseRegulating',
         dataType: DataType.BOOLEAN,
         valueEditorType: 'switch',
     },
@@ -741,10 +729,8 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.HAS_RATIO_TAP_CHANGER,
         FIELDS_OPTIONS.LOAD_TAP_CHANGING_CAPABILITIES,
         FIELDS_OPTIONS.RATIO_REGULATION_MODE,
-        FIELDS_OPTIONS.RATIO_REGULATING,
         FIELDS_OPTIONS.RATIO_TARGET_V,
         FIELDS_OPTIONS.HAS_PHASE_TAP_CHANGER,
-        FIELDS_OPTIONS.PHASE_REGULATING,
         FIELDS_OPTIONS.PHASE_REGULATION_MODE,
         FIELDS_OPTIONS.PHASE_REGULATION_VALUE,
         FIELDS_OPTIONS.PROPERTY,

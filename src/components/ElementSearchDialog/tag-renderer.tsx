@@ -7,14 +7,11 @@
 import clsx from 'clsx';
 import { SxProps, Theme } from '@mui/material';
 import OverflowableText from '../OverflowableText';
-import { EQUIPMENT_TYPE, EquipmentType } from '../../utils/EquipmentType';
+import { EQUIPMENT_TYPE, EquipmentInfos } from '../../utils/EquipmentType';
 import { mergeSx } from '../../utils/styles';
 
-interface TagRendererProps {
-    element: {
-        type: EquipmentType;
-        voltageLevelLabel?: string;
-    };
+export interface TagRendererProps {
+    element: EquipmentInfos;
     classes?: {
         equipmentTag?: string;
         equipmentVlTag?: string;

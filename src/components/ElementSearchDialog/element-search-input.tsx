@@ -19,8 +19,8 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
 
 export interface ElementSearchInputProps<T>
     extends Pick<
-        AutocompleteProps<T, false, false, true>,
-        'sx' | 'size' | 'loadingText' | 'loading'
+        AutocompleteProps<T, false, boolean, true>,
+        'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable'
     > {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
@@ -55,6 +55,7 @@ export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
         searchTermDisabled,
         size,
         sx,
+        disableClearable,
     } = props;
 
     const intl = useIntl();
@@ -77,6 +78,7 @@ export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
             open={showResults}
             freeSolo
             size={size}
+            disableClearable={disableClearable}
             id="element-search"
             forcePopupIcon={false}
             fullWidth

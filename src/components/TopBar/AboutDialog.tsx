@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -150,6 +150,7 @@ export interface AboutDialogProps {
     appGitTag?: string;
     appLicense?: string;
     additionalModulesPromise?: () => Promise<GridSuiteModule[]>;
+    logo?: ReactNode;
 }
 
 const moduleStyles = {
@@ -292,7 +293,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                         noWrap
                         sx={moduleStyles.version}
                     >
-                        {gitTag ?? version ?? null}
+                        {gitTag || version || null}
                     </Typography>
                 </Stack>
             </Tooltip>
@@ -309,6 +310,7 @@ function AboutDialog({
     appGitTag,
     appLicense,
     additionalModulesPromise,
+    logo,
 }: AboutDialogProps) {
     const theme = useTheme();
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -348,14 +350,18 @@ function AboutDialog({
     const [loadingAdditionalModules, setLoadingAdditionalModules] =
         useState(false);
     const [modules, setModules] = useState<GridSuiteModule[] | null>(null);
+    const currentApp: GridSuiteModule = useMemo(
+        () => ({
+            name: (!!logo && appName) || `Grid${appName}`,
+            type: 'app',
+            version: appVersion,
+            gitTag: appGitTag,
+            license: appLicense,
+        }),
+        [logo, appName, appVersion, appGitTag, appLicense]
+    );
     useEffect(() => {
         if (open) {
-            const currentApp: GridSuiteModule = {
-                name: `Grid${appName}`,
-                type: 'app',
-                version: appVersion,
-                gitTag: appGitTag,
-            };
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
                       additionalModulesPromise()
@@ -372,14 +378,7 @@ function AboutDialog({
                 })
                 .finally(() => setLoadingAdditionalModules(false));
         }
-    }, [
-        open,
-        additionalModulesPromise,
-        appName,
-        appVersion,
-        appGitTag,
-        appLicense,
-    ]);
+    }, [open, additionalModulesPromise, currentApp]);
 
     const handleClose = useCallback(() => {
         if (onClose) {
@@ -440,10 +439,12 @@ function AboutDialog({
                     )}
                 <Box sx={styles.mainSection}>
                     <Box sx={styles.logoSection}>
-                        <LogoText
-                            appName="Suite"
-                            appColor={theme.palette.grey['500']}
-                        />
+                        {logo || (
+                            <LogoText
+                                appName="Suite"
+                                appColor={theme.palette.grey['500']}
+                            />
+                        )}
                     </Box>
                     <Box sx={styles.mainInfos}>
                         <Fade

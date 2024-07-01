@@ -7,16 +7,17 @@
 
 import React, { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
 import FieldConstants from '../../utils/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
 import ExpertFilterForm from './expert/expert-filter-form';
+import { FilterType } from './constants/filter-constants';
+import ExpandableGroup from '../ExpandableGroup';
 import RadioInput from '../inputs/react-hook-form/radio-input';
 import { ElementExistsType, ElementType } from '../../utils/ElementType';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
-import { FilterType } from './constants/filter-constants';
 import UniqueNameInput from '../inputs/react-hook-form/unique-name-input';
 
 interface FilterFormProps {
@@ -69,14 +70,14 @@ function FilterForm(props: FilterFormProps) {
             {creation && (
                 <>
                     <Grid item xs={12}>
-                        <Box>
+                        <ExpandableGroup renderHeader="Description">
                             <ExpandingTextField
                                 name={FieldConstants.DESCRIPTION}
                                 label="descriptionProperty"
                                 minRows={3}
                                 rows={5}
                             />
-                        </Box>
+                        </ExpandableGroup>
                     </Grid>
                     {!sourceFilterForExplicitNamingConversion && (
                         <Grid item>
