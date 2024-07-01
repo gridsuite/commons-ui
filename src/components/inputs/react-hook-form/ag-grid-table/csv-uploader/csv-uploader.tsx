@@ -75,7 +75,7 @@ function CsvUploader({
         }
 
         // validate the headers
-        for (let i = 0; i < fileHeaders.length; i += 1) {
+        for (let i = 0; i < fileHeaders.length; i++) {
             if (fileHeaders[i] !== '' && rows[0][i] !== fileHeaders[i]) {
                 setCreateError(
                     intl.formatMessage({ id: 'wrongCsvHeadersError' })

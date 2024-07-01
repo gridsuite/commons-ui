@@ -174,7 +174,7 @@ const codedColumnsFromKeyAndDirection = (
 
     let ret = [];
     const columIndexByKey: Record<string, number> = {};
-    for (let colIdx = 0; colIdx < columns.length; colIdx += 1) {
+    for (let colIdx = 0; colIdx < columns.length; colIdx++) {
         const col = columns[colIdx];
         const colKey = col.dataKey;
         columIndexByKey[colKey] = colIdx;
@@ -495,11 +495,11 @@ export class KeyedColumnsRowIndexer {
             }
         });
 
-        for (let rowIdx = 0; rowIdx < rows.length; rowIdx += 1) {
+        for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
             const row = rows[rowIdx];
             let acceptsRow = true;
             const acceptedOnRow: Record<number, any> = {};
-            for (let colIdx = 0; colIdx < columns.length; colIdx += 1) {
+            for (let colIdx = 0; colIdx < columns.length; colIdx++) {
                 const col = columns[colIdx];
                 const helper = getHelper(col);
                 const colKey = col.dataKey;
