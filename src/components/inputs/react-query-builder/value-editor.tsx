@@ -6,7 +6,7 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, useCallback, useEffect } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 
 import CountryValueEditor from './country-value-editor';
@@ -62,6 +62,13 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
         },
         [props.field, getValues]
     );
+
+    useEffect(() => {
+        console.log('Mount ValueEditor');
+        return () => {
+            console.log('Unmount ValueEditor');
+        };
+    }, []);
 
     if (
         props.operator === OPERATOR_OPTIONS.EXISTS.name ||
