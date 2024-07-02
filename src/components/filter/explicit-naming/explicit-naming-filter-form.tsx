@@ -27,6 +27,7 @@ import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/ElementType';
 import ModifyElementSelection from '../../dialogs/modify-element-selection';
 import { exportFilter } from '../../../services/study';
+import { EquipmentType } from '../../../utils/EquipmentType';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 
@@ -131,6 +132,17 @@ const ExplicitNamingFilterForm: FunctionComponent<
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
+
+    useEffect(() => {
+        if (
+            watchEquipmentType &&
+            !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENTS)
+        ) {
+            snackError({
+                headerId: 'obsoleteFilter',
+            });
+        }
+    }, [snackError, watchEquipmentType]);
 
     const forGeneratorOrLoad = isGeneratorOrLoad(watchEquipmentType);
 
