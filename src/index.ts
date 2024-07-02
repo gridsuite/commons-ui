@@ -63,6 +63,10 @@ export {
     importExpertRules,
     exportExpertRules,
 } from './components/filter/expert/expert-filter-utils';
+export type {
+    RuleTypeExport,
+    RuleGroupTypeExport,
+} from './components/filter/expert/expert-filter.type';
 
 export { default as yup } from './utils/yup-config';
 
