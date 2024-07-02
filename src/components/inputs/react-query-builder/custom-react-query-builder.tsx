@@ -55,6 +55,7 @@ const CustomReactQueryBuilder = (props: CustomReactQueryBuilderProps) => {
     // and we don't have access to the path, so it can't be done in a proper way
     const handleQueryChange = useCallback(
         (newQuery: RuleGroupTypeAny) => {
+            console.log('onQueryChange', { newQuery });
             const oldQuery = getValues(props.name);
             const hasQueryChanged =
                 formatQuery(oldQuery, 'json_without_ids') !==

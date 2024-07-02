@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { validate as uuidValidate } from 'uuid';
 import {
     defaultOperators,
     findPath,
@@ -28,7 +29,6 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expert-filter.type';
-import { validate as uuidValidate } from 'uuid';
 import {
     FIELDS_OPTIONS,
     OPERATOR_OPTIONS,
@@ -39,6 +39,7 @@ import {
     microUnitToUnit,
     unitToMicroUnit,
 } from '../../../utils/conversion-utils';
+import { UUID } from 'crypto';
 
 const microUnits = [
     FieldType.SHUNT_CONDUCTANCE_1,
@@ -244,6 +245,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
 
         // a single rule
         return {
+            id: rule.id as UUID,
             field: rule.field as FieldType,
             operator:
                 dataType !== DataType.PROPERTY
@@ -289,6 +291,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         );
 
         return {
+            id: compositeGroup.id as UUID,
             combinator: compositeGroup.combinator as CombinatorType,
             dataType: DataType.COMBINATOR,
             rules: transformedRules,
@@ -311,6 +314,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         });
 
         return {
+            id: group.id as UUID,
             combinator: group.combinator as CombinatorType,
             dataType: DataType.COMBINATOR,
             rules: transformedRules,
@@ -351,6 +355,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
 
     function transformRule(rule: RuleTypeExport): RuleType {
         return {
+            id: rule.id,
             field: rule.field,
             operator:
                 rule.dataType !== DataType.PROPERTY
@@ -377,6 +382,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             );
 
         return {
+            id: group.id,
             field: group.field as FieldType,
             operator: Object.values(OPERATOR_OPTIONS).find(
                 (operator) => operator.customName === group.operator
@@ -406,6 +412,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
         });
 
         return {
+            id: group.id,
             combinator: group.combinator,
             rules: transformedRules,
         };
@@ -415,6 +422,10 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
 }
 
 export function countRules(query: RuleGroupTypeAny): number {
+    if (!query) {
+        return 0;
+    }
+
     if ('rules' in query) {
         const group = query as RuleGroupType;
         return group.rules.reduce(
@@ -592,5 +603,5 @@ export function getNumberOfSiblings(path: number[], query: RuleGroupTypeAny) {
     // Find the parent group object in the query
     const parentGroup = findPath(parentPath, query) as RuleGroupType;
     // Return the number of siblings
-    return parentGroup.rules.length;
+    return parentGroup?.rules?.length;
 }
