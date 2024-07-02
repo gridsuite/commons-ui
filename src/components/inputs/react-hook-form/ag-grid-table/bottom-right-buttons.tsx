@@ -9,13 +9,13 @@ import IconButton from '@mui/material/IconButton';
 import { ArrowCircleDown, ArrowCircleUp, Upload } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/ControlPoint';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CsvUploader from './csv-uploader/csv-uploader';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
+import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
 import ErrorInput from '../error-management/error-input';
 import FieldErrorAlert from '../error-management/field-error-alert';
-import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
+import CsvUploader from './csv-uploader/csv-uploader';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
     return {
@@ -36,7 +36,7 @@ export interface BottomRightButtonsProps {
     csvProps: any;
 }
 
-const BottomRightButtons: FunctionComponent<BottomRightButtonsProps> = ({
+function BottomRightButtons({
     name,
     disableUp,
     disableDown,
@@ -47,7 +47,7 @@ const BottomRightButtons: FunctionComponent<BottomRightButtonsProps> = ({
     handleMoveRowDown,
     useFieldArrayOutput,
     csvProps,
-}) => {
+}: BottomRightButtonsProps) {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
 
@@ -75,28 +75,25 @@ const BottomRightButtons: FunctionComponent<BottomRightButtonsProps> = ({
                     xs={11}
                     sx={{ display: 'flex', justifyContent: 'right' }}
                 >
-                    <InnerColoredButton
-                        key={'addButton'}
-                        onClick={handleAddRow}
-                    >
+                    <InnerColoredButton key="addButton" onClick={handleAddRow}>
                         <AddIcon />
                     </InnerColoredButton>
                     <InnerColoredButton
-                        key={'DeleteButton'}
+                        key="DeleteButton"
                         onClick={handleDeleteRows}
                         disabled={disableDelete}
                     >
                         <DeleteIcon />
                     </InnerColoredButton>
                     <InnerColoredButton
-                        key={'upButton'}
+                        key="upButton"
                         disabled={disableUp}
                         onClick={handleMoveRowUp}
                     >
                         <ArrowCircleUp />
                     </InnerColoredButton>
                     <InnerColoredButton
-                        key={'downButton'}
+                        key="downButton"
                         disabled={disableDown}
                         onClick={handleMoveRowDown}
                     >
@@ -116,6 +113,6 @@ const BottomRightButtons: FunctionComponent<BottomRightButtonsProps> = ({
             />
         </>
     );
-};
+}
 
 export default BottomRightButtons;

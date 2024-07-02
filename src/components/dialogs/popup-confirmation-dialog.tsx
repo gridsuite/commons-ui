@@ -13,7 +13,6 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { FormattedMessage } from 'react-intl';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
-import { FunctionComponent } from 'react';
 
 export interface PopupConfirmationDialogProps {
     message: string;
@@ -23,22 +22,20 @@ export interface PopupConfirmationDialogProps {
     handlePopupConfirmation: () => void;
 }
 
-const PopupConfirmationDialog: FunctionComponent<
-    PopupConfirmationDialogProps
-> = ({
+function PopupConfirmationDialog({
     message,
     validateButtonLabel,
     openConfirmationPopup,
     setOpenConfirmationPopup,
     handlePopupConfirmation,
-}: PopupConfirmationDialogProps) => {
+}: PopupConfirmationDialogProps) {
     return (
         <Dialog
             open={openConfirmationPopup}
             aria-labelledby="dialog-title-change-equipment-type"
         >
-            <DialogTitle id={'dialog-title-change-equipment-type'}>
-                {'Confirmation'}
+            <DialogTitle id="dialog-title-change-equipment-type">
+                Confirmation
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -53,10 +50,6 @@ const PopupConfirmationDialog: FunctionComponent<
             </DialogActions>
         </Dialog>
     );
-};
-
-PopupConfirmationDialog.defaultProps = {
-    validateButtonLabel: undefined,
-};
+}
 
 export default PopupConfirmationDialog;

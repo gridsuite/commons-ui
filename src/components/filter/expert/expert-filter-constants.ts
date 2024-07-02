@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Field } from 'react-querybuilder';
 import {
     CombinatorType,
     DataType,
     FieldType,
     OperatorType,
 } from './expert-filter.type';
-import { Field } from 'react-querybuilder';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',

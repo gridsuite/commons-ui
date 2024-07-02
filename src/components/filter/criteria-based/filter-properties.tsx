@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import Grid from '@mui/material/Grid';
-import { FunctionComponent, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -20,22 +20,19 @@ import {
     VoltageLevel,
 } from '../../../utils/equipment-types';
 import { areArrayElementsUnique } from '../../../utils/functions';
-import { FieldConstants } from '../../../utils/field-constants';
+import FieldConstants from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
-import FilterFreeProperties from './filter-free-properties';
+import FilterFreeProperties, {
+    FreePropertiesTypes,
+} from './filter-free-properties';
 import {
     PROPERTY_NAME,
     PROPERTY_VALUES,
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
-import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook';
+import usePredefinedProperties from '../../../hooks/predefined-properties-hook';
 import { FilterType } from '../constants/filter-constants';
-
-export enum FreePropertiesTypes {
-    SUBSTATION_FILTER_PROPERTIES = 'substationFreeProperties',
-    FREE_FILTER_PROPERTIES = 'freeProperties',
-}
 
 function propertyValuesTest(
     values: (string | undefined)[] | undefined,
@@ -54,9 +51,8 @@ function propertyValuesTest(
         equipmentType === Line.type || equipmentType === Hvdc.type;
     if (doublePropertyValues) {
         return isForLineOrHvdcLine ? values?.length! > 0 : true;
-    } else {
-        return isForLineOrHvdcLine ? true : values?.length! > 0;
     }
+    return isForLineOrHvdcLine || values?.length! > 0;
 }
 
 export const filterPropertiesYupSchema = {
@@ -148,7 +144,7 @@ export const filterPropertiesYupSchema = {
         ),
 };
 
-const FilterProperties: FunctionComponent = () => {
+function FilterProperties() {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
@@ -192,7 +188,7 @@ const FilterProperties: FunctionComponent = () => {
         watchEquipmentType && (
             <Grid item container spacing={1}>
                 <Grid item xs={12}>
-                    <FormattedMessage id={'FreePropsCrit'}>
+                    <FormattedMessage id="FreePropsCrit">
                         {(txt) => <h3>{txt}</h3>}
                     </FormattedMessage>
                     {displayEquipmentProperties && (
@@ -215,6 +211,6 @@ const FilterProperties: FunctionComponent = () => {
             </Grid>
         )
     );
-};
+}
 
 export default FilterProperties;

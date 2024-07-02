@@ -13,14 +13,14 @@ import {
     Theme,
     Tooltip,
 } from '@mui/material';
-import FieldLabel from './utils/field-label';
 import FolderIcon from '@mui/icons-material/Folder';
-import { FunctionComponent, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { RawReadOnlyInput } from './raw-read-only-input';
 import { UUID } from 'crypto';
-import { useCustomFormContext } from './provider/use-custom-form-context';
+import RawReadOnlyInput from './raw-read-only-input';
+import FieldLabel from './utils/field-label';
+import useCustomFormContext from './provider/use-custom-form-context';
 import { isFieldRequired } from './utils/functions';
 import ErrorInput from './error-management/error-input';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
@@ -75,7 +75,7 @@ export interface DirectoryItemsInputProps {
     labelRequiredFromContext?: boolean;
 }
 
-const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
+function DirectoryItemsInput({
     label,
     name,
     elementType, // Used to specify type of element (Filter, Contingency list, ...)
@@ -87,7 +87,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     onChange,
     disable = false,
     labelRequiredFromContext = true,
-}) => {
+}: DirectoryItemsInputProps) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);
@@ -143,8 +143,8 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                     });
                 } else {
                     append(otherElementAttributes);
-                    onRowChanged && onRowChanged(true);
-                    onChange && onChange(getValues(name));
+                    onRowChanged?.(true);
+                    onChange?.(getValues(name));
                 }
             });
             setDirectoryItemSelectorOpen(false);
@@ -165,8 +165,8 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
     const removeElements = useCallback(
         (index: number) => {
             remove(index);
-            onRowChanged && onRowChanged(true);
-            onChange && onChange(getValues(name));
+            onRowChanged?.(true);
+            onChange?.(getValues(name));
         },
         [onRowChanged, remove, getValues, name, onChange]
     );
@@ -196,7 +196,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
             <FormControl
                 sx={mergeSx(
                     styles.formDirectoryElements1,
-                    //@ts-ignore
+                    // @ts-ignore
                     error?.message && styles.formDirectoryElementsError
                 )}
                 error={!!error?.message}
@@ -242,7 +242,7 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
                             <span>
                                 <IconButton
                                     sx={styles.addDirectoryElements}
-                                    size={'small'}
+                                    size="small"
                                     disabled={disable}
                                     onClick={() => {
                                         setDirectoryItemSelectorOpen(true);
@@ -272,6 +272,6 @@ const DirectoryItemsInput: FunctionComponent<DirectoryItemsInputProps> = ({
             />
         </>
     );
-};
+}
 
 export default DirectoryItemsInput;

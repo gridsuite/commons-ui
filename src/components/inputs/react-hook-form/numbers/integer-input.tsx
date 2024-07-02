@@ -7,12 +7,13 @@
 import TextInput, { TextInputProps } from '../text-input';
 import { isIntegerNumber } from './utils';
 
-const IntegerInput = (props: TextInputProps) => {
+function IntegerInput(props: TextInputProps) {
     const inputTransform = (value: string | number | null) => {
-        if ('-' === value) {
+        if (value === '-') {
             return value;
         }
-        return value === null || (typeof value === 'number' && isNaN(value))
+        return value === null ||
+            (typeof value === 'number' && Number.isNaN(value))
             ? ''
             : value.toString();
     };
@@ -24,7 +25,7 @@ const IntegerInput = (props: TextInputProps) => {
         if (value === '0') {
             return 0;
         }
-        return parseInt(value) || null;
+        return parseInt(value, 10) || null;
     };
 
     return (
@@ -35,6 +36,6 @@ const IntegerInput = (props: TextInputProps) => {
             {...props}
         />
     );
-};
+}
 
 export default IntegerInput;

@@ -18,7 +18,7 @@ export interface ElementSearchDialogProps<T>
     open: boolean;
 }
 
-export const ElementSearchDialog = <T,>(props: ElementSearchDialogProps<T>) => {
+export function ElementSearchDialog<T>(props: ElementSearchDialogProps<T>) {
     const { open, onClose, onSearchTermChange, ...rest } = props;
 
     const handleClose = useCallback(() => {
@@ -30,9 +30,9 @@ export const ElementSearchDialog = <T,>(props: ElementSearchDialogProps<T>) => {
         <Dialog
             open={open}
             onClose={handleClose}
-            disableRestoreFocus={true}
+            disableRestoreFocus
             aria-labelledby="dialog-title-search"
-            fullWidth={true}
+            fullWidth
         >
             <DialogContent>
                 <ElementSearchInput
@@ -42,6 +42,6 @@ export const ElementSearchDialog = <T,>(props: ElementSearchDialogProps<T>) => {
             </DialogContent>
         </Dialog>
     );
-};
+}
 
 export default ElementSearchDialog;

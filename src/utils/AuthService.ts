@@ -5,7 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Log, User, UserManager } from 'oidc-client';
-import { UserManagerMock } from './UserManagerMock';
+import { jwtDecode } from 'jwt-decode';
+import { Dispatch } from 'react';
+import { NavigateFunction } from 'react-router-dom';
+
 import {
     setLoggedUser,
     setSignInCallbackError,
@@ -15,9 +18,7 @@ import {
     resetAuthenticationRouterError,
     setShowAuthenticationRouterLogin,
 } from '../redux/actions';
-import { jwtDecode } from 'jwt-decode';
-import { Dispatch } from 'react';
-import { NavigateFunction } from 'react-router-dom';
+import UserManagerMock from './UserManagerMock';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 
@@ -29,12 +30,14 @@ type CustomUserManager = UserManager & {
 };
 
 // set as a global variable to allow log level configuration at runtime
-//@ts-ignore
+// @ts-ignore
 window.OIDCLog = Log;
 
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
+
+const accessTokenExpiringNotificationTime = 60; // seconds
 
 function isIssuerErrorForCodeFlow(error: Error) {
     return error.message.includes('Invalid issuer in token');
@@ -63,159 +66,20 @@ function reloadTimerOnExpiresIn(
     // TODO: Can we stop doing it in the hash for implicit flow ? To make it common for both flows
     // Not allowed by TS because expires_in is supposed to be readonly
     // @ts-ignore
+    // eslint-disable-next-line no-param-reassign
     user.expires_in = expiresIn;
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
 }
 
-function handleSigninSilent(
-    dispatch: Dispatch<unknown>,
-    userManager: UserManager
-) {
-    userManager.getUser().then((user) => {
-        if (user == null || getIdTokenExpiresIn(user) < 0) {
-            return userManager.signinSilent().catch((error: Error) => {
-                dispatch(setShowAuthenticationRouterLogin(true));
-                const errorIssuerCodeFlow = isIssuerErrorForCodeFlow(error);
-                const errorIssuerImplicitFlow =
-                    error.message ===
-                    'authority mismatch on settings vs. signin state';
-                if (errorIssuerCodeFlow) {
-                    // Replacing authority for code flow only because it's done in the hash for implicit flow
-                    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common here for both flows
-                    extractIssuerToSessionStorage(error);
-                }
-                if (errorIssuerCodeFlow || errorIssuerImplicitFlow) {
-                    reload();
-                }
-            });
-        }
-    });
-}
-
-function initializeAuthenticationDev(
-    dispatch: Dispatch<unknown>,
-    isSilentRenew: boolean,
-    validateUser: UserValidationFunc,
-    isSigninCallback: boolean
-) {
-    let userManager: UserManager = new UserManagerMock(
-        {}
-    ) as unknown as UserManager;
-    if (!isSilentRenew) {
-        handleUser(dispatch, userManager, validateUser);
-        if (!isSigninCallback) {
-            handleSigninSilent(dispatch, userManager);
-        }
+function getIdTokenExpiresIn(user: User) {
+    const now = Date.now() / 1000;
+    const { exp } = jwtDecode(user.id_token);
+    if (exp === undefined) {
+        return 0;
     }
-    return Promise.resolve(userManager);
-}
-
-const accessTokenExpiringNotificationTime = 60; // seconds
-
-function initializeAuthenticationProd(
-    dispatch: Dispatch<unknown>,
-    isSilentRenew: boolean,
-    idpSettings: Promise<Response>,
-    validateUser: UserValidationFunc,
-    authorizationCodeFlowEnabled: boolean,
-    isSigninCallback: boolean
-) {
-    return idpSettings
-        .then((r) => r.json())
-        .then((idpSettings) => {
-            /* hack to ignore the iss check. XXX TODO to remove */
-            const regextoken = /id_token=[^&]*/;
-            const regexstate = /state=[^&]*/;
-            const regexexpires = /expires_in=[^&]*/;
-            let authority: string | undefined;
-            if (window.location.hash) {
-                const matched_id_token = window.location.hash.match(regextoken);
-                const matched_state = window.location.hash.match(regexstate);
-                if (matched_id_token != null && matched_state != null) {
-                    const id_token = matched_id_token[0].split('=')[1];
-                    const state = matched_state[0].split('=')[1];
-                    const strState = localStorage.getItem('oidc.' + state);
-                    if (strState != null) {
-                        const decoded = jwtDecode(id_token);
-                        authority = decoded.iss;
-                        const storedState = JSON.parse(strState);
-                        console.debug(
-                            'Replacing authority in storedState. Before: ',
-                            storedState.authority,
-                            'after: ',
-                            authority
-                        );
-                        storedState.authority = authority;
-                        localStorage.setItem(
-                            'oidc.' + state,
-                            JSON.stringify(storedState)
-                        );
-                        if (authority !== undefined) {
-                            sessionStorage.setItem(hackAuthorityKey, authority);
-                        }
-                        const matched_expires =
-                            window.location.hash.match(regexexpires);
-                        if (matched_expires != null) {
-                            const expires_in = parseInt(
-                                matched_expires[0].split('=')[1]
-                            );
-                            window.location.hash = window.location.hash.replace(
-                                matched_expires[0],
-                                'expires_in=' +
-                                    computeMinExpiresIn(
-                                        expires_in,
-                                        id_token,
-                                        idpSettings.maxExpiresIn
-                                    )
-                            );
-                        }
-                    }
-                }
-            }
-            authority =
-                authority ||
-                sessionStorage.getItem(hackAuthorityKey) ||
-                idpSettings.authority;
-
-            const responseSettings = authorizationCodeFlowEnabled
-                ? { response_type: 'code' }
-                : {
-                      response_type: 'id_token token',
-                      response_mode: 'fragment',
-                  };
-            const settings = {
-                authority,
-                client_id: idpSettings.client_id,
-                redirect_uri: idpSettings.redirect_uri,
-                post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
-                silent_redirect_uri: idpSettings.silent_redirect_uri,
-                scope: idpSettings.scope,
-                automaticSilentRenew: !isSilentRenew,
-                accessTokenExpiringNotificationTime:
-                    accessTokenExpiringNotificationTime,
-                ...responseSettings,
-            };
-            let userManager: CustomUserManager = new UserManager(settings);
-            // Hack to enrich UserManager object
-            userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
-            // Hack to enrich UserManager object
-            userManager.authorizationCodeFlowEnabled =
-                authorizationCodeFlowEnabled;
-            if (!isSilentRenew) {
-                handleUser(dispatch, userManager, validateUser);
-                if (!isSigninCallback) {
-                    handleSigninSilent(dispatch, userManager);
-                }
-            }
-            return userManager;
-        })
-        .catch((error) => {
-            console.debug('error when importing the idp settings', error);
-            dispatch(setShowAuthenticationRouterLogin(true));
-            throw error;
-        });
+    return exp - now;
 }
 
 function computeMinExpiresIn(
@@ -224,7 +88,7 @@ function computeMinExpiresIn(
     maxExpiresIn: number | undefined
 ) {
     const now = Date.now() / 1000;
-    const exp = jwtDecode(idToken).exp;
+    const { exp } = jwtDecode(idToken);
     if (exp === undefined) {
         return expiresIn;
     }
@@ -241,64 +105,13 @@ function computeMinExpiresIn(
     }
     if (newExpiresInReplaceReason) {
         console.debug(
-            'Replacing expiresIn in user to ' +
-                newExpiresIn +
-                ' because ' +
-                newExpiresInReplaceReason +
-                '. ',
+            `Replacing expiresIn in user to ${newExpiresIn} because ${newExpiresInReplaceReason}. `,
             'debug:',
-            'original expires_in: ' + expiresIn + ', ',
-            'idTokenExpiresIn: ' +
-                idTokenExpiresIn +
-                ', idpSettings maxExpiresIn: ' +
-                maxExpiresIn
+            `original expires_in: ${expiresIn}, `,
+            `idTokenExpiresIn: ${idTokenExpiresIn}, idpSettings maxExpiresIn: ${maxExpiresIn}`
         );
     }
     return newExpiresIn;
-}
-
-function login(location: Location, userManagerInstance: UserManager) {
-    sessionStorage.setItem(pathKey, location.pathname + location.search);
-    return userManagerInstance
-        .signinRedirect()
-        .then(() => console.debug('login'));
-}
-
-function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
-    sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
-    return userManagerInstance.getUser().then((user) => {
-        if (user) {
-            // We don't need to check if token is valid at this point
-            return userManagerInstance
-                .signoutRedirect({
-                    extraQueryParams: {
-                        TargetResource:
-                            userManagerInstance.settings
-                                .post_logout_redirect_uri,
-                    },
-                })
-                .then(() => {
-                    console.debug('logged out, window is closing...');
-                })
-                .catch((e) => {
-                    console.log('Error during logout :', e);
-                    // An error occured, window may not be closed, reset the user state
-                    dispatch(setLoggedUser(null));
-                    dispatch(setLogoutError(user?.profile?.name, { error: e }));
-                });
-        } else {
-            console.log('Error nobody to logout ');
-        }
-    });
-}
-
-function getIdTokenExpiresIn(user: User) {
-    const now = Date.now() / 1000;
-    const exp = jwtDecode(user.id_token).exp;
-    if (exp === undefined) {
-        return 0;
-    }
-    return exp - now;
 }
 
 function dispatchUser(
@@ -318,9 +131,9 @@ function dispatchUser(
                 return;
             }
             // without validateUser defined, valid user by default
-            let validateUserPromise =
+            const validateUserPromise =
                 (validateUser && validateUser(user)) || Promise.resolve(true);
-            return validateUserPromise
+            validateUserPromise
                 .then((valid) => {
                     if (!valid) {
                         console.debug(
@@ -363,56 +176,6 @@ function dispatchUser(
     });
 }
 
-function getPreLoginPath() {
-    return sessionStorage.getItem(pathKey);
-}
-
-function navigateToPreLoginPath(navigate: NavigateFunction) {
-    const previousPath = getPreLoginPath();
-    if (previousPath !== null) {
-        navigate(previousPath);
-    }
-}
-
-function handleSigninCallback(
-    dispatch: Dispatch<unknown>,
-    navigate: NavigateFunction,
-    userManagerInstance: UserManager
-) {
-    let reloadAfterNavigate = false;
-    userManagerInstance
-        .signinRedirectCallback()
-        .catch(function (e) {
-            if (isIssuerErrorForCodeFlow(e)) {
-                // Replacing authority for code flow only because it's done in the hash for implicit flow
-                // TODO: Can we also do it here for the implicit flow ? To make it common here for both flows
-                extractIssuerToSessionStorage(e);
-                // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
-                // It will reload the user manager based on hacked authority at initialization with the new authority
-                // We do this because on Azure we only get to know the issuer of the user in the idtoken and so signingredirectcallback will always fail
-                // We could restart the whole login process from signin redirect with the correct issuer, but instead we just rely on the silent login after the reload which will work
-                reloadAfterNavigate = true;
-            } else {
-                throw e;
-            }
-        })
-        .then(function () {
-            dispatch(setSignInCallbackError(null));
-            navigateToPreLoginPath(navigate);
-            if (reloadAfterNavigate) {
-                reload();
-            }
-        })
-        .catch(function (e) {
-            dispatch(setSignInCallbackError(e));
-            console.error(e);
-        });
-}
-
-function handleSilentRenewCallback(userManagerInstance: UserManager) {
-    userManagerInstance.signinSilentCallback();
-}
-
 function handleUser(
     dispatch: Dispatch<unknown>,
     userManager: CustomUserManager,
@@ -439,32 +202,28 @@ function handleUser(
                 const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
                     console.log(
-                        'Error in silent renew, idtoken expired: ' +
-                            idTokenExpiresIn +
-                            ' => Logging out.',
+                        `Error in silent renew, idtoken expired: ${idTokenExpiresIn} => Logging out.`,
                         error
                     );
                     // remove the user from our app, but don't sso logout on all other apps
                     dispatch(setShowAuthenticationRouterLogin(true));
                     // logout during token expiration, show login without errors
                     dispatch(resetAuthenticationRouterError());
-                    return dispatch(setLoggedUser(null));
-                } else if (userManager.idpSettings?.maxExpiresIn) {
+                    dispatch(setLoggedUser(null));
+                }
+                if (userManager.idpSettings?.maxExpiresIn) {
                     if (
                         idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
                     ) {
                         // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
                         // for now we do the same thing as in the else block
                         console.log(
-                            'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => last chance, next error will logout',
-                            'maxExpiresIn = ' +
-                                userManager.idpSettings.maxExpiresIn,
-                            'last renew attempt in ' +
-                                (idTokenExpiresIn -
-                                    accessTokenExpiringNotificationTime) +
-                                'seconds',
+                            `Error in silent renew, but idtoken ALMOST expiring (expiring in${idTokenExpiresIn}) => last chance, next error will logout`,
+                            `maxExpiresIn = ${userManager.idpSettings.maxExpiresIn}`,
+                            `last renew attempt in ${
+                                idTokenExpiresIn -
+                                accessTokenExpiringNotificationTime
+                            }seconds`,
                             error
                         );
                         reloadTimerOnExpiresIn(
@@ -474,10 +233,7 @@ function handleUser(
                         );
                     } else {
                         console.log(
-                            'Error in silent renew, but idtoken NOT expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => postponing expiration to' +
-                                userManager.idpSettings.maxExpiresIn,
+                            `Error in silent renew, but idtoken NOT expiring (expiring in${idTokenExpiresIn}) => postponing expiration to${userManager.idpSettings.maxExpiresIn}`,
                             error
                         );
                         reloadTimerOnExpiresIn(
@@ -488,10 +244,7 @@ function handleUser(
                     }
                 } else {
                     console.log(
-                        'Error in silent renew, unsupported configuration: token still valid for ' +
-                            idTokenExpiresIn +
-                            ' but maxExpiresIn is not configured:' +
-                            userManager.idpSettings?.maxExpiresIn,
+                        `Error in silent renew, unsupported configuration: token still valid for ${idTokenExpiresIn} but maxExpiresIn is not configured:${userManager.idpSettings?.maxExpiresIn}`,
                         error
                     );
                 }
@@ -506,6 +259,238 @@ function handleUser(
 
     console.debug('dispatch user');
     dispatchUser(dispatch, userManager, validateUser);
+}
+
+function handleSigninSilent(
+    dispatch: Dispatch<unknown>,
+    userManager: UserManager
+) {
+    userManager.getUser().then((user) => {
+        if (user == null || getIdTokenExpiresIn(user) < 0) {
+            return userManager.signinSilent().catch((error: Error) => {
+                dispatch(setShowAuthenticationRouterLogin(true));
+                const errorIssuerCodeFlow = isIssuerErrorForCodeFlow(error);
+                const errorIssuerImplicitFlow =
+                    error.message ===
+                    'authority mismatch on settings vs. signin state';
+                if (errorIssuerCodeFlow) {
+                    // Replacing authority for code flow only because it's done in the hash for implicit flow
+                    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common here for both flows
+                    extractIssuerToSessionStorage(error);
+                }
+                if (errorIssuerCodeFlow || errorIssuerImplicitFlow) {
+                    reload();
+                }
+            });
+        }
+        return null;
+    });
+}
+
+function initializeAuthenticationDev(
+    dispatch: Dispatch<unknown>,
+    isSilentRenew: boolean,
+    validateUser: UserValidationFunc,
+    isSigninCallback: boolean
+) {
+    const userManager: UserManager = new UserManagerMock(
+        {}
+    ) as unknown as UserManager;
+    if (!isSilentRenew) {
+        handleUser(dispatch, userManager, validateUser);
+        if (!isSigninCallback) {
+            handleSigninSilent(dispatch, userManager);
+        }
+    }
+    return Promise.resolve(userManager);
+}
+
+function initializeAuthenticationProd(
+    dispatch: Dispatch<unknown>,
+    isSilentRenew: boolean,
+    idpSettings: Promise<Response>,
+    validateUser: UserValidationFunc,
+    authorizationCodeFlowEnabled: boolean,
+    isSigninCallback: boolean
+) {
+    return idpSettings
+        .then((r) => r.json())
+        .then((idpSetting) => {
+            /* hack to ignore the iss check. XXX TODO to remove */
+            const regextoken = /id_token=[^&]*/;
+            const regexstate = /state=[^&]*/;
+            const regexexpires = /expires_in=[^&]*/;
+            let authority: string | undefined;
+            if (window.location.hash) {
+                const matchedIdToken = window.location.hash.match(regextoken);
+                const matchedState = window.location.hash.match(regexstate);
+                if (matchedIdToken != null && matchedState != null) {
+                    const idToken = matchedIdToken[0].split('=')[1];
+                    const state = matchedState[0].split('=')[1];
+                    const strState = localStorage.getItem(`oidc.${state}`);
+                    if (strState != null) {
+                        const decoded = jwtDecode(idToken);
+                        authority = decoded.iss;
+                        const storedState = JSON.parse(strState);
+                        console.debug(
+                            'Replacing authority in storedState. Before: ',
+                            storedState.authority,
+                            'after: ',
+                            authority
+                        );
+                        storedState.authority = authority;
+                        localStorage.setItem(
+                            `oidc.${state}`,
+                            JSON.stringify(storedState)
+                        );
+                        if (authority !== undefined) {
+                            sessionStorage.setItem(hackAuthorityKey, authority);
+                        }
+                        const matchedExpires =
+                            window.location.hash.match(regexexpires);
+                        if (matchedExpires != null) {
+                            const expiresIn = parseInt(
+                                matchedExpires[0].split('=')[1],
+                                10
+                            );
+                            window.location.hash = window.location.hash.replace(
+                                matchedExpires[0],
+                                `expires_in=${computeMinExpiresIn(
+                                    expiresIn,
+                                    idToken,
+                                    idpSetting.maxExpiresIn
+                                )}`
+                            );
+                        }
+                    }
+                }
+            }
+            authority =
+                authority ||
+                sessionStorage.getItem(hackAuthorityKey) ||
+                idpSetting.authority;
+
+            const responseSettings = authorizationCodeFlowEnabled
+                ? { response_type: 'code' }
+                : {
+                      response_type: 'id_token token',
+                      response_mode: 'fragment',
+                  };
+            const settings = {
+                authority,
+                client_id: idpSetting.client_id,
+                redirect_uri: idpSetting.redirect_uri,
+                post_logout_redirect_uri: idpSetting.post_logout_redirect_uri,
+                silent_redirect_uri: idpSetting.silent_redirect_uri,
+                scope: idpSetting.scope,
+                automaticSilentRenew: !isSilentRenew,
+                accessTokenExpiringNotificationTime,
+                ...responseSettings,
+            };
+            const userManager: CustomUserManager = new UserManager(settings);
+            // Hack to enrich UserManager object
+            userManager.idpSettings = idpSetting; // store our settings in there as well to use it later
+            // Hack to enrich UserManager object
+            userManager.authorizationCodeFlowEnabled =
+                authorizationCodeFlowEnabled;
+            if (!isSilentRenew) {
+                handleUser(dispatch, userManager, validateUser);
+                if (!isSigninCallback) {
+                    handleSigninSilent(dispatch, userManager);
+                }
+            }
+            return userManager;
+        })
+        .catch((error) => {
+            console.debug('error when importing the idp settings', error);
+            dispatch(setShowAuthenticationRouterLogin(true));
+            throw error;
+        });
+}
+
+function login(location: Location, userManagerInstance: UserManager) {
+    sessionStorage.setItem(pathKey, location.pathname + location.search);
+    return userManagerInstance
+        .signinRedirect()
+        .then(() => console.debug('login'));
+}
+
+function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
+    sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
+    return userManagerInstance.getUser().then((user) => {
+        if (user) {
+            // We don't need to check if token is valid at this point
+            return userManagerInstance
+                .signoutRedirect({
+                    extraQueryParams: {
+                        TargetResource:
+                            userManagerInstance.settings
+                                .post_logout_redirect_uri,
+                    },
+                })
+                .then(() => {
+                    console.debug('logged out, window is closing...');
+                })
+                .catch((e) => {
+                    console.log('Error during logout :', e);
+                    // An error occured, window may not be closed, reset the user state
+                    dispatch(setLoggedUser(null));
+                    dispatch(setLogoutError(user?.profile?.name, { error: e }));
+                });
+        }
+        console.log('Error nobody to logout ');
+        return null;
+    });
+}
+
+function getPreLoginPath() {
+    return sessionStorage.getItem(pathKey);
+}
+
+function navigateToPreLoginPath(navigate: NavigateFunction) {
+    const previousPath = getPreLoginPath();
+    if (previousPath !== null) {
+        navigate(previousPath);
+    }
+}
+
+function handleSigninCallback(
+    dispatch: Dispatch<unknown>,
+    navigate: NavigateFunction,
+    userManagerInstance: UserManager
+) {
+    let reloadAfterNavigate = false;
+    userManagerInstance
+        .signinRedirectCallback()
+        .catch((e) => {
+            if (isIssuerErrorForCodeFlow(e)) {
+                // Replacing authority for code flow only because it's done in the hash for implicit flow
+                // TODO: Can we also do it here for the implicit flow ? To make it common here for both flows
+                extractIssuerToSessionStorage(e);
+                // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
+                // It will reload the user manager based on hacked authority at initialization with the new authority
+                // We do this because on Azure we only get to know the issuer of the user in the idtoken and so signingredirectcallback will always fail
+                // We could restart the whole login process from signin redirect with the correct issuer, but instead we just rely on the silent login after the reload which will work
+                reloadAfterNavigate = true;
+            } else {
+                throw e;
+            }
+        })
+        .then(() => {
+            dispatch(setSignInCallbackError(null));
+            navigateToPreLoginPath(navigate);
+            if (reloadAfterNavigate) {
+                reload();
+            }
+        })
+        .catch((e) => {
+            dispatch(setSignInCallbackError(e));
+            console.error(e);
+        });
+}
+
+function handleSilentRenewCallback(userManagerInstance: UserManager) {
+    userManagerInstance.signinSilentCallback();
 }
 
 export {

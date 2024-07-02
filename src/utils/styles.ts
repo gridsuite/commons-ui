@@ -6,8 +6,7 @@
  */
 import { SxProps, Theme } from '@mui/material';
 
-//TODO do we need to export this to clients (index.ts) ?
-
+// TODO do we need to export this to clients (index.ts) ?
 // like mui sx(slot)/class merging but simpler with less features
 // TODO use their system ? But it's named unstable_composeClasses so not supported?
 export const makeComposeClasses =

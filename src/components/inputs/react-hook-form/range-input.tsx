@@ -5,15 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useWatch } from 'react-hook-form';
-import FloatInput from './numbers/float-input';
-import yup from '../../../utils/yup-config';
 import { FormattedMessage } from 'react-intl';
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import { Grid } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
+import FloatInput from './numbers/float-input';
+import yup from '../../../utils/yup-config';
 import MuiSelectInput from './select-inputs/mui-select-input';
-import { FieldConstants } from '../../../utils/field-constants';
+import FieldConstants from '../../../utils/field-constants';
 
 const style = {
     inputLegend: (theme: any) => ({
@@ -72,7 +72,7 @@ interface RangeInputProps {
     label: string;
 }
 
-const RangeInput: FunctionComponent<RangeInputProps> = ({ name, label }) => {
+function RangeInput({ name, label }: RangeInputProps) {
     const watchOperationType = useWatch({
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });
@@ -84,7 +84,7 @@ const RangeInput: FunctionComponent<RangeInputProps> = ({ name, label }) => {
 
     const firstValueField = (
         <FloatInput
-            label={''}
+            label=""
             name={`${name}.${FieldConstants.VALUE_1}`}
             clearable={false}
             formProps={{
@@ -98,7 +98,7 @@ const RangeInput: FunctionComponent<RangeInputProps> = ({ name, label }) => {
         <FloatInput
             name={`${name}.${FieldConstants.VALUE_2}`}
             clearable={false}
-            label={''}
+            label=""
             formProps={{
                 size: 'medium',
                 placeholder: 'Max',
@@ -137,6 +137,6 @@ const RangeInput: FunctionComponent<RangeInputProps> = ({ name, label }) => {
             </Grid>
         </FormControl>
     );
-};
+}
 
 export default RangeInput;

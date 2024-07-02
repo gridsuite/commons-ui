@@ -6,7 +6,7 @@
  */
 
 import { Alert, Grid } from '@mui/material';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 
 interface FieldErrorAlertProps {
     message: string | React.ReactNode;
@@ -14,14 +14,12 @@ interface FieldErrorAlertProps {
 
 // component to display alert when a specific rhf field is in error
 // this component needs to be isolated to avoid too many rerenders
-const FieldErrorAlert: FunctionComponent<FieldErrorAlertProps> = ({
-    message,
-}) => {
+function FieldErrorAlert({ message }: FieldErrorAlertProps) {
     return (
         <Grid item xs={12}>
             <Alert severity="error">{message}</Alert>
         </Grid>
     );
-};
+}
 
 export default FieldErrorAlert;

@@ -5,13 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback } from 'react';
+import { useCallback } from 'react';
+import { Resolver, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { UUID } from 'crypto';
 import {
     saveCriteriaBasedFilter,
     saveExpertFilter,
     saveExplicitNamingFilter,
 } from './utils/filter-api';
-import { Resolver, useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from '../dialogs/custom-mui-dialog';
 import {
@@ -23,18 +25,16 @@ import {
     FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
 } from './explicit-naming/explicit-naming-filter-form';
-import { FieldConstants } from '../../utils/field-constants';
+import FieldConstants from '../../utils/field-constants';
 import yup from '../../utils/yup-config';
-import { FilterForm } from './filter-form';
+import FilterForm from './filter-form';
 import {
     EXPERT_FILTER_QUERY,
     expertFilterSchema,
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
-import { UUID } from 'crypto';
 import { FilterType } from './constants/filter-constants';
+import { ElementExistsType } from '../../utils/ElementType';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -66,7 +66,7 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
+    elementExists?: ElementExistsType;
     language?: string;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
@@ -74,14 +74,14 @@ export interface FilterCreationDialogProps {
     };
 }
 
-const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
+function FilterCreationDialog({
     open,
     onClose,
     activeDirectory,
     elementExists,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
-}) => {
+}: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({
@@ -166,7 +166,7 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
                     ? 'convertIntoExplicitNamingFilter'
                     : 'createNewFilter'
             }
-            removeOptional={true}
+            removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
         >
@@ -180,6 +180,6 @@ const FilterCreationDialog: FunctionComponent<FilterCreationDialogProps> = ({
             />
         </CustomMuiDialog>
     );
-};
+}
 
 export default FilterCreationDialog;

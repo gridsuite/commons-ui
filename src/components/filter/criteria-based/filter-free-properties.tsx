@@ -5,34 +5,38 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import ErrorInput from '../../inputs/react-hook-form/error-management/error-input';
-import FieldErrorAlert from '../../inputs/react-hook-form/error-management/field-error-alert';
 import { Button, Grid, ListItem } from '@mui/material';
-import { FieldConstants } from '../../../utils/field-constants';
 import { useFieldArray, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { FreePropertiesTypes } from './filter-properties';
+import AddIcon from '@mui/icons-material/Add';
+import { useMemo } from 'react';
+import ErrorInput from '../../inputs/react-hook-form/error-management/error-input';
+import FieldErrorAlert from '../../inputs/react-hook-form/error-management/field-error-alert';
+import FieldConstants from '../../../utils/field-constants';
 import FilterProperty, {
     PROPERTY_NAME,
     PROPERTY_VALUES,
     PROPERTY_VALUES_1,
     PROPERTY_VALUES_2,
 } from './filter-property';
-import AddIcon from '@mui/icons-material/Add';
-import { FunctionComponent, useMemo } from 'react';
 import { Hvdc, Line } from '../../../utils/equipment-types';
 
 import { PredefinedProperties } from '../../../utils/types';
+
+export enum FreePropertiesTypes {
+    SUBSTATION_FILTER_PROPERTIES = 'substationFreeProperties',
+    FREE_FILTER_PROPERTIES = 'freeProperties',
+}
 
 interface FilterFreePropertiesProps {
     freePropertiesType: FreePropertiesTypes;
     predefined: PredefinedProperties;
 }
 
-const FilterFreeProperties: FunctionComponent<FilterFreePropertiesProps> = ({
+function FilterFreeProperties({
     freePropertiesType,
     predefined,
-}) => {
+}: FilterFreePropertiesProps) {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
@@ -80,7 +84,7 @@ const FilterFreeProperties: FunctionComponent<FilterFreePropertiesProps> = ({
         <>
             <Grid item xs={12}>
                 <FormattedMessage id={title}>
-                    {(title) => <h4>{title}</h4>}
+                    {(formattedTitle) => <h4>{formattedTitle}</h4>}
                 </FormattedMessage>
             </Grid>
             {filterProperties.map((prop, index) => (
@@ -95,8 +99,8 @@ const FilterFreeProperties: FunctionComponent<FilterFreePropertiesProps> = ({
                 </ListItem>
             ))}
             <Grid item>
-                <Button startIcon={<AddIcon />} onClick={addNewProp}>
-                    <FormattedMessage id={'AddFreePropCrit'} />
+                <Button startIcon={<AddIcon />} onClick={() => addNewProp}>
+                    <FormattedMessage id="AddFreePropCrit" />
                 </Button>
             </Grid>
             <Grid item>
@@ -104,6 +108,6 @@ const FilterFreeProperties: FunctionComponent<FilterFreePropertiesProps> = ({
             </Grid>
         </>
     );
-};
+}
 
 export default FilterFreeProperties;

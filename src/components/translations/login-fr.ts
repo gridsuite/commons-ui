@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const login_fr = {
+const loginFr = {
     'login/login': 'Se connecter',
     'login/connection': 'Connexion',
     'login/unauthorizedAccess': 'Accès non autorisé',
@@ -21,4 +21,4 @@ const login_fr = {
     'login/logout': 'Se déconnecter',
 };
 
-export default login_fr;
+export default loginFr;

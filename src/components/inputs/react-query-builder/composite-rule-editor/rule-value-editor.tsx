@@ -25,7 +25,7 @@ type RuleValueEditorProps = ValueEditorProps & {
     handleOnChangeRule: (rule: CompositeRule) => void;
 };
 
-const RuleValueEditor = (props: RuleValueEditorProps) => {
+function RuleValueEditor(props: RuleValueEditorProps) {
     const {
         schema: {
             controls: { valueEditor: ValueEditorControlElement },
@@ -41,18 +41,18 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
         rule?.operator ??
         (fieldData.operators as OperatorOption[])?.map((op) => op.name)[0];
 
-    const handleOnChangeOperator = (operator: string) => {
+    const handleOnChangeOperator = (newOperator: string) => {
         handleOnChangeRule({
             ...rule,
-            operator: operator,
+            operator: newOperator,
         });
     };
 
     const handleOnChangeValue = (value: any) => {
         handleOnChangeRule({
             ...rule,
-            value: value,
-            operator: operator,
+            value,
+            operator,
         });
     };
 
@@ -66,16 +66,16 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
             <Grid container item xs={2.5} sx={styles.gridItem} paddingLeft={1}>
                 <Select
                     value={operator}
-                    size={'small'}
+                    size="small"
                     onChange={(event) => {
                         handleOnChangeOperator(event.target.value);
                     }}
-                    variant={'standard'}
+                    variant="standard"
                 >
                     {(fieldData.operators as OperatorOption[])?.map(
-                        (operator) => (
-                            <MenuItem key={operator.name} value={operator.name}>
-                                {intl.formatMessage({ id: operator.label })}
+                        (option) => (
+                            <MenuItem key={option.name} value={option.name}>
+                                {intl.formatMessage({ id: option.label })}
                             </MenuItem>
                         )
                     )}
@@ -91,6 +91,6 @@ const RuleValueEditor = (props: RuleValueEditorProps) => {
             </Grid>
         </Grid>
     );
-};
+}
 
 export default RuleValueEditor;

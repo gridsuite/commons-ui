@@ -5,19 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { IntlProvider } from 'react-intl';
 
-import TopBar, { LANG_ENGLISH } from './TopBar';
-import { top_bar_en } from '../../';
-
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
-
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { beforeEach, afterEach, it, expect } from '@jest/globals';
+import TopBar, { LANG_ENGLISH } from './TopBar';
+import { top_bar_en } from '../..';
+
+import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
 let container: Element;
 

@@ -7,29 +7,28 @@
 
 import {
     Dispatch,
-    FunctionComponent,
     SetStateAction,
     useCallback,
     useEffect,
     useState,
 } from 'react';
-import { FieldConstants } from '../../../utils/field-constants';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { UUID } from 'crypto';
+import FieldConstants from '../../../utils/field-constants';
 import {
     backToFrontTweak,
     frontToBackTweak,
 } from './criteria-based-filter-utils';
 import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
-import { FilterForm } from '../filter-form';
-import { UUID } from 'crypto';
 import { FilterType } from '../constants/filter-constants';
-import { FetchStatus } from '../../../utils/FetchStatus';
-import { ElementType } from '../../../utils/ElementType';
+import FetchStatus from '../../../utils/FetchStatus';
 import { saveFilter } from '../../../services/explore';
+import { ElementExistsType } from '../../../utils/ElementType';
+import FilterForm from '../filter-form';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -37,12 +36,6 @@ export type SelectionCopy = {
     description: string | null;
     parentDirectoryUuid: UUID | null;
 };
-
-export type elementExistsType = (
-    directory: UUID,
-    value: string,
-    elementType: ElementType
-) => Promise<boolean>;
 
 export const noSelectionForCopy: SelectionCopy = {
     sourceItemUuid: null,
@@ -74,13 +67,11 @@ interface CriteriaBasedFilterEditionDialogProps {
         selection: SelectionCopy
     ) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
+    elementExists?: ElementExistsType;
     language?: string;
 }
 
-const CriteriaBasedFilterEditionDialog: FunctionComponent<
-    CriteriaBasedFilterEditionDialogProps
-> = ({
+function CriteriaBasedFilterEditionDialog({
     id,
     name,
     titleId,
@@ -93,7 +84,7 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
     activeDirectory,
     elementExists,
     language,
-}) => {
+}: CriteriaBasedFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -173,7 +164,7 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
             formSchema={formSchema}
             formMethods={formMethods}
             titleId={titleId}
-            removeOptional={true}
+            removeOptional
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
@@ -186,6 +177,6 @@ const CriteriaBasedFilterEditionDialog: FunctionComponent<
             )}
         </CustomMuiDialog>
     );
-};
+}
 
 export default CriteriaBasedFilterEditionDialog;

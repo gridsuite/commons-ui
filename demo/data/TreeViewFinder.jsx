@@ -15,7 +15,8 @@ import {
     Whatshot as WhatshotIcon,
 } from '@mui/icons-material';
 
-var PokemonTree = [
+// eslint-disable-next-line import/no-mutable-exports
+let PokemonTree = [
     {
         id: 'D1',
         name: 'Team',
@@ -116,7 +117,8 @@ var PokemonTree = [
     },
 ];
 
-var PokemonList = [
+// eslint-disable-next-line import/no-mutable-exports
+let PokemonList = [
     {
         id: '1',
         name: 'Pikachu',
@@ -137,14 +139,14 @@ var PokemonList = [
     { id: '6', name: 'Machoc', type: 'Combat', power: '64' },
 ];
 
-var IDCounter = 100; // Start at 100 to avoid conflicts for demo
+let IDCounter = 100; // Start at 100 to avoid conflicts for demo
 function fetchInfinitePokemonList() {
-    IDCounter++;
+    IDCounter += 1;
     PokemonList = [
         ...PokemonList,
         {
             id: IDCounter.toString(),
-            name: 'Métamorph_' + new Date().getTime(),
+            name: `Métamorph_${new Date().getTime()}`,
             type: 'Normal',
             power: '1',
             icon: <FiberNewIcon />,
@@ -154,20 +156,20 @@ function fetchInfinitePokemonList() {
 }
 
 function fetchInfinitePokemonTree(nodeId) {
-    IDCounter++;
+    IDCounter += 1;
 
-    let PokemonTreeCopy = [...PokemonTree];
+    const PokemonTreeCopy = [...PokemonTree];
     const dirFound = PokemonTreeCopy.find((element) => element.id === nodeId);
 
     if (dirFound) {
         dirFound.children.push({
             id: IDCounter.toString(),
-            name: 'Métamorph_' + new Date().getTime(),
+            name: `Métamorph_${new Date().getTime()}`,
             type: 'Normal',
             power: '1',
             icon: <FiberNewIcon />,
         });
-        dirFound.childrenCount++;
+        dirFound.childrenCount += 1;
     }
 
     PokemonTree = PokemonTreeCopy;

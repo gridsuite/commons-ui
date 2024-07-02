@@ -5,11 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { saveExplicitNamingFilter } from '../utils/filter-api';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { v4 as uuid4 } from 'uuid';
+import { UUID } from 'crypto';
+import { saveExplicitNamingFilter } from '../utils/filter-api';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
@@ -17,15 +19,13 @@ import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
 } from './explicit-naming-filter-form';
-import { FieldConstants } from '../../../utils/field-constants';
+import FieldConstants from '../../../utils/field-constants';
 
-import { FilterForm } from '../filter-form';
-import { v4 as uuid4 } from 'uuid';
+import FilterForm from '../filter-form';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
-import { UUID } from 'crypto';
-import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
-import { FetchStatus } from '../../../utils/FetchStatus';
+import FetchStatus from '../../../utils/FetchStatus';
+import { ElementExistsType } from '../../../utils/ElementType';
 
 const formSchema = yup
     .object()
@@ -48,13 +48,11 @@ interface ExplicitNamingFilterEditionDialogProps {
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
+    elementExists?: ElementExistsType;
     language?: string;
 }
 
-const ExplicitNamingFilterEditionDialog: FunctionComponent<
-    ExplicitNamingFilterEditionDialogProps
-> = ({
+function ExplicitNamingFilterEditionDialog({
     id,
     name,
     titleId,
@@ -67,7 +65,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
     activeDirectory,
     elementExists,
     language,
-}) => {
+}: ExplicitNamingFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -157,7 +155,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             formSchema={formSchema}
             formMethods={formMethods}
             titleId={titleId}
-            removeOptional={true}
+            removeOptional
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
@@ -170,7 +168,7 @@ const ExplicitNamingFilterEditionDialog: FunctionComponent<
             )}
         </CustomMuiDialog>
     );
-};
+}
 
 ExplicitNamingFilterEditionDialog.prototype = {
     id: PropTypes.string,

@@ -17,7 +17,7 @@ export function genHelperPreviousValue(
         ...((previousValue || previousValue === 0) && {
             error: false,
             helperText:
-                previousValue + (adornment ? ' ' + adornment?.text : ''),
+                previousValue + (adornment ? ` ${adornment?.text}` : ''),
         }),
     };
 }
@@ -49,13 +49,13 @@ export const isFieldRequired = (
             ?.optional === false
     );
 
-    //static way, not working when using "when" in schema, but does not need form values
-    //return yup.reach(schema, fieldName)?.exclusiveTests?.required === true;
+    // static way, not working when using "when" in schema, but does not need form values
+    // return yup.reach(schema, fieldName)?.exclusiveTests?.required === true;
 };
 
 export const gridItem = (field: string | ReactElement, size: number = 6) => {
     return (
-        <Grid item xs={size} alignItems={'start'}>
+        <Grid item xs={size} alignItems="start">
             {field}
         </Grid>
     );

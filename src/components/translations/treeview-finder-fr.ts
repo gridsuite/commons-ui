@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const treeview_finder_fr = {
+const treeviewFinderFr = {
     'treeview_finder/close': 'Fermer',
     'treeview_finder/validate': 'Valider',
     'treeview_finder/add': 'Ajouter...',
@@ -20,4 +20,4 @@ const treeview_finder_fr = {
         '{nbElements, plural, =0 {Veuillez sélectionner un élément} =1 {Remplacer par cet élément} other {Remplacer par # éléments}}',
 };
 
-export default treeview_finder_fr;
+export default treeviewFinderFr;

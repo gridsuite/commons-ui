@@ -6,13 +6,13 @@
  */
 import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, Theme } from '@mui/material';
+import { useCallback } from 'react';
 import RuleValueEditor from './rule-value-editor';
 import {
     CompositeField,
     CompositeGroup,
     CompositeRule,
 } from '../../../filter/expert/expert-filter.type';
-import { useCallback } from 'react';
 
 const styles = {
     group: (theme: Theme) => ({
@@ -22,7 +22,7 @@ const styles = {
     }),
 };
 
-const GroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
+function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
     const {
         fieldData: { combinator, children },
         value,
@@ -33,7 +33,7 @@ const GroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
         (field: string) => (rule: CompositeRule) => {
             const compositeGroup: CompositeGroup = {
                 ...value,
-                combinator: combinator,
+                combinator,
                 rules: {
                     ...value?.rules,
                     [field]: rule,
@@ -48,7 +48,7 @@ const GroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
     return (
         <Grid
             container
-            direction={'column'}
+            direction="column"
             sx={styles.group}
             paddingLeft={1}
             paddingRight={1}
@@ -69,6 +69,6 @@ const GroupValueEditor = (props: ValueEditorProps<CompositeField>) => {
                 ))}
         </Grid>
     );
-};
+}
 
 export default GroupValueEditor;

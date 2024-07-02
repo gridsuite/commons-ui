@@ -7,10 +7,12 @@
 
 import { useController } from 'react-hook-form';
 
-export function RawReadOnlyInput({ name }: { name: string }) {
+function RawReadOnlyInput({ name }: { name: string }) {
     const {
         field: { value },
     } = useController({ name });
 
     return value;
 }
+
+export default RawReadOnlyInput;

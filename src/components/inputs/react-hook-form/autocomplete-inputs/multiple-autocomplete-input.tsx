@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
 import AutocompleteInput from './autocomplete-input';
 
-const MultipleAutocompleteInput = ({ name, ...props }: any) => {
+function MultipleAutocompleteInput({ name, ...props }: any) {
     const [unsavedInput, setUnsavedInput] = useState('');
     const watchAutocompleteValues = useWatch({
         name,
@@ -40,7 +40,7 @@ const MultipleAutocompleteInput = ({ name, ...props }: any) => {
             options={[]}
             allowNewValue
             clearOnBlur
-            disableClearable={true}
+            disableClearable
             outputTransform={outputTransform}
             onInputChange={(_: unknown, val: string) =>
                 setUnsavedInput(val.trim() ?? '')
@@ -52,6 +52,6 @@ const MultipleAutocompleteInput = ({ name, ...props }: any) => {
             {...props}
         />
     );
-};
+}
 
 export default MultipleAutocompleteInput;

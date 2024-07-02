@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filter_en = {
+const filterEn = {
     OR: 'OR',
     AND: 'AND',
     rule: 'rule',
@@ -29,4 +29,4 @@ const filter_en = {
     Hvdc: 'HVDC',
 };
 
-export default filter_en;
+export default filterEn;

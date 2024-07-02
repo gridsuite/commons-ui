@@ -6,17 +6,16 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { FunctionComponent, useCallback } from 'react';
+import { useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-
+import Box from '@mui/material/Box';
+import { useFormContext } from 'react-hook-form';
 import CountryValueEditor from './country-value-editor';
 import TranslatedValueEditor from './translated-value-editor';
 import TextValueEditor from './text-value-editor';
-import Box from '@mui/material/Box';
 
-import { useFormContext } from 'react-hook-form';
-import { FieldConstants } from '../../../utils/field-constants';
 import { DataType, FieldType } from '../../filter/expert/expert-filter.type';
+import FieldConstants from '../../../utils/field-constants';
 import { Substation, VoltageLevel } from '../../../utils/equipment-types';
 import ElementValueEditor from './element-value-editor';
 import { ElementType } from '../../../utils/ElementType';
@@ -37,116 +36,127 @@ const styles = {
     },
 };
 
-const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
+function ValueEditor(props: ValueEditorProps) {
+    const {
+        field,
+        operator,
+        value,
+        rule,
+        handleOnChange,
+        inputType,
+        fieldData,
+    } = props;
     const formContext = useFormContext();
     const { getValues } = formContext;
-
     const itemFilter = useCallback(
-        (value: any) => {
-            if (value?.type === ElementType.FILTER) {
+        (filterValue: any) => {
+            if (filterValue?.type === ElementType.FILTER) {
                 return (
                     // we do not authorize to use an expert filter in the rules of
                     // another expert filter, to prevent potential cycle problems
-                    value?.specificMetadata?.type !== FilterType.EXPERT.id &&
-                    ((props.field === FieldType.ID &&
-                        value?.specificMetadata?.equipmentType ===
+                    filterValue?.specificMetadata?.type !==
+                        FilterType.EXPERT.id &&
+                    ((field === FieldType.ID &&
+                        filterValue?.specificMetadata?.equipmentType ===
                             getValues(FieldConstants.EQUIPMENT_TYPE)) ||
-                        ((props.field === FieldType.VOLTAGE_LEVEL_ID ||
-                            props.field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-                            props.field === FieldType.VOLTAGE_LEVEL_ID_2) &&
-                            value?.specificMetadata?.equipmentType ===
+                        ((field === FieldType.VOLTAGE_LEVEL_ID ||
+                            field === FieldType.VOLTAGE_LEVEL_ID_1 ||
+                            field === FieldType.VOLTAGE_LEVEL_ID_2) &&
+                            filterValue?.specificMetadata?.equipmentType ===
                                 VoltageLevel.type))
                 );
             }
             return true;
         },
-        [props.field, getValues]
+        [field, getValues]
     );
 
     if (
-        props.operator === OPERATOR_OPTIONS.EXISTS.name ||
-        props.operator === OPERATOR_OPTIONS.NOT_EXISTS.name
+        operator === OPERATOR_OPTIONS.EXISTS.name ||
+        operator === OPERATOR_OPTIONS.NOT_EXISTS.name
     ) {
         // No value needed for these operators
         return null;
     }
     if (
         [FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(
-            props.field as FieldType
+            field as FieldType
         )
     ) {
         return <CountryValueEditor {...props} />;
     }
     if (
-        props.field === FieldType.REGULATION_TYPE ||
-        props.field === FieldType.SVAR_REGULATION_MODE ||
-        props.field === FieldType.ENERGY_SOURCE ||
-        props.field === FieldType.SHUNT_COMPENSATOR_TYPE ||
-        props.field === FieldType.LOAD_TYPE ||
-        props.field === FieldType.RATIO_REGULATION_MODE ||
-        props.field === FieldType.PHASE_REGULATION_MODE
+        field === FieldType.REGULATION_TYPE ||
+        field === FieldType.SVAR_REGULATION_MODE ||
+        field === FieldType.ENERGY_SOURCE ||
+        field === FieldType.SHUNT_COMPENSATOR_TYPE ||
+        field === FieldType.LOAD_TYPE ||
+        field === FieldType.RATIO_REGULATION_MODE ||
+        field === FieldType.PHASE_REGULATION_MODE
     ) {
         return <TranslatedValueEditor {...props} />;
     }
     if (
-        props.operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
-        props.operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
+        operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
+        operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
     ) {
         let equipmentTypes;
         if (
-            props.field === FieldType.VOLTAGE_LEVEL_ID ||
-            props.field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-            props.field === FieldType.VOLTAGE_LEVEL_ID_2
+            field === FieldType.VOLTAGE_LEVEL_ID ||
+            field === FieldType.VOLTAGE_LEVEL_ID_1 ||
+            field === FieldType.VOLTAGE_LEVEL_ID_2
         ) {
             equipmentTypes = [VoltageLevel.type];
-        } else if (props.field === FieldType.ID) {
+        } else if (field === FieldType.ID) {
             equipmentTypes = [getValues(FieldConstants.EQUIPMENT_TYPE)];
         }
 
         return (
             <ElementValueEditor
-                name={DataType.FILTER_UUID + props.rule.id}
+                name={DataType.FILTER_UUID + rule.id}
                 elementType={ElementType.FILTER}
                 equipmentTypes={equipmentTypes}
                 titleId="selectFilterDialogTitle"
-                hideErrorMessage={true}
+                hideErrorMessage
                 onChange={(e: any) => {
-                    props.handleOnChange(e.map((v: any) => v.id));
+                    handleOnChange(e.map((v: any) => v.id));
                 }}
                 itemFilter={itemFilter}
-                defaultValue={props.value}
+                defaultValue={value}
             />
         );
-    } else if (
-        props.field === FieldType.ID ||
-        props.field === FieldType.NAME ||
-        props.field === FieldType.REGULATING_TERMINAL_VL_ID ||
-        props.field === FieldType.REGULATING_TERMINAL_CONNECTABLE_ID ||
-        props.field === FieldType.VOLTAGE_LEVEL_ID ||
-        props.field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-        props.field === FieldType.VOLTAGE_LEVEL_ID_2
+    }
+    if (
+        field === FieldType.ID ||
+        field === FieldType.NAME ||
+        field === FieldType.REGULATING_TERMINAL_VL_ID ||
+        field === FieldType.REGULATING_TERMINAL_CONNECTABLE_ID ||
+        field === FieldType.VOLTAGE_LEVEL_ID ||
+        field === FieldType.VOLTAGE_LEVEL_ID_1 ||
+        field === FieldType.VOLTAGE_LEVEL_ID_2
     ) {
         return <TextValueEditor {...props} />;
-    } else if (
-        props.field === FieldType.PROPERTY ||
-        props.field === FieldType.SUBSTATION_PROPERTY ||
-        props.field === FieldType.SUBSTATION_PROPERTY_1 ||
-        props.field === FieldType.SUBSTATION_PROPERTY_2 ||
-        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
-        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
-        props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
+    }
+    if (
+        field === FieldType.PROPERTY ||
+        field === FieldType.SUBSTATION_PROPERTY ||
+        field === FieldType.SUBSTATION_PROPERTY_1 ||
+        field === FieldType.SUBSTATION_PROPERTY_2 ||
+        field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
+        field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
+        field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
     ) {
         let equipmentType;
         if (
-            props.field === FieldType.SUBSTATION_PROPERTY ||
-            props.field === FieldType.SUBSTATION_PROPERTY_1 ||
-            props.field === FieldType.SUBSTATION_PROPERTY_2
+            field === FieldType.SUBSTATION_PROPERTY ||
+            field === FieldType.SUBSTATION_PROPERTY_1 ||
+            field === FieldType.SUBSTATION_PROPERTY_2
         ) {
             equipmentType = Substation.type;
         } else if (
-            props.field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
-            props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
-            props.field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
+            field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
+            field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
+            field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
         ) {
             equipmentType = VoltageLevel.type;
         } else {
@@ -159,17 +169,18 @@ const ValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
                 valueEditorProps={props}
             />
         );
-    } else if (props.fieldData.dataType === DataType.COMBINATOR) {
+    }
+    if (fieldData.dataType === DataType.COMBINATOR) {
         return <GroupValueEditor {...props} />;
     }
 
     return (
-        <Box sx={props.inputType === 'number' ? styles.noArrows : undefined}>
+        <Box sx={inputType === 'number' ? styles.noArrows : undefined}>
             <MaterialValueEditor
                 {...props}
                 title={undefined} // disable the tooltip
             />
         </Box>
     );
-};
+}
 export default ValueEditor;

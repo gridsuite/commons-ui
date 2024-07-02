@@ -5,13 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, useEffect } from 'react';
 import { validate as uuidValidate } from 'uuid';
-import {
-    DirectoryItemsInput,
-    fetchElementsInfos,
-    useCustomFormContext,
-} from '../../../index';
+import { useEffect } from 'react';
+import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
+import { fetchElementsInfos } from '../../../services';
+import DirectoryItemsInput from '../react-hook-form/directory-items-input';
 
 interface ElementValueEditorProps {
     name: string;
@@ -24,48 +22,54 @@ interface ElementValueEditorProps {
     defaultValue?: any;
 }
 
-const ElementValueEditor: FunctionComponent<ElementValueEditorProps> = (
-    props
-) => {
+function ElementValueEditor(props: ElementValueEditorProps) {
+    const {
+        defaultValue,
+        name,
+        elementType,
+        equipmentTypes,
+        titleId,
+        hideErrorMessage,
+        itemFilter,
+        onChange,
+    } = props;
     const { setValue } = useCustomFormContext();
 
     useEffect(() => {
         if (
-            props.defaultValue &&
-            Array.isArray(props.defaultValue) &&
-            props.defaultValue.length > 0 &&
-            props.defaultValue[0].length > 0 &&
-            uuidValidate(props.defaultValue[0])
+            defaultValue &&
+            Array.isArray(defaultValue) &&
+            defaultValue.length > 0 &&
+            defaultValue[0].length > 0 &&
+            uuidValidate(defaultValue[0])
         ) {
-            fetchElementsInfos(props.defaultValue).then(
-                (childrenWithMetadata) => {
-                    setValue(
-                        props.name,
-                        childrenWithMetadata.map((v: any) => {
-                            return {
-                                id: v.elementUuid,
-                                name: v.elementName,
-                                specificMetadata: v.specificMetadata,
-                            };
-                        })
-                    );
-                }
-            );
+            fetchElementsInfos(defaultValue).then((childrenWithMetadata) => {
+                setValue(
+                    name,
+                    childrenWithMetadata.map((v: any) => {
+                        return {
+                            id: v.elementUuid,
+                            name: v.elementName,
+                            specificMetadata: v.specificMetadata,
+                        };
+                    })
+                );
+            });
         }
-    }, [props.name, props.defaultValue, props.elementType, setValue]);
+    }, [name, defaultValue, elementType, setValue]);
 
     return (
         <DirectoryItemsInput
-            name={props.name}
-            elementType={props.elementType}
-            equipmentTypes={props.equipmentTypes}
-            titleId={props.titleId}
-            hideErrorMessage={props.hideErrorMessage}
-            label={'filter'}
-            itemFilter={props.itemFilter}
-            onChange={props.onChange}
+            name={name}
+            elementType={elementType}
+            equipmentTypes={equipmentTypes}
+            titleId={titleId}
+            hideErrorMessage={hideErrorMessage}
+            label="filter"
+            itemFilter={itemFilter}
+            onChange={onChange}
             labelRequiredFromContext={false}
-        ></DirectoryItemsInput>
+        />
     );
-};
+}
 export default ElementValueEditor;

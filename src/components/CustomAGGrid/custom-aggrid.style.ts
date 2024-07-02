@@ -24,22 +24,22 @@ export const styles = {
 
         '& .ag-checkbox-input': {
             cursor: 'pointer',
-            //Enlarge checkbox area to be more permissive when selecting it
+            // Enlarge checkbox area to be more permissive when selecting it
             scale: '2.5',
         },
 
-        //overrides the default computed max height for ag grid default selector editor to make it more usable
-        //can be removed if a custom selector editor is implemented
+        // overrides the default computed max height for ag grid default selector editor to make it more usable
+        // can be removed if a custom selector editor is implemented
         '& .ag-select-list': {
             maxHeight: '300px !important',
         },
 
-        //allows to hide the scrollbar in the pinned rows section as it is unecessary to our implementation
+        // allows to hide the scrollbar in the pinned rows section as it is unecessary to our implementation
         '& .ag-body-horizontal-scroll:not(.ag-scrollbar-invisible) .ag-horizontal-left-spacer:not(.ag-scroller-corner)':
             {
                 visibility: 'hidden',
             },
-        //removes border on focused cell - using "suppressCellFocus" Aggrid option causes side effects and breaks field edition
+        // removes border on focused cell - using "suppressCellFocus" Aggrid option causes side effects and breaks field edition
         '& .ag-cell-focus, .ag-cell': {
             border: 'none !important',
         },

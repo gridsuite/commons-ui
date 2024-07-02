@@ -5,15 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback } from 'react';
-import yup from '../../utils/yup-config';
-import { FieldConstants } from '../../utils/field-constants';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Box } from '@mui/material';
+import yup from '../../utils/yup-config';
+import FieldConstants from '../../utils/field-constants';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from './custom-mui-dialog';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
-import { Box } from '@mui/material';
 
 export interface IDescriptionModificationDialog {
     elementUuid: string;
@@ -32,9 +32,13 @@ const schema = yup.object().shape({
         .max(500, 'descriptionLimitError'),
 });
 
-const DescriptionModificationDialog: FunctionComponent<
-    IDescriptionModificationDialog
-> = ({ elementUuid, description, open, onClose, updateElement }) => {
+function DescriptionModificationDialog({
+    elementUuid,
+    description,
+    open,
+    onClose,
+    updateElement,
+}: IDescriptionModificationDialog) {
     const { snackError } = useSnackMessage();
 
     const emptyFormData = {
@@ -77,19 +81,19 @@ const DescriptionModificationDialog: FunctionComponent<
             onSave={onSubmit}
             formSchema={schema}
             formMethods={methods}
-            titleId={'description'}
-            removeOptional={true}
+            titleId="description"
+            removeOptional
         >
             <Box paddingTop={1}>
                 <ExpandingTextField
                     name={FieldConstants.DESCRIPTION}
-                    label={'descriptionProperty'}
+                    label="descriptionProperty"
                     minRows={3}
                     rows={5}
-                ></ExpandingTextField>
+                />
             </Box>{' '}
         </CustomMuiDialog>
     );
-};
+}
 
 export default DescriptionModificationDialog;

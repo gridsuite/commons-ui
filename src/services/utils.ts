@@ -7,35 +7,25 @@
 
 import { getUserToken } from '../redux/commonStore';
 
-export const backendFetch = (url: string, init: any, token?: string) => {
-    const initCopy = prepareRequest(init, token);
-    return safeFetch(url, initCopy);
-};
-
-export const backendFetchJson = (url: string, init: any, token?: string) => {
-    const initCopy = prepareRequest(init, token);
-    return safeFetch(url, initCopy).then((safeResponse) =>
-        safeResponse.status === 204 ? null : safeResponse.json()
-    );
+const parseError = (text: string) => {
+    try {
+        return JSON.parse(text);
+    } catch (err) {
+        return null;
+    }
 };
 
 const prepareRequest = (init: any, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
         throw new TypeError(
-            'First argument of prepareRequest is not an object : ' + typeof init
+            `First argument of prepareRequest is not an object : ${typeof init}`
         );
     }
-    const initCopy = Object.assign({}, init);
+    const initCopy = { ...init };
     initCopy.headers = new Headers(initCopy.headers || {});
     const tokenCopy = token ?? getUserToken();
-    initCopy.headers.append('Authorization', 'Bearer ' + tokenCopy);
+    initCopy.headers.append('Authorization', `Bearer ${tokenCopy}`);
     return initCopy;
-};
-
-const safeFetch = (url: string, initCopy: any) => {
-    return fetch(url, initCopy).then((response) =>
-        response.ok ? response : handleError(response)
-    );
 };
 
 const handleError = (response: any) => {
@@ -50,22 +40,16 @@ const handleError = (response: any) => {
             errorJson.message
         ) {
             customError = new Error(
-                errorName +
-                    errorJson.status +
-                    ' ' +
-                    errorJson.error +
-                    ', message : ' +
-                    errorJson.message
+                `${errorName + errorJson.status} ${
+                    errorJson.error
+                }, message : ${errorJson.message}`
             );
             customError.status = errorJson.status;
         } else {
             customError = new Error(
-                errorName +
-                    response.status +
-                    ' ' +
-                    response.statusText +
-                    ', message : ' +
-                    text
+                `${errorName + response.status} ${
+                    response.statusText
+                }, message : ${text}`
             );
             customError.status = response.status;
         }
@@ -73,17 +57,27 @@ const handleError = (response: any) => {
     });
 };
 
-const parseError = (text: string) => {
-    try {
-        return JSON.parse(text);
-    } catch (err) {
-        return null;
-    }
+const safeFetch = (url: string, initCopy: any) => {
+    return fetch(url, initCopy).then((response) =>
+        response.ok ? response : handleError(response)
+    );
+};
+
+export const backendFetch = (url: string, init: any, token?: string) => {
+    const initCopy = prepareRequest(init, token);
+    return safeFetch(url, initCopy);
+};
+
+export const backendFetchJson = (url: string, init: any, token?: string) => {
+    const initCopy = prepareRequest(init, token);
+    return safeFetch(url, initCopy).then((safeResponse) =>
+        safeResponse.status === 204 ? null : safeResponse.json()
+    );
 };
 
 export const getRequestParamFromList = (
-    params: string[] = [],
-    paramName: string
+    paramName: string,
+    params: string[] = []
 ) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };

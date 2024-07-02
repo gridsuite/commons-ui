@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import RightResizableBox from './right-resizable-box';
-import FlatParameters from '../../src/components/FlatParameters/FlatParameters';
+import { FlatParameters } from '../../src/components/FlatParameters/FlatParameters';
 
 const EXAMPLE_PARAMETERS = [
     {
@@ -198,7 +198,7 @@ const EXAMPLE_PARAMETERS = [
     },
 ];
 
-export const FlatParametersTab = () => {
+function FlatParametersTab() {
     const [currentParameters, setCurrentParameters] = useState({});
     const onChange = useCallback((paramName, value, isEdit) => {
         if (!isEdit) {
@@ -217,7 +217,7 @@ export const FlatParametersTab = () => {
                     paramsAsArray={EXAMPLE_PARAMETERS}
                     initValues={currentParameters}
                     onChange={onChange}
-                    variant={'standard'}
+                    variant="standard"
                     showSeparator
                     selectionWithDialog={(param) =>
                         param?.possibleValues?.length > 10
@@ -226,4 +226,6 @@ export const FlatParametersTab = () => {
             </RightResizableBox>
         </div>
     );
-};
+}
+
+export default FlatParametersTab;

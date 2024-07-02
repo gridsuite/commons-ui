@@ -4,20 +4,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import Grid from '@mui/material/Grid';
 import FilterProperties, {
     filterPropertiesYupSchema,
-    FreePropertiesTypes,
 } from './filter-properties';
-import { FieldConstants } from '../../../utils/field-constants';
+import FieldConstants from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CriteriaBasedForm from './criteria-based-form';
-import Grid from '@mui/material/Grid';
-import { FunctionComponent } from 'react';
 import {
     getCriteriaBasedFormData,
     getCriteriaBasedSchema,
 } from './criteria-based-filter-utils';
 import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
+import { FreePropertiesTypes } from './filter-free-properties';
 
 export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     [FieldConstants.ENERGY_SOURCE]: yup.string().nullable(),
@@ -30,7 +29,7 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
     [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: [],
 });
 
-const CriteriaBasedFilterForm: FunctionComponent = () => {
+function CriteriaBasedFilterForm() {
     return (
         <Grid container item spacing={1}>
             <CriteriaBasedForm
@@ -44,6 +43,6 @@ const CriteriaBasedFilterForm: FunctionComponent = () => {
             <FilterProperties />
         </Grid>
     );
-};
+}
 
 export default CriteriaBasedFilterForm;
