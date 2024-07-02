@@ -358,7 +358,7 @@ function AboutDialog({
                 type: 'app',
                 version: appVersion,
                 gitTag: appGitTag,
-                license: appLicense,
+                // license: appLicense,
             };
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
