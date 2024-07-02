@@ -101,10 +101,10 @@ function TextInput({
 
     return (
         <Field
-            key={id || label}
+            key={id ?? label}
             size="small"
             fullWidth
-            id={id || label}
+            id={id ?? label}
             label={fieldLabel}
             value={transformedValue}
             onChange={handleValueChanged}

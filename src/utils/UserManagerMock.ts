@@ -45,7 +45,8 @@ export default class UserManagerMock {
         this.events = new Events();
     }
 
-    static getUser() {
+    // eslint-disable-next-line class-methods-use-this
+    getUser() {
         return Promise.resolve(
             JSON.parse(
                 sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
@@ -71,7 +72,8 @@ export default class UserManagerMock {
         return Promise.resolve(localStorageUser);
     }
 
-    static signinSilentCallback() {
+    // eslint-disable-next-line class-methods-use-this
+    signinSilentCallback() {
         console.error(
             'Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)'
         );
@@ -87,7 +89,8 @@ export default class UserManagerMock {
         return Promise.resolve(null);
     }
 
-    static signoutRedirect() {
+    // eslint-disable-next-line class-methods-use-this
+    signoutRedirect() {
         sessionStorage.removeItem('powsybl-gridsuite-mock-user');
         localStorage.removeItem('powsybl-gridsuite-mock-user');
         window.location.href = '.';

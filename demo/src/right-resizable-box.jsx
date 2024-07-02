@@ -93,7 +93,6 @@ function RightResizableBox(props) {
 }
 
 RightResizableBox.defaultProps = {
-    children: null,
     disableResize: false,
     fullscreen: false,
     hide: false,

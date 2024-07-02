@@ -4,32 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable react/jsx-curly-brace-presence */
-/* eslint-disable react/jsx-boolean-value */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-else-return */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/function-component-definition */
-/* eslint-disable react/no-this-in-sfc */
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/no-access-state-in-setstate */
-/* eslint-disable spaced-comment */
-/* eslint-disable object-shorthand */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable prefer-template */
-/* eslint-disable no-return-assign */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable react/static-property-placement */
-/* eslint-disable @typescript-eslint/lines-between-class-members */
-/* eslint-disable react/default-props-match-prop-types */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable react/sort-comp */
-/* eslint-disable prefer-const */
-/* eslint-disable no-plusplus */
+/* eslint-disable react/jsx-curly-brace-presence, react/jsx-boolean-value, @typescript-eslint/no-shadow, @typescript-eslint/no-unused-vars, no-restricted-globals, no-else-return, react/no-unstable-nested-components, react/function-component-definition, react/no-this-in-sfc, react/require-default-props, react/no-access-state-in-setstate, spaced-comment, object-shorthand, prefer-destructuring, prefer-template, no-return-assign, no-restricted-syntax, react/static-property-placement, @typescript-eslint/lines-between-class-members, react/default-props-match-prop-types, react/destructuring-assignment, no-underscore-dangle, class-methods-use-this, react/sort-comp, prefer-const, no-plusplus */
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */

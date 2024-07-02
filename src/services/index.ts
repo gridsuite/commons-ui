@@ -8,4 +8,4 @@ export * from './utils';
 export * from './explore';
 export * from './apps-metadata';
 export * from './directory';
-export { exportFilter } from './study';
+export * from './study';

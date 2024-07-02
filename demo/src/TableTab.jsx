@@ -16,10 +16,11 @@ import {
     TextField,
 } from '@mui/material';
 import { DEFAULT_CELL_PADDING } from '../../src';
-import MuiVirtualizedTable, {
+import {
     ChangeWays,
     generateMuiVirtualizedTableClass,
     KeyedColumnsRowIndexer,
+    MuiVirtualizedTable,
 } from '../../src/components/MuiVirtualizedTable';
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
@@ -93,7 +94,7 @@ const stylesEmotion = ({ theme }) =>
     );
 const StyledVirtualizedTable = styled(MuiVirtualizedTable)(stylesEmotion);
 
-export function TableTab() {
+function TableTab() {
     const [usesCustomStyles, setUsesCustomStyles] = useState(true);
 
     const VirtualizedTable = usesCustomStyles

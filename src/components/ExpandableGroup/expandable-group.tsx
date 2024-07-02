@@ -16,8 +16,7 @@ import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
 export const styles = {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accordion: (theme: Theme) => ({
+    accordion: () => ({
         '&:before': {
             display: 'none',
         },
@@ -42,8 +41,7 @@ export const styles = {
             transform: 'rotate(0deg)',
         },
     }),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accordionDetails: (theme: Theme) => ({
+    accordionDetails: () => ({
         padding: 0, // reset default left right space in details
     }),
 };
@@ -60,10 +58,8 @@ function ExpandableGroup({ renderHeader, children }: ExpandableGroupProps) {
             <AccordionSummary
                 sx={styles.accordionSummary}
                 expandIcon={mouseHover ? <ExpandCircleDown /> : <ExpandMore />}
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                onMouseEnter={(event) => setMouseHover(true)}
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                onMouseLeave={(event) => setMouseHover(false)}
+                onMouseEnter={() => setMouseHover(true)}
+                onMouseLeave={() => setMouseHover(false)}
             >
                 {typeof renderHeader === 'string' ? (
                     <Typography>

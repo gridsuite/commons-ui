@@ -28,8 +28,6 @@
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
     },
     "dependencies": {
-        "@mui/system": "^5.15.15",
-        "@mui/x-tree-view": "^6.17.0",
         "@react-querybuilder/dnd": "^7.2.0",
         "@react-querybuilder/material": "^7.2.0",
         "autosuggest-highlight": "^3.3.4",
@@ -38,7 +36,6 @@
         "localized-countries": "^2.0.0",
         "memoize-one": "^6.0.0",
         "oidc-client": "^1.11.5",
-        "papaparse": "^5.4.1",
         "prop-types": "^15.8.1",
         "react-csv-downloader": "^3.1.0",
         "react-dnd": "^16.0.1",
@@ -48,6 +45,9 @@
         "uuid": "^9.0.1"
     },
     "peerDependencies": {
+        "@mui/system": "^5.15.15",
+        "@mui/x-tree-view": "^6.17.0",
+        "papaparse": "^5.4.1",
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.4",

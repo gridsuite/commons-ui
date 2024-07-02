@@ -14,6 +14,7 @@ interface MuiSelectInputProps {
     options: { id: string; label: string }[];
 }
 
+// This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
 function MuiSelectInput({
     name,
     options,

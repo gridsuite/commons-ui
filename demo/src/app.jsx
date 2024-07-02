@@ -26,7 +26,7 @@ import { styled } from '@mui/system';
 import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
-import TopBar from '../../src/components/TopBar';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import SnackbarProvider from '../../src/components/SnackbarProvider';
 import AuthenticationRouter from '../../src/components/AuthenticationRouter';
 import CardErrorBoundary from '../../src/components/CardErrorBoundary';
@@ -65,6 +65,7 @@ import {
     top_bar_fr,
     treeview_finder_en,
     treeview_finder_fr,
+    TopBar,
 } from '../../src';
 import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
@@ -75,7 +76,8 @@ import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import TreeViewFinder, {
+import {
+    TreeViewFinder,
     generateTreeViewFinderClass,
 } from '../../src/components/TreeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
@@ -94,7 +96,7 @@ import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipmen
 import OverflowableText from '../../src/components/OverflowableText';
 
 import { setShowAuthenticationRouterLogin } from '../../src/redux/actions';
-import { TableTab } from './TableTab';
+import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';

@@ -253,7 +253,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         }
         if (selectedProp.length > 0) {
             setSelected((oldSelectedNodes) => [
-                ...(oldSelectedNodes || []),
+                ...(oldSelectedNodes ?? []),
                 ...selectedProp,
             ]);
         }
@@ -265,7 +265,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         }
         if (expandedProp.length > 0) {
             setExpanded((oldExpandedNodes) => [
-                ...(oldExpandedNodes || []),
+                ...(oldExpandedNodes ?? []),
                 ...expandedProp,
             ]);
         }
@@ -459,7 +459,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
             }}
         >
             <DialogTitle id="TreeViewFindertitle">
-                {title ||
+                {title ??
                     intl.formatMessage(
                         { id: 'treeview_finder/finderTitle' },
                         { multiSelect }
@@ -467,7 +467,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    {contentText ||
+                    {contentText ??
                         intl.formatMessage(
                             { id: 'treeview_finder/contentText' },
                             { multiSelect }

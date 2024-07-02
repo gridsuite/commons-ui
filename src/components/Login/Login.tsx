@@ -75,7 +75,7 @@ function Login({ onLoginClick, disabled }: LoginProps) {
                 >
                     {'Copyright © '}
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                    <Link color="inherit" href="/some-valid-url">
+                    <Link color="inherit" href="#">
                         GridSuite
                     </Link>{' '}
                     {new Date().getFullYear()}.

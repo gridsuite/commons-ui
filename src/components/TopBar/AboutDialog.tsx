@@ -139,6 +139,7 @@ type GridSuiteModule = {
     type: ModuleType;
     version?: string;
     gitTag?: string;
+    // license?: string;
 };
 
 export interface AboutDialogProps {
@@ -370,8 +371,7 @@ function AboutDialog({
             )
                 .then(
                     (values) => (Array.isArray(values) ? values : []),
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    (reason) => []
+                    () => []
                 )
                 .then((values) => {
                     setModules([currentApp, ...values]);
@@ -397,8 +397,7 @@ function AboutDialog({
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             TransitionProps={{
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                onExited: (node) => {
+                onExited: () => {
                     setModules(null);
                     setActualGlobalVersion(null);
                 },
@@ -451,8 +450,7 @@ function AboutDialog({
                             in={loadingGlobalVersion}
                             appear
                             unmountOnExit
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            onExited={(node) => setShowGlobalVersion(true)}
+                            onExited={() => setShowGlobalVersion(true)}
                         >
                             <CircularProgress />
                         </Fade>
@@ -544,6 +542,7 @@ function AboutDialog({
                                                         name={module.name}
                                                         version={module.version}
                                                         gitTag={module.gitTag}
+                                                        // license={module.license}
                                                     />
                                                 ))}
                                         </>

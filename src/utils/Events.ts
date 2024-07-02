@@ -12,7 +12,8 @@ export default class Events {
         this.userLoadedCallbacks.push(callback);
     }
 
-    static addSilentRenewError() {
+    // eslint-disable-next-line class-methods-use-this
+    addSilentRenewError() {
         // Nothing to do
     }
 }

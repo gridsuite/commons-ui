@@ -63,12 +63,12 @@ function reloadTimerOnExpiresIn(
     userManager: UserManager,
     expiresIn: number
 ) {
-    const updatedUser: User = {
-        ...user,
-        expires_in: expiresIn,
-        toStorageString: () => JSON.stringify(user),
-    };
-    userManager.storeUser(updatedUser).then(() => {
+    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common for both flows
+    // Not allowed by TS because expires_in is supposed to be readonly
+    // @ts-ignore
+    // eslint-disable-next-line no-param-reassign
+    user.expires_in = expiresIn;
+    userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
 }

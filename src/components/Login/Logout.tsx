@@ -43,7 +43,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://example.com">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Link color="inherit" href="#">
                 GridSuite
             </Link>{' '}
             {new Date().getFullYear()}.
