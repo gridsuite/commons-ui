@@ -24,8 +24,6 @@ import {
     VSC,
 } from './equipment-types';
 
-export type UrlString = `${string}://${string}` | `/${string}` | `./${string}`;
-
 export type Input = string | number;
 
 export type ElementAttributes = {

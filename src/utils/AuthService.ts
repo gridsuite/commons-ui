@@ -18,17 +18,16 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import { UrlString } from './types';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
 
 export type IdpSettings = {
-    authority: UrlString;
+    authority: string;
     client_id: string;
-    redirect_uri: UrlString;
-    post_logout_redirect_uri: UrlString;
-    silent_redirect_uri: UrlString;
+    redirect_uri: string;
+    post_logout_redirect_uri: string;
+    silent_redirect_uri: string;
     scope: string;
     maxExpiresIn?: number;
 };
@@ -119,11 +118,11 @@ const accessTokenExpiringNotificationTime = 60; // seconds
 export async function initializeAuthenticationProd(
     dispatch: Dispatch<unknown>,
     isSilentRenew: boolean,
-    idpSettingsFetcher: IdpSettingsGetter,
+    idpSettingsGetter: IdpSettingsGetter,
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
-    const idpSettings = await idpSettingsFetcher();
+    const idpSettings = await idpSettingsGetter();
     try {
         const settings = {
             authority:
