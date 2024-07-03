@@ -34,7 +34,7 @@ you need to follow the steps below:
 -   Build it: `npm install`
 -   Commit the package.json and package-lock.json files, push to a branch, make a PR, have it reviewed and merged to main.
 -   Pull and checkout main on your last commit.
--   Make a release on GitHub by creating a new tag on the last commit 
+-   [Make a release](https://github.com/gridsuite/commons-ui/releases/new) on GitHub by creating a new tag on the last commit
 -   It will trigger a job that will publish the release on NPM
 
 #### License Headers and dependencies checking
