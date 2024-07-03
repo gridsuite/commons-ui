@@ -34,12 +34,12 @@ you need to follow the steps below:
 -   Build it: `npm install`
 -   Commit the package.json and package-lock.json files, push to a branch, make a PR, have it reviewed and merged to main.
 -   Pull and checkout main on your last commit.
--   [Tag your last commit](https://semver.org/) : `git tag <tag>` (example: `v0.6.0`)
--   Push tag : `git push origin <tag>`
--   Checkout the tag in a fresh repo copy : `cd $(mktemp -d) && git clone https://github.com/gridsuite/commons-ui.git` then `cd commons-ui && git checkout <tag>`
--   [Test your package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#testing-your-package): `npm install`
--   [Login on the command line to the npm registry](https://docs.npmjs.com/logging-in-to-an-npm-enterprise-registry-from-the-command-line): `npm login`
--   [Publish the package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages): `npm publish`
+-   [Make a release](https://github.com/gridsuite/commons-ui/releases/new) on GitHub by creating a new tag on the last commit. On the release creation page:
+    - In "Choose a tag": type the tag you want to create (ex.: v0.6.0) and select "create new tag"
+    - In "Target": click on "recent commit" tab and select your release commit
+    - Click on "Generate release note"
+    - Click on "Publish release"
+-   It will trigger a job that will publish the release on NPM
 
 #### License Headers and dependencies checking
 
