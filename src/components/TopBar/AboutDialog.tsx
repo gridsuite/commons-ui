@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import {
     Accordion,
     AccordionDetails,
@@ -151,6 +151,7 @@ export interface AboutDialogProps {
     appGitTag?: string;
     appLicense?: string;
     additionalModulesPromise?: () => Promise<GridSuiteModule[]>;
+    logo?: ReactNode;
 }
 
 const AboutDialog = ({
@@ -162,6 +163,7 @@ const AboutDialog = ({
     appGitTag,
     appLicense,
     additionalModulesPromise,
+    logo,
 }: AboutDialogProps) => {
     const theme = useTheme();
     const [isRefreshing, setRefreshState] = useState(false);
@@ -293,10 +295,12 @@ const AboutDialog = ({
                     )}
                 <Box sx={styles.mainSection}>
                     <Box sx={styles.logoSection}>
-                        <LogoText
-                            appName="Suite"
-                            appColor={theme.palette.grey['500']}
-                        />
+                        {logo || (
+                            <LogoText
+                                appName="Suite"
+                                appColor={theme.palette.grey['500']}
+                            />
+                        )}
                     </Box>
                     <Box sx={styles.mainInfos}>
                         <Fade
@@ -483,6 +487,7 @@ function insensitiveCaseCompare(str: string, obj: string) {
         sensitivity: 'base',
     });
 }
+
 function tooltipTypeLabel(type: string) {
     if (insensitiveCaseCompare('app', type) === 0) {
         return 'about-dialog/module-tooltip-app';
