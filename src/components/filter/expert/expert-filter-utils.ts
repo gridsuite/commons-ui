@@ -452,6 +452,10 @@ export const testQuery = (check: string, query: RuleGroupTypeAny): boolean => {
 export const queryValidator: QueryValidator = (query) => {
     const result: ValidationMap = {};
 
+    if (!query) {
+        return result;
+    }
+
     const validateRule = (rule: RuleType) => {
         const isValueAnArray = Array.isArray(rule.value);
         const dataType = getDataType(rule.field, rule.operator);

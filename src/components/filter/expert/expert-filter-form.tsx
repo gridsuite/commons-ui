@@ -46,6 +46,21 @@ yup.setLocale({
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
+export const queryTest = yup
+    .object()
+    .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
+        return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
+    })
+    .test(RULES.EMPTY_RULE, RULES.EMPTY_RULE, (query: any) => {
+        return testQuery(RULES.EMPTY_RULE, query as RuleGroupTypeAny);
+    })
+    .test(RULES.INCORRECT_RULE, RULES.INCORRECT_RULE, (query: any) => {
+        return testQuery(RULES.INCORRECT_RULE, query as RuleGroupTypeAny);
+    })
+    .test(RULES.BETWEEN_RULE, RULES.BETWEEN_RULE, (query: any) => {
+        return testQuery(RULES.BETWEEN_RULE, query as RuleGroupTypeAny);
+    });
+export const queryTestCb = (schema: any) => queryTest;
 export const expertFilterSchema = {
     [EXPERT_FILTER_QUERY]: yup.object().when([FieldConstants.FILTER_TYPE], {
         is: FilterType.EXPERT.id,
@@ -53,48 +68,7 @@ export const expertFilterSchema = {
             schema.when([FieldConstants.EQUIPMENT_TYPE], {
                 is: (equipmentType: string) =>
                     isSupportedEquipmentType(equipmentType),
-                then: (schema: any) =>
-                    schema
-                        .test(
-                            RULES.EMPTY_GROUP,
-                            RULES.EMPTY_GROUP,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.EMPTY_GROUP,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        )
-                        .test(
-                            RULES.EMPTY_RULE,
-                            RULES.EMPTY_RULE,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.EMPTY_RULE,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        )
-                        .test(
-                            RULES.INCORRECT_RULE,
-                            RULES.INCORRECT_RULE,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.INCORRECT_RULE,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        )
-                        .test(
-                            RULES.BETWEEN_RULE,
-                            RULES.BETWEEN_RULE,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.BETWEEN_RULE,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        ),
+                then: queryTestCb,
             }),
     }),
 };

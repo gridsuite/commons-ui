@@ -57,6 +57,7 @@ export { default as CustomReactQueryBuilder } from './components/inputs/react-qu
 export {
     EXPERT_FILTER_QUERY,
     expertFilterSchema as EXPERT_FILTER_SCHEMA,
+    queryTest as QUERY_TEST,
     getExpertFilterEmptyFormData,
 } from './components/filter/expert/expert-filter-form';
 export {
