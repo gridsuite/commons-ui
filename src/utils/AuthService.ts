@@ -266,6 +266,7 @@ function login(location: Location, userManagerInstance: UserManager) {
 
 function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
     sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
+    sessionStorage.removeItem(oidcHackReloadedKey);
     return userManagerInstance.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
