@@ -22,6 +22,8 @@ const filter_en = {
     isNotPartOf: 'is not part of',
     emptyRule: 'Filter contains an empty field',
     incorrectRule: 'Filter contains an incorrect field',
+    obsoleteFilter:
+        'This filter is no longer supported. Please remove it or change its equipment type.',
     betweenRule:
         "Left value of 'between' rule have to be lower than the right value",
     emptyGroup:
