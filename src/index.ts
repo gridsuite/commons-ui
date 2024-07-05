@@ -99,6 +99,7 @@ export {
     dispatchUser,
     getPreLoginPath,
 } from './utils/AuthService';
+export type * from './utils/AuthService';
 
 export { getFileIcon } from './utils/ElementIcon';
 
