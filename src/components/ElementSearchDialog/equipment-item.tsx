@@ -10,15 +10,15 @@ import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../utils/EquipmentType';
-import { Box, SxProps } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 import OverflowableText from '../OverflowableText';
 import { mergeSx } from '../../utils/styles';
 
 export interface EquipmentItemProps {
     inputValue: string;
-    suffixRenderer: typeof TagRenderer;
+    suffixRenderer?: typeof TagRenderer;
     element: EquipmentInfos;
-    showsJustText: boolean;
+    showsJustText?: boolean;
     classes?: {
         result?: string;
         equipmentOption?: string;
@@ -27,11 +27,11 @@ export interface EquipmentItemProps {
         equipmentVlTag?: string;
     };
     styles?: {
-        result?: SxProps;
-        equipmentOption?: SxProps;
-        equipmentTag?: SxProps;
-        equipmentTypeTag?: SxProps;
-        equipmentVlTag?: SxProps;
+        result?: SxProps<Theme>;
+        equipmentOption?: SxProps<Theme>;
+        equipmentTag?: SxProps<Theme>;
+        equipmentTypeTag?: SxProps<Theme>;
+        equipmentVlTag?: SxProps<Theme>;
     };
 }
 

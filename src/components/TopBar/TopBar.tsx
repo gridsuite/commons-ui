@@ -5,7 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MouseEvent, PropsWithChildren, useMemo, useState } from 'react';
+import {
+    MouseEvent,
+    PropsWithChildren,
+    ReactNode,
+    useMemo,
+    useState,
+} from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -167,6 +173,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         onLogoClick: GridLogoProps['onClick'];
         user: User;
         onAboutClick?: () => void;
+        logoAboutDialog?: ReactNode;
         appsAndUrls: CommonMetadata[];
         onThemeClick?: (theme: GsTheme) => void;
         theme?: GsTheme;
@@ -182,6 +189,7 @@ const TopBar = ({
     appLogo,
     appVersion,
     appLicense,
+    logoAboutDialog,
     onParametersClick,
     onLogoutClick,
     onLogoClick,
@@ -655,6 +663,7 @@ const TopBar = ({
                     appLicense={appLicense}
                     globalVersionPromise={globalVersionPromise}
                     additionalModulesPromise={additionalModulesPromise}
+                    logo={logoAboutDialog}
                 />
             </Toolbar>
         </AppBar>

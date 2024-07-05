@@ -29,6 +29,7 @@ export type Input = string | number;
 export type ElementAttributes = {
     elementUuid: UUID;
     elementName: string;
+    description: string;
     type: ElementType;
     accessRights: {
         isPrivate: boolean;
@@ -40,6 +41,8 @@ export type ElementAttributes = {
     lastModifiedBy: string;
     children: any[];
     parentUuid: null | UUID;
+    specificMetadata: Record<string, object>;
+    uploading?: boolean;
 };
 
 export type Equipment =

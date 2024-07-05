@@ -51,25 +51,29 @@ export const equipmentStyles = {
     },
 };
 
+/**
+ * The order of the equipments in this list is important, as many UI follow it directly.
+ * When EquipmentType is used for an interface this order must be maintained.
+ */
 export enum EquipmentType {
     SUBSTATION = 'SUBSTATION',
-    LOAD = 'LOAD',
-    GENERATOR = 'GENERATOR',
+    VOLTAGE_LEVEL = 'VOLTAGE_LEVEL',
+    BUS = 'BUS',
+    BUSBAR_SECTION = 'BUSBAR_SECTION',
+    SWITCH = 'SWITCH',
     LINE = 'LINE',
     TWO_WINDINGS_TRANSFORMER = 'TWO_WINDINGS_TRANSFORMER',
-    BATTERY = 'BATTERY',
-    SHUNT_COMPENSATOR = 'SHUNT_COMPENSATOR',
-    VOLTAGE_LEVEL = 'VOLTAGE_LEVEL',
-    BUSBAR_SECTION = 'BUSBAR_SECTION',
-    DANGLING_LINE = 'DANGLING_LINE',
-    HVDC_LINE = 'HVDC_LINE',
     THREE_WINDINGS_TRANSFORMER = 'THREE_WINDINGS_TRANSFORMER',
+    GENERATOR = 'GENERATOR',
+    BATTERY = 'BATTERY',
+    LOAD = 'LOAD',
+    SHUNT_COMPENSATOR = 'SHUNT_COMPENSATOR',
     STATIC_VAR_COMPENSATOR = 'STATIC_VAR_COMPENSATOR',
+    HVDC_LINE = 'HVDC_LINE',
     HVDC_CONVERTER_STATION = 'HVDC_CONVERTER_STATION',
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
-    BUS = 'BUS',
-    SWITCH = 'SWITCH',
+    DANGLING_LINE = 'DANGLING_LINE',
 }
 
 // Must be equivalent as the back enum

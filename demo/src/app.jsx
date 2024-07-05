@@ -106,6 +106,7 @@ import { InputsTab } from './InputsTab';
 import inputs_en from '../../src/components/translations/inputs-en';
 import inputs_fr from '../../src/components/translations/inputs-fr';
 import { EquipmentSearchDialog } from './equipment-search';
+import { InlineSearch } from './inline-search';
 
 const messages = {
     en: {
@@ -754,6 +755,9 @@ const AppContent = ({ language, onLanguageClick }) => {
                     }}
                 />
             </div>
+            <Box mt={2} width={500}>
+                <InlineSearch />
+            </Box>
             <hr />
             <div
                 style={{

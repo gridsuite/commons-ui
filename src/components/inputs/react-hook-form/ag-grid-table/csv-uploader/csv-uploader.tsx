@@ -20,6 +20,7 @@ import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { CancelButton } from '../../../../../index';
 import { FieldConstants } from '../../../../../utils/field-constants';
+import { RECORD_SEP, UNIT_SEP } from 'papaparse';
 
 interface CsvUploaderProps {
     name: string;
@@ -214,6 +215,16 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
                                     onUploadAccepted={(results: any) => {
                                         setImportedData([...results.data]);
                                         setCreateError('');
+                                    }}
+                                    config={{
+                                        // We use | for multi values in one cell, then we remove it from the default value for this config, to avoid delimiter autodetection
+                                        delimitersToGuess: [
+                                            ',',
+                                            '	',
+                                            ';',
+                                            RECORD_SEP,
+                                            UNIT_SEP,
+                                        ],
                                     }}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (

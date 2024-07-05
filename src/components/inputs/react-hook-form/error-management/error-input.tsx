@@ -43,7 +43,7 @@ const ErrorInput: FunctionComponent<ErrorInputProps> = ({
 
     const errorRef: MutableRefObject<any> = useRef(null);
 
-    const errorProps = (errorMsg: ErrorMessage) => {
+    const errorProps = (errorMsg: ErrorMessage | undefined) => {
         if (typeof errorMsg === 'string') {
             return {
                 id: errorMsg,
@@ -67,14 +67,15 @@ const ErrorInput: FunctionComponent<ErrorInputProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSubmitting]);
 
+    // RHF puts the error in root object when we submit the form
+    const errorMsg = error?.message || error?.root?.message;
+
     return (
         <>
-            {error?.message && (
+            {errorMsg && (
                 <div ref={errorRef}>
                     {InputField({
-                        message: (
-                            <FormattedMessage {...errorProps(error?.message)} />
-                        ),
+                        message: <FormattedMessage {...errorProps(errorMsg)} />,
                     })}
                 </div>
             )}

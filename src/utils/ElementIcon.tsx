@@ -13,9 +13,9 @@ import {
     Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { ElementType } from './ElementType';
-import { SxProps } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 
-export function getFileIcon(type: ElementType, style: SxProps) {
+export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
@@ -31,6 +31,7 @@ export function getFileIcon(type: ElementType, style: SxProps) {
         case ElementType.SECURITY_ANALYSIS_PARAMETERS:
         case ElementType.LOADFLOW_PARAMETERS:
         case ElementType.SENSITIVITY_PARAMETERS:
+        case ElementType.SHORT_CIRCUIT_PARAMETERS:
             return <SettingsIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories

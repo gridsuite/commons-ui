@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { FullField } from 'react-querybuilder';
 
 export enum OperatorType {
     EQUALS = 'EQUALS',
@@ -56,8 +57,11 @@ export enum FieldType {
     SHUNT_COMPENSATOR_TYPE = 'SHUNT_COMPENSATOR_TYPE',
     CONNECTED = 'CONNECTED',
     MAX_Q_AT_NOMINAL_V = 'MAX_Q_AT_NOMINAL_V',
+    MIN_Q_AT_NOMINAL_V = 'MIN_Q_AT_NOMINAL_V',
+    FIX_Q_AT_NOMINAL_V = 'FIX_Q_AT_NOMINAL_V',
     SWITCHED_ON_Q_AT_NOMINAL_V = 'SWITCHED_ON_Q_AT_NOMINAL_V',
     MAX_SUSCEPTANCE = 'MAX_SUSCEPTANCE',
+    MIN_SUSCEPTANCE = 'MIN_SUSCEPTANCE',
     SWITCHED_ON_SUSCEPTANCE = 'SWITCHED_ON_SUSCEPTANCE',
     CONNECTED_1 = 'CONNECTED_1',
     CONNECTED_2 = 'CONNECTED_2',
@@ -79,12 +83,10 @@ export enum FieldType {
     RATED_VOLTAGE_1 = 'RATED_VOLTAGE_1',
     RATED_VOLTAGE_2 = 'RATED_VOLTAGE_2',
     HAS_RATIO_TAP_CHANGER = 'HAS_RATIO_TAP_CHANGER',
-    RATIO_REGULATING = 'RATIO_REGULATING',
     LOAD_TAP_CHANGING_CAPABILITIES = 'LOAD_TAP_CHANGING_CAPABILITIES',
     RATIO_REGULATION_MODE = 'RATIO_REGULATION_MODE',
     RATIO_TARGET_V = 'RATIO_TARGET_V',
     HAS_PHASE_TAP_CHANGER = 'HAS_PHASE_TAP_CHANGER',
-    PHASE_REGULATING = 'PHASE_REGULATING',
     PHASE_REGULATION_MODE = 'PHASE_REGULATION_MODE',
     PHASE_REGULATION_VALUE = 'PHASE_REGULATION_VALUE',
     PROPERTY = 'FREE_PROPERTIES',
@@ -94,6 +96,19 @@ export enum FieldType {
     VOLTAGE_LEVEL_PROPERTY = 'VOLTAGE_LEVEL_PROPERTIES',
     VOLTAGE_LEVEL_PROPERTY_1 = 'VOLTAGE_LEVEL_PROPERTIES_1',
     VOLTAGE_LEVEL_PROPERTY_2 = 'VOLTAGE_LEVEL_PROPERTIES_2',
+    SVAR_REGULATION_MODE = 'SVAR_REGULATION_MODE',
+    VOLTAGE_SET_POINT = 'VOLTAGE_SET_POINT',
+    REACTIVE_POWER_SET_POINT = 'REACTIVE_POWER_SET_POINT',
+    REMOTE_REGULATED_TERMINAL = 'REMOTE_REGULATED_TERMINAL', // composite rule of REGULATING_TERMINAL_VL_ID and/or REGULATING_TERMINAL_CONNECTABLE_ID
+    REGULATING_TERMINAL_VL_ID = 'REGULATING_TERMINAL_VL_ID',
+    REGULATING_TERMINAL_CONNECTABLE_ID = 'REGULATING_TERMINAL_CONNECTABLE_ID',
+    REGULATION_TYPE = 'REGULATION_TYPE',
+    AUTOMATE = 'AUTOMATE',
+    LOW_VOLTAGE_SET_POINT = 'LOW_VOLTAGE_SET_POINT',
+    HIGH_VOLTAGE_SET_POINT = 'HIGH_VOLTAGE_SET_POINT',
+    LOW_VOLTAGE_THRESHOLD = 'LOW_VOLTAGE_THRESHOLD',
+    HIGH_VOLTAGE_THRESHOLD = 'HIGH_VOLTAGE_THRESHOLD',
+    SUSCEPTANCE_FIX = 'SUSCEPTANCE_FIX',
 }
 
 export enum DataType {
@@ -106,6 +121,14 @@ export enum DataType {
     PROPERTY = 'PROPERTIES',
 }
 
+export type OperatorOption = {
+    name: string;
+    customName: string;
+    label: string;
+};
+
+// This type is equivalent to a (partial) union type of BooleanExpertRule,
+// NumberExpertRule, StringExpertRule, PropertiesExpertRule in filter library
 export interface RuleTypeExport {
     field: FieldType;
     operator: OperatorType;
@@ -116,8 +139,30 @@ export interface RuleTypeExport {
     propertyValues?: string[];
 }
 
+// This type is equivalent to CombinatorExpertRule in filter library
 export interface RuleGroupTypeExport {
     combinator: CombinatorType;
     dataType: DataType;
+    field?: FieldType; // used in case of composite rule
+    operator?: OperatorType; // used in case of composite rule
     rules: (RuleTypeExport | RuleGroupTypeExport)[];
+}
+
+// typing composite rule schema
+export interface CompositeField extends FullField {
+    combinator?: string;
+    children?: { [field: string]: FullField };
+}
+
+// typing composite rule value
+export interface CompositeGroup {
+    combinator: string;
+    rules: {
+        [field: string]: CompositeRule;
+    };
+}
+
+export interface CompositeRule {
+    operator: string;
+    value: any;
 }

@@ -14,6 +14,11 @@ import { Grid, useTheme } from '@mui/material';
 import BottomRightButtons from './bottom-right-buttons';
 import { useIntl } from 'react-intl';
 import { FieldConstants } from '../../../../utils/field-constants';
+import {
+    CellEditingStoppedEvent,
+    ColumnState,
+    SortChangedEvent,
+} from 'ag-grid-community';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -119,6 +124,7 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowAdded, setNewRowAdded] = useState(false);
+    const [isSortApplied, setIsSortApplied] = useState(false);
 
     const { control, getValues, watch } = useFormContext();
     const useFieldArrayOutput = useFieldArray({
@@ -129,19 +135,21 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
 
     const rowData = watch(name);
 
-    const isFirstSelected =
+    const isFirstSelected = Boolean(
         rowData?.length &&
-        gridApi?.api
-            .getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])
-            ?.isSelected();
+            gridApi?.api
+                .getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])
+                ?.isSelected()
+    );
 
-    const isLastSelected =
+    const isLastSelected = Boolean(
         rowData?.length &&
-        gridApi?.api
-            .getRowNode(
-                rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID]
-            )
-            ?.isSelected();
+            gridApi?.api
+                .getRowNode(
+                    rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID]
+                )
+                ?.isSelected()
+    );
 
     const noRowSelected = selectedRows.length === 0;
 
@@ -188,13 +196,16 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
         setNewRowAdded(true);
     };
 
-    const getIndex = (val: any) => {
-        return getValues(name).findIndex(
-            (row: any) =>
-                row[FieldConstants.AG_GRID_ROW_UUID] ===
-                val[FieldConstants.AG_GRID_ROW_UUID]
-        );
-    };
+    const getIndex = useCallback(
+        (val: any) => {
+            return getValues(name).findIndex(
+                (row: any) =>
+                    row[FieldConstants.AG_GRID_ROW_UUID] ===
+                    val[FieldConstants.AG_GRID_ROW_UUID]
+            );
+        },
+        [getValues, name]
+    );
 
     useEffect(() => {
         if (gridApi) {
@@ -225,16 +236,34 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
         }
     };
 
+    const onCellEditingStopped = useCallback(
+        (event: CellEditingStoppedEvent) => {
+            const rowIndex = getIndex(event.data);
+            if (rowIndex === -1) {
+                return;
+            }
+            update(rowIndex, event.data);
+        },
+        [getIndex, update]
+    );
+
+    const onSortChanged = useCallback((event: SortChangedEvent) => {
+        const isAnycolumnhasSort = event.api
+            .getColumnState()
+            .some((col: ColumnState) => col.sort);
+        setIsSortApplied(isAnycolumnhasSort);
+    }, []);
+
     return (
         <Grid container spacing={2}>
             <Grid
                 item
                 xs={12}
-                className={theme.aggrid}
+                className={theme.aggrid.theme}
                 sx={style(cssProps).grid}
             >
                 <AgGridReact
-                    rowData={gridApi && rowData?.length ? rowData : null} // to display loader at first render before we get the initial data and before the columns are sized to avoid glitch
+                    rowData={rowData}
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
@@ -254,9 +283,8 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
                     onRowDataUpdated={
                         newRowAdded ? onRowDataUpdated : undefined
                     }
-                    onCellEditingStopped={(event) => {
-                        update(event.rowIndex!, event.data);
-                    }}
+                    onCellEditingStopped={onCellEditingStopped}
+                    onSortChanged={onSortChanged}
                     getRowId={(row) =>
                         row.data[FieldConstants.AG_GRID_ROW_UUID]
                     }
@@ -276,8 +304,8 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
                 handleDeleteRows={handleDeleteRows}
                 handleMoveRowDown={handleMoveRowDown}
                 handleMoveRowUp={handleMoveRowUp}
-                disableUp={noRowSelected || isFirstSelected}
-                disableDown={noRowSelected || isLastSelected}
+                disableUp={noRowSelected || isFirstSelected || isSortApplied}
+                disableDown={noRowSelected || isLastSelected || isSortApplied}
                 disableDelete={noRowSelected}
                 csvProps={csvProps}
                 useFieldArrayOutput={useFieldArrayOutput}
