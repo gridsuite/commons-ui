@@ -65,10 +65,10 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
             {props.creation && (
                 <>
                     <Grid item xs={12}>
-                        <ExpandableGroup renderHeader={'Description'}>
+                        <ExpandableGroup renderHeader={'inputs/description'}>
                             <ExpandingTextField
                                 name={FieldConstants.DESCRIPTION}
-                                label={'descriptionProperty'}
+                                label={'inputs/descriptionProperty'}
                                 minRows={3}
                                 rows={5}
                             />
