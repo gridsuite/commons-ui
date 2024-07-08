@@ -8,6 +8,7 @@
 export { TreeViewFinder } from './components/TreeViewFinder';
 export { TopBar } from './components/TopBar';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
+export type { GridSuiteModule } from './components/TopBar/AboutDialog';
 export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
 export { MuiVirtualizedTable } from './components/MuiVirtualizedTable';
