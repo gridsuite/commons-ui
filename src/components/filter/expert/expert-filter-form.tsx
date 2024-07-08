@@ -46,7 +46,7 @@ yup.setLocale({
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
-export const queryTest = yup
+export const rqbQueryTest = yup
     .object()
     .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
         return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
@@ -60,7 +60,7 @@ export const queryTest = yup
     .test(RULES.BETWEEN_RULE, RULES.BETWEEN_RULE, (query: any) => {
         return testQuery(RULES.BETWEEN_RULE, query as RuleGroupTypeAny);
     });
-export const queryTestCb = (schema: any) => queryTest;
+export const rqbQueryTestCb = (schema: any) => rqbQueryTest;
 export const expertFilterSchema = {
     [EXPERT_FILTER_QUERY]: yup.object().when([FieldConstants.FILTER_TYPE], {
         is: FilterType.EXPERT.id,
@@ -68,7 +68,7 @@ export const expertFilterSchema = {
             schema.when([FieldConstants.EQUIPMENT_TYPE], {
                 is: (equipmentType: string) =>
                     isSupportedEquipmentType(equipmentType),
-                then: queryTestCb,
+                then: rqbQueryTestCb,
             }),
     }),
 };
