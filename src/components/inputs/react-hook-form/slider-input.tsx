@@ -26,7 +26,12 @@ function SliderInput({
         field: { onChange, value },
     } = useController({ name });
 
-    const handleValueChange = (event: Event, newValue: number | number[]) => {
+    const handleValueChange = (
+        event: Event,
+        newValue: number | number[],
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        activeThumb: number
+    ) => {
         onValueChanged(newValue);
         onChange(newValue);
     };

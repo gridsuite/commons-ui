@@ -539,9 +539,10 @@ function AboutDialog({
                                         <>
                                             {[...modules]
                                                 .sort(compareModules)
-                                                .map((module) => (
+                                                .map((module, idx) => (
                                                     <Module
-                                                        key={`module-${module.name}`}
+                                                        // eslint-disable-next-line react/no-array-index-key
+                                                        key={`module-${idx}`}
                                                         type={module.type}
                                                         name={module.name}
                                                         version={module.version}

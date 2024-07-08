@@ -175,6 +175,20 @@ interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     expanded?: UUID[];
 }
 
+function sortHandlingDirectories(
+    a: TreeViewFinderNodeProps,
+    b: TreeViewFinderNodeProps
+): number {
+    // If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
+    if (a.children && !b.children) {
+        return -1;
+    }
+    if (b.children && !a.children) {
+        return 1;
+    }
+    return a.name.localeCompare(b.name);
+}
+
 function DirectoryItemSelector({
     open,
     types,
@@ -332,24 +346,10 @@ function DirectoryItemSelector({
         }
     }, [open, updateRootDirectories, expanded, fetchDirectory]);
 
-    function sortHandlingDirectories(
-        a: TreeViewFinderNodeProps,
-        b: TreeViewFinderNodeProps
-    ): number {
-        // If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
-        if (a.children && !b.children) {
-            return -1;
-        }
-        if (b.children && !a.children) {
-            return 1;
-        }
-        return a.name.localeCompare(b.name);
-    }
-
     return (
         <TreeViewFinder
             onTreeBrowse={fetchDirectory as (NodeId: string) => void}
-            sortMethod={(a, b) => sortHandlingDirectories(a, b)}
+            sortMethod={sortHandlingDirectories}
             multiSelect // defaulted to true
             open={open}
             expanded={expanded as string[]}
