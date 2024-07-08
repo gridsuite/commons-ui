@@ -8,22 +8,31 @@ import { Log, User, UserManager } from 'oidc-client';
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-
 import {
+    resetAuthenticationRouterError,
     setLoggedUser,
+    setLogoutError,
+    setShowAuthenticationRouterLogin,
     setSignInCallbackError,
     setUnauthorizedUserInfo,
-    setLogoutError,
     setUserValidationError,
-    resetAuthenticationRouterError,
-    setShowAuthenticationRouterLogin,
 } from '../redux/actions';
 import UserManagerMock from './UserManagerMock';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
+type IdpSettingsGetter = () => Promise<IdpSettings>;
+
+export type IdpSettings = {
+    authority: string;
+    client_id: string;
+    redirect_uri: string;
+    post_logout_redirect_uri: string;
+    silent_redirect_uri: string;
+    scope: string;
+    maxExpiresIn?: number;
+};
 
 type CustomUserManager = UserManager & {
-    authorizationCodeFlowEnabled?: boolean;
     idpSettings?: {
         maxExpiresIn?: number;
     };
@@ -39,7 +48,7 @@ const pathKey = 'powsybl-gridsuite-current-path';
 
 const accessTokenExpiringNotificationTime = 60; // seconds
 
-function isIssuerErrorForCodeFlow(error: Error) {
+function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
 }
 
@@ -63,7 +72,6 @@ function reloadTimerOnExpiresIn(
     userManager: UserManager,
     expiresIn: number
 ) {
-    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common for both flows
     // Not allowed by TS because expires_in is supposed to be readonly
     // @ts-ignore
     // eslint-disable-next-line no-param-reassign
@@ -80,6 +88,24 @@ function getIdTokenExpiresIn(user: User) {
         return 0;
     }
     return exp - now;
+}
+
+function handleSigninSilent(
+    dispatch: Dispatch<unknown>,
+    userManager: UserManager
+) {
+    // eslint-disable-next-line consistent-return
+    userManager.getUser().then((user) => {
+        if (user == null || getIdTokenExpiresIn(user) < 0) {
+            return userManager.signinSilent().catch((error: Error) => {
+                dispatch(setShowAuthenticationRouterLogin(true));
+                if (isIssuerError(error)) {
+                    extractIssuerToSessionStorage(error);
+                    reload();
+                }
+            });
+        }
+    });
 }
 
 function computeMinExpiresIn(
@@ -114,7 +140,7 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-function dispatchUser(
+export function dispatchUser(
     dispatch: Dispatch<unknown>,
     userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
@@ -133,7 +159,8 @@ function dispatchUser(
             // without validateUser defined, valid user by default
             const validateUserPromise =
                 (validateUser && validateUser(user)) || Promise.resolve(true);
-            validateUserPromise
+            // eslint-disable-next-line consistent-return
+            return validateUserPromise
                 .then((valid) => {
                     if (!valid) {
                         console.debug(
@@ -146,20 +173,17 @@ function dispatchUser(
                     console.debug(
                         'User has been successfully loaded from store.'
                     );
-
                     // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
                     // because it is not hacked at page loading on the fragment before oidc-client lib initialization
-                    if (userManagerInstance.authorizationCodeFlowEnabled) {
-                        reloadTimerOnExpiresIn(
-                            user,
-                            userManagerInstance,
-                            computeMinExpiresIn(
-                                user.expires_in,
-                                user.id_token,
-                                userManagerInstance.idpSettings?.maxExpiresIn
-                            )
-                        );
-                    }
+                    reloadTimerOnExpiresIn(
+                        user,
+                        userManagerInstance,
+                        computeMinExpiresIn(
+                            user.expires_in,
+                            user.id_token,
+                            userManagerInstance.idpSettings?.maxExpiresIn
+                        )
+                    );
                     return dispatch(setLoggedUser(user));
                 })
                 .catch((e) => {
@@ -170,9 +194,8 @@ function dispatchUser(
                         })
                     );
                 });
-        } else {
-            console.debug('You are not logged in.');
         }
+        console.debug('You are not logged in.');
     });
 }
 
@@ -209,7 +232,8 @@ function handleUser(
                     dispatch(setShowAuthenticationRouterLogin(true));
                     // logout during token expiration, show login without errors
                     dispatch(resetAuthenticationRouterError());
-                    dispatch(setLoggedUser(null));
+                    // eslint-disable-next-line consistent-return
+                    return dispatch(setLoggedUser(null));
                 }
                 if (userManager.idpSettings?.maxExpiresIn) {
                     if (
@@ -261,33 +285,7 @@ function handleUser(
     dispatchUser(dispatch, userManager, validateUser);
 }
 
-function handleSigninSilent(
-    dispatch: Dispatch<unknown>,
-    userManager: UserManager
-) {
-    userManager.getUser().then((user) => {
-        if (user == null || getIdTokenExpiresIn(user) < 0) {
-            return userManager.signinSilent().catch((error: Error) => {
-                dispatch(setShowAuthenticationRouterLogin(true));
-                const errorIssuerCodeFlow = isIssuerErrorForCodeFlow(error);
-                const errorIssuerImplicitFlow =
-                    error.message ===
-                    'authority mismatch on settings vs. signin state';
-                if (errorIssuerCodeFlow) {
-                    // Replacing authority for code flow only because it's done in the hash for implicit flow
-                    // TODO: Can we stop doing it in the hash for implicit flow ? To make it common here for both flows
-                    extractIssuerToSessionStorage(error);
-                }
-                if (errorIssuerCodeFlow || errorIssuerImplicitFlow) {
-                    reload();
-                }
-            });
-        }
-        return null;
-    });
-}
-
-function initializeAuthenticationDev(
+export async function initializeAuthenticationDev(
     dispatch: Dispatch<unknown>,
     isSilentRenew: boolean,
     validateUser: UserValidationFunc,
@@ -302,121 +300,62 @@ function initializeAuthenticationDev(
             handleSigninSilent(dispatch, userManager);
         }
     }
-    return Promise.resolve(userManager);
+    return userManager;
 }
 
-function initializeAuthenticationProd(
+export async function initializeAuthenticationProd(
     dispatch: Dispatch<unknown>,
     isSilentRenew: boolean,
-    idpSettings: Promise<Response>,
+    idpSettingsGetter: IdpSettingsGetter,
     validateUser: UserValidationFunc,
-    authorizationCodeFlowEnabled: boolean,
     isSigninCallback: boolean
 ) {
-    return idpSettings
-        .then((r) => r.json())
-        .then((idpSetting) => {
-            /* hack to ignore the iss check. XXX TODO to remove */
-            const regextoken = /id_token=[^&]*/;
-            const regexstate = /state=[^&]*/;
-            const regexexpires = /expires_in=[^&]*/;
-            let authority: string | undefined;
-            if (window.location.hash) {
-                const matchedIdToken = window.location.hash.match(regextoken);
-                const matchedState = window.location.hash.match(regexstate);
-                if (matchedIdToken != null && matchedState != null) {
-                    const idToken = matchedIdToken[0].split('=')[1];
-                    const state = matchedState[0].split('=')[1];
-                    const strState = localStorage.getItem(`oidc.${state}`);
-                    if (strState != null) {
-                        const decoded = jwtDecode(idToken);
-                        authority = decoded.iss;
-                        const storedState = JSON.parse(strState);
-                        console.debug(
-                            'Replacing authority in storedState. Before: ',
-                            storedState.authority,
-                            'after: ',
-                            authority
-                        );
-                        storedState.authority = authority;
-                        localStorage.setItem(
-                            `oidc.${state}`,
-                            JSON.stringify(storedState)
-                        );
-                        if (authority !== undefined) {
-                            sessionStorage.setItem(hackAuthorityKey, authority);
-                        }
-                        const matchedExpires =
-                            window.location.hash.match(regexexpires);
-                        if (matchedExpires != null) {
-                            const expiresIn = parseInt(
-                                matchedExpires[0].split('=')[1],
-                                10
-                            );
-                            window.location.hash = window.location.hash.replace(
-                                matchedExpires[0],
-                                `expires_in=${computeMinExpiresIn(
-                                    expiresIn,
-                                    idToken,
-                                    idpSetting.maxExpiresIn
-                                )}`
-                            );
-                        }
-                    }
-                }
-            }
-            authority =
-                authority ||
+    const idpSettings = await idpSettingsGetter();
+    try {
+        const settings = {
+            authority:
                 sessionStorage.getItem(hackAuthorityKey) ||
-                idpSetting.authority;
-
-            const responseSettings = authorizationCodeFlowEnabled
-                ? { response_type: 'code' }
-                : {
-                      response_type: 'id_token token',
-                      response_mode: 'fragment',
-                  };
-            const settings = {
-                authority,
-                client_id: idpSetting.client_id,
-                redirect_uri: idpSetting.redirect_uri,
-                post_logout_redirect_uri: idpSetting.post_logout_redirect_uri,
-                silent_redirect_uri: idpSetting.silent_redirect_uri,
-                scope: idpSetting.scope,
-                automaticSilentRenew: !isSilentRenew,
-                accessTokenExpiringNotificationTime,
-                ...responseSettings,
-            };
-            const userManager: CustomUserManager = new UserManager(settings);
-            // Hack to enrich UserManager object
-            userManager.idpSettings = idpSetting; // store our settings in there as well to use it later
-            // Hack to enrich UserManager object
-            userManager.authorizationCodeFlowEnabled =
-                authorizationCodeFlowEnabled;
-            if (!isSilentRenew) {
-                handleUser(dispatch, userManager, validateUser);
-                if (!isSigninCallback) {
-                    handleSigninSilent(dispatch, userManager);
-                }
+                idpSettings.authority,
+            client_id: idpSettings.client_id,
+            redirect_uri: idpSettings.redirect_uri,
+            post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
+            silent_redirect_uri: idpSettings.silent_redirect_uri,
+            scope: idpSettings.scope,
+            automaticSilentRenew: !isSilentRenew,
+            accessTokenExpiringNotificationTime,
+            response_type: 'code',
+        };
+        const userManager: CustomUserManager = new UserManager(settings);
+        // Hack to enrich UserManager object
+        userManager.idpSettings = idpSettings; // store our settings in there as well to use it later
+        if (!isSilentRenew) {
+            handleUser(dispatch, userManager, validateUser);
+            if (!isSigninCallback) {
+                handleSigninSilent(dispatch, userManager);
             }
-            return userManager;
-        })
-        .catch((error) => {
-            console.debug('error when importing the idp settings', error);
-            dispatch(setShowAuthenticationRouterLogin(true));
-            throw error;
-        });
+        }
+        return userManager;
+    } catch (error: unknown) {
+        console.debug('error when importing the idp settings', error);
+        dispatch(setShowAuthenticationRouterLogin(true));
+        throw error;
+    }
 }
 
-function login(location: Location, userManagerInstance: UserManager) {
+export function login(location: Location, userManagerInstance: UserManager) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
         .signinRedirect()
         .then(() => console.debug('login'));
 }
 
-function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
+export function logout(
+    dispatch: Dispatch<unknown>,
+    userManagerInstance: UserManager
+) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
+    sessionStorage.removeItem(oidcHackReloadedKey);
+    // eslint-disable-next-line consistent-return
     return userManagerInstance.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
@@ -439,11 +378,10 @@ function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
                 });
         }
         console.log('Error nobody to logout ');
-        return null;
     });
 }
 
-function getPreLoginPath() {
+export function getPreLoginPath() {
     return sessionStorage.getItem(pathKey);
 }
 
@@ -454,7 +392,7 @@ function navigateToPreLoginPath(navigate: NavigateFunction) {
     }
 }
 
-function handleSigninCallback(
+export function handleSigninCallback(
     dispatch: Dispatch<unknown>,
     navigate: NavigateFunction,
     userManagerInstance: UserManager
@@ -463,9 +401,7 @@ function handleSigninCallback(
     userManagerInstance
         .signinRedirectCallback()
         .catch((e) => {
-            if (isIssuerErrorForCodeFlow(e)) {
-                // Replacing authority for code flow only because it's done in the hash for implicit flow
-                // TODO: Can we also do it here for the implicit flow ? To make it common here for both flows
+            if (isIssuerError(e)) {
                 extractIssuerToSessionStorage(e);
                 // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
                 // It will reload the user manager based on hacked authority at initialization with the new authority
@@ -489,17 +425,6 @@ function handleSigninCallback(
         });
 }
 
-function handleSilentRenewCallback(userManagerInstance: UserManager) {
+export function handleSilentRenewCallback(userManagerInstance: UserManager) {
     userManagerInstance.signinSilentCallback();
 }
-
-export {
-    initializeAuthenticationDev,
-    initializeAuthenticationProd,
-    handleSilentRenewCallback,
-    login,
-    logout,
-    dispatchUser,
-    handleSigninCallback,
-    getPreLoginPath,
-};

@@ -11,9 +11,9 @@ import { IntlProvider } from 'react-intl';
 
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { beforeEach, afterEach, it, expect } from '@jest/globals';
+import { afterEach, beforeEach, expect, it } from '@jest/globals';
 import TopBar, { LANG_ENGLISH } from './TopBar';
-import { top_bar_en } from '../..';
+import { CommonMetadata, top_bar_en } from '../..';
 
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
@@ -30,19 +30,17 @@ afterEach(() => {
     container?.remove();
 });
 
-const apps = [
+const apps: CommonMetadata[] = [
     {
         name: 'App1',
         url: '/app1',
         appColor: 'blue',
         hiddenInAppsMenu: false,
-        resources: [],
     },
     {
         name: 'App2',
         url: '/app2',
         appColor: 'green',
-        resources: [],
         hiddenInAppsMenu: true,
     },
 ];
