@@ -10,8 +10,9 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 import InputWithPopupConfirmation from '../../inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useEffect } from 'react';
 import { FormEquipment } from '../utils/filter-form-utils';
+import { useSnackMessage } from '../../../hooks/useSnackMessage';
 
 export interface CriteriaBasedFormProps {
     equipments: Record<string, FormEquipment>;
@@ -23,10 +24,19 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
     defaultValues,
 }) => {
     const { getValues, setValue } = useFormContext();
+    const { snackError } = useSnackMessage();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
+
+    useEffect(() => {
+        if (watchEquipmentType && !equipments[watchEquipmentType]) {
+            snackError({
+                headerId: 'obsoleteFilter',
+            });
+        }
+    }, [snackError, equipments, watchEquipmentType]);
 
     const openConfirmationPopup = () => {
         return (
@@ -59,6 +69,7 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
                 />
             </Grid>
             {watchEquipmentType &&
+                equipments[watchEquipmentType] &&
                 equipments[watchEquipmentType].fields.map(
                     (equipment: any, index: number) => {
                         const EquipmentForm = equipment.renderer;
