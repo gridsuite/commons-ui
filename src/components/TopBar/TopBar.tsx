@@ -159,10 +159,8 @@ export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
 
-export type GsLang =
-    | typeof LANG_ENGLISH
-    | typeof LANG_FRENCH
-    | typeof LANG_SYSTEM;
+export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
+export type GsLang = GsLangUser | typeof LANG_SYSTEM;
 export type GsTheme = typeof LIGHT_THEME | typeof DARK_THEME;
 
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &

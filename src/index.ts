@@ -97,6 +97,7 @@ export {
     LANG_ENGLISH,
     LANG_FRENCH,
 } from './components/TopBar/TopBar';
+export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
 
 export {
     USER,
