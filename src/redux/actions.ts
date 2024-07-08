@@ -6,27 +6,60 @@
  */
 import { User } from 'oidc-client';
 
-export const USER = 'USER';
+// Is redux or isn't redux, that is the question, 🎭
+interface Action<T> {
+    type: T;
+}
 
-export function setLoggedUser(user: User | null) {
+export interface UnknownAction extends Action<any> {
+    [extraProps: string]: unknown;
+}
+
+export const USER = 'USER';
+export type UserAction = Readonly<
+    Action<typeof USER> & {
+        user: User | null;
+    }
+>;
+
+export function setLoggedUser(user: User | null): UserAction {
     return { type: USER, user: user };
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
+export type SignInCallbackErrorAction = Readonly<
+    Action<typeof SIGNIN_CALLBACK_ERROR> & {
+        signInCallbackError: string | null;
+    }
+>;
 
-export function setSignInCallbackError(signInCallbackError: string | null) {
+export function setSignInCallbackError(
+    signInCallbackError: string | null
+): SignInCallbackErrorAction {
     return {
         type: SIGNIN_CALLBACK_ERROR,
         signInCallbackError: signInCallbackError,
     };
 }
 
+export type AuthenticationRouterError<T> = {
+    authenticationRouterError: {
+        userName?: string;
+    } & T;
+};
+
 export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
+export type UnauthorizedUserAction = Readonly<
+    Action<typeof UNAUTHORIZED_USER_INFO> &
+        AuthenticationRouterError<{
+            unauthorizedUserInfo: string;
+        }>
+>;
 
 export function setUnauthorizedUserInfo(
     userName: string | undefined,
     unauthorizedUserInfo: string
-) {
+): UnauthorizedUserAction {
     return {
         type: UNAUTHORIZED_USER_INFO,
         authenticationRouterError: {
@@ -37,11 +70,17 @@ export function setUnauthorizedUserInfo(
 }
 
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
+export type LogoutErrorAction = Readonly<
+    Action<typeof LOGOUT_ERROR> &
+        AuthenticationRouterError<{
+            logoutError: { error: Error };
+        }>
+>;
 
 export function setLogoutError(
     userName: string | undefined,
     logoutError: { error: Error }
-) {
+): LogoutErrorAction {
     return {
         type: LOGOUT_ERROR,
         authenticationRouterError: {
@@ -52,11 +91,17 @@ export function setLogoutError(
 }
 
 export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
+export type UserValidationErrorAction = Readonly<
+    Action<typeof USER_VALIDATION_ERROR> &
+        AuthenticationRouterError<{
+            userValidationError: { error: Error };
+        }>
+>;
 
 export function setUserValidationError(
     userName: string | undefined,
     userValidationError: { error: Error }
-) {
+): UserValidationErrorAction {
     return {
         type: USER_VALIDATION_ERROR,
         authenticationRouterError: {
@@ -68,8 +113,13 @@ export function setUserValidationError(
 
 export const RESET_AUTHENTICATION_ROUTER_ERROR =
     'RESET_AUTHENTICATION_ROUTER_ERROR';
+export type AuthenticationRouterErrorAction = Readonly<
+    Action<typeof RESET_AUTHENTICATION_ROUTER_ERROR> & {
+        authenticationRouterError: null;
+    }
+>;
 
-export function resetAuthenticationRouterError() {
+export function resetAuthenticationRouterError(): AuthenticationRouterErrorAction {
     return {
         type: RESET_AUTHENTICATION_ROUTER_ERROR,
         authenticationRouterError: null,
@@ -77,10 +127,15 @@ export function resetAuthenticationRouterError() {
 }
 
 export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
+export type ShowAuthenticationRouterLoginAction = Readonly<
+    Action<typeof SHOW_AUTH_INFO_LOGIN> & {
+        showAuthenticationRouterLogin: boolean;
+    }
+>;
 
 export function setShowAuthenticationRouterLogin(
     showAuthenticationRouterLogin: boolean
-) {
+): ShowAuthenticationRouterLoginAction {
     return {
         type: SHOW_AUTH_INFO_LOGIN,
         showAuthenticationRouterLogin: showAuthenticationRouterLogin,

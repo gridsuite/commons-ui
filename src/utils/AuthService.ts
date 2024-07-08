@@ -7,6 +7,8 @@
 import { Log, User, UserManager } from 'oidc-client';
 import { UserManagerMock } from './UserManagerMock';
 import {
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
     resetAuthenticationRouterError,
     setLoggedUser,
     setLogoutError,
@@ -14,6 +16,10 @@ import {
     setSignInCallbackError,
     setUnauthorizedUserInfo,
     setUserValidationError,
+    ShowAuthenticationRouterLoginAction,
+    UnauthorizedUserAction,
+    UserAction,
+    UserValidationErrorAction,
 } from '../redux/actions';
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
@@ -79,7 +85,7 @@ function reloadTimerOnExpiresIn(
 }
 
 function handleSigninSilent(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<ShowAuthenticationRouterLoginAction>,
     userManager: UserManager
 ) {
     userManager.getUser().then((user) => {
@@ -116,7 +122,13 @@ export async function initializeAuthenticationDev(
 const accessTokenExpiringNotificationTime = 60; // seconds
 
 export async function initializeAuthenticationProd(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        | UnauthorizedUserAction
+        | UserAction
+        | UserValidationErrorAction
+        | ShowAuthenticationRouterLoginAction
+        | AuthenticationRouterErrorAction
+    >,
     isSilentRenew: boolean,
     idpSettingsGetter: IdpSettingsGetter,
     validateUser: UserValidationFunc,
@@ -202,7 +214,7 @@ export function login(location: Location, userManagerInstance: UserManager) {
 }
 
 export function logout(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<UserAction | LogoutErrorAction>,
     userManagerInstance: UserManager
 ) {
     sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
@@ -243,7 +255,9 @@ function getIdTokenExpiresIn(user: User) {
 }
 
 export function dispatchUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        UnauthorizedUserAction | UserAction | UserValidationErrorAction
+    >,
     userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -350,7 +364,13 @@ export function handleSilentRenewCallback(userManagerInstance: UserManager) {
 }
 
 function handleUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        | UnauthorizedUserAction
+        | UserAction
+        | UserValidationErrorAction
+        | ShowAuthenticationRouterLoginAction
+        | AuthenticationRouterErrorAction
+    >,
     userManager: CustomUserManager,
     validateUser: UserValidationFunc
 ) {

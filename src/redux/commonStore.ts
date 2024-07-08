@@ -6,9 +6,35 @@
  */
 
 import { User } from 'oidc-client';
+import { Dispatch } from 'react';
+import {
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
+    ShowAuthenticationRouterLoginAction,
+    SignInCallbackErrorAction,
+    UnauthorizedUserAction,
+    UnknownAction,
+    UserAction,
+    UserValidationErrorAction,
+} from './actions';
+
+export type CommonStoreState = {
+    user: User;
+};
+
+export type CommonActions =
+    | UnknownAction
+    | UserAction
+    | SignInCallbackErrorAction
+    | UnauthorizedUserAction
+    | LogoutErrorAction
+    | UserValidationErrorAction
+    | AuthenticationRouterErrorAction
+    | ShowAuthenticationRouterLoginAction;
 
 interface CommonStore {
-    getState: () => { user: User };
+    getState(): CommonStoreState;
+    dispatch: Dispatch<CommonActions>;
 }
 
 let commonStore: CommonStore | undefined;
