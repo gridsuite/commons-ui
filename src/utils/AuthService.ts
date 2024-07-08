@@ -101,9 +101,7 @@ export async function initializeAuthenticationDev(
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
-    let userManager: UserManager = new UserManagerMock(
-        {}
-    ) as unknown as UserManager;
+    const userManager: UserManager = new UserManagerMock({});
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
         if (!isSigninCallback) {
