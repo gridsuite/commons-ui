@@ -541,7 +541,7 @@ function AboutDialog({
                                                 .sort(compareModules)
                                                 .map((module, idx) => (
                                                     <Module
-                                                        // eslint-disable-next-line react/no-array-index-key
+                                                        // eslint-disable-next-line react/no-array-index-key -- modules aren't necessary uniques in the API, so we need something else for the key that must be unique
                                                         key={`module-${idx}`}
                                                         type={module.type}
                                                         name={module.name}

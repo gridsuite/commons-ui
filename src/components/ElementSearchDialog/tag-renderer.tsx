@@ -41,7 +41,6 @@ function TagRenderer({ element, ...props }: TagRendererProps) {
             />
         );
     }
-    return undefined;
 }
 
 export default TagRenderer;
