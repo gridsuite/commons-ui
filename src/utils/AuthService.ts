@@ -4,10 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Log, User, UserManager } from 'oidc-client';
-import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { Log, User, UserManager } from 'oidc-client';
+import UserManagerMock from './UserManagerMock';
 import {
     resetAuthenticationRouterError,
     setLoggedUser,
@@ -17,7 +18,6 @@ import {
     setUnauthorizedUserInfo,
     setUserValidationError,
 } from '../redux/actions';
-import UserManagerMock from './UserManagerMock';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
@@ -45,8 +45,6 @@ window.OIDCLog = Log;
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
-
-const accessTokenExpiringNotificationTime = 60; // seconds
 
 function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
@@ -94,7 +92,6 @@ function handleSigninSilent(
     dispatch: Dispatch<unknown>,
     userManager: UserManager
 ) {
-    // eslint-disable-next-line consistent-return
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error: Error) => {
@@ -105,6 +102,7 @@ function handleSigninSilent(
                 }
             });
         }
+        return Promise.resolve();
     });
 }
 
@@ -140,6 +138,45 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
+export function login(location: Location, userManagerInstance: UserManager) {
+    sessionStorage.setItem(pathKey, location.pathname + location.search);
+    return userManagerInstance
+        .signinRedirect()
+        .then(() => console.debug('login'));
+}
+
+export function logout(
+    dispatch: Dispatch<unknown>,
+    userManagerInstance: UserManager
+) {
+    sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
+    sessionStorage.removeItem(oidcHackReloadedKey);
+    return userManagerInstance.getUser().then((user) => {
+        if (user) {
+            // We don't need to check if token is valid at this point
+            return userManagerInstance
+                .signoutRedirect({
+                    extraQueryParams: {
+                        TargetResource:
+                            userManagerInstance.settings
+                                .post_logout_redirect_uri,
+                    },
+                })
+                .then(() => {
+                    console.debug('logged out, window is closing...');
+                })
+                .catch((e) => {
+                    console.log('Error during logout :', e);
+                    // An error occured, window may not be closed, reset the user state
+                    dispatch(setLoggedUser(null));
+                    dispatch(setLogoutError(user?.profile?.name, { error: e }));
+                });
+        }
+        console.log('Error nobody to logout ');
+        return Promise.resolve();
+    });
+}
+
 export function dispatchUser(
     dispatch: Dispatch<unknown>,
     userManagerInstance: CustomUserManager,
@@ -154,12 +191,11 @@ export function dispatchUser(
                 console.debug(
                     'User token is expired and will not be dispatched'
                 );
-                return;
+                return Promise.resolve();
             }
             // without validateUser defined, valid user by default
             const validateUserPromise =
-                (validateUser && validateUser(user)) || Promise.resolve(true);
-            // eslint-disable-next-line consistent-return
+                validateUser?.(user) || Promise.resolve(true);
             return validateUserPromise
                 .then((valid) => {
                     if (!valid) {
@@ -196,8 +232,59 @@ export function dispatchUser(
                 });
         }
         console.debug('You are not logged in.');
+        return Promise.resolve();
     });
 }
+
+export function getPreLoginPath() {
+    return sessionStorage.getItem(pathKey);
+}
+
+function navigateToPreLoginPath(navigate: NavigateFunction) {
+    const previousPath = getPreLoginPath();
+    if (previousPath !== null) {
+        navigate(previousPath);
+    }
+}
+
+export function handleSigninCallback(
+    dispatch: Dispatch<unknown>,
+    navigate: NavigateFunction,
+    userManagerInstance: UserManager
+) {
+    let reloadAfterNavigate = false;
+    userManagerInstance
+        .signinRedirectCallback()
+        .catch((e) => {
+            if (isIssuerError(e)) {
+                extractIssuerToSessionStorage(e);
+                // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
+                // It will reload the user manager based on hacked authority at initialization with the new authority
+                // We do this because on Azure we only get to know the issuer of the user in the idtoken and so signingredirectcallback will always fail
+                // We could restart the whole login process from signin redirect with the correct issuer, but instead we just rely on the silent login after the reload which will work
+                reloadAfterNavigate = true;
+            } else {
+                throw e;
+            }
+        })
+        .then(() => {
+            dispatch(setSignInCallbackError(null));
+            navigateToPreLoginPath(navigate);
+            if (reloadAfterNavigate) {
+                reload();
+            }
+        })
+        .catch((e) => {
+            dispatch(setSignInCallbackError(e));
+            console.error(e);
+        });
+}
+
+export function handleSilentRenewCallback(userManagerInstance: UserManager) {
+    userManagerInstance.signinSilentCallback();
+}
+
+const accessTokenExpiringNotificationTime = 60; // seconds
 
 function handleUser(
     dispatch: Dispatch<unknown>,
@@ -232,8 +319,8 @@ function handleUser(
                     dispatch(setShowAuthenticationRouterLogin(true));
                     // logout during token expiration, show login without errors
                     dispatch(resetAuthenticationRouterError());
-                    // eslint-disable-next-line consistent-return
-                    return dispatch(setLoggedUser(null));
+                    dispatch(setLoggedUser(null));
+                    return;
                 }
                 if (userManager.idpSettings?.maxExpiresIn) {
                     if (
@@ -291,9 +378,7 @@ export async function initializeAuthenticationDev(
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
-    const userManager: UserManager = new UserManagerMock(
-        {}
-    ) as unknown as UserManager;
+    const userManager: UserManager = new UserManagerMock({});
     if (!isSilentRenew) {
         handleUser(dispatch, userManager, validateUser);
         if (!isSigninCallback) {
@@ -340,91 +425,4 @@ export async function initializeAuthenticationProd(
         dispatch(setShowAuthenticationRouterLogin(true));
         throw error;
     }
-}
-
-export function login(location: Location, userManagerInstance: UserManager) {
-    sessionStorage.setItem(pathKey, location.pathname + location.search);
-    return userManagerInstance
-        .signinRedirect()
-        .then(() => console.debug('login'));
-}
-
-export function logout(
-    dispatch: Dispatch<unknown>,
-    userManagerInstance: UserManager
-) {
-    sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
-    sessionStorage.removeItem(oidcHackReloadedKey);
-    // eslint-disable-next-line consistent-return
-    return userManagerInstance.getUser().then((user) => {
-        if (user) {
-            // We don't need to check if token is valid at this point
-            return userManagerInstance
-                .signoutRedirect({
-                    extraQueryParams: {
-                        TargetResource:
-                            userManagerInstance.settings
-                                .post_logout_redirect_uri,
-                    },
-                })
-                .then(() => {
-                    console.debug('logged out, window is closing...');
-                })
-                .catch((e) => {
-                    console.log('Error during logout :', e);
-                    // An error occured, window may not be closed, reset the user state
-                    dispatch(setLoggedUser(null));
-                    dispatch(setLogoutError(user?.profile?.name, { error: e }));
-                });
-        }
-        console.log('Error nobody to logout ');
-    });
-}
-
-export function getPreLoginPath() {
-    return sessionStorage.getItem(pathKey);
-}
-
-function navigateToPreLoginPath(navigate: NavigateFunction) {
-    const previousPath = getPreLoginPath();
-    if (previousPath !== null) {
-        navigate(previousPath);
-    }
-}
-
-export function handleSigninCallback(
-    dispatch: Dispatch<unknown>,
-    navigate: NavigateFunction,
-    userManagerInstance: UserManager
-) {
-    let reloadAfterNavigate = false;
-    userManagerInstance
-        .signinRedirectCallback()
-        .catch((e) => {
-            if (isIssuerError(e)) {
-                extractIssuerToSessionStorage(e);
-                // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
-                // It will reload the user manager based on hacked authority at initialization with the new authority
-                // We do this because on Azure we only get to know the issuer of the user in the idtoken and so signingredirectcallback will always fail
-                // We could restart the whole login process from signin redirect with the correct issuer, but instead we just rely on the silent login after the reload which will work
-                reloadAfterNavigate = true;
-            } else {
-                throw e;
-            }
-        })
-        .then(() => {
-            dispatch(setSignInCallbackError(null));
-            navigateToPreLoginPath(navigate);
-            if (reloadAfterNavigate) {
-                reload();
-            }
-        })
-        .catch((e) => {
-            dispatch(setSignInCallbackError(e));
-            console.error(e);
-        });
-}
-
-export function handleSilentRenewCallback(userManagerInstance: UserManager) {
-    userManagerInstance.signinSilentCallback();
 }

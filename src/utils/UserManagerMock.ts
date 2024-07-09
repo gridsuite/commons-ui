@@ -5,15 +5,82 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Events from './Events';
+/* eslint-disable max-classes-per-file, class-methods-use-this */
 
-export default class UserManagerMock {
+import {
+    MetadataService,
+    SigninRequest,
+    SigninResponse,
+    SignoutRequest,
+    SignoutResponse,
+    User,
+    UserManager,
+    UserManagerEvents,
+    UserManagerSettings,
+} from 'oidc-client';
+
+class Events implements UserManagerEvents {
+    userLoadedCallbacks: ((data: any) => void)[] = [];
+
+    addUserLoaded(callback: (data: any) => void) {
+        this.userLoadedCallbacks.push(callback);
+    }
+
+    // eslint-disable-next-line
+    addSilentRenewError(callback: (data: any) => void) {
+        // Nothing to do
+    }
+
+    load(/* container: User */) {
+        // not implemented
+    }
+
+    unload() {}
+
+    removeUserLoaded() {}
+
+    addUserUnloaded() {}
+
+    removeUserUnloaded() {}
+
+    removeSilentRenewError() {}
+
+    addUserSignedIn() {}
+
+    removeUserSignedIn() {}
+
+    addUserSignedOut() {}
+
+    removeUserSignedOut() {}
+
+    addUserSessionChanged() {}
+
+    removeUserSessionChanged() {}
+
+    addAccessTokenExpiring() {}
+
+    removeAccessTokenExpiring() {}
+
+    addAccessTokenExpired() {}
+
+    removeAccessTokenExpired() {}
+}
+
+export default class UserManagerMock implements UserManager {
     settings;
 
     events;
 
-    user = {
-        profile: { name: 'John Doe', email: 'Jhon.Doe@rte-france.com' },
+    user: User = {
+        profile: {
+            name: 'John Doe',
+            email: 'Jhon.Doe@rte-france.com',
+            iss: '',
+            sub: '',
+            aud: '',
+            exp: Number.MAX_SAFE_INTEGER,
+            iat: 0,
+        },
         id_token:
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSJ9.eyJhdWQiOiI5YzQwMjQ2MS1iMmFiLTQ3NjctOWRiMy02Njg1OWJiMGZjZDAiLCJpc3MiOiJodHRwczovL2' +
             'xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vNzUwMmRhZDUtZDY0Yy00NmM3LTlkNDctYjE2ZjU4MGZjZmE5L3YyLjAiLCJpYXQiOjE1ODUzMzEyNDksIm5iZiI6MTU4NTMzMTI0OSwiZXhwIjoyNTg1MzM1MTQ5LCJhaW8iOiJBV1FB' +
@@ -38,9 +105,18 @@ export default class UserManagerMock {
             'UOej1ZMNwyVT6386O2pERPtxmFUt_D1dKLxBXxBNxLVUG5BG3bI7wMpBOHEUA5CbaBzYXmGrLMXVVbrj9OsF-WQ6aNoqsm9cicX6pJB60lFz1dxLeSgcFO7Zh2K3PFe4FnXCqAvNPadQMz_kJEO9_phlDV85c2MPqeXbA',
         token_type: 'Bearer',
         scope: 'scopes',
+        scopes: ['scopes'],
+        expires_at: Number.MAX_SAFE_INTEGER,
+        expires_in: Number.MAX_SAFE_INTEGER,
+        expired: false,
+        state: null,
+        toStorageString: () => 'Mock of UserManager',
     };
 
-    constructor(settings: unknown) {
+    readonly metadataService: MetadataService =
+        null as unknown as MetadataService;
+
+    constructor(settings: UserManagerSettings) {
         this.settings = settings;
         this.events = new Events();
     }
@@ -54,22 +130,20 @@ export default class UserManagerMock {
         );
     }
 
-    signinSilent() {
+    async signinSilent(): Promise<User> {
         console.info('signinSilent..............');
         const localStorageUser = JSON.parse(
             localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
         );
         if (localStorageUser === null) {
-            return Promise.reject(
-                new Error('End-User authentication required')
-            );
+            throw new Error('End-User authentication required');
         }
         sessionStorage.setItem(
             'powsybl-gridsuite-mock-user',
             JSON.stringify(localStorageUser)
         );
         this.events.userLoadedCallbacks.forEach((c) => c(localStorageUser));
-        return Promise.resolve(localStorageUser);
+        return localStorageUser;
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -86,7 +160,7 @@ export default class UserManagerMock {
             JSON.stringify(this.user)
         );
         window.location.href = './sign-in-callback';
-        return Promise.resolve(null);
+        return Promise.resolve();
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -94,7 +168,7 @@ export default class UserManagerMock {
         sessionStorage.removeItem('powsybl-gridsuite-mock-user');
         localStorage.removeItem('powsybl-gridsuite-mock-user');
         window.location.href = '.';
-        return Promise.resolve(null);
+        return Promise.resolve();
     }
 
     signinRedirectCallback() {
@@ -103,6 +177,82 @@ export default class UserManagerMock {
             JSON.stringify(this.user)
         );
         this.events.userLoadedCallbacks.forEach((c) => c(this.user));
-        return Promise.resolve('');
+        return Promise.resolve(this.user);
+    }
+
+    clearStaleState() {
+        return Promise.resolve();
+    }
+
+    storeUser() {
+        return Promise.resolve();
+    }
+
+    removeUser() {
+        return Promise.resolve();
+    }
+
+    signinPopup() {
+        return Promise.resolve(this.user);
+    }
+
+    signinPopupCallback() {
+        return Promise.resolve(undefined);
+    }
+
+    signoutRedirectCallback() {
+        return Promise.resolve({} as SignoutResponse);
+    }
+
+    signoutPopup() {
+        return Promise.resolve();
+    }
+
+    signoutPopupCallback() {
+        return Promise.resolve();
+    }
+
+    signinCallback() {
+        return Promise.resolve(this.user);
+    }
+
+    signoutCallback() {
+        return Promise.resolve(undefined);
+    }
+
+    querySessionStatus() {
+        return Promise.resolve({
+            session_state: '',
+            sub: '',
+            sid: undefined,
+        });
+    }
+
+    revokeAccessToken() {
+        return Promise.resolve();
+    }
+
+    startSilentRenew() {
+        return Promise.resolve();
+    }
+
+    stopSilentRenew() {
+        return Promise.resolve();
+    }
+
+    createSigninRequest() {
+        return Promise.resolve({} as SigninRequest);
+    }
+
+    processSigninResponse() {
+        return Promise.resolve({} as SigninResponse);
+    }
+
+    createSignoutRequest() {
+        return Promise.resolve({} as SignoutRequest);
+    }
+
+    processSignoutResponse() {
+        return Promise.resolve({} as SignoutResponse);
     }
 }
