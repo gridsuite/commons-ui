@@ -11,13 +11,13 @@ import { act } from 'react-dom/test-utils';
 import { IntlProvider } from 'react-intl';
 
 import TopBar, { LANG_ENGLISH } from './TopBar';
-import { CommonMetadata, top_bar_en } from '../../';
+import { top_bar_en } from '../../';
 
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { afterEach, beforeEach, expect, it } from '@jest/globals';
+import { beforeEach, afterEach, it, expect } from '@jest/globals';
 
 let container: Element;
 
@@ -32,17 +32,19 @@ afterEach(() => {
     container?.remove();
 });
 
-const apps: CommonMetadata[] = [
+const apps = [
     {
         name: 'App1',
         url: '/app1',
         appColor: 'blue',
         hiddenInAppsMenu: false,
+        resources: [],
     },
     {
         name: 'App2',
         url: '/app2',
         appColor: 'green',
+        resources: [],
         hiddenInAppsMenu: true,
     },
 ];
