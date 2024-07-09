@@ -18,7 +18,7 @@ import {
 } from './actions';
 
 export type CommonStoreState = {
-    user: User;
+    user: User | null;
 };
 
 export type CommonActions =
@@ -47,5 +47,5 @@ export function setCommonStore(store: CommonStore): void {
 }
 
 export function getUserToken() {
-    return commonStore?.getState().user.id_token;
+    return commonStore?.getState().user?.id_token;
 }

@@ -157,20 +157,23 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-export function login(location: Location, userManagerInstance: UserManager) {
+export async function login(
+    location: Location,
+    userManagerInstance: UserManager | null
+) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
-    return userManagerInstance
-        .signinRedirect()
+    await userManagerInstance
+        ?.signinRedirect()
         .then(() => console.debug('login'));
 }
 
-export function logout(
+export async function logout(
     dispatch: Dispatch<UserAction | LogoutErrorAction>,
-    userManagerInstance: UserManager
+    userManagerInstance: UserManager | null
 ) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
-    return userManagerInstance.getUser().then((user) => {
+    await userManagerInstance?.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
             return userManagerInstance
@@ -271,11 +274,11 @@ function navigateToPreLoginPath(navigate: NavigateFunction) {
 export function handleSigninCallback(
     dispatch: Dispatch<SignInCallbackErrorAction>,
     navigate: NavigateFunction,
-    userManagerInstance: UserManager
+    userManagerInstance: UserManager | null
 ) {
     let reloadAfterNavigate = false;
     userManagerInstance
-        .signinRedirectCallback()
+        ?.signinRedirectCallback()
         .catch((e) => {
             if (isIssuerError(e)) {
                 extractIssuerToSessionStorage(e);
@@ -301,8 +304,10 @@ export function handleSigninCallback(
         });
 }
 
-export function handleSilentRenewCallback(userManagerInstance: UserManager) {
-    userManagerInstance.signinSilentCallback();
+export function handleSilentRenewCallback(
+    userManagerInstance: UserManager | null
+) {
+    userManagerInstance?.signinSilentCallback();
 }
 
 const accessTokenExpiringNotificationTime = 60; // seconds

@@ -168,7 +168,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<AboutDialogProps, 'open' | 'onClose'> & {
         onParametersClick?: () => void;
         onLogoClick: GridLogoProps['onClick'];
-        user: User;
+        user?: User;
         onAboutClick?: () => void;
         logoAboutDialog?: ReactNode;
         appsAndUrls: CommonMetadata[];

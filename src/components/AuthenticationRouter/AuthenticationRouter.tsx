@@ -32,11 +32,13 @@ import {
     UserAction,
 } from '../../redux/actions';
 
+export type UserManagerState = {
+    instance: UserManager | null;
+    error: string | null;
+};
+
 export interface AuthenticationRouterProps {
-    userManager: {
-        instance: UserManager;
-        error: string;
-    };
+    userManager: UserManagerState;
     signInCallbackError: { message: string };
     authenticationRouterError: {
         userName: string;
