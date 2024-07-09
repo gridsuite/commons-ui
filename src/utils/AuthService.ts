@@ -10,6 +10,9 @@ import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
 import UserManagerMock from './UserManagerMock';
 import {
+    Action,
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
     resetAuthenticationRouterError,
     setLoggedUser,
     setLogoutError,
@@ -17,6 +20,11 @@ import {
     setSignInCallbackError,
     setUnauthorizedUserInfo,
     setUserValidationError,
+    ShowAuthenticationRouterLoginAction,
+    SignInCallbackErrorAction,
+    UnauthorizedUserAction,
+    UserAction,
+    UserValidationErrorAction,
 } from '../redux/actions';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
@@ -37,6 +45,17 @@ type CustomUserManager = UserManager & {
         maxExpiresIn?: number;
     };
 };
+
+type GetAction<
+    D extends Dispatch<Action<T>>,
+    T extends string
+> = Parameters<D>[0];
+type GetActionFn<
+    Fn extends (...args: any) => any,
+    Arg extends number,
+    T extends string = any,
+    D = Parameters<Fn>[Arg]
+> = D extends Dispatch<any> ? GetAction<D, T> : never;
 
 // set as a global variable to allow log level configuration at runtime
 // @ts-ignore
@@ -89,7 +108,7 @@ function getIdTokenExpiresIn(user: User) {
 }
 
 function handleSigninSilent(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<ShowAuthenticationRouterLoginAction>,
     userManager: UserManager
 ) {
     userManager.getUser().then((user) => {
@@ -146,7 +165,7 @@ export function login(location: Location, userManagerInstance: UserManager) {
 }
 
 export function logout(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<UserAction | LogoutErrorAction>,
     userManagerInstance: UserManager
 ) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
@@ -178,7 +197,9 @@ export function logout(
 }
 
 export function dispatchUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        UnauthorizedUserAction | UserAction | UserValidationErrorAction
+    >,
     userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -248,7 +269,7 @@ function navigateToPreLoginPath(navigate: NavigateFunction) {
 }
 
 export function handleSigninCallback(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<SignInCallbackErrorAction>,
     navigate: NavigateFunction,
     userManagerInstance: UserManager
 ) {
@@ -287,7 +308,12 @@ export function handleSilentRenewCallback(userManagerInstance: UserManager) {
 const accessTokenExpiringNotificationTime = 60; // seconds
 
 function handleUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        | GetActionFn<typeof dispatchUser, 0>
+        | UserAction
+        | ShowAuthenticationRouterLoginAction
+        | AuthenticationRouterErrorAction
+    >,
     userManager: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -373,7 +399,10 @@ function handleUser(
 }
 
 export async function initializeAuthenticationDev(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        | GetActionFn<typeof handleUser, 0>
+        | GetActionFn<typeof handleSigninSilent, 0>
+    >,
     isSilentRenew: boolean,
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
@@ -389,7 +418,11 @@ export async function initializeAuthenticationDev(
 }
 
 export async function initializeAuthenticationProd(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<
+        | GetActionFn<typeof handleUser, 0>
+        | GetActionFn<typeof handleSigninSilent, 0>
+        | ShowAuthenticationRouterLoginAction
+    >,
     isSilentRenew: boolean,
     idpSettingsGetter: IdpSettingsGetter,
     validateUser: UserValidationFunc,

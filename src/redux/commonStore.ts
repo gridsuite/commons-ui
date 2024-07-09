@@ -5,10 +5,34 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Dispatch } from 'react';
 import { User } from 'oidc-client';
+import {
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
+    ShowAuthenticationRouterLoginAction,
+    SignInCallbackErrorAction,
+    UnauthorizedUserAction,
+    UserAction,
+    UserValidationErrorAction,
+} from './actions';
+
+export type CommonStoreState = {
+    user: User;
+};
+
+export type CommonActions =
+    | UserAction
+    | SignInCallbackErrorAction
+    | UnauthorizedUserAction
+    | LogoutErrorAction
+    | UserValidationErrorAction
+    | AuthenticationRouterErrorAction
+    | ShowAuthenticationRouterLoginAction;
 
 interface CommonStore {
-    getState: () => { user: User };
+    getState(): CommonStoreState;
+    dispatch: Dispatch<CommonActions>;
 }
 
 let commonStore: CommonStore | undefined;

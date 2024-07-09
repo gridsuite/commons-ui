@@ -20,6 +20,11 @@ import {
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
+import {
+    LogoutErrorAction,
+    SignInCallbackErrorAction,
+    UserAction,
+} from '../../redux/actions';
 
 export interface AuthenticationRouterProps {
     userManager: {
@@ -35,7 +40,9 @@ export interface AuthenticationRouterProps {
         error: string;
     };
     showAuthenticationRouterLogin: boolean;
-    dispatch: Dispatch<unknown>;
+    dispatch: Dispatch<
+        SignInCallbackErrorAction | UserAction | LogoutErrorAction
+    >;
     navigate: () => void;
     location: Location;
 }
@@ -48,7 +55,7 @@ function AuthenticationRouter({
     dispatch,
     navigate,
     location,
-}: AuthenticationRouterProps) {
+}: Readonly<AuthenticationRouterProps>) {
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]
