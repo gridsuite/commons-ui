@@ -38,7 +38,7 @@ export function setSignInCallbackError(
     };
 }
 
-export type AuthenticationRouterError<T> = {
+export type AuthenticationRouterErrorBase<T> = {
     authenticationRouterError: {
         userName?: string;
     } & T;
@@ -47,7 +47,7 @@ export type AuthenticationRouterError<T> = {
 export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
 export type UnauthorizedUserAction = Readonly<
     Action<typeof UNAUTHORIZED_USER_INFO> &
-        AuthenticationRouterError<{
+        AuthenticationRouterErrorBase<{
             unauthorizedUserInfo: string;
         }>
 >;
@@ -68,7 +68,7 @@ export function setUnauthorizedUserInfo(
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
 export type LogoutErrorAction = Readonly<
     Action<typeof LOGOUT_ERROR> &
-        AuthenticationRouterError<{
+        AuthenticationRouterErrorBase<{
             logoutError: { error: Error };
         }>
 >;
@@ -89,7 +89,7 @@ export function setLogoutError(
 export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
 export type UserValidationErrorAction = Readonly<
     Action<typeof USER_VALIDATION_ERROR> &
-        AuthenticationRouterError<{
+        AuthenticationRouterErrorBase<{
             userValidationError: { error: Error };
         }>
 >;

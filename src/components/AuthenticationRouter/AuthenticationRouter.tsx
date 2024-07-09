@@ -27,10 +27,17 @@ import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
 import {
+    AuthenticationRouterErrorBase,
     LogoutErrorAction,
     SignInCallbackErrorAction,
     UserAction,
 } from '../../redux/actions';
+
+export type AuthenticationRouterErrorState = AuthenticationRouterErrorBase<{
+    userValidationError?: { error: Error };
+    logoutError?: { error: Error };
+    unauthorizedUserInfo?: string;
+}>['authenticationRouterError'];
 
 export type UserManagerState = {
     instance: UserManager | null;
@@ -39,14 +46,8 @@ export type UserManagerState = {
 
 export interface AuthenticationRouterProps {
     userManager: UserManagerState;
-    signInCallbackError: { message: string };
-    authenticationRouterError: {
-        userName: string;
-        userValidationError?: { error: Error };
-        logoutError?: { error: Error };
-        unauthorizedUserInfo?: string;
-        error: string;
-    };
+    signInCallbackError: string | null;
+    authenticationRouterError: AuthenticationRouterErrorState | null;
     showAuthenticationRouterLogin: boolean;
     dispatch: Dispatch<
         SignInCallbackErrorAction | UserAction | LogoutErrorAction
@@ -86,7 +87,7 @@ function AuthenticationRouter({
             {signInCallbackError !== null && (
                 <h1>
                     Error : SignIn Callback Error;
-                    {signInCallbackError.message}
+                    {signInCallbackError}
                 </h1>
             )}
             <Routes>

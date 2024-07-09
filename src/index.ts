@@ -11,7 +11,11 @@ export { default as AboutDialog } from './components/TopBar/AboutDialog';
 export type { GridSuiteModule } from './components/TopBar/AboutDialog';
 export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
-export type { UserManagerState } from './components/AuthenticationRouter';
+export type {
+    AuthenticationRouterErrorState,
+    AuthenticationRouterProps,
+    UserManagerState,
+} from './components/AuthenticationRouter';
 export { MuiVirtualizedTable } from './components/MuiVirtualizedTable';
 export {
     KeyedColumnsRowIndexer,
@@ -112,7 +116,7 @@ export {
     SHOW_AUTH_INFO_LOGIN,
 } from './redux/actions';
 export type {
-    AuthenticationRouterError,
+    AuthenticationRouterErrorBase,
     AuthenticationRouterErrorAction,
     LogoutErrorAction,
     ShowAuthenticationRouterLoginAction,
