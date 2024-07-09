@@ -6,7 +6,13 @@
  */
 
 import { Dispatch, useCallback } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+    Location,
+    Navigate,
+    NavigateFunction,
+    Route,
+    Routes,
+} from 'react-router-dom';
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
@@ -43,7 +49,7 @@ export interface AuthenticationRouterProps {
     dispatch: Dispatch<
         SignInCallbackErrorAction | UserAction | LogoutErrorAction
     >;
-    navigate: () => void;
+    navigate: NavigateFunction;
     location: Location;
 }
 
