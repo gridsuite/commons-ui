@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import BooleanInput from './boolean-input';
 import { Checkbox, CheckboxProps } from '@mui/material';
+import BooleanInput from './boolean-input';
 
 export interface CheckboxInputProps {
     name: string;
@@ -14,7 +14,7 @@ export interface CheckboxInputProps {
     formProps?: CheckboxProps;
 }
 
-const CheckboxInput = ({ name, label, formProps }: CheckboxInputProps) => {
+function CheckboxInput({ name, label, formProps }: CheckboxInputProps) {
     return (
         <BooleanInput
             name={name}
@@ -23,6 +23,6 @@ const CheckboxInput = ({ name, label, formProps }: CheckboxInputProps) => {
             Input={Checkbox}
         />
     );
-};
+}
 
 export default CheckboxInput;

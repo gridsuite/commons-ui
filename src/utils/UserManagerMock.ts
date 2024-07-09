@@ -5,20 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-class Events {
-    userLoadedCallbacks: ((data: any) => void)[] = [];
-    addUserLoaded(callback: (data: any) => void) {
-        this.userLoadedCallbacks.push(callback);
-    }
+import Events from './Events';
 
-    addSilentRenewError(callback: (data: any) => void) {
-        // Nothing to do
-    }
-}
-
-export class UserManagerMock {
+export default class UserManagerMock {
     settings;
+
     events;
+
     user = {
         profile: { name: 'John Doe', email: 'Jhon.Doe@rte-france.com' },
         id_token:
@@ -52,6 +45,7 @@ export class UserManagerMock {
         this.events = new Events();
     }
 
+    // eslint-disable-next-line class-methods-use-this
     getUser() {
         return Promise.resolve(
             JSON.parse(
@@ -78,6 +72,7 @@ export class UserManagerMock {
         return Promise.resolve(localStorageUser);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     signinSilentCallback() {
         console.error(
             'Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)'
@@ -94,12 +89,14 @@ export class UserManagerMock {
         return Promise.resolve(null);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     signoutRedirect() {
         sessionStorage.removeItem('powsybl-gridsuite-mock-user');
         localStorage.removeItem('powsybl-gridsuite-mock-user');
         window.location.href = '.';
         return Promise.resolve(null);
     }
+
     signinRedirectCallback() {
         sessionStorage.setItem(
             'powsybl-gridsuite-mock-user',

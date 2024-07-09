@@ -5,22 +5,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
-import { FieldConstants } from '../../../utils/field-constants';
-import { noSelectionForCopy } from '../../../utils/equipment-types';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { UUID } from 'crypto';
+import FieldConstants from '../../../utils/field-constants';
+import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
-import { FilterForm } from '../filter-form';
+import FilterForm from '../filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
-import { UUID } from 'crypto';
-import { elementExistsType } from '../criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from '../constants/filter-constants';
-import { FetchStatus } from '../../../utils/FetchStatus';
+import FetchStatus from '../../../utils/FetchStatus';
+import { ElementExistsType } from '../../../utils/ElementType';
 
 const formSchema = yup
     .object()
@@ -44,13 +44,11 @@ export interface ExpertFilterEditionDialogProps {
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
+    elementExists?: ElementExistsType;
     language?: string;
 }
 
-const ExpertFilterEditionDialog: FunctionComponent<
-    ExpertFilterEditionDialogProps
-> = ({
+function ExpertFilterEditionDialog({
     id,
     name,
     titleId,
@@ -63,7 +61,7 @@ const ExpertFilterEditionDialog: FunctionComponent<
     activeDirectory,
     elementExists,
     language,
-}) => {
+}: ExpertFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -151,7 +149,7 @@ const ExpertFilterEditionDialog: FunctionComponent<
             formSchema={formSchema}
             formMethods={formMethods}
             titleId={titleId}
-            removeOptional={true}
+            removeOptional
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
@@ -164,6 +162,6 @@ const ExpertFilterEditionDialog: FunctionComponent<
             )}
         </CustomMuiDialog>
     );
-};
+}
 
 export default ExpertFilterEditionDialog;

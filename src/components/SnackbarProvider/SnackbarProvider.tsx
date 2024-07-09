@@ -10,29 +10,32 @@ import { Button } from '@mui/material';
 
 import {
     SnackbarProvider as OrigSnackbarProvider,
+    SnackbarKey,
     SnackbarProviderProps,
 } from 'notistack';
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
-const SnackbarProvider = (props: SnackbarProviderProps) => {
+function SnackbarProvider(props: SnackbarProviderProps) {
     const ref = useRef<OrigSnackbarProvider>(null);
+
+    const action = (key: SnackbarKey) => (
+        <Button
+            onClick={() => ref.current?.closeSnackbar(key)}
+            style={{ color: '#fff', fontSize: '20px' }}
+        >
+            ✖
+        </Button>
+    );
 
     return (
         <OrigSnackbarProvider
             ref={ref}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
-            hideIconVariant={true}
-            action={(key) => (
-                <Button
-                    onClick={() => ref.current?.closeSnackbar(key)}
-                    style={{ color: '#fff', fontSize: '20px' }}
-                >
-                    ✖
-                </Button>
-            )}
+            hideIconVariant
+            action={action}
             {...props}
         />
     );
-};
+}
 
 export default SnackbarProvider;

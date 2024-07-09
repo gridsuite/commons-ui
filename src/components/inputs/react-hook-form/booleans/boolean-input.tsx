@@ -17,7 +17,7 @@ export interface BooleanInputProps {
     Input: typeof Switch | typeof Checkbox;
 }
 
-const BooleanInput = ({ name, label, formProps, Input }: BooleanInputProps) => {
+function BooleanInput({ name, label, formProps, Input }: BooleanInputProps) {
     const {
         field: { onChange, value, ref },
     } = useController<Record<string, boolean>>({ name });
@@ -55,6 +55,6 @@ const BooleanInput = ({ name, label, formProps, Input }: BooleanInputProps) => {
     }
 
     return CustomInput;
-};
+}
 
 export default BooleanInput;

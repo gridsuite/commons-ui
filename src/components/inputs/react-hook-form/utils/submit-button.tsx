@@ -8,9 +8,8 @@
 import { Button } from '@mui/material';
 import { useFormState } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 
-const SubmitButton = ({ ...buttonProps }) => {
+function SubmitButton({ ...buttonProps }) {
     const { isDirty } = useFormState();
 
     return (
@@ -21,10 +20,6 @@ const SubmitButton = ({ ...buttonProps }) => {
             <FormattedMessage id="validate" />
         </Button>
     );
-};
-
-SubmitButton.propTypes = {
-    buttonProps: PropTypes.object,
-};
+}
 
 export default SubmitButton;

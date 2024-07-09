@@ -5,18 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeEvent, FunctionComponent, useCallback, useEffect } from 'react';
-import { useDebounce } from '../../../hooks/useDebounce';
+import { ChangeEvent, useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { InputAdornment, TextFieldProps } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
-import { FieldConstants } from '../../../utils/field-constants';
-import { ElementType } from '../../../utils/ElementType';
 import { UUID } from 'crypto';
-import { elementExistsType } from '../../filter/criteria-based/criteria-based-filter-edition-dialog';
+import useDebounce from '../../../hooks/useDebounce';
+import FieldConstants from '../../../utils/field-constants';
+import { ElementExistsType, ElementType } from '../../../utils/ElementType';
 
 interface UniqueNameInputProps {
     name: string;
@@ -35,13 +34,13 @@ interface UniqueNameInputProps {
         | 'InputProps'
     >;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
+    elementExists?: ElementExistsType;
 }
 
 /**
  * Input component that constantly check if the field's value is available or not
  */
-export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
+function UniqueNameInput({
     name,
     label,
     elementType,
@@ -50,12 +49,12 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
     formProps,
     activeDirectory,
     elementExists,
-}) => {
+}: UniqueNameInputProps) {
     const {
         field: { onChange, onBlur, value, ref },
         fieldState: { error, isDirty },
     } = useController({
-        name: name,
+        name,
     });
 
     const {
@@ -76,28 +75,27 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
     const directory = selectedDirectory || activeDirectory;
 
     const handleCheckName = useCallback(
-        (value: string) => {
-            if (value) {
-                elementExists &&
-                    elementExists(directory, value, elementType)
-                        .then((alreadyExist) => {
-                            if (alreadyExist) {
-                                setError(name, {
-                                    type: 'validate',
-                                    message: 'nameAlreadyUsed',
-                                });
-                            }
-                        })
-                        .catch((error) => {
+        (nameValue: string) => {
+            if (nameValue) {
+                elementExists?.(directory, nameValue, elementType)
+                    .then((alreadyExist) => {
+                        if (alreadyExist) {
                             setError(name, {
                                 type: 'validate',
-                                message: 'nameValidityCheckErrorMsg',
+                                message: 'nameAlreadyUsed',
                             });
-                            console.error(error?.message);
-                        })
-                        .finally(() => {
-                            clearErrors('root.isValidating');
+                        }
+                    })
+                    .catch((e) => {
+                        setError(name, {
+                            type: 'validate',
+                            message: 'nameValidityCheckErrorMsg',
                         });
+                        console.error(e?.message);
+                    })
+                    .finally(() => {
+                        clearErrors('root.isValidating');
+                    });
             }
         },
         [setError, clearErrors, name, elementType, elementExists, directory]
@@ -147,7 +145,7 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
         e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         onChange(e.target.value);
-        onManualChangeCallback && onManualChangeCallback();
+        onManualChangeCallback?.();
     };
 
     const translatedLabel = <FormattedMessage id={label} />;
@@ -176,8 +174,10 @@ export const UniqueNameInput: FunctionComponent<UniqueNameInputProps> = ({
             fullWidth
             error={!!error}
             helperText={translatedError}
-            InputProps={{ endAdornment: endAdornment }}
+            InputProps={{ endAdornment }}
             {...formProps}
         />
     );
-};
+}
+
+export default UniqueNameInput;

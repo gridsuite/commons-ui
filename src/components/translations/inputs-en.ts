@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const inputs_en = {
+const inputsEn = {
     'inputs/kiki': 'Kylian Mbappe',
     'inputs/ney': 'Neymar',
     'inputs/lapulga': 'Lionel Messi',
@@ -24,4 +24,4 @@ const inputs_en = {
     Optional: 'Optional',
 };
 
-export default inputs_en;
+export default inputsEn;

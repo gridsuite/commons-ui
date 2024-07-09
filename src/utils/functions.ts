@@ -11,11 +11,14 @@
  */
 export function keyGenerator() {
     let key = 1;
-    return () => key++;
+    return () => {
+        key += 1;
+        return key;
+    };
 }
 
 export const areArrayElementsUnique = (array: unknown[]) => {
-    let uniqueValues = [...new Set(array)];
+    const uniqueValues = [...new Set(array)];
     return uniqueValues.length === array.length;
 };
 

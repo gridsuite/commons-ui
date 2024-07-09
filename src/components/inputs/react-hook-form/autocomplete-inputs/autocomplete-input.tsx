@@ -19,8 +19,7 @@ import {
     isFieldRequired,
 } from '../utils/functions';
 import FieldLabel from '../utils/field-label';
-import { useCustomFormContext } from '../provider/use-custom-form-context';
-import { FunctionComponent } from 'react';
+import useCustomFormContext from '../provider/use-custom-form-context';
 import { Option } from '../../../../utils/types';
 
 export interface AutocompleteInputProps
@@ -49,19 +48,19 @@ export interface AutocompleteInputProps
     >;
 }
 
-const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
+function AutocompleteInput({
     name,
     label,
     options,
-    outputTransform = identity, //transform materialUi input value before sending it to react hook form, mostly used to deal with select fields that need to return a string
-    inputTransform = identity, //transform react hook form value before sending it to materialUi input, mostly used to deal with select fields that need to return a string
+    outputTransform = identity, // transform materialUi input value before sending it to react hook form, mostly used to deal with select fields that need to return a string
+    inputTransform = identity, // transform react hook form value before sending it to materialUi input, mostly used to deal with select fields that need to return a string
     readOnly = false,
     previousValue,
     allowNewValue,
     onChangeCallback, // method called when input value is changing
     formProps,
     ...props
-}) => {
+}: AutocompleteInputProps) {
     const { validationSchema, getValues, removeOptional } =
         useCustomFormContext();
     const {
@@ -69,27 +68,27 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
         fieldState: { error },
     } = useController({ name });
 
-    const handleChange = (value: Option) => {
-        onChangeCallback && onChangeCallback();
-        //if free solo not enabled or if value is not of string type, we call onChange right away
-        if (!allowNewValue || typeof value !== 'string') {
-            onChange(outputTransform(value));
+    const handleChange = (newValue: Option) => {
+        onChangeCallback?.();
+        // if free solo not enabled or if value is not of string type, we call onChange right away
+        if (!allowNewValue || typeof newValue !== 'string') {
+            onChange(outputTransform(newValue));
             return;
         }
 
-        //otherwise, we check if user input matches with one of the options
+        // otherwise, we check if user input matches with one of the options
         const matchingOption = options.find(
             (option: Option) =>
-                typeof option !== 'string' && option.id === value
+                typeof option !== 'string' && option.id === newValue
         );
-        //if it does, we send the matching option to react hook form
+        // if it does, we send the matching option to react hook form
         if (matchingOption) {
             onChange(outputTransform(matchingOption));
             return;
         }
 
-        //otherwise, we send the user input
-        onChange(outputTransform(value));
+        // otherwise, we send the user input
+        onChange(outputTransform(newValue));
     };
 
     return (
@@ -110,7 +109,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
                 <TextField
                     {...(label && {
                         label: FieldLabel({
-                            label: label,
+                            label,
                             optional:
                                 !isFieldRequired(
                                     name,
@@ -122,7 +121,7 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
                         }),
                     })}
                     inputRef={ref}
-                    inputProps={{ ...inputProps, readOnly: readOnly }}
+                    inputProps={{ ...inputProps, readOnly }}
                     {...genHelperPreviousValue(previousValue!)}
                     {...genHelperError(error?.message)}
                     {...formProps}
@@ -132,6 +131,6 @@ const AutocompleteInput: FunctionComponent<AutocompleteInputProps> = ({
             {...props}
         />
     );
-};
+}
 
 export default AutocompleteInput;

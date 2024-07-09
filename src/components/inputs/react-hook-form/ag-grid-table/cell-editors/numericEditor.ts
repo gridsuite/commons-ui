@@ -16,8 +16,9 @@ const KEY_BACKSPACE = 'Backspace';
  * React version if you want to check, with forwardRef, useEffect and useImperativeHandle :
  * https://www.ag-grid.com/react-data-grid/component-cell-editor/#cell-editor-example
  */
-export class NumericEditor implements ICellEditorComp {
+class NumericEditor implements ICellEditorComp {
     eInput!: HTMLInputElement;
+
     cancelBeforeStart!: boolean;
 
     // gets called once before the renderer is used
@@ -28,24 +29,25 @@ export class NumericEditor implements ICellEditorComp {
 
         if (params.eventKey === KEY_BACKSPACE) {
             this.eInput.value = '';
-        } else if (this.isCharNumeric(params.eventKey)) {
+        } else if (NumericEditor.isCharNumeric(params.eventKey)) {
             this.eInput.value = params.eventKey!;
-        } else {
-            if (params.value !== undefined && params.value !== null) {
-                this.eInput.value = params.value;
-            }
+        } else if (params.value !== undefined && params.value !== null) {
+            this.eInput.value = params.value;
         }
 
         this.eInput.addEventListener('keydown', (event) => {
             if (!event.key || event.key.length !== 1) {
                 return;
             }
-            if (!this.isNumericKey(event)) {
+            if (!NumericEditor.isNumericKey(event)) {
                 this.eInput.focus();
                 if (event.preventDefault) {
                     event.preventDefault();
                 }
-            } else if (this.isNavigationKey(event) || this.isBackspace(event)) {
+            } else if (
+                NumericEditor.isNavigationKey(event) ||
+                NumericEditor.isBackspace(event)
+            ) {
                 event.stopPropagation();
             }
         });
@@ -59,11 +61,11 @@ export class NumericEditor implements ICellEditorComp {
         this.cancelBeforeStart = !!isNotANumber;
     }
 
-    isBackspace(event: any) {
+    static isBackspace(event: any) {
         return event.key === KEY_BACKSPACE;
     }
 
-    isNavigationKey(event: any) {
+    static isNavigationKey(event: any) {
         return event.key === 'ArrowLeft' || event.key === 'ArrowRight';
     }
 
@@ -84,24 +86,26 @@ export class NumericEditor implements ICellEditorComp {
 
     // returns the new value after editing
     getValue() {
-        const value = this.eInput.value;
+        const { value } = this.eInput;
         // FM : some modifications here
         const tmp = value?.replace(',', '.') || '';
         return parseFloat(tmp) || null;
     }
 
-    isCharNumeric(charStr: string | null) {
+    static isCharNumeric(charStr: string | null) {
         // FM : I added ',' and '.'
         return charStr && !!/\d|,|\./.test(charStr);
     }
 
-    isNumericKey(event: any) {
+    static isNumericKey(event: any) {
         const charStr = event.key;
-        return this.isCharNumeric(charStr);
+        return NumericEditor.isCharNumeric(charStr);
     }
 
     // force call when focus is leaving the editor
-    focusOut() {
+    static focusOut() {
         return true;
     }
 }
+
+export default NumericEditor;

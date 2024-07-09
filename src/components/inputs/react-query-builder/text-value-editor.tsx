@@ -7,38 +7,35 @@
 
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import useConvertValue from './use-convert-value';
 import { Autocomplete, TextField } from '@mui/material';
+import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
-import { FunctionComponent } from 'react';
 
-const TextValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
+function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
 
     const valid = useValid(props);
 
+    const { value, handleOnChange } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
-    if (!Array.isArray(props.value)) {
+    if (!Array.isArray(value)) {
         return (
             <MaterialValueEditor
                 {...props}
                 title={undefined} // disable the tooltip
             />
         );
-    } else {
-        return (
-            <Autocomplete
-                value={props.value}
-                freeSolo
-                options={[]}
-                onChange={(event, value: any) => props.handleOnChange(value)}
-                multiple
-                fullWidth
-                renderInput={(params) => (
-                    <TextField {...params} error={!valid} />
-                )}
-            />
-        );
     }
-};
+    return (
+        <Autocomplete
+            value={value}
+            freeSolo
+            options={[]}
+            onChange={(event, newValue: any) => handleOnChange(newValue)}
+            multiple
+            fullWidth
+            renderInput={(params) => <TextField {...params} error={!valid} />}
+        />
+    );
+}
 export default TextValueEditor;
