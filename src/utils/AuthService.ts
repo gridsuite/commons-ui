@@ -4,8 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { Dispatch } from 'react';
+import { NavigateFunction } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
-import { UserManagerMock } from './UserManagerMock';
+import UserManagerMock from './UserManagerMock';
 import {
     resetAuthenticationRouterError,
     setLoggedUser,
@@ -15,9 +18,6 @@ import {
     setUnauthorizedUserInfo,
     setUserValidationError,
 } from '../redux/actions';
-import { jwtDecode } from 'jwt-decode';
-import { Dispatch } from 'react';
-import { NavigateFunction } from 'react-router-dom';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
@@ -39,7 +39,7 @@ type CustomUserManager = UserManager & {
 };
 
 // set as a global variable to allow log level configuration at runtime
-//@ts-ignore
+// @ts-ignore
 window.OIDCLog = Log;
 
 const hackAuthorityKey = 'oidc.hack.authority';
@@ -72,10 +72,20 @@ function reloadTimerOnExpiresIn(
 ) {
     // Not allowed by TS because expires_in is supposed to be readonly
     // @ts-ignore
+    // eslint-disable-next-line no-param-reassign
     user.expires_in = expiresIn;
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
+}
+
+function getIdTokenExpiresIn(user: User) {
+    const now = Date.now() / 1000;
+    const { exp } = jwtDecode(user.id_token);
+    if (exp === undefined) {
+        return 0;
+    }
+    return exp - now;
 }
 
 function handleSigninSilent(
@@ -92,65 +102,8 @@ function handleSigninSilent(
                 }
             });
         }
+        return Promise.resolve();
     });
-}
-
-export async function initializeAuthenticationDev(
-    dispatch: Dispatch<unknown>,
-    isSilentRenew: boolean,
-    validateUser: UserValidationFunc,
-    isSigninCallback: boolean
-) {
-    const userManager: UserManager = new UserManagerMock({});
-    if (!isSilentRenew) {
-        handleUser(dispatch, userManager, validateUser);
-        if (!isSigninCallback) {
-            handleSigninSilent(dispatch, userManager);
-        }
-    }
-    return userManager;
-}
-
-const accessTokenExpiringNotificationTime = 60; // seconds
-
-export async function initializeAuthenticationProd(
-    dispatch: Dispatch<unknown>,
-    isSilentRenew: boolean,
-    idpSettingsGetter: IdpSettingsGetter,
-    validateUser: UserValidationFunc,
-    isSigninCallback: boolean
-) {
-    const idpSettings = await idpSettingsGetter();
-    try {
-        const settings = {
-            authority:
-                sessionStorage.getItem(hackAuthorityKey) ||
-                idpSettings.authority,
-            client_id: idpSettings.client_id,
-            redirect_uri: idpSettings.redirect_uri,
-            post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
-            silent_redirect_uri: idpSettings.silent_redirect_uri,
-            scope: idpSettings.scope,
-            automaticSilentRenew: !isSilentRenew,
-            accessTokenExpiringNotificationTime:
-                accessTokenExpiringNotificationTime,
-            response_type: 'code',
-        };
-        let userManager: CustomUserManager = new UserManager(settings);
-        // Hack to enrich UserManager object
-        userManager.idpSettings = idpSettings; //store our settings in there as well to use it later
-        if (!isSilentRenew) {
-            handleUser(dispatch, userManager, validateUser);
-            if (!isSigninCallback) {
-                handleSigninSilent(dispatch, userManager);
-            }
-        }
-        return userManager;
-    } catch (error: unknown) {
-        console.debug('error when importing the idp settings', error);
-        dispatch(setShowAuthenticationRouterLogin(true));
-        throw error;
-    }
 }
 
 function computeMinExpiresIn(
@@ -159,7 +112,7 @@ function computeMinExpiresIn(
     maxExpiresIn: number | undefined
 ) {
     const now = Date.now() / 1000;
-    const exp = jwtDecode(idToken).exp;
+    const { exp } = jwtDecode(idToken);
     if (exp === undefined) {
         return expiresIn;
     }
@@ -176,17 +129,10 @@ function computeMinExpiresIn(
     }
     if (newExpiresInReplaceReason) {
         console.debug(
-            'Replacing expiresIn in user to ' +
-                newExpiresIn +
-                ' because ' +
-                newExpiresInReplaceReason +
-                '. ',
+            `Replacing expiresIn in user to ${newExpiresIn} because ${newExpiresInReplaceReason}. `,
             'debug:',
-            'original expires_in: ' + expiresIn + ', ',
-            'idTokenExpiresIn: ' +
-                idTokenExpiresIn +
-                ', idpSettings maxExpiresIn: ' +
-                maxExpiresIn
+            `original expires_in: ${expiresIn}, `,
+            `idTokenExpiresIn: ${idTokenExpiresIn}, idpSettings maxExpiresIn: ${maxExpiresIn}`
         );
     }
     return newExpiresIn;
@@ -203,7 +149,7 @@ export function logout(
     dispatch: Dispatch<unknown>,
     userManagerInstance: UserManager
 ) {
-    sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
+    sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
     return userManagerInstance.getUser().then((user) => {
         if (user) {
@@ -225,19 +171,10 @@ export function logout(
                     dispatch(setLoggedUser(null));
                     dispatch(setLogoutError(user?.profile?.name, { error: e }));
                 });
-        } else {
-            console.log('Error nobody to logout ');
         }
+        console.log('Error nobody to logout ');
+        return Promise.resolve();
     });
-}
-
-function getIdTokenExpiresIn(user: User) {
-    const now = Date.now() / 1000;
-    const exp = jwtDecode(user.id_token).exp;
-    if (exp === undefined) {
-        return 0;
-    }
-    return exp - now;
 }
 
 export function dispatchUser(
@@ -254,11 +191,11 @@ export function dispatchUser(
                 console.debug(
                     'User token is expired and will not be dispatched'
                 );
-                return;
+                return Promise.resolve();
             }
             // without validateUser defined, valid user by default
-            let validateUserPromise =
-                (validateUser && validateUser(user)) || Promise.resolve(true);
+            const validateUserPromise =
+                validateUser?.(user) || Promise.resolve(true);
             return validateUserPromise
                 .then((valid) => {
                     if (!valid) {
@@ -293,9 +230,9 @@ export function dispatchUser(
                         })
                     );
                 });
-        } else {
-            console.debug('You are not logged in.');
         }
+        console.debug('You are not logged in.');
+        return Promise.resolve();
     });
 }
 
@@ -318,7 +255,7 @@ export function handleSigninCallback(
     let reloadAfterNavigate = false;
     userManagerInstance
         .signinRedirectCallback()
-        .catch(function (e) {
+        .catch((e) => {
             if (isIssuerError(e)) {
                 extractIssuerToSessionStorage(e);
                 // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
@@ -330,14 +267,14 @@ export function handleSigninCallback(
                 throw e;
             }
         })
-        .then(function () {
+        .then(() => {
             dispatch(setSignInCallbackError(null));
             navigateToPreLoginPath(navigate);
             if (reloadAfterNavigate) {
                 reload();
             }
         })
-        .catch(function (e) {
+        .catch((e) => {
             dispatch(setSignInCallbackError(e));
             console.error(e);
         });
@@ -346,6 +283,8 @@ export function handleSigninCallback(
 export function handleSilentRenewCallback(userManagerInstance: UserManager) {
     userManagerInstance.signinSilentCallback();
 }
+
+const accessTokenExpiringNotificationTime = 60; // seconds
 
 function handleUser(
     dispatch: Dispatch<unknown>,
@@ -373,32 +312,29 @@ function handleUser(
                 const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
                     console.log(
-                        'Error in silent renew, idtoken expired: ' +
-                            idTokenExpiresIn +
-                            ' => Logging out.',
+                        `Error in silent renew, idtoken expired: ${idTokenExpiresIn} => Logging out.`,
                         error
                     );
                     // remove the user from our app, but don't sso logout on all other apps
                     dispatch(setShowAuthenticationRouterLogin(true));
                     // logout during token expiration, show login without errors
                     dispatch(resetAuthenticationRouterError());
-                    return dispatch(setLoggedUser(null));
-                } else if (userManager.idpSettings?.maxExpiresIn) {
+                    dispatch(setLoggedUser(null));
+                    return;
+                }
+                if (userManager.idpSettings?.maxExpiresIn) {
                     if (
                         idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
                     ) {
                         // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
                         // for now we do the same thing as in the else block
                         console.log(
-                            'Error in silent renew, but idtoken ALMOST expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => last chance, next error will logout',
-                            'maxExpiresIn = ' +
-                                userManager.idpSettings.maxExpiresIn,
-                            'last renew attempt in ' +
-                                (idTokenExpiresIn -
-                                    accessTokenExpiringNotificationTime) +
-                                'seconds',
+                            `Error in silent renew, but idtoken ALMOST expiring (expiring in${idTokenExpiresIn}) => last chance, next error will logout`,
+                            `maxExpiresIn = ${userManager.idpSettings.maxExpiresIn}`,
+                            `last renew attempt in ${
+                                idTokenExpiresIn -
+                                accessTokenExpiringNotificationTime
+                            }seconds`,
                             error
                         );
                         reloadTimerOnExpiresIn(
@@ -408,10 +344,7 @@ function handleUser(
                         );
                     } else {
                         console.log(
-                            'Error in silent renew, but idtoken NOT expiring (expiring in' +
-                                idTokenExpiresIn +
-                                ') => postponing expiration to' +
-                                userManager.idpSettings.maxExpiresIn,
+                            `Error in silent renew, but idtoken NOT expiring (expiring in${idTokenExpiresIn}) => postponing expiration to${userManager.idpSettings.maxExpiresIn}`,
                             error
                         );
                         reloadTimerOnExpiresIn(
@@ -422,10 +355,7 @@ function handleUser(
                     }
                 } else {
                     console.log(
-                        'Error in silent renew, unsupported configuration: token still valid for ' +
-                            idTokenExpiresIn +
-                            ' but maxExpiresIn is not configured:' +
-                            userManager.idpSettings?.maxExpiresIn,
+                        `Error in silent renew, unsupported configuration: token still valid for ${idTokenExpiresIn} but maxExpiresIn is not configured:${userManager.idpSettings?.maxExpiresIn}`,
                         error
                     );
                 }
@@ -440,4 +370,59 @@ function handleUser(
 
     console.debug('dispatch user');
     dispatchUser(dispatch, userManager, validateUser);
+}
+
+export async function initializeAuthenticationDev(
+    dispatch: Dispatch<unknown>,
+    isSilentRenew: boolean,
+    validateUser: UserValidationFunc,
+    isSigninCallback: boolean
+) {
+    const userManager: UserManager = new UserManagerMock({});
+    if (!isSilentRenew) {
+        handleUser(dispatch, userManager, validateUser);
+        if (!isSigninCallback) {
+            handleSigninSilent(dispatch, userManager);
+        }
+    }
+    return userManager;
+}
+
+export async function initializeAuthenticationProd(
+    dispatch: Dispatch<unknown>,
+    isSilentRenew: boolean,
+    idpSettingsGetter: IdpSettingsGetter,
+    validateUser: UserValidationFunc,
+    isSigninCallback: boolean
+) {
+    const idpSettings = await idpSettingsGetter();
+    try {
+        const settings = {
+            authority:
+                sessionStorage.getItem(hackAuthorityKey) ||
+                idpSettings.authority,
+            client_id: idpSettings.client_id,
+            redirect_uri: idpSettings.redirect_uri,
+            post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,
+            silent_redirect_uri: idpSettings.silent_redirect_uri,
+            scope: idpSettings.scope,
+            automaticSilentRenew: !isSilentRenew,
+            accessTokenExpiringNotificationTime,
+            response_type: 'code',
+        };
+        const userManager: CustomUserManager = new UserManager(settings);
+        // Hack to enrich UserManager object
+        userManager.idpSettings = idpSettings; // store our settings in there as well to use it later
+        if (!isSilentRenew) {
+            handleUser(dispatch, userManager, validateUser);
+            if (!isSigninCallback) {
+                handleSigninSilent(dispatch, userManager);
+            }
+        }
+        return userManager;
+    } catch (error: unknown) {
+        console.debug('error when importing the idp settings', error);
+        dispatch(setShowAuthenticationRouterLogin(true));
+        throw error;
+    }
 }

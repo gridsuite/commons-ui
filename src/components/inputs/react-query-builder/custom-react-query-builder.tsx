@@ -11,6 +11,7 @@ import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
 import {
+    ActionWithRulesAndAddersProps,
     Field,
     formatQuery,
     QueryBuilder,
@@ -18,12 +19,11 @@ import {
 } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import RemoveButton from './remove-button';
+import { useCallback, useMemo } from 'react';
 import CombinatorSelector from './combinator-selector';
 import AddButton from './add-button';
 import ValueEditor from './value-editor';
 import ValueSelector from './value-selector';
-import { useCallback, useMemo } from 'react';
 
 import { COMBINATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 import ErrorInput from '../react-hook-form/error-management/error-input';
@@ -33,13 +33,23 @@ import {
     getOperators,
     queryValidator,
 } from '../../filter/expert/expert-filter-utils';
+import RemoveButton from './remove-button';
 
 interface CustomReactQueryBuilderProps {
     name: string;
     fields: Field[];
 }
 
-const CustomReactQueryBuilder = (props: CustomReactQueryBuilderProps) => {
+function RuleAddButton(props: ActionWithRulesAndAddersProps) {
+    return <AddButton {...props} label="rule" />;
+}
+
+function GroupAddButton(props: ActionWithRulesAndAddersProps) {
+    return <AddButton {...props} label="subGroup" />;
+}
+
+function CustomReactQueryBuilder(props: CustomReactQueryBuilderProps) {
+    const { name, fields } = props;
     const {
         getValues,
         setValue,
@@ -48,25 +58,25 @@ const CustomReactQueryBuilder = (props: CustomReactQueryBuilderProps) => {
     } = useFormContext();
     const intl = useIntl();
 
-    const query = watch(props.name);
+    const query = watch(name);
 
     // Ideally we should "clean" the empty groups after DnD as we do for the remove button
     // But it's the only callback we have access to in this case,
     // and we don't have access to the path, so it can't be done in a proper way
     const handleQueryChange = useCallback(
         (newQuery: RuleGroupTypeAny) => {
-            const oldQuery = getValues(props.name);
+            const oldQuery = getValues(name);
             const hasQueryChanged =
                 formatQuery(oldQuery, 'json_without_ids') !==
                 formatQuery(newQuery, 'json_without_ids');
             const hasAddedRules = countRules(newQuery) > countRules(oldQuery);
-            setValue(props.name, newQuery, {
+            setValue(name, newQuery, {
                 shouldDirty: hasQueryChanged,
                 shouldValidate:
                     isSubmitted && hasQueryChanged && !hasAddedRules,
             });
         },
-        [getValues, setValue, isSubmitted, props.name]
+        [getValues, setValue, isSubmitted, name]
     );
 
     const combinators = useMemo(() => {
@@ -84,9 +94,9 @@ const CustomReactQueryBuilder = (props: CustomReactQueryBuilderProps) => {
                         dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}
                     >
                         <QueryBuilder
-                            fields={props.fields}
+                            fields={fields}
                             query={query}
-                            addRuleToNewGroups={true}
+                            addRuleToNewGroups
                             combinators={combinators}
                             onQueryChange={handleQueryChange}
                             getOperators={(fieldName) =>
@@ -97,12 +107,8 @@ const CustomReactQueryBuilder = (props: CustomReactQueryBuilderProps) => {
                                 queryBuilder: 'queryBuilder-branches',
                             }}
                             controlElements={{
-                                addRuleAction: (props) => (
-                                    <AddButton {...props} label="rule" />
-                                ),
-                                addGroupAction: (props) => (
-                                    <AddButton {...props} label="subGroup" />
-                                ),
+                                addRuleAction: RuleAddButton,
+                                addGroupAction: GroupAddButton,
                                 combinatorSelector: CombinatorSelector,
                                 removeRuleAction: RemoveButton,
                                 removeGroupAction: RemoveButton,
@@ -117,10 +123,10 @@ const CustomReactQueryBuilder = (props: CustomReactQueryBuilderProps) => {
                 </QueryBuilderMaterial>
             </Grid>
             <Grid item xs={12}>
-                <ErrorInput name={props.name} InputField={FieldErrorAlert} />
+                <ErrorInput name={name} InputField={FieldErrorAlert} />
             </Grid>
         </>
     );
-};
+}
 
 export default CustomReactQueryBuilder;

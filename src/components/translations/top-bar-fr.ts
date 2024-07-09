@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const top_bar_fr = {
+const topBarFr = {
     'top-bar/settings': 'Paramètres',
     'top-bar/logout': 'Se déconnecter',
     'top-bar/goFullScreen': 'Plein écran',
@@ -31,4 +31,4 @@ const top_bar_fr = {
     'about-dialog/module-tooltip-other': 'autre',
 };
 
-export default top_bar_fr;
+export default topBarFr;

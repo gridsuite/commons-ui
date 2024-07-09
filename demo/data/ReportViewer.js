@@ -6,7 +6,7 @@
  */
 /* eslint-disable no-template-curly-in-string */
 
-export const LOGS_JSON = {
+const LOGS_JSON = {
     taskKey: 'Test',
     defaultName: 'Test',
     taskValues: {},
@@ -230,3 +230,5 @@ export const LOGS_JSON = {
     ],
     reports: [],
 };
+
+export default LOGS_JSON;

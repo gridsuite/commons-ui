@@ -5,33 +5,38 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UniqueNameInput } from '../inputs/react-hook-form/unique-name-input';
-import { FieldConstants } from '../../utils/field-constants';
+import React, { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { Grid } from '@mui/material';
+import { UUID } from 'crypto';
+import FieldConstants from '../../utils/field-constants';
 import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form';
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
-import React, { FunctionComponent, useEffect } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
 import ExpertFilterForm from './expert/expert-filter-form';
-import { Grid } from '@mui/material';
-import { ElementType } from '../../utils/ElementType';
-import { UUID } from 'crypto';
-import { elementExistsType } from './criteria-based/criteria-based-filter-edition-dialog';
 import { FilterType } from './constants/filter-constants';
 import ExpandableGroup from '../ExpandableGroup';
 import RadioInput from '../inputs/react-hook-form/radio-input';
+import { ElementExistsType, ElementType } from '../../utils/ElementType';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
+import UniqueNameInput from '../inputs/react-hook-form/unique-name-input';
 
 interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    elementExists?: elementExistsType;
+    elementExists?: ElementExistsType;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
     };
 }
 
-export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
+function FilterForm(props: FilterFormProps) {
+    const {
+        sourceFilterForExplicitNamingConversion,
+        creation,
+        activeDirectory,
+        elementExists,
+    } = props;
     const { setValue } = useFormContext();
 
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
@@ -45,36 +50,36 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
     };
 
     useEffect(() => {
-        if (props.sourceFilterForExplicitNamingConversion) {
+        if (sourceFilterForExplicitNamingConversion) {
             setValue(FieldConstants.FILTER_TYPE, FilterType.EXPLICIT_NAMING.id);
         }
-    }, [props.sourceFilterForExplicitNamingConversion, setValue]);
+    }, [sourceFilterForExplicitNamingConversion, setValue]);
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <UniqueNameInput
                     name={FieldConstants.NAME}
-                    label={'nameProperty'}
+                    label="nameProperty"
                     elementType={ElementType.FILTER}
-                    autoFocus={props.creation}
-                    activeDirectory={props.activeDirectory}
-                    elementExists={props.elementExists}
+                    autoFocus={creation}
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
                 />
             </Grid>
-            {props.creation && (
+            {creation && (
                 <>
                     <Grid item xs={12}>
-                        <ExpandableGroup renderHeader={'Description'}>
+                        <ExpandableGroup renderHeader="Description">
                             <ExpandingTextField
                                 name={FieldConstants.DESCRIPTION}
-                                label={'descriptionProperty'}
+                                label="descriptionProperty"
                                 minRows={3}
                                 rows={5}
                             />
                         </ExpandableGroup>
                     </Grid>
-                    {!props.sourceFilterForExplicitNamingConversion && (
+                    {!sourceFilterForExplicitNamingConversion && (
                         <Grid item>
                             <RadioInput
                                 name={FieldConstants.FILTER_TYPE}
@@ -91,11 +96,13 @@ export const FilterForm: FunctionComponent<FilterFormProps> = (props) => {
             {filterType === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={
-                        props.sourceFilterForExplicitNamingConversion
+                        sourceFilterForExplicitNamingConversion
                     }
                 />
             )}
             {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
         </Grid>
     );
-};
+}
+
+export default FilterForm;

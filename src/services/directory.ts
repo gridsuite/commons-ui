@@ -5,12 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { backendFetchJson, getRequestParamFromList } from './utils';
 import { UUID } from 'crypto';
+import { backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_DIRECTORY_SERVER_QUERIES =
-    import.meta.env.VITE_API_GATEWAY + '/directory';
+const PREFIX_DIRECTORY_SERVER_QUERIES = `${
+    import.meta.env.VITE_API_GATEWAY
+}/directory`;
 
 export function fetchRootFolders(
     types: string[]
@@ -19,8 +20,8 @@ export function fetchRootFolders(
 
     // Add params to Url
     const urlSearchParams = getRequestParamFromList(
-        types,
-        'elementTypes'
+        'elementTypes',
+        types
     ).toString();
     const fetchRootFoldersUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/root-directories?${urlSearchParams}`;
     return backendFetchJson(fetchRootFoldersUrl, {
@@ -37,12 +38,12 @@ export function fetchDirectoryContent(
 
     // Add params to Url
     const urlSearchParams = getRequestParamFromList(
-        types,
-        'elementTypes'
+        'elementTypes',
+        types
     ).toString();
 
-    let fetchDirectoryContentUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements${
-        urlSearchParams ? '?' + urlSearchParams : ''
+    const fetchDirectoryContentUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements${
+        urlSearchParams ? `?${urlSearchParams}` : ''
     }`;
     return backendFetchJson(fetchDirectoryContentUrl, {
         method: 'get',

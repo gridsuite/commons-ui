@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants } from '../../../utils/field-constants';
-import { FreePropertiesTypes } from './filter-properties';
+import FieldConstants from '../../../utils/field-constants';
 import {
     PROPERTY_NAME,
     PROPERTY_VALUES,
@@ -21,6 +20,7 @@ import {
     getRangeInputDataForm,
     getRangeInputSchema,
 } from '../../inputs/react-hook-form/range-input';
+import { FreePropertiesTypes } from './filter-free-properties';
 
 export const getCriteriaBasedSchema = (extraFields: any) => ({
     [FieldConstants.CRITERIA_BASED]: yup.object().shape({
@@ -140,6 +140,47 @@ export const backToFrontTweak = (response: any) => {
     return ret;
 };
 
+function isNominalVoltageEmpty(
+    nominalVoltage: Record<string, unknown>
+): boolean {
+    return (
+        nominalVoltage[FieldConstants.VALUE_1] === null &&
+        nominalVoltage[FieldConstants.VALUE_2] === null
+    );
+}
+
+// The server expect them to be null if the user don't fill them, unlike contingency list
+function cleanNominalVoltages(formValues: any) {
+    const cleanedFormValues = { ...formValues };
+    if (
+        isNominalVoltageEmpty(cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE])
+    ) {
+        cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE] = null;
+    }
+    if (
+        isNominalVoltageEmpty(
+            cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_1]
+        )
+    ) {
+        cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_1] = null;
+    }
+    if (
+        isNominalVoltageEmpty(
+            cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_2]
+        )
+    ) {
+        cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_2] = null;
+    }
+    if (
+        isNominalVoltageEmpty(
+            cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_3]
+        )
+    ) {
+        cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_3] = null;
+    }
+    return cleanedFormValues;
+}
+
 /**
  * Transform
  * from obj.criteriaBased.freeProperties.[
@@ -205,29 +246,3 @@ export const frontToBackTweak = (id?: string, filter?: any) => {
     eff.freeProperties = freeProps;
     return ret;
 };
-
-// The server expect them to be null if the user don't fill them, unlike contingency list
-function cleanNominalVoltages(formValues: any) {
-    if (isNominalVoltageEmpty(formValues[FieldConstants.NOMINAL_VOLTAGE])) {
-        formValues[FieldConstants.NOMINAL_VOLTAGE] = null;
-    }
-    if (isNominalVoltageEmpty(formValues[FieldConstants.NOMINAL_VOLTAGE_1])) {
-        formValues[FieldConstants.NOMINAL_VOLTAGE_1] = null;
-    }
-    if (isNominalVoltageEmpty(formValues[FieldConstants.NOMINAL_VOLTAGE_2])) {
-        formValues[FieldConstants.NOMINAL_VOLTAGE_2] = null;
-    }
-    if (isNominalVoltageEmpty(formValues[FieldConstants.NOMINAL_VOLTAGE_3])) {
-        formValues[FieldConstants.NOMINAL_VOLTAGE_3] = null;
-    }
-    return formValues;
-}
-
-function isNominalVoltageEmpty(
-    nominalVoltage: Record<string, unknown>
-): boolean {
-    return (
-        nominalVoltage[FieldConstants.VALUE_1] === null &&
-        nominalVoltage[FieldConstants.VALUE_2] === null
-    );
-}

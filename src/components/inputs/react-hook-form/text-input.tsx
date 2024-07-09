@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import {
     IconButton,
     InputAdornment,
@@ -24,7 +24,7 @@ import {
     identity,
     isFieldRequired,
 } from './utils/functions';
-import { useCustomFormContext } from './provider/use-custom-form-context';
+import useCustomFormContext from './provider/use-custom-form-context';
 
 import { Input } from '../../../utils/types';
 
@@ -49,20 +49,20 @@ export interface TextInputProps {
     >;
 }
 
-const TextInput: FunctionComponent<TextInputProps> = ({
+function TextInput({
     name,
     label,
     labelValues, // this prop is used to add a value to label. this value is displayed without being translated
     id,
     adornment,
     customAdornment,
-    outputTransform = identity, //transform materialUi input value before sending it to react hook form, mostly used to deal with number fields
-    inputTransform = identity, //transform react hook form value before sending it to materialUi input, mostly used to deal with number fields
-    acceptValue = () => true, //used to check user entry before committing the input change, used mostly to prevent user from typing a character in number field
+    outputTransform = identity, // transform materialUi input value before sending it to react hook form, mostly used to deal with number fields
+    inputTransform = identity, // transform react hook form value before sending it to materialUi input, mostly used to deal with number fields
+    acceptValue = () => true, // used to check user entry before committing the input change, used mostly to prevent user from typing a character in number field
     previousValue,
     clearable,
     formProps,
-}) => {
+}: TextInputProps) {
     const { validationSchema, getValues, removeOptional } =
         useCustomFormContext();
     const {
@@ -101,10 +101,10 @@ const TextInput: FunctionComponent<TextInputProps> = ({
 
     return (
         <Field
-            key={id ? id : label}
+            key={id ?? label}
             size="small"
             fullWidth
-            id={id ? id : label}
+            id={id ?? label}
             label={fieldLabel}
             value={transformedValue}
             onChange={handleValueChanged}
@@ -125,7 +125,7 @@ const TextInput: FunctionComponent<TextInputProps> = ({
             inputRef={ref}
             {...(clearable &&
                 adornment && {
-                    handleClearValue: handleClearValue,
+                    handleClearValue,
                 })}
             {...genHelperPreviousValue(previousValue!, adornment)}
             {...genHelperError(error?.message)}
@@ -133,6 +133,6 @@ const TextInput: FunctionComponent<TextInputProps> = ({
             {...finalAdornment}
         />
     );
-};
+}
 
 export default TextInput;

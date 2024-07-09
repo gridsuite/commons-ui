@@ -4,6 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+/* eslint-disable max-classes-per-file, class-methods-use-this */
+
 import {
     MetadataService,
     SigninRequest,
@@ -23,11 +26,14 @@ class Events implements UserManagerEvents {
         this.userLoadedCallbacks.push(callback);
     }
 
+    // eslint-disable-next-line
     addSilentRenewError(callback: (data: any) => void) {
         // Nothing to do
     }
 
-    load(/*container: User*/) {}
+    load(/* container: User */) {
+        // not implemented
+    }
 
     unload() {}
 
@@ -60,9 +66,11 @@ class Events implements UserManagerEvents {
     removeAccessTokenExpired() {}
 }
 
-export class UserManagerMock implements UserManager {
+export default class UserManagerMock implements UserManager {
     settings;
+
     events;
+
     user: User = {
         profile: {
             name: 'John Doe',
@@ -104,6 +112,7 @@ export class UserManagerMock implements UserManager {
         state: null,
         toStorageString: () => 'Mock of UserManager',
     };
+
     readonly metadataService: MetadataService =
         null as unknown as MetadataService;
 
@@ -112,6 +121,7 @@ export class UserManagerMock implements UserManager {
         this.events = new Events();
     }
 
+    // eslint-disable-next-line class-methods-use-this
     getUser() {
         return Promise.resolve(
             JSON.parse(
@@ -136,6 +146,7 @@ export class UserManagerMock implements UserManager {
         return localStorageUser;
     }
 
+    // eslint-disable-next-line class-methods-use-this
     signinSilentCallback() {
         console.error(
             'Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)'
@@ -152,6 +163,7 @@ export class UserManagerMock implements UserManager {
         return Promise.resolve();
     }
 
+    // eslint-disable-next-line class-methods-use-this
     signoutRedirect() {
         sessionStorage.removeItem('powsybl-gridsuite-mock-user');
         localStorage.removeItem('powsybl-gridsuite-mock-user');

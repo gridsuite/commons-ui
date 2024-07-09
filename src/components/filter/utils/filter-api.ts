@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants } from '../../../utils/field-constants';
+import { UUID } from 'crypto';
+import FieldConstants from '../../../utils/field-constants';
 import { frontToBackTweak } from '../criteria-based/criteria-based-filter-utils';
 import { Generator, Load } from '../../../utils/equipment-types';
 import { exportExpertRules } from '../expert/expert-filter-utils';
-import { UUID } from 'crypto';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 import { createFilter, saveFilter } from '../../../services/explore';
 
@@ -43,7 +43,7 @@ export const saveExplicitNamingFilter = (
         createFilter(
             {
                 type: FilterType.EXPLICIT_NAMING.id,
-                equipmentType: equipmentType,
+                equipmentType,
                 filterEquipmentsAttributes: cleanedTableValues,
             },
             name,
@@ -60,9 +60,9 @@ export const saveExplicitNamingFilter = (
     } else {
         saveFilter(
             {
-                id: id,
+                id,
                 type: FilterType.EXPLICIT_NAMING.id,
-                equipmentType: equipmentType,
+                equipmentType,
                 filterEquipmentsAttributes: cleanedTableValues,
             },
             name,
@@ -116,7 +116,7 @@ export const saveExpertFilter = (
         createFilter(
             {
                 type: FilterType.EXPERT.id,
-                equipmentType: equipmentType,
+                equipmentType,
                 rules: exportExpertRules(query),
             },
             name,
@@ -133,9 +133,9 @@ export const saveExpertFilter = (
     } else {
         saveFilter(
             {
-                id: id,
+                id,
                 type: FilterType.EXPERT.id,
-                equipmentType: equipmentType,
+                equipmentType,
                 rules: exportExpertRules(query),
             },
             name,
