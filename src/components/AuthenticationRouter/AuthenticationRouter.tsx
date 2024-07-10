@@ -70,17 +70,6 @@ function AuthenticationRouter({
             handleSilentRenewCallback(userManager.instance);
         }
     }, [userManager.instance]);
-    const loginClosure = useCallback(() => {
-        if (userManager.instance != null) {
-            login(location, userManager.instance);
-        }
-    }, [location, userManager.instance]);
-    const logoutClosure = useCallback(() => {
-        if (userManager.instance != null) {
-            logout(dispatch, userManager.instance);
-        }
-    }, [dispatch, userManager.instance]);
-
     return (
         <Grid
             container
@@ -126,7 +115,9 @@ function AuthenticationRouter({
                         authenticationRouterError == null && (
                             <Login
                                 disabled={userManager.instance === null}
-                                onLoginClick={loginClosure}
+                                onLoginClick={() =>
+                                    login(location, userManager.instance)
+                                }
                             />
                         )
                     }
@@ -138,7 +129,9 @@ function AuthenticationRouter({
                     <Grid item>
                         <Logout
                             disabled={userManager.instance === null}
-                            onLogoutClick={logoutClosure}
+                            onLogoutClick={() =>
+                                logout(dispatch, userManager.instance)
+                            }
                         />
                     </Grid>
                     <Grid item xs={4}>

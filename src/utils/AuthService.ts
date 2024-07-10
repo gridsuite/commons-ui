@@ -76,7 +76,6 @@ function reloadTimerOnExpiresIn(
     // @ts-ignore
     // eslint-disable-next-line no-param-reassign
     user.expires_in = expiresIn;
-    // TODO not waiting or passing the promise?
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
@@ -95,7 +94,6 @@ function handleSigninSilent(
     dispatch: Dispatch<AuthenticationActions>,
     userManager: UserManager
 ) {
-    // TODO not waiting or passing the promise?
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error: Error) => {
@@ -142,20 +140,23 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-export function login(location: Location, userManagerInstance: UserManager) {
+export function login(
+    location: Location,
+    userManagerInstance: UserManager | null
+) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
-        .signinRedirect()
+        ?.signinRedirect()
         .then(() => console.debug('login'));
 }
 
 export function logout(
     dispatch: Dispatch<AuthenticationActions>,
-    userManagerInstance: UserManager
+    userManagerInstance: UserManager | null
 ) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
-    return userManagerInstance.getUser().then((user) => {
+    return userManagerInstance?.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
             return userManagerInstance
@@ -257,7 +258,6 @@ export function handleSigninCallback(
     userManagerInstance: UserManager
 ) {
     let reloadAfterNavigate = false;
-    // TODO not waiting or passing the promise?
     userManagerInstance
         .signinRedirectCallback()
         .catch((e: Error) => {
@@ -305,7 +305,6 @@ function handleUser(
         // otherwise the library will fire AccessTokenExpiring everytime we do getUser()
         // Indeed, getUSer() => loadUser() => load() on events => if it's already expiring it will be init and triggerred again
         window.setTimeout(() => {
-            // TODO not waiting or passing the promise?
             userManager.getUser().then((user) => {
                 if (!user) {
                     console.error(
