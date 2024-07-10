@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { UserManager } from 'oidc-client';
 
 export interface SilentRenewCallbackHandlerProps {
-    userManager: UserManager;
+    userManager: UserManager | null;
     handleSilentRenewCallback: () => void;
 }
 

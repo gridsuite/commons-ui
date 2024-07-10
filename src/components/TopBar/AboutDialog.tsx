@@ -134,7 +134,7 @@ function compareModules(c1: ModuleDefinition, c2: ModuleDefinition) {
     );
 }
 
-type GridSuiteModule = {
+export type GridSuiteModule = {
     name: string;
     type: ModuleType;
     version?: string;

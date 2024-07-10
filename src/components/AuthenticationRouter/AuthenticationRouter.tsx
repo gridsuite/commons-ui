@@ -6,7 +6,13 @@
  */
 
 import { Dispatch, useCallback } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+    Location,
+    Navigate,
+    NavigateFunction,
+    Route,
+    Routes,
+} from 'react-router-dom';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
     handleSigninCallback,
@@ -17,27 +23,29 @@ import {
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
-
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
+import { AuthenticationActions } from '../../redux/authActions';
+
+export type AuthenticationRouterErrorState = {
+    userName?: string;
+    userValidationError?: { error: Error };
+    logoutError?: { error: Error };
+    unauthorizedUserInfo?: string;
+};
+export type UserManagerState = {
+    instance: UserManager | null;
+    error: string | null;
+};
 
 export interface AuthenticationRouterProps {
-    userManager: {
-        instance: UserManager;
-        error: string;
-    };
-    signInCallbackError: { message: string };
-    authenticationRouterError: {
-        userName: string;
-        userValidationError?: { error: Error };
-        logoutError?: { error: Error };
-        unauthorizedUserInfo?: string;
-        error: string;
-    };
+    userManager: UserManagerState;
+    signInCallbackError: Error | null;
+    authenticationRouterError: AuthenticationRouterErrorState | null;
     showAuthenticationRouterLogin: boolean;
-    dispatch: Dispatch<unknown>;
-    navigate: () => void;
+    dispatch: Dispatch<AuthenticationActions>;
+    navigate: NavigateFunction;
     location: Location;
 }
 
@@ -50,15 +58,16 @@ const AuthenticationRouter = ({
     navigate,
     location,
 }: AuthenticationRouterProps) => {
-    const handleSigninCallbackClosure = useCallback(
-        () => handleSigninCallback(dispatch, navigate, userManager.instance),
-        [dispatch, navigate, userManager.instance]
-    );
-    const handleSilentRenewCallbackClosure = useCallback(
-        () => handleSilentRenewCallback(userManager.instance),
-        [userManager.instance]
-    );
-
+    const handleSigninCallbackClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            handleSigninCallback(dispatch, navigate, userManager.instance);
+        }
+    }, [dispatch, navigate, userManager.instance]);
+    const handleSilentRenewCallbackClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            handleSilentRenewCallback(userManager.instance);
+        }
+    }, [userManager.instance]);
     return (
         <Grid
             container

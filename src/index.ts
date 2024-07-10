@@ -8,8 +8,14 @@
 export { default as TreeViewFinder } from './components/TreeViewFinder';
 export { default as TopBar } from './components/TopBar';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
+export type { GridSuiteModule } from './components/TopBar/AboutDialog';
 export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
+export type {
+    AuthenticationRouterErrorState,
+    AuthenticationRouterProps,
+    UserManagerState,
+} from './components/AuthenticationRouter';
 export { default as MuiVirtualizedTable } from './components/MuiVirtualizedTable';
 export {
     KeyedColumnsRowIndexer,
@@ -96,6 +102,7 @@ export {
     LANG_ENGLISH,
     LANG_FRENCH,
 } from './components/TopBar/TopBar';
+export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
 
 export {
     USER,
@@ -107,7 +114,18 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './redux/actions';
+} from './redux/authActions';
+export type {
+    AuthenticationActions,
+    AuthenticationRouterErrorBase,
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
+    ShowAuthenticationRouterLoginAction,
+    SignInCallbackErrorAction,
+    UnauthorizedUserAction,
+    UserAction,
+    UserValidationErrorAction,
+} from './redux/authActions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -227,6 +245,7 @@ export {
 
 export { mergeSx } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
+export type { CommonStoreState } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
 export * from './services';

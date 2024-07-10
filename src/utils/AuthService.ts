@@ -14,10 +14,11 @@ import {
     setUserValidationError,
     resetAuthenticationRouterError,
     setShowAuthenticationRouterLogin,
-} from '../redux/actions';
+    AuthenticationActions,
+} from '../redux/authActions';
 import { jwtDecode } from 'jwt-decode';
 import { Dispatch } from 'react';
-import { NavigateFunction } from 'react-router-dom';
+import { Location, NavigateFunction } from 'react-router-dom';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 
@@ -70,7 +71,7 @@ function reloadTimerOnExpiresIn(
 }
 
 function handleSigninSilent(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManager: UserManager
 ) {
     userManager.getUser().then((user) => {
@@ -95,7 +96,7 @@ function handleSigninSilent(
 }
 
 function initializeAuthenticationDev(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
@@ -115,7 +116,7 @@ function initializeAuthenticationDev(
 const accessTokenExpiringNotificationTime = 60; // seconds
 
 function initializeAuthenticationProd(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     idpSettings: Promise<Response>,
     validateUser: UserValidationFunc,
@@ -211,7 +212,7 @@ function initializeAuthenticationProd(
             }
             return userManager;
         })
-        .catch((error) => {
+        .catch((error: Error) => {
             console.debug('error when importing the idp settings', error);
             dispatch(setShowAuthenticationRouterLogin(true));
             throw error;
@@ -257,16 +258,19 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-function login(location: Location, userManagerInstance: UserManager) {
+function login(location: Location, userManagerInstance: UserManager | null) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
-        .signinRedirect()
+        ?.signinRedirect()
         .then(() => console.debug('login'));
 }
 
-function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
+function logout(
+    dispatch: Dispatch<AuthenticationActions>,
+    userManagerInstance: UserManager | null
+) {
     sessionStorage.removeItem(hackAuthorityKey); //To remove when hack is removed
-    return userManagerInstance.getUser().then((user) => {
+    return userManagerInstance?.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
             return userManagerInstance
@@ -280,7 +284,7 @@ function logout(dispatch: Dispatch<unknown>, userManagerInstance: UserManager) {
                 .then(() => {
                     console.debug('logged out, window is closing...');
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     console.log('Error during logout :', e);
                     // An error occured, window may not be closed, reset the user state
                     dispatch(setLoggedUser(null));
@@ -302,7 +306,7 @@ function getIdTokenExpiresIn(user: User) {
 }
 
 function dispatchUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -349,7 +353,7 @@ function dispatchUser(
                     }
                     return dispatch(setLoggedUser(user));
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     console.log('Error in dispatchUser', e);
                     return dispatch(
                         setUserValidationError(user?.profile?.name, {
@@ -375,14 +379,14 @@ function navigateToPreLoginPath(navigate: NavigateFunction) {
 }
 
 function handleSigninCallback(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     navigate: NavigateFunction,
     userManagerInstance: UserManager
 ) {
     let reloadAfterNavigate = false;
     userManagerInstance
         .signinRedirectCallback()
-        .catch(function (e) {
+        .catch(function (e: Error) {
             if (isIssuerErrorForCodeFlow(e)) {
                 // Replacing authority for code flow only because it's done in the hash for implicit flow
                 // TODO: Can we also do it here for the implicit flow ? To make it common here for both flows
@@ -403,7 +407,7 @@ function handleSigninCallback(
                 reload();
             }
         })
-        .catch(function (e) {
+        .catch(function (e: Error) {
             dispatch(setSignInCallbackError(e));
             console.error(e);
         });
@@ -414,7 +418,7 @@ function handleSilentRenewCallback(userManagerInstance: UserManager) {
 }
 
 function handleUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManager: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
