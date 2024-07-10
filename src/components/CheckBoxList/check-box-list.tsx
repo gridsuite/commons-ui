@@ -5,17 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {
-    FunctionComponent,
-    MouseEvent,
-    useCallback,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { Box, Divider, IconButton, List, ListItem } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Draggable } from 'react-beautiful-dnd';
-import CheckBoxItem, { HasId } from './check-box-item';
-import { useMultiselect } from './use-multiselect';
+import CheckBoxItem from './check-box-item';
 
 interface CheckboxListProps {
     itemRenderer?: (params: {
@@ -25,11 +19,10 @@ interface CheckboxListProps {
         toggleSelection: (id: any) => void;
     }) => React.ReactNode;
     values: any[];
+    selectedItems: any[];
+    setSelectedItems: (selectedItems: any[]) => void;
     defaultSelected?: any[];
     itemComparator?: (val1: any, val2: any) => boolean;
-    isAllSelected?: boolean;
-    setIsAllSelected?: (value: boolean) => void;
-    setIsPartiallySelected?: (value: boolean) => void;
     getValueId: (value: any) => any;
     getValueLabel?: (value: any) => string;
     checkboxListSx?: any;
@@ -38,10 +31,9 @@ interface CheckboxListProps {
     isCheckBoxDraggable?: boolean;
     isDragDisable?: boolean;
     draggableProps?: any;
-    secondaryAction?: (item: HasId) => React.ReactElement;
+    secondaryAction?: (item: any) => React.ReactElement;
     enableSecondaryActionOnHover?: boolean;
     isDisabled?: (item: any) => boolean;
-    [key: string]: any;
 }
 
 export const areIdsEqual = (val1: any, val2: any) => {
@@ -62,9 +54,6 @@ const CheckboxList: FunctionComponent<CheckboxListProps> = ({
     values = [],
     defaultSelected = [],
     itemComparator = areIdsEqual,
-    isAllSelected = undefined,
-    setIsAllSelected = undefined,
-    setIsPartiallySelected = undefined,
     getValueId = (value) => value?.id ?? value,
     getValueLabel = (value) => value?.label ?? value,
     checkboxListSx,
@@ -76,50 +65,42 @@ const CheckboxList: FunctionComponent<CheckboxListProps> = ({
     secondaryAction,
     enableSecondaryActionOnHover = true,
     isDisabled = (item: any) => false,
+    selectedItems,
+    setSelectedItems,
     ...props
 }) => {
-    const { toggleSelection, selectedIds, handleShiftAndCtrlClick } =
-        useMultiselect(
-            values.map((v) => getValueId(v)),
-            defaultSelected.map((v) => getValueId(v))
-        );
+    const toggleSelection = useCallback(
+        (elementToToggleId: string) => {
+            const element = values?.find(
+                (v) => getValueId(v) === elementToToggleId
+            );
+            if (element === undefined) {
+                return;
+            }
+
+            const elementSelected = selectedItems.find(
+                (v) => getValueId(v) === elementToToggleId
+            );
+            const newValues = [...selectedItems];
+            if (elementSelected === undefined) {
+                newValues.push(element);
+                setSelectedItems(newValues);
+            } else {
+                setSelectedItems(
+                    newValues.filter((v) => getValueId(v) !== elementToToggleId)
+                );
+            }
+        },
+        [values, selectedItems, getValueId, setSelectedItems]
+    );
 
     const isChecked = useCallback(
-        (item: any) => selectedIds.includes(getValueId(item)),
-        [selectedIds, getValueId]
+        (item: any) =>
+            selectedItems.map((v) => getValueId(v)).includes(getValueId(item)),
+        [selectedItems, getValueId]
     );
 
     const [hover, setHover] = useState(null);
-
-    /*useEffect(() => {
-        if (isAllSelected !== undefined) {
-            if (isAllSelected && selectedIds.length !== values.length) {
-                toggleSelectAll(true);
-            } else if (!isAllSelected && selectedIds.length !== 0) {
-                toggleSelectAll(false);
-            }
-        }
-    }, [isAllSelected, toggleSelectAll, values.length, selectedIds.length]);*/
-
-    const handleCheckBoxClicked = useCallback((
-        event: MouseEvent<HTMLButtonElement>,
-        item: any
-    ) => {
-        toggleSelection(getValueId(item));
-        const selectedIdsLength = selectedIds.length;
-        if (setIsAllSelected) {
-            setIsAllSelected(selectedIdsLength === values.length);
-        }
-
-        if (setIsPartiallySelected) {
-            setIsPartiallySelected(
-                selectedIdsLength !== 0 && selectedIdsLength < values.length
-            );
-        }
-        if (enableKeyboardSelection) {
-            handleShiftAndCtrlClick(event, getValueId(item));
-        }
-    }, []);
 
     const handleSecondaryAction = (item: any) => {
         if (!secondaryAction) {
@@ -193,12 +174,9 @@ const CheckboxList: FunctionComponent<CheckboxListProps> = ({
                                                         ? getValueLabel(item)
                                                         : ''
                                                 }
-                                                onClick={(
-                                                    e: MouseEvent<HTMLButtonElement>
-                                                ) =>
-                                                    handleCheckBoxClicked(
-                                                        e,
-                                                        item
+                                                onClick={() =>
+                                                    toggleSelection(
+                                                        getValueId(item)
                                                     )
                                                 }
                                                 secondaryAction={handleSecondaryAction(
@@ -221,8 +199,8 @@ const CheckboxList: FunctionComponent<CheckboxListProps> = ({
                                 item={item}
                                 checked={isChecked(item)}
                                 label={getValueLabel(item)}
-                                onClick={(e: MouseEvent<HTMLButtonElement>) =>
-                                    handleCheckBoxClicked(e, item)
+                                onClick={() =>
+                                    toggleSelection(getValueId(item))
                                 }
                                 secondaryAction={handleSecondaryAction(item)}
                                 labelSx={labelSx}

@@ -47,8 +47,6 @@ const MultipleSelectionDialog = ({
         }
     };
 
-    const [isAllSelected, setIsAllSelected] = useState(false);
-    const [isAnySelected, setIsAnySelected] = useState(false);
     return (
         <Dialog open={open}>
             <DialogTitle>{titleId}</DialogTitle>
@@ -63,8 +61,8 @@ const MultipleSelectionDialog = ({
                             }
                             control={
                                 <Checkbox
-                                    checked={isAllSelected}
-                                    indeterminate={isAnySelected}
+                                    checked={selectedIds.length !== 0}
+                                    indeterminate={selectedIds.length > 0 && selectedIds.length !== options.length}
                                     onChange={handleSelectAll}
                                 />
                             }
@@ -73,9 +71,8 @@ const MultipleSelectionDialog = ({
                     <Grid item>
                         <CheckboxList
                             values={options}
-                            isAllSelected={isAllSelected}
-                            setIsAllSelected={setIsAllSelected}
-                            setIsPartiallySelected={setIsAnySelected}
+                            selectedItems={selectedIds}
+                            setSelectedItems={setSelectedIds}
                             getValueId={(v) => v}
                             defaultSelected={selectedOptions}
                             getValueLabel={getOptionLabel}

@@ -1,13 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Checkbox, ListItemIcon } from '@mui/material';
 import { SxProps } from '@mui/material';
-import OverflowableText from '../OverflowableText';
-
-export interface HasId {
-    id?: string;
-    uuid?: string;
-    [key: string]: any; // Allow any other properties
-}
+import { OverflowableText } from '@gridsuite/commons-ui';
 
 export interface CheckBoxItemProps {
     item: any;
@@ -17,7 +11,7 @@ export interface CheckBoxItemProps {
     label: string;
     onClick: (
         event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        id: HasId
+        item: any
     ) => void;
     secondaryAction?: React.ReactElement | undefined;
     disabled: boolean | undefined;
