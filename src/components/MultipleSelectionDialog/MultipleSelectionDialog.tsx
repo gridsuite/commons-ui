@@ -62,7 +62,10 @@ const MultipleSelectionDialog = ({
                             control={
                                 <Checkbox
                                     checked={selectedIds.length !== 0}
-                                    indeterminate={selectedIds.length > 0 && selectedIds.length !== options.length}
+                                    indeterminate={
+                                        selectedIds.length > 0 &&
+                                        selectedIds.length !== options.length
+                                    }
                                     onChange={handleSelectAll}
                                 />
                             }

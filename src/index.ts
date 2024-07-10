@@ -20,7 +20,7 @@ export { default as ReportViewerDialog } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
 export { default as ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
-export {default as CheckboxList } from './components/CheckBoxList'
+export { default as CheckboxList } from './components/CheckBoxList';
 export { default as ExpandableGroup } from './components/ExpandableGroup';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
