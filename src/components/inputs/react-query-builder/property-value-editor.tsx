@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
 import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
-import useValid from './use-valid';
 import { useIntl } from 'react-intl';
+import useValid from './use-valid';
 
-import { FieldConstants } from '../../../utils/field-constants';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
-import { usePredefinedProperties } from '../../../hooks/predefined-properties-hook';
+import FieldConstants from '../../../utils/field-constants';
+import usePredefinedProperties from '../../../hooks/predefined-properties-hook';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
@@ -23,9 +23,7 @@ interface ExpertFilterPropertyProps {
     valueEditorProps: ValueEditorProps;
 }
 
-const PropertyValueEditor: FunctionComponent<ExpertFilterPropertyProps> = (
-    props
-) => {
+function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
@@ -98,7 +96,7 @@ const PropertyValueEditor: FunctionComponent<ExpertFilterPropertyProps> = (
                         propertyOperator ??
                         PROPERTY_VALUE_OPERATORS[0].customName
                     }
-                    size={'medium'}
+                    size="medium"
                     error={!valid}
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
@@ -131,6 +129,6 @@ const PropertyValueEditor: FunctionComponent<ExpertFilterPropertyProps> = (
             </Grid>
         </Grid>
     );
-};
+}
 
 export default PropertyValueEditor;

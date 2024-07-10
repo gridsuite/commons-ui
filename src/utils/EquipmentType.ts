@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { LIGHT_THEME } from '../components/TopBar/TopBar';
 import { Theme } from '@mui/material';
+import { LIGHT_THEME } from '../components/TopBar/TopBar';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -27,7 +27,7 @@ export const equipmentStyles = {
         fontSize: 'x-small',
         textAlign: 'center',
         color:
-            //TODO remove first condition when gridstudy is updated
+            // TODO remove first condition when gridstudy is updated
             theme === LIGHT_THEME ||
             (typeof theme !== 'string' && theme?.palette?.mode === 'light')
                 ? 'inherit'
@@ -178,11 +178,11 @@ export const getEquipmentsInfosForSearchBar = (
     getNameOrId: (e: Identifiable) => string
 ) => {
     return equipmentsInfos.flatMap((e): EquipmentInfos[] => {
-        let label = getNameOrId(e);
+        const label = getNameOrId(e);
         return e.type === EquipmentType.SUBSTATION
             ? [
                   {
-                      label: label,
+                      label,
                       id: e.id,
                       key: e.id,
                       type: e.type,
@@ -190,9 +190,9 @@ export const getEquipmentsInfosForSearchBar = (
               ]
             : e.voltageLevels?.map((vli) => {
                   return {
-                      label: label,
+                      label,
                       id: e.id,
-                      key: e.id + '_' + vli.id,
+                      key: `${e.id}_${vli.id}`,
                       type: e.type,
                       voltageLevelLabel: getNameOrId(vli),
                       voltageLevelId: vli.id,

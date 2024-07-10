@@ -85,11 +85,11 @@ function longestCommonPrefix(stringList: string[]) {
         str.length < acc.length ? str : acc
     );
 
-    for (let str of stringList) {
-        while (str.slice(0, prefix.length) !== prefix) {
+    stringList.forEach((str) => {
+        while (!str.startsWith(prefix)) {
             prefix = prefix.slice(0, -1);
         }
-    }
+    });
     return prefix;
 }
 
@@ -120,14 +120,14 @@ export interface FlatParametersProps {
  * @param showSeparator if true, a separator is added between parameters
  * @param selectionWithDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
  */
-export const FlatParameters = ({
+export function FlatParameters({
     paramsAsArray,
     initValues,
     onChange,
     variant = 'outlined',
     showSeparator = false,
-    selectionWithDialog = (param) => false,
-}: FlatParametersProps) => {
+    selectionWithDialog = () => false,
+}: FlatParametersProps) {
     const intl = useIntl();
 
     const longestPrefix = longestCommonPrefix(paramsAsArray.map((m) => m.name));
@@ -139,9 +139,9 @@ export const FlatParameters = ({
     const [openSelector, setOpenSelector] = useState(false);
 
     const getTranslatedValue = useCallback(
-        (prefix: string, value: string) => {
+        (prefixValue: string, value: string) => {
             return intl.formatMessage({
-                id: prefix + '.' + value,
+                id: `${prefixValue}.${value}`,
                 defaultMessage: value,
             });
         },
@@ -155,14 +155,14 @@ export const FlatParameters = ({
                 defaultMessage: paramName.slice(prefix.length),
             });
             return intl.formatMessage({
-                id: paramName + '.selectionDialog.name',
-                defaultMessage: defaultMessage,
+                id: `${paramName}.selectionDialog.name`,
+                defaultMessage,
             });
         },
         [intl, prefix.length]
     );
     const sortPossibleValues = useCallback(
-        (prefix: string, values: string[]) => {
+        (prefixValue: string, values: string[]) => {
             if (values == null) {
                 return [];
             }
@@ -171,7 +171,7 @@ export const FlatParameters = ({
                 .map((value) => {
                     return {
                         id: value,
-                        message: getTranslatedValue(prefix, value),
+                        message: getTranslatedValue(prefixValue, value),
                     };
                 })
                 .sort((a, b) => a.message.localeCompare(b.message));
@@ -226,7 +226,8 @@ export const FlatParameters = ({
     function mixInitAndDefault(param: Parameter) {
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
-        } else if (initValues && initValues.hasOwnProperty(param.name)) {
+        }
+        if (Object.hasOwn(initValues, param.name)) {
             if (param.type === 'BOOLEAN') {
                 // on the server side, we only store String, so we eventually need to convert before
                 return initValues[param.name] === 'false'
@@ -247,9 +248,8 @@ export const FlatParameters = ({
                       .map((s) => s.trim())
                       .filter((s) => !!s)
                 : [];
-        } else {
-            return extractDefault(param);
         }
+        return extractDefault(param);
     }
 
     const outputTransformFloatString = (value: string | undefined) => {
@@ -281,15 +281,15 @@ export const FlatParameters = ({
                         onChange={(e) => onFieldChange(e.target.checked, param)}
                     />
                 );
-            case 'DOUBLE':
+            case 'DOUBLE': {
                 const err =
-                    isNaN(fieldValue) ||
+                    Number.isNaN(fieldValue) ||
                     (typeof fieldValue !== 'number' &&
                         !!fieldValue &&
-                        isNaN(fieldValue - 0));
+                        Number.isNaN(fieldValue - 0));
                 return (
                     <TextField
-                        size={'small'}
+                        size="small"
                         sx={{ width: '50%' }}
                         inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
@@ -308,10 +308,11 @@ export const FlatParameters = ({
                         variant={variant}
                     />
                 );
+            }
             case 'INTEGER':
                 return (
                     <TextField
-                        size={'small'}
+                        size="small"
                         sx={{ width: '50%' }}
                         inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
@@ -342,7 +343,7 @@ export const FlatParameters = ({
                                         allOptions,
                                         fieldValue
                                     )}
-                                    size={'small'}
+                                    size="small"
                                     variant={variant}
                                     InputProps={{
                                         readOnly: true,
@@ -378,7 +379,7 @@ export const FlatParameters = ({
                         <Autocomplete
                             fullWidth
                             multiple
-                            size={'small'}
+                            size="small"
                             options={sortPossibleValues(
                                 param.name,
                                 param.possibleValues
@@ -404,59 +405,57 @@ export const FlatParameters = ({
                             )}
                         />
                     );
-                } else {
-                    // no possible values => free user inputs
-                    return (
-                        <Autocomplete
-                            multiple
-                            freeSolo
-                            autoSelect
-                            sx={{ width: '50%' }}
-                            options={[]}
-                            size={'small'}
-                            onChange={(e, value) => onFieldChange(value, param)}
-                            value={fieldValue}
-                            renderTags={(values, getTagProps) => {
-                                return values.map((value, index) => (
-                                    <Chip
-                                        id={'chip_' + value}
-                                        size={'small'}
-                                        label={value}
-                                        {...getTagProps({ index })}
-                                    />
-                                ));
-                            }}
-                            renderInput={(inputProps) => (
-                                <TextField {...inputProps} variant={variant} />
-                            )}
-                        />
-                    );
                 }
-            //@ts-ignore fallthrough is the expected behavior
+                // no possible values => free user inputs
+                return (
+                    <Autocomplete
+                        multiple
+                        freeSolo
+                        autoSelect
+                        sx={{ width: '50%' }}
+                        options={[]}
+                        size="small"
+                        onChange={(e, value) => onFieldChange(value, param)}
+                        value={fieldValue}
+                        renderTags={(values, getTagProps) => {
+                            return values.map((value, index) => (
+                                <Chip
+                                    id={`chip_${value}`}
+                                    size="small"
+                                    label={value}
+                                    {...getTagProps({ index })}
+                                />
+                            ));
+                        }}
+                        renderInput={(inputProps) => (
+                            <TextField {...inputProps} variant={variant} />
+                        )}
+                    />
+                );
+
+            // @ts-ignore fallthrough is the expected behavior
             case 'STRING':
                 if (param.possibleValues) {
                     return (
-                        <>
-                            <Select
-                                labelId={param.name}
-                                value={fieldValue ?? ''}
-                                onChange={(ev) => {
-                                    onFieldChange(ev.target.value, param);
-                                }}
-                                size="small"
-                                sx={{ minWidth: '4em' }}
-                                variant={variant}
-                            >
-                                {sortPossibleValues(
-                                    param.name,
-                                    param.possibleValues
-                                ).map((value) => (
-                                    <MenuItem key={value.id} value={value.id}>
-                                        <Typography>{value.message}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </>
+                        <Select
+                            labelId={param.name}
+                            value={fieldValue ?? ''}
+                            onChange={(ev) => {
+                                onFieldChange(ev.target.value, param);
+                            }}
+                            size="small"
+                            sx={{ minWidth: '4em' }}
+                            variant={variant}
+                        >
+                            {sortPossibleValues(
+                                param.name,
+                                param.possibleValues
+                            ).map((value) => (
+                                <MenuItem key={value.id} value={value.id}>
+                                    <Typography>{value.message}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Select>
                     );
                 }
             // else fallthrough to default
@@ -464,7 +463,7 @@ export const FlatParameters = ({
                 return (
                     <TextField
                         sx={{ width: '50%' }}
-                        size={'small'}
+                        size="small"
                         value={fieldValue || ''}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -483,7 +482,7 @@ export const FlatParameters = ({
                         <Tooltip
                             title={
                                 <FormattedMessage
-                                    id={param.name + '.desc'}
+                                    id={`${param.name}.desc`}
                                     defaultMessage={param.description}
                                 />
                             }
@@ -508,6 +507,6 @@ export const FlatParameters = ({
             ))}
         </List>
     );
-};
+}
 
 export default FlatParameters;

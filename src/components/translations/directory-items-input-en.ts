@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const directory_items_input_en = {
+const directoryItemsInputEn = {
     'directory_items_input/ElementAlreadyUsed': 'This element is already used',
 };
 
-export default directory_items_input_en;
+export default directoryItemsInputEn;

@@ -7,6 +7,9 @@
 
 import { Dispatch, useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { Alert, AlertTitle, Grid } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import { UserManager } from 'oidc-client';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
     handleSigninCallback,
@@ -17,10 +20,6 @@ import {
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
-
-import { Alert, AlertTitle, Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { UserManager } from 'oidc-client';
 
 export interface AuthenticationRouterProps {
     userManager: {
@@ -41,7 +40,7 @@ export interface AuthenticationRouterProps {
     location: Location;
 }
 
-const AuthenticationRouter = ({
+function AuthenticationRouter({
     userManager,
     signInCallbackError,
     authenticationRouterError,
@@ -49,7 +48,7 @@ const AuthenticationRouter = ({
     dispatch,
     navigate,
     location,
-}: AuthenticationRouterProps) => {
+}: AuthenticationRouterProps) {
     const handleSigninCallbackClosure = useCallback(
         () => handleSigninCallback(dispatch, navigate, userManager.instance),
         [dispatch, navigate, userManager.instance]
@@ -62,9 +61,9 @@ const AuthenticationRouter = ({
     return (
         <Grid
             container
-            alignContent={'center'}
-            alignItems={'center'}
-            direction={'column'}
+            alignContent="center"
+            alignItems="center"
+            direction="column"
         >
             {userManager.error !== null && (
                 <h1>Error : Getting userManager; {userManager.error}</h1>
@@ -185,5 +184,5 @@ const AuthenticationRouter = ({
             )}
         </Grid>
     );
-};
+}
 export default AuthenticationRouter;

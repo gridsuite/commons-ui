@@ -9,7 +9,7 @@ import { User } from 'oidc-client';
 export const USER = 'USER';
 
 export function setLoggedUser(user: User | null) {
-    return { type: USER, user: user };
+    return { type: USER, user };
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
@@ -17,7 +17,7 @@ export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
 export function setSignInCallbackError(signInCallbackError: string | null) {
     return {
         type: SIGNIN_CALLBACK_ERROR,
-        signInCallbackError: signInCallbackError,
+        signInCallbackError,
     };
 }
 
@@ -30,8 +30,8 @@ export function setUnauthorizedUserInfo(
     return {
         type: UNAUTHORIZED_USER_INFO,
         authenticationRouterError: {
-            userName: userName,
-            unauthorizedUserInfo: unauthorizedUserInfo,
+            userName,
+            unauthorizedUserInfo,
         },
     };
 }
@@ -45,8 +45,8 @@ export function setLogoutError(
     return {
         type: LOGOUT_ERROR,
         authenticationRouterError: {
-            userName: userName,
-            logoutError: logoutError,
+            userName,
+            logoutError,
         },
     };
 }
@@ -60,8 +60,8 @@ export function setUserValidationError(
     return {
         type: USER_VALIDATION_ERROR,
         authenticationRouterError: {
-            userName: userName,
-            userValidationError: userValidationError,
+            userName,
+            userValidationError,
         },
     };
 }
@@ -83,6 +83,6 @@ export function setShowAuthenticationRouterLogin(
 ) {
     return {
         type: SHOW_AUTH_INFO_LOGIN,
-        showAuthenticationRouterLogin: showAuthenticationRouterLogin,
+        showAuthenticationRouterLogin,
     };
 }

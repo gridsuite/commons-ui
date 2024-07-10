@@ -17,7 +17,7 @@ export type Env = {
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-dev/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-integ/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/local/env.json
-    //[key: string]: string;
+    // [key: string]: string;
 };
 
 export async function fetchEnv(): Promise<Env> {
@@ -42,8 +42,8 @@ export type StudyMetadata = CommonMetadata & {
     };
     defaultParametersValues?: {
         fluxConvention?: string;
-        enableDeveloperMode?: string; //maybe 'true'|'false' type?
-        mapManualRefresh?: string; //maybe 'true'|'false' type?
+        enableDeveloperMode?: string; // maybe 'true'|'false' type?
+        mapManualRefresh?: string; // maybe 'true'|'false' type?
     };
     defaultCountry?: string;
 };
@@ -51,7 +51,7 @@ export type StudyMetadata = CommonMetadata & {
 export async function fetchAppsMetadata(): Promise<CommonMetadata[]> {
     console.info(`Fetching apps and urls...`);
     const env = await fetchEnv();
-    const res = await fetch(env.appsMetadataServerUrl + '/apps-metadata.json');
+    const res = await fetch(`${env.appsMetadataServerUrl}/apps-metadata.json`);
     return res.json();
 }
 

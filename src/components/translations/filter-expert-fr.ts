@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filter_expert_fr = {
+const filterExpertFr = {
     id: 'ID',
     name: 'Nom',
     energySource: "Source d'énergie",
@@ -35,7 +35,6 @@ const filter_expert_fr = {
     p0: 'P constant (MW)',
     q0: 'Q constant (MVar)',
     loadTapChangingCapabilities: 'Régleur en charge',
-    regulatingRatio: 'Régleur en réglage',
     ratioTargetV: 'Tension de consigne du régleur (kV)',
     magnetizingConductance: 'Conductance magnétisante (μS)',
     magnetizingSusceptance: 'Susceptance magnétisante (μS)',
@@ -52,12 +51,13 @@ const filter_expert_fr = {
     hasPhaseTapChanger: 'Déphaseur existe',
     Voltage: 'Tension',
     ReactivePower: 'Puissance réactive',
+    VoltageRegulation: 'Réglage tension',
+    FixedRatio: 'Rapport fixe',
     CurrentLimiter: 'Limitation de courant',
     ActivePowerControl: 'Suivi de transit',
     FixedTap: 'Déphasage constant',
     ratioRegulationMode: 'Mode de réglage régleur',
     phaseRegulationMode: 'Mode de réglage déphaseur',
-    phaseRegulating: 'Déphaseur en réglage',
     phaseRegulationValue: 'Consigne de transit ou du courant du déphaseur',
     property: 'Propriété',
     substationProperty: 'Propriété site',
@@ -95,4 +95,4 @@ const filter_expert_fr = {
     susceptanceFix: 'Susceptance fixe',
 };
 
-export default filter_expert_fr;
+export default filterExpertFr;

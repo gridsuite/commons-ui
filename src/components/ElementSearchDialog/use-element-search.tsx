@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useRef, useState } from 'react';
-import { useDebounce } from '../../hooks/useDebounce';
+import useDebounce from '../../hooks/useDebounce';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
@@ -15,7 +15,7 @@ interface UseElementSearch<T> {
     fetchElements: (newSearchTerm: string) => Promise<T[]>;
 }
 
-export const useElementSearch = <T,>(props: UseElementSearch<T>) => {
+const useElementSearch = <T,>(props: UseElementSearch<T>) => {
     const { fetchElements } = props;
 
     const { snackError } = useSnackMessage();
@@ -78,3 +78,5 @@ export const useElementSearch = <T,>(props: UseElementSearch<T>) => {
 
     return { searchTerm, updateSearchTerm, elementsFound, isLoading };
 };
+
+export default useElementSearch;

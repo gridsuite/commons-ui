@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { TagRenderer } from './index';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
-import { EQUIPMENT_TYPE, EquipmentInfos } from '../../utils/EquipmentType';
 import { Box, SxProps, Theme } from '@mui/material';
+import { EQUIPMENT_TYPE, EquipmentInfos } from '../../utils/EquipmentType';
+import { TagRenderer } from './index';
 import OverflowableText from '../OverflowableText';
 import { mergeSx } from '../../utils/styles';
 
@@ -35,18 +35,18 @@ export interface EquipmentItemProps {
     };
 }
 
-export const EquipmentItem = ({
+export function EquipmentItem({
     inputValue,
     suffixRenderer = TagRenderer,
     element,
     showsJustText = false,
     ...props
-}: EquipmentItemProps) => {
-    let matches = match(element.label, inputValue, {
+}: EquipmentItemProps) {
+    const matches = match(element.label, inputValue, {
         insideWords: true,
         findAllOccurrences: true,
     });
-    let parts = parse(element.label, matches);
+    const parts = parse(element.label, matches);
     /* override li.key otherwise it will use label which could be duplicated */
     return (
         <li key={element.key} {...props}>
@@ -76,9 +76,9 @@ export const EquipmentItem = ({
                     className={props.classes?.result}
                     sx={props.styles?.result}
                 >
-                    {parts.map((part, index) => (
+                    {parts.map((part) => (
                         <span
-                            key={index}
+                            key={`${part.text}-${part.highlight}`}
                             style={{
                                 fontWeight: part.highlight ? 'bold' : 'inherit',
                             }}
@@ -87,8 +87,8 @@ export const EquipmentItem = ({
                         </span>
                     ))}
                 </OverflowableText>
-                {!showsJustText && suffixRenderer({ props, element })}
+                {!showsJustText && suffixRenderer({ element, ...props })}
             </Box>
         </li>
     );
-};
+}
