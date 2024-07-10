@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const common_button_en = {
+const commonButtonEn = {
     cancel: 'Cancel',
     validate: 'Validate',
 };
 
-export default common_button_en;
+export default commonButtonEn;

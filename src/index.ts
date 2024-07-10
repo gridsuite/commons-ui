@@ -5,20 +5,26 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export { default as TreeViewFinder } from './components/TreeViewFinder';
-export { default as TopBar } from './components/TopBar';
+export { TreeViewFinder } from './components/TreeViewFinder';
+export { TopBar } from './components/TopBar';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
+export type { GridSuiteModule } from './components/TopBar/AboutDialog';
 export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
-export { default as MuiVirtualizedTable } from './components/MuiVirtualizedTable';
+export type {
+    AuthenticationRouterErrorState,
+    AuthenticationRouterProps,
+    UserManagerState,
+} from './components/AuthenticationRouter';
+export { MuiVirtualizedTable } from './components/MuiVirtualizedTable';
 export {
     KeyedColumnsRowIndexer,
-    CHANGE_WAYS,
+    ChangeWays,
 } from './components/MuiVirtualizedTable';
 export { default as ReportViewer } from './components/ReportViewer';
 export { default as ReportViewerDialog } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
-export { default as ElementSearchDialog } from './components/ElementSearchDialog';
+export { ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
 export { default as ExpandableGroup } from './components/ExpandableGroup';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
@@ -50,7 +56,7 @@ export {
     noSelectionForCopy,
 } from './utils/equipment-types';
 
-export { FieldConstants } from './utils/field-constants';
+export { default as FieldConstants } from './utils/field-constants';
 
 export { fields as EXPERT_FILTER_FIELDS } from './components/filter/expert/expert-filter-constants';
 export { default as CustomReactQueryBuilder } from './components/inputs/react-query-builder/custom-react-query-builder';
@@ -100,7 +106,7 @@ export {
     getPreLoginPath,
 } from './utils/AuthService';
 
-export { getFileIcon } from './utils/ElementIcon';
+export { default as getFileIcon } from './utils/ElementIcon';
 
 export {
     DEFAULT_CELL_PADDING,
@@ -115,6 +121,7 @@ export {
     LANG_ENGLISH,
     LANG_FRENCH,
 } from './components/TopBar/TopBar';
+export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
 
 export {
     USER,
@@ -126,7 +133,18 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './redux/actions';
+} from './redux/authActions';
+export type {
+    AuthenticationActions,
+    AuthenticationRouterErrorBase,
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
+    ShowAuthenticationRouterLoginAction,
+    SignInCallbackErrorAction,
+    UnauthorizedUserAction,
+    UserAction,
+    UserValidationErrorAction,
+} from './redux/authActions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -164,12 +182,12 @@ export {
 export type { TagRendererProps } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
-export { useIntlRef } from './hooks/useIntlRef';
+export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
-export { useDebounce } from './hooks/useDebounce';
-export { usePrevious } from './hooks/usePrevious';
+export { default as useDebounce } from './hooks/useDebounce';
+export { default as usePrevious } from './hooks/usePrevious';
 export { default as SelectClearable } from './components/inputs/select-clearable';
-export { useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
+export { default as useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
 export { default as AutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
 export { default as TextInput } from './components/inputs/react-hook-form/text-input';
@@ -205,7 +223,7 @@ export {
 export { default as DirectoryItemsInput } from './components/inputs/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { default as CustomAGGrid } from './components/CustomAGGrid/custom-aggrid';
-export { RawReadOnlyInput } from './components/inputs/react-hook-form/raw-read-only-input';
+export { default as RawReadOnlyInput } from './components/inputs/react-hook-form/raw-read-only-input';
 
 export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
 export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
@@ -232,8 +250,8 @@ export {
 } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './components/inputs/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
-export { UniqueNameInput } from './components/inputs/react-hook-form/unique-name-input';
-export { UserManagerMock } from './utils/UserManagerMock';
+export { default as UniqueNameInput } from './components/inputs/react-hook-form/unique-name-input';
+export { default as UserManagerMock } from './utils/UserManagerMock';
 export {
     FILTER_EQUIPMENTS,
     CONTINGENCY_LIST_EQUIPMENTS,
@@ -247,7 +265,7 @@ export {
 
 export { mergeSx } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
+export type { CommonStoreState } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
 export * from './services';
-export type * from './services';

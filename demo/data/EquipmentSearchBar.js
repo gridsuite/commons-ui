@@ -148,7 +148,7 @@ const EQUIPMENTS = [
     },
 ];
 
-export const searchEquipments = (searchTerm, equipmentLabelling) => {
+const searchEquipments = (searchTerm, equipmentLabelling) => {
     if (searchTerm) {
         return getEquipmentsInfosForSearchBar(
             equipmentLabelling
@@ -160,7 +160,8 @@ export const searchEquipments = (searchTerm, equipmentLabelling) => {
                   ),
             equipmentLabelling ? (e) => e.name || e.id : (e) => e.id
         );
-    } else {
-        return [];
     }
+    return [];
 };
+
+export default searchEquipments;

@@ -13,8 +13,9 @@ import {
 } from './utils';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_EXPLORE_SERVER_QUERIES =
-    import.meta.env.VITE_API_GATEWAY + '/explore';
+const PREFIX_EXPLORE_SERVER_QUERIES = `${
+    import.meta.env.VITE_API_GATEWAY
+}/explore`;
 
 export function createFilter(
     newFilter: any,
@@ -23,15 +24,14 @@ export function createFilter(
     parentDirectoryUuid?: UUID,
     token?: string
 ) {
-    let urlSearchParams = new URLSearchParams();
+    const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
     urlSearchParams.append('description', description);
-    parentDirectoryUuid &&
+    if (parentDirectoryUuid) {
         urlSearchParams.append('parentDirectoryUuid', parentDirectoryUuid);
+    }
     return backendFetch(
-        PREFIX_EXPLORE_SERVER_QUERIES +
-            '/v1/explore/filters?' +
-            urlSearchParams.toString(),
+        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters?${urlSearchParams.toString()}`,
         {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -42,14 +42,12 @@ export function createFilter(
 }
 
 export function saveFilter(filter: any, name: string, token?: string) {
-    let urlSearchParams = new URLSearchParams();
+    const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
     return backendFetch(
-        PREFIX_EXPLORE_SERVER_QUERIES +
-            '/v1/explore/filters/' +
-            filter.id +
-            '?' +
-            urlSearchParams.toString(),
+        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters/${
+            filter.id
+        }?${urlSearchParams.toString()}`,
         {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
@@ -68,18 +66,18 @@ export function fetchElementsInfos(
 
     // Add params to Url
     const idsParams = getRequestParamFromList(
-        ids.filter((id) => id), // filter falsy elements
-        'ids'
+        'ids',
+        ids.filter((id) => id) // filter falsy elements
     );
 
     const equipmentTypesParams = getRequestParamFromList(
-        equipmentTypes,
-        'equipmentTypes'
+        'equipmentTypes',
+        equipmentTypes
     );
 
     const elementTypesParams = getRequestParamFromList(
-        elementTypes,
-        'elementTypes'
+        'elementTypes',
+        elementTypes
     );
 
     const urlSearchParams = new URLSearchParams([

@@ -5,20 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Grid, useTheme } from '@mui/material';
-import BottomRightButtons from './bottom-right-buttons';
 import { useIntl } from 'react-intl';
-import { FieldConstants } from '../../../../utils/field-constants';
 import {
     CellEditingStoppedEvent,
     ColumnState,
     SortChangedEvent,
 } from 'ag-grid-community';
+import BottomRightButtons from './bottom-right-buttons';
+import FieldConstants from '../../../../utils/field-constants';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -38,21 +38,17 @@ const style = (customProps: any) => ({
         // - AG Grid colors override -
         // It shouldn't be exactly like this, but I couldn't make it works otherwise
         // https://www.ag-grid.com/react-data-grid/global-style-customisation/
-        '--ag-alpine-active-color': theme.palette.primary.main + ' !important',
-        '--ag-checkbox-indeterminate-color':
-            theme.palette.primary.main + ' !important',
-        '--ag-background-color': theme.agGridBackground.color + ' !important',
-        '--ag-header-background-color':
-            theme.agGridBackground.color + ' !important',
-        '--ag-odd-row-background-color':
-            theme.agGridBackground.color + ' !important',
-        '--ag-modal-overlay-background-color':
-            theme.agGridBackground.color + ' !important',
+        '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
+        '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
+        '--ag-background-color': `${theme.agGridBackground.color} !important`,
+        '--ag-header-background-color': `${theme.agGridBackground.color} !important`,
+        '--ag-odd-row-background-color': `${theme.agGridBackground.color} !important`,
+        '--ag-modal-overlay-background-color': `${theme.agGridBackground.color} !important`,
         '--ag-selected-row-background-color': 'transparent !important',
         '--ag-range-selection-border-color': 'transparent !important',
 
-        //overrides the default computed max height for ag grid default selector editor to make it more usable
-        //can be removed if a custom selector editor is implemented
+        // overrides the default computed max height for ag grid default selector editor to make it more usable
+        // can be removed if a custom selector editor is implemented
         '& .ag-select-list': {
             maxHeight: '300px !important',
         },
@@ -106,7 +102,7 @@ export interface CustomAgGridTableProps {
     stopEditingWhenCellsLoseFocus: boolean;
 }
 
-export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
+function CustomAgGridTable({
     name,
     columnDefs,
     makeDefaultRowData,
@@ -119,7 +115,7 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}) => {
+}: CustomAgGridTableProps) {
     const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
@@ -129,7 +125,7 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     const { control, getValues, watch } = useFormContext();
     const useFieldArrayOutput = useFieldArray({
         control,
-        name: name,
+        name,
     });
     const { append, remove, update, swap, move } = useFieldArrayOutput;
 
@@ -152,6 +148,17 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     );
 
     const noRowSelected = selectedRows.length === 0;
+
+    const getIndex = useCallback(
+        (val: any) => {
+            return getValues(name).findIndex(
+                (row: any) =>
+                    row[FieldConstants.AG_GRID_ROW_UUID] ===
+                    val[FieldConstants.AG_GRID_ROW_UUID]
+            );
+        },
+        [getValues, name]
+    );
 
     const handleMoveRowUp = () => {
         selectedRows
@@ -196,17 +203,6 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
         setNewRowAdded(true);
     };
 
-    const getIndex = useCallback(
-        (val: any) => {
-            return getValues(name).findIndex(
-                (row: any) =>
-                    row[FieldConstants.AG_GRID_ROW_UUID] ===
-                    val[FieldConstants.AG_GRID_ROW_UUID]
-            );
-        },
-        [getValues, name]
-    );
-
     useEffect(() => {
         if (gridApi) {
             gridApi.api.sizeColumnsToFit();
@@ -216,7 +212,7 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
     const intl = useIntl();
     const getLocaleText = useCallback(
         (params: any) => {
-            const key = 'agGrid.' + params.key;
+            const key = `agGrid.${params.key}`;
             return intl.messages[key] || params.defaultValue;
         },
         [intl]
@@ -267,8 +263,8 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
-                    rowSelection={'multiple'}
-                    domLayout={'autoHeight'}
+                    rowSelection="multiple"
+                    domLayout="autoHeight"
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) =>
@@ -276,8 +272,8 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
                     }
                     suppressBrowserResizeObserver
                     columnDefs={columnDefs}
-                    detailRowAutoHeight={true}
-                    onSelectionChanged={(event) => {
+                    detailRowAutoHeight
+                    onSelectionChanged={() => {
                         setSelectedRows(gridApi.api.getSelectedRows());
                     }}
                     onRowDataUpdated={
@@ -296,7 +292,7 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
                         stopEditingWhenCellsLoseFocus
                     }
                     {...props}
-                ></AgGridReact>
+                />
             </Grid>
             <BottomRightButtons
                 name={name}
@@ -312,6 +308,6 @@ export const CustomAgGridTable: FunctionComponent<CustomAgGridTableProps> = ({
             />
         </Grid>
     );
-};
+}
 
 export default CustomAgGridTable;

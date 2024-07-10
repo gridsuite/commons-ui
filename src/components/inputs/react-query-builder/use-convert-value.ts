@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useEffect } from 'react';
-import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 import { ValueEditorProps } from 'react-querybuilder';
+import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 
 /**
  * Hook that convert a value of RQB from any to any[] and vice versa when the operator changes

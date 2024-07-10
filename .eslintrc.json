@@ -1,15 +1,28 @@
 {
   "root": true,
   "extends": [
-    "react-app",
-    "plugin:prettier/recommended"
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:prettier/recommended",
+    "plugin:react/jsx-runtime"
   ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "ignorePatterns": [
     // node_modules is implicitly always ignored
-    "dist"
+    "dist",
+    "vite.config.mts",
+    "jest.config.ts",
+    "jest.setup.ts"
   ],
   "rules": {
     "prettier/prettier": "warn",
-    "curly": "error"
+    "curly": "error",
+    "no-console": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
   }
 }

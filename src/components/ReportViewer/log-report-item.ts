@@ -9,8 +9,11 @@ import { LogSeverities, LogSeverity } from './log-severity';
 
 export default class LogReportItem {
     key: string;
+
     reportId: string;
+
     severity: LogSeverity;
+
     log: string;
 
     static resolveTemplateMessage(
@@ -18,15 +21,18 @@ export default class LogReportItem {
         templateValues: Record<string, ReportValue>
     ) {
         const templateVars: Record<string, string | number> = {};
-        for (const [key, value] of Object.entries(templateValues)) {
+        Object.entries(templateValues).forEach(([key, value]) => {
             templateVars[key] = value.value;
-        }
-        return templateMessage.replace(/\${([^{}]*)}/g, function (a, b) {
-            let r = templateVars[b];
-            return typeof r === 'string' || typeof r === 'number'
-                ? r.toString()
-                : a;
         });
+        return templateMessage.replace(
+            /\${([^{}]*)}/g,
+            function resolveTemplate(a, b) {
+                const r = templateVars[b];
+                return typeof r === 'string' || typeof r === 'number'
+                    ? r.toString()
+                    : a;
+            }
+        );
     }
 
     constructor(jsonReport: SubReport, reportId: string) {
@@ -36,8 +42,8 @@ export default class LogReportItem {
             jsonReport.values
         );
         this.reportId = reportId;
-        this.severity = this.initSeverity(
-            jsonReport.values['reportSeverity'] as unknown as ReportValue
+        this.severity = LogReportItem.initSeverity(
+            jsonReport.values.reportSeverity as unknown as ReportValue
         );
     }
 
@@ -65,14 +71,14 @@ export default class LogReportItem {
         return this.severity.colorHexCode;
     }
 
-    initSeverity(jsonSeverity: ReportValue) {
+    static initSeverity(jsonSeverity: ReportValue) {
         let severity = LogSeverities.UNKNOWN;
         if (!jsonSeverity) {
             return severity;
         }
 
         Object.values(LogSeverities).some((value) => {
-            let severityFound = (jsonSeverity.value as string).includes(
+            const severityFound = (jsonSeverity.value as string).includes(
                 value.name
             );
             if (severityFound) {

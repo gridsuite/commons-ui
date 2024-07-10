@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { validate as uuidValidate } from 'uuid';
 import {
     defaultOperators,
     findPath,
@@ -18,6 +17,8 @@ import {
     ValidationMap,
 } from 'react-querybuilder';
 import { IntlShape } from 'react-intl';
+import { validate as uuidValidate } from 'uuid';
+import { UUID } from 'crypto';
 import {
     CombinatorType,
     CompositeField,
@@ -39,7 +40,6 @@ import {
     microUnitToUnit,
     unitToMicroUnit,
 } from '../../../utils/conversion-utils';
-import { UUID } from 'crypto';
 
 const microUnits = [
     FieldType.SHUNT_CONDUCTANCE_1,
@@ -110,11 +110,11 @@ const getDataType = (fieldName: string, operator: string) => {
 
 export const getOperators = (fieldName: string, intl: IntlShape) => {
     const field = Object.values(FIELDS_OPTIONS).find(
-        (field) => field.name === fieldName
+        (fieldOption) => fieldOption.name === fieldName
     );
 
     switch (field?.dataType) {
-        case DataType.STRING:
+        case DataType.STRING: {
             let stringOperators: OperatorOption[] = [
                 OPERATOR_OPTIONS.CONTAINS,
                 OPERATOR_OPTIONS.IS,
@@ -146,8 +146,9 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
-        case DataType.NUMBER:
-            let numberOperators: OperatorOption[] = [
+        }
+        case DataType.NUMBER: {
+            const numberOperators: OperatorOption[] = [
                 OPERATOR_OPTIONS.EQUALS,
                 OPERATOR_OPTIONS.GREATER,
                 OPERATOR_OPTIONS.GREATER_OR_EQUALS,
@@ -162,7 +163,8 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
-        case DataType.BOOLEAN:
+        }
+        case DataType.BOOLEAN: {
             let booleanOperators: OperatorOption[] = [OPERATOR_OPTIONS.EQUALS];
 
             // particular case
@@ -177,7 +179,8 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
-        case DataType.ENUM:
+        }
+        case DataType.ENUM: {
             let enumOperators: OperatorOption[] = [
                 OPERATOR_OPTIONS.EQUALS,
                 OPERATOR_OPTIONS.NOT_EQUALS,
@@ -197,13 +200,15 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
-        case DataType.PROPERTY:
-            let propertiesOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
+        }
+        case DataType.PROPERTY: {
+            const propertiesOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
             return propertiesOperators.map((operator) => ({
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
-        case DataType.COMBINATOR:
+        }
+        case DataType.COMBINATOR: {
             const combinatorOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
 
             if (field.name === FieldType.REMOTE_REGULATED_TERMINAL) {
@@ -216,17 +221,18 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 name: operator.name,
                 label: intl.formatMessage({ id: operator.label }),
             }));
+        }
+        default:
+            return defaultOperators;
     }
-    return defaultOperators;
 };
 
 function changeValueUnit(value: any, field: FieldType) {
     if (microUnits.includes(field)) {
         if (!Array.isArray(value)) {
             return microUnitToUnit(value);
-        } else {
-            return value.map((a: number) => microUnitToUnit(a));
         }
+        return value.map((a: number) => microUnitToUnit(a));
     }
     return value;
 }
@@ -240,6 +246,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
 
         // a composite rule is a rule with dataType COMBINATOR  => build a group with child rules
         if (dataType === DataType.COMBINATOR) {
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             return transformCompositeRule(rule);
         }
 
@@ -264,7 +271,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
                 isValueAnArray && dataType !== DataType.PROPERTY
                     ? changeValueUnit(rule.value, rule.field as FieldType)
                     : undefined,
-            dataType: dataType,
+            dataType,
             propertyName:
                 dataType === DataType.PROPERTY
                     ? rule.value.propertyName
@@ -284,7 +291,7 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
             ([field, rule]) =>
                 transformRule({
                     ...rule,
-                    field: field,
+                    field,
                     operator: rule.operator,
                     value: rule.value,
                 })
@@ -308,9 +315,8 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
         const transformedRules = group.rules.map((ruleOrGroup) => {
             if ('rules' in ruleOrGroup) {
                 return transformGroup(ruleOrGroup);
-            } else {
-                return transformRule(ruleOrGroup);
             }
+            return transformRule(ruleOrGroup);
         });
 
         return {
@@ -332,7 +338,8 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                 propertyValues: rule.propertyValues,
                 propertyOperator: rule.operator,
             };
-        } else if (rule.values) {
+        }
+        if (rule.values) {
             // values is a Set on server side, so need to sort
             if (rule.dataType === DataType.NUMBER) {
                 return rule.values
@@ -343,14 +350,12 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                             : numberValue;
                     })
                     .sort((a, b) => a - b);
-            } else {
-                return rule.values.sort();
             }
-        } else {
-            return microUnits.includes(rule.field)
-                ? unitToMicroUnit(parseFloat(rule.value as string))
-                : rule.value;
+            return rule.values.sort();
         }
+        return microUnits.includes(rule.field)
+            ? unitToMicroUnit(parseFloat(rule.value as string))
+            : rule.value;
     }
 
     function transformRule(rule: RuleTypeExport): RuleType {
@@ -400,15 +405,12 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             if ('rules' in ruleOrGroup) {
                 // a composite group => aggregate into a composite rule
                 if ('field' in ruleOrGroup && 'operator' in ruleOrGroup) {
-                    return transformCompositeGroup(
-                        ruleOrGroup as RuleGroupTypeExport
-                    );
+                    return transformCompositeGroup(ruleOrGroup);
                 }
                 // a normal group
-                return transformGroup(ruleOrGroup as RuleGroupTypeExport);
-            } else {
-                return transformRule(ruleOrGroup as RuleTypeExport);
+                return transformGroup(ruleOrGroup);
             }
+            return transformRule(ruleOrGroup);
         });
 
         return {
@@ -433,20 +435,9 @@ export function countRules(query: RuleGroupTypeAny): number {
                 sum + countRules(ruleOrGroup as RuleGroupTypeAny),
             0
         );
-    } else {
-        return 1;
     }
+    return 1;
 }
-
-export const testQuery = (check: string, query: RuleGroupTypeAny): boolean => {
-    const queryValidatorResult = queryValidator(query);
-    return !Object.values(queryValidatorResult).some((ruleValidation) => {
-        if (typeof ruleValidation !== 'boolean' && ruleValidation.reasons) {
-            return ruleValidation.reasons.includes(check);
-        }
-        return false;
-    });
-};
 
 // Fork of defaultValidator of the react-query-builder to validate rules and groups
 export const queryValidator: QueryValidator = (query) => {
@@ -480,8 +471,8 @@ export const queryValidator: QueryValidator = (query) => {
                     reasons: [RULES.EMPTY_RULE],
                 };
             } else if (
-                isNaN(parseFloat(rule.value[0])) ||
-                isNaN(parseFloat(rule.value[1]))
+                Number.isNaN(parseFloat(rule.value[0])) ||
+                Number.isNaN(parseFloat(rule.value[1]))
             ) {
                 result[rule.id] = {
                     valid: false,
@@ -511,7 +502,11 @@ export const queryValidator: QueryValidator = (query) => {
                 valid: false,
                 reasons: [RULES.EMPTY_RULE],
             };
-        } else if (rule.id && isNumberInput && isNaN(parseFloat(rule.value))) {
+        } else if (
+            rule.id &&
+            isNumberInput &&
+            Number.isNaN(parseFloat(rule.value))
+        ) {
             result[rule.id] = {
                 valid: false,
                 reasons: [RULES.INCORRECT_RULE],
@@ -548,7 +543,7 @@ export const queryValidator: QueryValidator = (query) => {
             childrenFields.forEach((field) => {
                 validateRule({
                     ...rule,
-                    field: field,
+                    field,
                     operator: compositeGroup?.rules?.[field]?.operator,
                     value: compositeGroup?.rules?.[field]?.value,
                 });
@@ -582,6 +577,26 @@ export const queryValidator: QueryValidator = (query) => {
     return result;
 };
 
+export const testQuery = (check: string, query: RuleGroupTypeAny): boolean => {
+    const queryValidatorResult = queryValidator(query);
+    return !Object.values(queryValidatorResult).some((ruleValidation) => {
+        if (typeof ruleValidation !== 'boolean' && ruleValidation.reasons) {
+            return ruleValidation.reasons.includes(check);
+        }
+        return false;
+    });
+};
+
+// cf path concept https://react-querybuilder.js.org/docs/tips/path
+export function getNumberOfSiblings(path: number[], query: RuleGroupTypeAny) {
+    // Get the path of this rule's parent group
+    const parentPath = getParentPath(path);
+    // Find the parent group object in the query
+    const parentGroup = findPath(parentPath, query) as RuleGroupType;
+    // Return the number of siblings
+    return parentGroup?.rules?.length;
+}
+
 // Remove a rule or group and its parents if they become empty
 export function recursiveRemove(
     query: RuleGroupTypeAny,
@@ -595,17 +610,6 @@ export function recursiveRemove(
         return recursiveRemove(query, getParentPath(path));
     }
     // Otherwise, we can safely remove it
-    else {
-        return remove(query, path);
-    }
-}
 
-// cf path concept https://react-querybuilder.js.org/docs/tips/path
-export function getNumberOfSiblings(path: number[], query: RuleGroupTypeAny) {
-    // Get the path of this rule's parent group
-    const parentPath = getParentPath(path);
-    // Find the parent group object in the query
-    const parentGroup = findPath(parentPath, query) as RuleGroupType;
-    // Return the number of siblings
-    return parentGroup?.rules?.length;
+    return remove(query, path);
 }

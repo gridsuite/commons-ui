@@ -42,10 +42,10 @@ export interface FilterButtonProps {
  * @param {Function} setSelectedItems - Setter needed to update the list underlying data
  */
 
-export const FilterButton = ({
+export function FilterButton({
     selectedItems,
     setSelectedItems,
-}: FilterButtonProps) => {
+}: FilterButtonProps) {
     const [initialState] = useState(selectedItems);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -86,4 +86,4 @@ export const FilterButton = ({
             />
         </Box>
     );
-};
+}

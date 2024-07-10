@@ -5,9 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const FetchStatus = {
+const FetchStatus = {
     IDLE: 'IDLE',
     FETCHING: 'FETCHING',
     FETCH_SUCCESS: 'FETCH_SUCCESS',
     FETCH_ERROR: 'FETCH_ERROR',
 };
+
+export default FetchStatus;

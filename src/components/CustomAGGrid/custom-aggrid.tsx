@@ -13,8 +13,8 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
 import { Box } from '@mui/system';
-import { mergeSx } from '../../utils/styles';
 import { SxProps, useTheme } from '@mui/material';
+import { mergeSx } from '../../utils/styles';
 import { styles, CUSTOM_AGGRID_THEME } from './custom-aggrid.style';
 
 interface CustomAGGGridStyleProps {
@@ -77,7 +77,7 @@ const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>(
                 <AgGridReact
                     ref={ref}
                     getLocaleText={getLocaleText}
-                    suppressPropertyNamesCheck={true}
+                    suppressPropertyNamesCheck
                     loadingOverlayComponent={loadingOverlayComponent}
                     loadingOverlayComponentParams={
                         loadingOverlayComponentParams

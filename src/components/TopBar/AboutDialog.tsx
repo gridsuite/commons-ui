@@ -46,7 +46,7 @@ import { LogoText } from './GridLogo';
 const styles = {
     general: {
         '.MuiAccordion-root': {
-            //dunno why the theme has the background as black in dark mode
+            // dunno why the theme has the background as black in dark mode
             bgcolor: 'unset',
         },
     },
@@ -84,7 +84,7 @@ function getGlobalVersion(
 ) {
     if (fnPromise) {
         console.debug('Getting', type, 'global version...');
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (setLoader) {
                 setLoader(true);
             }
@@ -110,10 +110,10 @@ function getGlobalVersion(
                     setLoader(false);
                 }
             });
-    } else {
-        console.debug('No getter for global version');
-        setData(null);
     }
+    console.debug('No getter for global version');
+    setData(null);
+    return Promise.resolve(null);
 }
 
 const moduleTypeSort = {
@@ -127,19 +127,19 @@ type ModuleType = keyof typeof moduleTypeSort;
 type ModuleDefinition = { name: string; type: ModuleType };
 
 function compareModules(c1: ModuleDefinition, c2: ModuleDefinition) {
-    //sort by type then by name
+    // sort by type then by name
     return (
         (moduleTypeSort[c1.type] || 100) - (moduleTypeSort[c2.type] || 100) ||
         (c1.name || '').localeCompare(c2.name || '')
     );
 }
 
-type GridSuiteModule = {
+export type GridSuiteModule = {
     name: string;
     type: ModuleType;
     version?: string;
     gitTag?: string;
-    license?: string;
+    // license?: string;
 };
 
 export interface AboutDialogProps {
@@ -154,7 +154,155 @@ export interface AboutDialogProps {
     logo?: ReactNode;
 }
 
-const AboutDialog = ({
+const moduleStyles = {
+    icons: {
+        flexGrow: 0,
+        position: 'relative',
+        top: '4px',
+        flexShrink: 0,
+    },
+    version: {
+        flexGrow: 0,
+        alignSelf: 'flex-end',
+        flexShrink: 0,
+    },
+    tooltip: (theme: Theme) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
+            border: '1px solid #dadde9',
+            boxShadow: theme.shadows[1],
+        },
+    }),
+    tooltipDetails: {
+        display: 'grid',
+        gridTemplateColumns: 'max-content auto',
+        margin: 0,
+        dt: {
+            gridColumnStart: 1,
+            '&:after': {
+                content: '" :"',
+            },
+        },
+        dd: {
+            gridColumnStart: 2,
+            paddingLeft: '0.5em',
+        },
+    },
+};
+
+const ModuleTypesIcons = {
+    app: (
+        <WidgetsOutlined
+            sx={moduleStyles.icons}
+            fontSize="small"
+            color="primary"
+        />
+    ),
+    server: (
+        <DnsOutlined
+            sx={moduleStyles.icons}
+            fontSize="small"
+            color="secondary"
+        />
+    ),
+    other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
+};
+
+function insensitiveCaseCompare(str: string, obj: string) {
+    return str.localeCompare(obj, undefined, {
+        sensitivity: 'base',
+    });
+}
+function tooltipTypeLabel(type: string) {
+    if (insensitiveCaseCompare('app', type) === 0) {
+        return 'about-dialog/module-tooltip-app';
+    }
+    if (insensitiveCaseCompare('server', type) === 0) {
+        return 'about-dialog/module-tooltip-server';
+    }
+    return 'about-dialog/module-tooltip-other';
+}
+
+function Module({ type, name, version, gitTag }: GridSuiteModule) {
+    return (
+        <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            sx={{
+                '.MuiTypography-root': {
+                    minWidth: '3em',
+                },
+            }}
+        >
+            <Tooltip
+                TransitionComponent={Zoom}
+                enterDelay={2500}
+                enterNextDelay={350}
+                leaveDelay={200}
+                placement="bottom-start"
+                arrow
+                sx={moduleStyles.tooltip}
+                title={
+                    <>
+                        <Typography variant="body1">{name || '<?>'}</Typography>
+                        <Box component="dl" sx={moduleStyles.tooltipDetails}>
+                            <Typography variant="body2" component="dt">
+                                <FormattedMessage id="about-dialog/label-type" />
+                            </Typography>
+                            <Typography variant="body2" component="dd">
+                                <FormattedMessage id={tooltipTypeLabel(type)} />
+                            </Typography>
+                            {version && (
+                                <>
+                                    <Typography variant="body2" component="dt">
+                                        <FormattedMessage id="about-dialog/label-version" />
+                                    </Typography>
+                                    <Typography variant="body2" component="dd">
+                                        {version}
+                                    </Typography>
+                                </>
+                            )}
+                            {gitTag && (
+                                <>
+                                    <Typography variant="body2" component="dt">
+                                        <FormattedMessage id="about-dialog/label-git-version" />
+                                    </Typography>
+                                    <Typography variant="body2" component="dd">
+                                        {gitTag}
+                                    </Typography>
+                                </>
+                            )}
+                        </Box>
+                    </>
+                }
+            >
+                <Stack
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="baseline"
+                    spacing={1}
+                >
+                    {ModuleTypesIcons[type] || ModuleTypesIcons.other}
+                    <Typography display="inline" noWrap>
+                        {name || '<?>'}
+                    </Typography>
+                    <Typography
+                        variant="caption"
+                        color={(theme) => theme.palette.text.secondary}
+                        display="inline"
+                        noWrap
+                        sx={moduleStyles.version}
+                    >
+                        {gitTag || version || null}
+                    </Typography>
+                </Stack>
+            </Tooltip>
+        </Grid>
+    );
+}
+
+function AboutDialog({
     open,
     onClose,
     globalVersionPromise,
@@ -164,9 +312,9 @@ const AboutDialog = ({
     appLicense,
     additionalModulesPromise,
     logo,
-}: AboutDialogProps) => {
+}: AboutDialogProps) {
     const theme = useTheme();
-    const [isRefreshing, setRefreshState] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
     const [showGlobalVersion, setShowGlobalVersion] = useState(false);
 
@@ -178,8 +326,7 @@ const AboutDialog = ({
             getGlobalVersion(
                 globalVersionPromise,
                 'Initial',
-                setInitialGlobalVersion,
-                undefined
+                setInitialGlobalVersion
             );
         }
     }, [globalVersionPromise, initialGlobalVersion]);
@@ -211,7 +358,7 @@ const AboutDialog = ({
                 type: 'app',
                 version: appVersion,
                 gitTag: appGitTag,
-                license: appLicense,
+                // license: appLicense,
             };
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
@@ -221,7 +368,7 @@ const AboutDialog = ({
             )
                 .then(
                     (values) => (Array.isArray(values) ? values : []),
-                    (reason) => []
+                    () => []
                 )
                 .then((values) => {
                     setModules([currentApp, ...values]);
@@ -247,21 +394,21 @@ const AboutDialog = ({
         <Dialog
             onClose={handleClose}
             open={open}
-            fullWidth={true}
+            fullWidth
             maxWidth="md"
             fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             sx={styles.general}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
             TransitionProps={{
-                onExited: (node) => {
+                onExited: () => {
                     setModules(null);
                     setActualGlobalVersion(null);
                 },
             }}
         >
             <DialogTitle id="alert-dialog-title">
-                <FormattedMessage id={'about-dialog/title'} />
+                <FormattedMessage id="about-dialog/title" />
 
                 {/* we insert content in the title as a trick to have the main content not in the dialog's scrollable section */}
                 {initialGlobalVersion !== undefined &&
@@ -280,7 +427,7 @@ const AboutDialog = ({
                                         loadingPosition="start"
                                         loading={isRefreshing}
                                         onClick={() => {
-                                            setRefreshState(true);
+                                            setIsRefreshing(true);
                                             window.location.reload();
                                         }}
                                     >
@@ -307,7 +454,7 @@ const AboutDialog = ({
                             in={loadingGlobalVersion}
                             appear
                             unmountOnExit
-                            onExited={(node) => setShowGlobalVersion(true)}
+                            onExited={() => setShowGlobalVersion(true)}
                         >
                             <CircularProgress />
                         </Fade>
@@ -394,19 +541,20 @@ const AboutDialog = ({
                                                 .sort(compareModules)
                                                 .map((module, idx) => (
                                                     <Module
+                                                        // eslint-disable-next-line react/no-array-index-key -- modules aren't necessary uniques in the API, so we need something else for the key that must be unique
                                                         key={`module-${idx}`}
                                                         type={module.type}
                                                         name={module.name}
                                                         version={module.version}
                                                         gitTag={module.gitTag}
-                                                        license={module.license}
+                                                        // license={module.license}
                                                     />
                                                 ))}
                                         </>
                                     )) || (
                                         <Typography
-                                            color={(theme) =>
-                                                theme.palette.error.main
+                                            color={(selectedTheme) =>
+                                                selectedTheme.palette.error.main
                                             }
                                         >
                                             Error
@@ -425,155 +573,6 @@ const AboutDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
+}
 
 export default AboutDialog;
-
-const moduleStyles = {
-    icons: {
-        flexGrow: 0,
-        position: 'relative',
-        top: '4px',
-        flexShrink: 0,
-    },
-    version: {
-        flexGrow: 0,
-        alignSelf: 'flex-end',
-        flexShrink: 0,
-    },
-    tooltip: (theme: Theme) => ({
-        [`& .${tooltipClasses.tooltip}`]: {
-            border: '1px solid #dadde9',
-            boxShadow: theme.shadows[1],
-        },
-    }),
-    tooltipDetails: {
-        display: 'grid',
-        gridTemplateColumns: 'max-content auto',
-        margin: 0,
-        dt: {
-            gridColumnStart: 1,
-            '&:after': {
-                content: '" :"',
-            },
-        },
-        dd: {
-            gridColumnStart: 2,
-            paddingLeft: '0.5em',
-        },
-    },
-};
-
-const ModuleTypesIcons = {
-    app: (
-        <WidgetsOutlined
-            sx={moduleStyles.icons}
-            fontSize="small"
-            color="primary"
-        />
-    ),
-    server: (
-        <DnsOutlined
-            sx={moduleStyles.icons}
-            fontSize="small"
-            color="secondary"
-        />
-    ),
-    other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
-};
-
-function insensitiveCaseCompare(str: string, obj: string) {
-    return str.localeCompare(obj, undefined, {
-        sensitivity: 'base',
-    });
-}
-
-function tooltipTypeLabel(type: string) {
-    if (insensitiveCaseCompare('app', type) === 0) {
-        return 'about-dialog/module-tooltip-app';
-    } else if (insensitiveCaseCompare('server', type) === 0) {
-        return 'about-dialog/module-tooltip-server';
-    } else {
-        return 'about-dialog/module-tooltip-other';
-    }
-}
-
-const Module = ({ type, name, version, gitTag }: GridSuiteModule) => {
-    return (
-        <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            sx={{
-                '.MuiTypography-root': {
-                    minWidth: '3em',
-                },
-            }}
-        >
-            <Tooltip
-                TransitionComponent={Zoom}
-                enterDelay={2500}
-                enterNextDelay={350}
-                leaveDelay={200}
-                placement="bottom-start"
-                arrow
-                sx={moduleStyles.tooltip}
-                title={
-                    <>
-                        <Typography variant="body1">{name || '<?>'}</Typography>
-                        <Box component="dl" sx={moduleStyles.tooltipDetails}>
-                            <Typography variant="body2" component="dt">
-                                <FormattedMessage id="about-dialog/label-type" />
-                            </Typography>
-                            <Typography variant="body2" component="dd">
-                                <FormattedMessage id={tooltipTypeLabel(type)} />
-                            </Typography>
-                            {version && (
-                                <>
-                                    <Typography variant="body2" component="dt">
-                                        <FormattedMessage id="about-dialog/label-version" />
-                                    </Typography>
-                                    <Typography variant="body2" component="dd">
-                                        {version}
-                                    </Typography>
-                                </>
-                            )}
-                            {gitTag && (
-                                <>
-                                    <Typography variant="body2" component="dt">
-                                        <FormattedMessage id="about-dialog/label-git-version" />
-                                    </Typography>
-                                    <Typography variant="body2" component="dd">
-                                        {gitTag}
-                                    </Typography>
-                                </>
-                            )}
-                        </Box>
-                    </>
-                }
-            >
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="baseline"
-                    spacing={1}
-                >
-                    {ModuleTypesIcons[type] || ModuleTypesIcons['other']}
-                    <Typography display="inline" noWrap>
-                        {name || '<?>'}
-                    </Typography>
-                    <Typography
-                        variant="caption"
-                        color={(theme) => theme.palette.text.secondary}
-                        display="inline"
-                        noWrap
-                        sx={moduleStyles.version}
-                    >
-                        {gitTag || version || null}
-                    </Typography>
-                </Stack>
-            </Tooltip>
-        </Grid>
-    );
-};

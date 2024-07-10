@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants } from '../../../utils/field-constants';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
+import { useEffect } from 'react';
+import FieldConstants from '../../../utils/field-constants';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 import InputWithPopupConfirmation from '../../inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
-import { FunctionComponent, useEffect } from 'react';
 import { FormEquipment } from '../utils/filter-form-utils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 
@@ -19,10 +19,10 @@ export interface CriteriaBasedFormProps {
     defaultValues: Record<string, any>;
 }
 
-const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
+function CriteriaBasedForm({
     equipments,
     defaultValues,
-}) => {
+}: CriteriaBasedFormProps) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
@@ -61,11 +61,11 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(equipments)}
-                    label={'equipmentType'}
+                    label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
-                    message={'changeTypeMessage'}
-                    validateButtonLabel={'button.changeType'}
+                    message="changeTypeMessage"
+                    validateButtonLabel="button.changeType"
                 />
             </Grid>
             {watchEquipmentType &&
@@ -73,8 +73,9 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
                 equipments[watchEquipmentType].fields.map(
                     (equipment: any, index: number) => {
                         const EquipmentForm = equipment.renderer;
+                        const uniqueKey = `${watchEquipmentType}-${index}`;
                         return (
-                            <Grid item xs={12} key={index} flexGrow={1}>
+                            <Grid item xs={12} key={uniqueKey} flexGrow={1}>
                                 <EquipmentForm {...equipment.props} />
                             </Grid>
                         );
@@ -82,6 +83,6 @@ const CriteriaBasedForm: FunctionComponent<CriteriaBasedFormProps> = ({
                 )}
         </Grid>
     );
-};
+}
 
 export default CriteriaBasedForm;
