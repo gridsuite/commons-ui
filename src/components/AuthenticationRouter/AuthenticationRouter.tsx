@@ -26,18 +26,15 @@ import {
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
-import {
-    AuthenticationRouterErrorBase,
-    LogoutErrorAction,
-    SignInCallbackErrorAction,
-    UserAction,
-} from '../../redux/actions';
 
-export type AuthenticationRouterErrorState = AuthenticationRouterErrorBase<{
+import { AuthenticationActions } from '../../redux/authActions';
+
+export type AuthenticationRouterErrorState = {
+    userName?: string;
     userValidationError?: { error: Error };
     logoutError?: { error: Error };
     unauthorizedUserInfo?: string;
-}>['authenticationRouterError'];
+};
 
 export type UserManagerState = {
     instance: UserManager | null;
@@ -46,12 +43,10 @@ export type UserManagerState = {
 
 export interface AuthenticationRouterProps {
     userManager: UserManagerState;
-    signInCallbackError: string | null;
+    signInCallbackError: Error | null;
     authenticationRouterError: AuthenticationRouterErrorState | null;
     showAuthenticationRouterLogin: boolean;
-    dispatch: Dispatch<
-        SignInCallbackErrorAction | UserAction | LogoutErrorAction
-    >;
+    dispatch: Dispatch<AuthenticationActions>;
     navigate: NavigateFunction;
     location: Location;
 }
@@ -65,14 +60,26 @@ function AuthenticationRouter({
     navigate,
     location,
 }: Readonly<AuthenticationRouterProps>) {
-    const handleSigninCallbackClosure = useCallback(
-        () => handleSigninCallback(dispatch, navigate, userManager.instance),
-        [dispatch, navigate, userManager.instance]
-    );
-    const handleSilentRenewCallbackClosure = useCallback(
-        () => handleSilentRenewCallback(userManager.instance),
-        [userManager.instance]
-    );
+    const handleSigninCallbackClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            handleSigninCallback(dispatch, navigate, userManager.instance);
+        }
+    }, [dispatch, navigate, userManager.instance]);
+    const handleSilentRenewCallbackClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            handleSilentRenewCallback(userManager.instance);
+        }
+    }, [userManager.instance]);
+    const loginClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            login(location, userManager.instance);
+        }
+    }, [location, userManager.instance]);
+    const logoutClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            logout(dispatch, userManager.instance);
+        }
+    }, [dispatch, userManager.instance]);
 
     return (
         <Grid
@@ -87,7 +94,7 @@ function AuthenticationRouter({
             {signInCallbackError !== null && (
                 <h1>
                     Error : SignIn Callback Error;
-                    {signInCallbackError}
+                    {signInCallbackError.message}
                 </h1>
             )}
             <Routes>
@@ -119,9 +126,7 @@ function AuthenticationRouter({
                         authenticationRouterError == null && (
                             <Login
                                 disabled={userManager.instance === null}
-                                onLoginClick={() =>
-                                    login(location, userManager.instance)
-                                }
+                                onLoginClick={loginClosure}
                             />
                         )
                     }
@@ -133,9 +138,7 @@ function AuthenticationRouter({
                     <Grid item>
                         <Logout
                             disabled={userManager.instance === null}
-                            onLogoutClick={() =>
-                                logout(dispatch, userManager.instance)
-                            }
+                            onLogoutClick={logoutClosure}
                         />
                     </Grid>
                     <Grid item xs={4}>
@@ -201,4 +204,5 @@ function AuthenticationRouter({
         </Grid>
     );
 }
+
 export default AuthenticationRouter;

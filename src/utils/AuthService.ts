@@ -10,9 +10,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
 import UserManagerMock from './UserManagerMock';
 import {
-    Action,
-    AuthenticationRouterErrorAction,
-    LogoutErrorAction,
+    AuthenticationActions,
     resetAuthenticationRouterError,
     setLoggedUser,
     setLogoutError,
@@ -20,12 +18,7 @@ import {
     setSignInCallbackError,
     setUnauthorizedUserInfo,
     setUserValidationError,
-    ShowAuthenticationRouterLoginAction,
-    SignInCallbackErrorAction,
-    UnauthorizedUserAction,
-    UserAction,
-    UserValidationErrorAction,
-} from '../redux/actions';
+} from '../redux/authActions';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
@@ -46,17 +39,6 @@ type CustomUserManager = UserManager & {
     };
 };
 
-type GetAction<
-    D extends Dispatch<Action<T>>,
-    T extends string
-> = Parameters<D>[0];
-type GetActionFn<
-    Fn extends (...args: any) => any,
-    Arg extends number,
-    T extends string = any,
-    D = Parameters<Fn>[Arg]
-> = D extends Dispatch<any> ? GetAction<D, T> : never;
-
 // set as a global variable to allow log level configuration at runtime
 // @ts-ignore
 window.OIDCLog = Log;
@@ -64,6 +46,7 @@ window.OIDCLog = Log;
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
+const accessTokenExpiringNotificationTime = 60; // seconds
 
 function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
@@ -93,6 +76,7 @@ function reloadTimerOnExpiresIn(
     // @ts-ignore
     // eslint-disable-next-line no-param-reassign
     user.expires_in = expiresIn;
+    // TODO not waiting or passing the promise?
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
@@ -108,9 +92,10 @@ function getIdTokenExpiresIn(user: User) {
 }
 
 function handleSigninSilent(
-    dispatch: Dispatch<ShowAuthenticationRouterLoginAction>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManager: UserManager
 ) {
+    // TODO not waiting or passing the promise?
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error: Error) => {
@@ -157,23 +142,20 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-export async function login(
-    location: Location,
-    userManagerInstance: UserManager | null
-) {
+export function login(location: Location, userManagerInstance: UserManager) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
-    await userManagerInstance
-        ?.signinRedirect()
+    return userManagerInstance
+        .signinRedirect()
         .then(() => console.debug('login'));
 }
 
-export async function logout(
-    dispatch: Dispatch<UserAction | LogoutErrorAction>,
-    userManagerInstance: UserManager | null
+export function logout(
+    dispatch: Dispatch<AuthenticationActions>,
+    userManagerInstance: UserManager
 ) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
-    await userManagerInstance?.getUser().then((user) => {
+    return userManagerInstance.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
             return userManagerInstance
@@ -187,7 +169,7 @@ export async function logout(
                 .then(() => {
                     console.debug('logged out, window is closing...');
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     console.log('Error during logout :', e);
                     // An error occured, window may not be closed, reset the user state
                     dispatch(setLoggedUser(null));
@@ -200,9 +182,7 @@ export async function logout(
 }
 
 export function dispatchUser(
-    dispatch: Dispatch<
-        UnauthorizedUserAction | UserAction | UserValidationErrorAction
-    >,
+    dispatch: Dispatch<AuthenticationActions>,
     userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -246,7 +226,7 @@ export function dispatchUser(
                     );
                     return dispatch(setLoggedUser(user));
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     console.log('Error in dispatchUser', e);
                     return dispatch(
                         setUserValidationError(user?.profile?.name, {
@@ -272,14 +252,15 @@ function navigateToPreLoginPath(navigate: NavigateFunction) {
 }
 
 export function handleSigninCallback(
-    dispatch: Dispatch<SignInCallbackErrorAction>,
+    dispatch: Dispatch<AuthenticationActions>,
     navigate: NavigateFunction,
-    userManagerInstance: UserManager | null
+    userManagerInstance: UserManager
 ) {
     let reloadAfterNavigate = false;
+    // TODO not waiting or passing the promise?
     userManagerInstance
-        ?.signinRedirectCallback()
-        .catch((e) => {
+        .signinRedirectCallback()
+        .catch((e: Error) => {
             if (isIssuerError(e)) {
                 extractIssuerToSessionStorage(e);
                 // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
@@ -298,27 +279,18 @@ export function handleSigninCallback(
                 reload();
             }
         })
-        .catch((e) => {
+        .catch((e: Error) => {
             dispatch(setSignInCallbackError(e));
             console.error(e);
         });
 }
 
-export function handleSilentRenewCallback(
-    userManagerInstance: UserManager | null
-) {
-    userManagerInstance?.signinSilentCallback();
+export function handleSilentRenewCallback(userManagerInstance: UserManager) {
+    userManagerInstance.signinSilentCallback();
 }
 
-const accessTokenExpiringNotificationTime = 60; // seconds
-
 function handleUser(
-    dispatch: Dispatch<
-        | GetActionFn<typeof dispatchUser, 0>
-        | UserAction
-        | ShowAuthenticationRouterLoginAction
-        | AuthenticationRouterErrorAction
-    >,
+    dispatch: Dispatch<AuthenticationActions>,
     userManager: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -333,6 +305,7 @@ function handleUser(
         // otherwise the library will fire AccessTokenExpiring everytime we do getUser()
         // Indeed, getUSer() => loadUser() => load() on events => if it's already expiring it will be init and triggerred again
         window.setTimeout(() => {
+            // TODO not waiting or passing the promise?
             userManager.getUser().then((user) => {
                 if (!user) {
                     console.error(
@@ -404,10 +377,7 @@ function handleUser(
 }
 
 export async function initializeAuthenticationDev(
-    dispatch: Dispatch<
-        | GetActionFn<typeof handleUser, 0>
-        | GetActionFn<typeof handleSigninSilent, 0>
-    >,
+    dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
@@ -423,11 +393,7 @@ export async function initializeAuthenticationDev(
 }
 
 export async function initializeAuthenticationProd(
-    dispatch: Dispatch<
-        | GetActionFn<typeof handleUser, 0>
-        | GetActionFn<typeof handleSigninSilent, 0>
-        | ShowAuthenticationRouterLoginAction
-    >,
+    dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     idpSettingsGetter: IdpSettingsGetter,
     validateUser: UserValidationFunc,
