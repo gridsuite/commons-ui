@@ -113,14 +113,15 @@ export const OverflowableText = styled(
                 <Box
                     {...props}
                     ref={element}
-                    children={children || text}
                     className={className}
                     sx={
                         isMultiLine
                             ? multilineOverflowStyle(maxLineCount)
                             : overflowStyle.overflow
                     }
-                />
+                >
+                    {children || text}
+                </Box>
             </Tooltip>
         );
     }

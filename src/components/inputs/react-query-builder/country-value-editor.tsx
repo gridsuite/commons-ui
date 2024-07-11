@@ -8,15 +8,16 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Autocomplete, TextField } from '@mui/material';
+import { useMemo } from 'react';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
-import { useCustomFormContext } from '../react-hook-form/provider/use-custom-form-context';
-import { FunctionComponent, useMemo } from 'react';
+import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
 
-const CountryValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
+function CountryValueEditor(props: ValueEditorProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
+    const { value, handleOnChange } = props;
 
     const countriesList = useMemo(
         () =>
@@ -31,7 +32,7 @@ const CountryValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
     const valid = useValid(props);
 
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
-    if (!Array.isArray(props.value)) {
+    if (!Array.isArray(value)) {
         return (
             <MaterialValueEditor
                 {...props}
@@ -39,20 +40,17 @@ const CountryValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
                 title={undefined} // disable the tooltip
             />
         );
-    } else {
-        return (
-            <Autocomplete
-                value={props.value}
-                options={countryCodes}
-                getOptionLabel={(code: string) => translate(code)}
-                onChange={(event, value: any) => props.handleOnChange(value)}
-                multiple
-                fullWidth
-                renderInput={(params) => (
-                    <TextField {...params} error={!valid} />
-                )}
-            />
-        );
     }
-};
+    return (
+        <Autocomplete
+            value={value}
+            options={countryCodes}
+            getOptionLabel={(code: string) => translate(code)}
+            onChange={(event, newValue: any) => handleOnChange(newValue)}
+            multiple
+            fullWidth
+            renderInput={(params) => <TextField {...params} error={!valid} />}
+        />
+    );
+}
 export default CountryValueEditor;

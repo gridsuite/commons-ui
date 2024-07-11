@@ -56,14 +56,14 @@ export default function ReportViewerDialog(props: ReportViewerDialogProps) {
             onClose={onClose}
             fullScreen={fullScreen}
             aria-labelledby="dialog-title-report"
-            fullWidth={true}
+            fullWidth
             maxWidth="lg"
             sx={{
                 '& .MuiDialog-paperFullWidth': styles.paperFullWidth,
             }}
         >
             <DialogTitle>{title}</DialogTitle>
-            <DialogContent dividers={true}>
+            <DialogContent dividers>
                 <ReportViewer jsonReport={jsonReport} />
             </DialogContent>
             <DialogActions>

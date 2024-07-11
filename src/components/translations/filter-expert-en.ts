@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filter_expert_en = {
+const filterExpertEn = {
     id: 'ID',
     name: 'Name',
     energySource: 'Energy source',
@@ -35,7 +35,6 @@ const filter_expert_en = {
     p0: 'Constant P (MW)',
     q0: 'Constant Q (MVar)',
     loadTapChangingCapabilities: 'Ratio tap changer on-load',
-    regulatingRatio: 'Ratio tap changer regulating',
     ratioTargetV: 'Ratio tap changer voltage set point (kV)',
     magnetizingConductance: 'Magnetizing conductance (μS)',
     magnetizingSusceptance: 'Magnetizing susceptance (μS)',
@@ -52,12 +51,13 @@ const filter_expert_en = {
     hasPhaseTapChanger: 'Phase tap changer exists',
     Voltage: 'Voltage',
     ReactivePower: 'Reactive power',
+    VoltageRegulation: 'Voltage regulation',
+    FixedRatio: 'Fixed ratio',
     CurrentLimiter: 'Current limiter',
     ActivePowerControl: 'Active power control',
     FixedTap: 'Fixed tap',
     ratioRegulationMode: 'Ratio tap changer regulation mode',
     phaseRegulationMode: 'Phase tap changer regulation mode',
-    phaseRegulating: 'Phase tap changer regulating',
     phaseRegulationValue: 'Phase tap changer flow set point or current limit',
     property: 'Property',
     substationProperty: 'Substation property',
@@ -95,4 +95,4 @@ const filter_expert_en = {
     susceptanceFix: 'Fixed part of susceptance ',
 };
 
-export default filter_expert_en;
+export default filterExpertEn;

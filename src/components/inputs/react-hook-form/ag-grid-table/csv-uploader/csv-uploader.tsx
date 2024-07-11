@@ -11,16 +11,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { useCSVReader } from 'react-papaparse';
 import Button from '@mui/material/Button';
-import React, { FunctionComponent, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
 import Alert from '@mui/material/Alert';
 import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { CancelButton } from '../../../../../index';
-import { FieldConstants } from '../../../../../utils/field-constants';
 import { RECORD_SEP, UNIT_SEP } from 'papaparse';
+import FieldConstants from '../../../../../utils/field-constants';
+import CancelButton from '../../utils/cancel-button';
 
 interface CsvUploaderProps {
     name: string;
@@ -35,7 +35,7 @@ interface CsvUploaderProps {
     useFieldArrayOutput: any;
 }
 
-const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
+function CsvUploader({
     name,
     onClose,
     open,
@@ -43,24 +43,25 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
     fileHeaders,
     fileName,
     csvData,
-    validateData = (_rows) => true,
+    validateData = () => true,
     getDataFromCsv,
     useFieldArrayOutput,
-}) => {
+}: CsvUploaderProps) {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
     const [createError, setCreateError] = React.useState('');
     const intl = useIntl();
     const { CSVReader } = useCSVReader();
     const [importedData, setImportedData] = useState<any>([]);
-    const [isConfirmationPopupOpen, setOpenConfirmationPopup] = useState(false);
+    const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] =
+        useState(false);
 
     const data = useMemo(() => {
-        const data = [...[fileHeaders]];
+        const newData = [...[fileHeaders]];
         if (Array.isArray(csvData)) {
-            csvData.forEach((row) => data.push([row]));
+            csvData.forEach((row) => newData.push([row]));
         }
-        return data;
+        return newData;
     }, [csvData, fileHeaders]);
     const handleClose = () => {
         onClose();
@@ -137,25 +138,25 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
             );
 
         if (isValuesInTable && getResultsFromImportedData().length > 0) {
-            setOpenConfirmationPopup(true);
+            setIsConfirmationPopupOpen(true);
         } else {
-            setOpenConfirmationPopup(false);
+            setIsConfirmationPopupOpen(false);
             handleFileSubmit(false);
         }
     };
 
     const handleAddPopupConfirmation = () => {
         handleFileSubmit(true);
-        setOpenConfirmationPopup(false);
+        setIsConfirmationPopupOpen(false);
     };
 
     const handleReplacePopupConfirmation = () => {
         handleFileSubmit(false);
-        setOpenConfirmationPopup(false);
+        setIsConfirmationPopupOpen(false);
     };
 
     const handleCancelDialog = () => {
-        setOpenConfirmationPopup(false);
+        setIsConfirmationPopupOpen(false);
     };
     const renderConfirmationCsvData = () => {
         return (
@@ -163,8 +164,8 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
                 open={isConfirmationPopupOpen}
                 aria-labelledby="dialog-confirmation-csv-data"
             >
-                <DialogTitle id={'dialog-confirmation-csv-data'}>
-                    {'Confirmation'}
+                <DialogTitle id="dialog-confirmation-csv-data">
+                    Confirmation
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -202,9 +203,9 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
                                     <CsvDownloader
                                         datas={data}
                                         filename={fileName}
-                                        separator={','}
+                                        separator=","
                                     >
-                                        <Button variant={'contained'}>
+                                        <Button variant="contained">
                                             <FormattedMessage id="GenerateCSV" />
                                         </Button>
                                     </CsvDownloader>
@@ -228,28 +229,26 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
                                     }}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (
-                                        <>
-                                            <Grid item>
-                                                <Button
-                                                    {...getRootProps()}
-                                                    variant={'contained'}
-                                                >
-                                                    <FormattedMessage id="UploadCSV" />
-                                                </Button>
-                                                <span
-                                                    style={{
-                                                        marginLeft: '10px',
-                                                        fontWeight: 'bold',
-                                                    }}
-                                                >
-                                                    {acceptedFile
-                                                        ? acceptedFile.name
-                                                        : intl.formatMessage({
-                                                              id: 'uploadMessage',
-                                                          })}
-                                                </span>
-                                            </Grid>
-                                        </>
+                                        <Grid item>
+                                            <Button
+                                                {...getRootProps()}
+                                                variant="contained"
+                                            >
+                                                <FormattedMessage id="UploadCSV" />
+                                            </Button>
+                                            <span
+                                                style={{
+                                                    marginLeft: '10px',
+                                                    fontWeight: 'bold',
+                                                }}
+                                            >
+                                                {acceptedFile
+                                                    ? acceptedFile.name
+                                                    : intl.formatMessage({
+                                                          id: 'uploadMessage',
+                                                      })}
+                                            </span>
+                                        </Grid>
                                     )}
                                 </CSVReader>
                             </Grid>
@@ -273,6 +272,6 @@ const CsvUploader: FunctionComponent<CsvUploaderProps> = ({
             {renderConfirmationCsvData()}
         </>
     );
-};
+}
 
 export default CsvUploader;

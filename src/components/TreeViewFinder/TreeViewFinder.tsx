@@ -13,10 +13,6 @@ import React, {
     useState,
 } from 'react';
 import { useIntl } from 'react-intl';
-import {
-    makeComposeClasses,
-    toNestedGlobalSelectors,
-} from '../../utils/styles';
 
 import { styled } from '@mui/system';
 
@@ -38,6 +34,10 @@ import {
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
+import {
+    makeComposeClasses,
+    toNestedGlobalSelectors,
+} from '../../utils/styles';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 
 // As a bunch of individual variables to try to make it easier
@@ -89,7 +89,7 @@ interface TreeViewFinderNodeMapProps {
 }
 
 export interface TreeViewFinderProps {
-    //TreeView Props
+    // TreeView Props
     defaultExpanded?: string[];
     defaultSelected?: string[];
     selected?: string[];
@@ -144,7 +144,7 @@ export interface TreeViewFinderProps {
  * @param {Object}          [selected] - ids of selected items
  * @param {Array}           [expanded] - ids of the expanded items
  */
-const TreeViewFinder = (props: TreeViewFinderProps) => {
+function TreeViewFinder(props: TreeViewFinderProps) {
     const intl = useIntl();
     const {
         classes = {},
@@ -182,12 +182,12 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
     const [autoScrollAllowed, setAutoScrollAllowed] = useState<boolean>(true);
 
     /* Utilities */
-    const isSelectable = (node: TreeViewFinderNodeProps) => {
-        return onlyLeaves ? isLeaf(node) : true; // otherwise everything is selectable
-    };
-
     const isLeaf = (node: TreeViewFinderNodeProps) => {
         return node && node.children === undefined;
+    };
+
+    const isSelectable = (node: TreeViewFinderNodeProps) => {
+        return onlyLeaves ? isLeaf(node) : true; // otherwise everything is selectable
     };
 
     const isValidationDisabled = () => {
@@ -200,7 +200,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
 
     const computeMapPrintedNodes = useCallback(
         (nodes: TreeViewFinderNodeProps[] | undefined) => {
-            let newMapPrintedNodes: TreeViewFinderNodeMapProps = {};
+            const newMapPrintedNodes: TreeViewFinderNodeMapProps = {};
             nodes?.forEach((node) => {
                 newMapPrintedNodes[node.id] = node;
                 if (!isLeaf(node)) {
@@ -219,7 +219,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
     useEffect(() => {
         // compute all mapPrintedNodes here from data prop
         // if data changes in current expanded nodes
-        let newMapPrintedNodes = computeMapPrintedNodes(data);
+        const newMapPrintedNodes = computeMapPrintedNodes(data);
         setMapPrintedNodes(newMapPrintedNodes);
     }, [data, computeMapPrintedNodes]);
 
@@ -237,7 +237,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         nodeIds.every((nodeId) => {
             if (!expanded?.includes(nodeId)) {
                 // proc onTreeBrowse here
-                onTreeBrowse && onTreeBrowse(nodeId);
+                onTreeBrowse?.(nodeId);
                 return false; // break loop to call onTreeBrowse only once
             }
             return true;
@@ -253,7 +253,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         }
         if (selectedProp.length > 0) {
             setSelected((oldSelectedNodes) => [
-                ...(oldSelectedNodes ? oldSelectedNodes : []),
+                ...(oldSelectedNodes ?? []),
                 ...selectedProp,
             ]);
         }
@@ -265,7 +265,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
         }
         if (expandedProp.length > 0) {
             setExpanded((oldExpandedNodes) => [
-                ...(oldExpandedNodes ? oldExpandedNodes : []),
+                ...(oldExpandedNodes ?? []),
                 ...expandedProp,
             ]);
         }
@@ -306,16 +306,14 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
             setSelected(
                 values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId]))
             );
-        } else {
-            if (!Array.isArray(values)) {
-                // Toggle selection to allow unselection
-                if (selected?.includes(values)) {
-                    setSelected([]);
-                } else {
-                    setSelected(
-                        isSelectable(mapPrintedNodes[values]) ? [values] : []
-                    );
-                }
+        } else if (!Array.isArray(values)) {
+            // Toggle selection to allow unselection
+            if (selected?.includes(values)) {
+                setSelected([]);
+            } else {
+                setSelected(
+                    isSelectable(mapPrintedNodes[values]) ? [values] : []
+                );
             }
         }
     };
@@ -324,26 +322,25 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
     const getValidationButtonText = () => {
         if (validationButtonText) {
             return validationButtonText;
-        } else {
-            let buttonLabelId = '';
-            if (Array.isArray(selectedProp)) {
-                buttonLabelId =
-                    selectedProp?.length > 0
-                        ? 'treeview_finder/replaceElementsValidation'
-                        : 'treeview_finder/addElementsValidation';
-            } else {
-                buttonLabelId = selectedProp
+        }
+        let buttonLabelId = '';
+        if (Array.isArray(selectedProp)) {
+            buttonLabelId =
+                selectedProp?.length > 0
                     ? 'treeview_finder/replaceElementsValidation'
                     : 'treeview_finder/addElementsValidation';
-            }
-
-            return intl.formatMessage(
-                { id: buttonLabelId },
-                {
-                    nbElements: selected?.length,
-                }
-            );
+        } else {
+            buttonLabelId = selectedProp
+                ? 'treeview_finder/replaceElementsValidation'
+                : 'treeview_finder/addElementsValidation';
         }
+
+        return intl.formatMessage(
+            { id: buttonLabelId },
+            {
+                nbElements: selected?.length,
+            }
+        );
     };
 
     const getNodeIcon = (node: TreeViewFinderNodeProps) => {
@@ -358,17 +355,15 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
             return (
                 <CheckIcon className={composeClasses(classes, cssLabelIcon)} />
             );
-        } else {
-            if (node.icon) {
-                return (
-                    <div className={composeClasses(classes, cssLabelIcon)}>
-                        {node.icon}
-                    </div>
-                );
-            } else {
-                return null;
-            }
         }
+        if (node.icon) {
+            return (
+                <div className={composeClasses(classes, cssLabelIcon)}>
+                    {node.icon}
+                </div>
+            );
+        }
+        return null;
     };
 
     const renderTreeItemLabel = (node: TreeViewFinderNodeProps) => {
@@ -391,7 +386,19 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
 
     const renderTree = (node: TreeViewFinderNodeProps) => {
         if (!node) {
-            return;
+            return null;
+        }
+        let childrenNodes = null;
+
+        if (Array.isArray(node.children)) {
+            if (node.children.length) {
+                const sortedChildren = node.children.sort(sortMethod);
+                childrenNodes = sortedChildren.map((child) =>
+                    renderTree(child)
+                );
+            } else {
+                childrenNodes = [false]; // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
+            }
         }
         return (
             <TreeItem
@@ -418,13 +425,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
                     }
                 }}
             >
-                {Array.isArray(node.children)
-                    ? node.children.length
-                        ? node.children
-                              .sort(sortMethod)
-                              .map((child) => renderTree(child))
-                        : [false] // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
-                    : null}
+                {childrenNodes}
             </TreeItem>
         );
     };
@@ -447,7 +448,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
             open={open}
             onClose={(e, r) => {
                 if (r === 'escapeKeyDown' || r === 'backdropClick') {
-                    onClose && onClose([]);
+                    onClose?.([]);
                     setSelected([]);
                 }
             }}
@@ -458,21 +459,19 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
             }}
         >
             <DialogTitle id="TreeViewFindertitle">
-                {title
-                    ? title
-                    : intl.formatMessage(
-                          { id: 'treeview_finder/finderTitle' },
-                          { multiSelect: multiSelect }
-                      )}
+                {title ??
+                    intl.formatMessage(
+                        { id: 'treeview_finder/finderTitle' },
+                        { multiSelect }
+                    )}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    {contentText
-                        ? contentText
-                        : intl.formatMessage(
-                              { id: 'treeview_finder/contentText' },
-                              { multiSelect: multiSelect }
-                          )}
+                    {contentText ??
+                        intl.formatMessage(
+                            { id: 'treeview_finder/contentText' },
+                            { multiSelect }
+                        )}
                 </DialogContentText>
 
                 <TreeView
@@ -495,7 +494,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
                 <CancelButton
                     style={{ float: 'left', margin: '5px' }}
                     onClick={() => {
-                        onClose && onClose([]);
+                        onClose?.([]);
                         setSelected([]);
                         setAutoScrollAllowed(true);
                     }}
@@ -505,7 +504,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
                     variant="outlined"
                     style={{ float: 'left', margin: '5px' }}
                     onClick={() => {
-                        onClose && onClose(computeSelectedNodes());
+                        onClose?.(computeSelectedNodes());
                         setSelected([]);
                         setAutoScrollAllowed(true);
                     }}
@@ -516,7 +515,7 @@ const TreeViewFinder = (props: TreeViewFinderProps) => {
             </DialogActions>
         </Dialog>
     );
-};
+}
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(
     defaultStyles,

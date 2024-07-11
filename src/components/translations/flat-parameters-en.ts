@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const flat_parameters_en = {
+const flatParametersEn = {
     'flat_parameters/none': 'None',
     'flat_parameters/some': 'Some',
     'flat_parameters/all': 'All',
 };
 
-export default flat_parameters_en;
+export default flatParametersEn;

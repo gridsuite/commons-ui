@@ -5,12 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './utils';
-export type * from './utils';
 export * from './explore';
-export type * from './explore';
 export * from './apps-metadata';
-export type * from './apps-metadata';
 export * from './directory';
-export type * from './directory';
 export * from './study';
-export type * from './study';

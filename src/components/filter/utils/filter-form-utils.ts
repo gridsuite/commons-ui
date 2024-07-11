@@ -4,9 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FieldConstants } from '../../../utils/field-constants';
-import RangeInput from '../../inputs/react-hook-form/range-input';
 import { FunctionComponent } from 'react';
+import FieldConstants from '../../../utils/field-constants';
+import RangeInput from '../../inputs/react-hook-form/range-input';
 import CountriesInput from '../../inputs/react-hook-form/select-inputs/countries-input';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 import { EquipmentType } from '../../../utils/EquipmentType';

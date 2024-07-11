@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FunctionComponent, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Chip } from '@mui/material';
 import AutocompleteInput from '../autocomplete-inputs/autocomplete-input';
 import { useLocalizedCountries } from '../../../../hooks/localized-countries-hook';
-import { useCustomFormContext } from '../provider/use-custom-form-context';
+import useCustomFormContext from '../provider/use-custom-form-context';
 import { Option } from '../../../../utils/types';
 
 interface CountryInputProps {
@@ -16,10 +16,7 @@ interface CountryInputProps {
     label: string;
 }
 
-const CountriesInput: FunctionComponent<CountryInputProps> = ({
-    name,
-    label,
-}) => {
+function CountriesInput({ name, label }: CountryInputProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
 
@@ -27,9 +24,8 @@ const CountriesInput: FunctionComponent<CountryInputProps> = ({
         (option: Option) => {
             if (typeof option === 'string') {
                 return translate(option);
-            } else {
-                return translate(option.label);
             }
+            return translate(option.label);
         },
         [translate]
     );
@@ -46,7 +42,7 @@ const CountriesInput: FunctionComponent<CountryInputProps> = ({
                 val.map((code: string, index: number) => (
                     <Chip
                         key={code}
-                        size={'small'}
+                        size="small"
                         label={translate(code)}
                         {...getTagsProps({ index })}
                     />
@@ -54,6 +50,6 @@ const CountriesInput: FunctionComponent<CountryInputProps> = ({
             }
         />
     );
-};
+}
 
 export default CountriesInput;

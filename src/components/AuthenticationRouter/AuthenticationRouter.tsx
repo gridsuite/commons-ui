@@ -6,7 +6,16 @@
  */
 
 import { Dispatch, useCallback } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import {
+    Location,
+    Navigate,
+    NavigateFunction,
+    Route,
+    Routes,
+} from 'react-router-dom';
+import { Alert, AlertTitle, Grid } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import { UserManager } from 'oidc-client';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import {
     handleSigninCallback,
@@ -18,30 +27,31 @@ import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
 
-import { Alert, AlertTitle, Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { UserManager } from 'oidc-client';
+import { AuthenticationActions } from '../../redux/authActions';
+
+export type AuthenticationRouterErrorState = {
+    userName?: string;
+    userValidationError?: { error: Error };
+    logoutError?: { error: Error };
+    unauthorizedUserInfo?: string;
+};
+
+export type UserManagerState = {
+    instance: UserManager | null;
+    error: string | null;
+};
 
 export interface AuthenticationRouterProps {
-    userManager: {
-        instance: UserManager;
-        error: string;
-    };
-    signInCallbackError: { message: string };
-    authenticationRouterError: {
-        userName: string;
-        userValidationError?: { error: Error };
-        logoutError?: { error: Error };
-        unauthorizedUserInfo?: string;
-        error: string;
-    };
+    userManager: UserManagerState;
+    signInCallbackError: Error | null;
+    authenticationRouterError: AuthenticationRouterErrorState | null;
     showAuthenticationRouterLogin: boolean;
-    dispatch: Dispatch<unknown>;
-    navigate: () => void;
+    dispatch: Dispatch<AuthenticationActions>;
+    navigate: NavigateFunction;
     location: Location;
 }
 
-const AuthenticationRouter = ({
+function AuthenticationRouter({
     userManager,
     signInCallbackError,
     authenticationRouterError,
@@ -49,22 +59,23 @@ const AuthenticationRouter = ({
     dispatch,
     navigate,
     location,
-}: AuthenticationRouterProps) => {
-    const handleSigninCallbackClosure = useCallback(
-        () => handleSigninCallback(dispatch, navigate, userManager.instance),
-        [dispatch, navigate, userManager.instance]
-    );
-    const handleSilentRenewCallbackClosure = useCallback(
-        () => handleSilentRenewCallback(userManager.instance),
-        [userManager.instance]
-    );
-
+}: Readonly<AuthenticationRouterProps>) {
+    const handleSigninCallbackClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            handleSigninCallback(dispatch, navigate, userManager.instance);
+        }
+    }, [dispatch, navigate, userManager.instance]);
+    const handleSilentRenewCallbackClosure = useCallback(() => {
+        if (userManager.instance != null) {
+            handleSilentRenewCallback(userManager.instance);
+        }
+    }, [userManager.instance]);
     return (
         <Grid
             container
-            alignContent={'center'}
-            alignItems={'center'}
-            direction={'column'}
+            alignContent="center"
+            alignItems="center"
+            direction="column"
         >
             {userManager.error !== null && (
                 <h1>Error : Getting userManager; {userManager.error}</h1>
@@ -185,5 +196,6 @@ const AuthenticationRouter = ({
             )}
         </Grid>
     );
-};
+}
+
 export default AuthenticationRouter;

@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const multiple_selection_dialog_fr = {
+const multipleSelectionDialogFr = {
     'multiple_selection_dialog/cancel': 'Annuler',
     'multiple_selection_dialog/validate': 'Valider',
     'multiple_selection_dialog/selectAll': 'Tout sélectionner',
 };
 
-export default multiple_selection_dialog_fr;
+export default multipleSelectionDialogFr;

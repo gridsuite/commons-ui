@@ -6,7 +6,7 @@
  */
 
 export {
-    default,
+    default as MuiVirtualizedTable,
     generateMuiVirtualizedTableClass,
 } from './MuiVirtualizedTable';
-export { KeyedColumnsRowIndexer, CHANGE_WAYS } from './KeyedColumnsRowIndexer';
+export { KeyedColumnsRowIndexer, ChangeWays } from './KeyedColumnsRowIndexer';

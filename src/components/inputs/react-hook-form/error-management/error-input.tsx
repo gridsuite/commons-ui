@@ -5,12 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {
-    FunctionComponent,
-    MutableRefObject,
-    useEffect,
-    useRef,
-} from 'react';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
@@ -30,10 +25,7 @@ export interface ErrorInputProps {
     }) => React.ReactNode;
 }
 
-const ErrorInput: FunctionComponent<ErrorInputProps> = ({
-    name,
-    InputField,
-}) => {
+function ErrorInput({ name, InputField }: ErrorInputProps) {
     const {
         fieldState: { error },
         formState: { isSubmitting },
@@ -48,7 +40,8 @@ const ErrorInput: FunctionComponent<ErrorInputProps> = ({
             return {
                 id: errorMsg,
             };
-        } else if (typeof errorMsg === 'object') {
+        }
+        if (typeof errorMsg === 'object') {
             return {
                 id: errorMsg.id,
                 values: {
@@ -71,16 +64,14 @@ const ErrorInput: FunctionComponent<ErrorInputProps> = ({
     const errorMsg = error?.message || error?.root?.message;
 
     return (
-        <>
-            {errorMsg && (
-                <div ref={errorRef}>
-                    {InputField({
-                        message: <FormattedMessage {...errorProps(errorMsg)} />,
-                    })}
-                </div>
-            )}
-        </>
+        errorMsg && (
+            <div ref={errorRef}>
+                {InputField({
+                    message: <FormattedMessage {...errorProps(errorMsg)} />,
+                })}
+            </div>
+        )
     );
-};
+}
 
 export default ErrorInput;

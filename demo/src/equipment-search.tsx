@@ -6,6 +6,8 @@
  */
 import { useState } from 'react';
 import { Button, TextField } from '@mui/material';
+import { Search } from '@mui/icons-material';
+import { useIntl } from 'react-intl';
 import {
     ElementSearchDialog,
     EquipmentItem,
@@ -13,8 +15,6 @@ import {
     EquipmentType,
     useElementSearch,
 } from '../../src/index';
-import { Search } from '@mui/icons-material';
-import { useIntl } from 'react-intl';
 
 interface AnyElementInterface {
     id: string;
@@ -38,7 +38,7 @@ const equipmentsToReturn: AnyElementInterface[] = [
     },
 ];
 
-const searchEquipmentPromise = (term: string) => {
+const searchEquipmentPromise = () => {
     return new Promise<AnyElementInterface[]>((resolve) => {
         setTimeout(() => {
             resolve(equipmentsToReturn);
@@ -46,7 +46,7 @@ const searchEquipmentPromise = (term: string) => {
     });
 };
 
-export const EquipmentSearchDialog = () => {
+export function EquipmentSearchDialog() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const { elementsFound, isLoading, searchTerm, updateSearchTerm } =
@@ -82,7 +82,7 @@ export const EquipmentSearchDialog = () => {
                 }
                 renderInput={(displayedValue, params) => (
                     <TextField
-                        autoFocus={true}
+                        autoFocus
                         {...params}
                         label={intl.formatMessage({
                             id: 'element_search/label',
@@ -97,4 +97,6 @@ export const EquipmentSearchDialog = () => {
             />
         </>
     );
-};
+}
+
+export default EquipmentSearchDialog;

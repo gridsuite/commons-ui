@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import {
     IconButton,
@@ -24,9 +24,7 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
-const TextFieldWithAdornment: FunctionComponent<TextFieldWithAdornmentProps> = (
-    props
-) => {
+function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const {
         adornmentPosition,
         adornmentText,
@@ -39,14 +37,14 @@ const TextFieldWithAdornment: FunctionComponent<TextFieldWithAdornmentProps> = (
     const [isFocused, setIsFocused] = useState(false);
 
     const getAdornmentStyle = useCallback(
-        (variant: 'standard' | 'filled' | 'outlined') => {
-            if (variant === 'filled') {
+        (innerVariant: 'standard' | 'filled' | 'outlined') => {
+            if (innerVariant === 'filled') {
                 return {
                     alignItems: 'start',
                     marginBottom: '0.4em',
                 };
             }
-            if (variant === 'standard') {
+            if (innerVariant === 'standard') {
                 return {
                     marginBottom: '0.3em',
                 };
@@ -121,7 +119,7 @@ const TextFieldWithAdornment: FunctionComponent<TextFieldWithAdornmentProps> = (
 
     return (
         <TextField
-            {...otherProps} //TODO move at the end like other inputs ?
+            {...otherProps} // TODO move at the end like other inputs ?
             variant={variant}
             value={value}
             InputProps={
@@ -129,10 +127,10 @@ const TextFieldWithAdornment: FunctionComponent<TextFieldWithAdornmentProps> = (
                     ? withStartAdornmentText()
                     : withEndAdornmentText()
             }
-            onFocus={(e) => setIsFocused(true)}
-            onBlur={(e) => setIsFocused(false)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
         />
     );
-};
+}
 
 export default TextFieldWithAdornment;

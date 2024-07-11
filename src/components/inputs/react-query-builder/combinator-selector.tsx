@@ -6,26 +6,25 @@
  */
 
 import { CombinatorSelectorProps } from 'react-querybuilder';
-import { FunctionComponent, useCallback, useState } from 'react';
-import PopupConfirmationDialog from '../../dialogs/popup-confirmation-dialog';
+import { useCallback, useState } from 'react';
 import { MaterialValueSelector } from '@react-querybuilder/material';
+import PopupConfirmationDialog from '../../dialogs/popup-confirmation-dialog';
 
-const CombinatorSelector: FunctionComponent<CombinatorSelectorProps> = (
-    props
-) => {
-    const [tempCombinator, setTempCombinator] = useState(props.value);
+function CombinatorSelector(props: CombinatorSelectorProps) {
+    const { value, handleOnChange } = props;
+    const [tempCombinator, setTempCombinator] = useState(value);
     const [openPopup, setOpenPopup] = useState(false);
 
     const handlePopupConfirmation = useCallback(() => {
-        props.handleOnChange(tempCombinator);
+        handleOnChange(tempCombinator);
         setOpenPopup(false);
-    }, [props, tempCombinator]);
+    }, [handleOnChange, tempCombinator]);
 
     return (
         <>
             <PopupConfirmationDialog
-                message={'changeOperatorMessage'}
-                validateButtonLabel={'button.changeOperator'}
+                message="changeOperatorMessage"
+                validateButtonLabel="button.changeOperator"
                 openConfirmationPopup={openPopup}
                 setOpenConfirmationPopup={setOpenPopup}
                 handlePopupConfirmation={handlePopupConfirmation}
@@ -40,5 +39,5 @@ const CombinatorSelector: FunctionComponent<CombinatorSelectorProps> = (
             />
         </>
     );
-};
+}
 export default CombinatorSelector;

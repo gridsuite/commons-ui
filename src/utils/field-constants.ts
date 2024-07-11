@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export enum FieldConstants {
+enum FieldConstants {
     ID = 'id',
     NAME = 'name',
     FILTER_TYPE = 'filterType',
@@ -44,3 +44,5 @@ export enum FieldConstants {
     PROPERTY_VALUES = 'propertyValues',
     PROPERTY_OPERATOR = 'propertyOperator',
 }
+
+export default FieldConstants;

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+/* eslint-disable react/jsx-curly-brace-presence, react/jsx-boolean-value, @typescript-eslint/no-shadow, @typescript-eslint/no-unused-vars, no-restricted-globals, no-else-return, react/no-unstable-nested-components, react/function-component-definition, react/no-this-in-sfc, react/require-default-props, react/no-access-state-in-setstate, spaced-comment, object-shorthand, prefer-destructuring, prefer-template, no-return-assign, no-restricted-syntax, react/static-property-placement, @typescript-eslint/lines-between-class-members, react/default-props-match-prop-types, react/destructuring-assignment, no-underscore-dangle, class-methods-use-this, react/sort-comp, prefer-const, no-plusplus */
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
@@ -40,18 +40,18 @@ import {
     TableCellProps,
 } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
-import OverflowableText from '../OverflowableText/overflowable-text';
+import { OverflowableText } from '../OverflowableText/overflowable-text';
 import {
     makeComposeClasses,
     toNestedGlobalSelectors,
 } from '../../utils/styles';
 import {
-    CHANGE_WAYS,
+    ChangeWays,
     collectibleHelper,
     getHelper,
     KeyedColumnsRowIndexer,
 } from './KeyedColumnsRowIndexer';
-import ColumnHeader from './ColumnHeader';
+import { ColumnHeader } from './ColumnHeader';
 
 function getTextWidth(text: any): number {
     // re-use canvas object for better performance
@@ -571,13 +571,13 @@ class MuiVirtualizedTable extends PureComponent<
             return;
         }
 
-        let way = CHANGE_WAYS.SIMPLE;
+        let way = ChangeWays.SIMPLE;
         if (evt.ctrlKey && evt.shiftKey) {
-            way = CHANGE_WAYS.AMEND;
+            way = ChangeWays.AMEND;
         } else if (evt.ctrlKey) {
-            way = CHANGE_WAYS.REMOVE;
+            way = ChangeWays.REMOVE;
         } else if (evt.shiftKey) {
-            way = CHANGE_WAYS.TAIL;
+            way = ChangeWays.TAIL;
         }
 
         if (this.state.indexer?.updateSortingFromUser(colKey, way)) {

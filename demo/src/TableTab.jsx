@@ -6,7 +6,6 @@
  */
 
 import { useCallback, useMemo, useState } from 'react';
-import { DEFAULT_CELL_PADDING } from '../../src';
 import { styled } from '@mui/system';
 import {
     Box,
@@ -16,10 +15,12 @@ import {
     Switch,
     TextField,
 } from '@mui/material';
-import MuiVirtualizedTable, {
-    CHANGE_WAYS,
+import { DEFAULT_CELL_PADDING } from '../../src';
+import {
+    ChangeWays,
     generateMuiVirtualizedTableClass,
     KeyedColumnsRowIndexer,
+    MuiVirtualizedTable,
 } from '../../src/components/MuiVirtualizedTable';
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
@@ -29,16 +30,17 @@ const evenThenOddOrderingKey = (n) => {
     if (n <= 0 && remainder < 1) {
         // first negative even and zero ]...-3,-2,-1]
         return n / 2 - 1;
-    } else if (n > 0 && remainder < 1) {
+    }
+    if (n > 0 && remainder < 1) {
         // then positive even [-1/2, -1/3 ..., 0[
         return -1 / (n / 2 + 1);
-    } else if (n < 0 && remainder >= 1) {
+    }
+    if (n < 0 && remainder >= 1) {
         // then negative odds ]0, 1/3, 1/2...
         return -1 / ((n - 1) / 2 - 1);
-    } else {
-        //positive odd [1,2,3,4...[
-        return (n + 1) / 2;
     }
+    // positive odd [1,2,3,4...[
+    return (n + 1) / 2;
 };
 
 /**
@@ -64,7 +66,7 @@ const stylesVirtualizedTable = (theme) => ({
     },
     '& .tableCell': {
         flex: 1,
-        padding: DEFAULT_CELL_PADDING + 'px',
+        padding: `${DEFAULT_CELL_PADDING}px`,
     },
     '& .noClick': {
         cursor: 'initial',
@@ -92,7 +94,7 @@ const stylesEmotion = ({ theme }) =>
     );
 const StyledVirtualizedTable = styled(MuiVirtualizedTable)(stylesEmotion);
 
-export const TableTab = () => {
+function TableTab() {
     const [usesCustomStyles, setUsesCustomStyles] = useState(true);
 
     const VirtualizedTable = usesCustomStyles
@@ -141,11 +143,11 @@ export const TableTab = () => {
 
     function makeIndexer(prevIndexer) {
         const prevCol = prevIndexer?.highestCodedColumn(columns);
-        let colKey = !prevCol ? 'key2' : 'key' + ((Math.abs(prevCol) % 4) + 1);
+        const colKey = !prevCol ? 'key2' : `key${(Math.abs(prevCol) % 4) + 1}`;
         const ret = new KeyedColumnsRowIndexer(true, false);
         ret.setColFilterOuterParams(colKey, ['val9']);
 
-        const changeWay = CHANGE_WAYS.SIMPLE;
+        const changeWay = ChangeWays.SIMPLE;
         // fake user click twice, to set descending order
         ret.updateSortingFromUser(colKey, changeWay);
         ret.updateSortingFromUser(colKey, changeWay);
@@ -190,7 +192,8 @@ export const TableTab = () => {
                     filtered = filtered.reverse();
                 }
             }
-            return filtered.map(([d, j]) => j);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            return filtered.map(([_, j]) => j);
         },
         [rows, filter]
     );
@@ -238,7 +241,7 @@ export const TableTab = () => {
                 <Button
                     disabled={!isIndexerExternal}
                     onClick={() => setIndexer(makeIndexer(indexer))}
-                    variant={'contained'}
+                    variant="contained"
                 >
                     New external indexer
                 </Button>
@@ -249,7 +252,7 @@ export const TableTab = () => {
                 )}
                 <TextField
                     label="header2 filter"
-                    size={'small'}
+                    size="small"
                     onChange={(event) => {
                         updateKeyIfNeeded();
                         setFilterValue(event.target.value);
@@ -262,13 +265,13 @@ export const TableTab = () => {
                 )}
                 <TextField
                     label="Header height"
-                    size={'small'}
+                    size="small"
                     onChange={(event) => {
                         // still update the key to cause unmount/remount even if we don't get a new different number
                         // from the field to give more occasions to test unmount/remounts
                         updateKeyIfNeeded();
                         const newHeaderHeight = Number(event.target.value);
-                        if (!isNaN(newHeaderHeight)) {
+                        if (!Number.isNaN(newHeaderHeight)) {
                             setHeaderHeight(event.target.value);
                         }
                     }}
@@ -288,7 +291,7 @@ export const TableTab = () => {
                     sortable={sortable}
                     defersFilterChanges={defersFilterChanges}
                     columns={columns}
-                    enableExportCSV={true}
+                    enableExportCSV
                     exportCSVDataKeys={['key2', 'key4']}
                     headerHeight={
                         !headerHeight ? undefined : Number(headerHeight)
@@ -303,4 +306,6 @@ export const TableTab = () => {
             </Box>
         </Stack>
     );
-};
+}
+
+export default TableTab;

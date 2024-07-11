@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { mapEquipmentTypeForPredefinedProperties } from '../utils/equipment-types-for-predefined-properties-mapper';
+import mapEquipmentTypeForPredefinedProperties from '../utils/equipment-types-for-predefined-properties-mapper';
 import { useSnackMessage } from './useSnackMessage';
 import { EquipmentType, PredefinedProperties } from '../utils/types';
 import { fetchStudyMetadata } from '../services';
@@ -22,7 +22,7 @@ const fetchPredefinedProperties = async (
     return studyMetadata.predefinedEquipmentProperties?.[networkEquipmentType];
 };
 
-export const usePredefinedProperties = (
+const usePredefinedProperties = (
     initialType: EquipmentType | null
 ): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>] => {
     const [type, setType] = useState<EquipmentType | null>(initialType);
@@ -48,3 +48,5 @@ export const usePredefinedProperties = (
 
     return [equipmentPredefinedProps, setType];
 };
+
+export default usePredefinedProperties;

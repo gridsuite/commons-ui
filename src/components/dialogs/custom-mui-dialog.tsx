@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -16,12 +16,12 @@ import {
     Grid,
     LinearProgress,
 } from '@mui/material';
+import * as yup from 'yup';
 import SubmitButton from '../inputs/react-hook-form/utils/submit-button';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import CustomFormProvider, {
     MergedFormContextProps,
 } from '../inputs/react-hook-form/provider/custom-form-provider';
-import * as yup from 'yup';
 
 interface ICustomMuiDialog {
     open: boolean;
@@ -49,7 +49,7 @@ const styles = {
     },
 };
 
-const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
+function CustomMuiDialog({
     open,
     formSchema,
     formMethods,
@@ -63,11 +63,11 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     onCancel,
     children,
     language,
-}) => {
+}: ICustomMuiDialog) {
     const { handleSubmit } = formMethods;
 
     const handleCancel = (event: React.MouseEvent) => {
-        onCancel && onCancel();
+        onCancel?.();
         onClose(event);
     };
 
@@ -84,7 +84,7 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
     };
 
     const handleValidationError = (errors: FieldErrors) => {
-        onValidationError && onValidationError(errors);
+        onValidationError?.(errors);
     };
 
     return (
@@ -121,6 +121,6 @@ const CustomMuiDialog: FunctionComponent<ICustomMuiDialog> = ({
             </Dialog>
         </CustomFormProvider>
     );
-};
+}
 
 export default CustomMuiDialog;

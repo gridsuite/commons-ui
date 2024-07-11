@@ -8,10 +8,10 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { TableCell, Theme, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
-import MuiVirtualizedTable from '../MuiVirtualizedTable';
+import { MuiVirtualizedTable } from '../MuiVirtualizedTable';
 import { FilterButton } from './filter-button';
 import LogReportItem from './log-report-item';
-import { RowProps } from '../MuiVirtualizedTable/MuiVirtualizedTable';
+import { RowProps } from '../MuiVirtualizedTable/KeyedColumnsRowIndexer';
 
 const SEVERITY_COLUMN_FIXED_WIDTH = 115;
 
@@ -44,12 +44,12 @@ export interface LogTableProps {
     ) => void;
 }
 
-const LogTable = ({
+function LogTable({
     logs,
     onRowClick,
     selectedSeverity,
     setSelectedSeverity,
-}: LogTableProps) => {
+}: LogTableProps) {
     const intl = useIntl();
 
     const theme = useTheme();
@@ -125,13 +125,14 @@ const LogTable = ({
 
     const rowStyleFormat = (row: { index: number }) => {
         if (row.index < 0) {
-            return;
+            return undefined;
         }
         if (selectedRowIndex === row.index) {
             return {
                 backgroundColor: theme.palette.action.selected,
             };
         }
+        return undefined;
     };
 
     useEffect(() => {
@@ -151,18 +152,18 @@ const LogTable = ({
     );
 
     return (
-        //TODO do we need to useMemo/useCallback these props to avoid rerenders ?
+        // TODO do we need to useMemo/useCallback these props to avoid rerenders ?
         <VirtualizedTable
             columns={generateTableColumns()}
             rows={generateTableRows()}
             sortable={false}
             onRowClick={handleRowClick}
             // rowStyle is not recognized as a property should we delete it ?
-            //@ts-ignore
+            // @ts-ignore
             rowStyle={rowStyleFormat}
             filter={filter}
         />
     );
-};
+}
 
 export default memo(LogTable);

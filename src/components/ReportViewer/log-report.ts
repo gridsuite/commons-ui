@@ -5,18 +5,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { v4 as uuid4 } from 'uuid';
 import LogReportItem from './log-report-item';
 
-import { v4 as uuid4 } from 'uuid';
 import { Report } from './report.type';
 import { LogSeverities, LogSeverity } from './log-severity';
 
 export default class LogReport {
     id: string;
+
     key: string;
+
     title: string;
+
     subReports: LogReport[];
+
     logs: LogReportItem[];
+
     parentReportId?: string;
 
     constructor(jsonReporter: Report, parentReportId?: string) {
@@ -64,10 +69,10 @@ export default class LogReport {
     }
 
     getHighestSeverity(currentSeverity = LogSeverities.UNKNOWN): LogSeverity {
-        let reduceFct = (p: LogSeverity, c: LogSeverity) =>
+        const reduceFct = (p: LogSeverity, c: LogSeverity) =>
             p.level < c.level ? c : p;
 
-        let highestSeverity = this.getLogs()
+        const highestSeverity = this.getLogs()
             .map((r) => r.getSeverity())
             .reduce(reduceFct, currentSeverity);
 

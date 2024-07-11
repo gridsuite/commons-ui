@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const table_en = {
+const tableEn = {
     'MuiVirtualizedTable/exportCSV': 'Download CSV',
 };
 
-export default table_en;
+export default tableEn;

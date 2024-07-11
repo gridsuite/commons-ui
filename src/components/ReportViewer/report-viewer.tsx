@@ -18,13 +18,13 @@ import {
     ArrowDropDown as ArrowDropDownIcon,
     ArrowRight as ArrowRightIcon,
 } from '@mui/icons-material';
+import { Grid } from '@mui/material';
+import { TreeView } from '@mui/x-tree-view';
 import ReportItem from './report-item';
 import LogReport from './log-report';
-import { Grid } from '@mui/material';
 import LogTable from './log-table';
 import ReportTreeViewContext from './report-tree-view-context';
 import LogReportItem from './log-report-item';
-import { TreeView } from '@mui/x-tree-view';
 import { Report } from './report.type';
 import { LogSeverities } from './log-severity';
 
@@ -104,7 +104,7 @@ export default function ReportViewer({
 
     useEffect(() => {
         rootReport.current = new LogReport(jsonReport);
-        let rootId = rootReport.current.getId().toString();
+        const rootId = rootReport.current.getId().toString();
         treeView.current = createReporterItem(rootReport.current);
         setSelectedNode(rootId);
         setExpandedNodes([rootId]);
@@ -113,16 +113,12 @@ export default function ReportViewer({
 
     const handleToggleNode = (event: SyntheticEvent, nodeIds: string[]) => {
         event.persist();
-        //@ts-ignore
+        // @ts-ignore
         // With SyntheticEvent target is an EventTarget that does not have the 'closest' method so this shouldn't work
-        let iconClicked = event.target.closest('.MuiTreeItem-iconContainer');
+        const iconClicked = event.target.closest('.MuiTreeItem-iconContainer');
         if (iconClicked) {
             setExpandedNodes(nodeIds);
         }
-    };
-
-    const handleSelectNode = (event: SyntheticEvent, nodeId: string) => {
-        selectNode(nodeId);
     };
 
     const selectNode = (nodeId: string) => {
@@ -131,6 +127,10 @@ export default function ReportViewer({
             setLogs(allReports.current[nodeId].getAllLogs());
             setHighlightedReportId(null);
         }
+    };
+
+    const handleSelectNode = (event: SyntheticEvent, nodeId: string) => {
+        selectNode(nodeId);
     };
 
     // The MUI TreeView/TreeItems use useMemo on our items, so it's important to avoid changing the context
@@ -144,11 +144,10 @@ export default function ReportViewer({
 
     const onRowClick = (data: LogReportItem) => {
         setExpandedNodes((previouslyExpandedNodes) => {
-            let nodesToExpand = [];
-            let reportId = data.reportId;
+            const nodesToExpand = [];
+            let { reportId } = data;
             while (allReports.current[reportId]?.parentReportId) {
-                let parentReportId =
-                    allReports.current[reportId].parentReportId;
+                const { parentReportId } = allReports.current[reportId];
                 if (parentReportId !== undefined) {
                     if (!previouslyExpandedNodes.includes(parentReportId)) {
                         nodesToExpand.push(parentReportId);
@@ -158,9 +157,8 @@ export default function ReportViewer({
             }
             if (nodesToExpand.length > 0) {
                 return nodesToExpand.concat(previouslyExpandedNodes);
-            } else {
-                return previouslyExpandedNodes;
             }
+            return previouslyExpandedNodes;
         });
         setHighlightedReportId(data.reportId);
     };
@@ -177,7 +175,7 @@ export default function ReportViewer({
                         borderRight: '1px solid rgba(81, 81, 81, 1)',
                     }}
                 >
-                    {/*Passing a ref to isHighlighted to all children (here
+                    {/* Passing a ref to isHighlighted to all children (here
                     TreeItems) wouldn't work since TreeView children are
                     memoized and would then be rerendered only when TreeView is
                     rerendered. That's why we pass the isHighlighted callback in
@@ -185,7 +183,7 @@ export default function ReportViewer({
                     as the context is modified, children will be rerendered
                     accordingly */}
                     <ReportTreeViewContext.Provider value={isHighlighted}>
-                        {/*TODO do we need to useMemo/useCallback these props to avoid rerenders ?*/}
+                        {/* TODO do we need to useMemo/useCallback these props to avoid rerenders ? */}
                         <TreeView
                             sx={styles.treeView}
                             defaultCollapseIcon={<ArrowDropDownIcon />}

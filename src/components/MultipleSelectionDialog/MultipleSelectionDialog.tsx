@@ -29,7 +29,7 @@ export interface MultipleSelectionDialogProps {
     titleId: string;
 }
 
-const MultipleSelectionDialog = ({
+function MultipleSelectionDialog({
     options,
     selectedOptions,
     open,
@@ -37,7 +37,7 @@ const MultipleSelectionDialog = ({
     handleClose,
     handleValidate,
     titleId,
-}: MultipleSelectionDialogProps) => {
+}: MultipleSelectionDialogProps) {
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
     const handleSelectAll = () => {
         if (selectedIds.length !== options.length) {
@@ -63,9 +63,7 @@ const MultipleSelectionDialog = ({
                     <Grid item>
                         <FormControlLabel
                             label={
-                                <FormattedMessage
-                                    id={'multiple_selection_dialog/selectAll'}
-                                />
+                                <FormattedMessage id="multiple_selection_dialog/selectAll" />
                             }
                             control={
                                 <Checkbox
@@ -112,16 +110,14 @@ const MultipleSelectionDialog = ({
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleClose()}>
-                    <FormattedMessage id={'multiple_selection_dialog/cancel'} />
+                    <FormattedMessage id="multiple_selection_dialog/cancel" />
                 </Button>
                 <Button onClick={() => handleValidate(selectedIds)}>
-                    <FormattedMessage
-                        id={'multiple_selection_dialog/validate'}
-                    />
+                    <FormattedMessage id="multiple_selection_dialog/validate" />
                 </Button>
             </DialogActions>
         </Dialog>
     );
-};
+}
 
 export default MultipleSelectionDialog;

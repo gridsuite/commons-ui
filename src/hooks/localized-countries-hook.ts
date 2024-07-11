@@ -36,7 +36,7 @@ export const useLocalizedCountries = (language: string | undefined) => {
     const [localizedCountriesModule, setLocalizedCountriesModule] =
         useState<LocalizedCountries>();
 
-    //TODO FM this is disgusting, can we make it better ?
+    // TODO FM this is disgusting, can we make it better ?
     useEffect(() => {
         const lang = getComputedLanguage(language).substring(0, 2);
         let localizedCountriesResult;
@@ -48,9 +48,7 @@ export const useLocalizedCountries = (language: string | undefined) => {
             localizedCountriesResult = localizedCountries(countriesEn);
         } else {
             console.warn(
-                'Unsupported language "' +
-                    lang +
-                    '" for countries translation, we use english as default'
+                `Unsupported language "${lang}" for countries translation, we use english as default`
             );
             localizedCountriesResult = localizedCountries(countriesEn);
         }

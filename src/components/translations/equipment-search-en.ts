@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const equipment_search_en = {
+const equipmentSearchEn = {
     'equipment_search/label': 'Search for an equipment',
     'equipment_search/switchTag': 'SWITCH',
     'equipment_search/busbarSectionTag': 'BBS',
@@ -24,4 +24,4 @@ const equipment_search_en = {
     'equipment_search/busTag': 'BUS',
 };
 
-export default equipment_search_en;
+export default equipmentSearchEn;

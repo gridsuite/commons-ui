@@ -8,7 +8,7 @@ import { useController } from 'react-hook-form';
 import { useState } from 'react';
 import PopupConfirmationDialog from '../../../dialogs/popup-confirmation-dialog';
 
-const InputWithPopupConfirmation = ({
+function InputWithPopupConfirmation({
     Input,
     name,
     shouldOpenPopup, // condition to open popup confirmation
@@ -16,7 +16,7 @@ const InputWithPopupConfirmation = ({
     message,
     validateButtonLabel,
     ...props
-}: any) => {
+}: any) {
     const [newValue, setNewValue] = useState<string | null>(null);
     const [openPopup, setOpenPopup] = useState(false);
     const {
@@ -35,7 +35,7 @@ const InputWithPopupConfirmation = ({
     };
 
     const handlePopupConfirmation = () => {
-        resetOnConfirmation && resetOnConfirmation();
+        resetOnConfirmation?.();
         onChange(newValue);
         setOpenPopup(false);
     };
@@ -58,6 +58,6 @@ const InputWithPopupConfirmation = ({
             />
         </>
     );
-};
+}
 
 export default InputWithPopupConfirmation;

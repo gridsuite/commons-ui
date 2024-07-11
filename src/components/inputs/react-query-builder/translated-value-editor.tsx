@@ -6,43 +6,41 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { useIntl } from 'react-intl';
-import useConvertValue from './use-convert-value';
 import { Autocomplete, TextField } from '@mui/material';
+import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 
-const TranslatedValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
+function TranslatedValueEditor(props: ValueEditorProps) {
     const intl = useIntl();
+    const { values, value, handleOnChange } = props;
 
     const translatedValues = useMemo(() => {
-        return props.values?.map((v) => {
+        return values?.map((v) => {
             return {
                 name: v.name,
                 label: intl.formatMessage({ id: v.label }),
             };
         });
-    }, [intl, props.values]);
+    }, [intl, values]);
 
     const translatedValuesAutocomplete = useMemo(() => {
-        if (!props.values) {
+        if (!values) {
             return {};
         }
         return Object.fromEntries(
-            props.values.map((v) => [
-                v.name,
-                intl.formatMessage({ id: v.label }),
-            ])
+            values.map((v) => [v.name, intl.formatMessage({ id: v.label })])
         );
-    }, [intl, props.values]);
+    }, [intl, values]);
 
     useConvertValue(props);
 
     const valid = useValid(props);
 
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
-    if (!Array.isArray(props.value)) {
+    if (!Array.isArray(value)) {
         return (
             <MaterialValueEditor
                 {...props}
@@ -50,22 +48,19 @@ const TranslatedValueEditor: FunctionComponent<ValueEditorProps> = (props) => {
                 title={undefined} // disable the tooltip
             />
         );
-    } else {
-        return (
-            <Autocomplete
-                value={props.value}
-                options={Object.keys(translatedValuesAutocomplete)}
-                getOptionLabel={(code: string) =>
-                    translatedValuesAutocomplete[code]
-                }
-                onChange={(event, value: any) => props.handleOnChange(value)}
-                multiple
-                fullWidth
-                renderInput={(params) => (
-                    <TextField {...params} error={!valid} />
-                )}
-            />
-        );
     }
-};
+    return (
+        <Autocomplete
+            value={value}
+            options={Object.keys(translatedValuesAutocomplete)}
+            getOptionLabel={(code: string) =>
+                translatedValuesAutocomplete[code]
+            }
+            onChange={(event, newValue: any) => handleOnChange(newValue)}
+            multiple
+            fullWidth
+            renderInput={(params) => <TextField {...params} error={!valid} />}
+        />
+    );
+}
 export default TranslatedValueEditor;

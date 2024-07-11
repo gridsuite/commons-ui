@@ -87,11 +87,12 @@ export interface ReportItemProps extends TreeItemProps {
     className?: any;
 }
 
-const ReportItem = (props: PropsWithChildren<ReportItemProps>) => {
+function ReportItem(props: PropsWithChildren<ReportItemProps>) {
+    const { nodeId } = props;
     // using a context because TreeItem uses useMemo on this. See report-viewer.js for the provider
     const { isHighlighted } = useContext(ReportTreeViewContext);
 
-    const highlighted = isHighlighted ? isHighlighted(props.nodeId) : false;
+    const highlighted = isHighlighted ? isHighlighted(nodeId) : false;
 
     const { labelText, labelIconColor, className, ...other } = props;
 
@@ -123,6 +124,6 @@ const ReportItem = (props: PropsWithChildren<ReportItemProps>) => {
             {...other}
         />
     );
-};
+}
 
 export default styled(ReportItem)({});

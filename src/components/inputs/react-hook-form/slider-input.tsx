@@ -14,25 +14,26 @@ export interface SliderInputProps extends SliderProps {
     onValueChanged: (value: any) => void;
 }
 
-const SliderInput = ({
+function SliderInput({
     name,
     min,
     max,
     step,
     size = 'small',
     onValueChanged = identity,
-}: SliderInputProps) => {
+}: SliderInputProps) {
     const {
         field: { onChange, value },
     } = useController({ name });
 
     const handleValueChange = (
         event: Event,
-        value: number | number[],
+        newValue: number | number[],
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         activeThumb: number
     ) => {
-        onValueChanged(value);
-        onChange(value);
+        onValueChanged(newValue);
+        onChange(newValue);
     };
 
     return (
@@ -45,6 +46,6 @@ const SliderInput = ({
             onChange={handleValueChange}
         />
     );
-};
+}
 
 export default SliderInput;

@@ -8,7 +8,7 @@
 import { useEffect, useMemo } from 'react';
 import { debounce } from '@mui/material';
 
-export const useDebounce = <T extends (...args: any[]) => any>(
+const useDebounce = <T extends (...args: any[]) => any>(
     func: T,
     delay = 700
 ) => {
@@ -27,3 +27,5 @@ export const useDebounce = <T extends (...args: any[]) => any>(
 
     return debouncedChangeHandler;
 };
+
+export default useDebounce;

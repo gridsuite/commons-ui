@@ -7,7 +7,6 @@
 
 import TextInput, { TextInputProps } from '../text-input';
 import { isFloatNumber } from './utils';
-import { FunctionComponent } from 'react';
 import { Input } from '../../../../utils/types';
 
 export type FloatInputProps = Omit<
@@ -38,21 +37,20 @@ const normalizeFixed = (number: number) => {
     });
 };
 
-const FloatInput: FunctionComponent<FloatInputProps> = (
-    props: FloatInputProps
-) => {
+function FloatInput(props: FloatInputProps) {
     const inputTransform = (value: Input) => {
-        if (typeof value == 'number' && !isNaN(value)) {
+        if (typeof value === 'number' && !Number.isNaN(value)) {
             // if we have a parsed real number, normalize like we do after each
             // keystroke in outputTransform for consistency. We get parsed
             // numbers when the data doesn't come from a user edit in the form,
             // but from data persisted as a float.
             return normalizeFixed(value);
 
-            //We explicitly test for 'string' type for code clarity, it enables
+            // We explicitly test for 'string' type for code clarity, it enables
             // use to avoid casting the value variable from 'number | string'
             // to 'string' on multiple statements
-        } else if (typeof value == 'string') {
+        }
+        if (typeof value === 'string') {
             // The user is editing, leave as is because we already did what we
             // need to do in outputTransform after the previous keystroke.
             // NOTE: To avoid "bad things" we haven't predicted and be extra
@@ -108,7 +106,7 @@ const FloatInput: FunctionComponent<FloatInputProps> = (
         // restrict what the user can type with "acceptValue" but if we
         // have a bug just clear the data instead of sending "NaN"
         const parsed = parseFloat(tmp);
-        return isNaN(parsed) ? null : normalizeFixed(parsed);
+        return Number.isNaN(parsed) ? null : normalizeFixed(parsed);
     };
 
     return (
@@ -119,6 +117,6 @@ const FloatInput: FunctionComponent<FloatInputProps> = (
             {...props}
         />
     );
-};
+}
 
 export default FloatInput;

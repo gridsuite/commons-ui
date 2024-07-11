@@ -40,12 +40,12 @@ export interface MultiSelectListProps {
  * @param {Object} anchor - Determines where the menu will appear on screen
  */
 
-export const MultiSelectList = ({
+export function MultiSelectList({
     selectedItems,
     handleChange,
     handleClose,
     anchor,
-}: MultiSelectListProps) => {
+}: MultiSelectListProps) {
     const open = Boolean(anchor);
     return (
         <Menu open={open} onClose={handleClose} anchorEl={anchor}>
@@ -68,4 +68,4 @@ export const MultiSelectList = ({
             })}
         </Menu>
     );
-};
+}
