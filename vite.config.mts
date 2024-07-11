@@ -53,12 +53,12 @@ export default defineConfig((config) => ({
                     // file, so e.g. src/nested/foo.js becomes nested/foo
                     path.relative(
                         'src',
-                        file.slice(0, file.length - path.extname(file).length)
+                        file.slice(0, file.length - path.extname(file).length),
                     ),
                     // This expands the relative paths to absolute paths, so e.g.
                     // src/nested/foo becomes /project/src/nested/foo.js
                     url.fileURLToPath(new URL(file, import.meta.url)),
-                ])
+                ]),
             ),
             output: {
                 chunkFileNames: 'chunks/[name].[hash].js', // in case some chunks are created, but it should not because every file is supposed to be an entry point
@@ -67,6 +67,19 @@ export default defineConfig((config) => ({
             },
         },
         minify: false, // easier to debug on the apps using this lib
+        define:
+            config.command === 'build'
+                ? {
+                    /* We want to keep some variables in the final build to be resolved by the application using this library.
+                     * https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/define.ts
+                     * If the plugin "vite:define" change how it works, we probably will need to write plugins to obfuscate before then restore after.
+                     */
+                    'import.meta.env.VITE_API_GATEWAY':
+                        'import.meta.env.VITE_API_GATEWAY',
+                    'import.meta.env.VITE_WS_GATEWAY':
+                        'import.meta.env.VITE_WS_GATEWAY',
+                }
+                : undefined,
     },
 }));
 
@@ -86,7 +99,7 @@ function reactVirtualized(): PluginOption {
             const reactVirtualizedPath = require.resolve('react-virtualized');
             const { pathname: reactVirtualizedFilePath } = new url.URL(
                 reactVirtualizedPath,
-                import.meta.url
+                import.meta.url,
             );
             const file = reactVirtualizedFilePath.replace(
                 path.join('dist', 'commonjs', 'index.js'),
@@ -95,8 +108,8 @@ function reactVirtualized(): PluginOption {
                     'es',
                     'WindowScroller',
                     'utils',
-                    'onScroll.js'
-                )
+                    'onScroll.js',
+                ),
             );
             const code = await fs.readFile(file, 'utf-8');
             const modified = code.replace(WRONG_CODE, '');

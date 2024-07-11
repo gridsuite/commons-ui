@@ -11,12 +11,11 @@ import {
     backendFetch,
     backendFetchJson,
     getRequestParam,
+    getRestBase,
 } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_DIRECTORY_SERVER_QUERIES = `${
-    import.meta.env.VITE_API_GATEWAY
-}/directory`;
+const PREFIX_DIRECTORY_SERVER_QUERIES = `${getRestBase()}/directory`;
 
 export async function fetchRootFolders(types: string[]) {
     console.info('Fetching Root Directories');

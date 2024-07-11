@@ -11,13 +11,12 @@ import {
     backendFetch,
     backendFetchJson,
     getRequestParams,
+    getRestBase,
     HttpContentType,
 } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_EXPLORE_SERVER_QUERIES = `${
-    import.meta.env.VITE_API_GATEWAY
-}/explore`;
+const PREFIX_EXPLORE_SERVER_QUERIES = `${getRestBase()}/explore`;
 
 export async function createFilter(
     newFilter: any,

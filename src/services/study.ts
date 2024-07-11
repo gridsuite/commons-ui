@@ -6,9 +6,9 @@
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson } from '../utils/api';
+import { backendFetchJson, getRestBase } from '../utils/api';
 
-const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
+const PREFIX_STUDY_QUERIES = `${getRestBase()}/study`;
 
 // https://github.com/powsybl/powsybl-core/blob/main/iidm/iidm-api/src/main/java/com/powsybl/iidm/network/IdentifiableType.java#L14
 export enum IdentifiableType {
