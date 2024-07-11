@@ -14,8 +14,8 @@
     // node_modules is implicitly always ignored
     "dist",
     "vite.config.mts",
-    "jest.config.ts",
-    "jest.setup.ts"
+    "vitest.config.ts",
+    "vitest.setup.ts"
   ],
   "rules": {
     "prettier/prettier": "warn",
@@ -23,6 +23,7 @@
     "no-console": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
-    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx"]}]
   }
 }

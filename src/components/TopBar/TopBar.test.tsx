@@ -11,11 +11,11 @@ import { IntlProvider } from 'react-intl';
 
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { afterEach, beforeEach, expect, it } from '@jest/globals';
+import { afterEach, beforeEach, expect, it } from 'vitest';
 import TopBar, { LANG_ENGLISH } from './TopBar';
 import { CommonMetadata, top_bar_en } from '../..';
 
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
+import PowsyblLogo from '../../_mocks_/svg';
 
 let container: Element;
 
