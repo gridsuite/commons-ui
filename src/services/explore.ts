@@ -9,8 +9,8 @@ import { UUID } from 'crypto';
 import {
     backendFetch,
     backendFetchJson,
-    getRequestParamFromList,
-} from './utils';
+    getRequestParam as getRequestParamFromList,
+} from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${
@@ -33,7 +33,7 @@ export function createFilter(
     return backendFetch(
         `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters?${urlSearchParams.toString()}`,
         {
-            method: 'post',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newFilter),
         },
@@ -49,7 +49,7 @@ export function saveFilter(filter: any, name: string, token?: string) {
             filter.id
         }?${urlSearchParams.toString()}`,
         {
-            method: 'put',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(filter),
         },
@@ -61,7 +61,7 @@ export function fetchElementsInfos(
     ids: UUID[],
     elementTypes?: string[],
     equipmentTypes?: string[]
-): Promise<ElementAttributes[]> {
+) {
     console.info('Fetching elements metadata');
 
     // Add params to Url
@@ -89,7 +89,7 @@ export function fetchElementsInfos(
     const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
     console.debug(url);
     return backendFetchJson(url, {
-        method: 'get',
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }

@@ -248,4 +248,6 @@ export { setCommonStore } from './redux/commonStore';
 export type { CommonStoreState } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
+export { getErrorMessage } from './utils/error';
+export * from './utils/api';
 export * from './services';

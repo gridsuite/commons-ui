@@ -6,16 +6,17 @@
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson, getRequestParamFromList } from './utils';
+import {
+    backendFetchJson,
+    getRequestParam as getRequestParamFromList,
+} from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
 const PREFIX_DIRECTORY_SERVER_QUERIES = `${
     import.meta.env.VITE_API_GATEWAY
 }/directory`;
 
-export function fetchRootFolders(
-    types: string[]
-): Promise<ElementAttributes[]> {
+export function fetchRootFolders(types: string[]) {
     console.info('Fetching Root Directories');
 
     // Add params to Url
@@ -25,15 +26,12 @@ export function fetchRootFolders(
     ).toString();
     const fetchRootFoldersUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/root-directories?${urlSearchParams}`;
     return backendFetchJson(fetchRootFoldersUrl, {
-        method: 'get',
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }
 
-export function fetchDirectoryContent(
-    directoryUuid: UUID,
-    types?: string[]
-): Promise<ElementAttributes[]> {
+export function fetchDirectoryContent(directoryUuid: UUID, types?: string[]) {
     console.info("Fetching Folder content '%s'", directoryUuid);
 
     // Add params to Url
@@ -46,21 +44,19 @@ export function fetchDirectoryContent(
         urlSearchParams ? `?${urlSearchParams}` : ''
     }`;
     return backendFetchJson(fetchDirectoryContentUrl, {
-        method: 'get',
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }
 
-export function fetchDirectoryElementPath(
-    elementUuid: UUID
-): Promise<ElementAttributes[]> {
+export function fetchDirectoryElementPath(elementUuid: UUID) {
     console.info(`Fetching element '${elementUuid}' and its parents info ...`);
     const fetchPathUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/elements/${encodeURIComponent(
         elementUuid
     )}/path`;
     console.debug(fetchPathUrl);
     return backendFetchJson(fetchPathUrl, {
-        method: 'get',
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-    });
+    }) as Promise<ElementAttributes[]>;
 }

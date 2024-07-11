@@ -5,10 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { PredefinedProperties } from '../utils/types';
-
-// https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
-// https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
-export type Url = string | URL;
+import { Url } from '../utils/api';
 
 export type Env = {
     appsMetadataServerUrl?: Url;

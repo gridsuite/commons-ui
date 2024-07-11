@@ -5,12 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/* eslint-disable import/prefer-default-export -- utility class */
+
 import { UUID } from 'crypto';
-import { backendFetchJson } from './utils';
+import { backendFetchJson } from '../utils/api';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
-// eslint-disable-next-line import/prefer-default-export
 export function exportFilter(
     studyUuid: UUID,
     filterUuid?: UUID,
@@ -20,7 +21,7 @@ export function exportFilter(
     return backendFetchJson(
         `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/filters/${filterUuid}/elements`,
         {
-            method: 'get',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         },
         token
