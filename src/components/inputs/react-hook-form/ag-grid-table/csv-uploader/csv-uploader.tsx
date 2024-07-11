@@ -5,18 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import { useCSVReader } from 'react-papaparse';
-import Button from '@mui/material/Button';
-import React, { useMemo, useState } from 'react';
-import Grid from '@mui/material/Grid';
+import { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
-import Alert from '@mui/material/Alert';
-import { DialogContentText } from '@mui/material';
+import {
+    Alert,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid,
+} from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { RECORD_SEP, UNIT_SEP } from 'papaparse';
 import FieldConstants from '../../../../../utils/field-constants';
@@ -49,7 +51,7 @@ function CsvUploader({
 }: CsvUploaderProps) {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
-    const [createError, setCreateError] = React.useState('');
+    const [createError, setCreateError] = useState('');
     const intl = useIntl();
     const { CSVReader } = useCSVReader();
     const [importedData, setImportedData] = useState<any>([]);

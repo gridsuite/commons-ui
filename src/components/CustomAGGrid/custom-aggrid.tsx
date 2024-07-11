@@ -5,17 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
-import { Theme } from '@mui/material/styles/createTheme';
+import { forwardRef, useCallback } from 'react';
+import { SxProps, Theme, useTheme } from '@mui/material';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
 import { Box } from '@mui/system';
-import { SxProps, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
-import { styles, CUSTOM_AGGRID_THEME } from './custom-aggrid.style';
+import { CUSTOM_AGGRID_THEME, styles } from './custom-aggrid.style';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
@@ -36,7 +35,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     }
 };
 
-const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>(
+const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
     (props, ref) => {
         const {
             shouldHidePinnedHeaderRightBorder = false,

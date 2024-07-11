@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
@@ -43,7 +43,7 @@ function FilterForm(props: FilterFormProps) {
 
     // We do this because setValue don't set the field dirty
     const handleChange = (
-        _event: React.ChangeEvent<HTMLInputElement>,
+        _event: ChangeEvent<HTMLInputElement>,
         value: string
     ) => {
         setValue(FieldConstants.FILTER_TYPE, value);

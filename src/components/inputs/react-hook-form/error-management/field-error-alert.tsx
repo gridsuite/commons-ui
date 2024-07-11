@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { ReactNode } from 'react';
 import { Alert, Grid } from '@mui/material';
-import React from 'react';
 
 interface FieldErrorAlertProps {
-    message: string | React.ReactNode;
+    message: string | ReactNode;
 }
 
 // component to display alert when a specific rhf field is in error

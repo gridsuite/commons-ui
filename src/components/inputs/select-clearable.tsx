@@ -6,8 +6,7 @@
  */
 
 import { useIntl } from 'react-intl';
-import { Autocomplete, TextField } from '@mui/material';
-import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
+import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
 import FieldLabel from './react-hook-form/utils/field-label';
 
 type SelectOption = { id: string; label?: string };

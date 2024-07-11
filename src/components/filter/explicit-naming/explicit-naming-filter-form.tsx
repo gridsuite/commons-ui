@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
-import Grid from '@mui/material/Grid';
+import { Grid } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';

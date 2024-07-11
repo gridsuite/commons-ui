@@ -7,7 +7,7 @@
 
 import { ActionWithRulesAndAddersProps } from 'react-querybuilder';
 import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/ControlPoint';
+import ControlPoint from '@mui/icons-material/ControlPoint';
 import { FormattedMessage } from 'react-intl';
 
 interface ActionWithRulesAndAddersWithLabelProps
@@ -20,7 +20,7 @@ function AddButton(props: ActionWithRulesAndAddersWithLabelProps) {
     return (
         <span>
             <Button
-                startIcon={<AddIcon />}
+                startIcon={<ControlPoint />}
                 onClick={handleOnClick}
                 size="small"
                 className="add-button"

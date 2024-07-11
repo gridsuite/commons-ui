@@ -5,9 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/* eslint-disable no-restricted-imports */
+
+import '@mui/material/styles'; // IMPORTANT! keep it for typescript to merge definitions
+
 // used to customize mui theme
 // https://mui.com/material-ui/customization/theming/#typescript
-declare module '@mui/material/styles/createTheme' {
+declare module '@mui/material/styles' {
     interface Theme {
         aggrid: {
             theme: string;

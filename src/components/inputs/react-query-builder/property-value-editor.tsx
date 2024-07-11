@@ -6,8 +6,7 @@
  */
 
 import { useCallback, useEffect, useMemo } from 'react';
-import Grid from '@mui/material/Grid';
-import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, Grid, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import useValid from './use-valid';

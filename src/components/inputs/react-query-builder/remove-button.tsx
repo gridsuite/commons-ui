@@ -6,7 +6,7 @@
  */
 
 import { ActionWithRulesProps } from 'react-querybuilder';
-import IconButton from '@mui/material/IconButton';
+import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useController } from 'react-hook-form';
 
