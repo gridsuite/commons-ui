@@ -16,14 +16,13 @@ import ExpertFilterForm from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
 import ExpandableGroup from '../ExpandableGroup';
 import RadioInput from '../inputs/react-hook-form/radio-input';
-import { ElementExistsType, ElementType } from '../../utils/ElementType';
+import { ElementType } from '../../utils/ElementType';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
 import UniqueNameInput from '../inputs/react-hook-form/unique-name-input';
 
 interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
@@ -35,7 +34,6 @@ function FilterForm(props: FilterFormProps) {
         sourceFilterForExplicitNamingConversion,
         creation,
         activeDirectory,
-        elementExists,
     } = props;
     const { setValue } = useFormContext();
 
@@ -64,7 +62,6 @@ function FilterForm(props: FilterFormProps) {
                     elementType={ElementType.FILTER}
                     autoFocus={creation}
                     activeDirectory={activeDirectory}
-                    elementExists={elementExists}
                 />
             </Grid>
             {creation && (

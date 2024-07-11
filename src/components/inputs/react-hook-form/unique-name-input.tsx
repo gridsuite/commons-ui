@@ -15,7 +15,8 @@ import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
 import useDebounce from '../../../hooks/useDebounce';
 import FieldConstants from '../../../utils/field-constants';
-import { ElementExistsType, ElementType } from '../../../utils/ElementType';
+import { ElementType } from '../../../utils/ElementType';
+import { elementExists } from '../../../services';
 
 interface UniqueNameInputProps {
     name: string;
@@ -34,7 +35,6 @@ interface UniqueNameInputProps {
         | 'InputProps'
     >;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
 }
 
 /**
@@ -48,7 +48,6 @@ function UniqueNameInput({
     onManualChangeCallback,
     formProps,
     activeDirectory,
-    elementExists,
 }: UniqueNameInputProps) {
     const {
         field: { onChange, onBlur, value, ref },
@@ -77,7 +76,7 @@ function UniqueNameInput({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue) {
-                elementExists?.(directory, nameValue, elementType)
+                elementExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {
@@ -98,7 +97,7 @@ function UniqueNameInput({
                     });
             }
         },
-        [setError, clearErrors, name, elementType, elementExists, directory]
+        [setError, clearErrors, name, elementType, directory]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);

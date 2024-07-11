@@ -27,7 +27,6 @@ import yup from '../../../utils/yup-config';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
 import { saveFilter } from '../../../services/explore';
-import { ElementExistsType } from '../../../utils/ElementType';
 import FilterForm from '../filter-form';
 
 export type SelectionCopy = {
@@ -67,7 +66,6 @@ interface CriteriaBasedFilterEditionDialogProps {
         selection: SelectionCopy
     ) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
     language?: string;
 }
 
@@ -82,7 +80,6 @@ function CriteriaBasedFilterEditionDialog({
     selectionForCopy,
     setSelelectionForCopy,
     activeDirectory,
-    elementExists,
     language,
 }: CriteriaBasedFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
@@ -169,12 +166,7 @@ function CriteriaBasedFilterEditionDialog({
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    elementExists={elementExists}
-                />
-            )}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 }

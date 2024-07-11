@@ -34,7 +34,6 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
-import { ElementExistsType } from '../../utils/ElementType';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -66,7 +65,6 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
     language?: string;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
@@ -78,7 +76,6 @@ function FilterCreationDialog({
     open,
     onClose,
     activeDirectory,
-    elementExists,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
 }: FilterCreationDialogProps) {
@@ -173,7 +170,6 @@ function FilterCreationDialog({
             <FilterForm
                 creation
                 activeDirectory={activeDirectory}
-                elementExists={elementExists}
                 sourceFilterForExplicitNamingConversion={
                     sourceFilterForExplicitNamingConversion
                 }
