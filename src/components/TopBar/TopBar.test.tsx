@@ -13,7 +13,8 @@ import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { afterEach, beforeEach, expect, it } from '@jest/globals';
 import TopBar, { LANG_ENGLISH } from './TopBar';
-import { CommonMetadata, top_bar_en } from '../..';
+import top_bar_en from '../translations/top-bar-en';
+import { AppMetadataCommon } from '../../services';
 
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
@@ -30,7 +31,7 @@ afterEach(() => {
     container?.remove();
 });
 
-const apps: CommonMetadata[] = [
+const apps: AppMetadataCommon[] = [
     {
         name: 'App1',
         url: '/app1',

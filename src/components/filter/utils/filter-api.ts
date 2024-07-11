@@ -22,8 +22,7 @@ export const saveExplicitNamingFilter = (
     id: string | null,
     setCreateFilterErr: (value: any) => void,
     handleClose: () => void,
-    activeDirectory?: UUID,
-    token?: string
+    activeDirectory?: UUID
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
@@ -48,8 +47,7 @@ export const saveExplicitNamingFilter = (
             },
             name,
             description,
-            activeDirectory,
-            token
+            activeDirectory
         )
             .then(() => {
                 handleClose();
@@ -65,8 +63,7 @@ export const saveExplicitNamingFilter = (
                 equipmentType,
                 filterEquipmentsAttributes: cleanedTableValues,
             },
-            name,
-            token
+            name
         )
             .then(() => {
                 handleClose();
@@ -81,16 +78,14 @@ export const saveCriteriaBasedFilter = (
     filter: any,
     activeDirectory: any,
     onClose: () => void,
-    onError: (message: string) => void,
-    token?: string
+    onError: (message: string) => void
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
     createFilter(
         filterForBack,
         filter[FieldConstants.NAME],
         filter[FieldConstants.DESCRIPTION],
-        activeDirectory,
-        token
+        activeDirectory
     )
         .then(() => {
             onClose();
@@ -109,8 +104,7 @@ export const saveExpertFilter = (
     isFilterCreation: boolean,
     activeDirectory: any,
     onClose: () => void,
-    onError: (message: string) => void,
-    token?: string
+    onError: (message: string) => void
 ) => {
     if (isFilterCreation) {
         createFilter(
@@ -121,8 +115,7 @@ export const saveExpertFilter = (
             },
             name,
             description,
-            activeDirectory,
-            token
+            activeDirectory
         )
             .then(() => {
                 onClose();
@@ -138,8 +131,7 @@ export const saveExpertFilter = (
                 equipmentType,
                 rules: exportExpertRules(query),
             },
-            name,
-            token
+            name
         )
             .then(() => {
                 onClose();

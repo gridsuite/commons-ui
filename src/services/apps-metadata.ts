@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 import { PredefinedProperties } from '../utils/types';
 import { Url } from '../utils/api';
 
@@ -17,25 +18,44 @@ export type Env = {
     // [key: string]: string;
 };
 
+// https://github.com/gridsuite/deployment/blob/main/docker-compose/version.json
+// https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/version.json
+export type VersionJson = {
+    deployVersion?: string;
+};
+
 export async function fetchEnv(): Promise<Env> {
     return (await fetch('env.json')).json();
 }
 
-export type CommonMetadata = {
+// https://github.com/gridsuite/deployment/blob/main/docker-compose/apps-metadata.json
+// https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
+export type AppMetadata = AppMetadataCommon | AppMetadataStudy;
+
+export type AppMetadataCommon = {
     name: string;
     url: Url;
     appColor: string;
     hiddenInAppsMenu: boolean;
 };
 
-export type StudyMetadata = CommonMetadata & {
+export type AppMetadataStudy = AppMetadataCommon & {
     readonly name: 'Study';
     resources?: {
         types: string[];
         path: string;
     }[];
     predefinedEquipmentProperties?: {
-        [networkElementType: string]: PredefinedProperties;
+        [networkElementType: string]: PredefinedProperties | null | undefined;
+        /* substation?: {
+            region?: string[];
+            tso?: string[];
+            totallyFree?: unknown[];
+            Demo?: string[];
+        };
+        load?: {
+            codeOI?: string[];
+        }; */
     };
     defaultParametersValues?: {
         fluxConvention?: string;
@@ -45,7 +65,7 @@ export type StudyMetadata = CommonMetadata & {
     defaultCountry?: string;
 };
 
-export async function fetchAppsMetadata(): Promise<CommonMetadata[]> {
+export async function fetchAppsMetadata(): Promise<AppMetadataCommon[]> {
     console.info(`Fetching apps and urls...`);
     const env = await fetchEnv();
     const res = await fetch(`${env.appsMetadataServerUrl}/apps-metadata.json`);
@@ -53,12 +73,12 @@ export async function fetchAppsMetadata(): Promise<CommonMetadata[]> {
 }
 
 const isStudyMetadata = (
-    metadata: CommonMetadata
-): metadata is StudyMetadata => {
+    metadata: AppMetadataCommon
+): metadata is AppMetadataStudy => {
     return metadata.name === 'Study';
 };
 
-export async function fetchStudyMetadata(): Promise<StudyMetadata> {
+export async function fetchStudyMetadata(): Promise<AppMetadataStudy> {
     console.info(`Fetching study metadata...`);
     const studyMetadata = (await fetchAppsMetadata()).filter(isStudyMetadata);
     if (!studyMetadata) {

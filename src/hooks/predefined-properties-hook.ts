@@ -19,7 +19,10 @@ const fetchPredefinedProperties = async (
         return Promise.resolve(undefined);
     }
     const studyMetadata = await fetchStudyMetadata();
-    return studyMetadata.predefinedEquipmentProperties?.[networkEquipmentType];
+    return (
+        studyMetadata.predefinedEquipmentProperties?.[networkEquipmentType] ??
+        undefined
+    );
 };
 
 const usePredefinedProperties = (

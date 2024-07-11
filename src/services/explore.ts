@@ -7,9 +7,11 @@
 
 import { UUID } from 'crypto';
 import {
+    appendSearchParam,
     backendFetch,
     backendFetchJson,
-    getRequestParam as getRequestParamFromList,
+    getRequestParams,
+    HttpContentType,
 } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
@@ -17,12 +19,11 @@ const PREFIX_EXPLORE_SERVER_QUERIES = `${
     import.meta.env.VITE_API_GATEWAY
 }/explore`;
 
-export function createFilter(
+export async function createFilter(
     newFilter: any,
     name: string,
     description: string,
-    parentDirectoryUuid?: UUID,
-    token?: string
+    parentDirectoryUuid?: UUID
 ) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
@@ -30,66 +31,48 @@ export function createFilter(
     if (parentDirectoryUuid) {
         urlSearchParams.append('parentDirectoryUuid', parentDirectoryUuid);
     }
-    return backendFetch(
+    await backendFetch(
         `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters?${urlSearchParams.toString()}`,
         {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
             body: JSON.stringify(newFilter),
-        },
-        token
+        }
     );
 }
 
-export function saveFilter(filter: any, name: string, token?: string) {
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('name', name);
-    return backendFetch(
+export async function saveFilter(
+    filter: Record<string, unknown>,
+    name: string
+) {
+    await backendFetch(
         `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters/${
             filter.id
-        }?${urlSearchParams.toString()}`,
+        }?${new URLSearchParams({ name }).toString()}`,
         {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
             body: JSON.stringify(filter),
-        },
-        token
+        }
     );
 }
 
-export function fetchElementsInfos(
+export async function fetchElementsInfos(
     ids: UUID[],
     elementTypes?: string[],
     equipmentTypes?: string[]
 ) {
     console.info('Fetching elements metadata');
-
-    // Add params to Url
-    const idsParams = getRequestParamFromList(
-        'ids',
-        ids.filter((id) => id) // filter falsy elements
-    );
-
-    const equipmentTypesParams = getRequestParamFromList(
-        'equipmentTypes',
-        equipmentTypes
-    );
-
-    const elementTypesParams = getRequestParamFromList(
-        'elementTypes',
-        elementTypes
-    );
-
-    const urlSearchParams = new URLSearchParams([
-        ...idsParams,
-        ...equipmentTypesParams,
-        ...elementTypesParams,
-    ]).toString();
-
-    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
-    console.debug(url);
-    return backendFetchJson(url, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    }) as Promise<ElementAttributes[]>;
+    const urlSearchParams = getRequestParams({
+        ids: ids.filter((id) => id), // filter falsy elements
+        equipmentTypes: equipmentTypes ?? [],
+        elementTypes: elementTypes ?? [],
+    });
+    return (await backendFetchJson(
+        appendSearchParam(
+            `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`,
+            urlSearchParams
+        ),
+        'GET'
+    )) as ElementAttributes[];
 }
