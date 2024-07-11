@@ -62,7 +62,7 @@ export { fields as EXPERT_FILTER_FIELDS } from './components/filter/expert/exper
 export { default as CustomReactQueryBuilder } from './components/inputs/react-query-builder/custom-react-query-builder';
 export {
     EXPERT_FILTER_QUERY,
-    rqbQueryTest,
+    rqbQuerySchemaValidator,
     getExpertFilterEmptyFormData,
 } from './components/filter/expert/expert-filter-form';
 export {

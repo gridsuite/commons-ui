@@ -51,31 +51,29 @@ function isSupportedEquipmentType(equipmentType: string): boolean {
         .includes(equipmentType);
 }
 
-export const rqbQueryTest = yup
-    .object()
-    .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
-        return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
-    })
-    .test(RULES.EMPTY_RULE, RULES.EMPTY_RULE, (query: any) => {
-        return testQuery(RULES.EMPTY_RULE, query as RuleGroupTypeAny);
-    })
-    .test(RULES.INCORRECT_RULE, RULES.INCORRECT_RULE, (query: any) => {
-        return testQuery(RULES.INCORRECT_RULE, query as RuleGroupTypeAny);
-    })
-    .test(RULES.BETWEEN_RULE, RULES.BETWEEN_RULE, (query: any) => {
-        return testQuery(RULES.BETWEEN_RULE, query as RuleGroupTypeAny);
-    });
+export const rqbQuerySchemaValidator = (schema: yup.Schema) =>
+    schema
+        .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
+            return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
+        })
+        .test(RULES.EMPTY_RULE, RULES.EMPTY_RULE, (query: any) => {
+            return testQuery(RULES.EMPTY_RULE, query as RuleGroupTypeAny);
+        })
+        .test(RULES.INCORRECT_RULE, RULES.INCORRECT_RULE, (query: any) => {
+            return testQuery(RULES.INCORRECT_RULE, query as RuleGroupTypeAny);
+        })
+        .test(RULES.BETWEEN_RULE, RULES.BETWEEN_RULE, (query: any) => {
+            return testQuery(RULES.BETWEEN_RULE, query as RuleGroupTypeAny);
+        });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const rqbQueryTestCb = (schema: any) => rqbQueryTest;
 export const expertFilterSchema = {
     [EXPERT_FILTER_QUERY]: yup.object().when([FieldConstants.FILTER_TYPE], {
         is: FilterType.EXPERT.id,
-        then: (schema: any) =>
+        then: (schema: yup.Schema) =>
             schema.when([FieldConstants.EQUIPMENT_TYPE], {
                 is: (equipmentType: string) =>
                     isSupportedEquipmentType(equipmentType),
-                then: rqbQueryTestCb,
+                then: rqbQuerySchemaValidator,
             }),
     }),
 };
