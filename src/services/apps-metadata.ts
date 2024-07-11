@@ -7,6 +7,7 @@
 
 import { PredefinedProperties } from '../utils/types';
 import { Url } from '../utils/api';
+import { IdpSettings } from '../utils/AuthService';
 
 export type Env = {
     appsMetadataServerUrl?: Url;
@@ -86,4 +87,24 @@ export async function fetchStudyMetadata(): Promise<AppMetadataStudy> {
     } else {
         return studyMetadata[0]; // There should be only one study metadata
     }
+}
+
+export async function fetchDefaultParametersValues(): Promise<
+    AppMetadataStudy['defaultParametersValues']
+> {
+    console.debug('fetching default parameters values from apps-metadata file');
+    return (await fetchStudyMetadata()).defaultParametersValues;
+}
+
+export async function fetchVersion(): Promise<VersionJson> {
+    console.debug('Fetching global version...');
+    const envData = await fetchEnv();
+    return (
+        await fetch(`${envData.appsMetadataServerUrl}/version.json`)
+    ).json();
+}
+
+export async function fetchIdpSettings() {
+    // TODO get app base path, can cause problems if router use
+    return (await (await fetch('idpSettings.json')).json()) as IdpSettings;
 }
