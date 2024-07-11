@@ -116,7 +116,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "glob": "^10.3.12",
         "identity-obj-proxy": "^3.0.0",
-        "jest-environment-jsdom": "^29.7.0",
+        "jsdom": "^24.1.0",
         "license-checker": "^25.0.1",
         "notistack": "^3.0.1",
         "prettier": "^2.8.8",
