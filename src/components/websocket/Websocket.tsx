@@ -5,7 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PropsWithChildren, useCallback, useEffect, useRef } from 'react';
+import {
+    PropsWithChildren,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerWS, WSContext, WSContextType } from './contexts/WSContext';
 
@@ -13,7 +19,7 @@ import { ListenerWS, WSContext, WSContextType } from './contexts/WSContext';
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
 type WebsocketProps = { urls: Record<string, string> };
-const Websocket = ({ urls, children }: PropsWithChildren<WebsocketProps>) => {
+function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
     const urlsListenersRef = useRef(
         Object.keys(urls).reduce((acc, urlKey) => {
             acc[urlKey] = [];
@@ -87,12 +93,13 @@ const Websocket = ({ urls, children }: PropsWithChildren<WebsocketProps>) => {
         },
         []
     );
-
-    return (
-        <WSContext.Provider value={{ addListener, removeListener }}>
-            {children}
-        </WSContext.Provider>
+    const contextValue = useMemo(
+        () => ({ addListener, removeListener }),
+        [addListener, removeListener]
     );
-};
+    return (
+        <WSContext.Provider value={contextValue}>{children}</WSContext.Provider>
+    );
+}
 
 export default Websocket;
