@@ -6,6 +6,26 @@
  */
 /* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, no-undef, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types, import/no-extraneous-dependencies */
 
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import {
+    ElementType,
+    EQUIPMENT_TYPE,
+    equipmentStyles,
+    getFileIcon,
+    initializeAuthenticationDev,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
+    logout,
+} from '../../src';
+import AuthenticationRouter from '../../src/components/AuthenticationRouter';
+import CardErrorBoundary from '../../src/components/CardErrorBoundary';
+import SnackbarProvider from '../../src/components/SnackbarProvider';
+import TopBar from '../../src/components/TopBar';
+import { useSnackMessage } from '../../src/hooks/useSnackMessage';
+
 import {
     Box,
     Button,
@@ -24,23 +44,10 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { useMatch } from 'react-router';
+
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import SnackbarProvider from '../../src/components/SnackbarProvider';
-import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import CardErrorBoundary from '../../src/components/CardErrorBoundary';
 import {
-    ElementType,
-    EQUIPMENT_TYPE,
-    equipmentStyles,
-    getFileIcon,
-    initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-    logout,
     card_error_boundary_en,
     card_error_boundary_fr,
     element_search_en,
@@ -48,9 +55,9 @@ import {
     equipment_search_en,
     equipment_search_fr,
     filter_en,
-    filter_fr,
     filter_expert_en,
     filter_expert_fr,
+    filter_fr,
     flat_parameters_en,
     flat_parameters_fr,
     login_en,
@@ -65,20 +72,18 @@ import {
     top_bar_fr,
     treeview_finder_en,
     treeview_finder_fr,
-    TopBar,
 } from '../../src';
-import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
 import translations from './demo_intl';
 
 // eslint-disable-next-line import/no-unresolved
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
+import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import {
-    TreeViewFinder,
     generateTreeViewFinderClass,
+    TreeViewFinder,
 } from '../../src/components/TreeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
@@ -91,18 +96,21 @@ import {
 
 import LOGS_JSON from '../data/ReportViewer';
 
-import searchEquipments from '../data/EquipmentSearchBar';
 import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
 import OverflowableText from '../../src/components/OverflowableText';
+import searchEquipments from '../data/EquipmentSearchBar';
 
 import { setShowAuthenticationRouterLogin } from '../../src/redux/authActions';
-import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
+import TableTab from './TableTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import InputsTab from './InputsTab';
+
 import inputs_en from '../../src/components/translations/inputs-en';
 import inputs_fr from '../../src/components/translations/inputs-fr';
+import useListener from '../../src/components/websocket/hooks/useListener';
+import Websocket from '../../src/components/websocket/Websocket';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 
@@ -888,7 +896,15 @@ function AppContent({ language, onLanguageClick }) {
     );
 }
 
-function App() {
+const WS_URL = 'WS_URL';
+const WS_URL_KEY = 'WS_URL_KEY';
+const AppWSConsumer = () => {
+    useListener(WS_URL_KEY, (event) => {
+        console.log('WS called UPDATE_FINISHED : ', event);
+    });
+};
+
+const App = () => {
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
     const [language, setLanguage] = useState(LANG_ENGLISH);
 
@@ -912,13 +928,16 @@ function App() {
                 locale={computedLanguage}
                 messages={messages[computedLanguage]}
             >
-                <AppContent
-                    language={language}
-                    onLanguageClick={handleLanguageClick}
-                />
+                <Websocket urls={{ [WS_URL_KEY]: WS_URL }}>
+                    <AppWSConsumer />
+                    <AppContent
+                        language={language}
+                        onLanguageClick={handleLanguageClick}
+                    />
+                </Websocket>
             </IntlProvider>
         </BrowserRouter>
     );
-}
+};
 
 export default App;
