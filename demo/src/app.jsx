@@ -5,27 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 /* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, no-undef, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types, import/no-extraneous-dependencies */
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-import {
-    ElementType,
-    EQUIPMENT_TYPE,
-    equipmentStyles,
-    getFileIcon,
-    initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-    logout,
-} from '../../src';
-import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import CardErrorBoundary from '../../src/components/CardErrorBoundary';
-import SnackbarProvider from '../../src/components/SnackbarProvider';
-import TopBar from '../../src/components/TopBar';
-import { useSnackMessage } from '../../src/hooks/useSnackMessage';
-
 import {
     Box,
     Button,
@@ -48,8 +27,10 @@ import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import {
+    AuthenticationRouter,
     card_error_boundary_en,
     card_error_boundary_fr,
+    CardErrorBoundary,
     element_search_en,
     element_search_fr,
     equipment_search_en,
@@ -66,10 +47,12 @@ import {
     multiple_selection_dialog_fr,
     report_viewer_en,
     report_viewer_fr,
+    SnackbarProvider,
     table_en,
     table_fr,
     top_bar_en,
     top_bar_fr,
+    TopBar,
     treeview_finder_en,
     treeview_finder_fr,
 } from '../../src';
@@ -78,7 +61,7 @@ import translations from './demo_intl';
 
 // eslint-disable-next-line import/no-unresolved
 import AppPackage from '../../package.json';
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
+import PowsyblLogo from '../images/powsybl_logo.svg';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
 import {
@@ -898,13 +881,13 @@ function AppContent({ language, onLanguageClick }) {
 
 const WS_URL = 'WS_URL';
 const WS_URL_KEY = 'WS_URL_KEY';
-const AppWSConsumer = () => {
+function AppWSConsumer() {
     useListener(WS_URL_KEY, (event) => {
         console.log('WS called UPDATE_FINISHED : ', event);
     });
-};
+}
 
-const App = () => {
+function App() {
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
     const [language, setLanguage] = useState(LANG_ENGLISH);
 
@@ -938,6 +921,6 @@ const App = () => {
             </IntlProvider>
         </BrowserRouter>
     );
-};
+}
 
 export default App;
