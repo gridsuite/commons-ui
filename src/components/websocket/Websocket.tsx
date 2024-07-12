@@ -28,8 +28,8 @@ function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
     );
 
     const broadcastMessage = useCallback(
-        (url: string) => (event: MessageEvent) => {
-            const listenerList = urlsListenersRef.current?.[url];
+        (urlKey: string) => (event: MessageEvent) => {
+            const listenerList = urlsListenersRef.current?.[urlKey];
             if (listenerList) {
                 listenerList.forEach(({ callback }) => {
                     callback(event);
