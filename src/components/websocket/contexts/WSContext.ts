@@ -12,8 +12,8 @@ export type ListenerWS = {
 };
 
 export type WSContextType = {
-    addListener: (url: string, l: ListenerWS) => void;
-    removeListener: (url: string, idListener: string) => void;
+    addListener: (urlKey: string, l: ListenerWS) => void;
+    removeListener: (urlKey: string, idListener: string) => void;
 };
 
 export type WSContextRecordType = Record<string, WSContextType>;

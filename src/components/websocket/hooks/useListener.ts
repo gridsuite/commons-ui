@@ -7,10 +7,10 @@
 import { useContext, useEffect, useRef } from 'react';
 import { WSContext } from '../contexts/WSContext';
 
-export const randomUniqueID = (lenght: number) =>
+export const randomUniqueID = (length: number) =>
     Math.random()
         .toString(36)
-        .slice(13 - Math.min(lenght, 13));
+        .slice(13 - Math.min(length, 13));
 
 const useListener = (
     listenerKey: string,
