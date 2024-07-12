@@ -41,6 +41,7 @@ export interface ElementSearchInputProps<T>
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
     showResults?: boolean;
+    PaperComponent?: any;
 }
 
 export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
@@ -61,6 +62,7 @@ export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
         size,
         sx,
         disableClearable,
+        PaperComponent,
     } = props;
 
     const intl = useIntl();
@@ -136,6 +138,7 @@ export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
                 return option === value;
             }}
             disabled={searchTermDisabled}
+            PaperComponent={PaperComponent}
         />
     );
 }

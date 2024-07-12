@@ -11,8 +11,16 @@ import { useSnackMessage } from '../../hooks/useSnackMessage';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
 
+type Paginated<T> = {
+    content: T;
+    currentPage: number;
+    totalPages: number;
+    totalElements: number;
+};
 interface UseElementSearch<T> {
-    fetchElements: (newSearchTerm: string) => Promise<T[]>;
+    fetchElements:
+        | ((newSearchTerm: string) => Promise<Paginated<T>>)
+        | ((newSearchTerm: string) => Promise<T[]>);
 }
 
 const useElementSearch = <T,>(props: UseElementSearch<T>) => {
@@ -22,6 +30,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [elementsFound, setElementsFound] = useState<T[]>([]);
+    const [totalElements, setTotalElements] = useState(0);
     const lastSearchTermRef = useRef('');
 
     const searchMatchingElements = useCallback(
@@ -31,17 +40,25 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
             }
 
             lastSearchTermRef.current = newSearchTerm;
+
             fetchElements(newSearchTerm)
-                .then((infos) => {
+                .then((infos: any) => {
                     if (newSearchTerm === lastSearchTermRef.current) {
-                        setElementsFound(infos);
+                        if (Array.isArray(infos)) {
+                            setElementsFound(infos);
+                            setTotalElements(infos.length);
+                        } else {
+                            setElementsFound(infos.content);
+                            setTotalElements(infos.totalElements);
+                        }
                         setIsLoading(false);
                     } // else ignore results of outdated fetch
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     // else ignore errors of outdated fetch if changing "isLoading state"
                     if (newSearchTerm === lastSearchTermRef.current) {
                         setElementsFound([]);
+                        setTotalElements(0);
                         setIsLoading(false);
                         snackError({
                             messageTxt: error.message,
@@ -50,7 +67,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
                     }
                 });
         },
-        [snackError, fetchElements]
+        [fetchElements, snackError]
     );
 
     const debouncedSearchMatchingElements = useDebounce(
@@ -66,6 +83,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
             // still debouncing to cancel previous call, otherwise last call will still trigger
             if (newSearchTerm.length === 0) {
                 setElementsFound([]);
+                setTotalElements(0);
                 setIsLoading(false);
             } else {
                 setIsLoading(true);
@@ -76,7 +94,13 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
         [debouncedSearchMatchingElements]
     );
 
-    return { searchTerm, updateSearchTerm, elementsFound, isLoading };
+    return {
+        searchTerm,
+        updateSearchTerm,
+        elementsFound,
+        isLoading,
+        totalElements,
+    };
 };
 
 export default useElementSearch;
