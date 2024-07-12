@@ -5,7 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { TextEncoder, TextDecoder } from 'util';
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
 
-// fix for ReferenceError: TextDecoder / TextEncoder is not defined
-Object.assign(global, { TextDecoder, TextEncoder });
+// runs a clean after each test case (e.g. clearing jsdom)
+afterEach(() => {
+    cleanup();
+});
