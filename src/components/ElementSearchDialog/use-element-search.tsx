@@ -29,7 +29,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
     const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [elementsFound, setElementsFound] = useState<T[]>([]);
+    const [elementsFound, setElementsFound] = useState<T[]>([] as T[]);
     const [totalElements, setTotalElements] = useState(0);
     const lastSearchTermRef = useRef('');
 
