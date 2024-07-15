@@ -8,8 +8,14 @@
 export { TreeViewFinder } from './components/TreeViewFinder';
 export { TopBar } from './components/TopBar';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
+export type { GridSuiteModule } from './components/TopBar/AboutDialog';
 export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
+export type {
+    AuthenticationRouterErrorState,
+    AuthenticationRouterProps,
+    UserManagerState,
+} from './components/AuthenticationRouter';
 export { MuiVirtualizedTable } from './components/MuiVirtualizedTable';
 export {
     KeyedColumnsRowIndexer,
@@ -51,6 +57,25 @@ export {
 } from './utils/equipment-types';
 
 export { default as FieldConstants } from './utils/field-constants';
+
+export { fields as EXPERT_FILTER_FIELDS } from './components/filter/expert/expert-filter-constants';
+export { default as CustomReactQueryBuilder } from './components/inputs/react-query-builder/custom-react-query-builder';
+export {
+    EXPERT_FILTER_QUERY,
+    rqbQuerySchemaValidator,
+    getExpertFilterEmptyFormData,
+} from './components/filter/expert/expert-filter-form';
+export {
+    importExpertRules,
+    exportExpertRules,
+} from './components/filter/expert/expert-filter-utils';
+export type {
+    RuleTypeExport,
+    RuleGroupTypeExport,
+} from './components/filter/expert/expert-filter.type';
+export { formatQuery } from 'react-querybuilder';
+
+export { default as yup } from './utils/yup-config';
 
 export type { TreeViewFinderNodeProps } from './components/TreeViewFinder/TreeViewFinder';
 
@@ -96,6 +121,7 @@ export {
     LANG_ENGLISH,
     LANG_FRENCH,
 } from './components/TopBar/TopBar';
+export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
 
 export {
     USER,
@@ -107,7 +133,18 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './redux/actions';
+} from './redux/authActions';
+export type {
+    AuthenticationActions,
+    AuthenticationRouterErrorBase,
+    AuthenticationRouterErrorAction,
+    LogoutErrorAction,
+    ShowAuthenticationRouterLoginAction,
+    SignInCallbackErrorAction,
+    UnauthorizedUserAction,
+    UserAction,
+    UserValidationErrorAction,
+} from './redux/authActions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -149,6 +186,7 @@ export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
+export { default as usePrevious } from './hooks/usePrevious';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export { default as useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
@@ -228,6 +266,7 @@ export {
 
 export { mergeSx } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
+export type { CommonStoreState } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
 export * from './services';

@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Dispatch } from 'react';
-import { NavigateFunction } from 'react-router-dom';
+import { Location, NavigateFunction } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
 import UserManagerMock from './UserManagerMock';
 import {
+    AuthenticationActions,
     resetAuthenticationRouterError,
     setLoggedUser,
     setLogoutError,
@@ -17,7 +18,7 @@ import {
     setSignInCallbackError,
     setUnauthorizedUserInfo,
     setUserValidationError,
-} from '../redux/actions';
+} from '../redux/authActions';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
@@ -45,6 +46,7 @@ window.OIDCLog = Log;
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
+const accessTokenExpiringNotificationTime = 60; // seconds
 
 function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
@@ -89,7 +91,7 @@ function getIdTokenExpiresIn(user: User) {
 }
 
 function handleSigninSilent(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManager: UserManager
 ) {
     userManager.getUser().then((user) => {
@@ -138,20 +140,23 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-export function login(location: Location, userManagerInstance: UserManager) {
+export function login(
+    location: Location,
+    userManagerInstance: UserManager | null
+) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
     return userManagerInstance
-        .signinRedirect()
+        ?.signinRedirect()
         .then(() => console.debug('login'));
 }
 
 export function logout(
-    dispatch: Dispatch<unknown>,
-    userManagerInstance: UserManager
+    dispatch: Dispatch<AuthenticationActions>,
+    userManagerInstance: UserManager | null
 ) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
-    return userManagerInstance.getUser().then((user) => {
+    return userManagerInstance?.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
             return userManagerInstance
@@ -165,7 +170,7 @@ export function logout(
                 .then(() => {
                     console.debug('logged out, window is closing...');
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     console.log('Error during logout :', e);
                     // An error occured, window may not be closed, reset the user state
                     dispatch(setLoggedUser(null));
@@ -178,7 +183,7 @@ export function logout(
 }
 
 export function dispatchUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManagerInstance: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -222,7 +227,7 @@ export function dispatchUser(
                     );
                     return dispatch(setLoggedUser(user));
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     console.log('Error in dispatchUser', e);
                     return dispatch(
                         setUserValidationError(user?.profile?.name, {
@@ -248,14 +253,14 @@ function navigateToPreLoginPath(navigate: NavigateFunction) {
 }
 
 export function handleSigninCallback(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     navigate: NavigateFunction,
     userManagerInstance: UserManager
 ) {
     let reloadAfterNavigate = false;
     userManagerInstance
         .signinRedirectCallback()
-        .catch((e) => {
+        .catch((e: Error) => {
             if (isIssuerError(e)) {
                 extractIssuerToSessionStorage(e);
                 // After navigate, location will be out of a redirection route (sign-in-silent or sign-in-callback) so reloading the page will attempt a silent signin
@@ -274,7 +279,7 @@ export function handleSigninCallback(
                 reload();
             }
         })
-        .catch((e) => {
+        .catch((e: Error) => {
             dispatch(setSignInCallbackError(e));
             console.error(e);
         });
@@ -284,10 +289,8 @@ export function handleSilentRenewCallback(userManagerInstance: UserManager) {
     userManagerInstance.signinSilentCallback();
 }
 
-const accessTokenExpiringNotificationTime = 60; // seconds
-
 function handleUser(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     userManager: CustomUserManager,
     validateUser: UserValidationFunc
 ) {
@@ -373,7 +376,7 @@ function handleUser(
 }
 
 export async function initializeAuthenticationDev(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     validateUser: UserValidationFunc,
     isSigninCallback: boolean
@@ -389,7 +392,7 @@ export async function initializeAuthenticationDev(
 }
 
 export async function initializeAuthenticationProd(
-    dispatch: Dispatch<unknown>,
+    dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     idpSettingsGetter: IdpSettingsGetter,
     validateUser: UserValidationFunc,
