@@ -50,7 +50,7 @@ const useElementSearch = <T,>(
             lastSearchTermRef.current = newSearchTerm;
 
             fetchElements(newSearchTerm)
-                .then((infos: any) => {
+                .then((infos) => {
                     if (newSearchTerm === lastSearchTermRef.current) {
                         if (Array.isArray(infos)) {
                             setElementsFound(infos);
@@ -62,7 +62,7 @@ const useElementSearch = <T,>(
                         setIsLoading(false);
                     } // else ignore results of outdated fetch
                 })
-                .catch((error: any) => {
+                .catch((error) => {
                     // else ignore errors of outdated fetch if changing "isLoading state"
                     if (newSearchTerm === lastSearchTermRef.current) {
                         setElementsFound([]);
