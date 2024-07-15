@@ -9,3 +9,4 @@ export { default as TagRenderer } from './tag-renderer';
 export type { TagRendererProps } from './tag-renderer';
 export { ElementSearchInput } from './element-search-input';
 export { default as useElementSearch } from './use-element-search';
+export type { Paginated } from './use-element-search';

@@ -11,19 +11,27 @@ import { useSnackMessage } from '../../hooks/useSnackMessage';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
 
-type Paginated<T> = {
-    content: T;
-    currentPage: number;
+export type Paginated<T> = {
+    content: T[];
     totalPages: number;
     totalElements: number;
 };
+
 interface UseElementSearch<T> {
     fetchElements:
         | ((newSearchTerm: string) => Promise<Paginated<T>>)
         | ((newSearchTerm: string) => Promise<T[]>);
 }
 
-const useElementSearch = <T,>(props: UseElementSearch<T>) => {
+const useElementSearch = <T,>(
+    props: UseElementSearch<T>
+): {
+    searchTerm: string;
+    updateSearchTerm: (newSearchTerm: string) => void;
+    elementsFound: T[];
+    isLoading: boolean;
+    totalElements: number;
+} => {
     const { fetchElements } = props;
 
     const { snackError } = useSnackMessage();
