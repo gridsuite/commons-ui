@@ -80,6 +80,7 @@ const filterExpertEn = {
     'regulationMode.voltage': 'Voltage regulation',
     'regulationMode.reactivePower': 'Reactive power regulation',
     voltageSetPoint: 'Voltage set point',
+    activePowerSetPoint: 'Active power set point',
     reactivePowerSetPoint: 'Reactive power set point',
     remoteRegulatedTerminal: 'Remote regulated terminal',
     regulatingTerminalVLId: 'Voltage Level ID',
@@ -93,6 +94,11 @@ const filterExpertEn = {
     lowVoltageThreshold: 'Low voltage threshold',
     highVoltageThreshold: 'High voltage threshold',
     susceptanceFix: 'Fixed part of susceptance ',
+    converterStationId1: 'Converter station 1 id',
+    converterStationId2: 'Converter station 2 id',
+    convertersMode: 'Converters mode',
+    side1RectifierSide2Inverter: 'Side 1 rectifier side 2 inverter',
+    side1InverterSide2Rectifier: 'Side 1 inverter side 2 rectifier',
 };
 
 export default filterExpertEn;
