@@ -4,31 +4,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
-import { FieldConstants } from '../../../utils/field-constants';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { useFormContext, useWatch } from 'react-hook-form';
+import Grid from '@mui/material/Grid';
+import { ValueParserParams } from 'ag-grid-community';
+import { v4 as uuid4 } from 'uuid';
+import { UUID } from 'crypto';
+import FieldConstants from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CustomAgGridTable, {
     ROW_DRAGGING_SELECTION_COLUMN_DEF,
 } from '../../inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
-import { useIntl } from 'react-intl';
-import { useFormContext, useWatch } from 'react-hook-form';
-import Grid from '@mui/material/Grid';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
-import { ValueParserParams } from 'ag-grid-community';
 import { Generator, Load } from '../../../utils/equipment-types';
-import { NumericEditor } from '../../inputs/react-hook-form/ag-grid-table/cell-editors/numericEditor';
+import NumericEditor from '../../inputs/react-hook-form/ag-grid-table/cell-editors/numericEditor';
 import InputWithPopupConfirmation from '../../inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
-import { v4 as uuid4 } from 'uuid';
 import { toFloatOrNullValue } from '../../inputs/react-hook-form/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
 import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
-import { UUID } from 'crypto';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/ElementType';
 import ModifyElementSelection from '../../dialogs/modify-element-selection';
 import { exportFilter } from '../../../services/study';
+import { EquipmentType } from '../../../utils/EquipmentType';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
+
+function isGeneratorOrLoad(equipmentType: string): boolean {
+    return equipmentType === Generator.type || equipmentType === Load.type;
+}
 
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
@@ -51,8 +56,8 @@ export const explicitNamingFilterSchema = {
                     .when([FieldConstants.EQUIPMENT_TYPE], {
                         is: (equipmentType: string) =>
                             isGeneratorOrLoad(equipmentType),
-                        then: (schema) =>
-                            schema
+                        then: (innerSchema) =>
+                            innerSchema
                                 .test(
                                     'noKeyWithoutId',
                                     'distributionKeyWithMissingIdError',
@@ -83,10 +88,6 @@ export const explicitNamingFilterSchema = {
         }),
 };
 
-function isGeneratorOrLoad(equipmentType: string): boolean {
-    return equipmentType === Generator.type || equipmentType === Load.type;
-}
-
 interface FilterTableRow {
     [FieldConstants.AG_GRID_ROW_UUID]: string;
     [FieldConstants.EQUIPMENT_ID]: string;
@@ -113,16 +114,16 @@ export function getExplicitNamingFilterEmptyFormData() {
 
 export interface FilterForExplicitConversionProps {
     id: UUID;
-    equipmentType: String;
+    equipmentType: string;
 }
 
 interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
 }
 
-const ExplicitNamingFilterForm: FunctionComponent<
-    ExplicitNamingFilterFormProps
-> = ({ sourceFilterForExplicitNamingConversion }) => {
+function ExplicitNamingFilterForm({
+    sourceFilterForExplicitNamingConversion,
+}: ExplicitNamingFilterFormProps) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
@@ -131,6 +132,17 @@ const ExplicitNamingFilterForm: FunctionComponent<
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
+
+    useEffect(() => {
+        if (
+            watchEquipmentType &&
+            !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENTS)
+        ) {
+            snackError({
+                headerId: 'obsoleteFilter',
+            });
+        }
+    }, [snackError, watchEquipmentType]);
 
     const forGeneratorOrLoad = isGeneratorOrLoad(watchEquipmentType);
 
@@ -144,7 +156,7 @@ const ExplicitNamingFilterForm: FunctionComponent<
     }, [sourceFilterForExplicitNamingConversion, setValue]);
 
     const columnDefs = useMemo(() => {
-        const columnDefs: any[] = [
+        const newColumnDefs: any[] = [
             ...ROW_DRAGGING_SELECTION_COLUMN_DEF,
             {
                 headerName: intl.formatMessage({
@@ -158,7 +170,7 @@ const ExplicitNamingFilterForm: FunctionComponent<
             },
         ];
         if (forGeneratorOrLoad) {
-            columnDefs.push({
+            newColumnDefs.push({
                 headerName: intl.formatMessage({ id: DISTRIBUTION_KEY }),
                 field: DISTRIBUTION_KEY,
                 editable: true,
@@ -167,7 +179,7 @@ const ExplicitNamingFilterForm: FunctionComponent<
                 maxWidth: 200,
             });
         }
-        return columnDefs;
+        return newColumnDefs;
     }, [intl, forGeneratorOrLoad]);
 
     const defaultColDef = useMemo(
@@ -178,13 +190,15 @@ const ExplicitNamingFilterForm: FunctionComponent<
     );
 
     const csvFileHeaders = useMemo(() => {
-        const csvFileHeaders = [
+        const newCsvFileHeaders = [
             intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID }),
         ];
         if (forGeneratorOrLoad) {
-            csvFileHeaders.push(intl.formatMessage({ id: DISTRIBUTION_KEY }));
+            newCsvFileHeaders.push(
+                intl.formatMessage({ id: DISTRIBUTION_KEY })
+            );
         }
-        return csvFileHeaders;
+        return newCsvFileHeaders;
     }, [intl, forGeneratorOrLoad]);
 
     const getDataFromCsvFile = useCallback((csvData: any) => {
@@ -196,9 +210,8 @@ const ExplicitNamingFilterForm: FunctionComponent<
                     [DISTRIBUTION_KEY]: toFloatOrNullValue(value[1]?.trim()),
                 };
             });
-        } else {
-            return [];
         }
+        return [];
     }, []);
 
     const openConfirmationPopup = () => {
@@ -242,20 +255,20 @@ const ExplicitNamingFilterForm: FunctionComponent<
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
                     disabled={sourceFilterForExplicitNamingConversion}
-                    label={'equipmentType'}
+                    label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
-                    message={'changeTypeMessage'}
-                    validateButtonLabel={'button.changeType'}
+                    message="changeTypeMessage"
+                    validateButtonLabel="button.changeType"
                 />
                 {sourceFilterForExplicitNamingConversion && (
                     <ModifyElementSelection
                         elementType={ElementType.STUDY}
                         onElementValidated={onStudySelected}
-                        dialogOpeningButtonLabel={'selectStudyDialogButton'}
-                        dialogTitleLabel={'selectStudyDialogTitle'}
-                        dialogMessageLabel={'selectStudyText'}
-                        noElementMessageLabel={'noSelectedStudyText'}
+                        dialogOpeningButtonLabel="selectStudyDialogButton"
+                        dialogTitleLabel="selectStudyDialogTitle"
+                        dialogMessageLabel="selectStudyText"
+                        noElementMessageLabel="noSelectedStudyText"
                     />
                 )}
             </Grid>
@@ -266,7 +279,7 @@ const ExplicitNamingFilterForm: FunctionComponent<
                         columnDefs={columnDefs}
                         defaultColDef={defaultColDef}
                         makeDefaultRowData={makeDefaultRowData}
-                        pagination={true}
+                        pagination
                         paginationPageSize={100}
                         suppressRowClickSelection
                         alwaysShowVerticalScroll
@@ -288,6 +301,6 @@ const ExplicitNamingFilterForm: FunctionComponent<
             )}
         </Grid>
     );
-};
+}
 
 export default ExplicitNamingFilterForm;

@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export { default } from './element-search-dialog';
-export { TagRenderer } from './tag-renderer';
+export { default as ElementSearchDialog } from './element-search-dialog';
+export { default as TagRenderer } from './tag-renderer';
 export type { TagRendererProps } from './tag-renderer';
 export { ElementSearchInput } from './element-search-input';
-export { useElementSearch } from './use-element-search';
+export { default as useElementSearch } from './use-element-search';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const card_error_boundary_en = {
+const cardErrorBoundaryEn = {
     'card_error_boundary/title': 'Sorry, unexpected error :(',
     'card_error_boundary/content':
         'Please reload, or close and reopen this application, or contact support.',
@@ -13,4 +13,4 @@ const card_error_boundary_en = {
         'Error message (and see more information in the developper console):',
 };
 
-export default card_error_boundary_en;
+export default cardErrorBoundaryEn;

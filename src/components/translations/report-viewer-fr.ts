@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const report_viewer_fr = {
+const reportViewerFr = {
     'report_viewer/close': 'Fermer',
     'report_viewer/severity': 'Sévérité',
     'report_viewer/message': 'Message',
 };
 
-export default report_viewer_fr;
+export default reportViewerFr;

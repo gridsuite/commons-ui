@@ -12,9 +12,11 @@ import {
     MergedFormContextProps,
 } from './custom-form-provider';
 
-export const useCustomFormContext = (): MergedFormContextProps => {
+const useCustomFormContext = (): MergedFormContextProps => {
     const formMethods = useFormContext();
     const customFormMethods = useContext(CustomFormContext);
 
     return { ...formMethods, ...customFormMethods };
 };
+
+export default useCustomFormContext;

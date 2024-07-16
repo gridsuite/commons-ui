@@ -5,11 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { FunctionComponent } from 'react';
 import { useIntl } from 'react-intl';
 import { Autocomplete, TextField } from '@mui/material';
 import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
-import FieldLabel from '../inputs/react-hook-form/utils/field-label';
+import FieldLabel from './react-hook-form/utils/field-label';
 
 type SelectOption = { id: string; label?: string };
 
@@ -23,14 +22,14 @@ interface SelectClearableProps
     label?: string;
 }
 
-const SelectClearable: FunctionComponent<SelectClearableProps> = (props) => {
-    const { value, onChange, label, ...otherProps } = props;
+function SelectClearable(props: SelectClearableProps) {
+    const { value, onChange, label, options, ...otherProps } = props;
 
     const intl = useIntl();
 
-    const inputTransform = (value: string | null) => {
+    const inputTransform = (inputValue: string | null) => {
         return (
-            (value && props.options.find((option) => option.id === value)) ||
+            (value && options.find((option) => option.id === inputValue)) ||
             null
         );
     };
@@ -53,15 +52,16 @@ const SelectClearable: FunctionComponent<SelectClearableProps> = (props) => {
                     {...otherParams}
                     {...(label && {
                         label: FieldLabel({
-                            label: label,
+                            label,
                         }),
                     })}
                     inputProps={{ ...inputProps, readOnly: true }}
                 />
             )}
+            options={options}
             {...otherProps}
         />
     );
-};
+}
 
 export default SelectClearable;

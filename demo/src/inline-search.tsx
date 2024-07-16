@@ -5,17 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useState } from 'react';
+import { TextField } from '@mui/material';
+import { Search } from '@mui/icons-material';
+import { useIntl } from 'react-intl';
 import {
     ElementSearchInput,
     EquipmentItem,
     EquipmentType,
     equipmentStyles,
 } from '../../src';
-import { TextField } from '@mui/material';
-import { Search } from '@mui/icons-material';
-import { useIntl } from 'react-intl';
 
-export const InlineSearch = () => {
+export function InlineSearch() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -79,4 +79,6 @@ export const InlineSearch = () => {
             )}
         />
     );
-};
+}
+
+export default InlineSearch;

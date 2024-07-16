@@ -11,12 +11,12 @@ import {
     Theme,
     Typography,
 } from '@mui/material';
-import React, { PropsWithChildren, ReactNode, useState } from 'react';
+import { PropsWithChildren, ReactNode, useState } from 'react';
 import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
 export const styles = {
-    accordion: (theme: Theme) => ({
+    accordion: () => ({
         '&:before': {
             display: 'none',
         },
@@ -41,7 +41,7 @@ export const styles = {
             transform: 'rotate(0deg)',
         },
     }),
-    accordionDetails: (theme: Theme) => ({
+    accordionDetails: () => ({
         padding: 0, // reset default left right space in details
     }),
 };
@@ -50,7 +50,7 @@ interface ExpandableGroupProps extends PropsWithChildren {
     renderHeader: ReactNode;
 }
 
-const ExpandableGroup = ({ renderHeader, children }: ExpandableGroupProps) => {
+function ExpandableGroup({ renderHeader, children }: ExpandableGroupProps) {
     const [mouseHover, setMouseHover] = useState(false);
 
     return (
@@ -58,8 +58,8 @@ const ExpandableGroup = ({ renderHeader, children }: ExpandableGroupProps) => {
             <AccordionSummary
                 sx={styles.accordionSummary}
                 expandIcon={mouseHover ? <ExpandCircleDown /> : <ExpandMore />}
-                onMouseEnter={(event) => setMouseHover(true)}
-                onMouseLeave={(event) => setMouseHover(false)}
+                onMouseEnter={() => setMouseHover(true)}
+                onMouseLeave={() => setMouseHover(false)}
             >
                 {typeof renderHeader === 'string' ? (
                     <Typography>
@@ -74,6 +74,6 @@ const ExpandableGroup = ({ renderHeader, children }: ExpandableGroupProps) => {
             </AccordionDetails>
         </Accordion>
     );
-};
+}
 
 export default ExpandableGroup;

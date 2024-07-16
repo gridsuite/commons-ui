@@ -5,11 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { MenuItem, Select, SelectProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { FunctionComponent } from 'react';
 
 interface MuiSelectInputProps {
     name: string;
@@ -17,11 +15,11 @@ interface MuiSelectInputProps {
 }
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-const MuiSelectInput: FunctionComponent<MuiSelectInputProps & SelectProps> = ({
+function MuiSelectInput({
     name,
     options,
     ...props
-}) => {
+}: MuiSelectInputProps & SelectProps) {
     const {
         field: { value, onChange },
     } = useController({
@@ -30,19 +28,16 @@ const MuiSelectInput: FunctionComponent<MuiSelectInputProps & SelectProps> = ({
 
     return (
         <Select value={value} onChange={onChange} {...props}>
-            {options.map((option, index: number) => (
-                <MenuItem key={index} value={option.id ?? option}>
+            {options.map((option) => (
+                <MenuItem
+                    key={option.id ?? option.label}
+                    value={option.id ?? option}
+                >
                     <FormattedMessage id={option.label ?? option} />
                 </MenuItem>
             ))}
         </Select>
     );
-};
-
-MuiSelectInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    options: PropTypes.array.isRequired,
-};
+}
 
 export default MuiSelectInput;

@@ -5,11 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useIntl } from 'react-intl';
 import AutocompleteInput, {
     AutocompleteInputProps,
 } from '../autocomplete-inputs/autocomplete-input';
-import { useIntl } from 'react-intl';
-import { FunctionComponent } from 'react';
 import { Option } from '../../../../utils/types';
 
 export interface SelectInputProps
@@ -20,23 +19,23 @@ export interface SelectInputProps
     options: Option[];
 }
 
-const SelectInput: FunctionComponent<SelectInputProps> = (props) => {
+function SelectInput(props: SelectInputProps) {
     const intl = useIntl();
-
+    const { options } = props;
     const inputTransform = (value: Option | null) => {
         if (value === null) {
             return null;
         }
         if (typeof value === 'string') {
             return (
-                props.options.find(
+                options.find(
                     (option) =>
                         typeof option !== 'string' && option?.id === value
                 ) || null
             );
         }
         return (
-            props.options.find(
+            options.find(
                 (option) =>
                     typeof option !== 'string' && option?.id === value.id
             ) || null
@@ -50,21 +49,25 @@ const SelectInput: FunctionComponent<SelectInputProps> = (props) => {
         return value?.id ?? null;
     };
 
+    const getOptionLabel = (option: Option) => {
+        if (typeof option === 'string') {
+            return option;
+        }
+        if (option.label) {
+            return intl.formatMessage({ id: option.label });
+        }
+        return option.id;
+    };
+
     return (
         <AutocompleteInput
-            getOptionLabel={(option: Option) => {
-                return typeof option !== 'string'
-                    ? option?.label
-                        ? intl.formatMessage({ id: option?.label }) // If the option has a label property, display the label using internationalization
-                        : option?.id // If the option doesn't have a label property, display the ID instead
-                    : option;
-            }}
+            getOptionLabel={getOptionLabel}
             inputTransform={inputTransform}
             outputTransform={outputTransform}
-            readOnly={true}
+            readOnly
             {...props}
         />
     );
-};
+}
 
 export default SelectInput;

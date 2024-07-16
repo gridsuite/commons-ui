@@ -12,10 +12,10 @@ import {
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
 } from '@mui/icons-material';
-import { ElementType } from './ElementType';
 import { SxProps, Theme } from '@mui/material';
+import { ElementType } from './ElementType';
 
-export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
+function getFileIcon(type: ElementType, style: SxProps<Theme>) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
@@ -35,8 +35,11 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
             return <SettingsIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
-            return;
+            return undefined;
         default:
-            console.warn('unknown type [' + type + ']');
+            console.warn(`unknown type [${type}]`);
     }
+    return undefined;
 }
+
+export default getFileIcon;

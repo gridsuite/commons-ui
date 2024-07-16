@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
 // component to display error message in the middle of dialog
-const MidFormError = ({ message }: { message: string | ReactNode }) => {
+function MidFormError({ message }: { message: string | ReactNode }) {
     return (
         <Box
             sx={(theme) => ({
@@ -22,6 +22,6 @@ const MidFormError = ({ message }: { message: string | ReactNode }) => {
             {message}
         </Box>
     );
-};
+}
 
 export default MidFormError;
