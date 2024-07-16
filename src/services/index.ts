@@ -4,7 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export * from './explore';
-export * from './apps-metadata';
-export * from './directory';
-export * from './study';
+export * as ExploreSvc from './explore';
+export type * from './explore';
+
+export * as AppsMetadataSvc from './apps-metadata';
+export type * from './apps-metadata';
+
+export * as DirectorySvc from './directory';
+export type * from './directory';
+
+export * as StudySvc from './study';
+export type * from './study';

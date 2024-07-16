@@ -29,7 +29,7 @@ import { mergeSx } from '../../../utils/styles';
 import OverflowableText from '../../OverflowableText';
 import MidFormError from './error-management/mid-form-error';
 import DirectoryItemSelector from '../../DirectoryItemSelector/directory-item-selector';
-import { fetchDirectoryElementPath } from '../../../services';
+import { DirectorySvc } from '../../../services';
 
 export const NAME = 'name';
 
@@ -176,16 +176,18 @@ function DirectoryItemsInput({
             const chips = getValues(name) as any[];
             const chip = chips.at(index)?.id;
             if (chip) {
-                fetchDirectoryElementPath(chip).then((response: any[]) => {
-                    const path = response
-                        .filter((e) => e.elementUuid !== chip)
-                        .map((e) => e.elementUuid);
+                DirectorySvc.fetchDirectoryElementPath(chip).then(
+                    (response: any[]) => {
+                        const path = response
+                            .filter((e) => e.elementUuid !== chip)
+                            .map((e) => e.elementUuid);
 
-                    setExpanded(path);
-                    setSelected([chip]);
-                    setDirectoryItemSelectorOpen(true);
-                    setMultiSelect(false);
-                });
+                        setExpanded(path);
+                        setSelected([chip]);
+                        setDirectoryItemSelectorOpen(true);
+                        setMultiSelect(false);
+                    }
+                );
             }
         },
         [getValues, name]

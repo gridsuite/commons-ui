@@ -11,7 +11,7 @@ import { frontToBackTweak } from '../criteria-based/criteria-based-filter-utils'
 import { Generator, Load } from '../../../utils/equipment-types';
 import { exportExpertRules } from '../expert/expert-filter-utils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
-import { createFilter, saveFilter } from '../../../services/explore';
+import { ExploreSvc } from '../../../services';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -39,7 +39,7 @@ export const saveExplicitNamingFilter = (
         }));
     }
     if (isFilterCreation) {
-        createFilter(
+        ExploreSvc.createFilter(
             {
                 type: FilterType.EXPLICIT_NAMING.id,
                 equipmentType,
@@ -56,7 +56,7 @@ export const saveExplicitNamingFilter = (
                 setCreateFilterErr(error.message);
             });
     } else {
-        saveFilter(
+        ExploreSvc.saveFilter(
             {
                 id,
                 type: FilterType.EXPLICIT_NAMING.id,
@@ -81,7 +81,7 @@ export const saveCriteriaBasedFilter = (
     onError: (message: string) => void
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
-    createFilter(
+    ExploreSvc.createFilter(
         filterForBack,
         filter[FieldConstants.NAME],
         filter[FieldConstants.DESCRIPTION],
@@ -107,7 +107,7 @@ export const saveExpertFilter = (
     onError: (message: string) => void
 ) => {
     if (isFilterCreation) {
-        createFilter(
+        ExploreSvc.createFilter(
             {
                 type: FilterType.EXPERT.id,
                 equipmentType,
@@ -124,7 +124,7 @@ export const saveExpertFilter = (
                 onError(error.message);
             });
     } else {
-        saveFilter(
+        ExploreSvc.saveFilter(
             {
                 id,
                 type: FilterType.EXPERT.id,

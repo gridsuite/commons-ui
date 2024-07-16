@@ -26,7 +26,7 @@ import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-import { saveFilter } from '../../../services/explore';
+import { ExploreSvc } from '../../../services';
 import FilterForm from '../filter-form';
 
 export type SelectionCopy = {
@@ -124,7 +124,7 @@ function CriteriaBasedFilterEditionDialog({
 
     const onSubmit = useCallback(
         (filterForm: any) => {
-            saveFilter(
+            ExploreSvc.saveFilter(
                 frontToBackTweak(id, filterForm),
                 filterForm[FieldConstants.NAME]
             )

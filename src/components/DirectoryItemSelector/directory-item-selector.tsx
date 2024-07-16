@@ -15,11 +15,7 @@ import TreeViewFinder, {
     TreeViewFinderProps,
 } from '../TreeViewFinder/TreeViewFinder';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
-import {
-    fetchDirectoryContent,
-    fetchElementsInfos,
-    fetchRootFolders,
-} from '../../services';
+import { DirectorySvc, ExploreSvc } from '../../services';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -269,7 +265,7 @@ function DirectoryItemSelector({
     );
 
     const updateRootDirectories = useCallback(() => {
-        fetchRootFolders(types)
+        DirectorySvc.fetchRootFolders(types)
             .then((newData) => {
                 const [nrs, mdr] = updatedTree(
                     rootsRef.current,
@@ -292,7 +288,7 @@ function DirectoryItemSelector({
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
-            fetchDirectoryContent(nodeId, typeList)
+            DirectorySvc.fetchDirectoryContent(nodeId, typeList)
                 .then((children) => {
                     const childrenMatchedTypes = children.filter((item: any) =>
                         contentFilter().has(item.type)
@@ -303,7 +299,7 @@ function DirectoryItemSelector({
                         equipmentTypes &&
                         equipmentTypes.length > 0
                     ) {
-                        fetchElementsInfos(
+                        ExploreSvc.fetchElementsInfos(
                             childrenMatchedTypes.map((e: any) => e.elementUuid),
                             types,
                             equipmentTypes
