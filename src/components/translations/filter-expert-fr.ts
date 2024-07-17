@@ -93,6 +93,7 @@ const filterExpertFr = {
     lowVoltageThreshold: 'U activation bas',
     highVoltageThreshold: 'U activation haut',
     susceptanceFix: 'Susceptance fixe',
+    paired: 'appareillé',
 };
 
 export default filterExpertFr;

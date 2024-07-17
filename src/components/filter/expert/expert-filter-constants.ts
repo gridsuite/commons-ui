@@ -57,6 +57,10 @@ export const EXPERT_FILTER_EQUIPMENTS = {
         id: 'STATIC_VAR_COMPENSATOR',
         label: 'StaticVarCompensators',
     },
+    DANGLING_LINE: {
+        id: 'DANGLING_LINE',
+        label: 'DanglingLines',
+    },
 };
 
 export const ENERGY_SOURCE_OPTIONS = [
@@ -674,6 +678,25 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    SHUNT_SUSCEPTANCE: {
+        name: FieldType.SHUNT_SUSCEPTANCE,
+        label: 'shuntSusceptance',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    SHUNT_CONDUCTANCE: {
+        name: FieldType.SHUNT_CONDUCTANCE,
+        label: 'shuntConductance',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    PAIRED: {
+        name: FieldType.PAIRED,
+        label: 'paired',
+        dataType: DataType.BOOLEAN,
+        defaultValue: false,
+        valueEditorType: 'switch',
+    },
 };
 
 export const fields: Record<string, Field[]> = {
@@ -858,6 +881,22 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.SUSCEPTANCE_FIX,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
+    ],
+    DANGLING_LINE: [
+        FIELDS_OPTIONS.ID,
+        FIELDS_OPTIONS.NAME,
+        FIELDS_OPTIONS.PROPERTY,
+        FIELDS_OPTIONS.P0,
+        FIELDS_OPTIONS.Q0,
+        FIELDS_OPTIONS.SERIE_RESISTANCE,
+        FIELDS_OPTIONS.SERIE_REACTANCE,
+        FIELDS_OPTIONS.SHUNT_SUSCEPTANCE,
+        FIELDS_OPTIONS.SHUNT_CONDUCTANCE,
+        FIELDS_OPTIONS.PAIRED,
+        FIELDS_OPTIONS.COUNTRY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
+        FIELDS_OPTIONS.NOMINAL_VOLTAGE,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
     ],
 };

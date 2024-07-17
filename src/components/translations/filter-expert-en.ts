@@ -93,6 +93,7 @@ const filterExpertEn = {
     lowVoltageThreshold: 'Low voltage threshold',
     highVoltageThreshold: 'High voltage threshold',
     susceptanceFix: 'Fixed part of susceptance ',
+    paired: 'paired',
 };
 
 export default filterExpertEn;
