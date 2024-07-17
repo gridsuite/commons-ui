@@ -41,7 +41,7 @@ export interface ElementSearchInputProps<T>
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
     showResults?: boolean;
-    PaperComponent?: any;
+    PaperComponent?: React.ComponentType<any>;
 }
 
 export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
