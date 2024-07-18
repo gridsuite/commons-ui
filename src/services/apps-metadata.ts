@@ -7,27 +7,13 @@
 
 import { PredefinedProperties } from '../utils/types';
 import { Url } from '../utils/api';
-import { IdpSettings } from '../utils/AuthService';
-
-export type Env = {
-    appsMetadataServerUrl?: Url;
-    mapBoxToken?: string;
-    // https://github.com/gridsuite/deployment/blob/main/docker-compose/env.json
-    // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-dev/env.json
-    // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-integ/env.json
-    // https://github.com/gridsuite/deployment/blob/main/k8s/live/local/env.json
-    // [key: string]: string;
-};
+import { fetchEnv } from './app-local';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/version.json
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/version.json
 export type VersionJson = {
     deployVersion?: string;
 };
-
-export async function fetchEnv(): Promise<Env> {
-    return (await fetch('env.json')).json();
-}
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/apps-metadata.json
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
@@ -102,9 +88,4 @@ export async function fetchVersion(): Promise<VersionJson> {
     return (
         await fetch(`${envData.appsMetadataServerUrl}/version.json`)
     ).json();
-}
-
-export async function fetchIdpSettings() {
-    // TODO get app base path, can cause problems if router use
-    return (await (await fetch('idpSettings.json')).json()) as IdpSettings;
 }
