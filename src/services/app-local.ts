@@ -23,6 +23,5 @@ export async function fetchEnv(): Promise<Env> {
 }
 
 export async function fetchIdpSettings() {
-    // TODO get app base path, can cause problems if router use
     return (await (await fetch('idpSettings.json')).json()) as IdpSettings;
 }

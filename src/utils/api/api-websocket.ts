@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { getGatewayWsPath } from './variables';
 import { getUserToken } from './utils';
 
 export function getWsBase(): string {
@@ -12,7 +13,7 @@ export function getWsBase(): string {
     return (
         document.baseURI
             .replace(/^http(s?):\/\//, 'ws$1://')
-            .replace(/\/+$/, '') + import.meta.env.VITE_WS_GATEWAY
+            .replace(/\/+$/, '') + getGatewayWsPath()
     );
 }
 

@@ -9,7 +9,14 @@ import { UUID } from 'crypto';
 import { backendFetchJson, getRestBase } from '../utils/api';
 import { GridSuiteModule } from '../components/TopBar/AboutDialog';
 
-const PREFIX_STUDY_QUERIES = `${getRestBase()}/study`;
+/**
+ * Return the base API prefix to the study server
+ * <br/>Note: cannot be a const because part of the prefix can be overridden at runtime
+ * @param vApi the version of api to use
+ */
+function getPrefix(vApi: number) {
+    return `${getRestBase()}/study/v${vApi}`;
+}
 
 // https://github.com/powsybl/powsybl-core/blob/main/iidm/iidm-api/src/main/java/com/powsybl/iidm/network/IdentifiableType.java#L14
 export enum IdentifiableType {
@@ -46,7 +53,7 @@ export type IdentifiableAttributes = {
 export async function exportFilter(studyUuid: UUID, filterUuid?: UUID) {
     console.info('get filter export on study root node');
     return (await backendFetchJson(
-        `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/filters/${filterUuid}/elements`,
+        `${getPrefix(1)}/studies/${studyUuid}/filters/${filterUuid}/elements`,
         'GET'
     )) as IdentifiableAttributes[];
 }
@@ -54,6 +61,6 @@ export async function exportFilter(studyUuid: UUID, filterUuid?: UUID) {
 export async function getServersInfos(viewName: string) {
     console.info('get backend servers informations');
     return (await backendFetchJson(
-        `${PREFIX_STUDY_QUERIES}/v1/servers/about?view=${viewName}`
+        `${getPrefix(1)}/servers/about?view=${viewName}`
     )) as GridSuiteModule[];
 }

@@ -7,6 +7,7 @@
 
 import { IncomingHttpHeaders } from 'node:http';
 import { LiteralUnion } from 'type-fest';
+import { getGatewayRestPath } from './variables';
 import { FileType, getUserToken } from './utils';
 import { KeyOfWithoutIndexSignature } from '../types';
 
@@ -45,9 +46,7 @@ export interface ErrorWithStatus extends Error {
 
 export function getRestBase(): string {
     // We use the `baseURI` (from `<base/>` in index.html) to build the URL, which is corrected by httpd/nginx
-    return (
-        document.baseURI.replace(/\/+$/, '') + import.meta.env.VITE_API_GATEWAY
-    );
+    return document.baseURI.replace(/\/+$/, '') + getGatewayRestPath();
 }
 
 function prepareRequest(init?: InitRequest, token?: Token): RequestInit {

@@ -16,7 +16,14 @@ import {
 } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_EXPLORE_SERVER_QUERIES = `${getRestBase()}/explore`;
+/**
+ * Return the base API prefix to the explore server
+ * <br/>Note: cannot be a const because part of the prefix can be overridden at runtime
+ * @param vApi the version of api to use
+ */
+function getPrefix(vApi: number) {
+    return `${getRestBase()}/explore/v${vApi}`;
+}
 
 export async function createFilter(
     newFilter: any,
@@ -31,7 +38,7 @@ export async function createFilter(
         urlSearchParams.append('parentDirectoryUuid', parentDirectoryUuid);
     }
     await backendFetch(
-        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters?${urlSearchParams.toString()}`,
+        `${getPrefix(1)}/explore/filters?${urlSearchParams.toString()}`,
         {
             method: 'POST',
             headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
@@ -45,9 +52,9 @@ export async function saveFilter(
     name: string
 ) {
     await backendFetch(
-        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters/${
-            filter.id
-        }?${new URLSearchParams({ name }).toString()}`,
+        `${getPrefix(1)}/explore/filters/${filter.id}?${new URLSearchParams({
+            name,
+        }).toString()}`,
         {
             method: 'PUT',
             headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
@@ -69,7 +76,7 @@ export async function fetchElementsInfos(
     });
     return (await backendFetchJson(
         appendSearchParam(
-            `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`,
+            `${getPrefix(1)}/explore/elements/metadata?${urlSearchParams}`,
             urlSearchParams
         ),
         'GET'

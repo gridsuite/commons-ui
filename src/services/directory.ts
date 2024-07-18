@@ -15,13 +15,20 @@ import {
 } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_DIRECTORY_SERVER_QUERIES = `${getRestBase()}/directory`;
+/**
+ * Return the base API prefix to the directory server
+ * <br/>Note: cannot be a const because part of the prefix can be overridden at runtime
+ * @param vApi the version of api to use
+ */
+function getPrefix(vApi: number) {
+    return `${getRestBase()}/directory/v${vApi}`;
+}
 
 export async function fetchRootFolders(types: string[]) {
     console.info('Fetching Root Directories');
     const urlSearchParams = getRequestParam('elementTypes', types).toString();
     return (await backendFetchJson(
-        `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/root-directories?${urlSearchParams}`,
+        `${getPrefix(1)}/root-directories?${urlSearchParams}`,
         'GET'
     )) as ElementAttributes[];
 }
@@ -33,7 +40,7 @@ export async function fetchDirectoryContent(
     console.info("Fetching Folder content '%s'", directoryUuid);
     return (await backendFetchJson(
         appendSearchParam(
-            `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements`,
+            `${getPrefix(1)}/directories/${directoryUuid}/elements`,
             getRequestParam('elementTypes', types)
         ),
         'GET'
@@ -42,7 +49,7 @@ export async function fetchDirectoryContent(
 
 export async function fetchDirectoryElementPath(elementUuid: UUID) {
     console.info(`Fetching element '${elementUuid}' and its parents info ...`);
-    const fetchPathUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/elements/${encodeURIComponent(
+    const fetchPathUrl = `${getPrefix(1)}/elements/${encodeURIComponent(
         elementUuid
     )}/path`;
     return (await backendFetchJson(fetchPathUrl, 'GET')) as ElementAttributes[];
@@ -54,7 +61,9 @@ export async function elementExists(
     type: string
 ) {
     const response = await backendFetch(
-        `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
+        `${getPrefix(
+            1
+        )}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
         'HEAD'
     );
     return response.status !== 204; // HTTP 204 : No-content

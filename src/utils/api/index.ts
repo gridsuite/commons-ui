@@ -8,3 +8,4 @@
 export * from './api-rest';
 export * from './api-websocket';
 export * from './utils';
+export { setGatewayRestPath, setGatewayWsPath } from './variables';
