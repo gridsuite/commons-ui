@@ -7,6 +7,7 @@
 
 import { UUID } from 'crypto';
 import { backendFetchJson, getRestBase } from '../utils/api';
+import { GridSuiteModule } from '../components/TopBar/AboutDialog';
 
 const PREFIX_STUDY_QUERIES = `${getRestBase()}/study`;
 
@@ -48,4 +49,11 @@ export async function exportFilter(studyUuid: UUID, filterUuid?: UUID) {
         `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/filters/${filterUuid}/elements`,
         'GET'
     )) as IdentifiableAttributes[];
+}
+
+export async function getServersInfos(viewName: string) {
+    console.info('get backend servers informations');
+    return (await backendFetchJson(
+        `${PREFIX_STUDY_QUERIES}/v1/servers/about?view=${viewName}`
+    )) as GridSuiteModule[];
 }

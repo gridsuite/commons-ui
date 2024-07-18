@@ -89,3 +89,7 @@ export async function fetchVersion(): Promise<VersionJson> {
         await fetch(`${envData.appsMetadataServerUrl}/version.json`)
     ).json();
 }
+
+export async function fetchDeployedVersion() {
+    return (await fetchVersion())?.deployVersion;
+}
