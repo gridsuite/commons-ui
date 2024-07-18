@@ -15,12 +15,21 @@ export type Paginated<T> = {
     content: T[];
     totalPages: number;
     totalElements: number;
+    last: boolean;
+    size: number;
+    number: number;
+    sort: {
+        sorted: boolean;
+        unsorted: boolean;
+        empty: boolean;
+    };
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
 };
 
 interface UseElementSearch<T> {
-    fetchElements:
-        | ((newSearchTerm: string) => Promise<Paginated<T>>)
-        | ((newSearchTerm: string) => Promise<T[]>);
+    fetchElements: (newSearchTerm: string) => Promise<Paginated<T> | T[]>;
 }
 
 const useElementSearch = <T,>(

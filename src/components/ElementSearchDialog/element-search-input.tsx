@@ -26,6 +26,7 @@ export interface ElementSearchInputProps<T>
         | 'loading'
         | 'disableClearable'
         | 'getOptionDisabled'
+        | 'PaperComponent'
     > {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
@@ -41,10 +42,11 @@ export interface ElementSearchInputProps<T>
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
     showResults?: boolean;
-    PaperComponent?: React.ComponentType<any>;
 }
 
-export function ElementSearchInput<T>(props: ElementSearchInputProps<T>) {
+export function ElementSearchInput<T>(
+    props: Readonly<ElementSearchInputProps<T>>
+) {
     const {
         elementsFound,
         loading,
