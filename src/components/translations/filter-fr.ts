@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filter_fr = {
+const filterFr = {
     OR: 'OU',
     AND: 'ET',
     rule: 'règle',
@@ -22,6 +22,8 @@ const filter_fr = {
     isNotPartOf: 'ne fait pas partie de',
     emptyRule: 'Le filtre contient un champ vide',
     incorrectRule: 'Le filtre contient un champ incorrect',
+    obsoleteFilter:
+        "Ce filtre n'est plus supporté. Veuillez le supprimer ou changer son type d'équipement.",
     betweenRule:
         "La valeur de gauche d'une règle 'entre' doit être inférieure à la valeur de droite",
     emptyGroup:
@@ -29,4 +31,4 @@ const filter_fr = {
     Hvdc: 'HVDC',
 };
 
-export default filter_fr;
+export default filterFr;

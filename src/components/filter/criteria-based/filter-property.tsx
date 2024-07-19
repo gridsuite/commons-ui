@@ -4,14 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FunctionComponent, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import { useFormContext, useWatch } from 'react-hook-form';
 import AutocompleteInput from '../../inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
 import MultipleAutocompleteInput from '../../inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
-import { FieldConstants } from '../../../utils/field-constants';
+import FieldConstants from '../../../utils/field-constants';
 
 import { PredefinedProperties } from '../../../utils/types';
 
@@ -28,41 +28,43 @@ interface FilterPropertyProps {
     propertyType: string;
 }
 
-const FilterProperty: FunctionComponent<FilterPropertyProps> = (props) => {
+function FilterProperty(props: FilterPropertyProps) {
+    const { propertyType, index, predefined, valuesFields, handleDelete } =
+        props;
     const { setValue } = useFormContext();
 
     const watchName = useWatch({
-        name: `${FieldConstants.CRITERIA_BASED}.${props.propertyType}[${props.index}].${PROPERTY_NAME}`,
+        name: `${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${PROPERTY_NAME}`,
     });
 
     const predefinedNames = useMemo(() => {
-        return Object.keys(props.predefined ?? []).sort();
-    }, [props.predefined]);
+        return Object.keys(predefined ?? []).sort();
+    }, [predefined]);
 
     const predefinedValues = useMemo(() => {
-        const predefinedForName: string[] = props.predefined?.[watchName];
+        const predefinedForName: string[] = predefined?.[watchName];
         if (!predefinedForName) {
             return [];
         }
         return [...new Set(predefinedForName)].sort();
-    }, [watchName, props.predefined]);
+    }, [watchName, predefined]);
 
     // We reset values when name change
     const onNameChange = useCallback(() => {
-        props.valuesFields.forEach((valuesField) =>
+        valuesFields.forEach((valuesField) =>
             setValue(
-                `${FieldConstants.CRITERIA_BASED}.${props.propertyType}[${props.index}].${valuesField.name}`,
+                `${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${valuesField.name}`,
                 []
             )
         );
-    }, [setValue, props.index, props.valuesFields, props.propertyType]);
+    }, [setValue, index, valuesFields, propertyType]);
 
     return (
         <Grid container item spacing={1} columns={21}>
             <Grid item xs={6}>
                 <AutocompleteInput
-                    name={`${FieldConstants.CRITERIA_BASED}.${props.propertyType}[${props.index}].${PROPERTY_NAME}`}
-                    label={'PropertyName'}
+                    name={`${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${PROPERTY_NAME}`}
+                    label="PropertyName"
                     options={predefinedNames}
                     // freeSolo
                     autoSelect
@@ -70,22 +72,22 @@ const FilterProperty: FunctionComponent<FilterPropertyProps> = (props) => {
                     onChangeCallback={onNameChange}
                 />
             </Grid>
-            {props.valuesFields.map((valuesField) => (
+            {valuesFields.map((valuesField) => (
                 <Grid item xs key={valuesField.name}>
                     <MultipleAutocompleteInput
-                        name={`${FieldConstants.CRITERIA_BASED}.${props.propertyType}[${props.index}].${valuesField.name}`}
+                        name={`${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${valuesField.name}`}
                         label={valuesField.label}
                         options={predefinedValues}
                     />
                 </Grid>
             ))}
             <Grid item xs={1} alignSelf="center">
-                <IconButton onClick={() => props.handleDelete(props.index)}>
+                <IconButton onClick={() => handleDelete(index)}>
                     <DeleteIcon />
                 </IconButton>
             </Grid>
         </Grid>
     );
-};
+}
 
 export default FilterProperty;

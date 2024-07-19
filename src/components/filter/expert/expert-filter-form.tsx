@@ -5,13 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import Grid from '@mui/material/Grid';
 import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 import './styles-expert-filter.css';
 import { useFormContext, useWatch } from 'react-hook-form';
+import * as yup from 'yup';
+import { v4 as uuid4 } from 'uuid';
+import { useIntl } from 'react-intl';
 import { testQuery } from './expert-filter-utils';
 import {
     COMBINATOR_OPTIONS,
@@ -20,16 +23,13 @@ import {
     OPERATOR_OPTIONS,
     RULES,
 } from './expert-filter-constants';
-import * as yup from 'yup';
 
 import { FieldType } from './expert-filter.type';
-import { v4 as uuid4 } from 'uuid';
-import { useIntl } from 'react-intl';
-import { FieldConstants } from '../../../utils/field-constants';
-import CustomReactQueryBuilder from '../../inputs/react-query-builder/custom-react-query-builder';
+import FieldConstants from '../../../utils/field-constants';
 import InputWithPopupConfirmation from '../../inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
 import SelectInput from '../../inputs/react-hook-form/select-inputs/select-input';
 import { FilterType } from '../constants/filter-constants';
+import CustomReactQueryBuilder from '../../inputs/react-query-builder/custom-react-query-builder';
 
 yup.setLocale({
     mixed: {
@@ -37,73 +37,46 @@ yup.setLocale({
         notType: ({ type }) => {
             if (type === 'number') {
                 return 'YupNotTypeNumber';
-            } else {
-                return 'YupNotTypeDefault';
             }
+            return 'YupNotTypeDefault';
         },
     },
 });
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
-export const expertFilterSchema = {
-    [EXPERT_FILTER_QUERY]: yup.object().when([FieldConstants.FILTER_TYPE], {
-        is: FilterType.EXPERT.id,
-        then: (schema: any) =>
-            schema.when([FieldConstants.EQUIPMENT_TYPE], {
-                is: (equipmentType: string) =>
-                    isSupportedEquipmentType(equipmentType),
-                then: (schema: any) =>
-                    schema
-                        .test(
-                            RULES.EMPTY_GROUP,
-                            RULES.EMPTY_GROUP,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.EMPTY_GROUP,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        )
-                        .test(
-                            RULES.EMPTY_RULE,
-                            RULES.EMPTY_RULE,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.EMPTY_RULE,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        )
-                        .test(
-                            RULES.INCORRECT_RULE,
-                            RULES.INCORRECT_RULE,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.INCORRECT_RULE,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        )
-                        .test(
-                            RULES.BETWEEN_RULE,
-                            RULES.BETWEEN_RULE,
-                            (query: any) => {
-                                return testQuery(
-                                    RULES.BETWEEN_RULE,
-                                    query as RuleGroupTypeAny
-                                );
-                            }
-                        ),
-            }),
-    }),
-};
-
 function isSupportedEquipmentType(equipmentType: string): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)
         .map((equipments) => equipments.id)
         .includes(equipmentType);
 }
+
+export const rqbQuerySchemaValidator = (schema: yup.Schema) =>
+    schema
+        .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
+            return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
+        })
+        .test(RULES.EMPTY_RULE, RULES.EMPTY_RULE, (query: any) => {
+            return testQuery(RULES.EMPTY_RULE, query as RuleGroupTypeAny);
+        })
+        .test(RULES.INCORRECT_RULE, RULES.INCORRECT_RULE, (query: any) => {
+            return testQuery(RULES.INCORRECT_RULE, query as RuleGroupTypeAny);
+        })
+        .test(RULES.BETWEEN_RULE, RULES.BETWEEN_RULE, (query: any) => {
+            return testQuery(RULES.BETWEEN_RULE, query as RuleGroupTypeAny);
+        });
+
+export const expertFilterSchema = {
+    [EXPERT_FILTER_QUERY]: yup.object().when([FieldConstants.FILTER_TYPE], {
+        is: FilterType.EXPERT.id,
+        then: (schema: yup.Schema) =>
+            schema.when([FieldConstants.EQUIPMENT_TYPE], {
+                is: (equipmentType: string) =>
+                    isSupportedEquipmentType(equipmentType),
+                then: rqbQuerySchemaValidator,
+            }),
+    }),
+};
 
 const defaultQuery = {
     combinator: COMBINATOR_OPTIONS.AND.name,
@@ -123,7 +96,7 @@ export function getExpertFilterEmptyFormData() {
     };
 }
 
-const ExpertFilterForm: FunctionComponent = () => {
+function ExpertFilterForm() {
     const intl = useIntl();
 
     const { getValues, setValue } = useFormContext();
@@ -159,11 +132,11 @@ const ExpertFilterForm: FunctionComponent = () => {
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(EXPERT_FILTER_EQUIPMENTS)}
-                    label={'equipmentType'}
+                    label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
-                    message={'changeTypeMessage'}
-                    validateButtonLabel={'button.changeType'}
+                    message="changeTypeMessage"
+                    validateButtonLabel="button.changeType"
                 />
             </Grid>
             {watchEquipmentType &&
@@ -175,6 +148,6 @@ const ExpertFilterForm: FunctionComponent = () => {
                 )}
         </Grid>
     );
-};
+}
 
 export default ExpertFilterForm;

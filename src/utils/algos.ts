@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export function equalsArray(a: Array<any>, b: Array<any>) {
+function equalsArray(a: Array<any>, b: Array<any>) {
     if (b === a) {
         return true;
     }
@@ -16,7 +16,7 @@ export function equalsArray(a: Array<any>, b: Array<any>) {
         return false;
     }
 
-    for (var i = 0, l = a.length; i < l; i++) {
+    for (let i = 0, l = a.length; i < l; i++) {
         if (a[i] instanceof Array && b[i] instanceof Array) {
             if (!equalsArray(a[i], b[i])) {
                 return false;
@@ -28,3 +28,5 @@ export function equalsArray(a: Array<any>, b: Array<any>) {
     }
     return true;
 }
+
+export default equalsArray;

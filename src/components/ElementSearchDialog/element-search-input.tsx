@@ -20,7 +20,13 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
 export interface ElementSearchInputProps<T>
     extends Pick<
         AutocompleteProps<T, false, boolean, true>,
-        'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable'
+        | 'sx'
+        | 'size'
+        | 'loadingText'
+        | 'loading'
+        | 'disableClearable'
+        | 'getOptionDisabled'
+        | 'PaperComponent'
     > {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
@@ -38,7 +44,9 @@ export interface ElementSearchInputProps<T>
     showResults?: boolean;
 }
 
-export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
+export function ElementSearchInput<T>(
+    props: Readonly<ElementSearchInputProps<T>>
+) {
     const {
         elementsFound,
         loading,
@@ -56,6 +64,7 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
         size,
         sx,
         disableClearable,
+        PaperComponent,
     } = props;
 
     const intl = useIntl();
@@ -68,9 +77,8 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
                     id: 'element_search/searchDisabled',
                 })
             );
-        } else {
-            return searchTerm ?? '';
         }
+        return searchTerm ?? '';
     }, [searchTerm, searchTermDisabled, searchTermDisableReason, intl]);
 
     return (
@@ -102,7 +110,7 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
             options={loading ? [] : elementsFound}
             loading={loading}
             loadingText={loadingText}
-            autoHighlight={true}
+            autoHighlight
             noOptionsText={intl.formatMessage({
                 id: 'element_search/noResult',
             })}
@@ -128,11 +136,11 @@ export const ElementSearchInput = <T,>(props: ElementSearchInputProps<T>) => {
                  ** this method is only relevant when both params are of type T, the else block should not be useful */
                 if (typeof option !== 'string' && typeof value !== 'string') {
                     return isOptionEqualToValue(option, value);
-                } else {
-                    return option === value;
                 }
+                return option === value;
             }}
             disabled={searchTermDisabled}
+            PaperComponent={PaperComponent}
         />
     );
-};
+}

@@ -13,9 +13,8 @@ yup.setLocale({
         notType: ({ type }) => {
             if (type === 'number') {
                 return 'YupNotTypeNumber';
-            } else {
-                return 'YupNotTypeDefault';
             }
+            return 'YupNotTypeDefault';
         },
     },
 });

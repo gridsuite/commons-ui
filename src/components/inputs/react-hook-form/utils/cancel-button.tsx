@@ -7,20 +7,15 @@
 
 import { Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 import { useThemeProps } from '@mui/material/styles';
 
-const CancelButton = ({ ...inProps }) => {
+function CancelButton({ ...inProps }) {
     const props = useThemeProps({ props: inProps, name: 'CancelButton' });
     return (
         <Button {...props}>
             <FormattedMessage id="cancel" />
         </Button>
     );
-};
-
-CancelButton.propTypes = {
-    buttonProps: PropTypes.object,
-};
+}
 
 export default CancelButton;

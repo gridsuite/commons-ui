@@ -6,7 +6,7 @@
  */
 import { EquipmentType } from './types';
 
-export const mapEquipmentTypeForPredefinedProperties = (
+const mapEquipmentTypeForPredefinedProperties = (
     type: EquipmentType
 ): string | undefined => {
     switch (type) {
@@ -34,5 +34,9 @@ export const mapEquipmentTypeForPredefinedProperties = (
         case 'STATIC_VAR_COMPENSATOR':
         case 'VSC_CONVERTER_STATION':
             return undefined;
+        default:
+            return undefined;
     }
 };
+
+export default mapEquipmentTypeForPredefinedProperties;

@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Field } from 'react-querybuilder';
 import {
     CombinatorType,
     DataType,
     FieldType,
     OperatorType,
 } from './expert-filter.type';
-import { Field } from 'react-querybuilder';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',
@@ -243,6 +243,7 @@ export const FIELDS_OPTIONS = {
         name: FieldType.VOLTAGE_REGULATOR_ON,
         label: 'voltageRegulatorOn',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     PLANNED_ACTIVE_POWER_SET_POINT: {
@@ -255,6 +256,7 @@ export const FIELDS_OPTIONS = {
         name: FieldType.CONNECTED,
         label: 'connected',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     RATED_S: {
@@ -376,12 +378,14 @@ export const FIELDS_OPTIONS = {
         name: FieldType.CONNECTED_1,
         label: 'terminal1Connected',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     CONNECTED_2: {
         name: FieldType.CONNECTED_2,
         label: 'terminal2Connected',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     VOLTAGE_LEVEL_ID_1: {
@@ -492,12 +496,14 @@ export const FIELDS_OPTIONS = {
         name: FieldType.HAS_RATIO_TAP_CHANGER,
         label: 'hasRatioTapChanger',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     LOAD_TAP_CHANGING_CAPABILITIES: {
         name: FieldType.LOAD_TAP_CHANGING_CAPABILITIES,
         label: 'loadTapChangingCapabilities',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     RATIO_REGULATION_MODE: {
@@ -518,6 +524,7 @@ export const FIELDS_OPTIONS = {
         name: FieldType.HAS_PHASE_TAP_CHANGER,
         label: 'hasPhaseTapChanger',
         dataType: DataType.BOOLEAN,
+        defaultValue: false,
         valueEditorType: 'switch',
     },
     PHASE_REGULATION_MODE: {

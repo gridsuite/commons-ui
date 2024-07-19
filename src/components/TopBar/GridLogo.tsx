@@ -7,8 +7,8 @@
 
 import { Box, SxProps, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
-import { mergeSx } from '../../utils/styles';
 import { ReactNode } from 'react';
+import { mergeSx } from '../../utils/styles';
 
 const styles = {
     logo: {
@@ -30,12 +30,30 @@ export interface GridLogoProps extends Omit<LogoTextProps, 'style'> {
     appLogo: ReactNode;
 }
 
-const GridLogo = ({
+export function LogoText({
+    appName,
+    appColor,
+    style,
+    onClick,
+}: Partial<LogoTextProps>) {
+    return (
+        <Typography
+            variant="h4"
+            sx={mergeSx(style, onClick && styles.clickable)}
+            onClick={onClick}
+        >
+            <span style={{ fontWeight: 'bold' }}>Grid</span>
+            <span style={{ color: appColor }}>{appName}</span>
+        </Typography>
+    );
+}
+
+function GridLogo({
     appLogo,
     appName,
     appColor,
     onClick,
-}: Partial<GridLogoProps>) => {
+}: Partial<GridLogoProps>) {
     return (
         <>
             <Box
@@ -52,7 +70,7 @@ const GridLogo = ({
             />
         </>
     );
-};
+}
 
 export default GridLogo;
 
@@ -62,21 +80,3 @@ export interface LogoTextProps {
     style: SxProps;
     onClick: () => void;
 }
-
-export const LogoText = ({
-    appName,
-    appColor,
-    style,
-    onClick,
-}: Partial<LogoTextProps>) => {
-    return (
-        <Typography
-            variant="h4"
-            sx={mergeSx(style, onClick && styles.clickable)}
-            onClick={onClick}
-        >
-            <span style={{ fontWeight: 'bold' }}>Grid</span>
-            <span style={{ color: appColor }}>{appName}</span>
-        </Typography>
-    );
-};

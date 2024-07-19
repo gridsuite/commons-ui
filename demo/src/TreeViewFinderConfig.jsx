@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import PropTypes from 'prop-types';
 import {
     Checkbox,
     FormControl,
@@ -29,7 +30,7 @@ import {
  * @param {EventListener}   onSelectionTypeChange - onChange type EventListener on the multiselect value change.
  * @param {EventListener}   onOnlyLeavesChange - onChange type EventListener on the onlyLeaves value change.
  */
-const TreeViewFinderConfig = (props) => {
+function TreeViewFinderConfig(props) {
     const {
         dynamicData,
         dataFormat,
@@ -159,6 +160,32 @@ const TreeViewFinderConfig = (props) => {
             </FormControl>
         </div>
     );
+}
+
+TreeViewFinderConfig.propTypes = {
+    dynamicData: PropTypes.bool,
+    dataFormat: PropTypes.string,
+    multiSelect: PropTypes.bool,
+    onlyLeaves: PropTypes.bool,
+    sortedAlphabetically: PropTypes.bool,
+    onDynamicDataChange: PropTypes.func,
+    onDataFormatChange: PropTypes.func,
+    onSelectionTypeChange: PropTypes.func,
+    onOnlyLeavesChange: PropTypes.func,
+    onSortedAlphabeticallyChange: PropTypes.func,
+};
+
+TreeViewFinderConfig.defaultProps = {
+    dynamicData: false,
+    dataFormat: 'Tree',
+    multiSelect: false,
+    onlyLeaves: false,
+    sortedAlphabetically: false,
+    onDynamicDataChange: () => {},
+    onDataFormatChange: () => {},
+    onSelectionTypeChange: () => {},
+    onOnlyLeavesChange: () => {},
+    onSortedAlphabeticallyChange: () => {},
 };
 
 export default TreeViewFinderConfig;

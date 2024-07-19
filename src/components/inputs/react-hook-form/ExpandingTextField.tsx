@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { TextFieldProps, Theme, Typography } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { useCustomFormContext } from './provider/use-custom-form-context';
+import useCustomFormContext from './provider/use-custom-form-context';
 import TextInput, { TextInputProps } from './text-input';
 
 interface ExpandingTextFieldProps extends TextInputProps {
@@ -21,7 +21,7 @@ interface ExpandingTextFieldProps extends TextInputProps {
     textFieldFormProps?: TextFieldProps;
 }
 
-const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
+function ExpandingTextField({
     name,
     maxCharactersNumber = 500,
     rows,
@@ -30,11 +30,11 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     label,
     textFieldFormProps,
     ...otherTexFieldProps
-}) => {
+}: ExpandingTextFieldProps) {
     const [isFocused, setIsFocused] = useState(false);
     const { control } = useCustomFormContext();
     const descriptionWatch = useWatch({
-        name: name,
+        name,
         control,
     });
     const handleFocus = () => {
@@ -46,7 +46,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
     };
     const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
-    const descriptionCounter = descriptionLength + '/' + maxCharactersNumber;
+    const descriptionCounter = `${descriptionLength}/${maxCharactersNumber}`;
 
     const rowsToDisplay = isFocused ? rows : minRows;
 
@@ -76,7 +76,7 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
             },
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
-        ...(sx && { sx: sx }),
+        ...(sx && { sx }),
         ...textFieldFormProps,
     };
     return (
@@ -87,6 +87,6 @@ const ExpandingTextField: FunctionComponent<ExpandingTextFieldProps> = ({
             {...otherTexFieldProps}
         />
     );
-};
+}
 
 export default ExpandingTextField;
