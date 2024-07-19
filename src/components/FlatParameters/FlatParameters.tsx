@@ -227,7 +227,7 @@ export function FlatParameters({
         if (param.name === inEditionParam && uncommitted !== null) {
             return uncommitted;
         }
-        if (Object.hasOwn(initValues, param.name)) {
+        if (initValues && Object.hasOwn(initValues, param.name)) {
             if (param.type === 'BOOLEAN') {
                 // on the server side, we only store String, so we eventually need to convert before
                 return initValues[param.name] === 'false'

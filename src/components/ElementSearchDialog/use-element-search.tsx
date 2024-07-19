@@ -11,17 +11,43 @@ import { useSnackMessage } from '../../hooks/useSnackMessage';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
 
+export type Paginated<T> = {
+    content: T[];
+    totalPages: number;
+    totalElements: number;
+    last: boolean;
+    size: number;
+    number: number;
+    sort: {
+        sorted: boolean;
+        unsorted: boolean;
+        empty: boolean;
+    };
+    first: boolean;
+    numberOfElements: number;
+    empty: boolean;
+};
+
 interface UseElementSearch<T> {
-    fetchElements: (newSearchTerm: string) => Promise<T[]>;
+    fetchElements: (newSearchTerm: string) => Promise<Paginated<T> | T[]>;
 }
 
-const useElementSearch = <T,>(props: UseElementSearch<T>) => {
+const useElementSearch = <T,>(
+    props: UseElementSearch<T>
+): {
+    searchTerm: string;
+    updateSearchTerm: (newSearchTerm: string) => void;
+    elementsFound: T[];
+    isLoading: boolean;
+    totalElements: number;
+} => {
     const { fetchElements } = props;
 
     const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [elementsFound, setElementsFound] = useState<T[]>([]);
+    const [elementsFound, setElementsFound] = useState<T[]>([] as T[]);
+    const [totalElements, setTotalElements] = useState(0);
     const lastSearchTermRef = useRef('');
 
     const searchMatchingElements = useCallback(
@@ -31,10 +57,17 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
             }
 
             lastSearchTermRef.current = newSearchTerm;
+
             fetchElements(newSearchTerm)
                 .then((infos) => {
                     if (newSearchTerm === lastSearchTermRef.current) {
-                        setElementsFound(infos);
+                        if (Array.isArray(infos)) {
+                            setElementsFound(infos);
+                            setTotalElements(infos.length);
+                        } else {
+                            setElementsFound(infos.content);
+                            setTotalElements(infos.totalElements);
+                        }
                         setIsLoading(false);
                     } // else ignore results of outdated fetch
                 })
@@ -42,6 +75,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
                     // else ignore errors of outdated fetch if changing "isLoading state"
                     if (newSearchTerm === lastSearchTermRef.current) {
                         setElementsFound([]);
+                        setTotalElements(0);
                         setIsLoading(false);
                         snackError({
                             messageTxt: error.message,
@@ -50,7 +84,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
                     }
                 });
         },
-        [snackError, fetchElements]
+        [fetchElements, snackError]
     );
 
     const debouncedSearchMatchingElements = useDebounce(
@@ -66,6 +100,7 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
             // still debouncing to cancel previous call, otherwise last call will still trigger
             if (newSearchTerm.length === 0) {
                 setElementsFound([]);
+                setTotalElements(0);
                 setIsLoading(false);
             } else {
                 setIsLoading(true);
@@ -76,7 +111,13 @@ const useElementSearch = <T,>(props: UseElementSearch<T>) => {
         [debouncedSearchMatchingElements]
     );
 
-    return { searchTerm, updateSearchTerm, elementsFound, isLoading };
+    return {
+        searchTerm,
+        updateSearchTerm,
+        elementsFound,
+        isLoading,
+        totalElements,
+    };
 };
 
 export default useElementSearch;

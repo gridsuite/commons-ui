@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FullField } from 'react-querybuilder';
+import { UUID } from 'crypto';
 
 export enum OperatorType {
     EQUALS = 'EQUALS',
@@ -130,6 +131,7 @@ export type OperatorOption = {
 // This type is equivalent to a (partial) union type of BooleanExpertRule,
 // NumberExpertRule, StringExpertRule, PropertiesExpertRule in filter library
 export interface RuleTypeExport {
+    id?: UUID;
     field: FieldType;
     operator: OperatorType;
     value: string | number | undefined;
@@ -141,6 +143,7 @@ export interface RuleTypeExport {
 
 // This type is equivalent to CombinatorExpertRule in filter library
 export interface RuleGroupTypeExport {
+    id?: UUID;
     combinator: CombinatorType;
     dataType: DataType;
     field?: FieldType; // used in case of composite rule
@@ -156,6 +159,7 @@ export interface CompositeField extends FullField {
 
 // typing composite rule value
 export interface CompositeGroup {
+    id?: string;
     combinator: string;
     rules: {
         [field: string]: CompositeRule;
