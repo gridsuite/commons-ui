@@ -85,15 +85,7 @@ function ValueEditor(props: ValueEditorProps) {
     ) {
         return <CountryValueEditor {...props} />;
     }
-    if (
-        field === FieldType.REGULATION_TYPE ||
-        field === FieldType.SVAR_REGULATION_MODE ||
-        field === FieldType.ENERGY_SOURCE ||
-        field === FieldType.SHUNT_COMPENSATOR_TYPE ||
-        field === FieldType.LOAD_TYPE ||
-        field === FieldType.RATIO_REGULATION_MODE ||
-        field === FieldType.PHASE_REGULATION_MODE
-    ) {
+    if (fieldData.dataType === DataType.ENUM) {
         return <TranslatedValueEditor {...props} />;
     }
     if (
