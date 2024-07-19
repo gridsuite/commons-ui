@@ -8,24 +8,31 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Autocomplete, TextField } from '@mui/material';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
+import useFavoriteCountries from '../../../hooks/favorite-countries-hook';
 
 function CountryValueEditor(props: ValueEditorProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
     const { value, handleOnChange } = props;
+    const [allCountryCodes, setAllCountryCodes] = useState(countryCodes);
+    const [fetchFavoriteCountries] = useFavoriteCountries();
 
-    const countriesList = useMemo(
-        () =>
-            countryCodes.map((country: string) => {
-                return { name: country, label: translate(country) };
-            }),
-        [countryCodes, translate]
-    );
+    useEffect(() => {
+        fetchFavoriteCountries().then((favoriteCountryCodes) => {
+            setAllCountryCodes([...favoriteCountryCodes, ...countryCodes]);
+        });
+    }, [fetchFavoriteCountries, countryCodes]);
+
+    const countriesList = useMemo(() => {
+        return allCountryCodes.map((countryCode: string) => {
+            return { name: countryCode, label: translate(countryCode) };
+        });
+    }, [allCountryCodes, translate]);
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
 
@@ -44,7 +51,7 @@ function CountryValueEditor(props: ValueEditorProps) {
     return (
         <Autocomplete
             value={value}
-            options={countryCodes}
+            options={allCountryCodes}
             getOptionLabel={(code: string) => translate(code)}
             onChange={(event, newValue: any) => handleOnChange(newValue)}
             multiple

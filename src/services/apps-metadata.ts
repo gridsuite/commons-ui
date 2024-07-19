@@ -37,6 +37,7 @@ export type StudyMetadata = CommonMetadata & {
         types: string[];
         path: string;
     }[];
+    favoriteCountries?: string[];
     predefinedEquipmentProperties?: {
         [networkElementType: string]: PredefinedProperties;
     };
