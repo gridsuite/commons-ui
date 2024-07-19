@@ -713,6 +713,24 @@ export const FIELDS_OPTIONS = {
         valueEditorType: 'select',
         defaultValue: 'SIDE_1_RECTIFIER_SIDE_2_INVERTER',
     },
+    CONVERTER_STATION_NOMINAL_VOLTAGE_1: {
+        name: FieldType.CONVERTER_STATION_NOMINAL_VOLTAGE_1,
+        label: 'converterStationNominalVoltage1',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    CONVERTER_STATION_NOMINAL_VOLTAGE_2: {
+        name: FieldType.CONVERTER_STATION_NOMINAL_VOLTAGE_2,
+        label: 'converterStationNominalVoltage2',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    DC_NOMINAL_VOLTAGE: {
+        name: FieldType.DC_NOMINAL_VOLTAGE,
+        label: 'dcNominalVoltage',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
 };
 
 export const fields: Record<string, Field[]> = {
@@ -906,10 +924,11 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.COUNTRY_2,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_1,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_2,
         FIELDS_OPTIONS.CONVERTER_STATION_ID_1,
         FIELDS_OPTIONS.CONVERTER_STATION_ID_2,
+        FIELDS_OPTIONS.CONVERTER_STATION_NOMINAL_VOLTAGE_1,
+        FIELDS_OPTIONS.CONVERTER_STATION_NOMINAL_VOLTAGE_2,
+        FIELDS_OPTIONS.DC_NOMINAL_VOLTAGE,
         FIELDS_OPTIONS.SERIE_RESISTANCE,
         FIELDS_OPTIONS.MAX_P,
         FIELDS_OPTIONS.ACTIVE_POWER_SET_POINT,
