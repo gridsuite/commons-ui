@@ -114,7 +114,8 @@ const filterExpertFr = {
     'regulationMode.voltage': 'Réglage de tension',
     'regulationMode.reactivePower': 'Réglage du réactif',
     voltageSetPoint: 'Tension',
-    reactivePowerSetPoint: 'Puissance réactive',
+    activePowerSetPoint: 'Consigne de puissance active',
+    reactivePowerSetPoint: 'Consigne de puissance réactive',
     remoteRegulatedTerminal: 'Terminal distant réglé',
     regulatingTerminalVLId: 'ID de poste',
     regulatingTerminalConnectableId: "ID d'ouvrage",
@@ -127,6 +128,16 @@ const filterExpertFr = {
     lowVoltageThreshold: 'U activation bas',
     highVoltageThreshold: 'U activation haut',
     susceptanceFix: 'Susceptance fixe',
+    converterStationId1: 'ID de la station de conversion 1',
+    converterStationId2: 'ID de la station de conversion 2',
+    convertersMode: 'Mode de conversion',
+    side1RectifierSide2Inverter: 'Coté 1 redresseur côté 2 onduleur',
+    side1InverterSide2Rectifier: 'Côté 1 onduleur côté 2 redresseur',
+    dcNominalVoltage: 'Tension nominale DC (kV)',
+    converterStationNominalVoltage1:
+        'Tension nominale de la station de conversion 1 (kV)',
+    converterStationNominalVoltage2:
+        'Tension nominale de la station de conversion 2 (kV)',
 };
 
 export default filterExpertFr;
