@@ -71,3 +71,15 @@ export async function fetchStudyMetadata(): Promise<StudyMetadata> {
         return studyMetadata[0]; // There should be only one study metadata
     }
 }
+
+export async function fetchFavoriteCountries(): Promise<string[]> {
+    const studyMetadata = await fetchStudyMetadata();
+    return studyMetadata.favoriteCountries !== undefined
+        ? studyMetadata.favoriteCountries
+        : [];
+}
+
+export const fetchDefaultCountry = async (): Promise<string | undefined> => {
+    const studyMetadata = await fetchStudyMetadata();
+    return studyMetadata.defaultCountry;
+};

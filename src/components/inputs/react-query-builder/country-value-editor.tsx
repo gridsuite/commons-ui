@@ -13,20 +13,19 @@ import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
-import useFavoriteCountries from '../../../hooks/favorite-countries-hook';
+import { fetchFavoriteCountries } from '../../../services';
 
 function CountryValueEditor(props: ValueEditorProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
     const { value, handleOnChange } = props;
     const [allCountryCodes, setAllCountryCodes] = useState(countryCodes);
-    const [fetchFavoriteCountries] = useFavoriteCountries();
 
     useEffect(() => {
         fetchFavoriteCountries().then((favoriteCountryCodes) => {
             setAllCountryCodes([...favoriteCountryCodes, ...countryCodes]);
         });
-    }, [fetchFavoriteCountries, countryCodes]);
+    }, [countryCodes]);
 
     const countriesList = useMemo(() => {
         return allCountryCodes.map((countryCode: string) => {
