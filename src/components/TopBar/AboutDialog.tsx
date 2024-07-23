@@ -42,6 +42,8 @@ import {
 } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { LogoText } from './GridLogo';
+import { StudySvc } from '../../services';
+import { GridSuiteModule, ModuleType, moduleTypeSort } from './modules';
 
 const styles = {
     general: {
@@ -116,14 +118,6 @@ function getGlobalVersion(
     return Promise.resolve(null);
 }
 
-const moduleTypeSort = {
-    app: 1,
-    server: 10,
-    other: 20,
-};
-
-type ModuleType = keyof typeof moduleTypeSort;
-
 type ModuleDefinition = { name: string; type: ModuleType };
 
 function compareModules(c1: ModuleDefinition, c2: ModuleDefinition) {
@@ -134,13 +128,7 @@ function compareModules(c1: ModuleDefinition, c2: ModuleDefinition) {
     );
 }
 
-export type GridSuiteModule = {
-    name: string;
-    type: ModuleType;
-    version?: string;
-    gitTag?: string;
-    // license?: string;
-};
+export type { GridSuiteModule } from './modules';
 
 export interface AboutDialogProps {
     open: boolean;
@@ -150,7 +138,7 @@ export interface AboutDialogProps {
     appVersion?: string;
     appGitTag?: string;
     appLicense?: string;
-    additionalModulesPromise?: () => Promise<GridSuiteModule[]>;
+    additionalModulesPromise?: string | (() => Promise<GridSuiteModule[]>);
     logo?: ReactNode;
 }
 
@@ -302,7 +290,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
     );
 }
 
-function AboutDialog({
+export default function AboutDialog({
     open,
     onClose,
     globalVersionPromise,
@@ -312,7 +300,7 @@ function AboutDialog({
     appLicense,
     additionalModulesPromise,
     logo,
-}: AboutDialogProps) {
+}: Readonly<AboutDialogProps>) {
     const theme = useTheme();
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [loadingGlobalVersion, setLoadingGlobalVersion] = useState(false);
@@ -362,7 +350,9 @@ function AboutDialog({
             };
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
-                      additionalModulesPromise()
+                      typeof additionalModulesPromise === 'string'
+                          ? StudySvc.getServersInfos(additionalModulesPromise)
+                          : additionalModulesPromise()
                   )
                 : Promise.reject(new Error('no getter'))
             )
@@ -574,5 +564,3 @@ function AboutDialog({
         </Dialog>
     );
 }
-
-export default AboutDialog;

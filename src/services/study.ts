@@ -7,7 +7,7 @@
 
 import { UUID } from 'crypto';
 import { backendFetchJson, getRestBase } from '../utils/api';
-import { GridSuiteModule } from '../components/TopBar/AboutDialog';
+import { GridSuiteModule } from '../components/TopBar/modules';
 
 /**
  * Return the base API prefix to the study server
