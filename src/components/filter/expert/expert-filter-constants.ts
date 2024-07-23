@@ -731,6 +731,12 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    P_ABSOLUTE: {
+        name: FieldType.P_ABSOLUTE,
+        label: 'pAbsolute',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
 };
 
 export const fields: Record<string, Field[]> = {
@@ -816,6 +822,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.RATED_S,
         FIELDS_OPTIONS.TARGET_P,
         FIELDS_OPTIONS.TARGET_Q,
+        FIELDS_OPTIONS.P_ABSOLUTE,
         FIELDS_OPTIONS.VOLTAGE_REGULATOR_ON,
         FIELDS_OPTIONS.TARGET_V,
         FIELDS_OPTIONS.PLANNED_ACTIVE_POWER_SET_POINT,

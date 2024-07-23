@@ -102,6 +102,7 @@ const filterExpertEn = {
     dcNominalVoltage: 'DC nominal voltage (kV)',
     converterStationNominalVoltage1: 'Converter station 1 nominal voltage (kV)',
     converterStationNominalVoltage2: 'Converter station 2 nominal voltage (kV)',
+    pAbsolute: 'Terminal active power absolute value (MW)',
 };
 
 export default filterExpertEn;

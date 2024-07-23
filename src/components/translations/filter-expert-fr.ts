@@ -104,6 +104,7 @@ const filterExpertFr = {
         'Tension nominale de la station de conversion 1 (kV)',
     converterStationNominalVoltage2:
         'Tension nominale de la station de conversion 2 (kV)',
+    pAbsolute: 'Puissance active du terminal en valeur absolue (MW)',
 };
 
 export default filterExpertFr;
