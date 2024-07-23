@@ -52,15 +52,15 @@ export type IdentifiableAttributes = {
 
 export async function exportFilter(studyUuid: UUID, filterUuid?: UUID) {
     console.info('get filter export on study root node');
-    return (await backendFetchJson(
+    return backendFetchJson<IdentifiableAttributes[]>(
         `${getPrefix(1)}/studies/${studyUuid}/filters/${filterUuid}/elements`,
         'GET'
-    )) as IdentifiableAttributes[];
+    );
 }
 
 export async function getServersInfos(viewName: string) {
     console.info('get backend servers informations');
-    return (await backendFetchJson(
+    return backendFetchJson<GridSuiteModule[]>(
         `${getPrefix(1)}/servers/about?view=${viewName}`
-    )) as GridSuiteModule[];
+    );
 }

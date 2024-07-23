@@ -27,10 +27,10 @@ function getPrefix(vApi: number) {
 export async function fetchRootFolders(types: string[]) {
     console.info('Fetching Root Directories');
     const urlSearchParams = getRequestParam('elementTypes', types).toString();
-    return (await backendFetchJson(
+    return backendFetchJson<ElementAttributes[]>(
         `${getPrefix(1)}/root-directories?${urlSearchParams}`,
         'GET'
-    )) as ElementAttributes[];
+    );
 }
 
 export async function fetchDirectoryContent(
@@ -38,13 +38,13 @@ export async function fetchDirectoryContent(
     types?: string[]
 ) {
     console.info("Fetching Folder content '%s'", directoryUuid);
-    return (await backendFetchJson(
+    return backendFetchJson<ElementAttributes[]>(
         appendSearchParam(
             `${getPrefix(1)}/directories/${directoryUuid}/elements`,
             getRequestParam('elementTypes', types)
         ),
         'GET'
-    )) as ElementAttributes[];
+    );
 }
 
 export async function fetchDirectoryElementPath(elementUuid: UUID) {
@@ -52,7 +52,7 @@ export async function fetchDirectoryElementPath(elementUuid: UUID) {
     const fetchPathUrl = `${getPrefix(1)}/elements/${encodeURIComponent(
         elementUuid
     )}/path`;
-    return (await backendFetchJson(fetchPathUrl, 'GET')) as ElementAttributes[];
+    return backendFetchJson<ElementAttributes[]>(fetchPathUrl, 'GET');
 }
 
 export async function elementExists(

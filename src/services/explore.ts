@@ -74,11 +74,11 @@ export async function fetchElementsInfos(
         equipmentTypes: equipmentTypes ?? [],
         elementTypes: elementTypes ?? [],
     });
-    return (await backendFetchJson(
+    return backendFetchJson<ElementAttributes[]>(
         appendSearchParam(
             `${getPrefix(1)}/explore/elements/metadata?${urlSearchParams}`,
             urlSearchParams
         ),
         'GET'
-    )) as ElementAttributes[];
+    );
 }

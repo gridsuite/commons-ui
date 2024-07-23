@@ -66,7 +66,7 @@ type AppName = LiteralUnion<typeof COMMON_APP_NAME, string>;
 export async function fetchConfigParameters(appName: AppName) {
     console.debug(`Fetching UI configuration params for app : ${appName}`);
     const fetchParams = `${getPrefix(1)}/applications/${appName}/parameters`;
-    return (await backendFetchJson(fetchParams)) as ConfigParameters;
+    return backendFetchJson<ConfigParameters>(fetchParams);
 }
 
 export async function fetchConfigParameter(
@@ -80,7 +80,7 @@ export async function fetchConfigParameter(
     const fetchParams = `${getPrefix(
         1
     )}/applications/${appName}/parameters/${paramName}`;
-    return (await backendFetchJson(fetchParams)) as ConfigParameter;
+    return backendFetchJson<ConfigParameter>(fetchParams);
 }
 
 export async function updateConfigParameter(

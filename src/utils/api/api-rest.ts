@@ -128,11 +128,11 @@ export function backendFetch(
     return safeFetch(url, prepareRequest(init, token));
 }
 
-export async function backendFetchJson(
+export async function backendFetchJson<TReturn = unknown>(
     url: Url<false>,
     init?: InitRequest,
     token?: Token
-): Promise<unknown> {
+): Promise<TReturn> {
     const reqInit = setRequestHeader(
         init,
         'accept',
