@@ -37,6 +37,10 @@ export const EXPERT_FILTER_EQUIPMENTS = {
         id: 'TWO_WINDINGS_TRANSFORMER',
         label: 'TwoWindingsTransformers',
     },
+    THREE_WINDINGS_TRANSFORMER: {
+        id: 'THREE_WINDINGS_TRANSFORMER',
+        label: 'ThreeWindingsTransformers',
+    },
     GENERATOR: {
         id: 'GENERATOR',
         label: 'Generators',
@@ -60,10 +64,6 @@ export const EXPERT_FILTER_EQUIPMENTS = {
     HVDC_LINE: {
         id: 'HVDC_LINE',
         label: 'Hvdc',
-    },
-    THREE_WINDINGS_TRANSFORMER: {
-        id: 'THREE_WINDINGS_TRANSFORMER',
-        label: 'ThreeWindingsTransformers',
     },
 };
 
