@@ -61,6 +61,10 @@ export const EXPERT_FILTER_EQUIPMENTS = {
         id: 'DANGLING_LINE',
         label: 'DanglingLines',
     },
+    HVDC_LINE: {
+        id: 'HVDC_LINE',
+        label: 'Hvdc',
+    },
 };
 
 export const ENERGY_SOURCE_OPTIONS = [
@@ -103,6 +107,17 @@ export const SVAR_REGULATION_MODE_OPTIONS = [
 export const REGULATION_TYPE_OPTIONS = [
     { name: 'LOCAL', label: 'regulationType.local' },
     { name: 'DISTANT', label: 'regulationType.distant' },
+];
+
+export const CONVERTERS_MODE_OPTIONS = [
+    {
+        name: 'SIDE_1_RECTIFIER_SIDE_2_INVERTER',
+        label: 'side1RectifierSide2Inverter',
+    },
+    {
+        name: 'SIDE_1_INVERTER_SIDE_2_RECTIFIER',
+        label: 'side1InverterSide2Rectifier',
+    },
 ];
 
 // customName is used to export to the server
@@ -608,6 +623,12 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    ACTIVE_POWER_SET_POINT: {
+        name: FieldType.ACTIVE_POWER_SET_POINT,
+        label: 'activePowerSetPoint',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
     REACTIVE_POWER_SET_POINT: {
         name: FieldType.REACTIVE_POWER_SET_POINT,
         label: 'reactivePowerSetPoint',
@@ -696,6 +717,42 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.BOOLEAN,
         defaultValue: false,
         valueEditorType: 'switch',
+    },
+    CONVERTER_STATION_ID_1: {
+        name: FieldType.CONVERTER_STATION_ID_1,
+        label: 'converterStationId1',
+        dataType: DataType.STRING,
+    },
+    CONVERTER_STATION_ID_2: {
+        name: FieldType.CONVERTER_STATION_ID_2,
+        label: 'converterStationId2',
+        dataType: DataType.STRING,
+    },
+    CONVERTERS_MODE: {
+        name: FieldType.CONVERTERS_MODE,
+        label: 'convertersMode',
+        dataType: DataType.ENUM,
+        values: CONVERTERS_MODE_OPTIONS,
+        valueEditorType: 'select',
+        defaultValue: 'SIDE_1_RECTIFIER_SIDE_2_INVERTER',
+    },
+    CONVERTER_STATION_NOMINAL_VOLTAGE_1: {
+        name: FieldType.CONVERTER_STATION_NOMINAL_VOLTAGE_1,
+        label: 'converterStationNominalVoltage1',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    CONVERTER_STATION_NOMINAL_VOLTAGE_2: {
+        name: FieldType.CONVERTER_STATION_NOMINAL_VOLTAGE_2,
+        label: 'converterStationNominalVoltage2',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    DC_NOMINAL_VOLTAGE: {
+        name: FieldType.DC_NOMINAL_VOLTAGE,
+        label: 'dcNominalVoltage',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
     },
 };
 
@@ -898,5 +955,29 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
         FIELDS_OPTIONS.NOMINAL_VOLTAGE,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
+    ],
+    HVDC_LINE: [
+        FIELDS_OPTIONS.ID,
+        FIELDS_OPTIONS.NAME,
+        FIELDS_OPTIONS.COUNTRY_1,
+        FIELDS_OPTIONS.COUNTRY_2,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2,
+        FIELDS_OPTIONS.CONVERTER_STATION_ID_1,
+        FIELDS_OPTIONS.CONVERTER_STATION_ID_2,
+        FIELDS_OPTIONS.CONNECTED_1,
+        FIELDS_OPTIONS.CONNECTED_2,
+        FIELDS_OPTIONS.CONVERTER_STATION_NOMINAL_VOLTAGE_1,
+        FIELDS_OPTIONS.CONVERTER_STATION_NOMINAL_VOLTAGE_2,
+        FIELDS_OPTIONS.DC_NOMINAL_VOLTAGE,
+        FIELDS_OPTIONS.SERIE_RESISTANCE,
+        FIELDS_OPTIONS.MAX_P,
+        FIELDS_OPTIONS.ACTIVE_POWER_SET_POINT,
+        FIELDS_OPTIONS.CONVERTERS_MODE,
+        FIELDS_OPTIONS.PROPERTY,
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
     ],
 };
