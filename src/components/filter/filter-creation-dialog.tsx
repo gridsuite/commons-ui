@@ -34,6 +34,7 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
+import { GsLangUser } from '../TopBar/TopBar';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -65,7 +66,7 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    language?: string;
+    language?: GsLangUser;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;

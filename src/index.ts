@@ -243,11 +243,7 @@ export {
 export { default as InputWithPopupConfirmation } from './components/inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
 export { default as MuiSelectInput } from './components/inputs/react-hook-form/select-inputs/mui-select-input';
 export { default as CountriesInput } from './components/inputs/react-hook-form/select-inputs/countries-input';
-export {
-    getSystemLanguage,
-    getComputedLanguage,
-    useLocalizedCountries,
-} from './hooks/localized-countries-hook';
+export { default as useLocalizedCountries } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './components/inputs/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
 export { default as UniqueNameInput } from './components/inputs/react-hook-form/unique-name-input';
@@ -271,3 +267,5 @@ export type { EquipmentInfos } from './utils/EquipmentType';
 export { getErrorMessage } from './utils/error';
 export * from './utils/api';
 export * from './services';
+export * from './utils/language';
+export * from './local-storage';

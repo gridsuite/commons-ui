@@ -28,6 +28,7 @@ import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
 import { ExploreSvc } from '../../../services';
 import FilterForm from '../filter-form';
+import { GsLangUser } from '../../TopBar/TopBar';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -66,7 +67,7 @@ interface CriteriaBasedFilterEditionDialogProps {
         selection: SelectionCopy
     ) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
-    language?: string;
+    language?: GsLangUser;
 }
 
 function CriteriaBasedFilterEditionDialog({

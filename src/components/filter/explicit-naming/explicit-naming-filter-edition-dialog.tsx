@@ -24,6 +24,7 @@ import FilterForm from '../filter-form';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
+import { GsLangUser } from '../../TopBar/TopBar';
 
 const formSchema = yup
     .object()
@@ -46,7 +47,7 @@ interface ExplicitNamingFilterEditionDialogProps {
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
-    language?: string;
+    language?: GsLangUser;
 }
 
 function ExplicitNamingFilterEditionDialog({

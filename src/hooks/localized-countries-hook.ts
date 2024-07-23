@@ -7,38 +7,21 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries, { LocalizedCountries } from 'localized-countries';
-// @ts-ignore
-import countriesFr from 'localized-countries/data/fr';
-// @ts-ignore
-import countriesEn from 'localized-countries/data/en';
-import {
-    LANG_FRENCH,
-    LANG_ENGLISH,
-    LANG_SYSTEM,
-} from '../components/TopBar/TopBar';
+import countriesFr from 'localized-countries/data/fr.json';
+import countriesEn from 'localized-countries/data/en.json';
+import { getComputedLanguage } from '../utils/language';
+import { GsLang, LANG_ENGLISH } from '../components/TopBar/TopBar';
 
-const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
-
-export const getSystemLanguage = () => {
-    const systemLanguage = navigator.language.split(/[-_]/)[0];
-    return supportedLanguages.includes(systemLanguage)
-        ? systemLanguage
-        : LANG_ENGLISH;
-};
-
-export const getComputedLanguage = (language: string | undefined) => {
-    return language === LANG_SYSTEM
-        ? getSystemLanguage()
-        : language ?? LANG_ENGLISH;
-};
-
-export const useLocalizedCountries = (language: string | undefined) => {
+export default function useLocalizedCountries(language: GsLang | undefined) {
     const [localizedCountriesModule, setLocalizedCountriesModule] =
         useState<LocalizedCountries>();
 
     // TODO FM this is disgusting, can we make it better ?
     useEffect(() => {
-        const lang = getComputedLanguage(language).substring(0, 2);
+        const lang = getComputedLanguage(language ?? LANG_ENGLISH).substring(
+            0,
+            2
+        );
         let localizedCountriesResult;
         // vite does not support ESM dynamic imports on node_modules, so we have to imports the languages before and do this
         // https://github.com/vitejs/vite/issues/14102
@@ -72,4 +55,4 @@ export const useLocalizedCountries = (language: string | undefined) => {
     );
 
     return { translate, countryCodes };
-};
+}

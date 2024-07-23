@@ -20,6 +20,7 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
+import { GsLangUser } from '../../TopBar/TopBar';
 
 const formSchema = yup
     .object()
@@ -42,7 +43,7 @@ export interface ExpertFilterEditionDialogProps {
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
     activeDirectory?: UUID;
-    language?: string;
+    language?: GsLangUser;
 }
 
 function ExpertFilterEditionDialog({

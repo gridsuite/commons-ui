@@ -11,7 +11,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useMemo } from 'react';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
-import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
+import useLocalizedCountries from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
 
 function CountryValueEditor(props: ValueEditorProps) {

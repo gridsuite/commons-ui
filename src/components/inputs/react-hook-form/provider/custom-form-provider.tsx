@@ -8,12 +8,13 @@
 import React, { createContext, PropsWithChildren } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
-import { getSystemLanguage } from '../../../../hooks/localized-countries-hook';
+import { getSystemLanguage } from '../../../../utils/language';
+import { GsLangUser } from '../../../TopBar/TopBar';
 
 type CustomFormContextProps = {
     removeOptional?: boolean;
     validationSchema: yup.AnySchema;
-    language?: string;
+    language?: GsLangUser;
 };
 
 export type MergedFormContextProps = UseFormReturn<any> &

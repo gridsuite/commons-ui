@@ -7,7 +7,7 @@
 import { useCallback } from 'react';
 import { Chip } from '@mui/material';
 import AutocompleteInput from '../autocomplete-inputs/autocomplete-input';
-import { useLocalizedCountries } from '../../../../hooks/localized-countries-hook';
+import useLocalizedCountries from '../../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../provider/use-custom-form-context';
 import { Option } from '../../../../utils/types';
 
