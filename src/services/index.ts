@@ -11,6 +11,12 @@ export type * from './app-local';
 export * as AppsMetadataSvc from './apps-metadata';
 export type * from './apps-metadata';
 
+export * as ConfigSvc from './config';
+export type * from './config';
+
+export * as ConfigNotificationSvc from './config-notification';
+export type * from './config-notification';
+
 export * as DirectorySvc from './directory';
 export type * from './directory';
 

@@ -16,6 +16,7 @@ import { UrlString } from './utils/api';
 interface ImportMetaEnv {
     readonly VITE_API_GATEWAY: UrlString;
     readonly VITE_WS_GATEWAY: UrlString;
+    readonly VITE_DEBUG_REQUESTS?: boolean;
 }
 
 interface ImportMeta {
