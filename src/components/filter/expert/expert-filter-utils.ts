@@ -57,7 +57,7 @@ interface Tree {
     [key: string]: TreeNode;
 }
 
-const searchTree = (tree: Tree, key: string, value: any) => {
+export const searchTree = (tree: Tree, key: string, value: any) => {
     const stack = Object.values(tree);
     while (stack.length) {
         const node = stack.shift();
