@@ -37,7 +37,6 @@ export type StudyMetadata = CommonMetadata & {
         types: string[];
         path: string;
     }[];
-    favoriteCountries?: string[];
     predefinedEquipmentProperties?: {
         [networkElementType: string]: PredefinedProperties;
     };
@@ -47,6 +46,7 @@ export type StudyMetadata = CommonMetadata & {
         mapManualRefresh?: string; // maybe 'true'|'false' type?
     };
     defaultCountry?: string;
+    favoriteCountries?: string[];
 };
 
 export async function fetchAppsMetadata(): Promise<CommonMetadata[]> {

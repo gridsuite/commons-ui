@@ -252,7 +252,7 @@ export const FIELDS_OPTIONS = {
         label: 'country',
         dataType: DataType.ENUM,
         valueEditorType: 'select',
-        defaultValue: 'FR',
+        defaultValue: undefined,
     },
     VOLTAGE_REGULATOR_ON: {
         name: FieldType.VOLTAGE_REGULATOR_ON,
@@ -442,14 +442,14 @@ export const FIELDS_OPTIONS = {
         label: 'country1',
         dataType: DataType.ENUM,
         valueEditorType: 'select',
-        defaultValue: 'FR',
+        defaultValue: undefined,
     },
     COUNTRY_2: {
         name: FieldType.COUNTRY_2,
         label: 'country2',
         dataType: DataType.ENUM,
         valueEditorType: 'select',
-        defaultValue: 'DE',
+        defaultValue: undefined,
     },
     SERIE_RESISTANCE: {
         name: FieldType.SERIE_RESISTANCE,
