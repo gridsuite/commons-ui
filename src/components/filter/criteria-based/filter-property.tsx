@@ -66,7 +66,7 @@ function FilterProperty(props: FilterPropertyProps) {
                     name={`${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${PROPERTY_NAME}`}
                     label="PropertyName"
                     options={predefinedNames}
-                    // freeSolo
+                    freeSolo
                     autoSelect
                     forcePopupIcon
                     onChangeCallback={onNameChange}
