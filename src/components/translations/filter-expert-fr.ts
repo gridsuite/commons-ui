@@ -138,7 +138,6 @@ const filterExpertFr = {
     lowVoltageThreshold: 'U activation bas',
     highVoltageThreshold: 'U activation haut',
     susceptanceFix: 'Susceptance fixe',
-    paired: 'appareillé',
     converterStationId1: 'ID de la station de conversion 1',
     converterStationId2: 'ID de la station de conversion 2',
     convertersMode: 'Mode de conversion',
