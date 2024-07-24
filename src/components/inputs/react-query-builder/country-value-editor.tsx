@@ -14,12 +14,16 @@ import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
 import { fetchDefaultCountry, fetchFavoriteCountries } from '../../../services';
+import CountrySelector from './country-selector';
 
 function CountryValueEditor(props: ValueEditorProps) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
     const { value, handleOnChange } = props;
     const [allCountryCodes, setAllCountryCodes] = useState(countryCodes);
+    const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>([
+        '',
+    ]);
     // true when several countries may be selected simultaneously
     const multiCountryMode: boolean = useMemo(() => {
         return Array.isArray(value);
@@ -29,22 +33,11 @@ function CountryValueEditor(props: ValueEditorProps) {
         multiCountryMode ? undefined : value
     );
 
-    // fetch and adds the favorites
     useEffect(() => {
-        if (countryCodes.length > 0) {
-            fetchFavoriteCountries().then((favoriteCountryCodes) => {
-                // remove favoriteCountryCodes from countryCodes to avoid duplicate keys
-                const countryCodesWithoutFavorites = countryCodes.filter(
-                    (countryCode: string) =>
-                        !favoriteCountryCodes.includes(countryCode)
-                );
-                setAllCountryCodes([
-                    ...favoriteCountryCodes,
-                    ...countryCodesWithoutFavorites,
-                ]);
-            });
-        }
-    }, [countryCodes]);
+        fetchFavoriteCountries().then((favs: string[]) => {
+            setFavoriteCountryCodes(favs);
+        });
+    }, [setFavoriteCountryCodes]);
 
     // fetches and set the default country
     useEffect(() => {
@@ -62,10 +55,36 @@ function CountryValueEditor(props: ValueEditorProps) {
     }, [allCountryCodes, multiCountryMode, value]);
 
     const countriesList = useMemo(() => {
-        return allCountryCodes.map((countryCode: string) => {
-            return { name: countryCode, label: translate(countryCode) };
-        });
-    }, [allCountryCodes, translate]);
+        // remove favoriteCountryCodes from countryCodes to avoid duplicate keys
+        const countryCodesWithoutFavorites = countryCodes.filter(
+            (countryCode: string) => !favoriteCountryCodes.includes(countryCode)
+        );
+        setAllCountryCodes([
+            ...favoriteCountryCodes,
+            ...countryCodesWithoutFavorites,
+        ]);
+
+        const favoriteCountryOptions = favoriteCountryCodes.map(
+            (countryCode: string) => {
+                return {
+                    name: countryCode,
+                    label: translate(countryCode),
+                    fav: true,
+                };
+            }
+        );
+        const otherCountryOptions = countryCodesWithoutFavorites.map(
+            (countryCode: string) => {
+                return {
+                    name: countryCode,
+                    label: translate(countryCode),
+                    fav: false,
+                };
+            }
+        );
+
+        return [...favoriteCountryOptions, ...otherCountryOptions];
+    }, [countryCodes, favoriteCountryCodes, translate]);
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
 
@@ -79,6 +98,7 @@ function CountryValueEditor(props: ValueEditorProps) {
                 value={currentCountryCode}
                 values={countriesList}
                 title={undefined} // disable the tooltip
+                selectorComponent={CountrySelector}
             />
         );
     }
