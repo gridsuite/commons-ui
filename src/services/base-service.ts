@@ -9,13 +9,13 @@
 
 import { User } from 'oidc-client';
 import { HttpContentType, InitRequest, setRequestHeader, Token, Url, UrlString } from '../utils/api';
-import { safeFetch } from '../utils/api/api-rest';
+import { expandInitRequest, safeFetch } from '../utils/api/api-rest';
 
 /* The first problem we have here is that some front apps don't use Vite, and by consequence using VITE_* vars don't work...
  * What we do here is to try to use these variables as default, while permitting devs to overwrite these constants.
  *
  * The second problem is to how to keep organized the fetcher by service while letting devs add to others in apps.
- * Using named export was try but isn't extendable (some sort of "import namespace").
+ * Using named export was tried but isn't extendable (some sort of "import namespace").
  *
  * The third problem is how to manage the user token ID that comes from the app's side for now.
  * We can't use React context, and using a pseudo store copy isn't a satisfying solution.
@@ -86,21 +86,35 @@ export abstract class ApiService extends BaseService {
         return `${this.basePrefix}/config/v${vApi}`;
     }
 
-    private prepareRequest(init?: InitRequest, token?: Token): RequestInit {
-        if (!(typeof init === 'undefined' || typeof init === 'string' || typeof init === 'object')) {
+    private finalizeRequest(init?: InitRequest, token?: Token): RequestInit {
+        if (typeof init !== 'undefined' && typeof init !== 'string' && typeof init !== 'object') {
             throw new TypeError(`First argument of prepareRequest is not an object: ${typeof init}`);
         }
-        const initCopy: RequestInit = typeof init === 'string' ? { method: init } : { ...(init ?? {}) };
-        initCopy.headers = new Headers(initCopy.headers || {});
-        const tokenCopy = token || this.getUserToken();
-        initCopy.headers.append('Authorization', `Bearer ${tokenCopy}`);
-        return initCopy;
+        // initCopy.cache = 'default';
+        return setRequestHeader(init, 'Authorization', `Bearer ${token ?? this.getUserToken()}`);
     }
 
+    /**
+     * Fetch response from the server
+     * @return the raw HTTP response
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
     protected backendFetch(url: Url<false>, init?: InitRequest, token?: Token) {
-        return safeFetch(url, this.prepareRequest(init, token));
+        return safeFetch(url, this.finalizeRequest(init, token));
     }
 
+    /**
+     * Fetch JSON from the server
+     * @template TReturn the type of data fetched
+     * @return {Promise<TReturn>} the object deserialized from the response
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
     protected async backendFetchJson<TReturn = unknown>(
         url: Url<false>,
         init?: InitRequest,
@@ -110,12 +124,124 @@ export abstract class ApiService extends BaseService {
         return (await this.backendFetch(url, reqInit, token)).json();
     }
 
-    protected async backendFetchText(url: Url<false>, init?: InitRequest, token?: Token) {
+    /**
+     * Fetch text from the server
+     * @return the text from the response
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
+    protected async backendFetchText<TReturn extends string = string>(
+        url: Url<false>,
+        init?: InitRequest,
+        token?: Token
+    ) {
         const reqInit = setRequestHeader(init, 'accept', HttpContentType.TEXT_PLAIN);
-        return (await this.backendFetch(url, reqInit, token)).text();
+        return (await this.backendFetch(url, reqInit, token)).text() as Promise<TReturn>;
     }
 
+    /**
+     * Fetch raw data from the server
+     * @return the raw HTTP response body
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
     protected async backendFetchFile(url: Url<false>, init?: InitRequest, token?: Token) {
         return (await this.backendFetch(url, init, token)).blob();
+    }
+
+    /**
+     * Send data in the request and fetch the response
+     * @return the raw HTTP response
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param body the data to send
+     * @param contentType the content type of the {@link #body}
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
+    protected async backendSendFetch(
+        url: Url<false>,
+        init: InitRequest,
+        body: BodyInit,
+        contentType?: HttpContentType,
+        token?: Token
+    ) {
+        let reqInit = expandInitRequest(init);
+        let cType = contentType;
+        if (!(body instanceof FormData) && contentType === undefined) {
+            cType = HttpContentType.APPLICATION_JSON;
+        }
+        if (cType !== undefined) {
+            reqInit = setRequestHeader(init, 'content-type', cType);
+        }
+        reqInit.body = body;
+        return safeFetch(url, this.finalizeRequest(reqInit, token));
+    }
+
+    /**
+     * Send data in the request and fetch the JSON response
+     * @template TReturn the type of data fetched
+     * @return {Promise<TReturn>} the object deserialized from the response
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param body the data to send
+     * @param contentType the content type of the {@link #body}
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @type TReturn sdfgv
+     * @protected
+     */
+    protected async backendSendFetchJson<TReturn = unknown>(
+        url: Url<false>,
+        init: InitRequest,
+        body: BodyInit,
+        contentType?: HttpContentType,
+        token?: Token
+    ): Promise<TReturn> {
+        const reqInit = setRequestHeader(init, 'accept', HttpContentType.APPLICATION_JSON);
+        return (await this.backendSendFetch(url, reqInit, body, contentType, token)).json();
+    }
+
+    /**
+     * Send data in the request and fetch the text response
+     * @return the text from the response
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param body the data to send
+     * @param contentType the content type of the {@link #body}
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
+    protected async backendSendFetchText<TReturn extends string = string>(
+        url: Url<false>,
+        init: InitRequest,
+        body: BodyInit,
+        contentType?: HttpContentType,
+        token?: Token
+    ) {
+        const reqInit = setRequestHeader(init, 'accept', HttpContentType.TEXT_PLAIN);
+        return (await this.backendSendFetch(url, reqInit, body, contentType, token)).text() as Promise<TReturn>;
+    }
+
+    /**
+     * Send data in the request (and return nothing)
+     * @param url the {@link URL} to fetch on
+     * @param init the HTTP method or request configuration
+     * @param body the data to send
+     * @param contentType the content type of the {@link #body}
+     * @param token the token to used instead of getting it from {@link getUserToken the getter}
+     * @protected
+     */
+    protected async backendSend(
+        url: Url<false>,
+        init: InitRequest,
+        body: BodyInit,
+        contentType?: HttpContentType,
+        token?: Token
+    ) {
+        await this.backendSendFetch(url, init, body, contentType, token);
     }
 }

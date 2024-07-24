@@ -2,7 +2,7 @@
 
 Library for sharing GridSuite apps commons components
 
-#### For developers
+## For developers
 
 The commons-ui library have a demo app in which you can call your components to test them.
 The `npm start` command install the library's dependencies then launches the demo app.
@@ -22,7 +22,12 @@ Then in the my-app project :
 To fix this, run this command from the app **after** running "npm install"
 - rm -Rf node_modules/.cache
 
-#### For integrators
+### Imports
+Anything not exported at the root level of commons-ui is considered as internal and
+not safe to use.
+
+
+## For integrators
 
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
 you need to follow the steps below:
@@ -37,7 +42,8 @@ you need to follow the steps below:
     - Click on "Publish release"
 -   It will trigger a job that will publish the release on NPM
 
-#### License Headers and dependencies checking
+
+## License Headers and dependencies checking
 
 To check dependencies license compatibility with this project one locally, please run the following command :
 

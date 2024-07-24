@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import { appendSearchParam, getRequestParams, HttpContentType, UrlString } from '../utils/api';
+import { appendSearchParam, getRequestParams, UrlString } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 import { ApiService, UserGetter } from './base-service';
 
@@ -22,23 +22,20 @@ export default class ExploreComSvc extends ApiService {
         if (parentDirectoryUuid) {
             urlSearchParams.append('parentDirectoryUuid', parentDirectoryUuid);
         }
-        await this.backendFetch(`${this.getPrefix(1)}/explore/filters?${urlSearchParams.toString()}`, {
-            method: 'POST',
-            headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
-            body: JSON.stringify(newFilter),
-        });
+        await this.backendSend(
+            `${this.getPrefix(1)}/explore/filters?${urlSearchParams}`,
+            'POST',
+            JSON.stringify(newFilter)
+        );
     }
 
     public async saveFilter(filter: Record<string, unknown>, name: string) {
-        await this.backendFetch(
+        await this.backendSend(
             `${this.getPrefix(1)}/explore/filters/${filter.id}?${new URLSearchParams({
                 name,
-            }).toString()}`,
-            {
-                method: 'PUT',
-                headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
-                body: JSON.stringify(filter),
-            }
+            })}`,
+            'PUT',
+            JSON.stringify(filter)
         );
     }
 

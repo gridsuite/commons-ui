@@ -70,6 +70,7 @@ export default defineConfig((config) => ({
                       'import.meta.env.VITE_API_GATEWAY': 'import.meta.env.VITE_API_GATEWAY',
                       'import.meta.env.VITE_WS_GATEWAY': 'import.meta.env.VITE_WS_GATEWAY',
                       'import.meta.env.VITE_DEBUG_REQUESTS': 'import.meta.env.VITE_DEBUG_REQUESTS',
+                      'import.meta.env.VITE_DEBUG_HOOK_RENDER': 'import.meta.env.VITE_DEBUG_HOOK_RENDER',
                   }
                 : undefined,
     },

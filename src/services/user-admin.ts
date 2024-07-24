@@ -19,12 +19,12 @@ export default class UserAdminComSvc extends ApiService {
      */
     public async fetchValidateUser(user: User) {
         try {
-            const userSub = await extractUserSub(user);
+            const userSub = extractUserSub(user);
             console.debug(`Fetching access for user "${userSub}"...`);
             const response = await this.backendFetch(
                 `${this.getPrefix(1)}/users/${userSub}`,
-                { method: 'HEAD' },
-                this.getUserToken(user) ?? undefined
+                'HEAD',
+                this.getUserToken(user)
             );
             // if the response is ok, the responseCode will be either 200 or 204 otherwise it's an HTTP error and it will be caught
             return response.status === 200;

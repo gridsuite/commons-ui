@@ -43,7 +43,9 @@ export default class DirectoryComSvc extends ApiService {
 
     public async elementExists(directoryUuid: UUID, elementName: string, type: string) {
         const response = await this.backendFetch(
-            `${this.getPrefix(1)}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
+            `${this.getPrefix(1)}/directories/${directoryUuid}/elements/${encodeURIComponent(
+                elementName
+            )}/types/${type}`,
             'HEAD'
         );
         return response.status !== 204; // HTTP 204 : No-content

@@ -30,6 +30,11 @@ export let appLocalSvc: AppLocalComSvc,
     studySvc: StudyComSvc,
     userAdminSvc: UserAdminComSvc;
 
+/**
+ * Set services instances use by commons-ui components.
+ *
+ * Intended to be used if front app has override some implementations.
+ */
 export function setCommonServices<TAppName extends string>(
     appLocalService: AppLocalComSvc,
     appsMetadataService: AppsMetadataComSvc,
@@ -50,6 +55,11 @@ export function setCommonServices<TAppName extends string>(
     userAdminSvc = userAdminService;
 }
 
+/**
+ * Set services instances use by commons-ui components using base implementation
+ * @param appName the application name use in configuration
+ * @param userGetter the getter for the user token
+ */
 export function initCommonServices<TAppName extends string>(appName: TAppName, userGetter: UserGetter) {
     const tmpAppLocal = new AppLocalComSvc();
     setCommonServices(

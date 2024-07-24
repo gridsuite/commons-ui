@@ -27,8 +27,7 @@ export function appendSearchParam(url: string, searchParams: URLSearchParams | s
     return searchParams ? `${url}${url.includes('?') ? '&' : '?'}${searchParams.toString()}` : url;
 }
 
-// TODO: why was it promisified? dont remember the reason...
-export async function extractUserSub(user: User | undefined) {
+export function extractUserSub(user: User | undefined) {
     const sub = user?.profile?.sub;
     if (!sub) {
         throw new Error(`Fetching access for missing user.profile.sub : ${JSON.stringify(user)}`);

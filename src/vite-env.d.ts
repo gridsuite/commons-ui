@@ -17,6 +17,7 @@ interface ImportMetaEnv {
     readonly VITE_API_GATEWAY: UrlString;
     readonly VITE_WS_GATEWAY: UrlString;
     readonly VITE_DEBUG_REQUESTS?: boolean;
+    readonly VITE_DEBUG_HOOK_RENDER?: boolean;
 }
 
 interface ImportMeta {

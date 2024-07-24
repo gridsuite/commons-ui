@@ -15,6 +15,7 @@ export type Url<Check extends boolean = true> = (Check extends true ? UrlString 
 export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
 type StandardHeader = keyof KeyOfWithoutIndexSignature<IncomingHttpHeaders>;
 export type HttpHeaderName = LiteralUnion<StandardHeader, string>;
+type HeadersInitExt = [HttpHeaderName, string][] | Partial<Record<HttpHeaderName, string>> | Headers;
 
 export enum HttpContentType {
     APPLICATION_OCTET_STREAM = 'application/octet-stream',
@@ -22,8 +23,9 @@ export enum HttpContentType {
     TEXT_PLAIN = 'text/plain',
 }
 
-type RequestInitExt = Omit<RequestInit, 'method'> & {
+type RequestInitExt = RequestInit & {
     method?: HttpMethod;
+    headers?: HeadersInitExt;
 };
 export type InitRequest = HttpMethod | Partial<RequestInitExt>;
 export type Token = string;
@@ -40,43 +42,46 @@ function parseError(text: string) {
     }
 }
 
-function handleError(response: Response): Promise<never> {
-    return response.text().then((text: string) => {
-        const errorName = 'HttpResponseError : ';
-        let error: ErrorWithStatus;
-        const errorJson = parseError(text);
-        if (errorJson?.status && errorJson?.error && errorJson?.message) {
-            error = new Error(
-                `${errorName}${errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
-            ) as ErrorWithStatus;
-            error.status = errorJson.status;
-        } else {
-            error = new Error(`${errorName}${response.status} ${response.statusText}`) as ErrorWithStatus;
-            error.status = response.status;
-        }
-        throw error;
-    });
+async function handleError(response: Response): Promise<never> {
+    const errorName = 'HttpResponseError : ';
+    let error: ErrorWithStatus;
+    const errorJson = parseError(await response.text());
+    if (errorJson?.status && errorJson?.error && errorJson?.message) {
+        error = new Error(
+            `${errorName}${errorJson.status} ${errorJson.error}, message: ${errorJson.message}`
+        ) as ErrorWithStatus;
+        error.status = errorJson.status;
+    } else {
+        error = new Error(`${errorName}${response.status} ${response.statusText}`) as ErrorWithStatus;
+        error.status = response.status;
+    }
+    throw error;
 }
 
-export async function safeFetch(url: Url<false>, initCopy: RequestInit) {
-    const response = await fetch(url, initCopy);
+export async function safeFetch(url: Url<false>, reqInit: RequestInit) {
+    const response = await fetch(url, reqInit);
     return response.ok ? response : handleError(response);
 }
 
-export function setRequestHeader(
-    initReq: InitRequest | undefined,
-    name: HttpHeaderName,
-    value: string
-): Partial<RequestInitExt> {
-    let result = initReq;
-    if (result === undefined) {
-        result = {};
-    } else if (typeof result === 'string') {
-        result = {
-            method: result,
-        };
+type ExpandedInitRequest = Partial<RequestInitExt> & {
+    headers: Headers;
+};
+export function expandInitRequest(initReq: InitRequest | undefined) {
+    const result: Partial<RequestInitExt> =
+        typeof initReq === 'string'
+            ? {
+                  method: initReq,
+              }
+            : initReq ?? {};
+    if (!(result.headers instanceof Headers)) {
+        // && result.headers?.constructor?.name !== 'Headers'
+        result.headers = new Headers(result.headers);
     }
-    result.headers = new Headers();
+    return result as ExpandedInitRequest;
+}
+
+export function setRequestHeader(initReq: InitRequest | undefined, name: HttpHeaderName, value: string) {
+    const result = expandInitRequest(initReq);
     result.headers.set(name, value);
     return result;
 }

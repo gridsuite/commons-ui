@@ -8,6 +8,7 @@
 import { Url } from '../utils/api';
 import { IdpSettings } from '../utils/AuthService';
 
+// TODO: permit to extend, with a module (like react-intl, emotion, etc...)
 export type Env = {
     appsMetadataServerUrl?: Url;
     mapBoxToken?: string;

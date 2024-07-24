@@ -73,10 +73,7 @@ export default class ConfigComSvc<TAppName extends string> extends ApiService {
         const updateParams = `${this.getPrefix(
             1
         )}/applications/${appName}/parameters/${paramName}?value=${encodeURIComponent(value)}`;
-        return (
-            await this.backendFetch(updateParams, {
-                method: 'PUT',
-            })
-        ).ok;
+        // TODO will always return true because of safeFetch() control
+        return (await this.backendFetch(updateParams, 'PUT')).ok;
     }
 }
