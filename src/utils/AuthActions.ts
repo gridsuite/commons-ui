@@ -14,11 +14,11 @@ type ReadonlyAction<T> = Readonly<Action<T>>;
 
 export const USER = 'USER';
 export type UserAction = ReadonlyAction<typeof USER> & {
-    user: User | null;
+    user: User | undefined;
 };
 
 export function setLoggedUser(user: User | null): UserAction {
-    return { type: USER, user };
+    return { type: USER, user: user ?? undefined };
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';

@@ -42,7 +42,7 @@ import {
 } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { LogoText } from './GridLogo';
-import { StudySvc } from '../../services';
+import { studySvc } from '../../services/instances';
 import { GridSuiteModule, ModuleType, moduleTypeSort } from './modules';
 
 const styles = {
@@ -351,7 +351,7 @@ export default function AboutDialog({
             (additionalModulesPromise
                 ? Promise.resolve(setLoadingAdditionalModules(true)).then(() =>
                       typeof additionalModulesPromise === 'string'
-                          ? StudySvc.getServersInfos(additionalModulesPromise)
+                          ? studySvc.getServersInfos(additionalModulesPromise)
                           : additionalModulesPromise()
                   )
                 : Promise.reject(new Error('no getter'))

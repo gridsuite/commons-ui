@@ -26,7 +26,7 @@ import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-import { ExploreSvc } from '../../../services';
+import { exploreSvc } from '../../../services/instances';
 import FilterForm from '../filter-form';
 import { GsLangUser } from '../../TopBar/TopBar';
 
@@ -125,10 +125,11 @@ function CriteriaBasedFilterEditionDialog({
 
     const onSubmit = useCallback(
         (filterForm: any) => {
-            ExploreSvc.saveFilter(
-                frontToBackTweak(id, filterForm),
-                filterForm[FieldConstants.NAME]
-            )
+            exploreSvc
+                .saveFilter(
+                    frontToBackTweak(id, filterForm),
+                    filterForm[FieldConstants.NAME]
+                )
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
                         setSelelectionForCopy(noSelectionForCopy);

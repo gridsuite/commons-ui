@@ -7,8 +7,7 @@
 
 import { IncomingHttpHeaders } from 'node:http';
 import { LiteralUnion } from 'type-fest';
-import { getGatewayRestPath } from './variables';
-import { FileType, getUserToken } from './utils';
+import { FileType } from './utils';
 import { KeyOfWithoutIndexSignature } from '../types';
 
 export type UrlString = `${string}://${string}` | `/${string}` | `./${string}`;
@@ -44,31 +43,6 @@ export interface ErrorWithStatus extends Error {
     status?: number;
 }
 
-export function getRestBase(): string {
-    // We use the `baseURI` (from `<base/>` in index.html) to build the URL, which is corrected by httpd/nginx
-    return document.baseURI.replace(/\/+$/, '') + getGatewayRestPath();
-}
-
-function prepareRequest(init?: InitRequest, token?: Token): RequestInit {
-    if (
-        !(
-            typeof init === 'undefined' ||
-            typeof init === 'string' ||
-            typeof init === 'object'
-        )
-    ) {
-        throw new TypeError(
-            `First argument of prepareRequest is not an object: ${typeof init}`
-        );
-    }
-    const initCopy: RequestInit =
-        typeof init === 'string' ? { method: init } : { ...(init ?? {}) };
-    initCopy.headers = new Headers(initCopy.headers || {});
-    const tokenCopy = token || getUserToken();
-    initCopy.headers.append('Authorization', `Bearer ${tokenCopy}`);
-    return initCopy;
-}
-
 function parseError(text: string) {
     try {
         return JSON.parse(text);
@@ -97,7 +71,7 @@ function handleError(response: Response): Promise<never> {
     });
 }
 
-async function safeFetch(url: Url<false>, initCopy: RequestInit) {
+export async function safeFetch(url: Url<false>, initCopy: RequestInit) {
     const response = await fetch(url, initCopy);
     return response.ok ? response : handleError(response);
 }
@@ -118,48 +92,6 @@ export function setRequestHeader(
     result.headers = new Headers();
     result.headers.set(name, value);
     return result;
-}
-
-export function backendFetch(
-    url: Url<false>,
-    init?: InitRequest,
-    token?: Token
-) {
-    return safeFetch(url, prepareRequest(init, token));
-}
-
-export async function backendFetchJson<TReturn = unknown>(
-    url: Url<false>,
-    init?: InitRequest,
-    token?: Token
-): Promise<TReturn> {
-    const reqInit = setRequestHeader(
-        init,
-        'accept',
-        HttpContentType.APPLICATION_JSON
-    );
-    return (await backendFetch(url, reqInit, token)).json();
-}
-
-export async function backendFetchText(
-    url: Url<false>,
-    init?: InitRequest,
-    token?: Token
-) {
-    const reqInit = setRequestHeader(
-        init,
-        'accept',
-        HttpContentType.TEXT_PLAIN
-    );
-    return (await backendFetch(url, reqInit, token)).text();
-}
-
-export async function backendFetchFile(
-    url: Url<false>,
-    init?: InitRequest,
-    token?: Token
-) {
-    return (await backendFetch(url, init, token)).blob();
 }
 
 export function downloadFile(blob: Blob, filename: string, type?: FileType) {

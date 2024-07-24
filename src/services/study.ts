@@ -1,22 +1,14 @@
-/**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+/*
+ * Copyright © 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson, getRestBase } from '../utils/api';
 import { GridSuiteModule } from '../components/TopBar/modules';
-
-/**
- * Return the base API prefix to the study server
- * <br/>Note: cannot be a const because part of the prefix can be overridden at runtime
- * @param vApi the version of api to use
- */
-function getPrefix(vApi: number) {
-    return `${getRestBase()}/study/v${vApi}`;
-}
+import { ApiService, UserGetter } from './base-service';
+import { UrlString } from '../utils/api';
 
 // https://github.com/powsybl/powsybl-core/blob/main/iidm/iidm-api/src/main/java/com/powsybl/iidm/network/IdentifiableType.java#L14
 export enum IdentifiableType {
@@ -50,17 +42,25 @@ export type IdentifiableAttributes = {
     distributionKey: number; // double
 };
 
-export async function exportFilter(studyUuid: UUID, filterUuid?: UUID) {
-    console.info('get filter export on study root node');
-    return backendFetchJson<IdentifiableAttributes[]>(
-        `${getPrefix(1)}/studies/${studyUuid}/filters/${filterUuid}/elements`,
-        'GET'
-    );
-}
+export default class StudyComSvc extends ApiService {
+    public constructor(userGetter: UserGetter, restGatewayPath?: UrlString) {
+        super(userGetter, 'explore', restGatewayPath);
+    }
 
-export async function getServersInfos(viewName: string) {
-    console.info('get backend servers informations');
-    return backendFetchJson<GridSuiteModule[]>(
-        `${getPrefix(1)}/servers/about?view=${viewName}`
-    );
+    public async exportFilter(studyUuid: UUID, filterUuid?: UUID) {
+        console.info('get filter export on study root node');
+        return this.backendFetchJson<IdentifiableAttributes[]>(
+            `${this.getPrefix(
+                1
+            )}/studies/${studyUuid}/filters/${filterUuid}/elements`,
+            'GET'
+        );
+    }
+
+    public async getServersInfos(viewName: string) {
+        console.info('get backend servers informations');
+        return this.backendFetchJson<GridSuiteModule[]>(
+            `${this.getPrefix(1)}/servers/about?view=${viewName}`
+        );
+    }
 }

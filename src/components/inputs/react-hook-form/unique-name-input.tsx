@@ -16,7 +16,7 @@ import { UUID } from 'crypto';
 import useDebounce from '../../../hooks/useDebounce';
 import FieldConstants from '../../../utils/field-constants';
 import { ElementType } from '../../../utils/ElementType';
-import { DirectorySvc } from '../../../services';
+import { directorySvc } from '../../../services/instances';
 
 interface UniqueNameInputProps {
     name: string;
@@ -76,7 +76,8 @@ function UniqueNameInput({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue) {
-                DirectorySvc.elementExists(directory, nameValue, elementType)
+                directorySvc
+                    .elementExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {

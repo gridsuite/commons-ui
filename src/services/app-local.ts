@@ -18,10 +18,14 @@ export type Env = {
     // [key: string]: string;
 };
 
-export async function fetchEnv(): Promise<Env> {
-    return (await fetch('env.json')).json();
-}
+export default class AppLocalComSvc {
+    // eslint-disable-next-line class-methods-use-this
+    public async fetchEnv(): Promise<Env> {
+        return (await fetch('env.json')).json();
+    }
 
-export async function fetchIdpSettings() {
-    return (await (await fetch('idpSettings.json')).json()) as IdpSettings;
+    // eslint-disable-next-line class-methods-use-this
+    public async fetchIdpSettings() {
+        return (await (await fetch('idpSettings.json')).json()) as IdpSettings;
+    }
 }

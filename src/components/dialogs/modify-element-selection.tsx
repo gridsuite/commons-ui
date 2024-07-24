@@ -14,7 +14,7 @@ import { TreeViewFinderNodeProps } from '../TreeViewFinder';
 import FieldConstants from '../../utils/field-constants';
 import DirectoryItemSelector from '../DirectoryItemSelector/directory-item-selector';
 import { ElementType } from '../../utils/ElementType';
-import { DirectorySvc } from '../../services';
+import { directorySvc } from '../../services/instances';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
@@ -46,15 +46,15 @@ function ModifyElementSelection(props: ModifyElementSelectionProps) {
 
     useEffect(() => {
         if (directory) {
-            DirectorySvc.fetchDirectoryElementPath(directory).then(
-                (res: any) => {
+            directorySvc
+                .fetchDirectoryElementPath(directory)
+                .then((res: any) => {
                     setActiveDirectoryName(
                         res
                             .map((element: any) => element.elementName.trim())
                             .join('/')
                     );
-                }
-            );
+                });
         }
     }, [directory]);
 

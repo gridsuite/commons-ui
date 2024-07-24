@@ -1,70 +1,64 @@
-/**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+/*
+ * Copyright © 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 import { UUID } from 'crypto';
-import {
-    appendSearchParam,
-    backendFetch,
-    backendFetchJson,
-    getRequestParam,
-    getRestBase,
-} from '../utils/api';
+import { appendSearchParam, getRequestParam, UrlString } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
+import { ApiService, UserGetter } from './base-service';
 
-/**
- * Return the base API prefix to the directory server
- * <br/>Note: cannot be a const because part of the prefix can be overridden at runtime
- * @param vApi the version of api to use
- */
-function getPrefix(vApi: number) {
-    return `${getRestBase()}/directory/v${vApi}`;
-}
+export default class DirectoryComSvc extends ApiService {
+    public constructor(userGetter: UserGetter, restGatewayPath?: UrlString) {
+        super(userGetter, 'directory', restGatewayPath);
+    }
 
-export async function fetchRootFolders(types: string[]) {
-    console.info('Fetching Root Directories');
-    const urlSearchParams = getRequestParam('elementTypes', types).toString();
-    return backendFetchJson<ElementAttributes[]>(
-        `${getPrefix(1)}/root-directories?${urlSearchParams}`,
-        'GET'
-    );
-}
+    public async fetchRootFolders(types: string[]) {
+        console.info('Fetching Root Directories');
+        const urlSearchParams = getRequestParam(
+            'elementTypes',
+            types
+        ).toString();
+        return this.backendFetchJson<ElementAttributes[]>(
+            `${this.getPrefix(1)}/root-directories?${urlSearchParams}`,
+            'GET'
+        );
+    }
 
-export async function fetchDirectoryContent(
-    directoryUuid: UUID,
-    types?: string[]
-) {
-    console.info("Fetching Folder content '%s'", directoryUuid);
-    return backendFetchJson<ElementAttributes[]>(
-        appendSearchParam(
-            `${getPrefix(1)}/directories/${directoryUuid}/elements`,
-            getRequestParam('elementTypes', types)
-        ),
-        'GET'
-    );
-}
+    public async fetchDirectoryContent(directoryUuid: UUID, types?: string[]) {
+        console.info("Fetching Folder content '%s'", directoryUuid);
+        return this.backendFetchJson<ElementAttributes[]>(
+            appendSearchParam(
+                `${this.getPrefix(1)}/directories/${directoryUuid}/elements`,
+                getRequestParam('elementTypes', types)
+            ),
+            'GET'
+        );
+    }
 
-export async function fetchDirectoryElementPath(elementUuid: UUID) {
-    console.info(`Fetching element '${elementUuid}' and its parents info ...`);
-    const fetchPathUrl = `${getPrefix(1)}/elements/${encodeURIComponent(
-        elementUuid
-    )}/path`;
-    return backendFetchJson<ElementAttributes[]>(fetchPathUrl, 'GET');
-}
-
-export async function elementExists(
-    directoryUuid: UUID,
-    elementName: string,
-    type: string
-) {
-    const response = await backendFetch(
-        `${getPrefix(
+    public async fetchDirectoryElementPath(elementUuid: UUID) {
+        console.info(
+            `Fetching element '${elementUuid}' and its parents info ...`
+        );
+        const fetchPathUrl = `${this.getPrefix(
             1
-        )}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
-        'HEAD'
-    );
-    return response.status !== 204; // HTTP 204 : No-content
+        )}/elements/${encodeURIComponent(elementUuid)}/path`;
+        return this.backendFetchJson<ElementAttributes[]>(fetchPathUrl, 'GET');
+    }
+
+    public async elementExists(
+        directoryUuid: UUID,
+        elementName: string,
+        type: string
+    ) {
+        const response = await this.backendFetch(
+            `${this.getPrefix(
+                1
+            )}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
+            'HEAD'
+        );
+        return response.status !== 204; // HTTP 204 : No-content
+    }
 }

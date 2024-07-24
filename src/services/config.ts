@@ -4,20 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable import/prefer-default-export */
 
 import { GsLang, GsTheme } from '@gridsuite/commons-ui';
 import { LiteralUnion } from 'type-fest';
-import { backendFetch, backendFetchJson, getRestBase } from '../utils/api';
-
-/**
- * Return the base API prefix to the config server
- * <br/>Note: cannot be a const because part of the prefix can be overridden at runtime
- * @param vApi the version of api to use
- */
-function getPrefix(vApi: number) {
-    return `${getRestBase()}/config/v${vApi}`;
-}
+import { UrlString } from '../utils/api';
+import { ApiService, UserGetter } from './base-service';
 
 export const COMMON_APP_NAME = 'common';
 
@@ -43,6 +34,7 @@ type AppConfigParameter = LiteralUnion<
     string
 >;
 
+// TODO: how to test it's a fixed value and not any string?
 type AppConfigType<TAppName extends string | undefined = undefined> =
     TAppName extends string
         ? typeof COMMON_APP_NAME | TAppName
@@ -62,44 +54,54 @@ function getAppName<TAppName extends string>(
     ) as AppConfigType<TAppName>;
 }
 
-type AppName = LiteralUnion<typeof COMMON_APP_NAME, string>;
-export async function fetchConfigParameters(appName: AppName) {
-    console.debug(`Fetching UI configuration params for app : ${appName}`);
-    const fetchParams = `${getPrefix(1)}/applications/${appName}/parameters`;
-    return backendFetchJson<ConfigParameters>(fetchParams);
-}
+export default class ConfigComSvc<TAppName extends string> extends ApiService {
+    private readonly appName: TAppName;
 
-export async function fetchConfigParameter(
-    currentAppName: string,
-    paramName: AppConfigParameter
-) {
-    const appName = getAppName(currentAppName, paramName);
-    console.debug(
-        `Fetching UI config parameter '${paramName}' for app '${appName}'`
-    );
-    const fetchParams = `${getPrefix(
-        1
-    )}/applications/${appName}/parameters/${paramName}`;
-    return backendFetchJson<ConfigParameter>(fetchParams);
-}
+    public constructor(
+        appName: TAppName,
+        userGetter: UserGetter,
+        restGatewayPath?: UrlString
+    ) {
+        super(userGetter, 'config', restGatewayPath);
+        this.appName = appName;
+    }
 
-export async function updateConfigParameter(
-    currentAppName: string,
-    paramName: AppConfigParameter,
-    value: Parameters<typeof encodeURIComponent>[0]
-) {
-    const appName = getAppName(currentAppName, paramName);
-    console.debug(
-        `Updating config parameter '${paramName}=${value}' for app '${appName}'`
-    );
-    const updateParams = `${getPrefix(
-        1
-    )}/applications/${appName}/parameters/${paramName}?value=${encodeURIComponent(
-        value
-    )}`;
-    return (
-        await backendFetch(updateParams, {
-            method: 'PUT',
-        })
-    ).ok;
+    public async fetchConfigParameters(appName: AppConfigType<TAppName>) {
+        console.debug(`Fetching UI configuration params for app : ${appName}`);
+        const fetchParams = `${this.getPrefix(
+            1
+        )}/applications/${appName}/parameters`;
+        return this.backendFetchJson<ConfigParameters>(fetchParams);
+    }
+
+    public async fetchConfigParameter(paramName: AppConfigParameter) {
+        const appName = getAppName(this.appName, paramName);
+        console.debug(
+            `Fetching UI config parameter '${paramName}' for app '${appName}'`
+        );
+        const fetchParams = `${this.getPrefix(
+            1
+        )}/applications/${appName}/parameters/${paramName}`;
+        return this.backendFetchJson<ConfigParameter>(fetchParams);
+    }
+
+    public async updateConfigParameter(
+        paramName: AppConfigParameter,
+        value: Parameters<typeof encodeURIComponent>[0]
+    ) {
+        const appName = getAppName(this.appName, paramName);
+        console.debug(
+            `Updating config parameter '${paramName}=${value}' for app '${appName}'`
+        );
+        const updateParams = `${this.getPrefix(
+            1
+        )}/applications/${appName}/parameters/${paramName}?value=${encodeURIComponent(
+            value
+        )}`;
+        return (
+            await this.backendFetch(updateParams, {
+                method: 'PUT',
+            })
+        ).ok;
+    }
 }

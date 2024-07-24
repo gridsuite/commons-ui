@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { getUser } from '../../redux/commonStore';
-
 export enum FileType {
     ZIP = 'ZIP',
 }
@@ -23,10 +21,6 @@ export function getRequestParams(parameters: Record<string, string[]>) {
         )
         .forEach(([paramName, param]) => searchParams.append(paramName, param));
     return searchParams;
-}
-
-export function getUserToken() {
-    return getUser()?.id_token;
 }
 
 export function appendSearchParam(

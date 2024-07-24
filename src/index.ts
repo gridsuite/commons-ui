@@ -133,7 +133,7 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './redux/authActions';
+} from './utils/AuthActions';
 export type {
     AuthenticationActions,
     AuthenticationRouterErrorBase,
@@ -144,7 +144,7 @@ export type {
     UnauthorizedUserAction,
     UserAction,
     UserValidationErrorAction,
-} from './redux/authActions';
+} from './utils/AuthActions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -261,8 +261,6 @@ export {
 } from './components/filter/criteria-based/criteria-based-filter-utils';
 
 export { mergeSx } from './utils/styles';
-export { setCommonStore } from './redux/commonStore';
-export type { CommonStoreState } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
 export { getErrorMessage } from './utils/error';

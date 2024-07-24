@@ -17,6 +17,7 @@ import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
 import SignInCallbackHandler from '../SignInCallbackHandler';
+import { AuthenticationActions } from '../../utils/AuthActions';
 import {
     handleSigninCallback,
     handleSilentRenewCallback,
@@ -26,8 +27,6 @@ import {
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
-
-import { AuthenticationActions } from '../../redux/authActions';
 
 export type AuthenticationRouterErrorState = {
     userName?: string;
