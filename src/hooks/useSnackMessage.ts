@@ -95,9 +95,9 @@ export function useSnackMessage(): UseSnackMessageReturn {
         (snackInputs: SnackInputs, variant: BaseVariant) => {
             const message = makeMessage(intlRef, snackInputs);
             if (message === null) {
-                return;
+                return undefined;
             }
-            enqueueSnackbar(message, {
+            return enqueueSnackbar(message, {
                 ...snackInputs,
                 variant,
                 style: { whiteSpace: 'pre-line' },
