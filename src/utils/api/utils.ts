@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { User } from 'oidc-client';
 
 export enum FileType {
     ZIP = 'ZIP',
@@ -30,4 +31,18 @@ export function appendSearchParam(
     return searchParams
         ? `${url}${url.includes('?') ? '&' : '?'}${searchParams.toString()}`
         : url;
+}
+
+// TODO: why was it promisified? dont remember the reason...
+export async function extractUserSub(user: User | undefined) {
+    const sub = user?.profile?.sub;
+    if (!sub) {
+        throw new Error(
+            `Fetching access for missing user.profile.sub : ${JSON.stringify(
+                user
+            )}`
+        );
+    } else {
+        return sub;
+    }
 }

@@ -40,8 +40,8 @@ abstract class BaseService {
         this.getUser = userGetter;
     }
 
-    protected getUserToken() {
-        return this.getUser()?.id_token;
+    protected getUserToken(user?: User) {
+        return (user ?? this.getUser())?.id_token;
     }
 }
 

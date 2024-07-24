@@ -12,6 +12,7 @@ import ConfigNotificationComSvc from './config-notification';
 import DirectoryComSvc from './directory';
 import ExploreComSvc from './explore';
 import StudyComSvc from './study';
+import UserAdminComSvc from './user-admin';
 import { UserGetter } from './base-service';
 
 /*
@@ -26,7 +27,8 @@ export let appLocalSvc: AppLocalComSvc,
     configNotificationSvc: ConfigNotificationComSvc,
     directorySvc: DirectoryComSvc,
     exploreSvc: ExploreComSvc,
-    studySvc: StudyComSvc;
+    studySvc: StudyComSvc,
+    userAdminSvc: UserAdminComSvc;
 
 export function setCommonServices<TAppName extends string>(
     appLocalService: AppLocalComSvc,
@@ -35,7 +37,8 @@ export function setCommonServices<TAppName extends string>(
     configNotificationService: ConfigNotificationComSvc,
     directoryService: DirectoryComSvc,
     exploreService: ExploreComSvc,
-    studyService: StudyComSvc
+    studyService: StudyComSvc,
+    userAdminService: UserAdminComSvc
 ) {
     appLocalSvc = appLocalService;
     appsMetadataSvc = appsMetadataService;
@@ -44,6 +47,7 @@ export function setCommonServices<TAppName extends string>(
     directorySvc = directoryService;
     exploreSvc = exploreService;
     studySvc = studyService;
+    userAdminSvc = userAdminService;
 }
 
 export function initCommonServices<TAppName extends string>(
@@ -58,6 +62,7 @@ export function initCommonServices<TAppName extends string>(
         new ConfigNotificationComSvc(userGetter),
         new DirectoryComSvc(userGetter),
         new ExploreComSvc(userGetter),
-        new StudyComSvc(userGetter)
+        new StudyComSvc(userGetter),
+        new UserAdminComSvc(userGetter)
     );
 }

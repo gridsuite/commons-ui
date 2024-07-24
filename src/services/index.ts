@@ -37,3 +37,5 @@ export { default as ExploreComSvc } from './explore';
 
 export { default as StudyComSvc, IdentifiableType } from './study';
 export type { IdentifiableAttributes } from './study';
+
+export { default as UserAdminComSvc } from './user-admin';
