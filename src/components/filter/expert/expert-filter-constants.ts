@@ -61,13 +61,13 @@ export const EXPERT_FILTER_EQUIPMENTS = {
         id: 'STATIC_VAR_COMPENSATOR',
         label: 'StaticVarCompensators',
     },
-    DANGLING_LINE: {
-        id: 'DANGLING_LINE',
-        label: 'DanglingLines',
-    },
     HVDC_LINE: {
         id: 'HVDC_LINE',
         label: 'Hvdc',
+    },
+    DANGLING_LINE: {
+        id: 'DANGLING_LINE',
+        label: 'DanglingLines',
     },
 };
 
