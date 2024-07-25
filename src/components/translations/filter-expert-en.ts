@@ -141,6 +141,7 @@ const filterExpertEn = {
     lowVoltageThreshold: 'Low voltage threshold',
     highVoltageThreshold: 'High voltage threshold',
     susceptanceFix: 'Fixed part of susceptance ',
+    paired: 'Paired',
     converterStationId1: 'Converter station 1 ID',
     converterStationId2: 'Converter station 2 ID',
     convertersMode: 'Converters mode',
