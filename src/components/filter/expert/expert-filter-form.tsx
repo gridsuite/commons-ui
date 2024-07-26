@@ -7,7 +7,7 @@
 
 import { useCallback, useMemo } from 'react';
 
-import Grid from '@mui/material/Grid';
+import { Grid } from '@mui/material';
 import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 import './styles-expert-filter.css';

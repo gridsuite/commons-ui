@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Button } from '@mui/material';
+import { Button, useThemeProps } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { useThemeProps } from '@mui/material/styles';
 
 function CancelButton({ ...inProps }) {
     const props = useThemeProps({ props: inProps, name: 'CancelButton' });

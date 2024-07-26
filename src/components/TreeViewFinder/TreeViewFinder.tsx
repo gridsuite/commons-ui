@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {
+import {
     ReactElement,
+    SyntheticEvent,
     useCallback,
     useEffect,
     useRef,
@@ -24,8 +25,8 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Typography,
     ModalProps,
+    Typography,
 } from '@mui/material';
 
 import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
@@ -232,7 +233,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         });
     };
 
-    const handleNodeToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
+    const handleNodeToggle = (_e: SyntheticEvent, nodeIds: string[]) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
         nodeIds.every((nodeId) => {
             if (!expanded?.includes(nodeId)) {
@@ -298,7 +299,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
 
     /* User Interaction management */
     const handleNodeSelect = (
-        _e: React.SyntheticEvent,
+        _e: SyntheticEvent,
         values: string | string[]
     ) => {
         // Default management

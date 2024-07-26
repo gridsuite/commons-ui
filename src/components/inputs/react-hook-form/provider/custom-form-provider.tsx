@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { createContext, PropsWithChildren } from 'react';
+import { createContext, PropsWithChildren, useMemo } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import { getSystemLanguage } from '../../../../hooks/localized-countries-hook';
@@ -39,7 +39,7 @@ function CustomFormProvider(props: CustomFormProviderProps) {
     return (
         <FormProvider {...formMethods}>
             <CustomFormContext.Provider
-                value={React.useMemo(
+                value={useMemo(
                     () => ({
                         validationSchema,
                         removeOptional,

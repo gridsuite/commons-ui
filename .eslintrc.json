@@ -23,6 +23,22 @@
     "no-console": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
-    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-restricted-imports": ["error", {
+      "paths": [
+        {
+          // We don't need "import React from 'react'" since React 17
+          "name": "react",
+          "importNames": ["default"],
+          "message": "Do not import React, use import deconstruction instead"
+        }
+      ],
+      "patterns": [
+        {
+          "group": ["@mui/material/*", "!@mui/material/colors"],
+          "message": "Please use `import { /*...*/ } from '@mui/material';` instead."
+        }
+      ]
+    }]
   }
 }

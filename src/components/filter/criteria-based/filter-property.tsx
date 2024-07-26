@@ -5,14 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useCallback, useMemo } from 'react';
+import { Grid, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
-import Grid from '@mui/material/Grid';
 import { useFormContext, useWatch } from 'react-hook-form';
 import AutocompleteInput from '../../inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
 import MultipleAutocompleteInput from '../../inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 import FieldConstants from '../../../utils/field-constants';
-
 import { PredefinedProperties } from '../../../utils/types';
 
 export const PROPERTY_NAME = 'name_property';

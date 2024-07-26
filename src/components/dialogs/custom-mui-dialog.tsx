@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -27,14 +27,14 @@ interface ICustomMuiDialog {
     open: boolean;
     formSchema: yup.AnySchema;
     formMethods: UseFormReturn<any> | MergedFormContextProps;
-    onClose: (event: React.MouseEvent) => void;
+    onClose: (event: MouseEvent) => void;
     onSave: (data: any) => void;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
     disabledSave?: boolean;
     removeOptional?: boolean;
     onCancel?: () => void;
-    children: React.ReactNode;
+    children: ReactNode;
     isDataFetching?: boolean;
     language?: string;
 }
@@ -66,12 +66,12 @@ function CustomMuiDialog({
 }: ICustomMuiDialog) {
     const { handleSubmit } = formMethods;
 
-    const handleCancel = (event: React.MouseEvent) => {
+    const handleCancel = (event: MouseEvent) => {
         onCancel?.();
         onClose(event);
     };
 
-    const handleClose = (event: React.MouseEvent, reason?: string) => {
+    const handleClose = (event: MouseEvent, reason?: string) => {
         if (reason === 'backdropClick' && onCancel) {
             onCancel();
         }
