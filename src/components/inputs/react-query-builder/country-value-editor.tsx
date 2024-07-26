@@ -7,14 +7,21 @@
 
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Box, TextField, Theme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import useConvertValue from './use-convert-value';
 import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
 import { fetchDefaultCountry, fetchFavoriteCountries } from '../../../services';
-import CountrySelector from './country-selector';
+import CountrySelector, { CountryOption } from './country-selector';
+
+const styles = {
+    favBox: (theme: Theme) => ({
+        borderBottom: '1px solid',
+        borderColor: theme.palette.divider,
+    }),
+};
 
 function CountryValueEditor(props: ValueEditorProps) {
     const { language } = useCustomFormContext();
@@ -54,7 +61,7 @@ function CountryValueEditor(props: ValueEditorProps) {
         }
     }, [allCountryCodes, multiCountryMode, value]);
 
-    const countriesList = useMemo(() => {
+    const countriesList: CountryOption[] = useMemo(() => {
         // remove favoriteCountryCodes from countryCodes to avoid duplicate keys
         const countryCodesWithoutFavorites = countryCodes.filter(
             (countryCode: string) => !favoriteCountryCodes.includes(countryCode)
@@ -108,9 +115,22 @@ function CountryValueEditor(props: ValueEditorProps) {
             options={allCountryCodes}
             getOptionLabel={(code: string) => translate(code)}
             onChange={(event, newValue: any) => handleOnChange(newValue)}
+            groupBy={(option: string) => {
+                return favoriteCountryCodes.includes(option)
+                    ? `fav`
+                    : 'not_fav';
+            }}
             multiple
             fullWidth
             renderInput={(params) => <TextField {...params} error={!valid} />}
+            renderGroup={(item) => {
+                const { group, children } = item;
+                return (
+                    <Box key={`keyBoxGroup_${group}`} sx={styles.favBox}>
+                        {children}
+                    </Box>
+                );
+            }}
         />
     );
 }

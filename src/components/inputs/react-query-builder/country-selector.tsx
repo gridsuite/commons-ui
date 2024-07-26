@@ -5,22 +5,30 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    FullOption,
-    OptionGroup,
-    ValueSelectorProps,
-} from 'react-querybuilder';
-import { MenuItem, Select } from '@mui/material';
+import { ValueSelectorProps } from 'react-querybuilder';
+import { Box, MenuItem, Select, Theme } from '@mui/material';
+
+export interface CountryOption {
+    name: string;
+    label: string;
+    fav: boolean;
+}
+
+const styles = {
+    favBox: (theme: Theme) => ({
+        borderBottom: '1px solid',
+        borderColor: theme.palette.divider,
+    }),
+};
 
 /**
- * ValueSelector which allows to have a few "favorite" countries always displayed
+ * ValueSelector which allows to have a few "favorite" options always displayed
  * at the beginning of the selector and separated from the others options
  */
 function CountrySelector(props: ValueSelectorProps) {
     const { options, value, handleOnChange } = props;
-    let favs: FullOption<string>[] | OptionGroup<FullOption<string>>[] = [];
-    let allOthers: FullOption<string>[] | OptionGroup<FullOption<string>>[] =
-        [];
+    let favs: CountryOption[] = [];
+    let allOthers: CountryOption[] = [];
     options.forEach((opt: any) => {
         if (opt.fav) {
             favs = [...favs, opt];
@@ -30,17 +38,14 @@ function CountrySelector(props: ValueSelectorProps) {
     });
 
     return (
-        <Select
-            value={value !== undefined ? value : ''}
-            onChange={(e) => handleOnChange(e.target.value)}
-        >
-            {favs.map((opt: any) => (
+        <Select value={value} onChange={(e) => handleOnChange(e.target.value)}>
+            {favs.map((opt: CountryOption) => (
                 <MenuItem key={opt.name} value={opt.name}>
                     {opt.label}
                 </MenuItem>
             ))}
-            {favs.length > 0 ? <option disabled>──────────</option> : ''}
-            {allOthers.map((opt: any) => (
+            {favs.length > 0 ? <Box sx={styles.favBox} /> : ''}
+            {allOthers.map((opt: CountryOption) => (
                 <MenuItem key={opt.name} value={opt.name}>
                     {opt.label}
                 </MenuItem>
