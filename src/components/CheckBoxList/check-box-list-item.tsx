@@ -38,7 +38,6 @@ export interface CheckBoxItemProps {
         hover: string | UUID
     ) => React.ReactElement | undefined;
     isCheckBoxDraggable?: boolean | undefined;
-    isDragging?: boolean;
     provided?: DraggableProvided;
 }
 

@@ -4,6 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import defaultCheckboxList from "./check-box-list";
+import defaultCheckboxList from './check-box-list';
 
 export default defaultCheckboxList;
