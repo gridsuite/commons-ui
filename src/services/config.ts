@@ -5,10 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { GsLang, GsTheme } from '@gridsuite/commons-ui';
 import { LiteralUnion } from 'type-fest';
 import { UrlString } from '../utils/api';
 import { ApiService, UserGetter } from './base-service';
+import { GsLang } from '../utils/language';
+import { GsTheme } from '../utils/theme';
 
 export const COMMON_APP_NAME = 'common';
 

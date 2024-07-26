@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { DARK_THEME, GsTheme } from '../components/TopBar/TopBar';
+import { DARK_THEME, GsTheme } from '../utils/theme';
 
 function getLocalStorageThemeKey(appName: string) {
     return `${appName.toUpperCase()}_THEME`;

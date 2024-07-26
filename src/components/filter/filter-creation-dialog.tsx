@@ -34,7 +34,8 @@ import {
     getExpertFilterEmptyFormData,
 } from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
-import { GsLangUser } from '../TopBar/TopBar';
+
+import { GsLangUser } from '../../utils/language';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',

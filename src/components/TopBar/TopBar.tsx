@@ -54,6 +54,13 @@ import GridLogo, { GridLogoProps } from './GridLogo';
 import AboutDialog, { AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../Login/Logout';
 import { AppMetadataCommon } from '../../services';
+import {
+    GsLang,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+} from '../../utils/language';
+import { DARK_THEME, GsTheme, LIGHT_THEME } from '../../utils/theme';
 
 const styles = {
     grow: {
@@ -151,17 +158,8 @@ const CustomListItemIcon = styled(ListItemIcon)({
     borderRadius: '25px',
 });
 
-export const DARK_THEME = 'Dark';
-export const LIGHT_THEME = 'Light';
-export const LANG_SYSTEM = 'sys';
-export const LANG_ENGLISH = 'en';
-export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
-
-export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
-export type GsLang = GsLangUser | typeof LANG_SYSTEM;
-export type GsTheme = typeof LIGHT_THEME | typeof DARK_THEME;
 
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &

@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { GsLang, LANG_SYSTEM } from '../components/TopBar/TopBar';
-
-import { getComputedLanguage } from '../utils/language';
+import { getComputedLanguage, GsLang, LANG_SYSTEM } from '../utils/language';
 
 function getLocalStorageLanguageKey(appName: string) {
     return `${appName.toUpperCase()}_LANGUAGE`;

@@ -36,10 +36,6 @@ import {
     equipmentStyles,
     getFileIcon,
     initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
     logout,
     card_error_boundary_en,
     card_error_boundary_fr,
@@ -105,6 +101,7 @@ import inputs_en from '../../src/components/translations/inputs-en';
 import inputs_fr from '../../src/components/translations/inputs-fr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
+import { LIGHT_THEME } from '../../src/utils/theme';
 
 const messages = {
     en: {

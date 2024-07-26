@@ -22,7 +22,8 @@ import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import CustomFormProvider, {
     MergedFormContextProps,
 } from '../inputs/react-hook-form/provider/custom-form-provider';
-import { GsLangUser } from '../TopBar/TopBar';
+
+import { GsLangUser } from '../../utils/language';
 
 interface ICustomMuiDialog {
     open: boolean;

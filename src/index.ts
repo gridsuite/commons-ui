@@ -114,14 +114,16 @@ export {
     DEFAULT_ROW_HEIGHT,
 } from './components/MuiVirtualizedTable/MuiVirtualizedTable';
 
+export { DARK_THEME, LIGHT_THEME } from './utils/theme';
+export type { GsTheme } from './utils/theme';
 export {
-    DARK_THEME,
-    LIGHT_THEME,
     LANG_SYSTEM,
     LANG_ENGLISH,
     LANG_FRENCH,
-} from './components/TopBar/TopBar';
-export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
+    getSystemLanguage,
+    getComputedLanguage,
+} from './utils/language';
+export type { GsLang, GsLangUser } from './utils/language';
 
 export {
     USER,
@@ -266,5 +268,4 @@ export type { EquipmentInfos } from './utils/EquipmentType';
 export { getErrorMessage } from './utils/error';
 export * from './utils/api';
 export * from './services';
-export * from './utils/language';
 export * from './local-storage';

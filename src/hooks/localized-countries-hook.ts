@@ -9,8 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries, { LocalizedCountries } from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr.json';
 import countriesEn from 'localized-countries/data/en.json';
-import { getComputedLanguage } from '../utils/language';
-import { GsLang, LANG_ENGLISH } from '../components/TopBar/TopBar';
+import { getComputedLanguage, GsLang, LANG_ENGLISH } from '../utils/language';
 
 export default function useLocalizedCountries(language: GsLang | undefined) {
     const [localizedCountriesModule, setLocalizedCountriesModule] =

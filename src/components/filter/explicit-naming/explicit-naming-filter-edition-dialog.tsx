@@ -24,7 +24,8 @@ import FilterForm from '../filter-form';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-import { GsLangUser } from '../../TopBar/TopBar';
+
+import { GsLangUser } from '../../../utils/language';
 
 const formSchema = yup
     .object()
