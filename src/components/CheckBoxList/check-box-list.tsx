@@ -70,7 +70,7 @@ export function CheckboxList({
     onDragStart,
     onDragEnd,
     isDropDisabled,
-    isDragDisable,
+    isDragDisable = false,
     draggableProps,
     ...props
 }: CheckboxListProps) {
@@ -208,7 +208,7 @@ export function CheckboxList({
                                         checkboxListSx={checkboxListSx}
                                         secondaryAction={handleSecondaryAction}
                                         isDragging={
-                                            !isDragDisable && isDragging
+                                            !isDragDisable && !isDragging
                                         }
                                         isCheckBoxDraggable={
                                             isCheckBoxDraggable

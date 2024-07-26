@@ -20,7 +20,7 @@ import { DraggableProvided } from 'react-beautiful-dnd';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
 
-export interface CheckBoxItemProps {
+export interface CheckBoxListItemProps {
     item: any;
     checkBoxIconSx?: SxProps;
     labelSx?: SxProps;
@@ -28,11 +28,9 @@ export interface CheckBoxItemProps {
     checked: boolean;
     label: string;
     getValueId: (value: any) => string | UUID;
-    onClick: (
-        event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-        item: any
-    ) => void;
+    onClick: () => void;
     disabled: boolean | undefined;
+    isDragging?: boolean;
     secondaryAction?: (
         item: any,
         hover: string | UUID
@@ -62,16 +60,17 @@ export function CheckBoxListItem({
     checkboxListSx,
     getValueId,
     isCheckBoxDraggable,
+    isDragging,
     provided,
     ...props
-}: CheckBoxItemProps) {
-    const [hover, setHover] = useState<string | UUID>(null);
+}: CheckBoxListItemProps) {
+    const [hover, setHover] = useState<string | UUID>('');
     return (
         <ListItem
             secondaryAction={secondaryAction && secondaryAction(item, hover)}
             sx={checkboxListSx}
             onMouseEnter={() => setHover(getValueId(item))}
-            onMouseLeave={() => setHover(null)}
+            onMouseLeave={() => setHover('')}
             disablePadding
             divider
             ref={provided?.innerRef}
@@ -82,7 +81,7 @@ export function CheckBoxListItem({
                 ? provided?.dragHandleProps
                 : {})}
         >
-            <ListItemButton onClick={(event) => onClick(event, item)}>
+            <ListItemButton onClick={onClick}>
                 {isCheckBoxDraggable && provided ? (
                     <ListItemIcon sx={checkBoxIconSx}>
                         <IconButton
@@ -90,7 +89,10 @@ export function CheckBoxListItem({
                             sx={styles.dragIcon}
                             size="small"
                             style={{
-                                opacity: hover === getValueId(item) ? '1' : '0',
+                                opacity:
+                                    hover === getValueId(item) && isDragging
+                                        ? '1'
+                                        : '0',
                             }}
                         >
                             <DragIndicatorIcon />
