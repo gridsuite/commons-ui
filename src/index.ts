@@ -26,7 +26,7 @@ export { default as ReportViewerDialog } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
 export { ElementSearchDialog } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
-export { default as CheckboxList } from './components/CheckBoxList';
+export { default as CheckboxList } from './components/CheckBoxList/check-box-list';
 export { default as ExpandableGroup } from './components/ExpandableGroup';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
@@ -208,7 +208,7 @@ export { default as TextFieldWithAdornment } from './components/inputs/react-hoo
 export { default as FieldLabel } from './components/inputs/react-hook-form/utils/field-label';
 export { default as SubmitButton } from './components/inputs/react-hook-form/utils/submit-button';
 export { default as CancelButton } from './components/inputs/react-hook-form/utils/cancel-button';
-//export { default as CheckboxList } from './components/CheckBoxList/check-box-list';
+// export { default as CheckboxList } from './components/CheckBoxList/check-box-list';
 export {
     genHelperPreviousValue,
     genHelperError,

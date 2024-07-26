@@ -7,17 +7,14 @@
 
 import {
     Button,
-    Checkbox,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    FormControlLabel,
-    Grid,
 } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
-import CheckboxList from '../CheckBoxList/check-box-list';
+import { CheckboxList } from '../CheckBoxList/check-box-list';
 
 export interface MultipleSelectionDialogProps {
     options: string[];
@@ -37,49 +34,24 @@ function MultipleSelectionDialog({
     handleClose,
     handleValidate,
     titleId,
+    ...props
 }: MultipleSelectionDialogProps) {
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
-    const handleSelectAll = () => {
-        if (selectedIds.length !== options.length) {
-            setSelectedIds(options);
-        } else {
-            setSelectedIds([]);
-        }
-    };
-
     return (
-        <Dialog open={open}>
+        <Dialog open={open} fullWidth>
             <DialogTitle>{titleId}</DialogTitle>
             <DialogContent>
-                <Grid container spacing={2} flexDirection="column">
-                    <Grid item>
-                        <FormControlLabel
-                            label={
-                                <FormattedMessage id="multiple_selection_dialog/selectAll" />
-                            }
-                            control={
-                                <Checkbox
-                                    checked={selectedIds.length !== 0}
-                                    indeterminate={
-                                        selectedIds.length > 0 &&
-                                        selectedIds.length !== options.length
-                                    }
-                                    onChange={handleSelectAll}
-                                />
-                            }
-                        />
-                    </Grid>
-                    <Grid item>
-                        <CheckboxList
-                            values={options}
-                            selectedItems={selectedIds}
-                            setSelectedItems={setSelectedIds}
-                            getValueId={(v) => v}
-                            defaultSelected={selectedOptions}
-                            getValueLabel={getOptionLabel}
-                        />
-                    </Grid>
-                </Grid>
+                <CheckboxList
+                    values={options}
+                    selectedItems={selectedIds}
+                    onSelectionChange={(values: any[]) =>
+                        setSelectedIds(values)
+                    }
+                    getValueId={(v) => v}
+                    getValueLabel={getOptionLabel}
+                    addSelectAllCheckbox
+                    {...props}
+                />
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleClose()}>
