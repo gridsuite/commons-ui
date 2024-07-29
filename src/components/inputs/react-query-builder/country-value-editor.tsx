@@ -14,7 +14,7 @@ import useValid from './use-valid';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
 import { fetchDefaultCountry, fetchFavoriteCountries } from '../../../services';
-import CountrySelector, { CountryOption } from './country-selector';
+import SelectorWithFavs, { OptionWithFav } from './selector-with-favs';
 
 const styles = {
     favBox: (theme: Theme) => ({
@@ -35,10 +35,9 @@ function CountryValueEditor(props: ValueEditorProps) {
     const multiCountryMode: boolean = useMemo(() => {
         return Array.isArray(value);
     }, [value]);
-    // matters when only one country is selectable
-    const [currentCountryCode, setCurrentCountryCode] = useState(
-        multiCountryMode ? undefined : value
-    );
+    const [currentCountryCodes, setCurrentCountryCodes] = useState<string[]>([
+        '',
+    ]);
 
     useEffect(() => {
         fetchFavoriteCountries().then((favs: string[]) => {
@@ -46,22 +45,26 @@ function CountryValueEditor(props: ValueEditorProps) {
         });
     }, [setFavoriteCountryCodes]);
 
-    // fetches and set the default country
     useEffect(() => {
-        if (allCountryCodes.length > 0 && !multiCountryMode) {
-            if (value === undefined || value === '') {
-                fetchDefaultCountry().then((countryCode) => {
-                    if (countryCode) {
-                        setCurrentCountryCode(countryCode);
-                    }
-                });
+        if (allCountryCodes.length > 0) {
+            if (!multiCountryMode) {
+                // fetches and set the default country
+                if (value === undefined || value === '') {
+                    fetchDefaultCountry().then((countryCode) => {
+                        if (countryCode) {
+                            setCurrentCountryCodes([countryCode]);
+                        }
+                    });
+                } else {
+                    setCurrentCountryCodes([value]);
+                }
             } else {
-                setCurrentCountryCode(value);
+                setCurrentCountryCodes(value);
             }
         }
-    }, [allCountryCodes, multiCountryMode, value]);
+    }, [allCountryCodes, multiCountryMode, value, setCurrentCountryCodes]);
 
-    const countriesList: CountryOption[] = useMemo(() => {
+    const countriesList: OptionWithFav[] = useMemo(() => {
         // remove favoriteCountryCodes from countryCodes to avoid duplicate keys
         const countryCodesWithoutFavorites = countryCodes.filter(
             (countryCode: string) => !favoriteCountryCodes.includes(countryCode)
@@ -99,19 +102,21 @@ function CountryValueEditor(props: ValueEditorProps) {
 
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!multiCountryMode) {
+        // only one country may be selected
         return (
             <MaterialValueEditor
                 {...props}
-                value={currentCountryCode}
+                value={currentCountryCodes[0]}
                 values={countriesList}
                 title={undefined} // disable the tooltip
-                selectorComponent={CountrySelector}
+                selectorComponent={SelectorWithFavs}
             />
         );
     }
     return (
+        // any number of country may be selected
         <Autocomplete
-            value={value}
+            value={currentCountryCodes}
             options={allCountryCodes}
             getOptionLabel={(code: string) => translate(code)}
             onChange={(event, newValue: any) => handleOnChange(newValue)}

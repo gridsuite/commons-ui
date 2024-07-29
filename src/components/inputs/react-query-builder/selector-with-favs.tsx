@@ -8,7 +8,7 @@
 import { ValueSelectorProps } from 'react-querybuilder';
 import { Box, MenuItem, Select, Theme } from '@mui/material';
 
-export interface CountryOption {
+export interface OptionWithFav {
     name: string;
     label: string;
     fav: boolean;
@@ -25,10 +25,10 @@ const styles = {
  * ValueSelector which allows to have a few "favorite" options always displayed
  * at the beginning of the selector and separated from the others options
  */
-function CountrySelector(props: ValueSelectorProps) {
+function SelectorWithFavs(props: ValueSelectorProps) {
     const { options, value, handleOnChange } = props;
-    let favs: CountryOption[] = [];
-    let allOthers: CountryOption[] = [];
+    let favs: OptionWithFav[] = [];
+    let allOthers: OptionWithFav[] = [];
     options.forEach((opt: any) => {
         if (opt.fav) {
             favs = [...favs, opt];
@@ -39,13 +39,13 @@ function CountrySelector(props: ValueSelectorProps) {
 
     return (
         <Select value={value} onChange={(e) => handleOnChange(e.target.value)}>
-            {favs.map((opt: CountryOption) => (
+            {favs.map((opt: OptionWithFav) => (
                 <MenuItem key={opt.name} value={opt.name}>
                     {opt.label}
                 </MenuItem>
             ))}
             {favs.length > 0 ? <Box sx={styles.favBox} /> : ''}
-            {allOthers.map((opt: CountryOption) => (
+            {allOthers.map((opt: OptionWithFav) => (
                 <MenuItem key={opt.name} value={opt.name}>
                     {opt.label}
                 </MenuItem>
@@ -54,4 +54,4 @@ function CountrySelector(props: ValueSelectorProps) {
     );
 }
 
-export default CountrySelector;
+export default SelectorWithFavs;
