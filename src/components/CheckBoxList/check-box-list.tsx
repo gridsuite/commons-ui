@@ -189,7 +189,7 @@ export function CheckboxList({
                     if (isCheckBoxDraggable) {
                         return (
                             <Draggable
-                                draggableId={String(getValueId(item))}
+                                draggableId={getValueId(item)}
                                 index={index}
                                 isDragDisabled={isDragDisable}
                             >
