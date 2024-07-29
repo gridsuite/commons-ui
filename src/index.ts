@@ -208,7 +208,6 @@ export { default as TextFieldWithAdornment } from './components/inputs/react-hoo
 export { default as FieldLabel } from './components/inputs/react-hook-form/utils/field-label';
 export { default as SubmitButton } from './components/inputs/react-hook-form/utils/submit-button';
 export { default as CancelButton } from './components/inputs/react-hook-form/utils/cancel-button';
-// export { default as CheckboxList } from './components/CheckBoxList/check-box-list';
 export {
     genHelperPreviousValue,
     genHelperError,
