@@ -128,7 +128,7 @@ const filterExpertEn = {
     'regulationMode.reactivePower': 'Reactive power regulation',
     voltageSetPoint: 'Voltage set point',
     activePowerSetPoint: 'Active power set point (MW)',
-    reactivePowerSetPoint: 'Reactive power set point (MVAR)',
+    reactivePowerSetPoint: 'Reactive power set point (MVar)',
     remoteRegulatedTerminal: 'Remote regulated terminal',
     regulatingTerminalVLId: 'Voltage Level ID',
     regulatingTerminalConnectableId: 'Equipment ID',

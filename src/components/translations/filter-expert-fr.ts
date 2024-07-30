@@ -125,7 +125,7 @@ const filterExpertFr = {
     'regulationMode.reactivePower': 'Réglage du réactif',
     voltageSetPoint: 'Tension',
     activePowerSetPoint: 'Consigne de puissance active (MW)',
-    reactivePowerSetPoint: 'Consigne de puissance réactive (MVAR)',
+    reactivePowerSetPoint: 'Consigne de puissance réactive (MVar)',
     remoteRegulatedTerminal: 'Terminal distant réglé',
     regulatingTerminalVLId: 'ID de poste',
     regulatingTerminalConnectableId: "ID d'ouvrage",
