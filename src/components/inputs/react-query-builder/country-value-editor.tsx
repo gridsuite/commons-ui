@@ -40,7 +40,6 @@ function CountryValueEditor(props: ValueEditorProps) {
     }, [setFavoriteCountryCodes]);
 
     useEffect(() => {
-        // fetches and set the default country
         fetchDefaultCountry().then((countryCode) => {
             if (countryCode) {
                 setDefaultCountry(countryCode);
@@ -80,7 +79,6 @@ function CountryValueEditor(props: ValueEditorProps) {
     }, [defaultCountry, value]);
 
     return (
-        // any number of country may be selected
         <Autocomplete
             value={checkForDefaultValue}
             options={allCountryCodes}
