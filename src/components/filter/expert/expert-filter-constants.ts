@@ -460,17 +460,7 @@ export const FIELDS_OPTIONS = {
         label: 'voltageLevelId2',
         dataType: DataType.STRING,
     },
-    VOLTAGE_LEVEL_ID_1_3WT: {
-        name: FieldType.VOLTAGE_LEVEL_ID_1,
-        label: 'voltageLevelId1Twt',
-        dataType: DataType.STRING,
-    },
-    VOLTAGE_LEVEL_ID_2_3WT: {
-        name: FieldType.VOLTAGE_LEVEL_ID_2,
-        label: 'voltageLevelId2Twt',
-        dataType: DataType.STRING,
-    },
-    VOLTAGE_LEVEL_ID_3_3WT: {
+    VOLTAGE_LEVEL_ID_3: {
         name: FieldType.VOLTAGE_LEVEL_ID_3,
         label: 'voltageLevelId3Twt',
         dataType: DataType.STRING,
@@ -487,19 +477,7 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
-    NOMINAL_VOLTAGE_1_3WT: {
-        name: FieldType.NOMINAL_VOLTAGE_1,
-        label: 'nominalVoltage1KVTwt',
-        dataType: DataType.NUMBER,
-        inputType: 'number',
-    },
-    NOMINAL_VOLTAGE_2_3WT: {
-        name: FieldType.NOMINAL_VOLTAGE_2,
-        label: 'nominalVoltage2KVTwt',
-        dataType: DataType.NUMBER,
-        inputType: 'number',
-    },
-    NOMINAL_VOLTAGE_3_3WT: {
+    NOMINAL_VOLTAGE_3: {
         name: FieldType.NOMINAL_VOLTAGE_3,
         label: 'nominalVoltage3KVTwt',
         dataType: DataType.NUMBER,
@@ -517,25 +495,13 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
-    RATED_VOLTAGE_0_3WT: {
+    RATED_VOLTAGE_0: {
         name: FieldType.RATED_VOLTAGE_0,
         label: 'ratedVoltage0KVTwt',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
-    RATED_VOLTAGE_1_3WT: {
-        name: FieldType.RATED_VOLTAGE_1,
-        label: 'ratedVoltage1KVTwt',
-        dataType: DataType.NUMBER,
-        inputType: 'number',
-    },
-    RATED_VOLTAGE_2_3WT: {
-        name: FieldType.RATED_VOLTAGE_2,
-        label: 'ratedVoltage2KVTwt',
-        dataType: DataType.NUMBER,
-        inputType: 'number',
-    },
-    RATED_VOLTAGE_3_3WT: {
+    RATED_VOLTAGE_3: {
         name: FieldType.RATED_VOLTAGE_3,
         label: 'ratedVoltage3KVTwt',
         dataType: DataType.NUMBER,
@@ -907,21 +873,7 @@ export const FIELDS_OPTIONS = {
         valueEditorType: 'select',
         defaultValue: '',
     },
-    SUBSTATION_PROPERTY_1_3WT: {
-        name: FieldType.SUBSTATION_PROPERTY_1,
-        label: 'substationProperty1Twt',
-        dataType: DataType.PROPERTY,
-        valueEditorType: 'select',
-        defaultValue: '',
-    },
-    SUBSTATION_PROPERTY_2_3WT: {
-        name: FieldType.SUBSTATION_PROPERTY_2,
-        label: 'substationProperty2Twt',
-        dataType: DataType.PROPERTY,
-        valueEditorType: 'select',
-        defaultValue: '',
-    },
-    SUBSTATION_PROPERTY_3_3WT: {
+    SUBSTATION_PROPERTY_3: {
         name: FieldType.SUBSTATION_PROPERTY_3,
         label: 'substationProperty3Twt',
         dataType: DataType.PROPERTY,
@@ -949,21 +901,7 @@ export const FIELDS_OPTIONS = {
         valueEditorType: 'select',
         defaultValue: '',
     },
-    VOLTAGE_LEVEL_PROPERTY_1_3WT: {
-        name: FieldType.VOLTAGE_LEVEL_PROPERTY_1,
-        label: 'voltageLevelProperty1Twt',
-        dataType: DataType.PROPERTY,
-        valueEditorType: 'select',
-        defaultValue: '',
-    },
-    VOLTAGE_LEVEL_PROPERTY_2_3WT: {
-        name: FieldType.VOLTAGE_LEVEL_PROPERTY_2,
-        label: 'voltageLevelProperty2Twt',
-        dataType: DataType.PROPERTY,
-        valueEditorType: 'select',
-        defaultValue: '',
-    },
-    VOLTAGE_LEVEL_PROPERTY_3_3WT: {
+    VOLTAGE_LEVEL_PROPERTY_3: {
         name: FieldType.VOLTAGE_LEVEL_PROPERTY_3,
         label: 'voltageLevelProperty3Twt',
         dataType: DataType.PROPERTY,
@@ -1191,19 +1129,37 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.ID,
         FIELDS_OPTIONS.NAME,
         FIELDS_OPTIONS.COUNTRY,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_3_3WT,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_3_3WT,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_3_3WT,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_1_3WT,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_2_3WT,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_3_3WT,
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2.label}Twt`,
+        },
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_3,
+        {
+            ...FIELDS_OPTIONS.NOMINAL_VOLTAGE_1,
+            label: `${FIELDS_OPTIONS.NOMINAL_VOLTAGE_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.NOMINAL_VOLTAGE_2,
+            label: `${FIELDS_OPTIONS.NOMINAL_VOLTAGE_2.label}Twt`,
+        },
+        FIELDS_OPTIONS.NOMINAL_VOLTAGE_3,
         FIELDS_OPTIONS.CONNECTED_1_3WT,
         FIELDS_OPTIONS.CONNECTED_2_3WT,
         FIELDS_OPTIONS.CONNECTED_3_3WT,
-        FIELDS_OPTIONS.RATED_VOLTAGE_0_3WT,
-        FIELDS_OPTIONS.RATED_VOLTAGE_1_3WT,
-        FIELDS_OPTIONS.RATED_VOLTAGE_2_3WT,
-        FIELDS_OPTIONS.RATED_VOLTAGE_3_3WT,
+        FIELDS_OPTIONS.RATED_VOLTAGE_0,
+        {
+            ...FIELDS_OPTIONS.RATED_VOLTAGE_1,
+            label: `${FIELDS_OPTIONS.RATED_VOLTAGE_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.RATED_VOLTAGE_2,
+            label: `${FIELDS_OPTIONS.RATED_VOLTAGE_2.label}Twt`,
+        },
+        FIELDS_OPTIONS.RATED_VOLTAGE_3,
         FIELDS_OPTIONS.RATED_S1,
         FIELDS_OPTIONS.RATED_S2,
         FIELDS_OPTIONS.RATED_S3,
@@ -1241,12 +1197,24 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.PHASE_REGULATION_MODE_2,
         FIELDS_OPTIONS.PHASE_REGULATION_MODE_3,
         FIELDS_OPTIONS.PROPERTY,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_1_3WT,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_2_3WT,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_3_3WT,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1_3WT,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2_3WT,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_3_3WT,
+        {
+            ...FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
+            label: `${FIELDS_OPTIONS.SUBSTATION_PROPERTY_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+            label: `${FIELDS_OPTIONS.SUBSTATION_PROPERTY_2.label}Twt`,
+        },
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY_3,
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2.label}Twt`,
+        },
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_3,
     ],
     GENERATOR: [
         FIELDS_OPTIONS.ID,
