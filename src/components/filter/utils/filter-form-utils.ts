@@ -152,7 +152,7 @@ export const FILTER_EQUIPMENTS: Record<
     SUBSTATION: {
         id: 'SUBSTATION',
         label: 'Substations',
-        fields: [countries, nominalVoltage],
+        fields: [countries],
     },
     VOLTAGE_LEVEL: {
         id: 'VOLTAGE_LEVEL',
