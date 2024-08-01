@@ -11,4 +11,4 @@ export type {
     AuthenticationRouterErrorState,
     AuthenticationRouterProps,
     UserManagerState,
-} from './AuthenticationRouter';
+} from './authenticationType';
