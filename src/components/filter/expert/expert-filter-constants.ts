@@ -429,21 +429,7 @@ export const FIELDS_OPTIONS = {
         defaultValue: false,
         valueEditorType: 'switch',
     },
-    CONNECTED_1_3WT: {
-        name: FieldType.CONNECTED_1,
-        label: 'terminal1ConnectedTwt',
-        dataType: DataType.BOOLEAN,
-        defaultValue: false,
-        valueEditorType: 'switch',
-    },
-    CONNECTED_2_3WT: {
-        name: FieldType.CONNECTED_2,
-        label: 'terminal2ConnectedTwt',
-        dataType: DataType.BOOLEAN,
-        defaultValue: false,
-        valueEditorType: 'switch',
-    },
-    CONNECTED_3_3WT: {
+    CONNECTED_3: {
         name: FieldType.CONNECTED_3,
         label: 'terminal3ConnectedTwt',
         dataType: DataType.BOOLEAN,
@@ -1147,9 +1133,15 @@ export const fields: Record<string, Field[]> = {
             label: `${FIELDS_OPTIONS.NOMINAL_VOLTAGE_2.label}Twt`,
         },
         FIELDS_OPTIONS.NOMINAL_VOLTAGE_3,
-        FIELDS_OPTIONS.CONNECTED_1_3WT,
-        FIELDS_OPTIONS.CONNECTED_2_3WT,
-        FIELDS_OPTIONS.CONNECTED_3_3WT,
+        {
+            ...FIELDS_OPTIONS.CONNECTED_1,
+            label: `${FIELDS_OPTIONS.CONNECTED_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.CONNECTED_2,
+            label: `${FIELDS_OPTIONS.CONNECTED_2.label}Twt`,
+        },
+        FIELDS_OPTIONS.CONNECTED_3,
         FIELDS_OPTIONS.RATED_VOLTAGE_0,
         {
             ...FIELDS_OPTIONS.RATED_VOLTAGE_1,
