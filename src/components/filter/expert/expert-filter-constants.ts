@@ -431,7 +431,7 @@ export const FIELDS_OPTIONS = {
     },
     CONNECTED_3: {
         name: FieldType.CONNECTED_3,
-        label: 'terminal3Connected',
+        label: 'terminal3ConnectedTwt',
         dataType: DataType.BOOLEAN,
         defaultValue: false,
         valueEditorType: 'switch',
@@ -448,7 +448,7 @@ export const FIELDS_OPTIONS = {
     },
     VOLTAGE_LEVEL_ID_3: {
         name: FieldType.VOLTAGE_LEVEL_ID_3,
-        label: 'voltageLevelId3',
+        label: 'voltageLevelId3Twt',
         dataType: DataType.STRING,
     },
     NOMINAL_VOLTAGE_1: {
@@ -465,13 +465,7 @@ export const FIELDS_OPTIONS = {
     },
     NOMINAL_VOLTAGE_3: {
         name: FieldType.NOMINAL_VOLTAGE_3,
-        label: 'nominalVoltage3KV',
-        dataType: DataType.NUMBER,
-        inputType: 'number',
-    },
-    RATED_VOLTAGE_0: {
-        name: FieldType.RATED_VOLTAGE_0,
-        label: 'ratedVoltage0KV',
+        label: 'nominalVoltage3KVTwt',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
@@ -487,9 +481,15 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    RATED_VOLTAGE_0: {
+        name: FieldType.RATED_VOLTAGE_0,
+        label: 'ratedVoltage0KVTwt',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
     RATED_VOLTAGE_3: {
         name: FieldType.RATED_VOLTAGE_3,
-        label: 'ratedVoltage3KV',
+        label: 'ratedVoltage3KVTwt',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
@@ -861,7 +861,7 @@ export const FIELDS_OPTIONS = {
     },
     SUBSTATION_PROPERTY_3: {
         name: FieldType.SUBSTATION_PROPERTY_3,
-        label: 'substationProperty3',
+        label: 'substationProperty3Twt',
         dataType: DataType.PROPERTY,
         valueEditorType: 'select',
         defaultValue: '',
@@ -889,7 +889,7 @@ export const FIELDS_OPTIONS = {
     },
     VOLTAGE_LEVEL_PROPERTY_3: {
         name: FieldType.VOLTAGE_LEVEL_PROPERTY_3,
-        label: 'voltageLevelProperty3',
+        label: 'voltageLevelProperty3Twt',
         dataType: DataType.PROPERTY,
         valueEditorType: 'select',
         defaultValue: '',
@@ -1115,18 +1115,42 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.ID,
         FIELDS_OPTIONS.NAME,
         FIELDS_OPTIONS.COUNTRY,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2,
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_2.label}Twt`,
+        },
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID_3,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_1,
-        FIELDS_OPTIONS.NOMINAL_VOLTAGE_2,
+        {
+            ...FIELDS_OPTIONS.NOMINAL_VOLTAGE_1,
+            label: `${FIELDS_OPTIONS.NOMINAL_VOLTAGE_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.NOMINAL_VOLTAGE_2,
+            label: `${FIELDS_OPTIONS.NOMINAL_VOLTAGE_2.label}Twt`,
+        },
         FIELDS_OPTIONS.NOMINAL_VOLTAGE_3,
-        FIELDS_OPTIONS.CONNECTED_1,
-        FIELDS_OPTIONS.CONNECTED_2,
+        {
+            ...FIELDS_OPTIONS.CONNECTED_1,
+            label: `${FIELDS_OPTIONS.CONNECTED_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.CONNECTED_2,
+            label: `${FIELDS_OPTIONS.CONNECTED_2.label}Twt`,
+        },
         FIELDS_OPTIONS.CONNECTED_3,
         FIELDS_OPTIONS.RATED_VOLTAGE_0,
-        FIELDS_OPTIONS.RATED_VOLTAGE_1,
-        FIELDS_OPTIONS.RATED_VOLTAGE_2,
+        {
+            ...FIELDS_OPTIONS.RATED_VOLTAGE_1,
+            label: `${FIELDS_OPTIONS.RATED_VOLTAGE_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.RATED_VOLTAGE_2,
+            label: `${FIELDS_OPTIONS.RATED_VOLTAGE_2.label}Twt`,
+        },
         FIELDS_OPTIONS.RATED_VOLTAGE_3,
         FIELDS_OPTIONS.RATED_S1,
         FIELDS_OPTIONS.RATED_S2,
@@ -1165,11 +1189,23 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.PHASE_REGULATION_MODE_2,
         FIELDS_OPTIONS.PHASE_REGULATION_MODE_3,
         FIELDS_OPTIONS.PROPERTY,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+        {
+            ...FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
+            label: `${FIELDS_OPTIONS.SUBSTATION_PROPERTY_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+            label: `${FIELDS_OPTIONS.SUBSTATION_PROPERTY_2.label}Twt`,
+        },
         FIELDS_OPTIONS.SUBSTATION_PROPERTY_3,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
-        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1.label}Twt`,
+        },
+        {
+            ...FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
+            label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2.label}Twt`,
+        },
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_3,
     ],
     GENERATOR: [
