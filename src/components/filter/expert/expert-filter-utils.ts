@@ -128,7 +128,8 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 field.name === FieldType.ID ||
                 field.name === FieldType.VOLTAGE_LEVEL_ID ||
                 field.name === FieldType.VOLTAGE_LEVEL_ID_1 ||
-                field.name === FieldType.VOLTAGE_LEVEL_ID_2
+                field.name === FieldType.VOLTAGE_LEVEL_ID_2 ||
+                field.name === FieldType.VOLTAGE_LEVEL_ID_3
             ) {
                 // two additional operators when fields ID or VOLTAGE_LEVEL_ID are selected
                 stringOperators.push(OPERATOR_OPTIONS.IS_PART_OF);

@@ -61,7 +61,8 @@ function ValueEditor(props: ValueEditorProps) {
                             getValues(FieldConstants.EQUIPMENT_TYPE)) ||
                         ((field === FieldType.VOLTAGE_LEVEL_ID ||
                             field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-                            field === FieldType.VOLTAGE_LEVEL_ID_2) &&
+                            field === FieldType.VOLTAGE_LEVEL_ID_2 ||
+                            field === FieldType.VOLTAGE_LEVEL_ID_3) &&
                             filterValue?.specificMetadata?.equipmentType ===
                                 VoltageLevel.type))
                 );
@@ -78,6 +79,7 @@ function ValueEditor(props: ValueEditorProps) {
         // No value needed for these operators
         return null;
     }
+
     if (
         [FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(
             field as FieldType
@@ -85,17 +87,11 @@ function ValueEditor(props: ValueEditorProps) {
     ) {
         return <CountryValueEditor {...props} />;
     }
-    if (
-        field === FieldType.REGULATION_TYPE ||
-        field === FieldType.SVAR_REGULATION_MODE ||
-        field === FieldType.ENERGY_SOURCE ||
-        field === FieldType.SHUNT_COMPENSATOR_TYPE ||
-        field === FieldType.LOAD_TYPE ||
-        field === FieldType.RATIO_REGULATION_MODE ||
-        field === FieldType.PHASE_REGULATION_MODE
-    ) {
+
+    if (fieldData.dataType === DataType.ENUM) {
         return <TranslatedValueEditor {...props} />;
     }
+
     if (
         operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
         operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
@@ -104,7 +100,8 @@ function ValueEditor(props: ValueEditorProps) {
         if (
             field === FieldType.VOLTAGE_LEVEL_ID ||
             field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-            field === FieldType.VOLTAGE_LEVEL_ID_2
+            field === FieldType.VOLTAGE_LEVEL_ID_2 ||
+            field === FieldType.VOLTAGE_LEVEL_ID_3
         ) {
             equipmentTypes = [VoltageLevel.type];
         } else if (field === FieldType.ID) {
@@ -126,6 +123,7 @@ function ValueEditor(props: ValueEditorProps) {
             />
         );
     }
+
     if (
         field === FieldType.ID ||
         field === FieldType.NAME ||
@@ -133,30 +131,26 @@ function ValueEditor(props: ValueEditorProps) {
         field === FieldType.REGULATING_TERMINAL_CONNECTABLE_ID ||
         field === FieldType.VOLTAGE_LEVEL_ID ||
         field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-        field === FieldType.VOLTAGE_LEVEL_ID_2
+        field === FieldType.VOLTAGE_LEVEL_ID_2 ||
+        field === FieldType.VOLTAGE_LEVEL_ID_3
     ) {
         return <TextValueEditor {...props} />;
     }
-    if (
-        field === FieldType.PROPERTY ||
-        field === FieldType.SUBSTATION_PROPERTY ||
-        field === FieldType.SUBSTATION_PROPERTY_1 ||
-        field === FieldType.SUBSTATION_PROPERTY_2 ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
-    ) {
+
+    if (fieldData.dataType === DataType.PROPERTY) {
         let equipmentType;
         if (
             field === FieldType.SUBSTATION_PROPERTY ||
             field === FieldType.SUBSTATION_PROPERTY_1 ||
-            field === FieldType.SUBSTATION_PROPERTY_2
+            field === FieldType.SUBSTATION_PROPERTY_2 ||
+            field === FieldType.SUBSTATION_PROPERTY_3
         ) {
             equipmentType = Substation.type;
         } else if (
             field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
             field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
-            field === FieldType.VOLTAGE_LEVEL_PROPERTY_2
+            field === FieldType.VOLTAGE_LEVEL_PROPERTY_2 ||
+            field === FieldType.VOLTAGE_LEVEL_PROPERTY_3
         ) {
             equipmentType = VoltageLevel.type;
         } else {
@@ -170,6 +164,7 @@ function ValueEditor(props: ValueEditorProps) {
             />
         );
     }
+
     if (fieldData.dataType === DataType.COMBINATOR) {
         return <GroupValueEditor {...props} />;
     }
