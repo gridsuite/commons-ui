@@ -26,6 +26,7 @@ function CountryValueEditor(props: ValueEditorProps) {
     const { translate, countryCodes } = useLocalizedCountries(language);
     const { value, handleOnChange } = props;
     const [allCountryCodes, setAllCountryCodes] = useState(countryCodes);
+    const [setByUser, setSetByUser] = useState<boolean>(false);
     const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>(
         []
     );
@@ -67,16 +68,18 @@ function CountryValueEditor(props: ValueEditorProps) {
     const valid = useValid(props);
 
     const checkForDefaultValue = useMemo(() => {
-        if (defaultCountry !== undefined) {
-            if (value === undefined || value === '') {
-                return defaultCountry;
-            }
-            if (Array.isArray(value) && !value.length) {
-                return [defaultCountry];
+        if (!setByUser) {
+            if (defaultCountry !== undefined) {
+                if (Array.isArray(value) && !value.length) {
+                    return [defaultCountry];
+                }
+                if (value === undefined || value === '') {
+                    return defaultCountry;
+                }
             }
         }
         return value;
-    }, [defaultCountry, value]);
+    }, [defaultCountry, value, setByUser]);
 
     return (
         <Autocomplete
@@ -85,7 +88,10 @@ function CountryValueEditor(props: ValueEditorProps) {
             getOptionLabel={(code: string) =>
                 code === '' ? '' : translate(code)
             }
-            onChange={(event, newValue: any) => handleOnChange(newValue)}
+            onChange={(event, newValue: any) => {
+                setSetByUser(true);
+                handleOnChange(newValue);
+            }}
             groupBy={(option: string) => {
                 return favoriteCountryCodes.includes(option)
                     ? `fav`
