@@ -17,6 +17,7 @@ import {
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import Websocket from '../Websocket';
 import useListener from '../hooks/useListener';
+import { waitFor } from '@testing-library/react';
 
 jest.mock('reconnecting-websocket');
 let container: Element;
@@ -63,7 +64,7 @@ describe('Websocket', () => {
         expect(lastMsg?.textContent).toEqual('Child');
     });
 
-    test('renders Websocket children component and updated by event ', () => {
+    test('renders Websocket children component and updated by event ', async () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
@@ -91,7 +92,7 @@ describe('Websocket', () => {
             reconnectingWebSocketClass.onmessage(event);
         });
 
-        expect(eventCallback).toBeCalledWith(event);
+        waitFor(() => expect(eventCallback).toBeCalledWith(event));
     });
 
     test('renders Websocket children component not called with other key ', () => {
