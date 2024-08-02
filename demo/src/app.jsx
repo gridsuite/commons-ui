@@ -329,6 +329,8 @@ function AppContent({ language, onLanguageClick }) {
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
         useState(false);
     const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
+    const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] =
+        useState(false);
     const [
         openTreeViewFinderDialogCustomDialog,
         setOpenTreeViewFinderDialogCustomDialog,
@@ -578,10 +580,10 @@ function AppContent({ language, onLanguageClick }) {
     }
 
     const [checkBoxListOption, setCheckBoxListOption] = useState([
-        'option 1',
-        'option 2',
-        'option 3',
-        'option 4',
+        { id: 'kiki', label: 'inputs/kiki' },
+        { id: 'ney', label: 'inputs/ney' },
+        { id: 'lapulga', label: 'inputs/lapulga' },
+        { id: 'ibra', label: 'inputs/ibra' },
     ]);
 
     const secondaryAction = () => (
@@ -620,12 +622,38 @@ function AppContent({ language, onLanguageClick }) {
                 options={checkBoxListOption}
                 selectedOptions={[]}
                 open={openMultiChoiceDialog}
-                getOptionLabel={(o) => o}
+                getOptionLabel={(o) => o.label}
+                getOptionId={(o) => o.id}
                 handleClose={() => setOpenMultiChoiceDialog(false)}
                 handleValidate={() => setOpenMultiChoiceDialog(false)}
                 titleId="Checkbox list"
+                divider={false}
                 secondaryAction={secondaryAction}
-                isCheckBoxDraggable
+                addSelectAllCheckbox={false}
+            />
+
+            <Button
+                variant="contained"
+                style={{
+                    float: 'left',
+                    margin: '5px',
+                }}
+                onClick={() => setOpenDraggableMultiChoiceDialog(true)}
+            >
+                Draggable checkbox list
+            </Button>
+            <MultipleSelectionDialog
+                options={checkBoxListOption}
+                selectedOptions={[]}
+                open={openDraggableMultiChoiceDialog}
+                getOptionLabel={(o) => o.label}
+                getOptionId={(o) => o.id}
+                handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
+                handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
+                titleId="Draggable checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                isDndDragAndDropActive
                 onDragEnd={({ source, destination }) => {
                     if (
                         destination !== null &&

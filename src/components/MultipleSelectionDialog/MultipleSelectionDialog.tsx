@@ -16,39 +16,41 @@ import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
 import { CheckboxList } from '../CheckBoxList/check-box-list';
 
-export interface MultipleSelectionDialogProps {
-    options: string[];
-    selectedOptions: string[];
+export interface MultipleSelectionDialogProps<T> {
+    options: T[];
+    selectedOptions: T[];
     open: boolean;
-    getOptionLabel: (option: string) => string;
+    getOptionLabel: (option: T) => string;
+    getOptionId: (option: T) => string;
     handleClose: () => void;
-    handleValidate: (ids: string[]) => void;
+    handleValidate: (options: T[]) => void;
     titleId: string;
 }
 
-function MultipleSelectionDialog({
+function MultipleSelectionDialog<T>({
     options,
     selectedOptions,
     open,
+    getOptionId,
     getOptionLabel,
     handleClose,
     handleValidate,
     titleId,
     ...props
-}: MultipleSelectionDialogProps) {
+}: MultipleSelectionDialogProps<T>) {
     const [selectedIds, setSelectedIds] = useState(selectedOptions ?? []);
     return (
         <Dialog open={open} fullWidth>
             <DialogTitle>{titleId}</DialogTitle>
             <DialogContent>
-                <CheckboxList
-                    values={options}
+                <CheckboxList<T>
+                    items={options}
                     selectedItems={selectedIds}
                     onSelectionChange={(values: any[]) =>
                         setSelectedIds(values)
                     }
-                    getValueId={(v) => v}
-                    getValueLabel={getOptionLabel}
+                    getItemId={getOptionId}
+                    getItemLabel={getOptionLabel}
                     addSelectAllCheckbox
                     {...props}
                 />

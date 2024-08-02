@@ -358,13 +358,14 @@ export function FlatParameters({
                                         ),
                                     }}
                                 />
-                                <MultipleSelectionDialog
+                                <MultipleSelectionDialog<string>
                                     options={allOptions}
                                     titleId={getSelectionDialogName(param.name)}
                                     open={openSelector}
                                     getOptionLabel={(option) =>
                                         getTranslatedValue(param.name, option)
                                     }
+                                    getOptionId={(o) => o}
                                     selectedOptions={fieldValue}
                                     handleClose={() => setOpenSelector(false)}
                                     handleValidate={(selectedOptions) => {
