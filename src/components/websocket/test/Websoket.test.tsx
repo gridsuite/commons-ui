@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { createRoot } from 'react-dom/client';
+import { waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import {
     afterEach,
@@ -17,7 +18,6 @@ import {
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import Websocket from '../Websocket';
 import useListener from '../hooks/useListener';
-import { waitFor } from '@testing-library/react';
 
 jest.mock('reconnecting-websocket');
 let container: Element;
