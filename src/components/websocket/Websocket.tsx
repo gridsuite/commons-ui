@@ -28,6 +28,13 @@ function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
         }, {} as Record<string, ListenerWS[]>)
     );
 
+    useEffect(() => {
+        urlsListenersRef.current = Object.keys(urls).reduce((acc, urlKey) => {
+            acc[urlKey] = [];
+            return acc;
+        }, {} as Record<string, ListenerWS[]>);
+    }, [urls]);
+
     const broadcastMessage = useCallback(
         (urlKey: string) => (event: MessageEvent) => {
             const listenerList = urlsListenersRef.current?.[urlKey];
