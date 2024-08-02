@@ -7,12 +7,8 @@
 // @author Quentin CAPY
 
 import { useContext, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { WSContext } from '../contexts/WSContext';
-
-export const randomUniqueID = (length: number) =>
-    Math.random()
-        .toString(36)
-        .slice(13 - Math.min(length, 13));
 
 const useListener = (
     listenerKey: string,
@@ -21,7 +17,7 @@ const useListener = (
 ) => {
     const { addListener, removeListener } = useContext(WSContext);
     useEffect(() => {
-        const id = propsId ?? randomUniqueID(13);
+        const id = propsId ?? uuidv4();
         addListener(listenerKey, {
             id,
             callback: listenerCallback,
