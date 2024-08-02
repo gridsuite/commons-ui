@@ -1,12 +1,12 @@
-/* eslint-disable no-template-curly-in-string */
 /**
  * Copyright (c) 2021, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+/* eslint-disable no-template-curly-in-string */
 
-export const LOGS_JSON = {
+const LOGS_JSON = {
     taskKey: 'Test',
     defaultName: 'Test',
     taskValues: {},
@@ -230,3 +230,5 @@ export const LOGS_JSON = {
     ],
     reports: [],
 };
+
+export default LOGS_JSON;

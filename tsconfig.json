@@ -1,0 +1,20 @@
+{
+    // Inspired by TSConfig base for Vite React and what is recommended for bundler and library
+    // https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#tsconfig-bases
+    // https://www.npmjs.com/package/@tsconfig/vite-react
+    // https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
+    "compilerOptions": {
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "target": "es6",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx"
+    },
+    "include": ["src", "demo"] // we can let demo because the file generation is managed my vite and we have noEmit anyway
+}
