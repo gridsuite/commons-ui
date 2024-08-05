@@ -177,8 +177,8 @@ const filterExpertFr = {
     shuntSusceptance1: 'Susceptance parallèle 1 (μS)',
     shuntConductance2: 'Conductance parallèle 2 (μS)',
     shuntSusceptance2: 'Susceptance parallèle 2 (μS)',
-    pairingKey: 'clé d\'appareillement',
-    tieLineId: 'Id de la ',
+    pairingKey: "clé d'appareillement",
+    tieLineId: "Id de l'interconnexion",
 };
 
 export default filterExpertFr;
