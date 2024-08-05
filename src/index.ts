@@ -62,7 +62,7 @@ export {
     rqbQuerySchemaValidator,
     getExpertFilterEmptyFormData,
 } from './components/filter/expert/expert-filter-form';
-export { importExpertRules, exportExpertRules } from './components/filter/expert/expert-filter-utils';
+export { importExpertRules, exportExpertRules, searchTree } from './components/filter/expert/expert-filter-utils';
 export type { RuleTypeExport, RuleGroupTypeExport } from './components/filter/expert/expert-filter.type';
 export { formatQuery } from 'react-querybuilder';
 
@@ -163,6 +163,7 @@ export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
+export { default as usePredefinedProperties } from './hooks/predefined-properties-hook';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export { default as useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
