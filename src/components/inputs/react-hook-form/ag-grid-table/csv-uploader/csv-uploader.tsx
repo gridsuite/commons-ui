@@ -53,8 +53,7 @@ function CsvUploader({
     const intl = useIntl();
     const { CSVReader } = useCSVReader();
     const [importedData, setImportedData] = useState<any>([]);
-    const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] =
-        useState(false);
+    const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
 
     const data = useMemo(() => {
         const newData = [...[fileHeaders]];
@@ -77,9 +76,7 @@ function CsvUploader({
         // validate the headers
         for (let i = 0; i < fileHeaders.length; i++) {
             if (fileHeaders[i] !== '' && rows[0][i] !== fileHeaders[i]) {
-                setCreateError(
-                    intl.formatMessage({ id: 'wrongCsvHeadersError' })
-                );
+                setCreateError(intl.formatMessage({ id: 'wrongCsvHeadersError' }));
                 return false;
             }
         }
@@ -126,15 +123,8 @@ function CsvUploader({
                 (val) =>
                     val &&
                     Object.keys(val)
-                        .filter(
-                            (key) => key !== FieldConstants.AG_GRID_ROW_UUID
-                        )
-                        .some(
-                            (e) =>
-                                val[e] !== undefined &&
-                                val[e] !== null &&
-                                String(val[e]).trim().length > 0
-                        )
+                        .filter((key) => key !== FieldConstants.AG_GRID_ROW_UUID)
+                        .some((e) => val[e] !== undefined && val[e] !== null && String(val[e]).trim().length > 0)
             );
 
         if (isValuesInTable && getResultsFromImportedData().length > 0) {
@@ -160,30 +150,17 @@ function CsvUploader({
     };
     const renderConfirmationCsvData = () => {
         return (
-            <Dialog
-                open={isConfirmationPopupOpen}
-                aria-labelledby="dialog-confirmation-csv-data"
-            >
-                <DialogTitle id="dialog-confirmation-csv-data">
-                    Confirmation
-                </DialogTitle>
+            <Dialog open={isConfirmationPopupOpen} aria-labelledby="dialog-confirmation-csv-data">
+                <DialogTitle id="dialog-confirmation-csv-data">Confirmation</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {intl.formatMessage({ id: 'keepCSVDataMessage' })}
-                    </DialogContentText>
+                    <DialogContentText>{intl.formatMessage({ id: 'keepCSVDataMessage' })}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancelDialog} />
-                    <Button
-                        onClick={() => handleReplacePopupConfirmation()}
-                        variant="outlined"
-                    >
+                    <Button onClick={() => handleReplacePopupConfirmation()} variant="outlined">
                         <FormattedMessage id="replace" />
                     </Button>
-                    <Button
-                        onClick={() => handleAddPopupConfirmation()}
-                        variant="outlined"
-                    >
+                    <Button onClick={() => handleAddPopupConfirmation()} variant="outlined">
                         <FormattedMessage id="add" />
                     </Button>
                 </DialogActions>
@@ -200,11 +177,7 @@ function CsvUploader({
                         <Grid container spacing={2}>
                             <Grid container item>
                                 <Grid item xs={6}>
-                                    <CsvDownloader
-                                        datas={data}
-                                        filename={fileName}
-                                        separator=","
-                                    >
+                                    <CsvDownloader datas={data} filename={fileName} separator=",">
                                         <Button variant="contained">
                                             <FormattedMessage id="GenerateCSV" />
                                         </Button>
@@ -219,21 +192,12 @@ function CsvUploader({
                                     }}
                                     config={{
                                         // We use | for multi values in one cell, then we remove it from the default value for this config, to avoid delimiter autodetection
-                                        delimitersToGuess: [
-                                            ',',
-                                            '	',
-                                            ';',
-                                            RECORD_SEP,
-                                            UNIT_SEP,
-                                        ],
+                                        delimitersToGuess: [',', '	', ';', RECORD_SEP, UNIT_SEP],
                                     }}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (
                                         <Grid item>
-                                            <Button
-                                                {...getRootProps()}
-                                                variant="contained"
-                                            >
+                                            <Button {...getRootProps()} variant="contained">
                                                 <FormattedMessage id="UploadCSV" />
                                             </Button>
                                             <span
@@ -253,9 +217,7 @@ function CsvUploader({
                                 </CSVReader>
                             </Grid>
                         </Grid>
-                        {createError !== '' && (
-                            <Alert severity="error">{createError}</Alert>
-                        )}
+                        {createError !== '' && <Alert severity="error">{createError}</Alert>}
                     </div>
                 </DialogContent>
                 <DialogActions>

@@ -5,13 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    MouseEvent,
-    PropsWithChildren,
-    ReactNode,
-    useMemo,
-    useState,
-} from 'react';
+import { MouseEvent, PropsWithChildren, ReactNode, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import {
@@ -203,11 +197,8 @@ function TopBar({
     onLanguageClick,
     language,
 }: PropsWithChildren<TopBarProps>) {
-    const [anchorElSettingsMenu, setAnchorElSettingsMenu] =
-        useState<Element | null>(null);
-    const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(
-        null
-    );
+    const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
+    const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
 
     const handleToggleSettingsMenu = (event: MouseEvent) => {
         setAnchorElSettingsMenu(event.currentTarget);
@@ -270,14 +261,7 @@ function TopBar({
     };
 
     const logoClickable = useMemo(
-        () => (
-            <GridLogo
-                onClick={onLogoClick}
-                appLogo={appLogo}
-                appName={appName}
-                appColor={appColor}
-            />
-        ),
+        () => <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} />,
         [onLogoClick, appLogo, appName, appColor]
     );
 
@@ -318,9 +302,7 @@ function TopBar({
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            <StyledMenuItem
-                                                onClick={handleCloseAppsMenu}
-                                            >
+                                            <StyledMenuItem onClick={handleCloseAppsMenu}>
                                                 <ListItemText>
                                                     <span
                                                         style={{
@@ -331,11 +313,7 @@ function TopBar({
                                                     </span>
                                                     <span
                                                         style={{
-                                                            color:
-                                                                item.appColor ===
-                                                                undefined
-                                                                    ? 'grey'
-                                                                    : item.appColor,
+                                                            color: item.appColor === undefined ? 'grey' : item.appColor,
                                                             fontWeight: 'bold',
                                                         }}
                                                     >
@@ -357,11 +335,7 @@ function TopBar({
                             sx={styles.showHideMenu}
                             onClick={handleToggleSettingsMenu}
                             color="inherit"
-                            style={
-                                anchorElSettingsMenu
-                                    ? { cursor: 'initial' }
-                                    : { cursor: 'pointer' }
-                            }
+                            style={anchorElSettingsMenu ? { cursor: 'initial' } : { cursor: 'pointer' }}
                         >
                             <Box component="span" sx={styles.name}>
                                 {user !== null
@@ -385,31 +359,18 @@ function TopBar({
                             anchorEl={anchorElSettingsMenu}
                         >
                             <Paper>
-                                <ClickAwayListener
-                                    onClickAway={handleCloseSettingsMenu}
-                                >
+                                <ClickAwayListener onClickAway={handleCloseSettingsMenu}>
                                     <MenuList id="settings-menu">
                                         {/* user info */}
-                                        <StyledMenuItem
-                                            sx={styles.borderBottom}
-                                            disabled
-                                            style={{ opacity: '1' }}
-                                        >
+                                        <StyledMenuItem sx={styles.borderBottom} disabled style={{ opacity: '1' }}>
                                             <CustomListItemIcon>
                                                 <PersonIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 {user !== null && (
-                                                    <Box
-                                                        component="span"
-                                                        sx={styles.sizeLabel}
-                                                    >
-                                                        {user.profile.name}{' '}
-                                                        <br />
-                                                        <Box
-                                                            component="span"
-                                                            sx={styles.userMail}
-                                                        >
+                                                    <Box component="span" sx={styles.sizeLabel}>
+                                                        {user.profile.name} <br />
+                                                        <Box component="span" sx={styles.userMail}>
                                                             {user.profile.email}
                                                         </Box>
                                                     </Box>
@@ -428,9 +389,7 @@ function TopBar({
                                             }}
                                         >
                                             <ListItemText>
-                                                <Typography
-                                                    sx={styles.sizeLabel}
-                                                >
+                                                <Typography sx={styles.sizeLabel}>
                                                     <FormattedMessage
                                                         id="top-bar/displayMode"
                                                         defaultMessage="Display mode"
@@ -471,14 +430,11 @@ function TopBar({
                                                     // padding: '0',
                                                     paddingTop: '10px',
                                                     paddingBottom: '10px',
-                                                    backgroundColor:
-                                                        'transparent',
+                                                    backgroundColor: 'transparent',
                                                 }}
                                             >
                                                 <ListItemText>
-                                                    <Typography
-                                                        sx={styles.sizeLabel}
-                                                    >
+                                                    <Typography sx={styles.sizeLabel}>
                                                         <FormattedMessage
                                                             id="top-bar/equipmentLabel"
                                                             defaultMessage="Equipment label"
@@ -488,30 +444,14 @@ function TopBar({
                                                 <ToggleButtonGroup
                                                     exclusive
                                                     value={equipmentLabelling}
-                                                    sx={
-                                                        styles.toggleButtonGroup
-                                                    }
-                                                    onChange={
-                                                        changeEquipmentLabelling
-                                                    }
+                                                    sx={styles.toggleButtonGroup}
+                                                    onChange={changeEquipmentLabelling}
                                                 >
-                                                    <ToggleButton
-                                                        value={false}
-                                                        sx={styles.toggleButton}
-                                                    >
-                                                        <FormattedMessage
-                                                            id="top-bar/id"
-                                                            defaultMessage="Id"
-                                                        />
+                                                    <ToggleButton value={false} sx={styles.toggleButton}>
+                                                        <FormattedMessage id="top-bar/id" defaultMessage="Id" />
                                                     </ToggleButton>
-                                                    <ToggleButton
-                                                        value
-                                                        sx={styles.toggleButton}
-                                                    >
-                                                        <FormattedMessage
-                                                            id="top-bar/name"
-                                                            defaultMessage="Name"
-                                                        />
+                                                    <ToggleButton value sx={styles.toggleButton}>
+                                                        <FormattedMessage id="top-bar/name" defaultMessage="Name" />
                                                     </ToggleButton>
                                                 </ToggleButtonGroup>
                                             </StyledMenuItem>
@@ -527,13 +467,8 @@ function TopBar({
                                             }}
                                         >
                                             <ListItemText>
-                                                <Typography
-                                                    sx={styles.sizeLabel}
-                                                >
-                                                    <FormattedMessage
-                                                        id="top-bar/language"
-                                                        defaultMessage="Language"
-                                                    />
+                                                <Typography sx={styles.sizeLabel}>
+                                                    <FormattedMessage id="top-bar/language" defaultMessage="Language" />
                                                 </Typography>
                                             </ListItemText>
                                             <ToggleButtonGroup
@@ -545,18 +480,14 @@ function TopBar({
                                                 <ToggleButton
                                                     value={LANG_SYSTEM}
                                                     aria-label={LANG_SYSTEM}
-                                                    sx={
-                                                        styles.languageToggleButton
-                                                    }
+                                                    sx={styles.languageToggleButton}
                                                 >
                                                     <ComputerIcon />
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={LANG_ENGLISH}
                                                     aria-label={LANG_ENGLISH}
-                                                    sx={
-                                                        styles.languageToggleButton
-                                                    }
+                                                    sx={styles.languageToggleButton}
                                                 >
                                                     {EN}
                                                 </ToggleButton>
@@ -573,17 +504,12 @@ function TopBar({
                                         {/* Settings */}
                                         {/* If the callback onParametersClicked is undefined, parameters component should be disabled */}
                                         {onParametersClick && (
-                                            <StyledMenuItem
-                                                onClick={onParametersClicked}
-                                                sx={styles.borderTop}
-                                            >
+                                            <StyledMenuItem onClick={onParametersClicked} sx={styles.borderTop}>
                                                 <CustomListItemIcon>
                                                     <SettingsIcon fontSize="small" />
                                                 </CustomListItemIcon>
                                                 <ListItemText>
-                                                    <Typography
-                                                        sx={styles.sizeLabel}
-                                                    >
+                                                    <Typography sx={styles.sizeLabel}>
                                                         <FormattedMessage
                                                             id="top-bar/settings"
                                                             defaultMessage="Settings"
@@ -604,13 +530,8 @@ function TopBar({
                                                 <HelpOutlineIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
-                                                <Typography
-                                                    sx={styles.sizeLabel}
-                                                >
-                                                    <FormattedMessage
-                                                        id="top-bar/about"
-                                                        defaultMessage="About"
-                                                    />
+                                                <Typography sx={styles.sizeLabel}>
+                                                    <FormattedMessage id="top-bar/about" defaultMessage="About" />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>
@@ -621,13 +542,8 @@ function TopBar({
                                                 <ExitToAppIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
-                                                <Typography
-                                                    sx={styles.sizeLabel}
-                                                >
-                                                    <FormattedMessage
-                                                        id="top-bar/logout"
-                                                        defaultMessage="Logout"
-                                                    />
+                                                <Typography sx={styles.sizeLabel}>
+                                                    <FormattedMessage id="top-bar/logout" defaultMessage="Logout" />
                                                 </Typography>
                                             </ListItemText>
                                         </StyledMenuItem>

@@ -6,12 +6,7 @@
  */
 
 import { MutableRefObject, useCallback } from 'react';
-import {
-    BaseVariant,
-    OptionsObject,
-    closeSnackbar as closeSnackbarFromNotistack,
-    useSnackbar,
-} from 'notistack';
+import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
 import useIntlRef from './useIntlRef';
 
@@ -37,12 +32,7 @@ function checkInputs(txt?: string, id?: string, values?: any) {
     }
 }
 
-function checkAndTranslateIfNecessary(
-    intlRef: MutableRefObject<IntlShape>,
-    txt?: string,
-    id?: string,
-    values?: any
-) {
+function checkAndTranslateIfNecessary(intlRef: MutableRefObject<IntlShape>, txt?: string, id?: string, values?: any) {
     checkInputs(txt, id, values);
     return (
         txt ??
@@ -57,10 +47,7 @@ function checkAndTranslateIfNecessary(
     );
 }
 
-function makeMessage(
-    intlRef: MutableRefObject<IntlShape>,
-    snackInputs: SnackInputs
-): string | null {
+function makeMessage(intlRef: MutableRefObject<IntlShape>, snackInputs: SnackInputs): string | null {
     const message = checkAndTranslateIfNecessary(
         intlRef,
         snackInputs.messageTxt,
@@ -120,22 +107,13 @@ export function useSnackMessage(): UseSnackMessageReturn {
               persist
             }
    */
-    const snackError = useCallback(
-        (snackInputs: SnackInputs) => enqueue(snackInputs, 'error'),
-        [enqueue]
-    );
+    const snackError = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'error'), [enqueue]);
 
     /* see snackError */
-    const snackWarning = useCallback(
-        (snackInputs: SnackInputs) => enqueue(snackInputs, 'warning'),
-        [enqueue]
-    );
+    const snackWarning = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'warning'), [enqueue]);
 
     /* see snackError */
-    const snackInfo = useCallback(
-        (snackInputs: SnackInputs) => enqueue(snackInputs, 'info'),
-        [enqueue]
-    );
+    const snackInfo = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'info'), [enqueue]);
 
     return { snackError, snackInfo, snackWarning, closeSnackbar };
 }

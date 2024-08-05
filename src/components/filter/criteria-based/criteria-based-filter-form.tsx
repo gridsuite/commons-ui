@@ -5,16 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import Grid from '@mui/material/Grid';
-import FilterProperties, {
-    filterPropertiesYupSchema,
-} from './filter-properties';
+import FilterProperties, { filterPropertiesYupSchema } from './filter-properties';
 import FieldConstants from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
 import CriteriaBasedForm from './criteria-based-form';
-import {
-    getCriteriaBasedFormData,
-    getCriteriaBasedSchema,
-} from './criteria-based-filter-utils';
+import { getCriteriaBasedFormData, getCriteriaBasedSchema } from './criteria-based-filter-utils';
 import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 import { FreePropertiesTypes } from './filter-free-properties';
 
@@ -34,11 +29,7 @@ function CriteriaBasedFilterForm() {
         <Grid container item spacing={1}>
             <CriteriaBasedForm
                 equipments={FILTER_EQUIPMENTS}
-                defaultValues={
-                    criteriaBasedFilterEmptyFormData[
-                        FieldConstants.CRITERIA_BASED
-                    ]
-                }
+                defaultValues={criteriaBasedFilterEmptyFormData[FieldConstants.CRITERIA_BASED]}
             />
             <FilterProperties />
         </Grid>

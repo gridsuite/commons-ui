@@ -22,15 +22,11 @@ export function setLoggedUser(user: User | null): UserAction {
 }
 
 export const SIGNIN_CALLBACK_ERROR = 'SIGNIN_CALLBACK_ERROR';
-export type SignInCallbackErrorAction = ReadonlyAction<
-    typeof SIGNIN_CALLBACK_ERROR
-> & {
+export type SignInCallbackErrorAction = ReadonlyAction<typeof SIGNIN_CALLBACK_ERROR> & {
     signInCallbackError: Error | null;
 };
 
-export function setSignInCallbackError(
-    signInCallbackError: Error | null
-): SignInCallbackErrorAction {
+export function setSignInCallbackError(signInCallbackError: Error | null): SignInCallbackErrorAction {
     return {
         type: SIGNIN_CALLBACK_ERROR,
         signInCallbackError,
@@ -44,9 +40,7 @@ export type AuthenticationRouterErrorBase<T> = {
 };
 
 export const UNAUTHORIZED_USER_INFO = 'UNAUTHORIZED_USER_INFO';
-export type UnauthorizedUserAction = ReadonlyAction<
-    typeof UNAUTHORIZED_USER_INFO
-> &
+export type UnauthorizedUserAction = ReadonlyAction<typeof UNAUTHORIZED_USER_INFO> &
     AuthenticationRouterErrorBase<{
         unauthorizedUserInfo: string;
     }>;
@@ -70,10 +64,7 @@ export type LogoutErrorAction = ReadonlyAction<typeof LOGOUT_ERROR> &
         logoutError: { error: Error };
     }>;
 
-export function setLogoutError(
-    userName: string | undefined,
-    logoutError: { error: Error }
-): LogoutErrorAction {
+export function setLogoutError(userName: string | undefined, logoutError: { error: Error }): LogoutErrorAction {
     return {
         type: LOGOUT_ERROR,
         authenticationRouterError: {
@@ -84,9 +75,7 @@ export function setLogoutError(
 }
 
 export const USER_VALIDATION_ERROR = 'USER_VALIDATION_ERROR';
-export type UserValidationErrorAction = ReadonlyAction<
-    typeof USER_VALIDATION_ERROR
-> &
+export type UserValidationErrorAction = ReadonlyAction<typeof USER_VALIDATION_ERROR> &
     AuthenticationRouterErrorBase<{
         userValidationError: { error: Error };
     }>;
@@ -104,11 +93,8 @@ export function setUserValidationError(
     };
 }
 
-export const RESET_AUTHENTICATION_ROUTER_ERROR =
-    'RESET_AUTHENTICATION_ROUTER_ERROR';
-export type AuthenticationRouterErrorAction = ReadonlyAction<
-    typeof RESET_AUTHENTICATION_ROUTER_ERROR
-> & {
+export const RESET_AUTHENTICATION_ROUTER_ERROR = 'RESET_AUTHENTICATION_ROUTER_ERROR';
+export type AuthenticationRouterErrorAction = ReadonlyAction<typeof RESET_AUTHENTICATION_ROUTER_ERROR> & {
     authenticationRouterError: null;
 };
 
@@ -120,9 +106,7 @@ export function resetAuthenticationRouterError(): AuthenticationRouterErrorActio
 }
 
 export const SHOW_AUTH_INFO_LOGIN = 'SHOW_AUTH_INFO_LOGIN';
-export type ShowAuthenticationRouterLoginAction = ReadonlyAction<
-    typeof SHOW_AUTH_INFO_LOGIN
-> & {
+export type ShowAuthenticationRouterLoginAction = ReadonlyAction<typeof SHOW_AUTH_INFO_LOGIN> & {
     showAuthenticationRouterLogin: boolean;
 };
 

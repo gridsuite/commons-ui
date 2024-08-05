@@ -47,11 +47,7 @@ function ModifyElementSelection(props: ModifyElementSelectionProps) {
     useEffect(() => {
         if (directory) {
             fetchDirectoryElementPath(directory).then((res: any) => {
-                setActiveDirectoryName(
-                    res
-                        .map((element: any) => element.elementName.trim())
-                        .join('/')
-                );
+                setActiveDirectoryName(res.map((element: any) => element.elementName.trim()).join('/'));
             });
         }
     }, [directory]);

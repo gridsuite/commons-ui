@@ -6,12 +6,7 @@
  */
 
 import { Field } from 'react-querybuilder';
-import {
-    CombinatorType,
-    DataType,
-    FieldType,
-    OperatorType,
-} from './expert-filter.type';
+import { CombinatorType, DataType, FieldType, OperatorType } from './expert-filter.type';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',
@@ -1042,12 +1037,7 @@ export const FIELDS_OPTIONS = {
 };
 
 export const fields: Record<string, Field[]> = {
-    SUBSTATION: [
-        FIELDS_OPTIONS.ID,
-        FIELDS_OPTIONS.NAME,
-        FIELDS_OPTIONS.COUNTRY,
-        FIELDS_OPTIONS.PROPERTY,
-    ],
+    SUBSTATION: [FIELDS_OPTIONS.ID, FIELDS_OPTIONS.NAME, FIELDS_OPTIONS.COUNTRY, FIELDS_OPTIONS.PROPERTY],
     VOLTAGE_LEVEL: [
         FIELDS_OPTIONS.ID,
         FIELDS_OPTIONS.NAME,
