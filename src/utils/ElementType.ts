@@ -21,8 +21,4 @@ export enum ElementType {
     SHORT_CIRCUIT_PARAMETERS = 'SHORT_CIRCUIT_PARAMETERS',
 }
 
-export type ElementExistsType = (
-    directory: UUID,
-    value: string,
-    elementType: ElementType
-) => Promise<boolean>;
+export type ElementExistsType = (directory: UUID, value: string, elementType: ElementType) => Promise<boolean>;

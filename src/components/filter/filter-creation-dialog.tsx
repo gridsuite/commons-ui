@@ -9,11 +9,7 @@ import { useCallback } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import {
-    saveCriteriaBasedFilter,
-    saveExpertFilter,
-    saveExplicitNamingFilter,
-} from './utils/filter-api';
+import { saveCriteriaBasedFilter, saveExpertFilter, saveExplicitNamingFilter } from './utils/filter-api';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from '../dialogs/custom-mui-dialog';
 import {
@@ -28,11 +24,7 @@ import {
 import FieldConstants from '../../utils/field-constants';
 import yup from '../../utils/yup-config';
 import FilterForm from './filter-form';
-import {
-    EXPERT_FILTER_QUERY,
-    expertFilterSchema,
-    getExpertFilterEmptyFormData,
-} from './expert/expert-filter-form';
+import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
 import { ElementExistsType } from '../../utils/ElementType';
 
@@ -51,9 +43,7 @@ const formSchema = yup
     .object()
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.DESCRIPTION]: yup
-            .string()
-            .max(500, 'descriptionLimitError'),
+        [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
         [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
         ...criteriaBasedFilterSchema,
@@ -98,10 +88,7 @@ function FilterCreationDialog({
 
     const onSubmit = useCallback(
         (filterForm: any) => {
-            if (
-                filterForm[FieldConstants.FILTER_TYPE] ===
-                FilterType.EXPLICIT_NAMING.id
-            ) {
+            if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPLICIT_NAMING.id) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
                     true,
@@ -117,23 +104,13 @@ function FilterCreationDialog({
                     onClose,
                     activeDirectory
                 );
-            } else if (
-                filterForm[FieldConstants.FILTER_TYPE] ===
-                FilterType.CRITERIA_BASED.id
-            ) {
-                saveCriteriaBasedFilter(
-                    filterForm,
-                    activeDirectory,
-                    onClose,
-                    (error: any) => {
-                        snackError({
-                            messageTxt: error,
-                        });
-                    }
-                );
-            } else if (
-                filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id
-            ) {
+            } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.CRITERIA_BASED.id) {
+                saveCriteriaBasedFilter(filterForm, activeDirectory, onClose, (error: any) => {
+                    snackError({
+                        messageTxt: error,
+                    });
+                });
+            } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id) {
                 saveExpertFilter(
                     null,
                     filterForm[EXPERT_FILTER_QUERY],
@@ -161,11 +138,7 @@ function FilterCreationDialog({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={
-                sourceFilterForExplicitNamingConversion
-                    ? 'convertIntoExplicitNamingFilter'
-                    : 'createNewFilter'
-            }
+            titleId={sourceFilterForExplicitNamingConversion ? 'convertIntoExplicitNamingFilter' : 'createNewFilter'}
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
@@ -174,9 +147,7 @@ function FilterCreationDialog({
                 creation
                 activeDirectory={activeDirectory}
                 elementExists={elementExists}
-                sourceFilterForExplicitNamingConversion={
-                    sourceFilterForExplicitNamingConversion
-                }
+                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
             />
         </CustomMuiDialog>
     );

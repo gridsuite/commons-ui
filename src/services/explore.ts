@@ -6,16 +6,10 @@
  */
 
 import { UUID } from 'crypto';
-import {
-    backendFetch,
-    backendFetchJson,
-    getRequestParamFromList,
-} from './utils';
+import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils/types';
 
-const PREFIX_EXPLORE_SERVER_QUERIES = `${
-    import.meta.env.VITE_API_GATEWAY
-}/explore`;
+const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
 export function createFilter(
     newFilter: any,
@@ -45,9 +39,7 @@ export function saveFilter(filter: any, name: string, token?: string) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
     return backendFetch(
-        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters/${
-            filter.id
-        }?${urlSearchParams.toString()}`,
+        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters/${filter.id}?${urlSearchParams.toString()}`,
         {
             method: 'put',
             headers: { 'Content-Type': 'application/json' },
@@ -70,15 +62,9 @@ export function fetchElementsInfos(
         ids.filter((id) => id) // filter falsy elements
     );
 
-    const equipmentTypesParams = getRequestParamFromList(
-        'equipmentTypes',
-        equipmentTypes
-    );
+    const equipmentTypesParams = getRequestParamFromList('equipmentTypes', equipmentTypes);
 
-    const elementTypesParams = getRequestParamFromList(
-        'elementTypes',
-        elementTypes
-    );
+    const elementTypesParams = getRequestParamFromList('elementTypes', elementTypes);
 
     const urlSearchParams = new URLSearchParams([
         ...idsParams,

@@ -62,18 +62,11 @@ function MultipleSelectionDialog({
                 <Grid container spacing={2} flexDirection="column">
                     <Grid item>
                         <FormControlLabel
-                            label={
-                                <FormattedMessage id="multiple_selection_dialog/selectAll" />
-                            }
+                            label={<FormattedMessage id="multiple_selection_dialog/selectAll" />}
                             control={
                                 <Checkbox
-                                    checked={
-                                        selectedIds.length === options.length
-                                    }
-                                    indeterminate={
-                                        !!selectedIds.length &&
-                                        selectedIds.length !== options.length
-                                    }
+                                    checked={selectedIds.length === options.length}
+                                    indeterminate={!!selectedIds.length && selectedIds.length !== options.length}
                                     onChange={handleSelectAll}
                                 />
                             }
@@ -90,14 +83,8 @@ function MultipleSelectionDialog({
                                             label={label}
                                             control={
                                                 <Checkbox
-                                                    checked={selectedIds.includes(
-                                                        optionId
-                                                    )}
-                                                    onChange={() =>
-                                                        handleOptionSelection(
-                                                            optionId
-                                                        )
-                                                    }
+                                                    checked={selectedIds.includes(optionId)}
+                                                    onChange={() => handleOptionSelection(optionId)}
                                                 />
                                             }
                                         />

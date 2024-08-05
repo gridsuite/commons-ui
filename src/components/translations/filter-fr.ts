@@ -22,12 +22,9 @@ const filterFr = {
     isNotPartOf: 'ne fait pas partie de',
     emptyRule: 'Le filtre contient un champ vide',
     incorrectRule: 'Le filtre contient un champ incorrect',
-    obsoleteFilter:
-        "Ce filtre n'est plus supporté. Veuillez le supprimer ou changer son type d'équipement.",
-    betweenRule:
-        "La valeur de gauche d'une règle 'entre' doit être inférieure à la valeur de droite",
-    emptyGroup:
-        'Le filtre contient un groupe vide. Supprimez le ou ajoutez des règles à ce groupe',
+    obsoleteFilter: "Ce filtre n'est plus supporté. Veuillez le supprimer ou changer son type d'équipement.",
+    betweenRule: "La valeur de gauche d'une règle 'entre' doit être inférieure à la valeur de droite",
+    emptyGroup: 'Le filtre contient un groupe vide. Supprimez le ou ajoutez des règles à ce groupe',
     Hvdc: 'HVDC',
 };
 

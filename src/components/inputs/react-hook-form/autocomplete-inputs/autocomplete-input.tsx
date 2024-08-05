@@ -5,31 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Autocomplete,
-    AutocompleteProps,
-    TextField,
-    TextFieldProps,
-} from '@mui/material';
+import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import {
-    genHelperError,
-    genHelperPreviousValue,
-    identity,
-    isFieldRequired,
-} from '../utils/functions';
+import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
 import FieldLabel from '../utils/field-label';
 import useCustomFormContext from '../provider/use-custom-form-context';
 import { Option } from '../../../../utils/types';
 
 export interface AutocompleteInputProps
     extends Omit<
-        AutocompleteProps<
-            Option,
-            boolean | undefined,
-            boolean | undefined,
-            boolean | undefined
-        >,
+        AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
         // we already defined them in our custom Autocomplete
         'value' | 'onChange' | 'renderInput'
     > {
@@ -42,10 +27,7 @@ export interface AutocompleteInputProps
     previousValue?: string;
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
-    formProps?: Omit<
-        TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
+    formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
 }
 
 function AutocompleteInput({
@@ -61,8 +43,7 @@ function AutocompleteInput({
     formProps,
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional } =
-        useCustomFormContext();
+    const { validationSchema, getValues, removeOptional } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -77,10 +58,7 @@ function AutocompleteInput({
         }
 
         // otherwise, we check if user input matches with one of the options
-        const matchingOption = options.find(
-            (option: Option) =>
-                typeof option !== 'string' && option.id === newValue
-        );
+        const matchingOption = options.find((option: Option) => typeof option !== 'string' && option.id === newValue);
         // if it does, we send the matching option to react hook form
         if (matchingOption) {
             onChange(outputTransform(matchingOption));
@@ -111,11 +89,7 @@ function AutocompleteInput({
                         label: FieldLabel({
                             label,
                             optional:
-                                !isFieldRequired(
-                                    name,
-                                    validationSchema,
-                                    getValues()
-                                ) &&
+                                !isFieldRequired(name, validationSchema, getValues()) &&
                                 !props?.disabled &&
                                 !removeOptional,
                         }),

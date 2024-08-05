@@ -27,8 +27,7 @@ export const saveExplicitNamingFilter = (
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
-    const isGeneratorOrLoad =
-        equipmentType === Generator.type || equipmentType === Load.type;
+    const isGeneratorOrLoad = equipmentType === Generator.type || equipmentType === Load.type;
     if (isGeneratorOrLoad) {
         cleanedTableValues = tableValues.map((row) => ({
             [FieldConstants.EQUIPMENT_ID]: row[FieldConstants.EQUIPMENT_ID],
@@ -85,13 +84,7 @@ export const saveCriteriaBasedFilter = (
     token?: string
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
-    createFilter(
-        filterForBack,
-        filter[FieldConstants.NAME],
-        filter[FieldConstants.DESCRIPTION],
-        activeDirectory,
-        token
-    )
+    createFilter(filterForBack, filter[FieldConstants.NAME], filter[FieldConstants.DESCRIPTION], activeDirectory, token)
         .then(() => {
             onClose();
         })
