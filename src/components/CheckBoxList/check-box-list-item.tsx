@@ -41,7 +41,7 @@ export function CheckBoxListItem<T>({
                 <ListItemIcon sx={sx?.checkBoxIcon}>
                     <Checkbox disableRipple {...props} />
                 </ListItemIcon>
-                <ListItemText>
+                <ListItemText sx={{ display: 'flex' }} disableTypography>
                     <OverflowableText
                         sx={sx?.label}
                         text={

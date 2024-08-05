@@ -72,7 +72,7 @@ export function DraggableCheckBoxListItem<T>({
                     </IconButton>
                     <Checkbox disableRipple {...props} />
                 </ListItemIcon>
-                <ListItemText>
+                <ListItemText sx={{ display: 'flex' }} disableTypography>
                     <OverflowableText
                         sx={sx?.label}
                         text={

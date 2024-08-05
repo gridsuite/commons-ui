@@ -129,7 +129,10 @@ export function CheckBoxListItems<T>({
                                 }
                             />
                         </ListItemIcon>
-                        <ListItemText>
+                        <ListItemText
+                            sx={{ display: 'flex' }}
+                            disableTypography
+                        >
                             <OverflowableText
                                 text={
                                     <FormattedMessage
