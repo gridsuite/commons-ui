@@ -7,13 +7,9 @@
 
 import { useCallback } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
-import {
-    ElementSearchInput,
-    ElementSearchInputProps,
-} from './element-search-input';
+import { ElementSearchInput, ElementSearchInputProps } from './element-search-input';
 
-export interface ElementSearchDialogProps<T>
-    extends ElementSearchInputProps<T> {
+export interface ElementSearchDialogProps<T> extends ElementSearchInputProps<T> {
     onClose?: () => void;
     open: boolean;
 }
@@ -27,18 +23,9 @@ export function ElementSearchDialog<T>(props: ElementSearchDialogProps<T>) {
     }, [onSearchTermChange, onClose]);
 
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            disableRestoreFocus
-            aria-labelledby="dialog-title-search"
-            fullWidth
-        >
+        <Dialog open={open} onClose={handleClose} disableRestoreFocus aria-labelledby="dialog-title-search" fullWidth>
             <DialogContent>
-                <ElementSearchInput
-                    onSearchTermChange={onSearchTermChange}
-                    {...rest}
-                />
+                <ElementSearchInput onSearchTermChange={onSearchTermChange} {...rest} />
             </DialogContent>
         </Dialog>
     );

@@ -10,13 +10,7 @@ import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
-import {
-    ActionWithRulesAndAddersProps,
-    Field,
-    formatQuery,
-    QueryBuilder,
-    RuleGroupTypeAny,
-} from 'react-querybuilder';
+import { ActionWithRulesAndAddersProps, Field, formatQuery, QueryBuilder, RuleGroupTypeAny } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
@@ -28,11 +22,7 @@ import ValueSelector from './value-selector';
 import { COMBINATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 import ErrorInput from '../react-hook-form/error-management/error-input';
 import FieldErrorAlert from '../react-hook-form/error-management/field-error-alert';
-import {
-    countRules,
-    getOperators,
-    queryValidator,
-} from '../../filter/expert/expert-filter-utils';
+import { countRules, getOperators, queryValidator } from '../../filter/expert/expert-filter-utils';
 import RemoveButton from './remove-button';
 
 interface CustomReactQueryBuilderProps {
@@ -67,13 +57,11 @@ function CustomReactQueryBuilder(props: CustomReactQueryBuilderProps) {
         (newQuery: RuleGroupTypeAny) => {
             const oldQuery = getValues(name);
             const hasQueryChanged =
-                formatQuery(oldQuery, 'json_without_ids') !==
-                formatQuery(newQuery, 'json_without_ids');
+                formatQuery(oldQuery, 'json_without_ids') !== formatQuery(newQuery, 'json_without_ids');
             const hasAddedRules = countRules(newQuery) > countRules(oldQuery);
             setValue(name, newQuery, {
                 shouldDirty: hasQueryChanged,
-                shouldValidate:
-                    isSubmitted && hasQueryChanged && !hasAddedRules,
+                shouldValidate: isSubmitted && hasQueryChanged && !hasAddedRules,
             });
         },
         [getValues, setValue, isSubmitted, name]
@@ -90,18 +78,14 @@ function CustomReactQueryBuilder(props: CustomReactQueryBuilderProps) {
         <>
             <Grid item xs={12}>
                 <QueryBuilderMaterial>
-                    <QueryBuilderDnD
-                        dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}
-                    >
+                    <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
                         <QueryBuilder
                             fields={fields}
                             query={query}
                             addRuleToNewGroups
                             combinators={combinators}
                             onQueryChange={handleQueryChange}
-                            getOperators={(fieldName) =>
-                                getOperators(fieldName, intl)
-                            }
+                            getOperators={(fieldName) => getOperators(fieldName, intl)}
                             validator={queryValidator}
                             controlClassnames={{
                                 queryBuilder: 'queryBuilder-branches',

@@ -16,35 +16,22 @@ export default class LogReportItem {
 
     log: string;
 
-    static resolveTemplateMessage(
-        templateMessage: string,
-        templateValues: Record<string, ReportValue>
-    ) {
+    static resolveTemplateMessage(templateMessage: string, templateValues: Record<string, ReportValue>) {
         const templateVars: Record<string, string | number> = {};
         Object.entries(templateValues).forEach(([key, value]) => {
             templateVars[key] = value.value;
         });
-        return templateMessage.replace(
-            /\${([^{}]*)}/g,
-            function resolveTemplate(a, b) {
-                const r = templateVars[b];
-                return typeof r === 'string' || typeof r === 'number'
-                    ? r.toString()
-                    : a;
-            }
-        );
+        return templateMessage.replace(/\${([^{}]*)}/g, function resolveTemplate(a, b) {
+            const r = templateVars[b];
+            return typeof r === 'string' || typeof r === 'number' ? r.toString() : a;
+        });
     }
 
     constructor(jsonReport: SubReport, reportId: string) {
         this.key = jsonReport.reportKey;
-        this.log = LogReportItem.resolveTemplateMessage(
-            jsonReport.defaultMessage,
-            jsonReport.values
-        );
+        this.log = LogReportItem.resolveTemplateMessage(jsonReport.defaultMessage, jsonReport.values);
         this.reportId = reportId;
-        this.severity = LogReportItem.initSeverity(
-            jsonReport.values.reportSeverity as unknown as ReportValue
-        );
+        this.severity = LogReportItem.initSeverity(jsonReport.values.reportSeverity as unknown as ReportValue);
     }
 
     getLog() {
@@ -78,9 +65,7 @@ export default class LogReportItem {
         }
 
         Object.values(LogSeverities).some((value) => {
-            const severityFound = (jsonSeverity.value as string).includes(
-                value.name
-            );
+            const severityFound = (jsonSeverity.value as string).includes(value.name);
             if (severityFound) {
                 severity = value;
             }

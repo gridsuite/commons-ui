@@ -34,9 +34,7 @@ function BooleanInput({ name, label, formProps, Input }: BooleanInputProps) {
     const CustomInput = (
         <Input
             checked={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleChangeValue(e)
-            }
+            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeValue(e)}
             inputRef={ref}
             inputProps={{
                 'aria-label': 'primary checkbox',
@@ -46,12 +44,7 @@ function BooleanInput({ name, label, formProps, Input }: BooleanInputProps) {
     );
 
     if (label) {
-        return (
-            <FormControlLabel
-                control={CustomInput}
-                label={intl.formatMessage({ id: label })}
-            />
-        );
+        return <FormControlLabel control={CustomInput} label={intl.formatMessage({ id: label })} />;
     }
 
     return CustomInput;

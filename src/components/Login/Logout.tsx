@@ -5,15 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Avatar,
-    Box,
-    Button,
-    Container,
-    Link,
-    Theme,
-    Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, Container, Link, Theme, Typography } from '@mui/material';
 import { LogoutOutlined as LogoutOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
@@ -60,24 +52,11 @@ function Logout({ onLogoutClick, disabled }: LogoutProps) {
                     <LogoutOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    <FormattedMessage
-                        id="login/logout"
-                        defaultMessage="logout"
-                    />{' '}
-                    ?
+                    <FormattedMessage id="login/logout" defaultMessage="logout" /> ?
                 </Typography>
 
-                <Button
-                    disabled={disabled}
-                    fullWidth
-                    variant="contained"
-                    sx={styles.submit}
-                    onClick={onLogoutClick}
-                >
-                    <FormattedMessage
-                        id="login/logout"
-                        defaultMessage="logout"
-                    />
+                <Button disabled={disabled} fullWidth variant="contained" sx={styles.submit} onClick={onLogoutClick}>
+                    <FormattedMessage id="login/logout" defaultMessage="logout" />
                 </Button>
             </Box>
             <Box mt={2}>

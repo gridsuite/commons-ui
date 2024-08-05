@@ -67,11 +67,7 @@ function reload() {
     }
 }
 
-function reloadTimerOnExpiresIn(
-    user: User,
-    userManager: UserManager,
-    expiresIn: number
-) {
+function reloadTimerOnExpiresIn(user: User, userManager: UserManager, expiresIn: number) {
     // Not allowed by TS because expires_in is supposed to be readonly
     // @ts-ignore
     // eslint-disable-next-line no-param-reassign
@@ -90,10 +86,7 @@ function getIdTokenExpiresIn(user: User) {
     return exp - now;
 }
 
-function handleSigninSilent(
-    dispatch: Dispatch<AuthenticationActions>,
-    userManager: UserManager
-) {
+function handleSigninSilent(dispatch: Dispatch<AuthenticationActions>, userManager: UserManager) {
     userManager.getUser().then((user) => {
         if (user == null || getIdTokenExpiresIn(user) < 0) {
             return userManager.signinSilent().catch((error: Error) => {
@@ -108,11 +101,7 @@ function handleSigninSilent(
     });
 }
 
-function computeMinExpiresIn(
-    expiresIn: number,
-    idToken: string,
-    maxExpiresIn: number | undefined
-) {
+function computeMinExpiresIn(expiresIn: number, idToken: string, maxExpiresIn: number | undefined) {
     const now = Date.now() / 1000;
     const { exp } = jwtDecode(idToken);
     if (exp === undefined) {
@@ -140,20 +129,12 @@ function computeMinExpiresIn(
     return newExpiresIn;
 }
 
-export function login(
-    location: Location,
-    userManagerInstance: UserManager | null
-) {
+export function login(location: Location, userManagerInstance: UserManager | null) {
     sessionStorage.setItem(pathKey, location.pathname + location.search);
-    return userManagerInstance
-        ?.signinRedirect()
-        .then(() => console.debug('login'));
+    return userManagerInstance?.signinRedirect().then(() => console.debug('login'));
 }
 
-export function logout(
-    dispatch: Dispatch<AuthenticationActions>,
-    userManagerInstance: UserManager | null
-) {
+export function logout(dispatch: Dispatch<AuthenticationActions>, userManagerInstance: UserManager | null) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
     return userManagerInstance?.getUser().then((user) => {
@@ -162,9 +143,7 @@ export function logout(
             return userManagerInstance
                 .signoutRedirect({
                     extraQueryParams: {
-                        TargetResource:
-                            userManagerInstance.settings
-                                .post_logout_redirect_uri,
+                        TargetResource: userManagerInstance.settings.post_logout_redirect_uri,
                     },
                 })
                 .then(() => {
@@ -193,27 +172,18 @@ export function dispatchUser(
             // We do not dispatch the user
             // Our explicit SigninSilent will attempt to connect once
             if (getIdTokenExpiresIn(user) < 0) {
-                console.debug(
-                    'User token is expired and will not be dispatched'
-                );
+                console.debug('User token is expired and will not be dispatched');
                 return Promise.resolve();
             }
             // without validateUser defined, valid user by default
-            const validateUserPromise =
-                validateUser?.(user) || Promise.resolve(true);
+            const validateUserPromise = validateUser?.(user) || Promise.resolve(true);
             return validateUserPromise
                 .then((valid) => {
                     if (!valid) {
-                        console.debug(
-                            "User isn't authorized to log in and will not be dispatched"
-                        );
-                        return dispatch(
-                            setUnauthorizedUserInfo(user?.profile?.name, '')
-                        );
+                        console.debug("User isn't authorized to log in and will not be dispatched");
+                        return dispatch(setUnauthorizedUserInfo(user?.profile?.name, ''));
                     }
-                    console.debug(
-                        'User has been successfully loaded from store.'
-                    );
+                    console.debug('User has been successfully loaded from store.');
                     // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
                     // because it is not hacked at page loading on the fragment before oidc-client lib initialization
                     reloadTimerOnExpiresIn(
@@ -307,17 +277,12 @@ function handleUser(
         window.setTimeout(() => {
             userManager.getUser().then((user) => {
                 if (!user) {
-                    console.error(
-                        "user is null at silent renew error, it shouldn't happen."
-                    );
+                    console.error("user is null at silent renew error, it shouldn't happen.");
                     return;
                 }
                 const idTokenExpiresIn = getIdTokenExpiresIn(user);
                 if (idTokenExpiresIn < 0) {
-                    console.log(
-                        `Error in silent renew, idtoken expired: ${idTokenExpiresIn} => Logging out.`,
-                        error
-                    );
+                    console.log(`Error in silent renew, idtoken expired: ${idTokenExpiresIn} => Logging out.`, error);
                     // remove the user from our app, but don't sso logout on all other apps
                     dispatch(setShowAuthenticationRouterLogin(true));
                     // logout during token expiration, show login without errors
@@ -326,35 +291,22 @@ function handleUser(
                     return;
                 }
                 if (userManager.idpSettings?.maxExpiresIn) {
-                    if (
-                        idTokenExpiresIn < userManager.idpSettings.maxExpiresIn
-                    ) {
+                    if (idTokenExpiresIn < userManager.idpSettings.maxExpiresIn) {
                         // TODO here attempt last chance login ? snackbar to notify the user ? Popup ?
                         // for now we do the same thing as in the else block
                         console.log(
                             `Error in silent renew, but idtoken ALMOST expiring (expiring in${idTokenExpiresIn}) => last chance, next error will logout`,
                             `maxExpiresIn = ${userManager.idpSettings.maxExpiresIn}`,
-                            `last renew attempt in ${
-                                idTokenExpiresIn -
-                                accessTokenExpiringNotificationTime
-                            }seconds`,
+                            `last renew attempt in ${idTokenExpiresIn - accessTokenExpiringNotificationTime}seconds`,
                             error
                         );
-                        reloadTimerOnExpiresIn(
-                            user,
-                            userManager,
-                            idTokenExpiresIn
-                        );
+                        reloadTimerOnExpiresIn(user, userManager, idTokenExpiresIn);
                     } else {
                         console.log(
                             `Error in silent renew, but idtoken NOT expiring (expiring in${idTokenExpiresIn}) => postponing expiration to${userManager.idpSettings.maxExpiresIn}`,
                             error
                         );
-                        reloadTimerOnExpiresIn(
-                            user,
-                            userManager,
-                            userManager.idpSettings.maxExpiresIn
-                        );
+                        reloadTimerOnExpiresIn(user, userManager, userManager.idpSettings.maxExpiresIn);
                     }
                 } else {
                     console.log(
@@ -401,9 +353,7 @@ export async function initializeAuthenticationProd(
     const idpSettings = await idpSettingsGetter();
     try {
         const settings = {
-            authority:
-                sessionStorage.getItem(hackAuthorityKey) ||
-                idpSettings.authority,
+            authority: sessionStorage.getItem(hackAuthorityKey) || idpSettings.authority,
             client_id: idpSettings.client_id,
             redirect_uri: idpSettings.redirect_uri,
             post_logout_redirect_uri: idpSettings.post_logout_redirect_uri,

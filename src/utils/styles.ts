@@ -10,22 +10,11 @@ import { SxProps, Theme } from '@mui/material';
 // like mui sx(slot)/class merging but simpler with less features
 // TODO use their system ? But it's named unstable_composeClasses so not supported?
 export const makeComposeClasses =
-    (generateGlobalClass: (className: string) => string) =>
-    (classes: Record<string, string>, ruleName: string) =>
-        [generateGlobalClass(ruleName), classes[ruleName]]
-            .filter((x) => x)
-            .join(' ');
+    (generateGlobalClass: (className: string) => string) => (classes: Record<string, string>, ruleName: string) =>
+        [generateGlobalClass(ruleName), classes[ruleName]].filter((x) => x).join(' ');
 
-export const toNestedGlobalSelectors = (
-    styles: object,
-    generateGlobalClass: (className: string) => string
-) =>
-    Object.fromEntries(
-        Object.entries(styles).map(([k, v]) => [
-            `& .${generateGlobalClass(k)}`,
-            v,
-        ])
-    );
+export const toNestedGlobalSelectors = (styles: object, generateGlobalClass: (className: string) => string) =>
+    Object.fromEntries(Object.entries(styles).map(([k, v]) => [`& .${generateGlobalClass(k)}`, v]));
 
 const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
     return sx !== undefined;
@@ -34,5 +23,4 @@ const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
 // https://mui.com/system/getting-started/the-sx-prop/#passing-the-sx-prop
 // You cannot spread or concat directly because `SxProps` (typeof sx) can be an array. */
 // same as [{}, ...(Array.isArray(sx) ? sx : [sx])]
-export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) =>
-    allSx.filter(isSxProps).flat();
+export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) => allSx.filter(isSxProps).flat();

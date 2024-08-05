@@ -7,12 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import { Clear as ClearIcon } from '@mui/icons-material';
-import {
-    IconButton,
-    InputAdornment,
-    TextField,
-    TextFieldProps,
-} from '@mui/material';
+import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 
 import { Input } from '../../../../utils/types';
 
@@ -25,34 +20,24 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
 };
 
 function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
-    const {
-        adornmentPosition,
-        adornmentText,
-        value,
-        variant,
-        handleClearValue,
-        ...otherProps
-    } = props;
+    const { adornmentPosition, adornmentText, value, variant, handleClearValue, ...otherProps } = props;
 
     const [isFocused, setIsFocused] = useState(false);
 
-    const getAdornmentStyle = useCallback(
-        (innerVariant: 'standard' | 'filled' | 'outlined') => {
-            if (innerVariant === 'filled') {
-                return {
-                    alignItems: 'start',
-                    marginBottom: '0.4em',
-                };
-            }
-            if (innerVariant === 'standard') {
-                return {
-                    marginBottom: '0.3em',
-                };
-            }
-            return undefined;
-        },
-        []
-    );
+    const getAdornmentStyle = useCallback((innerVariant: 'standard' | 'filled' | 'outlined') => {
+        if (innerVariant === 'filled') {
+            return {
+                alignItems: 'start',
+                marginBottom: '0.4em',
+            };
+        }
+        if (innerVariant === 'standard') {
+            return {
+                marginBottom: '0.3em',
+            };
+        }
+        return undefined;
+    }, []);
 
     const getClearAdornment = useCallback(
         (position: 'start' | 'end') => {
@@ -70,10 +55,7 @@ function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const getTextAdornment = useCallback(
         (position: 'start' | 'end') => {
             return (
-                <InputAdornment
-                    position={position}
-                    sx={variant && getAdornmentStyle(variant)}
-                >
+                <InputAdornment position={position} sx={variant && getAdornmentStyle(variant)}>
                     {adornmentText}
                 </InputAdornment>
             );
@@ -84,49 +66,29 @@ function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const withEndAdornmentText = useCallback(() => {
         return value !== '' || isFocused
             ? {
-                  startAdornment:
-                      value && handleClearValue
-                          ? getClearAdornment('start')
-                          : undefined,
+                  startAdornment: value && handleClearValue ? getClearAdornment('start') : undefined,
                   endAdornment: getTextAdornment('end'),
                   sx: { textAlign: 'end' },
               }
             : undefined;
-    }, [
-        value,
-        handleClearValue,
-        getClearAdornment,
-        isFocused,
-        getTextAdornment,
-    ]);
+    }, [value, handleClearValue, getClearAdornment, isFocused, getTextAdornment]);
 
     const withStartAdornmentText = useCallback(() => {
         return value !== '' || isFocused
             ? {
                   startAdornment: getTextAdornment('start'),
-                  endAdornment:
-                      value && handleClearValue && getClearAdornment('end'),
+                  endAdornment: value && handleClearValue && getClearAdornment('end'),
                   sx: { textAlign: 'start' },
               }
             : undefined;
-    }, [
-        value,
-        handleClearValue,
-        getClearAdornment,
-        isFocused,
-        getTextAdornment,
-    ]);
+    }, [value, handleClearValue, getClearAdornment, isFocused, getTextAdornment]);
 
     return (
         <TextField
             {...otherProps} // TODO move at the end like other inputs ?
             variant={variant}
             value={value}
-            InputProps={
-                adornmentPosition === 'start'
-                    ? withStartAdornmentText()
-                    : withEndAdornmentText()
-            }
+            InputProps={adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText()}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
         />
