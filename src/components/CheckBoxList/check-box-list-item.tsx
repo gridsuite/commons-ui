@@ -6,13 +6,7 @@
  */
 
 import { useState } from 'react';
-import {
-    Checkbox,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
+import { Checkbox, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import OverflowableText from '../OverflowableText';
 import { CheckBoxListItemProps } from './check-box-list-type';
 

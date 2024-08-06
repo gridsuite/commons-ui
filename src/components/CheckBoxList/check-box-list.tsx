@@ -65,10 +65,7 @@ export function CheckboxList<T>({
                 setIsDragging(true);
             }}
         >
-            <Droppable
-                droppableId="droppable-checkbox-list"
-                isDropDisabled={isDragDisable}
-            >
+            <Droppable droppableId="droppable-checkbox-list" isDropDisabled={isDragDisable}>
                 {(provided) => (
                     <Box {...provided.droppableProps} ref={provided.innerRef}>
                         {checkBoxField}

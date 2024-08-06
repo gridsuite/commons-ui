@@ -7,14 +7,7 @@
 
 import { Draggable } from 'react-beautiful-dnd';
 import { useCallback, useMemo } from 'react';
-import {
-    Checkbox,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
+import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CheckBoxListItem } from './check-box-list-item';
 import OverflowableText from '../OverflowableText';
@@ -57,32 +50,25 @@ export function CheckBoxListItems<T>({
 
     const toggleSelection = useCallback(
         (elementToToggleId: string) => {
-            const element = items?.find(
-                (v) => getItemId(v) === elementToToggleId
-            );
+            const element = items?.find((v) => getItemId(v) === elementToToggleId);
             if (element === undefined) {
                 return;
             }
 
-            const elementSelected = selectedItems.find(
-                (v) => getItemId(v) === elementToToggleId
-            );
+            const elementSelected = selectedItems.find((v) => getItemId(v) === elementToToggleId);
             const newValues = [...selectedItems];
             if (elementSelected === undefined) {
                 newValues.push(element);
                 handleOnchange(newValues);
             } else {
-                handleOnchange(
-                    newValues.filter((v) => getItemId(v) !== elementToToggleId)
-                );
+                handleOnchange(newValues.filter((v) => getItemId(v) !== elementToToggleId));
             }
         },
         [items, selectedItems, getItemId, handleOnchange]
     );
 
     const isChecked = useCallback(
-        (item: T) =>
-            selectedItems.map((v) => getItemId(v)).includes(getItemId(item)),
+        (item: T) => selectedItems.map((v) => getItemId(v)).includes(getItemId(item)),
         [selectedItems, getItemId]
     );
 
@@ -123,32 +109,19 @@ export function CheckBoxListItems<T>({
                         <ListItemIcon>
                             <Checkbox
                                 checked={selectedItems.length !== 0}
-                                indeterminate={
-                                    selectedItems.length > 0 &&
-                                    selectedItems.length !== items.length
-                                }
+                                indeterminate={selectedItems.length > 0 && selectedItems.length !== items.length}
                             />
                         </ListItemIcon>
-                        <ListItemText
-                            sx={{ display: 'flex' }}
-                            disableTypography
-                        >
+                        <ListItemText sx={{ display: 'flex' }} disableTypography>
                             <OverflowableText
-                                text={
-                                    <FormattedMessage
-                                        id={selectAllLabel}
-                                        defaultMessage={selectAllLabel}
-                                    />
-                                }
+                                text={<FormattedMessage id={selectAllLabel} defaultMessage={selectAllLabel} />}
                             />
                         </ListItemText>
                     </ListItemButton>
                 </ListItem>
             )}
             {items?.map((item, index) => {
-                const label = getItemLabel
-                    ? getItemLabel(item)
-                    : getItemId(item);
+                const label = getItemLabel ? getItemLabel(item) : getItemId(item);
                 const disabled = isDisabled ? isDisabled(item) : false;
                 console.log('test label : ', item, label);
 
@@ -166,9 +139,7 @@ export function CheckBoxListItems<T>({
                                     item={item}
                                     checked={isChecked(item)}
                                     label={label}
-                                    onClick={() =>
-                                        toggleSelection(getItemId(item))
-                                    }
+                                    onClick={() => toggleSelection(getItemId(item))}
                                     sx={sx}
                                     disabled={disabled}
                                     getItemId={getItemId}

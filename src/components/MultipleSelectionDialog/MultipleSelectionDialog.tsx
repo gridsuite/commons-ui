@@ -8,7 +8,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
-import { CheckboxList } from '../CheckBoxList';
+import { CheckboxList } from '../CheckBoxList/check-box-list';
 
 export interface MultipleSelectionDialogProps<T> {
     options: T[];

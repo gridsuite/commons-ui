@@ -6,14 +6,7 @@
  */
 
 import { useState } from 'react';
-import {
-    Checkbox,
-    IconButton,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
+import { Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
 import { DraggableCheckBoxListItemProps } from './check-box-list-type';
@@ -59,10 +52,7 @@ export function DraggableCheckBoxListItem<T>({
                     {...provided.dragHandleProps}
                     size="small"
                     sx={{
-                        opacity:
-                            hover === getItemId(item) && !isDragDisable
-                                ? '1'
-                                : '0',
+                        opacity: hover === getItemId(item) && !isDragDisable ? '1' : '0',
                         ...styles.dragIcon,
                     }}
                 >

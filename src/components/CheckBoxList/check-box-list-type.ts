@@ -29,8 +29,7 @@ export interface CheckBoxListItemProps<T> {
     checked: boolean;
 }
 
-export interface DraggableCheckBoxListItemProps<T>
-    extends CheckBoxListItemProps<T> {
+export interface DraggableCheckBoxListItemProps<T> extends CheckBoxListItemProps<T> {
     isDragDisable?: boolean;
     provided: DraggableProvided;
 }
