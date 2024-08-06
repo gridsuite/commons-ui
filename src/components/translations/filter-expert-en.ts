@@ -179,7 +179,7 @@ const filterExpertEn = {
     shuntConductance2: 'Shunt conductance 2 (μS)',
     shuntSusceptance2: 'Shunt susceptance 2 (μS)',
     pairingKey: 'Pairing key',
-    tieLineId: 'Tie line id',
+    tieLineId: 'Tie line ID',
 };
 
 export default filterExpertEn;
