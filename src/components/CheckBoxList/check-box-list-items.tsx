@@ -150,6 +150,7 @@ export function CheckBoxListItems<T>({
                     ? getItemLabel(item)
                     : getItemId(item);
                 const disabled = isDisabled ? isDisabled(item) : false;
+                console.log('test label : ', item, label);
 
                 if (isDndDragAndDropActive) {
                     return (

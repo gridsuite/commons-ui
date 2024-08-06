@@ -13,7 +13,6 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
 import OverflowableText from '../OverflowableText';
 import { CheckBoxListItemProps } from './check-box-list-type';
 
@@ -37,20 +36,12 @@ export function CheckBoxListItem<T>({
             disablePadding
             divider={divider}
         >
-            <ListItemButton onClick={onClick}>
+            <ListItemButton onClick={onClick} sx={sx?.checkboxButton}>
                 <ListItemIcon sx={sx?.checkBoxIcon}>
-                    <Checkbox disableRipple {...props} />
+                    <Checkbox disableRipple sx={sx?.checkbox} {...props} />
                 </ListItemIcon>
                 <ListItemText sx={{ display: 'flex' }} disableTypography>
-                    <OverflowableText
-                        sx={sx?.label}
-                        text={
-                            <FormattedMessage
-                                id={label}
-                                defaultMessage={label}
-                            />
-                        }
-                    />
+                    <OverflowableText sx={sx?.label} text={label} />
                 </ListItemText>
             </ListItemButton>
         </ListItem>

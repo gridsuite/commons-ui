@@ -14,7 +14,6 @@ import {
     ListItemIcon,
     ListItemText,
 } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
 import { DraggableCheckBoxListItemProps } from './check-box-list-type';
@@ -45,7 +44,7 @@ export function DraggableCheckBoxListItem<T>({
     return (
         <ListItem
             secondaryAction={secondaryAction?.(item, hover)}
-            sx={sx?.checkboxList}
+            sx={{ ...sx?.checkboxList }}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
             disablePadding
@@ -55,33 +54,30 @@ export function DraggableCheckBoxListItem<T>({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
         >
-            <ListItemButton onClick={onClick}>
-                <ListItemIcon sx={sx?.checkBoxIcon}>
-                    <IconButton
-                        {...provided.dragHandleProps}
-                        size="small"
-                        sx={{
-                            opacity:
-                                hover === getItemId(item) && !isDragDisable
-                                    ? '1'
-                                    : '0',
-                            ...styles.dragIcon,
-                        }}
-                    >
-                        <DragIndicatorIcon />
-                    </IconButton>
-                    <Checkbox disableRipple {...props} />
+            <ListItemButton onClick={onClick} sx={sx?.checkboxButton}>
+                <IconButton
+                    {...provided.dragHandleProps}
+                    size="small"
+                    sx={{
+                        opacity:
+                            hover === getItemId(item) && !isDragDisable
+                                ? '1'
+                                : '0',
+                        ...styles.dragIcon,
+                    }}
+                >
+                    <DragIndicatorIcon />
+                </IconButton>
+                <ListItemIcon sx={{ ...sx?.checkBoxIcon }}>
+                    <Checkbox disableRipple sx={sx?.checkbox} {...props} />
                 </ListItemIcon>
-                <ListItemText sx={{ display: 'flex' }} disableTypography>
-                    <OverflowableText
-                        sx={sx?.label}
-                        text={
-                            <FormattedMessage
-                                id={label}
-                                defaultMessage={label}
-                            />
-                        }
-                    />
+                <ListItemText
+                    sx={{
+                        display: 'flex',
+                    }}
+                    disableTypography
+                >
+                    <OverflowableText sx={sx?.label} text={label} />
                 </ListItemText>
             </ListItemButton>
         </ListItem>

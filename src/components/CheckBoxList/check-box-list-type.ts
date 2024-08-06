@@ -13,6 +13,8 @@ export interface CheckBoxListItemSxProps {
     checkBoxIcon?: SxProps;
     label?: SxProps;
     checkboxList?: SxProps;
+    checkboxButton?: SxProps;
+    checkbox?: SxProps;
 }
 
 export interface CheckBoxListItemProps<T> {
