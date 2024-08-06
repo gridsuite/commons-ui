@@ -157,10 +157,8 @@ const filterExpertFr = {
     side1RectifierSide2Inverter: 'Coté 1 redresseur côté 2 onduleur',
     side1InverterSide2Rectifier: 'Côté 1 onduleur côté 2 redresseur',
     dcNominalVoltage: 'Tension nominale DC (kV)',
-    converterStationNominalVoltage1:
-        'Tension nominale de la station de conversion 1 (kV)',
-    converterStationNominalVoltage2:
-        'Tension nominale de la station de conversion 2 (kV)',
+    converterStationNominalVoltage1: 'Tension nominale de la station de conversion 1 (kV)',
+    converterStationNominalVoltage2: 'Tension nominale de la station de conversion 2 (kV)',
     country1: 'Pays 1',
     country2: 'Pays 2',
     seriesResistance: 'Résistance série (Ω)',

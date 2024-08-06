@@ -6,12 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import {
-    appendSearchParam,
-    getRequestParams,
-    HttpContentType,
-    UrlString,
-} from '../utils/api';
+import { appendSearchParam, getRequestParams, HttpContentType, UrlString } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
 import { ApiService, UserGetter } from './base-service';
 
@@ -20,35 +15,23 @@ export default class ExploreComSvc extends ApiService {
         super(userGetter, 'explore', restGatewayPath);
     }
 
-    public async createFilter(
-        newFilter: any,
-        name: string,
-        description: string,
-        parentDirectoryUuid?: UUID
-    ) {
+    public async createFilter(newFilter: any, name: string, description: string, parentDirectoryUuid?: UUID) {
         const urlSearchParams = new URLSearchParams();
         urlSearchParams.append('name', name);
         urlSearchParams.append('description', description);
         if (parentDirectoryUuid) {
             urlSearchParams.append('parentDirectoryUuid', parentDirectoryUuid);
         }
-        await this.backendFetch(
-            `${this.getPrefix(
-                1
-            )}/explore/filters?${urlSearchParams.toString()}`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
-                body: JSON.stringify(newFilter),
-            }
-        );
+        await this.backendFetch(`${this.getPrefix(1)}/explore/filters?${urlSearchParams.toString()}`, {
+            method: 'POST',
+            headers: { 'Content-Type': HttpContentType.APPLICATION_JSON },
+            body: JSON.stringify(newFilter),
+        });
     }
 
     public async saveFilter(filter: Record<string, unknown>, name: string) {
         await this.backendFetch(
-            `${this.getPrefix(1)}/explore/filters/${
-                filter.id
-            }?${new URLSearchParams({
+            `${this.getPrefix(1)}/explore/filters/${filter.id}?${new URLSearchParams({
                 name,
             }).toString()}`,
             {
@@ -59,11 +42,7 @@ export default class ExploreComSvc extends ApiService {
         );
     }
 
-    public async fetchElementsInfos(
-        ids: UUID[],
-        elementTypes?: string[],
-        equipmentTypes?: string[]
-    ) {
+    public async fetchElementsInfos(ids: UUID[], elementTypes?: string[], equipmentTypes?: string[]) {
         console.info('Fetching elements metadata');
         const urlSearchParams = getRequestParams({
             ids: ids.filter((id) => id), // filter falsy elements
@@ -71,12 +50,7 @@ export default class ExploreComSvc extends ApiService {
             elementTypes: elementTypes ?? [],
         });
         return this.backendFetchJson<ElementAttributes[]>(
-            appendSearchParam(
-                `${this.getPrefix(
-                    1
-                )}/explore/elements/metadata?${urlSearchParams}`,
-                urlSearchParams
-            ),
+            appendSearchParam(`${this.getPrefix(1)}/explore/elements/metadata?${urlSearchParams}`, urlSearchParams),
             'GET'
         );
     }

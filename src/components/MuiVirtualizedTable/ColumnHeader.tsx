@@ -5,16 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    ComponentProps,
-    forwardRef,
-    MouseEvent,
-    ReactNode,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import { ComponentProps, forwardRef, MouseEvent, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
 
 import {
     ArrowDownward as ArrowDownwardIcon,
@@ -77,16 +68,10 @@ interface SortButtonProps {
 // so lesser values are at top, so the upward arrow
 function SortButton({ signedRank = 0, ...props }: SortButtonProps) {
     const sortRank = Math.abs(signedRank);
-    const visibilityStyle =
-        (!signedRank || undefined) &&
-        (props.headerHovered ? styles.hovered : styles.transparent);
+    const visibilityStyle = (!signedRank || undefined) && (props.headerHovered ? styles.hovered : styles.transparent);
     return (
         <Box sx={styles.sortDiv} onClick={props.onClick}>
-            {signedRank >= 0 ? (
-                <ArrowUpwardIcon sx={visibilityStyle} />
-            ) : (
-                <ArrowDownwardIcon sx={visibilityStyle} />
-            )}
+            {signedRank >= 0 ? <ArrowUpwardIcon sx={visibilityStyle} /> : <ArrowDownwardIcon sx={visibilityStyle} />}
             {sortRank > 1 && !props.hovered && <sub>{sortRank}</sub>}
         </Box>
     );
@@ -100,8 +85,7 @@ interface FilterButtonProps {
 
 function FilterButton(props: FilterButtonProps) {
     const { filterLevel, headerHovered, onClick } = props;
-    const visibilityStyle =
-        !filterLevel && (headerHovered ? styles.hovered : styles.transparent);
+    const visibilityStyle = !filterLevel && (headerHovered ? styles.hovered : styles.transparent);
     return (
         <FilterAltOutlinedIcon
             onClick={onClick}
@@ -124,71 +108,47 @@ export interface ColumnHeaderProps extends BoxProps {
     onFilterClick: FilterButtonProps['onClick'];
 }
 
-export const ColumnHeader = forwardRef<typeof Box, ColumnHeaderProps>(
-    (props, ref) => {
-        const {
-            className,
-            label,
-            numeric,
-            sortSignedRank,
-            filterLevel,
-            onSortClick,
-            onFilterClick,
-            onContextMenu,
-            style,
-        } = props;
+export const ColumnHeader = forwardRef<typeof Box, ColumnHeaderProps>((props, ref) => {
+    const { className, label, numeric, sortSignedRank, filterLevel, onSortClick, onFilterClick, onContextMenu, style } =
+        props;
 
-        const [hovered, setHovered] = useState<boolean>(false);
-        const onHover = useCallback((evt: Event) => {
-            setHovered(evt.type === 'mouseenter');
-        }, []);
+    const [hovered, setHovered] = useState<boolean>(false);
+    const onHover = useCallback((evt: Event) => {
+        setHovered(evt.type === 'mouseenter');
+    }, []);
 
-        const topmostDiv = useRef();
+    const topmostDiv = useRef();
 
-        const handleFilterClick = useMemo(() => {
-            if (!onFilterClick) {
-                return undefined;
-            }
-            return (evt: MouseEvent<SVGSVGElement>) => {
-                onFilterClick(evt);
-            };
-        }, [onFilterClick]);
+    const handleFilterClick = useMemo(() => {
+        if (!onFilterClick) {
+            return undefined;
+        }
+        return (evt: MouseEvent<SVGSVGElement>) => {
+            onFilterClick(evt);
+        };
+    }, [onFilterClick]);
 
-        return (
-            // @ts-ignore it does not let us define Box with onMouseEnter/onMouseLeave attributes with 'div' I think, not sure though
-            <Box
-                ref={topmostDiv}
-                onMouseEnter={onHover}
-                onMouseLeave={onHover}
-                sx={mergeSx(
-                    styles.divFlex,
-                    numeric ? styles.divNum : undefined
-                )}
-                className={className}
-                style={style}
-                onContextMenu={onContextMenu}
-            >
-                {/* we cheat here to get the _variable_ height */}
-                <Box ref={ref} sx={styles.label}>
-                    {label}
-                </Box>
-                {onSortClick && (
-                    <SortButton
-                        headerHovered={hovered}
-                        onClick={onSortClick}
-                        signedRank={sortSignedRank}
-                    />
-                )}
-                {handleFilterClick && (
-                    <FilterButton
-                        headerHovered={hovered}
-                        onClick={handleFilterClick}
-                        filterLevel={filterLevel}
-                    />
-                )}
+    return (
+        // @ts-ignore it does not let us define Box with onMouseEnter/onMouseLeave attributes with 'div' I think, not sure though
+        <Box
+            ref={topmostDiv}
+            onMouseEnter={onHover}
+            onMouseLeave={onHover}
+            sx={mergeSx(styles.divFlex, numeric ? styles.divNum : undefined)}
+            className={className}
+            style={style}
+            onContextMenu={onContextMenu}
+        >
+            {/* we cheat here to get the _variable_ height */}
+            <Box ref={ref} sx={styles.label}>
+                {label}
             </Box>
-        );
-    }
-);
+            {onSortClick && <SortButton headerHovered={hovered} onClick={onSortClick} signedRank={sortSignedRank} />}
+            {handleFilterClick && (
+                <FilterButton headerHovered={hovered} onClick={handleFilterClick} filterLevel={filterLevel} />
+            )}
+        </Box>
+    );
+});
 
 export default styled(ColumnHeader)({});

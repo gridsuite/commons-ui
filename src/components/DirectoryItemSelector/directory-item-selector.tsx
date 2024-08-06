@@ -10,10 +10,7 @@ import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
 import getFileIcon from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
-import TreeViewFinder, {
-    TreeViewFinderNodeProps,
-    TreeViewFinderProps,
-} from '../TreeViewFinder/TreeViewFinder';
+import TreeViewFinder, { TreeViewFinderNodeProps, TreeViewFinderProps } from '../TreeViewFinder/TreeViewFinder';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { directorySvc, exploreSvc } from '../../services/instances';
 
@@ -40,10 +37,7 @@ function flattenDownNodes(n: any, cef: (n: any) => any[]): any[] {
     if (subs.length === 0) {
         return [n];
     }
-    return Array.prototype.concat(
-        [n],
-        ...subs.map((sn: any) => flattenDownNodes(sn, cef))
-    );
+    return Array.prototype.concat([n], ...subs.map((sn: any) => flattenDownNodes(sn, cef)));
 }
 
 function refreshedUpNodes(m: any[], nn: any): any[] {
@@ -54,9 +48,7 @@ function refreshedUpNodes(m: any[], nn: any): any[] {
         return [nn];
     }
     const parent = m[nn.parentUuid];
-    const nextChildren = parent.children.map((c: any) =>
-        c.elementUuid === nn.elementUuid ? nn : c
-    );
+    const nextChildren = parent.children.map((c: any) => (c.elementUuid === nn.elementUuid ? nn : c));
     const nextParent = { ...parent, children: nextChildren };
     return [nn, ...refreshedUpNodes(m, nextParent)];
 }
@@ -68,12 +60,7 @@ function refreshedUpNodes(m: any[], nn: any): any[] {
  * @param nodeId uuid of the node to update children, may be null or undefined (means root)
  * @param children new value of the node children (shallow nodes)
  */
-function updatedTree(
-    prevRoots: any[],
-    prevMap: any,
-    nodeId: UUID | null,
-    children: any[]
-) {
+function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, children: any[]) {
     const nextChildren = children
         .sort((a, b) => a.elementName.localeCompare(b.elementName))
         .map((n: any) => {
@@ -109,12 +96,8 @@ function updatedTree(
         return [prevRoots, prevMap];
     }
 
-    const nextUuids = new Set(
-        children ? children.map((n) => n.elementUuid) : []
-    );
-    const prevUuids = prevChildren
-        ? prevChildren.map((n: any) => n.elementUuid)
-        : [];
+    const nextUuids = new Set(children ? children.map((n) => n.elementUuid) : []);
+    const prevUuids = prevChildren ? prevChildren.map((n: any) => n.elementUuid) : [];
     const mayNodeId = nodeId ? [nodeId] : [];
 
     const nonCopyUuids = new Set([
@@ -123,11 +106,7 @@ function updatedTree(
         ...Array.prototype.concat(
             ...prevUuids
                 .filter((u: UUID) => !nextUuids.has(u))
-                .map((u: UUID) =>
-                    flattenDownNodes(prevMap[u], (n) => n.children).map(
-                        (n) => n.elementUuid
-                    )
-                )
+                .map((u: UUID) => flattenDownNodes(prevMap[u], (n) => n.children).map((n) => n.elementUuid))
         ),
     ]);
 
@@ -146,10 +125,7 @@ function updatedTree(
         ...refreshedUpNodes(prevMap, nextNode).map((n) => [n.elementUuid, n]),
     ]);
 
-    const nextRoots =
-        nodeId === null
-            ? nextChildren
-            : prevRoots.map((r) => nextMap[r.elementUuid]);
+    const nextRoots = nodeId === null ? nextChildren : prevRoots.map((r) => nextMap[r.elementUuid]);
 
     return [nextRoots, nextMap];
 }
@@ -171,10 +147,7 @@ interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     expanded?: UUID[];
 }
 
-function sortHandlingDirectories(
-    a: TreeViewFinderNodeProps,
-    b: TreeViewFinderNodeProps
-): number {
+function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps): number {
     // If children property is set it means it's a directory, they are handled differently in order to keep them at the top of the list
     if (a.children && !b.children) {
         return -1;
@@ -202,10 +175,7 @@ function DirectoryItemSelector({
     const rootsRef = useRef<any[]>([]);
     rootsRef.current = rootDirectories;
     const { snackError } = useSnackMessage();
-    const contentFilter = useCallback(
-        () => new Set([ElementType.DIRECTORY, ...types]),
-        [types]
-    );
+    const contentFilter = useCallback(() => new Set([ElementType.DIRECTORY, ...types]), [types]);
 
     const convertChildren = useCallback((children: any[]): any[] => {
         return children.map((e) => {
@@ -214,14 +184,8 @@ function DirectoryItemSelector({
                 name: e.elementName,
                 specificMetadata: e.specificMetadata,
                 icon: getFileIcon(e.type, styles.icon as SxProps),
-                children:
-                    e.type === ElementType.DIRECTORY
-                        ? convertChildren(e.children)
-                        : undefined,
-                childrenCount:
-                    e.type === ElementType.DIRECTORY
-                        ? e.subdirectoriesCount
-                        : undefined,
+                children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
+                childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
             };
         });
     }, []);
@@ -235,14 +199,9 @@ function DirectoryItemSelector({
                     icon: getFileIcon(e.type, styles.icon as SxProps),
                     children:
                         e.type === ElementType.DIRECTORY
-                            ? convertChildren(
-                                  nodeMap.current[e.elementUuid].children
-                              )
+                            ? convertChildren(nodeMap.current[e.elementUuid].children)
                             : undefined,
-                    childrenCount:
-                        e.type === ElementType.DIRECTORY
-                            ? e.subdirectoriesCount
-                            : undefined,
+                    childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
                 };
             });
         },
@@ -251,12 +210,7 @@ function DirectoryItemSelector({
 
     const addToDirectory = useCallback(
         (nodeId: UUID, content: any[]) => {
-            const [nrs, mdr] = updatedTree(
-                rootsRef.current,
-                nodeMap.current,
-                nodeId,
-                content
-            );
+            const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, nodeId, content);
             setRootDirectories(nrs);
             nodeMap.current = mdr;
             setData(convertRoots(nrs));
@@ -268,12 +222,7 @@ function DirectoryItemSelector({
         directorySvc
             .fetchRootFolders(types)
             .then((newData) => {
-                const [nrs, mdr] = updatedTree(
-                    rootsRef.current,
-                    nodeMap.current,
-                    null,
-                    newData
-                );
+                const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, null, newData);
                 setRootDirectories(nrs);
                 nodeMap.current = mdr;
                 setData(convertRoots(nrs));
@@ -292,38 +241,25 @@ function DirectoryItemSelector({
             directorySvc
                 .fetchDirectoryContent(nodeId, typeList)
                 .then((children) => {
-                    const childrenMatchedTypes = children.filter((item: any) =>
-                        contentFilter().has(item.type)
-                    );
+                    const childrenMatchedTypes = children.filter((item: any) => contentFilter().has(item.type));
 
-                    if (
-                        childrenMatchedTypes.length > 0 &&
-                        equipmentTypes &&
-                        equipmentTypes.length > 0
-                    ) {
+                    if (childrenMatchedTypes.length > 0 && equipmentTypes && equipmentTypes.length > 0) {
                         exploreSvc
                             .fetchElementsInfos(
-                                childrenMatchedTypes.map(
-                                    (e: any) => e.elementUuid
-                                ),
+                                childrenMatchedTypes.map((e: any) => e.elementUuid),
                                 types,
                                 equipmentTypes
                             )
                             .then((childrenWithMetadata) => {
                                 const filtredChildren = itemFilter
-                                    ? childrenWithMetadata.filter(
-                                          (val: any) => {
-                                              // Accept every directory
-                                              if (
-                                                  val.type ===
-                                                  ElementType.DIRECTORY
-                                              ) {
-                                                  return true;
-                                              }
-                                              // otherwise filter with the custom itemFilter func
-                                              return itemFilter(val);
+                                    ? childrenWithMetadata.filter((val: any) => {
+                                          // Accept every directory
+                                          if (val.type === ElementType.DIRECTORY) {
+                                              return true;
                                           }
-                                      )
+                                          // otherwise filter with the custom itemFilter func
+                                          return itemFilter(val);
+                                      })
                                     : childrenWithMetadata;
                                 // update directory content
                                 addToDirectory(nodeId, filtredChildren);
@@ -334,9 +270,7 @@ function DirectoryItemSelector({
                     }
                 })
                 .catch((error) => {
-                    console.warn(
-                        `Could not update subs (and content) of '${nodeId}' : ${error.message}`
-                    );
+                    console.warn(`Could not update subs (and content) of '${nodeId}' : ${error.message}`);
                 });
         },
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]

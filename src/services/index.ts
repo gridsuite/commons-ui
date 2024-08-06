@@ -14,19 +14,9 @@ export { default as AppLocalComSvc } from './app-local';
 export type { Env } from './app-local';
 
 export { default as AppsMetadataComSvc } from './apps-metadata';
-export type {
-    AppMetadata,
-    AppMetadataCommon,
-    AppMetadataStudy,
-    VersionJson,
-} from './apps-metadata';
+export type { AppMetadata, AppMetadataCommon, AppMetadataStudy, VersionJson } from './apps-metadata';
 
-export {
-    default as ConfigComSvc,
-    COMMON_APP_NAME,
-    PARAM_THEME,
-    PARAM_LANGUAGE,
-} from './config';
+export { default as ConfigComSvc, COMMON_APP_NAME, PARAM_THEME, PARAM_LANGUAGE } from './config';
 export type { ConfigParameter, ConfigParameters } from './config';
 
 export { default as ConfigNotificationComSvc } from './config-notification';

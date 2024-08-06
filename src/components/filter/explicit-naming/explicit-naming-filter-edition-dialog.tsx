@@ -15,10 +15,7 @@ import { saveExplicitNamingFilter } from '../utils/filter-api';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
-import {
-    explicitNamingFilterSchema,
-    FILTER_EQUIPMENTS_ATTRIBUTES,
-} from './explicit-naming-filter-form';
+import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './explicit-naming-filter-form';
 import FieldConstants from '../../../utils/field-constants';
 import FilterForm from '../filter-form';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
@@ -88,13 +85,9 @@ function ExplicitNamingFilterEditionDialog({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
-                        [FieldConstants.FILTER_TYPE]:
-                            FilterType.EXPLICIT_NAMING.id,
-                        [FieldConstants.EQUIPMENT_TYPE]:
-                            response[FieldConstants.EQUIPMENT_TYPE],
-                        [FILTER_EQUIPMENTS_ATTRIBUTES]: response[
-                            FILTER_EQUIPMENTS_ATTRIBUTES
-                        ].map((row: any) => ({
+                        [FieldConstants.FILTER_TYPE]: FilterType.EXPLICIT_NAMING.id,
+                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
+                        [FILTER_EQUIPMENTS_ATTRIBUTES]: response[FILTER_EQUIPMENTS_ATTRIBUTES].map((row: any) => ({
                             [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
                             ...row,
                         })),
@@ -133,14 +126,7 @@ function ExplicitNamingFilterEditionDialog({
                 });
             }
         },
-        [
-            broadcastChannel,
-            id,
-            selectionForCopy,
-            onClose,
-            snackError,
-            setSelectionForCopy,
-        ]
+        [broadcastChannel, id, selectionForCopy, onClose, snackError, setSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

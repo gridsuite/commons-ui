@@ -30,20 +30,13 @@ interface FilterFormProps {
 }
 
 function FilterForm(props: FilterFormProps) {
-    const {
-        sourceFilterForExplicitNamingConversion,
-        creation,
-        activeDirectory,
-    } = props;
+    const { sourceFilterForExplicitNamingConversion, creation, activeDirectory } = props;
     const { setValue } = useFormContext();
 
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     // We do this because setValue don't set the field dirty
-    const handleChange = (
-        _event: React.ChangeEvent<HTMLInputElement>,
-        value: string
-    ) => {
+    const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
         setValue(FieldConstants.FILTER_TYPE, value);
     };
 
@@ -87,14 +80,10 @@ function FilterForm(props: FilterFormProps) {
                     )}
                 </>
             )}
-            {filterType === FilterType.CRITERIA_BASED.id && (
-                <CriteriaBasedFilterForm />
-            )}
+            {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
             {filterType === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
-                    sourceFilterForExplicitNamingConversion={
-                        sourceFilterForExplicitNamingConversion
-                    }
+                    sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
             )}
             {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}

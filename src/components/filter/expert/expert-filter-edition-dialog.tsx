@@ -86,11 +86,8 @@ function ExpertFilterEditionDialog({
                     reset({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
-                        [FieldConstants.EQUIPMENT_TYPE]:
-                            response[FieldConstants.EQUIPMENT_TYPE],
-                        [EXPERT_FILTER_QUERY]: importExpertRules(
-                            response[EXPERT_FILTER_QUERY]
-                        ),
+                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
+                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]),
                     });
                 })
                 .catch((error: { message: any }) => {
@@ -127,14 +124,7 @@ function ExpertFilterEditionDialog({
                 });
             }
         },
-        [
-            broadcastChannel,
-            id,
-            onClose,
-            selectionForCopy.sourceItemUuid,
-            snackError,
-            setSelectionForCopy,
-        ]
+        [broadcastChannel, id, onClose, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

@@ -31,15 +31,7 @@ import {
     Zoom,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import {
-    Apps,
-    DnsOutlined,
-    ExpandMore,
-    Gavel,
-    QuestionMark,
-    Refresh,
-    WidgetsOutlined,
-} from '@mui/icons-material';
+import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { LogoText } from './GridLogo';
 import { studySvc } from '../../services/instances';
@@ -99,11 +91,7 @@ function getGlobalVersion(
                     setData(value ?? null);
                 },
                 (reason) => {
-                    console.debug(
-                        type,
-                        "global version isn't available",
-                        reason
-                    );
+                    console.debug(type, "global version isn't available", reason);
                     setData(null);
                 }
             )
@@ -178,20 +166,8 @@ const moduleStyles = {
 };
 
 const ModuleTypesIcons = {
-    app: (
-        <WidgetsOutlined
-            sx={moduleStyles.icons}
-            fontSize="small"
-            color="primary"
-        />
-    ),
-    server: (
-        <DnsOutlined
-            sx={moduleStyles.icons}
-            fontSize="small"
-            color="secondary"
-        />
-    ),
+    app: <WidgetsOutlined sx={moduleStyles.icons} fontSize="small" color="primary" />,
+    server: <DnsOutlined sx={moduleStyles.icons} fontSize="small" color="secondary" />,
     other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
 };
 
@@ -265,12 +241,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                     </>
                 }
             >
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="baseline"
-                    spacing={1}
-                >
+                <Stack direction="row" justifyContent="flex-start" alignItems="baseline" spacing={1}>
                     {ModuleTypesIcons[type] || ModuleTypesIcons.other}
                     <Typography display="inline" noWrap>
                         {name || '<?>'}
@@ -307,37 +278,24 @@ export default function AboutDialog({
     const [showGlobalVersion, setShowGlobalVersion] = useState(false);
 
     /* We want to get the initial version once at first render to detect later a new deploy */
-    const [initialGlobalVersion, setInitialGlobalVersion] =
-        useState<unknown>(undefined);
+    const [initialGlobalVersion, setInitialGlobalVersion] = useState<unknown>(undefined);
     useEffect(() => {
         if (initialGlobalVersion === undefined) {
-            getGlobalVersion(
-                globalVersionPromise,
-                'Initial',
-                setInitialGlobalVersion
-            );
+            getGlobalVersion(globalVersionPromise, 'Initial', setInitialGlobalVersion);
         }
     }, [globalVersionPromise, initialGlobalVersion]);
 
-    const [actualGlobalVersion, setActualGlobalVersion] = useState<
-        string | null
-    >(null);
+    const [actualGlobalVersion, setActualGlobalVersion] = useState<string | null>(null);
     useEffect(() => {
         if (open) {
-            getGlobalVersion(
-                globalVersionPromise,
-                'Actual',
-                setActualGlobalVersion,
-                (loading) => {
-                    setLoadingGlobalVersion(loading);
-                    setShowGlobalVersion(false);
-                }
-            );
+            getGlobalVersion(globalVersionPromise, 'Actual', setActualGlobalVersion, (loading) => {
+                setLoadingGlobalVersion(loading);
+                setShowGlobalVersion(false);
+            });
         }
     }, [open, globalVersionPromise]);
 
-    const [loadingAdditionalModules, setLoadingAdditionalModules] =
-        useState(false);
+    const [loadingAdditionalModules, setLoadingAdditionalModules] = useState(false);
     const [modules, setModules] = useState<GridSuiteModule[] | null>(null);
     useEffect(() => {
         if (open) {
@@ -365,14 +323,7 @@ export default function AboutDialog({
                 })
                 .finally(() => setLoadingAdditionalModules(false));
         }
-    }, [
-        open,
-        additionalModulesPromise,
-        appName,
-        appVersion,
-        appGitTag,
-        appLicense,
-    ]);
+    }, [open, additionalModulesPromise, appName, appVersion, appGitTag, appLicense]);
 
     const handleClose = useCallback(() => {
         if (onClose) {
@@ -432,12 +383,7 @@ export default function AboutDialog({
                     )}
                 <Box sx={styles.mainSection}>
                     <Box sx={styles.logoSection}>
-                        {logo || (
-                            <LogoText
-                                appName="Suite"
-                                appColor={theme.palette.grey['500']}
-                            />
-                        )}
+                        {logo || <LogoText appName="Suite" appColor={theme.palette.grey['500']} />}
                     </Box>
                     <Box sx={styles.mainInfos}>
                         <Fade
@@ -457,13 +403,9 @@ export default function AboutDialog({
                                         version: (
                                             <Typography
                                                 component="span"
-                                                sx={styles.versionField(
-                                                    !loadingGlobalVersion &&
-                                                        !!actualGlobalVersion
-                                                )}
+                                                sx={styles.versionField(!loadingGlobalVersion && !!actualGlobalVersion)}
                                             >
-                                                {actualGlobalVersion ||
-                                                    'unknown'}
+                                                {actualGlobalVersion || 'unknown'}
                                             </Typography>
                                         ),
                                     }}
@@ -475,78 +417,46 @@ export default function AboutDialog({
             </DialogTitle>
             <DialogContent id="alert-dialog-description">
                 <Box sx={styles.detailsSection}>
-                    <Accordion
-                        disableGutters
-                        variant="outlined"
-                        disabled
-                        sx={{ display: 'none' }}
-                    >
+                    <Accordion disableGutters variant="outlined" disabled sx={{ display: 'none' }}>
                         {/* disabled, todo for future update */}
-                        <AccordionSummary
-                            expandIcon={<ExpandMore />}
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                        >
+                        <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel1-content" id="panel1-header">
                             <Gavel fontSize="small" />
                             <Typography sx={{ width: '33%', flexShrink: 0 }}>
                                 <FormattedMessage id="about-dialog/license" />
                             </Typography>
-                            <Typography sx={{ color: 'text.secondary' }}>
-                                {appLicense}
-                            </Typography>
+                            <Typography sx={{ color: 'text.secondary' }}>{appLicense}</Typography>
                         </AccordionSummary>
-                        <AccordionDetails>
-                            license app summary text
-                        </AccordionDetails>
+                        <AccordionDetails>license app summary text</AccordionDetails>
                     </Accordion>
 
-                    <Accordion
-                        disableGutters
-                        variant="outlined"
-                        TransitionProps={{ unmountOnExit: true }}
-                    >
-                        <AccordionSummary
-                            expandIcon={<ExpandMore />}
-                            aria-controls="panel2-content"
-                            id="panel2-header"
-                        >
+                    <Accordion disableGutters variant="outlined" TransitionProps={{ unmountOnExit: true }}>
+                        <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel2-content" id="panel2-header">
                             <Apps fontSize="small" />
                             <FormattedMessage id="about-dialog/modules-section" />
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container sx={{ pl: 2 }} spacing={1}>
                                 {loadingAdditionalModules ? (
-                                    <Grid
-                                        item
-                                        xs
-                                        display="inline-flex"
-                                        justifyContent="center"
-                                    >
+                                    <Grid item xs display="inline-flex" justifyContent="center">
                                         <CircularProgress color="inherit" />
                                     </Grid>
                                 ) : (
                                     (Array.isArray(modules) && (
                                         <>
-                                            {[...modules]
-                                                .sort(compareModules)
-                                                .map((module, idx) => (
-                                                    <Module
-                                                        // eslint-disable-next-line react/no-array-index-key -- modules aren't necessary uniques in the API, so we need something else for the key that must be unique
-                                                        key={`module-${idx}`}
-                                                        type={module.type}
-                                                        name={module.name}
-                                                        version={module.version}
-                                                        gitTag={module.gitTag}
-                                                        // license={module.license}
-                                                    />
-                                                ))}
+                                            {[...modules].sort(compareModules).map((module, idx) => (
+                                                <Module
+                                                    // eslint-disable-next-line react/no-array-index-key -- modules aren't necessary uniques in the API, so we need something else for the key that must be unique
+                                                    key={`module-${idx}`}
+                                                    type={module.type}
+                                                    name={module.name}
+                                                    version={module.version}
+                                                    gitTag={module.gitTag}
+                                                    // license={module.license}
+                                                />
+                                            ))}
                                         </>
                                     )) || (
-                                        <Typography
-                                            color={(selectedTheme) =>
-                                                selectedTheme.palette.error.main
-                                            }
-                                        >
+                                        <Typography color={(selectedTheme) => selectedTheme.palette.error.main}>
                                             Error
                                         </Typography>
                                     )

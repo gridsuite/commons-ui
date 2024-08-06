@@ -46,15 +46,9 @@ function ModifyElementSelection(props: ModifyElementSelectionProps) {
 
     useEffect(() => {
         if (directory) {
-            directorySvc
-                .fetchDirectoryElementPath(directory)
-                .then((res: any) => {
-                    setActiveDirectoryName(
-                        res
-                            .map((element: any) => element.elementName.trim())
-                            .join('/')
-                    );
-                });
+            directorySvc.fetchDirectoryElementPath(directory).then((res: any) => {
+                setActiveDirectoryName(res.map((element: any) => element.elementName.trim()).join('/'));
+            });
         }
     }, [directory]);
 

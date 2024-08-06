@@ -17,10 +17,7 @@ export default class DirectoryComSvc extends ApiService {
 
     public async fetchRootFolders(types: string[]) {
         console.info('Fetching Root Directories');
-        const urlSearchParams = getRequestParam(
-            'elementTypes',
-            types
-        ).toString();
+        const urlSearchParams = getRequestParam('elementTypes', types).toString();
         return this.backendFetchJson<ElementAttributes[]>(
             `${this.getPrefix(1)}/root-directories?${urlSearchParams}`,
             'GET'
@@ -39,24 +36,14 @@ export default class DirectoryComSvc extends ApiService {
     }
 
     public async fetchDirectoryElementPath(elementUuid: UUID) {
-        console.info(
-            `Fetching element '${elementUuid}' and its parents info ...`
-        );
-        const fetchPathUrl = `${this.getPrefix(
-            1
-        )}/elements/${encodeURIComponent(elementUuid)}/path`;
+        console.info(`Fetching element '${elementUuid}' and its parents info ...`);
+        const fetchPathUrl = `${this.getPrefix(1)}/elements/${encodeURIComponent(elementUuid)}/path`;
         return this.backendFetchJson<ElementAttributes[]>(fetchPathUrl, 'GET');
     }
 
-    public async elementExists(
-        directoryUuid: UUID,
-        elementName: string,
-        type: string
-    ) {
+    public async elementExists(directoryUuid: UUID, elementName: string, type: string) {
         const response = await this.backendFetch(
-            `${this.getPrefix(
-                1
-            )}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
+            `${this.getPrefix(1)}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
             'HEAD'
         );
         return response.status !== 204; // HTTP 204 : No-content

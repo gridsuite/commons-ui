@@ -5,13 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {
-    ReactElement,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { styled } from '@mui/system';
@@ -34,10 +28,7 @@ import {
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import {
-    makeComposeClasses,
-    toNestedGlobalSelectors,
-} from '../../utils/styles';
+import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 
 // As a bunch of individual variables to try to make it easier
@@ -72,8 +63,7 @@ const defaultStyles = {
     [cssIcon]: {},
 };
 
-export const generateTreeViewFinderClass = (className: string) =>
-    `GsiTreeViewFinder-${className}`;
+export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
 
 export interface TreeViewFinderNodeProps {
@@ -110,10 +100,7 @@ export interface TreeViewFinderProps {
     onlyLeaves?: boolean;
     data?: TreeViewFinderNodeProps[];
     onTreeBrowse?: (nodeId: string) => void;
-    sortMethod?: (
-        a: TreeViewFinderNodeProps,
-        b: TreeViewFinderNodeProps
-    ) => number;
+    sortMethod?: (a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps) => number;
 }
 
 /**
@@ -166,17 +153,12 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         expanded: expandedProp,
     } = props;
 
-    const [mapPrintedNodes, setMapPrintedNodes] =
-        useState<TreeViewFinderNodeMapProps>({});
+    const [mapPrintedNodes, setMapPrintedNodes] = useState<TreeViewFinderNodeMapProps>({});
 
     // Controlled expanded for TreeView
-    const [expanded, setExpanded] = useState<string[] | undefined>(
-        defaultExpanded ?? []
-    );
+    const [expanded, setExpanded] = useState<string[] | undefined>(defaultExpanded ?? []);
     // Controlled selected for TreeView
-    const [selected, setSelected] = useState<string[] | undefined>(
-        defaultSelected ?? []
-    );
+    const [selected, setSelected] = useState<string[] | undefined>(defaultSelected ?? []);
 
     const scrollRef = useRef<any>([]);
     const [autoScrollAllowed, setAutoScrollAllowed] = useState<boolean>(true);
@@ -193,27 +175,20 @@ function TreeViewFinder(props: TreeViewFinderProps) {
     const isValidationDisabled = () => {
         return (
             selected?.length === 0 ||
-            (selected?.length === selectedProp?.length &&
-                selected?.every((nodeId) => selectedProp?.includes(nodeId)))
+            (selected?.length === selectedProp?.length && selected?.every((nodeId) => selectedProp?.includes(nodeId)))
         );
     };
 
-    const computeMapPrintedNodes = useCallback(
-        (nodes: TreeViewFinderNodeProps[] | undefined) => {
-            const newMapPrintedNodes: TreeViewFinderNodeMapProps = {};
-            nodes?.forEach((node) => {
-                newMapPrintedNodes[node.id] = node;
-                if (!isLeaf(node)) {
-                    Object.assign(
-                        newMapPrintedNodes,
-                        computeMapPrintedNodes(node.children)
-                    );
-                }
-            });
-            return newMapPrintedNodes;
-        },
-        []
-    );
+    const computeMapPrintedNodes = useCallback((nodes: TreeViewFinderNodeProps[] | undefined) => {
+        const newMapPrintedNodes: TreeViewFinderNodeMapProps = {};
+        nodes?.forEach((node) => {
+            newMapPrintedNodes[node.id] = node;
+            if (!isLeaf(node)) {
+                Object.assign(newMapPrintedNodes, computeMapPrintedNodes(node.children));
+            }
+        });
+        return newMapPrintedNodes;
+    }, []);
 
     // Effects
     useEffect(() => {
@@ -252,10 +227,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
             return;
         }
         if (selectedProp.length > 0) {
-            setSelected((oldSelectedNodes) => [
-                ...(oldSelectedNodes ?? []),
-                ...selectedProp,
-            ]);
+            setSelected((oldSelectedNodes) => [...(oldSelectedNodes ?? []), ...selectedProp]);
         }
     }, [selectedProp]);
 
@@ -264,10 +236,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
             return;
         }
         if (expandedProp.length > 0) {
-            setExpanded((oldExpandedNodes) => [
-                ...(oldExpandedNodes ?? []),
-                ...expandedProp,
-            ]);
+            setExpanded((oldExpandedNodes) => [...(oldExpandedNodes ?? []), ...expandedProp]);
         }
     }, [expandedProp]);
 
@@ -278,13 +247,10 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         // if we have selected elements by default, we scroll to it
         if (selectedProp.length > 0 && autoScrollAllowed) {
             // we check if all expanded nodes by default all already expanded first
-            const isNodeExpanded = expandedProp?.every((nodeId) =>
-                expanded?.includes(nodeId)
-            );
+            const isNodeExpanded = expandedProp?.every((nodeId) => expanded?.includes(nodeId));
 
             // we got the last element that we suppose to scroll to
-            const lastScrollRef =
-                scrollRef.current[scrollRef.current.length - 1];
+            const lastScrollRef = scrollRef.current[scrollRef.current.length - 1];
             if (isNodeExpanded && lastScrollRef) {
                 lastScrollRef.scrollIntoView({
                     behavior: 'smooth',
@@ -297,23 +263,16 @@ function TreeViewFinder(props: TreeViewFinderProps) {
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
-    const handleNodeSelect = (
-        _e: React.SyntheticEvent,
-        values: string | string[]
-    ) => {
+    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[]) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
-            setSelected(
-                values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId]))
-            );
+            setSelected(values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId])));
         } else if (!Array.isArray(values)) {
             // Toggle selection to allow unselection
             if (selected?.includes(values)) {
                 setSelected([]);
             } else {
-                setSelected(
-                    isSelectable(mapPrintedNodes[values]) ? [values] : []
-                );
+                setSelected(isSelectable(mapPrintedNodes[values]) ? [values] : []);
             }
         }
     };
@@ -348,20 +307,11 @@ function TreeViewFinder(props: TreeViewFinderProps) {
             return null;
         }
 
-        if (
-            isSelectable(node) &&
-            selected?.find((nodeId) => nodeId === node.id)
-        ) {
-            return (
-                <CheckIcon className={composeClasses(classes, cssLabelIcon)} />
-            );
+        if (isSelectable(node) && selected?.find((nodeId) => nodeId === node.id)) {
+            return <CheckIcon className={composeClasses(classes, cssLabelIcon)} />;
         }
         if (node.icon) {
-            return (
-                <div className={composeClasses(classes, cssLabelIcon)}>
-                    {node.icon}
-                </div>
-            );
+            return <div className={composeClasses(classes, cssLabelIcon)}>{node.icon}</div>;
         }
         return null;
     };
@@ -370,18 +320,13 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         return (
             <div className={composeClasses(classes, cssLabelRoot)}>
                 {getNodeIcon(node)}
-                <Typography className={composeClasses(classes, cssLabelText)}>
-                    {node.name}
-                </Typography>
+                <Typography className={composeClasses(classes, cssLabelText)}>{node.name}</Typography>
             </div>
         );
     };
     const showChevron = (node: TreeViewFinderNodeProps) => {
         // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
-        return !!(
-            node.childrenCount == null ||
-            (node.childrenCount && node.childrenCount > 0)
-        );
+        return !!(node.childrenCount == null || (node.childrenCount && node.childrenCount > 0));
     };
 
     const renderTree = (node: TreeViewFinderNodeProps) => {
@@ -393,9 +338,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         if (Array.isArray(node.children)) {
             if (node.children.length) {
                 const sortedChildren = node.children.sort(sortMethod);
-                childrenNodes = sortedChildren.map((child) =>
-                    renderTree(child)
-                );
+                childrenNodes = sortedChildren.map((child) => renderTree(child));
             } else {
                 childrenNodes = [false]; // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
             }
@@ -406,18 +349,10 @@ function TreeViewFinder(props: TreeViewFinderProps) {
                 nodeId={node.id}
                 label={renderTreeItemLabel(node)}
                 expandIcon={
-                    showChevron(node) ? (
-                        <ChevronRightIcon
-                            className={composeClasses(classes, cssIcon)}
-                        />
-                    ) : null
+                    showChevron(node) ? <ChevronRightIcon className={composeClasses(classes, cssIcon)} /> : null
                 }
                 collapseIcon={
-                    showChevron(node) ? (
-                        <ExpandMoreIcon
-                            className={composeClasses(classes, cssIcon)}
-                        />
-                    ) : null
+                    showChevron(node) ? <ExpandMoreIcon className={composeClasses(classes, cssIcon)} /> : null
                 }
                 ref={(element) => {
                     if (selectedProp?.includes(node.id)) {
@@ -459,19 +394,11 @@ function TreeViewFinder(props: TreeViewFinderProps) {
             }}
         >
             <DialogTitle id="TreeViewFindertitle">
-                {title ??
-                    intl.formatMessage(
-                        { id: 'treeview_finder/finderTitle' },
-                        { multiSelect }
-                    )}
+                {title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect })}
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    {contentText ??
-                        intl.formatMessage(
-                            { id: 'treeview_finder/contentText' },
-                            { multiSelect }
-                        )}
+                    {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
                 </DialogContentText>
 
                 <TreeView
@@ -483,11 +410,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
                     // Uncontrolled props
                     {...getTreeViewSelectionProps()}
                 >
-                    {data && Array.isArray(data)
-                        ? data
-                              .sort(sortMethod)
-                              .map((child) => renderTree(child))
-                        : null}
+                    {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
                 </TreeView>
             </DialogContent>
             <DialogActions>
@@ -517,9 +440,6 @@ function TreeViewFinder(props: TreeViewFinderProps) {
     );
 }
 
-const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(
-    defaultStyles,
-    generateTreeViewFinderClass
-);
+const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
 
 export default styled(TreeViewFinder)(nestedGlobalSelectorsStyles);

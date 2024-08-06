@@ -12,16 +12,10 @@ function getLocalStorageLanguageKey(appName: string) {
 }
 
 export function getLocalStorageLanguage(appName: string) {
-    return (
-        (localStorage.getItem(getLocalStorageLanguageKey(appName)) as GsLang) ||
-        LANG_SYSTEM
-    );
+    return (localStorage.getItem(getLocalStorageLanguageKey(appName)) as GsLang) || LANG_SYSTEM;
 }
 
-export function saveLocalStorageLanguage(
-    appName: string,
-    language: GsLang
-): void {
+export function saveLocalStorageLanguage(appName: string, language: GsLang): void {
     localStorage.setItem(getLocalStorageLanguageKey(appName), language);
 }
 

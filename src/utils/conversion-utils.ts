@@ -7,11 +7,9 @@
 
 export const GRIDSUITE_DEFAULT_PRECISION: number = 13;
 
-export const roundToPrecision = (num: number, precision: number) =>
-    Number(num.toPrecision(precision));
+export const roundToPrecision = (num: number, precision: number) => Number(num.toPrecision(precision));
 
-export const roundToDefaultPrecision = (num: number) =>
-    roundToPrecision(num, GRIDSUITE_DEFAULT_PRECISION);
+export const roundToDefaultPrecision = (num: number) => roundToPrecision(num, GRIDSUITE_DEFAULT_PRECISION);
 
 export function isBlankOrEmpty(value: unknown) {
     if (value === undefined || value === null) {
@@ -23,8 +21,6 @@ export function isBlankOrEmpty(value: unknown) {
     return false;
 }
 
-export const unitToMicroUnit = (num: number) =>
-    isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e6);
+export const unitToMicroUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e6));
 
-export const microUnitToUnit = (num: number) =>
-    isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e6);
+export const microUnitToUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e6));

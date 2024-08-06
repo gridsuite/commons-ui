@@ -14,19 +14,13 @@ export default class ConfigNotificationComSvc extends WsService {
         super(userGetter, 'config-notification', wsGatewayPath);
     }
 
-    public connectNotificationsWsUpdateConfig(
-        appName: string
-    ): ReconnectingWebSocket {
+    public connectNotificationsWsUpdateConfig(appName: string): ReconnectingWebSocket {
         const webSocketUrl = `${this.queryPrefix}/notify?appName=${appName}`;
-        const reconnectingWebSocket = new ReconnectingWebSocket(
-            () => this.getUrlWithToken(webSocketUrl),
-            undefined,
-            { debug: `${import.meta.env.VITE_DEBUG_REQUESTS}` === 'true' }
-        );
+        const reconnectingWebSocket = new ReconnectingWebSocket(() => this.getUrlWithToken(webSocketUrl), undefined, {
+            debug: `${import.meta.env.VITE_DEBUG_REQUESTS}` === 'true',
+        });
         reconnectingWebSocket.onopen = (event: Event) => {
-            console.groupCollapsed(
-                `Connected Websocket update config ui: ${appName}`
-            );
+            console.groupCollapsed(`Connected Websocket update config ui: ${appName}`);
             console.debug(`Websocket URL: ${webSocketUrl}`);
             console.dir(event);
             console.groupEnd();

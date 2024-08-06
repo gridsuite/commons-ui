@@ -16,9 +16,7 @@ export type GsLang = GsLangUser | typeof LANG_SYSTEM;
 
 export function getSystemLanguage() {
     const systemLanguage = navigator.language.split(/[-_]/)[0];
-    return supportedLanguages.includes(systemLanguage)
-        ? (systemLanguage as GsLangUser)
-        : LANG_ENGLISH;
+    return supportedLanguages.includes(systemLanguage) ? (systemLanguage as GsLangUser) : LANG_ENGLISH;
 }
 
 export function getComputedLanguage(language: GsLang) {

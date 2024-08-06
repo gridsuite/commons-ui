@@ -5,21 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
 import FieldConstants from '../../../utils/field-constants';
-import {
-    backToFrontTweak,
-    frontToBackTweak,
-} from './criteria-based-filter-utils';
+import { backToFrontTweak, frontToBackTweak } from './criteria-based-filter-utils';
 import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
@@ -64,9 +55,7 @@ interface CriteriaBasedFilterEditionDialogProps {
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
     selectionForCopy: SelectionCopy;
-    setSelelectionForCopy: (
-        selection: SelectionCopy
-    ) => Dispatch<SetStateAction<SelectionCopy>>;
+    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
     language?: GsLangUser;
 }
@@ -109,8 +98,7 @@ function CriteriaBasedFilterEditionDialog({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
-                        [FieldConstants.FILTER_TYPE]:
-                            FilterType.CRITERIA_BASED.id,
+                        [FieldConstants.FILTER_TYPE]: FilterType.CRITERIA_BASED.id,
                         ...backToFrontTweak(response),
                     });
                 })
@@ -127,10 +115,7 @@ function CriteriaBasedFilterEditionDialog({
     const onSubmit = useCallback(
         (filterForm: any) => {
             exploreSvc
-                .saveFilter(
-                    frontToBackTweak(id, filterForm),
-                    filterForm[FieldConstants.NAME]
-                )
+                .saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
                         setSelelectionForCopy(noSelectionForCopy);
@@ -145,13 +130,7 @@ function CriteriaBasedFilterEditionDialog({
                     });
                 });
         },
-        [
-            broadcastChannel,
-            id,
-            selectionForCopy.sourceItemUuid,
-            snackError,
-            setSelelectionForCopy,
-        ]
+        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

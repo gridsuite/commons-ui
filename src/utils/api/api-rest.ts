@@ -11,19 +11,8 @@ import { FileType } from './utils';
 import { KeyOfWithoutIndexSignature } from '../types';
 
 export type UrlString = `${string}://${string}` | `/${string}` | `./${string}`;
-export type Url<Check extends boolean = true> =
-    | (Check extends true ? UrlString : string)
-    | URL;
-export type HttpMethod =
-    | 'GET'
-    | 'HEAD'
-    | 'POST'
-    | 'PUT'
-    | 'DELETE'
-    | 'CONNECT'
-    | 'OPTIONS'
-    | 'TRACE'
-    | 'PATCH';
+export type Url<Check extends boolean = true> = (Check extends true ? UrlString : string) | URL;
+export type HttpMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
 type StandardHeader = keyof KeyOfWithoutIndexSignature<IncomingHttpHeaders>;
 export type HttpHeaderName = LiteralUnion<StandardHeader, string>;
 
@@ -62,9 +51,7 @@ function handleError(response: Response): Promise<never> {
             ) as ErrorWithStatus;
             error.status = errorJson.status;
         } else {
-            error = new Error(
-                `${errorName}${response.status} ${response.statusText}`
-            ) as ErrorWithStatus;
+            error = new Error(`${errorName}${response.status} ${response.statusText}`) as ErrorWithStatus;
             error.status = response.status;
         }
         throw error;
@@ -99,9 +86,7 @@ export function downloadFile(blob: Blob, filename: string, type?: FileType) {
     if (type === FileType.ZIP) {
         contentType = HttpContentType.APPLICATION_OCTET_STREAM;
     }
-    const href = window.URL.createObjectURL(
-        new Blob([blob], { type: contentType })
-    );
+    const href = window.URL.createObjectURL(new Blob([blob], { type: contentType }));
     const link = document.createElement('a');
     link.href = href;
     link.setAttribute('download', filename);

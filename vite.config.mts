@@ -38,27 +38,20 @@ export default defineConfig((config) => ({
             formats: ['es'],
         },
         rollupOptions: {
-            external: (id: string) =>
-                !id.startsWith('.') && !path.isAbsolute(id),
+            external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
             // We do this to keep the same folder structure
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
-                    ignore: [
-                        'src/vite-env.d.ts',
-                        'src/**/*.test.{js,jsx,ts,tsx}',
-                    ],
+                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
                 }).map((file) => [
                     // This remove `src/` as well as the file extension from each
                     // file, so e.g. src/nested/foo.js becomes nested/foo
-                    path.relative(
-                        'src',
-                        file.slice(0, file.length - path.extname(file).length),
-                    ),
+                    path.relative('src', file.slice(0, file.length - path.extname(file).length)),
                     // This expands the relative paths to absolute paths, so e.g.
                     // src/nested/foo becomes /project/src/nested/foo.js
                     url.fileURLToPath(new URL(file, import.meta.url)),
-                ]),
+                ])
             ),
             output: {
                 chunkFileNames: 'chunks/[name].[hash].js', // in case some chunks are created, but it should not because every file is supposed to be an entry point
@@ -70,17 +63,14 @@ export default defineConfig((config) => ({
         define:
             config.command === 'build'
                 ? {
-                    /* We want to keep some variables in the final build to be resolved by the application using this library.
-                     * https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/define.ts
-                     * If the plugin "vite:define" change how it works, we probably will need to write plugins to obfuscate before then restore after.
-                     */
-                    'import.meta.env.VITE_API_GATEWAY':
-                        'import.meta.env.VITE_API_GATEWAY',
-                    'import.meta.env.VITE_WS_GATEWAY':
-                        'import.meta.env.VITE_WS_GATEWAY',
-                    'import.meta.env.VITE_DEBUG_REQUESTS':
-                        'import.meta.env.VITE_DEBUG_REQUESTS',
-                }
+                      /* We want to keep some variables in the final build to be resolved by the application using this library.
+                       * https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/define.ts
+                       * If the plugin "vite:define" change how it works, we probably will need to write plugins to obfuscate before then restore after.
+                       */
+                      'import.meta.env.VITE_API_GATEWAY': 'import.meta.env.VITE_API_GATEWAY',
+                      'import.meta.env.VITE_WS_GATEWAY': 'import.meta.env.VITE_WS_GATEWAY',
+                      'import.meta.env.VITE_DEBUG_REQUESTS': 'import.meta.env.VITE_DEBUG_REQUESTS',
+                  }
                 : undefined,
     },
 }));
@@ -99,19 +89,10 @@ function reactVirtualized(): PluginOption {
         configResolved: async () => {
             const require = createRequire(import.meta.url);
             const reactVirtualizedPath = require.resolve('react-virtualized');
-            const { pathname: reactVirtualizedFilePath } = new url.URL(
-                reactVirtualizedPath,
-                import.meta.url,
-            );
+            const { pathname: reactVirtualizedFilePath } = new url.URL(reactVirtualizedPath, import.meta.url);
             const file = reactVirtualizedFilePath.replace(
                 path.join('dist', 'commonjs', 'index.js'),
-                path.join(
-                    'dist',
-                    'es',
-                    'WindowScroller',
-                    'utils',
-                    'onScroll.js',
-                ),
+                path.join('dist', 'es', 'WindowScroller', 'utils', 'onScroll.js')
             );
             const code = await fs.readFile(file, 'utf-8');
             const modified = code.replace(WRONG_CODE, '');

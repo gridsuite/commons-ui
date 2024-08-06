@@ -23,16 +23,7 @@ interface ElementValueEditorProps {
 }
 
 function ElementValueEditor(props: ElementValueEditorProps) {
-    const {
-        defaultValue,
-        name,
-        elementType,
-        equipmentTypes,
-        titleId,
-        hideErrorMessage,
-        itemFilter,
-        onChange,
-    } = props;
+    const { defaultValue, name, elementType, equipmentTypes, titleId, hideErrorMessage, itemFilter, onChange } = props;
     const { setValue } = useCustomFormContext();
 
     useEffect(() => {
@@ -43,20 +34,18 @@ function ElementValueEditor(props: ElementValueEditorProps) {
             defaultValue[0].length > 0 &&
             uuidValidate(defaultValue[0])
         ) {
-            exploreSvc
-                .fetchElementsInfos(defaultValue)
-                .then((childrenWithMetadata) => {
-                    setValue(
-                        name,
-                        childrenWithMetadata.map((v: any) => {
-                            return {
-                                id: v.elementUuid,
-                                name: v.elementName,
-                                specificMetadata: v.specificMetadata,
-                            };
-                        })
-                    );
-                });
+            exploreSvc.fetchElementsInfos(defaultValue).then((childrenWithMetadata) => {
+                setValue(
+                    name,
+                    childrenWithMetadata.map((v: any) => {
+                        return {
+                            id: v.elementUuid,
+                            name: v.elementName,
+                            specificMetadata: v.specificMetadata,
+                        };
+                    })
+                );
+            });
         }
     }, [name, defaultValue, elementType, setValue]);
 

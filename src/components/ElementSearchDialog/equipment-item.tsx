@@ -50,25 +50,14 @@ export function EquipmentItem({
     /* override li.key otherwise it will use label which could be duplicated */
     return (
         <li key={element.key} {...props}>
-            <Box
-                className={props.classes?.equipmentOption}
-                sx={props.styles?.equipmentOption}
-            >
+            <Box className={props.classes?.equipmentOption} sx={props.styles?.equipmentOption}>
                 {!showsJustText && (
                     <Box
                         component="span"
-                        className={clsx(
-                            props.classes?.equipmentTag,
-                            props.classes?.equipmentTypeTag
-                        )}
-                        sx={mergeSx(
-                            props.styles?.equipmentTag,
-                            props.styles?.equipmentTypeTag
-                        )}
+                        className={clsx(props.classes?.equipmentTag, props.classes?.equipmentTypeTag)}
+                        sx={mergeSx(props.styles?.equipmentTag, props.styles?.equipmentTypeTag)}
                     >
-                        <FormattedMessage
-                            id={EQUIPMENT_TYPE[element.type]?.tagLabel}
-                        />
+                        <FormattedMessage id={EQUIPMENT_TYPE[element.type]?.tagLabel} />
                     </Box>
                 )}
                 <OverflowableText

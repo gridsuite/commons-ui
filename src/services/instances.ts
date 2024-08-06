@@ -50,10 +50,7 @@ export function setCommonServices<TAppName extends string>(
     userAdminSvc = userAdminService;
 }
 
-export function initCommonServices<TAppName extends string>(
-    appName: TAppName,
-    userGetter: UserGetter
-) {
+export function initCommonServices<TAppName extends string>(appName: TAppName, userGetter: UserGetter) {
     const tmpAppLocal = new AppLocalComSvc();
     setCommonServices(
         tmpAppLocal,

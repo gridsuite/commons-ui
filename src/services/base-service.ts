@@ -8,14 +8,7 @@
 /* eslint-disable max-classes-per-file */
 
 import { User } from 'oidc-client';
-import {
-    HttpContentType,
-    InitRequest,
-    setRequestHeader,
-    Token,
-    Url,
-    UrlString,
-} from '../utils/api';
+import { HttpContentType, InitRequest, setRequestHeader, Token, Url, UrlString } from '../utils/api';
 import { safeFetch } from '../utils/api/api-rest';
 
 /* The first problem we have here is that some front apps don't use Vite, and by consequence using VITE_* vars don't work...
@@ -59,11 +52,7 @@ export abstract class WsService extends BaseService {
 
     private static getWsBase(wsGatewayPath: string): string {
         // We use the `baseURI` (from `<base/>` in index.html) to build the URL, which is corrected by httpd/nginx
-        return (
-            document.baseURI
-                .replace(/^http(s?):\/\//, 'ws$1://')
-                .replace(/\/+$/, '') + wsGatewayPath
-        );
+        return document.baseURI.replace(/^http(s?):\/\//, 'ws$1://').replace(/\/+$/, '') + wsGatewayPath;
     }
 
     protected getUrlWithToken(baseUrl: string) {
@@ -81,9 +70,7 @@ export abstract class ApiService extends BaseService {
         restGatewayPath: UrlString = import.meta.env.VITE_API_GATEWAY
     ) {
         super(userGetter);
-        this.basePrefix = `${ApiService.getRestBase(
-            restGatewayPath
-        )}/${service}`;
+        this.basePrefix = `${ApiService.getRestBase(restGatewayPath)}/${service}`;
     }
 
     private static getRestBase(restGatewayPath: string): string {
@@ -100,19 +87,10 @@ export abstract class ApiService extends BaseService {
     }
 
     private prepareRequest(init?: InitRequest, token?: Token): RequestInit {
-        if (
-            !(
-                typeof init === 'undefined' ||
-                typeof init === 'string' ||
-                typeof init === 'object'
-            )
-        ) {
-            throw new TypeError(
-                `First argument of prepareRequest is not an object: ${typeof init}`
-            );
+        if (!(typeof init === 'undefined' || typeof init === 'string' || typeof init === 'object')) {
+            throw new TypeError(`First argument of prepareRequest is not an object: ${typeof init}`);
         }
-        const initCopy: RequestInit =
-            typeof init === 'string' ? { method: init } : { ...(init ?? {}) };
+        const initCopy: RequestInit = typeof init === 'string' ? { method: init } : { ...(init ?? {}) };
         initCopy.headers = new Headers(initCopy.headers || {});
         const tokenCopy = token || this.getUserToken();
         initCopy.headers.append('Authorization', `Bearer ${tokenCopy}`);
@@ -128,32 +106,16 @@ export abstract class ApiService extends BaseService {
         init?: InitRequest,
         token?: Token
     ): Promise<TReturn> {
-        const reqInit = setRequestHeader(
-            init,
-            'accept',
-            HttpContentType.APPLICATION_JSON
-        );
+        const reqInit = setRequestHeader(init, 'accept', HttpContentType.APPLICATION_JSON);
         return (await this.backendFetch(url, reqInit, token)).json();
     }
 
-    protected async backendFetchText(
-        url: Url<false>,
-        init?: InitRequest,
-        token?: Token
-    ) {
-        const reqInit = setRequestHeader(
-            init,
-            'accept',
-            HttpContentType.TEXT_PLAIN
-        );
+    protected async backendFetchText(url: Url<false>, init?: InitRequest, token?: Token) {
+        const reqInit = setRequestHeader(init, 'accept', HttpContentType.TEXT_PLAIN);
         return (await this.backendFetch(url, reqInit, token)).text();
     }
 
-    protected async backendFetchFile(
-        url: Url<false>,
-        init?: InitRequest,
-        token?: Token
-    ) {
+    protected async backendFetchFile(url: Url<false>, init?: InitRequest, token?: Token) {
         return (await this.backendFetch(url, init, token)).blob();
     }
 }

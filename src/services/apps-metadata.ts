@@ -52,9 +52,7 @@ export type AppMetadataStudy = AppMetadataCommon & {
     defaultCountry?: string;
 };
 
-function isStudyMetadata(
-    metadata: AppMetadataCommon
-): metadata is AppMetadataStudy {
+function isStudyMetadata(metadata: AppMetadataCommon): metadata is AppMetadataStudy {
     return metadata.name === 'Study';
 }
 
@@ -68,17 +66,13 @@ export default class AppsMetadataComSvc {
     public async fetchAppsMetadata(): Promise<AppMetadata[]> {
         console.info(`Fetching apps and urls...`);
         const env = await this.appLocalSvc.fetchEnv();
-        const res = await fetch(
-            `${env.appsMetadataServerUrl}/apps-metadata.json`
-        );
+        const res = await fetch(`${env.appsMetadataServerUrl}/apps-metadata.json`);
         return res.json();
     }
 
     public async fetchStudyMetadata(): Promise<AppMetadataStudy> {
         console.info(`Fetching study metadata...`);
-        const studyMetadata = (await this.fetchAppsMetadata()).filter(
-            isStudyMetadata
-        );
+        const studyMetadata = (await this.fetchAppsMetadata()).filter(isStudyMetadata);
         if (!studyMetadata) {
             throw new Error('Study entry could not be found in metadata');
         } else {
@@ -86,21 +80,15 @@ export default class AppsMetadataComSvc {
         }
     }
 
-    public async fetchDefaultParametersValues(): Promise<
-        AppMetadataStudy['defaultParametersValues']
-    > {
-        console.debug(
-            'fetching default parameters values from apps-metadata file'
-        );
+    public async fetchDefaultParametersValues(): Promise<AppMetadataStudy['defaultParametersValues']> {
+        console.debug('fetching default parameters values from apps-metadata file');
         return (await this.fetchStudyMetadata()).defaultParametersValues;
     }
 
     public async fetchVersion(): Promise<VersionJson> {
         console.debug('Fetching global version...');
         const envData = await this.appLocalSvc.fetchEnv();
-        return (
-            await fetch(`${envData.appsMetadataServerUrl}/version.json`)
-        ).json();
+        return (await fetch(`${envData.appsMetadataServerUrl}/version.json`)).json();
     }
 
     public async fetchDeployedVersion() {

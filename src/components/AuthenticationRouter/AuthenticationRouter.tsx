@@ -6,24 +6,13 @@
  */
 
 import { Dispatch, useCallback } from 'react';
-import {
-    Location,
-    Navigate,
-    NavigateFunction,
-    Route,
-    Routes,
-} from 'react-router-dom';
+import { Location, Navigate, NavigateFunction, Route, Routes } from 'react-router-dom';
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
 import SignInCallbackHandler from '../SignInCallbackHandler';
 import { AuthenticationActions } from '../../utils/AuthActions';
-import {
-    handleSigninCallback,
-    handleSilentRenewCallback,
-    login,
-    logout,
-} from '../../utils/AuthService';
+import { handleSigninCallback, handleSilentRenewCallback, login, logout } from '../../utils/AuthService';
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import Logout from '../Login/Logout';
@@ -70,15 +59,8 @@ function AuthenticationRouter({
         }
     }, [userManager.instance]);
     return (
-        <Grid
-            container
-            alignContent="center"
-            alignItems="center"
-            direction="column"
-        >
-            {userManager.error !== null && (
-                <h1>Error : Getting userManager; {userManager.error}</h1>
-            )}
+        <Grid container alignContent="center" alignItems="center" direction="column">
+            {userManager.error !== null && <h1>Error : Getting userManager; {userManager.error}</h1>}
             {signInCallbackError !== null && (
                 <h1>
                     Error : SignIn Callback Error;
@@ -100,9 +82,7 @@ function AuthenticationRouter({
                     element={
                         <SilentRenewCallbackHandler
                             userManager={userManager.instance}
-                            handleSilentRenewCallback={
-                                handleSilentRenewCallbackClosure
-                            }
+                            handleSilentRenewCallback={handleSilentRenewCallbackClosure}
                         />
                     }
                 />
@@ -114,9 +94,7 @@ function AuthenticationRouter({
                         authenticationRouterError == null && (
                             <Login
                                 disabled={userManager.instance === null}
-                                onLoginClick={() =>
-                                    login(location, userManager.instance)
-                                }
+                                onLoginClick={() => login(location, userManager.instance)}
                             />
                         )
                     }
@@ -128,9 +106,7 @@ function AuthenticationRouter({
                     <Grid item>
                         <Logout
                             disabled={userManager.instance === null}
-                            onLogoutClick={() =>
-                                logout(dispatch, userManager.instance)
-                            }
+                            onLogoutClick={() => logout(dispatch, userManager.instance)}
                         />
                     </Grid>
                     <Grid item xs={4}>
@@ -142,20 +118,13 @@ function AuthenticationRouter({
                                 <FormattedMessage
                                     id="login/errorInLogoutMessage"
                                     values={{
-                                        userName:
-                                            authenticationRouterError.userName,
+                                        userName: authenticationRouterError.userName,
                                     }}
                                 />
-                                <p>
-                                    {
-                                        authenticationRouterError.logoutError
-                                            .error.message
-                                    }
-                                </p>
+                                <p>{authenticationRouterError.logoutError.error.message}</p>
                             </Alert>
                         )}
-                        {authenticationRouterError?.userValidationError !=
-                            null && (
+                        {authenticationRouterError?.userValidationError != null && (
                             <Alert severity="error">
                                 <AlertTitle>
                                     <FormattedMessage id="login/errorInUserValidation" />
@@ -163,20 +132,13 @@ function AuthenticationRouter({
                                 <FormattedMessage
                                     id="login/errorInUserValidationMessage"
                                     values={{
-                                        userName:
-                                            authenticationRouterError.userName,
+                                        userName: authenticationRouterError.userName,
                                     }}
                                 />
-                                <p>
-                                    {
-                                        authenticationRouterError
-                                            .userValidationError.error.message
-                                    }
-                                </p>
+                                <p>{authenticationRouterError.userValidationError.error.message}</p>
                             </Alert>
                         )}
-                        {authenticationRouterError?.unauthorizedUserInfo !=
-                            null && (
+                        {authenticationRouterError?.unauthorizedUserInfo != null && (
                             <Alert severity="info">
                                 <AlertTitle>
                                     <FormattedMessage id="login/unauthorizedAccess" />
@@ -184,8 +146,7 @@ function AuthenticationRouter({
                                 <FormattedMessage
                                     id="login/unauthorizedAccessMessage"
                                     values={{
-                                        userName:
-                                            authenticationRouterError.userName,
+                                        userName: authenticationRouterError.userName,
                                     }}
                                 />
                             </Alert>

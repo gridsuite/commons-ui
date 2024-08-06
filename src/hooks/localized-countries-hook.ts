@@ -12,15 +12,11 @@ import countriesEn from 'localized-countries/data/en.json';
 import { getComputedLanguage, GsLang, LANG_ENGLISH } from '../utils/language';
 
 export default function useLocalizedCountries(language: GsLang | undefined) {
-    const [localizedCountriesModule, setLocalizedCountriesModule] =
-        useState<LocalizedCountries>();
+    const [localizedCountriesModule, setLocalizedCountriesModule] = useState<LocalizedCountries>();
 
     // TODO FM this is disgusting, can we make it better ?
     useEffect(() => {
-        const lang = getComputedLanguage(language ?? LANG_ENGLISH).substring(
-            0,
-            2
-        );
+        const lang = getComputedLanguage(language ?? LANG_ENGLISH).substring(0, 2);
         let localizedCountriesResult;
         // vite does not support ESM dynamic imports on node_modules, so we have to imports the languages before and do this
         // https://github.com/vitejs/vite/issues/14102
@@ -29,27 +25,19 @@ export default function useLocalizedCountries(language: GsLang | undefined) {
         } else if (lang === 'en') {
             localizedCountriesResult = localizedCountries(countriesEn);
         } else {
-            console.warn(
-                `Unsupported language "${lang}" for countries translation, we use english as default`
-            );
+            console.warn(`Unsupported language "${lang}" for countries translation, we use english as default`);
             localizedCountriesResult = localizedCountries(countriesEn);
         }
         setLocalizedCountriesModule(localizedCountriesResult);
     }, [language]);
 
     const countryCodes = useMemo(
-        () =>
-            localizedCountriesModule
-                ? Object.keys(localizedCountriesModule.object())
-                : [],
+        () => (localizedCountriesModule ? Object.keys(localizedCountriesModule.object()) : []),
         [localizedCountriesModule]
     );
 
     const translate = useCallback(
-        (countryCode: string) =>
-            localizedCountriesModule
-                ? localizedCountriesModule.get(countryCode)
-                : '',
+        (countryCode: string) => (localizedCountriesModule ? localizedCountriesModule.get(countryCode) : ''),
         [localizedCountriesModule]
     );
 

@@ -45,46 +45,24 @@ export const explicitNamingFilterSchema = {
             })
         )
         // we remove empty lines
-        .compact(
-            (row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID]
-        )
+        .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .when([FieldConstants.FILTER_TYPE], {
             is: FilterType.EXPLICIT_NAMING.id,
             then: (schema) =>
-                schema
-                    .min(1, 'emptyFilterError')
-                    .when([FieldConstants.EQUIPMENT_TYPE], {
-                        is: (equipmentType: string) =>
-                            isGeneratorOrLoad(equipmentType),
-                        then: (innerSchema) =>
-                            innerSchema
-                                .test(
-                                    'noKeyWithoutId',
-                                    'distributionKeyWithMissingIdError',
-                                    (array) => {
-                                        return !array!.some(
-                                            (row) =>
-                                                !row[
-                                                    FieldConstants.EQUIPMENT_ID
-                                                ]
-                                        );
-                                    }
-                                )
-                                .test(
-                                    'ifOneKeyThenKeyEverywhere',
-                                    'missingDistributionKeyError',
-                                    (array) => {
-                                        return !(
-                                            array!.some(
-                                                (row) => row[DISTRIBUTION_KEY]
-                                            ) &&
-                                            array!.some(
-                                                (row) => !row[DISTRIBUTION_KEY]
-                                            )
-                                        );
-                                    }
-                                ),
-                    }),
+                schema.min(1, 'emptyFilterError').when([FieldConstants.EQUIPMENT_TYPE], {
+                    is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
+                    then: (innerSchema) =>
+                        innerSchema
+                            .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
+                                return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
+                            })
+                            .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
+                                return !(
+                                    array!.some((row) => row[DISTRIBUTION_KEY]) &&
+                                    array!.some((row) => !row[DISTRIBUTION_KEY])
+                                );
+                            }),
+                }),
         }),
 };
 
@@ -121,9 +99,7 @@ interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
 }
 
-function ExplicitNamingFilterForm({
-    sourceFilterForExplicitNamingConversion,
-}: ExplicitNamingFilterFormProps) {
+function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
@@ -134,10 +110,7 @@ function ExplicitNamingFilterForm({
     });
 
     useEffect(() => {
-        if (
-            watchEquipmentType &&
-            !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENTS)
-        ) {
+        if (watchEquipmentType && !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENTS)) {
             snackError({
                 headerId: 'obsoleteFilter',
             });
@@ -148,10 +121,7 @@ function ExplicitNamingFilterForm({
 
     useEffect(() => {
         if (sourceFilterForExplicitNamingConversion) {
-            setValue(
-                FieldConstants.EQUIPMENT_TYPE,
-                sourceFilterForExplicitNamingConversion.equipmentType
-            );
+            setValue(FieldConstants.EQUIPMENT_TYPE, sourceFilterForExplicitNamingConversion.equipmentType);
         }
     }, [sourceFilterForExplicitNamingConversion, setValue]);
 
@@ -165,8 +135,7 @@ function ExplicitNamingFilterForm({
                 field: FieldConstants.EQUIPMENT_ID,
                 editable: true,
                 singleClickEdit: true,
-                valueParser: (params: ValueParserParams) =>
-                    params.newValue?.trim() ?? null,
+                valueParser: (params: ValueParserParams) => params.newValue?.trim() ?? null,
             },
         ];
         if (forGeneratorOrLoad) {
@@ -190,13 +159,9 @@ function ExplicitNamingFilterForm({
     );
 
     const csvFileHeaders = useMemo(() => {
-        const newCsvFileHeaders = [
-            intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID }),
-        ];
+        const newCsvFileHeaders = [intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID })];
         if (forGeneratorOrLoad) {
-            newCsvFileHeaders.push(
-                intl.formatMessage({ id: DISTRIBUTION_KEY })
-            );
+            newCsvFileHeaders.push(intl.formatMessage({ id: DISTRIBUTION_KEY }));
         }
         return newCsvFileHeaders;
     }, [intl, forGeneratorOrLoad]);
@@ -216,8 +181,7 @@ function ExplicitNamingFilterForm({
 
     const openConfirmationPopup = () => {
         return getValues(FILTER_EQUIPMENTS_ATTRIBUTES).some(
-            (row: FilterTableRow) =>
-                row[DISTRIBUTION_KEY] || row[FieldConstants.EQUIPMENT_ID]
+            (row: FilterTableRow) => row[DISTRIBUTION_KEY] || row[FieldConstants.EQUIPMENT_ID]
         );
     };
 
@@ -227,10 +191,7 @@ function ExplicitNamingFilterForm({
 
     const onStudySelected = (studyUuid: UUID) => {
         studySvc
-            .exportFilter(
-                studyUuid,
-                sourceFilterForExplicitNamingConversion?.id
-            )
+            .exportFilter(studyUuid, sourceFilterForExplicitNamingConversion?.id)
             .then((matchingEquipments: any) => {
                 setValue(
                     FILTER_EQUIPMENTS_ATTRIBUTES,

@@ -12,10 +12,7 @@ function getLocalStorageThemeKey(appName: string) {
 }
 
 export function getLocalStorageTheme(appName: string) {
-    return (
-        (localStorage.getItem(getLocalStorageThemeKey(appName)) as GsTheme) ||
-        DARK_THEME
-    );
+    return (localStorage.getItem(getLocalStorageThemeKey(appName)) as GsTheme) || DARK_THEME;
 }
 
 export function saveLocalStorageTheme(appName: string, theme: GsTheme) {

@@ -20,16 +20,11 @@ export interface IDescriptionModificationDialog {
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement: (
-        uuid: string,
-        data: Record<string, string>
-    ) => Promise<void>;
+    updateElement: (uuid: string, data: Record<string, string>) => Promise<void>;
 }
 
 const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup
-        .string()
-        .max(500, 'descriptionLimitError'),
+    [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
 });
 
 function DescriptionModificationDialog({
@@ -62,8 +57,7 @@ function DescriptionModificationDialog({
     const onSubmit = useCallback(
         (data: { description: string }) => {
             updateElement(elementUuid, {
-                [FieldConstants.DESCRIPTION]:
-                    data[FieldConstants.DESCRIPTION].trim(),
+                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
             }).catch((error: any) => {
                 snackError({
                     messageTxt: error.message,

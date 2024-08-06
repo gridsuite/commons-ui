@@ -29,8 +29,7 @@ export const equipmentStyles = {
         textAlign: 'center',
         color:
             // TODO remove first condition when gridstudy is updated
-            theme === LIGHT_THEME ||
-            (typeof theme !== 'string' && theme?.palette?.mode === 'light')
+            theme === LIGHT_THEME || (typeof theme !== 'string' && theme?.palette?.mode === 'light')
                 ? 'inherit'
                 : 'black',
     }),
@@ -78,10 +77,7 @@ export enum EquipmentType {
 }
 
 // Must be equivalent as the back enum
-export const EQUIPMENT_TYPE: Record<
-    EquipmentType,
-    { name: EquipmentType; tagLabel: string } | undefined
-> = {
+export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',

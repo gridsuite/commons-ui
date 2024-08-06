@@ -68,12 +68,7 @@ const options = [
     { id: 'ibra', label: 'inputs/ibra' },
 ];
 
-const basicOptions = [
-    'Kylian Mbappe',
-    'Neymar',
-    'Lionel Messi',
-    'Zlatan Ibrahimovic',
-];
+const basicOptions = ['Kylian Mbappe', 'Neymar', 'Lionel Messi', 'Zlatan Ibrahimovic'];
 
 const gridSize = 4;
 
@@ -141,20 +136,10 @@ function InputsTab() {
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SliderInput
-                            name={SLIDER_INPUT}
-                            label="inputs/slider"
-                            min={0.0}
-                            max={100.0}
-                            step={0.1}
-                        />
+                        <SliderInput name={SLIDER_INPUT} label="inputs/slider" min={0.0} max={100.0} step={0.1} />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SelectInput
-                            name={SELECT_INPUT}
-                            label="inputs/select"
-                            options={options}
-                        />
+                        <SelectInput name={SELECT_INPUT} label="inputs/select" options={options} />
                     </Grid>
                     <Grid item xs={gridSize}>
                         <SelectClearable
@@ -165,32 +150,19 @@ function InputsTab() {
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <RadioInput
-                            name={RADIO_INPUT}
-                            label="inputs/radio"
-                            options={options}
-                        />
+                        <RadioInput name={RADIO_INPUT} label="inputs/radio" options={options} />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <IntegerInput
-                            name={INTEGER_INPUT}
-                            label="inputs/integer"
-                        />
+                        <IntegerInput name={INTEGER_INPUT} label="inputs/integer" />
                     </Grid>
                     <Grid item xs={gridSize}>
                         <FloatInput name={FLOAT_INPUT} label="inputs/float" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <CheckboxInput
-                            name={CHECKBOX_INPUT}
-                            label="inputs/checkbox"
-                        />
+                        <CheckboxInput name={CHECKBOX_INPUT} label="inputs/checkbox" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SwitchInput
-                            name={SWITCH_INPUT}
-                            label="inputs/switch"
-                        />
+                        <SwitchInput name={SWITCH_INPUT} label="inputs/switch" />
                     </Grid>
                 </Grid>
                 <Box

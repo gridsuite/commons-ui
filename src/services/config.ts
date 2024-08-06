@@ -30,75 +30,49 @@ export type ConfigParameter =
       };
 export type ConfigParameters = ConfigParameter[];
 
-type AppConfigParameter = LiteralUnion<
-    typeof PARAM_THEME | typeof PARAM_LANGUAGE,
-    string
->;
+type AppConfigParameter = LiteralUnion<typeof PARAM_THEME | typeof PARAM_LANGUAGE, string>;
 
 // TODO: how to test it's a fixed value and not any string?
-type AppConfigType<TAppName extends string | undefined = undefined> =
-    TAppName extends string
-        ? typeof COMMON_APP_NAME | TAppName
-        : LiteralUnion<typeof COMMON_APP_NAME, string>;
+type AppConfigType<TAppName extends string | undefined = undefined> = TAppName extends string
+    ? typeof COMMON_APP_NAME | TAppName
+    : LiteralUnion<typeof COMMON_APP_NAME, string>;
 
 /**
  * Permit knowing if a parameter is common/shared between webapps or is specific to this application.
  * @param appName the current application name/identifier
  * @param paramName the parameter name/key
  */
-function getAppName<TAppName extends string>(
-    appName: TAppName,
-    paramName: AppConfigParameter
-) {
-    return (
-        COMMON_CONFIG_PARAMS_NAMES.has(paramName) ? COMMON_APP_NAME : appName
-    ) as AppConfigType<TAppName>;
+function getAppName<TAppName extends string>(appName: TAppName, paramName: AppConfigParameter) {
+    return (COMMON_CONFIG_PARAMS_NAMES.has(paramName) ? COMMON_APP_NAME : appName) as AppConfigType<TAppName>;
 }
 
 export default class ConfigComSvc<TAppName extends string> extends ApiService {
     private readonly appName: TAppName;
 
-    public constructor(
-        appName: TAppName,
-        userGetter: UserGetter,
-        restGatewayPath?: UrlString
-    ) {
+    public constructor(appName: TAppName, userGetter: UserGetter, restGatewayPath?: UrlString) {
         super(userGetter, 'config', restGatewayPath);
         this.appName = appName;
     }
 
     public async fetchConfigParameters(appName: AppConfigType<TAppName>) {
         console.debug(`Fetching UI configuration params for app : ${appName}`);
-        const fetchParams = `${this.getPrefix(
-            1
-        )}/applications/${appName}/parameters`;
+        const fetchParams = `${this.getPrefix(1)}/applications/${appName}/parameters`;
         return this.backendFetchJson<ConfigParameters>(fetchParams);
     }
 
     public async fetchConfigParameter(paramName: AppConfigParameter) {
         const appName = getAppName(this.appName, paramName);
-        console.debug(
-            `Fetching UI config parameter '${paramName}' for app '${appName}'`
-        );
-        const fetchParams = `${this.getPrefix(
-            1
-        )}/applications/${appName}/parameters/${paramName}`;
+        console.debug(`Fetching UI config parameter '${paramName}' for app '${appName}'`);
+        const fetchParams = `${this.getPrefix(1)}/applications/${appName}/parameters/${paramName}`;
         return this.backendFetchJson<ConfigParameter>(fetchParams);
     }
 
-    public async updateConfigParameter(
-        paramName: AppConfigParameter,
-        value: Parameters<typeof encodeURIComponent>[0]
-    ) {
+    public async updateConfigParameter(paramName: AppConfigParameter, value: Parameters<typeof encodeURIComponent>[0]) {
         const appName = getAppName(this.appName, paramName);
-        console.debug(
-            `Updating config parameter '${paramName}=${value}' for app '${appName}'`
-        );
+        console.debug(`Updating config parameter '${paramName}=${value}' for app '${appName}'`);
         const updateParams = `${this.getPrefix(
             1
-        )}/applications/${appName}/parameters/${paramName}?value=${encodeURIComponent(
-            value
-        )}`;
+        )}/applications/${appName}/parameters/${paramName}?value=${encodeURIComponent(value)}`;
         return (
             await this.backendFetch(updateParams, {
                 method: 'PUT',

@@ -58,10 +58,11 @@
     position: relative;
 }
 
-.queryBuilder-branches .rule::before, .queryBuilder-branches .rule::after,
+.queryBuilder-branches .rule::before,
+.queryBuilder-branches .rule::after,
 .queryBuilder-branches .ruleGroup .ruleGroup::before,
 .queryBuilder-branches .ruleGroup .ruleGroup::after {
-    content: "";
+    content: '';
     width: 0.5rem;
     left: calc(-0.5rem - 1px);
     border-color: #969696;
@@ -94,7 +95,8 @@
     display: none;
 }
 
-.queryBuilder-branches .ruleGroup .ruleGroup::before, .queryBuilder-branches .ruleGroup .ruleGroup::after {
+.queryBuilder-branches .ruleGroup .ruleGroup::before,
+.queryBuilder-branches .ruleGroup .ruleGroup::after {
     left: calc(calc(-0.5rem - 1px) - 1px);
 }
 
@@ -133,25 +135,33 @@
 }
 
 /* DnD section, copied from original, just 'border-bottom-color: lightgrey' change */
-[data-inlinecombinators=disabled] .dndOver.rule, [data-inlinecombinators=disabled] .dndOver.ruleGroup-header {
+[data-inlinecombinators='disabled'] .dndOver.rule,
+[data-inlinecombinators='disabled'] .dndOver.ruleGroup-header {
     border-bottom-width: 2px;
     border-bottom-style: dashed;
     border-bottom-color: lightgrey;
     padding-bottom: 0.5rem;
 }
 
-[data-inlinecombinators=disabled] .dndOver.rule.dndCopy, [data-inlinecombinators=disabled] .dndOver.ruleGroup-header.dndCopy {
+[data-inlinecombinators='disabled'] .dndOver.rule.dndCopy,
+[data-inlinecombinators='disabled'] .dndOver.ruleGroup-header.dndCopy {
     border-bottom-color: #669933;
 }
 
-[data-inlinecombinators=enabled] .dndOver.rule:last-child, [data-inlinecombinators=enabled] .dndOver.ruleGroup-header, [data-inlinecombinators=enabled] .dndOver.rule + .betweenRules, [data-inlinecombinators=enabled] .dndOver.betweenRules {
+[data-inlinecombinators='enabled'] .dndOver.rule:last-child,
+[data-inlinecombinators='enabled'] .dndOver.ruleGroup-header,
+[data-inlinecombinators='enabled'] .dndOver.rule + .betweenRules,
+[data-inlinecombinators='enabled'] .dndOver.betweenRules {
     border-bottom-width: 2px;
     border-bottom-style: dashed;
     border-bottom-color: lightgrey;
     padding-bottom: 0.5rem;
 }
 
-[data-inlinecombinators=enabled] .dndOver.rule:last-child.dndCopy, [data-inlinecombinators=enabled] .dndOver.ruleGroup-header.dndCopy, [data-inlinecombinators=enabled] .dndOver.rule + .betweenRules.dndCopy, [data-inlinecombinators=enabled] .dndOver.betweenRules.dndCopy {
+[data-inlinecombinators='enabled'] .dndOver.rule:last-child.dndCopy,
+[data-inlinecombinators='enabled'] .dndOver.ruleGroup-header.dndCopy,
+[data-inlinecombinators='enabled'] .dndOver.rule + .betweenRules.dndCopy,
+[data-inlinecombinators='enabled'] .dndOver.betweenRules.dndCopy {
     border-bottom-color: #669933;
 }
 

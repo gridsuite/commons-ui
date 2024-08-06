@@ -27,11 +27,7 @@ import {
 // trick found here https://dev.to/tmlr/til-get-strongly-typed-http-headers-with-typescript-3e33
 export type KeyOfWithoutIndexSignature<T> = {
     // copy every declared property from T but remove index signatures
-    [K in keyof T as string extends K
-        ? never
-        : number extends K
-        ? never
-        : K]: T[K];
+    [K in keyof T as string extends K ? never : number extends K ? never : K]: T[K];
 };
 
 export type Input = string | number;
