@@ -20,7 +20,6 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-
 import { GsLangUser } from '../../../utils/language';
 
 const formSchema = yup

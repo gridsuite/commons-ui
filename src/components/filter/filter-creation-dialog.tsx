@@ -26,7 +26,6 @@ import yup from '../../utils/yup-config';
 import FilterForm from './filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
-
 import { GsLangUser } from '../../utils/language';
 
 const emptyFormData = {

@@ -6,7 +6,6 @@
  */
 
 import { Theme } from '@mui/material';
-
 import { LIGHT_THEME } from './theme';
 
 export const TYPE_TAG_MAX_SIZE = '90px';

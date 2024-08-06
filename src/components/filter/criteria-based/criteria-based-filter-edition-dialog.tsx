@@ -19,7 +19,6 @@ import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
 import { exploreSvc } from '../../../services/instances';
 import FilterForm from '../filter-form';
-
 import { GsLangUser } from '../../../utils/language';
 
 export type SelectionCopy = {
