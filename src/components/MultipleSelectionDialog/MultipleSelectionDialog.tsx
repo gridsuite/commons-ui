@@ -5,16 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
-import { CheckboxList } from '../CheckBoxList/check-box-list';
+import { CheckboxList } from '../CheckBoxList';
 
 export interface MultipleSelectionDialogProps<T> {
     options: T[];
@@ -43,55 +37,15 @@ function MultipleSelectionDialog<T>({
         <Dialog open={open} fullWidth>
             <DialogTitle>{titleId}</DialogTitle>
             <DialogContent>
-<<<<<<< HEAD
                 <CheckboxList<T>
                     items={options}
                     selectedItems={selectedIds}
-                    onSelectionChange={(values: any[]) =>
-                        setSelectedIds(values)
-                    }
+                    onSelectionChange={(values: T[]) => setSelectedIds(values)}
                     getItemId={getOptionId}
                     getItemLabel={getOptionLabel}
                     addSelectAllCheckbox
                     {...props}
                 />
-=======
-                <Grid container spacing={2} flexDirection="column">
-                    <Grid item>
-                        <FormControlLabel
-                            label={<FormattedMessage id="multiple_selection_dialog/selectAll" />}
-                            control={
-                                <Checkbox
-                                    checked={selectedIds.length === options.length}
-                                    indeterminate={!!selectedIds.length && selectedIds.length !== options.length}
-                                    onChange={handleSelectAll}
-                                />
-                            }
-                        />
-                    </Grid>
-                    <Grid item>
-                        <List>
-                            {options.map((option) => {
-                                const optionId = option;
-                                const label = getOptionLabel(option);
-                                return (
-                                    <Grid item key={optionId}>
-                                        <FormControlLabel
-                                            label={label}
-                                            control={
-                                                <Checkbox
-                                                    checked={selectedIds.includes(optionId)}
-                                                    onChange={() => handleOptionSelection(optionId)}
-                                                />
-                                            }
-                                        />
-                                    </Grid>
-                                );
-                            })}
-                        </List>
-                    </Grid>
-                </Grid>
->>>>>>> main
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => handleClose()}>
