@@ -12,11 +12,7 @@ type FieldLabelProps = {
     optional?: boolean;
     values?: any;
 };
-function FieldLabel({
-    label,
-    optional = false,
-    values = undefined,
-}: FieldLabelProps) {
+function FieldLabel({ label, optional = false, values = undefined }: FieldLabelProps) {
     return (
         <>
             <FormattedMessage id={label} values={values} />

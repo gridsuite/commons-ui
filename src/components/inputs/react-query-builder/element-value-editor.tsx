@@ -23,16 +23,7 @@ interface ElementValueEditorProps {
 }
 
 function ElementValueEditor(props: ElementValueEditorProps) {
-    const {
-        defaultValue,
-        name,
-        elementType,
-        equipmentTypes,
-        titleId,
-        hideErrorMessage,
-        itemFilter,
-        onChange,
-    } = props;
+    const { defaultValue, name, elementType, equipmentTypes, titleId, hideErrorMessage, itemFilter, onChange } = props;
     const { setValue } = useCustomFormContext();
 
     useEffect(() => {

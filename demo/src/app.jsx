@@ -78,10 +78,7 @@ import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
 import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import {
-    TreeViewFinder,
-    generateTreeViewFinderClass,
-} from '../../src/components/TreeViewFinder';
+import { TreeViewFinder, generateTreeViewFinderClass } from '../../src/components/TreeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
 import {
@@ -185,13 +182,8 @@ const TreeViewFinderCustomStyles = (theme) => ({
 });
 
 const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
-    toNestedGlobalSelectors(
-        TreeViewFinderCustomStyles(theme),
-        generateTreeViewFinderClass
-    );
-const CustomTreeViewFinder = styled(TreeViewFinder)(
-    TreeViewFinderCustomStylesEmotion
-);
+    toNestedGlobalSelectors(TreeViewFinderCustomStyles(theme), generateTreeViewFinderClass);
+const CustomTreeViewFinder = styled(TreeViewFinder)(TreeViewFinderCustomStylesEmotion);
 
 function Crasher() {
     const [crash, setCrash] = useState(false);
@@ -312,12 +304,8 @@ function AppContent({ language, onLanguageClick }) {
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [authenticationRouterError, setAuthenticationRouterError] =
-        useState(null);
-    const [
-        showAuthenticationRouterLoginState,
-        setShowAuthenticationRouterLoginState,
-    ] = useState(false);
+    const [authenticationRouterError, setAuthenticationRouterError] = useState(null);
+    const [showAuthenticationRouterLoginState, setShowAuthenticationRouterLoginState] = useState(false);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
 
@@ -326,20 +314,15 @@ function AppContent({ language, onLanguageClick }) {
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
     const [openReportViewer, setOpenReportViewer] = useState(false);
-    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
-        useState(false);
+
     const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
-    const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] =
-        useState(false);
-    const [
-        openTreeViewFinderDialogCustomDialog,
-        setOpenTreeViewFinderDialogCustomDialog,
-    ] = useState(false);
+    const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] = useState(false);
+
+    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
+    const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
 
     // Can't use lazy initializer because useMatch is a hook
-    const [initialMatchSilentRenewCallbackUrl] = useState(
-        useMatch('/silent-renew-callback')
-    );
+    const [initialMatchSilentRenewCallbackUrl] = useState(useMatch('/silent-renew-callback'));
 
     // TreeViewFinder data
     const [nodesTree, setNodesTree] = useState(testDataTree);
@@ -388,9 +371,7 @@ function AppContent({ language, onLanguageClick }) {
         if (equipment != null) {
             equipment.type === EQUIPMENT_TYPE.SUBSTATION.name
                 ? alert(`Equipment ${equipment.label} found !`)
-                : alert(
-                      `Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`
-                  );
+                : alert(`Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`);
         }
     };
     const [searchTermDisableReason] = useState('search disabled');
@@ -408,9 +389,7 @@ function AppContent({ language, onLanguageClick }) {
         } else if (e.type === 'RESET_AUTHENTICATION_ROUTER_ERROR') {
             setAuthenticationRouterError(null);
         } else if (e.type === 'SHOW_AUTH_INFO_LOGIN') {
-            setShowAuthenticationRouterLoginState(
-                e.showAuthenticationRouterLogin
-            );
+            setShowAuthenticationRouterLoginState(e.showAuthenticationRouterLogin);
         }
     };
 
@@ -434,11 +413,7 @@ function AppContent({ language, onLanguageClick }) {
     ];
 
     useEffect(() => {
-        initializeAuthenticationDev(
-            dispatch,
-            initialMatchSilentRenewCallbackUrl != null,
-            validateUser
-        )
+        initializeAuthenticationDev(dispatch, initialMatchSilentRenewCallbackUrl != null, validateUser)
             .then((userManager) => {
                 setUserManager({
                     instance: userManager,
@@ -477,21 +452,14 @@ function AppContent({ language, onLanguageClick }) {
         return a.name.localeCompare(b.name);
     }
 
-    const handleToggleDisableSearch = useCallback(
-        () => setSearchDisabled((oldState) => !oldState),
-        []
-    );
+    const handleToggleDisableSearch = useCallback(() => setSearchDisabled((oldState) => !oldState), []);
 
     const aboutTimerVersion = useRef();
     const aboutTimerCmpnt = useRef();
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
-            (resolve, reject) =>
-                (aboutTimerVersion.current = window.setTimeout(
-                    () => resolve('1.0.0-demo'),
-                    1250
-                ))
+            (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
     function simulateGetAdditionalComponents() {
@@ -655,19 +623,10 @@ function AppContent({ language, onLanguageClick }) {
                 secondaryAction={secondaryAction}
                 isDndDragAndDropActive
                 onDragEnd={({ source, destination }) => {
-                    if (
-                        destination !== null &&
-                        source.index !== destination.index
-                    ) {
+                    if (destination !== null && source.index !== destination.index) {
                         const res = [...checkBoxListOption];
                         const [item] = res.splice(source.index, 1);
-                        res.splice(
-                            destination
-                                ? destination.index
-                                : checkBoxListOption.length,
-                            0,
-                            item
-                        );
+                        res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
                         setCheckBoxListOption(res);
                     }
                 }}
@@ -702,21 +661,11 @@ function AppContent({ language, onLanguageClick }) {
                     multiSelect={multiSelect}
                     onlyLeaves={onlyLeaves}
                     sortedAlphabetically={sortedAlphabetically}
-                    onDynamicDataChange={(event) =>
-                        setDynamicData(event.target.value === 'dynamic')
-                    }
-                    onDataFormatChange={(event) =>
-                        setDataFormat(event.target.value)
-                    }
-                    onSelectionTypeChange={(event) =>
-                        setMultiSelect(event.target.value === 'multiselect')
-                    }
-                    onOnlyLeavesChange={(event) =>
-                        setOnlyLeaves(event.target.checked)
-                    }
-                    onSortedAlphabeticallyChange={(event) =>
-                        setSortedAlphabetically(event.target.checked)
-                    }
+                    onDynamicDataChange={(event) => setDynamicData(event.target.value === 'dynamic')}
+                    onDataFormatChange={(event) => setDataFormat(event.target.value)}
+                    onSelectionTypeChange={(event) => setMultiSelect(event.target.value === 'multiselect')}
+                    onOnlyLeavesChange={(event) => setOnlyLeaves(event.target.checked)}
+                    onSortedAlphabeticallyChange={(event) => setSortedAlphabetically(event.target.checked)}
                 />
                 <Button
                     variant="contained"
@@ -754,13 +703,9 @@ function AppContent({ language, onLanguageClick }) {
                             : undefined
                     }
                     onlyLeaves={onlyLeaves}
-                    sortMethod={
-                        sortedAlphabetically ? sortAlphabetically : undefined
-                    }
+                    sortMethod={sortedAlphabetically ? sortAlphabetically : undefined}
                     // Customisation props to pass the counter in the title
-                    title={`Number of nodes : ${countNodes(
-                        dataFormat === 'Tree' ? nodesTree : nodesList
-                    )}`}
+                    title={`Number of nodes : ${countNodes(dataFormat === 'Tree' ? nodesTree : nodesList)}`}
                 />
                 <Button
                     variant="contained"
@@ -768,9 +713,7 @@ function AppContent({ language, onLanguageClick }) {
                         float: 'left',
                         margin: '5px',
                     }}
-                    onClick={() =>
-                        setOpenTreeViewFinderDialogCustomDialog(true)
-                    }
+                    onClick={() => setOpenTreeViewFinderDialogCustomDialog(true)}
                 >
                     Open Custom TreeViewFinder…
                 </Button>
@@ -849,10 +792,7 @@ function AppContent({ language, onLanguageClick }) {
                                 onChange={() => {
                                     setSearchTermDisabled(!searchTermDisabled);
                                     // TO TEST search activation after some times
-                                    setTimeout(
-                                        () => setSearchTermDisabled(false),
-                                        4000
-                                    );
+                                    setTimeout(() => setSearchTermDisabled(false), 4000);
                                 }}
                                 name="search-disabled"
                             />
@@ -877,21 +817,15 @@ function AppContent({ language, onLanguageClick }) {
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
                             onParametersClick={() => console.log('settings')}
-                            onLogoutClick={() =>
-                                logout(dispatch, userManager.instance)
-                            }
+                            onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
                             theme={theme}
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
                             globalVersionPromise={simulateGetGlobalVersion}
-                            additionalModulesPromise={
-                                simulateGetAdditionalComponents
-                            }
-                            onEquipmentLabellingClick={
-                                handleEquipmentLabellingClick
-                            }
+                            additionalModulesPromise={simulateGetAdditionalComponents}
+                            onEquipmentLabellingClick={handleEquipmentLabellingClick}
                             equipmentLabelling={equipmentLabelling}
                             withElementsSearch
                             searchingLabel={intl.formatMessage({
@@ -904,11 +838,7 @@ function AppContent({ language, onLanguageClick }) {
                             searchTermDisableReason={searchTermDisableReason}
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
-                                <EquipmentItem
-                                    styles={equipmentStyles}
-                                    {...props}
-                                    key={props.element.key}
-                                />
+                                <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
                             )}
                             onLanguageClick={onLanguageClick}
                             language={language}
@@ -932,12 +862,7 @@ function AppContent({ language, onLanguageClick }) {
                         <CardErrorBoundary>
                             {user !== null ? (
                                 <div>
-                                    <Tabs
-                                        value={tabIndex}
-                                        onChange={(event, newTabIndex) =>
-                                            setTabIndex(newTabIndex)
-                                        }
-                                    >
+                                    <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />
                                         <Tab label="virtual table" />
                                         <Tab label="parameters" />
@@ -952,12 +877,8 @@ function AppContent({ language, onLanguageClick }) {
                                 <AuthenticationRouter
                                     userManager={userManager}
                                     signInCallbackError={null}
-                                    authenticationRouterError={
-                                        authenticationRouterError
-                                    }
-                                    showAuthenticationRouterLogin={
-                                        showAuthenticationRouterLoginState
-                                    }
+                                    authenticationRouterError={authenticationRouterError}
+                                    showAuthenticationRouterLogin={showAuthenticationRouterLoginState}
                                     dispatch={dispatch}
                                     navigate={navigate}
                                     location={location}
@@ -979,11 +900,7 @@ function App() {
         setLanguage(pickedLanguage);
         if (pickedLanguage === LANG_SYSTEM) {
             const sysLanguage = navigator.language.split(/[-_]/)[0];
-            setComputedLanguage(
-                [LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage)
-                    ? sysLanguage
-                    : LANG_ENGLISH
-            );
+            setComputedLanguage([LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage) ? sysLanguage : LANG_ENGLISH);
         } else {
             setComputedLanguage(pickedLanguage);
         }
@@ -991,14 +908,8 @@ function App() {
 
     return (
         <BrowserRouter basename="/">
-            <IntlProvider
-                locale={computedLanguage}
-                messages={messages[computedLanguage]}
-            >
-                <AppContent
-                    language={language}
-                    onLanguageClick={handleLanguageClick}
-                />
+            <IntlProvider locale={computedLanguage} messages={messages[computedLanguage]}>
+                <AppContent language={language} onLanguageClick={handleLanguageClick} />
             </IntlProvider>
         </BrowserRouter>
     );

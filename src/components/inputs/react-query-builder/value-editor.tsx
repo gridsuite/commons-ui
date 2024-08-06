@@ -26,10 +26,9 @@ import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
 
 const styles = {
     noArrows: {
-        '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button':
-            {
-                display: 'none',
-            },
+        '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+            display: 'none',
+        },
         '& input[type=number]': {
             MozAppearance: 'textfield',
         },
@@ -37,15 +36,7 @@ const styles = {
 };
 
 function ValueEditor(props: ValueEditorProps) {
-    const {
-        field,
-        operator,
-        value,
-        rule,
-        handleOnChange,
-        inputType,
-        fieldData,
-    } = props;
+    const { field, operator, value, rule, handleOnChange, inputType, fieldData } = props;
     const formContext = useFormContext();
     const { getValues } = formContext;
     const itemFilter = useCallback(
@@ -54,17 +45,14 @@ function ValueEditor(props: ValueEditorProps) {
                 return (
                     // we do not authorize to use an expert filter in the rules of
                     // another expert filter, to prevent potential cycle problems
-                    filterValue?.specificMetadata?.type !==
-                        FilterType.EXPERT.id &&
+                    filterValue?.specificMetadata?.type !== FilterType.EXPERT.id &&
                     ((field === FieldType.ID &&
-                        filterValue?.specificMetadata?.equipmentType ===
-                            getValues(FieldConstants.EQUIPMENT_TYPE)) ||
+                        filterValue?.specificMetadata?.equipmentType === getValues(FieldConstants.EQUIPMENT_TYPE)) ||
                         ((field === FieldType.VOLTAGE_LEVEL_ID ||
                             field === FieldType.VOLTAGE_LEVEL_ID_1 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_2 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_3) &&
-                            filterValue?.specificMetadata?.equipmentType ===
-                                VoltageLevel.type))
+                            filterValue?.specificMetadata?.equipmentType === VoltageLevel.type))
                 );
             }
             return true;
@@ -72,19 +60,12 @@ function ValueEditor(props: ValueEditorProps) {
         [field, getValues]
     );
 
-    if (
-        operator === OPERATOR_OPTIONS.EXISTS.name ||
-        operator === OPERATOR_OPTIONS.NOT_EXISTS.name
-    ) {
+    if (operator === OPERATOR_OPTIONS.EXISTS.name || operator === OPERATOR_OPTIONS.NOT_EXISTS.name) {
         // No value needed for these operators
         return null;
     }
 
-    if (
-        [FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(
-            field as FieldType
-        )
-    ) {
+    if ([FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(field as FieldType)) {
         return <CountryValueEditor {...props} />;
     }
 
@@ -92,10 +73,7 @@ function ValueEditor(props: ValueEditorProps) {
         return <TranslatedValueEditor {...props} />;
     }
 
-    if (
-        operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
-        operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
-    ) {
+    if (operator === OPERATOR_OPTIONS.IS_PART_OF.name || operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name) {
         let equipmentTypes;
         if (
             field === FieldType.VOLTAGE_LEVEL_ID ||
@@ -157,12 +135,7 @@ function ValueEditor(props: ValueEditorProps) {
             equipmentType = getValues(FieldConstants.EQUIPMENT_TYPE);
         }
 
-        return (
-            <PropertyValueEditor
-                equipmentType={equipmentType}
-                valueEditorProps={props}
-            />
-        );
+        return <PropertyValueEditor equipmentType={equipmentType} valueEditorProps={props} />;
     }
 
     if (fieldData.dataType === DataType.COMBINATOR) {

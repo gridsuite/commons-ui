@@ -29,8 +29,7 @@ interface FilterPropertyProps {
 }
 
 function FilterProperty(props: FilterPropertyProps) {
-    const { propertyType, index, predefined, valuesFields, handleDelete } =
-        props;
+    const { propertyType, index, predefined, valuesFields, handleDelete } = props;
     const { setValue } = useFormContext();
 
     const watchName = useWatch({
@@ -52,10 +51,7 @@ function FilterProperty(props: FilterPropertyProps) {
     // We reset values when name change
     const onNameChange = useCallback(() => {
         valuesFields.forEach((valuesField) =>
-            setValue(
-                `${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${valuesField.name}`,
-                []
-            )
+            setValue(`${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${valuesField.name}`, [])
         );
     }, [setValue, index, valuesFields, propertyType]);
 
@@ -66,7 +62,7 @@ function FilterProperty(props: FilterPropertyProps) {
                     name={`${FieldConstants.CRITERIA_BASED}.${propertyType}[${index}].${PROPERTY_NAME}`}
                     label="PropertyName"
                     options={predefinedNames}
-                    // freeSolo
+                    freeSolo
                     autoSelect
                     forcePopupIcon
                     onChangeCallback={onNameChange}

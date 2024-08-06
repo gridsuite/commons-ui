@@ -81,9 +81,7 @@ function longestCommonPrefix(stringList: string[]) {
     if (!stringList?.length) {
         return '';
     }
-    let prefix = stringList.reduce((acc: string, str: string) =>
-        str.length < acc.length ? str : acc
-    );
+    let prefix = stringList.reduce((acc: string, str: string) => (str.length < acc.length ? str : acc));
 
     stringList.forEach((str) => {
         while (!str.startsWith(prefix)) {
@@ -188,11 +186,7 @@ export function FlatParameters({
             }
             if (onChange) {
                 if (param.type === 'STRING_LIST') {
-                    onChange(
-                        paramName,
-                        value ? value.toString() : null,
-                        isInEdition
-                    );
+                    onChange(paramName, value ? value.toString() : null, isInEdition);
                 } else {
                     onChange(paramName, value, isInEdition);
                 }
@@ -230,9 +224,7 @@ export function FlatParameters({
         if (initValues && Object.hasOwn(initValues, param.name)) {
             if (param.type === 'BOOLEAN') {
                 // on the server side, we only store String, so we eventually need to convert before
-                return initValues[param.name] === 'false'
-                    ? false
-                    : initValues[param.name]; // 'true' is truthly
+                return initValues[param.name] === 'false' ? false : initValues[param.name]; // 'true' is truthly
             }
             if (param.type !== 'STRING_LIST') {
                 return initValues[param.name];
@@ -256,10 +248,7 @@ export function FlatParameters({
         return value?.replace(',', '.') || '';
     };
 
-    const getStringListValue = (
-        allValues: string[],
-        selectValues: string[]
-    ) => {
+    const getStringListValue = (allValues: string[], selectValues: string[]) => {
         if (!selectValues || !selectValues.length) {
             return intl.formatMessage({ id: 'flat_parameters/none' });
         }
@@ -275,18 +264,11 @@ export function FlatParameters({
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
-                return (
-                    <Switch
-                        checked={!!fieldValue}
-                        onChange={(e) => onFieldChange(e.target.checked, param)}
-                    />
-                );
+                return <Switch checked={!!fieldValue} onChange={(e) => onFieldChange(e.target.checked, param)} />;
             case 'DOUBLE': {
                 const err =
                     Number.isNaN(fieldValue) ||
-                    (typeof fieldValue !== 'number' &&
-                        !!fieldValue &&
-                        Number.isNaN(fieldValue - 0));
+                    (typeof fieldValue !== 'number' && !!fieldValue && Number.isNaN(fieldValue - 0));
                 return (
                     <TextField
                         size="small"
@@ -298,10 +280,7 @@ export function FlatParameters({
                         onChange={(e) => {
                             const m = FloatRE.exec(e.target.value);
                             if (m) {
-                                onFieldChange(
-                                    outputTransformFloatString(e.target.value),
-                                    param
-                                );
+                                onFieldChange(outputTransformFloatString(e.target.value), param);
                             }
                         }}
                         error={err}
@@ -329,30 +308,20 @@ export function FlatParameters({
                 );
             case 'STRING_LIST':
                 if (param.possibleValues) {
-                    const allOptions = sortPossibleValues(
-                        param.name,
-                        param.possibleValues
-                    ).map(({ id }) => id);
+                    const allOptions = sortPossibleValues(param.name, param.possibleValues).map(({ id }) => id);
 
                     const withDialog = selectionWithDialog(param);
                     if (withDialog) {
                         return (
                             <>
                                 <TextField
-                                    value={getStringListValue(
-                                        allOptions,
-                                        fieldValue
-                                    )}
+                                    value={getStringListValue(allOptions, fieldValue)}
                                     size="small"
                                     variant={variant}
                                     InputProps={{
                                         readOnly: true,
                                         endAdornment: (
-                                            <IconButton
-                                                onClick={() =>
-                                                    setOpenSelector(true)
-                                                }
-                                            >
+                                            <IconButton onClick={() => setOpenSelector(true)}>
                                                 <TuneIcon />
                                             </IconButton>
                                         ),
@@ -362,9 +331,7 @@ export function FlatParameters({
                                     options={allOptions}
                                     titleId={getSelectionDialogName(param.name)}
                                     open={openSelector}
-                                    getOptionLabel={(option) =>
-                                        getTranslatedValue(param.name, option)
-                                    }
+                                    getOptionLabel={(option) => getTranslatedValue(param.name, option)}
                                     getOptionId={(o) => o}
                                     selectedOptions={fieldValue}
                                     handleClose={() => setOpenSelector(false)}
@@ -381,29 +348,16 @@ export function FlatParameters({
                             fullWidth
                             multiple
                             size="small"
-                            options={sortPossibleValues(
-                                param.name,
-                                param.possibleValues
-                            ).map((v) => v.id)}
-                            getOptionLabel={(option) =>
-                                getTranslatedValue(param.name, option)
-                            }
+                            options={sortPossibleValues(param.name, param.possibleValues).map((v) => v.id)}
+                            getOptionLabel={(option) => getTranslatedValue(param.name, option)}
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={fieldValue}
                             renderTags={(values, getTagProps) => {
                                 return values.map((value, index) => (
-                                    <Chip
-                                        label={getTranslatedValue(
-                                            param.name,
-                                            value
-                                        )}
-                                        {...getTagProps({ index })}
-                                    />
+                                    <Chip label={getTranslatedValue(param.name, value)} {...getTagProps({ index })} />
                                 ));
                             }}
-                            renderInput={(inputProps) => (
-                                <TextField {...inputProps} variant={variant} />
-                            )}
+                            renderInput={(inputProps) => <TextField {...inputProps} variant={variant} />}
                         />
                     );
                 }
@@ -420,17 +374,10 @@ export function FlatParameters({
                         value={fieldValue}
                         renderTags={(values, getTagProps) => {
                             return values.map((value, index) => (
-                                <Chip
-                                    id={`chip_${value}`}
-                                    size="small"
-                                    label={value}
-                                    {...getTagProps({ index })}
-                                />
+                                <Chip id={`chip_${value}`} size="small" label={value} {...getTagProps({ index })} />
                             ));
                         }}
-                        renderInput={(inputProps) => (
-                            <TextField {...inputProps} variant={variant} />
-                        )}
+                        renderInput={(inputProps) => <TextField {...inputProps} variant={variant} />}
                     />
                 );
 
@@ -448,10 +395,7 @@ export function FlatParameters({
                             sx={{ minWidth: '4em' }}
                             variant={variant}
                         >
-                            {sortPossibleValues(
-                                param.name,
-                                param.possibleValues
-                            ).map((value) => (
+                            {sortPossibleValues(param.name, param.possibleValues).map((value) => (
                                 <MenuItem key={value.id} value={value.id}>
                                     <Typography>{value.message}</Typography>
                                 </MenuItem>
@@ -481,29 +425,17 @@ export function FlatParameters({
                 <Fragment key={param.name}>
                     <ListItem sx={styles.paramListItem}>
                         <Tooltip
-                            title={
-                                <FormattedMessage
-                                    id={`${param.name}.desc`}
-                                    defaultMessage={param.description}
-                                />
-                            }
+                            title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
                             enterDelay={1200}
                             key={param.name}
                         >
                             <Typography sx={styles.paramName}>
-                                <FormattedMessage
-                                    id={param.name}
-                                    defaultMessage={param.name.slice(
-                                        prefix.length
-                                    )}
-                                />
+                                <FormattedMessage id={param.name} defaultMessage={param.name.slice(prefix.length)} />
                             </Typography>
                         </Tooltip>
                         {renderField(param)}
                     </ListItem>
-                    {showSeparator && index !== paramsAsArray.length - 1 && (
-                        <Divider />
-                    )}
+                    {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}
                 </Fragment>
             ))}
         </List>

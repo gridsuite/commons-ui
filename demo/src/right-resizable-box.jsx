@@ -73,13 +73,8 @@ function RightResizableBox(props) {
     return (
         <ResizableBoxSx
             style={{ display: hide ? 'none' : undefined }}
-            width={
-                fullscreen ? windowWidth : windowWidth * resizedTreePercentage
-            }
-            sx={mergeSx(
-                styles.panel,
-                !disableResize && styles.resizePanelHandle
-            )}
+            width={fullscreen ? windowWidth : windowWidth * resizedTreePercentage}
+            sx={mergeSx(styles.panel, !disableResize && styles.resizePanelHandle)}
             resizeHandles={['e']}
             axis={disableResize ? 'none' : 'x'}
             onResize={onResize}
