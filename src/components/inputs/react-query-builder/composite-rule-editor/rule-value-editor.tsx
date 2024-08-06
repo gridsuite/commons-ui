@@ -7,10 +7,7 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, MenuItem, Select, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
-import {
-    CompositeRule,
-    OperatorOption,
-} from '../../../filter/expert/expert-filter.type';
+import { CompositeRule, OperatorOption } from '../../../filter/expert/expert-filter.type';
 
 const styles = {
     gridItem: {
@@ -37,9 +34,7 @@ function RuleValueEditor(props: RuleValueEditorProps) {
     const intl = useIntl();
 
     // set operator as the previous in rule if exists, otherwise the first operator in schema is selected
-    const operator =
-        rule?.operator ??
-        (fieldData.operators as OperatorOption[])?.map((op) => op.name)[0];
+    const operator = rule?.operator ?? (fieldData.operators as OperatorOption[])?.map((op) => op.name)[0];
 
     const handleOnChangeOperator = (newOperator: string) => {
         handleOnChangeRule({
@@ -59,9 +54,7 @@ function RuleValueEditor(props: RuleValueEditorProps) {
     return (
         <Grid container paddingTop={1}>
             <Grid container item xs={4} sx={styles.gridItem}>
-                <Typography>
-                    {intl.formatMessage({ id: fieldData.label })}
-                </Typography>
+                <Typography>{intl.formatMessage({ id: fieldData.label })}</Typography>
             </Grid>
             <Grid container item xs={2.5} sx={styles.gridItem} paddingLeft={1}>
                 <Select
@@ -72,13 +65,11 @@ function RuleValueEditor(props: RuleValueEditorProps) {
                     }}
                     variant="standard"
                 >
-                    {(fieldData.operators as OperatorOption[])?.map(
-                        (option) => (
-                            <MenuItem key={option.name} value={option.name}>
-                                {intl.formatMessage({ id: option.label })}
-                            </MenuItem>
-                        )
-                    )}
+                    {(fieldData.operators as OperatorOption[])?.map((option) => (
+                        <MenuItem key={option.name} value={option.name}>
+                            {intl.formatMessage({ id: option.label })}
+                        </MenuItem>
+                    ))}
                 </Select>
             </Grid>
             <Grid container item xs={5.5} sx={styles.gridItem} paddingLeft={1}>

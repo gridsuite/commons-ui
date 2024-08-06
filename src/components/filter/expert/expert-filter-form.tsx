@@ -71,8 +71,7 @@ export const expertFilterSchema = {
         is: FilterType.EXPERT.id,
         then: (schema: yup.Schema) =>
             schema.when([FieldConstants.EQUIPMENT_TYPE], {
-                is: (equipmentType: string) =>
-                    isSupportedEquipmentType(equipmentType),
+                is: (equipmentType: string) => isSupportedEquipmentType(equipmentType),
                 then: rqbQuerySchemaValidator,
             }),
     }),
@@ -139,13 +138,9 @@ function ExpertFilterForm() {
                     validateButtonLabel="button.changeType"
                 />
             </Grid>
-            {watchEquipmentType &&
-                isSupportedEquipmentType(watchEquipmentType) && (
-                    <CustomReactQueryBuilder
-                        name={EXPERT_FILTER_QUERY}
-                        fields={translatedFields}
-                    />
-                )}
+            {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
+                <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
+            )}
         </Grid>
     );
 }

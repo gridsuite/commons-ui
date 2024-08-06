@@ -19,10 +19,7 @@ export interface CriteriaBasedFormProps {
     defaultValues: Record<string, any>;
 }
 
-function CriteriaBasedForm({
-    equipments,
-    defaultValues,
-}: CriteriaBasedFormProps) {
+function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
@@ -39,18 +36,12 @@ function CriteriaBasedForm({
     }, [snackError, equipments, watchEquipmentType]);
 
     const openConfirmationPopup = () => {
-        return (
-            JSON.stringify(getValues(FieldConstants.CRITERIA_BASED)) !==
-            JSON.stringify(defaultValues)
-        );
+        return JSON.stringify(getValues(FieldConstants.CRITERIA_BASED)) !== JSON.stringify(defaultValues);
     };
 
     const handleResetOnConfirmation = () => {
         Object.keys(defaultValues).forEach((field) =>
-            setValue(
-                `${FieldConstants.CRITERIA_BASED}.${field}`,
-                defaultValues[field]
-            )
+            setValue(`${FieldConstants.CRITERIA_BASED}.${field}`, defaultValues[field])
         );
     };
 
@@ -70,17 +61,15 @@ function CriteriaBasedForm({
             </Grid>
             {watchEquipmentType &&
                 equipments[watchEquipmentType] &&
-                equipments[watchEquipmentType].fields.map(
-                    (equipment: any, index: number) => {
-                        const EquipmentForm = equipment.renderer;
-                        const uniqueKey = `${watchEquipmentType}-${index}`;
-                        return (
-                            <Grid item xs={12} key={uniqueKey} flexGrow={1}>
-                                <EquipmentForm {...equipment.props} />
-                            </Grid>
-                        );
-                    }
-                )}
+                equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
+                    const EquipmentForm = equipment.renderer;
+                    const uniqueKey = `${watchEquipmentType}-${index}`;
+                    return (
+                        <Grid item xs={12} key={uniqueKey} flexGrow={1}>
+                            <EquipmentForm {...equipment.props} />
+                        </Grid>
+                    );
+                })}
         </Grid>
     );
 }

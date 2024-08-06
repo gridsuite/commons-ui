@@ -40,8 +40,7 @@ const LOGS_JSON = {
                         },
                         {
                             taskKey: 'postLoading',
-                            defaultName:
-                                'Post loading process on network CC${numNetworkCc} SC${numNetworkSc}',
+                            defaultName: 'Post loading process on network CC${numNetworkCc} SC${numNetworkSc}',
                             taskValues: {
                                 numNetworkCc: {
                                     value: 0,
@@ -154,8 +153,7 @@ const LOGS_JSON = {
                                 },
                                 {
                                     reportKey: 'NoMismatchDistribution',
-                                    defaultMessage:
-                                        'Iteration ${iteration}: already balanced',
+                                    defaultMessage: 'Iteration ${iteration}: already balanced',
                                     values: {
                                         reportSeverity: {
                                             value: 'FATAL',
@@ -194,8 +192,7 @@ const LOGS_JSON = {
                             reports: [
                                 {
                                     reportKey: 'NoMismatchDistribution',
-                                    defaultMessage:
-                                        'Iteration ${iteration}: already balanced',
+                                    defaultMessage: 'Iteration ${iteration}: already balanced',
                                     values: {
                                         reportSeverity: {
                                             value: 'WARN',

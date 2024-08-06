@@ -56,9 +56,7 @@ function BottomRightButtons({
             <Grid container paddingTop={1} paddingLeft={2}>
                 <Grid item xs={1}>
                     {csvProps && (
-                        <InnerColoredButton
-                            onClick={() => setUploaderOpen(true)}
-                        >
+                        <InnerColoredButton onClick={() => setUploaderOpen(true)}>
                             <Tooltip
                                 title={intl.formatMessage({
                                     id: 'ImportCSV',
@@ -70,33 +68,17 @@ function BottomRightButtons({
                         </InnerColoredButton>
                     )}
                 </Grid>
-                <Grid
-                    item
-                    xs={11}
-                    sx={{ display: 'flex', justifyContent: 'right' }}
-                >
+                <Grid item xs={11} sx={{ display: 'flex', justifyContent: 'right' }}>
                     <InnerColoredButton key="addButton" onClick={handleAddRow}>
                         <AddIcon />
                     </InnerColoredButton>
-                    <InnerColoredButton
-                        key="DeleteButton"
-                        onClick={handleDeleteRows}
-                        disabled={disableDelete}
-                    >
+                    <InnerColoredButton key="DeleteButton" onClick={handleDeleteRows} disabled={disableDelete}>
                         <DeleteIcon />
                     </InnerColoredButton>
-                    <InnerColoredButton
-                        key="upButton"
-                        disabled={disableUp}
-                        onClick={handleMoveRowUp}
-                    >
+                    <InnerColoredButton key="upButton" disabled={disableUp} onClick={handleMoveRowUp}>
                         <ArrowCircleUp />
                     </InnerColoredButton>
-                    <InnerColoredButton
-                        key="downButton"
-                        disabled={disableDown}
-                        onClick={handleMoveRowDown}
-                    >
+                    <InnerColoredButton key="downButton" disabled={disableDown} onClick={handleMoveRowDown}>
                         <ArrowCircleDown />
                     </InnerColoredButton>
                 </Grid>

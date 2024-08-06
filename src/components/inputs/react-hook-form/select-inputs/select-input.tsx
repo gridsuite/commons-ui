@@ -6,9 +6,7 @@
  */
 
 import { useIntl } from 'react-intl';
-import AutocompleteInput, {
-    AutocompleteInputProps,
-} from '../autocomplete-inputs/autocomplete-input';
+import AutocompleteInput, { AutocompleteInputProps } from '../autocomplete-inputs/autocomplete-input';
 import { Option } from '../../../../utils/types';
 
 export interface SelectInputProps
@@ -27,19 +25,9 @@ function SelectInput(props: SelectInputProps) {
             return null;
         }
         if (typeof value === 'string') {
-            return (
-                options.find(
-                    (option) =>
-                        typeof option !== 'string' && option?.id === value
-                ) || null
-            );
+            return options.find((option) => typeof option !== 'string' && option?.id === value) || null;
         }
-        return (
-            options.find(
-                (option) =>
-                    typeof option !== 'string' && option?.id === value.id
-            ) || null
-        );
+        return options.find((option) => typeof option !== 'string' && option?.id === value.id) || null;
     };
 
     const outputTransform = (value: Option | null) => {

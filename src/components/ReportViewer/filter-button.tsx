@@ -30,9 +30,7 @@ const styles = {
 
 export interface FilterButtonProps {
     selectedItems: Record<string, boolean>;
-    setSelectedItems: (
-        func: (items: Record<string, boolean>) => Record<string, boolean>
-    ) => void;
+    setSelectedItems: (func: (items: Record<string, boolean>) => Record<string, boolean>) => void;
 }
 
 /**
@@ -42,10 +40,7 @@ export interface FilterButtonProps {
  * @param {Function} setSelectedItems - Setter needed to update the list underlying data
  */
 
-export function FilterButton({
-    selectedItems,
-    setSelectedItems,
-}: FilterButtonProps) {
+export function FilterButton({ selectedItems, setSelectedItems }: FilterButtonProps) {
     const [initialState] = useState(selectedItems);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -67,9 +62,7 @@ export function FilterButton({
     };
 
     const isInitialStateModified = useMemo(() => {
-        return Object.keys(selectedItems).some(
-            (key) => initialState[key] !== selectedItems[key]
-        );
+        return Object.keys(selectedItems).some((key) => initialState[key] !== selectedItems[key]);
     }, [initialState, selectedItems]);
 
     return (

@@ -13,23 +13,12 @@ import { OPERATOR_OPTIONS } from '../../filter/expert/expert-filter-constants';
  * PS : can be extended to manage more than the IN operator
  * PS 2 : don't use this if the operator can be another array operator (like BETWEEN) or change a bit the conditions
  */
-const useConvertValue = ({
-    operator,
-    value,
-    fieldData: { defaultValue },
-    handleOnChange,
-}: ValueEditorProps) => {
+const useConvertValue = ({ operator, value, fieldData: { defaultValue }, handleOnChange }: ValueEditorProps) => {
     useEffect(
         () => {
-            if (
-                operator === OPERATOR_OPTIONS.IN.name &&
-                !Array.isArray(value)
-            ) {
+            if (operator === OPERATOR_OPTIONS.IN.name && !Array.isArray(value)) {
                 handleOnChange(value ? [value] : []);
-            } else if (
-                operator !== OPERATOR_OPTIONS.IN.name &&
-                Array.isArray(value)
-            ) {
+            } else if (operator !== OPERATOR_OPTIONS.IN.name && Array.isArray(value)) {
                 handleOnChange(value.length ? value[0] : defaultValue);
             }
         },
