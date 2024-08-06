@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import SubmitButton from '../inputs/react-hook-form/utils/submit-button';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import CustomFormProvider, { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
+import PopupConfirmationDialog from './popup-confirmation-dialog';
 
 interface ICustomMuiDialog {
     open: boolean;
@@ -28,6 +29,7 @@ interface ICustomMuiDialog {
     children: React.ReactNode;
     isDataFetching?: boolean;
     language?: string;
+    confirmationMessage?: string;
 }
 
 const styles = {
@@ -54,7 +56,10 @@ function CustomMuiDialog({
     onCancel,
     children,
     language,
+    confirmationMessage,
 }: ICustomMuiDialog) {
+    const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
+    const [validatedData, setValidatedData] = useState(undefined);
     const { handleSubmit } = formMethods;
 
     const handleCancel = (event: React.MouseEvent) => {
@@ -69,9 +74,23 @@ function CustomMuiDialog({
         onClose(event);
     };
 
-    const handleValidate = (data: any) => {
+    const validate = (data: any) => {
         onSave(data);
         onClose(data);
+    };
+
+    const handleValidate = (data: any) => {
+        if (confirmationMessage?.length) {
+            setValidatedData(data);
+            setOpenConfirmationPopup(true);
+        } else {
+            validate(data);
+        }
+    };
+
+    const handlePopupConfirmation = () => {
+        setOpenConfirmationPopup(false);
+        validate(validatedData);
     };
 
     const handleValidationError = (errors: FieldErrors) => {
@@ -102,6 +121,12 @@ function CustomMuiDialog({
                     />
                 </DialogActions>
             </Dialog>
+            <PopupConfirmationDialog
+                message={confirmationMessage}
+                openConfirmationPopup={openConfirmationPopup}
+                setOpenConfirmationPopup={setOpenConfirmationPopup}
+                handlePopupConfirmation={handlePopupConfirmation}
+            />
         </CustomFormProvider>
     );
 }
