@@ -80,7 +80,7 @@ function CustomMuiDialog({
     };
 
     const handleValidate = (data: any) => {
-        if (confirmationMessage?.length) {
+        if (confirmationMessage) {
             setValidatedData(data);
             setOpenConfirmationPopup(true);
         } else {
