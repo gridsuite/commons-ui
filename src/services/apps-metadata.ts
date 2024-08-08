@@ -13,6 +13,7 @@ export type Url = string | URL;
 export type Env = {
     appsMetadataServerUrl?: Url;
     mapBoxToken?: string;
+    confidentialityMessageKey?: string;
     // https://github.com/gridsuite/deployment/blob/main/docker-compose/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-dev/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-integ/env.json

@@ -15,8 +15,8 @@ import { FormattedMessage } from 'react-intl';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 
 export interface PopupConfirmationDialogProps {
-    message: string;
-    validateButtonLabel: string;
+    message?: string;
+    validateButtonLabel?: string;
     openConfirmationPopup: boolean;
     setOpenConfirmationPopup: (value: boolean) => void;
     handlePopupConfirmation: () => void;
@@ -33,9 +33,7 @@ function PopupConfirmationDialog({
         <Dialog open={openConfirmationPopup} aria-labelledby="dialog-title-change-equipment-type">
             <DialogTitle id="dialog-title-change-equipment-type">Confirmation</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    <FormattedMessage id={message} />
-                </DialogContentText>
+                <DialogContentText>{message && <FormattedMessage id={message} />}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <CancelButton onClick={() => setOpenConfirmationPopup(false)} />
