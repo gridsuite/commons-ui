@@ -77,7 +77,7 @@ function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, childr
                 return pn;
             }
             if (pn.parentUuid !== nodeId) {
-                console.warn(`reparent ${pn.parentUuid} -> ${nodeId}`);
+                console.warn(`reparent ${pn?.parentUuid} -> ${nodeId}`);
             }
             return {
                 ...pn,
