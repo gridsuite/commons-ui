@@ -12,18 +12,44 @@ import { WSContext } from '../contexts/WSContext';
 
 const useListener = (
     listenerKey: string,
-    listenerCallback: (event: MessageEvent<any>) => void,
-    propsId?: string
+    {
+        listenerCallbackMessage,
+        listenerCallbackOnOpen,
+        propsId,
+    }: {
+        listenerCallbackMessage?: (event: MessageEvent<any>) => void;
+        listenerCallbackOnOpen?: () => void;
+        propsId?: string;
+    }
 ) => {
-    const { addListener, removeListener } = useContext(WSContext);
+    const { addListenerEvent, removeListenerEvent,addListenerOnOpen,removeListenerOnOpen } = useContext(WSContext);
     useEffect(() => {
         const id = propsId ?? uuidv4();
-        addListener(listenerKey, {
-            id,
-            callback: listenerCallback,
-        });
-        return () => removeListener(listenerKey, id);
-    }, [addListener, removeListener, listenerKey, listenerCallback, propsId]);
+        if(listenerCallbackMessage){
+            addListenerEvent(listenerKey, {
+                id,
+                callback: listenerCallbackMessage,
+            });
+        }
+        return () => removeListenerEvent(listenerKey, id);
+    }, [
+        addListenerEvent,
+        removeListenerEvent,
+        listenerKey,
+        listenerCallbackMessage,
+        propsId,
+    ]);
+    
+    useEffect(() => {
+        const id = propsId ?? uuidv4();
+        if(listenerCallbackOnOpen){
+            addListenerOnOpen(listenerKey, {
+                id,
+                callback: listenerCallbackOnOpen,
+            });
+        }
+        return () => removeListenerOnOpen(listenerKey, id);
+    }, [addListenerOnOpen, removeListenerOnOpen, listenerKey, listenerCallbackOnOpen, propsId]);
 };
 
 export default useListener;

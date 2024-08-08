@@ -6,50 +6,35 @@
  */
 // @author Quentin CAPY
 
-import {
-    PropsWithChildren,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-} from 'react';
+import { PropsWithChildren, useEffect, useMemo } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { ListenerWS, WSContext, WSContextType } from './contexts/WSContext';
+import {
+    ListenerEventWS,
+    ListenerOnOpen,
+    WSContext,
+} from './contexts/WSContext';
+import useListenerManager from './hooks/useListenerManager';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
-type WebsocketProps = { urls: Record<string, string> };
+export type WebsocketProps = { urls: Record<string, string> };
 function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
-    const urlsListenersRef = useRef(
-        Object.keys(urls).reduce((acc, urlKey) => {
-            acc[urlKey] = [];
-            return acc;
-        }, {} as Record<string, ListenerWS[]>)
-    );
-
-    useEffect(() => {
-        urlsListenersRef.current = Object.keys(urls).reduce((acc, urlKey) => {
-            acc[urlKey] = [];
-            return acc;
-        }, {} as Record<string, ListenerWS[]>);
-    }, [urls]);
-
-    const broadcastMessage = useCallback(
-        (urlKey: string) => (event: MessageEvent) => {
-            const listenerList = urlsListenersRef.current?.[urlKey];
-            if (listenerList) {
-                listenerList.forEach(({ callback }) => {
-                    callback(event);
-                });
-            }
-        },
-        []
-    );
+    const {
+        broadcast: broadcastMessage,
+        addListener: addListenerMessage,
+        removeListener: removeListenerMessage,
+    } = useListenerManager<ListenerEventWS, MessageEvent>(urls);
+    const {
+        broadcast: broadcastOnOpen,
+        addListener: addListenerOnOpen,
+        removeListener: removeListenerOnOpen,
+    } = useListenerManager<ListenerOnOpen, never>(urls);
 
     useEffect(() => {
         const connections = Object.keys(urls).map((urlKey) => {
             const rws = new ReconnectingWebSocket(() => urls[urlKey], [], {
+                // this option set the minimum duration being connected before reset the retry count to 0
                 minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
             });
 
@@ -65,45 +50,28 @@ function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
                 console.error('Unexpected Notification WebSocket error', event);
             };
 
-            rws.onopen = () => {
-                console.log('Notification WebSocket opened');
-            };
+            rws.onopen = () => broadcastOnOpen(urlKey);
             return rws;
         });
 
         return () => {
             connections.forEach((c) => c.close());
         };
-    }, [broadcastMessage, urls]);
+    }, [broadcastMessage, broadcastOnOpen, urls]);
 
-    const addListener: WSContextType['addListener'] = useCallback(
-        (urlKey, listener) => {
-            const urlsListeners = urlsListenersRef.current;
-            if (urlKey in urlsListeners) {
-                urlsListeners[urlKey].push(listener);
-            } else {
-                urlsListeners[urlKey] = [listener];
-            }
-            urlsListenersRef.current = urlsListeners;
-        },
-        []
-    );
-    const removeListener: WSContextType['removeListener'] = useCallback(
-        (urlKey, id) => {
-            const listeners = urlsListenersRef.current?.[urlKey];
-            if (listeners) {
-                const newListerner = listeners.filter((l) => l.id !== id);
-                urlsListenersRef.current = {
-                    ...urlsListenersRef.current,
-                    [urlKey]: newListerner,
-                };
-            }
-        },
-        []
-    );
     const contextValue = useMemo(
-        () => ({ addListener, removeListener }),
-        [addListener, removeListener]
+        () => ({
+            addListenerEvent: addListenerMessage,
+            removeListenerEvent: removeListenerMessage,
+            addListenerOnOpen,
+            removeListenerOnOpen,
+        }),
+        [
+            addListenerMessage,
+            removeListenerMessage,
+            addListenerOnOpen,
+            removeListenerOnOpen,
+        ]
     );
     return (
         <WSContext.Provider value={contextValue}>{children}</WSContext.Provider>
