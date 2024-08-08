@@ -16,9 +16,7 @@ function CountryValueEditor(props: ValueEditorProps) {
     const { value } = props;
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
-    const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>(
-        []
-    );
+    const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>([]);
     const [valueInitialised, setValueInitialised] = useState(value);
     const [initialized, setInitialized] = useState<boolean>(false);
 
@@ -43,13 +41,7 @@ function CountryValueEditor(props: ValueEditorProps) {
         } else {
             setValueInitialised(value);
         }
-    }, [
-        setValueInitialised,
-        initialized,
-        setInitialized,
-        valueInitialised,
-        value,
-    ]);
+    }, [setValueInitialised, initialized, setInitialized, valueInitialised, value]);
 
     return (
         <AutocompleteWithFavorites
