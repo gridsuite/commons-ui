@@ -7,14 +7,7 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/system';
-import {
-    Box,
-    Button,
-    FormControlLabel,
-    Stack,
-    Switch,
-    TextField,
-} from '@mui/material';
+import { Box, Button, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
 import { DEFAULT_CELL_PADDING } from '../../src';
 import {
     ChangeWays,
@@ -52,8 +45,7 @@ const stylesVirtualizedTable = (theme) => ({
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
-            paddingRight:
-                theme.direction === 'rtl' ? '0 !important' : undefined,
+            paddingRight: theme.direction === 'rtl' ? '0 !important' : undefined,
         },
     },
     '& .tableRow': {
@@ -88,18 +80,13 @@ const stylesVirtualizedTable = (theme) => ({
 });
 
 const stylesEmotion = ({ theme }) =>
-    toNestedGlobalSelectors(
-        stylesVirtualizedTable(theme),
-        generateMuiVirtualizedTableClass
-    );
+    toNestedGlobalSelectors(stylesVirtualizedTable(theme), generateMuiVirtualizedTableClass);
 const StyledVirtualizedTable = styled(MuiVirtualizedTable)(stylesEmotion);
 
 function TableTab() {
     const [usesCustomStyles, setUsesCustomStyles] = useState(true);
 
-    const VirtualizedTable = usesCustomStyles
-        ? StyledVirtualizedTable
-        : MuiVirtualizedTable;
+    const VirtualizedTable = usesCustomStyles ? StyledVirtualizedTable : MuiVirtualizedTable;
 
     const columns = useMemo(
         () => [
@@ -174,20 +161,12 @@ function TableTab() {
     );
     const sort = useCallback(
         (dataKey, reverse, isNumeric) => {
-            let filtered = rows
-                .map((r, i) => [r, i])
-                .filter(([r]) => !filter || filter(r));
+            let filtered = rows.map((r, i) => [r, i]).filter(([r]) => !filter || filter(r));
             if (dataKey) {
                 filtered = filtered
                     .map(([r, j]) => [r[dataKey], j])
-                    .map(([r, j]) => [
-                        isNumeric ? r : Number(r.replace(/[^0-9.]/g, '')),
-                        j,
-                    ]); // for demo, extract any number from a string..
-                filtered.sort(
-                    ([a], [b]) =>
-                        evenThenOddOrderingKey(b) - evenThenOddOrderingKey(a)
-                );
+                    .map(([r, j]) => [isNumeric ? r : Number(r.replace(/[^0-9.]/g, '')), j]); // for demo, extract any number from a string..
+                filtered.sort(([a], [b]) => evenThenOddOrderingKey(b) - evenThenOddOrderingKey(a));
                 if (reverse) {
                     filtered = filtered.reverse();
                 }
@@ -226,18 +205,10 @@ function TableTab() {
     function renderParams() {
         return (
             <Stack sx={{ margin: '1ex' }}>
-                {mkSwitch(
-                    'Custom theme (emotion)',
-                    usesCustomStyles,
-                    setUsesCustomStyles
-                )}
+                {mkSwitch('Custom theme (emotion)', usesCustomStyles, setUsesCustomStyles)}
                 {mkSwitch('Sortable', sortable, setSortable)}
                 {mkSwitch('Instance renewal', recreates, setRecreates)}
-                {mkSwitch(
-                    'Uses external indexer',
-                    isIndexerExternal,
-                    setIndexerIsExternal
-                )}
+                {mkSwitch('Uses external indexer', isIndexerExternal, setIndexerIsExternal)}
                 <Button
                     disabled={!isIndexerExternal}
                     onClick={() => setIndexer(makeIndexer(indexer))}
@@ -245,11 +216,7 @@ function TableTab() {
                 >
                     New external indexer
                 </Button>
-                {mkSwitch(
-                    'External sort (even then odds)',
-                    doesSort,
-                    setDoesSort
-                )}
+                {mkSwitch('External sort (even then odds)', doesSort, setDoesSort)}
                 <TextField
                     label="header2 filter"
                     size="small"
@@ -258,11 +225,7 @@ function TableTab() {
                         setFilterValue(event.target.value);
                     }}
                 />
-                {mkSwitch(
-                    'Defer filter changes',
-                    defersFilterChanges,
-                    setDefersFilterChanges
-                )}
+                {mkSwitch('Defer filter changes', defersFilterChanges, setDefersFilterChanges)}
                 <TextField
                     label="Header height"
                     size="small"
@@ -293,9 +256,7 @@ function TableTab() {
                     columns={columns}
                     enableExportCSV
                     exportCSVDataKeys={['key2', 'key4']}
-                    headerHeight={
-                        !headerHeight ? undefined : Number(headerHeight)
-                    }
+                    headerHeight={!headerHeight ? undefined : Number(headerHeight)}
                     onRowClick={(...args) => console.log('onRowClick', args)}
                     onClick={(...args) => console.log('onClick', args)}
                     onCellClick={(...args) => console.log('onCellClick', args)}

@@ -28,9 +28,7 @@ function MultipleAutocompleteInput({ name, ...props }: any) {
     const outputTransform = (values: any[]) => {
         const newValues = values.map((val) => val.trim());
 
-        return newValues.filter(
-            (val, index) => newValues.indexOf(val) === index
-        );
+        return newValues.filter((val, index) => newValues.indexOf(val) === index);
     };
 
     return (
@@ -42,9 +40,7 @@ function MultipleAutocompleteInput({ name, ...props }: any) {
             clearOnBlur
             disableClearable
             outputTransform={outputTransform}
-            onInputChange={(_: unknown, val: string) =>
-                setUnsavedInput(val.trim() ?? '')
-            }
+            onInputChange={(_: unknown, val: string) => setUnsavedInput(val.trim() ?? '')}
             onBlur={handleOnBlur}
             blurOnSelect={false}
             multiple

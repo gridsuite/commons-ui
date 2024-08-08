@@ -25,13 +25,7 @@ interface UniqueNameInputProps {
     onManualChangeCallback?: () => void;
     formProps?: Omit<
         TextFieldProps,
-        | 'value'
-        | 'onChange'
-        | 'name'
-        | 'label'
-        | 'inputRef'
-        | 'inputProps'
-        | 'InputProps'
+        'value' | 'onChange' | 'name' | 'label' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
@@ -130,20 +124,10 @@ function UniqueNameInput({
                 message: 'nameEmpty',
             });
         }
-    }, [
-        debouncedHandleCheckName,
-        setError,
-        clearErrors,
-        name,
-        value,
-        isDirty,
-        selectedDirectory,
-    ]);
+    }, [debouncedHandleCheckName, setError, clearErrors, name, value, isDirty, selectedDirectory]);
 
     // Handle on user's change
-    const handleManualChange = (
-        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    const handleManualChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onChange(e.target.value);
         onManualChangeCallback?.();
     };

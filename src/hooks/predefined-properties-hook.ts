@@ -10,11 +10,8 @@ import { useSnackMessage } from './useSnackMessage';
 import { EquipmentType, PredefinedProperties } from '../utils/types';
 import { fetchStudyMetadata } from '../services';
 
-const fetchPredefinedProperties = async (
-    equipmentType: EquipmentType
-): Promise<PredefinedProperties | undefined> => {
-    const networkEquipmentType =
-        mapEquipmentTypeForPredefinedProperties(equipmentType);
+const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<PredefinedProperties | undefined> => {
+    const networkEquipmentType = mapEquipmentTypeForPredefinedProperties(equipmentType);
     if (networkEquipmentType === undefined) {
         return Promise.resolve(undefined);
     }
@@ -26,8 +23,7 @@ const usePredefinedProperties = (
     initialType: EquipmentType | null
 ): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>] => {
     const [type, setType] = useState<EquipmentType | null>(initialType);
-    const [equipmentPredefinedProps, setEquipmentPredefinedProps] =
-        useState<PredefinedProperties>({});
+    const [equipmentPredefinedProps, setEquipmentPredefinedProps] = useState<PredefinedProperties>({});
     const { snackError } = useSnackMessage();
 
     useEffect(() => {

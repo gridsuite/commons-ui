@@ -87,10 +87,7 @@ const useElementSearch = <T,>(
         [fetchElements, snackError]
     );
 
-    const debouncedSearchMatchingElements = useDebounce(
-        searchMatchingElements,
-        SEARCH_FETCH_TIMEOUT_MILLIS
-    );
+    const debouncedSearchMatchingElements = useDebounce(searchMatchingElements, SEARCH_FETCH_TIMEOUT_MILLIS);
 
     const updateSearchTerm = useCallback(
         (newSearchTerm: string) => {

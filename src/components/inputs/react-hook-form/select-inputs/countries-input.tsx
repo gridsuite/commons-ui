@@ -40,12 +40,7 @@ function CountriesInput({ name, label }: CountryInputProps) {
             multiple
             renderTags={(val: any[], getTagsProps: any) =>
                 val.map((code: string, index: number) => (
-                    <Chip
-                        key={code}
-                        size="small"
-                        label={translate(code)}
-                        {...getTagsProps({ index })}
-                    />
+                    <Chip key={code} size="small" label={translate(code)} {...getTagsProps({ index })} />
                 ))
             }
         />

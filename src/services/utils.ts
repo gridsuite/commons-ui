@@ -17,9 +17,7 @@ const parseError = (text: string) => {
 
 const prepareRequest = (init: any, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
-        throw new TypeError(
-            `First argument of prepareRequest is not an object : ${typeof init}`
-        );
+        throw new TypeError(`First argument of prepareRequest is not an object : ${typeof init}`);
     }
     const initCopy = { ...init };
     initCopy.headers = new Headers(initCopy.headers || {});
@@ -33,24 +31,13 @@ const handleError = (response: any) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
         let customError: Error & { status?: string };
-        if (
-            errorJson &&
-            errorJson.status &&
-            errorJson.error &&
-            errorJson.message
-        ) {
+        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
             customError = new Error(
-                `${errorName + errorJson.status} ${
-                    errorJson.error
-                }, message : ${errorJson.message}`
+                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
             );
             customError.status = errorJson.status;
         } else {
-            customError = new Error(
-                `${errorName + response.status} ${
-                    response.statusText
-                }, message : ${text}`
-            );
+            customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
             customError.status = response.status;
         }
         throw customError;
@@ -58,9 +45,7 @@ const handleError = (response: any) => {
 };
 
 const safeFetch = (url: string, initCopy: any) => {
-    return fetch(url, initCopy).then((response) =>
-        response.ok ? response : handleError(response)
-    );
+    return fetch(url, initCopy).then((response) => (response.ok ? response : handleError(response)));
 };
 
 export const backendFetch = (url: string, init: any, token?: string) => {
@@ -70,14 +55,9 @@ export const backendFetch = (url: string, init: any, token?: string) => {
 
 export const backendFetchJson = (url: string, init: any, token?: string) => {
     const initCopy = prepareRequest(init, token);
-    return safeFetch(url, initCopy).then((safeResponse) =>
-        safeResponse.status === 204 ? null : safeResponse.json()
-    );
+    return safeFetch(url, initCopy).then((safeResponse) => (safeResponse.status === 204 ? null : safeResponse.json()));
 };
 
-export const getRequestParamFromList = (
-    paramName: string,
-    params: string[] = []
-) => {
+export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };

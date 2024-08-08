@@ -18,11 +18,7 @@ export type ErrorMessage =
 
 export interface ErrorInputProps {
     name: string;
-    InputField: ({
-        message,
-    }: {
-        message: string | React.ReactNode;
-    }) => React.ReactNode;
+    InputField: ({ message }: { message: string | React.ReactNode }) => React.ReactNode;
 }
 
 function ErrorInput({ name, InputField }: ErrorInputProps) {

@@ -6,15 +6,7 @@
  */
 
 import PropTypes from 'prop-types';
-import {
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel,
-    Radio,
-    RadioGroup,
-} from '@mui/material';
+import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 /**
  * TreeViewFinderConfig documentation:
@@ -66,69 +58,39 @@ function TreeViewFinderConfig(props) {
                     }}
                 >
                     <div>
-                        <FormLabel component="legend-data-format">
-                            Data Format
-                        </FormLabel>
+                        <FormLabel component="legend-data-format">Data Format</FormLabel>
                         <RadioGroup
                             aria-label="data-format"
                             name="Data Format"
                             value={dataFormat}
                             onChange={onDataFormatChange}
                         >
-                            <FormControlLabel
-                                value="Tree"
-                                control={<Radio />}
-                                label="Tree"
-                            />
-                            <FormControlLabel
-                                value="List"
-                                control={<Radio />}
-                                label="List"
-                            />
+                            <FormControlLabel value="Tree" control={<Radio />} label="Tree" />
+                            <FormControlLabel value="List" control={<Radio />} label="List" />
                         </RadioGroup>
                     </div>
                     <div>
-                        <FormLabel component="legend-data-update">
-                            Data update
-                        </FormLabel>
+                        <FormLabel component="legend-data-update">Data update</FormLabel>
                         <RadioGroup
                             aria-label="dynamic-data"
                             name="Dynamic Data"
                             value={dynamicData ? 'dynamic' : 'static'}
                             onChange={onDynamicDataChange}
                         >
-                            <FormControlLabel
-                                value="static"
-                                control={<Radio />}
-                                label="static"
-                            />
-                            <FormControlLabel
-                                value="dynamic"
-                                control={<Radio />}
-                                label="dynamic"
-                            />
+                            <FormControlLabel value="static" control={<Radio />} label="static" />
+                            <FormControlLabel value="dynamic" control={<Radio />} label="dynamic" />
                         </RadioGroup>
                     </div>
                     <div>
-                        <FormLabel component="legend-selection">
-                            Selection Type
-                        </FormLabel>
+                        <FormLabel component="legend-selection">Selection Type</FormLabel>
                         <RadioGroup
                             aria-label="seletcion-type"
                             name="Selection type"
                             value={multiSelect ? 'multiselect' : 'singleselect'}
                             onChange={onSelectionTypeChange}
                         >
-                            <FormControlLabel
-                                value="singleselect"
-                                control={<Radio />}
-                                label="single selection"
-                            />
-                            <FormControlLabel
-                                value="multiselect"
-                                control={<Radio />}
-                                label="multiselect"
-                            />
+                            <FormControlLabel value="singleselect" control={<Radio />} label="single selection" />
+                            <FormControlLabel value="multiselect" control={<Radio />} label="multiselect" />
                         </RadioGroup>
                     </div>
                     <div>
@@ -136,11 +98,7 @@ function TreeViewFinderConfig(props) {
                         <FormGroup>
                             <FormControlLabel
                                 control={
-                                    <Checkbox
-                                        checked={onlyLeaves}
-                                        onChange={onOnlyLeavesChange}
-                                        name="only-leaves"
-                                    />
+                                    <Checkbox checked={onlyLeaves} onChange={onOnlyLeavesChange} name="only-leaves" />
                                 }
                                 label="Only leaves selection"
                             />

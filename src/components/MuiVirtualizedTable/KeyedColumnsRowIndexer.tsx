@@ -61,11 +61,7 @@ export const noOpHelper = Object.freeze({
     maintainsStats: false,
     initStat: () => undefined,
     updateStat: (colStat: ColStat, value: number) => {},
-    accepts: (
-        value: any,
-        userParams: any[] | undefined,
-        outerParams: any[] | undefined
-    ) => {
+    accepts: (value: any, userParams: any[] | undefined, outerParams: any[] | undefined) => {
         return true;
     },
 });
@@ -77,26 +73,14 @@ const numericHelper = Object.freeze({
         return { imin: null, imax: null };
     },
     updateStat: (colStat: ColStat, value: number) => {
-        if (
-            colStat.imin === undefined ||
-            colStat.imin === null ||
-            colStat.imin > value
-        ) {
+        if (colStat.imin === undefined || colStat.imin === null || colStat.imin > value) {
             colStat.imin = value;
         }
-        if (
-            colStat.imax === undefined ||
-            colStat.imax === null ||
-            colStat.imax < value
-        ) {
+        if (colStat.imax === undefined || colStat.imax === null || colStat.imax < value) {
             colStat.imax = value;
         }
     },
-    accepts: (
-        value: number,
-        userParams: any[] | undefined,
-        outerParams: any[] | undefined
-    ) => {
+    accepts: (value: number, userParams: any[] | undefined, outerParams: any[] | undefined) => {
         return true;
     },
 });
@@ -115,11 +99,7 @@ export const collectibleHelper = Object.freeze({
             m[cellValue] += 1;
         }
     },
-    accepts: (
-        value: number,
-        userParams: any[] | undefined,
-        outerParams: any[] | undefined
-    ) => {
+    accepts: (value: number, userParams: any[] | undefined, outerParams: any[] | undefined) => {
         return !userParams || userParams.some((v) => v === value);
     },
 });
@@ -326,21 +306,19 @@ const groupAndSort = (
         // @ts-ignore I don't know how to fix this one
         const groups = groupRows(groupingColumnsCount, columns, indexedArray);
 
-        const interGroupSortingComparator =
-            makeCompositeComparatorFromCodedColumns(
-                codedColumns,
-                columns,
-                (ar) => ar[0][0]
-            );
+        const interGroupSortingComparator = makeCompositeComparatorFromCodedColumns(
+            codedColumns,
+            columns,
+            (ar) => ar[0][0]
+        );
         groups.sort(interGroupSortingComparator);
 
-        const intraGroupSortingComparator =
-            makeCompositeComparatorFromCodedColumns(
-                codedColumns,
-                columns,
-                // @ts-ignore I don't know how to fix this one
-                (ar) => ar[0]
-            );
+        const intraGroupSortingComparator = makeCompositeComparatorFromCodedColumns(
+            codedColumns,
+            columns,
+            // @ts-ignore I don't know how to fix this one
+            (ar) => ar[0]
+        );
 
         indexedArray = [];
         groups.forEach((group: any) => {
@@ -363,19 +341,11 @@ export class KeyedColumnsRowIndexer {
 
     versionSetter: ((version: number) => void) | null;
 
-    byColFilter: Record<
-        string,
-        { userParams?: any[]; outerParams?: any[] }
-    > | null;
+    byColFilter: Record<string, { userParams?: any[]; outerParams?: any[] }> | null;
 
     byRowFilter: ((row: RowProps) => boolean) | null;
 
-    delegatorCallback:
-        | ((
-              instance: KeyedColumnsRowIndexer,
-              callback: (input: any) => void
-          ) => void)
-        | null;
+    delegatorCallback: ((instance: KeyedColumnsRowIndexer, callback: (input: any) => void) => void) | null;
 
     filterVersion: number;
 
@@ -544,24 +514,14 @@ export class KeyedColumnsRowIndexer {
 
     // Does not mutate any internal
     // returns an array of indexes in rows given to preFilter
-    makeGroupAndSortIndirector = (
-        preFilteredRowPairs: FilteredRows | null,
-        columns: CustomColumnProps[]
-    ) => {
+    makeGroupAndSortIndirector = (preFilteredRowPairs: FilteredRows | null, columns: CustomColumnProps[]) => {
         if (!preFilteredRowPairs) {
             return null;
         }
 
-        const codedColumns = !this.sortingState
-            ? null
-            : codedColumnsFromKeyAndDirection(this.sortingState, columns);
+        const codedColumns = !this.sortingState ? null : codedColumnsFromKeyAndDirection(this.sortingState, columns);
         const groupingColumnsCount = this.groupingCount;
-        const indexedArray = groupAndSort(
-            preFilteredRowPairs,
-            codedColumns,
-            groupingColumnsCount,
-            columns
-        );
+        const indexedArray = groupAndSort(preFilteredRowPairs, codedColumns, groupingColumnsCount, columns);
 
         return !indexedArray ? null : indexedArray.map((k) => k[1]);
     };
@@ -598,8 +558,7 @@ export class KeyedColumnsRowIndexer {
             this.lastUsedRank = 1;
         } else {
             const wasAtIdx = keyAndDirections.findIndex((p) => p[0] === colKey);
-            const wasFuzzyDir =
-                wasAtIdx < 0 ? 0 : keyAndDirections[wasAtIdx][1];
+            const wasFuzzyDir = wasAtIdx < 0 ? 0 : keyAndDirections[wasAtIdx][1];
             const wasSignDir = giveDirSignFor(wasFuzzyDir);
 
             if (change_way === ChangeWays.SIMPLE) {
@@ -616,10 +575,7 @@ export class KeyedColumnsRowIndexer {
                         this.sortingState?.splice(wasAtIdx, 1);
                     }
                     const nextSign = wasSignDir ? -wasSignDir : 1;
-                    const nextKD: [string, string | undefined] = [
-                        colKey,
-                        canonicalForSign(nextSign),
-                    ];
+                    const nextKD: [string, string | undefined] = [colKey, canonicalForSign(nextSign)];
                     this.sortingState?.unshift(nextKD);
                 }
             } else if (change_way === ChangeWays.TAIL) {
@@ -629,9 +585,7 @@ export class KeyedColumnsRowIndexer {
                     return false;
                 } else if (!(this.isThreeState && wasSignDir === -1)) {
                     // @ts-ignore could be null but hard to handle with such accesses
-                    this.sortingState[wasAtIdx][1] = canonicalForSign(
-                        -wasSignDir
-                    );
+                    this.sortingState[wasAtIdx][1] = canonicalForSign(-wasSignDir);
                 } else {
                     this.sortingState?.splice(wasAtIdx, 1);
                 }
@@ -643,10 +597,7 @@ export class KeyedColumnsRowIndexer {
                 ) {
                     return false;
                 }
-                this.sortingState?.splice(this.lastUsedRank - 1, 0, [
-                    colKey,
-                    canonicalForSign(1),
-                ]);
+                this.sortingState?.splice(this.lastUsedRank - 1, 0, [colKey, canonicalForSign(1)]);
             } else if (!(this.isThreeState && wasSignDir === -1)) {
                 // @ts-ignore could be null but hard to handle with such accesses
                 this.sortingState[wasAtIdx][1] = canonicalForSign(-wasSignDir);
@@ -700,11 +651,7 @@ export class KeyedColumnsRowIndexer {
         return colFilter[isForUser ? 'userParams' : 'outerParams'];
     };
 
-    setColFilterParams = (
-        colKey: string | null,
-        params: any[] | null,
-        isForUser: boolean
-    ) => {
+    setColFilterParams = (colKey: string | null, params: any[] | null, isForUser: boolean) => {
         if (!colKey) {
             if (params) {
                 throw new Error('column key has to be defined');
@@ -718,8 +665,7 @@ export class KeyedColumnsRowIndexer {
             if (!this.byColFilter) {
                 this.byColFilter = {};
             }
-            let colFilter: { userParams?: any[]; outerParams?: any[] } =
-                this.byColFilter[colKey];
+            let colFilter: { userParams?: any[]; outerParams?: any[] } = this.byColFilter[colKey];
             if (!colFilter) {
                 colFilter = {};
                 this.byColFilter[colKey] = colFilter;

@@ -55,9 +55,7 @@ export async function fetchAppsMetadata(): Promise<CommonMetadata[]> {
     return res.json();
 }
 
-const isStudyMetadata = (
-    metadata: CommonMetadata
-): metadata is StudyMetadata => {
+const isStudyMetadata = (metadata: CommonMetadata): metadata is StudyMetadata => {
     return metadata.name === 'Study';
 };
 

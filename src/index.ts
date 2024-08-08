@@ -17,10 +17,7 @@ export type {
     UserManagerState,
 } from './components/AuthenticationRouter';
 export { MuiVirtualizedTable } from './components/MuiVirtualizedTable';
-export {
-    KeyedColumnsRowIndexer,
-    ChangeWays,
-} from './components/MuiVirtualizedTable';
+export { KeyedColumnsRowIndexer, ChangeWays } from './components/MuiVirtualizedTable';
 export { default as ReportViewer } from './components/ReportViewer';
 export { default as ReportViewerDialog } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
@@ -65,14 +62,8 @@ export {
     rqbQuerySchemaValidator,
     getExpertFilterEmptyFormData,
 } from './components/filter/expert/expert-filter-form';
-export {
-    importExpertRules,
-    exportExpertRules,
-} from './components/filter/expert/expert-filter-utils';
-export type {
-    RuleTypeExport,
-    RuleGroupTypeExport,
-} from './components/filter/expert/expert-filter.type';
+export { importExpertRules, exportExpertRules } from './components/filter/expert/expert-filter-utils';
+export type { RuleTypeExport, RuleGroupTypeExport } from './components/filter/expert/expert-filter.type';
 export { formatQuery } from 'react-querybuilder';
 
 export { default as yup } from './utils/yup-config';
@@ -91,12 +82,7 @@ export {
 export { ElementType } from './utils/ElementType';
 export type { ElementAttributes, Option, Equipment } from './utils/types';
 
-export {
-    EQUIPMENT_TYPE,
-    EquipmentType,
-    getEquipmentsInfosForSearchBar,
-    equipmentStyles,
-} from './utils/EquipmentType';
+export { EQUIPMENT_TYPE, EquipmentType, getEquipmentsInfosForSearchBar, equipmentStyles } from './utils/EquipmentType';
 
 export {
     initializeAuthenticationDev,
@@ -114,13 +100,7 @@ export {
     DEFAULT_ROW_HEIGHT,
 } from './components/MuiVirtualizedTable/MuiVirtualizedTable';
 
-export {
-    DARK_THEME,
-    LIGHT_THEME,
-    LANG_SYSTEM,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-} from './components/TopBar/TopBar';
+export { DARK_THEME, LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from './components/TopBar/TopBar';
 export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
 
 export {
@@ -174,11 +154,7 @@ export { default as common_button_fr } from './components/translations/common-bu
 export { default as directory_items_input_en } from './components/translations/directory-items-input-en';
 export { default as directory_items_input_fr } from './components/translations/directory-items-input-fr';
 
-export {
-    TagRenderer,
-    ElementSearchInput,
-    useElementSearch,
-} from './components/ElementSearchDialog';
+export { TagRenderer, ElementSearchInput, useElementSearch } from './components/ElementSearchDialog';
 export type { Paginated } from './components/ElementSearchDialog';
 export type { TagRendererProps } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
@@ -216,11 +192,7 @@ export {
     isFloatNumber,
     toFloatOrNullValue,
 } from './components/inputs/react-hook-form/utils/functions';
-export {
-    keyGenerator,
-    areArrayElementsUnique,
-    isObjectEmpty,
-} from './utils/functions';
+export { keyGenerator, areArrayElementsUnique, isObjectEmpty } from './utils/functions';
 export { default as DirectoryItemsInput } from './components/inputs/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
 export { default as CustomAGGrid } from './components/CustomAGGrid/custom-aggrid';
@@ -244,19 +216,12 @@ export {
 export { default as InputWithPopupConfirmation } from './components/inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
 export { default as MuiSelectInput } from './components/inputs/react-hook-form/select-inputs/mui-select-input';
 export { default as CountriesInput } from './components/inputs/react-hook-form/select-inputs/countries-input';
-export {
-    getSystemLanguage,
-    getComputedLanguage,
-    useLocalizedCountries,
-} from './hooks/localized-countries-hook';
+export { getSystemLanguage, getComputedLanguage, useLocalizedCountries } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './components/inputs/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
 export { default as UniqueNameInput } from './components/inputs/react-hook-form/unique-name-input';
 export { default as UserManagerMock } from './utils/UserManagerMock';
-export {
-    FILTER_EQUIPMENTS,
-    CONTINGENCY_LIST_EQUIPMENTS,
-} from './components/filter/utils/filter-form-utils';
+export { FILTER_EQUIPMENTS, CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/filter-form-utils';
 export type { FormEquipment } from './components/filter/utils/filter-form-utils';
 
 export {

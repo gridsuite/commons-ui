@@ -30,9 +30,7 @@ function TranslatedValueEditor(props: ValueEditorProps) {
         if (!values) {
             return {};
         }
-        return Object.fromEntries(
-            values.map((v) => [v.name, intl.formatMessage({ id: v.label })])
-        );
+        return Object.fromEntries(values.map((v) => [v.name, intl.formatMessage({ id: v.label })]));
     }, [intl, values]);
 
     useConvertValue(props);
@@ -53,9 +51,7 @@ function TranslatedValueEditor(props: ValueEditorProps) {
         <Autocomplete
             value={value}
             options={Object.keys(translatedValuesAutocomplete)}
-            getOptionLabel={(code: string) =>
-                translatedValuesAutocomplete[code]
-            }
+            getOptionLabel={(code: string) => translatedValuesAutocomplete[code]}
             onChange={(event, newValue: any) => handleOnChange(newValue)}
             multiple
             fullWidth

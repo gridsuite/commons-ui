@@ -219,9 +219,7 @@ function FlatParametersTab() {
                     onChange={onChange}
                     variant="standard"
                     showSeparator
-                    selectionWithDialog={(param) =>
-                        param?.possibleValues?.length > 10
-                    }
+                    selectionWithDialog={(param) => param?.possibleValues?.length > 10}
                 />
             </RightResizableBox>
         </div>

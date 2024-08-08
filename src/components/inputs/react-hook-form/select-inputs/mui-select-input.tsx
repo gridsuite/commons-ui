@@ -15,11 +15,7 @@ interface MuiSelectInputProps {
 }
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-function MuiSelectInput({
-    name,
-    options,
-    ...props
-}: MuiSelectInputProps & SelectProps) {
+function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps & SelectProps) {
     const {
         field: { value, onChange },
     } = useController({
@@ -29,10 +25,7 @@ function MuiSelectInput({
     return (
         <Select value={value} onChange={onChange} {...props}>
             {options.map((option) => (
-                <MenuItem
-                    key={option.id ?? option.label}
-                    value={option.id ?? option}
-                >
+                <MenuItem key={option.id ?? option.label} value={option.id ?? option}>
                     <FormattedMessage id={option.label ?? option} />
                 </MenuItem>
             ))}

@@ -6,7 +6,5 @@
         "@babel/preset-typescript",
         "babel-preset-vite"
     ],
-    "plugins": [
-        "@babel/plugin-transform-runtime"
-    ]
+    "plugins": ["@babel/plugin-transform-runtime"]
 }

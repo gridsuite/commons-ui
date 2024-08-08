@@ -30,16 +30,8 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expert-filter.type';
-import {
-    FIELDS_OPTIONS,
-    OPERATOR_OPTIONS,
-    RULES,
-} from './expert-filter-constants';
-import {
-    isBlankOrEmpty,
-    microUnitToUnit,
-    unitToMicroUnit,
-} from '../../../utils/conversion-utils';
+import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expert-filter-constants';
+import { isBlankOrEmpty, microUnitToUnit, unitToMicroUnit } from '../../../utils/conversion-utils';
 
 const microUnits = [
     FieldType.SHUNT_CONDUCTANCE_1,
@@ -86,18 +78,14 @@ const getFieldData = (fieldName: string) => {
  */
 const getDataType = (fieldName: string, operator: string) => {
     // particular case => set dataType to FILTER_UUID when exporting rule with operator IS_PART_OF or IS_NOT_PART_OF
-    if (
-        operator === OPERATOR_OPTIONS.IS_PART_OF.name ||
-        operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name
-    ) {
+    if (operator === OPERATOR_OPTIONS.IS_PART_OF.name || operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name) {
         return DataType.FILTER_UUID;
     }
 
     // particular case => set dataType to BOOLEAN when exporting composite rule REMOTE_REGULATED_TERMINAL with operator EXISTS or NOT_EXISTS
     if (
         fieldName === FieldType.REMOTE_REGULATED_TERMINAL &&
-        (operator === OPERATOR_OPTIONS.EXISTS.name ||
-            operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
+        (operator === OPERATOR_OPTIONS.EXISTS.name || operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
     ) {
         return DataType.BOOLEAN;
     }
@@ -109,9 +97,7 @@ const getDataType = (fieldName: string, operator: string) => {
 };
 
 export const getOperators = (fieldName: string, intl: IntlShape) => {
-    const field = Object.values(FIELDS_OPTIONS).find(
-        (fieldOption) => fieldOption.name === fieldName
-    );
+    const field = Object.values(FIELDS_OPTIONS).find((fieldOption) => fieldOption.name === fieldName);
 
     switch (field?.dataType) {
         case DataType.STRING: {
@@ -138,9 +124,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
             if (field.name === FieldType.ID) {
                 // When the ID is selected, the operators EXISTS and NOT_EXISTS must be removed.
                 stringOperators = stringOperators.filter(
-                    (operator) =>
-                        operator !== OPERATOR_OPTIONS.EXISTS &&
-                        operator !== OPERATOR_OPTIONS.NOT_EXISTS
+                    (operator) => operator !== OPERATOR_OPTIONS.EXISTS && operator !== OPERATOR_OPTIONS.NOT_EXISTS
                 );
             }
             return stringOperators.map((operator) => ({
@@ -171,10 +155,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
             // particular case
             if (field.name === FieldType.AUTOMATE) {
                 // take only EXISTS and NOT_EXISTS
-                booleanOperators = [
-                    OPERATOR_OPTIONS.EXISTS,
-                    OPERATOR_OPTIONS.NOT_EXISTS,
-                ];
+                booleanOperators = [OPERATOR_OPTIONS.EXISTS, OPERATOR_OPTIONS.NOT_EXISTS];
             }
             return booleanOperators.map((operator) => ({
                 name: operator.name,
@@ -193,9 +174,7 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 field.name === FieldType.SVAR_REGULATION_MODE
             ) {
                 // When one of above field is selected, the operator IN must be removed.
-                enumOperators = enumOperators.filter(
-                    (operator) => operator !== OPERATOR_OPTIONS.IN
-                );
+                enumOperators = enumOperators.filter((operator) => operator !== OPERATOR_OPTIONS.IN);
             }
             return enumOperators.map((operator) => ({
                 name: operator.name,
@@ -239,9 +218,7 @@ function changeValueUnit(value: any, field: FieldType) {
 }
 
 export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
-    function transformRule(
-        rule: RuleType
-    ): RuleTypeExport | RuleGroupTypeExport {
+    function transformRule(rule: RuleType): RuleTypeExport | RuleGroupTypeExport {
         const isValueAnArray = Array.isArray(rule.value);
         const dataType = getDataType(rule.field, rule.operator) as DataType;
 
@@ -257,9 +234,8 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
             field: rule.field as FieldType,
             operator:
                 dataType !== DataType.PROPERTY
-                    ? (Object.values(OPERATOR_OPTIONS).find(
-                          (operator) => operator.name === rule.operator
-                      )?.customName as OperatorType)
+                    ? (Object.values(OPERATOR_OPTIONS).find((operator) => operator.name === rule.operator)
+                          ?.customName as OperatorType)
                     : rule.value.propertyOperator,
             value:
                 !isValueAnArray &&
@@ -273,29 +249,20 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
                     ? changeValueUnit(rule.value, rule.field as FieldType)
                     : undefined,
             dataType,
-            propertyName:
-                dataType === DataType.PROPERTY
-                    ? rule.value.propertyName
-                    : undefined,
-            propertyValues:
-                dataType === DataType.PROPERTY
-                    ? rule.value.propertyValues
-                    : undefined,
+            propertyName: dataType === DataType.PROPERTY ? rule.value.propertyName : undefined,
+            propertyValues: dataType === DataType.PROPERTY ? rule.value.propertyValues : undefined,
         };
     }
 
-    function transformCompositeRule(
-        compositeRule: RuleType
-    ): RuleGroupTypeExport {
+    function transformCompositeRule(compositeRule: RuleType): RuleGroupTypeExport {
         const compositeGroup = compositeRule.value as CompositeGroup;
-        const transformedRules = Object.entries(compositeGroup.rules).map(
-            ([field, rule]) =>
-                transformRule({
-                    ...rule,
-                    field,
-                    operator: rule.operator,
-                    value: rule.value,
-                })
+        const transformedRules = Object.entries(compositeGroup.rules).map(([field, rule]) =>
+            transformRule({
+                ...rule,
+                field,
+                operator: rule.operator,
+                value: rule.value,
+            })
         );
 
         return {
@@ -304,9 +271,8 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
             dataType: DataType.COMBINATOR,
             rules: transformedRules,
             // two additional attributes to distinct a composite rule from a normal rule group
-            operator: Object.values(OPERATOR_OPTIONS).find(
-                (operator) => operator.name === compositeRule.operator
-            )?.customName as OperatorType,
+            operator: Object.values(OPERATOR_OPTIONS).find((operator) => operator.name === compositeRule.operator)
+                ?.customName as OperatorType,
             field: compositeRule.field as FieldType,
         };
     }
@@ -346,17 +312,13 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                 return rule.values
                     .map((value) => parseFloat(value as string))
                     .map((numberValue) => {
-                        return microUnits.includes(rule.field)
-                            ? unitToMicroUnit(numberValue)!
-                            : numberValue;
+                        return microUnits.includes(rule.field) ? unitToMicroUnit(numberValue)! : numberValue;
                     })
                     .sort((a, b) => a - b);
             }
             return rule.values.sort();
         }
-        return microUnits.includes(rule.field)
-            ? unitToMicroUnit(parseFloat(rule.value as string))
-            : rule.value;
+        return microUnits.includes(rule.field) ? unitToMicroUnit(parseFloat(rule.value as string)) : rule.value;
     }
 
     function transformRule(rule: RuleTypeExport): RuleType {
@@ -365,9 +327,8 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             field: rule.field,
             operator:
                 rule.dataType !== DataType.PROPERTY
-                    ? (Object.values(OPERATOR_OPTIONS).find(
-                          (operator) => operator.customName === rule.operator
-                      )?.name as string)
+                    ? (Object.values(OPERATOR_OPTIONS).find((operator) => operator.customName === rule.operator)
+                          ?.name as string)
                     : OPERATOR_OPTIONS.IS.name,
             value: parseValue(rule),
         };
@@ -390,9 +351,8 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
         return {
             id: group.id,
             field: group.field as FieldType,
-            operator: Object.values(OPERATOR_OPTIONS).find(
-                (operator) => operator.customName === group.operator
-            )?.name as string,
+            operator: Object.values(OPERATOR_OPTIONS).find((operator) => operator.customName === group.operator)
+                ?.name as string,
             value: {
                 combinator: group.combinator,
                 rules: transformedRules,
@@ -431,11 +391,7 @@ export function countRules(query: RuleGroupTypeAny): number {
 
     if ('rules' in query) {
         const group = query as RuleGroupType;
-        return group.rules.reduce(
-            (sum, ruleOrGroup) =>
-                sum + countRules(ruleOrGroup as RuleGroupTypeAny),
-            0
-        );
+        return group.rules.reduce((sum, ruleOrGroup) => sum + countRules(ruleOrGroup as RuleGroupTypeAny), 0);
     }
     return 1;
 }
@@ -457,8 +413,7 @@ export const queryValidator: QueryValidator = (query) => {
 
         if (
             rule.id &&
-            (rule.operator === OPERATOR_OPTIONS.EXISTS.name ||
-                rule.operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
+            (rule.operator === OPERATOR_OPTIONS.EXISTS.name || rule.operator === OPERATOR_OPTIONS.NOT_EXISTS.name)
         ) {
             // In the case of (NOT_)EXISTS operator, because we do not have a second value to evaluate, we force a valid result.
             result[rule.id] = {
@@ -471,10 +426,7 @@ export const queryValidator: QueryValidator = (query) => {
                     valid: false,
                     reasons: [RULES.EMPTY_RULE],
                 };
-            } else if (
-                Number.isNaN(parseFloat(rule.value[0])) ||
-                Number.isNaN(parseFloat(rule.value[1]))
-            ) {
+            } else if (Number.isNaN(parseFloat(rule.value[0])) || Number.isNaN(parseFloat(rule.value[1]))) {
                 result[rule.id] = {
                     valid: false,
                     reasons: [RULES.INCORRECT_RULE],
@@ -485,29 +437,17 @@ export const queryValidator: QueryValidator = (query) => {
                     reasons: [RULES.BETWEEN_RULE],
                 };
             }
-        } else if (
-            rule.id &&
-            rule.operator === OPERATOR_OPTIONS.IN.name &&
-            !rule.value?.length
-        ) {
+        } else if (rule.id && rule.operator === OPERATOR_OPTIONS.IN.name && !rule.value?.length) {
             result[rule.id] = {
                 valid: false,
                 reasons: [RULES.EMPTY_RULE],
             };
-        } else if (
-            rule.id &&
-            isStringInput &&
-            (rule.value || '').trim() === ''
-        ) {
+        } else if (rule.id && isStringInput && (rule.value || '').trim() === '') {
             result[rule.id] = {
                 valid: false,
                 reasons: [RULES.EMPTY_RULE],
             };
-        } else if (
-            rule.id &&
-            isNumberInput &&
-            Number.isNaN(parseFloat(rule.value))
-        ) {
+        } else if (rule.id && isNumberInput && Number.isNaN(parseFloat(rule.value))) {
             result[rule.id] = {
                 valid: false,
                 reasons: [RULES.INCORRECT_RULE],
@@ -535,9 +475,7 @@ export const queryValidator: QueryValidator = (query) => {
             };
         } else if (rule.id && dataType === DataType.COMBINATOR) {
             // based on FIELDS_OPTIONS configuration and composite group, validate for each children composite rule in a composite group
-            const childrenFields = Object.keys(
-                getFieldData(rule.field).children ?? {}
-            );
+            const childrenFields = Object.keys(getFieldData(rule.field).children ?? {});
             const compositeGroup = rule.value as CompositeGroup;
 
             // call validate recursively
@@ -599,15 +537,9 @@ export function getNumberOfSiblings(path: number[], query: RuleGroupTypeAny) {
 }
 
 // Remove a rule or group and its parents if they become empty
-export function recursiveRemove(
-    query: RuleGroupTypeAny,
-    path: number[]
-): RuleGroupTypeAny {
+export function recursiveRemove(query: RuleGroupTypeAny, path: number[]): RuleGroupTypeAny {
     // If it's an only child, we also need to remove and check the parent group (but not the root)
-    if (
-        getNumberOfSiblings(path, query) === 1 &&
-        path.toString() !== [0].toString()
-    ) {
+    if (getNumberOfSiblings(path, query) === 1 && path.toString() !== [0].toString()) {
         return recursiveRemove(query, getParentPath(path));
     }
     // Otherwise, we can safely remove it

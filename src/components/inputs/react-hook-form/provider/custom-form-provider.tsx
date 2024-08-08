@@ -16,8 +16,7 @@ type CustomFormContextProps = {
     language?: string;
 };
 
-export type MergedFormContextProps = UseFormReturn<any> &
-    CustomFormContextProps;
+export type MergedFormContextProps = UseFormReturn<any> & CustomFormContextProps;
 
 type CustomFormProviderProps = PropsWithChildren<MergedFormContextProps>;
 
@@ -28,13 +27,7 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
 });
 
 function CustomFormProvider(props: CustomFormProviderProps) {
-    const {
-        validationSchema,
-        removeOptional,
-        language,
-        children,
-        ...formMethods
-    } = props;
+    const { validationSchema, removeOptional, language, children, ...formMethods } = props;
 
     return (
         <FormProvider {...formMethods}>

@@ -5,19 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    ReactNode,
-    SyntheticEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
-import {
-    ArrowDropDown as ArrowDropDownIcon,
-    ArrowRight as ArrowRightIcon,
-} from '@mui/icons-material';
+import { ReactNode, SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowDropDown as ArrowDropDownIcon, ArrowRight as ArrowRightIcon } from '@mui/icons-material';
 import { Grid } from '@mui/material';
 import { TreeView } from '@mui/x-tree-view';
 import ReportItem from './report-item';
@@ -45,17 +34,12 @@ export interface ReportViewerProps {
     maxSubReports?: number;
 }
 
-export default function ReportViewer({
-    jsonReport,
-    maxSubReports = MAX_SUB_REPORTS,
-}: ReportViewerProps) {
+export default function ReportViewer({ jsonReport, maxSubReports = MAX_SUB_REPORTS }: ReportViewerProps) {
     const [selectedNode, setSelectedNode] = useState<string | null>(null);
     const [expandedNodes, setExpandedNodes] = useState<string[]>([]);
     const [logs, setLogs] = useState<LogReportItem[]>([]);
 
-    const [highlightedReportId, setHighlightedReportId] = useState<
-        string | null
-    >();
+    const [highlightedReportId, setHighlightedReportId] = useState<string | null>();
 
     const rootReport = useRef<LogReport | null>(null);
     const allReports = useRef<Record<string, LogReport>>({});
@@ -69,9 +53,7 @@ export default function ReportViewer({
         return filterConfig;
     }, []);
 
-    const [selectedSeverity, setSelectedSeverity] = useState(
-        defaultSeverityFilter
-    );
+    const [selectedSeverity, setSelectedSeverity] = useState(defaultSeverityFilter);
 
     const createReporterItem = useCallback(
         (logReport: LogReport) => {
@@ -136,8 +118,7 @@ export default function ReportViewer({
     // The MUI TreeView/TreeItems use useMemo on our items, so it's important to avoid changing the context
     const isHighlighted = useMemo(
         () => ({
-            isHighlighted: (reportId: string) =>
-                highlightedReportId === reportId,
+            isHighlighted: (reportId: string) => highlightedReportId === reportId,
         }),
         [highlightedReportId]
     );

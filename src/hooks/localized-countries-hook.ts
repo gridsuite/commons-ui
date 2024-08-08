@@ -11,30 +11,21 @@ import localizedCountries, { LocalizedCountries } from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr';
 // @ts-ignore
 import countriesEn from 'localized-countries/data/en';
-import {
-    LANG_FRENCH,
-    LANG_ENGLISH,
-    LANG_SYSTEM,
-} from '../components/TopBar/TopBar';
+import { LANG_FRENCH, LANG_ENGLISH, LANG_SYSTEM } from '../components/TopBar/TopBar';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
 
 export const getSystemLanguage = () => {
     const systemLanguage = navigator.language.split(/[-_]/)[0];
-    return supportedLanguages.includes(systemLanguage)
-        ? systemLanguage
-        : LANG_ENGLISH;
+    return supportedLanguages.includes(systemLanguage) ? systemLanguage : LANG_ENGLISH;
 };
 
 export const getComputedLanguage = (language: string | undefined) => {
-    return language === LANG_SYSTEM
-        ? getSystemLanguage()
-        : language ?? LANG_ENGLISH;
+    return language === LANG_SYSTEM ? getSystemLanguage() : language ?? LANG_ENGLISH;
 };
 
 export const useLocalizedCountries = (language: string | undefined) => {
-    const [localizedCountriesModule, setLocalizedCountriesModule] =
-        useState<LocalizedCountries>();
+    const [localizedCountriesModule, setLocalizedCountriesModule] = useState<LocalizedCountries>();
 
     // TODO FM this is disgusting, can we make it better ?
     useEffect(() => {
@@ -47,27 +38,19 @@ export const useLocalizedCountries = (language: string | undefined) => {
         } else if (lang === 'en') {
             localizedCountriesResult = localizedCountries(countriesEn);
         } else {
-            console.warn(
-                `Unsupported language "${lang}" for countries translation, we use english as default`
-            );
+            console.warn(`Unsupported language "${lang}" for countries translation, we use english as default`);
             localizedCountriesResult = localizedCountries(countriesEn);
         }
         setLocalizedCountriesModule(localizedCountriesResult);
     }, [language]);
 
     const countryCodes = useMemo(
-        () =>
-            localizedCountriesModule
-                ? Object.keys(localizedCountriesModule.object())
-                : [],
+        () => (localizedCountriesModule ? Object.keys(localizedCountriesModule.object()) : []),
         [localizedCountriesModule]
     );
 
     const translate = useCallback(
-        (countryCode: string) =>
-            localizedCountriesModule
-                ? localizedCountriesModule.get(countryCode)
-                : '',
+        (countryCode: string) => (localizedCountriesModule ? localizedCountriesModule.get(countryCode) : ''),
         [localizedCountriesModule]
     );
 

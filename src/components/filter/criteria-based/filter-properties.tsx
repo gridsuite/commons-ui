@@ -22,15 +22,8 @@ import {
 import { areArrayElementsUnique } from '../../../utils/functions';
 import FieldConstants from '../../../utils/field-constants';
 import yup from '../../../utils/yup-config';
-import FilterFreeProperties, {
-    FreePropertiesTypes,
-} from './filter-free-properties';
-import {
-    PROPERTY_NAME,
-    PROPERTY_VALUES,
-    PROPERTY_VALUES_1,
-    PROPERTY_VALUES_2,
-} from './filter-property';
+import FilterFreeProperties, { FreePropertiesTypes } from './filter-free-properties';
+import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './filter-property';
 import usePredefinedProperties from '../../../hooks/predefined-properties-hook';
 import { FilterType } from '../constants/filter-constants';
 
@@ -47,8 +40,7 @@ function propertyValuesTest(
         return true;
     }
     const equipmentType = rootLevelForm.value[FieldConstants.EQUIPMENT_TYPE];
-    const isForLineOrHvdcLine =
-        equipmentType === Line.type || equipmentType === Hvdc.type;
+    const isForLineOrHvdcLine = equipmentType === Line.type || equipmentType === Hvdc.type;
     if (doublePropertyValues) {
         return isForLineOrHvdcLine ? values?.length! > 0 : true;
     }
@@ -64,50 +56,36 @@ export const filterPropertiesYupSchema = {
                 [PROPERTY_VALUES]: yup
                     .array()
                     .of(yup.string())
-                    .test(
-                        'can not be empty if not line',
-                        'YupRequired',
-                        (values, context) =>
-                            propertyValuesTest(values, context, false)
+                    .test('can not be empty if not line', 'YupRequired', (values, context) =>
+                        propertyValuesTest(values, context, false)
                     ),
                 [PROPERTY_VALUES_1]: yup
                     .array()
                     .of(yup.string())
-                    .test(
-                        'can not be empty if line',
-                        'YupRequired',
-                        (values, context) =>
-                            propertyValuesTest(values, context, true)
+                    .test('can not be empty if line', 'YupRequired', (values, context) =>
+                        propertyValuesTest(values, context, true)
                     ),
                 [PROPERTY_VALUES_2]: yup
                     .array()
                     .of(yup.string())
-                    .test(
-                        'can not be empty if line',
-                        'YupRequired',
-                        (values, context) =>
-                            propertyValuesTest(values, context, true)
+                    .test('can not be empty if line', 'YupRequired', (values, context) =>
+                        propertyValuesTest(values, context, true)
                     ),
             })
         )
-        .test(
-            'distinct names',
-            'filterPropertiesNameUniquenessError',
-            (properties, context) => {
-                // with context.from[length - 1], we can access to the root fields of the form
-                const rootLevelForm = context.from![context.from!.length - 1];
-                const filterType =
-                    rootLevelForm.value[FieldConstants.FILTER_TYPE];
-                if (filterType !== FilterType.CRITERIA_BASED.id) {
-                    // we don't test if we are not in a criteria based form
-                    return true;
-                }
-                const names = properties! // never null / undefined
-                    .filter((prop) => !!prop[PROPERTY_NAME])
-                    .map((prop) => prop[PROPERTY_NAME]);
-                return areArrayElementsUnique(names);
+        .test('distinct names', 'filterPropertiesNameUniquenessError', (properties, context) => {
+            // with context.from[length - 1], we can access to the root fields of the form
+            const rootLevelForm = context.from![context.from!.length - 1];
+            const filterType = rootLevelForm.value[FieldConstants.FILTER_TYPE];
+            if (filterType !== FilterType.CRITERIA_BASED.id) {
+                // we don't test if we are not in a criteria based form
+                return true;
             }
-        ),
+            const names = properties! // never null / undefined
+                .filter((prop) => !!prop[PROPERTY_NAME])
+                .map((prop) => prop[PROPERTY_NAME]);
+            return areArrayElementsUnique(names);
+        }),
     [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: yup
         .array()
         .of(
@@ -116,42 +94,32 @@ export const filterPropertiesYupSchema = {
                 [PROPERTY_VALUES]: yup
                     .array()
                     .of(yup.string())
-                    .test(
-                        'can not be empty if not line',
-                        'YupRequired',
-                        (values, context) =>
-                            propertyValuesTest(values, context, false)
+                    .test('can not be empty if not line', 'YupRequired', (values, context) =>
+                        propertyValuesTest(values, context, false)
                     ),
             })
         )
-        .test(
-            'distinct names',
-            'filterPropertiesNameUniquenessError',
-            (properties, context) => {
-                // with context.from[length - 1], we can access to the root fields of the form
-                const rootLevelForm = context.from![context.from!.length - 1];
-                const filterType =
-                    rootLevelForm.value[FieldConstants.FILTER_TYPE];
-                if (filterType !== FilterType.CRITERIA_BASED.id) {
-                    // we don't test if we are not in a criteria based form
-                    return true;
-                }
-                const names = properties! // never null / undefined
-                    .filter((prop) => !!prop[PROPERTY_NAME])
-                    .map((prop) => prop[PROPERTY_NAME]);
-                return areArrayElementsUnique(names);
+        .test('distinct names', 'filterPropertiesNameUniquenessError', (properties, context) => {
+            // with context.from[length - 1], we can access to the root fields of the form
+            const rootLevelForm = context.from![context.from!.length - 1];
+            const filterType = rootLevelForm.value[FieldConstants.FILTER_TYPE];
+            if (filterType !== FilterType.CRITERIA_BASED.id) {
+                // we don't test if we are not in a criteria based form
+                return true;
             }
-        ),
+            const names = properties! // never null / undefined
+                .filter((prop) => !!prop[PROPERTY_NAME])
+                .map((prop) => prop[PROPERTY_NAME]);
+            return areArrayElementsUnique(names);
+        }),
 };
 
 function FilterProperties() {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
-    const [equipmentPredefinedProps, setEquipmentType] =
-        usePredefinedProperties(watchEquipmentType);
-    const [substationPredefinedProps, setSubstationType] =
-        usePredefinedProperties(null);
+    const [equipmentPredefinedProps, setEquipmentType] = usePredefinedProperties(watchEquipmentType);
+    const [substationPredefinedProps, setSubstationType] = usePredefinedProperties(null);
 
     const displayEquipmentProperties = useMemo(() => {
         return (
@@ -167,10 +135,7 @@ function FilterProperties() {
     }, [watchEquipmentType]);
 
     const displaySubstationProperties = useMemo(() => {
-        return (
-            watchEquipmentType !== Substation.type &&
-            watchEquipmentType !== null
-        );
+        return watchEquipmentType !== Substation.type && watchEquipmentType !== null;
     }, [watchEquipmentType]);
 
     useEffect(() => {
@@ -188,22 +153,16 @@ function FilterProperties() {
         watchEquipmentType && (
             <Grid item container spacing={1}>
                 <Grid item xs={12}>
-                    <FormattedMessage id="FreePropsCrit">
-                        {(txt) => <h3>{txt}</h3>}
-                    </FormattedMessage>
+                    <FormattedMessage id="FreePropsCrit">{(txt) => <h3>{txt}</h3>}</FormattedMessage>
                     {displayEquipmentProperties && (
                         <FilterFreeProperties
-                            freePropertiesType={
-                                FreePropertiesTypes.FREE_FILTER_PROPERTIES
-                            }
+                            freePropertiesType={FreePropertiesTypes.FREE_FILTER_PROPERTIES}
                             predefined={equipmentPredefinedProps}
                         />
                     )}
                     {displaySubstationProperties && (
                         <FilterFreeProperties
-                            freePropertiesType={
-                                FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES
-                            }
+                            freePropertiesType={FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES}
                             predefined={substationPredefinedProps}
                         />
                     )}

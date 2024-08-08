@@ -5,14 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Checkbox,
-    CheckboxProps,
-    FormControlLabel,
-    Menu,
-    MenuItem,
-    MenuProps,
-} from '@mui/material';
+import { Checkbox, CheckboxProps, FormControlLabel, Menu, MenuItem, MenuProps } from '@mui/material';
 
 const styles = {
     label: {
@@ -40,12 +33,7 @@ export interface MultiSelectListProps {
  * @param {Object} anchor - Determines where the menu will appear on screen
  */
 
-export function MultiSelectList({
-    selectedItems,
-    handleChange,
-    handleClose,
-    anchor,
-}: MultiSelectListProps) {
+export function MultiSelectList({ selectedItems, handleChange, handleClose, anchor }: MultiSelectListProps) {
     const open = Boolean(anchor);
     return (
         <Menu open={open} onClose={handleClose} anchorEl={anchor}>
@@ -53,13 +41,7 @@ export function MultiSelectList({
                 return (
                     <MenuItem sx={styles.menuItem} key={key}>
                         <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={value}
-                                    onChange={handleChange}
-                                    name={key}
-                                />
-                            }
+                            control={<Checkbox checked={value} onChange={handleChange} name={key} />}
                             label={key}
                             sx={styles.label}
                         />

@@ -8,11 +8,7 @@ import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, Theme } from '@mui/material';
 import { useCallback } from 'react';
 import RuleValueEditor from './rule-value-editor';
-import {
-    CompositeField,
-    CompositeGroup,
-    CompositeRule,
-} from '../../../filter/expert/expert-filter.type';
+import { CompositeField, CompositeGroup, CompositeRule } from '../../../filter/expert/expert-filter.type';
 
 const styles = {
     group: (theme: Theme) => ({
@@ -46,14 +42,7 @@ function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
     );
 
     return (
-        <Grid
-            container
-            direction="column"
-            sx={styles.group}
-            paddingLeft={1}
-            paddingRight={1}
-            paddingBottom={1}
-        >
+        <Grid container direction="column" sx={styles.group} paddingLeft={1} paddingRight={1} paddingBottom={1}>
             {children &&
                 Object.values(children).map((fieldData) => (
                     <RuleValueEditor
@@ -62,9 +51,7 @@ function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
                         field={fieldData.name}
                         fieldData={fieldData}
                         rule={value?.rules?.[fieldData.name]}
-                        handleOnChangeRule={generateOnChangeRuleHandler(
-                            fieldData.name
-                        )}
+                        handleOnChangeRule={generateOnChangeRuleHandler(fieldData.name)}
                     />
                 ))}
         </Grid>

@@ -113,8 +113,7 @@ export default class UserManagerMock implements UserManager {
         toStorageString: () => 'Mock of UserManager',
     };
 
-    readonly metadataService: MetadataService =
-        null as unknown as MetadataService;
+    readonly metadataService: MetadataService = null as unknown as MetadataService;
 
     constructor(settings: UserManagerSettings) {
         this.settings = settings;
@@ -123,42 +122,28 @@ export default class UserManagerMock implements UserManager {
 
     // eslint-disable-next-line class-methods-use-this
     getUser() {
-        return Promise.resolve(
-            JSON.parse(
-                sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
-            )
-        );
+        return Promise.resolve(JSON.parse(sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'));
     }
 
     async signinSilent(): Promise<User> {
         console.info('signinSilent..............');
-        const localStorageUser = JSON.parse(
-            localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'
-        );
+        const localStorageUser = JSON.parse(localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null');
         if (localStorageUser === null) {
             throw new Error('End-User authentication required');
         }
-        sessionStorage.setItem(
-            'powsybl-gridsuite-mock-user',
-            JSON.stringify(localStorageUser)
-        );
+        sessionStorage.setItem('powsybl-gridsuite-mock-user', JSON.stringify(localStorageUser));
         this.events.userLoadedCallbacks.forEach((c) => c(localStorageUser));
         return localStorageUser;
     }
 
     // eslint-disable-next-line class-methods-use-this
     signinSilentCallback() {
-        console.error(
-            'Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)'
-        );
+        console.error('Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)');
         return Promise.reject();
     }
 
     signinRedirect() {
-        localStorage.setItem(
-            'powsybl-gridsuite-mock-user',
-            JSON.stringify(this.user)
-        );
+        localStorage.setItem('powsybl-gridsuite-mock-user', JSON.stringify(this.user));
         window.location.href = './sign-in-callback';
         return Promise.resolve();
     }
@@ -172,10 +157,7 @@ export default class UserManagerMock implements UserManager {
     }
 
     signinRedirectCallback() {
-        sessionStorage.setItem(
-            'powsybl-gridsuite-mock-user',
-            JSON.stringify(this.user)
-        );
+        sessionStorage.setItem('powsybl-gridsuite-mock-user', JSON.stringify(this.user));
         this.events.userLoadedCallbacks.forEach((c) => c(this.user));
         return Promise.resolve(this.user);
     }

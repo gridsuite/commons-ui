@@ -22,5 +22,4 @@ export const areArrayElementsUnique = (array: unknown[]) => {
     return uniqueValues.length === array.length;
 };
 
-export const isObjectEmpty = (object: object) =>
-    object && Object.keys(object).length === 0;
+export const isObjectEmpty = (object: object) => object && Object.keys(object).length === 0;

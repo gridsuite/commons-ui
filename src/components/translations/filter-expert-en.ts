@@ -86,12 +86,9 @@ const filterExpertEn = {
     phaseRegulationMode2: 'Phase tap 2 changer regulation mode',
     phaseRegulationMode3: 'Phase tap 3 changer regulation mode',
     phaseRegulationValue: 'Phase tap changer flow set point or current limit',
-    phaseRegulationValue1:
-        'Phase tap 1 changer flow set point or current limit',
-    phaseRegulationValue2:
-        'Phase tap 2 changer flow set point or current limit',
-    phaseRegulationValue3:
-        'Phase tap 3 changer flow set point or current limit',
+    phaseRegulationValue1: 'Phase tap 1 changer flow set point or current limit',
+    phaseRegulationValue2: 'Phase tap 2 changer flow set point or current limit',
+    phaseRegulationValue3: 'Phase tap 3 changer flow set point or current limit',
     property: 'Property',
     substationProperty: 'Substation property',
     substationProperty1: 'Substation property 1',
@@ -178,6 +175,8 @@ const filterExpertEn = {
     shuntSusceptance1: 'Shunt susceptance 1 (μS)',
     shuntConductance2: 'Shunt conductance 2 (μS)',
     shuntSusceptance2: 'Shunt susceptance 2 (μS)',
+    pairingKey: 'Xnode',
+    tieLineId: 'Tie line ID',
 };
 
 export default filterExpertEn;

@@ -8,21 +8,14 @@
 import { useRef } from 'react';
 import { Button } from '@mui/material';
 
-import {
-    SnackbarProvider as OrigSnackbarProvider,
-    SnackbarKey,
-    SnackbarProviderProps,
-} from 'notistack';
+import { SnackbarProvider as OrigSnackbarProvider, SnackbarKey, SnackbarProviderProps } from 'notistack';
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
 function SnackbarProvider(props: SnackbarProviderProps) {
     const ref = useRef<OrigSnackbarProvider>(null);
 
     const action = (key: SnackbarKey) => (
-        <Button
-            onClick={() => ref.current?.closeSnackbar(key)}
-            style={{ color: '#fff', fontSize: '20px' }}
-        >
+        <Button onClick={() => ref.current?.closeSnackbar(key)} style={{ color: '#fff', fontSize: '20px' }}>
             ✖
         </Button>
     );

@@ -63,30 +63,18 @@ function ExpandingTextField({
                 resize: 'none', // or 'horizontal' for horizontal resizing
             },
         },
-        helperText: (
-            <Typography variant="caption">{descriptionCounter}</Typography>
-        ),
+        helperText: <Typography variant="caption">{descriptionCounter}</Typography>,
         FormHelperTextProps: {
             sx: {
                 ml: 'auto',
-                color: (theme: Theme) =>
-                    isOverTheLimit
-                        ? theme.palette.error.main
-                        : theme.palette.text.secondary,
+                color: (theme: Theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
             },
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
         ...(sx && { sx }),
         ...textFieldFormProps,
     };
-    return (
-        <TextInput
-            name={name}
-            label={label}
-            formProps={formProps}
-            {...otherTexFieldProps}
-        />
-    );
+    return <TextInput name={name} label={label} formProps={formProps} {...otherTexFieldProps} />;
 }
 
 export default ExpandingTextField;

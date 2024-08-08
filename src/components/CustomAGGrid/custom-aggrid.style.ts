@@ -16,8 +16,7 @@ export const styles = {
         position: 'relative',
 
         [`&.${CUSTOM_AGGRID_THEME}`]: {
-            '--ag-value-change-value-highlight-background-color':
-                theme.aggrid.valueChangeHighlightBackgroundColor,
+            '--ag-value-change-value-highlight-background-color': theme.aggrid.valueChangeHighlightBackgroundColor,
             '--ag-selected-row-background-color': theme.aggrid.highlightColor,
             '--ag-row-hover-color': theme.aggrid.highlightColor,
         },

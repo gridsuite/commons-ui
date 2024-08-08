@@ -26,8 +26,7 @@ const styles = {
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
-            paddingRight:
-                theme.direction === 'rtl' ? '0 !important' : undefined,
+            paddingRight: theme.direction === 'rtl' ? '0 !important' : undefined,
         },
     }),
     header: { variant: 'header' },
@@ -39,17 +38,10 @@ export interface LogTableProps {
     logs: LogReportItem[];
     onRowClick: (data: any) => void;
     selectedSeverity: Record<string, boolean>;
-    setSelectedSeverity: (
-        func: (items: Record<string, boolean>) => Record<string, boolean>
-    ) => void;
+    setSelectedSeverity: (func: (items: Record<string, boolean>) => Record<string, boolean>) => void;
 }
 
-function LogTable({
-    logs,
-    onRowClick,
-    selectedSeverity,
-    setSelectedSeverity,
-}: LogTableProps) {
+function LogTable({ logs, onRowClick, selectedSeverity, setSelectedSeverity }: LogTableProps) {
     const intl = useIntl();
 
     const theme = useTheme();
@@ -75,26 +67,17 @@ function LogTable({
 
     const COLUMNS_DEFINITIONS = [
         {
-            label: intl
-                .formatMessage({ id: 'report_viewer/severity' })
-                .toUpperCase(),
+            label: intl.formatMessage({ id: 'report_viewer/severity' }).toUpperCase(),
             id: 'severity',
             dataKey: 'severity',
             width: SEVERITY_COLUMN_FIXED_WIDTH,
             maxWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             minWidth: SEVERITY_COLUMN_FIXED_WIDTH,
             cellRenderer: severityCellRender,
-            extra: (
-                <FilterButton
-                    selectedItems={selectedSeverity}
-                    setSelectedItems={setSelectedSeverity}
-                />
-            ),
+            extra: <FilterButton selectedItems={selectedSeverity} setSelectedItems={setSelectedSeverity} />,
         },
         {
-            label: intl
-                .formatMessage({ id: 'report_viewer/message' })
-                .toUpperCase(),
+            label: intl.formatMessage({ id: 'report_viewer/message' }).toUpperCase(),
             id: 'message',
             dataKey: 'message',
             width: SEVERITY_COLUMN_FIXED_WIDTH,
@@ -142,10 +125,7 @@ function LogTable({
     const filter = useCallback(
         (row: { severity: any }) => {
             return (
-                row.severity &&
-                Object.entries(selectedSeverity).some(
-                    ([key, value]) => key === row.severity && value
-                )
+                row.severity && Object.entries(selectedSeverity).some(([key, value]) => key === row.severity && value)
             );
         },
         [selectedSeverity]

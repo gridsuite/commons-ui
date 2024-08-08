@@ -9,10 +9,7 @@
 //    https://reactjs.org/docs/error-boundaries.html
 //    https://mui.com/material-ui/react-card/#complex-interaction
 
-import {
-    ExpandMore as ExpandMoreIcon,
-    Replay as ReplayIcon,
-} from '@mui/icons-material';
+import { ExpandMore as ExpandMoreIcon, Replay as ReplayIcon } from '@mui/icons-material';
 import {
     Box,
     Card,
@@ -59,10 +56,7 @@ type CardErrorBoundaryStateSuccess = {
     hasError: false;
 };
 
-type CardErrorBoundaryState = (
-    | CardErrorBoundaryStateError
-    | CardErrorBoundaryStateSuccess
-) & {
+type CardErrorBoundaryState = (CardErrorBoundaryStateError | CardErrorBoundaryStateSuccess) & {
     expanded: boolean;
 };
 
@@ -126,10 +120,7 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
                             </Typography>
                         </CardContent>
                         <CardActions disableSpacing>
-                            <IconButton
-                                onClick={this.handleReloadClick}
-                                aria-label="reload"
-                            >
+                            <IconButton onClick={this.handleReloadClick} aria-label="reload">
                                 <ReplayIcon />
                             </IconButton>
                             <ExpandMore
@@ -143,18 +134,13 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
                         </CardActions>
                         <Collapse in={expanded}>
                             <CardContent>
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                >
+                                <Typography variant="body2" color="text.secondary">
                                     <FormattedMessage
                                         id="card_error_boundary/expandederrorheader"
                                         defaultMessage="Error message (and see more information in the developper console):"
                                     />
                                 </Typography>
-                                <Typography variant="caption">
-                                    {error.message}
-                                </Typography>
+                                <Typography variant="caption">{error.message}</Typography>
                             </CardContent>
                         </Collapse>
                     </Card>

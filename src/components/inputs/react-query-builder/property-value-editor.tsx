@@ -28,11 +28,9 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
 
-    const { propertyName, propertyOperator, propertyValues } =
-        valueEditorProps?.value ?? {};
+    const { propertyName, propertyOperator, propertyValues } = valueEditorProps?.value ?? {};
 
-    const [equipmentPredefinedProps, setEquipmentType] =
-        usePredefinedProperties(equipmentType);
+    const [equipmentPredefinedProps, setEquipmentType] = usePredefinedProperties(equipmentType);
 
     useEffect(() => {
         setEquipmentType(equipmentType);
@@ -43,8 +41,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     }, [equipmentPredefinedProps]);
 
     const predefinedValues = useMemo(() => {
-        const predefinedForName: string[] =
-            equipmentPredefinedProps?.[propertyName];
+        const predefinedForName: string[] = equipmentPredefinedProps?.[propertyName];
 
         if (!predefinedForName) {
             return [];
@@ -57,8 +54,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
             let updatedValue = {
                 ...valueEditorProps?.value,
                 [FieldConstants.PROPERTY_OPERATOR]:
-                    valueEditorProps?.value?.propertyOperator ??
-                    PROPERTY_VALUE_OPERATORS[0].customName,
+                    valueEditorProps?.value?.propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName,
                 [field]: value,
             };
             // Reset the property values when the property name changes
@@ -82,9 +78,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     freeSolo
                     autoSelect
                     forcePopupIcon
-                    renderInput={(params) => (
-                        <TextField {...params} error={!valid} />
-                    )}
+                    renderInput={(params) => <TextField {...params} error={!valid} />}
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
@@ -92,10 +86,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
             </Grid>
             <Grid item xs={2.5}>
                 <Select
-                    value={
-                        propertyOperator ??
-                        PROPERTY_VALUE_OPERATORS[0].customName
-                    }
+                    value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
                     size="medium"
                     error={!valid}
                     onChange={(event, value: any) => {
@@ -103,10 +94,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     }}
                 >
                     {PROPERTY_VALUE_OPERATORS.map((operator) => (
-                        <MenuItem
-                            key={operator.customName}
-                            value={operator.customName}
-                        >
+                        <MenuItem key={operator.customName} value={operator.customName}>
                             {intl.formatMessage({ id: operator.label })}
                         </MenuItem>
                     ))}
@@ -117,9 +105,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     value={propertyValues ?? []}
                     options={predefinedValues ?? []}
                     multiple
-                    renderInput={(params) => (
-                        <TextField {...params} error={!valid} />
-                    )}
+                    renderInput={(params) => <TextField {...params} error={!valid} />}
                     freeSolo
                     autoSelect
                     onChange={(event, value: any) => {

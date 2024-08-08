@@ -6,24 +6,12 @@
  */
 
 import { ReactElement } from 'react';
-import {
-    IconButton,
-    InputAdornment,
-    TextField,
-    TextFieldProps,
-} from '@mui/material';
+import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
-import TextFieldWithAdornment, {
-    TextFieldWithAdornmentProps,
-} from './utils/text-field-with-adornment';
+import TextFieldWithAdornment, { TextFieldWithAdornmentProps } from './utils/text-field-with-adornment';
 import FieldLabel from './utils/field-label';
-import {
-    genHelperError,
-    genHelperPreviousValue,
-    identity,
-    isFieldRequired,
-} from './utils/functions';
+import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from './utils/functions';
 import useCustomFormContext from './provider/use-custom-form-context';
 
 import { Input } from '../../../utils/types';
@@ -63,8 +51,7 @@ function TextInput({
     clearable,
     formProps,
 }: TextInputProps) {
-    const { validationSchema, getValues, removeOptional } =
-        useCustomFormContext();
+    const { validationSchema, getValues, removeOptional } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -94,9 +81,7 @@ function TextInput({
               label,
               values: labelValues,
               optional:
-                  !isFieldRequired(name, validationSchema, getValues()) &&
-                  !formProps?.disabled &&
-                  !removeOptional,
+                  !isFieldRequired(name, validationSchema, getValues()) && !formProps?.disabled && !removeOptional,
           });
 
     return (
@@ -111,13 +96,11 @@ function TextInput({
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
-                        {clearable &&
-                            transformedValue !== undefined &&
-                            transformedValue !== '' && (
-                                <IconButton onClick={handleClearValue}>
-                                    <ClearIcon />
-                                </IconButton>
-                            )}
+                        {clearable && transformedValue !== undefined && transformedValue !== '' && (
+                            <IconButton onClick={handleClearValue}>
+                                <ClearIcon />
+                            </IconButton>
+                        )}
                         {customAdornment && { ...customAdornment }}
                     </InputAdornment>
                 ),

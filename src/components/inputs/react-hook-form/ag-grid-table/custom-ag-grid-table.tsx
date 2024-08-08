@@ -12,11 +12,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Grid, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
-import {
-    CellEditingStoppedEvent,
-    ColumnState,
-    SortChangedEvent,
-} from 'ag-grid-community';
+import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import BottomRightButtons from './bottom-right-buttons';
 import FieldConstants from '../../../../utils/field-constants';
 
@@ -79,8 +75,7 @@ const style = (customProps: any) => ({
         },
         '& .Mui-focused .MuiOutlinedInput-root': {
             // borders moves row height
-            outline:
-                'var(--ag-borders-input) var(--ag-input-focus-border-color)',
+            outline: 'var(--ag-borders-input) var(--ag-input-focus-border-color)',
             outlineOffset: '-1px',
             backgroundColor: theme.agGridBackground.color,
         },
@@ -132,19 +127,12 @@ function CustomAgGridTable({
     const rowData = watch(name);
 
     const isFirstSelected = Boolean(
-        rowData?.length &&
-            gridApi?.api
-                .getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])
-                ?.isSelected()
+        rowData?.length && gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
     );
 
     const isLastSelected = Boolean(
         rowData?.length &&
-            gridApi?.api
-                .getRowNode(
-                    rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID]
-                )
-                ?.isSelected()
+            gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
     );
 
     const noRowSelected = selectedRows.length === 0;
@@ -152,9 +140,7 @@ function CustomAgGridTable({
     const getIndex = useCallback(
         (val: any) => {
             return getValues(name).findIndex(
-                (row: any) =>
-                    row[FieldConstants.AG_GRID_ROW_UUID] ===
-                    val[FieldConstants.AG_GRID_ROW_UUID]
+                (row: any) => row[FieldConstants.AG_GRID_ROW_UUID] === val[FieldConstants.AG_GRID_ROW_UUID]
             );
         },
         [getValues, name]
@@ -244,20 +230,13 @@ function CustomAgGridTable({
     );
 
     const onSortChanged = useCallback((event: SortChangedEvent) => {
-        const isAnycolumnhasSort = event.api
-            .getColumnState()
-            .some((col: ColumnState) => col.sort);
+        const isAnycolumnhasSort = event.api.getColumnState().some((col: ColumnState) => col.sort);
         setIsSortApplied(isAnycolumnhasSort);
     }, []);
 
     return (
         <Grid container spacing={2}>
-            <Grid
-                item
-                xs={12}
-                className={theme.aggrid.theme}
-                sx={style(cssProps).grid}
-            >
+            <Grid item xs={12} className={theme.aggrid.theme} sx={style(cssProps).grid}>
                 <AgGridReact
                     rowData={rowData}
                     onGridReady={onGridReady}
@@ -267,30 +246,22 @@ function CustomAgGridTable({
                     domLayout="autoHeight"
                     rowDragEntireRow
                     rowDragManaged
-                    onRowDragEnd={(e) =>
-                        move(getIndex(e.node.data), e.overIndex)
-                    }
+                    onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
                     suppressBrowserResizeObserver
                     columnDefs={columnDefs}
                     detailRowAutoHeight
                     onSelectionChanged={() => {
                         setSelectedRows(gridApi.api.getSelectedRows());
                     }}
-                    onRowDataUpdated={
-                        newRowAdded ? onRowDataUpdated : undefined
-                    }
+                    onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
                     onCellEditingStopped={onCellEditingStopped}
                     onSortChanged={onSortChanged}
-                    getRowId={(row) =>
-                        row.data[FieldConstants.AG_GRID_ROW_UUID]
-                    }
+                    getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}
                     suppressRowClickSelection={suppressRowClickSelection}
                     alwaysShowVerticalScroll={alwaysShowVerticalScroll}
-                    stopEditingWhenCellsLoseFocus={
-                        stopEditingWhenCellsLoseFocus
-                    }
+                    stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     {...props}
                 />
             </Grid>

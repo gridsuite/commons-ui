@@ -17,8 +17,7 @@ import FieldConstants from '../../../utils/field-constants';
 
 const style = {
     inputLegend: (theme: any) => ({
-        backgroundImage:
-            'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
+        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
         backgroundColor: theme.palette.background.paper,
         padding: '0 8px 0 8px',
     }),
@@ -46,22 +45,16 @@ export const getRangeInputSchema = (name: string) => ({
     [name]: yup.object().shape(
         {
             [FieldConstants.OPERATION_TYPE]: yup.string(),
-            [FieldConstants.VALUE_1]: yup
-                .number()
-                .when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
-                    is: (operationType: string, value2: unknown) =>
-                        operationType === RangeType.RANGE.id && value2 !== null,
-                    then: (schema) => schema.required(),
-                    otherwise: (schema) => schema.nullable(),
-                }),
-            [FieldConstants.VALUE_2]: yup
-                .number()
-                .when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
-                    is: (operationType: string, value1: unknown) =>
-                        operationType === RangeType.RANGE.id && value1 !== null,
-                    then: (schema) => schema.required(),
-                    otherwise: (schema) => schema.nullable(),
-                }),
+            [FieldConstants.VALUE_1]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
+                is: (operationType: string, value2: unknown) => operationType === RangeType.RANGE.id && value2 !== null,
+                then: (schema) => schema.required(),
+                otherwise: (schema) => schema.nullable(),
+            }),
+            [FieldConstants.VALUE_2]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
+                is: (operationType: string, value1: unknown) => operationType === RangeType.RANGE.id && value1 !== null,
+                then: (schema) => schema.required(),
+                otherwise: (schema) => schema.nullable(),
+            }),
         },
         [[FieldConstants.VALUE_1, FieldConstants.VALUE_2]]
     ),
@@ -77,10 +70,7 @@ function RangeInput({ name, label }: RangeInputProps) {
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });
 
-    const isOperationTypeRange = useMemo(
-        () => watchOperationType === RangeType.RANGE.id,
-        [watchOperationType]
-    );
+    const isOperationTypeRange = useMemo(() => watchOperationType === RangeType.RANGE.id, [watchOperationType]);
 
     const firstValueField = (
         <FloatInput

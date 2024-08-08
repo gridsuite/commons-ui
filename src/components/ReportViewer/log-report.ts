@@ -27,10 +27,7 @@ export default class LogReport {
     constructor(jsonReporter: Report, parentReportId?: string) {
         this.id = uuid4();
         this.key = jsonReporter.taskKey;
-        this.title = LogReportItem.resolveTemplateMessage(
-            jsonReporter.defaultName,
-            jsonReporter.taskValues
-        );
+        this.title = LogReportItem.resolveTemplateMessage(jsonReporter.defaultName, jsonReporter.taskValues);
         this.subReports = [];
         this.logs = [];
         this.parentReportId = parentReportId;
@@ -54,23 +51,16 @@ export default class LogReport {
     }
 
     getAllLogs(): LogReportItem[] {
-        return this.getLogs().concat(
-            this.getSubReports().flatMap((r) => r.getAllLogs())
-        );
+        return this.getLogs().concat(this.getSubReports().flatMap((r) => r.getAllLogs()));
     }
 
     init(jsonReporter: Report) {
-        jsonReporter.subReporters.map((value) =>
-            this.subReports.push(new LogReport(value, this.id))
-        );
-        jsonReporter.reports.map((value) =>
-            this.logs.push(new LogReportItem(value, this.id))
-        );
+        jsonReporter.subReporters.map((value) => this.subReports.push(new LogReport(value, this.id)));
+        jsonReporter.reports.map((value) => this.logs.push(new LogReportItem(value, this.id)));
     }
 
     getHighestSeverity(currentSeverity = LogSeverities.UNKNOWN): LogSeverity {
-        const reduceFct = (p: LogSeverity, c: LogSeverity) =>
-            p.level < c.level ? c : p;
+        const reduceFct = (p: LogSeverity, c: LogSeverity) => (p.level < c.level ? c : p);
 
         const highestSeverity = this.getLogs()
             .map((r) => r.getSeverity())

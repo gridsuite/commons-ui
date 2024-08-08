@@ -33,16 +33,12 @@ interface FilterFreePropertiesProps {
     predefined: PredefinedProperties;
 }
 
-function FilterFreeProperties({
-    freePropertiesType,
-    predefined,
-}: FilterFreePropertiesProps) {
+function FilterFreeProperties({ freePropertiesType, predefined }: FilterFreePropertiesProps) {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
     const isForLineOrHvdcLineSubstation =
-        (watchEquipmentType === Line.type ||
-            watchEquipmentType === Hvdc.type) &&
+        (watchEquipmentType === Line.type || watchEquipmentType === Hvdc.type) &&
         freePropertiesType === FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES;
 
     const fieldName = `${FieldConstants.CRITERIA_BASED}.${freePropertiesType}`;
@@ -75,17 +71,13 @@ function FilterFreeProperties({
         : [{ name: PROPERTY_VALUES, label: 'PropertyValues' }];
 
     const title = useMemo<string>(() => {
-        return freePropertiesType === FreePropertiesTypes.FREE_FILTER_PROPERTIES
-            ? 'FreeProps'
-            : 'SubstationFreeProps';
+        return freePropertiesType === FreePropertiesTypes.FREE_FILTER_PROPERTIES ? 'FreeProps' : 'SubstationFreeProps';
     }, [freePropertiesType]);
 
     return (
         <>
             <Grid item xs={12}>
-                <FormattedMessage id={title}>
-                    {(formattedTitle) => <h4>{formattedTitle}</h4>}
-                </FormattedMessage>
+                <FormattedMessage id={title}>{(formattedTitle) => <h4>{formattedTitle}</h4>}</FormattedMessage>
             </Grid>
             {filterProperties.map((prop, index) => (
                 <ListItem key={prop.id}>

@@ -5,14 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Chip,
-    FormControl,
-    Grid,
-    IconButton,
-    Theme,
-    Tooltip,
-} from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, Theme, Tooltip } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import { useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
@@ -94,8 +87,7 @@ function DirectoryItemsInput({
     const [expanded, setExpanded] = useState<UUID[]>([]);
     const [multiSelect, setMultiSelect] = useState(true);
     const types = useMemo(() => [elementType], [elementType]);
-    const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] =
-        useState(false);
+    const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
     const {
         fields: elements,
         append,
@@ -121,22 +113,14 @@ function DirectoryItemsInput({
             // if we select a chip and return a new values, we remove it to be replaced
             if (selected?.length > 0 && values?.length > 0) {
                 selected.forEach((chip) => {
-                    remove(
-                        getValues(name).findIndex(
-                            (item: any) => item.id === chip
-                        )
-                    );
+                    remove(getValues(name).findIndex((item: any) => item.id === chip));
                 });
             }
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
                 // Check if the element is already present
-                if (
-                    getValues(name).find(
-                        (v: any) => v?.id === otherElementAttributes.id
-                    ) !== undefined
-                ) {
+                if (getValues(name).find((v: any) => v?.id === otherElementAttributes.id) !== undefined) {
                     snackError({
                         messageTxt: '',
                         headerId: 'directory_items_input/ElementAlreadyUsed',
@@ -150,16 +134,7 @@ function DirectoryItemsInput({
             setDirectoryItemSelectorOpen(false);
             setSelected([]);
         },
-        [
-            append,
-            getValues,
-            snackError,
-            name,
-            onRowChanged,
-            onChange,
-            selected,
-            remove,
-        ]
+        [append, getValues, snackError, name, onRowChanged, onChange, selected, remove]
     );
 
     const removeElements = useCallback(
@@ -177,9 +152,7 @@ function DirectoryItemsInput({
             const chip = chips.at(index)?.id;
             if (chip) {
                 fetchDirectoryElementPath(chip).then((response: any[]) => {
-                    const path = response
-                        .filter((e) => e.elementUuid !== chip)
-                        .map((e) => e.elementUuid);
+                    const path = response.filter((e) => e.elementUuid !== chip).map((e) => e.elementUuid);
 
                     setExpanded(path);
                     setSelected([chip]);
@@ -204,14 +177,7 @@ function DirectoryItemsInput({
                 {elements?.length === 0 && label && (
                     <FieldLabel
                         label={label}
-                        optional={
-                            labelRequiredFromContext &&
-                            !isFieldRequired(
-                                name,
-                                validationSchema,
-                                getValues()
-                            )
-                        }
+                        optional={labelRequiredFromContext && !isFieldRequired(name, validationSchema, getValues())}
                     />
                 )}
                 {elements?.length > 0 && (
@@ -224,11 +190,7 @@ function DirectoryItemsInput({
                                 onClick={() => handleChipClick(index)}
                                 label={
                                     <OverflowableText
-                                        text={
-                                            <RawReadOnlyInput
-                                                name={`${name}.${index}.${NAME}`}
-                                            />
-                                        }
+                                        text={<RawReadOnlyInput name={`${name}.${index}.${NAME}`} />}
                                         sx={{ width: '100%' }}
                                     />
                                 }
@@ -256,9 +218,7 @@ function DirectoryItemsInput({
                     </Grid>
                 </Grid>
             </FormControl>
-            {!hideErrorMessage && (
-                <ErrorInput name={name} InputField={MidFormError} />
-            )}
+            {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}
             <DirectoryItemSelector
                 open={directoryItemSelectorOpen}
                 onClose={addElements}

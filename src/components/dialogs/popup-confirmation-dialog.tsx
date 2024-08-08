@@ -30,13 +30,8 @@ function PopupConfirmationDialog({
     handlePopupConfirmation,
 }: PopupConfirmationDialogProps) {
     return (
-        <Dialog
-            open={openConfirmationPopup}
-            aria-labelledby="dialog-title-change-equipment-type"
-        >
-            <DialogTitle id="dialog-title-change-equipment-type">
-                Confirmation
-            </DialogTitle>
+        <Dialog open={openConfirmationPopup} aria-labelledby="dialog-title-change-equipment-type">
+            <DialogTitle id="dialog-title-change-equipment-type">Confirmation</DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     <FormattedMessage id={message} />

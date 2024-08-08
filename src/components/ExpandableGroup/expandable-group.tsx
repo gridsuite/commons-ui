@@ -4,13 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Theme,
-    Typography,
-} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from '@mui/material';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
@@ -69,9 +63,7 @@ function ExpandableGroup({ renderHeader, children }: ExpandableGroupProps) {
                     renderHeader
                 )}
             </AccordionSummary>
-            <AccordionDetails sx={styles.accordionDetails}>
-                {children}
-            </AccordionDetails>
+            <AccordionDetails sx={styles.accordionDetails}>{children}</AccordionDetails>
         </Accordion>
     );
 }

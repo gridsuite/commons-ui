@@ -6,17 +6,8 @@
  */
 
 import { useState } from 'react';
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from '@mui/material';
-import {
-    Fullscreen as FullscreenIcon,
-    FullscreenExit as FullscreenExitIcon,
-} from '@mui/icons-material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Fullscreen as FullscreenIcon, FullscreenExit as FullscreenExitIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import ReportViewer from '../ReportViewer';
 import { Report } from '../ReportViewer/report.type';
@@ -68,15 +59,9 @@ export default function ReportViewerDialog(props: ReportViewerDialogProps) {
             </DialogContent>
             <DialogActions>
                 {fullScreen ? (
-                    <FullscreenExitIcon
-                        onClick={hideFullScreen}
-                        sx={styles.fullScreenIcon}
-                    />
+                    <FullscreenExitIcon onClick={hideFullScreen} sx={styles.fullScreenIcon} />
                 ) : (
-                    <FullscreenIcon
-                        onClick={showFullScreen}
-                        sx={styles.fullScreenIcon}
-                    />
+                    <FullscreenIcon onClick={showFullScreen} sx={styles.fullScreenIcon} />
                 )}
                 <Button onClick={() => onClose()} variant="text">
                     <FormattedMessage id="report_viewer/close" />

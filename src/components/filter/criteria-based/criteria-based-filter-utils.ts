@@ -6,12 +6,7 @@
  */
 
 import FieldConstants from '../../../utils/field-constants';
-import {
-    PROPERTY_NAME,
-    PROPERTY_VALUES,
-    PROPERTY_VALUES_1,
-    PROPERTY_VALUES_2,
-} from './filter-property';
+import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './filter-property';
 import { FilterType } from '../constants/filter-constants';
 import { PredefinedProperties } from '../../../utils/types';
 import yup from '../../../utils/yup-config';
@@ -34,36 +29,26 @@ export const getCriteriaBasedSchema = (extraFields: any) => ({
         ...extraFields,
     }),
 });
-export const getCriteriaBasedFormData = (
-    criteriaValues: any,
-    extraFields: any
-) => ({
+export const getCriteriaBasedFormData = (criteriaValues: any, extraFields: any) => ({
     [FieldConstants.CRITERIA_BASED]: {
-        [FieldConstants.COUNTRIES]:
-            criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
-        [FieldConstants.COUNTRIES_1]:
-            criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
-        [FieldConstants.COUNTRIES_2]:
-            criteriaValues?.[FieldConstants.COUNTRIES_2] ?? [],
+        [FieldConstants.COUNTRIES]: criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
+        [FieldConstants.COUNTRIES_1]: criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
+        [FieldConstants.COUNTRIES_2]: criteriaValues?.[FieldConstants.COUNTRIES_2] ?? [],
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE] ??
-                DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE] ?? DEFAULT_RANGE_VALUE
         ),
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE_1,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_1] ??
-                DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_1] ?? DEFAULT_RANGE_VALUE
         ),
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE_2,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_2] ??
-                DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_2] ?? DEFAULT_RANGE_VALUE
         ),
         ...getRangeInputDataForm(
             FieldConstants.NOMINAL_VOLTAGE_3,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_3] ??
-                DEFAULT_RANGE_VALUE
+            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_3] ?? DEFAULT_RANGE_VALUE
         ),
         ...extraFields,
     },
@@ -127,55 +112,33 @@ export const backToFrontTweak = (response: any) => {
     });
 
     const ret = {
-        [FieldConstants.EQUIPMENT_TYPE]:
-            response[FieldConstants.EQUIPMENT_TYPE],
+        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
         ...getCriteriaBasedFormData(response.equipmentFilterForm, {
-            [FieldConstants.ENERGY_SOURCE]:
-                response.equipmentFilterForm[FieldConstants.ENERGY_SOURCE],
-            [FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES]:
-                filterSubstationProperties,
+            [FieldConstants.ENERGY_SOURCE]: response.equipmentFilterForm[FieldConstants.ENERGY_SOURCE],
+            [FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES]: filterSubstationProperties,
             [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: filterFreeProperties,
         }),
     };
     return ret;
 };
 
-function isNominalVoltageEmpty(
-    nominalVoltage: Record<string, unknown>
-): boolean {
-    return (
-        nominalVoltage[FieldConstants.VALUE_1] === null &&
-        nominalVoltage[FieldConstants.VALUE_2] === null
-    );
+function isNominalVoltageEmpty(nominalVoltage: Record<string, unknown>): boolean {
+    return nominalVoltage[FieldConstants.VALUE_1] === null && nominalVoltage[FieldConstants.VALUE_2] === null;
 }
 
 // The server expect them to be null if the user don't fill them, unlike contingency list
 function cleanNominalVoltages(formValues: any) {
     const cleanedFormValues = { ...formValues };
-    if (
-        isNominalVoltageEmpty(cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE])
-    ) {
+    if (isNominalVoltageEmpty(cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE])) {
         cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE] = null;
     }
-    if (
-        isNominalVoltageEmpty(
-            cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_1]
-        )
-    ) {
+    if (isNominalVoltageEmpty(cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_1])) {
         cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_1] = null;
     }
-    if (
-        isNominalVoltageEmpty(
-            cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_2]
-        )
-    ) {
+    if (isNominalVoltageEmpty(cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_2])) {
         cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_2] = null;
     }
-    if (
-        isNominalVoltageEmpty(
-            cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_3]
-        )
-    ) {
+    if (isNominalVoltageEmpty(cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_3])) {
         cleanedFormValues[FieldConstants.NOMINAL_VOLTAGE_3] = null;
     }
     return cleanedFormValues;
@@ -194,9 +157,7 @@ function cleanNominalVoltages(formValues: any) {
  */
 export const frontToBackTweak = (id?: string, filter?: any) => {
     const filterSubstationProperties =
-        filter[FieldConstants.CRITERIA_BASED][
-            FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES
-        ];
+        filter[FieldConstants.CRITERIA_BASED][FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES];
     const ret = {
         id,
         type: FilterType.CRITERIA_BASED.id,
@@ -230,10 +191,7 @@ export const frontToBackTweak = (id?: string, filter?: any) => {
     eff.freeProperties1 = props1;
     eff.freeProperties2 = props2;
 
-    const filterFreeProperties =
-        filter[FieldConstants.CRITERIA_BASED][
-            FreePropertiesTypes.FREE_FILTER_PROPERTIES
-        ];
+    const filterFreeProperties = filter[FieldConstants.CRITERIA_BASED][FreePropertiesTypes.FREE_FILTER_PROPERTIES];
     // in the back end we store everything in a field called equipmentFilterForm
     delete eff[FreePropertiesTypes.FREE_FILTER_PROPERTIES];
     const freeProps: any = {};

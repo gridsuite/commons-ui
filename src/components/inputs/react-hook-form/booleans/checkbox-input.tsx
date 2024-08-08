@@ -15,14 +15,7 @@ export interface CheckboxInputProps {
 }
 
 function CheckboxInput({ name, label, formProps }: CheckboxInputProps) {
-    return (
-        <BooleanInput
-            name={name}
-            label={label}
-            formProps={formProps}
-            Input={Checkbox}
-        />
-    );
+    return <BooleanInput name={name} label={label} formProps={formProps} Input={Checkbox} />;
 }
 
 export default CheckboxInput;

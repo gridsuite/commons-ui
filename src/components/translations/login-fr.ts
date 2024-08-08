@@ -9,15 +9,12 @@ const loginFr = {
     'login/login': 'Se connecter',
     'login/connection': 'Connexion',
     'login/unauthorizedAccess': 'Accès non autorisé',
-    'login/unauthorizedAccessMessage':
-        "L'utilisateur {userName} n'a pas encore accès à GridSuite",
-    'login/errorInUserValidation':
-        "Erreur lors de la validation de l'utilisateur",
+    'login/unauthorizedAccessMessage': "L'utilisateur {userName} n'a pas encore accès à GridSuite",
+    'login/errorInUserValidation': "Erreur lors de la validation de l'utilisateur",
     'login/errorInUserValidationMessage':
         "Une erreur s'est produite pendant la validation de l'utilisateur {userName}.",
     'login/errorInLogout': "Erreur lors de la déconnexion de l'utilisateur",
-    'login/errorInLogoutMessage':
-        "Une erreur s'est produite pendant la déconnexion de l'utilisateur {userName}.",
+    'login/errorInLogoutMessage': "Une erreur s'est produite pendant la déconnexion de l'utilisateur {userName}.",
     'login/logout': 'Se déconnecter',
 };
 

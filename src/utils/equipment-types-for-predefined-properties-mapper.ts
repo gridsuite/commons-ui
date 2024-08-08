@@ -6,9 +6,7 @@
  */
 import { EquipmentType } from './types';
 
-const mapEquipmentTypeForPredefinedProperties = (
-    type: EquipmentType
-): string | undefined => {
+const mapEquipmentTypeForPredefinedProperties = (type: EquipmentType): string | undefined => {
     switch (type) {
         case 'SUBSTATION':
             return 'substation';
