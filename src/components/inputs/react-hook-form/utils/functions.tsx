@@ -9,15 +9,11 @@ import { SchemaDescription, getIn } from 'yup';
 import { ReactElement } from 'react';
 import { Grid } from '@mui/material';
 
-export function genHelperPreviousValue(
-    previousValue: number | string,
-    adornment?: any
-) {
+export function genHelperPreviousValue(previousValue: number | string, adornment?: any) {
     return {
         ...((previousValue || previousValue === 0) && {
             error: false,
-            helperText:
-                previousValue + (adornment ? ` ${adornment?.text}` : ''),
+            helperText: previousValue + (adornment ? ` ${adornment?.text}` : ''),
         }),
     };
 }
@@ -37,17 +33,9 @@ export function identity(x: any) {
     return x;
 }
 
-export const isFieldRequired = (
-    fieldName: string,
-    schema: any,
-    values: unknown
-) => {
-    const { schema: fieldSchema, parent: parentValues } =
-        getIn(schema, fieldName, values) || {};
-    return (
-        (fieldSchema.describe({ parent: parentValues }) as SchemaDescription)
-            ?.optional === false
-    );
+export const isFieldRequired = (fieldName: string, schema: any, values: unknown) => {
+    const { schema: fieldSchema, parent: parentValues } = getIn(schema, fieldName, values) || {};
+    return (fieldSchema.describe({ parent: parentValues }) as SchemaDescription)?.optional === false;
 
     // static way, not working when using "when" in schema, but does not need form values
     // return yup.reach(schema, fieldName)?.exclusiveTests?.required === true;

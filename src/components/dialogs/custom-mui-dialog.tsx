@@ -8,20 +8,11 @@
 import React from 'react';
 import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    LinearProgress,
-} from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import * as yup from 'yup';
 import SubmitButton from '../inputs/react-hook-form/utils/submit-button';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
-import CustomFormProvider, {
-    MergedFormContextProps,
-} from '../inputs/react-hook-form/provider/custom-form-provider';
+import CustomFormProvider, { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
 
 interface ICustomMuiDialog {
     open: boolean;
@@ -94,12 +85,7 @@ function CustomMuiDialog({
             removeOptional={removeOptional}
             language={language}
         >
-            <Dialog
-                sx={styles.dialogPaper}
-                open={open}
-                onClose={handleClose}
-                fullWidth
-            >
+            <Dialog sx={styles.dialogPaper} open={open} onClose={handleClose} fullWidth>
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle>
                     <Grid item xs={11}>
@@ -112,10 +98,7 @@ function CustomMuiDialog({
                     <SubmitButton
                         variant="outlined"
                         disabled={disabledSave}
-                        onClick={handleSubmit(
-                            handleValidate,
-                            handleValidationError
-                        )}
+                        onClick={handleSubmit(handleValidate, handleValidationError)}
                     />
                 </DialogActions>
             </Dialog>

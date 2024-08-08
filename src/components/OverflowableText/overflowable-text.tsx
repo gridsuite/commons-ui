@@ -4,14 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    ReactElement,
-    useCallback,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import { ReactElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, BoxProps, SxProps, Theme, Tooltip, styled } from '@mui/material';
 import { Style } from 'node:util';
 
@@ -57,10 +50,7 @@ export const OverflowableText = styled(
     }: OverflowableTextProps) => {
         const element = useRef<HTMLHeadingElement>();
 
-        const isMultiLine = useMemo(
-            () => maxLineCount && maxLineCount > 1,
-            [maxLineCount]
-        );
+        const isMultiLine = useMemo(() => maxLineCount && maxLineCount > 1, [maxLineCount]);
 
         const [overflowed, setOverflowed] = useState(false);
 
@@ -70,13 +60,9 @@ export const OverflowableText = styled(
             }
 
             if (isMultiLine) {
-                setOverflowed(
-                    element.current.scrollHeight > element.current.clientHeight
-                );
+                setOverflowed(element.current.scrollHeight > element.current.clientHeight);
             } else {
-                setOverflowed(
-                    element.current.scrollWidth > element.current.clientWidth
-                );
+                setOverflowed(element.current.scrollWidth > element.current.clientWidth);
             }
         }, [isMultiLine, setOverflowed, element]);
 
@@ -114,11 +100,7 @@ export const OverflowableText = styled(
                     {...props}
                     ref={element}
                     className={className}
-                    sx={
-                        isMultiLine
-                            ? multilineOverflowStyle(maxLineCount)
-                            : overflowStyle.overflow
-                    }
+                    sx={isMultiLine ? multilineOverflowStyle(maxLineCount) : overflowStyle.overflow}
                 >
                     {children || text}
                 </Box>

@@ -152,12 +152,8 @@ const searchEquipments = (searchTerm, equipmentLabelling) => {
     if (searchTerm) {
         return getEquipmentsInfosForSearchBar(
             equipmentLabelling
-                ? EQUIPMENTS.filter((equipment) =>
-                      (equipment.name || equipment.id).includes(searchTerm)
-                  )
-                : EQUIPMENTS.filter((equipment) =>
-                      equipment.id.includes(searchTerm)
-                  ),
+                ? EQUIPMENTS.filter((equipment) => (equipment.name || equipment.id).includes(searchTerm))
+                : EQUIPMENTS.filter((equipment) => equipment.id.includes(searchTerm)),
             equipmentLabelling ? (e) => e.name || e.id : (e) => e.id
         );
     }

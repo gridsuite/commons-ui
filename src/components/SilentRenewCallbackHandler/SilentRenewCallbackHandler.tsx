@@ -13,10 +13,7 @@ export interface SilentRenewCallbackHandlerProps {
     handleSilentRenewCallback: () => void;
 }
 
-function SilentRenewCallbackHandler({
-    userManager,
-    handleSilentRenewCallback,
-}: SilentRenewCallbackHandlerProps) {
+function SilentRenewCallbackHandler({ userManager, handleSilentRenewCallback }: SilentRenewCallbackHandlerProps) {
     useEffect(() => {
         if (userManager !== null) {
             handleSilentRenewCallback();

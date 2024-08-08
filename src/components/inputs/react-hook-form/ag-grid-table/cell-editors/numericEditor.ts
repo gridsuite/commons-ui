@@ -44,10 +44,7 @@ class NumericEditor implements ICellEditorComp {
                 if (event.preventDefault) {
                     event.preventDefault();
                 }
-            } else if (
-                NumericEditor.isNavigationKey(event) ||
-                NumericEditor.isBackspace(event)
-            ) {
+            } else if (NumericEditor.isNavigationKey(event) || NumericEditor.isBackspace(event)) {
                 event.stopPropagation();
             }
         });
@@ -55,9 +52,7 @@ class NumericEditor implements ICellEditorComp {
         // only start edit if key pressed is a number, not a letter
         // FM : I added ',' and '.'
         const isNotANumber =
-            params.eventKey &&
-            params.eventKey.length === 1 &&
-            '1234567890,.'.indexOf(params.eventKey) < 0;
+            params.eventKey && params.eventKey.length === 1 && '1234567890,.'.indexOf(params.eventKey) < 0;
         this.cancelBeforeStart = !!isNotANumber;
     }
 

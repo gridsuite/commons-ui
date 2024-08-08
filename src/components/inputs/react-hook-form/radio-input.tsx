@@ -5,14 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Radio,
-    RadioGroup,
-    RadioGroupProps,
-} from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, RadioGroupProps } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 import FieldLabel from './utils/field-label';
@@ -42,13 +35,7 @@ function RadioInput({ name, label, id, options, formProps }: RadioInputProps) {
                     <FormattedMessage id={label} />
                 </FormLabel>
             )}
-            <RadioGroup
-                row
-                aria-labelledby={id ?? label}
-                value={value}
-                onChange={onChange}
-                {...formProps}
-            >
+            <RadioGroup row aria-labelledby={id ?? label} value={value} onChange={onChange} {...formProps}>
                 {options.map((option) => (
                     <FormControlLabel
                         control={<Radio />}
