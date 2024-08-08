@@ -4,11 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    Autocomplete,
-    AutocompleteProps,
-    AutocompleteRenderInputParams,
-} from '@mui/material';
+import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams } from '@mui/material';
 import { HTMLAttributes, ReactNode, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -20,13 +16,7 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
 export interface ElementSearchInputProps<T>
     extends Pick<
         AutocompleteProps<T, false, boolean, true>,
-        | 'sx'
-        | 'size'
-        | 'loadingText'
-        | 'loading'
-        | 'disableClearable'
-        | 'getOptionDisabled'
-        | 'PaperComponent'
+        'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable' | 'getOptionDisabled' | 'PaperComponent'
     > {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
@@ -35,18 +25,13 @@ export interface ElementSearchInputProps<T>
     isOptionEqualToValue: (option1: T, option2: T) => boolean;
     elementsFound: T[];
     renderElement: (props: RenderElementProps<T>) => ReactNode;
-    renderInput: (
-        searchTerm: string,
-        props: AutocompleteRenderInputParams
-    ) => ReactNode;
+    renderInput: (searchTerm: string, props: AutocompleteRenderInputParams) => ReactNode;
     searchTermDisabled?: boolean;
     searchTermDisableReason?: string;
     showResults?: boolean;
 }
 
-export function ElementSearchInput<T>(
-    props: Readonly<ElementSearchInputProps<T>>
-) {
+export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>>) {
     const {
         elementsFound,
         loading,
@@ -99,11 +84,7 @@ export function ElementSearchInput<T>(
             }}
             onChange={(_event, newValue, reason) => {
                 // when calling this method with reason == "selectOption", newValue can't be null or of type "string", since an option has been clicked on
-                if (
-                    newValue != null &&
-                    typeof newValue !== 'string' &&
-                    reason === 'selectOption'
-                ) {
+                if (newValue != null && typeof newValue !== 'string' && reason === 'selectOption') {
                     onSelectionChange(newValue);
                 }
             }}
@@ -121,9 +102,7 @@ export function ElementSearchInput<T>(
                     inputValue,
                 })
             }
-            renderInput={(params: AutocompleteRenderInputParams) =>
-                renderInput(displayedValue, params)
-            }
+            renderInput={(params: AutocompleteRenderInputParams) => renderInput(displayedValue, params)}
             getOptionLabel={(option) => {
                 if (typeof option === 'string') {
                     return option;

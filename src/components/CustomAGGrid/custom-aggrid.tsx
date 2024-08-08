@@ -36,60 +36,52 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     }
 };
 
-const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>(
-    (props, ref) => {
-        const {
-            shouldHidePinnedHeaderRightBorder = false,
-            overlayNoRowsTemplate,
-            loadingOverlayComponent,
-            loadingOverlayComponentParams,
-            showOverlay = false,
-        } = props;
-        const theme = useTheme<Theme>();
-        const intl = useIntl();
+const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
+    const {
+        shouldHidePinnedHeaderRightBorder = false,
+        overlayNoRowsTemplate,
+        loadingOverlayComponent,
+        loadingOverlayComponentParams,
+        showOverlay = false,
+    } = props;
+    const theme = useTheme<Theme>();
+    const intl = useIntl();
 
-        const GRID_PREFIX = 'grid.';
+    const GRID_PREFIX = 'grid.';
 
-        const getLocaleText = useCallback(
-            (params: GetLocaleTextParams) => {
-                const key = GRID_PREFIX + params.key;
-                return intl.formatMessage({
-                    id: key,
-                    defaultMessage: params.defaultValue,
-                });
-            },
-            [intl]
-        );
+    const getLocaleText = useCallback(
+        (params: GetLocaleTextParams) => {
+            const key = GRID_PREFIX + params.key;
+            return intl.formatMessage({
+                id: key,
+                defaultMessage: params.defaultValue,
+            });
+        },
+        [intl]
+    );
 
-        return (
-            <Box
-                sx={mergeSx(
-                    styles.grid as SxProps | undefined,
-                    shouldHidePinnedHeaderRightBorder
-                        ? styles.noBorderRight
-                        : undefined,
-                    showOverlay
-                        ? (styles.overlayBackground as SxProps | undefined)
-                        : undefined
-                )}
-                className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
-            >
-                <AgGridReact
-                    ref={ref}
-                    getLocaleText={getLocaleText}
-                    suppressPropertyNamesCheck
-                    loadingOverlayComponent={loadingOverlayComponent}
-                    loadingOverlayComponentParams={
-                        loadingOverlayComponentParams
-                    }
-                    overlayNoRowsTemplate={overlayNoRowsTemplate}
-                    onColumnResized={onColumnResized}
-                    enableCellTextSelection
-                    {...props}
-                />
-            </Box>
-        );
-    }
-);
+    return (
+        <Box
+            sx={mergeSx(
+                styles.grid as SxProps | undefined,
+                shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined,
+                showOverlay ? (styles.overlayBackground as SxProps | undefined) : undefined
+            )}
+            className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
+        >
+            <AgGridReact
+                ref={ref}
+                getLocaleText={getLocaleText}
+                suppressPropertyNamesCheck
+                loadingOverlayComponent={loadingOverlayComponent}
+                loadingOverlayComponentParams={loadingOverlayComponentParams}
+                overlayNoRowsTemplate={overlayNoRowsTemplate}
+                onColumnResized={onColumnResized}
+                enableCellTextSelection
+                {...props}
+            />
+        </Box>
+    );
+});
 
 export default CustomAGGrid;

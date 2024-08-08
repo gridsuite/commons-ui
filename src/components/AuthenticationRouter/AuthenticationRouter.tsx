@@ -9,11 +9,7 @@ import { useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import SignInCallbackHandler from '../SignInCallbackHandler';
-import {
-    handleSigninCallback,
-    handleSilentRenewCallback,
-    login,
-} from '../../utils/AuthService';
+import { handleSigninCallback, handleSilentRenewCallback, login } from '../../utils/AuthService';
 import SilentRenewCallbackHandler from '../SilentRenewCallbackHandler';
 import Login from '../Login';
 import { AuthenticationRouterProps } from './authenticationType';
@@ -39,16 +35,9 @@ function AuthenticationRouter({
         }
     }, [userManager.instance]);
     return (
-        <Grid
-            container
-            alignContent="center"
-            alignItems="center"
-            direction="column"
-        >
-            {userManager.error && (
-                <h1>Error : Getting userManager; {userManager.error}</h1>
-            )}
-            {signInCallbackError && (
+        <Grid container alignContent="center" alignItems="center" direction="column">
+            {userManager.error !== null && <h1>Error : Getting userManager; {userManager.error}</h1>}
+            {signInCallbackError !== null && (
                 <h1>
                     Error : SignIn Callback Error;
                     {signInCallbackError.message}
@@ -69,9 +58,7 @@ function AuthenticationRouter({
                     element={
                         <SilentRenewCallbackHandler
                             userManager={userManager.instance}
-                            handleSilentRenewCallback={
-                                handleSilentRenewCallbackClosure
-                            }
+                            handleSilentRenewCallback={handleSilentRenewCallbackClosure}
                         />
                     }
                 />
@@ -83,9 +70,7 @@ function AuthenticationRouter({
                         authenticationRouterError == null && (
                             <Login
                                 disabled={userManager.instance === null}
-                                onLoginClick={() =>
-                                    login(location, userManager.instance)
-                                }
+                                onLoginClick={() => login(location, userManager.instance)}
                             />
                         )
                     }

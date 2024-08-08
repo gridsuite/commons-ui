@@ -23,21 +23,12 @@ export interface TagRendererProps {
 }
 
 function TagRenderer({ element, ...props }: TagRendererProps) {
-    if (
-        element.type !== EQUIPMENT_TYPE.SUBSTATION?.name &&
-        element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name
-    ) {
+    if (element.type !== EQUIPMENT_TYPE.SUBSTATION?.name && element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name) {
         return (
             <OverflowableText
                 text={element.voltageLevelLabel}
-                className={clsx(
-                    props.classes?.equipmentTag,
-                    props.classes?.equipmentVlTag
-                )}
-                sx={mergeSx(
-                    props.styles?.equipmentTag,
-                    props.styles?.equipmentVlTag
-                )}
+                className={clsx(props.classes?.equipmentTag, props.classes?.equipmentVlTag)}
+                sx={mergeSx(props.styles?.equipmentTag, props.styles?.equipmentVlTag)}
             />
         );
     }

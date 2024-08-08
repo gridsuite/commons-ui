@@ -13,10 +13,7 @@ function SubmitButton({ ...buttonProps }) {
     const { isDirty } = useFormState();
 
     return (
-        <Button
-            {...buttonProps}
-            disabled={!isDirty || (buttonProps?.disabled ?? false)}
-        >
+        <Button {...buttonProps} disabled={!isDirty || (buttonProps?.disabled ?? false)}>
             <FormattedMessage id="validate" />
         </Button>
     );
