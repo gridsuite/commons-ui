@@ -15,10 +15,7 @@ function UnauthorizedAccessAlert({ userName }: UnauthorizedAccessAlertProps) {
             <AlertTitle>
                 <FormattedMessage id="login/unauthorizedAccess" />
             </AlertTitle>
-            <FormattedMessage
-                id="login/unauthorizedAccessMessage"
-                values={{ userName }}
-            />
+            <FormattedMessage id="login/unauthorizedAccessMessage" values={{ userName }} />
         </Alert>
     );
 }

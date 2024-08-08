@@ -10,11 +10,7 @@ import Logout from '../Login/Logout';
 import ErrorInLogoutAlert from './alert/ErrorInLogoutAlert';
 import ErrorInUserValidationAlert from './alert/ErrorInUserValidationAlert';
 import UnauthorizedAccessAlert from './alert/UnauthorizedAccessAlert';
-import {
-    AuthenticationRouterErrorState,
-    AuthenticationRouterProps,
-    UserManagerState,
-} from './authenticationType';
+import { AuthenticationRouterErrorState, AuthenticationRouterProps, UserManagerState } from './authenticationType';
 import { logout } from '../../utils/AuthService';
 
 type AuthenticationRouterErrorDisplayProps = {
@@ -23,25 +19,15 @@ type AuthenticationRouterErrorDisplayProps = {
     dispatch: AuthenticationRouterProps['dispatch'];
 };
 
-function AuthenticationRouterErrorDisplay({
-    errorState,
-    instance,
-    dispatch,
-}: AuthenticationRouterErrorDisplayProps) {
+function AuthenticationRouterErrorDisplay({ errorState, instance, dispatch }: AuthenticationRouterErrorDisplayProps) {
     return (
         <>
             <Grid item>
-                <Logout
-                    disabled={instance === null}
-                    onLogoutClick={() => logout(dispatch, instance)}
-                />
+                <Logout disabled={instance === null} onLogoutClick={() => logout(dispatch, instance)} />
             </Grid>
             <Grid item xs={4}>
                 {errorState.logoutError && (
-                    <ErrorInLogoutAlert
-                        userName={errorState.userName}
-                        message={errorState.logoutError.error.message}
-                    />
+                    <ErrorInLogoutAlert userName={errorState.userName} message={errorState.logoutError.error.message} />
                 )}
                 {errorState.userValidationError && (
                     <ErrorInUserValidationAlert
@@ -49,9 +35,7 @@ function AuthenticationRouterErrorDisplay({
                         message={errorState.userValidationError.error.message}
                     />
                 )}
-                {errorState.unauthorizedUserInfo && (
-                    <UnauthorizedAccessAlert userName={errorState.userName} />
-                )}
+                {errorState.unauthorizedUserInfo && <UnauthorizedAccessAlert userName={errorState.userName} />}
             </Grid>
         </>
     );

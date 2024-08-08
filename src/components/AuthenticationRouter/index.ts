@@ -7,8 +7,4 @@
 import AuthenticationRouter from './AuthenticationRouter';
 
 export default AuthenticationRouter;
-export type {
-    AuthenticationRouterErrorState,
-    AuthenticationRouterProps,
-    UserManagerState,
-} from './authenticationType';
+export type { AuthenticationRouterErrorState, AuthenticationRouterProps, UserManagerState } from './authenticationType';

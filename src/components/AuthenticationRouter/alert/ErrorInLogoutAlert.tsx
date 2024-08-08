@@ -18,10 +18,7 @@ function ErrorInLogoutAlert({ userName, message }: ErrorInLogoutAlertProps) {
             <AlertTitle>
                 <FormattedMessage id="login/errorInLogout" />
             </AlertTitle>
-            <FormattedMessage
-                id="login/errorInLogoutMessage"
-                values={{ userName }}
-            />
+            <FormattedMessage id="login/errorInLogoutMessage" values={{ userName }} />
             <p>{message}</p>
         </Alert>
     );
