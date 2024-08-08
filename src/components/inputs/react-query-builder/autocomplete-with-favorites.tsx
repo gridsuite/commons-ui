@@ -29,13 +29,7 @@ type AutocompleteWithFavoritesProps = ValueEditorProps & {
  * at the beginning of the selector and separated from the others options
  */
 function AutocompleteWithFavorites(props: AutocompleteWithFavoritesProps) {
-    const {
-        favorites,
-        standardOptions,
-        getOptionLabel,
-        handleOnChange,
-        value,
-    } = props;
+    const { favorites, standardOptions, getOptionLabel, handleOnChange, value } = props;
     const [allOptions, setAllOptions] = useState(standardOptions);
 
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa

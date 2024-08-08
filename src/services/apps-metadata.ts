@@ -72,9 +72,7 @@ export async function fetchStudyMetadata(): Promise<StudyMetadata> {
 
 export async function fetchFavoriteCountries(): Promise<string[]> {
     const studyMetadata = await fetchStudyMetadata();
-    return studyMetadata.favoriteCountries !== undefined
-        ? studyMetadata.favoriteCountries
-        : [];
+    return studyMetadata.favoriteCountries !== undefined ? studyMetadata.favoriteCountries : [];
 }
 
 export const fetchDefaultCountry = async (): Promise<string | undefined> => {
