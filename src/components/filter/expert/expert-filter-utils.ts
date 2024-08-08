@@ -409,7 +409,7 @@ export const queryValidator: QueryValidator = (query) => {
         const dataType = getDataType(rule.field, rule.operator);
 
         const isNumberInput = dataType === DataType.NUMBER && !isValueAnArray;
-        const isStringInput = dataType === DataType.STRING && !isValueAnArray;
+        const isStringInput = (dataType === DataType.STRING || dataType === DataType.ENUM) && !isValueAnArray;
 
         if (
             rule.id &&

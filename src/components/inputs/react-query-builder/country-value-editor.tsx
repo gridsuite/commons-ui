@@ -6,50 +6,51 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
-import { fetchDefaultCountry, fetchFavoriteCountries } from '../../../services';
+import { fetchFavoriteAndDefaultCountries } from '../../../services';
 import AutocompleteWithFavorites from './autocomplete-with-favorites';
+import useConvertValue from './use-convert-value';
+import useValid from './use-valid';
 
 function CountryValueEditor(props: ValueEditorProps) {
-    const { value } = props;
+    const { value, handleOnChange } = props;
+
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
     const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>([]);
-    const [valueInitialised, setValueInitialised] = useState(value);
     const [initialized, setInitialized] = useState<boolean>(false);
 
+    // fetch favorite countries and default country
     useEffect(() => {
-        fetchFavoriteCountries().then((favs: string[]) => {
-            setFavoriteCountryCodes(favs);
-        });
-    }, [setFavoriteCountryCodes]);
-
-    useEffect(() => {
-        if (!valueInitialised) {
-            if (!initialized) {
-                fetchDefaultCountry().then((countryCode) => {
-                    if (countryCode) {
-                        setValueInitialised(countryCode);
-                    }
-                    setInitialized(true);
-                });
-            } else {
-                setValueInitialised(value);
-            }
-        } else {
-            setValueInitialised(value);
+        if (!initialized) {
+            fetchFavoriteAndDefaultCountries().then(({ favoriteCountries, defaultCountry }) => {
+                setFavoriteCountryCodes(favoriteCountries);
+                if (defaultCountry && !value) {
+                    handleOnChange(defaultCountry);
+                }
+                setInitialized(true);
+            });
         }
-    }, [setValueInitialised, initialized, setInitialized, valueInitialised, value]);
+    }, [initialized, setInitialized, handleOnChange, value]);
+
+    // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
+    useConvertValue(props);
+
+    const valid = useValid(props);
 
     return (
         <AutocompleteWithFavorites
-            {...props}
-            value={valueInitialised}
-            standardOptions={countryCodes}
+            value={value}
+            options={countryCodes}
             favorites={favoriteCountryCodes}
-            getOptionLabel={(code: any) => (code === '' ? '' : translate(code))}
+            getOptionLabel={(code: string) => (code ? translate(code) : '')}
+            valid={valid}
+            onChange={(event: SyntheticEvent, newValue: any) => {
+                handleOnChange(newValue);
+            }}
+            fullWidth
         />
     );
 }
