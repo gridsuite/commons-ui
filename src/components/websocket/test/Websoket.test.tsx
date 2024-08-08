@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { createRoot } from 'react-dom/client';
-import { waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { waitFor, act } from '@testing-library/react';
 import {
     afterEach,
     beforeEach,
@@ -69,7 +68,7 @@ describe('Websocket', () => {
 
         const eventCallback = jest.fn();
         function WSConsumer() {
-            useListener(WS_KEY, eventCallback);
+            useListener(WS_KEY, { listenerCallbackMessage: eventCallback });
             return <p>empty</p>;
         }
 
@@ -100,7 +99,7 @@ describe('Websocket', () => {
 
         const eventCallback = jest.fn();
         function WSConsumer() {
-            useListener('Fake_Key', eventCallback);
+            useListener('Fake_Key', { listenerCallbackMessage: eventCallback });
             return <p>empty</p>;
         }
 
@@ -123,5 +122,34 @@ describe('Websocket', () => {
         });
 
         expect(eventCallback).not.toBeCalled();
+    });
+
+    test('renders Websocket component and calls onOpen callback', async () => {
+        const root = createRoot(container);
+
+        const onOpenCallback = jest.fn();
+        const reconnectingWebSocketClass = {
+            onopen: onOpenCallback,
+        };
+        const eventCallback = jest.fn();
+        function WSConsumer() {
+            useListener('Fake_Key', { listenerCallbackOnOpen: eventCallback });
+            return <p>empty</p>;
+        }
+
+        // @ts-ignore
+        ReconnectingWebSocket.mockImplementation(
+            () => reconnectingWebSocketClass
+        );
+
+        act(() => {
+            root.render(
+                <Websocket urls={{ [WS_KEY]: 'test' }}>
+                    <WSConsumer />
+                </Websocket>
+            );
+        });
+
+        waitFor(() => expect(onOpenCallback).toBeCalled());
     });
 });

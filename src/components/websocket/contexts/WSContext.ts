@@ -8,19 +8,28 @@
 
 import { createContext } from 'react';
 
-export type ListenerWS = {
+export type ListenerEventWS = {
     id: string;
     callback: (event: MessageEvent) => void;
 };
 
+export type ListenerOnOpen = {
+    id: string;
+    callback: () => void;
+};
+
 export type WSContextType = {
-    addListener: (urlKey: string, l: ListenerWS) => void;
-    removeListener: (urlKey: string, idListener: string) => void;
+    addListenerEvent: (urlKey: string, l: ListenerEventWS) => void;
+    removeListenerEvent: (urlKey: string, idListener: string) => void;
+    addListenerOnOpen: (urlKey: string, l: ListenerOnOpen) => void;
+    removeListenerOnOpen: (urlKey: string, idListener: string) => void;
 };
 
 export type WSContextRecordType = Record<string, WSContextType>;
 
 export const WSContext = createContext<WSContextType>({
-    addListener: () => {},
-    removeListener: () => {},
+    addListenerEvent: () => {},
+    removeListenerEvent: () => {},
+    addListenerOnOpen: () => {},
+    removeListenerOnOpen: () => {},
 });
