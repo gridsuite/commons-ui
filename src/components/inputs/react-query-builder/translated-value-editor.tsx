@@ -56,6 +56,7 @@ function TranslatedValueEditor(props: ValueEditorProps) {
             multiple
             fullWidth
             renderInput={(params) => <TextField {...params} error={!valid} />}
+            size="small"
         />
     );
 }
