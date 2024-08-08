@@ -8,11 +8,7 @@
 
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import {
-    ListenerEventWS,
-    ListenerOnOpen,
-    WSContext,
-} from './contexts/WSContext';
+import { ListenerEventWS, ListenerOnOpen, WSContext } from './contexts/WSContext';
 import useListenerManager from './hooks/useListenerManager';
 
 // the delay before we consider the WS truly connected
@@ -41,10 +37,7 @@ function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
             rws.onmessage = broadcastMessage(urlKey);
 
             rws.onclose = (event) => {
-                console.error(
-                    'Unexpected Notification WebSocket closed',
-                    event
-                );
+                console.error('Unexpected Notification WebSocket closed', event);
             };
             rws.onerror = (event) => {
                 console.error('Unexpected Notification WebSocket error', event);
@@ -66,16 +59,9 @@ function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
             addListenerOnOpen,
             removeListenerOnOpen,
         }),
-        [
-            addListenerMessage,
-            removeListenerMessage,
-            addListenerOnOpen,
-            removeListenerOnOpen,
-        ]
+        [addListenerMessage, removeListenerMessage, addListenerOnOpen, removeListenerOnOpen]
     );
-    return (
-        <WSContext.Provider value={contextValue}>{children}</WSContext.Provider>
-    );
+    return <WSContext.Provider value={contextValue}>{children}</WSContext.Provider>;
 }
 
 export default Websocket;

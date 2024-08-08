@@ -22,27 +22,22 @@ const useListener = (
         propsId?: string;
     }
 ) => {
-    const { addListenerEvent, removeListenerEvent,addListenerOnOpen,removeListenerOnOpen } = useContext(WSContext);
+    const { addListenerEvent, removeListenerEvent, addListenerOnOpen, removeListenerOnOpen } = useContext(WSContext);
+
     useEffect(() => {
         const id = propsId ?? uuidv4();
-        if(listenerCallbackMessage){
+        if (listenerCallbackMessage) {
             addListenerEvent(listenerKey, {
                 id,
                 callback: listenerCallbackMessage,
             });
         }
         return () => removeListenerEvent(listenerKey, id);
-    }, [
-        addListenerEvent,
-        removeListenerEvent,
-        listenerKey,
-        listenerCallbackMessage,
-        propsId,
-    ]);
-    
+    }, [addListenerEvent, removeListenerEvent, listenerKey, listenerCallbackMessage, propsId]);
+
     useEffect(() => {
         const id = propsId ?? uuidv4();
-        if(listenerCallbackOnOpen){
+        if (listenerCallbackOnOpen) {
             addListenerOnOpen(listenerKey, {
                 id,
                 callback: listenerCallbackOnOpen,

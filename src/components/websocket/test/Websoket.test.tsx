@@ -6,14 +6,7 @@
  */
 import { createRoot } from 'react-dom/client';
 import { waitFor, act } from '@testing-library/react';
-import {
-    afterEach,
-    beforeEach,
-    describe,
-    expect,
-    jest,
-    test,
-} from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import Websocket from '../Websocket';
 import useListener from '../hooks/useListener';
@@ -74,9 +67,7 @@ describe('Websocket', () => {
 
         const reconnectingWebSocketClass = {};
         // @ts-ignore
-        ReconnectingWebSocket.mockImplementation(
-            () => reconnectingWebSocketClass
-        );
+        ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
             root.render(
@@ -105,9 +96,7 @@ describe('Websocket', () => {
 
         const reconnectingWebSocketClass = {};
         // @ts-ignore
-        ReconnectingWebSocket.mockImplementation(
-            () => reconnectingWebSocketClass
-        );
+        ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
             root.render(
@@ -138,9 +127,7 @@ describe('Websocket', () => {
         }
 
         // @ts-ignore
-        ReconnectingWebSocket.mockImplementation(
-            () => reconnectingWebSocketClass
-        );
+        ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
             root.render(

@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { ListenerEventWS, ListenerOnOpen } from '../contexts/WSContext';
 
-const useListenerManager = <
-    TListener extends ListenerEventWS | ListenerOnOpen,
-    TMessage extends MessageEvent | never
->(
+const useListenerManager = <TListener extends ListenerEventWS | ListenerOnOpen, TMessage extends MessageEvent | never>(
     urls: Record<string, string>
 ) => {
     const urlsListenersRef = useRef(
@@ -21,18 +18,15 @@ const useListenerManager = <
         }, {} as Record<string, TListener[]>);
     }, [urls]);
 
-    const addListenerEvent = useCallback(
-        (urlKey: string, listener: TListener) => {
-            const urlsListeners = urlsListenersRef.current;
-            if (urlKey in urlsListeners) {
-                urlsListeners[urlKey].push(listener);
-            } else {
-                urlsListeners[urlKey] = [listener];
-            }
-            urlsListenersRef.current = urlsListeners;
-        },
-        []
-    );
+    const addListenerEvent = useCallback((urlKey: string, listener: TListener) => {
+        const urlsListeners = urlsListenersRef.current;
+        if (urlKey in urlsListeners) {
+            urlsListeners[urlKey].push(listener);
+        } else {
+            urlsListeners[urlKey] = [listener];
+        }
+        urlsListenersRef.current = urlsListeners;
+    }, []);
     const removeListenerEvent = useCallback((urlKey: string, id: string) => {
         const listeners = urlsListenersRef.current?.[urlKey];
         if (listeners) {
