@@ -100,8 +100,10 @@ export {
     DEFAULT_ROW_HEIGHT,
 } from './components/MuiVirtualizedTable/MuiVirtualizedTable';
 
-export { DARK_THEME, LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from './components/TopBar/TopBar';
-export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
+export { DARK_THEME, LIGHT_THEME } from './utils/theme';
+export type { GsTheme } from './utils/theme';
+export { LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH, getSystemLanguage, getComputedLanguage } from './utils/language';
+export type { GsLang, GsLangUser } from './utils/language';
 
 export {
     USER,
@@ -113,7 +115,7 @@ export {
     USER_VALIDATION_ERROR,
     RESET_AUTHENTICATION_ROUTER_ERROR,
     SHOW_AUTH_INFO_LOGIN,
-} from './redux/authActions';
+} from './utils/AuthActions';
 export type {
     AuthenticationActions,
     AuthenticationRouterErrorBase,
@@ -124,7 +126,7 @@ export type {
     UnauthorizedUserAction,
     UserAction,
     UserValidationErrorAction,
-} from './redux/authActions';
+} from './utils/AuthActions';
 export { default as report_viewer_en } from './components/translations/report-viewer-en';
 export { default as report_viewer_fr } from './components/translations/report-viewer-fr';
 export { default as login_en } from './components/translations/login-en';
@@ -216,7 +218,7 @@ export {
 export { default as InputWithPopupConfirmation } from './components/inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
 export { default as MuiSelectInput } from './components/inputs/react-hook-form/select-inputs/mui-select-input';
 export { default as CountriesInput } from './components/inputs/react-hook-form/select-inputs/countries-input';
-export { getSystemLanguage, getComputedLanguage, useLocalizedCountries } from './hooks/localized-countries-hook';
+export { default as useLocalizedCountries } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './components/inputs/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
 export { default as UniqueNameInput } from './components/inputs/react-hook-form/unique-name-input';
@@ -230,8 +232,9 @@ export {
 } from './components/filter/criteria-based/criteria-based-filter-utils';
 
 export { mergeSx } from './utils/styles';
-export { setCommonStore } from './redux/commonStore';
-export type { CommonStoreState } from './redux/commonStore';
 export type { EquipmentInfos } from './utils/EquipmentType';
 
+export { getErrorMessage } from './utils/error';
+export * from './utils/api';
 export * from './services';
+export * from './local-storage';

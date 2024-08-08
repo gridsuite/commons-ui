@@ -8,7 +8,7 @@
 import { validate as uuidValidate } from 'uuid';
 import { useEffect } from 'react';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
-import { fetchElementsInfos } from '../../../services';
+import { exploreSvc } from '../../../services/instances';
 import DirectoryItemsInput from '../react-hook-form/directory-items-input';
 
 interface ElementValueEditorProps {
@@ -34,7 +34,7 @@ function ElementValueEditor(props: ElementValueEditorProps) {
             defaultValue[0].length > 0 &&
             uuidValidate(defaultValue[0])
         ) {
-            fetchElementsInfos(defaultValue).then((childrenWithMetadata) => {
+            exploreSvc.fetchElementsInfos(defaultValue).then((childrenWithMetadata) => {
                 setValue(
                     name,
                     childrenWithMetadata.map((v: any) => {
@@ -63,4 +63,5 @@ function ElementValueEditor(props: ElementValueEditorProps) {
         />
     );
 }
+
 export default ElementValueEditor;

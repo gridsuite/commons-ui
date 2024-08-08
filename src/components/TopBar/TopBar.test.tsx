@@ -7,16 +7,16 @@
 
 import { render } from '@testing-library/react';
 import { IntlProvider } from 'react-intl';
-
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { expect, it } from '@jest/globals';
-import TopBar, { LANG_ENGLISH } from './TopBar';
-import { CommonMetadata, top_bar_en } from '../..';
-
+import TopBar from './TopBar';
+import { LANG_ENGLISH } from '../../utils/language';
+import top_bar_en from '../translations/top-bar-en';
+import { AppMetadataCommon } from '../../services';
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 
-const apps: CommonMetadata[] = [
+const apps: AppMetadataCommon[] = [
     {
         name: 'App1',
         url: '/app1',

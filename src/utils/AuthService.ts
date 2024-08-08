@@ -18,7 +18,7 @@ import {
     setSignInCallbackError,
     setUnauthorizedUserInfo,
     setUserValidationError,
-} from '../redux/authActions';
+} from './AuthActions';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;

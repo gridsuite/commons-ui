@@ -17,12 +17,11 @@ import CustomMuiDialog from '../../dialogs/custom-mui-dialog';
 import yup from '../../../utils/yup-config';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './explicit-naming-filter-form';
 import FieldConstants from '../../../utils/field-constants';
-
 import FilterForm from '../filter-form';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-import { ElementExistsType } from '../../../utils/ElementType';
+import { GsLangUser } from '../../../utils/language';
 
 const formSchema = yup
     .object()
@@ -45,8 +44,7 @@ interface ExplicitNamingFilterEditionDialogProps {
     setSelectionForCopy: (selection: any) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
+    language?: GsLangUser;
 }
 
 function ExplicitNamingFilterEditionDialog({
@@ -60,7 +58,6 @@ function ExplicitNamingFilterEditionDialog({
     setSelectionForCopy,
     getFilterById,
     activeDirectory,
-    elementExists,
     language,
 }: ExplicitNamingFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
@@ -146,7 +143,7 @@ function ExplicitNamingFilterEditionDialog({
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 }

@@ -17,9 +17,9 @@ import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-import { saveFilter } from '../../../services/explore';
-import { ElementExistsType } from '../../../utils/ElementType';
+import { exploreSvc } from '../../../services/instances';
 import FilterForm from '../filter-form';
+import { GsLangUser } from '../../../utils/language';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -56,8 +56,7 @@ interface CriteriaBasedFilterEditionDialogProps {
     selectionForCopy: SelectionCopy;
     setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
+    language?: GsLangUser;
 }
 
 function CriteriaBasedFilterEditionDialog({
@@ -71,7 +70,6 @@ function CriteriaBasedFilterEditionDialog({
     selectionForCopy,
     setSelelectionForCopy,
     activeDirectory,
-    elementExists,
     language,
 }: CriteriaBasedFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
@@ -115,7 +113,8 @@ function CriteriaBasedFilterEditionDialog({
 
     const onSubmit = useCallback(
         (filterForm: any) => {
-            saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
+            exploreSvc
+                .saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
                         setSelelectionForCopy(noSelectionForCopy);
@@ -148,7 +147,7 @@ function CriteriaBasedFilterEditionDialog({
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 }

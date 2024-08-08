@@ -20,7 +20,7 @@ import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { FilterType } from '../constants/filter-constants';
 import FetchStatus from '../../../utils/FetchStatus';
-import { ElementExistsType } from '../../../utils/ElementType';
+import { GsLangUser } from '../../../utils/language';
 
 const formSchema = yup
     .object()
@@ -39,13 +39,11 @@ export interface ExpertFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-
     selectionForCopy: any;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
+    language?: GsLangUser;
 }
 
 function ExpertFilterEditionDialog({
@@ -59,7 +57,6 @@ function ExpertFilterEditionDialog({
     getFilterById,
     setSelectionForCopy,
     activeDirectory,
-    elementExists,
     language,
 }: ExpertFilterEditionDialogProps) {
     const { snackError } = useSnackMessage();
@@ -144,7 +141,7 @@ function ExpertFilterEditionDialog({
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 }

@@ -60,6 +60,18 @@ export default defineConfig((config) => ({
             },
         },
         minify: false, // easier to debug on the apps using this lib
+        define:
+            config.command === 'build'
+                ? {
+                      /* We want to keep some variables in the final build to be resolved by the application using this library.
+                       * https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/define.ts
+                       * If the plugin "vite:define" change how it works, we probably will need to write plugins to obfuscate before then restore after.
+                       */
+                      'import.meta.env.VITE_API_GATEWAY': 'import.meta.env.VITE_API_GATEWAY',
+                      'import.meta.env.VITE_WS_GATEWAY': 'import.meta.env.VITE_WS_GATEWAY',
+                      'import.meta.env.VITE_DEBUG_REQUESTS': 'import.meta.env.VITE_DEBUG_REQUESTS',
+                  }
+                : undefined,
     },
 }));
 

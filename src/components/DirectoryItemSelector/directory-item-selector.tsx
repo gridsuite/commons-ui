@@ -12,7 +12,7 @@ import getFileIcon from '../../utils/ElementIcon';
 import { ElementType } from '../../utils/ElementType';
 import TreeViewFinder, { TreeViewFinderNodeProps, TreeViewFinderProps } from '../TreeViewFinder/TreeViewFinder';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
-import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
+import { directorySvc, exploreSvc } from '../../services/instances';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -219,7 +219,8 @@ function DirectoryItemSelector({
     );
 
     const updateRootDirectories = useCallback(() => {
-        fetchRootFolders(types)
+        directorySvc
+            .fetchRootFolders(types)
             .then((newData) => {
                 const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, null, newData);
                 setRootDirectories(nrs);
@@ -237,29 +238,32 @@ function DirectoryItemSelector({
     const fetchDirectory = useCallback(
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
-            fetchDirectoryContent(nodeId, typeList)
+            directorySvc
+                .fetchDirectoryContent(nodeId, typeList)
                 .then((children) => {
                     const childrenMatchedTypes = children.filter((item: any) => contentFilter().has(item.type));
 
                     if (childrenMatchedTypes.length > 0 && equipmentTypes && equipmentTypes.length > 0) {
-                        fetchElementsInfos(
-                            childrenMatchedTypes.map((e: any) => e.elementUuid),
-                            types,
-                            equipmentTypes
-                        ).then((childrenWithMetadata) => {
-                            const filtredChildren = itemFilter
-                                ? childrenWithMetadata.filter((val: any) => {
-                                      // Accept every directory
-                                      if (val.type === ElementType.DIRECTORY) {
-                                          return true;
-                                      }
-                                      // otherwise filter with the custom itemFilter func
-                                      return itemFilter(val);
-                                  })
-                                : childrenWithMetadata;
-                            // update directory content
-                            addToDirectory(nodeId, filtredChildren);
-                        });
+                        exploreSvc
+                            .fetchElementsInfos(
+                                childrenMatchedTypes.map((e: any) => e.elementUuid),
+                                types,
+                                equipmentTypes
+                            )
+                            .then((childrenWithMetadata) => {
+                                const filtredChildren = itemFilter
+                                    ? childrenWithMetadata.filter((val: any) => {
+                                          // Accept every directory
+                                          if (val.type === ElementType.DIRECTORY) {
+                                              return true;
+                                          }
+                                          // otherwise filter with the custom itemFilter func
+                                          return itemFilter(val);
+                                      })
+                                    : childrenWithMetadata;
+                                // update directory content
+                                addToDirectory(nodeId, filtredChildren);
+                            });
                     } else {
                         // update directory content
                         addToDirectory(nodeId, childrenMatchedTypes);

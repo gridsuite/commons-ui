@@ -11,7 +11,7 @@ import { frontToBackTweak } from '../criteria-based/criteria-based-filter-utils'
 import { Generator, Load } from '../../../utils/equipment-types';
 import { exportExpertRules } from '../expert/expert-filter-utils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/filter-constants';
-import { createFilter, saveFilter } from '../../../services/explore';
+import { exploreSvc } from '../../../services/instances';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -22,8 +22,7 @@ export const saveExplicitNamingFilter = (
     id: string | null,
     setCreateFilterErr: (value: any) => void,
     handleClose: () => void,
-    activeDirectory?: UUID,
-    token?: string
+    activeDirectory?: UUID
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
@@ -39,17 +38,17 @@ export const saveExplicitNamingFilter = (
         }));
     }
     if (isFilterCreation) {
-        createFilter(
-            {
-                type: FilterType.EXPLICIT_NAMING.id,
-                equipmentType,
-                filterEquipmentsAttributes: cleanedTableValues,
-            },
-            name,
-            description,
-            activeDirectory,
-            token
-        )
+        exploreSvc
+            .createFilter(
+                {
+                    type: FilterType.EXPLICIT_NAMING.id,
+                    equipmentType,
+                    filterEquipmentsAttributes: cleanedTableValues,
+                },
+                name,
+                description,
+                activeDirectory
+            )
             .then(() => {
                 handleClose();
             })
@@ -57,16 +56,16 @@ export const saveExplicitNamingFilter = (
                 setCreateFilterErr(error.message);
             });
     } else {
-        saveFilter(
-            {
-                id,
-                type: FilterType.EXPLICIT_NAMING.id,
-                equipmentType,
-                filterEquipmentsAttributes: cleanedTableValues,
-            },
-            name,
-            token
-        )
+        exploreSvc
+            .saveFilter(
+                {
+                    id,
+                    type: FilterType.EXPLICIT_NAMING.id,
+                    equipmentType,
+                    filterEquipmentsAttributes: cleanedTableValues,
+                },
+                name
+            )
             .then(() => {
                 handleClose();
             })
@@ -80,11 +79,11 @@ export const saveCriteriaBasedFilter = (
     filter: any,
     activeDirectory: any,
     onClose: () => void,
-    onError: (message: string) => void,
-    token?: string
+    onError: (message: string) => void
 ) => {
     const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
-    createFilter(filterForBack, filter[FieldConstants.NAME], filter[FieldConstants.DESCRIPTION], activeDirectory, token)
+    exploreSvc
+        .createFilter(filterForBack, filter[FieldConstants.NAME], filter[FieldConstants.DESCRIPTION], activeDirectory)
         .then(() => {
             onClose();
         })
@@ -102,21 +101,20 @@ export const saveExpertFilter = (
     isFilterCreation: boolean,
     activeDirectory: any,
     onClose: () => void,
-    onError: (message: string) => void,
-    token?: string
+    onError: (message: string) => void
 ) => {
     if (isFilterCreation) {
-        createFilter(
-            {
-                type: FilterType.EXPERT.id,
-                equipmentType,
-                rules: exportExpertRules(query),
-            },
-            name,
-            description,
-            activeDirectory,
-            token
-        )
+        exploreSvc
+            .createFilter(
+                {
+                    type: FilterType.EXPERT.id,
+                    equipmentType,
+                    rules: exportExpertRules(query),
+                },
+                name,
+                description,
+                activeDirectory
+            )
             .then(() => {
                 onClose();
             })
@@ -124,16 +122,16 @@ export const saveExpertFilter = (
                 onError(error.message);
             });
     } else {
-        saveFilter(
-            {
-                id,
-                type: FilterType.EXPERT.id,
-                equipmentType,
-                rules: exportExpertRules(query),
-            },
-            name,
-            token
-        )
+        exploreSvc
+            .saveFilter(
+                {
+                    id,
+                    type: FilterType.EXPERT.id,
+                    equipmentType,
+                    rules: exportExpertRules(query),
+                },
+                name
+            )
             .then(() => {
                 onClose();
             })

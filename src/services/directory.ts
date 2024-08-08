@@ -1,49 +1,51 @@
-/**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+/*
+ * Copyright © 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson, getRequestParamFromList } from './utils';
+import { appendSearchParam, getRequestParam, UrlString } from '../utils/api';
 import { ElementAttributes } from '../utils/types';
+import { ApiService, UserGetter } from './base-service';
 
-const PREFIX_DIRECTORY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/directory`;
+export default class DirectoryComSvc extends ApiService {
+    public constructor(userGetter: UserGetter, restGatewayPath?: UrlString) {
+        super(userGetter, 'directory', restGatewayPath);
+    }
 
-export function fetchRootFolders(types: string[]): Promise<ElementAttributes[]> {
-    console.info('Fetching Root Directories');
+    public async fetchRootFolders(types: string[]) {
+        console.info('Fetching Root Directories');
+        const urlSearchParams = getRequestParam('elementTypes', types).toString();
+        return this.backendFetchJson<ElementAttributes[]>(
+            `${this.getPrefix(1)}/root-directories?${urlSearchParams}`,
+            'GET'
+        );
+    }
 
-    // Add params to Url
-    const urlSearchParams = getRequestParamFromList('elementTypes', types).toString();
-    const fetchRootFoldersUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/root-directories?${urlSearchParams}`;
-    return backendFetchJson(fetchRootFoldersUrl, {
-        method: 'get',
-        headers: { 'Content-Type': 'application/json' },
-    });
-}
+    public async fetchDirectoryContent(directoryUuid: UUID, types?: string[]) {
+        console.info("Fetching Folder content '%s'", directoryUuid);
+        return this.backendFetchJson<ElementAttributes[]>(
+            appendSearchParam(
+                `${this.getPrefix(1)}/directories/${directoryUuid}/elements`,
+                getRequestParam('elementTypes', types)
+            ),
+            'GET'
+        );
+    }
 
-export function fetchDirectoryContent(directoryUuid: UUID, types?: string[]): Promise<ElementAttributes[]> {
-    console.info("Fetching Folder content '%s'", directoryUuid);
+    public async fetchDirectoryElementPath(elementUuid: UUID) {
+        console.info(`Fetching element '${elementUuid}' and its parents info ...`);
+        const fetchPathUrl = `${this.getPrefix(1)}/elements/${encodeURIComponent(elementUuid)}/path`;
+        return this.backendFetchJson<ElementAttributes[]>(fetchPathUrl, 'GET');
+    }
 
-    // Add params to Url
-    const urlSearchParams = getRequestParamFromList('elementTypes', types).toString();
-
-    const fetchDirectoryContentUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements${
-        urlSearchParams ? `?${urlSearchParams}` : ''
-    }`;
-    return backendFetchJson(fetchDirectoryContentUrl, {
-        method: 'get',
-        headers: { 'Content-Type': 'application/json' },
-    });
-}
-
-export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAttributes[]> {
-    console.info(`Fetching element '${elementUuid}' and its parents info ...`);
-    const fetchPathUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/elements/${encodeURIComponent(elementUuid)}/path`;
-    console.debug(fetchPathUrl);
-    return backendFetchJson(fetchPathUrl, {
-        method: 'get',
-        headers: { 'Content-Type': 'application/json' },
-    });
+    public async elementExists(directoryUuid: UUID, elementName: string, type: string) {
+        const response = await this.backendFetch(
+            `${this.getPrefix(1)}/directories/${directoryUuid}/elements/${elementName}/types/${type}`,
+            'HEAD'
+        );
+        return response.status !== 204; // HTTP 204 : No-content
+    }
 }

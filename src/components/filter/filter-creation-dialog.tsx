@@ -26,7 +26,7 @@ import yup from '../../utils/yup-config';
 import FilterForm from './filter-form';
 import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
-import { ElementExistsType } from '../../utils/ElementType';
+import { GsLangUser } from '../../utils/language';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -56,8 +56,7 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
+    language?: GsLangUser;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
@@ -68,7 +67,6 @@ function FilterCreationDialog({
     open,
     onClose,
     activeDirectory,
-    elementExists,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
 }: FilterCreationDialogProps) {
@@ -146,7 +144,6 @@ function FilterCreationDialog({
             <FilterForm
                 creation
                 activeDirectory={activeDirectory}
-                elementExists={elementExists}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
             />
         </CustomMuiDialog>

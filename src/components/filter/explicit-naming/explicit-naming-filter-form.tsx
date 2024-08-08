@@ -26,7 +26,7 @@ import { FILTER_EQUIPMENTS } from '../utils/filter-form-utils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/ElementType';
 import ModifyElementSelection from '../../dialogs/modify-element-selection';
-import { exportFilter } from '../../../services/study';
+import { studySvc } from '../../../services/instances';
 import { EquipmentType } from '../../../utils/EquipmentType';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
@@ -190,7 +190,8 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
     };
 
     const onStudySelected = (studyUuid: UUID) => {
-        exportFilter(studyUuid, sourceFilterForExplicitNamingConversion?.id)
+        studySvc
+            .exportFilter(studyUuid, sourceFilterForExplicitNamingConversion?.id)
             .then((matchingEquipments: any) => {
                 setValue(
                     FILTER_EQUIPMENTS_ATTRIBUTES,

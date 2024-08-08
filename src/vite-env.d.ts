@@ -7,3 +7,18 @@
 
 /// <reference types="vite-plugin-svgr/client" />
 /// <reference types="vite/client" />
+
+/* Don't know why but seem that TypeScript merge definitions of these two interfaces with existing ones.
+ * https://vitejs.dev/guide/env-and-mode#intellisense-for-typescript
+ */
+import { UrlString } from './utils/api';
+
+interface ImportMetaEnv {
+    readonly VITE_API_GATEWAY: UrlString;
+    readonly VITE_WS_GATEWAY: UrlString;
+    readonly VITE_DEBUG_REQUESTS?: boolean;
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}
