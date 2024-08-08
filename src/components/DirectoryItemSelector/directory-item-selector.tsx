@@ -64,7 +64,7 @@ function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, childr
     const nextChildren = children
         .sort((a, b) => a.elementName.localeCompare(b.elementName))
         .map((n: any) => {
-            const pn: any = prevMap[n.elementUuid];
+            const pn = prevMap[n.elementUuid];
             if (!pn) {
                 return { ...n, children: [], parentUuid: nodeId };
             }
@@ -221,7 +221,6 @@ function DirectoryItemSelector({
     const updateRootDirectories = useCallback(() => {
         fetchRootFolders(types)
             .then((newData) => {
-                console.log('debug', { newData, types, nodeMap: nodeMap.current });
                 const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, null, newData);
                 setRootDirectories(nrs);
                 nodeMap.current = mdr;
