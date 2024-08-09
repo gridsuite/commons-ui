@@ -175,6 +175,8 @@ const filterExpertFr = {
     shuntSusceptance1: 'Susceptance parallèle 1 (μS)',
     shuntConductance2: 'Conductance parallèle 2 (μS)',
     shuntSusceptance2: 'Susceptance parallèle 2 (μS)',
+    pairingKey: 'Xnode',
+    tieLineId: "ID de l'interconnexion",
 };
 
 export default filterExpertFr;
