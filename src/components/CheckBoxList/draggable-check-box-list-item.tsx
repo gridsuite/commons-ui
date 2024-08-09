@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
-import { DraggableCheckBoxListItemProps } from './check-box-list-type';
+import { CheckBoxListItemInterface } from './check-box-list-type';
 
 const styles = {
     dragIcon: (theme: any) => ({
@@ -32,7 +32,7 @@ export function DraggableCheckBoxListItem<T>({
     disabled,
     divider,
     ...props
-}: DraggableCheckBoxListItemProps<T>) {
+}: CheckBoxListItemInterface<T>) {
     const [hover, setHover] = useState<string>('');
     return (
         <ListItem
@@ -42,12 +42,11 @@ export function DraggableCheckBoxListItem<T>({
             onMouseLeave={() => setHover('')}
             disablePadding
             divider={divider}
-            disabled={disabled}
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
         >
-            <ListItemButton onClick={onClick} sx={sx?.checkboxButton}>
+            <ListItemButton onClick={onClick} sx={sx?.checkboxButton} disabled={disabled}>
                 <IconButton
                     {...provided.dragHandleProps}
                     size="small"

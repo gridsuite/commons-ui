@@ -12,40 +12,18 @@ import { CheckBoxListItems } from './check-box-list-items';
 import { CheckboxListProps } from './check-box-list-type';
 
 export function CheckboxList<T>({
-    items,
-    selectedItems,
-    getItemId,
-    getItemLabel,
-    sx,
-    secondaryAction,
-    enableSecondaryActionOnHover = true,
-    isDisabled,
-    onSelectionChange,
-    addSelectAllCheckbox = false,
     isDndDragAndDropActive = false,
     onDragStart,
     onDragEnd,
     isDragDisable = false,
-    divider,
     ...props
 }: CheckboxListProps<T>) {
     const [isDragging, setIsDragging] = useState(false);
 
     const checkBoxField = (
-        <CheckBoxListItems<T>
-            items={items}
-            getItemLabel={getItemLabel}
-            getItemId={getItemId}
-            selectedItems={selectedItems}
+        <CheckBoxListItems
             isDndDragAndDropActive={isDndDragAndDropActive}
-            enableSecondaryActionOnHover={enableSecondaryActionOnHover}
-            secondaryAction={secondaryAction}
             isDragDisable={isDragDisable || isDragging}
-            sx={sx}
-            isDisabled={isDisabled}
-            addSelectAllCheckbox={addSelectAllCheckbox}
-            onSelectionChange={onSelectionChange}
-            divider={divider}
             {...props}
         />
     );

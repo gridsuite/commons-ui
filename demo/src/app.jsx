@@ -548,10 +548,10 @@ function AppContent({ language, onLanguageClick }) {
     }
 
     const [checkBoxListOption, setCheckBoxListOption] = useState([
-        { id: 'kiki', label: 'inputs/kiki' },
-        { id: 'ney', label: 'inputs/ney' },
-        { id: 'lapulga', label: 'inputs/lapulga' },
-        { id: 'ibra', label: 'inputs/ibra' },
+        { id: 'kiki', label: 'Kylian Mbappe' },
+        { id: 'ney', label: 'Neymar' },
+        { id: 'lapulga', label: 'Lionel Messi' },
+        { id: 'ibra', label: 'Zlatan Ibrahimovic' },
     ]);
 
     const secondaryAction = () => (
@@ -587,11 +587,11 @@ function AppContent({ language, onLanguageClick }) {
                 Checkbox list
             </Button>
             <MultipleSelectionDialog
-                options={checkBoxListOption}
-                selectedOptions={[]}
+                items={checkBoxListOption}
+                selectedItems={[]}
                 open={openMultiChoiceDialog}
-                getOptionLabel={(o) => o.label}
-                getOptionId={(o) => o.id}
+                getItemLabel={(o) => o.label}
+                getItemId={(o) => o.id}
                 handleClose={() => setOpenMultiChoiceDialog(false)}
                 handleValidate={() => setOpenMultiChoiceDialog(false)}
                 titleId="Checkbox list"
@@ -611,16 +611,17 @@ function AppContent({ language, onLanguageClick }) {
                 Draggable checkbox list
             </Button>
             <MultipleSelectionDialog
-                options={checkBoxListOption}
-                selectedOptions={[]}
+                items={checkBoxListOption}
+                selectedItems={[]}
                 open={openDraggableMultiChoiceDialog}
-                getOptionLabel={(o) => o.label}
-                getOptionId={(o) => o.id}
+                getItemLabel={(o) => o.label}
+                getItemId={(o) => o.id}
                 handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
                 handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
                 titleId="Draggable checkbox list"
                 divider
                 secondaryAction={secondaryAction}
+                addSelectAllCheckbox
                 isDndDragAndDropActive
                 onDragEnd={({ source, destination }) => {
                     if (destination !== null && source.index !== destination.index) {
