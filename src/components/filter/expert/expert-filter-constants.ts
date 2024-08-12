@@ -255,7 +255,6 @@ export const FIELDS_OPTIONS = {
         label: 'country',
         dataType: DataType.ENUM,
         valueEditorType: 'select',
-        defaultValue: 'AF',
     },
     VOLTAGE_REGULATOR_ON: {
         name: FieldType.VOLTAGE_REGULATOR_ON,
@@ -493,14 +492,12 @@ export const FIELDS_OPTIONS = {
         label: 'country1',
         dataType: DataType.ENUM,
         valueEditorType: 'select',
-        defaultValue: 'AF',
     },
     COUNTRY_2: {
         name: FieldType.COUNTRY_2,
         label: 'country2',
         dataType: DataType.ENUM,
         valueEditorType: 'select',
-        defaultValue: 'AF',
     },
     SERIE_RESISTANCE: {
         name: FieldType.SERIE_RESISTANCE,
@@ -1034,6 +1031,16 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    PAIRING_KEY: {
+        name: FieldType.PAIRING_KEY,
+        label: 'pairingKey',
+        dataType: DataType.STRING,
+    },
+    TIE_LINE_ID: {
+        name: FieldType.TIE_LINE_ID,
+        label: 'tieLineId',
+        dataType: DataType.STRING,
+    },
 };
 
 export const fields: Record<string, Field[]> = {
@@ -1342,6 +1349,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.COUNTRY,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
         FIELDS_OPTIONS.NOMINAL_VOLTAGE,
+        FIELDS_OPTIONS.TIE_LINE_ID,
         FIELDS_OPTIONS.CONNECTED,
         FIELDS_OPTIONS.P0,
         FIELDS_OPTIONS.Q0,
@@ -1350,6 +1358,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.SHUNT_SUSCEPTANCE,
         FIELDS_OPTIONS.SHUNT_CONDUCTANCE,
         FIELDS_OPTIONS.PAIRED,
+        FIELDS_OPTIONS.PAIRING_KEY,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
