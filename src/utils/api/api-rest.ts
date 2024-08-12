@@ -28,6 +28,7 @@ type RequestInitExt = RequestInit & {
     headers?: HeadersInitExt;
 };
 export type InitRequest = HttpMethod | Partial<RequestInitExt>;
+export type InitRequestSend = HttpMethod | Partial<Omit<RequestInitExt, 'body'>>;
 export type Token = string;
 
 export interface ErrorWithStatus extends Error {

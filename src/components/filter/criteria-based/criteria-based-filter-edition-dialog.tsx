@@ -16,8 +16,8 @@ import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { criteriaBasedFilterSchema } from './criteria-based-filter-form';
 import yup from '../../../utils/yup-config';
 import { FilterType } from '../constants/filter-constants';
-import FetchStatus from '../../../utils/FetchStatus';
-import { exploreSvc } from '../../../services/instances';
+import FetchStatus, { FetchStatusType } from '../../../utils/FetchStatus';
+import { exploreSvc, filterSvc } from '../../../services/instances';
 import FilterForm from '../filter-form';
 import { GsLangUser } from '../../../utils/language';
 
@@ -52,9 +52,8 @@ interface CriteriaBasedFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-    getFilterById: (id: string) => Promise<any>;
     selectionForCopy: SelectionCopy;
-    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
+    setSelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
     activeDirectory?: UUID;
     language?: GsLangUser;
 }
@@ -66,14 +65,13 @@ function CriteriaBasedFilterEditionDialog({
     open,
     onClose,
     broadcastChannel,
-    getFilterById,
     selectionForCopy,
-    setSelelectionForCopy,
+    setSelectionForCopy,
     activeDirectory,
     language,
-}: CriteriaBasedFilterEditionDialogProps) {
+}: Readonly<CriteriaBasedFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
-    const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
+    const [dataFetchStatus, setDataFetchStatus] = useState<FetchStatusType>(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
     const formMethods = useForm({
@@ -92,8 +90,9 @@ function CriteriaBasedFilterEditionDialog({
     useEffect(() => {
         if (id && open) {
             setDataFetchStatus(FetchStatus.FETCHING);
-            getFilterById(id)
-                .then((response: any) => {
+            filterSvc
+                .getFilterById(id)
+                .then((response) => {
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
@@ -109,7 +108,7 @@ function CriteriaBasedFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError]);
 
     const onSubmit = useCallback(
         (filterForm: any) => {
@@ -117,7 +116,7 @@ function CriteriaBasedFilterEditionDialog({
                 .saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
-                        setSelelectionForCopy(noSelectionForCopy);
+                        setSelectionForCopy(noSelectionForCopy);
                         broadcastChannel.postMessage({
                             noSelectionForCopy,
                         });
@@ -129,7 +128,7 @@ function CriteriaBasedFilterEditionDialog({
                     });
                 });
         },
-        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelelectionForCopy]
+        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

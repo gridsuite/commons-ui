@@ -25,6 +25,8 @@ export { default as DirectoryComSvc } from './directory';
 
 export { default as ExploreComSvc } from './explore';
 
+export { default as FilterComSvc } from './filter';
+
 export { default as StudyComSvc, IdentifiableType } from './study';
 export type { IdentifiableAttributes } from './study';
 

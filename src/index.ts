@@ -79,6 +79,7 @@ export {
     microUnitToUnit,
 } from './utils/conversion-utils';
 export { default as FetchStatus } from './utils/FetchStatus';
+export type { FetchStatusType } from './utils/FetchStatus';
 export { ElementType } from './utils/ElementType';
 export type { ElementAttributes, Option, Equipment } from './utils/types';
 

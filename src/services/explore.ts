@@ -40,7 +40,7 @@ export default class ExploreComSvc extends ApiService {
     }
 
     public async fetchElementsInfos(ids: UUID[], elementTypes?: string[], equipmentTypes?: string[]) {
-        console.info('Fetching elements metadata');
+        console.debug('Fetching elements metadata');
         const urlSearchParams = getRequestParams({
             ids: ids.filter((id) => id), // filter falsy elements
             equipmentTypes: equipmentTypes ?? [],
@@ -49,6 +49,15 @@ export default class ExploreComSvc extends ApiService {
         return this.backendFetchJson<ElementAttributes[]>(
             appendSearchParam(`${this.getPrefix(1)}/explore/elements/metadata?${urlSearchParams}`, urlSearchParams),
             'GET'
+        );
+    }
+
+    public async updateElement(elementUuid: UUID, element: unknown) {
+        console.debug(`Updating element info for ${elementUuid}`);
+        return this.backendSendFetchJson(
+            `${this.getPrefix(1)}/explore/elements/${elementUuid}`,
+            'PUT',
+            JSON.stringify(element)
         );
     }
 }

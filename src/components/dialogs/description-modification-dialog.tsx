@@ -9,18 +9,19 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
+import { UUID } from 'crypto';
 import yup from '../../utils/yup-config';
 import FieldConstants from '../../utils/field-constants';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from './custom-mui-dialog';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
+import { exploreSvc } from '../../services/instances';
 
 export interface IDescriptionModificationDialog {
-    elementUuid: string;
+    elementUuid: UUID;
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement: (uuid: string, data: Record<string, string>) => Promise<void>;
 }
 
 const schema = yup.object().shape({
@@ -32,8 +33,7 @@ function DescriptionModificationDialog({
     description,
     open,
     onClose,
-    updateElement,
-}: IDescriptionModificationDialog) {
+}: Readonly<IDescriptionModificationDialog>) {
     const { snackError } = useSnackMessage();
 
     const emptyFormData = {
@@ -56,16 +56,18 @@ function DescriptionModificationDialog({
 
     const onSubmit = useCallback(
         (data: { description: string }) => {
-            updateElement(elementUuid, {
-                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
-            }).catch((error: any) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'descriptionModificationError',
+            exploreSvc
+                .updateElement(elementUuid, {
+                    [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
+                })
+                .catch((error: any) => {
+                    snackError({
+                        messageTxt: error.message,
+                        headerId: 'descriptionModificationError',
+                    });
                 });
-            });
         },
-        [elementUuid, updateElement, snackError]
+        [elementUuid, snackError]
     );
 
     return (

@@ -48,7 +48,7 @@ export default class StudyComSvc extends ApiService {
     }
 
     public async exportFilter(studyUuid: UUID, filterUuid?: UUID) {
-        console.info('get filter export on study root node');
+        console.debug('get filter export on study root node');
         return this.backendFetchJson<IdentifiableAttributes[]>(
             `${this.getPrefix(1)}/studies/${studyUuid}/filters/${filterUuid}/elements`,
             'GET'
@@ -56,7 +56,7 @@ export default class StudyComSvc extends ApiService {
     }
 
     public async getServersInfos(viewName: string) {
-        console.info('get backend servers informations');
+        console.debug('get backend servers informations');
         return this.backendFetchJson<GridSuiteModule[]>(`${this.getPrefix(1)}/servers/about?view=${viewName}`);
     }
 }

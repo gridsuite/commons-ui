@@ -5,11 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/* We can't use an enum here because we have this error in apps using tsc with isolatedModules set to true
+ * TS2748: Cannot access ambient const enums when isolatedModules is enabled.
+ */
 const FetchStatus = {
     IDLE: 'IDLE',
     FETCHING: 'FETCHING',
     FETCH_SUCCESS: 'FETCH_SUCCESS',
     FETCH_ERROR: 'FETCH_ERROR',
-};
-
+} as const;
 export default FetchStatus;
+
+// 'enum like' "TS type" creation
+export type FetchStatusType = keyof typeof FetchStatus;

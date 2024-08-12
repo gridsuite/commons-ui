@@ -16,7 +16,7 @@ export default class DirectoryComSvc extends ApiService {
     }
 
     public async fetchRootFolders(types: string[]) {
-        console.info('Fetching Root Directories');
+        console.debug('Fetching Root Directories');
         const urlSearchParams = getRequestParam('elementTypes', types).toString();
         return this.backendFetchJson<ElementAttributes[]>(
             `${this.getPrefix(1)}/root-directories?${urlSearchParams}`,
@@ -25,7 +25,7 @@ export default class DirectoryComSvc extends ApiService {
     }
 
     public async fetchDirectoryContent(directoryUuid: UUID, types?: string[]) {
-        console.info("Fetching Folder content '%s'", directoryUuid);
+        console.debug("Fetching Folder content '%s'", directoryUuid);
         return this.backendFetchJson<ElementAttributes[]>(
             appendSearchParam(
                 `${this.getPrefix(1)}/directories/${directoryUuid}/elements`,
@@ -36,7 +36,7 @@ export default class DirectoryComSvc extends ApiService {
     }
 
     public async fetchDirectoryElementPath(elementUuid: UUID) {
-        console.info(`Fetching element '${elementUuid}' and its parents info ...`);
+        console.debug(`Fetching element '${elementUuid}' and its parents info ...`);
         const fetchPathUrl = `${this.getPrefix(1)}/elements/${encodeURIComponent(elementUuid)}/path`;
         return this.backendFetchJson<ElementAttributes[]>(fetchPathUrl, 'GET');
     }

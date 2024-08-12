@@ -5,15 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UserGetter } from './base-service';
 import AppLocalComSvc from './app-local';
 import AppsMetadataComSvc from './apps-metadata';
 import ConfigComSvc from './config';
 import ConfigNotificationComSvc from './config-notification';
 import DirectoryComSvc from './directory';
 import ExploreComSvc from './explore';
+import FilterComSvc from './filter';
 import StudyComSvc from './study';
 import UserAdminComSvc from './user-admin';
-import { UserGetter } from './base-service';
 
 /*
  * This "local" instances are means to be used only internally in commons-ui library, not by external apps.
@@ -27,6 +28,7 @@ export let appLocalSvc: AppLocalComSvc,
     configNotificationSvc: ConfigNotificationComSvc,
     directorySvc: DirectoryComSvc,
     exploreSvc: ExploreComSvc,
+    filterSvc: FilterComSvc,
     studySvc: StudyComSvc,
     userAdminSvc: UserAdminComSvc;
 
@@ -42,6 +44,7 @@ export function setCommonServices<TAppName extends string>(
     configNotificationService: ConfigNotificationComSvc,
     directoryService: DirectoryComSvc,
     exploreService: ExploreComSvc,
+    filterService: FilterComSvc,
     studyService: StudyComSvc,
     userAdminService: UserAdminComSvc
 ) {
@@ -51,6 +54,7 @@ export function setCommonServices<TAppName extends string>(
     configNotificationSvc = configNotificationService;
     directorySvc = directoryService;
     exploreSvc = exploreService;
+    filterSvc = filterService;
     studySvc = studyService;
     userAdminSvc = userAdminService;
 }
@@ -69,6 +73,7 @@ export function initCommonServices<TAppName extends string>(appName: TAppName, u
         new ConfigNotificationComSvc(userGetter),
         new DirectoryComSvc(userGetter),
         new ExploreComSvc(userGetter),
+        new FilterComSvc(userGetter),
         new StudyComSvc(userGetter),
         new UserAdminComSvc(userGetter)
     );

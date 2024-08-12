@@ -19,8 +19,9 @@ import { EXPERT_FILTER_QUERY, expertFilterSchema } from './expert-filter-form';
 import { saveExpertFilter } from '../utils/filter-api';
 import { importExpertRules } from './expert-filter-utils';
 import { FilterType } from '../constants/filter-constants';
-import FetchStatus from '../../../utils/FetchStatus';
+import FetchStatus, { FetchStatusType } from '../../../utils/FetchStatus';
 import { GsLangUser } from '../../../utils/language';
+import { filterSvc } from '../../../services/instances';
 
 const formSchema = yup
     .object()
@@ -40,7 +41,6 @@ export interface ExpertFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     selectionForCopy: any;
-    getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: any) => void;
     activeDirectory?: UUID;
     language?: GsLangUser;
@@ -54,13 +54,12 @@ function ExpertFilterEditionDialog({
     onClose,
     broadcastChannel,
     selectionForCopy,
-    getFilterById,
     setSelectionForCopy,
     activeDirectory,
     language,
-}: ExpertFilterEditionDialogProps) {
+}: Readonly<ExpertFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
-    const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
+    const [dataFetchStatus, setDataFetchStatus] = useState<FetchStatusType>(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
     const formMethods = useForm({
@@ -79,8 +78,9 @@ function ExpertFilterEditionDialog({
     useEffect(() => {
         if (id && open) {
             setDataFetchStatus(FetchStatus.FETCHING);
-            getFilterById(id)
-                .then((response: { [prop: string]: any }) => {
+            filterSvc
+                .getFilterById(id)
+                .then((response) => {
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
@@ -97,7 +97,7 @@ function ExpertFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError]);
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {

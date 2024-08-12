@@ -20,8 +20,9 @@ import FieldConstants from '../../../utils/field-constants';
 import FilterForm from '../filter-form';
 import { noSelectionForCopy } from '../../../utils/equipment-types';
 import { FilterType } from '../constants/filter-constants';
-import FetchStatus from '../../../utils/FetchStatus';
+import FetchStatus, { FetchStatusType } from '../../../utils/FetchStatus';
 import { GsLangUser } from '../../../utils/language';
+import { filterSvc } from '../../../services/instances';
 
 const formSchema = yup
     .object()
@@ -42,7 +43,6 @@ interface ExplicitNamingFilterEditionDialogProps {
     broadcastChannel: BroadcastChannel;
     selectionForCopy: any;
     setSelectionForCopy: (selection: any) => void;
-    getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
     language?: GsLangUser;
 }
@@ -56,12 +56,11 @@ function ExplicitNamingFilterEditionDialog({
     broadcastChannel,
     selectionForCopy,
     setSelectionForCopy,
-    getFilterById,
     activeDirectory,
     language,
-}: ExplicitNamingFilterEditionDialogProps) {
+}: Readonly<ExplicitNamingFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
-    const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
+    const [dataFetchStatus, setDataFetchStatus] = useState<FetchStatusType>(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
     const formMethods = useForm({
@@ -79,7 +78,8 @@ function ExplicitNamingFilterEditionDialog({
     useEffect(() => {
         if (id && open) {
             setDataFetchStatus(FetchStatus.FETCHING);
-            getFilterById(id)
+            filterSvc
+                .getFilterById(id)
                 .then((response) => {
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
@@ -100,7 +100,7 @@ function ExplicitNamingFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError]);
 
     const onSubmit = useCallback(
         (filterForm: any) => {

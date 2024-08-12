@@ -9,7 +9,9 @@
 
 import { User } from 'oidc-client';
 import { HttpContentType, InitRequest, setRequestHeader, Token, Url, UrlString } from '../utils/api';
-import { expandInitRequest, safeFetch } from '../utils/api/api-rest';
+import { expandInitRequest, InitRequestSend, safeFetch } from '../utils/api/api-rest';
+
+export type UserGetter = () => User | undefined;
 
 /* The first problem we have here is that some front apps don't use Vite, and by consequence using VITE_* vars don't work...
  * What we do here is to try to use these variables as default, while permitting devs to overwrite these constants.
@@ -20,8 +22,6 @@ import { expandInitRequest, safeFetch } from '../utils/api/api-rest';
  * The third problem is how to manage the user token ID that comes from the app's side for now.
  * We can't use React context, and using a pseudo store copy isn't a satisfying solution.
  */
-
-export type UserGetter = () => User | undefined;
 
 /* Note: some utilities functions are moved in the class as it's a dependant of runtime data
  * Note: the baseUrlPrefix isn't in the base because websocket services haven't a version in url
@@ -83,7 +83,7 @@ export abstract class ApiService extends BaseService {
      * @param vApi the version of api to use
      */
     protected getPrefix(vApi: number) {
-        return `${this.basePrefix}/config/v${vApi}`;
+        return `${this.basePrefix}/v${vApi}`;
     }
 
     private finalizeRequest(init?: InitRequest, token?: Token): RequestInit {
@@ -165,13 +165,13 @@ export abstract class ApiService extends BaseService {
      */
     protected async backendSendFetch(
         url: Url<false>,
-        init: InitRequest,
+        init: InitRequestSend,
         body: BodyInit,
         contentType?: HttpContentType,
         token?: Token
     ) {
         let reqInit = expandInitRequest(init);
-        let cType = contentType;
+        let cType = contentType ?? reqInit.headers.get('content-type') ?? undefined;
         if (!(body instanceof FormData) && contentType === undefined) {
             cType = HttpContentType.APPLICATION_JSON;
         }
@@ -196,7 +196,7 @@ export abstract class ApiService extends BaseService {
      */
     protected async backendSendFetchJson<TReturn = unknown>(
         url: Url<false>,
-        init: InitRequest,
+        init: InitRequestSend,
         body: BodyInit,
         contentType?: HttpContentType,
         token?: Token
@@ -217,7 +217,7 @@ export abstract class ApiService extends BaseService {
      */
     protected async backendSendFetchText<TReturn extends string = string>(
         url: Url<false>,
-        init: InitRequest,
+        init: InitRequestSend,
         body: BodyInit,
         contentType?: HttpContentType,
         token?: Token
@@ -237,7 +237,7 @@ export abstract class ApiService extends BaseService {
      */
     protected async backendSend(
         url: Url<false>,
-        init: InitRequest,
+        init: InitRequestSend,
         body: BodyInit,
         contentType?: HttpContentType,
         token?: Token

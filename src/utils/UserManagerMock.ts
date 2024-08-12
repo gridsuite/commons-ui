@@ -126,7 +126,7 @@ export default class UserManagerMock implements UserManager {
     }
 
     async signinSilent(): Promise<User> {
-        console.info('signinSilent..............');
+        console.debug('signinSilent..............');
         const localStorageUser = JSON.parse(localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null');
         if (localStorageUser === null) {
             throw new Error('End-User authentication required');

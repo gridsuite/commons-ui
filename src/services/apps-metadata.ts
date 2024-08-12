@@ -64,14 +64,14 @@ export default class AppsMetadataComSvc {
     }
 
     public async fetchAppsMetadata(): Promise<AppMetadata[]> {
-        console.info(`Fetching apps and urls...`);
+        console.debug(`Fetching apps and urls...`);
         const env = await this.appLocalSvc.fetchEnv();
         const res = await fetch(`${env.appsMetadataServerUrl}/apps-metadata.json`);
         return res.json();
     }
 
     public async fetchStudyMetadata(): Promise<AppMetadataStudy> {
-        console.info(`Fetching study metadata...`);
+        console.debug(`Fetching study metadata...`);
         const studyMetadata = (await this.fetchAppsMetadata()).filter(isStudyMetadata);
         if (!studyMetadata) {
             throw new Error('Study entry could not be found in metadata');
