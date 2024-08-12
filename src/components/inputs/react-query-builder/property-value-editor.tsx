@@ -82,12 +82,13 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
+                    size="small"
                 />
             </Grid>
             <Grid item xs={2.5}>
                 <Select
                     value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
-                    size="medium"
+                    size="small"
                     error={!valid}
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
@@ -111,6 +112,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
+                    size="small"
                 />
             </Grid>
         </Grid>
