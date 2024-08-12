@@ -15,7 +15,7 @@ import { FormattedMessage } from 'react-intl';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 
 export interface PopupConfirmationDialogProps {
-    message?: string;
+    message: string;
     validateButtonLabel?: string;
     openConfirmationPopup: boolean;
     setOpenConfirmationPopup: (value: boolean) => void;
