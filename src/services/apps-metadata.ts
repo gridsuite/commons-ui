@@ -70,9 +70,15 @@ export async function fetchStudyMetadata(): Promise<StudyMetadata> {
     }
 }
 
-export async function fetchFavoriteCountries(): Promise<string[]> {
-    const studyMetadata = await fetchStudyMetadata();
-    return studyMetadata.favoriteCountries !== undefined ? studyMetadata.favoriteCountries : [];
+export async function fetchFavoriteAndDefaultCountries(): Promise<{
+    favoriteCountries: string[];
+    defaultCountry?: string;
+}> {
+    const { favoriteCountries = [], defaultCountry } = await fetchStudyMetadata();
+    return {
+        favoriteCountries,
+        defaultCountry,
+    };
 }
 
 export const fetchDefaultCountry = async (): Promise<string | undefined> => {
