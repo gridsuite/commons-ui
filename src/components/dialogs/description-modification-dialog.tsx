@@ -15,7 +15,7 @@ import { useSnackMessage } from '../../hooks/useSnackMessage';
 import CustomMuiDialog from './custom-mui-dialog';
 import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
 
-export interface IDescriptionModificationDialog {
+export interface DescriptionModificationDialogProps {
     elementUuid: string;
     description: string;
     open: boolean;
@@ -33,7 +33,7 @@ function DescriptionModificationDialog({
     open,
     onClose,
     updateElement,
-}: IDescriptionModificationDialog) {
+}: Readonly<DescriptionModificationDialogProps>) {
     const { snackError } = useSnackMessage();
 
     const emptyFormData = {

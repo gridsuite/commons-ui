@@ -14,7 +14,7 @@ import SubmitButton from '../inputs/react-hook-form/utils/submit-button';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import CustomFormProvider, { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
 
-interface ICustomMuiDialog {
+export interface CustomMuiDialogProps {
     open: boolean;
     formSchema: yup.AnySchema;
     formMethods: UseFormReturn<any> | MergedFormContextProps;
@@ -54,7 +54,7 @@ function CustomMuiDialog({
     onCancel,
     children,
     language,
-}: ICustomMuiDialog) {
+}: Readonly<CustomMuiDialogProps>) {
     const { handleSubmit } = formMethods;
 
     const handleCancel = (event: React.MouseEvent) => {

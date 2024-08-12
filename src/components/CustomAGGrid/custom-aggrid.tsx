@@ -22,7 +22,7 @@ interface CustomAGGGridStyleProps {
     showOverlay?: boolean;
 }
 
-interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
+export interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
 
 // We have to define a minWidth to column to activate this feature
 const onColumnResized = (params: ColumnResizedEvent) => {

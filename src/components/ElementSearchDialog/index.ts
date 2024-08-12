@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export { default as ElementSearchDialog } from './element-search-dialog';
+export type { ElementSearchDialogProps } from './element-search-dialog';
 export { default as TagRenderer } from './tag-renderer';
 export type { TagRendererProps } from './tag-renderer';
 export { ElementSearchInput } from './element-search-input';

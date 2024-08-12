@@ -7,3 +7,4 @@
 import defaultMultipleSelectionDialog from './MultipleSelectionDialog';
 
 export default defaultMultipleSelectionDialog;
+export type { MultipleSelectionDialogProps } from './MultipleSelectionDialog';

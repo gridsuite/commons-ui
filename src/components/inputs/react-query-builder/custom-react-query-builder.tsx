@@ -25,20 +25,20 @@ import FieldErrorAlert from '../react-hook-form/error-management/field-error-ale
 import { countRules, getOperators, queryValidator } from '../../filter/expert/expert-filter-utils';
 import RemoveButton from './remove-button';
 
-interface CustomReactQueryBuilderProps {
+export interface CustomReactQueryBuilderProps {
     name: string;
     fields: Field[];
 }
 
-function RuleAddButton(props: ActionWithRulesAndAddersProps) {
+function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
     return <AddButton {...props} label="rule" />;
 }
 
-function GroupAddButton(props: ActionWithRulesAndAddersProps) {
+function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
     return <AddButton {...props} label="subGroup" />;
 }
 
-function CustomReactQueryBuilder(props: CustomReactQueryBuilderProps) {
+function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
     const {
         getValues,
