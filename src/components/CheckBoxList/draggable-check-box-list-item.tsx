@@ -9,12 +9,12 @@ import { useState } from 'react';
 import { Checkbox, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
-import { CheckBoxListItemInterface } from './check-box-list-type';
+import { DraggableCheckBoxListItemProps } from './check-box-list-type';
 
 const styles = {
     dragIcon: (theme: any) => ({
-        padding: theme.spacing(0),
-        border: theme.spacing(1),
+        padding: 'unset',
+        border: theme.spacing(0),
         borderRadius: theme.spacing(0),
         zIndex: 90,
     }),
@@ -31,8 +31,9 @@ export function DraggableCheckBoxListItem<T>({
     provided,
     disabled,
     divider,
+    isCheckboxClickableOnly,
     ...props
-}: CheckBoxListItemInterface<T>) {
+}: DraggableCheckBoxListItemProps<T>) {
     const [hover, setHover] = useState<string>('');
     return (
         <ListItem
@@ -46,19 +47,33 @@ export function DraggableCheckBoxListItem<T>({
             {...provided.draggableProps}
             {...provided.dragHandleProps}
         >
-            <ListItemButton onClick={onClick} sx={sx?.checkboxButton} disabled={disabled}>
+            <ListItemButton
+                sx={sx?.checkboxButton}
+                disabled={disabled}
+                {...(!isCheckboxClickableOnly && {
+                    onClick: () => onClick(),
+                })}
+            >
                 <IconButton
                     {...provided.dragHandleProps}
                     size="small"
                     sx={{
                         opacity: hover === getItemId(item) && !isDragDisable ? '1' : '0',
+                        padding: 'unset',
                         ...styles.dragIcon,
                     }}
                 >
-                    <DragIndicatorIcon />
+                    <DragIndicatorIcon spacing={0} />
                 </IconButton>
                 <ListItemIcon sx={{ ...sx?.checkBoxIcon }}>
-                    <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+                    <Checkbox
+                        disableRipple
+                        sx={sx?.checkbox}
+                        {...(isCheckboxClickableOnly && {
+                            onClick: () => onClick(),
+                        })}
+                        {...props}
+                    />
                 </ListItemIcon>
                 <ListItemText
                     sx={{

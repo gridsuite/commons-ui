@@ -598,6 +598,7 @@ function AppContent({ language, onLanguageClick }) {
                 divider={false}
                 secondaryAction={secondaryAction}
                 addSelectAllCheckbox={false}
+                isCheckboxClickableOnly
             />
 
             <Button

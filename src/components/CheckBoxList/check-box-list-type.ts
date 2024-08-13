@@ -17,7 +17,7 @@ export interface CheckBoxListItemSxProps {
     checkbox?: SxProps;
 }
 
-interface CheckBoxListItemBaseProps<T> {
+export interface CheckBoxListItemProps<T> {
     item: T;
     sx?: CheckBoxListItemSxProps;
     label: string;
@@ -27,20 +27,13 @@ interface CheckBoxListItemBaseProps<T> {
     disabled?: boolean;
     divider?: boolean;
     checked: boolean;
-    isDndDragAndDropActive: boolean;
+    isCheckboxClickableOnly?: boolean;
 }
 
-interface ClassicCheckBoxListItemProps<T> extends CheckBoxListItemBaseProps<T> {
-    isDndDragAndDropActive: false;
-}
-
-interface DraggableCheckBoxListItemProps<T> extends CheckBoxListItemBaseProps<T> {
-    isDndDragAndDropActive: true;
+export interface DraggableCheckBoxListItemProps<T> extends CheckBoxListItemProps<T> {
     isDragDisable?: boolean;
     provided: DraggableProvided;
 }
-
-export type CheckBoxListItemInterface<T> = ClassicCheckBoxListItemProps<T> | DraggableCheckBoxListItemProps<T>;
 
 export interface CheckBoxListItemsProps<T> {
     items: T[];
@@ -57,6 +50,7 @@ export interface CheckBoxListItemsProps<T> {
     isDndDragAndDropActive?: boolean;
     isDragDisable?: boolean;
     divider?: boolean;
+    isCheckboxClickableOnly?: boolean;
 }
 
 export interface CheckboxListProps<T> extends CheckBoxListItemsProps<T> {

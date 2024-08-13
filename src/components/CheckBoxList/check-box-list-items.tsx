@@ -29,6 +29,7 @@ export function CheckBoxListItems<T>({
     isDndDragAndDropActive,
     isDragDisable,
     divider,
+    isCheckboxClickableOnly,
     ...props
 }: CheckBoxListItemsProps<T>) {
     const handleOnchange = useCallback(
@@ -133,7 +134,7 @@ export function CheckBoxListItems<T>({
                             key={getItemId(item)}
                         >
                             {(provided) => (
-                                <DraggableCheckBoxListItem
+                                <DraggableCheckBoxListItem<T>
                                     key={getItemId(item)}
                                     item={item}
                                     checked={isChecked(item)}
@@ -146,14 +147,14 @@ export function CheckBoxListItems<T>({
                                     isDragDisable={isDragDisable}
                                     provided={provided}
                                     divider={divider}
-                                    isDndDragAndDropActive={isDndDragAndDropActive}
+                                    isCheckboxClickableOnly={isCheckboxClickableOnly}
                                 />
                             )}
                         </Draggable>
                     );
                 }
                 return (
-                    <CheckBoxListItem
+                    <CheckBoxListItem<T>
                         key={getItemId(item)}
                         item={item}
                         checked={isChecked(item)}
@@ -164,7 +165,7 @@ export function CheckBoxListItems<T>({
                         sx={sx}
                         secondaryAction={handleSecondaryAction}
                         divider={divider}
-                        isDndDragAndDropActive={isDndDragAndDropActive}
+                        isCheckboxClickableOnly={isCheckboxClickableOnly}
                     />
                 );
             })}

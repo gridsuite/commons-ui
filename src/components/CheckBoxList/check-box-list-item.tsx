@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { Checkbox, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import OverflowableText from '../OverflowableText';
-import { CheckBoxListItemInterface } from './check-box-list-type';
+import { CheckBoxListItemProps } from './check-box-list-type';
 
 export function CheckBoxListItem<T>({
     item,
@@ -19,8 +19,9 @@ export function CheckBoxListItem<T>({
     getItemId,
     divider,
     disabled,
+    isCheckboxClickableOnly,
     ...props
-}: CheckBoxListItemInterface<T>) {
+}: CheckBoxListItemProps<T>) {
     const [hover, setHover] = useState<string>('');
     return (
         <ListItem
@@ -31,9 +32,22 @@ export function CheckBoxListItem<T>({
             disablePadding
             divider={divider}
         >
-            <ListItemButton onClick={onClick} sx={sx?.checkboxButton} disabled={disabled}>
+            <ListItemButton
+                sx={sx?.checkboxButton}
+                disabled={disabled}
+                {...(!isCheckboxClickableOnly && {
+                    onClick: () => onClick(),
+                })}
+            >
                 <ListItemIcon sx={sx?.checkBoxIcon}>
-                    <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+                    <Checkbox
+                        disableRipple
+                        sx={sx?.checkbox}
+                        {...(isCheckboxClickableOnly && {
+                            onClick: () => onClick(),
+                        })}
+                        {...props}
+                    />
                 </ListItemIcon>
                 <ListItemText sx={{ display: 'flex' }} disableTypography>
                     <OverflowableText sx={sx?.label} text={label} />
