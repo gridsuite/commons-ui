@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { fetchEnv } from '@gridsuite/commons-ui';
+import { fetchEnv } from '../services';
 
 const useConfidentialityWarning = () => {
     const [confidentialityWarningKey, setConfidentialityWarningKey] = useState<string>();
