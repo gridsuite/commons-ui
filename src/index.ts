@@ -163,6 +163,7 @@ export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
+export { default as useConfidentialityWarning } from './hooks/useConfidentialityWarning';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export { default as useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
