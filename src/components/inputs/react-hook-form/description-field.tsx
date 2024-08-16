@@ -11,23 +11,26 @@ import { Box, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useFormContext } from 'react-hook-form'; // Import useFormContext
-import FieldConstants from '../../utils/field-constants';
-import ExpandingTextField from './react-hook-form/ExpandingTextField';
+import FieldConstants from '../../../utils/field-constants';
+import ExpandingTextField from './ExpandingTextField';
 
 function DescriptionField() {
-    const [isDescriptionFieldVisible, setDescriptionFieldVisibility] = useState(false);
+    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(false);
     const { setValue } = useFormContext();
-    const handleToggle = () => {
-        if (isDescriptionFieldVisible) {
-            setValue(FieldConstants.DESCRIPTION, '');
-        }
-        setDescriptionFieldVisibility((prev) => !prev);
+
+    const handleOpenDescription = () => {
+        setIsDescriptionFieldVisible(true);
+        setValue(FieldConstants.DESCRIPTION, '');
+    };
+
+    const handleCloseDescription = () => {
+        setIsDescriptionFieldVisible(false);
     };
 
     return (
         <Box>
             {!isDescriptionFieldVisible ? (
-                <Button startIcon={<AddIcon />} onClick={handleToggle}>
+                <Button startIcon={<AddIcon />} onClick={handleOpenDescription}>
                     <FormattedMessage id="AddDescription" />
                 </Button>
             ) : (
@@ -46,7 +49,7 @@ function DescriptionField() {
                             padding: 1,
                             marginBottom: 2,
                         }}
-                        onClick={handleToggle}
+                        onClick={handleCloseDescription}
                     >
                         <DeleteIcon />
                     </Button>

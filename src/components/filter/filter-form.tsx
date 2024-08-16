@@ -17,7 +17,7 @@ import { FilterType } from './constants/filter-constants';
 import RadioInput from '../inputs/react-hook-form/radio-input';
 import { ElementExistsType, ElementType } from '../../utils/ElementType';
 import UniqueNameInput from '../inputs/react-hook-form/unique-name-input';
-import DescriptionField from '../inputs/description-field';
+import DescriptionField from '../inputs/react-hook-form/description-field';
 
 interface FilterFormProps {
     creation?: boolean;
