@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import SubmitButton from '../inputs/react-hook-form/utils/submit-button';
 import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import CustomFormProvider, { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
+import PopupConfirmationDialog from './popup-confirmation-dialog';
 
 interface ICustomMuiDialog {
     open: boolean;
@@ -28,6 +29,7 @@ interface ICustomMuiDialog {
     children: React.ReactNode;
     isDataFetching?: boolean;
     language?: string;
+    confirmationMessageKey?: string;
 }
 
 const styles = {
@@ -54,13 +56,19 @@ function CustomMuiDialog({
     onCancel,
     children,
     language,
+    confirmationMessageKey,
 }: ICustomMuiDialog) {
+    const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
+    const [validatedData, setValidatedData] = useState(undefined);
     const { handleSubmit } = formMethods;
 
-    const handleCancel = (event: React.MouseEvent) => {
-        onCancel?.();
-        onClose(event);
-    };
+    const handleCancel = useCallback(
+        (event: React.MouseEvent) => {
+            onCancel?.();
+            onClose(event);
+        },
+        [onCancel, onClose]
+    );
 
     const handleClose = (event: React.MouseEvent, reason?: string) => {
         if (reason === 'backdropClick' && onCancel) {
@@ -69,10 +77,30 @@ function CustomMuiDialog({
         onClose(event);
     };
 
-    const handleValidate = (data: any) => {
-        onSave(data);
-        onClose(data);
-    };
+    const validate = useCallback(
+        (data: any) => {
+            onSave(data);
+            onClose(data);
+        },
+        [onClose, onSave]
+    );
+
+    const handleValidate = useCallback(
+        (data: any) => {
+            if (confirmationMessageKey) {
+                setValidatedData(data);
+                setOpenConfirmationPopup(true);
+            } else {
+                validate(data);
+            }
+        },
+        [confirmationMessageKey, validate]
+    );
+
+    const handlePopupConfirmation = useCallback(() => {
+        setOpenConfirmationPopup(false);
+        validate(validatedData);
+    }, [validate, validatedData]);
 
     const handleValidationError = (errors: FieldErrors) => {
         onValidationError?.(errors);
@@ -102,6 +130,14 @@ function CustomMuiDialog({
                     />
                 </DialogActions>
             </Dialog>
+            {confirmationMessageKey && (
+                <PopupConfirmationDialog
+                    message={confirmationMessageKey}
+                    openConfirmationPopup={openConfirmationPopup}
+                    setOpenConfirmationPopup={setOpenConfirmationPopup}
+                    handlePopupConfirmation={handlePopupConfirmation}
+                />
+            )}
         </CustomFormProvider>
     );
 }

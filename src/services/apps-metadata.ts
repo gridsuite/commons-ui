@@ -13,6 +13,7 @@ export type Url = string | URL;
 export type Env = {
     appsMetadataServerUrl?: Url;
     mapBoxToken?: string;
+    confidentialityMessageKey?: string;
     // https://github.com/gridsuite/deployment/blob/main/docker-compose/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-dev/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-integ/env.json
@@ -46,6 +47,7 @@ export type StudyMetadata = CommonMetadata & {
         mapManualRefresh?: string; // maybe 'true'|'false' type?
     };
     defaultCountry?: string;
+    favoriteCountries?: string[];
 };
 
 export async function fetchAppsMetadata(): Promise<CommonMetadata[]> {
@@ -68,3 +70,19 @@ export async function fetchStudyMetadata(): Promise<StudyMetadata> {
         return studyMetadata[0]; // There should be only one study metadata
     }
 }
+
+export async function fetchFavoriteAndDefaultCountries(): Promise<{
+    favoriteCountries: string[];
+    defaultCountry?: string;
+}> {
+    const { favoriteCountries = [], defaultCountry } = await fetchStudyMetadata();
+    return {
+        favoriteCountries,
+        defaultCountry,
+    };
+}
+
+export const fetchDefaultCountry = async (): Promise<string | undefined> => {
+    const studyMetadata = await fetchStudyMetadata();
+    return studyMetadata.defaultCountry;
+};
