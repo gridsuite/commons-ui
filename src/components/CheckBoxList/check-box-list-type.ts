@@ -57,3 +57,16 @@ export interface CheckboxListProps<T> extends CheckBoxListItemsProps<T> {
     onDragStart?: (dragStart: DragStart) => void;
     onDragEnd?: (dropResult: DropResult) => void;
 }
+
+export interface ClickableItemProps {
+    sx?: CheckBoxListItemSxProps;
+    label: string;
+    onClick: () => void;
+    disabled?: boolean;
+    checked: boolean;
+}
+
+export interface DraggableClickableItemProps extends ClickableItemProps {
+    provided: DraggableProvided;
+    isHighlighted: boolean;
+}

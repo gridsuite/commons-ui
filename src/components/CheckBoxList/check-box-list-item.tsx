@@ -6,19 +6,17 @@
  */
 
 import { useState } from 'react';
-import { Checkbox, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import OverflowableText from '../OverflowableText';
+import { ListItem } from '@mui/material';
 import { CheckBoxListItemProps } from './check-box-list-type';
+import { ClickableCheckBoxItem } from './clickable-check-box-item';
+import { ClickableRowItem } from './clickable-row-item';
 
 export function CheckBoxListItem<T>({
     item,
     sx,
-    label,
-    onClick,
     secondaryAction,
     getItemId,
     divider,
-    disabled,
     isCheckboxClickableOnly,
     ...props
 }: CheckBoxListItemProps<T>) {
@@ -32,27 +30,7 @@ export function CheckBoxListItem<T>({
             disablePadding
             divider={divider}
         >
-            <ListItemButton
-                sx={sx?.checkboxButton}
-                disabled={disabled}
-                {...(!isCheckboxClickableOnly && {
-                    onClick: () => onClick(),
-                })}
-            >
-                <ListItemIcon sx={sx?.checkBoxIcon}>
-                    <Checkbox
-                        disableRipple
-                        sx={sx?.checkbox}
-                        {...(isCheckboxClickableOnly && {
-                            onClick: () => onClick(),
-                        })}
-                        {...props}
-                    />
-                </ListItemIcon>
-                <ListItemText sx={{ display: 'flex' }} disableTypography>
-                    <OverflowableText sx={sx?.label} text={label} />
-                </ListItemText>
-            </ListItemButton>
+            {isCheckboxClickableOnly ? <ClickableCheckBoxItem {...props} /> : <ClickableRowItem {...props} />}
         </ListItem>
     );
 }
