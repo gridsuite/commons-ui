@@ -54,7 +54,7 @@ const formSchema = yup
 
 export interface FilterCreationDialogProps {
     open: boolean;
-    onClose: () => void;
+    onClose: (e?: any, nextSelectedDirectoryId?: string | null) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
