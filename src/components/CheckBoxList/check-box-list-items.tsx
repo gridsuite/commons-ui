@@ -124,6 +124,7 @@ export function CheckBoxListItems<T>({
             {items?.map((item, index) => {
                 const label = getItemLabel ? getItemLabel(item) : getItemId(item);
                 const disabled = isDisabled ? isDisabled(item) : false;
+                const addDivider = divider && index < items.length - 1;
 
                 if (isDndDragAndDropActive) {
                     return (
@@ -146,7 +147,7 @@ export function CheckBoxListItems<T>({
                                     secondaryAction={handleSecondaryAction}
                                     isDragDisable={isDragDisable}
                                     provided={provided}
-                                    divider={divider}
+                                    divider={addDivider}
                                     isCheckboxClickableOnly={isCheckboxClickableOnly}
                                 />
                             )}
@@ -164,7 +165,7 @@ export function CheckBoxListItems<T>({
                         getItemId={getItemId}
                         sx={sx}
                         secondaryAction={handleSecondaryAction}
-                        divider={divider}
+                        divider={addDivider}
                         isCheckboxClickableOnly={isCheckboxClickableOnly}
                     />
                 );

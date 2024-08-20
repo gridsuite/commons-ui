@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Checkbox, IconButton, ListItemText } from '@mui/material';
+import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
 import { DraggableClickableItemProps } from './check-box-list-type';
@@ -40,7 +40,9 @@ export function DraggableClickableCheckBoxItem({
             >
                 <DragIndicatorIcon spacing={0} />
             </IconButton>
-            <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+            <ListItemIcon sx={{ ...sx?.checkBoxIcon }}>
+                <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+            </ListItemIcon>
             <ListItemText
                 sx={{
                     display: 'flex',

@@ -552,6 +552,10 @@ function AppContent({ language, onLanguageClick }) {
         { id: 'ney', label: 'Neymar' },
         { id: 'lapulga', label: 'Lionel Messi' },
         { id: 'ibra', label: 'Zlatan Ibrahimovic' },
+        {
+            id: 'random',
+            label: 'sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv',
+        },
     ]);
 
     const secondaryAction = () => (
@@ -595,9 +599,11 @@ function AppContent({ language, onLanguageClick }) {
                 handleClose={() => setOpenMultiChoiceDialog(false)}
                 handleValidate={() => setOpenMultiChoiceDialog(false)}
                 titleId="Checkbox list"
-                divider={false}
+                divider
                 secondaryAction={secondaryAction}
                 addSelectAllCheckbox={false}
+                isCheckboxClickableOnly
+                enableSecondaryActionOnHover
             />
 
             <Button
