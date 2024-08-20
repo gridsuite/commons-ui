@@ -5,5 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export { default as TopBar } from './TopBar';
+export type { TopBarProps } from './TopBar';
 export * from './GridLogo';
 export { default as AboutDialog } from './AboutDialog';

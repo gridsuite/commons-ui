@@ -11,12 +11,12 @@ import { useLocalizedCountries } from '../../../../hooks/localized-countries-hoo
 import useCustomFormContext from '../provider/use-custom-form-context';
 import { Option } from '../../../../utils/types';
 
-interface CountryInputProps {
+export interface CountryInputProps {
     name: string;
     label: string;
 }
 
-function CountriesInput({ name, label }: CountryInputProps) {
+function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
 
