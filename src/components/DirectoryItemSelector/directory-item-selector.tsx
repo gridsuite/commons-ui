@@ -130,7 +130,7 @@ function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, childr
     return [nextRoots, nextMap];
 }
 
-interface DirectoryItemSelectorProps extends TreeViewFinderProps {
+export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     open: boolean;
     types: string[];
     equipmentTypes?: string[];
@@ -165,7 +165,7 @@ function DirectoryItemSelector({
     itemFilter,
     expanded,
     ...otherTreeViewFinderProps
-}: DirectoryItemSelectorProps) {
+}: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
     const [rootDirectories, setRootDirectories] = useState<any[]>([]);
     const nodeMap = useRef<any>({});

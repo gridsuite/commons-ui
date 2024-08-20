@@ -7,3 +7,4 @@
 import defaultReportViewer from './report-viewer';
 
 export default defaultReportViewer;
+export type { ReportViewerProps } from './report-viewer';

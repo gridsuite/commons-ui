@@ -15,7 +15,7 @@ import CancelButton from '../inputs/react-hook-form/utils/cancel-button';
 import CustomFormProvider, { MergedFormContextProps } from '../inputs/react-hook-form/provider/custom-form-provider';
 import PopupConfirmationDialog from './popup-confirmation-dialog';
 
-interface ICustomMuiDialog {
+export interface CustomMuiDialogProps {
     open: boolean;
     formSchema: yup.AnySchema;
     formMethods: UseFormReturn<any> | MergedFormContextProps;
@@ -57,7 +57,7 @@ function CustomMuiDialog({
     children,
     language,
     confirmationMessageKey,
-}: ICustomMuiDialog) {
+}: Readonly<CustomMuiDialogProps>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState(undefined);
     const { handleSubmit } = formMethods;
