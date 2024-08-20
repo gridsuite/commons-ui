@@ -45,6 +45,7 @@ export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dial
 export type { CustomMuiDialogProps } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
 export type { DescriptionModificationDialogProps } from './components/dialogs/description-modification-dialog';
+export { default as DescriptionField } from './components/inputs/react-hook-form/description-field';
 export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
 export type { ModifyElementSelectionProps } from './components/dialogs/modify-element-selection';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
@@ -178,6 +179,7 @@ export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
+export { default as useConfidentialityWarning } from './hooks/useConfidentialityWarning';
 export { default as SelectClearable } from './components/inputs/select-clearable';
 export type { SelectClearableProps } from './components/inputs/select-clearable';
 export { default as useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
