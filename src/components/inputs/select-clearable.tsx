@@ -12,14 +12,14 @@ import FieldLabel from './react-hook-form/utils/field-label';
 
 type SelectOption = { id: string; label?: string };
 
-interface SelectClearableProps
+export interface SelectClearableProps
     extends Omit<AutocompleteProps<SelectOption, false, false, false>, 'value' | 'onChange' | 'renderInput'> {
     value: string | null;
     onChange: (value: string | null) => void;
     label?: string;
 }
 
-function SelectClearable(props: SelectClearableProps) {
+function SelectClearable(props: Readonly<SelectClearableProps>) {
     const { value, onChange, label, options, ...otherProps } = props;
 
     const intl = useIntl();

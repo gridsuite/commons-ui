@@ -7,3 +7,4 @@
 import defaultOverflowableText from './overflowable-text';
 
 export default defaultOverflowableText;
+export type { OverflowableTextProps } from './overflowable-text';

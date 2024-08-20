@@ -34,7 +34,7 @@ const formSchema = yup
     })
     .required();
 
-interface ExplicitNamingFilterEditionDialogProps {
+export interface ExplicitNamingFilterEditionDialogProps {
     id: string;
     name: string;
     titleId: string;
@@ -62,7 +62,7 @@ function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: ExplicitNamingFilterEditionDialogProps) {
+}: Readonly<ExplicitNamingFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

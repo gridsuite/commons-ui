@@ -9,13 +9,13 @@ import { FormattedMessage } from 'react-intl';
 import { MenuItem, Select, SelectProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 
-interface MuiSelectInputProps {
+export type MuiSelectInputProps = SelectProps & {
     name: string;
     options: { id: string; label: string }[];
-}
+};
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps & SelectProps) {
+function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
     const {
         field: { value, onChange },
     } = useController({

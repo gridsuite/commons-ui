@@ -6,50 +6,51 @@
  */
 
 import { ValueEditorProps } from 'react-querybuilder';
-import { MaterialValueEditor } from '@react-querybuilder/material';
-import { Autocomplete, TextField } from '@mui/material';
-import { useMemo } from 'react';
-import useConvertValue from './use-convert-value';
-import useValid from './use-valid';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocalizedCountries } from '../../../hooks/localized-countries-hook';
 import useCustomFormContext from '../react-hook-form/provider/use-custom-form-context';
+import { fetchFavoriteAndDefaultCountries } from '../../../services';
+import AutocompleteWithFavorites from './autocomplete-with-favorites';
+import useConvertValue from './use-convert-value';
+import useValid from './use-valid';
 
 function CountryValueEditor(props: ValueEditorProps) {
-    const { language } = useCustomFormContext();
-    const { translate, countryCodes } = useLocalizedCountries(language);
     const { value, handleOnChange } = props;
 
-    const countriesList = useMemo(
-        () =>
-            countryCodes.map((country: string) => {
-                return { name: country, label: translate(country) };
-            }),
-        [countryCodes, translate]
-    );
+    const { language } = useCustomFormContext();
+    const { translate, countryCodes } = useLocalizedCountries(language);
+    const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>([]);
+    const [initialized, setInitialized] = useState<boolean>(false);
+
+    // fetch favorite countries and default country
+    useEffect(() => {
+        if (!initialized) {
+            fetchFavoriteAndDefaultCountries().then(({ favoriteCountries, defaultCountry }) => {
+                setFavoriteCountryCodes(favoriteCountries);
+                if (defaultCountry && !value) {
+                    handleOnChange(defaultCountry);
+                }
+                setInitialized(true);
+            });
+        }
+    }, [initialized, setInitialized, handleOnChange, value]);
+
     // When we switch to 'in' operator, we need to switch the input value to an array and vice versa
     useConvertValue(props);
 
     const valid = useValid(props);
 
-    // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
-    if (!Array.isArray(value)) {
-        return (
-            <MaterialValueEditor
-                {...props}
-                values={countriesList}
-                title={undefined} // disable the tooltip
-            />
-        );
-    }
     return (
-        <Autocomplete
+        <AutocompleteWithFavorites
             value={value}
             options={countryCodes}
-            getOptionLabel={(code: string) => translate(code)}
-            onChange={(event, newValue: any) => handleOnChange(newValue)}
-            multiple
+            favorites={favoriteCountryCodes}
+            getOptionLabel={(code: string) => (code ? translate(code) : '')}
+            valid={valid}
+            onChange={(event: SyntheticEvent, newValue: any) => {
+                handleOnChange(newValue);
+            }}
             fullWidth
-            renderInput={(params) => <TextField {...params} error={!valid} />}
         />
     );
 }

@@ -17,7 +17,7 @@ import useDebounce from '../../../hooks/useDebounce';
 import FieldConstants from '../../../utils/field-constants';
 import { ElementExistsType, ElementType } from '../../../utils/ElementType';
 
-interface UniqueNameInputProps {
+export interface UniqueNameInputProps {
     name: string;
     label?: string;
     elementType: ElementType;
@@ -43,7 +43,7 @@ function UniqueNameInput({
     formProps,
     activeDirectory,
     elementExists,
-}: UniqueNameInputProps) {
+}: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
         fieldState: { error, isDirty },
