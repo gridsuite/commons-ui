@@ -22,7 +22,7 @@ import { RECORD_SEP, UNIT_SEP } from 'papaparse';
 import FieldConstants from '../../../../../utils/field-constants';
 import CancelButton from '../../utils/cancel-button';
 
-interface CsvUploaderProps {
+export interface CsvUploaderProps {
     name: string;
     onClose: () => void;
     open: true;
@@ -46,7 +46,7 @@ function CsvUploader({
     validateData = () => true,
     getDataFromCsv,
     useFieldArrayOutput,
-}: CsvUploaderProps) {
+}: Readonly<CsvUploaderProps>) {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
     const [createError, setCreateError] = React.useState('');

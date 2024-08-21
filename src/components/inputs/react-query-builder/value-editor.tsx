@@ -102,16 +102,7 @@ function ValueEditor(props: ValueEditorProps) {
         );
     }
 
-    if (
-        field === FieldType.ID ||
-        field === FieldType.NAME ||
-        field === FieldType.REGULATING_TERMINAL_VL_ID ||
-        field === FieldType.REGULATING_TERMINAL_CONNECTABLE_ID ||
-        field === FieldType.VOLTAGE_LEVEL_ID ||
-        field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-        field === FieldType.VOLTAGE_LEVEL_ID_2 ||
-        field === FieldType.VOLTAGE_LEVEL_ID_3
-    ) {
+    if (fieldData.dataType === DataType.STRING) {
         return <TextValueEditor {...props} />;
     }
 

@@ -15,7 +15,7 @@ type RadioOptions = Array<{
     label: string;
 }>;
 
-interface RadioInputProps {
+export interface RadioInputProps {
     name: string;
     label?: string;
     id?: string;
@@ -23,7 +23,7 @@ interface RadioInputProps {
     formProps?: Omit<RadioGroupProps, 'value'>;
 }
 
-function RadioInput({ name, label, id, options, formProps }: RadioInputProps) {
+function RadioInput({ name, label, id, options, formProps }: Readonly<RadioInputProps>) {
     const {
         field: { onChange, value },
     } = useController({ name });

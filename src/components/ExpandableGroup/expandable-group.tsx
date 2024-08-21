@@ -40,11 +40,11 @@ export const styles = {
     }),
 };
 
-interface ExpandableGroupProps extends PropsWithChildren {
+export interface ExpandableGroupProps extends PropsWithChildren {
     renderHeader: ReactNode;
 }
 
-function ExpandableGroup({ renderHeader, children }: ExpandableGroupProps) {
+function ExpandableGroup({ renderHeader, children }: Readonly<ExpandableGroupProps>) {
     const [mouseHover, setMouseHover] = useState(false);
 
     return (
