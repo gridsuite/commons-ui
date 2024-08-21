@@ -7,3 +7,4 @@
 import defaultFlatParameters from './FlatParameters';
 
 export default defaultFlatParameters;
+export type { FlatParametersProps, Parameter } from './FlatParameters';

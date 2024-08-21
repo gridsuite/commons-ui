@@ -45,7 +45,7 @@ const formSchema = yup
     })
     .required();
 
-interface CriteriaBasedFilterEditionDialogProps {
+export interface CriteriaBasedFilterEditionDialogProps {
     id: string;
     name: string;
     titleId: string;
@@ -73,7 +73,7 @@ function CriteriaBasedFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: CriteriaBasedFilterEditionDialogProps) {
+}: Readonly<CriteriaBasedFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
