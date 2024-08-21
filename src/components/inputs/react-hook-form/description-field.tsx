@@ -20,11 +20,11 @@ function DescriptionField() {
 
     const handleOpenDescription = () => {
         setIsDescriptionFieldVisible(true);
-        setValue(FieldConstants.DESCRIPTION, '');
     };
 
     const handleCloseDescription = () => {
         setIsDescriptionFieldVisible(false);
+        setValue(FieldConstants.DESCRIPTION, '');
     };
 
     return (
