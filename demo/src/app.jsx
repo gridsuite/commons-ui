@@ -27,9 +27,9 @@ import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import SnackbarProvider from '../../src/components/SnackbarProvider';
-import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import CardErrorBoundary from '../../src/components/CardErrorBoundary';
+import SnackbarProvider from '../../src/components/snackbarProvider';
+import AuthenticationRouter from '../../src/components/authenticationRouter';
+import CardErrorBoundary from '../../src/components/cardErrorBoundary';
 import {
     ElementType,
     EQUIPMENT_TYPE,
@@ -75,8 +75,8 @@ import translations from './demo_intl';
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
-import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import { TreeViewFinder, generateTreeViewFinderClass } from '../../src/components/TreeViewFinder';
+import ReportViewerDialog from '../../src/components/reportViewerDialog';
+import { TreeViewFinder, generateTreeViewFinderClass } from '../../src/components/treeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
 import {
@@ -89,17 +89,17 @@ import {
 import LOGS_JSON from '../data/ReportViewer';
 
 import searchEquipments from '../data/EquipmentSearchBar';
-import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
-import OverflowableText from '../../src/components/OverflowableText';
+import { EquipmentItem } from '../../src/components/elementSearch/elementItem/EquipmentItem';
+import OverflowableText from '../../src/components/overflowableText';
 
-import { setShowAuthenticationRouterLogin } from '../../src/redux/authActions';
+import { setShowAuthenticationRouterLogin } from '../../src/redux/actions/authActions';
 import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import InputsTab from './InputsTab';
-import inputs_en from '../../src/components/translations/inputs-en';
-import inputs_fr from '../../src/components/translations/inputs-fr';
+import inputs_en from '../../src/components/translations/en/inputsEn';
+import inputs_fr from '../../src/components/translations/fr/inputsFr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 
