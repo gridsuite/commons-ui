@@ -11,14 +11,11 @@ import { ClickableItemProps } from './check-box-list-type';
 export function ClickableCheckBoxItem({ sx, label, ...props }: ClickableItemProps) {
     return (
         <>
-            <ListItemIcon sx={{ ...sx?.checkBoxIcon }}>
-                <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+            <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
+                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} {...props} />
             </ListItemIcon>
             <ListItemText sx={{ display: 'flex' }} disableTypography>
-                <OverflowableText
-                    sx={{ marginRight: (theme) => theme.spacing(5), flexGrow: '1', ...sx?.label }}
-                    text={label}
-                />
+                <OverflowableText sx={sx?.label} text={label} />
             </ListItemText>
         </>
     );

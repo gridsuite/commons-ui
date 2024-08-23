@@ -29,7 +29,8 @@ export function DraggableCheckBoxListItem<T>({
             sx={sx?.checkboxList}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
-            disablePadding
+            disablePadding={!isCheckboxClickableOnly}
+            disableGutters
             divider={divider}
             ref={provided.innerRef}
             {...provided.draggableProps}

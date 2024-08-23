@@ -627,8 +627,8 @@ function AppContent({ language, onLanguageClick }) {
                 titleId="Draggable checkbox list"
                 divider
                 secondaryAction={secondaryAction}
-                addSelectAllCheckbox
                 isDndDragAndDropActive
+                enableSecondaryActionOnHover
                 onDragEnd={({ source, destination }) => {
                     if (destination !== null && source.index !== destination.index) {
                         const res = [...checkBoxListOption];

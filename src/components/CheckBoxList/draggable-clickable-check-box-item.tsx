@@ -40,8 +40,8 @@ export function DraggableClickableCheckBoxItem({
             >
                 <DragIndicatorIcon spacing={0} />
             </IconButton>
-            <ListItemIcon sx={{ ...sx?.checkBoxIcon }}>
-                <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+            <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
+                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} {...props} />
             </ListItemIcon>
             <ListItemText
                 sx={{

@@ -11,8 +11,8 @@ import { ClickableItemProps } from './check-box-list-type';
 export function ClickableRowItem({ sx, disabled, label, onClick, ...props }: ClickableItemProps) {
     return (
         <ListItemButton sx={sx?.checkboxButton} disabled={disabled} onClick={onClick}>
-            <ListItemIcon sx={sx?.checkBoxIcon}>
-                <Checkbox disableRipple sx={sx?.checkbox} {...props} />
+            <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
+                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} {...props} />
             </ListItemIcon>
             <ListItemText
                 sx={{

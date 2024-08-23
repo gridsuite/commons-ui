@@ -27,7 +27,8 @@ export function CheckBoxListItem<T>({
             sx={sx?.checkboxList}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
-            disablePadding
+            disablePadding={!isCheckboxClickableOnly}
+            disableGutters
             divider={divider}
         >
             {isCheckboxClickableOnly ? <ClickableCheckBoxItem {...props} /> : <ClickableRowItem {...props} />}

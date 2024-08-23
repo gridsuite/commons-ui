@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { CheckboxList } from '../CheckBoxList/check-box-list';
 import { CheckboxListProps } from '../CheckBoxList/check-box-list-type';
 
-interface MultipleSelectionDialogProps<T> extends CheckboxListProps<T> {
+export interface MultipleSelectionDialogProps<T> extends CheckboxListProps<T> {
     open: boolean;
     handleClose: () => void;
     handleValidate: (options: T[]) => void;
