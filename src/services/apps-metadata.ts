@@ -8,7 +8,8 @@ import { PredefinedProperties } from '../utils/types';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
-export type Url = string | URL;
+export type UrlString = `${string}://${string}` | `/${string}` | `./${string}`;
+export type Url = UrlString | URL;
 
 export type Env = {
     appsMetadataServerUrl?: Url;
