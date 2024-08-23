@@ -29,7 +29,7 @@ export function DraggableClickableRowItem({
     ...props
 }: DraggableClickableItemProps) {
     return (
-        <ListItemButton sx={sx?.checkboxButton} disabled={disabled} onClick={onClick}>
+        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onClick}>
             <IconButton
                 {...provided.dragHandleProps}
                 size="small"
