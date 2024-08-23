@@ -12,11 +12,11 @@ import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { expect, it } from '@jest/globals';
 import TopBar, { LANG_ENGLISH } from '../TopBar';
-import { CommonMetadata, topBarEn } from '../../..';
+import { Metadata, topBarEn } from '../../..';
 
 import PowsyblLogo from './powsybl_logo.svg?react';
 
-const apps: CommonMetadata[] = [
+const apps: Metadata[] = [
     {
         name: 'App1',
         url: '/app1',
