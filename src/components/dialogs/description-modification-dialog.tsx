@@ -83,9 +83,9 @@ function DescriptionModificationDialog({
                     name={FieldConstants.DESCRIPTION}
                     label="descriptionProperty"
                     minRows={3}
-                    rows={5}
+                    rows={3}
                 />
-            </Box>{' '}
+            </Box>
         </CustomMuiDialog>
     );
 }
