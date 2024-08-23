@@ -15,6 +15,7 @@ import {
     FormControlLabel,
     FormGroup,
     Grid,
+    IconButton,
     StyledEngineProvider,
     Tab,
     Tabs,
@@ -22,6 +23,7 @@ import {
     ThemeProvider,
     Typography,
 } from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
 import { styled } from '@mui/system';
 import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
@@ -102,6 +104,7 @@ import inputs_en from '../../src/components/translations/inputs-en';
 import inputs_fr from '../../src/components/translations/inputs-fr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
+import MultipleSelectionDialog from '../../src/components/MultipleSelectionDialog/MultipleSelectionDialog';
 
 const messages = {
     en: {
@@ -311,6 +314,10 @@ function AppContent({ language, onLanguageClick }) {
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
     const [openReportViewer, setOpenReportViewer] = useState(false);
+
+    const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
+    const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] = useState(false);
+
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
     const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
 
@@ -540,6 +547,22 @@ function AppContent({ language, onLanguageClick }) {
         );
     }
 
+    const [checkBoxListOption, setCheckBoxListOption] = useState([
+        { id: 'kiki', label: 'Kylian Mbappe' },
+        { id: 'ney', label: 'Neymar' },
+        { id: 'lapulga', label: 'Lionel Messi' },
+        { id: 'ibra', label: 'Zlatan Ibrahimovic' },
+        {
+            id: 'john',
+            label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
+        },
+    ]);
+
+    const secondaryAction = () => (
+        <IconButton aria-label="comment">
+            <CommentIcon />
+        </IconButton>
+    );
     const defaultTab = (
         <div>
             <Box mt={3}>
@@ -556,6 +579,65 @@ function AppContent({ language, onLanguageClick }) {
             <SnackErrorButton />
             <SnackWarningButton />
             <SnackInfoButton />
+
+            <Button
+                variant="contained"
+                style={{
+                    float: 'left',
+                    margin: '5px',
+                }}
+                onClick={() => setOpenMultiChoiceDialog(true)}
+            >
+                Checkbox list
+            </Button>
+            <MultipleSelectionDialog
+                items={checkBoxListOption}
+                selectedItems={[]}
+                open={openMultiChoiceDialog}
+                getItemLabel={(o) => o.label}
+                getItemId={(o) => o.id}
+                handleClose={() => setOpenMultiChoiceDialog(false)}
+                handleValidate={() => setOpenMultiChoiceDialog(false)}
+                titleId="Checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                addSelectAllCheckbox
+                isCheckboxClickableOnly
+                enableSecondaryActionOnHover
+            />
+
+            <Button
+                variant="contained"
+                style={{
+                    float: 'left',
+                    margin: '5px',
+                }}
+                onClick={() => setOpenDraggableMultiChoiceDialog(true)}
+            >
+                Draggable checkbox list
+            </Button>
+            <MultipleSelectionDialog
+                items={checkBoxListOption}
+                selectedItems={[]}
+                open={openDraggableMultiChoiceDialog}
+                getItemLabel={(o) => o.label}
+                getItemId={(o) => o.id}
+                handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
+                handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
+                titleId="Draggable checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                isDndDragAndDropActive
+                enableSecondaryActionOnHover
+                onDragEnd={({ source, destination }) => {
+                    if (destination !== null && source.index !== destination.index) {
+                        const res = [...checkBoxListOption];
+                        const [item] = res.splice(source.index, 1);
+                        res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
+                        setCheckBoxListOption(res);
+                    }
+                }}
+            />
 
             <Button
                 variant="contained"
