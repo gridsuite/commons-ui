@@ -6,7 +6,7 @@
  */
 import clsx from 'clsx';
 import { SxProps, Theme } from '@mui/material';
-import OverflowableText from '../../overflowableText';
+import { OverflowableText } from '../../overflowableText';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
 import { mergeSx } from '../../../utils/styles';
 

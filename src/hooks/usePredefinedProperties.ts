@@ -7,8 +7,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import mapEquipmentTypeForPredefinedProperties from '../utils/mapper/equipmentTypesForPredefinedPropertiesMapper';
 import { useSnackMessage } from './useSnackMessage';
-import { EquipmentType, PredefinedProperties } from '../utils/types/types';
+import { PredefinedProperties } from '../utils/types/types';
 import { fetchStudyMetadata } from '../services';
+import { EquipmentType } from '../utils';
 
 const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<PredefinedProperties | undefined> => {
     const networkEquipmentType = mapEquipmentTypeForPredefinedProperties(equipmentType);

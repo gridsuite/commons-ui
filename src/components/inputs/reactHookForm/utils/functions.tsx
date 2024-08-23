@@ -49,10 +49,6 @@ export const gridItem = (field: string | ReactElement, size: number = 6) => {
     );
 };
 
-export const isFloatNumber = (val: string) => {
-    return /^-?[0-9]*[.,]?[0-9]*$/.test(val);
-};
-
 export const toFloatOrNullValue = (value: string) => {
     if (value === '-') {
         return value;

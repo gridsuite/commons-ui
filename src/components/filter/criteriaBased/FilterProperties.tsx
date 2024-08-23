@@ -26,6 +26,7 @@ import FilterFreeProperties, { FreePropertiesTypes } from './FilterFreePropertie
 import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './FilterProperty';
 import usePredefinedProperties from '../../../hooks/usePredefinedProperties';
 import { FilterType } from '../constants/FilterConstants';
+import { EquipmentType } from '../../../utils';
 
 function propertyValuesTest(
     values: (string | undefined)[] | undefined,
@@ -145,7 +146,7 @@ function FilterProperties() {
     }, [displayEquipmentProperties, watchEquipmentType, setEquipmentType]);
     useEffect(() => {
         if (displaySubstationProperties) {
-            setSubstationType(Substation.type);
+            setSubstationType(EquipmentType.SUBSTATION);
         }
     }, [displaySubstationProperties, setSubstationType]);
 

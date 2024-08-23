@@ -19,10 +19,10 @@ import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './Expl
 import FieldConstants from '../../../utils/constants/fieldConstants';
 
 import FilterForm from '../FilterForm';
-import { noSelectionForCopy } from '../../../utils/types/equipmentTypes';
 import { FilterType } from '../constants/FilterConstants';
 import FetchStatus from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
+import { noSelectionForCopy } from '../criteriaBased';
 
 const formSchema = yup
     .object()

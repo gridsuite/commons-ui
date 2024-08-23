@@ -19,7 +19,7 @@ import { AutoSizer, Column, ColumnProps, RowMouseEventHandlerParams, Table, Tabl
 import CsvDownloader from 'react-csv-downloader';
 import { OverflowableText } from '../overflowableText/OverflowableText';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
-import { ChangeWays, collectibleHelper, getHelper, KeyedColumnsRowIndexer } from './KeyedColumnsRowIndexer';
+import { ChangeWays, collectibleHelper, CustomColumnProps, getHelper, KeyedColumnsRowIndexer, RowProps } from './KeyedColumnsRowIndexer';
 import { ColumnHeader } from './ColumnHeader';
 
 function getTextWidth(text: any): number {
@@ -151,22 +151,6 @@ function makeIndexRecord(
                   return rows[modelIndex];
               },
     };
-}
-
-export interface CustomColumnProps extends ColumnProps {
-    sortable?: boolean;
-    numeric?: boolean;
-    indexer?: KeyedColumnsRowIndexer;
-    label: string;
-    clickable?: boolean;
-    fractionDigits?: number;
-    unit?: number;
-    extra?: ReactElement;
-    nostat?: boolean;
-}
-
-export interface RowProps {
-    notClickable?: boolean;
 }
 
 const initIndexer = (props: CustomColumnProps, versionSetter: (version: number) => void) => {

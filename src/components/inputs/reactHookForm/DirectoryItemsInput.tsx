@@ -19,7 +19,7 @@ import ErrorInput from './errorManagement/ErrorInput';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { mergeSx } from '../../../utils/styles';
-import OverflowableText from '../../overflowableText';
+import { OverflowableText } from '../../overflowableText';
 import MidFormError from './errorManagement/MidFormError';
 import DirectoryItemSelector from '../../directoryItemSelector/DirectoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';

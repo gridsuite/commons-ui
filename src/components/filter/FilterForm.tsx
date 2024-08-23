@@ -19,7 +19,7 @@ import { ElementExistsType, ElementType } from '../../utils/types/elementType';
 import UniqueNameInput from '../inputs/reactHookForm/text/UniqueNameInput';
 import DescriptionField from '../inputs/reactHookForm/text/DescriptionField';
 
-interface FilterFormProps {
+export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;

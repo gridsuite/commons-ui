@@ -64,10 +64,6 @@ export type Equipment =
     | typeof ShuntCompensator
     | typeof VoltageLevel;
 
-export type EquipmentType = {
-    [Type in Equipment['type']]: Type;
-}[Equipment['type']];
-
 export type Option =
     | {
           id: string;

@@ -9,7 +9,7 @@ import { PropsWithChildren, ReactNode, useState } from 'react';
 import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
-export const styles = {
+const styles = {
     accordion: () => ({
         '&:before': {
             display: 'none',

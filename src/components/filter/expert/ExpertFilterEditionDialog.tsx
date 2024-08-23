@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
 import FieldConstants from '../../../utils/constants/fieldConstants';
-import { noSelectionForCopy } from '../../../utils/types/equipmentTypes';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import yup from '../../../utils/yupConfig';
@@ -21,6 +20,7 @@ import { importExpertRules } from './expertFilterUtils';
 import { FilterType } from '../constants/FilterConstants';
 import FetchStatus from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
+import { noSelectionForCopy } from '../criteriaBased';
 
 const formSchema = yup
     .object()

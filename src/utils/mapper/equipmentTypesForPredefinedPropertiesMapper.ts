@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { EquipmentType } from '../types/types';
+
+import { EquipmentType } from '../types';
 
 const mapEquipmentTypeForPredefinedProperties = (type: EquipmentType): string | undefined => {
     switch (type) {
