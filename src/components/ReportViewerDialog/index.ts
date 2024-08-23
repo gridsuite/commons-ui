@@ -7,3 +7,4 @@
 import defaultReportViewerDialog from './report-viewer-dialog';
 
 export default defaultReportViewerDialog;
+export type { ReportViewerDialogProps } from './report-viewer-dialog';

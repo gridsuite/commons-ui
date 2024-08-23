@@ -7,7 +7,9 @@
 
 import { useController } from 'react-hook-form';
 
-function RawReadOnlyInput({ name }: { name: string }) {
+export type RawReadOnlyInputProps = { name: string };
+
+function RawReadOnlyInput({ name }: Readonly<RawReadOnlyInputProps>) {
     const {
         field: { value },
     } = useController({ name });

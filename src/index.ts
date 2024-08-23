@@ -6,9 +6,11 @@
  */
 
 export { TreeViewFinder } from './components/TreeViewFinder';
+export type { TreeViewFinderProps, TreeViewFinderNodeProps } from './components/TreeViewFinder';
 export { TopBar } from './components/TopBar';
+export type { TopBarProps } from './components/TopBar';
 export { default as AboutDialog } from './components/TopBar/AboutDialog';
-export type { GridSuiteModule } from './components/TopBar/AboutDialog';
+export type { AboutDialogProps, GridSuiteModule } from './components/TopBar/AboutDialog';
 export { default as SnackbarProvider } from './components/SnackbarProvider';
 export { default as AuthenticationRouter } from './components/AuthenticationRouter';
 export type {
@@ -16,24 +18,45 @@ export type {
     AuthenticationRouterProps,
     UserManagerState,
 } from './components/AuthenticationRouter';
-export { MuiVirtualizedTable } from './components/MuiVirtualizedTable';
-export { KeyedColumnsRowIndexer, ChangeWays } from './components/MuiVirtualizedTable';
+export {
+    MuiVirtualizedTable,
+    KeyedColumnsRowIndexer,
+    ChangeWays,
+    DEFAULT_CELL_PADDING,
+    DEFAULT_HEADER_HEIGHT,
+    DEFAULT_ROW_HEIGHT,
+} from './components/MuiVirtualizedTable';
+export type { MuiVirtualizedTableProps, CustomColumnProps, RowProps } from './components/MuiVirtualizedTable';
 export { default as ReportViewer } from './components/ReportViewer';
+export type { ReportViewerProps } from './components/ReportViewer';
 export { default as ReportViewerDialog } from './components/ReportViewerDialog';
+export type { ReportViewerDialogProps } from './components/ReportViewerDialog';
 export { default as OverflowableText } from './components/OverflowableText';
+export type { OverflowableTextProps } from './components/OverflowableText';
 export { ElementSearchDialog } from './components/ElementSearchDialog';
+export type { ElementSearchDialogProps } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
+export type { FlatParametersProps, Parameter } from './components/FlatParameters';
 export { default as ExpandableGroup } from './components/ExpandableGroup';
+export type { ExpandableGroupProps } from './components/ExpandableGroup';
 export { default as MultipleSelectionDialog } from './components/MultipleSelectionDialog';
+export type { MultipleSelectionDialogProps } from './components/MultipleSelectionDialog';
 export { default as CustomMuiDialog } from './components/dialogs/custom-mui-dialog';
+export type { CustomMuiDialogProps } from './components/dialogs/custom-mui-dialog';
 export { default as DescriptionModificationDialog } from './components/dialogs/description-modification-dialog';
+export type { DescriptionModificationDialogProps } from './components/dialogs/description-modification-dialog';
+export { default as DescriptionField } from './components/inputs/react-hook-form/description-field';
 export { default as ModifyElementSelection } from './components/dialogs/modify-element-selection';
+export type { ModifyElementSelectionProps } from './components/dialogs/modify-element-selection';
 export { default as CriteriaBasedForm } from './components/filter/criteria-based/criteria-based-form';
+export type { CriteriaBasedFormProps } from './components/filter/criteria-based/criteria-based-form';
 export { default as PopupConfirmationDialog } from './components/dialogs/popup-confirmation-dialog';
+export type { PopupConfirmationDialogProps } from './components/dialogs/popup-confirmation-dialog';
 export { default as BottomRightButtons } from './components/inputs/react-hook-form/ag-grid-table/bottom-right-buttons';
+export type { BottomRightButtonsProps } from './components/inputs/react-hook-form/ag-grid-table/bottom-right-buttons';
 export { default as CustomAgGridTable } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
+export type { CustomAgGridTableProps } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
 export { ROW_DRAGGING_SELECTION_COLUMN_DEF } from './components/inputs/react-hook-form/ag-grid-table/custom-ag-grid-table';
-export type { Parameter } from './components/FlatParameters/FlatParameters';
 export {
     Line,
     Generator,
@@ -57,6 +80,7 @@ export { default as FieldConstants } from './utils/field-constants';
 
 export { fields as EXPERT_FILTER_FIELDS } from './components/filter/expert/expert-filter-constants';
 export { default as CustomReactQueryBuilder } from './components/inputs/react-query-builder/custom-react-query-builder';
+export type { CustomReactQueryBuilderProps } from './components/inputs/react-query-builder/custom-react-query-builder';
 export {
     EXPERT_FILTER_QUERY,
     rqbQuerySchemaValidator,
@@ -67,8 +91,6 @@ export type { RuleTypeExport, RuleGroupTypeExport } from './components/filter/ex
 export { formatQuery } from 'react-querybuilder';
 
 export { default as yup } from './utils/yup-config';
-
-export type { TreeViewFinderNodeProps } from './components/TreeViewFinder/TreeViewFinder';
 
 export {
     GRIDSUITE_DEFAULT_PRECISION,
@@ -93,12 +115,6 @@ export {
 } from './utils/AuthService';
 
 export { default as getFileIcon } from './utils/ElementIcon';
-
-export {
-    DEFAULT_CELL_PADDING,
-    DEFAULT_HEADER_HEIGHT,
-    DEFAULT_ROW_HEIGHT,
-} from './components/MuiVirtualizedTable/MuiVirtualizedTable';
 
 export { DARK_THEME, LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from './components/TopBar/TopBar';
 export type { GsLang, GsLangUser, GsTheme } from './components/TopBar/TopBar';
@@ -155,32 +171,49 @@ export { default as directory_items_input_en } from './components/translations/d
 export { default as directory_items_input_fr } from './components/translations/directory-items-input-fr';
 
 export { TagRenderer, ElementSearchInput, useElementSearch } from './components/ElementSearchDialog';
-export type { Paginated } from './components/ElementSearchDialog';
-export type { TagRendererProps } from './components/ElementSearchDialog';
+export type { Paginated, TagRendererProps } from './components/ElementSearchDialog';
 export { EquipmentItem } from './components/ElementSearchDialog/equipment-item';
+export type { EquipmentItemProps } from './components/ElementSearchDialog/equipment-item';
 export { default as CardErrorBoundary } from './components/CardErrorBoundary';
 export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
+export { default as useConfidentialityWarning } from './hooks/useConfidentialityWarning';
 export { default as SelectClearable } from './components/inputs/select-clearable';
+export type { SelectClearableProps } from './components/inputs/select-clearable';
 export { default as useCustomFormContext } from './components/inputs/react-hook-form/provider/use-custom-form-context';
 export { default as CustomFormProvider } from './components/inputs/react-hook-form/provider/custom-form-provider';
+export type { MergedFormContextProps } from './components/inputs/react-hook-form/provider/custom-form-provider';
 export { default as AutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
+export type { AutocompleteInputProps } from './components/inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
 export { default as TextInput } from './components/inputs/react-hook-form/text-input';
+export type { TextInputProps } from './components/inputs/react-hook-form/text-input';
 export { default as ExpandingTextField } from './components/inputs/react-hook-form/ExpandingTextField';
+export type { ExpandingTextFieldProps } from './components/inputs/react-hook-form/ExpandingTextField';
 export { default as RadioInput } from './components/inputs/react-hook-form/radio-input';
+export type { RadioInputProps } from './components/inputs/react-hook-form/radio-input';
 export { default as SliderInput } from './components/inputs/react-hook-form/slider-input';
+export type { SliderInputProps } from './components/inputs/react-hook-form/slider-input';
 export { default as FloatInput } from './components/inputs/react-hook-form/numbers/float-input';
+export type { FloatInputProps } from './components/inputs/react-hook-form/numbers/float-input';
 export { default as IntegerInput } from './components/inputs/react-hook-form/numbers/integer-input';
 export { default as SelectInput } from './components/inputs/react-hook-form/select-inputs/select-input';
+export type { SelectInputProps } from './components/inputs/react-hook-form/select-inputs/select-input';
 export { default as CheckboxInput } from './components/inputs/react-hook-form/booleans/checkbox-input';
+export type { CheckboxInputProps } from './components/inputs/react-hook-form/booleans/checkbox-input';
 export { default as SwitchInput } from './components/inputs/react-hook-form/booleans/switch-input';
+export type { SwitchInputProps } from './components/inputs/react-hook-form/booleans/switch-input';
 export { default as ErrorInput } from './components/inputs/react-hook-form/error-management/error-input';
+export type { ErrorInputProps } from './components/inputs/react-hook-form/error-management/error-input';
 export { default as FieldErrorAlert } from './components/inputs/react-hook-form/error-management/field-error-alert';
+export type { FieldErrorAlertProps } from './components/inputs/react-hook-form/error-management/field-error-alert';
 export { default as MidFormError } from './components/inputs/react-hook-form/error-management/mid-form-error';
+export type { MidFormErrorProps } from './components/inputs/react-hook-form/error-management/mid-form-error';
 export { default as TextFieldWithAdornment } from './components/inputs/react-hook-form/utils/text-field-with-adornment';
+export type { TextFieldWithAdornmentProps } from './components/inputs/react-hook-form/utils/text-field-with-adornment';
 export { default as FieldLabel } from './components/inputs/react-hook-form/utils/field-label';
+export type { FieldLabelProps } from './components/inputs/react-hook-form/utils/field-label';
 export { default as SubmitButton } from './components/inputs/react-hook-form/utils/submit-button';
 export { default as CancelButton } from './components/inputs/react-hook-form/utils/cancel-button';
 export {
@@ -194,14 +227,22 @@ export {
 } from './components/inputs/react-hook-form/utils/functions';
 export { keyGenerator, areArrayElementsUnique, isObjectEmpty } from './utils/functions';
 export { default as DirectoryItemsInput } from './components/inputs/react-hook-form/directory-items-input';
+export type { DirectoryItemsInputProps } from './components/inputs/react-hook-form/directory-items-input';
 export { default as DirectoryItemSelector } from './components/DirectoryItemSelector/directory-item-selector';
+export type { DirectoryItemSelectorProps } from './components/DirectoryItemSelector/directory-item-selector';
 export { default as CustomAGGrid } from './components/CustomAGGrid/custom-aggrid';
+export type { CustomAGGridProps } from './components/CustomAGGrid/custom-aggrid';
 export { default as RawReadOnlyInput } from './components/inputs/react-hook-form/raw-read-only-input';
+export type { RawReadOnlyInputProps } from './components/inputs/react-hook-form/raw-read-only-input';
 
 export { default as FilterCreationDialog } from './components/filter/filter-creation-dialog';
+export type { FilterCreationDialogProps } from './components/filter/filter-creation-dialog';
 export { default as ExpertFilterEditionDialog } from './components/filter/expert/expert-filter-edition-dialog';
+export type { ExpertFilterEditionDialogProps } from './components/filter/expert/expert-filter-edition-dialog';
 export { default as ExplicitNamingFilterEditionDialog } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
+export type { ExplicitNamingFilterEditionDialogProps } from './components/filter/explicit-naming/explicit-naming-filter-edition-dialog';
 export { default as CriteriaBasedFilterEditionDialog } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
+export type { CriteriaBasedFilterEditionDialogProps } from './components/filter/criteria-based/criteria-based-filter-edition-dialog';
 export {
     saveExplicitNamingFilter,
     saveCriteriaBasedFilter,
@@ -215,11 +256,15 @@ export {
 } from './components/inputs/react-hook-form/range-input';
 export { default as InputWithPopupConfirmation } from './components/inputs/react-hook-form/select-inputs/input-with-popup-confirmation';
 export { default as MuiSelectInput } from './components/inputs/react-hook-form/select-inputs/mui-select-input';
+export type { MuiSelectInputProps } from './components/inputs/react-hook-form/select-inputs/mui-select-input';
 export { default as CountriesInput } from './components/inputs/react-hook-form/select-inputs/countries-input';
+export type { CountryInputProps } from './components/inputs/react-hook-form/select-inputs/countries-input';
 export { getSystemLanguage, getComputedLanguage, useLocalizedCountries } from './hooks/localized-countries-hook';
 export { default as MultipleAutocompleteInput } from './components/inputs/react-hook-form/autocomplete-inputs/multiple-autocomplete-input';
 export { default as CsvUploader } from './components/inputs/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
+export type { CsvUploaderProps } from './components/inputs/react-hook-form/ag-grid-table/csv-uploader/csv-uploader';
 export { default as UniqueNameInput } from './components/inputs/react-hook-form/unique-name-input';
+export type { UniqueNameInputProps } from './components/inputs/react-hook-form/unique-name-input';
 export { default as UserManagerMock } from './utils/UserManagerMock';
 export { FILTER_EQUIPMENTS, CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/filter-form-utils';
 export type { FormEquipment } from './components/filter/utils/filter-form-utils';

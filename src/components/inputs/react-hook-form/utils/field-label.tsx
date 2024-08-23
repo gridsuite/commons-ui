@@ -7,7 +7,7 @@
 
 import { FormattedMessage } from 'react-intl';
 
-type FieldLabelProps = {
+export type FieldLabelProps = {
     label: string;
     optional?: boolean;
     values?: any;

@@ -14,11 +14,10 @@ import CriteriaBasedFilterForm from './criteria-based/criteria-based-filter-form
 import ExplicitNamingFilterForm from './explicit-naming/explicit-naming-filter-form';
 import ExpertFilterForm from './expert/expert-filter-form';
 import { FilterType } from './constants/filter-constants';
-import ExpandableGroup from '../ExpandableGroup';
 import RadioInput from '../inputs/react-hook-form/radio-input';
 import { ElementExistsType, ElementType } from '../../utils/ElementType';
-import ExpandingTextField from '../inputs/react-hook-form/ExpandingTextField';
 import UniqueNameInput from '../inputs/react-hook-form/unique-name-input';
+import DescriptionField from '../inputs/react-hook-form/description-field';
 
 interface FilterFormProps {
     creation?: boolean;
@@ -62,14 +61,7 @@ function FilterForm(props: FilterFormProps) {
             {creation && (
                 <>
                     <Grid item xs={12}>
-                        <ExpandableGroup renderHeader="Description">
-                            <ExpandingTextField
-                                name={FieldConstants.DESCRIPTION}
-                                label="descriptionProperty"
-                                minRows={3}
-                                rows={5}
-                            />
-                        </ExpandableGroup>
+                        <DescriptionField />
                     </Grid>
                     {!sourceFilterForExplicitNamingConversion && (
                         <Grid item>

@@ -8,3 +8,4 @@
 import ExpandableGroup from './expandable-group';
 
 export default ExpandableGroup;
+export type { ExpandableGroupProps } from './expandable-group';
