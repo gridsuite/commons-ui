@@ -553,8 +553,8 @@ function AppContent({ language, onLanguageClick }) {
         { id: 'lapulga', label: 'Lionel Messi' },
         { id: 'ibra', label: 'Zlatan Ibrahimovic' },
         {
-            id: 'random',
-            label: 'sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv sqdcsdcsvsdvfvdfvdfvdfvdfvdvdfvfdvdvdfvdfv',
+            id: 'john',
+            label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
         },
     ]);
 
@@ -601,7 +601,7 @@ function AppContent({ language, onLanguageClick }) {
                 titleId="Checkbox list"
                 divider
                 secondaryAction={secondaryAction}
-                addSelectAllCheckbox={false}
+                addSelectAllCheckbox
                 isCheckboxClickableOnly
                 enableSecondaryActionOnHover
             />

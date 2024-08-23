@@ -106,9 +106,10 @@ export function CheckBoxListItems<T>({
                         },
                     }}
                 >
-                    <ListItemButton onClick={toggleSelectAll}>
-                        <ListItemIcon>
+                    <ListItemButton onClick={toggleSelectAll} sx={{ paddingLeft: 0 }}>
+                        <ListItemIcon sx={{ minWidth: 0 }}>
                             <Checkbox
+                                sx={{ paddingLeft: 0 }}
                                 checked={selectedItems.length !== 0}
                                 indeterminate={selectedItems.length > 0 && selectedItems.length !== items.length}
                             />
