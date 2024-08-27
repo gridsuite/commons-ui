@@ -8,7 +8,7 @@
 const descriptionEn = {
     description: 'Description',
     descriptionProperty: 'Description (optional)',
-    descriptionModificationError: 'An error when modifying the description',
+    descriptionModificationError: 'An error occurred while editing the description',
     descriptionLimitError: 'Description exceeds character limit',
 };
 
