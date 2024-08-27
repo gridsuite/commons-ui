@@ -36,6 +36,7 @@ export type { OverflowableTextProps } from './components/OverflowableText';
 export { ElementSearchDialog } from './components/ElementSearchDialog';
 export type { ElementSearchDialogProps } from './components/ElementSearchDialog';
 export { default as FlatParameters } from './components/FlatParameters';
+export { default as CheckboxList } from './components/CheckBoxList/check-box-list';
 export type { FlatParametersProps, Parameter } from './components/FlatParameters';
 export { default as ExpandableGroup } from './components/ExpandableGroup';
 export type { ExpandableGroupProps } from './components/ExpandableGroup';
