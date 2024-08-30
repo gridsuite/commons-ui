@@ -558,11 +558,12 @@ function AppContent({ language, onLanguageClick }) {
         },
     ]);
 
-    const secondaryAction = () => (
-        <IconButton aria-label="comment">
-            <CommentIcon />
-        </IconButton>
-    );
+    const secondaryAction = (item, isItemHovered) =>
+        isItemHovered && (
+            <IconButton aria-label="comment">
+                <CommentIcon />
+            </IconButton>
+        );
     const defaultTab = (
         <div>
             <Box mt={3}>
@@ -602,8 +603,6 @@ function AppContent({ language, onLanguageClick }) {
                 divider
                 secondaryAction={secondaryAction}
                 addSelectAllCheckbox
-                isCheckboxClickableOnly
-                enableSecondaryActionOnHover
             />
 
             <Button
@@ -628,7 +627,6 @@ function AppContent({ language, onLanguageClick }) {
                 divider
                 secondaryAction={secondaryAction}
                 isDndDragAndDropActive
-                enableSecondaryActionOnHover
                 onDragEnd={({ source, destination }) => {
                     if (destination !== null && source.index !== destination.index) {
                         const res = [...checkBoxListOption];
@@ -637,6 +635,7 @@ function AppContent({ language, onLanguageClick }) {
                         setCheckBoxListOption(res);
                     }
                 }}
+                onItemClick={(item) => console.log('clicked', item)}
             />
 
             <Button

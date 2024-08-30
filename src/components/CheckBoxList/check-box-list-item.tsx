@@ -17,7 +17,7 @@ export function CheckBoxListItem<T>({
     secondaryAction,
     getItemId,
     divider,
-    isCheckboxClickableOnly,
+    onItemClick,
     ...props
 }: CheckBoxListItemProps<T>) {
     const [hover, setHover] = useState<string>('');
@@ -27,11 +27,15 @@ export function CheckBoxListItem<T>({
             sx={{ minWidth: 0, ...sx?.checkboxList }}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
-            disablePadding={!isCheckboxClickableOnly}
+            disablePadding={!!onItemClick}
             disableGutters
             divider={divider}
         >
-            {isCheckboxClickableOnly ? <ClickableCheckBoxItem {...props} /> : <ClickableRowItem {...props} />}
+            {!onItemClick ? (
+                <ClickableCheckBoxItem {...props} />
+            ) : (
+                <ClickableRowItem onItemClick={() => onItemClick(item)} {...props} />
+            )}
         </ListItem>
     );
 }

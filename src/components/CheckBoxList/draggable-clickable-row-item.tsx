@@ -8,7 +8,7 @@
 import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../OverflowableText';
-import { DraggableClickableItemProps } from './check-box-list-type';
+import { DraggableClickableRowItemProps } from './check-box-list-type';
 
 const styles = {
     dragIcon: (theme: any) => ({
@@ -26,10 +26,15 @@ export function DraggableClickableRowItem({
     provided,
     isHighlighted,
     label,
+    onItemClick,
     ...props
-}: DraggableClickableItemProps) {
+}: DraggableClickableRowItemProps) {
+    const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        onClick();
+    };
     return (
-        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onClick}>
+        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onItemClick}>
             <IconButton
                 {...provided.dragHandleProps}
                 size="small"
@@ -42,7 +47,7 @@ export function DraggableClickableRowItem({
                 <DragIndicatorIcon spacing={0} />
             </IconButton>
             <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
-                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} {...props} />
+                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} onClick={onCheckboxClick} {...props} />
             </ListItemIcon>
             <ListItemText
                 sx={{

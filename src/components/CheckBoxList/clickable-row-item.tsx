@@ -6,13 +6,17 @@
  */
 import { Checkbox, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import OverflowableText from '../OverflowableText';
-import { ClickableItemProps } from './check-box-list-type';
+import { ClickableRowItemProps } from './check-box-list-type';
 
-export function ClickableRowItem({ sx, disabled, label, onClick, ...props }: ClickableItemProps) {
+export function ClickableRowItem({ sx, disabled, label, onClick, onItemClick, ...props }: ClickableRowItemProps) {
+    const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        onClick();
+    };
     return (
-        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onClick}>
+        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onItemClick}>
             <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
-                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} {...props} />
+                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} onClick={onCheckboxClick} {...props} />
             </ListItemIcon>
             <ListItemText
                 sx={{

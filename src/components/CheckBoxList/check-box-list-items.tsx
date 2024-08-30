@@ -21,7 +21,6 @@ export function CheckBoxListItems<T>({
     getItemId,
     sx,
     secondaryAction,
-    enableSecondaryActionOnHover,
     addSelectAllCheckbox,
     selectAllCheckBoxLabel,
     getItemLabel,
@@ -29,7 +28,7 @@ export function CheckBoxListItems<T>({
     isDndDragAndDropActive,
     isDragDisable,
     divider,
-    isCheckboxClickableOnly,
+    onItemClick,
     ...props
 }: CheckBoxListItemsProps<T>) {
     const handleOnchange = useCallback(
@@ -77,16 +76,8 @@ export function CheckBoxListItems<T>({
         if (!secondaryAction) {
             return null;
         }
-
-        if (!enableSecondaryActionOnHover) {
-            return secondaryAction(item);
-        }
-
-        if (hover === getItemId(item)) {
-            return secondaryAction(item);
-        }
-
-        return null;
+        const isItemHovered = hover === getItemId(item);
+        return secondaryAction(item, isItemHovered);
     };
 
     const selectAllLabel = useMemo(
@@ -149,7 +140,7 @@ export function CheckBoxListItems<T>({
                                     isDragDisable={isDragDisable}
                                     provided={provided}
                                     divider={addDivider}
-                                    isCheckboxClickableOnly={isCheckboxClickableOnly}
+                                    onItemClick={onItemClick}
                                 />
                             )}
                         </Draggable>
@@ -167,7 +158,7 @@ export function CheckBoxListItems<T>({
                         sx={sx}
                         secondaryAction={handleSecondaryAction}
                         divider={addDivider}
-                        isCheckboxClickableOnly={isCheckboxClickableOnly}
+                        onItemClick={onItemClick}
                     />
                 );
             })}

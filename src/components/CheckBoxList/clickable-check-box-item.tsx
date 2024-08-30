@@ -6,9 +6,9 @@
  */
 import { Checkbox, ListItemIcon, ListItemText } from '@mui/material';
 import OverflowableText from '../OverflowableText';
-import { ClickableItemProps } from './check-box-list-type';
+import { ClickableCheckBoxItemProps } from './check-box-list-type';
 
-export function ClickableCheckBoxItem({ sx, label, ...props }: ClickableItemProps) {
+export function ClickableCheckBoxItem({ sx, label, ...props }: ClickableCheckBoxItemProps) {
     return (
         <>
             <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
