@@ -18,6 +18,7 @@ export function CheckBoxListItem<T>({
     getItemId,
     divider,
     onItemClick,
+    isItemClickable,
     ...props
 }: CheckBoxListItemProps<T>) {
     const [hover, setHover] = useState<string>('');
@@ -34,7 +35,11 @@ export function CheckBoxListItem<T>({
             {!onItemClick ? (
                 <ClickableCheckBoxItem {...props} />
             ) : (
-                <ClickableRowItem onItemClick={() => onItemClick(item)} {...props} />
+                <ClickableRowItem
+                    isItemClickable={isItemClickable(item)}
+                    onItemClick={() => onItemClick(item)}
+                    {...props}
+                />
             )}
         </ListItem>
     );

@@ -17,6 +17,12 @@ const styles = {
         borderRadius: theme.spacing(0),
         zIndex: 90,
     }),
+    unclickableItem: {
+        '&:hover': {
+            backgroundColor: 'transparent',
+        },
+        cursor: 'inherit',
+    },
 };
 
 export function DraggableClickableRowItem({
@@ -27,14 +33,25 @@ export function DraggableClickableRowItem({
     isHighlighted,
     label,
     onItemClick,
+    isItemClickable,
     ...props
 }: DraggableClickableRowItemProps) {
     const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onClick();
     };
+    const handleItemClick = () => isItemClickable && onItemClick();
     return (
-        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onItemClick}>
+        <ListItemButton
+            disableTouchRipple={!isItemClickable}
+            sx={{
+                paddingLeft: 0,
+                ...sx?.checkboxButton,
+                ...(!isItemClickable && styles.unclickableItem),
+            }}
+            disabled={disabled}
+            onClick={handleItemClick}
+        >
             <IconButton
                 {...provided.dragHandleProps}
                 size="small"

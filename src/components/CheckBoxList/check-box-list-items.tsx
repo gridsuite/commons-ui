@@ -29,6 +29,7 @@ export function CheckBoxListItems<T>({
     isDragDisable,
     divider,
     onItemClick,
+    isItemClickable,
     ...props
 }: CheckBoxListItemsProps<T>) {
     const handleOnchange = useCallback(
@@ -141,6 +142,7 @@ export function CheckBoxListItems<T>({
                                     provided={provided}
                                     divider={addDivider}
                                     onItemClick={onItemClick}
+                                    isItemClickable={isItemClickable}
                                 />
                             )}
                         </Draggable>
@@ -159,6 +161,7 @@ export function CheckBoxListItems<T>({
                         secondaryAction={handleSecondaryAction}
                         divider={addDivider}
                         onItemClick={onItemClick}
+                        isItemClickable={isItemClickable}
                     />
                 );
             })}

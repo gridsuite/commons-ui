@@ -636,6 +636,7 @@ function AppContent({ language, onLanguageClick }) {
                     }
                 }}
                 onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id.indexOf('i') >= 0}
             />
 
             <Button

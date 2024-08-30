@@ -28,6 +28,7 @@ export interface CheckBoxListItemProps<T> {
     divider?: boolean;
     checked: boolean;
     onItemClick?: (item: T) => void;
+    isItemClickable: (item: T) => boolean;
 }
 
 export interface DraggableCheckBoxListItemProps<T> extends CheckBoxListItemProps<T> {
@@ -50,6 +51,7 @@ export interface CheckBoxListItemsProps<T> {
     isDragDisable?: boolean;
     divider?: boolean;
     onItemClick?: (item: T) => void;
+    isItemClickable: (item: T) => boolean;
 }
 
 export interface CheckboxListProps<T> extends CheckBoxListItemsProps<T> {
@@ -72,6 +74,7 @@ export interface DraggableClickableCheckBoxItemProps extends ClickableCheckBoxIt
 
 interface ClickableItem {
     onItemClick: () => void;
+    isItemClickable: boolean;
 }
 
 export interface ClickableRowItemProps extends ClickableCheckBoxItemProps, ClickableItem {}
