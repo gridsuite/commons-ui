@@ -31,7 +31,7 @@ export function CheckBoxListItems<T>({
     onItemClick,
     isItemClickable,
     ...props
-}: CheckBoxListItemsProps<T>) {
+}: Readonly<CheckBoxListItemsProps<T>>) {
     const handleOnchange = useCallback(
         (newValues: T[]) => {
             if (onSelectionChange) {
@@ -118,6 +118,8 @@ export function CheckBoxListItems<T>({
                 const label = getItemLabel ? getItemLabel(item) : getItemId(item);
                 const disabled = isDisabled ? isDisabled(item) : false;
                 const addDivider = divider && index < items.length - 1;
+                // sx can be dependent on item or not
+                const calculatedSx = typeof sx === 'function' ? sx(item) : sx;
 
                 if (isDndDragAndDropActive) {
                     return (
@@ -134,7 +136,7 @@ export function CheckBoxListItems<T>({
                                     checked={isChecked(item)}
                                     label={label}
                                     onClick={() => toggleSelection(getItemId(item))}
-                                    sx={sx}
+                                    sx={calculatedSx}
                                     disabled={disabled}
                                     getItemId={getItemId}
                                     secondaryAction={handleSecondaryAction}
@@ -157,7 +159,7 @@ export function CheckBoxListItems<T>({
                         onClick={() => toggleSelection(getItemId(item))}
                         disabled={disabled}
                         getItemId={getItemId}
-                        sx={sx}
+                        sx={calculatedSx}
                         secondaryAction={handleSecondaryAction}
                         divider={addDivider}
                         onItemClick={onItemClick}

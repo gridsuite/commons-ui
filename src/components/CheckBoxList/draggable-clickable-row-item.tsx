@@ -33,14 +33,15 @@ export function DraggableClickableRowItem({
     isHighlighted,
     label,
     onItemClick,
-    isItemClickable,
+    isItemClickable = true,
     ...props
-}: DraggableClickableRowItemProps) {
+}: Readonly<DraggableClickableRowItemProps>) {
     const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onClick();
     };
     const handleItemClick = () => isItemClickable && onItemClick();
+
     return (
         <ListItemButton
             disableTouchRipple={!isItemClickable}

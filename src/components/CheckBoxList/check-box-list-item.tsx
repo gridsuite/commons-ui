@@ -20,7 +20,7 @@ export function CheckBoxListItem<T>({
     onItemClick,
     isItemClickable,
     ...props
-}: CheckBoxListItemProps<T>) {
+}: Readonly<CheckBoxListItemProps<T>>) {
     const [hover, setHover] = useState<string>('');
     return (
         <ListItem
@@ -33,11 +33,12 @@ export function CheckBoxListItem<T>({
             divider={divider}
         >
             {!onItemClick ? (
-                <ClickableCheckBoxItem {...props} />
+                <ClickableCheckBoxItem sx={sx} {...props} />
             ) : (
                 <ClickableRowItem
-                    isItemClickable={isItemClickable(item)}
+                    isItemClickable={isItemClickable?.(item)}
                     onItemClick={() => onItemClick(item)}
+                    sx={sx}
                     {...props}
                 />
             )}

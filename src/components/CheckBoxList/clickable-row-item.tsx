@@ -23,9 +23,9 @@ export function ClickableRowItem({
     label,
     onClick,
     onItemClick,
-    isItemClickable,
+    isItemClickable = true,
     ...props
-}: ClickableRowItemProps) {
+}: Readonly<ClickableRowItemProps>) {
     const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onClick();

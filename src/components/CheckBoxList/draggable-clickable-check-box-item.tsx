@@ -26,7 +26,7 @@ export function DraggableClickableCheckBoxItem({
     isHighlighted,
     label,
     ...props
-}: DraggableClickableCheckBoxItemProps) {
+}: Readonly<DraggableClickableCheckBoxItemProps>) {
     return (
         <>
             <IconButton

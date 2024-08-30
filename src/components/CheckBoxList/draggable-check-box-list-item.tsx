@@ -22,7 +22,7 @@ export function DraggableCheckBoxListItem<T>({
     onItemClick,
     isItemClickable,
     ...props
-}: DraggableCheckBoxListItemProps<T>) {
+}: Readonly<DraggableCheckBoxListItemProps<T>>) {
     const [hover, setHover] = useState<string>('');
     return (
         <ListItem
@@ -40,6 +40,7 @@ export function DraggableCheckBoxListItem<T>({
                 <DraggableClickableCheckBoxItem
                     provided={provided}
                     isHighlighted={hover === getItemId(item) && !isDragDisable}
+                    sx={sx}
                     {...props}
                 />
             ) : (
@@ -47,7 +48,8 @@ export function DraggableCheckBoxListItem<T>({
                     provided={provided}
                     isHighlighted={hover === getItemId(item) && !isDragDisable}
                     onItemClick={() => onItemClick(item)}
-                    isItemClickable={isItemClickable(item)}
+                    isItemClickable={isItemClickable?.(item)}
+                    sx={sx}
                     {...props}
                 />
             )}
