@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import OverflowableText from '../OverflowableText';
-import { DraggableClickableItemProps } from './check-box-list-type';
+import OverflowableText from '../overflowableText';
+import { DraggableClickableItemProps } from './checkBoxList.type';
 
 const styles = {
     dragIcon: (theme: any) => ({
@@ -19,17 +19,16 @@ const styles = {
     }),
 };
 
-export function DraggableClickableRowItem({
+export function DraggableClickableCheckBoxItem({
     sx,
     disabled,
-    onClick,
     provided,
     isHighlighted,
     label,
     ...props
 }: DraggableClickableItemProps) {
     return (
-        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onClick}>
+        <>
             <IconButton
                 {...provided.dragHandleProps}
                 size="small"
@@ -52,8 +51,8 @@ export function DraggableClickableRowItem({
             >
                 <OverflowableText sx={sx?.label} text={label} />
             </ListItemText>
-        </ListItemButton>
+        </>
     );
 }
 
-export default DraggableClickableRowItem;
+export default DraggableClickableCheckBoxItem;

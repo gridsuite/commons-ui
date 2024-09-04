@@ -9,10 +9,10 @@ import { Draggable } from 'react-beautiful-dnd';
 import { useCallback, useMemo } from 'react';
 import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CheckBoxListItem } from './check-box-list-item';
-import OverflowableText from '../OverflowableText';
-import { DraggableCheckBoxListItem } from './draggable-check-box-list-item';
-import { CheckBoxListItemsProps } from './check-box-list-type';
+import { CheckBoxListItem } from './CheckBoxListItem';
+import OverflowableText from '../overflowableText';
+import { DraggableCheckBoxListItem } from './DraggableCheckBoxListItem';
+import { CheckBoxListItemsProps } from './checkBoxList.type';
 
 export function CheckBoxListItems<T>({
     items,

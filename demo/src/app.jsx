@@ -109,7 +109,7 @@ import inputs_en from '../../src/translations/en/inputsEn';
 import inputs_fr from '../../src/translations/fr/inputsFr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
-import MultipleSelectionDialog from '../../src/components/MultipleSelectionDialog/MultipleSelectionDialog';
+import MultipleSelectionDialog from '../../src/components/multipleSelectionDialog';
 
 const messages = {
     en: {
@@ -323,8 +323,6 @@ function AppContent({ language, onLanguageClick }) {
     const [tabIndex, setTabIndex] = useState(0);
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
-
-    const [openReportViewer, setOpenReportViewer] = useState(false);
 
     const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
     const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] = useState(false);
@@ -650,23 +648,6 @@ function AppContent({ language, onLanguageClick }) {
                         setCheckBoxListOption(res);
                     }
                 }}
-            />
-
-            <Button
-                variant="contained"
-                style={{
-                    float: 'left',
-                    margin: '5px',
-                }}
-                onClick={() => setOpenReportViewer(true)}
-            >
-                Logs
-            </Button>
-            <ReportViewerDialog
-                title="Logs test"
-                open={openReportViewer}
-                onClose={() => setOpenReportViewer(false)}
-                jsonReport={LOGS_JSON}
             />
             <div
                 style={{

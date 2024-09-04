@@ -8,10 +8,10 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { CheckBoxListItems } from './check-box-list-items';
-import { CheckboxListProps } from './check-box-list-type';
+import { CheckBoxListItems } from './CheckBoxListItems';
+import { CheckboxListProps } from './checkBoxList.type';
 
-export function CheckboxList<T>({
+export function CheckBoxList<T>({
     isDndDragAndDropActive = false,
     onDragStart,
     onDragEnd,
@@ -57,4 +57,4 @@ export function CheckboxList<T>({
     );
 }
 
-export default CheckboxList;
+export default CheckBoxList;

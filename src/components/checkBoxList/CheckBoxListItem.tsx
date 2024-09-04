@@ -7,9 +7,9 @@
 
 import { useState } from 'react';
 import { ListItem } from '@mui/material';
-import { CheckBoxListItemProps } from './check-box-list-type';
-import { ClickableCheckBoxItem } from './clickable-check-box-item';
-import { ClickableRowItem } from './clickable-row-item';
+import { CheckBoxListItemProps } from './checkBoxList.type';
+import { ClickableCheckBoxItem } from './ClickableCheckBoxItem';
+import { ClickableRowItem } from './ClickableRowItem';
 
 export function CheckBoxListItem<T>({
     item,

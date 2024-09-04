@@ -10,10 +10,10 @@ import { Location, Navigate, NavigateFunction, Route, Routes } from 'react-route
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
-import SignInCallbackHandler from '../signInCallbackHandler';
+import SignInCallbackHandler from './SignInCallbackHandler';
 import { handleSigninCallback, handleSilentRenewCallback, login, logout } from '../../utils/authService';
-import SilentRenewCallbackHandler from '../silentRenewCallbackHandler';
-import Login from '../login';
+import SilentRenewCallbackHandler from './SilentRenewCallbackHandler';
+import Login from './Login';
 import Logout from './Logout';
 
 import { AuthenticationActions } from '../../redux/actions/authActions';

@@ -8,8 +8,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
-import { CheckboxList } from '../CheckBoxList/check-box-list';
-import { CheckboxListProps } from '../CheckBoxList/check-box-list-type';
+import CheckBoxList, { CheckboxListProps } from '../checkBoxList';
 
 export interface MultipleSelectionDialogProps<T> extends CheckboxListProps<T> {
     open: boolean;
@@ -31,7 +30,7 @@ function MultipleSelectionDialog<T>({
         <Dialog open={open} fullWidth>
             <DialogTitle>{titleId}</DialogTitle>
             <DialogContent>
-                <CheckboxList
+                <CheckBoxList
                     selectedItems={selectedIds}
                     onSelectionChange={(values: T[]) => setSelectedIds(values)}
                     {...props}

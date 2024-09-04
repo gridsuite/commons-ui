@@ -13,11 +13,6 @@ export { default as AboutDialog } from './components/topBar/AboutDialog';
 export type { AboutDialogProps, GridSuiteModule } from './components/topBar/AboutDialog';
 export { default as SnackbarProvider } from './components/snackbarProvider';
 export * from './components/authentication';
-export type {
-    AuthenticationRouterErrorState,
-    AuthenticationRouterProps,
-    UserManagerState,
-} from './components/authentication';
 export {
     MuiVirtualizedTable,
     KeyedColumnsRowIndexer,
@@ -32,7 +27,7 @@ export type { OverflowableTextProps } from './components/overflowableText';
 export { ElementSearchDialog } from './components/elementSearch';
 export type { ElementSearchDialogProps } from './components/elementSearch';
 export { default as FlatParameters } from './components/flatParameters';
-export { default as CheckboxList } from './components/CheckBoxList/check-box-list';
+export { default as CheckboxList } from './components/checkBoxList/CheckBoxList';
 export type { FlatParametersProps, Parameter } from './components/flatParameters';
 export { default as ExpandableGroup } from './components/expandableGroup';
 export type { ExpandableGroupProps } from './components/expandableGroup';
@@ -99,7 +94,7 @@ export {
 } from './utils/conversionUtils';
 
 export { ElementType } from './utils/types/elementType';
-export type { ElementAttributes, Option, Equipment } from './utils/types/types';
+export type { ElementAttributes, Option } from './utils/types/types';
 
 export {
     EQUIPMENT_TYPE,
@@ -107,6 +102,8 @@ export {
     getEquipmentsInfosForSearchBar,
     equipmentStyles,
 } from './utils/types/equipmentType';
+
+export type { Identifiable, Equipment, EquipmentInfos } from './utils/types/equipmentType';
 
 export {
     initializeAuthenticationDev,
@@ -161,12 +158,12 @@ export { default as filter_en } from './translations/en/filterEn';
 export { default as filter_fr } from './translations/fr/filterFr';
 export { default as filter_expert_en } from './translations/en/filterExpertEn';
 export { default as filter_expert_fr } from './translations/fr/filterExpertFr';
-export { default as description_fr } from './components/translations/description-fr';
-export { default as description_en } from './components/translations/description-en';
-export { default as equipments_fr } from './components/translations/equipments-fr';
-export { default as equipments_en } from './components/translations/equipments-en';
-export { default as csv_fr } from './components/translations/csv-fr';
-export { default as csv_en } from './components/translations/csv-en';
+export { default as description_fr } from './translations/fr/descriptionFr';
+export { default as description_en } from './translations/en/descriptionEn';
+export { default as equipments_fr } from './translations/fr/equipmentsFr';
+export { default as equipments_en } from './translations/en/equipmentsEn';
+export { default as csv_fr } from './translations/fr/csvFr';
+export { default as csv_en } from './translations/en/csvEn';
 export { default as card_error_boundary_en } from './translations/en/cardErrorBoundaryEn';
 export { default as card_error_boundary_fr } from './translations/fr/cardErrorBoundaryFr';
 export { default as flat_parameters_en } from './translations/en/flatParametersEn';
@@ -185,6 +182,7 @@ export type { EquipmentItemProps } from './components/elementSearch/elementItem/
 export { default as CardErrorBoundary } from './components/cardErrorBoundary';
 export { default as useIntlRef } from './hooks/useIntlRef';
 export { useSnackMessage } from './hooks/useSnackMessage';
+export type { UseSnackMessageReturn } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
 export { default as useConfidentialityWarning } from './hooks/useConfidentialityWarning';
@@ -285,6 +283,5 @@ export {
 export { mergeSx } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
 export type { CommonStoreState } from './redux/commonStore';
-export type { EquipmentInfos } from './utils/types/equipmentType';
 
 export * from './services';
