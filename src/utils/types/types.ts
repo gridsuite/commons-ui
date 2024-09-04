@@ -43,6 +43,8 @@ export type ElementAttributes = {
     parentUuid: null | UUID;
     specificMetadata: Record<string, object>;
     uploading?: boolean;
+    hasMetadata?: boolean;
+    subtype?: string;
 };
 
 export type Equipment =

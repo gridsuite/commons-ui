@@ -154,8 +154,8 @@ const filterExpertFr = {
     converterStationId1: 'ID de la station de conversion 1',
     converterStationId2: 'ID de la station de conversion 2',
     convertersMode: 'Mode de conversion',
-    side1RectifierSide2Inverter: 'Coté 1 redresseur côté 2 onduleur',
-    side1InverterSide2Rectifier: 'Côté 1 onduleur côté 2 redresseur',
+    side1RectifierSide2Inverter: 'Flux (1->2)',
+    side1InverterSide2Rectifier: 'Flux (2->1)',
     dcNominalVoltage: 'Tension nominale DC (kV)',
     converterStationNominalVoltage1: 'Tension nominale de la station de conversion 1 (kV)',
     converterStationNominalVoltage2: 'Tension nominale de la station de conversion 2 (kV)',
@@ -177,6 +177,16 @@ const filterExpertFr = {
     shuntSusceptance2: 'Susceptance parallèle 2 (μS)',
     pairingKey: 'Xnode',
     tieLineId: "ID de l'interconnexion",
+    cannotRetrieveFilter: "Erreur d'accès au filtre : ",
+    equality: '=',
+    notEquality: '!=',
+    greaterThan: '>',
+    greaterOrEqual: '>=',
+    lessThan: '<',
+    lessOrEqual: '<=',
+    YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
+    YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
+    changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur toutes les règles déjà créées dans le groupe.",
 };
 
 export default filterExpertFr;

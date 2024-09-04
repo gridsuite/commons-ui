@@ -154,8 +154,8 @@ const filterExpertEn = {
     converterStationId1: 'Converter station 1 ID',
     converterStationId2: 'Converter station 2 ID',
     convertersMode: 'Converters mode',
-    side1RectifierSide2Inverter: 'Side 1 rectifier side 2 inverter',
-    side1InverterSide2Rectifier: 'Side 1 inverter side 2 rectifier',
+    side1RectifierSide2Inverter: 'Flow (Side1->Side2)',
+    side1InverterSide2Rectifier: 'Flow (Side2->Side1)',
     dcNominalVoltage: 'DC nominal voltage (kV)',
     converterStationNominalVoltage1: 'Converter station 1 nominal voltage (kV)',
     converterStationNominalVoltage2: 'Converter station 2 nominal voltage (kV)',
@@ -177,6 +177,17 @@ const filterExpertEn = {
     shuntSusceptance2: 'Shunt susceptance 2 (μS)',
     pairingKey: 'Xnode',
     tieLineId: 'Tie line ID',
+    cannotRetrieveFilter: 'Could not retrieve filter: ',
+    equality: '=',
+    notEquality: '!=',
+    greaterThan: '>',
+    greaterOrEqual: '>=',
+    lessThan: '<',
+    lessOrEqual: '<=',
+    YupNotTypeNumber: 'This field only accepts numeric values',
+    YupNotTypeDefault: 'Field value format is incorrect',
+    changeOperatorMessage:
+        'The operator will be changed and will be applied to all the rules already created in the group.',
 };
 
 export default filterExpertEn;

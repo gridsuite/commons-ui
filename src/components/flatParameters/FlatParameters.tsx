@@ -328,11 +328,13 @@ export function FlatParameters({
                                     }}
                                 />
                                 <MultipleSelectionDialog
-                                    options={allOptions}
+                                    items={allOptions}
                                     titleId={getSelectionDialogName(param.name)}
                                     open={openSelector}
-                                    getOptionLabel={(option) => getTranslatedValue(param.name, option)}
-                                    selectedOptions={fieldValue}
+                                    getItemLabel={(option) => getTranslatedValue(param.name, option)}
+                                    getItemId={(o) => o}
+                                    selectedItems={fieldValue}
+                                    addSelectAllCheckbox
                                     handleClose={() => setOpenSelector(false)}
                                     handleValidate={(selectedOptions) => {
                                         onFieldChange(selectedOptions, param);
