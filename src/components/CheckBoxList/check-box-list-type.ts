@@ -15,6 +15,8 @@ export interface CheckBoxListItemSxProps {
     checkboxList?: SxProps;
     checkboxButton?: SxProps;
     checkbox?: SxProps;
+    dragAndDropContainer?: SxProps;
+    list?: SxProps;
 }
 
 export interface CheckBoxListItemProps<T> {
