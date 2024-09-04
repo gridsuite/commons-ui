@@ -11,7 +11,7 @@ import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
 import SignInCallbackHandler from './SignInCallbackHandler';
-import { handleSigninCallback, handleSilentRenewCallback, login, logout } from '../../utils/authService';
+import { handleSigninCallback, handleSilentRenewCallback, login, logout } from './authService';
 import SilentRenewCallbackHandler from './SilentRenewCallbackHandler';
 import Login from './Login';
 import Logout from './Logout';

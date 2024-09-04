@@ -8,7 +8,7 @@ import { Dispatch } from 'react';
 import { Location, NavigateFunction } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
-import UserManagerMock from './mocks/userManagerMock';
+import UserManagerMock from '../../utils/mocks/userManagerMock';
 import {
     AuthenticationActions,
     resetAuthenticationRouterError,
@@ -18,7 +18,7 @@ import {
     setSignInCallbackError,
     setUnauthorizedUserInfo,
     setUserValidationError,
-} from '../redux/actions/authActions';
+} from '../../redux/actions/authActions';
 
 type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;

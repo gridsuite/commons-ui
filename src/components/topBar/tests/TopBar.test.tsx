@@ -14,7 +14,7 @@ import { expect, it } from '@jest/globals';
 import TopBar, { LANG_ENGLISH } from '../TopBar';
 import { CommonMetadata, top_bar_en } from '../../..';
 
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
+import PowsyblLogo from './powsybl_logo.svg?react';
 
 const apps: CommonMetadata[] = [
     {

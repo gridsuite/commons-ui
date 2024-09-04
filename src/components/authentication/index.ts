@@ -17,3 +17,11 @@ export { default as Login } from './Login';
 export { default as SignInCallbackHandler } from './SignInCallbackHandler';
 
 export { default as SilentRenewCallbackHandler } from './SilentRenewCallbackHandler';
+
+export {
+    initializeAuthenticationDev,
+    initializeAuthenticationProd,
+    logout,
+    dispatchUser,
+    getPreLoginPath,
+} from './authService';

@@ -105,14 +105,6 @@ export {
 
 export type { Identifiable, Equipment, EquipmentInfos } from './utils/types/equipmentType';
 
-export {
-    initializeAuthenticationDev,
-    initializeAuthenticationProd,
-    logout,
-    dispatchUser,
-    getPreLoginPath,
-} from './utils/authService';
-
 export { default as getFileIcon } from './utils/mapper/elementIcon';
 
 export { DARK_THEME, LIGHT_THEME, LANG_SYSTEM, LANG_ENGLISH, LANG_FRENCH } from './components/topBar/TopBar';
