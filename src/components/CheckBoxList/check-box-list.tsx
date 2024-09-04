@@ -46,7 +46,7 @@ export function CheckboxList<T>({
         >
             <Droppable droppableId="droppable-checkbox-list" isDropDisabled={isDragDisable}>
                 {(provided) => (
-                    <Box {...provided.droppableProps} ref={provided.innerRef} sx={sx?.dragAndDropContainer || {}}>
+                    <Box {...provided.droppableProps} ref={provided.innerRef} sx={sx?.dragAndDropContainer}>
                         {checkBoxField}
                         {provided.placeholder}
                     </Box>
