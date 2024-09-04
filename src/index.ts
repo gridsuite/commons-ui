@@ -263,7 +263,6 @@ export { default as CsvUploader } from './components/inputs/reactHookForm/agGrid
 export type { CsvUploaderProps } from './components/inputs/reactHookForm/agGridTable/csvUploader/CsvUploader';
 export { default as UniqueNameInput } from './components/inputs/reactHookForm/text/UniqueNameInput';
 export type { UniqueNameInputProps } from './components/inputs/reactHookForm/text/UniqueNameInput';
-export { default as UserManagerMock } from './utils/mocks/userManagerMock';
 export { FILTER_EQUIPMENTS, CONTINGENCY_LIST_EQUIPMENTS } from './components/filter/utils/filterFormUtils';
 export type { FormEquipment } from './components/filter/utils/filterFormUtils';
 
