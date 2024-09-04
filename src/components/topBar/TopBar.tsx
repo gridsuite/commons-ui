@@ -46,7 +46,7 @@ import { styled } from '@mui/system';
 import { User } from 'oidc-client';
 import GridLogo, { GridLogoProps } from './GridLogo';
 import AboutDialog, { AboutDialogProps } from './AboutDialog';
-import { LogoutProps } from '../login/Logout';
+import { LogoutProps } from '../authentication/Logout';
 import { CommonMetadata } from '../../services';
 
 const styles = {

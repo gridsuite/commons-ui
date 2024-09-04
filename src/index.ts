@@ -12,12 +12,12 @@ export type { TopBarProps } from './components/topBar';
 export { default as AboutDialog } from './components/topBar/AboutDialog';
 export type { AboutDialogProps, GridSuiteModule } from './components/topBar/AboutDialog';
 export { default as SnackbarProvider } from './components/snackbarProvider';
-export { default as AuthenticationRouter } from './components/authenticationRouter';
+export * from './components/authentication';
 export type {
     AuthenticationRouterErrorState,
     AuthenticationRouterProps,
     UserManagerState,
-} from './components/authenticationRouter';
+} from './components/authentication';
 export {
     MuiVirtualizedTable,
     KeyedColumnsRowIndexer,
@@ -27,10 +27,6 @@ export {
     DEFAULT_ROW_HEIGHT,
 } from './components/muiVirtualizedTable';
 export type { MuiVirtualizedTableProps, CustomColumnProps, RowProps } from './components/muiVirtualizedTable';
-export { default as ReportViewer } from './components/reportViewer';
-export type { ReportViewerProps } from './components/reportViewer';
-export { default as ReportViewerDialog } from './components/reportViewerDialog';
-export type { ReportViewerDialogProps } from './components/reportViewerDialog';
 export { default as OverflowableText } from './components/overflowableText';
 export type { OverflowableTextProps } from './components/overflowableText';
 export { ElementSearchDialog } from './components/elementSearch';

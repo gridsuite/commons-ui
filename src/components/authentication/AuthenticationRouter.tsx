@@ -14,7 +14,7 @@ import SignInCallbackHandler from '../signInCallbackHandler';
 import { handleSigninCallback, handleSilentRenewCallback, login, logout } from '../../utils/authService';
 import SilentRenewCallbackHandler from '../silentRenewCallbackHandler';
 import Login from '../login';
-import Logout from '../login/Logout';
+import Logout from './Logout';
 
 import { AuthenticationActions } from '../../redux/actions/authActions';
 
