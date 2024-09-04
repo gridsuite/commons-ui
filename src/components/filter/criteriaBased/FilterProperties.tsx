@@ -24,7 +24,7 @@ import FieldConstants from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import FilterFreeProperties, { FreePropertiesTypes } from './FilterFreeProperties';
 import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './FilterProperty';
-import usePredefinedProperties from '../../../hooks/predefinedPropertiesHook';
+import usePredefinedProperties from '../../../hooks/usePredefinedProperties';
 import { FilterType } from '../constants/FilterConstants';
 
 function propertyValuesTest(

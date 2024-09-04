@@ -14,7 +14,7 @@ import useValid from './hooks/useValid';
 
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import FieldConstants from '../../../utils/constants/fieldConstants';
-import usePredefinedProperties from '../../../hooks/predefinedPropertiesHook';
+import usePredefinedProperties from '../../../hooks/usePredefinedProperties';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
