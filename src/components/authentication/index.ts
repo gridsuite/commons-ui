@@ -24,4 +24,4 @@ export {
     logout,
     dispatchUser,
     getPreLoginPath,
-} from './authService';
+} from './utils/authService';
