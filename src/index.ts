@@ -87,7 +87,7 @@ export {
     rqbQuerySchemaValidator,
     getExpertFilterEmptyFormData,
 } from './components/filter/expert/expert-filter-form';
-export { importExpertRules, exportExpertRules, searchTree } from './components/filter/expert/expert-filter-utils';
+export { importExpertRules, exportExpertRules } from './components/filter/expert/expert-filter-utils';
 export type { RuleTypeExport, RuleGroupTypeExport } from './components/filter/expert/expert-filter.type';
 export { formatQuery } from 'react-querybuilder';
 
