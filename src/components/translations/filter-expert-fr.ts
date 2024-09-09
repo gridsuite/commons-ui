@@ -177,6 +177,16 @@ const filterExpertFr = {
     shuntSusceptance2: 'Susceptance parallèle 2 (μS)',
     pairingKey: 'Xnode',
     tieLineId: "ID de l'interconnexion",
+    cannotRetrieveFilter: "Erreur d'accès au filtre : ",
+    equality: '=',
+    notEquality: '!=',
+    greaterThan: '>',
+    greaterOrEqual: '>=',
+    lessThan: '<',
+    lessOrEqual: '<=',
+    YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
+    YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
+    changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur toutes les règles déjà créées dans le groupe.",
 };
 
 export default filterExpertFr;
