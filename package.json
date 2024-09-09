@@ -1,6 +1,6 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.64.4",
+    "version": "0.64.5",
     "description": "common react components for gridsuite applications",
     "engines": {
         "npm": ">=9",

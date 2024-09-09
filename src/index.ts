@@ -178,6 +178,7 @@ export type { UseSnackMessageReturn } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
 export { default as useConfidentialityWarning } from './hooks/useConfidentialityWarning';
+export { default as usePredefinedProperties } from './hooks/usePredefinedProperties';
 export { default as SelectClearable } from './components/inputs/SelectClearable';
 export type { SelectClearableProps } from './components/inputs/SelectClearable';
 export { default as useCustomFormContext } from './components/inputs/reactHookForm/provider/useCustomFormContext';
