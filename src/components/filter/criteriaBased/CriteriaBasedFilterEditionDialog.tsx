@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
@@ -46,15 +46,15 @@ const formSchema = yup
     .required();
 
 export interface CriteriaBasedFilterEditionDialogProps {
-    id: string;
+    id: string | undefined | null;
     name: string;
     titleId: string;
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
-    selectionForCopy: SelectionCopy;
-    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
+    selectionForCopy: any;
+    setSelectionForCopy: (selection: any) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
@@ -69,7 +69,7 @@ function CriteriaBasedFilterEditionDialog({
     broadcastChannel,
     getFilterById,
     selectionForCopy,
-    setSelelectionForCopy,
+    setSelectionForCopy,
     activeDirectory,
     elementExists,
     language,
@@ -118,7 +118,7 @@ function CriteriaBasedFilterEditionDialog({
             saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
-                        setSelelectionForCopy(noSelectionForCopy);
+                        setSelectionForCopy(noSelectionForCopy);
                         broadcastChannel.postMessage({
                             noSelectionForCopy,
                         });
@@ -130,7 +130,7 @@ function CriteriaBasedFilterEditionDialog({
                     });
                 });
         },
-        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelelectionForCopy]
+        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

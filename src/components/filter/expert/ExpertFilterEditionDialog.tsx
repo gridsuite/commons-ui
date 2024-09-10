@@ -33,7 +33,7 @@ const formSchema = yup
     .required();
 
 export interface ExpertFilterEditionDialogProps {
-    id: string;
+    id: string | null;
     name: string;
     titleId: string;
     open: boolean;

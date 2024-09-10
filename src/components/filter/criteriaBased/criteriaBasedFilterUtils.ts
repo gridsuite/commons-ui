@@ -155,7 +155,7 @@ function cleanNominalVoltages(formValues: any) {
  *  freeProperties2.{nameA:valuesC}}
  * @author Laurent LAUGARN modified by Florent MILLOT
  */
-export const frontToBackTweak = (id?: string, filter?: any) => {
+export const frontToBackTweak = (id: string | undefined | null, filter?: any) => {
     const filterSubstationProperties =
         filter[FieldConstants.CRITERIA_BASED][FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES];
     const ret = {

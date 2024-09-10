@@ -35,7 +35,7 @@ const formSchema = yup
     .required();
 
 export interface ExplicitNamingFilterEditionDialogProps {
-    id: string;
+    id: string | null;
     name: string;
     titleId: string;
     open: boolean;
