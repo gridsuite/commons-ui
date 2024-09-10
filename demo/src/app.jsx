@@ -30,7 +30,7 @@ import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import SnackbarProvider from '../../src/components/snackbarProvider';
-import AuthenticationRouter from '../../src/components/authentication';
+import { AuthenticationRouter } from '../../src/components/authentication';
 import CardErrorBoundary from '../../src/components/cardErrorBoundary';
 import {
     card_error_boundary_en,
