@@ -24,7 +24,7 @@ export function CheckBoxListItem<T>({
     return (
         <ListItem
             secondaryAction={secondaryAction?.(item, hover)}
-            sx={{ minWidth: 0, ...sx?.checkboxList }}
+            sx={{ minWidth: 0, ...sx?.checkboxListItem }}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
             disablePadding={!isCheckboxClickableOnly}
