@@ -16,6 +16,7 @@ export function CheckBoxList<T>({
     onDragStart,
     onDragEnd,
     isDragDisable = false,
+    sx,
     ...props
 }: CheckboxListProps<T>) {
     const [isDragging, setIsDragging] = useState(false);
@@ -24,6 +25,7 @@ export function CheckBoxList<T>({
         <CheckBoxListItems
             isDndDragAndDropActive={isDndDragAndDropActive}
             isDragDisable={isDragDisable || isDragging}
+            sx={sx}
             {...props}
         />
     );
@@ -45,7 +47,7 @@ export function CheckBoxList<T>({
         >
             <Droppable droppableId="droppable-checkbox-list" isDropDisabled={isDragDisable}>
                 {(provided) => (
-                    <Box {...provided.droppableProps} ref={provided.innerRef}>
+                    <Box {...provided.droppableProps} ref={provided.innerRef} sx={sx?.dragAndDropContainer}>
                         {checkBoxField}
                         {provided.placeholder}
                     </Box>
