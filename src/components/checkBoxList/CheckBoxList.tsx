@@ -25,6 +25,7 @@ export function CheckBoxList<T>({
         <CheckBoxListItems
             isDndDragAndDropActive={isDndDragAndDropActive}
             isDragDisable={isDragDisable || isDragging}
+            sx={sx}
             {...props}
         />
     );
