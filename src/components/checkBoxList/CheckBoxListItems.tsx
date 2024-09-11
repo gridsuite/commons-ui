@@ -95,7 +95,7 @@ export function CheckBoxListItems<T>({
     );
 
     return (
-        <List key="droppable-checkbox-list" dense disablePadding {...props}>
+        <List key="droppable-checkbox-list" sx={sx?.checkboxList} dense disablePadding {...props}>
             {addSelectAllCheckbox && (
                 <ListItem
                     disablePadding

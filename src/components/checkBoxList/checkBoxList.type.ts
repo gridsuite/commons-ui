@@ -12,9 +12,11 @@ import { SxProps } from '@mui/system';
 export interface CheckBoxListItemSxProps {
     checkBoxIcon?: SxProps;
     label?: SxProps;
-    checkboxList?: SxProps;
+    checkboxListItem?: SxProps;
     checkboxButton?: SxProps;
     checkbox?: SxProps;
+    dragAndDropContainer?: SxProps;
+    checkboxList?: SxProps;
 }
 
 export interface CheckBoxListItemProps<T> {
