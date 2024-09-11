@@ -29,16 +29,10 @@ interface FilterFormProps {
     };
 }
 
-function FilterForm(props: FilterFormProps) {
+function HeaderFilterForm(props: FilterFormProps) {
     const { sourceFilterForExplicitNamingConversion, creation, activeDirectory, elementExists } = props;
+
     const { setValue } = useFormContext();
-
-    const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
-
-    // We do this because setValue don't set the field dirty
-    const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-        setValue(FieldConstants.FILTER_TYPE, value);
-    };
 
     useEffect(() => {
         if (sourceFilterForExplicitNamingConversion) {
@@ -46,8 +40,13 @@ function FilterForm(props: FilterFormProps) {
         }
     }, [sourceFilterForExplicitNamingConversion, setValue]);
 
+    // We do this because setValue don't set the field dirty
+    const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+        setValue(FieldConstants.FILTER_TYPE, value);
+    };
+
     return (
-        <Grid container spacing={2}>
+        <>
             <Grid item xs={12}>
                 <UniqueNameInput
                     name={FieldConstants.NAME}
@@ -74,13 +73,34 @@ function FilterForm(props: FilterFormProps) {
                     )}
                 </>
             )}
-            {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
-            {filterType === FilterType.EXPLICIT_NAMING.id && (
-                <ExplicitNamingFilterForm
+        </>
+    );
+}
+
+function FilterForm(props: FilterFormProps) {
+    const { sourceFilterForExplicitNamingConversion, creation, activeDirectory, elementExists } = props;
+
+    const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
+
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <HeaderFilterForm
+                    creation={creation}
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
-            )}
-            {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
+            </Grid>
+            <Grid item xs={12}>
+                {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
+                {filterType === FilterType.EXPLICIT_NAMING.id && (
+                    <ExplicitNamingFilterForm
+                        sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                    />
+                )}
+                {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
+            </Grid>
         </Grid>
     );
 }
