@@ -29,26 +29,20 @@ import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import SnackbarProvider from '../../src/components/SnackbarProvider';
-import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import CardErrorBoundary from '../../src/components/CardErrorBoundary';
+import SnackbarProvider from '../../src/components/snackbarProvider';
+import { AuthenticationRouter } from '../../src/components/authentication';
+import CardErrorBoundary from '../../src/components/cardErrorBoundary';
 import {
-    ElementType,
-    EQUIPMENT_TYPE,
-    equipmentStyles,
-    getFileIcon,
-    initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-    logout,
     card_error_boundary_en,
     card_error_boundary_fr,
     element_search_en,
     element_search_fr,
+    ElementType,
     equipment_search_en,
     equipment_search_fr,
+    EQUIPMENT_TYPE,
+    EquipmentItem,
+    equipmentStyles,
     filter_en,
     filter_fr,
     filter_expert_en,
@@ -61,8 +55,15 @@ import {
     csv_fr,
     flat_parameters_en,
     flat_parameters_fr,
+    getFileIcon,
+    initializeAuthenticationDev,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
     login_en,
     login_fr,
+    logout,
     multiple_selection_dialog_en,
     multiple_selection_dialog_fr,
     report_viewer_en,
@@ -71,11 +72,11 @@ import {
     table_fr,
     top_bar_en,
     top_bar_fr,
+    TopBar,
     treeview_finder_en,
     treeview_finder_fr,
-    TopBar,
+    useSnackMessage,
 } from '../../src';
-import { useSnackMessage } from '../../src/hooks/useSnackMessage';
 
 import translations from './demo_intl';
 
@@ -83,8 +84,7 @@ import translations from './demo_intl';
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
-import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import { TreeViewFinder, generateTreeViewFinderClass } from '../../src/components/TreeViewFinder';
+import { generateTreeViewFinderClass, TreeViewFinder } from '../../src/components/treeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
 import {
@@ -97,20 +97,19 @@ import {
 import LOGS_JSON from '../data/ReportViewer';
 
 import searchEquipments from '../data/EquipmentSearchBar';
-import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
-import OverflowableText from '../../src/components/OverflowableText';
+import OverflowableText from '../../src/components/overflowableText';
 
-import { setShowAuthenticationRouterLogin } from '../../src/redux/authActions';
+import { setShowAuthenticationRouterLogin } from '../../src/redux/actions/authActions';
 import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import InputsTab from './InputsTab';
-import inputs_en from '../../src/components/translations/inputs-en';
-import inputs_fr from '../../src/components/translations/inputs-fr';
+import inputs_en from '../../src/translations/en/inputsEn';
+import inputs_fr from '../../src/translations/fr/inputsFr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
-import MultipleSelectionDialog from '../../src/components/MultipleSelectionDialog/MultipleSelectionDialog';
+import MultipleSelectionDialog from '../../src/components/multipleSelectionDialog';
 
 const messages = {
     en: {
@@ -325,8 +324,6 @@ function AppContent({ language, onLanguageClick }) {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [openReportViewer, setOpenReportViewer] = useState(false);
-
     const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
     const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] = useState(false);
 
@@ -468,12 +465,14 @@ function AppContent({ language, onLanguageClick }) {
 
     const aboutTimerVersion = useRef();
     const aboutTimerCmpnt = useRef();
+
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
             (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
+
     function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
         return new Promise(
@@ -662,23 +661,6 @@ function AppContent({ language, onLanguageClick }) {
                               },
                           }
                 }
-            />
-
-            <Button
-                variant="contained"
-                style={{
-                    float: 'left',
-                    margin: '5px',
-                }}
-                onClick={() => setOpenReportViewer(true)}
-            >
-                Logs
-            </Button>
-            <ReportViewerDialog
-                title="Logs test"
-                open={openReportViewer}
-                onClose={() => setOpenReportViewer(false)}
-                jsonReport={LOGS_JSON}
             />
             <div
                 style={{

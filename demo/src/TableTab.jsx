@@ -14,7 +14,7 @@ import {
     generateMuiVirtualizedTableClass,
     KeyedColumnsRowIndexer,
     MuiVirtualizedTable,
-} from '../../src/components/MuiVirtualizedTable';
+} from '../../src/components/muiVirtualizedTable';
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
 
 // For demo and fun... all even numbers first, then all ascending odd numbers, only positive numbers...
