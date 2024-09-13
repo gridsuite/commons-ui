@@ -6,6 +6,6 @@
  */
 export * from './utils';
 export * from './explore';
-export * from './apps-metadata';
+export * from './appsMetadata';
 export * from './directory';
 export * from './study';

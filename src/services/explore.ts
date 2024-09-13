@@ -7,7 +7,7 @@
 
 import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
-import { ElementAttributes } from '../utils/types';
+import { ElementAttributes } from '../utils/types/types';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
