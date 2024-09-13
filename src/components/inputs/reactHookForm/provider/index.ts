@@ -5,5 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './CustomFormProvider';
-export { default as CustomFormProvider } from './CustomFormProvider';
-export { default as useCustomFormContext } from './useCustomFormContext';
+export * from './useCustomFormContext';

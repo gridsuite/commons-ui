@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterFr = {
+export const filterFr = {
     OR: 'OU',
     AND: 'ET',
     rule: 'règle',
@@ -56,5 +56,3 @@ const filterFr = {
     nameValidityCheckErrorMsg: 'Erreur lors de la vérification de la validité du nom',
     cantSubmitWhileValidating: "Impossible de soumettre le formulaire durant la validation d'un champ",
 };
-
-export default filterFr;

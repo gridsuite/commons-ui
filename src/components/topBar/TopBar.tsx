@@ -44,8 +44,8 @@ import {
 import { styled } from '@mui/system';
 
 import { User } from 'oidc-client';
-import GridLogo, { GridLogoProps } from './GridLogo';
-import AboutDialog, { AboutDialogProps } from './AboutDialog';
+import { GridLogo, GridLogoProps } from './GridLogo';
+import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
 import { Metadata } from '../../utils';
 import {
@@ -176,7 +176,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
     };
 
-function TopBar({
+export function TopBar({
     appName,
     appColor,
     appLogo,
@@ -569,5 +569,3 @@ function TopBar({
         </AppBar>
     );
 }
-
-export default TopBar;

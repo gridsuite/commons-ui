@@ -19,11 +19,11 @@ import { testQuery } from './expertFilterUtils';
 import { COMBINATOR_OPTIONS, EXPERT_FILTER_EQUIPMENTS, fields, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
 
 import { FieldType } from './expertFilter.type';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { FilterType } from '../constants/FilterConstants';
-import CustomReactQueryBuilder from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
+import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 
 yup.setLocale({
     mixed: {
@@ -89,7 +89,7 @@ export function getExpertFilterEmptyFormData() {
     };
 }
 
-function ExpertFilterForm() {
+export function ExpertFilterForm() {
     const intl = useIntl();
 
     const { getValues, setValue } = useFormContext();
@@ -138,5 +138,3 @@ function ExpertFilterForm() {
         </Grid>
     );
 }
-
-export default ExpertFilterForm;

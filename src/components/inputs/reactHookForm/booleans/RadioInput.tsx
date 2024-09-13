@@ -8,7 +8,7 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, RadioGroupProps } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
-import FieldLabel from '../utils/FieldLabel';
+import { FieldLabel } from '../utils/FieldLabel';
 
 type RadioOptions = Array<{
     id: string;
@@ -23,7 +23,7 @@ export interface RadioInputProps {
     formProps?: Omit<RadioGroupProps, 'value'>;
 }
 
-function RadioInput({ name, label, id, options, formProps }: Readonly<RadioInputProps>) {
+export function RadioInput({ name, label, id, options, formProps }: Readonly<RadioInputProps>) {
     const {
         field: { onChange, value },
     } = useController({ name });
@@ -48,5 +48,3 @@ function RadioInput({ name, label, id, options, formProps }: Readonly<RadioInput
         </FormControl>
     );
 }
-
-export default RadioInput;

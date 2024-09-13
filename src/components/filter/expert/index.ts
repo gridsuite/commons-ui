@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './ExpertFilterEditionDialog';
-export { default as ExpertFilterEditionDialog } from './ExpertFilterEditionDialog';
 export * from './ExpertFilterForm';
-export { default as ExpertFilterForm } from './ExpertFilterForm';
 export * from './expertFilter.type';
 export * from './expertFilterConstants';
 export * from './expertFilterUtils';

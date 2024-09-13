@@ -9,17 +9,17 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'reac
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
 import yup from '../../../utils/yupConfig';
 import { FilterType } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { saveFilter } from '../../../services/explore';
 import { ElementExistsType } from '../../../utils/types/elementType';
-import FilterForm from '../FilterForm';
+import { FilterForm } from '../FilterForm';
 
 export type SelectionCopy = {
     sourceItemUuid: UUID | null;
@@ -60,7 +60,7 @@ export interface CriteriaBasedFilterEditionDialogProps {
     language?: string;
 }
 
-function CriteriaBasedFilterEditionDialog({
+export function CriteriaBasedFilterEditionDialog({
     id,
     name,
     titleId,
@@ -152,5 +152,3 @@ function CriteriaBasedFilterEditionDialog({
         </CustomMuiDialog>
     );
 }
-
-export default CriteriaBasedFilterEditionDialog;

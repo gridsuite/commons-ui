@@ -35,5 +35,3 @@ export function CheckBoxListItem<T>({
         </ListItem>
     );
 }
-
-export default CheckBoxListItem;

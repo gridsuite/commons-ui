@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './CountriesInput';
-export { default as CountriesInput } from './CountriesInput';
-export { default as InputWithPopupConfirmation } from './InputWithPopupConfirmation';
+export * from './InputWithPopupConfirmation';
 export * from './MuiSelectInput';
-export { default as MuiSelectInput } from './MuiSelectInput';
 export * from './SelectInput';
-export { default as SelectInput } from './SelectInput';

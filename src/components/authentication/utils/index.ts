@@ -5,4 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 // eslint-disable-next-line import/prefer-default-export
-export { default as userManagerMock } from './userManagerMock';
+export * from './authService';
+export * from './userManagerMock';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterExpertFr = {
+export const filterExpertFr = {
     id: 'ID',
     name: 'Nom',
     energySource: "Source d'énergie",
@@ -188,5 +188,3 @@ const filterExpertFr = {
     YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
     changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur toutes les règles déjà créées dans le groupe.",
 };
-
-export default filterExpertFr;

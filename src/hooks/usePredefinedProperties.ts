@@ -5,14 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import mapEquipmentTypeForPredefinedProperties from '../utils/mapper/equipmentTypesForPredefinedPropertiesMapper';
+import { equipmentTypesForPredefinedPropertiesMapper } from '../utils/mapper/equipmentTypesForPredefinedPropertiesMapper';
 import { useSnackMessage } from './useSnackMessage';
 import { PredefinedProperties } from '../utils/types/types';
 import { fetchStudyMetadata } from '../services';
 import { EquipmentType } from '../utils';
 
 const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<PredefinedProperties | undefined> => {
-    const networkEquipmentType = mapEquipmentTypeForPredefinedProperties(equipmentType);
+    const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType);
     if (networkEquipmentType === undefined) {
         return Promise.resolve(undefined);
     }
@@ -20,7 +20,7 @@ const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<
     return studyMetadata.predefinedEquipmentProperties?.[networkEquipmentType];
 };
 
-const usePredefinedProperties = (
+export const usePredefinedProperties = (
     initialType: EquipmentType | null
 ): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>] => {
     const [type, setType] = useState<EquipmentType | null>(initialType);
@@ -45,5 +45,3 @@ const usePredefinedProperties = (
 
     return [equipmentPredefinedProps, setType];
 };
-
-export default usePredefinedProperties;

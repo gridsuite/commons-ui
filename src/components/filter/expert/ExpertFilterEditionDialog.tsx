@@ -9,16 +9,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import yup from '../../../utils/yupConfig';
-import FilterForm from '../FilterForm';
+import { FilterForm } from '../FilterForm';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { importExpertRules } from './expertFilterUtils';
 import { FilterType } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
 import { noSelectionForCopy } from '../criteriaBased';
 
@@ -48,7 +48,7 @@ export interface ExpertFilterEditionDialogProps {
     language?: string;
 }
 
-function ExpertFilterEditionDialog({
+export function ExpertFilterEditionDialog({
     id,
     name,
     titleId,
@@ -148,5 +148,3 @@ function ExpertFilterEditionDialog({
         </CustomMuiDialog>
     );
 }
-
-export default ExpertFilterEditionDialog;

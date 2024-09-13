@@ -44,7 +44,7 @@ export interface ExpandableGroupProps extends PropsWithChildren {
     renderHeader: ReactNode;
 }
 
-function ExpandableGroup({ renderHeader, children }: Readonly<ExpandableGroupProps>) {
+export function ExpandableGroup({ renderHeader, children }: Readonly<ExpandableGroupProps>) {
     const [mouseHover, setMouseHover] = useState(false);
 
     return (
@@ -67,5 +67,3 @@ function ExpandableGroup({ renderHeader, children }: Readonly<ExpandableGroupPro
         </Accordion>
     );
 }
-
-export default ExpandableGroup;

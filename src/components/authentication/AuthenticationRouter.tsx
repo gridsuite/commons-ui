@@ -10,13 +10,13 @@ import { Location, Navigate, NavigateFunction, Route, Routes } from 'react-route
 import { Alert, AlertTitle, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UserManager } from 'oidc-client';
-import { SignInCallbackHandler } from '../signInCallbackHandler';
-import { SilentRenewCallbackHandler } from '../silentRenewCallbackHandler';
-import Login from './Login';
-import Logout from './Logout';
+import { Login } from './Login';
+import { Logout } from './Logout';
 
 import { AuthenticationActions } from '../../redux/actions/authActions';
 import { handleSigninCallback, handleSilentRenewCallback, login, logout } from './utils/authService';
+import { SignInCallbackHandler } from './SignInCallbackHandler';
+import { SilentRenewCallbackHandler } from './SilentRenewCallbackHandler';
 
 export type AuthenticationRouterErrorState = {
     userName?: string;
@@ -40,7 +40,7 @@ export interface AuthenticationRouterProps {
     location: Location;
 }
 
-function AuthenticationRouter({
+export function AuthenticationRouter({
     userManager,
     signInCallbackError,
     authenticationRouterError,
@@ -158,5 +158,3 @@ function AuthenticationRouter({
         </Grid>
     );
 }
-
-export default AuthenticationRouter;

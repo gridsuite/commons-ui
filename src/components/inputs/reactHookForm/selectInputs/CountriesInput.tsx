@@ -6,9 +6,9 @@
  */
 import { useCallback } from 'react';
 import { Chip } from '@mui/material';
-import AutocompleteInput from '../autocompleteInputs/AutocompleteInput';
+import { AutocompleteInput } from '../autocompleteInputs/AutocompleteInput';
 import { useLocalizedCountries } from '../../../../hooks/useLocalizedCountries';
-import useCustomFormContext from '../provider/useCustomFormContext';
+import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
 
 export interface CountryInputProps {
@@ -16,7 +16,7 @@ export interface CountryInputProps {
     label: string;
 }
 
-function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
+export function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
 
@@ -46,5 +46,3 @@ function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
         />
     );
 }
-
-export default CountriesInput;

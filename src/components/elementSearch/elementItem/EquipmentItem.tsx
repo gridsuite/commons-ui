@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { Box, SxProps, Theme } from '@mui/material';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
-import TagRenderer from '../tagRenderer/TagRenderer';
+import { TagRenderer } from '../tagRenderer/TagRenderer';
 import { OverflowableText } from '../../overflowableText';
 import { mergeSx } from '../../../utils/styles';
 

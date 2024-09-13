@@ -5,4 +5,3 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './FlatParameters';
-export { default as defaultFlatParameters } from './FlatParameters';

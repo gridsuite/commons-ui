@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FunctionComponent } from 'react';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import RangeInput from '../../inputs/reactHookForm/numbers/RangeInput';
-import CountriesInput from '../../inputs/reactHookForm/selectInputs/CountriesInput';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
+import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 
 const countries = {

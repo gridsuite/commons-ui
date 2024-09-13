@@ -5,5 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './AutocompleteInput';
-export { default as AutocompleteInput } from './AutocompleteInput';
-export { default as MultipleAutocompleteInput } from './MultipleAutocompleteInput';
+export * from './MultipleAutocompleteInput';

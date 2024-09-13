@@ -5,15 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './CriteriaBasedFilterEditionDialog';
-export { default as CriteriaBasedFilterEditionDialog } from './CriteriaBasedFilterEditionDialog';
 export * from './CriteriaBasedFilterForm';
-export { default as CriteriaBasedFilterForm } from './CriteriaBasedFilterForm';
 export * from './CriteriaBasedForm';
-export { default as CriteriaBasedForm } from './CriteriaBasedForm';
 export * from './FilterFreeProperties';
-export { default as FilterFreeProperties } from './FilterFreeProperties';
 export * from './FilterProperties';
-export { default as FilterProperties } from './FilterProperties';
 export * from './FilterProperty';
-export { default as FilterProperty } from './FilterProperty';
 export * from './criteriaBasedFilterUtils';

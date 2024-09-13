@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './FilterCreationDialog';
-export { default as FilterCreationDialog } from './FilterCreationDialog';
 export * from './FilterForm';
-export { default as FilterForm } from './FilterForm';
 export * from './constants/FilterConstants';
 export * from './criteriaBased';
 export * from './expert';

@@ -6,9 +6,7 @@
  */
 
 export * from './DirectoryItemsInput';
-export { default as DirectoryItemsInput } from './DirectoryItemsInput';
 export * from './RawReadOnlyInput';
-export { default as RawReadOnlyInput } from './RawReadOnlyInput';
 export * from './agGridTable';
 export * from './autocompleteInputs';
 export * from './booleans';

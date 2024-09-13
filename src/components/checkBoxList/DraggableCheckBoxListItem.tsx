@@ -51,5 +51,3 @@ export function DraggableCheckBoxListItem<T>({
         </ListItem>
     );
 }
-
-export default DraggableCheckBoxListItem;

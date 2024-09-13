@@ -6,7 +6,7 @@
  */
 
 import { useIntl } from 'react-intl';
-import AutocompleteInput, { AutocompleteInputProps } from '../autocompleteInputs/AutocompleteInput';
+import { AutocompleteInput, AutocompleteInputProps } from '../autocompleteInputs/AutocompleteInput';
 import { Option } from '../../../../utils/types/types';
 
 export interface SelectInputProps
@@ -17,7 +17,7 @@ export interface SelectInputProps
     options: Option[];
 }
 
-function SelectInput(props: SelectInputProps) {
+export function SelectInput(props: SelectInputProps) {
     const intl = useIntl();
     const { options } = props;
     const inputTransform = (value: Option | null) => {
@@ -57,5 +57,3 @@ function SelectInput(props: SelectInputProps) {
         />
     );
 }
-
-export default SelectInput;

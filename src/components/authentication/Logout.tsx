@@ -44,7 +44,7 @@ function Copyright() {
     );
 }
 
-function Logout({ onLogoutClick, disabled }: LogoutProps) {
+export function Logout({ onLogoutClick, disabled }: LogoutProps) {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -65,5 +65,3 @@ function Logout({ onLogoutClick, disabled }: LogoutProps) {
         </Container>
     );
 }
-
-export default Logout;

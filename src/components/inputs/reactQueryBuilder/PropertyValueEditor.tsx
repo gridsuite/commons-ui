@@ -10,11 +10,11 @@ import Grid from '@mui/material/Grid';
 import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
-import useValid from './hooks/useValid';
+import { useValid } from './hooks/useValid';
 
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import usePredefinedProperties from '../../../hooks/usePredefinedProperties';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
@@ -24,7 +24,7 @@ interface ExpertFilterPropertyProps {
     valueEditorProps: ValueEditorProps;
 }
 
-function PropertyValueEditor(props: ExpertFilterPropertyProps) {
+export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
@@ -119,5 +119,3 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         </Grid>
     );
 }
-
-export default PropertyValueEditor;

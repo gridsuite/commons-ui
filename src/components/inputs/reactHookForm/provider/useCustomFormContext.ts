@@ -9,11 +9,9 @@ import { useFormContext } from 'react-hook-form';
 import { useContext } from 'react';
 import { CustomFormContext, MergedFormContextProps } from './CustomFormProvider';
 
-const useCustomFormContext = (): MergedFormContextProps => {
+export const useCustomFormContext = (): MergedFormContextProps => {
     const formMethods = useFormContext();
     const customFormMethods = useContext(CustomFormContext);
 
     return { ...formMethods, ...customFormMethods };
 };
-
-export default useCustomFormContext;

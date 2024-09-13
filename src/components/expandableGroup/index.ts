@@ -6,4 +6,3 @@
  */
 
 export * from './ExpandableGroup';
-export { default as ExpandableGroup } from './ExpandableGroup';

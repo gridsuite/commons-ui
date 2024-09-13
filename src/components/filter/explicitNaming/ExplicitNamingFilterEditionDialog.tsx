@@ -13,14 +13,14 @@ import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
 import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import yup from '../../../utils/yupConfig';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 
-import FilterForm from '../FilterForm';
+import { FilterForm } from '../FilterForm';
 import { FilterType } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
 import { noSelectionForCopy } from '../criteriaBased';
 
@@ -49,7 +49,7 @@ export interface ExplicitNamingFilterEditionDialogProps {
     language?: string;
 }
 
-function ExplicitNamingFilterEditionDialog({
+export function ExplicitNamingFilterEditionDialog({
     id,
     name,
     titleId,
@@ -158,5 +158,3 @@ ExplicitNamingFilterEditionDialog.prototype = {
     open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
 };
-
-export default ExplicitNamingFilterEditionDialog;

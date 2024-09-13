@@ -6,4 +6,3 @@
  */
 export * from './KeyedColumnsRowIndexer';
 export * from './MuiVirtualizedTable';
-export { default as MuiVirtualizedTable } from './MuiVirtualizedTable';

@@ -5,10 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './BooleanInput';
-export { default as BooleanInput } from './BooleanInput';
 export * from './CheckboxInput';
-export { default as CheckboxInput } from './CheckboxInput';
 export * from './RadioInput';
-export { default as RadioInput } from './RadioInput';
 export * from './SwitchInput';
-export { default as SwitchInput } from './SwitchInput';

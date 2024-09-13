@@ -6,4 +6,3 @@
  */
 
 export * from './MultipleSelectionDialog';
-export { default as MultipleSelectionDialog } from './MultipleSelectionDialog';

@@ -7,4 +7,3 @@
 
 export * from './customAggrid.style';
 export * from './customAggrid';
-export { default as customAggrid } from './customAggrid';

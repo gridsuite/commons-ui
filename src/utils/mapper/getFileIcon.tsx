@@ -15,7 +15,7 @@ import {
 import { SxProps, Theme } from '@mui/material';
 import { ElementType } from '../types/elementType';
 
-function getFileIcon(type: ElementType, style: SxProps<Theme>) {
+export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
@@ -42,5 +42,3 @@ function getFileIcon(type: ElementType, style: SxProps<Theme>) {
     }
     return undefined;
 }
-
-export default getFileIcon;

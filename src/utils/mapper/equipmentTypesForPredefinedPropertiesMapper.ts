@@ -7,7 +7,7 @@
 
 import { EquipmentType } from '../types';
 
-const mapEquipmentTypeForPredefinedProperties = (type: EquipmentType): string | undefined => {
+export const equipmentTypesForPredefinedPropertiesMapper = (type: EquipmentType): string | undefined => {
     switch (type) {
         case 'SUBSTATION':
             return 'substation';
@@ -37,5 +37,3 @@ const mapEquipmentTypeForPredefinedProperties = (type: EquipmentType): string | 
             return undefined;
     }
 };
-
-export default mapEquipmentTypeForPredefinedProperties;

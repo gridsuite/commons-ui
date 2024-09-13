@@ -5,6 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './ExplicitNamingFilterEditionDialog';
-export { default as ExplicitNamingFilterEditionDialog } from './ExplicitNamingFilterEditionDialog';
 export * from './ExplicitNamingFilterForm';
-export { default as ExplicitNamingFilterForm } from './ExplicitNamingFilterForm';

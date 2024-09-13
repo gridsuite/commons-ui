@@ -66,7 +66,8 @@ class Events implements UserManagerEvents {
     removeAccessTokenExpired() {}
 }
 
-export default class UserManagerMock implements UserManager {
+// eslint-disable-next-line import/prefer-default-export
+export class UserManagerMock implements UserManager {
     settings;
 
     events;

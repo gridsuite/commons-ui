@@ -7,7 +7,7 @@
 
 import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import OverflowableText from '../overflowableText';
+import { OverflowableText } from '../overflowableText';
 import { DraggableClickableItemProps } from './checkBoxList.type';
 
 const styles = {
@@ -54,5 +54,3 @@ export function DraggableClickableCheckBoxItem({
         </>
     );
 }
-
-export default DraggableClickableCheckBoxItem;

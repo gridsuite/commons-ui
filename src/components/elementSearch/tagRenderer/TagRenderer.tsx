@@ -22,7 +22,7 @@ export interface TagRendererProps {
     };
 }
 
-function TagRenderer({ element, ...props }: TagRendererProps) {
+export function TagRenderer({ element, ...props }: TagRendererProps) {
     if (element.type !== EQUIPMENT_TYPE.SUBSTATION?.name && element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name) {
         return (
             <OverflowableText
@@ -33,5 +33,3 @@ function TagRenderer({ element, ...props }: TagRendererProps) {
         );
     }
 }
-
-export default TagRenderer;
