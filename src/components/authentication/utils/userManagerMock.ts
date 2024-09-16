@@ -66,7 +66,6 @@ class Events implements UserManagerEvents {
     removeAccessTokenExpired() {}
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export class UserManagerMock implements UserManager {
     settings;
 
@@ -239,3 +238,5 @@ export class UserManagerMock implements UserManager {
         return Promise.resolve({} as SignoutResponse);
     }
 }
+
+export default UserManagerMock;
