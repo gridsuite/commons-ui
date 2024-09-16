@@ -13,6 +13,7 @@
     "ignorePatterns": [
         // node_modules is implicitly always ignored
         "dist",
+        "coverage",
         "vite.config.mts",
         "jest.config.ts",
         "jest.setup.ts"
