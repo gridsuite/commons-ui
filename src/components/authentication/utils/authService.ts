@@ -51,6 +51,8 @@ const accessTokenExpiringNotificationTime = 60; // seconds
 function isIssuerError(error: Error) {
     if (error instanceof Error) {
         console.log('coucou');
+    } else {
+        console.log('hehehe');
     }
     return error.message.includes('Invalid issuer in token');
 }
