@@ -49,6 +49,9 @@ const pathKey = 'powsybl-gridsuite-current-path';
 const accessTokenExpiringNotificationTime = 60; // seconds
 
 function isIssuerError(error: Error) {
+    if (error instanceof Error) {
+        console.log('coucou');
+    }
     return error.message.includes('Invalid issuer in token');
 }
 
