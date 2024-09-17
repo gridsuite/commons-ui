@@ -12,9 +12,11 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Grid, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
-import BottomRightButtons from './BottomRightButtons';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
+import BottomRightButtons, { BottomRightButtonsProps } from './BottomRightButtons';
 import FieldConstants from '../../../../utils/constants/fieldConstants';
+
+type AgGridFn<TFn extends keyof GridOptions, TData> = NonNullable<GridOptions<TData>[TFn]>;
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -23,9 +25,9 @@ export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
         checkboxSelection: true,
         maxWidth: 50,
     },
-];
+] as const satisfies Readonly<ColDef[]>;
 
-const style = (customProps: any) => ({
+const style = (customProps: object = {}) => ({
     grid: (theme: any) => ({
         width: 'auto',
         height: '100%',
@@ -83,13 +85,13 @@ const style = (customProps: any) => ({
     }),
 });
 
-export interface CustomAgGridTableProps {
+export interface CustomAgGridTableProps<TData, TValue> {
     name: string;
-    columnDefs: any;
-    makeDefaultRowData: any;
-    csvProps: unknown;
-    cssProps: unknown;
-    defaultColDef: unknown;
+    columnDefs: ColDef<TData, TValue>[];
+    makeDefaultRowData: () => unknown;
+    csvProps: BottomRightButtonsProps['csvProps'];
+    cssProps?: object;
+    defaultColDef: GridOptions<TData>['defaultColDef'];
     pagination: boolean;
     paginationPageSize: number;
     suppressRowClickSelection: boolean;
@@ -97,7 +99,9 @@ export interface CustomAgGridTableProps {
     stopEditingWhenCellsLoseFocus: boolean;
 }
 
-function CustomAgGridTable({
+// TODO: rename ContingencyAgGridTable
+// TODO: used only once in gridexplore, move to gridexplore?
+function CustomAgGridTable<TData = unknown, TValue = unknown>({
     name,
     columnDefs,
     makeDefaultRowData,
@@ -109,11 +113,10 @@ function CustomAgGridTable({
     suppressRowClickSelection,
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
-    ...props
-}: CustomAgGridTableProps) {
+}: Readonly<CustomAgGridTableProps<TData, TValue>>) {
     const theme: any = useTheme();
-    const [gridApi, setGridApi] = useState<any>(null);
-    const [selectedRows, setSelectedRows] = useState([]);
+    const [gridApi, setGridApi] = useState<GridApi<TData>>();
+    const [selectedRows, setSelectedRows] = useState<TData[]>([]);
     const [newRowAdded, setNewRowAdded] = useState(false);
     const [isSortApplied, setIsSortApplied] = useState(false);
 
@@ -124,15 +127,15 @@ function CustomAgGridTable({
     });
     const { append, remove, update, swap, move } = useFieldArrayOutput;
 
-    const rowData = watch(name);
+    const rowData = watch(name); // TODO: use correct types for useFormContext<...>()
 
     const isFirstSelected = Boolean(
-        rowData?.length && gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+        rowData?.length && gridApi?.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
     );
 
     const isLastSelected = Boolean(
         rowData?.length &&
-            gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+            gridApi?.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
     );
 
     const noRowSelected = selectedRows.length === 0;
@@ -146,26 +149,26 @@ function CustomAgGridTable({
         [getValues, name]
     );
 
-    const handleMoveRowUp = () => {
+    const handleMoveRowUp = useCallback(() => {
         selectedRows
-            .map((row) => getIndex(row))
+            .map(getIndex)
             .sort()
             .forEach((idx) => {
                 swap(idx, idx - 1);
             });
-    };
+    }, [getIndex, selectedRows, swap]);
 
-    const handleMoveRowDown = () => {
+    const handleMoveRowDown = useCallback(() => {
         selectedRows
-            .map((row) => getIndex(row))
+            .map(getIndex)
             .sort()
             .reverse()
             .forEach((idx) => {
                 swap(idx, idx + 1);
             });
-    };
+    }, [getIndex, selectedRows, swap]);
 
-    const handleDeleteRows = () => {
+    const handleDeleteRows = useCallback(() => {
         if (selectedRows.length === rowData.length) {
             remove();
         } else {
@@ -174,52 +177,59 @@ function CustomAgGridTable({
                 remove(idx);
             });
         }
-    };
+    }, [getIndex, remove, rowData.length, selectedRows]);
 
-    useEffect(() => {
-        if (gridApi) {
-            gridApi.api.refreshCells({
-                force: true,
-            });
-        }
-    }, [gridApi, rowData]);
-
-    const handleAddRow = () => {
+    const handleAddRow = useCallback(() => {
         append(makeDefaultRowData());
         setNewRowAdded(true);
-    };
+    }, [append, makeDefaultRowData]);
 
     useEffect(() => {
-        if (gridApi) {
-            gridApi.api.sizeColumnsToFit();
-        }
+        gridApi?.refreshCells({
+            force: true,
+        });
+    }, [gridApi, rowData]);
+
+    useEffect(() => {
+        gridApi?.sizeColumnsToFit();
     }, [columnDefs, gridApi]);
 
     const intl = useIntl();
-    const getLocaleText = useCallback(
-        (params: any) => {
-            const key = `agGrid.${params.key}`;
-            return intl.messages[key] || params.defaultValue;
-        },
+    const getLocaleText = useCallback<AgGridFn<'getLocaleText', TData>>(
+        (params) => intl.formatMessage({ id: `agGrid.${params.key}`, defaultMessage: params.defaultValue }),
         [intl]
     );
 
-    const onGridReady = (params: any) => {
-        setGridApi(params);
-    };
+    const onGridReady = useCallback<AgGridFn<'onGridReady', TData>>((event) => {
+        setGridApi(event.api);
+    }, []);
 
-    const onRowDataUpdated = () => {
-        setNewRowAdded(false);
-        if (gridApi?.api) {
-            // update due to new appended row, let's scroll
-            const lastIndex = rowData.length - 1;
-            gridApi.api.paginationGoToLastPage();
-            gridApi.api.ensureIndexVisible(lastIndex, 'bottom');
-        }
-    };
+    const onRowDragEnd = useCallback<AgGridFn<'onRowDragEnd', TData>>(
+        (e) => move(getIndex(e.node.data), e.overIndex),
+        [getIndex, move]
+    );
 
-    const onCellEditingStopped = useCallback(
-        (event: CellEditingStoppedEvent) => {
+    const onSelectionChanged = useCallback<AgGridFn<'onSelectionChanged', TData>>(
+        // @ts-expect-error TODO manage null api case (not possible at runtime?)
+        () => setSelectedRows(gridApi.getSelectedRows()),
+        [gridApi]
+    );
+
+    const onRowDataUpdated = useCallback<AgGridFn<'onRowDataUpdated', TData>>(
+        (/* event */) => {
+            setNewRowAdded(false);
+            if (gridApi) {
+                // update due to new appended row, let's scroll
+                const lastIndex = rowData.length - 1;
+                gridApi.paginationGoToLastPage();
+                gridApi.ensureIndexVisible(lastIndex, 'bottom');
+            }
+        },
+        [gridApi, rowData.length]
+    );
+
+    const onCellEditingStopped = useCallback<AgGridFn<'onCellEditingStopped', TData>>(
+        (event) => {
             const rowIndex = getIndex(event.data);
             if (rowIndex === -1) {
                 return;
@@ -229,15 +239,22 @@ function CustomAgGridTable({
         [getIndex, update]
     );
 
-    const onSortChanged = useCallback((event: SortChangedEvent) => {
-        const isAnycolumnhasSort = event.api.getColumnState().some((col: ColumnState) => col.sort);
-        setIsSortApplied(isAnycolumnhasSort);
-    }, []);
+    const onSortChanged = useCallback<AgGridFn<'onSortChanged', TData>>(
+        (event) => setIsSortApplied(event.api.getColumnState().some((col) => col.sort)),
+        []
+    );
+
+    const getRowId = useCallback<AgGridFn<'getRowId', TData>>(
+        // @ts-expect-error: we don't know at compile time if TData has a "FieldConstants.AG_GRID_ROW_UUID" field
+        // TODO maybe force TData type to have this field?
+        (row) => row.data[FieldConstants.AG_GRID_ROW_UUID],
+        []
+    );
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} className={theme.aggrid.theme} sx={style(cssProps).grid}>
-                <AgGridReact
+                <AgGridReact<TData>
                     rowData={rowData}
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
@@ -246,23 +263,21 @@ function CustomAgGridTable({
                     domLayout="autoHeight"
                     rowDragEntireRow
                     rowDragManaged
-                    onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
+                    onRowDragEnd={onRowDragEnd}
                     suppressBrowserResizeObserver
+                    defaultColDef={defaultColDef}
                     columnDefs={columnDefs}
                     detailRowAutoHeight
-                    onSelectionChanged={() => {
-                        setSelectedRows(gridApi.api.getSelectedRows());
-                    }}
+                    onSelectionChanged={onSelectionChanged}
                     onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
                     onCellEditingStopped={onCellEditingStopped}
                     onSortChanged={onSortChanged}
-                    getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
+                    getRowId={getRowId}
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}
                     suppressRowClickSelection={suppressRowClickSelection}
                     alwaysShowVerticalScroll={alwaysShowVerticalScroll}
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
-                    {...props}
                 />
             </Grid>
             <BottomRightButtons

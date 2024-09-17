@@ -9,13 +9,13 @@ import IconButton from '@mui/material/IconButton';
 import { ArrowCircleDown, ArrowCircleUp, Upload } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/ControlPoint';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
 import ErrorInput from '../errorManagement/ErrorInput';
 import FieldErrorAlert from '../errorManagement/FieldErrorAlert';
-import CsvUploader from './csvUploader/CsvUploader';
+import CsvUploader, { CsvUploaderProps } from './csvUploader/CsvUploader';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
     return {
@@ -33,7 +33,7 @@ export interface BottomRightButtonsProps {
     handleMoveRowUp: () => void;
     handleMoveRowDown: () => void;
     useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, 'id'>;
-    csvProps: any;
+    csvProps: Omit<CsvUploaderProps, 'open' | 'onClose' | 'name' | 'useFieldArrayOutput'>;
 }
 
 function BottomRightButtons({
@@ -47,7 +47,7 @@ function BottomRightButtons({
     handleMoveRowDown,
     useFieldArrayOutput,
     csvProps,
-}: BottomRightButtonsProps) {
+}: Readonly<BottomRightButtonsProps>) {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
 
@@ -88,7 +88,7 @@ function BottomRightButtons({
             </Grid>
             <CsvUploader
                 open={uploaderOpen}
-                onClose={() => setUploaderOpen(false)}
+                onClose={useCallback(() => setUploaderOpen(false), [])}
                 name={name}
                 useFieldArrayOutput={useFieldArrayOutput}
                 {...csvProps}
