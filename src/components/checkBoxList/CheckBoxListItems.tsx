@@ -119,7 +119,7 @@ export function CheckBoxListItems<T>({
                 const disabled = isDisabled ? isDisabled(item) : false;
                 const addDivider = divider && index < items.length - 1;
                 // sx can be dependent on item or not
-                const calculatedSx = typeof sx === 'function' ? sx(item) : sx;
+                const calculatedItemSx = typeof sx?.items === 'function' ? sx?.items(item) : sx?.items;
 
                 if (isDndDragAndDropActive) {
                     return (
@@ -136,7 +136,7 @@ export function CheckBoxListItems<T>({
                                     checked={isChecked(item)}
                                     label={label}
                                     onClick={() => toggleSelection(getItemId(item))}
-                                    sx={calculatedSx}
+                                    sx={calculatedItemSx}
                                     disabled={disabled}
                                     getItemId={getItemId}
                                     secondaryAction={handleSecondaryAction}
@@ -159,7 +159,7 @@ export function CheckBoxListItems<T>({
                         onClick={() => toggleSelection(getItemId(item))}
                         disabled={disabled}
                         getItemId={getItemId}
-                        sx={calculatedSx}
+                        sx={calculatedItemSx}
                         secondaryAction={handleSecondaryAction}
                         divider={addDivider}
                         onItemClick={onItemClick}

@@ -648,19 +648,13 @@ function AppContent({ language, onLanguageClick }) {
                 }}
                 onItemClick={(item) => console.log('clicked', item)}
                 isItemClickable={(item) => item.id.indexOf('i') >= 0}
-                sx={(item) =>
-                    item.id.indexOf('i') >= 0
-                        ? {
-                              label: {
-                                  color: 'blue',
-                              },
-                          }
-                        : {
-                              label: {
-                                  color: 'red',
-                              },
-                          }
-                }
+                sx={{
+                    items: (item) => ({
+                        label: {
+                            color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
+                        },
+                    }),
+                }}
             />
             <div
                 style={{
