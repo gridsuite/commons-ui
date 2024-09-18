@@ -19,7 +19,7 @@ function FilterForm({
     creation,
     activeDirectory,
     elementExists,
-}: FilterFormProps) {
+}: Readonly<FilterFormProps>) {
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     return (
