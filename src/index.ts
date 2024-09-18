@@ -273,7 +273,7 @@ export {
 } from './components/filter/criteriaBased/criteriaBasedFilterUtils';
 
 export { mergeSx } from './utils/styles';
-export type { MuiStyle, MuiStyles } from './utils/styles';
+export type { MuiStyle, MuiStyleObj, MuiStyles } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
 export type { CommonStoreState } from './redux/commonStore';
 

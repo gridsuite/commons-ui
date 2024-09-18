@@ -17,7 +17,7 @@ import { GetApp as GetAppIcon } from '@mui/icons-material';
 import { AutoSizer, Column, ColumnProps, RowMouseEventHandlerParams, Table, TableCellProps } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
 import { OverflowableText } from '../overflowableText/OverflowableText';
-import { makeComposeClasses, MuiStyle, MuiStyles, SxPropsObj, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, MuiStyle, MuiStyles, MuiStyleObj, toNestedGlobalSelectors } from '../../utils/styles';
 import { ChangeWays, collectibleHelper, getHelper, KeyedColumnsRowIndexer } from './KeyedColumnsRowIndexer';
 import { ColumnHeader } from './ColumnHeader';
 
@@ -261,7 +261,7 @@ export interface MuiVirtualizedTableProps extends CustomColumnProps {
     onRowClick?: (event: RowMouseEventHandlerParams) => void;
     rowHeight: number;
     onCellClick: (row: RowProps, column: ColumnProps) => void;
-    tooltipSx: SxPropsObj;
+    tooltipSx: MuiStyleObj;
     name: string;
     exportCSVDataKeys: unknown[];
     enableExportCSV: boolean;

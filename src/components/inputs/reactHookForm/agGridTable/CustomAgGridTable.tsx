@@ -15,7 +15,7 @@ import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import BottomRightButtons from './BottomRightButtons';
 import FieldConstants from '../../../../utils/constants/fieldConstants';
-import type { MuiStyle, SxPropsObj } from '../../../../utils/styles';
+import type { MuiStyle, MuiStyleObj } from '../../../../utils/styles';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -27,7 +27,7 @@ export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
 ];
 
 const style =
-    (customProps: SxPropsObj = {}): MuiStyle =>
+    (customProps: MuiStyleObj = {}): MuiStyle =>
     (theme) => ({
         width: 'auto',
         height: '100%',
@@ -89,7 +89,7 @@ export interface CustomAgGridTableProps {
     columnDefs: any;
     makeDefaultRowData: any;
     csvProps: unknown;
-    cssProps?: SxPropsObj;
+    cssProps?: MuiStyleObj;
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;

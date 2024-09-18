@@ -7,13 +7,18 @@
 import { SxProps, Theme } from '@mui/material';
 import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
 
-export type MuiStyle = SxProps<Theme>;
-export type MuiStyles = Record<string, SxProps<Theme>>;
-
 /**
- * Same Mui's SxProps, but without the array version in possibilities.
+ * Mui's {@link SxProps} preset with {@link Theme}.
  */
-export type SxPropsObj = SystemStyleObject<Theme> | ((theme: Theme) => SystemStyleObject<Theme>);
+export type MuiStyle = SxProps<Theme>;
+/**
+ * Alias for `const styles = {}` definitions.
+ */
+export type MuiStyles = Record<string, SxProps<Theme>>;
+/**
+ * Same Mui's SxProps, but without the array and function version in possibilities.
+ */
+export type MuiStyleObj = SystemStyleObject<Theme>;
 
 // TODO do we need to export this to clients (index.ts) ?
 // like mui sx(slot)/class merging but simpler with less features
