@@ -19,7 +19,7 @@ import { useCSVReader } from 'react-papaparse';
 import { ReactNode, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
-import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
+import { FieldValues, UseFieldArrayAppend, UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import { RECORD_SEP, UNIT_SEP } from 'papaparse';
 import FieldConstants from '../../../../../utils/constants/fieldConstants';
 import CancelButton from '../../utils/CancelButton';
@@ -33,7 +33,7 @@ export interface CsvUploaderProps {
     fileName: string;
     csvData?: Array<string[] | Record<string, string | null | undefined>>;
     validateData?: (rows: string[][]) => boolean;
-    getDataFromCsv: any;
+    getDataFromCsv: (csvData: string[][]) => Parameters<UseFieldArrayAppend<FieldValues, string>>[0]; // keep generics in sync with useFieldArrayOutput field
     useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, 'id'>;
 }
 

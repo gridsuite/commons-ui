@@ -99,7 +99,9 @@ interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
 }
 
-function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
+function ExplicitNamingFilterForm({
+    sourceFilterForExplicitNamingConversion,
+}: Readonly<ExplicitNamingFilterFormProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
@@ -166,9 +168,9 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
         return newCsvFileHeaders;
     }, [intl, forGeneratorOrLoad]);
 
-    const getDataFromCsvFile = useCallback((csvData: any) => {
+    const getDataFromCsvFile = useCallback((csvData: string[][]) => {
         if (csvData) {
-            return csvData.map((value: any) => {
+            return csvData.map((value) => {
                 return {
                     [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
                     [FieldConstants.EQUIPMENT_ID]: value[0]?.trim(),

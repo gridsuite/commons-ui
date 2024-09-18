@@ -50,6 +50,7 @@ function BottomRightButtons({
 }: Readonly<BottomRightButtonsProps>) {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
+    const onClose = useCallback(() => setUploaderOpen(false), []);
 
     return (
         <>
@@ -88,7 +89,7 @@ function BottomRightButtons({
             </Grid>
             <CsvUploader
                 open={uploaderOpen}
-                onClose={useCallback(() => setUploaderOpen(false), [])}
+                onClose={onClose}
                 name={name}
                 useFieldArrayOutput={useFieldArrayOutput}
                 {...csvProps}
