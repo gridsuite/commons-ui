@@ -11,7 +11,7 @@
 import type { CSSObject } from '@mui/styled-engine';
 import type { Property } from 'csstype';
 
-export type CommonMuiTheme = {
+type CommonMuiTheme = {
     aggrid: {
         theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
         highlightColor: Property.Color;
@@ -23,7 +23,7 @@ export type CommonMuiTheme = {
     };
 };
 
-export type CommonMuiPalette = {};
+type CommonMuiPalette = {};
 
 // used to customize mui theme
 // https://mui.com/material-ui/customization/theming/#typescript

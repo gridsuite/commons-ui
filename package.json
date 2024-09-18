@@ -1,16 +1,30 @@
 {
     "name": "@gridsuite/commons-ui",
     "version": "0.65.1",
-    "description": "common react components for gridsuite applications",
+    "description": "Common React components for GridSuite applications",
     "engines": {
         "npm": ">=9",
         "node": ">=18"
     },
-    "exports": "./dist/index.js",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./module-mui": {
+            "types": "./src/module-mui.d.ts"
+        },
+        "./module-emotion": {
+            "types": "./src/module-emotion.d.ts"
+        },
+        "./package.json": "./package.json"
+    },
     "files": [
-        "dist"
+        "dist",
+        "src/module-mui.d.ts",
+        "src/module-emotion.d.ts"
     ],
     "sideEffects": [
         "**/*.css"
@@ -46,18 +60,18 @@
         "uuid": "^9.0.1"
     },
     "peerDependencies": {
-        "@mui/system": "^5.15.15",
-        "@mui/x-tree-view": "^6.17.0",
-        "papaparse": "^5.4.1",
         "@emotion/react": "^11.11.4",
         "@emotion/styled": "^11.11.0",
         "@hookform/resolvers": "^3.3.4",
         "@mui/icons-material": "^5.15.14",
         "@mui/lab": "5.0.0-alpha.169",
         "@mui/material": "^5.15.14",
+        "@mui/system": "^5.15.15",
+        "@mui/x-tree-view": "^6.17.0",
         "ag-grid-community": "^31.0.0",
         "ag-grid-react": "^31.2.0",
         "notistack": "^3.0.1",
+        "papaparse": "^5.4.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.51.2",

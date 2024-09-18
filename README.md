@@ -2,7 +2,22 @@
 
 Library for sharing GridSuite apps commons components
 
-#### For developers
+
+## Use and integration
+### MUI & Emotion styles
+Some components of commons-ui define custom rules in Mui styling system that need
+to be initialized.  
+To have TypeScript helping (through module augmentation), you can in a `.d.ts`
+file at the root of your project source folder (like `globals.d.ts`):
+```ts
+/// <reference types="@gridsuite/commons-ui/module-mui" />
+/// <reference types="@gridsuite/commons-ui/module-emotion" />
+```
+Typescript will check the new options with function related to `Theme` interface.
+
+
+## Build & deploy
+### For developers
 
 The commons-ui library have a demo app in which you can call your components to test them.
 The `npm start` command install the library's dependencies then launches the demo app.
@@ -13,10 +28,9 @@ to build commons-ui via
 - `npm run build:pack`
 
 Then in the my-app project :
-- Change the commons-ui dependency in my-app's package.json from    
-`@gridsuite/commons-ui:"^x.x.x"`    
-to     
-`@gridsuite/commons-ui:"file:{PATH_TO_LIBRARY}/gridsuite-commons-ui-{LIBRARY_VERSION}.tgz"` 
+- Change the commons-ui dependency in my-app's `package.json`
+    from`@gridsuite/commons-ui:"^x.x.x"`
+    to `@gridsuite/commons-ui:"file:{PATH_TO_LIBRARY}/gridsuite-commons-ui-{LIBRARY_VERSION}.tgz"` 
 - `npm install`
 - `npm start`
 
@@ -25,11 +39,10 @@ To fix this, run this command from the app **after** running "npm install"
 - rm -Rf node_modules/.cache
  
 
-#### For integrators
+### For integrators
 
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
 you need to follow the steps below:
-
 -   Update to the new version in [package.json](https://github.com/gridsuite/commons-ui/blob/main/package.json) (example `0.6.0`)
 -   Build it: `npm install`
 -   Commit the package.json and package-lock.json files, push to a branch, make a PR, have it reviewed and merged to main.
@@ -40,14 +53,13 @@ you need to follow the steps below:
     - Click on "Publish release"
 -   It will trigger a job that will publish the release on NPM
 
-#### License Headers and dependencies checking
+### License Headers and dependencies checking
 
 To check dependencies license compatibility with this project one locally, please run the following command :
-
-```
+```shell
 npm run licenses-check
 ```
 
-Notes : 
-* Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
+Notes:  
+Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
 If you need to update this list, please inform organization's owners.

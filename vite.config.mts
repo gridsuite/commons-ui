@@ -43,7 +43,7 @@ export default defineConfig((config) => ({
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
-                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
+                    ignore: ['src/vite-env.d.ts', 'src/module-*.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
                 }).map((file) => [
                     // This remove `src/` as well as the file extension from each
                     // file, so e.g. src/nested/foo.js becomes nested/foo
