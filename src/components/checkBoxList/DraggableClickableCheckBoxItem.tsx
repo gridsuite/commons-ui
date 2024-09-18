@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
-import { DraggableClickableItemProps } from './checkBoxList.type';
+import { DraggableClickableCheckBoxItemProps } from './checkBoxList.type';
 
 const styles = {
     dragIcon: (theme: any) => ({
@@ -26,7 +26,7 @@ export function DraggableClickableCheckBoxItem({
     isHighlighted,
     label,
     ...props
-}: DraggableClickableItemProps) {
+}: Readonly<DraggableClickableCheckBoxItemProps>) {
     return (
         <>
             <IconButton

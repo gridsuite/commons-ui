@@ -6,13 +6,41 @@
  */
 import { Checkbox, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
-import { ClickableItemProps } from './checkBoxList.type';
+import { ClickableRowItemProps } from './checkBoxList.type';
 
-export function ClickableRowItem({ sx, disabled, label, onClick, ...props }: ClickableItemProps) {
+const styles = {
+    unclickableItem: {
+        '&:hover': {
+            backgroundColor: 'transparent',
+        },
+        cursor: 'inherit',
+    },
+};
+
+export function ClickableRowItem({
+    sx,
+    disabled,
+    label,
+    onClick,
+    onItemClick,
+    isItemClickable = true,
+    ...props
+}: Readonly<ClickableRowItemProps>) {
+    const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation();
+        onClick();
+    };
+    const handleItemClick = () => isItemClickable && onItemClick();
+
     return (
-        <ListItemButton sx={{ paddingLeft: 0, ...sx?.checkboxButton }} disabled={disabled} onClick={onClick}>
+        <ListItemButton
+            disableTouchRipple={!isItemClickable}
+            sx={{ paddingLeft: 0, ...sx?.checkboxButton, ...(!isItemClickable && styles.unclickableItem) }}
+            disabled={disabled}
+            onClick={handleItemClick}
+        >
             <ListItemIcon sx={{ minWidth: 0, ...sx?.checkBoxIcon }}>
-                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} {...props} />
+                <Checkbox disableRipple sx={{ paddingLeft: 0, ...sx?.checkbox }} onClick={onCheckboxClick} {...props} />
             </ListItemIcon>
             <ListItemText
                 sx={{
