@@ -6,15 +6,9 @@
  */
 import { useState } from 'react';
 import { Button, TextField } from '@mui/material';
-import {
-    ElementSearchDialog,
-    EquipmentItem,
-    equipmentStyles,
-    EquipmentType,
-    useElementSearch,
-} from '../../src/index';
 import { Search } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
+import { ElementSearchDialog, EquipmentItem, equipmentStyles, EquipmentType, useElementSearch } from '../../src/index';
 
 interface AnyElementInterface {
     id: string;
@@ -38,7 +32,7 @@ const equipmentsToReturn: AnyElementInterface[] = [
     },
 ];
 
-const searchEquipmentPromise = (term: string) => {
+const searchEquipmentPromise = () => {
     return new Promise<AnyElementInterface[]>((resolve) => {
         setTimeout(() => {
             resolve(equipmentsToReturn);
@@ -46,13 +40,12 @@ const searchEquipmentPromise = (term: string) => {
     });
 };
 
-export const EquipmentSearchDialog = () => {
+export function EquipmentSearchDialog() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    const { elementsFound, isLoading, searchTerm, updateSearchTerm } =
-        useElementSearch({
-            fetchElements: searchEquipmentPromise,
-        });
+    const { elementsFound, isLoading, searchTerm, updateSearchTerm } = useElementSearch({
+        fetchElements: searchEquipmentPromise,
+    });
 
     const intl = useIntl();
 
@@ -68,21 +61,15 @@ export const EquipmentSearchDialog = () => {
                 }}
                 elementsFound={elementsFound}
                 renderElement={(props: any) => (
-                    <EquipmentItem
-                        styles={equipmentStyles}
-                        {...props}
-                        key={props.element.key}
-                    />
+                    <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
                 )}
                 searchTerm={searchTerm}
                 loading={isLoading}
                 getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option1, option2) =>
-                    option1.id === option2.id
-                }
+                isOptionEqualToValue={(option1, option2) => option1.id === option2.id}
                 renderInput={(displayedValue, params) => (
                     <TextField
-                        autoFocus={true}
+                        autoFocus
                         {...params}
                         label={intl.formatMessage({
                             id: 'element_search/label',
@@ -97,4 +84,6 @@ export const EquipmentSearchDialog = () => {
             />
         </>
     );
-};
+}
+
+export default EquipmentSearchDialog;

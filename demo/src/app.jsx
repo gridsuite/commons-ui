@@ -4,26 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-
-import TopBar from '../../src/components/TopBar';
-import SnackbarProvider from '../../src/components/SnackbarProvider';
-import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import CardErrorBoundary from '../../src/components/CardErrorBoundary';
-import {
-    ElementType,
-    EQUIPMENT_TYPE,
-    equipmentStyles,
-    getFileIcon,
-    initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-    logout,
-} from '../../src';
-import { useSnackMessage } from '../../src/hooks/useSnackMessage';
+/* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, no-undef, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types, import/no-extraneous-dependencies */
 
 import {
     Box,
@@ -34,6 +15,7 @@ import {
     FormControlLabel,
     FormGroup,
     Grid,
+    IconButton,
     StyledEngineProvider,
     Tab,
     Tabs,
@@ -41,27 +23,47 @@ import {
     ThemeProvider,
     Typography,
 } from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
 import { styled } from '@mui/system';
-
 import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
-
+import { useCallback, useEffect, useRef, useState } from 'react';
+import SnackbarProvider from '../../src/components/snackbarProvider';
+import { AuthenticationRouter } from '../../src/components/authentication';
+import CardErrorBoundary from '../../src/components/cardErrorBoundary';
 import {
     card_error_boundary_en,
     card_error_boundary_fr,
     element_search_en,
     element_search_fr,
+    ElementType,
     equipment_search_en,
     equipment_search_fr,
+    EQUIPMENT_TYPE,
+    EquipmentItem,
+    equipmentStyles,
     filter_en,
     filter_fr,
     filter_expert_en,
     filter_expert_fr,
+    description_en,
+    description_fr,
+    equipments_en,
+    equipments_fr,
+    csv_en,
+    csv_fr,
     flat_parameters_en,
     flat_parameters_fr,
+    getFileIcon,
+    initializeAuthenticationDev,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
     login_en,
     login_fr,
+    logout,
     multiple_selection_dialog_en,
     multiple_selection_dialog_fr,
     report_viewer_en,
@@ -70,18 +72,19 @@ import {
     table_fr,
     top_bar_en,
     top_bar_fr,
+    TopBar,
     treeview_finder_en,
     treeview_finder_fr,
-} from '../../src/index';
+    useSnackMessage,
+} from '../../src';
+
 import translations from './demo_intl';
 
+// eslint-disable-next-line import/no-unresolved
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
-import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import TreeViewFinder, {
-    generateTreeViewFinderClass,
-} from '../../src/components/TreeViewFinder';
+import { generateTreeViewFinderClass, TreeViewFinder } from '../../src/components/treeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
 import {
@@ -91,22 +94,22 @@ import {
     testDataTree,
 } from '../data/TreeViewFinder';
 
-import { LOGS_JSON } from '../data/ReportViewer';
+import LOGS_JSON from '../data/ReportViewer';
 
-import { searchEquipments } from '../data/EquipmentSearchBar';
-import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
-import OverflowableText from '../../src/components/OverflowableText';
+import searchEquipments from '../data/EquipmentSearchBar';
+import OverflowableText from '../../src/components/overflowableText';
 
-import { setShowAuthenticationRouterLogin } from '../../src/redux/actions';
-import { TableTab } from './TableTab';
-import { FlatParametersTab } from './FlatParametersTab';
+import { setShowAuthenticationRouterLogin } from '../../src/redux/actions/authActions';
+import TableTab from './TableTab';
+import FlatParametersTab from './FlatParametersTab';
 
 import { toNestedGlobalSelectors } from '../../src/utils/styles';
-import { InputsTab } from './InputsTab';
-import inputs_en from '../../src/components/translations/inputs-en';
-import inputs_fr from '../../src/components/translations/inputs-fr';
+import InputsTab from './InputsTab';
+import inputs_en from '../../src/translations/en/inputsEn';
+import inputs_fr from '../../src/translations/fr/inputsFr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
+import MultipleSelectionDialog from '../../src/components/multipleSelectionDialog';
 
 const messages = {
     en: {
@@ -119,6 +122,9 @@ const messages = {
         ...equipment_search_en,
         ...filter_en,
         ...filter_expert_en,
+        ...description_en,
+        ...equipments_en,
+        ...csv_en,
         ...card_error_boundary_en,
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
@@ -134,6 +140,9 @@ const messages = {
         ...element_search_fr,
         ...equipment_search_fr,
         ...filter_fr,
+        ...description_fr,
+        ...equipments_fr,
+        ...csv_fr,
         ...filter_expert_fr,
         ...card_error_boundary_fr,
         ...flat_parameters_fr,
@@ -158,9 +167,8 @@ const darkTheme = createTheme({
 const getMuiTheme = (theme) => {
     if (theme === LIGHT_THEME) {
         return lightTheme;
-    } else {
-        return darkTheme;
     }
+    return darkTheme;
 };
 
 const style = {
@@ -185,21 +193,17 @@ const TreeViewFinderCustomStyles = (theme) => ({
 });
 
 const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
-    toNestedGlobalSelectors(
-        TreeViewFinderCustomStyles(theme),
-        generateTreeViewFinderClass
-    );
-const CustomTreeViewFinder = styled(TreeViewFinder)(
-    TreeViewFinderCustomStylesEmotion
-);
+    toNestedGlobalSelectors(TreeViewFinderCustomStyles(theme), generateTreeViewFinderClass);
+const CustomTreeViewFinder = styled(TreeViewFinder)(TreeViewFinderCustomStylesEmotion);
 
-const Crasher = () => {
+function Crasher() {
     const [crash, setCrash] = useState(false);
     if (crash) {
+        // eslint-disable-next-line no-undef
         window.foonotexists.bar();
     }
     return <Button onClick={() => setCrash(true)}>CRASH ME</Button>;
-};
+}
 
 function SnackErrorButton() {
     const { snackError } = useSnackMessage();
@@ -293,14 +297,15 @@ function PermanentSnackButton() {
     );
 }
 
-const validateUser = (user) => {
+const validateUser = () => {
     // change to false to simulate user unauthorized access
-    return new Promise((resolve) =>
-        window.setTimeout(() => resolve(true), 500)
-    );
+    return new Promise((resolve) => {
+        // eslint-disable-next-line no-undef
+        window.setTimeout(() => resolve(true), 500);
+    });
 };
 
-const AppContent = ({ language, onLanguageClick }) => {
+function AppContent({ language, onLanguageClick }) {
     const navigate = useNavigate();
     const location = useLocation();
     const intl = useIntl();
@@ -310,12 +315,8 @@ const AppContent = ({ language, onLanguageClick }) => {
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [authenticationRouterError, setAuthenticationRouterError] =
-        useState(null);
-    const [
-        showAuthenticationRouterLoginState,
-        setShowAuthenticationRouterLoginState,
-    ] = useState(false);
+    const [authenticationRouterError, setAuthenticationRouterError] = useState(null);
+    const [showAuthenticationRouterLoginState, setShowAuthenticationRouterLoginState] = useState(false);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
 
@@ -323,18 +324,14 @@ const AppContent = ({ language, onLanguageClick }) => {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [openReportViewer, setOpenReportViewer] = useState(false);
-    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
-        useState(false);
-    const [
-        openTreeViewFinderDialogCustomDialog,
-        setOpenTreeViewFinderDialogCustomDialog,
-    ] = useState(false);
+    const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
+    const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] = useState(false);
+
+    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
+    const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
 
     // Can't use lazy initializer because useMatch is a hook
-    const [initialMatchSilentRenewCallbackUrl] = useState(
-        useMatch('/silent-renew-callback')
-    );
+    const [initialMatchSilentRenewCallbackUrl] = useState(useMatch('/silent-renew-callback'));
 
     // TreeViewFinder data
     const [nodesTree, setNodesTree] = useState(testDataTree);
@@ -345,9 +342,8 @@ const AppContent = ({ language, onLanguageClick }) => {
             .map((node) => {
                 if (node.children && node.children.length > 0) {
                     return 1 + countNodes(node.children);
-                } else {
-                    return 1;
                 }
+                return 1;
             })
             .reduce((a, b) => {
                 return a + b;
@@ -384,9 +380,7 @@ const AppContent = ({ language, onLanguageClick }) => {
         if (equipment != null) {
             equipment.type === EQUIPMENT_TYPE.SUBSTATION.name
                 ? alert(`Equipment ${equipment.label} found !`)
-                : alert(
-                      `Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`
-                  );
+                : alert(`Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`);
         }
     };
     const [searchTermDisableReason] = useState('search disabled');
@@ -404,9 +398,7 @@ const AppContent = ({ language, onLanguageClick }) => {
         } else if (e.type === 'RESET_AUTHENTICATION_ROUTER_ERROR') {
             setAuthenticationRouterError(null);
         } else if (e.type === 'SHOW_AUTH_INFO_LOGIN') {
-            setShowAuthenticationRouterLoginState(
-                e.showAuthenticationRouterLogin
-            );
+            setShowAuthenticationRouterLoginState(e.showAuthenticationRouterLogin);
         }
     };
 
@@ -430,11 +422,7 @@ const AppContent = ({ language, onLanguageClick }) => {
     ];
 
     useEffect(() => {
-        initializeAuthenticationDev(
-            dispatch,
-            initialMatchSilentRenewCallbackUrl != null,
-            validateUser
-        )
+        initializeAuthenticationDev(dispatch, initialMatchSilentRenewCallbackUrl != null, validateUser)
             .then((userManager) => {
                 setUserManager({
                     instance: userManager,
@@ -458,7 +446,7 @@ const AppContent = ({ language, onLanguageClick }) => {
 
     function testIcons() {
         return (
-            <Grid container direction={'column'}>
+            <Grid container direction="column">
                 {Object.keys(ElementType).map((type) => (
                     <Grid container item key={type}>
                         <Grid item>{getFileIcon(type)}</Grid>
@@ -473,23 +461,18 @@ const AppContent = ({ language, onLanguageClick }) => {
         return a.name.localeCompare(b.name);
     }
 
-    const handleToggleDisableSearch = useCallback(
-        () => setSearchDisabled((oldState) => !oldState),
-        []
-    );
+    const handleToggleDisableSearch = useCallback(() => setSearchDisabled((oldState) => !oldState), []);
 
     const aboutTimerVersion = useRef();
     const aboutTimerCmpnt = useRef();
+
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
-            (resolve, reject) =>
-                (aboutTimerVersion.current = window.setTimeout(
-                    () => resolve('1.0.0-demo'),
-                    1250
-                ))
+            (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
+
     function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
         return new Promise(
@@ -575,6 +558,23 @@ const AppContent = ({ language, onLanguageClick }) => {
         );
     }
 
+    const [checkBoxListOption, setCheckBoxListOption] = useState([
+        { id: 'kiki', label: 'Kylian Mbappe' },
+        { id: 'ney', label: 'Neymar' },
+        { id: 'lapulga', label: 'Lionel Messi' },
+        { id: 'ibra', label: 'Zlatan Ibrahimovic' },
+        {
+            id: 'john',
+            label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
+        },
+    ]);
+
+    const secondaryAction = (item, isItemHovered) =>
+        isItemHovered && (
+            <IconButton aria-label="comment">
+                <CommentIcon />
+            </IconButton>
+        );
     const defaultTab = (
         <div>
             <Box mt={3}>
@@ -598,15 +598,63 @@ const AppContent = ({ language, onLanguageClick }) => {
                     float: 'left',
                     margin: '5px',
                 }}
-                onClick={() => setOpenReportViewer(true)}
+                onClick={() => setOpenMultiChoiceDialog(true)}
             >
-                Logs
+                Checkbox list
             </Button>
-            <ReportViewerDialog
-                title={'Logs test'}
-                open={openReportViewer}
-                onClose={() => setOpenReportViewer(false)}
-                jsonReport={LOGS_JSON}
+            <MultipleSelectionDialog
+                items={checkBoxListOption}
+                selectedItems={[]}
+                open={openMultiChoiceDialog}
+                getItemLabel={(o) => o.label}
+                getItemId={(o) => o.id}
+                handleClose={() => setOpenMultiChoiceDialog(false)}
+                handleValidate={() => setOpenMultiChoiceDialog(false)}
+                titleId="Checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                addSelectAllCheckbox
+            />
+
+            <Button
+                variant="contained"
+                style={{
+                    float: 'left',
+                    margin: '5px',
+                }}
+                onClick={() => setOpenDraggableMultiChoiceDialog(true)}
+            >
+                Draggable checkbox list
+            </Button>
+            <MultipleSelectionDialog
+                items={checkBoxListOption}
+                selectedItems={[]}
+                open={openDraggableMultiChoiceDialog}
+                getItemLabel={(o) => o.label}
+                getItemId={(o) => o.id}
+                handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
+                handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
+                titleId="Draggable checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                isDndDragAndDropActive
+                onDragEnd={({ source, destination }) => {
+                    if (destination !== null && source.index !== destination.index) {
+                        const res = [...checkBoxListOption];
+                        const [item] = res.splice(source.index, 1);
+                        res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
+                        setCheckBoxListOption(res);
+                    }
+                }}
+                onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id.indexOf('i') >= 0}
+                sx={{
+                    items: (item) => ({
+                        label: {
+                            color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
+                        },
+                    }),
+                }}
             />
             <div
                 style={{
@@ -621,21 +669,11 @@ const AppContent = ({ language, onLanguageClick }) => {
                     multiSelect={multiSelect}
                     onlyLeaves={onlyLeaves}
                     sortedAlphabetically={sortedAlphabetically}
-                    onDynamicDataChange={(event) =>
-                        setDynamicData(event.target.value === 'dynamic')
-                    }
-                    onDataFormatChange={(event) =>
-                        setDataFormat(event.target.value)
-                    }
-                    onSelectionTypeChange={(event) =>
-                        setMultiSelect(event.target.value === 'multiselect')
-                    }
-                    onOnlyLeavesChange={(event) =>
-                        setOnlyLeaves(event.target.checked)
-                    }
-                    onSortedAlphabeticallyChange={(event) =>
-                        setSortedAlphabetically(event.target.checked)
-                    }
+                    onDynamicDataChange={(event) => setDynamicData(event.target.value === 'dynamic')}
+                    onDataFormatChange={(event) => setDataFormat(event.target.value)}
+                    onSelectionTypeChange={(event) => setMultiSelect(event.target.value === 'multiselect')}
+                    onOnlyLeavesChange={(event) => setOnlyLeaves(event.target.checked)}
+                    onSortedAlphabeticallyChange={(event) => setSortedAlphabetically(event.target.checked)}
                 />
                 <Button
                     variant="contained"
@@ -673,16 +711,9 @@ const AppContent = ({ language, onLanguageClick }) => {
                             : undefined
                     }
                     onlyLeaves={onlyLeaves}
-                    sortMethod={
-                        sortedAlphabetically ? sortAlphabetically : undefined
-                    }
+                    sortMethod={sortedAlphabetically ? sortAlphabetically : undefined}
                     // Customisation props to pass the counter in the title
-                    title={
-                        'Number of nodes : ' +
-                        countNodes(
-                            dataFormat === 'Tree' ? nodesTree : nodesList
-                        )
-                    }
+                    title={`Number of nodes : ${countNodes(dataFormat === 'Tree' ? nodesTree : nodesList)}`}
                 />
                 <Button
                     variant="contained"
@@ -690,9 +721,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         float: 'left',
                         margin: '5px',
                     }}
-                    onClick={() =>
-                        setOpenTreeViewFinderDialogCustomDialog(true)
-                    }
+                    onClick={() => setOpenTreeViewFinderDialogCustomDialog(true)}
                 >
                     Open Custom TreeViewFinder…
                 </Button>
@@ -713,13 +742,10 @@ const AppContent = ({ language, onLanguageClick }) => {
                     }
                     onlyLeaves={onlyLeaves}
                     // Customisation props
-                    title={
-                        'Custom Title TreeViewFinder, Number of nodes : ' +
-                        countNodes(
-                            dataFormat === 'Tree' ? nodesTree : nodesList
-                        )
-                    }
-                    validationButtonText={'Move To this location'}
+                    title={`Custom Title TreeViewFinder, Number of nodes : ${countNodes(
+                        dataFormat === 'Tree' ? nodesTree : nodesList
+                    )}`}
+                    validationButtonText="Move To this location"
                 />
             </div>
             <div
@@ -735,8 +761,8 @@ const AppContent = ({ language, onLanguageClick }) => {
                     }}
                     label="text"
                     id="overflowableText-textField"
-                    size={'small'}
-                    defaultValue={'Set large text here to test'}
+                    size="small"
+                    defaultValue="Set large text here to test"
                     onChange={onChangeOverflowableText}
                 />
                 <OverflowableText
@@ -774,10 +800,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 onChange={() => {
                                     setSearchTermDisabled(!searchTermDisabled);
                                     // TO TEST search activation after some times
-                                    setTimeout(
-                                        () => setSearchTermDisabled(false),
-                                        4000
-                                    );
+                                    setTimeout(() => setSearchTermDisabled(false), 4000);
                                 }}
                                 name="search-disabled"
                             />
@@ -802,23 +825,17 @@ const AppContent = ({ language, onLanguageClick }) => {
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
                             onParametersClick={() => console.log('settings')}
-                            onLogoutClick={() =>
-                                logout(dispatch, userManager.instance)
-                            }
+                            onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
                             theme={theme}
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
                             globalVersionPromise={simulateGetGlobalVersion}
-                            additionalModulesPromise={
-                                simulateGetAdditionalComponents
-                            }
-                            onEquipmentLabellingClick={
-                                handleEquipmentLabellingClick
-                            }
+                            additionalModulesPromise={simulateGetAdditionalComponents}
+                            onEquipmentLabellingClick={handleEquipmentLabellingClick}
                             equipmentLabelling={equipmentLabelling}
-                            withElementsSearch={true}
+                            withElementsSearch
                             searchingLabel={intl.formatMessage({
                                 id: 'equipment_search/label',
                             })}
@@ -829,11 +846,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                             searchTermDisableReason={searchTermDisableReason}
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
-                                <EquipmentItem
-                                    styles={equipmentStyles}
-                                    {...props}
-                                    key={props.element.key}
-                                />
+                                <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
                             )}
                             onLanguageClick={onLanguageClick}
                             language={language}
@@ -857,12 +870,7 @@ const AppContent = ({ language, onLanguageClick }) => {
                         <CardErrorBoundary>
                             {user !== null ? (
                                 <div>
-                                    <Tabs
-                                        value={tabIndex}
-                                        onChange={(event, newTabIndex) =>
-                                            setTabIndex(newTabIndex)
-                                        }
-                                    >
+                                    <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />
                                         <Tab label="virtual table" />
                                         <Tab label="parameters" />
@@ -877,12 +885,8 @@ const AppContent = ({ language, onLanguageClick }) => {
                                 <AuthenticationRouter
                                     userManager={userManager}
                                     signInCallbackError={null}
-                                    authenticationRouterError={
-                                        authenticationRouterError
-                                    }
-                                    showAuthenticationRouterLogin={
-                                        showAuthenticationRouterLoginState
-                                    }
+                                    authenticationRouterError={authenticationRouterError}
+                                    showAuthenticationRouterLogin={showAuthenticationRouterLoginState}
                                     dispatch={dispatch}
                                     navigate={navigate}
                                     location={location}
@@ -894,9 +898,9 @@ const AppContent = ({ language, onLanguageClick }) => {
             </ThemeProvider>
         </StyledEngineProvider>
     );
-};
+}
 
-const App = () => {
+function App() {
     const [computedLanguage, setComputedLanguage] = useState(LANG_ENGLISH);
     const [language, setLanguage] = useState(LANG_ENGLISH);
 
@@ -904,29 +908,19 @@ const App = () => {
         setLanguage(pickedLanguage);
         if (pickedLanguage === LANG_SYSTEM) {
             const sysLanguage = navigator.language.split(/[-_]/)[0];
-            setComputedLanguage(
-                [LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage)
-                    ? sysLanguage
-                    : LANG_ENGLISH
-            );
+            setComputedLanguage([LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage) ? sysLanguage : LANG_ENGLISH);
         } else {
             setComputedLanguage(pickedLanguage);
         }
     };
 
     return (
-        <BrowserRouter basename={'/'}>
-            <IntlProvider
-                locale={computedLanguage}
-                messages={messages[computedLanguage]}
-            >
-                <AppContent
-                    language={language}
-                    onLanguageClick={handleLanguageClick}
-                />
+        <BrowserRouter basename="/">
+            <IntlProvider locale={computedLanguage} messages={messages[computedLanguage]}>
+                <AppContent language={language} onLanguageClick={handleLanguageClick} />
             </IntlProvider>
         </BrowserRouter>
     );
-};
+}
 
 export default App;

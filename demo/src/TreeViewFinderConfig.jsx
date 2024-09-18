@@ -5,15 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel,
-    Radio,
-    RadioGroup,
-} from '@mui/material';
+import PropTypes from 'prop-types';
+import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 /**
  * TreeViewFinderConfig documentation:
@@ -29,7 +22,7 @@ import {
  * @param {EventListener}   onSelectionTypeChange - onChange type EventListener on the multiselect value change.
  * @param {EventListener}   onOnlyLeavesChange - onChange type EventListener on the onlyLeaves value change.
  */
-const TreeViewFinderConfig = (props) => {
+function TreeViewFinderConfig(props) {
     const {
         dynamicData,
         dataFormat,
@@ -65,69 +58,39 @@ const TreeViewFinderConfig = (props) => {
                     }}
                 >
                     <div>
-                        <FormLabel component="legend-data-format">
-                            Data Format
-                        </FormLabel>
+                        <FormLabel component="legend-data-format">Data Format</FormLabel>
                         <RadioGroup
                             aria-label="data-format"
                             name="Data Format"
                             value={dataFormat}
                             onChange={onDataFormatChange}
                         >
-                            <FormControlLabel
-                                value="Tree"
-                                control={<Radio />}
-                                label="Tree"
-                            />
-                            <FormControlLabel
-                                value="List"
-                                control={<Radio />}
-                                label="List"
-                            />
+                            <FormControlLabel value="Tree" control={<Radio />} label="Tree" />
+                            <FormControlLabel value="List" control={<Radio />} label="List" />
                         </RadioGroup>
                     </div>
                     <div>
-                        <FormLabel component="legend-data-update">
-                            Data update
-                        </FormLabel>
+                        <FormLabel component="legend-data-update">Data update</FormLabel>
                         <RadioGroup
                             aria-label="dynamic-data"
                             name="Dynamic Data"
                             value={dynamicData ? 'dynamic' : 'static'}
                             onChange={onDynamicDataChange}
                         >
-                            <FormControlLabel
-                                value="static"
-                                control={<Radio />}
-                                label="static"
-                            />
-                            <FormControlLabel
-                                value="dynamic"
-                                control={<Radio />}
-                                label="dynamic"
-                            />
+                            <FormControlLabel value="static" control={<Radio />} label="static" />
+                            <FormControlLabel value="dynamic" control={<Radio />} label="dynamic" />
                         </RadioGroup>
                     </div>
                     <div>
-                        <FormLabel component="legend-selection">
-                            Selection Type
-                        </FormLabel>
+                        <FormLabel component="legend-selection">Selection Type</FormLabel>
                         <RadioGroup
                             aria-label="seletcion-type"
                             name="Selection type"
                             value={multiSelect ? 'multiselect' : 'singleselect'}
                             onChange={onSelectionTypeChange}
                         >
-                            <FormControlLabel
-                                value="singleselect"
-                                control={<Radio />}
-                                label="single selection"
-                            />
-                            <FormControlLabel
-                                value="multiselect"
-                                control={<Radio />}
-                                label="multiselect"
-                            />
+                            <FormControlLabel value="singleselect" control={<Radio />} label="single selection" />
+                            <FormControlLabel value="multiselect" control={<Radio />} label="multiselect" />
                         </RadioGroup>
                     </div>
                     <div>
@@ -135,11 +98,7 @@ const TreeViewFinderConfig = (props) => {
                         <FormGroup>
                             <FormControlLabel
                                 control={
-                                    <Checkbox
-                                        checked={onlyLeaves}
-                                        onChange={onOnlyLeavesChange}
-                                        name="only-leaves"
-                                    />
+                                    <Checkbox checked={onlyLeaves} onChange={onOnlyLeavesChange} name="only-leaves" />
                                 }
                                 label="Only leaves selection"
                             />
@@ -159,6 +118,32 @@ const TreeViewFinderConfig = (props) => {
             </FormControl>
         </div>
     );
+}
+
+TreeViewFinderConfig.propTypes = {
+    dynamicData: PropTypes.bool,
+    dataFormat: PropTypes.string,
+    multiSelect: PropTypes.bool,
+    onlyLeaves: PropTypes.bool,
+    sortedAlphabetically: PropTypes.bool,
+    onDynamicDataChange: PropTypes.func,
+    onDataFormatChange: PropTypes.func,
+    onSelectionTypeChange: PropTypes.func,
+    onOnlyLeavesChange: PropTypes.func,
+    onSortedAlphabeticallyChange: PropTypes.func,
+};
+
+TreeViewFinderConfig.defaultProps = {
+    dynamicData: false,
+    dataFormat: 'Tree',
+    multiSelect: false,
+    onlyLeaves: false,
+    sortedAlphabetically: false,
+    onDynamicDataChange: () => {},
+    onDataFormatChange: () => {},
+    onSelectionTypeChange: () => {},
+    onOnlyLeavesChange: () => {},
+    onSortedAlphabeticallyChange: () => {},
 };
 
 export default TreeViewFinderConfig;

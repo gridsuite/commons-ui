@@ -5,17 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useState } from 'react';
-import {
-    ElementSearchInput,
-    EquipmentItem,
-    EquipmentType,
-    equipmentStyles,
-} from '../../src';
 import { TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
+import { ElementSearchInput, EquipmentItem, EquipmentType, equipmentStyles } from '../../src';
 
-export const InlineSearch = () => {
+export function InlineSearch() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -52,18 +47,12 @@ export const InlineSearch = () => {
                     : []
             }
             renderElement={(props: any) => (
-                <EquipmentItem
-                    styles={equipmentStyles}
-                    {...props}
-                    key={props.element.key}
-                />
+                <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
             )}
             searchTerm={searchTerm}
             loading={isLoading}
             getOptionLabel={(option) => option.label}
-            isOptionEqualToValue={(option1, option2) =>
-                option1.id === option2.id
-            }
+            isOptionEqualToValue={(option1, option2) => option1.id === option2.id}
             renderInput={(displayedValue, params) => (
                 <TextField
                     {...params}
@@ -79,4 +68,6 @@ export const InlineSearch = () => {
             )}
         />
     );
-};
+}
+
+export default InlineSearch;
