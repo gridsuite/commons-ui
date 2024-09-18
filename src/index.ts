@@ -272,7 +272,9 @@ export {
     getCriteriaBasedSchema,
 } from './components/filter/criteriaBased/criteriaBasedFilterUtils';
 
+export type { CommonMuiTheme, CommonMuiPalette } from './module-mui';
 export { mergeSx } from './utils/styles';
+export type { MuiStyle, MuiStyles } from './utils/styles';
 export { setCommonStore } from './redux/commonStore';
 export type { CommonStoreState } from './redux/commonStore';
 

@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, SxProps, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { ReactNode } from 'react';
-import { mergeSx } from '../../utils/styles';
+import { mergeSx, MuiStyle, MuiStyles } from '../../utils/styles';
 
 const styles = {
     logo: {
@@ -24,7 +24,7 @@ const styles = {
     clickable: {
         cursor: 'pointer',
     },
-};
+} as const satisfies MuiStyles;
 
 export interface GridLogoProps extends Omit<LogoTextProps, 'style'> {
     appLogo: ReactNode;
@@ -55,6 +55,6 @@ export default GridLogo;
 export interface LogoTextProps {
     appName: string;
     appColor: string;
-    style: SxProps;
+    style: MuiStyle;
     onClick: () => void;
 }

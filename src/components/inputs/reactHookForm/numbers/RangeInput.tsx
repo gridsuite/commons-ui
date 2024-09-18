@@ -7,21 +7,20 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import { Grid } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
+import { FormControl, Grid, InputLabel } from '@mui/material';
 import FloatInput from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import MuiSelectInput from '../selectInputs/MuiSelectInput';
 import FieldConstants from '../../../../utils/constants/fieldConstants';
+import { MuiStyles } from '../../../../utils/styles';
 
 const style = {
-    inputLegend: (theme: any) => ({
+    inputLegend: (theme) => ({
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
         backgroundColor: theme.palette.background.paper,
         padding: '0 8px 0 8px',
     }),
-};
+} as const satisfies MuiStyles;
 
 export const RangeType = {
     EQUALITY: { id: 'EQUALITY', label: 'equality' },
@@ -30,13 +29,14 @@ export const RangeType = {
     LESS_THAN: { id: 'LESS_THAN', label: 'lessThan' },
     LESS_OR_EQUAL: { id: 'LESS_OR_EQUAL', label: 'lessOrEqual' },
     RANGE: { id: 'RANGE', label: 'range' },
-};
+} as const;
 
 export const DEFAULT_RANGE_VALUE = {
     [FieldConstants.OPERATION_TYPE]: RangeType.EQUALITY.id,
     [FieldConstants.VALUE_1]: null,
     [FieldConstants.VALUE_2]: null,
-};
+} as const;
+
 export const getRangeInputDataForm = (name: string, rangeValue: unknown) => ({
     [name]: rangeValue,
 });
@@ -65,7 +65,7 @@ interface RangeInputProps {
     label: string;
 }
 
-function RangeInput({ name, label }: RangeInputProps) {
+function RangeInput({ name, label }: Readonly<RangeInputProps>) {
     const watchOperationType = useWatch({
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });

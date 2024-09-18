@@ -12,10 +12,10 @@ import {
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
 } from '@mui/icons-material';
-import { SxProps, Theme } from '@mui/material';
 import { ElementType } from '../types/elementType';
+import { MuiStyle } from '../styles';
 
-function getFileIcon(type: ElementType, style: SxProps<Theme>) {
+function getFileIcon(type: ElementType, style: MuiStyle) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;

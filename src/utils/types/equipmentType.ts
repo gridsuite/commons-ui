@@ -7,6 +7,7 @@
 
 import { Theme } from '@mui/material';
 import { LIGHT_THEME } from '../../components/topBar/TopBar';
+import { MuiStyles } from '../styles';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -48,7 +49,7 @@ export const equipmentStyles = {
         width: '100%',
         padding: '2px',
     },
-};
+} as const satisfies MuiStyles;
 
 /**
  * The order of the equipments in this list is important, as many UI follow it directly.

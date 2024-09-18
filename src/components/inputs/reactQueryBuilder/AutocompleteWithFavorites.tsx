@@ -5,16 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Autocomplete, Box, TextField, Theme } from '@mui/material';
+import { Autocomplete, Box, TextField } from '@mui/material';
 import { useMemo } from 'react';
 import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
+import { MuiStyles } from '../../../utils/styles';
 
 const styles = {
-    favBox: (theme: Theme) => ({
+    favBox: (theme) => ({
         borderBottom: '1px solid',
         borderColor: theme.palette.divider,
     }),
-};
+} as const satisfies MuiStyles;
 
 interface AutocompleteWithFavoritesProps<Value>
     extends Omit<
@@ -52,7 +53,7 @@ function AutocompleteWithFavorites<Value>({
             options={optionsWithFavorites}
             {...otherProps}
             /* props should not be overridden */
-            groupBy={(option: Value) => (favorites.includes(option) ? `fav` : 'not_fav')}
+            groupBy={(option: Value) => (favorites.includes(option) ? 'fav' : 'not_fav')}
             multiple={Array.isArray(value)}
             renderInput={(params) => <TextField {...params} error={!valid} />}
             renderGroup={(item) => {

@@ -8,17 +8,16 @@
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
-import { createRef, PureComponent, ReactElement, ReactNode, MouseEvent, KeyboardEvent, MutableRefObject } from 'react';
+import { createRef, KeyboardEvent, MouseEvent, MutableRefObject, PureComponent, ReactElement, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 import memoize from 'memoize-one';
-import { Autocomplete, Chip, IconButton, Popover, SxProps, TableCell, TextField } from '@mui/material';
-import { styled } from '@mui/system';
+import { Autocomplete, Chip, IconButton, Popover, styled, TableCell, TextField } from '@mui/material';
 import { GetApp as GetAppIcon } from '@mui/icons-material';
 import { AutoSizer, Column, ColumnProps, RowMouseEventHandlerParams, Table, TableCellProps } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
 import { OverflowableText } from '../overflowableText/OverflowableText';
-import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, MuiStyle, MuiStyles, SxPropsObj, toNestedGlobalSelectors } from '../../utils/styles';
 import { ChangeWays, collectibleHelper, getHelper, KeyedColumnsRowIndexer } from './KeyedColumnsRowIndexer';
 import { ColumnHeader } from './ColumnHeader';
 
@@ -66,7 +65,7 @@ const defaultStyles = {
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
         },
-    },
+    } as MuiStyle, // "flip" isn't recognized property
     [cssTableRow]: {
         cursor: 'pointer',
     },
@@ -84,7 +83,7 @@ const defaultStyles = {
     },
     [cssRowBackgroundDark]: {},
     [cssRowBackgroundLight]: {},
-};
+} as const satisfies MuiStyles;
 
 // TODO find a better system, maybe MUI will fix/improve this ?
 // Different from all others because of the poor nested sx support for portals
@@ -262,7 +261,7 @@ export interface MuiVirtualizedTableProps extends CustomColumnProps {
     onRowClick?: (event: RowMouseEventHandlerParams) => void;
     rowHeight: number;
     onCellClick: (row: RowProps, column: ColumnProps) => void;
-    tooltipSx: SxProps;
+    tooltipSx: SxPropsObj;
     name: string;
     exportCSVDataKeys: unknown[];
     enableExportCSV: boolean;

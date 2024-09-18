@@ -7,8 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import { Clear as ClearIcon } from '@mui/icons-material';
-import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-
+import { IconButton, InputAdornment, TextField, TextFieldProps, TextFieldVariants } from '@mui/material';
 import { Input } from '../../../../utils/types/types';
 
 export type TextFieldWithAdornmentProps = TextFieldProps & {
@@ -24,7 +23,7 @@ function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
 
     const [isFocused, setIsFocused] = useState(false);
 
-    const getAdornmentStyle = useCallback((innerVariant: 'standard' | 'filled' | 'outlined') => {
+    const getAdornmentStyle = useCallback((innerVariant: TextFieldVariants) => {
         if (innerVariant === 'filled') {
             return {
                 alignItems: 'start',

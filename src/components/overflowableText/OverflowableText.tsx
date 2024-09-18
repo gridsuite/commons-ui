@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Box, BoxProps, SxProps, Theme, Tooltip, styled } from '@mui/material';
+import { Box, BoxProps, styled, Tooltip } from '@mui/material';
 import { Style } from 'node:util';
+import { MuiStyle, MuiStyles } from '../../utils/styles';
 
 const overflowStyle = {
     overflow: {
@@ -20,9 +21,9 @@ const overflowStyle = {
         width: 'fit-content',
         maxWidth: 'fit-content',
     },
-};
+} as const satisfies MuiStyles;
 
-const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxProps => ({
+const multilineOverflowStyle = (numberOfLinesToDisplay?: number): MuiStyle => ({
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
@@ -34,15 +35,15 @@ const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxProps => ({
 export interface OverflowableTextProps extends BoxProps {
     text?: ReactElement | string;
     maxLineCount?: number;
-    tooltipStyle?: Style;
-    tooltipSx?: SxProps<Theme>;
+    tooltipStyle?: Style; // TODO can be only boolean
+    tooltipSx?: MuiStyle;
 }
 
 export const OverflowableText = styled(
     ({
         text,
         maxLineCount, // overflowable text can be displayed on several lines if this is set to a number > 1 tooltipStyle,
-        tooltipStyle,
+        tooltipStyle, // TODO: why not just do "tooltipSx!==undefined"?
         tooltipSx,
         className,
         children,

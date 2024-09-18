@@ -9,15 +9,16 @@ import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import OverflowableText from '../overflowableText';
 import { DraggableClickableItemProps } from './checkBoxList.type';
+import { MuiStyles } from '../../utils/styles';
 
 const styles = {
-    dragIcon: (theme: any) => ({
+    dragIcon: (theme) => ({
         padding: 'unset',
         border: theme.spacing(0),
         borderRadius: theme.spacing(0),
         zIndex: 90,
     }),
-};
+} as const satisfies MuiStyles;
 
 export function DraggableClickableCheckBoxItem({
     sx,

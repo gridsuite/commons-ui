@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import BottomRightButtons from './BottomRightButtons';
 import FieldConstants from '../../../../utils/constants/fieldConstants';
+import type { MuiStyle, SxPropsObj } from '../../../../utils/styles';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -25,8 +26,9 @@ export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     },
 ];
 
-const style = (customProps: any) => ({
-    grid: (theme: any) => ({
+const style =
+    (customProps: SxPropsObj = {}): MuiStyle =>
+    (theme) => ({
         width: 'auto',
         height: '100%',
         position: 'relative',
@@ -36,10 +38,10 @@ const style = (customProps: any) => ({
         // https://www.ag-grid.com/react-data-grid/global-style-customisation/
         '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
         '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
-        '--ag-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-header-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-odd-row-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-modal-overlay-background-color': `${theme.agGridBackground.color} !important`,
+        '--ag-background-color': `${theme.aggrid.background.color} !important`,
+        '--ag-header-background-color': `${theme.aggrid.background.color} !important`,
+        '--ag-odd-row-background-color': `${theme.aggrid.background.color} !important`,
+        '--ag-modal-overlay-background-color': `${theme.aggrid.background.color} !important`,
         '--ag-selected-row-background-color': 'transparent !important',
         '--ag-range-selection-border-color': 'transparent !important',
 
@@ -71,24 +73,23 @@ const style = (customProps: any) => ({
             height: '100%',
             border: 'inherit',
             outline: 'inherit',
-            backgroundColor: theme.agGridBackground.color,
+            backgroundColor: theme.aggrid.background.color,
         },
         '& .Mui-focused .MuiOutlinedInput-root': {
             // borders moves row height
             outline: 'var(--ag-borders-input) var(--ag-input-focus-border-color)',
             outlineOffset: '-1px',
-            backgroundColor: theme.agGridBackground.color,
+            backgroundColor: theme.aggrid.background.color,
         },
         ...customProps,
-    }),
-});
+    });
 
 export interface CustomAgGridTableProps {
     name: string;
     columnDefs: any;
     makeDefaultRowData: any;
     csvProps: unknown;
-    cssProps: unknown;
+    cssProps?: SxPropsObj;
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
@@ -110,8 +111,9 @@ function CustomAgGridTable({
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}: CustomAgGridTableProps) {
-    const theme: any = useTheme();
+}: Readonly<CustomAgGridTableProps>) {
+    const theme = useTheme();
+    const styles = useMemo(() => style(cssProps), [cssProps]);
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowAdded, setNewRowAdded] = useState(false);
@@ -236,7 +238,7 @@ function CustomAgGridTable({
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12} className={theme.aggrid.theme} sx={style(cssProps).grid}>
+            <Grid item xs={12} className={theme.aggrid.theme} sx={styles}>
                 <AgGridReact
                     rowData={rowData}
                     onGridReady={onGridReady}

@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import clsx from 'clsx';
-import { SxProps, Theme } from '@mui/material';
 import OverflowableText from '../../overflowableText';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
-import { mergeSx } from '../../../utils/styles';
+import { mergeSx, MuiStyle } from '../../../utils/styles';
 
 export interface TagRendererProps {
     element: EquipmentInfos;
@@ -17,12 +16,12 @@ export interface TagRendererProps {
         equipmentVlTag?: string;
     };
     styles?: {
-        equipmentTag?: SxProps<Theme>;
-        equipmentVlTag?: SxProps<Theme>;
+        equipmentTag?: MuiStyle;
+        equipmentVlTag?: MuiStyle;
     };
 }
 
-function TagRenderer({ element, ...props }: TagRendererProps) {
+function TagRenderer({ element, ...props }: Readonly<TagRendererProps>) {
     if (element.type !== EQUIPMENT_TYPE.SUBSTATION?.name && element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name) {
         return (
             <OverflowableText

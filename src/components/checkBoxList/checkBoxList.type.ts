@@ -5,18 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import { ReactElement } from 'react';
 import { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
-import { SxProps } from '@mui/system';
+import { MuiStyle } from '../../utils/styles';
 
 export interface CheckBoxListItemSxProps {
-    checkBoxIcon?: SxProps;
-    label?: SxProps;
-    checkboxListItem?: SxProps;
-    checkboxButton?: SxProps;
-    checkbox?: SxProps;
-    dragAndDropContainer?: SxProps;
-    checkboxList?: SxProps;
+    checkBoxIcon?: MuiStyle;
+    label?: MuiStyle;
+    checkboxListItem?: MuiStyle;
+    checkboxButton?: MuiStyle;
+    checkbox?: MuiStyle;
+    dragAndDropContainer?: MuiStyle;
+    checkboxList?: MuiStyle;
 }
 
 export interface CheckBoxListItemProps<T> {
@@ -24,7 +24,7 @@ export interface CheckBoxListItemProps<T> {
     sx?: CheckBoxListItemSxProps;
     label: string;
     onClick: () => void;
-    secondaryAction?: (item: T, hover: string) => React.ReactElement | null;
+    secondaryAction?: (item: T, hover: string) => ReactElement | null;
     getItemId: (item: T) => string;
     disabled?: boolean;
     divider?: boolean;
@@ -43,7 +43,7 @@ export interface CheckBoxListItemsProps<T> {
     onSelectionChange?: (selectedItems: T[]) => void;
     getItemId: (item: T) => string;
     getItemLabel?: (item: T) => string;
-    secondaryAction?: (item: T) => React.ReactElement | null;
+    secondaryAction?: (item: T) => ReactElement | null;
     enableSecondaryActionOnHover?: boolean;
     isDisabled?: (item: T) => boolean;
     addSelectAllCheckbox?: boolean;

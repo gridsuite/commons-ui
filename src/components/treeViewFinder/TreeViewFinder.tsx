@@ -5,11 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { ReactElement, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-
-import { styled } from '@mui/system';
-
 import {
     Button,
     ButtonProps,
@@ -18,17 +15,17 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Typography,
     ModalProps,
+    styled,
+    Typography,
 } from '@mui/material';
-
 import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import CancelButton from '../inputs/reactHookForm/utils/CancelButton';
 
 // As a bunch of individual variables to try to make it easier
@@ -61,7 +58,7 @@ const defaultStyles = {
         marginRight: '4px',
     },
     [cssIcon]: {},
-};
+} as const satisfies MuiStyles;
 
 export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
@@ -207,7 +204,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         });
     };
 
-    const handleNodeToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
+    const handleNodeToggle = (_e: SyntheticEvent, nodeIds: string[]) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
         nodeIds.every((nodeId) => {
             if (!expanded?.includes(nodeId)) {
@@ -263,7 +260,7 @@ function TreeViewFinder(props: TreeViewFinderProps) {
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
-    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[]) => {
+    const handleNodeSelect = (_e: SyntheticEvent, values: string | string[]) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
             setSelected(values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId])));

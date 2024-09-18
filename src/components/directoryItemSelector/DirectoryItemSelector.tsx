@@ -6,21 +6,21 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
 import getFileIcon from '../../utils/mapper/elementIcon';
 import { ElementType } from '../../utils/types/elementType';
 import TreeViewFinder, { TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
+import { MuiStyles } from '../../utils/styles';
 
 const styles = {
-    icon: (theme: Theme) => ({
+    icon: (theme) => ({
         marginRight: theme.spacing(1),
         width: '18px',
         height: '18px',
     }),
-};
+} as const satisfies MuiStyles;
 
 function sameRights(a: any, b: any) {
     if (!a && !b) {
@@ -183,7 +183,7 @@ function DirectoryItemSelector({
                 id: e.elementUuid,
                 name: e.elementName,
                 specificMetadata: e.specificMetadata,
-                icon: getFileIcon(e.type, styles.icon as SxProps),
+                icon: getFileIcon(e.type, styles.icon),
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
                 childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
             };
@@ -196,7 +196,7 @@ function DirectoryItemSelector({
                 return {
                     id: e.elementUuid,
                     name: e.elementName,
-                    icon: getFileIcon(e.type, styles.icon as SxProps),
+                    icon: getFileIcon(e.type, styles.icon),
                     children:
                         e.type === ElementType.DIRECTORY
                             ? convertChildren(nodeMap.current[e.elementUuid].children)

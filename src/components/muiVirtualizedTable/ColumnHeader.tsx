@@ -6,16 +6,13 @@
  */
 
 import { ComponentProps, forwardRef, MouseEvent, ReactNode, useCallback, useMemo, useRef, useState } from 'react';
-
 import {
     ArrowDownward as ArrowDownwardIcon,
     ArrowUpward as ArrowUpwardIcon,
     FilterAltOutlined as FilterAltOutlinedIcon,
 } from '@mui/icons-material';
-
-import { styled } from '@mui/system';
-import { Box, BoxProps, Theme } from '@mui/material';
-import { mergeSx } from '../../utils/styles';
+import { Box, BoxProps, styled } from '@mui/material';
+import { mergeSx, MuiStyles } from '../../utils/styles';
 
 const styles = {
     label: {
@@ -43,7 +40,7 @@ const styles = {
     filterButton: {
         stroke: 'currentcolor',
     },
-    filterTooLossy: (theme: Theme) => ({
+    filterTooLossy: (theme) => ({
         stroke: theme.palette.secondary.main,
     }),
     transparent: {
@@ -52,7 +49,7 @@ const styles = {
     hovered: {
         opacity: 0.5,
     },
-};
+} as const satisfies MuiStyles;
 
 interface SortButtonProps {
     signedRank?: number;

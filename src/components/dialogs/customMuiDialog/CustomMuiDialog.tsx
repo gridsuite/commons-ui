@@ -14,6 +14,7 @@ import SubmitButton from '../../inputs/reactHookForm/utils/SubmitButton';
 import CancelButton from '../../inputs/reactHookForm/utils/CancelButton';
 import CustomFormProvider, { MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import PopupConfirmationDialog from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { MuiStyles } from '../../../utils/styles';
 
 export interface CustomMuiDialogProps {
     open: boolean;
@@ -40,7 +41,7 @@ const styles = {
             margin: 'auto',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 function CustomMuiDialog({
     open,

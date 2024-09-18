@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
-import { TextFieldProps, Theme, Typography } from '@mui/material';
+import { useCallback, useState } from 'react';
+import { TextFieldProps, Typography } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import useCustomFormContext from '../provider/useCustomFormContext';
 import TextInput, { TextInputProps } from './TextInput';
@@ -37,20 +37,17 @@ function ExpandingTextField({
         name,
         control,
     });
-    const handleFocus = () => {
+    const handleFocus = useCallback(() => {
         setIsFocused(true);
-    };
-
-    const handleBlur = () => {
+    }, []);
+    const handleBlur = useCallback(() => {
         setIsFocused(false);
-    };
+    }, []);
     const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
     const descriptionCounter = `${descriptionLength}/${maxCharactersNumber}`;
-
     const rowsToDisplay = isFocused ? rows : minRows;
-
-    const formProps = {
+    const formProps: TextInputProps['formProps'] = {
         size: 'medium',
         multiline: true,
         onFocus: handleFocus,
@@ -67,7 +64,7 @@ function ExpandingTextField({
         FormHelperTextProps: {
             sx: {
                 ml: 'auto',
-                color: (theme: Theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
+                color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
             },
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
