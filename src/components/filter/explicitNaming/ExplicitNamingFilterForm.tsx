@@ -218,7 +218,7 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={sourceFilterForExplicitNamingConversion}
+                    disabled={!!sourceFilterForExplicitNamingConversion}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
