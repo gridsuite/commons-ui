@@ -66,7 +66,7 @@ class Events implements UserManagerEvents {
     removeAccessTokenExpired() {}
 }
 
-export default class UserManagerMock implements UserManager {
+export class UserManagerMock implements UserManager {
     settings;
 
     events;
@@ -238,3 +238,5 @@ export default class UserManagerMock implements UserManager {
         return Promise.resolve({} as SignoutResponse);
     }
 }
+
+export default UserManagerMock;

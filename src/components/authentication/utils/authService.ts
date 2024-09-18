@@ -8,7 +8,7 @@ import { Dispatch } from 'react';
 import { Location, NavigateFunction } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
-import UserManagerMock from './userManagerMock';
+import { UserManagerMock } from './userManagerMock';
 import {
     AuthenticationActions,
     resetAuthenticationRouterError,
