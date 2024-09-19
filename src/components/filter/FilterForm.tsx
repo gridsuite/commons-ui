@@ -14,6 +14,12 @@ import ExplicitNamingFilterForm from './explicitNaming/ExplicitNamingFilterForm'
 import ExpertFilterForm from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 
+const styles = {
+    filterForm: {
+        height: '80vh',
+    },
+};
+
 function FilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
@@ -23,7 +29,7 @@ function FilterForm({
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={styles.filterForm}>
             <Grid item xs={12}>
                 <HeaderFilterForm
                     creation={creation}
