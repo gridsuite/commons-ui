@@ -18,7 +18,7 @@ const config: Config = {
     globals: {
         IS_REACT_ACT_ENVIRONMENT: true,
     },
-    setupFiles: ['<rootDir>/jest.setup.ts'],
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
 
 export default config;
