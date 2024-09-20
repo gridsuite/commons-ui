@@ -10,29 +10,32 @@ import CardErrorBoundary from '../CardErrorBoundary';
 import { RenderBuilder } from '../../../tests/testsUtils';
 
 const RenderBuilderInstance = new RenderBuilder().withTrad();
-it('renders the child component when there is no error', () => {
-    RenderBuilderInstance.render(
-        <CardErrorBoundary>
-            <div>Child Component</div>
-        </CardErrorBoundary>
-    );
 
-    const childComponent = screen.getByText('Child Component');
-    expect(childComponent).toBeInTheDocument();
-});
+describe('CardErrorBoundary', () => {
+    it('renders the child component when there is no error', () => {
+        RenderBuilderInstance.render(
+            <CardErrorBoundary>
+                <div>Child Component</div>
+            </CardErrorBoundary>
+        );
 
-it('renders an error message when there is an error', () => {
-    const errorMessage = 'Something went wrong';
-    const ErrorComponent = () => {
-        throw new Error(errorMessage);
-    };
+        const childComponent = screen.getByText('Child Component');
+        expect(childComponent).toBeInTheDocument();
+    });
 
-    RenderBuilderInstance.render(
-        <CardErrorBoundary>
-            <ErrorComponent />
-        </CardErrorBoundary>
-    );
+    it('renders an error message when there is an error', () => {
+        const errorMessage = 'Something went wrong';
+        const ErrorComponent = () => {
+            throw new Error(errorMessage);
+        };
 
-    const errorText = screen.getByText(errorMessage);
-    expect(errorText).toBeInTheDocument();
+        RenderBuilderInstance.render(
+            <CardErrorBoundary>
+                <ErrorComponent />
+            </CardErrorBoundary>
+        );
+
+        const errorText = screen.getByText(errorMessage);
+        expect(errorText).toBeInTheDocument();
+    });
 });
