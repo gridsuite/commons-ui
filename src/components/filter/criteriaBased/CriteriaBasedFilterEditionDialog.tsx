@@ -17,7 +17,7 @@ import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
 import yup from '../../../utils/yupConfig';
 import { FilterType } from '../constants/FilterConstants';
 import FetchStatus from '../../../utils/constants/fetchStatus';
-import { saveFilter } from '../../../services/explore';
+import { saveFilter } from '../../../services';
 import { ElementExistsType } from '../../../utils/types/elementType';
 import FilterForm from '../FilterForm';
 
@@ -46,7 +46,7 @@ const formSchema = yup
     .required();
 
 export interface CriteriaBasedFilterEditionDialogProps {
-    id: string | undefined | null;
+    id?: string | null;
     name: string;
     titleId: string;
     open: boolean;
