@@ -41,9 +41,10 @@ const styles = {
             height: '90vh', // devrait être valable seulement pour une version non scrollable spécifique
         },
     },
-    unscrollable: { // devrait être valable seulement pour une version non scrollable spécifique
+    unscrollable: {
+        // devrait être valable seulement pour une version non scrollable spécifique
+        height: '100%',
         overflowY: 'hidden',
-        maxHeight: '80vh',
     },
 };
 

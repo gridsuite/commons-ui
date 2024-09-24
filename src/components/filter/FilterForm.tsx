@@ -6,12 +6,24 @@
  */
 
 import { useWatch } from 'react-hook-form';
+import { Box } from '@mui/material';
 import FieldConstants from '../../utils/constants/fieldConstants';
 import CriteriaBasedFilterForm from './criteriaBased/CriteriaBasedFilterForm';
 import HeaderFilterForm, { FilterFormProps } from './HeaderFilterForm';
 import ExplicitNamingFilterForm from './explicitNaming/ExplicitNamingFilterForm';
 import ExpertFilterForm from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
+
+const styles = {
+    NonScrollableContainer: {
+        height: '100%',
+        '&::before': {
+            content: '""',
+            height: '100%',
+            float: 'left',
+        },
+    },
+};
 
 function FilterForm({
     sourceFilterForExplicitNamingConversion,
@@ -22,7 +34,7 @@ function FilterForm({
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     return (
-        <>
+        <Box sx={styles.NonScrollableContainer}>
             <HeaderFilterForm
                 creation={creation}
                 activeDirectory={activeDirectory}
@@ -36,7 +48,7 @@ function FilterForm({
                 />
             )}
             {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
-        </>
+        </Box>
     );
 }
 

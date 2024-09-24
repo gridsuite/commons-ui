@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import Grid from '@mui/material/Grid';
 import { useFormContext } from 'react-hook-form';
+import { Box } from '@mui/material';
 import FilterProperties, { filterPropertiesYupSchema } from './FilterProperties';
 import FieldConstants from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
@@ -28,10 +28,20 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
 });
 
 const styles = {
-    scrollablePart: {
-        height: '500px', // tmp : pas trouvé de moyen de déterminer dynamiquement la hauteur, et sans ça overflow ne fonctionne pas...
-        overflowY: 'auto',
-        flex: '1 1 auto',
+    ScrollableContainer: {
+        position: 'relative',
+        zIndex: '1',
+        '&::after': {
+            content: '""',
+            clear: 'both',
+            display: 'block',
+        },
+    },
+    ScrollableContent: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
     },
 };
 
@@ -50,8 +60,8 @@ function CriteriaBasedFilterForm() {
     };
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12}>
+        <>
+            <Box>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -62,12 +72,14 @@ function CriteriaBasedFilterForm() {
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                 />
-            </Grid>
-            <Grid container item spacing={1} sx={styles.scrollablePart}>
-                <CriteriaBasedForm equipments={FILTER_EQUIPMENTS} />
-                <FilterProperties />
-            </Grid>
-        </Grid>
+            </Box>
+            <Box sx={styles.ScrollableContainer}>
+                <Box sx={styles.ScrollableContent}>
+                    <CriteriaBasedForm equipments={FILTER_EQUIPMENTS} />
+                    <FilterProperties />
+                </Box>
+            </Box>
+        </>
     );
 }
 
