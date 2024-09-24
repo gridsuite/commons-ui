@@ -16,7 +16,7 @@ export interface CriteriaBasedFormProps {
     equipments: Record<string, FormEquipment>;
 }
 
-function CriteriaBasedForm({ equipments }: CriteriaBasedFormProps) {
+function CriteriaBasedForm({ equipments }: Readonly<CriteriaBasedFormProps>) {
     const { snackError } = useSnackMessage();
 
     const watchEquipmentType = useWatch({
