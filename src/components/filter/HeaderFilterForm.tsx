@@ -46,7 +46,7 @@ function HeaderFilterForm({
     };
 
     return (
-        <>
+        <Grid container>
             <Grid item xs={12}>
                 <UniqueNameInput
                     name={FieldConstants.NAME}
@@ -73,7 +73,7 @@ function HeaderFilterForm({
                     )}
                 </>
             )}
-        </>
+        </Grid>
     );
 }
 export default HeaderFilterForm;

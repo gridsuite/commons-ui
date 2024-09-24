@@ -38,7 +38,12 @@ const styles = {
             width: 'auto',
             minWidth: '1100px',
             margin: 'auto',
+            height: '90vh', // devrait être valable seulement pour une version non scrollable spécifique
         },
+    },
+    unscrollable: { // devrait être valable seulement pour une version non scrollable spécifique
+        overflowY: 'hidden',
+        maxHeight: '80vh',
     },
 };
 
@@ -120,7 +125,7 @@ function CustomMuiDialog({
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent>{children}</DialogContent>
+                <DialogContent sx={styles.unscrollable}>{children}</DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton

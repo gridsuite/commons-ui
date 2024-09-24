@@ -6,19 +6,12 @@
  */
 
 import { useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
 import FieldConstants from '../../utils/constants/fieldConstants';
 import CriteriaBasedFilterForm from './criteriaBased/CriteriaBasedFilterForm';
 import HeaderFilterForm, { FilterFormProps } from './HeaderFilterForm';
 import ExplicitNamingFilterForm from './explicitNaming/ExplicitNamingFilterForm';
 import ExpertFilterForm from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
-
-const styles = {
-    filterForm: {
-        height: '80vh',
-    },
-};
 
 function FilterForm({
     sourceFilterForExplicitNamingConversion,
@@ -29,25 +22,21 @@ function FilterForm({
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     return (
-        <Grid container spacing={2} sx={styles.filterForm}>
-            <Grid item xs={12}>
-                <HeaderFilterForm
-                    creation={creation}
-                    activeDirectory={activeDirectory}
-                    elementExists={elementExists}
+        <>
+            <HeaderFilterForm
+                creation={creation}
+                activeDirectory={activeDirectory}
+                elementExists={elementExists}
+                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+            />
+            {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
+            {filterType === FilterType.EXPLICIT_NAMING.id && (
+                <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
-            </Grid>
-            <Grid item xs={12}>
-                {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
-                {filterType === FilterType.EXPLICIT_NAMING.id && (
-                    <ExplicitNamingFilterForm
-                        sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                    />
-                )}
-                {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
-            </Grid>
-        </Grid>
+            )}
+            {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
+        </>
     );
 }
 
