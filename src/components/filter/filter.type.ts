@@ -6,10 +6,10 @@
  */
 
 export type SelectionForCopy = {
-    sourceItemUuid: unknown | null;
-    typeItem: unknown | null;
-    nameItem: unknown | null;
-    descriptionItem: unknown | null;
-    parentDirectoryUuid: unknown | null;
-    specificTypeItem: unknown | null;
+    sourceItemUuid: string | null;
+    typeItem: string | null;
+    nameItem: string | null;
+    descriptionItem: string | null;
+    parentDirectoryUuid: string | null;
+    specificTypeItem: string | null;
 };
