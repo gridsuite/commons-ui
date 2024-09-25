@@ -1,3 +1,5 @@
+import { SelectionForCopy } from '../filter.type';
+
 /**
  * Copyright (c) 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -10,4 +12,13 @@ export const FilterType = {
     CRITERIA_BASED: { id: 'CRITERIA', label: 'filter.criteriaBased' },
     EXPLICIT_NAMING: { id: 'IDENTIFIER_LIST', label: 'filter.explicitNaming' },
     EXPERT: { id: 'EXPERT', label: 'filter.expert' },
+};
+
+export const NO_SELECTION_FOR_COPY: SelectionForCopy = {
+    sourceItemUuid: null,
+    nameItem: null,
+    descriptionItem: null,
+    parentDirectoryUuid: null,
+    typeItem: null,
+    specificTypeItem: null,
 };
