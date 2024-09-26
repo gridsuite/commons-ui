@@ -21,7 +21,8 @@ function FieldSelector({ options, className, value, disabled, handleOnChange }: 
             className={className}
             options={optionList}
             size="small"
-            renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+            renderInput={(params) => <TextField {...params} label="" variant="standard" />}
+            autoHighlight
             getOptionLabel={(option) => option.label}
         />
     );
