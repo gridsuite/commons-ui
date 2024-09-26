@@ -14,12 +14,15 @@ function FieldSelector({ options, className, value, disabled, handleOnChange }: 
     return (
         <Autocomplete
             onChange={(event, newValue) => {
-                handleOnChange(newValue?.name);
+                if (newValue) {
+                    handleOnChange(newValue.name);
+                }
             }}
             value={optionList.find((option) => option.name === value)}
             disabled={disabled}
             className={className}
             options={optionList}
+            disableClearable
             size="small"
             renderInput={(params) => <TextField {...params} label="" variant="standard" />}
             autoHighlight
