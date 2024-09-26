@@ -19,10 +19,10 @@ import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './Expl
 import FieldConstants from '../../../utils/constants/fieldConstants';
 
 import FilterForm from '../FilterForm';
-import { noSelectionForCopy } from '../../../utils/types/equipmentTypes';
-import { FilterType } from '../constants/FilterConstants';
+import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import FetchStatus from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
+import { SelectionForCopy } from '../filter.type';
 
 const formSchema = yup
     .object()
@@ -41,8 +41,8 @@ export interface ExplicitNamingFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-    selectionForCopy: any;
-    setSelectionForCopy: (selection: any) => void;
+    selectionForCopy: SelectionForCopy;
+    setSelectionForCopy: (selection: SelectionForCopy) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
@@ -122,9 +122,9 @@ function ExplicitNamingFilterEditionDialog({
                 onClose
             );
             if (selectionForCopy.sourceItemUuid === id) {
-                setSelectionForCopy(noSelectionForCopy);
+                setSelectionForCopy(NO_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({
-                    noSelectionForCopy,
+                    NO_SELECTION_FOR_COPY,
                 });
             }
         },

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
@@ -15,25 +15,12 @@ import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
 import yup from '../../../utils/yupConfig';
-import { FilterType } from '../constants/FilterConstants';
+import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import FetchStatus from '../../../utils/constants/fetchStatus';
 import { saveFilter } from '../../../services/explore';
 import { ElementExistsType } from '../../../utils/types/elementType';
 import FilterForm from '../FilterForm';
-
-export type SelectionCopy = {
-    sourceItemUuid: UUID | null;
-    name: string | null;
-    description: string | null;
-    parentDirectoryUuid: UUID | null;
-};
-
-export const noSelectionForCopy: SelectionCopy = {
-    sourceItemUuid: null,
-    name: null,
-    description: null,
-    parentDirectoryUuid: null,
-};
+import { SelectionForCopy } from '../filter.type';
 
 const formSchema = yup
     .object()
@@ -53,8 +40,8 @@ export interface CriteriaBasedFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
-    selectionForCopy: SelectionCopy;
-    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
+    selectionForCopy: SelectionForCopy;
+    setSelectionForCopy: (selection: SelectionForCopy) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
@@ -69,7 +56,7 @@ function CriteriaBasedFilterEditionDialog({
     broadcastChannel,
     getFilterById,
     selectionForCopy,
-    setSelelectionForCopy,
+    setSelectionForCopy,
     activeDirectory,
     elementExists,
     language,
@@ -118,9 +105,9 @@ function CriteriaBasedFilterEditionDialog({
             saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
-                        setSelelectionForCopy(noSelectionForCopy);
+                        setSelectionForCopy(NO_SELECTION_FOR_COPY);
                         broadcastChannel.postMessage({
-                            noSelectionForCopy,
+                            NO_SELECTION_FOR_COPY,
                         });
                     }
                 })
@@ -130,7 +117,7 @@ function CriteriaBasedFilterEditionDialog({
                     });
                 });
         },
-        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelelectionForCopy]
+        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
