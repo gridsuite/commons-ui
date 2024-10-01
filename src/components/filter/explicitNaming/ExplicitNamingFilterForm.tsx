@@ -7,10 +7,10 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
-import Grid from '@mui/material/Grid';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
+import { Box } from '@mui/material';
 import FieldConstants from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import CustomAgGridTable, {
@@ -26,10 +26,29 @@ import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
 import ModifyElementSelection from '../../dialogs/modifyElementSelection/ModifyElementSelection';
-import { exportFilter } from '../../../services/study';
+import { exportFilter } from "../../../services";
 import { EquipmentType } from '../../../utils/types/equipmentType';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
+
+const styles = {
+    ScrollableContainer: {
+        position: 'relative',
+        '&::after': {
+            content: '""',
+            clear: 'both',
+            display: 'block',
+        },
+    },
+    ScrollableContent: {
+        // should not be scrollable !
+        paddingTop: '10px',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        overflow: 'auto', // not
+    },
+};
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -212,8 +231,8 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
     };
 
     return (
-        <Grid container item spacing={2}>
-            <Grid item xs={12}>
+        <>
+            <Box sx={{ paddingY: '12px' }}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -235,35 +254,38 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
                         noElementMessageLabel="noSelectedStudyText"
                     />
                 )}
-            </Grid>
+            </Box>
             {watchEquipmentType && (
-                <Grid item xs={12}>
-                    <CustomAgGridTable
-                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                        columnDefs={columnDefs}
-                        defaultColDef={defaultColDef}
-                        makeDefaultRowData={makeDefaultRowData}
-                        pagination
-                        paginationPageSize={100}
-                        suppressRowClickSelection
-                        alwaysShowVerticalScroll
-                        stopEditingWhenCellsLoseFocus
-                        csvProps={{
-                            fileName: intl.formatMessage({
-                                id: 'filterCsvFileName',
-                            }),
-                            fileHeaders: csvFileHeaders,
-                            getDataFromCsv: getDataFromCsvFile,
-                        }}
-                        cssProps={{
-                            '& .ag-root-wrapper-body': {
-                                maxHeight: '430px',
-                            },
-                        }}
-                    />
-                </Grid>
+                <Box sx={styles.ScrollableContainer}>
+                    <Box sx={styles.ScrollableContent}>
+                        <CustomAgGridTable
+                            name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                            columnDefs={columnDefs}
+                            defaultColDef={defaultColDef}
+                            makeDefaultRowData={makeDefaultRowData}
+                            pagination
+                            paginationPageSize={100}
+                            suppressRowClickSelection
+                            alwaysShowVerticalScroll
+                            stopEditingWhenCellsLoseFocus
+                            csvProps={{
+                                fileName: intl.formatMessage({
+                                    id: 'filterCsvFileName',
+                                }),
+                                fileHeaders: csvFileHeaders,
+                                getDataFromCsv: getDataFromCsvFile,
+                            }}
+                            cssProps={{
+                                '& .ag-root-wrapper-body': {
+                                    maxHeight: '380px',
+                                    height: '380px',
+                                },
+                            }}
+                        />
+                    </Box>
+                </Box>
             )}
-        </Grid>
+        </>
     );
 }
 
