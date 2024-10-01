@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
@@ -14,6 +13,7 @@ import { ActionWithRulesAndAddersProps, Field, formatQuery, QueryBuilder, RuleGr
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
+import { Box } from '@mui/material';
 import CombinatorSelector from './CombinatorSelector';
 import AddButton from './AddButton';
 import ValueEditor from './ValueEditor';
@@ -76,39 +76,37 @@ function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) 
 
     return (
         <>
-            <Grid item xs={12}>
-                <QueryBuilderMaterial>
-                    <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
-                        <QueryBuilder
-                            fields={fields}
-                            query={query}
-                            addRuleToNewGroups
-                            combinators={combinators}
-                            onQueryChange={handleQueryChange}
-                            getOperators={(fieldName) => getOperators(fieldName, intl)}
-                            validator={queryValidator}
-                            controlClassnames={{
-                                queryBuilder: 'queryBuilder-branches',
-                            }}
-                            controlElements={{
-                                addRuleAction: RuleAddButton,
-                                addGroupAction: GroupAddButton,
-                                combinatorSelector: CombinatorSelector,
-                                removeRuleAction: RemoveButton,
-                                removeGroupAction: RemoveButton,
-                                valueEditor: ValueEditor,
-                                operatorSelector: ValueSelector,
-                                fieldSelector: ValueSelector,
-                                valueSourceSelector: ValueSelector,
-                            }}
-                            listsAsArrays
-                        />
-                    </QueryBuilderDnD>
-                </QueryBuilderMaterial>
-            </Grid>
-            <Grid item xs={12}>
+            <QueryBuilderMaterial>
+                <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
+                    <QueryBuilder
+                        fields={fields}
+                        query={query}
+                        addRuleToNewGroups
+                        combinators={combinators}
+                        onQueryChange={handleQueryChange}
+                        getOperators={(fieldName) => getOperators(fieldName, intl)}
+                        validator={queryValidator}
+                        controlClassnames={{
+                            queryBuilder: 'queryBuilder-branches',
+                        }}
+                        controlElements={{
+                            addRuleAction: RuleAddButton,
+                            addGroupAction: GroupAddButton,
+                            combinatorSelector: CombinatorSelector,
+                            removeRuleAction: RemoveButton,
+                            removeGroupAction: RemoveButton,
+                            valueEditor: ValueEditor,
+                            operatorSelector: ValueSelector,
+                            fieldSelector: ValueSelector,
+                            valueSourceSelector: ValueSelector,
+                        }}
+                        listsAsArrays
+                    />
+                </QueryBuilderDnD>
+            </QueryBuilderMaterial>
+            <Box>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
-            </Grid>
+            </Box>
         </>
     );
 }

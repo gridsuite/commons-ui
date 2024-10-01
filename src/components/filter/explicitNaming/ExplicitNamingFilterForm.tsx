@@ -26,7 +26,7 @@ import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
 import ModifyElementSelection from '../../dialogs/modifyElementSelection/ModifyElementSelection';
-import { exportFilter } from "../../../services";
+import { exportFilter } from '../../../services';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
@@ -41,12 +41,11 @@ const styles = {
         },
     },
     ScrollableContent: {
-        // should not be scrollable !
         paddingTop: '10px',
         position: 'absolute',
         width: '100%',
         height: '100%',
-        overflow: 'auto', // not
+        overflow: 'auto',
     },
 };
 
