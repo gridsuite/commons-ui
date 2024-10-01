@@ -65,8 +65,9 @@ export {
     ShuntCompensator,
     VoltageLevel,
     Substation,
-    noSelectionForCopy,
 } from './utils/types/equipmentTypes';
+
+export { NO_SELECTION_FOR_COPY as noSelectionForCopy } from './components/filter/constants/FilterConstants';
 
 export { default as FieldConstants } from './utils/constants/fieldConstants';
 

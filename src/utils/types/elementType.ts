@@ -20,6 +20,7 @@ export enum ElementType {
     LOADFLOW_PARAMETERS = 'LOADFLOW_PARAMETERS',
     SENSITIVITY_PARAMETERS = 'SENSITIVITY_PARAMETERS',
     SHORT_CIRCUIT_PARAMETERS = 'SHORT_CIRCUIT_PARAMETERS',
+    SPREADSHEET_CONFIG = 'SPREADSHEET_CONFIG',
 }
 
 export type ElementExistsType = (directory: UUID, value: string, elementType: ElementType) => Promise<boolean>;
