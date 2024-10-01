@@ -38,7 +38,7 @@ const styles = {
             width: 'auto',
             minWidth: '1100px',
             margin: 'auto',
-            height: '90vh', // devrait être valable seulement pour une version non scrollable spécifique
+            height: '95vh', // devrait être valable seulement pour une version non scrollable spécifique
         },
     },
     unscrollable: {
