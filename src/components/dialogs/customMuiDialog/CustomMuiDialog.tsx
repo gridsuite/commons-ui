@@ -30,6 +30,7 @@ export interface CustomMuiDialogProps {
     isDataFetching?: boolean;
     language?: string;
     confirmationMessageKey?: string;
+    unscrollableFullHeight?: boolean;
 }
 
 const styles = {
@@ -38,11 +39,17 @@ const styles = {
             width: 'auto',
             minWidth: '1100px',
             margin: 'auto',
-            height: '95vh', // devrait être valable seulement pour une version non scrollable spécifique
+        },
+    },
+    dialogPaperFullHeight: {
+        '.MuiDialog-paper': {
+            width: 'auto',
+            minWidth: '1100px',
+            margin: 'auto',
+            height: '95vh',
         },
     },
     unscrollable: {
-        // devrait être valable seulement pour une version non scrollable spécifique
         height: '100%',
         overflowY: 'hidden',
     },
@@ -63,6 +70,7 @@ function CustomMuiDialog({
     children,
     language,
     confirmationMessageKey,
+    unscrollableFullHeight = false,
 }: Readonly<CustomMuiDialogProps>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState(undefined);
@@ -119,14 +127,19 @@ function CustomMuiDialog({
             removeOptional={removeOptional}
             language={language}
         >
-            <Dialog sx={styles.dialogPaper} open={open} onClose={handleClose} fullWidth>
+            <Dialog
+                sx={unscrollableFullHeight ? styles.dialogPaperFullHeight : styles.dialogPaper}
+                open={open}
+                onClose={handleClose}
+                fullWidth
+            >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle>
                     <Grid item xs={11}>
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent sx={styles.unscrollable}>{children}</DialogContent>
+                <DialogContent sx={unscrollableFullHeight ? styles.unscrollable : null}>{children}</DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton
