@@ -30,7 +30,6 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
 const styles = {
     ScrollableContainer: {
         position: 'relative',
-        zIndex: '1',
         '&::after': {
             content: '""',
             clear: 'both',
@@ -38,6 +37,7 @@ const styles = {
         },
     },
     ScrollableContent: {
+        paddingTop: '10px',
         position: 'absolute',
         width: '100%',
         height: '100%',
@@ -61,7 +61,7 @@ function CriteriaBasedFilterForm() {
 
     return (
         <>
-            <Box>
+            <Box sx={{ paddingY: '12px' }}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}

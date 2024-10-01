@@ -32,7 +32,7 @@ function CriteriaBasedForm({ equipments }: Readonly<CriteriaBasedFormProps>) {
     }, [snackError, equipments, watchEquipmentType]);
 
     return (
-        <Grid container item spacing={2}>
+        <Grid container spacing={2}>
             {watchEquipmentType &&
                 equipments[watchEquipmentType] &&
                 equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
