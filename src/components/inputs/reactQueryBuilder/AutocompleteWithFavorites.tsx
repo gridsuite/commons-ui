@@ -50,6 +50,8 @@ function AutocompleteWithFavorites<Value>({
             size="small"
             value={value}
             options={optionsWithFavorites}
+            // avoid warning in console MUI: The value provided to Autocomplete is invalid.
+            isOptionEqualToValue={(option, val) => option === val || val === ''}
             {...otherProps}
             /* props should not be overridden */
             groupBy={(option: Value) => (favorites.includes(option) ? `fav` : 'not_fav')}
