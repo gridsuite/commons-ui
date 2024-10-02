@@ -50,32 +50,19 @@ export function saveFilter(filter: any, name: string, token?: string) {
 }
 
 export function fetchElementsInfos(
-    ids: UUID[],
+    elementIds: UUID[],
     elementTypes?: string[],
     equipmentTypes?: string[]
 ): Promise<ElementAttributes[]> {
     console.info('Fetching elements metadata');
-
-    // Add params to Url
-    const idsParams = getRequestParamFromList(
-        'ids',
-        ids.filter((id) => id) // filter falsy elements
-    );
-
     const equipmentTypesParams = getRequestParamFromList('equipmentTypes', equipmentTypes);
-
     const elementTypesParams = getRequestParamFromList('elementTypes', elementTypes);
-
-    const urlSearchParams = new URLSearchParams([
-        ...idsParams,
-        ...equipmentTypesParams,
-        ...elementTypesParams,
-    ]).toString();
+    const urlSearchParams = new URLSearchParams([...equipmentTypesParams, ...elementTypesParams]).toString();
 
     const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
-    console.debug(url);
     return backendFetchJson(url, {
-        method: 'get',
+        method: 'post',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(elementIds),
     });
 }
