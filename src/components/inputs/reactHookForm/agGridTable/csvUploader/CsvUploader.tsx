@@ -5,19 +5,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
+import {
+    Alert,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Grid,
+} from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
-import Button from '@mui/material/Button';
-import React, { useMemo, useState } from 'react';
-import Grid from '@mui/material/Grid';
+import { ReactNode, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
-import Alert from '@mui/material/Alert';
-import { DialogContentText } from '@mui/material';
-import { useWatch } from 'react-hook-form';
+import { FieldValues, UseFieldArrayAppend, UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import { RECORD_SEP, UNIT_SEP } from 'papaparse';
 import FieldConstants from '../../../../../utils/constants/fieldConstants';
 import CancelButton from '../../utils/CancelButton';
@@ -25,14 +27,14 @@ import CancelButton from '../../utils/CancelButton';
 export interface CsvUploaderProps {
     name: string;
     onClose: () => void;
-    open: true;
-    title: string[];
+    open: boolean;
+    title?: ReactNode;
     fileHeaders: string[];
     fileName: string;
-    csvData: unknown;
-    validateData: (rows: string[][]) => boolean;
-    getDataFromCsv: any;
-    useFieldArrayOutput: any;
+    csvData?: Array<string[] | Record<string, string | null | undefined>>;
+    validateData?: (rows: string[][]) => boolean;
+    getDataFromCsv: (csvData: string[][]) => Parameters<UseFieldArrayAppend<FieldValues, string>>[0]; // keep generics in sync with useFieldArrayOutput field
+    useFieldArrayOutput: UseFieldArrayReturn<FieldValues, string, 'id'>;
 }
 
 function CsvUploader({
@@ -42,26 +44,20 @@ function CsvUploader({
     title,
     fileHeaders,
     fileName,
-    csvData,
+    csvData = [],
     validateData = () => true,
     getDataFromCsv,
     useFieldArrayOutput,
 }: Readonly<CsvUploaderProps>) {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
-    const [createError, setCreateError] = React.useState('');
+    const [createError, setCreateError] = useState('');
     const intl = useIntl();
     const { CSVReader } = useCSVReader();
-    const [importedData, setImportedData] = useState<any>([]);
+    const [importedData, setImportedData] = useState<string[][]>([]);
     const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = useState(false);
 
-    const data = useMemo(() => {
-        const newData = [...[fileHeaders]];
-        if (Array.isArray(csvData)) {
-            csvData.forEach((row) => newData.push([row]));
-        }
-        return newData;
-    }, [csvData, fileHeaders]);
+    const data = useMemo(() => [[...fileHeaders], ...csvData], [csvData, fileHeaders]);
     const handleClose = () => {
         onClose();
         setCreateError('');
@@ -85,9 +81,9 @@ function CsvUploader({
     };
 
     const getResultsFromImportedData = () => {
-        return importedData.filter((row: string[]) => {
+        return importedData.filter((row) => {
             // We do not keep the comment rows
-            if (row[0].startsWith('#')) {
+            if (row[0]?.startsWith('#')) {
                 return false;
             }
             // We keep the row if at least one of its column has a value
