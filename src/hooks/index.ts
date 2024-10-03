@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+export * from './customStates';
 export * from './useConfidentialityWarning';
 export * from './useDebounce';
 export * from './useIntlRef';

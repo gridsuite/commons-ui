@@ -6,6 +6,7 @@
  */
 import {
     Article as ArticleIcon,
+    Calculate as CalculateIcon,
     NoteAlt as NoteAltIcon,
     OfflineBolt as OfflineBoltIcon,
     Photo as PhotoIcon,
@@ -34,6 +35,8 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
         case ElementType.SENSITIVITY_PARAMETERS:
         case ElementType.SHORT_CIRCUIT_PARAMETERS:
             return <SettingsIcon sx={style} />;
+        case ElementType.SPREADSHEET_CONFIG:
+            return <CalculateIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return undefined;

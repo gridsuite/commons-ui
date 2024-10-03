@@ -22,20 +22,6 @@ import { SelectionForCopy } from '../filter.type';
 import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
 import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
 
-export type SelectionCopy = {
-    sourceItemUuid: UUID | null;
-    name: string | null;
-    description: string | null;
-    parentDirectoryUuid: UUID | null;
-};
-
-export const noSelectionForCopy: SelectionCopy = {
-    sourceItemUuid: null,
-    name: null,
-    description: null,
-    parentDirectoryUuid: null,
-};
-
 const formSchema = yup
     .object()
     .shape({
