@@ -16,7 +16,13 @@ import * as yup from 'yup';
 import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
 import { testQuery } from './expertFilterUtils';
-import { COMBINATOR_OPTIONS, EXPERT_FILTER_EQUIPMENTS, fields, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
+import {
+    COMBINATOR_OPTIONS,
+    EXPERT_FILTER_EQUIPMENTS,
+    EXPERT_FILTER_FIELDS,
+    OPERATOR_OPTIONS,
+    RULES,
+} from './expertFilterConstants';
 
 import { FieldType } from './expertFilter.type';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
@@ -110,7 +116,7 @@ export function ExpertFilterForm() {
     });
 
     const translatedFields = useMemo(() => {
-        return fields[watchEquipmentType]?.map((field) => {
+        return EXPERT_FILTER_FIELDS[watchEquipmentType]?.map((field) => {
             return {
                 ...field,
                 label: intl.formatMessage({ id: field.label }),
