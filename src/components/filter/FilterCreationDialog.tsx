@@ -139,6 +139,7 @@ function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            unscrollableFullHeight
         >
             <FilterForm
                 creation

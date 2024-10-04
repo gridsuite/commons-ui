@@ -134,6 +134,7 @@ function CriteriaBasedFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            unscrollableFullHeight
         >
             {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
         </CustomMuiDialog>

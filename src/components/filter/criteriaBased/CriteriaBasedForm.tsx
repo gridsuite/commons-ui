@@ -6,20 +6,41 @@
  */
 
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
-import { useEffect } from 'react';
+import { Box, Grid } from '@mui/material';
+import { ReactElement, useEffect } from 'react';
 import FieldConstants from '../../../utils/constants/fieldConstants';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { FormEquipment } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
+import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
 
 export interface CriteriaBasedFormProps {
     equipments: Record<string, FormEquipment>;
     defaultValues: Record<string, any>;
+    children?: ReactElement;
 }
 
-function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps) {
+const styles = {
+    ScrollableContainer: {
+        paddingY: '12px',
+        position: 'relative',
+        '&::after': {
+            content: '""',
+            clear: 'both',
+            display: 'block',
+        },
+    },
+    ScrollableContent: {
+        paddingY: '12px',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        minHeight: '200px',
+        overflow: 'auto',
+    },
+};
+
+function CriteriaBasedForm({ equipments, defaultValues, children }: Readonly<CriteriaBasedFormProps>) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
@@ -46,8 +67,8 @@ function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps
     };
 
     return (
-        <Grid container item spacing={2}>
-            <Grid item xs={12}>
+        <>
+            <Box sx={{ paddingTop: '10px' }}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -58,19 +79,26 @@ function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                 />
-            </Grid>
-            {watchEquipmentType &&
-                equipments[watchEquipmentType] &&
-                equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
-                    const EquipmentForm = equipment.renderer;
-                    const uniqueKey = `${watchEquipmentType}-${index}`;
-                    return (
-                        <Grid item xs={12} key={uniqueKey} flexGrow={1}>
-                            <EquipmentForm {...equipment.props} />
-                        </Grid>
-                    );
-                })}
-        </Grid>
+            </Box>
+            <Box sx={styles.ScrollableContainer}>
+                <Box sx={styles.ScrollableContent}>
+                    <Grid container spacing={2}>
+                        {watchEquipmentType &&
+                            equipments[watchEquipmentType] &&
+                            equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
+                                const EquipmentForm = equipment.renderer;
+                                const uniqueKey = `${watchEquipmentType}-${index}`;
+                                return (
+                                    <Grid item xs={12} key={uniqueKey} flexGrow={1}>
+                                        <EquipmentForm {...equipment.props} />
+                                    </Grid>
+                                );
+                            })}
+                        {children}
+                    </Grid>
+                </Box>
+            </Box>
+        </>
     );
 }
 
