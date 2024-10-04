@@ -78,3 +78,12 @@ export type Option =
 export type PredefinedProperties = {
     [propertyName: string]: string[];
 };
+
+export type UserDetail = {
+    sub: string;
+    isAdmin: boolean;
+    profileName?: string;
+    maxAllowedCases: number;
+    numberCasesUsed: number;
+    maxAllowedBuilds: number;
+};
