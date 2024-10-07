@@ -49,20 +49,37 @@ export function saveFilter(filter: any, name: string, token?: string) {
     );
 }
 
-export function fetchElementsInfos(
-    elementIds: UUID[],
+export async function fetchElementsInfos(
+    ids: UUID[],
     elementTypes?: string[],
     equipmentTypes?: string[]
 ): Promise<ElementAttributes[]> {
     console.info('Fetching elements metadata');
-    const equipmentTypesParams = getRequestParamFromList('equipmentTypes', equipmentTypes);
-    const elementTypesParams = getRequestParamFromList('elementTypes', elementTypes);
-    const urlSearchParams = new URLSearchParams([...equipmentTypesParams, ...elementTypesParams]).toString();
+    let final: ElementAttributes[] = [];
+    const chunkSize = 50;
+    for (let i = 0; i < ids.length; i += chunkSize) {
+        const partitionIds = ids.slice(i, i + chunkSize);
+        const idsParams = getRequestParamFromList(
+            'ids',
+            partitionIds.filter((id) => id) // filter falsy elements
+        );
+        const equipmentTypesParams = getRequestParamFromList('equipmentTypes', equipmentTypes);
+        const elementTypesParams = getRequestParamFromList('elementTypes', elementTypes);
+        const urlSearchParams = new URLSearchParams([
+            ...idsParams,
+            ...equipmentTypesParams,
+            ...elementTypesParams,
+        ]).toString();
 
-    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
-    return backendFetchJson(url, {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(elementIds),
-    });
+        const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
+        // eslint-disable-next-line no-await-in-loop
+        const result = await backendFetchJson(url, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        final = final.concat(result);
+        console.log(final);
+    }
+    console.log(final);
+    return final;
 }
