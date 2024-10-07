@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v.2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FormattedMessage } from 'react-intl';
@@ -6,6 +13,14 @@ import { useEffect, useState } from 'react';
 import CancelButton from '../inputs/reactHookForm/utils/CancelButton';
 import fetchUserDetails from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
+
+const styles = {
+    DialogTitle: { fontSize: '1.5rem' },
+    DialogContent: { marginTop: '10px' },
+    quotasBox: { marginTop: '60px' },
+    quotasTopography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
+    usedTopography: { marginLeft: '15%' },
+};
 
 interface UserInformationDialogProps {
     openDialog: boolean;
@@ -37,13 +52,13 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
     }, [user, onClose]);
 
     return (
-        <Dialog open={openDialog} onClose={onClose}>
-            <DialogTitle sx={{ fontSize: '1.5rem' }}>
+        <Dialog open={openDialog && !!userDetails} onClose={onClose}>
+            <DialogTitle sx={styles.DialogTitle}>
                 <FormattedMessage id="user-information-dialog/title" />
             </DialogTitle>
 
             <DialogContent>
-                <Grid container spacing={2} sx={{ marginTop: '10px' }}>
+                <Grid container spacing={2} sx={styles.DialogContent}>
                     <Grid item xs={6}>
                         <Typography fontWeight="bold">
                             <FormattedMessage id="user-information-dialog/role" />
@@ -71,8 +86,8 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
                     </Grid>
                 </Grid>
 
-                <Box mt={3} sx={{ marginTop: '60px' }}>
-                    <Typography fontWeight="bold" sx={{ marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' }}>
+                <Box mt={3} sx={styles.quotasBox}>
+                    <Typography fontWeight="bold" sx={styles.quotasTopography}>
                         <FormattedMessage id="user-information-dialog/quotas" />
                     </Typography>
                     <Grid container spacing={2}>
@@ -84,7 +99,7 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
                         <Grid item xs={6}>
                             <Typography>
                                 {userDetails?.maxAllowedCases}
-                                <Box component="span" sx={{ marginLeft: '15%' }}>
+                                <Box component="span" sx={styles.usedTopography}>
                                     (<FormattedMessage id="user-information-dialog/used" />:
                                     {` ${userDetails?.numberCasesUsed}`})
                                 </Box>
