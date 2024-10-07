@@ -78,8 +78,6 @@ export async function fetchElementsInfos(
             headers: { 'Content-Type': 'application/json' },
         });
         final = final.concat(result);
-        console.log(final);
     }
-    console.log(final);
     return final;
 }
