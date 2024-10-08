@@ -19,8 +19,8 @@ import Alert from '@mui/material/Alert';
 import { DialogContentText } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { RECORD_SEP, UNIT_SEP } from 'papaparse';
-import FieldConstants from '../../../../../utils/constants/fieldConstants';
-import CancelButton from '../../utils/CancelButton';
+import { FieldConstants } from '../../../../../utils/constants/fieldConstants';
+import { CancelButton } from '../../utils/CancelButton';
 
 export interface CsvUploaderProps {
     name: string;
@@ -35,7 +35,7 @@ export interface CsvUploaderProps {
     useFieldArrayOutput: any;
 }
 
-function CsvUploader({
+export function CsvUploader({
     name,
     onClose,
     open,
@@ -235,5 +235,3 @@ function CsvUploader({
         </>
     );
 }
-
-export default CsvUploader;

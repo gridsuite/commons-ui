@@ -14,7 +14,7 @@ interface ActionWithRulesAndAddersWithLabelProps extends ActionWithRulesAndAdder
     label: string;
 }
 
-function AddButton(props: ActionWithRulesAndAddersWithLabelProps) {
+export function AddButton(props: ActionWithRulesAndAddersWithLabelProps) {
     const { label, handleOnClick } = props;
     return (
         <span>
@@ -24,4 +24,3 @@ function AddButton(props: ActionWithRulesAndAddersWithLabelProps) {
         </span>
     );
 }
-export default AddButton;

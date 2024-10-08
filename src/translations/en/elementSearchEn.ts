@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const elementSearchEn = {
+export const elementSearchEn = {
     'element_search/label': 'Search for an element',
     'element_search/noResult': 'No result',
 };
-
-export default elementSearchEn;

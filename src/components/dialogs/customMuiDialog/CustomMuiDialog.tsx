@@ -10,10 +10,10 @@ import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import * as yup from 'yup';
-import SubmitButton from '../../inputs/reactHookForm/utils/SubmitButton';
-import CancelButton from '../../inputs/reactHookForm/utils/CancelButton';
-import CustomFormProvider, { MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
-import PopupConfirmationDialog from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
+import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
+import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
+import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
 export interface CustomMuiDialogProps {
     open: boolean;
@@ -42,7 +42,7 @@ const styles = {
     },
 };
 
-function CustomMuiDialog({
+export function CustomMuiDialog({
     open,
     formSchema,
     formMethods,
@@ -71,8 +71,8 @@ function CustomMuiDialog({
     );
 
     const handleClose = (event: React.MouseEvent, reason?: string) => {
-        if (reason === 'backdropClick' && onCancel) {
-            onCancel();
+        if (reason === 'backdropClick') {
+            return;
         }
         onClose(event);
     };
@@ -141,5 +141,3 @@ function CustomMuiDialog({
         </CustomFormProvider>
     );
 }
-
-export default CustomMuiDialog;

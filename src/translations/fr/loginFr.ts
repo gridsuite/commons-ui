@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const loginFr = {
+export const loginFr = {
     'login/login': 'Se connecter',
     'login/connection': 'Connexion',
     'login/unauthorizedAccess': 'Accès non autorisé',
@@ -17,5 +17,3 @@ const loginFr = {
     'login/errorInLogoutMessage': "Une erreur s'est produite pendant la déconnexion de l'utilisateur {userName}.",
     'login/logout': 'Se déconnecter',
 };
-
-export default loginFr;

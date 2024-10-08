@@ -10,10 +10,10 @@ import { useMemo } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import { Grid } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import FloatInput from './FloatInput';
+import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
-import MuiSelectInput from '../selectInputs/MuiSelectInput';
-import FieldConstants from '../../../../utils/constants/fieldConstants';
+import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 
 const style = {
     inputLegend: (theme: any) => ({
@@ -65,7 +65,7 @@ interface RangeInputProps {
     label: string;
 }
 
-function RangeInput({ name, label }: RangeInputProps) {
+export function RangeInput({ name, label }: RangeInputProps) {
     const watchOperationType = useWatch({
         name: `${name}.${FieldConstants.OPERATION_TYPE}`,
     });
@@ -128,5 +128,3 @@ function RangeInput({ name, label }: RangeInputProps) {
         </FormControl>
     );
 }
-
-export default RangeInput;

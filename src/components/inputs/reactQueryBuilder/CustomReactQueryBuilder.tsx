@@ -14,16 +14,17 @@ import { ActionWithRulesAndAddersProps, Field, formatQuery, QueryBuilder, RuleGr
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
-import CombinatorSelector from './CombinatorSelector';
-import AddButton from './AddButton';
-import ValueEditor from './ValueEditor';
-import ValueSelector from './ValueSelector';
+import { CombinatorSelector } from './CombinatorSelector';
+import { AddButton } from './AddButton';
+import { ValueEditor } from './ValueEditor';
+import { ValueSelector } from './ValueSelector';
 
 import { COMBINATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
-import ErrorInput from '../reactHookForm/errorManagement/ErrorInput';
-import FieldErrorAlert from '../reactHookForm/errorManagement/FieldErrorAlert';
+import { ErrorInput } from '../reactHookForm/errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../reactHookForm/errorManagement/FieldErrorAlert';
 import { countRules, getOperators, queryValidator } from '../../filter/expert/expertFilterUtils';
-import RemoveButton from './RemoveButton';
+import { RemoveButton } from './RemoveButton';
+import { FieldSelector } from './FieldSelector';
 
 export interface CustomReactQueryBuilderProps {
     name: string;
@@ -38,7 +39,7 @@ function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
     return <AddButton {...props} label="subGroup" />;
 }
 
-function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
+export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
     const {
         getValues,
@@ -98,7 +99,7 @@ function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) 
                                 removeGroupAction: RemoveButton,
                                 valueEditor: ValueEditor,
                                 operatorSelector: ValueSelector,
-                                fieldSelector: ValueSelector,
+                                fieldSelector: FieldSelector,
                                 valueSourceSelector: ValueSelector,
                             }}
                             listsAsArrays
@@ -112,5 +113,3 @@ function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) 
         </>
     );
 }
-
-export default CustomReactQueryBuilder;

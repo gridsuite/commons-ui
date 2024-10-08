@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const topBarEn = {
+export const topBarEn = {
     'top-bar/settings': 'Settings',
     'top-bar/logout': 'Logout',
     'top-bar/goFullScreen': 'Full screen',
@@ -41,5 +41,3 @@ const topBarEn = {
     'user-information-dialog/used': 'Used',
     'user-information-dialog/number-of-builds-per-study': 'Number of builds per study',
 };
-
-export default topBarEn;

@@ -7,7 +7,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars, no-param-reassign */
 import { ReactElement } from 'react';
 import { ColumnProps } from 'react-virtualized';
-import equalsArray from '../../utils/algos';
+import { equalsArray } from '../../utils/algos';
 
 export interface RowProps {
     notClickable?: boolean;

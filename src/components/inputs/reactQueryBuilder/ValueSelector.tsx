@@ -8,7 +8,7 @@
 import { ValueSelectorProps } from 'react-querybuilder';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 
-function ValueSelector(props: ValueSelectorProps) {
+export function ValueSelector(props: ValueSelectorProps) {
     return (
         <MaterialValueSelector
             {...props}
@@ -16,4 +16,3 @@ function ValueSelector(props: ValueSelectorProps) {
         />
     );
 }
-export default ValueSelector;
