@@ -6,7 +6,7 @@
  */
 
 import { Checkbox, CheckboxProps } from '@mui/material';
-import BooleanInput from './BooleanInput';
+import { BooleanInput } from './BooleanInput';
 
 export interface CheckboxInputProps {
     name: string;
@@ -14,8 +14,6 @@ export interface CheckboxInputProps {
     formProps?: CheckboxProps;
 }
 
-function CheckboxInput({ name, label, formProps }: CheckboxInputProps) {
+export function CheckboxInput({ name, label, formProps }: CheckboxInputProps) {
     return <BooleanInput name={name} label={label} formProps={formProps} Input={Checkbox} />;
 }
-
-export default CheckboxInput;

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterExpertFr = {
+export const filterExpertFr = {
     id: 'ID',
     name: 'Nom',
     energySource: "Source d'énergie",
@@ -190,5 +190,3 @@ const filterExpertFr = {
     shortCircuitLowCurrentLimit: 'Limite ICC min',
     shortCircuitHighCurrentLimit: 'Limite ICC max',
 };
-
-export default filterExpertFr;

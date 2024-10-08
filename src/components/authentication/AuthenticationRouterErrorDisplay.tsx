@@ -7,7 +7,7 @@
 
 import { Grid } from '@mui/material';
 import { AuthenticationRouterErrorState, AuthenticationRouterProps, UserManagerState } from './authenticationType';
-import Logout from './Logout';
+import { Logout } from './Logout';
 import { logout } from './utils';
 import { ErrorInLogoutAlert, ErrorInUserValidationAlert, UnauthorizedAccessAlert } from './alert';
 

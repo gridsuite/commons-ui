@@ -6,9 +6,9 @@
  */
 import { useController } from 'react-hook-form';
 import { useState } from 'react';
-import PopupConfirmationDialog from '../../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
+import { PopupConfirmationDialog } from '../../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
 
-function InputWithPopupConfirmation({
+export function InputWithPopupConfirmation({
     Input,
     name,
     shouldOpenPopup, // condition to open popup confirmation
@@ -59,5 +59,3 @@ function InputWithPopupConfirmation({
         </>
     );
 }
-
-export default InputWithPopupConfirmation;

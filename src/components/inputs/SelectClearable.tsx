@@ -8,7 +8,7 @@
 import { useIntl } from 'react-intl';
 import { Autocomplete, TextField } from '@mui/material';
 import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
-import FieldLabel from './reactHookForm/utils/FieldLabel';
+import { FieldLabel } from './reactHookForm/utils/FieldLabel';
 
 type SelectOption = { id: string; label?: string };
 
@@ -19,7 +19,7 @@ export interface SelectClearableProps
     label?: string;
 }
 
-function SelectClearable(props: Readonly<SelectClearableProps>) {
+export function SelectClearable(props: Readonly<SelectClearableProps>) {
     const { value, onChange, label, options, ...otherProps } = props;
 
     const intl = useIntl();
@@ -57,5 +57,3 @@ function SelectClearable(props: Readonly<SelectClearableProps>) {
         />
     );
 }
-
-export default SelectClearable;

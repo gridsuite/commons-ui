@@ -12,7 +12,7 @@ import { useIntl } from 'react-intl';
 // This ref is used to avoid redoing other useEffects when the language (intl) is changed for things that produce temporary messages using the snackbar.
 // The drawback to this custom hook is that a ref and a useEffect are created in each component that needs this hook.
 // Can we avoid this overhead ?
-function useIntlRef() {
+export function useIntlRef() {
     const intl = useIntl();
     const intlRef = useRef(intl);
 
@@ -22,5 +22,3 @@ function useIntlRef() {
 
     return intlRef;
 }
-
-export default useIntlRef;

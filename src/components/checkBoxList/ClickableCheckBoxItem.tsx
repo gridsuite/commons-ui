@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Checkbox, ListItemIcon, ListItemText } from '@mui/material';
-import OverflowableText from '../overflowableText';
+import { OverflowableText } from '../overflowableText';
 import { ClickableCheckBoxItemProps } from './checkBoxList.type';
 
 export function ClickableCheckBoxItem({ sx, label, ...props }: ClickableCheckBoxItemProps) {
@@ -20,5 +20,3 @@ export function ClickableCheckBoxItem({ sx, label, ...props }: ClickableCheckBox
         </>
     );
 }
-
-export default ClickableCheckBoxItem;

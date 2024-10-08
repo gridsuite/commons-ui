@@ -11,10 +11,10 @@ import { Box, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useFormContext } from 'react-hook-form'; // Import useFormContext
-import FieldConstants from '../../../../utils/constants/fieldConstants';
-import ExpandingTextField from './ExpandingTextField';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import { ExpandingTextField } from './ExpandingTextField';
 
-function DescriptionField() {
+export function DescriptionField() {
     const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(false);
     const { setValue } = useFormContext();
 
@@ -58,5 +58,3 @@ function DescriptionField() {
         </Box>
     );
 }
-
-export default DescriptionField;

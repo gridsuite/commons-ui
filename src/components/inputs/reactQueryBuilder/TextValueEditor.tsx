@@ -8,10 +8,10 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Autocomplete, TextField } from '@mui/material';
-import useConvertValue from './hooks/useConvertValue';
-import useValid from './hooks/useValid';
+import { useConvertValue } from './hooks/useConvertValue';
+import { useValid } from './hooks/useValid';
 
-function TextValueEditor(props: ValueEditorProps) {
+export function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
 
     const valid = useValid(props);
@@ -39,4 +39,3 @@ function TextValueEditor(props: ValueEditorProps) {
         />
     );
 }
-export default TextValueEditor;
