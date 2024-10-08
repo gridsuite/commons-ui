@@ -10,10 +10,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
 import yup from '../../../utils/yupConfig';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../customMuiDialog/CustomMuiDialog';
-import ExpandingTextField from '../../inputs/reactHookForm/text/ExpandingTextField';
+import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
+import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
 
 export interface DescriptionModificationDialogProps {
     elementUuid: string;
@@ -27,7 +27,7 @@ const schema = yup.object().shape({
     [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
 });
 
-function DescriptionModificationDialog({
+export function DescriptionModificationDialog({
     elementUuid,
     description,
     open,
@@ -89,5 +89,3 @@ function DescriptionModificationDialog({
         </CustomMuiDialog>
     );
 }
-
-export default DescriptionModificationDialog;

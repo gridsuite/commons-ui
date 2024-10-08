@@ -44,10 +44,17 @@ import {
 import { styled } from '@mui/system';
 
 import { User } from 'oidc-client';
-import GridLogo, { GridLogoProps } from './GridLogo';
-import AboutDialog, { AboutDialogProps } from './AboutDialog';
+import { GridLogo, GridLogoProps } from './GridLogo';
+import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
-import { CommonMetadata } from '../../services';
+import { Metadata } from '../../utils';
+import {
+    DARK_THEME,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
+} from '../../utils/constants/browserConstants';
 
 const styles = {
     grow: {
@@ -145,11 +152,6 @@ const CustomListItemIcon = styled(ListItemIcon)({
     borderRadius: '25px',
 });
 
-export const DARK_THEME = 'Dark';
-export const LIGHT_THEME = 'Light';
-export const LANG_SYSTEM = 'sys';
-export const LANG_ENGLISH = 'en';
-export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
 
@@ -165,7 +167,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         user?: User;
         onAboutClick?: () => void;
         logoAboutDialog?: ReactNode;
-        appsAndUrls: CommonMetadata[];
+        appsAndUrls: Metadata[];
         onThemeClick?: (theme: GsTheme) => void;
         theme?: GsTheme;
         onEquipmentLabellingClick?: (toggle: boolean) => void;
@@ -174,7 +176,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
     };
 
-function TopBar({
+export function TopBar({
     appName,
     appColor,
     appLogo,
@@ -567,5 +569,3 @@ function TopBar({
         </AppBar>
     );
 }
-
-export default TopBar;

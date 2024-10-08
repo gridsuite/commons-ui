@@ -5,7 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import ExpandableGroup from './ExpandableGroup';
-
-export default ExpandableGroup;
-export type { ExpandableGroupProps } from './ExpandableGroup';
+export * from './ExpandableGroup';

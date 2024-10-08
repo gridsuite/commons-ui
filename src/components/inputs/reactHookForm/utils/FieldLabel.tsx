@@ -12,7 +12,7 @@ export type FieldLabelProps = {
     optional?: boolean;
     values?: any;
 };
-function FieldLabel({ label, optional = false, values = undefined }: FieldLabelProps) {
+export function FieldLabel({ label, optional = false, values = undefined }: FieldLabelProps) {
     return (
         <>
             <FormattedMessage id={label} values={values} />
@@ -20,5 +20,3 @@ function FieldLabel({ label, optional = false, values = undefined }: FieldLabelP
         </>
     );
 }
-
-export default FieldLabel;

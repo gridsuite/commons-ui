@@ -26,7 +26,7 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     language: getSystemLanguage(),
 });
 
-function CustomFormProvider(props: CustomFormProviderProps) {
+export function CustomFormProvider(props: CustomFormProviderProps) {
     const { validationSchema, removeOptional, language, children, ...formMethods } = props;
 
     return (
@@ -46,5 +46,3 @@ function CustomFormProvider(props: CustomFormProviderProps) {
         </FormProvider>
     );
 }
-
-export default CustomFormProvider;

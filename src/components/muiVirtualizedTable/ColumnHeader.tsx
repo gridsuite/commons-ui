@@ -108,7 +108,7 @@ export interface ColumnHeaderProps extends BoxProps {
     onFilterClick: FilterButtonProps['onClick'];
 }
 
-export const ColumnHeader = forwardRef<typeof Box, ColumnHeaderProps>((props, ref) => {
+export const ColumnHeaderComponent = forwardRef<typeof Box, ColumnHeaderProps>((props, ref) => {
     const { className, label, numeric, sortSignedRank, filterLevel, onSortClick, onFilterClick, onContextMenu, style } =
         props;
 
@@ -151,4 +151,4 @@ export const ColumnHeader = forwardRef<typeof Box, ColumnHeaderProps>((props, re
     );
 });
 
-export default styled(ColumnHeader)({});
+export const ColumnHeader = styled(ColumnHeaderComponent)({});

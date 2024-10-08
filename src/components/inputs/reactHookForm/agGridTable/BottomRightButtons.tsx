@@ -13,9 +13,9 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
-import ErrorInput from '../errorManagement/ErrorInput';
-import FieldErrorAlert from '../errorManagement/FieldErrorAlert';
-import CsvUploader from './csvUploader/CsvUploader';
+import { ErrorInput } from '../errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../errorManagement/FieldErrorAlert';
+import { CsvUploader } from './csvUploader/CsvUploader';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
     return {
@@ -36,7 +36,7 @@ export interface BottomRightButtonsProps {
     csvProps: any;
 }
 
-function BottomRightButtons({
+export function BottomRightButtons({
     name,
     disableUp,
     disableDown,
@@ -96,5 +96,3 @@ function BottomRightButtons({
         </>
     );
 }
-
-export default BottomRightButtons;

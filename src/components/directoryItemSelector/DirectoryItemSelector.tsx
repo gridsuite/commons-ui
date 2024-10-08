@@ -8,9 +8,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
-import getFileIcon from '../../utils/mapper/elementIcon';
+import { getFileIcon } from '../../utils/mapper/getFileIcon';
 import { ElementType } from '../../utils/types/elementType';
-import TreeViewFinder, { TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
+import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
 
@@ -158,7 +158,7 @@ function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNo
     return a.name.localeCompare(b.name);
 }
 
-function DirectoryItemSelector({
+export function DirectoryItemSelector({
     open,
     types,
     equipmentTypes,
@@ -296,5 +296,3 @@ function DirectoryItemSelector({
         />
     );
 }
-
-export default DirectoryItemSelector;

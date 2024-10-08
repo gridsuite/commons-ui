@@ -8,9 +8,9 @@
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { useEffect } from 'react';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { FormEquipment } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 
@@ -19,7 +19,7 @@ export interface CriteriaBasedFormProps {
     defaultValues: Record<string, any>;
 }
 
-function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps) {
+export function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
@@ -73,5 +73,3 @@ function CriteriaBasedForm({ equipments, defaultValues }: CriteriaBasedFormProps
         </Grid>
     );
 }
-
-export default CriteriaBasedForm;

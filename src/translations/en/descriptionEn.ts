@@ -5,11 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const descriptionEn = {
+export const descriptionEn = {
     description: 'Description',
     descriptionProperty: 'Description (optional)',
     descriptionModificationError: 'An error occurred while editing the description',
     descriptionLimitError: 'Description exceeds character limit',
 };
-
-export default descriptionEn;

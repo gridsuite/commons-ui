@@ -5,11 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const commonButtonFr = {
+export const commonButtonFr = {
     cancel: 'Annuler',
     validate: 'Valider',
     'button.changeType': 'Modifier',
     'button.changeOperator': 'Modifier',
 };
-
-export default commonButtonFr;

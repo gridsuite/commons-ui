@@ -8,7 +8,7 @@
 import { MutableRefObject, useCallback } from 'react';
 import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
-import useIntlRef from './useIntlRef';
+import { useIntlRef } from './useIntlRef';
 
 interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;

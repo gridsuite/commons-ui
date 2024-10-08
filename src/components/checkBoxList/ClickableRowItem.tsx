@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Checkbox, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { OverflowableText } from '../overflowableText';
 import { ClickableRowItemProps } from './checkBoxList.type';
-import OverflowableText from '../overflowableText';
 
 const styles = {
     unclickableItem: {
@@ -53,5 +53,3 @@ export function ClickableRowItem({
         </ListItemButton>
     );
 }
-
-export default ClickableRowItem;

@@ -9,17 +9,17 @@ import React, { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
-import FieldConstants from '../../utils/constants/fieldConstants';
-import CriteriaBasedFilterForm from './criteriaBased/CriteriaBasedFilterForm';
-import ExplicitNamingFilterForm from './explicitNaming/ExplicitNamingFilterForm';
-import ExpertFilterForm from './expert/ExpertFilterForm';
+import { FieldConstants } from '../../utils/constants/fieldConstants';
+import { CriteriaBasedFilterForm } from './criteriaBased/CriteriaBasedFilterForm';
+import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
+import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
-import RadioInput from '../inputs/reactHookForm/booleans/RadioInput';
+import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
 import { ElementExistsType, ElementType } from '../../utils/types/elementType';
-import UniqueNameInput from '../inputs/reactHookForm/text/UniqueNameInput';
-import DescriptionField from '../inputs/reactHookForm/text/DescriptionField';
+import { UniqueNameInput } from '../inputs/reactHookForm/text/UniqueNameInput';
+import { DescriptionField } from '../inputs/reactHookForm/text/DescriptionField';
 
-interface FilterFormProps {
+export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
@@ -29,7 +29,7 @@ interface FilterFormProps {
     };
 }
 
-function FilterForm(props: FilterFormProps) {
+export function FilterForm(props: FilterFormProps) {
     const { sourceFilterForExplicitNamingConversion, creation, activeDirectory, elementExists } = props;
     const { setValue } = useFormContext();
 
@@ -84,5 +84,3 @@ function FilterForm(props: FilterFormProps) {
         </Grid>
     );
 }
-
-export default FilterForm;
