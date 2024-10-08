@@ -29,7 +29,7 @@ export function RemoveButton(props: ActionWithRulesProps) {
     const isLastRuleOrGroup = path.toString() === [0].toString() && getNumberOfSiblings(path, query) === 1;
 
     return (
-        <IconButton size="small" onClick={() => handleDelete()} className={className}>
+        <IconButton size="small" onClick={() => handleDelete()} className={className} title="">
             {!isLastRuleOrGroup && <DeleteIcon />}
         </IconButton>
     );

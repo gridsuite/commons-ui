@@ -12,7 +12,7 @@ export function ValueSelector(props: ValueSelectorProps) {
     return (
         <MaterialValueSelector
             {...props}
-            title={undefined} // disable the tooltip
+            title="" // disable the tooltip
         />
     );
 }

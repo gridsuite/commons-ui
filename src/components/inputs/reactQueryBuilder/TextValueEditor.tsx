@@ -16,15 +16,10 @@ export function TextValueEditor(props: ValueEditorProps) {
 
     const valid = useValid(props);
 
-    const { value, handleOnChange } = props;
+    const { value, handleOnChange, title } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!Array.isArray(value)) {
-        return (
-            <MaterialValueEditor
-                {...props}
-                title={undefined} // disable the tooltip
-            />
-        );
+        return <MaterialValueEditor {...props} title={title} />;
     }
     return (
         <Autocomplete
@@ -36,6 +31,7 @@ export function TextValueEditor(props: ValueEditorProps) {
             fullWidth
             renderInput={(params) => <TextField {...params} error={!valid} />}
             size="small"
+            title={title}
         />
     );
 }
