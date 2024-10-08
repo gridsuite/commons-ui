@@ -9,7 +9,7 @@ import { Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useThemeProps } from '@mui/material/styles';
 
-function CancelButton({ ...inProps }) {
+export function CancelButton({ ...inProps }) {
     const props = useThemeProps({ props: inProps, name: 'CancelButton' });
     return (
         <Button {...props}>
@@ -17,5 +17,3 @@ function CancelButton({ ...inProps }) {
         </Button>
     );
 }
-
-export default CancelButton;

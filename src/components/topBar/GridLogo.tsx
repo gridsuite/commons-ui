@@ -39,7 +39,7 @@ export function LogoText({ appName, appColor, style, onClick }: Partial<LogoText
     );
 }
 
-function GridLogo({ appLogo, appName, appColor, onClick }: Partial<GridLogoProps>) {
+export function GridLogo({ appLogo, appName, appColor, onClick }: Partial<GridLogoProps>) {
     return (
         <>
             <Box sx={mergeSx(styles.logo, onClick && styles.clickable)} onClick={onClick}>
@@ -49,8 +49,6 @@ function GridLogo({ appLogo, appName, appColor, onClick }: Partial<GridLogoProps
         </>
     );
 }
-
-export default GridLogo;
 
 export interface LogoTextProps {
     appName: string;

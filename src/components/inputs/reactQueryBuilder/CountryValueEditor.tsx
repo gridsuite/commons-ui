@@ -8,13 +8,13 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocalizedCountries } from '../../../hooks/useLocalizedCountries';
-import useCustomFormContext from '../reactHookForm/provider/useCustomFormContext';
+import { useCustomFormContext } from '../reactHookForm/provider/useCustomFormContext';
 import { fetchFavoriteAndDefaultCountries } from '../../../services';
-import AutocompleteWithFavorites from './AutocompleteWithFavorites';
-import useConvertValue from './hooks/useConvertValue';
-import useValid from './hooks/useValid';
+import { AutocompleteWithFavorites } from './AutocompleteWithFavorites';
+import { useConvertValue } from './hooks/useConvertValue';
+import { useValid } from './hooks/useValid';
 
-function CountryValueEditor(props: ValueEditorProps) {
+export function CountryValueEditor(props: ValueEditorProps) {
     const { value, handleOnChange } = props;
 
     const { language } = useCustomFormContext();
@@ -54,4 +54,3 @@ function CountryValueEditor(props: ValueEditorProps) {
         />
     );
 }
-export default CountryValueEditor;

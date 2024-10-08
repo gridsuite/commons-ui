@@ -273,7 +273,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
     );
 }
 
-function AboutDialog({
+export function AboutDialog({
     open,
     onClose,
     globalVersionPromise,
@@ -482,5 +482,3 @@ function AboutDialog({
         </Dialog>
     );
 }
-
-export default AboutDialog;

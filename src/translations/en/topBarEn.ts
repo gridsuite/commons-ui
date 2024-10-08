@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const topBarEn = {
+export const topBarEn = {
     'top-bar/settings': 'Settings',
     'top-bar/logout': 'Logout',
     'top-bar/goFullScreen': 'Full screen',
@@ -30,5 +30,3 @@ const topBarEn = {
     'about-dialog/module-tooltip-server': 'server',
     'about-dialog/module-tooltip-other': 'other',
 };
-
-export default topBarEn;

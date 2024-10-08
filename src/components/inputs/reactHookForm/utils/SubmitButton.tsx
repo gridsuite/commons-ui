@@ -9,7 +9,7 @@ import { Button } from '@mui/material';
 import { useFormState } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-function SubmitButton({ ...buttonProps }) {
+export function SubmitButton({ ...buttonProps }) {
     const { isDirty } = useFormState();
 
     return (
@@ -18,5 +18,3 @@ function SubmitButton({ ...buttonProps }) {
         </Button>
     );
 }
-
-export default SubmitButton;

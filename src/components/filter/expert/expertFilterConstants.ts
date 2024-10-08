@@ -1043,7 +1043,7 @@ export const FIELDS_OPTIONS = {
     },
 };
 
-export const fields: Record<string, Field[]> = {
+export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
     SUBSTATION: [FIELDS_OPTIONS.ID, FIELDS_OPTIONS.NAME, FIELDS_OPTIONS.COUNTRY, FIELDS_OPTIONS.PROPERTY],
     VOLTAGE_LEVEL: [
         FIELDS_OPTIONS.ID,

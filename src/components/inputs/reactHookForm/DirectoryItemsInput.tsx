@@ -11,17 +11,17 @@ import { useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { UUID } from 'crypto';
-import RawReadOnlyInput from './RawReadOnlyInput';
-import FieldLabel from './utils/FieldLabel';
-import useCustomFormContext from './provider/useCustomFormContext';
+import { RawReadOnlyInput } from './RawReadOnlyInput';
+import { FieldLabel } from './utils/FieldLabel';
+import { useCustomFormContext } from './provider/useCustomFormContext';
 import { isFieldRequired } from './utils/functions';
-import ErrorInput from './errorManagement/ErrorInput';
+import { ErrorInput } from './errorManagement/ErrorInput';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { mergeSx } from '../../../utils/styles';
-import OverflowableText from '../../overflowableText';
-import MidFormError from './errorManagement/MidFormError';
-import DirectoryItemSelector from '../../directoryItemSelector/DirectoryItemSelector';
+import { OverflowableText } from '../../overflowableText';
+import { MidFormError } from './errorManagement/MidFormError';
+import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
 
 export const NAME = 'name';
@@ -68,7 +68,7 @@ export interface DirectoryItemsInputProps {
     labelRequiredFromContext?: boolean;
 }
 
-function DirectoryItemsInput({
+export function DirectoryItemsInput({
     label,
     name,
     elementType, // Used to specify type of element (Filter, Contingency list, ...)
@@ -233,5 +233,3 @@ function DirectoryItemsInput({
         </>
     );
 }
-
-export default DirectoryItemsInput;

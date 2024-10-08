@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Draggable } from 'react-beautiful-dnd';
 import { useCallback, useMemo } from 'react';
 import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { Draggable } from 'react-beautiful-dnd';
 import { CheckBoxListItem } from './CheckBoxListItem';
-import OverflowableText from '../overflowableText';
+import { OverflowableText } from '../overflowableText';
 import { DraggableCheckBoxListItem } from './DraggableCheckBoxListItem';
 import { CheckBoxListItemsProps } from './checkBoxList.type';
 
@@ -170,5 +170,3 @@ export function CheckBoxListItems<T>({
         </List>
     );
 }
-
-export default CheckBoxListItems;

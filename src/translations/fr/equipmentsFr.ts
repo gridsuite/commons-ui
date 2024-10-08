@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const equipmentsFr = {
+export const equipmentsFr = {
     Substations: 'Sites',
     VoltageLevels: 'Postes',
     Lines: 'Lignes',
@@ -25,5 +25,3 @@ const equipmentsFr = {
     VscConverterStations: 'Stations de conversion VSC',
     StaticVarCompensators: 'CSPR',
 };
-
-export default equipmentsFr;
