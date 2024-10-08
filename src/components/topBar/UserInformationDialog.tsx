@@ -10,7 +10,7 @@ import { Box } from '@mui/system';
 import { FormattedMessage } from 'react-intl';
 import { User } from 'oidc-client';
 import { useEffect, useState } from 'react';
-import CancelButton from '../inputs/reactHookForm/utils/CancelButton';
+import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import fetchUserDetails from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
 
