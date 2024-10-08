@@ -188,6 +188,8 @@ const filterExpertEn = {
     YupNotTypeDefault: 'Field value format is incorrect',
     changeOperatorMessage:
         'The operator will be changed and will be applied to all the rules already created in the group.',
+    shortCircuitLowCurrentLimit: 'Low short-circuit current limit',
+    shortCircuitHighCurrentLimit: 'High short-circuit current limit',
 };
 
 export default filterExpertEn;
