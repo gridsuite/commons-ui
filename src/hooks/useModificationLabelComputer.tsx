@@ -8,8 +8,8 @@
 import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import { UUID } from 'crypto';
-import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
+import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
 
 export interface NetworkModificationMetadata {
     uuid: UUID;
