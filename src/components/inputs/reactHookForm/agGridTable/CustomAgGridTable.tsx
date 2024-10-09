@@ -149,7 +149,7 @@ export function CustomAgGridTable({
     const handleMoveRowUp = () => {
         selectedRows
             .map((row) => getIndex(row))
-            .sort()
+            .sort((n1, n2) => n1 - n2)
             .forEach((idx) => {
                 swap(idx, idx - 1);
             });
@@ -158,7 +158,7 @@ export function CustomAgGridTable({
     const handleMoveRowDown = () => {
         selectedRows
             .map((row) => getIndex(row))
-            .sort()
+            .sort((n1, n2) => n1 - n2)
             .reverse()
             .forEach((idx) => {
                 swap(idx, idx + 1);
