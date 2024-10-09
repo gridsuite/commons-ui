@@ -75,6 +75,8 @@ import {
     TopBar,
     treeview_finder_en,
     treeview_finder_fr,
+    network_modifications_locale_en,
+    network_modifications_locale_fr,
     useSnackMessage,
 } from '../../src';
 
@@ -128,6 +130,7 @@ const messages = {
         ...card_error_boundary_en,
         ...flat_parameters_en,
         ...multiple_selection_dialog_en,
+        ...network_modifications_locale_en,
         ...inputs_en,
         ...translations.en,
     },
@@ -147,6 +150,7 @@ const messages = {
         ...card_error_boundary_fr,
         ...flat_parameters_fr,
         ...multiple_selection_dialog_fr,
+        ...network_modifications_locale_fr,
         ...inputs_fr,
         ...translations.fr,
     },
