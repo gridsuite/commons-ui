@@ -44,7 +44,7 @@ const styles = {
     dialogPaperFullHeight: {
         '.MuiDialog-paper': {
             width: 'auto',
-            minWidth: '1100px',
+            minWidth: '1100px', // TODO : turn this into a parameter ??
             margin: 'auto',
             height: '95vh',
         },

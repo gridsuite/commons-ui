@@ -163,6 +163,8 @@ export { default as flat_parameters_en } from './translations/en/flatParametersE
 export { default as flat_parameters_fr } from './translations/fr/flatParametersFr';
 export { default as multiple_selection_dialog_en } from './translations/en/multipleSelectionDialogEn';
 export { default as multiple_selection_dialog_fr } from './translations/fr/multipleSelectionDialogFr';
+export { default as network_modifications_locale_en } from './translations/en/networkModificationsLocaleEn';
+export { default as network_modifications_locale_fr } from './translations/fr/networkModificationsLocaleFr';
 export { default as common_button_en } from './translations/en/commonButtonEn';
 export { default as common_button_fr } from './translations/fr/commonButtonFr';
 export { default as directory_items_input_en } from './translations/en/directoryItemsInputEn';
@@ -179,6 +181,7 @@ export type { UseSnackMessageReturn } from './hooks/useSnackMessage';
 export { default as useDebounce } from './hooks/useDebounce';
 export { default as usePrevious } from './hooks/usePrevious';
 export { default as useConfidentialityWarning } from './hooks/useConfidentialityWarning';
+export { default as useModificationLabelComputer } from './hooks/useModificationLabelComputer';
 export { default as usePredefinedProperties } from './hooks/usePredefinedProperties';
 export { default as useStateBoolean } from './hooks/customStates/useStateBoolean';
 export type { UseStateBooleanReturn } from './hooks/customStates/useStateBoolean';
