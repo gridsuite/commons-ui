@@ -24,6 +24,7 @@ export function FieldSelector({ options, className, value, disabled, handleOnCha
             options={optionList}
             disableClearable
             size="small"
+            title=""
             renderInput={(params) => <TextField {...params} label="" variant="standard" />}
             autoHighlight
             getOptionLabel={(option) => option.label}

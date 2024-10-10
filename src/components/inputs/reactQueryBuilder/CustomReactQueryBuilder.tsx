@@ -32,11 +32,11 @@ export interface CustomReactQueryBuilderProps {
 }
 
 function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
-    return <AddButton {...props} label="rule" />;
+    return <AddButton {...props} label="rule" title="" />;
 }
 
 function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
-    return <AddButton {...props} label="subGroup" />;
+    return <AddButton {...props} label="subGroup" title="" />;
 }
 
 export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
