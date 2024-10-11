@@ -38,6 +38,7 @@ import {
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
     Person as PersonIcon,
+    ManageAccounts,
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
@@ -47,6 +48,8 @@ import { User } from 'oidc-client';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
+import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
+import UserInformationDialog from './UserInformationDialog';
 import { Metadata } from '../../utils';
 import {
     DARK_THEME,
@@ -201,6 +204,11 @@ export function TopBar({
 }: PropsWithChildren<TopBarProps>) {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
+    const {
+        value: userInformationDialogOpen,
+        setFalse: closeUserInformationDialog,
+        setTrue: openUserInformationDialog,
+    } = useStateBoolean(false);
 
     const handleToggleSettingsMenu = (event: MouseEvent) => {
         setAnchorElSettingsMenu(event.currentTarget);
@@ -260,6 +268,11 @@ export function TopBar({
         } else {
             setAboutDialogOpen(true);
         }
+    };
+
+    const onUserInformationDialogClicked = () => {
+        setAnchorElSettingsMenu(null);
+        openUserInformationDialog();
     };
 
     const logoClickable = useMemo(
@@ -521,6 +534,25 @@ export function TopBar({
                                             </StyledMenuItem>
                                         )}
 
+                                        {/* User information */}
+                                        <StyledMenuItem
+                                            sx={styles.borderBottom}
+                                            style={{ opacity: '1' }}
+                                            onClick={onUserInformationDialogClicked}
+                                        >
+                                            <CustomListItemIcon>
+                                                <ManageAccounts fontSize="small" />
+                                            </CustomListItemIcon>
+                                            <ListItemText>
+                                                <Typography sx={styles.sizeLabel}>
+                                                    <FormattedMessage
+                                                        id="top-bar/userInformation"
+                                                        defaultMessage="User information"
+                                                    />
+                                                </Typography>
+                                            </ListItemText>
+                                        </StyledMenuItem>
+
                                         {/* About */}
                                         {/* If the callback onAboutClick is undefined, we open default about dialog */}
                                         <StyledMenuItem
@@ -555,6 +587,15 @@ export function TopBar({
                         </Popper>
                     </Box>
                 )}
+
+                {userInformationDialogOpen && (
+                    <UserInformationDialog
+                        openDialog={userInformationDialogOpen}
+                        user={user}
+                        onClose={closeUserInformationDialog}
+                    />
+                )}
+
                 <AboutDialog
                     open={isAboutDialogOpen}
                     onClose={() => setAboutDialogOpen(false)}
