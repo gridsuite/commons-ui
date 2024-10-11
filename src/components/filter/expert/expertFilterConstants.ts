@@ -1045,11 +1045,13 @@ export const FIELDS_OPTIONS = {
         name: FieldType.SHORT_CIRCUIT_CURRENT_LOW_LIMIT,
         label: 'shortCircuitLowCurrentLimit',
         dataType: DataType.NUMBER,
+        inputType: 'number',
     },
     SHORT_CIRCUIT_CURRENT_HIGH_LIMIT: {
         name: FieldType.SHORT_CIRCUIT_CURRENT_HIGH_LIMIT,
         label: 'shortCircuitHighCurrentLimit',
         dataType: DataType.NUMBER,
+        inputType: 'number',
     },
 };
 
