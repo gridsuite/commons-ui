@@ -15,6 +15,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { ElementType } from '../../../utils/types/elementType';
 import { fetchDirectoryElementPath } from '../../../services';
+import { ElementAttributes } from '../../../utils';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
@@ -46,8 +47,8 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
 
     useEffect(() => {
         if (directory) {
-            fetchDirectoryElementPath(directory).then((res: any) => {
-                setActiveDirectoryName(res.map((element: any) => element.elementName.trim()).join('/'));
+            fetchDirectoryElementPath(directory).then((res: ElementAttributes[]) => {
+                setActiveDirectoryName(res.map((element: ElementAttributes) => element.elementName.trim()).join('/'));
             });
         }
     }, [directory]);

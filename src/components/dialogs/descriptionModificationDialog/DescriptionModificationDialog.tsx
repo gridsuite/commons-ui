@@ -58,10 +58,12 @@ export function DescriptionModificationDialog({
         (data: { description: string }) => {
             updateElement(elementUuid, {
                 [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
-            }).catch((error: any) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'descriptionModificationError',
+            }).catch((error: unknown) => {
+                onErrorMessage(error, (message) => {
+                    snackError({
+                        messageTxt: error.message,
+                        headerId: 'descriptionModificationError',
+                    });
                 });
             });
         },

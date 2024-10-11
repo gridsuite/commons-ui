@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useState } from 'react';
-import { FieldErrors, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, FieldValues, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import * as yup from 'yup';
@@ -15,12 +15,12 @@ import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
-export interface CustomMuiDialogProps {
+export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     open: boolean;
     formSchema: yup.AnySchema;
-    formMethods: UseFormReturn<any> | MergedFormContextProps;
+    formMethods: UseFormReturn<T> | MergedFormContextProps;
     onClose: (event: React.MouseEvent) => void;
-    onSave: (data: any) => void;
+    onSave: (data: T) => void;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
     disabledSave?: boolean;
@@ -42,7 +42,7 @@ const styles = {
     },
 };
 
-export function CustomMuiDialog({
+export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,
     formSchema,
     formMethods,
@@ -57,7 +57,7 @@ export function CustomMuiDialog({
     children,
     language,
     confirmationMessageKey,
-}: Readonly<CustomMuiDialogProps>) {
+}: Readonly<CustomMuiDialogProps<T>>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState(undefined);
     const { handleSubmit } = formMethods;
