@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
-import FieldConstants from '../../utils/constants/fieldConstants';
-import CriteriaBasedFilterForm from './criteriaBased/CriteriaBasedFilterForm';
-import HeaderFilterForm, { FilterFormProps } from './HeaderFilterForm';
-import ExplicitNamingFilterForm from './explicitNaming/ExplicitNamingFilterForm';
-import ExpertFilterForm from './expert/ExpertFilterForm';
+import { useWatch } from 'react-hook-form';
+import { HeaderFilterForm, FilterFormProps } from './HeaderFilterForm';
+import { FieldConstants } from '../../utils/constants/fieldConstants';
+import { CriteriaBasedFilterForm } from './criteriaBased/CriteriaBasedFilterForm';
+import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
+import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 
 const styles = {
@@ -25,7 +25,7 @@ const styles = {
     },
 };
 
-function FilterForm({
+export function FilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
@@ -51,5 +51,3 @@ function FilterForm({
         </Box>
     );
 }
-
-export default FilterForm;

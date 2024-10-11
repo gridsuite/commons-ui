@@ -13,8 +13,8 @@ import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
-import useDebounce from '../../../../hooks/useDebounce';
-import FieldConstants from '../../../../utils/constants/fieldConstants';
+import { useDebounce } from '../../../../hooks/useDebounce';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ElementExistsType, ElementType } from '../../../../utils/types/elementType';
 
 export interface UniqueNameInputProps {
@@ -34,7 +34,7 @@ export interface UniqueNameInputProps {
 /**
  * Input component that constantly check if the field's value is available or not
  */
-function UniqueNameInput({
+export function UniqueNameInput({
     name,
     label,
     elementType,
@@ -163,5 +163,3 @@ function UniqueNameInput({
         />
     );
 }
-
-export default UniqueNameInput;

@@ -8,11 +8,11 @@
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
 import { ReactElement, useEffect } from 'react';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { FormEquipment } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
 
 export interface CriteriaBasedFormProps {
     equipments: Record<string, FormEquipment>;
@@ -40,7 +40,7 @@ const styles = {
     },
 };
 
-function CriteriaBasedForm({ equipments, defaultValues, children }: Readonly<CriteriaBasedFormProps>) {
+export function CriteriaBasedForm({ equipments, defaultValues, children }: CriteriaBasedFormProps) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
@@ -101,5 +101,3 @@ function CriteriaBasedForm({ equipments, defaultValues, children }: Readonly<Cri
         </>
     );
 }
-
-export default CriteriaBasedForm;

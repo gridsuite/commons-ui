@@ -9,12 +9,10 @@ import { useController } from 'react-hook-form';
 
 export type RawReadOnlyInputProps = { name: string };
 
-function RawReadOnlyInput({ name }: Readonly<RawReadOnlyInputProps>) {
+export function RawReadOnlyInput({ name }: Readonly<RawReadOnlyInputProps>) {
     const {
         field: { value },
     } = useController({ name });
 
     return value;
 }
-
-export default RawReadOnlyInput;

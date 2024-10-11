@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const csvEn = {
+export const csvEn = {
     ImportCSV: 'Import CSV',
     noDataInCsvFile: 'No data found in this file',
     wrongCsvHeadersError:
@@ -15,5 +15,3 @@ const csvEn = {
     UploadCSV: 'Upload CSV',
     uploadMessage: ' No file selected',
 };
-
-export default csvEn;

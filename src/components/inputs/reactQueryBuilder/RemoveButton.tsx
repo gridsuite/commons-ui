@@ -14,7 +14,7 @@ import { getNumberOfSiblings, recursiveRemove } from '../../filter/expert/expert
 
 const EXPERT_FILTER_QUERY = 'rules';
 
-function RemoveButton(props: ActionWithRulesProps) {
+export function RemoveButton(props: ActionWithRulesProps) {
     const { path, className } = props;
     const {
         field: { value: query, onChange },
@@ -34,5 +34,3 @@ function RemoveButton(props: ActionWithRulesProps) {
         </IconButton>
     );
 }
-
-export default RemoveButton;

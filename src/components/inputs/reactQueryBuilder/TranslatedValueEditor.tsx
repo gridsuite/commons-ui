@@ -10,10 +10,10 @@ import { useMemo } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { useIntl } from 'react-intl';
 import { Autocomplete, TextField } from '@mui/material';
-import useConvertValue from './hooks/useConvertValue';
-import useValid from './hooks/useValid';
+import { useConvertValue } from './hooks/useConvertValue';
+import { useValid } from './hooks/useValid';
 
-function TranslatedValueEditor(props: ValueEditorProps) {
+export function TranslatedValueEditor(props: ValueEditorProps) {
     const intl = useIntl();
     const { values, value, handleOnChange } = props;
 
@@ -60,4 +60,3 @@ function TranslatedValueEditor(props: ValueEditorProps) {
         />
     );
 }
-export default TranslatedValueEditor;

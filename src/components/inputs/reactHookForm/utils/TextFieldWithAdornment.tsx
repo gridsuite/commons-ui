@@ -19,7 +19,7 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
-function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
+export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const { adornmentPosition, adornmentText, value, variant, handleClearValue, ...otherProps } = props;
 
     const [isFocused, setIsFocused] = useState(false);
@@ -94,5 +94,3 @@ function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
         />
     );
 }
-
-export default TextFieldWithAdornment;

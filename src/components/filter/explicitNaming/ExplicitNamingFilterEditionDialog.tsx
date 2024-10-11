@@ -5,23 +5,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
-import { saveExplicitNamingFilter } from '../utils/filterApi';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { v4 as uuid4 } from 'uuid';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
-import FieldConstants from '../../../utils/constants/fieldConstants';
 
-import FilterForm from '../FilterForm';
-import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
+import { FilterForm } from '../FilterForm';
+import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { SelectionForCopy } from '../filter.type';
 
 const formSchema = yup
@@ -49,7 +49,7 @@ export interface ExplicitNamingFilterEditionDialogProps {
     language?: string;
 }
 
-function ExplicitNamingFilterEditionDialog({
+export function ExplicitNamingFilterEditionDialog({
     id,
     name,
     titleId,
@@ -159,5 +159,3 @@ ExplicitNamingFilterEditionDialog.prototype = {
     open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
 };
-
-export default ExplicitNamingFilterEditionDialog;

@@ -13,8 +13,8 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Grid, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
-import BottomRightButtons from './BottomRightButtons';
-import FieldConstants from '../../../../utils/constants/fieldConstants';
+import { BottomRightButtons } from './BottomRightButtons';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -97,7 +97,7 @@ export interface CustomAgGridTableProps {
     stopEditingWhenCellsLoseFocus: boolean;
 }
 
-function CustomAgGridTable({
+export function CustomAgGridTable({
     name,
     columnDefs,
     makeDefaultRowData,
@@ -149,7 +149,7 @@ function CustomAgGridTable({
     const handleMoveRowUp = () => {
         selectedRows
             .map((row) => getIndex(row))
-            .sort()
+            .sort((n1, n2) => n1 - n2)
             .forEach((idx) => {
                 swap(idx, idx - 1);
             });
@@ -158,7 +158,7 @@ function CustomAgGridTable({
     const handleMoveRowDown = () => {
         selectedRows
             .map((row) => getIndex(row))
-            .sort()
+            .sort((n1, n2) => n1 - n2)
             .reverse()
             .forEach((idx) => {
                 swap(idx, idx + 1);
@@ -280,5 +280,3 @@ function CustomAgGridTable({
         </Grid>
     );
 }
-
-export default CustomAgGridTable;

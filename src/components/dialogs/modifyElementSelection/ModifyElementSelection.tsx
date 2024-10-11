@@ -11,8 +11,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import DirectoryItemSelector from '../../directoryItemSelector/DirectoryItemSelector';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { ElementType } from '../../../utils/types/elementType';
 import { fetchDirectoryElementPath } from '../../../services';
 
@@ -25,7 +25,7 @@ export interface ModifyElementSelectionProps {
     onElementValidated?: (elementId: UUID) => void;
 }
 
-function ModifyElementSelection(props: ModifyElementSelectionProps) {
+export function ModifyElementSelection(props: ModifyElementSelectionProps) {
     const intl = useIntl();
     const {
         elementType,
@@ -117,5 +117,3 @@ function ModifyElementSelection(props: ModifyElementSelectionProps) {
         </Grid>
     );
 }
-
-export default ModifyElementSelection;

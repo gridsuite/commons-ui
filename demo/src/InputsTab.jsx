@@ -10,19 +10,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
 import { useState } from 'react';
-import AutocompleteInput from '../../src/components/inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
-import TextInput from '../../src/components/inputs/reactHookForm/text/TextInput';
-import RadioInput from '../../src/components/inputs/reactHookForm/booleans/RadioInput';
-import SliderInput from '../../src/components/inputs/reactHookForm/numbers/SliderInput';
-import FloatInput from '../../src/components/inputs/reactHookForm/numbers/FloatInput';
-import IntegerInput from '../../src/components/inputs/reactHookForm/numbers/IntegerInput';
-import SelectInput from '../../src/components/inputs/reactHookForm/selectInputs/SelectInput';
-import CheckboxInput from '../../src/components/inputs/reactHookForm/booleans/CheckboxInput';
-import SwitchInput from '../../src/components/inputs/reactHookForm/booleans/SwitchInput';
-import SubmitButton from '../../src/components/inputs/reactHookForm/utils/SubmitButton';
-import ExpandingTextField from '../../src/components/inputs/reactHookForm/text/ExpandingTextField';
-import CustomFormProvider from '../../src/components/inputs/reactHookForm/provider/CustomFormProvider';
-import SelectClearable from '../../src/components/inputs/SelectClearable';
+import {
+    AutocompleteInput,
+    TextInput,
+    RadioInput,
+    SliderInput,
+    FloatInput,
+    IntegerInput,
+    SelectInput,
+    CheckboxInput,
+    SwitchInput,
+    SubmitButton,
+    ExpandingTextField,
+    CustomFormProvider,
+    SelectClearable,
+} from '../../src';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';

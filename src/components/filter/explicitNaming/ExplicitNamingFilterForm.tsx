@@ -7,26 +7,27 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
-import { Box } from '@mui/material';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
-import CustomAgGridTable, {
+import {
+    CustomAgGridTable,
     ROW_DRAGGING_SELECTION_COLUMN_DEF,
 } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
-import NumericEditor from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
-import ModifyElementSelection from '../../dialogs/modifyElementSelection/ModifyElementSelection';
-import { exportFilter } from '../../../services';
+import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/ModifyElementSelection';
+import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
@@ -117,7 +118,7 @@ interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
 }
 
-function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
+export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
