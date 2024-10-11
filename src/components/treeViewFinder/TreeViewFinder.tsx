@@ -382,7 +382,10 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
         <Dialog
             open={open}
             onClose={(e, r) => {
-                if (r === 'escapeKeyDown' || r === 'backdropClick') {
+                if (r === 'backdropClick') {
+                    return;
+                }
+                if (r === 'escapeKeyDown') {
                     onClose?.([]);
                     setSelected([]);
                 }
