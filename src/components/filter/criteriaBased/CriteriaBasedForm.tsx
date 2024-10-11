@@ -40,7 +40,7 @@ const styles = {
     },
 };
 
-export function CriteriaBasedForm({ equipments, defaultValues, children }: CriteriaBasedFormProps) {
+export function CriteriaBasedForm({ equipments, defaultValues, children }: Readonly<CriteriaBasedFormProps>) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
