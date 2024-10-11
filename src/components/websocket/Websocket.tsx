@@ -9,13 +9,13 @@
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnOpen, WSContext } from './contexts/WSContext';
-import useListenerManager from './hooks/useListenerManager';
+import { useListenerManager } from './hooks/useListenerManager';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
 export type WebsocketProps = { urls: Record<string, string> };
-function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
+export function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
     const {
         broadcast: broadcastMessage,
         addListener: addListenerMessage,
@@ -63,5 +63,3 @@ function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
     );
     return <WSContext.Provider value={contextValue}>{children}</WSContext.Provider>;
 }
-
-export default Websocket;

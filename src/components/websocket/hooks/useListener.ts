@@ -10,7 +10,7 @@ import { useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { WSContext } from '../contexts/WSContext';
 
-const useListener = (
+export const useListener = (
     listenerKey: string,
     {
         listenerCallbackMessage,
@@ -46,5 +46,3 @@ const useListener = (
         return () => removeListenerOnOpen(listenerKey, id);
     }, [addListenerOnOpen, removeListenerOnOpen, listenerKey, listenerCallbackOnOpen, propsId]);
 };
-
-export default useListener;

@@ -8,7 +8,10 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { ListenerEventWS, ListenerOnOpen } from '../contexts/WSContext';
 
-const useListenerManager = <TListener extends ListenerEventWS | ListenerOnOpen, TMessage extends MessageEvent | never>(
+export const useListenerManager = <
+    TListener extends ListenerEventWS | ListenerOnOpen,
+    TMessage extends MessageEvent | never
+>(
     urls: Record<string, string>
 ) => {
     const urlsListenersRef = useRef(
@@ -62,5 +65,3 @@ const useListenerManager = <TListener extends ListenerEventWS | ListenerOnOpen, 
         broadcast,
     };
 };
-
-export default useListenerManager;

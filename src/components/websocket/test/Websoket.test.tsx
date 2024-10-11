@@ -8,8 +8,8 @@ import { createRoot } from 'react-dom/client';
 import { waitFor, act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import Websocket from '../Websocket';
-import useListener from '../hooks/useListener';
+import { Websocket } from '../Websocket';
+import { useListener } from '../hooks/useListener';
 
 jest.mock('reconnecting-websocket');
 let container: Element;
