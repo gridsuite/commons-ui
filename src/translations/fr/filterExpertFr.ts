@@ -187,6 +187,6 @@ export const filterExpertFr = {
     YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
     YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
     changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur toutes les règles déjà créées dans le groupe.",
-    shortCircuitLowCurrentLimit: 'Limite ICC min (kA)',
-    shortCircuitHighCurrentLimit: 'Limite ICC max (kA)',
+    lowShortCircuitCurrentLimit: 'Limite ICC min (kA)',
+    highShortCircuitCurrentLimit: 'Limite ICC max (kA)',
 };

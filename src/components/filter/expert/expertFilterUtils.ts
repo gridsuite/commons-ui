@@ -46,7 +46,7 @@ const microUnits = [
     FieldType.SHUNT_SUSCEPTANCE_2,
 ];
 
-const kiloUnits = [FieldType.SHORT_CIRCUIT_CURRENT_HIGH_LIMIT, FieldType.SHORT_CIRCUIT_CURRENT_LOW_LIMIT];
+const kiloUnits = [FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT];
 
 interface TreeNode {
     [key: string]: any;

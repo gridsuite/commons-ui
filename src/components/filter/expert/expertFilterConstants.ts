@@ -1041,15 +1041,15 @@ export const FIELDS_OPTIONS = {
         label: 'tieLineId',
         dataType: DataType.STRING,
     },
-    SHORT_CIRCUIT_CURRENT_LOW_LIMIT: {
-        name: FieldType.SHORT_CIRCUIT_CURRENT_LOW_LIMIT,
-        label: 'shortCircuitLowCurrentLimit',
+    LOW_SHORT_CIRCUIT_CURRENT_LIMIT: {
+        name: FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
+        label: 'lowShortCircuitCurrentLimit',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
-    SHORT_CIRCUIT_CURRENT_HIGH_LIMIT: {
-        name: FieldType.SHORT_CIRCUIT_CURRENT_HIGH_LIMIT,
-        label: 'shortCircuitHighCurrentLimit',
+    HIGH_SHORT_CIRCUIT_CURRENT_LIMIT: {
+        name: FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
+        label: 'highShortCircuitCurrentLimit',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
@@ -1066,8 +1066,8 @@ export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
         FIELDS_OPTIONS.HIGH_VOLTAGE_LIMIT,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
-        FIELDS_OPTIONS.SHORT_CIRCUIT_CURRENT_LOW_LIMIT,
-        FIELDS_OPTIONS.SHORT_CIRCUIT_CURRENT_HIGH_LIMIT,
+        FIELDS_OPTIONS.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
+        FIELDS_OPTIONS.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
     ],
     LINE: [
         FIELDS_OPTIONS.ID,
