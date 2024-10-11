@@ -82,7 +82,11 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography>{userDetails?.profileName}</Typography>
+                        {userDetails?.profileName === null ? (
+                            <FormattedMessage id="user-information-dialog/no-profile" />
+                        ) : (
+                            <Typography>{userDetails?.profileName}</Typography>
+                        )}
                     </Grid>
                 </Grid>
 
@@ -100,8 +104,8 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
                             <Typography>
                                 {userDetails?.maxAllowedCases}
                                 <Box component="span" sx={styles.usedTopography}>
-                                    (<FormattedMessage id="user-information-dialog/used" />:
-                                    {` ${userDetails?.numberCasesUsed}`})
+                                    ( <FormattedMessage id="user-information-dialog/used" />:
+                                    {` ${userDetails?.numberCasesUsed}`} )
                                 </Box>
                             </Typography>
                         </Grid>
