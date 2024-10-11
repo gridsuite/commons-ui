@@ -61,3 +61,11 @@ export const backendFetchJson = (url: string, init: any, token?: string) => {
 export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };
+
+const catchErrorHandler = (error: unknown, callback: (message: string) => void) => {
+    if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+        callback(error.message);
+    } else {
+        callback('unknown error');
+    }
+};
