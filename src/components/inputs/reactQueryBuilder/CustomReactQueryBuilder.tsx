@@ -10,7 +10,14 @@ import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
-import { ActionWithRulesAndAddersProps, Field, formatQuery, QueryBuilder, RuleGroupTypeAny } from 'react-querybuilder';
+import {
+    ActionWithRulesAndAddersProps,
+    defaultTranslations,
+    Field,
+    formatQuery,
+    QueryBuilder,
+    RuleGroupTypeAny,
+} from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
@@ -75,6 +82,10 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
         }));
     }, [intl]);
 
+    // Drag handle title
+    const customDragHandle = { label: defaultTranslations.dragHandle.label, title: '' };
+    const customTranslations = { ...defaultTranslations, dragHandle: customDragHandle };
+
     return (
         <>
             <Grid item xs={12}>
@@ -103,6 +114,8 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
                                 valueSourceSelector: ValueSelector,
                             }}
                             listsAsArrays
+                            accessibleDescriptionGenerator={() => ''} // tooltip for querybuilder container and subgroups
+                            translations={customTranslations}
                         />
                     </QueryBuilderDnD>
                 </QueryBuilderMaterial>
