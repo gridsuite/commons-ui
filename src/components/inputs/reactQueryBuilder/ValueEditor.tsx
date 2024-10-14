@@ -66,7 +66,7 @@ export function ValueEditor(props: ValueEditorProps) {
     }
 
     if ([FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(field as FieldType)) {
-        return <CountryValueEditor {...props} />;
+        return <CountryValueEditor {...props} key={field} />;
     }
 
     if (fieldData.dataType === DataType.ENUM) {
