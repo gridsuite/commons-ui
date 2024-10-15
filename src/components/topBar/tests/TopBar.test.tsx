@@ -31,7 +31,7 @@ const apps: Metadata[] = [
         url: '/app2',
         appColor: 'green',
         hiddenInAppsMenu: true,
-        hiddenUserInformation: false,
+        hiddenUserInformation: true,
     },
 ];
 
