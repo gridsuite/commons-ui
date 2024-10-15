@@ -270,12 +270,12 @@ export function TopBar({
         }
     };
 
-    const isHiddenUserInformation = (): boolean | undefined => {
+    const isHiddenUserInformation = (): boolean => {
         if (appsAndUrls) {
             const app = appsAndUrls.find((item) => item.name === appName);
-            return app?.hiddenUserInformation ?? true;
+            return app?.hiddenUserInformation ?? false;
         }
-        return true;
+        return false;
     };
 
     const onUserInformationDialogClicked = () => {
