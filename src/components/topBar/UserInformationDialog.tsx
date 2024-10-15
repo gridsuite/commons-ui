@@ -42,18 +42,14 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
     };
 
     useEffect(() => {
-        if (!user || user.expired) {
-            // The case when the user is not logged in or disconnected from the session
-            onClose();
-        }
-        if (user?.profile.sub) {
+        if (openDialog && user?.profile.sub) {
             getUserDetails(user?.profile.sub);
         }
-    }, [user, onClose]);
+    }, [openDialog, user]);
 
     return (
-        <Dialog open={openDialog && !!userDetails} onClose={onClose}>
-            <DialogTitle sx={styles.DialogTitle}>
+        <Dialog open={openDialog && !!user && !!userDetails} onClose={onClose}>
+            <DialogTitle fontWeight="bold" sx={styles.DialogTitle}>
                 <FormattedMessage id="user-information-dialog/title" />
             </DialogTitle>
 
@@ -78,7 +74,7 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
 
                     <Grid item xs={6}>
                         <Typography fontWeight="bold">
-                            <FormattedMessage id="user-information-dialog/profil" />
+                            <FormattedMessage id="user-information-dialog/profile" />
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
