@@ -127,19 +127,18 @@ export type GridSuiteModule = {
     type: ModuleType;
     version?: string;
     gitTag?: string;
-    // license?: string;
 };
 
 export interface AboutDialogProps {
     open: boolean;
-    onClose: () => void;
-    globalVersionPromise?: () => Promise<string>;
     appName: string;
     appVersion?: string;
     appGitTag?: string;
     appLicense?: string;
-    additionalModulesPromise?: () => Promise<GridSuiteModule[]>;
     logo?: ReactNode;
+    onClose: () => void;
+    globalVersionPromise?: () => Promise<string>;
+    additionalModulesPromise?: () => Promise<GridSuiteModule[]>;
 }
 
 const moduleStyles = {
@@ -275,14 +274,14 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
 
 export function AboutDialog({
     open,
-    onClose,
-    globalVersionPromise,
     appName,
     appVersion,
     appGitTag,
     appLicense,
-    additionalModulesPromise,
     logo,
+    onClose,
+    globalVersionPromise,
+    additionalModulesPromise,
 }: AboutDialogProps) {
     const theme = useTheme();
     const [isRefreshing, setIsRefreshing] = useState(false);

@@ -607,7 +607,7 @@ export function TopBar({
                 )}
 
                 <AboutDialog
-                    open={isAboutDialogOpen}
+                    open={isAboutDialogOpen && !!user}
                     onClose={() => setAboutDialogOpen(false)}
                     appName={appName}
                     appVersion={appVersion}
