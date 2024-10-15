@@ -10,6 +10,7 @@ export const topBarFr = {
     'top-bar/logout': 'Se déconnecter',
     'top-bar/goFullScreen': 'Plein écran',
     'top-bar/exitFullScreen': 'Quitter mode plein écran',
+    'top-bar/userInformation': 'Informations utilisateur',
     'top-bar/about': 'À propos',
     'top-bar/displayMode': "Mode d'affichage",
     'top-bar/equipmentLabel': 'Label des ouvrages',
@@ -29,4 +30,15 @@ export const topBarFr = {
     'about-dialog/module-tooltip-app': 'application',
     'about-dialog/module-tooltip-server': 'serveur',
     'about-dialog/module-tooltip-other': 'autre',
+
+    'user-information-dialog/title': 'Informations utilisateur',
+    'user-information-dialog/role': 'Rôle',
+    'user-information-dialog/role-user': 'Utilisateur simple',
+    'user-information-dialog/role-admin': 'Admin',
+    'user-information-dialog/profil': 'Profile',
+    'user-information-dialog/no-profile': 'Pas de profile',
+    'user-information-dialog/quotas': 'Quotas',
+    'user-information-dialog/number-of-cases-or-studies': 'Nombre situations ou études',
+    'user-information-dialog/used': 'Utilisé',
+    'user-information-dialog/number-of-builds-per-study': 'Nombre réalisations par étude',
 };
