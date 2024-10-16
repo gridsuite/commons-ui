@@ -27,6 +27,7 @@ export function FilterForm({
             <Box
                 sx={{
                     flex: 'none',
+                    padding: 1,
                 }}
             >
                 <HeaderFilterForm
@@ -36,22 +37,13 @@ export function FilterForm({
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
             </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                    overflowY: 'hidden',
-                }}
-            >
-                {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
-                {filterType === FilterType.EXPLICIT_NAMING.id && (
-                    <ExplicitNamingFilterForm
-                        sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                    />
-                )}
-                {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
-            </Box>
+            {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
+            {filterType === FilterType.EXPLICIT_NAMING.id && (
+                <ExplicitNamingFilterForm
+                    sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                />
+            )}
+            {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
         </>
     );
 }

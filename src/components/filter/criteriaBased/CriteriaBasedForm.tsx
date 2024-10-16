@@ -51,8 +51,7 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Crite
             <Box
                 sx={{
                     flex: 'none',
-                    paddingTop: 2,
-                    paddingBottom: 2,
+                    padding: 1,
                 }}
             >
                 <InputWithPopupConfirmation
@@ -70,7 +69,7 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Crite
                 sx={{
                     flex: 'auto',
                     overflowY: 'auto',
-                    paddingTop: 1,
+                    padding: 1,
                 }}
             >
                 <Grid container spacing={2}>
