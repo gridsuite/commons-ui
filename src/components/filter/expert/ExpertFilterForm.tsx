@@ -30,6 +30,7 @@ import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInp
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 yup.setLocale({
     mixed: {
@@ -42,24 +43,6 @@ yup.setLocale({
         },
     },
 });
-
-const styles = {
-    scrollableContainer: {
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            clear: 'both',
-            display: 'block',
-        },
-    },
-    scrollableContent: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        maxHeight: '100%',
-        overflow: 'auto',
-    },
-};
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
@@ -144,7 +127,7 @@ export function ExpertFilterForm() {
 
     return (
         <>
-            <Box sx={{ paddingY: '12px' }}>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -156,12 +139,10 @@ export function ExpertFilterForm() {
                     validateButtonLabel="button.changeType"
                 />
             </Box>
-            <Box sx={styles.scrollableContainer}>
-                <Box sx={styles.scrollableContent}>
-                    {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
-                        <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
-                    )}
-                </Box>
+            <Box sx={unscrollableDialogStyles.scrollableContent}>
+                {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
+                    <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
+                )}
             </Box>
         </>
     );

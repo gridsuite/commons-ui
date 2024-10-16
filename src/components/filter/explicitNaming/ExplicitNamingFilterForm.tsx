@@ -29,26 +29,9 @@ import { ElementType } from '../../../utils/types/elementType';
 import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/ModifyElementSelection';
 import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
-
-const styles = {
-    scrollableContainer: {
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            clear: 'both',
-            display: 'block',
-        },
-    },
-    scrollableContent: {
-        paddingTop: '10px',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-    },
-};
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -232,7 +215,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
 
     return (
         <>
-            <Box sx={{ paddingY: '12px' }}>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -256,33 +239,31 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 )}
             </Box>
             {watchEquipmentType && (
-                <Box sx={styles.scrollableContainer}>
-                    <Box sx={styles.scrollableContent}>
-                        <CustomAgGridTable
-                            name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                            columnDefs={columnDefs}
-                            defaultColDef={defaultColDef}
-                            makeDefaultRowData={makeDefaultRowData}
-                            pagination
-                            paginationPageSize={100}
-                            suppressRowClickSelection
-                            alwaysShowVerticalScroll
-                            stopEditingWhenCellsLoseFocus
-                            csvProps={{
-                                fileName: intl.formatMessage({
-                                    id: 'filterCsvFileName',
-                                }),
-                                fileHeaders: csvFileHeaders,
-                                getDataFromCsv: getDataFromCsvFile,
-                            }}
-                            cssProps={{
-                                '& .ag-root-wrapper-body': {
-                                    maxHeight: '380px',
-                                    height: '380px',
-                                },
-                            }}
-                        />
-                    </Box>
+                <Box sx={unscrollableDialogStyles.scrollableContent}>
+                    <CustomAgGridTable
+                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                        columnDefs={columnDefs}
+                        defaultColDef={defaultColDef}
+                        makeDefaultRowData={makeDefaultRowData}
+                        pagination
+                        paginationPageSize={100}
+                        suppressRowClickSelection
+                        alwaysShowVerticalScroll
+                        stopEditingWhenCellsLoseFocus
+                        csvProps={{
+                            fileName: intl.formatMessage({
+                                id: 'filterCsvFileName',
+                            }),
+                            fileHeaders: csvFileHeaders,
+                            getDataFromCsv: getDataFromCsvFile,
+                        }}
+                        cssProps={{
+                            '& .ag-root-wrapper-body': {
+                                maxHeight: '380px',
+                                height: '380px',
+                            },
+                        }}
+                    />
                 </Box>
             )}
         </>

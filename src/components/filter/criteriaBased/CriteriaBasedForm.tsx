@@ -13,32 +13,13 @@ import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { FormEquipment, FormField } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 export interface CriteriaBasedFormProps {
     equipments: Record<string, FormEquipment>;
     defaultValues: Record<string, any>;
     children?: ReactElement;
 }
-
-const styles = {
-    scrollableContainer: {
-        paddingY: '12px',
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            clear: 'both',
-            display: 'block',
-        },
-    },
-    scrollableContent: {
-        paddingY: '12px',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        minHeight: '200px',
-        overflow: 'auto',
-    },
-};
 
 export function CriteriaBasedForm({ equipments, defaultValues, children }: Readonly<CriteriaBasedFormProps>) {
     const { getValues, setValue } = useFormContext();
@@ -68,7 +49,7 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Reado
 
     return (
         <>
-            <Box sx={{ paddingTop: '10px' }}>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -80,23 +61,21 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Reado
                     validateButtonLabel="button.changeType"
                 />
             </Box>
-            <Box sx={styles.scrollableContainer}>
-                <Box sx={styles.scrollableContent}>
-                    <Grid container spacing={2}>
-                        {watchEquipmentType &&
-                            equipments[watchEquipmentType] &&
-                            equipments[watchEquipmentType].fields.map((equipment: FormField, index: number) => {
-                                const EquipmentForm = equipment.renderer;
-                                const uniqueKey = `${watchEquipmentType}-${index}`;
-                                return (
-                                    <Grid item xs={12} key={uniqueKey} flexGrow={1}>
-                                        <EquipmentForm {...equipment.props} />
-                                    </Grid>
-                                );
-                            })}
-                        {children}
-                    </Grid>
-                </Box>
+            <Box sx={unscrollableDialogStyles.scrollableContent}>
+                <Grid container spacing={2}>
+                    {watchEquipmentType &&
+                        equipments[watchEquipmentType] &&
+                        equipments[watchEquipmentType].fields.map((equipment: FormField, index: number) => {
+                            const EquipmentForm = equipment.renderer;
+                            const uniqueKey = `${watchEquipmentType}-${index}`;
+                            return (
+                                <Grid item xs={12} key={uniqueKey} flexGrow={1}>
+                                    <EquipmentForm {...equipment.props} />
+                                </Grid>
+                            );
+                        })}
+                    {children}
+                </Grid>
             </Box>
         </>
     );

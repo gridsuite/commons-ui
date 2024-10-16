@@ -41,17 +41,39 @@ const styles = {
             margin: 'auto',
         },
     },
-    dialogPaperFullHeight: {
+};
+
+/**
+ * all those styles are made to work with each other :
+ * <fullHeightDialog>
+ *   <unscrollableContainer>
+ *     <unscrollableHeader/> => there may be several unscrollableHeader one after another
+ *     <scrollableContent/>
+ *   </unscrollableContainer>
+ * </fullHeightDialog>
+ */
+export const unscrollableDialogStyles = {
+    fullHeightDialog: {
         '.MuiDialog-paper': {
             width: 'auto',
-            minWidth: '1000px',
+            minWidth: '1024px',
             margin: 'auto',
             height: '95vh',
         },
     },
-    unscrollable: {
-        height: '100%',
+    unscrollableContainer: {
+        display: 'flex',
+        flexDirection: 'column',
         overflowY: 'hidden',
+    },
+    unscrollableHeader: {
+        flex: 'none',
+        padding: 1,
+    },
+    scrollableContent: {
+        flex: 'auto',
+        overflowY: 'auto',
+        padding: 1,
     },
 };
 
@@ -128,7 +150,7 @@ export function CustomMuiDialog({
             language={language}
         >
             <Dialog
-                sx={unscrollableFullHeight ? styles.dialogPaperFullHeight : styles.dialogPaper}
+                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
                 open={open}
                 onClose={handleClose}
                 fullWidth
@@ -139,7 +161,9 @@ export function CustomMuiDialog({
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent sx={unscrollableFullHeight ? styles.unscrollable : null}>{children}</DialogContent>
+                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
+                    {children}
+                </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton
