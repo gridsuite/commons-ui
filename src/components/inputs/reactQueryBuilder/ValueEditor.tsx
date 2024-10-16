@@ -66,11 +66,11 @@ export function ValueEditor(props: ValueEditorProps) {
     }
 
     if ([FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(field as FieldType)) {
-        return <CountryValueEditor {...props} title="" />;
+        return <CountryValueEditor {...props} />;
     }
 
     if (fieldData.dataType === DataType.ENUM) {
-        return <TranslatedValueEditor {...props} title="" />;
+        return <TranslatedValueEditor {...props} />;
     }
 
     if (operator === OPERATOR_OPTIONS.IS_PART_OF.name || operator === OPERATOR_OPTIONS.IS_NOT_PART_OF.name) {
@@ -103,7 +103,7 @@ export function ValueEditor(props: ValueEditorProps) {
     }
 
     if (fieldData.dataType === DataType.STRING) {
-        return <TextValueEditor {...props} title="" />;
+        return <TextValueEditor {...props} />;
     }
 
     if (fieldData.dataType === DataType.PROPERTY) {
@@ -126,19 +126,16 @@ export function ValueEditor(props: ValueEditorProps) {
             equipmentType = getValues(FieldConstants.EQUIPMENT_TYPE);
         }
 
-        return <PropertyValueEditor equipmentType={equipmentType} valueEditorProps={props} title="" />;
+        return <PropertyValueEditor equipmentType={equipmentType} valueEditorProps={props} />;
     }
 
     if (fieldData.dataType === DataType.COMBINATOR) {
-        return <GroupValueEditor {...props} title="" />;
+        return <GroupValueEditor {...props} />;
     }
 
     return (
         <Box sx={inputType === 'number' ? styles.noArrows : undefined}>
-            <MaterialValueEditor
-                {...props}
-                title="" // disable the tooltip
-            />
+            <MaterialValueEditor {...props} />
         </Box>
     );
 }

@@ -9,10 +9,5 @@ import { ValueSelectorProps } from 'react-querybuilder';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 
 export function ValueSelector(props: ValueSelectorProps) {
-    return (
-        <MaterialValueSelector
-            {...props}
-            title="" // disable the tooltip
-        />
-    );
+    return <MaterialValueSelector {...props} />;
 }

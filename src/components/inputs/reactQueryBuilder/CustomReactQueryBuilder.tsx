@@ -39,12 +39,26 @@ export interface CustomReactQueryBuilderProps {
 }
 
 function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
-    return <AddButton {...props} label="rule" title="" />;
+    return <AddButton {...props} label="rule" />;
 }
 
 function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
-    return <AddButton {...props} label="subGroup" title="" />;
+    return <AddButton {...props} label="subGroup" />;
 }
+
+// titles for different components
+const customTranslations = {
+    ...defaultTranslations,
+    fields: { ...defaultTranslations.fields, title: '' },
+    operators: { ...defaultTranslations.operators, title: '' },
+    dragHandle: { ...defaultTranslations.dragHandle, title: '' },
+    addRule: { ...defaultTranslations.addRule, title: '' },
+    addGroup: { ...defaultTranslations.addGroup, title: '' },
+    removeRule: { ...defaultTranslations.removeRule, title: '' },
+    removeGroup: { ...defaultTranslations.removeGroup, title: '' },
+    value: { title: '' },
+    combinators: { title: '' },
+};
 
 export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
@@ -81,10 +95,6 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
             label: intl.formatMessage({ id: c.label }),
         }));
     }, [intl]);
-
-    // Drag handle title
-    const customDragHandle = { label: defaultTranslations.dragHandle.label, title: '' };
-    const customTranslations = { ...defaultTranslations, dragHandle: customDragHandle };
 
     return (
         <>

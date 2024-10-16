@@ -22,11 +22,10 @@ const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 interface ExpertFilterPropertyProps {
     equipmentType: EquipmentType;
     valueEditorProps: ValueEditorProps;
-    title: string;
 }
 
 export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
-    const { equipmentType, valueEditorProps, title } = props;
+    const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
 
@@ -85,14 +84,13 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
-                    title={title}
                 />
             </Grid>
             <Grid item xs={2.5}>
                 <Select
                     value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
                     size="small"
-                    title={title}
+                    title={valueEditorProps?.title}
                     error={!valid}
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
@@ -109,7 +107,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Autocomplete
                     value={propertyValues ?? []}
                     options={predefinedValues ?? []}
-                    title={title}
+                    title={valueEditorProps?.title}
                     multiple
                     renderInput={(params) => <TextField {...params} error={!valid} />}
                     freeSolo

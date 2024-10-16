@@ -15,7 +15,7 @@ import { getNumberOfSiblings, recursiveRemove } from '../../filter/expert/expert
 const EXPERT_FILTER_QUERY = 'rules';
 
 export function RemoveButton(props: ActionWithRulesProps) {
-    const { path, className } = props;
+    const { path, className, title } = props;
     const {
         field: { value: query, onChange },
     } = useController({ name: EXPERT_FILTER_QUERY });
@@ -29,7 +29,7 @@ export function RemoveButton(props: ActionWithRulesProps) {
     const isLastRuleOrGroup = path.toString() === [0].toString() && getNumberOfSiblings(path, query) === 1;
 
     return (
-        <IconButton size="small" onClick={() => handleDelete()} className={className} title="">
+        <IconButton size="small" onClick={() => handleDelete()} className={className} title={title}>
             {!isLastRuleOrGroup && <DeleteIcon />}
         </IconButton>
     );

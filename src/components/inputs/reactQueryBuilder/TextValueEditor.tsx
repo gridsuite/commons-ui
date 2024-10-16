@@ -19,7 +19,7 @@ export function TextValueEditor(props: ValueEditorProps) {
     const { value, handleOnChange, title } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!Array.isArray(value)) {
-        return <MaterialValueEditor {...props} title={title} />;
+        return <MaterialValueEditor {...props} />;
     }
     return (
         <Autocomplete

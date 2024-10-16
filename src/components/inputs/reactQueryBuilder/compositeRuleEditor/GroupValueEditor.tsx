@@ -23,7 +23,6 @@ export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
         fieldData: { combinator, children },
         value,
         handleOnChange,
-        title,
     } = props;
 
     const generateOnChangeRuleHandler = useCallback(
@@ -53,7 +52,6 @@ export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
                         fieldData={fieldData}
                         rule={value?.rules?.[fieldData.name]}
                         handleOnChangeRule={generateOnChangeRuleHandler(fieldData.name)}
-                        title={title}
                     />
                 ))}
         </Grid>

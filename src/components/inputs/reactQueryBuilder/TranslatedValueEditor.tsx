@@ -39,7 +39,7 @@ export function TranslatedValueEditor(props: ValueEditorProps) {
 
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!Array.isArray(value)) {
-        return <MaterialValueEditor {...props} values={translatedValues} title={title} />;
+        return <MaterialValueEditor {...props} values={translatedValues} />;
     }
     return (
         <Autocomplete
