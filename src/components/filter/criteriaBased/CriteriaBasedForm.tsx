@@ -11,7 +11,7 @@ import { ReactElement, useEffect } from 'react';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import { FormEquipment } from '../utils/filterFormUtils';
+import { FormEquipment, FormField } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 
 export interface CriteriaBasedFormProps {
@@ -21,7 +21,7 @@ export interface CriteriaBasedFormProps {
 }
 
 const styles = {
-    ScrollableContainer: {
+    scrollableContainer: {
         paddingY: '12px',
         position: 'relative',
         '&::after': {
@@ -30,7 +30,7 @@ const styles = {
             display: 'block',
         },
     },
-    ScrollableContent: {
+    scrollableContent: {
         paddingY: '12px',
         position: 'absolute',
         width: '100%',
@@ -80,12 +80,12 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Reado
                     validateButtonLabel="button.changeType"
                 />
             </Box>
-            <Box sx={styles.ScrollableContainer}>
-                <Box sx={styles.ScrollableContent}>
+            <Box sx={styles.scrollableContainer}>
+                <Box sx={styles.scrollableContent}>
                     <Grid container spacing={2}>
                         {watchEquipmentType &&
                             equipments[watchEquipmentType] &&
-                            equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
+                            equipments[watchEquipmentType].fields.map((equipment: FormField, index: number) => {
                                 const EquipmentForm = equipment.renderer;
                                 const uniqueKey = `${watchEquipmentType}-${index}`;
                                 return (

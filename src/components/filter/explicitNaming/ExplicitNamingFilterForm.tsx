@@ -33,7 +33,7 @@ import { EquipmentType } from '../../../utils/types/equipmentType';
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 
 const styles = {
-    ScrollableContainer: {
+    scrollableContainer: {
         position: 'relative',
         '&::after': {
             content: '""',
@@ -41,7 +41,7 @@ const styles = {
             display: 'block',
         },
     },
-    ScrollableContent: {
+    scrollableContent: {
         paddingTop: '10px',
         position: 'absolute',
         width: '100%',
@@ -256,8 +256,8 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 )}
             </Box>
             {watchEquipmentType && (
-                <Box sx={styles.ScrollableContainer}>
-                    <Box sx={styles.ScrollableContent}>
+                <Box sx={styles.scrollableContainer}>
+                    <Box sx={styles.scrollableContent}>
                         <CustomAgGridTable
                             name={FILTER_EQUIPMENTS_ATTRIBUTES}
                             columnDefs={columnDefs}
@@ -288,5 +288,3 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
         </>
     );
 }
-
-export default ExplicitNamingFilterForm;

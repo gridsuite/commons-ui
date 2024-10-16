@@ -44,7 +44,7 @@ yup.setLocale({
 });
 
 const styles = {
-    ScrollableContainer: {
+    scrollableContainer: {
         position: 'relative',
         '&::after': {
             content: '""',
@@ -52,7 +52,7 @@ const styles = {
             display: 'block',
         },
     },
-    ScrollableContent: {
+    scrollableContent: {
         position: 'absolute',
         width: '100%',
         height: '100%',
@@ -156,8 +156,8 @@ export function ExpertFilterForm() {
                     validateButtonLabel="button.changeType"
                 />
             </Box>
-            <Box sx={styles.ScrollableContainer}>
-                <Box sx={styles.ScrollableContent}>
+            <Box sx={styles.scrollableContainer}>
+                <Box sx={styles.scrollableContent}>
                     {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
                         <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
                     )}

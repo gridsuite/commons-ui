@@ -15,7 +15,7 @@ import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 
 const styles = {
-    FillerContainer: {
+    fillerContainer: {
         height: '100%',
         '&::before': {
             content: '""',
@@ -34,7 +34,7 @@ export function FilterForm({
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     return (
-        <Box sx={styles.FillerContainer}>
+        <Box sx={styles.fillerContainer}>
             <HeaderFilterForm
                 creation={creation}
                 activeDirectory={activeDirectory}
