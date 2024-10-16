@@ -7,23 +7,12 @@
 
 import { Box } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { HeaderFilterForm, FilterFormProps } from './HeaderFilterForm';
+import { FilterFormProps, HeaderFilterForm } from './HeaderFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
 import { CriteriaBasedFilterForm } from './criteriaBased/CriteriaBasedFilterForm';
 import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
 import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
-
-const styles = {
-    FillerContainer: {
-        height: '100%',
-        '&::before': {
-            content: '""',
-            height: '100%',
-            float: 'left',
-        },
-    },
-};
 
 export function FilterForm({
     sourceFilterForExplicitNamingConversion,
@@ -34,20 +23,35 @@ export function FilterForm({
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     return (
-        <Box sx={styles.FillerContainer}>
-            <HeaderFilterForm
-                creation={creation}
-                activeDirectory={activeDirectory}
-                elementExists={elementExists}
-                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-            />
-            {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
-            {filterType === FilterType.EXPLICIT_NAMING.id && (
-                <ExplicitNamingFilterForm
+        <>
+            <Box
+                sx={{
+                    flex: 'none',
+                }}
+            >
+                <HeaderFilterForm
+                    creation={creation}
+                    activeDirectory={activeDirectory}
+                    elementExists={elementExists}
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
-            )}
-            {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
-        </Box>
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    overflowY: 'hidden',
+                }}
+            >
+                {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
+                {filterType === FilterType.EXPLICIT_NAMING.id && (
+                    <ExplicitNamingFilterForm
+                        sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                    />
+                )}
+                {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
+            </Box>
+        </>
     );
 }
