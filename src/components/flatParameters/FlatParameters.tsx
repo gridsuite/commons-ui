@@ -12,7 +12,7 @@ import {
     Divider,
     IconButton,
     List,
-    ListItem,
+    ListItemButton,
     MenuItem,
     Select,
     Switch,
@@ -264,7 +264,13 @@ export function FlatParameters({
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
-                return <Switch checked={!!fieldValue} onChange={(e) => onFieldChange(e.target.checked, param)} />;
+                return (
+                    <Switch
+                        checked={!!fieldValue}
+                        onChange={(e) => onFieldChange(e.target.checked, param)}
+                        disabled={param.name === 'iidm.import.cgmes.cgm-with-subnetworks'} // Disable this option for the moment
+                    />
+                );
             case 'DOUBLE': {
                 const err =
                     Number.isNaN(fieldValue) ||
@@ -424,7 +430,11 @@ export function FlatParameters({
         <List sx={styles.paramList}>
             {paramsAsArray.map((param, index) => (
                 <Fragment key={param.name}>
-                    <ListItem sx={styles.paramListItem}>
+                    <ListItemButton
+                        sx={styles.paramListItem}
+                        disabled={param.name === 'iidm.import.cgmes.cgm-with-subnetworks'} // disable this option for the moment
+                        disableRipple
+                    >
                         <Tooltip
                             title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
                             enterDelay={1200}
@@ -435,7 +445,7 @@ export function FlatParameters({
                             </Typography>
                         </Tooltip>
                         {renderField(param)}
-                    </ListItem>
+                    </ListItemButton>
                     {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}
                 </Fragment>
             ))}
