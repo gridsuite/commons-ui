@@ -15,10 +15,10 @@ interface ActionWithRulesAndAddersWithLabelProps extends ActionWithRulesAndAdder
 }
 
 export function AddButton(props: ActionWithRulesAndAddersWithLabelProps) {
-    const { label, handleOnClick } = props;
+    const { label, handleOnClick, title } = props;
     return (
         <span>
-            <Button startIcon={<AddIcon />} onClick={handleOnClick} size="small" className="add-button">
+            <Button startIcon={<AddIcon />} onClick={handleOnClick} size="small" className="add-button" title={title}>
                 <FormattedMessage id={label} />
             </Button>
         </span>

@@ -8,7 +8,14 @@
 import { FullOption, toFlatOptionArray, ValueSelectorProps } from 'react-querybuilder';
 import { Autocomplete, TextField } from '@mui/material';
 
-export function FieldSelector({ options, className, value, disabled, handleOnChange }: Readonly<ValueSelectorProps>) {
+export function FieldSelector({
+    options,
+    className,
+    value,
+    disabled,
+    handleOnChange,
+    title,
+}: Readonly<ValueSelectorProps>) {
     const optionList: FullOption[] = toFlatOptionArray(options);
 
     return (
@@ -24,6 +31,7 @@ export function FieldSelector({ options, className, value, disabled, handleOnCha
             options={optionList}
             disableClearable
             size="small"
+            title={title}
             renderInput={(params) => <TextField {...params} label="" variant="standard" />}
             autoHighlight
             getOptionLabel={(option) => option.label}

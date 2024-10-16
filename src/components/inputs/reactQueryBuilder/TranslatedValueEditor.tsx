@@ -15,7 +15,7 @@ import { useValid } from './hooks/useValid';
 
 export function TranslatedValueEditor(props: ValueEditorProps) {
     const intl = useIntl();
-    const { values, value, handleOnChange } = props;
+    const { values, value, handleOnChange, title } = props;
 
     const translatedValues = useMemo(() => {
         return values?.map((v) => {
@@ -39,18 +39,13 @@ export function TranslatedValueEditor(props: ValueEditorProps) {
 
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!Array.isArray(value)) {
-        return (
-            <MaterialValueEditor
-                {...props}
-                values={translatedValues}
-                title={undefined} // disable the tooltip
-            />
-        );
+        return <MaterialValueEditor {...props} values={translatedValues} />;
     }
     return (
         <Autocomplete
             value={value}
             options={Object.keys(translatedValuesAutocomplete)}
+            title={title}
             getOptionLabel={(code: string) => translatedValuesAutocomplete[code]}
             onChange={(event, newValue: any) => handleOnChange(newValue)}
             multiple
