@@ -47,10 +47,12 @@ const styles = {
             minWidth: '1000px',
             margin: 'auto',
             height: '95vh',
+            overflowY: 'hidden',
         },
     },
     unscrollable: {
-        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
         overflowY: 'hidden',
     },
 };

@@ -20,27 +20,7 @@ export interface CriteriaBasedFormProps {
     children?: ReactElement;
 }
 
-const styles = {
-    ScrollableContainer: {
-        paddingY: '12px',
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            clear: 'both',
-            display: 'block',
-        },
-    },
-    ScrollableContent: {
-        paddingY: '12px',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        minHeight: '200px',
-        overflow: 'auto',
-    },
-};
-
-export function CriteriaBasedForm({ equipments, defaultValues, children }: Readonly<CriteriaBasedFormProps>) {
+export function CriteriaBasedForm({ equipments, defaultValues, children }: CriteriaBasedFormProps) {
     const { getValues, setValue } = useFormContext();
     const { snackError } = useSnackMessage();
 
@@ -68,7 +48,12 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Reado
 
     return (
         <>
-            <Box sx={{ paddingTop: '10px' }}>
+            <Box
+                sx={{
+                    flex: 'none',
+                    padding: 1,
+                }}
+            >
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -80,23 +65,27 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Reado
                     validateButtonLabel="button.changeType"
                 />
             </Box>
-            <Box sx={styles.ScrollableContainer}>
-                <Box sx={styles.ScrollableContent}>
-                    <Grid container spacing={2}>
-                        {watchEquipmentType &&
-                            equipments[watchEquipmentType] &&
-                            equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
-                                const EquipmentForm = equipment.renderer;
-                                const uniqueKey = `${watchEquipmentType}-${index}`;
-                                return (
-                                    <Grid item xs={12} key={uniqueKey} flexGrow={1}>
-                                        <EquipmentForm {...equipment.props} />
-                                    </Grid>
-                                );
-                            })}
-                        {children}
-                    </Grid>
-                </Box>
+            <Box
+                sx={{
+                    flex: 'auto',
+                    overflowY: 'auto',
+                    padding: 1,
+                }}
+            >
+                <Grid container spacing={2}>
+                    {watchEquipmentType &&
+                        equipments[watchEquipmentType] &&
+                        equipments[watchEquipmentType].fields.map((equipment: any, index: number) => {
+                            const EquipmentForm = equipment.renderer;
+                            const uniqueKey = `${watchEquipmentType}-${index}`;
+                            return (
+                                <Grid item xs={12} key={uniqueKey} flexGrow={1}>
+                                    <EquipmentForm {...equipment.props} />
+                                </Grid>
+                            );
+                        })}
+                    {children}
+                </Grid>
             </Box>
         </>
     );
