@@ -7,7 +7,6 @@
 
 import { useCallback, useMemo } from 'react';
 
-import Grid from '@mui/material/Grid';
 import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 import './stylesExpertFilter.css';
@@ -15,6 +14,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
+import { Box } from '@mui/material';
 import { testQuery } from './expertFilterUtils';
 import {
     COMBINATOR_OPTIONS,
@@ -30,6 +30,7 @@ import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInp
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 yup.setLocale({
     mixed: {
@@ -125,8 +126,8 @@ export function ExpertFilterForm() {
     }, [intl, watchEquipmentType]);
 
     return (
-        <Grid container item spacing={2}>
-            <Grid item xs={12}>
+        <>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -137,10 +138,12 @@ export function ExpertFilterForm() {
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                 />
-            </Grid>
-            {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
-                <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
-            )}
-        </Grid>
+            </Box>
+            <Box sx={unscrollableDialogStyles.scrollableContent}>
+                {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
+                    <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
+                )}
+            </Box>
+        </>
     );
 }

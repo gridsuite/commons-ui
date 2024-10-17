@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
+import { Box } from '@mui/material';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
@@ -98,41 +98,39 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
 
     return (
         <>
-            <Grid item xs={12}>
-                <QueryBuilderMaterial>
-                    <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
-                        <QueryBuilder
-                            fields={fields}
-                            query={query}
-                            addRuleToNewGroups
-                            combinators={combinators}
-                            onQueryChange={handleQueryChange}
-                            getOperators={(fieldName) => getOperators(fieldName, intl)}
-                            validator={queryValidator}
-                            controlClassnames={{
-                                queryBuilder: 'queryBuilder-branches',
-                            }}
-                            controlElements={{
-                                addRuleAction: RuleAddButton,
-                                addGroupAction: GroupAddButton,
-                                combinatorSelector: CombinatorSelector,
-                                removeRuleAction: RemoveButton,
-                                removeGroupAction: RemoveButton,
-                                valueEditor: ValueEditor,
-                                operatorSelector: ValueSelector,
-                                fieldSelector: FieldSelector,
-                                valueSourceSelector: ValueSelector,
-                            }}
-                            listsAsArrays
-                            accessibleDescriptionGenerator={() => ''} // tooltip for querybuilder container and subgroups
-                            translations={customTranslations}
-                        />
-                    </QueryBuilderDnD>
-                </QueryBuilderMaterial>
-            </Grid>
-            <Grid item xs={12}>
+            <QueryBuilderMaterial>
+                <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
+                    <QueryBuilder
+                        fields={fields}
+                        query={query}
+                        addRuleToNewGroups
+                        combinators={combinators}
+                        onQueryChange={handleQueryChange}
+                        getOperators={(fieldName) => getOperators(fieldName, intl)}
+                        validator={queryValidator}
+                        controlClassnames={{
+                            queryBuilder: 'queryBuilder-branches',
+                        }}
+                        controlElements={{
+                            addRuleAction: RuleAddButton,
+                            addGroupAction: GroupAddButton,
+                            combinatorSelector: CombinatorSelector,
+                            removeRuleAction: RemoveButton,
+                            removeGroupAction: RemoveButton,
+                            valueEditor: ValueEditor,
+                            operatorSelector: ValueSelector,
+                            fieldSelector: FieldSelector,
+                            valueSourceSelector: ValueSelector,
+                        }}
+                        listsAsArrays
+                        accessibleDescriptionGenerator={() => ''} // tooltip for querybuilder container and subgroups
+                        translations={customTranslations}
+                    />
+                </QueryBuilderDnD>
+            </QueryBuilderMaterial>
+            <Box>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
-            </Grid>
+            </Box>
         </>
     );
 }
