@@ -44,7 +44,7 @@ const styles = {
 };
 
 /**
- * all those styles are made to work with each other :
+ * all those styles are made to work with each other in order to control the scroll behavior:
  * <fullHeightDialog>
  *   <unscrollableContainer>
  *     <unscrollableHeader/> => there may be several unscrollableHeader one after another
