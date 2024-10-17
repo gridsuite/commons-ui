@@ -31,7 +31,6 @@ export function CombinatorSelector(props: CombinatorSelectorProps) {
             />
             <MaterialValueSelector
                 {...props}
-                title={undefined} // disable the tooltip
                 handleOnChange={(newCombinator) => {
                     setTempCombinator(newCombinator);
                     setOpenPopup(true);

@@ -15,7 +15,7 @@ import { useConvertValue } from './hooks/useConvertValue';
 import { useValid } from './hooks/useValid';
 
 export function CountryValueEditor(props: ValueEditorProps) {
-    const { value, handleOnChange } = props;
+    const { value, handleOnChange, title } = props;
 
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
@@ -47,6 +47,7 @@ export function CountryValueEditor(props: ValueEditorProps) {
             favorites={favoriteCountryCodes}
             getOptionLabel={(code: string) => (code ? translate(code) : '')}
             valid={valid}
+            title={title}
             onChange={(event: SyntheticEvent, newValue: any) => {
                 handleOnChange(newValue);
             }}

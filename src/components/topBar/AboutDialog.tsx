@@ -127,7 +127,6 @@ export type GridSuiteModule = {
     type: ModuleType;
     version?: string;
     gitTag?: string;
-    // license?: string;
 };
 
 export interface AboutDialogProps {

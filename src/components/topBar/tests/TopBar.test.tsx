@@ -24,12 +24,14 @@ const apps: Metadata[] = [
         url: '/app1',
         appColor: 'blue',
         hiddenInAppsMenu: false,
+        hiddenUserInformation: false,
     },
     {
         name: 'App2',
         url: '/app2',
         appColor: 'green',
         hiddenInAppsMenu: true,
+        hiddenUserInformation: true,
     },
 ];
 
