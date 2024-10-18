@@ -12,7 +12,7 @@ import {
     Divider,
     IconButton,
     List,
-    ListItem,
+    ListItemButton,
     MenuItem,
     Select,
     Switch,
@@ -106,6 +106,7 @@ export interface FlatParametersProps {
     variant: TextFieldProps['variant'];
     showSeparator?: boolean;
     selectionWithDialog?: (param: Parameter) => boolean;
+    disabledParams?: string[];
 }
 
 /**
@@ -118,6 +119,7 @@ export interface FlatParametersProps {
  * @param showSeparator if true, a separator is added between parameters
  * @param selectionWithDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
  */
+
 export function FlatParameters({
     paramsAsArray,
     initValues,
@@ -125,6 +127,7 @@ export function FlatParameters({
     variant = 'outlined',
     showSeparator = false,
     selectionWithDialog = () => false,
+    disabledParams,
 }: FlatParametersProps) {
     const intl = useIntl();
 
@@ -264,7 +267,13 @@ export function FlatParameters({
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
-                return <Switch checked={!!fieldValue} onChange={(e) => onFieldChange(e.target.checked, param)} />;
+                return (
+                    <Switch
+                        checked={!!fieldValue}
+                        onChange={(e) => onFieldChange(e.target.checked, param)}
+                        disabled={disabledParams !== undefined && disabledParams.indexOf(param.name) >= 0}
+                    />
+                );
             case 'DOUBLE': {
                 const err =
                     Number.isNaN(fieldValue) ||
@@ -424,7 +433,11 @@ export function FlatParameters({
         <List sx={styles.paramList}>
             {paramsAsArray.map((param, index) => (
                 <Fragment key={param.name}>
-                    <ListItem sx={styles.paramListItem}>
+                    <ListItemButton
+                        sx={styles.paramListItem}
+                        disabled={disabledParams !== undefined && disabledParams.indexOf(param.name) >= 0}
+                        disableRipple
+                    >
                         <Tooltip
                             title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
                             enterDelay={1200}
@@ -435,7 +448,7 @@ export function FlatParameters({
                             </Typography>
                         </Tooltip>
                         {renderField(param)}
-                    </ListItem>
+                    </ListItemButton>
                     {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}
                 </Fragment>
             ))}
