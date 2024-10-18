@@ -75,7 +75,7 @@ const energySource = {
         ],
     },
 };
-type FormField = {
+export type FormField = {
     renderer: FunctionComponent<any>;
     props: {
         label: string;

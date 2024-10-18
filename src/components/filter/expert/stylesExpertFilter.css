@@ -129,11 +129,6 @@
     border-bottom: 2px solid #ba000d;
 }
 
-.queryBuilder {
-    overflow: auto;
-    max-height: 600px;
-}
-
 /* DnD section, copied from original, just 'border-bottom-color: lightgrey' change */
 [data-inlinecombinators='disabled'] .dndOver.rule,
 [data-inlinecombinators='disabled'] .dndOver.ruleGroup-header {
