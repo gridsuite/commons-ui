@@ -10,7 +10,14 @@ import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
-import { ActionWithRulesAndAddersProps, Field, formatQuery, QueryBuilder, RuleGroupTypeAny } from 'react-querybuilder';
+import {
+    ActionWithRulesAndAddersProps,
+    defaultTranslations,
+    Field,
+    formatQuery,
+    QueryBuilder,
+    RuleGroupTypeAny,
+} from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
@@ -38,6 +45,20 @@ function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
 function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
     return <AddButton {...props} label="subGroup" />;
 }
+
+// titles for different components
+const customTranslations = {
+    ...defaultTranslations,
+    fields: { ...defaultTranslations.fields, title: '' },
+    operators: { ...defaultTranslations.operators, title: '' },
+    dragHandle: { ...defaultTranslations.dragHandle, title: '' },
+    addRule: { ...defaultTranslations.addRule, title: '' },
+    addGroup: { ...defaultTranslations.addGroup, title: '' },
+    removeRule: { ...defaultTranslations.removeRule, title: '' },
+    removeGroup: { ...defaultTranslations.removeGroup, title: '' },
+    value: { title: '' },
+    combinators: { title: '' },
+};
 
 export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
@@ -103,6 +124,8 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
                                 valueSourceSelector: ValueSelector,
                             }}
                             listsAsArrays
+                            accessibleDescriptionGenerator={() => ''} // tooltip for querybuilder container and subgroups
+                            translations={customTranslations}
                         />
                     </QueryBuilderDnD>
                 </QueryBuilderMaterial>

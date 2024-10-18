@@ -135,10 +135,7 @@ export function ValueEditor(props: ValueEditorProps) {
 
     return (
         <Box sx={inputType === 'number' ? styles.noArrows : undefined}>
-            <MaterialValueEditor
-                {...props}
-                title={undefined} // disable the tooltip
-            />
+            <MaterialValueEditor {...props} />
         </Box>
     );
 }
