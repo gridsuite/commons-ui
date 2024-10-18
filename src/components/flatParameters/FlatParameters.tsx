@@ -118,6 +118,8 @@ export interface FlatParametersProps {
  * @param showSeparator if true, a separator is added between parameters
  * @param selectionWithDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
  */
+
+const CGM_WITH_SUBNETWORKS_OPTION = 'iidm.import.cgmes.cgm-with-subnetworks';
 export function FlatParameters({
     paramsAsArray,
     initValues,
@@ -268,7 +270,7 @@ export function FlatParameters({
                     <Switch
                         checked={!!fieldValue}
                         onChange={(e) => onFieldChange(e.target.checked, param)}
-                        disabled={param.name === 'iidm.import.cgmes.cgm-with-subnetworks'} // Disable this option for the moment
+                        disabled={param.name === CGM_WITH_SUBNETWORKS_OPTION} // Disable this option for the moment
                     />
                 );
             case 'DOUBLE': {
@@ -432,7 +434,7 @@ export function FlatParameters({
                 <Fragment key={param.name}>
                     <ListItemButton
                         sx={styles.paramListItem}
-                        disabled={param.name === 'iidm.import.cgmes.cgm-with-subnetworks'} // disable this option for the moment
+                        disabled={param.name === CGM_WITH_SUBNETWORKS_OPTION} // disable this option for the moment
                         disableRipple
                     >
                         <Tooltip
