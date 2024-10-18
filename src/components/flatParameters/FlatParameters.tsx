@@ -106,6 +106,7 @@ export interface FlatParametersProps {
     variant: TextFieldProps['variant'];
     showSeparator?: boolean;
     selectionWithDialog?: (param: Parameter) => boolean;
+    disabledParams?: string[];
 }
 
 /**
@@ -119,7 +120,6 @@ export interface FlatParametersProps {
  * @param selectionWithDialog {(param: {}) => boolean} if true, param with multiple options use dialog for selection
  */
 
-const CGM_WITH_SUBNETWORKS_OPTION = 'iidm.import.cgmes.cgm-with-subnetworks';
 export function FlatParameters({
     paramsAsArray,
     initValues,
@@ -127,6 +127,7 @@ export function FlatParameters({
     variant = 'outlined',
     showSeparator = false,
     selectionWithDialog = () => false,
+    disabledParams,
 }: FlatParametersProps) {
     const intl = useIntl();
 
@@ -270,7 +271,7 @@ export function FlatParameters({
                     <Switch
                         checked={!!fieldValue}
                         onChange={(e) => onFieldChange(e.target.checked, param)}
-                        disabled={param.name === CGM_WITH_SUBNETWORKS_OPTION} // Disable this option for the moment
+                        disabled={disabledParams !== undefined && disabledParams.indexOf(param.name) >= 0}
                     />
                 );
             case 'DOUBLE': {
@@ -434,7 +435,7 @@ export function FlatParameters({
                 <Fragment key={param.name}>
                     <ListItemButton
                         sx={styles.paramListItem}
-                        disabled={param.name === CGM_WITH_SUBNETWORKS_OPTION} // disable this option for the moment
+                        disabled={disabledParams !== undefined && disabledParams.indexOf(param.name) >= 0}
                         disableRipple
                     >
                         <Tooltip
