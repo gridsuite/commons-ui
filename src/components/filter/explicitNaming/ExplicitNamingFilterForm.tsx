@@ -239,32 +239,30 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 )}
             </Box>
             {watchEquipmentType && (
-                <Box sx={unscrollableDialogStyles.scrollableContent}>
-                    <CustomAgGridTable
-                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                        columnDefs={columnDefs}
-                        defaultColDef={defaultColDef}
-                        makeDefaultRowData={makeDefaultRowData}
-                        pagination
-                        paginationPageSize={100}
-                        suppressRowClickSelection
-                        alwaysShowVerticalScroll
-                        stopEditingWhenCellsLoseFocus
-                        csvProps={{
-                            fileName: intl.formatMessage({
-                                id: 'filterCsvFileName',
-                            }),
-                            fileHeaders: csvFileHeaders,
-                            getDataFromCsv: getDataFromCsvFile,
-                        }}
-                        cssProps={{
-                            '& .ag-root-wrapper-body': {
-                                maxHeight: '380px',
-                                height: '380px',
-                            },
-                        }}
-                    />
-                </Box>
+                <CustomAgGridTable
+                    name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                    columnDefs={columnDefs}
+                    defaultColDef={defaultColDef}
+                    makeDefaultRowData={makeDefaultRowData}
+                    pagination
+                    paginationPageSize={100}
+                    suppressRowClickSelection
+                    alwaysShowVerticalScroll
+                    stopEditingWhenCellsLoseFocus
+                    csvProps={{
+                        fileName: intl.formatMessage({
+                            id: 'filterCsvFileName',
+                        }),
+                        fileHeaders: csvFileHeaders,
+                        getDataFromCsv: getDataFromCsvFile,
+                    }}
+                    cssProps={{
+                        padding: 1,
+                        '& .ag-root-wrapper-body': {
+                            maxHeight: 'unset',
+                        },
+                    }}
+                />
             )}
         </>
     );

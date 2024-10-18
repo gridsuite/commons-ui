@@ -10,7 +10,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { Grid, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
@@ -235,15 +235,14 @@ export function CustomAgGridTable({
     }, []);
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12} className={theme.aggrid.theme} sx={style(cssProps).grid}>
+        <>
+            <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
                 <AgGridReact
                     rowData={rowData}
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
                     rowSelection="multiple"
-                    domLayout="autoHeight"
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
@@ -264,7 +263,7 @@ export function CustomAgGridTable({
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     {...props}
                 />
-            </Grid>
+            </Box>
             <BottomRightButtons
                 name={name}
                 handleAddRow={handleAddRow}
@@ -277,6 +276,6 @@ export function CustomAgGridTable({
                 csvProps={csvProps}
                 useFieldArrayOutput={useFieldArrayOutput}
             />
-        </Grid>
+        </>
     );
 }
