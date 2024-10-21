@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, Tooltip } from '@mui/material';
+import { Box, Grid, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { ArrowCircleDown, ArrowCircleUp, Upload } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/ControlPoint';
@@ -83,9 +83,9 @@ export function BottomRightButtons({
                     </InnerColoredButton>
                 </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Box>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
-            </Grid>
+            </Box>
             <CsvUploader
                 open={uploaderOpen}
                 onClose={() => setUploaderOpen(false)}

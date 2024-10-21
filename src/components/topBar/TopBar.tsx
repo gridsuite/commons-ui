@@ -270,6 +270,14 @@ export function TopBar({
         }
     };
 
+    const isHiddenUserInformation = (): boolean => {
+        if (appsAndUrls) {
+            const app = appsAndUrls.find((item) => item.name === appName);
+            return app?.hiddenUserInformation ?? false;
+        }
+        return false;
+    };
+
     const onUserInformationDialogClicked = () => {
         setAnchorElSettingsMenu(null);
         openUserInformationDialog();
@@ -535,23 +543,25 @@ export function TopBar({
                                         )}
 
                                         {/* User information */}
-                                        <StyledMenuItem
-                                            sx={styles.borderBottom}
-                                            style={{ opacity: '1' }}
-                                            onClick={onUserInformationDialogClicked}
-                                        >
-                                            <CustomListItemIcon>
-                                                <ManageAccounts fontSize="small" />
-                                            </CustomListItemIcon>
-                                            <ListItemText>
-                                                <Typography sx={styles.sizeLabel}>
-                                                    <FormattedMessage
-                                                        id="top-bar/userInformation"
-                                                        defaultMessage="User information"
-                                                    />
-                                                </Typography>
-                                            </ListItemText>
-                                        </StyledMenuItem>
+                                        {!isHiddenUserInformation() && (
+                                            <StyledMenuItem
+                                                sx={styles.borderBottom}
+                                                style={{ opacity: '1' }}
+                                                onClick={onUserInformationDialogClicked}
+                                            >
+                                                <CustomListItemIcon>
+                                                    <ManageAccounts fontSize="small" />
+                                                </CustomListItemIcon>
+                                                <ListItemText>
+                                                    <Typography sx={styles.sizeLabel}>
+                                                        <FormattedMessage
+                                                            id="top-bar/userInformation"
+                                                            defaultMessage="User information"
+                                                        />
+                                                    </Typography>
+                                                </ListItemText>
+                                            </StyledMenuItem>
+                                        )}
 
                                         {/* About */}
                                         {/* If the callback onAboutClick is undefined, we open default about dialog */}
@@ -597,7 +607,7 @@ export function TopBar({
                 )}
 
                 <AboutDialog
-                    open={isAboutDialogOpen}
+                    open={isAboutDialogOpen && !!user}
                     onClose={() => setAboutDialogOpen(false)}
                     appName={appName}
                     appVersion={appVersion}

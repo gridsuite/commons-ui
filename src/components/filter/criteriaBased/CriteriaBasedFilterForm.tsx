@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import Grid from '@mui/material/Grid';
 import { FilterProperties, filterPropertiesYupSchema } from './FilterProperties';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
@@ -26,12 +25,11 @@ export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
 
 export function CriteriaBasedFilterForm() {
     return (
-        <Grid container item spacing={1}>
-            <CriteriaBasedForm
-                equipments={FILTER_EQUIPMENTS}
-                defaultValues={criteriaBasedFilterEmptyFormData[FieldConstants.CRITERIA_BASED]}
-            />
+        <CriteriaBasedForm
+            equipments={FILTER_EQUIPMENTS}
+            defaultValues={criteriaBasedFilterEmptyFormData[FieldConstants.CRITERIA_BASED]}
+        >
             <FilterProperties />
-        </Grid>
+        </CriteriaBasedForm>
     );
 }
