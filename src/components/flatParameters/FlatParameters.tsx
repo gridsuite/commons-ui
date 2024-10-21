@@ -267,13 +267,7 @@ export function FlatParameters({
         const fieldValue = mixInitAndDefault(param);
         switch (param.type) {
             case 'BOOLEAN':
-                return (
-                    <Switch
-                        checked={!!fieldValue}
-                        onChange={(e) => onFieldChange(e.target.checked, param)}
-                        disabled={disabledParams !== undefined && disabledParams.indexOf(param.name) >= 0}
-                    />
-                );
+                return <Switch checked={!!fieldValue} onChange={(e) => onFieldChange(e.target.checked, param)} />;
             case 'DOUBLE': {
                 const err =
                     Number.isNaN(fieldValue) ||
@@ -435,7 +429,7 @@ export function FlatParameters({
                 <Fragment key={param.name}>
                     <ListItemButton
                         sx={styles.paramListItem}
-                        disabled={disabledParams !== undefined && disabledParams.indexOf(param.name) >= 0}
+                        disabled={disabledParams && disabledParams.indexOf(param.name) !== -1}
                         disableRipple
                     >
                         <Tooltip
