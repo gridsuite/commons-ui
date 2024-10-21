@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
-import Grid from '@mui/material/Grid';
+import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
@@ -29,6 +29,7 @@ import { ElementType } from '../../../utils/types/elementType';
 import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/ModifyElementSelection';
 import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
 
@@ -213,8 +214,8 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
     };
 
     return (
-        <Grid container item spacing={2}>
-            <Grid item xs={12}>
+        <>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -236,34 +237,33 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                         noElementMessageLabel="noSelectedStudyText"
                     />
                 )}
-            </Grid>
+            </Box>
             {watchEquipmentType && (
-                <Grid item xs={12}>
-                    <CustomAgGridTable
-                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                        columnDefs={columnDefs}
-                        defaultColDef={defaultColDef}
-                        makeDefaultRowData={makeDefaultRowData}
-                        pagination
-                        paginationPageSize={100}
-                        suppressRowClickSelection
-                        alwaysShowVerticalScroll
-                        stopEditingWhenCellsLoseFocus
-                        csvProps={{
-                            fileName: intl.formatMessage({
-                                id: 'filterCsvFileName',
-                            }),
-                            fileHeaders: csvFileHeaders,
-                            getDataFromCsv: getDataFromCsvFile,
-                        }}
-                        cssProps={{
-                            '& .ag-root-wrapper-body': {
-                                maxHeight: '430px',
-                            },
-                        }}
-                    />
-                </Grid>
+                <CustomAgGridTable
+                    name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                    columnDefs={columnDefs}
+                    defaultColDef={defaultColDef}
+                    makeDefaultRowData={makeDefaultRowData}
+                    pagination
+                    paginationPageSize={100}
+                    suppressRowClickSelection
+                    alwaysShowVerticalScroll
+                    stopEditingWhenCellsLoseFocus
+                    csvProps={{
+                        fileName: intl.formatMessage({
+                            id: 'filterCsvFileName',
+                        }),
+                        fileHeaders: csvFileHeaders,
+                        getDataFromCsv: getDataFromCsvFile,
+                    }}
+                    cssProps={{
+                        padding: 1,
+                        '& .ag-root-wrapper-body': {
+                            maxHeight: 'unset',
+                        },
+                    }}
+                />
             )}
-        </Grid>
+        </>
     );
 }
