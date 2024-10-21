@@ -29,7 +29,7 @@ interface AutocompleteWithFavoritesProps<Value>
  * Autocomplete component which allows to have a few "favorite" options always displayed
  * at the beginning of the selector and separated from the others options
  */
-function AutocompleteWithFavorites<Value>({
+export function AutocompleteWithFavorites<Value>({
     favorites,
     valid,
     options,
@@ -68,5 +68,3 @@ function AutocompleteWithFavorites<Value>({
         />
     );
 }
-
-export default AutocompleteWithFavorites;

@@ -7,47 +7,31 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
-import { Box } from '@mui/material';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
-import CustomAgGridTable, {
+import {
+    CustomAgGridTable,
     ROW_DRAGGING_SELECTION_COLUMN_DEF,
 } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
-import NumericEditor from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
-import ModifyElementSelection from '../../dialogs/modifyElementSelection/ModifyElementSelection';
-import { exportFilter } from '../../../services';
+import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/ModifyElementSelection';
+import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
-
-const styles = {
-    ScrollableContainer: {
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            clear: 'both',
-            display: 'block',
-        },
-    },
-    ScrollableContent: {
-        paddingTop: '10px',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-    },
-};
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -117,7 +101,7 @@ interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
 }
 
-function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
+export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
@@ -231,7 +215,7 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
 
     return (
         <>
-            <Box sx={{ paddingY: '12px' }}>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -255,37 +239,31 @@ function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: E
                 )}
             </Box>
             {watchEquipmentType && (
-                <Box sx={styles.ScrollableContainer}>
-                    <Box sx={styles.ScrollableContent}>
-                        <CustomAgGridTable
-                            name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                            columnDefs={columnDefs}
-                            defaultColDef={defaultColDef}
-                            makeDefaultRowData={makeDefaultRowData}
-                            pagination
-                            paginationPageSize={100}
-                            suppressRowClickSelection
-                            alwaysShowVerticalScroll
-                            stopEditingWhenCellsLoseFocus
-                            csvProps={{
-                                fileName: intl.formatMessage({
-                                    id: 'filterCsvFileName',
-                                }),
-                                fileHeaders: csvFileHeaders,
-                                getDataFromCsv: getDataFromCsvFile,
-                            }}
-                            cssProps={{
-                                '& .ag-root-wrapper-body': {
-                                    maxHeight: '380px',
-                                    height: '380px',
-                                },
-                            }}
-                        />
-                    </Box>
-                </Box>
+                <CustomAgGridTable
+                    name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                    columnDefs={columnDefs}
+                    defaultColDef={defaultColDef}
+                    makeDefaultRowData={makeDefaultRowData}
+                    pagination
+                    paginationPageSize={100}
+                    suppressRowClickSelection
+                    alwaysShowVerticalScroll
+                    stopEditingWhenCellsLoseFocus
+                    csvProps={{
+                        fileName: intl.formatMessage({
+                            id: 'filterCsvFileName',
+                        }),
+                        fileHeaders: csvFileHeaders,
+                        getDataFromCsv: getDataFromCsvFile,
+                    }}
+                    cssProps={{
+                        padding: 1,
+                        '& .ag-root-wrapper-body': {
+                            maxHeight: 'unset',
+                        },
+                    }}
+                />
             )}
         </>
     );
 }
-
-export default ExplicitNamingFilterForm;

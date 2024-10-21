@@ -16,7 +16,7 @@ const KEY_BACKSPACE = 'Backspace';
  * React version if you want to check, with forwardRef, useEffect and useImperativeHandle :
  * https://www.ag-grid.com/react-data-grid/component-cell-editor/#cell-editor-example
  */
-class NumericEditor implements ICellEditorComp {
+export class NumericEditor implements ICellEditorComp {
     eInput!: HTMLInputElement;
 
     cancelBeforeStart!: boolean;
@@ -102,5 +102,3 @@ class NumericEditor implements ICellEditorComp {
         return true;
     }
 }
-
-export default NumericEditor;

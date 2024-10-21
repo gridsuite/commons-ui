@@ -16,14 +16,21 @@ import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
 import { Box } from '@mui/material';
 import { testQuery } from './expertFilterUtils';
-import { COMBINATOR_OPTIONS, EXPERT_FILTER_EQUIPMENTS, fields, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
+import {
+    COMBINATOR_OPTIONS,
+    EXPERT_FILTER_EQUIPMENTS,
+    EXPERT_FILTER_FIELDS,
+    OPERATOR_OPTIONS,
+    RULES,
+} from './expertFilterConstants';
 
 import { FieldType } from './expertFilter.type';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import InputWithPopupConfirmation from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { FilterType } from '../constants/FilterConstants';
-import CustomReactQueryBuilder from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
+import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
+import { unscrollableDialogStyles } from '../../dialogs';
 
 yup.setLocale({
     mixed: {
@@ -36,24 +43,6 @@ yup.setLocale({
         },
     },
 });
-
-const styles = {
-    ScrollableContainer: {
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            clear: 'both',
-            display: 'block',
-        },
-    },
-    ScrollableContent: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        maxHeight: '100%',
-        overflow: 'auto',
-    },
-};
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
@@ -107,7 +96,7 @@ export function getExpertFilterEmptyFormData() {
     };
 }
 
-function ExpertFilterForm() {
+export function ExpertFilterForm() {
     const intl = useIntl();
 
     const { getValues, setValue } = useFormContext();
@@ -128,7 +117,7 @@ function ExpertFilterForm() {
     });
 
     const translatedFields = useMemo(() => {
-        return fields[watchEquipmentType]?.map((field) => {
+        return EXPERT_FILTER_FIELDS[watchEquipmentType]?.map((field) => {
             return {
                 ...field,
                 label: intl.formatMessage({ id: field.label }),
@@ -138,7 +127,7 @@ function ExpertFilterForm() {
 
     return (
         <>
-            <Box sx={{ paddingY: '12px' }}>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
@@ -150,15 +139,11 @@ function ExpertFilterForm() {
                     validateButtonLabel="button.changeType"
                 />
             </Box>
-            <Box sx={styles.ScrollableContainer}>
-                <Box sx={styles.ScrollableContent}>
-                    {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
-                        <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
-                    )}
-                </Box>
+            <Box sx={unscrollableDialogStyles.scrollableContent}>
+                {watchEquipmentType && isSupportedEquipmentType(watchEquipmentType) && (
+                    <CustomReactQueryBuilder name={EXPERT_FILTER_QUERY} fields={translatedFields} />
+                )}
             </Box>
         </>
     );
 }
-
-export default ExpertFilterForm;

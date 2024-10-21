@@ -5,22 +5,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
-import yup from '../../../utils/yupConfig';
-import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
 import { saveFilter } from '../../../services/explore';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { ElementExistsType } from '../../../utils/types/elementType';
-import FilterForm from '../FilterForm';
+import yup from '../../../utils/yupConfig';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { FilterForm } from '../FilterForm';
+import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { SelectionForCopy } from '../filter.type';
+import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
+import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
 
 const formSchema = yup
     .object()
@@ -47,7 +47,7 @@ export interface CriteriaBasedFilterEditionDialogProps {
     language?: string;
 }
 
-function CriteriaBasedFilterEditionDialog({
+export function CriteriaBasedFilterEditionDialog({
     id,
     name,
     titleId,
@@ -140,5 +140,3 @@ function CriteriaBasedFilterEditionDialog({
         </CustomMuiDialog>
     );
 }
-
-export default CriteriaBasedFilterEditionDialog;

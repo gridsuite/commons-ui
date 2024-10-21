@@ -24,3 +24,7 @@ export function isBlankOrEmpty(value: unknown) {
 export const unitToMicroUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e6));
 
 export const microUnitToUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e6));
+
+export const unitToKiloUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e3));
+
+export const kiloUnitToUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e3));

@@ -10,10 +10,10 @@ import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import * as yup from 'yup';
-import SubmitButton from '../../inputs/reactHookForm/utils/SubmitButton';
-import CancelButton from '../../inputs/reactHookForm/utils/CancelButton';
-import CustomFormProvider, { MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
-import PopupConfirmationDialog from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
+import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
+import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
+import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
 export interface CustomMuiDialogProps {
     open: boolean;
@@ -41,21 +41,43 @@ const styles = {
             margin: 'auto',
         },
     },
-    dialogPaperFullHeight: {
+};
+
+/**
+ * all those styles are made to work with each other in order to control the scroll behavior:
+ * <fullHeightDialog>
+ *   <unscrollableContainer>
+ *     <unscrollableHeader/> => there may be several unscrollableHeader one after another
+ *     <scrollableContent/>
+ *   </unscrollableContainer>
+ * </fullHeightDialog>
+ */
+export const unscrollableDialogStyles = {
+    fullHeightDialog: {
         '.MuiDialog-paper': {
             width: 'auto',
-            minWidth: '1100px', // TODO : turn this into a parameter ??
+            minWidth: '1024px',
             margin: 'auto',
             height: '95vh',
         },
     },
-    unscrollable: {
-        height: '100%',
+    unscrollableContainer: {
+        display: 'flex',
+        flexDirection: 'column',
         overflowY: 'hidden',
+    },
+    unscrollableHeader: {
+        flex: 'none',
+        padding: 1,
+    },
+    scrollableContent: {
+        flex: 'auto',
+        overflowY: 'auto',
+        padding: 1,
     },
 };
 
-function CustomMuiDialog({
+export function CustomMuiDialog({
     open,
     formSchema,
     formMethods,
@@ -128,7 +150,7 @@ function CustomMuiDialog({
             language={language}
         >
             <Dialog
-                sx={unscrollableFullHeight ? styles.dialogPaperFullHeight : styles.dialogPaper}
+                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
                 open={open}
                 onClose={handleClose}
                 fullWidth
@@ -139,7 +161,9 @@ function CustomMuiDialog({
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent sx={unscrollableFullHeight ? styles.unscrollable : null}>{children}</DialogContent>
+                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
+                    {children}
+                </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton
@@ -160,5 +184,3 @@ function CustomMuiDialog({
         </CustomFormProvider>
     );
 }
-
-export default CustomMuiDialog;

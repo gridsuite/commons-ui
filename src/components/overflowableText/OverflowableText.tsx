@@ -108,5 +108,3 @@ export const OverflowableText = styled(
         );
     }
 )({});
-
-export default OverflowableText;

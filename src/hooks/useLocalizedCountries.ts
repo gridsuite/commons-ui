@@ -11,7 +11,7 @@ import localizedCountries, { LocalizedCountries } from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr';
 // @ts-ignore
 import countriesEn from 'localized-countries/data/en';
-import { LANG_FRENCH, LANG_ENGLISH, LANG_SYSTEM } from '../components/topBar/TopBar';
+import { LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../utils/constants/browserConstants';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
 

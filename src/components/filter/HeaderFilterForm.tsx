@@ -9,12 +9,12 @@ import { useFormContext } from 'react-hook-form';
 import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
-import FieldConstants from '../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../utils/constants/fieldConstants';
 import { FilterType } from './constants/FilterConstants';
-import UniqueNameInput from '../inputs/reactHookForm/text/UniqueNameInput';
+import { UniqueNameInput } from '../inputs/reactHookForm/text/UniqueNameInput';
 import { ElementExistsType, ElementType } from '../../utils/types/elementType';
-import DescriptionField from '../inputs/reactHookForm/text/DescriptionField';
-import RadioInput from '../inputs/reactHookForm/booleans/RadioInput';
+import { DescriptionField } from '../inputs/reactHookForm/text/DescriptionField';
+import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
 
 export interface FilterFormProps {
     creation?: boolean;
@@ -26,7 +26,7 @@ export interface FilterFormProps {
     };
 }
 
-function HeaderFilterForm({
+export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
@@ -76,4 +76,3 @@ function HeaderFilterForm({
         </Grid>
     );
 }
-export default HeaderFilterForm;

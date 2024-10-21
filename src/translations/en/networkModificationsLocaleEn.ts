@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const networkModificationsLocaleEn = {
+export const networkModificationsLocaleEn = {
     'network_modifications.modificationsCount':
         '{hide, select, false {{count, plural, =0 {no modification} =1 {{count} modification} other {{count} modifications}}} other {...}}',
     'network_modifications.EQUIPMENT_DELETION': 'Deletion of {computedLabel}',
@@ -62,5 +62,3 @@ const networkModificationsLocaleEn = {
     'network_modifications.TABULAR_CREATION': 'Tabular creation - {computedLabel}',
     'network_modifications.tabular.GENERATOR_CREATION': 'generator creations',
 };
-
-export default networkModificationsLocaleEn;

@@ -44,7 +44,7 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
     };
 };
 
-const useModificationLabelComputer = () => {
+export const useModificationLabelComputer = () => {
     const intl = useIntl();
 
     const getLabel = useCallback(
@@ -104,5 +104,3 @@ const useModificationLabelComputer = () => {
 
     return { computeLabel };
 };
-
-export default useModificationLabelComputer;

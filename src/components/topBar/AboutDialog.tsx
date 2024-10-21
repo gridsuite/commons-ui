@@ -127,7 +127,6 @@ export type GridSuiteModule = {
     type: ModuleType;
     version?: string;
     gitTag?: string;
-    // license?: string;
 };
 
 export interface AboutDialogProps {
@@ -273,7 +272,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
     );
 }
 
-function AboutDialog({
+export function AboutDialog({
     open,
     onClose,
     globalVersionPromise,
@@ -482,5 +481,3 @@ function AboutDialog({
         </Dialog>
     );
 }
-
-export default AboutDialog;

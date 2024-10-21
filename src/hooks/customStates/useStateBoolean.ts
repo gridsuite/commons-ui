@@ -15,12 +15,10 @@ export type UseStateBooleanReturn = {
     setValue: Dispatch<SetStateAction<boolean>>;
 };
 
-const useStateBoolean = (initialState: boolean | (() => boolean)): UseStateBooleanReturn => {
+export const useStateBoolean = (initialState: boolean | (() => boolean)): UseStateBooleanReturn => {
     const [value, setValue] = useState<boolean>(initialState);
     const setTrue = useCallback(() => setValue(true), []);
     const setFalse = useCallback(() => setValue(false), []);
     const invert = useCallback(() => setValue((prevState) => !prevState), []);
     return { value, setTrue, setFalse, invert, setValue };
 };
-
-export default useStateBoolean;

@@ -21,7 +21,7 @@ export interface ErrorInputProps {
     InputField: ({ message }: { message: string | React.ReactNode }) => React.ReactNode;
 }
 
-function ErrorInput({ name, InputField }: ErrorInputProps) {
+export function ErrorInput({ name, InputField }: ErrorInputProps) {
     const {
         fieldState: { error },
         formState: { isSubmitting },
@@ -69,5 +69,3 @@ function ErrorInput({ name, InputField }: ErrorInputProps) {
         )
     );
 }
-
-export default ErrorInput;

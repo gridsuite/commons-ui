@@ -15,12 +15,10 @@ export type UseStateNumberReturn = {
     reset: () => void;
 };
 
-const useStateNumber = (initialState: number | (() => number) = 0): UseStateNumberReturn => {
+export const useStateNumber = (initialState: number | (() => number) = 0): UseStateNumberReturn => {
     const [value, setValue] = useState<number>(initialState);
     const increment = useCallback((step: number = 1) => setValue((prevState) => prevState + step), []);
     const decrement = useCallback((step: number = 1) => setValue((prevState) => prevState - step), []);
     const reset = useCallback(() => setValue(initialState), [initialState]);
     return { value, increment, decrement, reset, setValue };
 };
-
-export default useStateNumber;

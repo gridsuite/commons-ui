@@ -14,7 +14,7 @@ export interface SliderInputProps extends SliderProps {
     onValueChanged: (value: any) => void;
 }
 
-function SliderInput({ name, min, max, step, size = 'small', onValueChanged = identity }: SliderInputProps) {
+export function SliderInput({ name, min, max, step, size = 'small', onValueChanged = identity }: SliderInputProps) {
     const {
         field: { onChange, value },
     } = useController({ name });
@@ -31,5 +31,3 @@ function SliderInput({ name, min, max, step, size = 'small', onValueChanged = id
 
     return <Slider size={size} min={min} max={max} step={step} value={value} onChange={handleValueChange} />;
 }
-
-export default SliderInput;
