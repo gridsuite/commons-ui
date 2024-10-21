@@ -12,7 +12,7 @@ import {
     Divider,
     IconButton,
     List,
-    ListItemButton,
+    ListItem,
     MenuItem,
     Select,
     Switch,
@@ -427,10 +427,9 @@ export function FlatParameters({
         <List sx={styles.paramList}>
             {paramsAsArray.map((param, index) => (
                 <Fragment key={param.name}>
-                    <ListItemButton
+                    <ListItem
                         sx={styles.paramListItem}
                         disabled={disabledParams && disabledParams.indexOf(param.name) !== -1}
-                        disableRipple
                     >
                         <Tooltip
                             title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
@@ -442,7 +441,7 @@ export function FlatParameters({
                             </Typography>
                         </Tooltip>
                         {renderField(param)}
-                    </ListItemButton>
+                    </ListItem>
                     {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}
                 </Fragment>
             ))}
