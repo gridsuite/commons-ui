@@ -425,26 +425,30 @@ export function FlatParameters({
 
     return (
         <List sx={styles.paramList}>
-            {paramsAsArray.map((param, index) => (
-                <Fragment key={param.name}>
-                    <ListItem
-                        sx={styles.paramListItem}
-                        disabled={disabledParams && disabledParams.indexOf(param.name) !== -1}
-                    >
-                        <Tooltip
-                            title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
-                            enterDelay={1200}
-                            key={param.name}
-                        >
-                            <Typography sx={styles.paramName}>
-                                <FormattedMessage id={param.name} defaultMessage={param.name.slice(prefix.length)} />
-                            </Typography>
-                        </Tooltip>
-                        {renderField(param)}
-                    </ListItem>
-                    {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}
-                </Fragment>
-            ))}
+            {paramsAsArray
+                .filter((param) => !disabledParams || disabledParams.indexOf(param.name) === -1)
+                .map((param, index) => (
+                    <Fragment key={param.name}>
+                        <ListItem sx={styles.paramListItem}>
+                            <Tooltip
+                                title={
+                                    <FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />
+                                }
+                                enterDelay={1200}
+                                key={param.name}
+                            >
+                                <Typography sx={styles.paramName}>
+                                    <FormattedMessage
+                                        id={param.name}
+                                        defaultMessage={param.name.slice(prefix.length)}
+                                    />
+                                </Typography>
+                            </Tooltip>
+                            {renderField(param)}
+                        </ListItem>
+                        {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}
+                    </Fragment>
+                ))}
         </List>
     );
 }
