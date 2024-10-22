@@ -72,6 +72,8 @@ export async function fetchElementsInfos(
         ]).toString();
 
         const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
+        // eslint disable is present because of https://eslint.org/docs/latest/rules/no-await-in-loop#when-not-to-use-it
+        // we use await here to avoid to do too many request to the server
         // eslint-disable-next-line no-await-in-loop
         const result = await backendFetchJson(url, {
             method: 'get',
