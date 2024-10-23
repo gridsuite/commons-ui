@@ -75,6 +75,8 @@ export enum EquipmentType {
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
     DANGLING_LINE = 'DANGLING_LINE',
     TIE_LINE = 'TIE_LINE',
+    DISCONNECTOR = 'DISCONNECTOR',
+    BREAKER = 'BREAKER',
 }
 
 // Must be equivalent as the back enum
@@ -152,6 +154,8 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
         tagLabel: 'equipment_search/lccConverterStationTag',
     },
     [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
+    [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
+    [EquipmentType.BREAKER]: undefined, // Not used in the UI
 };
 
 export interface Identifiable {
