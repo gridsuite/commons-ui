@@ -10,10 +10,10 @@ import { FieldErrors, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import * as yup from 'yup';
-import SubmitButton from '../../inputs/reactHookForm/utils/SubmitButton';
-import CancelButton from '../../inputs/reactHookForm/utils/CancelButton';
-import CustomFormProvider, { MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
-import PopupConfirmationDialog from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
+import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
+import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
+import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
 export interface CustomMuiDialogProps {
     open: boolean;
@@ -30,6 +30,7 @@ export interface CustomMuiDialogProps {
     isDataFetching?: boolean;
     language?: string;
     confirmationMessageKey?: string;
+    unscrollableFullHeight?: boolean;
 }
 
 const styles = {
@@ -42,7 +43,41 @@ const styles = {
     },
 };
 
-function CustomMuiDialog({
+/**
+ * all those styles are made to work with each other in order to control the scroll behavior:
+ * <fullHeightDialog>
+ *   <unscrollableContainer>
+ *     <unscrollableHeader/> => there may be several unscrollableHeader one after another
+ *     <scrollableContent/>
+ *   </unscrollableContainer>
+ * </fullHeightDialog>
+ */
+export const unscrollableDialogStyles = {
+    fullHeightDialog: {
+        '.MuiDialog-paper': {
+            width: 'auto',
+            minWidth: '1024px',
+            margin: 'auto',
+            height: '95vh',
+        },
+    },
+    unscrollableContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflowY: 'hidden',
+    },
+    unscrollableHeader: {
+        flex: 'none',
+        padding: 1,
+    },
+    scrollableContent: {
+        flex: 'auto',
+        overflowY: 'auto',
+        padding: 1,
+    },
+};
+
+export function CustomMuiDialog({
     open,
     formSchema,
     formMethods,
@@ -57,6 +92,7 @@ function CustomMuiDialog({
     children,
     language,
     confirmationMessageKey,
+    unscrollableFullHeight = false,
 }: Readonly<CustomMuiDialogProps>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState(undefined);
@@ -71,8 +107,8 @@ function CustomMuiDialog({
     );
 
     const handleClose = (event: React.MouseEvent, reason?: string) => {
-        if (reason === 'backdropClick' && onCancel) {
-            onCancel();
+        if (reason === 'backdropClick') {
+            return;
         }
         onClose(event);
     };
@@ -113,14 +149,21 @@ function CustomMuiDialog({
             removeOptional={removeOptional}
             language={language}
         >
-            <Dialog sx={styles.dialogPaper} open={open} onClose={handleClose} fullWidth>
+            <Dialog
+                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
+                open={open}
+                onClose={handleClose}
+                fullWidth
+            >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle>
                     <Grid item xs={11}>
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent>{children}</DialogContent>
+                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
+                    {children}
+                </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton
@@ -141,5 +184,3 @@ function CustomMuiDialog({
         </CustomFormProvider>
     );
 }
-
-export default CustomMuiDialog;

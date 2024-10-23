@@ -13,7 +13,7 @@ export interface SignInCallbackHandlerProps {
     handleSignInCallback: () => void;
 }
 
-function SignInCallbackHandler({ userManager, handleSignInCallback }: SignInCallbackHandlerProps) {
+export function SignInCallbackHandler({ userManager, handleSignInCallback }: SignInCallbackHandlerProps) {
     useEffect(() => {
         if (userManager !== null) {
             handleSignInCallback();
@@ -22,4 +22,3 @@ function SignInCallbackHandler({ userManager, handleSignInCallback }: SignInCall
 
     return <h1> </h1>;
 }
-export default SignInCallbackHandler;

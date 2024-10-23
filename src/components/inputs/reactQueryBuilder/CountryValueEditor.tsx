@@ -8,14 +8,14 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocalizedCountries } from '../../../hooks/useLocalizedCountries';
-import useCustomFormContext from '../reactHookForm/provider/useCustomFormContext';
+import { useCustomFormContext } from '../reactHookForm/provider/useCustomFormContext';
 import { fetchFavoriteAndDefaultCountries } from '../../../services';
-import AutocompleteWithFavorites from './AutocompleteWithFavorites';
-import useConvertValue from './hooks/useConvertValue';
-import useValid from './hooks/useValid';
+import { AutocompleteWithFavorites } from './AutocompleteWithFavorites';
+import { useConvertValue } from './hooks/useConvertValue';
+import { useValid } from './hooks/useValid';
 
-function CountryValueEditor(props: ValueEditorProps) {
-    const { value, handleOnChange } = props;
+export function CountryValueEditor(props: ValueEditorProps) {
+    const { value, handleOnChange, title } = props;
 
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language);
@@ -47,6 +47,7 @@ function CountryValueEditor(props: ValueEditorProps) {
             favorites={favoriteCountryCodes}
             getOptionLabel={(code: string) => (code ? translate(code) : '')}
             valid={valid}
+            title={title}
             onChange={(event: SyntheticEvent, newValue: any) => {
                 handleOnChange(newValue);
             }}
@@ -54,4 +55,3 @@ function CountryValueEditor(props: ValueEditorProps) {
         />
     );
 }
-export default CountryValueEditor;

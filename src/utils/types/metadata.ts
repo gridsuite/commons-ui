@@ -6,17 +6,29 @@
  */
 import { PredefinedProperties } from './types';
 
-export interface Metadata {
+type MetaDataRessources = {
+    types: string[];
+    path: string;
+};
+export type Metadata = {
     name: string;
-    url: string;
+    url: string | URL;
     appColor: string;
     hiddenInAppsMenu: boolean;
-    resources: unknown;
-}
+    hiddenUserInformation: boolean;
+    resources?: MetaDataRessources[];
+};
 
-export interface StudyMetadata extends Metadata {
+export type StudyMetadata = Metadata & {
     name: 'Study';
-    predefinedEquipmentProperties: {
+    predefinedEquipmentProperties?: {
         [networkElementType: string]: PredefinedProperties;
     };
-}
+    defaultParametersValues?: {
+        fluxConvention?: string;
+        enableDeveloperMode?: string; // maybe 'true'|'false' type?
+        mapManualRefresh?: string; // maybe 'true'|'false' type?
+    };
+    defaultCountry?: string;
+    favoriteCountries?: string[];
+};

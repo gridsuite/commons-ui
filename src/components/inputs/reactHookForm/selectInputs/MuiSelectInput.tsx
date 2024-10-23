@@ -15,7 +15,7 @@ export type MuiSelectInputProps = SelectProps & {
 };
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
+export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
     const {
         field: { value, onChange },
     } = useController({
@@ -32,5 +32,3 @@ function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
         </Select>
     );
 }
-
-export default MuiSelectInput;

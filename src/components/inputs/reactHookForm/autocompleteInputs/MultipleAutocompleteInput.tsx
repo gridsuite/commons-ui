@@ -6,9 +6,9 @@
  */
 import { useState } from 'react';
 import { useFieldArray, useWatch } from 'react-hook-form';
-import AutocompleteInput from './AutocompleteInput';
+import { AutocompleteInput } from './AutocompleteInput';
 
-function MultipleAutocompleteInput({ name, ...props }: any) {
+export function MultipleAutocompleteInput({ name, ...props }: any) {
     const [unsavedInput, setUnsavedInput] = useState('');
     const watchAutocompleteValues = useWatch({
         name,
@@ -49,5 +49,3 @@ function MultipleAutocompleteInput({ name, ...props }: any) {
         />
     );
 }
-
-export default MultipleAutocompleteInput;

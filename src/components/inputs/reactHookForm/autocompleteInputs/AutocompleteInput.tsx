@@ -8,8 +8,8 @@
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
-import FieldLabel from '../utils/FieldLabel';
-import useCustomFormContext from '../provider/useCustomFormContext';
+import { FieldLabel } from '../utils/FieldLabel';
+import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
 
 export interface AutocompleteInputProps
@@ -30,7 +30,7 @@ export interface AutocompleteInputProps
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
 }
 
-function AutocompleteInput({
+export function AutocompleteInput({
     name,
     label,
     options,
@@ -106,5 +106,3 @@ function AutocompleteInput({
         />
     );
 }
-
-export default AutocompleteInput;

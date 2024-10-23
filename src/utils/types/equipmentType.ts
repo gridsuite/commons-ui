@@ -6,7 +6,7 @@
  */
 
 import { Theme } from '@mui/material';
-import { LIGHT_THEME } from '../../components/topBar/TopBar';
+import { LIGHT_THEME } from '../constants/browserConstants';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';

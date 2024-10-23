@@ -9,9 +9,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import { useFormContext, useWatch } from 'react-hook-form';
-import AutocompleteInput from '../../inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
-import MultipleAutocompleteInput from '../../inputs/reactHookForm/autocompleteInputs/MultipleAutocompleteInput';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { AutocompleteInput } from '../../inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
+import { MultipleAutocompleteInput } from '../../inputs/reactHookForm/autocompleteInputs/MultipleAutocompleteInput';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 
 import { PredefinedProperties } from '../../../utils/types/types';
 
@@ -28,7 +28,7 @@ interface FilterPropertyProps {
     propertyType: string;
 }
 
-function FilterProperty(props: FilterPropertyProps) {
+export function FilterProperty(props: FilterPropertyProps) {
     const { propertyType, index, predefined, valuesFields, handleDelete } = props;
     const { setValue } = useFormContext();
 
@@ -85,5 +85,3 @@ function FilterProperty(props: FilterPropertyProps) {
         </Grid>
     );
 }
-
-export default FilterProperty;

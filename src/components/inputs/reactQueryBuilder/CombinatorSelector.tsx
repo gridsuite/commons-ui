@@ -8,9 +8,9 @@
 import { CombinatorSelectorProps } from 'react-querybuilder';
 import { useCallback, useState } from 'react';
 import { MaterialValueSelector } from '@react-querybuilder/material';
-import PopupConfirmationDialog from '../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
+import { PopupConfirmationDialog } from '../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
 
-function CombinatorSelector(props: CombinatorSelectorProps) {
+export function CombinatorSelector(props: CombinatorSelectorProps) {
     const { value, handleOnChange } = props;
     const [tempCombinator, setTempCombinator] = useState(value);
     const [openPopup, setOpenPopup] = useState(false);
@@ -31,7 +31,6 @@ function CombinatorSelector(props: CombinatorSelectorProps) {
             />
             <MaterialValueSelector
                 {...props}
-                title={undefined} // disable the tooltip
                 handleOnChange={(newCombinator) => {
                     setTempCombinator(newCombinator);
                     setOpenPopup(true);
@@ -40,4 +39,3 @@ function CombinatorSelector(props: CombinatorSelectorProps) {
         </>
     );
 }
-export default CombinatorSelector;

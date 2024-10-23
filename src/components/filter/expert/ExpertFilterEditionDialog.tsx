@@ -5,22 +5,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import { noSelectionForCopy } from '../../../utils/types/equipmentTypes';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
-import yup from '../../../utils/yupConfig';
-import FilterForm from '../FilterForm';
-import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
-import { saveExpertFilter } from '../utils/filterApi';
-import { importExpertRules } from './expertFilterUtils';
-import { FilterType } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { ElementExistsType } from '../../../utils/types/elementType';
+import yup from '../../../utils/yupConfig';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { SelectionForCopy } from '../filter.type';
+import { FilterForm } from '../FilterForm';
+import { saveExpertFilter } from '../utils/filterApi';
+import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
+import { importExpertRules } from './expertFilterUtils';
 
 const formSchema = yup
     .object()
@@ -40,15 +40,15 @@ export interface ExpertFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
 
-    selectionForCopy: any;
+    selectionForCopy: SelectionForCopy;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-    setSelectionForCopy: (selection: any) => void;
+    setSelectionForCopy: (selection: SelectionForCopy) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
 }
 
-function ExpertFilterEditionDialog({
+export function ExpertFilterEditionDialog({
     id,
     name,
     titleId,
@@ -120,9 +120,9 @@ function ExpertFilterEditionDialog({
                 }
             );
             if (selectionForCopy.sourceItemUuid === id) {
-                setSelectionForCopy(noSelectionForCopy);
+                setSelectionForCopy(NO_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({
-                    noSelectionForCopy,
+                    NO_SELECTION_FOR_COPY,
                 });
             }
         },
@@ -143,10 +143,9 @@ function ExpertFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            unscrollableFullHeight
         >
             {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
         </CustomMuiDialog>
     );
 }
-
-export default ExpertFilterEditionDialog;

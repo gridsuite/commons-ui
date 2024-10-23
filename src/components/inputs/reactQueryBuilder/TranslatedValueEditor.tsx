@@ -10,12 +10,12 @@ import { useMemo } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { useIntl } from 'react-intl';
 import { Autocomplete, TextField } from '@mui/material';
-import useConvertValue from './hooks/useConvertValue';
-import useValid from './hooks/useValid';
+import { useConvertValue } from './hooks/useConvertValue';
+import { useValid } from './hooks/useValid';
 
-function TranslatedValueEditor(props: ValueEditorProps) {
+export function TranslatedValueEditor(props: ValueEditorProps) {
     const intl = useIntl();
-    const { values, value, handleOnChange } = props;
+    const { values, value, handleOnChange, title } = props;
 
     const translatedValues = useMemo(() => {
         return values?.map((v) => {
@@ -39,18 +39,13 @@ function TranslatedValueEditor(props: ValueEditorProps) {
 
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!Array.isArray(value)) {
-        return (
-            <MaterialValueEditor
-                {...props}
-                values={translatedValues}
-                title={undefined} // disable the tooltip
-            />
-        );
+        return <MaterialValueEditor {...props} values={translatedValues} />;
     }
     return (
         <Autocomplete
             value={value}
             options={Object.keys(translatedValuesAutocomplete)}
+            title={title}
             getOptionLabel={(code: string) => translatedValuesAutocomplete[code]}
             onChange={(event, newValue: any) => handleOnChange(newValue)}
             multiple
@@ -60,4 +55,3 @@ function TranslatedValueEditor(props: ValueEditorProps) {
         />
     );
 }
-export default TranslatedValueEditor;

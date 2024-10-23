@@ -12,7 +12,7 @@ import { DialogContentText } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { FormattedMessage } from 'react-intl';
-import CancelButton from '../../inputs/reactHookForm/utils/CancelButton';
+import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 
 export interface PopupConfirmationDialogProps {
     message: string;
@@ -22,7 +22,7 @@ export interface PopupConfirmationDialogProps {
     handlePopupConfirmation: () => void;
 }
 
-function PopupConfirmationDialog({
+export function PopupConfirmationDialog({
     message,
     validateButtonLabel,
     openConfirmationPopup,
@@ -44,5 +44,3 @@ function PopupConfirmationDialog({
         </Dialog>
     );
 }
-
-export default PopupConfirmationDialog;

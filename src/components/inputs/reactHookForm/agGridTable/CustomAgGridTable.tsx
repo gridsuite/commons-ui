@@ -10,11 +10,11 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { Grid, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
-import BottomRightButtons from './BottomRightButtons';
-import FieldConstants from '../../../../utils/constants/fieldConstants';
+import { BottomRightButtons } from './BottomRightButtons';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -97,7 +97,7 @@ export interface CustomAgGridTableProps {
     stopEditingWhenCellsLoseFocus: boolean;
 }
 
-function CustomAgGridTable({
+export function CustomAgGridTable({
     name,
     columnDefs,
     makeDefaultRowData,
@@ -149,7 +149,7 @@ function CustomAgGridTable({
     const handleMoveRowUp = () => {
         selectedRows
             .map((row) => getIndex(row))
-            .sort()
+            .sort((n1, n2) => n1 - n2)
             .forEach((idx) => {
                 swap(idx, idx - 1);
             });
@@ -158,7 +158,7 @@ function CustomAgGridTable({
     const handleMoveRowDown = () => {
         selectedRows
             .map((row) => getIndex(row))
-            .sort()
+            .sort((n1, n2) => n1 - n2)
             .reverse()
             .forEach((idx) => {
                 swap(idx, idx + 1);
@@ -235,15 +235,14 @@ function CustomAgGridTable({
     }, []);
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12} className={theme.aggrid.theme} sx={style(cssProps).grid}>
+        <>
+            <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
                 <AgGridReact
                     rowData={rowData}
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
                     rowSelection="multiple"
-                    domLayout="autoHeight"
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
@@ -264,7 +263,7 @@ function CustomAgGridTable({
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     {...props}
                 />
-            </Grid>
+            </Box>
             <BottomRightButtons
                 name={name}
                 handleAddRow={handleAddRow}
@@ -277,8 +276,6 @@ function CustomAgGridTable({
                 csvProps={csvProps}
                 useFieldArrayOutput={useFieldArrayOutput}
             />
-        </Grid>
+        </>
     );
 }
-
-export default CustomAgGridTable;
