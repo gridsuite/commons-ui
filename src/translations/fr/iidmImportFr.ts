@@ -1,0 +1,12 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { iidmCommonImportExportFr } from './iidmCommonImportExportFr';
+
+export const iidmImportFr = {
+    'iidm.import.xml.extensions.entsoeArea': iidmCommonImportExportFr['iidm.xml.extensions.entsoeArea'],
+};
