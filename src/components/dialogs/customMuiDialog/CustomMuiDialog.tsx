@@ -55,8 +55,7 @@ const styles = {
 export const unscrollableDialogStyles = {
     fullHeightDialog: {
         '.MuiDialog-paper': {
-            width: 'auto',
-            minWidth: '1024px',
+            width: '90vw',
             margin: 'auto',
             height: '95vh',
         },
