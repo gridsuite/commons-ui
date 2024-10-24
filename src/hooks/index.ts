@@ -6,6 +6,7 @@
  */
 
 export * from './customStates';
+export * from './useModificationLabelComputer';
 export * from './useConfidentialityWarning';
 export * from './useDebounce';
 export * from './useIntlRef';

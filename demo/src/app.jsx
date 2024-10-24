@@ -107,6 +107,8 @@ import {
     useSnackMessage,
     commonButtonEn,
     commonButtonFr,
+    networkModificationsLocaleEn,
+    networkModificationsLocaleFr,
 } from '../../src';
 
 const messages = {
@@ -127,6 +129,7 @@ const messages = {
         ...flatParametersEn,
         ...multipleSelectionDialogEn,
         ...commonButtonEn,
+        ...networkModificationsLocaleEn,
         ...inputsEn,
         ...translations.en,
     },
@@ -146,6 +149,7 @@ const messages = {
         ...cardErrorBoundaryFr,
         ...flatParametersFr,
         ...commonButtonFr,
+        ...networkModificationsLocaleFr,
         ...multipleSelectionDialogFr,
         ...inputsFr,
         ...translations.fr,
