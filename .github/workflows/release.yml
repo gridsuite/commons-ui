@@ -31,6 +31,8 @@ jobs:
 
       - name: Add release commit and publish
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           npm version ${{ github.event.inputs.versionType }} 
           git push origin main
           git push origin $(git tag --points-at HEAD)
@@ -38,3 +40,9 @@ jobs:
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub release
+        run: |
+          gh release create $(git tag --points-at HEAD) --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
