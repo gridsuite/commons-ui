@@ -9,6 +9,7 @@
 import { render as rtlRender } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { IntlProvider } from 'react-intl';
+import { Theme } from '@mui/system';
 import {
     loginEn,
     reportViewerEn,
@@ -27,7 +28,7 @@ import {
     multipleSelectionDialogEn,
     commonButtonEn,
     directoryItemsInputEn,
-} from '..';
+} from '../translations/en';
 
 const fullTrad = {
     ...reportViewerEn,
@@ -48,8 +49,8 @@ const fullTrad = {
     ...commonButtonEn,
     ...directoryItemsInputEn,
 };
-const renderWithTranslation = (ui: React.ReactElement) => (
-    <IntlProvider locale="en" messages={fullTrad}>
+const renderWithTranslation = (ui: React.ReactElement, trad: Record<string, string> = fullTrad) => (
+    <IntlProvider locale="en" messages={trad}>
         {ui}
     </IntlProvider>
 );
@@ -85,27 +86,39 @@ const lightTheme = createTheme(
         },
     }
 );
-const renderWithTheme = (ui: React.ReactElement) => <ThemeProvider theme={lightTheme}>{ui}</ThemeProvider>;
+const renderWithTheme = (ui: React.ReactElement, theme: Theme = lightTheme) => (
+    <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+);
 
 // eslint-disable-next-line import/prefer-default-export
 export class RenderBuilder {
     renderWithTheme: boolean = false;
 
+    theme: Theme = lightTheme;
+
     renderWithTrad: boolean = false;
 
-    withTrad() {
+    trad: Record<string, string> = fullTrad;
+
+    withTrad(trad?: Record<string, string>) {
         this.renderWithTrad = true;
+        if (trad) {
+            this.trad = trad;
+        }
         return this;
     }
 
-    withTheme() {
+    withTheme(theme?: Theme) {
         this.renderWithTheme = true;
+        if (theme) {
+            this.theme = theme;
+        }
         return this;
     }
 
     render(ui: React.ReactElement) {
-        let newUi = this.renderWithTrad ? renderWithTranslation(ui) : ui;
-        newUi = this.renderWithTheme ? renderWithTheme(newUi) : newUi;
+        let newUi = this.renderWithTrad ? renderWithTranslation(ui, this.trad) : ui;
+        newUi = this.renderWithTheme ? renderWithTheme(newUi, this.theme) : newUi;
         return rtlRender(newUi);
     }
 }

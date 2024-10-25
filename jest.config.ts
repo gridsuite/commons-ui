@@ -19,6 +19,7 @@ const config: Config = {
         IS_REACT_ACT_ENVIRONMENT: true,
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+    testPathIgnorePatterns: ['<rootDir>/src/tests/testsUtils.test.tsx'],
 };
 
 export default config;
