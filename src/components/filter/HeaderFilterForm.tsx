@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useFormContext } from 'react-hook-form';
-import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
@@ -24,6 +22,7 @@ export interface FilterFormProps {
         id: UUID;
         equipmentType: string;
     };
+    handleFilterTypeChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
 }
 
 export function HeaderFilterForm({
@@ -31,20 +30,8 @@ export function HeaderFilterForm({
     creation,
     activeDirectory,
     elementExists,
+    handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
-    const { setValue } = useFormContext();
-
-    useEffect(() => {
-        if (sourceFilterForExplicitNamingConversion) {
-            setValue(FieldConstants.FILTER_TYPE, FilterType.EXPLICIT_NAMING.id);
-        }
-    }, [sourceFilterForExplicitNamingConversion, setValue]);
-
-    // We do this because setValue don't set the field dirty
-    const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
-        setValue(FieldConstants.FILTER_TYPE, value);
-    };
-
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -67,7 +54,7 @@ export function HeaderFilterForm({
                             <RadioInput
                                 name={FieldConstants.FILTER_TYPE}
                                 options={Object.values(FilterType)}
-                                formProps={{ onChange: handleChange }} // need to override this in order to do not activate the validate button when changing the filter type
+                                formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
                             />
                         </Grid>
                     )}

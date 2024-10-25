@@ -49,33 +49,37 @@ export function saveFilter(filter: any, name: string, token?: string) {
     );
 }
 
-export function fetchElementsInfos(
+export async function fetchElementsInfos(
     ids: UUID[],
     elementTypes?: string[],
     equipmentTypes?: string[]
 ): Promise<ElementAttributes[]> {
     console.info('Fetching elements metadata');
+    let final: ElementAttributes[] = [];
+    const chunkSize = 50;
+    for (let i = 0; i < ids.length; i += chunkSize) {
+        const partitionIds = ids.slice(i, i + chunkSize);
+        const idsParams = getRequestParamFromList(
+            'ids',
+            partitionIds.filter((id) => id) // filter falsy elements
+        );
+        const equipmentTypesParams = getRequestParamFromList('equipmentTypes', equipmentTypes);
+        const elementTypesParams = getRequestParamFromList('elementTypes', elementTypes);
+        const urlSearchParams = new URLSearchParams([
+            ...idsParams,
+            ...equipmentTypesParams,
+            ...elementTypesParams,
+        ]).toString();
 
-    // Add params to Url
-    const idsParams = getRequestParamFromList(
-        'ids',
-        ids.filter((id) => id) // filter falsy elements
-    );
-
-    const equipmentTypesParams = getRequestParamFromList('equipmentTypes', equipmentTypes);
-
-    const elementTypesParams = getRequestParamFromList('elementTypes', elementTypes);
-
-    const urlSearchParams = new URLSearchParams([
-        ...idsParams,
-        ...equipmentTypesParams,
-        ...elementTypesParams,
-    ]).toString();
-
-    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
-    console.debug(url);
-    return backendFetchJson(url, {
-        method: 'get',
-        headers: { 'Content-Type': 'application/json' },
-    });
+        const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/metadata?${urlSearchParams}`;
+        // eslint disable is present because of https://eslint.org/docs/latest/rules/no-await-in-loop#when-not-to-use-it
+        // we use await here to avoid to do too many request to the server
+        // eslint-disable-next-line no-await-in-loop
+        const result = await backendFetchJson(url, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        final = final.concat(result);
+    }
+    return final;
 }
