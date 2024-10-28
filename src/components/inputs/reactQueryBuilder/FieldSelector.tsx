@@ -32,7 +32,13 @@ export function FieldSelector({
             disableClearable
             size="small"
             title={title}
-            renderInput={(params) => <TextField {...params} label="" variant="standard" />}
+            renderInput={({ inputProps, ...rest }) => (
+                <TextField
+                    {...rest}
+                    inputProps={{ ...inputProps, readOnly: true }}
+                    sx={{ input: { cursor: 'pointer' } }}
+                />
+            )}
             autoHighlight
             getOptionLabel={(option) => option.label}
         />
