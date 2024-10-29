@@ -28,6 +28,8 @@ export type ElementAttributes = {
     uploading?: boolean;
     hasMetadata?: boolean;
     subtype?: string;
+    // only uploading element have this field
+    id?: string;
 };
 
 // TODO : Check where used
