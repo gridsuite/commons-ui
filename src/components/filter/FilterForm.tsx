@@ -6,7 +6,8 @@
  */
 
 import { Box } from '@mui/material';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
+import React, { useEffect } from 'react';
 import { HeaderFilterForm, FilterFormProps } from './HeaderFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
 import { CriteriaBasedFilterForm } from './criteriaBased/CriteriaBasedFilterForm';
@@ -21,7 +22,20 @@ export function FilterForm({
     activeDirectory,
     elementExists,
 }: Readonly<FilterFormProps>) {
+    const { setValue } = useFormContext();
+
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
+
+    // We do this because setValue don't set the field dirty
+    const handleFilterTypeChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+        setValue(FieldConstants.FILTER_TYPE, value);
+    };
+
+    useEffect(() => {
+        if (sourceFilterForExplicitNamingConversion) {
+            setValue(FieldConstants.FILTER_TYPE, FilterType.EXPLICIT_NAMING.id);
+        }
+    }, [sourceFilterForExplicitNamingConversion, setValue]);
 
     return (
         <>
@@ -31,6 +45,7 @@ export function FilterForm({
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                    handleFilterTypeChange={handleFilterTypeChange}
                 />
             </Box>
             {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
