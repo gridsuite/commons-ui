@@ -20,7 +20,6 @@ const MenuProps = {
     },
 };
 
-export function FieldSelector(props: ValueSelectorProps) {
-    console.log('props', props);
+export function FieldSelector(props: Readonly<ValueSelectorProps>) {
     return <MaterialValueSelector {...props} MenuProps={MenuProps} />;
 }
