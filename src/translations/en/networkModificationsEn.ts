@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const networkModificationsLocaleEn = {
+export const networkModificationsEn = {
     'network_modifications.modificationsCount':
         '{hide, select, false {{count, plural, =0 {no modification} =1 {{count} modification} other {{count} modifications}}} other {...}}',
     'network_modifications.EQUIPMENT_DELETION': 'Deletion of {computedLabel}',

@@ -22,4 +22,4 @@ export * from './reportViewerEn';
 export * from './tableEn';
 export * from './topBarEn';
 export * from './treeviewFinderEn';
-export * from './networkModificationsLocaleEn';
+export * from './networkModificationsEn';
