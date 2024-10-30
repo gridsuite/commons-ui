@@ -123,4 +123,12 @@ export const importParamsEn = {
     'iidm.import.xml.extensions.voltagePerReactivePowerControl': 'Voltage per reactive power control',
     'iidm.import.xml.extensions.voltageRegulation': 'Voltage regulation',
     'iidm.import.xml.extensions.xnode': 'Xnode',
+
+    // to remove after powsybl september release
+    'iidm.import.xml.extensions.generatorFortescue': 'Generator asymmetrical',
+    'iidm.import.xml.extensions.lineFortescue': 'Line asymmetrical',
+    'iidm.import.xml.extensions.loadFortescue': 'Load asymmetrical',
+    'iidm.import.xml.extensions.threeWindingsTransformerFortescue': 'Three windings transformer asymmetrical',
+    'iidm.import.xml.extensions.twoWindingsTransformerFortescue': 'Two windings transformer asymmetrical',
+    // end to remove
 };

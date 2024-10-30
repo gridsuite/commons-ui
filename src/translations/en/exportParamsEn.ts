@@ -115,6 +115,7 @@ export const exportParamsEn = {
     'iidm.export.xml.extensions.twoWindingsTransformerToBeEstimated': 'Two windings transformer to be estimated',
     'iidm.export.xml.extensions.voltageLevelShortCircuits': 'Voltage level short circuits',
     'iidm.export.xml.extensions.voltagePerReactivePowerControl': 'Voltage per reactive power control',
+    'iidm.export.xml.extensions.voltageRegulation': 'Voltage regulation',
     'iidm.export.xml.sorted': 'Sort export output file',
     'iidm.export.xml.sorted.desc': 'Sort export output file',
     'iidm.export.xml.version': 'IIDM Version',

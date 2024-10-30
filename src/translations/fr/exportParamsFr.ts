@@ -129,6 +129,7 @@ export const exportParamsFr = {
     'iidm.export.xml.extensions.voltageLevelShortCircuits': 'Données de court-circuit des postes (Version IIDM 1.0)',
     'iidm.export.xml.extensions.voltagePerReactivePowerControl':
         'Lien entre la tension de consigne et la puissance réactive en mode réglage de tension (CSPRs)',
+    'iidm.export.xml.extensions.voltageRegulation': 'Réglage de tension',
     'iidm.export.xml.sorted': 'Trier les ouvrages dans le fichier',
     'iidm.export.xml.sorted.desc': 'Trier les ouvrages dans le fichier',
     'iidm.export.xml.version': 'Version IIDM',

@@ -128,4 +128,14 @@ export const importParamsFr = {
     'iidm.import.xml.extensions.voltagePerReactivePowerControl': 'Contrôle de la tension par le réactif',
     'iidm.import.xml.extensions.voltageRegulation': 'Réglage de tension',
     'iidm.import.xml.extensions.xnode': 'Code Xnode',
+
+    // to remove after powsybl september release
+    'iidm.import.xml.extensions.generatorFortescue': 'Données pour les calculs dissymétriques des groupes',
+    'iidm.import.xml.extensions.lineFortescue': 'Données pour les calculs dissymétriques des lignes',
+    'iidm.import.xml.extensions.loadFortescue': 'Données pour les calculs dissymétriques des consommations',
+    'iidm.import.xml.extensions.threeWindingsTransformerFortescue':
+        'Données pour les calculs dissymétriques des transformateurs à trois enroulements',
+    'iidm.import.xml.extensions.twoWindingsTransformerFortescue':
+        'Données pour les calculs dissymétriques des transformateurs à deux enroulements',
+    // end to remove
 };
