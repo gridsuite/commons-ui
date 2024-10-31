@@ -6,7 +6,6 @@
  */
 
 import { Theme } from '@mui/material';
-import { UUID } from 'crypto';
 import { LIGHT_THEME } from '../constants/browserConstants';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
@@ -177,9 +176,9 @@ export interface EquipmentInfos extends Identifiable {
     operatingStatus?: string;
     terminal1Connected?: boolean;
     terminal2Connected?: boolean;
-    voltageLevelId1?: UUID;
+    voltageLevelId1?: string;
     voltageLevelName1?: string;
-    voltageLevelId2?: UUID;
+    voltageLevelId2?: string;
     voltageLevelName2?: string;
 }
 
