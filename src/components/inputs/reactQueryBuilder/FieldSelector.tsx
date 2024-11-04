@@ -5,36 +5,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FullOption, toFlatOptionArray, ValueSelectorProps } from 'react-querybuilder';
-import { Autocomplete, TextField } from '@mui/material';
+import { ValueSelectorProps } from 'react-querybuilder';
+import { MaterialValueSelector } from '@react-querybuilder/material';
 
-export function FieldSelector({
-    options,
-    className,
-    value,
-    disabled,
-    handleOnChange,
-    title,
-}: Readonly<ValueSelectorProps>) {
-    const optionList: FullOption[] = toFlatOptionArray(options);
+const ITEM_HEIGHT = 32; // default value from React query builder defaultNativeSelectStyles that can't be accessed
+const ITEM_PADDING = 4;
+const ITEMS_COUNT = 10;
 
-    return (
-        <Autocomplete
-            onChange={(event, newValue) => {
-                if (newValue) {
-                    handleOnChange(newValue.name);
-                }
-            }}
-            value={optionList.find((option) => option.name === value)}
-            disabled={disabled}
-            className={className}
-            options={optionList}
-            disableClearable
-            size="small"
-            title={title}
-            renderInput={(params) => <TextField {...params} label="" variant="standard" />}
-            autoHighlight
-            getOptionLabel={(option) => option.label}
-        />
-    );
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: (ITEM_HEIGHT + ITEM_PADDING) * ITEMS_COUNT + ITEM_PADDING,
+        },
+    },
+};
+
+export function FieldSelector(props: Readonly<ValueSelectorProps>) {
+    return <MaterialValueSelector {...props} MenuProps={MenuProps} />;
 }
