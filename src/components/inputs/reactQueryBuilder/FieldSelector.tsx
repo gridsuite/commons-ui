@@ -10,7 +10,7 @@ import { MaterialValueSelector } from '@react-querybuilder/material';
 
 const ITEM_HEIGHT = 32;
 const ITEM_PADDING = 4;
-const ITEMS_COUNT = 6;
+const ITEMS_COUNT = 10;
 
 const MenuProps = {
     PaperProps: {
