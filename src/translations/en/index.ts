@@ -22,3 +22,5 @@ export * from './reportViewerEn';
 export * from './tableEn';
 export * from './topBarEn';
 export * from './treeviewFinderEn';
+export * from './external/exportParamsEn';
+export * from './external/importParamsEn';
