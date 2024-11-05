@@ -4,8 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       versionType:
-        description: version type increment (major | minor | patch)
+        description: version type increment
         required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 jobs:
   release:
