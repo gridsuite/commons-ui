@@ -274,13 +274,11 @@ export function DirectoryItemSelector({
 
     useEffect(() => {
         if (open && expanded) {
-            if (expanded) {
-                expanded.forEach((nodeId) => {
-                    if (nodeMap.current[nodeId]) {
-                        fetchDirectoryChildren(nodeId);
-                    }
-                });
-            }
+            expanded.forEach((nodeId) => {
+                if (nodeMap.current[nodeId]) {
+                    fetchDirectoryChildren(nodeId);
+                }
+            });
         }
     }, [open, expanded, fetchDirectoryChildren, data]);
 
