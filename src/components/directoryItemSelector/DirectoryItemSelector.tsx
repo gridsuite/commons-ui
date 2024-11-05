@@ -234,7 +234,7 @@ export function DirectoryItemSelector({
             });
     }, [convertRoots, types, snackError]);
 
-    const fetchDirectory = useCallback(
+    const fetchDirectoryChildren = useCallback(
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
@@ -273,19 +273,26 @@ export function DirectoryItemSelector({
     );
 
     useEffect(() => {
-        if (open) {
-            updateRootDirectories();
+        if (open && expanded) {
             if (expanded) {
                 expanded.forEach((nodeId) => {
-                    fetchDirectory(nodeId);
+                    if (nodeMap.current[nodeId]) {
+                        fetchDirectoryChildren(nodeId);
+                    }
                 });
             }
         }
-    }, [open, updateRootDirectories, expanded, fetchDirectory]);
+    }, [open, expanded, fetchDirectoryChildren, data]);
+
+    useEffect(() => {
+        if (open) {
+            updateRootDirectories();
+        }
+    }, [open, updateRootDirectories]);
 
     return (
         <TreeViewFinder
-            onTreeBrowse={fetchDirectory as (NodeId: string) => void}
+            onTreeBrowse={fetchDirectoryChildren as (NodeId: string) => void}
             sortMethod={sortHandlingDirectories}
             multiSelect // defaulted to true
             open={open}
