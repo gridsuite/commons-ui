@@ -22,12 +22,8 @@ import {
     ModalProps,
 } from '@mui/material';
 
-import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
-import {
-    Check as CheckIcon,
-    ChevronRight as ChevronRightIcon,
-    ExpandMore as ExpandMoreIcon,
-} from '@mui/icons-material';
+import { TreeItem, SimpleTreeView, SimpleTreeViewClasses } from '@mui/x-tree-view';
+import { Check as CheckIcon } from '@mui/icons-material';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 
@@ -85,7 +81,7 @@ export interface TreeViewFinderProps {
     selected?: string[];
     expanded?: string[];
     multiSelect?: boolean;
-    classes?: Partial<TreeViewClasses>;
+    classes?: Partial<SimpleTreeViewClasses>;
     className?: string;
 
     // dialog props
@@ -324,10 +320,6 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
             </div>
         );
     };
-    const showChevron = (node: TreeViewFinderNodeProps) => {
-        // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
-        return !!(node.childrenCount == null || (node.childrenCount && node.childrenCount > 0));
-    };
 
     const renderTree = (node: TreeViewFinderNodeProps) => {
         if (!node) {
@@ -346,14 +338,8 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
         return (
             <TreeItem
                 key={node.id}
-                nodeId={node.id}
+                itemId={node.id}
                 label={renderTreeItemLabel(node)}
-                expandIcon={
-                    showChevron(node) ? <ChevronRightIcon className={composeClasses(classes, cssIcon)} /> : null
-                }
-                collapseIcon={
-                    showChevron(node) ? <ExpandMoreIcon className={composeClasses(classes, cssIcon)} /> : null
-                }
                 ref={(element) => {
                     if (selectedProp?.includes(node.id)) {
                         scrollRef.current.push(element);
@@ -404,17 +390,15 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
                     {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
                 </DialogContentText>
 
-                <TreeView
-                    // Controlled props
-                    expanded={expanded}
-                    // events
-                    onNodeToggle={handleNodeToggle}
-                    onNodeSelect={handleNodeSelect}
+                <SimpleTreeView
+                    expandedItems={expanded}
+                    onExpandedItemsChange={handleNodeToggle}
+                    onItemSelectionToggle={handleNodeSelect}
                     // Uncontrolled props
                     {...getTreeViewSelectionProps()}
                 >
                     {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
-                </TreeView>
+                </SimpleTreeView>
             </DialogContent>
             <DialogActions>
                 <CancelButton
