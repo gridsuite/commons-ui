@@ -274,7 +274,7 @@ export function DirectoryItemSelector({
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
-    //In this useEffect, we fetch the path (expanded array) of every selected node
+    // In this useEffect, we fetch the path (expanded array) of every selected node
     useEffect(() => {
         if (open && expanded && selected) {
             // we check if every selected item is already fetched
