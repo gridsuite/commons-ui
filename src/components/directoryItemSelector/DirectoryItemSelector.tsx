@@ -145,6 +145,7 @@ export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     onlyLeaves?: boolean;
     multiselect?: boolean;
     expanded?: UUID[];
+    selected?: UUID[];
 }
 
 function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps): number {
@@ -164,6 +165,7 @@ export function DirectoryItemSelector({
     equipmentTypes,
     itemFilter,
     expanded,
+    selected,
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
@@ -273,14 +275,21 @@ export function DirectoryItemSelector({
     );
 
     useEffect(() => {
-        if (open && expanded) {
-            expanded.forEach((nodeId) => {
-                if (nodeMap.current[nodeId]) {
-                    fetchDirectoryChildren(nodeId);
-                }
-            });
+        if (open && expanded && selected) {
+            // we check if every selected item is already fetched
+            const isSelectedItemFetched = selected.every((id) => nodeMap.current[id]);
+            if (!isSelectedItemFetched) {
+                expanded.forEach((nodeId) => {
+                    const node = nodeMap.current[nodeId];
+                    // we check that the node exist before fetching the children
+                    // And we check if there is already children
+                    if (node && node?.children && node.children.length === 0) {
+                        fetchDirectoryChildren(nodeId);
+                    }
+                });
+            }
         }
-    }, [open, expanded, fetchDirectoryChildren, data]);
+    }, [open, expanded, fetchDirectoryChildren, selected, data]);
 
     useEffect(() => {
         if (open) {
@@ -296,6 +305,7 @@ export function DirectoryItemSelector({
             open={open}
             expanded={expanded as string[]}
             onlyLeaves // defaulted to true
+            selected={selected}
             {...otherTreeViewFinderProps}
             data={data}
         />
