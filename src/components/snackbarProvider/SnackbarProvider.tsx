@@ -6,9 +6,19 @@
  */
 
 import { useRef } from 'react';
-import { Button } from '@mui/material';
+import { Button, styled } from '@mui/material';
 
 import { SnackbarProvider as OrigSnackbarProvider, SnackbarKey, SnackbarProviderProps } from 'notistack';
+
+const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
+    '&.notistack-MuiContent': {
+        alignItems: 'flex-start',
+        flexWrap: 'nowrap',
+    },
+    '#notistack-snackbar': {
+        alignItems: 'flex-start',
+    },
+}));
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
 export function SnackbarProvider(props: SnackbarProviderProps) {
@@ -21,7 +31,7 @@ export function SnackbarProvider(props: SnackbarProviderProps) {
     );
 
     return (
-        <OrigSnackbarProvider
+        <StyledOrigSnackbarProvider
             ref={ref}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             hideIconVariant
