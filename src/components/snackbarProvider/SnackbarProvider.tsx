@@ -6,9 +6,19 @@
  */
 
 import { useRef } from 'react';
-import { IconButton, Theme } from '@mui/material';
+import { IconButton, styled, Theme } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { SnackbarProvider as OrigSnackbarProvider, SnackbarKey, SnackbarProviderProps } from 'notistack';
+
+const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
+    '&.notistack-MuiContent': {
+        alignItems: 'flex-start',
+        flexWrap: 'nowrap',
+    },
+    '#notistack-snackbar': {
+        alignItems: 'flex-start',
+    },
+}));
 
 const styles = {
     buttonColor: (theme: Theme) => ({
@@ -32,7 +42,7 @@ export function SnackbarProvider(props: SnackbarProviderProps) {
     );
 
     return (
-        <OrigSnackbarProvider
+        <StyledOrigSnackbarProvider
             ref={ref}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             hideIconVariant

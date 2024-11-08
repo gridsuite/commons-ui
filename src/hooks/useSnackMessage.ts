@@ -67,7 +67,7 @@ function makeMessage(intlRef: MutableRefObject<IntlShape>, snackInputs: SnackInp
     }
     if (message) {
         if (header) {
-            fullMessage += '\n\n';
+            fullMessage += '\n';
         }
         fullMessage += message;
     }
