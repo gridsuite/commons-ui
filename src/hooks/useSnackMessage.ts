@@ -107,7 +107,10 @@ export function useSnackMessage(): UseSnackMessageReturn {
               persist
             }
    */
-    const snackError = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'error'), [enqueue]);
+    const snackError = useCallback(
+        (snackInputs: SnackInputs) => enqueue({ ...snackInputs, persist: true }, 'error'),
+        [enqueue]
+    );
 
     /* see snackError */
     const snackWarning = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'warning'), [enqueue]);
