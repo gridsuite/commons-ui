@@ -12,6 +12,9 @@ on:
           - minor
           - patch
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -41,7 +44,7 @@ jobs:
           git push origin main
           git push origin $(git tag --points-at HEAD)
           npm install
-          npm publish
+          npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
