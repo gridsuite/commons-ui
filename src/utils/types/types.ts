@@ -28,6 +28,8 @@ export type ElementAttributes = {
     uploading?: boolean;
     hasMetadata?: boolean;
     subtype?: string;
+    // only uploading element have this field
+    id?: string;
 };
 
 // TODO : Check where used
@@ -57,4 +59,13 @@ export type Option =
 
 export type PredefinedProperties = {
     [propertyName: string]: string[];
+};
+
+export type UserDetail = {
+    sub: string;
+    isAdmin: boolean;
+    profileName?: string;
+    maxAllowedCases: number;
+    numberCasesUsed: number;
+    maxAllowedBuilds: number;
 };

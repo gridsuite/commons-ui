@@ -90,6 +90,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Select
                     value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
                     size="small"
+                    title={valueEditorProps?.title}
                     error={!valid}
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
@@ -106,6 +107,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Autocomplete
                     value={propertyValues ?? []}
                     options={predefinedValues ?? []}
+                    title={valueEditorProps?.title}
                     multiple
                     renderInput={(params) => <TextField {...params} error={!valid} />}
                     freeSolo
