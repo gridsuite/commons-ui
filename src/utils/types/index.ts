@@ -9,3 +9,4 @@ export * from './equipmentType';
 export * from './equipmentTypes';
 export * from './metadata';
 export * from './types';
+export * from './modificationType';

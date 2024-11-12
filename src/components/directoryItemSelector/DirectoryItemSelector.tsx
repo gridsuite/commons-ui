@@ -145,6 +145,7 @@ export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     onlyLeaves?: boolean;
     multiselect?: boolean;
     expanded?: UUID[];
+    selected?: UUID[];
 }
 
 function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps): number {
@@ -164,6 +165,7 @@ export function DirectoryItemSelector({
     equipmentTypes,
     itemFilter,
     expanded,
+    selected,
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
@@ -234,7 +236,7 @@ export function DirectoryItemSelector({
             });
     }, [convertRoots, types, snackError]);
 
-    const fetchDirectory = useCallback(
+    const fetchDirectoryChildren = useCallback(
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
@@ -272,25 +274,39 @@ export function DirectoryItemSelector({
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
+    // In this useEffect, we fetch the path (expanded array) of every selected node
     useEffect(() => {
-        if (open) {
-            updateRootDirectories();
-            if (expanded) {
+        if (open && expanded && selected) {
+            // we check if every selected item is already fetched
+            const isSelectedItemFetched = selected.every((id) => nodeMap.current[id]);
+            if (!isSelectedItemFetched) {
                 expanded.forEach((nodeId) => {
-                    fetchDirectory(nodeId);
+                    const node = nodeMap.current[nodeId];
+                    // we check that the node exist before fetching the children
+                    // And we check if there is already children (Because we are trying to reach a selected element, we know every node has at least one child)
+                    if (node?.children && node.children.length === 0) {
+                        fetchDirectoryChildren(nodeId);
+                    }
                 });
             }
         }
-    }, [open, updateRootDirectories, expanded, fetchDirectory]);
+    }, [open, expanded, fetchDirectoryChildren, selected, data]);
+
+    useEffect(() => {
+        if (open) {
+            updateRootDirectories();
+        }
+    }, [open, updateRootDirectories]);
 
     return (
         <TreeViewFinder
-            onTreeBrowse={fetchDirectory as (NodeId: string) => void}
+            onTreeBrowse={fetchDirectoryChildren as (NodeId: string) => void}
             sortMethod={sortHandlingDirectories}
             multiSelect // defaulted to true
             open={open}
             expanded={expanded as string[]}
             onlyLeaves // defaulted to true
+            selected={selected}
             {...otherTreeViewFinderProps}
             data={data}
         />
