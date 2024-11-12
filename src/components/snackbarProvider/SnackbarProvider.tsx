@@ -6,22 +6,43 @@
  */
 
 import { useRef } from 'react';
-import { Button } from '@mui/material';
-
+import { IconButton, styled, Theme } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { SnackbarProvider as OrigSnackbarProvider, SnackbarKey, SnackbarProviderProps } from 'notistack';
+
+const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
+    '&.notistack-MuiContent': {
+        alignItems: 'flex-start',
+        flexWrap: 'nowrap',
+    },
+    '#notistack-snackbar': {
+        alignItems: 'flex-start',
+    },
+}));
+
+const styles = {
+    buttonColor: (theme: Theme) => ({
+        color: theme.palette.common.white,
+    }),
+};
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
 export function SnackbarProvider(props: SnackbarProviderProps) {
     const ref = useRef<OrigSnackbarProvider>(null);
 
     const action = (key: SnackbarKey) => (
-        <Button onClick={() => ref.current?.closeSnackbar(key)} style={{ color: '#fff', fontSize: '20px' }}>
-            ✖
-        </Button>
+        <IconButton
+            onClick={() => ref.current?.closeSnackbar(key)}
+            aria-label="clear-snack"
+            size="small"
+            sx={styles.buttonColor}
+        >
+            <ClearIcon fontSize="small" />
+        </IconButton>
     );
 
     return (
-        <OrigSnackbarProvider
+        <StyledOrigSnackbarProvider
             ref={ref}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             hideIconVariant
