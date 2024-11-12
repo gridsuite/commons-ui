@@ -4,8 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       versionType:
-        description: version type increment (major | minor | patch)
+        description: version type increment
         required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -21,7 +29,6 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
       - uses: actions/setup-node@v4
@@ -37,7 +44,7 @@ jobs:
           git push origin main
           git push origin $(git tag --points-at HEAD)
           npm install
-          npm publish
+          npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
