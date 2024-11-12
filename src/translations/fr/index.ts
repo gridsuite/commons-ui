@@ -22,3 +22,6 @@ export * from './reportViewerFr';
 export * from './tableFr';
 export * from './topBarFr';
 export * from './treeviewFinderFr';
+export * from './networkModificationsFr';
+export * from './external/exportParamsFr';
+export * from './external/importParamsFr';
