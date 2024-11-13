@@ -17,7 +17,10 @@ export type ElementAttributes = {
     accessRights: {
         isPrivate: boolean;
     };
-    owner: string;
+    owner: {
+        id: string; // given from DTO
+        name: string; // enrich with user identity server
+    };
     subdirectoriesCount: number;
     creationDate: string;
     lastModificationDate: string;
