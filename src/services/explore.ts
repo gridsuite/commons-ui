@@ -79,12 +79,7 @@ export async function fetchElementsInfos(
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
         });
-        final = final.concat(
-            result.map((r: any) => {
-                const copy = { ...r, owner: { id: r.owner, name: '' } };
-                return copy;
-            })
-        );
+        final = final.concat(result);
     }
     return final;
 }

@@ -17,14 +17,13 @@ export type ElementAttributes = {
     accessRights: {
         isPrivate: boolean;
     };
-    owner: {
-        id: string; // given from DTO
-        name: string; // enrich with user identity server
-    };
+    owner: string; // id
+    ownerLabel?: string; // enrich with user identity server
     subdirectoriesCount: number;
     creationDate: string;
     lastModificationDate: string;
-    lastModifiedBy: string;
+    lastModifiedBy: string; // id
+    lastModifiedByLabel?: string; // enrich with user identity server
     children: any[];
     parentUuid: null | UUID;
     specificMetadata: Record<string, object>;
