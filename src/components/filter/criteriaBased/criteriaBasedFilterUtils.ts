@@ -17,7 +17,7 @@ import {
 } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { FreePropertiesTypes } from './FilterFreeProperties';
 
-export const getCriteriaBasedSchema = (extraFields: any) => ({
+export const getCriteriaBasedSchema = (extraFields: Record<string, yup.AnyObject | null>) => ({
     [FieldConstants.CRITERIA_BASED]: yup.object().shape({
         [FieldConstants.COUNTRIES]: yup.array().of(yup.string()),
         [FieldConstants.COUNTRIES_1]: yup.array().of(yup.string()),
@@ -29,7 +29,7 @@ export const getCriteriaBasedSchema = (extraFields: any) => ({
         ...extraFields,
     }),
 });
-export const getCriteriaBasedFormData = (criteriaValues: any, extraFields: any) => ({
+export const getCriteriaBasedFormData = (criteriaValues: any, extraFields: Record<string, yup.AnyObject | null>) => ({
     [FieldConstants.CRITERIA_BASED]: {
         [FieldConstants.COUNTRIES]: criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
         [FieldConstants.COUNTRIES_1]: criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
