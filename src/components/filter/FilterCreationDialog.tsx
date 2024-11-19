@@ -9,21 +9,20 @@ import { useCallback } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import { saveCriteriaBasedFilter, saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
-import { useSnackMessage } from '../../hooks/useSnackMessage';
-import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
-import { criteriaBasedFilterEmptyFormData, criteriaBasedFilterSchema } from './criteriaBased/CriteriaBasedFilterForm';
+import { saveCriteriaBasedFilter, saveExpertFilter, saveExplicitNamingFilter } from './utils';
+import { useSnackMessage } from '../../hooks';
+import { CustomMuiDialog } from '../dialogs';
+import { criteriaBasedFilterEmptyFormData, criteriaBasedFilterSchema } from './criteriaBased';
 import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
-} from './explicitNaming/ExplicitNamingFilterForm';
-import { FieldConstants } from '../../utils/constants/fieldConstants';
+} from './explicitNaming';
+import { ElementExistsType, FieldConstants } from '../../utils';
 import yup from '../../utils/yupConfig';
 import { FilterForm } from './FilterForm';
-import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
+import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert';
 import { FilterType } from './constants/FilterConstants';
-import { ElementExistsType } from '../../utils/types/elementType';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -51,7 +50,7 @@ const formSchema = yup
 
 export interface FilterCreationDialogProps {
     open: boolean;
-    onClose: (e?: unknown, nextSelectedDirectoryId?: string | null) => void;
+    onClose: () => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
