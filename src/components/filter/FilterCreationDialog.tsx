@@ -28,7 +28,7 @@ import { ElementExistsType } from '../../utils/types/elementType';
 const emptyFormData = {
     [FieldConstants.NAME]: '',
     [FieldConstants.DESCRIPTION]: '',
-    [FieldConstants.FILTER_TYPE]: FilterType.CRITERIA_BASED.id,
+    [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
     [FieldConstants.EQUIPMENT_TYPE]: null,
     ...criteriaBasedFilterEmptyFormData,
     ...getExplicitNamingFilterEmptyFormData(),

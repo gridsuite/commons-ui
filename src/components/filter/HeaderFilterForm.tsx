@@ -32,6 +32,9 @@ export function HeaderFilterForm({
     elementExists,
     handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
+    // TODO : remove this code after we remove Criteria Filter
+    const filterTypes = Object.values(FilterType).filter((value) => value.id !== 'CRITERIA');
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -53,7 +56,7 @@ export function HeaderFilterForm({
                         <Grid item>
                             <RadioInput
                                 name={FieldConstants.FILTER_TYPE}
-                                options={Object.values(FilterType)}
+                                options={filterTypes}
                                 formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
                             />
                         </Grid>
