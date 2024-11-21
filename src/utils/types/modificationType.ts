@@ -46,6 +46,7 @@ export enum ModificationType {
     VSC_MODIFICATION = 'VSC_MODIFICATION',
     CONVERTER_STATION_MODIFICATION = 'CONVERTER_STATION_MODIFICATION',
     COMPOSITE_MODIFICATION = 'COMPOSITE_MODIFICATION',
+    LCC_CREATION = 'LCC_CREATION',
 }
 
 export const MODIFICATION_TYPES = {
@@ -168,5 +169,8 @@ export const MODIFICATION_TYPES = {
     },
     COMPOSITE_MODIFICATION: {
         type: ModificationType.COMPOSITE_MODIFICATION,
+    },
+    LCC_CREATION: {
+        type: ModificationType.LCC_CREATION,
     },
 };
