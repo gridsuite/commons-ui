@@ -95,7 +95,6 @@ export const filterExpertFr = {
     substationProperty2: 'Propriété site 2',
     substationProperty1Twt: 'Propriété site 1',
     substationProperty2Twt: 'Propriété site 2',
-    substationProperty3Twt: 'Propriété site 3',
     ratedVoltage1KV: "Tension d'enroulement 1 (kV)",
     ratedVoltage2KV: "Tension d'enroulement 2 (kV)",
     ratedVoltage0KVTwt: "Tension d'enroulement 0 (kV)",
