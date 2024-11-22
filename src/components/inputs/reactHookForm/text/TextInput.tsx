@@ -113,7 +113,7 @@ export function TextInput({
             {...genHelperPreviousValue(previousValue!, adornment)}
             {...genHelperError(error?.message)}
             {...formProps}
-            {...finalAdornment}
+            {...(adornment && { ...finalAdornment })}
         />
     );
 }

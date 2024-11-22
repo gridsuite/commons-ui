@@ -31,7 +31,13 @@ import {
     RuleTypeExport,
 } from './expertFilter.type';
 import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
-import { isBlankOrEmpty, microUnitToUnit, unitToMicroUnit } from '../../../utils/conversionUtils';
+import {
+    isBlankOrEmpty,
+    kiloUnitToUnit,
+    microUnitToUnit,
+    unitToKiloUnit,
+    unitToMicroUnit,
+} from '../../../utils/conversionUtils';
 
 const microUnits = [
     FieldType.SHUNT_CONDUCTANCE_1,
@@ -39,6 +45,8 @@ const microUnits = [
     FieldType.SHUNT_SUSCEPTANCE_1,
     FieldType.SHUNT_SUSCEPTANCE_2,
 ];
+
+const kiloUnits = [FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT];
 
 interface TreeNode {
     [key: string]: any;
@@ -214,6 +222,12 @@ function changeValueUnit(value: any, field: FieldType) {
         }
         return value.map((a: number) => microUnitToUnit(a));
     }
+    if (kiloUnits.includes(field)) {
+        if (!Array.isArray(value)) {
+            return kiloUnitToUnit(value);
+        }
+        return value.map((a: number) => kiloUnitToUnit(a));
+    }
     return value;
 }
 
@@ -314,11 +328,20 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                     .map((numberValue) => {
                         return microUnits.includes(rule.field) ? unitToMicroUnit(numberValue)! : numberValue;
                     })
+                    .map((numberValue) => {
+                        return kiloUnits.includes(rule.field) ? unitToKiloUnit(numberValue)! : numberValue;
+                    })
                     .sort((a, b) => a - b);
             }
             return rule.values.sort();
         }
-        return microUnits.includes(rule.field) ? unitToMicroUnit(parseFloat(rule.value as string)) : rule.value;
+        if (microUnits.includes(rule.field)) {
+            return unitToMicroUnit(parseFloat(rule.value as string));
+        }
+        if (kiloUnits.includes(rule.field)) {
+            return unitToKiloUnit(parseFloat(rule.value as string));
+        }
+        return rule.value;
     }
 
     function transformRule(rule: RuleTypeExport): RuleType {

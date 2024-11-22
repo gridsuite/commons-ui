@@ -30,6 +30,7 @@ export interface CustomMuiDialogProps {
     isDataFetching?: boolean;
     language?: string;
     confirmationMessageKey?: string;
+    unscrollableFullHeight?: boolean;
 }
 
 const styles = {
@@ -39,6 +40,39 @@ const styles = {
             minWidth: '1100px',
             margin: 'auto',
         },
+    },
+};
+
+/**
+ * all those styles are made to work with each other in order to control the scroll behavior:
+ * <fullHeightDialog>
+ *   <unscrollableContainer>
+ *     <unscrollableHeader/> => there may be several unscrollableHeader one after another
+ *     <scrollableContent/>
+ *   </unscrollableContainer>
+ * </fullHeightDialog>
+ */
+export const unscrollableDialogStyles = {
+    fullHeightDialog: {
+        '.MuiDialog-paper': {
+            minWidth: '90vw',
+            margin: 'auto',
+            height: '95vh',
+        },
+    },
+    unscrollableContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflowY: 'hidden',
+    },
+    unscrollableHeader: {
+        flex: 'none',
+        padding: 1,
+    },
+    scrollableContent: {
+        flex: 'auto',
+        overflowY: 'auto',
+        padding: 1,
     },
 };
 
@@ -57,6 +91,7 @@ export function CustomMuiDialog({
     children,
     language,
     confirmationMessageKey,
+    unscrollableFullHeight = false,
 }: Readonly<CustomMuiDialogProps>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState(undefined);
@@ -113,14 +148,21 @@ export function CustomMuiDialog({
             removeOptional={removeOptional}
             language={language}
         >
-            <Dialog sx={styles.dialogPaper} open={open} onClose={handleClose} fullWidth>
+            <Dialog
+                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
+                open={open}
+                onClose={handleClose}
+                fullWidth
+            >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle>
                     <Grid item xs={11}>
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent>{children}</DialogContent>
+                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
+                    {children}
+                </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton
