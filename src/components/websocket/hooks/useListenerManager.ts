@@ -40,18 +40,18 @@ export const useListenerManager = <
     const removeListenerEvent = useCallback((urlKey: string, id: string) => {
         const listeners = urlsListenersRef.current?.[urlKey];
         if (listeners) {
-            const newListerner = listeners.filter((l) => l.id !== id);
+            const newListerners = listeners.filter((l) => l.id !== id);
             urlsListenersRef.current = {
                 ...urlsListenersRef.current,
-                [urlKey]: newListerner,
+                [urlKey]: newListerners,
             };
         }
     }, []);
     const broadcast = useCallback(
         (urlKey: string) => (event: TMessage) => {
-            const listenerList = urlsListenersRef.current?.[urlKey];
-            if (listenerList) {
-                listenerList.forEach(({ callback }) => {
+            const listeners = urlsListenersRef.current?.[urlKey];
+            if (listeners) {
+                listeners.forEach(({ callback }) => {
                     callback(event);
                 });
             }
