@@ -39,7 +39,6 @@ export interface ExpertFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-
     selectionForCopy: SelectionForCopy;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
     setSelectionForCopy: (selection: SelectionForCopy) => void;
@@ -61,7 +60,7 @@ export function ExpertFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: ExpertFilterEditionDialogProps) {
+}: Readonly<ExpertFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -121,9 +120,7 @@ export function ExpertFilterEditionDialog({
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(NO_SELECTION_FOR_COPY);
-                broadcastChannel.postMessage({
-                    NO_SELECTION_FOR_COPY,
-                });
+                broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY });
             }
         },
         [broadcastChannel, id, onClose, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]

@@ -5,11 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'crypto';
+
 export type SelectionForCopy = {
-    sourceItemUuid: string | null;
+    sourceItemUuid: UUID | null;
     typeItem: string | null;
     nameItem: string | null;
     descriptionItem: string | null;
-    parentDirectoryUuid: string | null;
+    parentDirectoryUuid: UUID | null;
     specificTypeItem: string | null;
 };

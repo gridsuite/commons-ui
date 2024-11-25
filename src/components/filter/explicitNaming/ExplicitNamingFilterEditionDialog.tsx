@@ -124,9 +124,7 @@ export function ExplicitNamingFilterEditionDialog({
             );
             if (selectionForCopy.sourceItemUuid === id) {
                 setSelectionForCopy(NO_SELECTION_FOR_COPY);
-                broadcastChannel.postMessage({
-                    NO_SELECTION_FOR_COPY,
-                });
+                broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY });
             }
         },
         [broadcastChannel, id, selectionForCopy, onClose, snackError, setSelectionForCopy]

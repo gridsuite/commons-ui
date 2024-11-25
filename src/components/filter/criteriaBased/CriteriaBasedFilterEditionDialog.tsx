@@ -107,9 +107,7 @@ export function CriteriaBasedFilterEditionDialog({
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {
                         setSelectionForCopy(NO_SELECTION_FOR_COPY);
-                        broadcastChannel.postMessage({
-                            NO_SELECTION_FOR_COPY,
-                        });
+                        broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY });
                     }
                 })
                 .catch((error) => {
