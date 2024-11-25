@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useState } from 'react';
-import { FieldErrors, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import * as yup from 'yup';
@@ -15,12 +15,12 @@ import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
-export interface CustomMuiDialogProps {
+export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     open: boolean;
     formSchema: yup.AnySchema;
-    formMethods: UseFormReturn<any> | MergedFormContextProps;
-    onClose: (event: React.MouseEvent) => void;
-    onSave: (data: any) => void;
+    formMethods: UseFormReturn<T> | MergedFormContextProps;
+    onClose: (event?: React.MouseEvent) => void;
+    onSave: SubmitHandler<T>;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
     disabledSave?: boolean;
@@ -76,7 +76,7 @@ export const unscrollableDialogStyles = {
     },
 };
 
-export function CustomMuiDialog({
+export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,
     formSchema,
     formMethods,
@@ -92,9 +92,9 @@ export function CustomMuiDialog({
     language,
     confirmationMessageKey,
     unscrollableFullHeight = false,
-}: Readonly<CustomMuiDialogProps>) {
+}: Readonly<CustomMuiDialogProps<T>>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
-    const [validatedData, setValidatedData] = useState(undefined);
+    const [validatedData, setValidatedData] = useState<T>();
     const { handleSubmit } = formMethods;
 
     const handleCancel = useCallback(
@@ -113,15 +113,15 @@ export function CustomMuiDialog({
     };
 
     const validate = useCallback(
-        (data: any) => {
+        (data: T) => {
             onSave(data);
-            onClose(data);
+            onClose();
         },
         [onClose, onSave]
     );
 
     const handleValidate = useCallback(
-        (data: any) => {
+        (data: T) => {
             if (confirmationMessageKey) {
                 setValidatedData(data);
                 setOpenConfirmationPopup(true);
@@ -134,7 +134,9 @@ export function CustomMuiDialog({
 
     const handlePopupConfirmation = useCallback(() => {
         setOpenConfirmationPopup(false);
-        validate(validatedData);
+        if (validatedData) {
+            validate(validatedData);
+        }
     }, [validate, validatedData]);
 
     const handleValidationError = (errors: FieldErrors) => {
