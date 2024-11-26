@@ -6,7 +6,7 @@
  */
 
 import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
 import yup from '../../../utils/yupConfig';
@@ -26,6 +26,7 @@ export interface DescriptionModificationDialogProps {
 const schema = yup.object().shape({
     [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
 });
+type SchemaType = yup.InferType<typeof schema>;
 
 export function DescriptionModificationDialog({
     elementUuid,
@@ -54,15 +55,17 @@ export function DescriptionModificationDialog({
         onClose();
     };
 
-    const onSubmit = useCallback(
-        (data: { description: string }) => {
+    const onSubmit = useCallback<SubmitHandler<SchemaType>>(
+        (data) => {
             updateElement(elementUuid, {
-                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
-            }).catch((error: any) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'descriptionModificationError',
-                });
+                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION]?.trim() ?? '',
+            }).catch((error: unknown) => {
+                if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+                    snackError({
+                        messageTxt: error.message,
+                        headerId: 'descriptionModificationError',
+                    });
+                }
             });
         },
         [elementUuid, updateElement, snackError]
