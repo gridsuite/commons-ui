@@ -21,8 +21,8 @@ import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './Expl
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
 import { FilterForm } from '../FilterForm';
-import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { SelectionForCopy } from '../filter.type';
+import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { ItemSelectionForCopy } from '../filter.type';
 
 const formSchema = yup
     .object()
@@ -42,8 +42,8 @@ export interface ExplicitNamingFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-    selectionForCopy: SelectionForCopy;
-    setSelectionForCopy: (selection: SelectionForCopy) => void;
+    itemSelectionForCopy: ItemSelectionForCopy;
+    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
@@ -57,8 +57,8 @@ export function ExplicitNamingFilterEditionDialog({
     open,
     onClose,
     broadcastChannel,
-    selectionForCopy,
-    setSelectionForCopy,
+    itemSelectionForCopy,
+    setItemSelectionForCopy,
     getFilterById,
     activeDirectory,
     elementExists,
@@ -122,12 +122,12 @@ export function ExplicitNamingFilterEditionDialog({
                 },
                 onClose
             );
-            if (selectionForCopy.sourceItemUuid === id) {
-                setSelectionForCopy(NO_SELECTION_FOR_COPY);
-                broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY });
+            if (itemSelectionForCopy.sourceItemUuid === id) {
+                setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
+                broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, selectionForCopy, onClose, snackError, setSelectionForCopy]
+        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

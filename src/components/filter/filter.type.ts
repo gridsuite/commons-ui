@@ -7,7 +7,10 @@
 
 import { UUID } from 'crypto';
 
-export type SelectionForCopy = {
+/**
+ * Represent an item/object in directories.
+ */
+export type ItemSelectionForCopy = {
     sourceItemUuid: UUID | null;
     typeItem: string | null;
     nameItem: string | null;
