@@ -111,8 +111,7 @@ export function ValueEditor(props: ValueEditorProps) {
         if (
             field === FieldType.SUBSTATION_PROPERTY ||
             field === FieldType.SUBSTATION_PROPERTY_1 ||
-            field === FieldType.SUBSTATION_PROPERTY_2 ||
-            field === FieldType.SUBSTATION_PROPERTY_3
+            field === FieldType.SUBSTATION_PROPERTY_2
         ) {
             equipmentType = Substation.type;
         } else if (

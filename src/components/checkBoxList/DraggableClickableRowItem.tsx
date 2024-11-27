@@ -6,12 +6,13 @@
  */
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText, SxProps, Theme } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { DraggableClickableRowItemProps } from './checkBoxList.type';
+import { mergeSx } from '../../utils';
 
-const styles = {
-    dragIcon: (theme: any) => ({
+const styles: Record<string, SxProps<Theme>> = {
+    dragIcon: (theme) => ({
         padding: 'unset',
         border: theme.spacing(0),
         borderRadius: theme.spacing(0),
@@ -45,11 +46,7 @@ export function DraggableClickableRowItem({
     return (
         <ListItemButton
             disableTouchRipple={!isItemClickable}
-            sx={{
-                paddingLeft: 0,
-                ...sx?.checkboxButton,
-                ...(!isItemClickable && styles.unclickableItem),
-            }}
+            sx={mergeSx({ paddingLeft: 0 }, sx?.checkboxButton, !isItemClickable ? styles.unclickableItem : undefined)}
             disabled={disabled}
             onClick={handleItemClick}
         >
