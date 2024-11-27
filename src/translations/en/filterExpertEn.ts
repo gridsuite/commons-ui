@@ -95,7 +95,6 @@ export const filterExpertEn = {
     substationProperty2: 'Substation property 2',
     substationProperty1Twt: 'Substation property 1',
     substationProperty2Twt: 'Substation property 2',
-    substationProperty3Twt: 'Substation property 3',
     ratedVoltage1KV: 'Rated Voltage 1 (kV)',
     ratedVoltage2KV: 'Rated Voltage 2 (kV)',
     ratedVoltage0KVTwt: 'Rated Voltage 0 (kV)',
