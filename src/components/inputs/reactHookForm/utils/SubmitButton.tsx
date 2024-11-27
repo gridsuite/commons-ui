@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Button } from '@mui/material';
+import { Button, ButtonProps } from '@mui/material';
 import { useFormState } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
-export function SubmitButton({ ...buttonProps }) {
+export function SubmitButton(buttonProps: Readonly<ButtonProps>) {
     const { isDirty } = useFormState();
 
     return (

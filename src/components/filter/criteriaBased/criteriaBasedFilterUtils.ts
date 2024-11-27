@@ -5,27 +5,43 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { type ObjectSchema } from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './FilterProperty';
 import { FilterType } from '../constants/FilterConstants';
 import { PredefinedProperties } from '../../../utils/types/types';
 import yup from '../../../utils/yupConfig';
-import { DEFAULT_RANGE_VALUE, getRangeInputSchema } from '../../inputs/reactHookForm/numbers/RangeInput';
+import {
+    DEFAULT_RANGE_VALUE,
+    getRangeInputSchema,
+    type RangeInputData,
+} from '../../inputs/reactHookForm/numbers/RangeInput';
 import { FreePropertiesTypes } from './FilterFreeProperties';
+
+export type CriteriaBasedData = {
+    [FieldConstants.COUNTRIES]?: string[];
+    [FieldConstants.COUNTRIES_1]?: string[];
+    [FieldConstants.COUNTRIES_2]?: string[];
+    [FieldConstants.NOMINAL_VOLTAGE]?: RangeInputData | null;
+    [FieldConstants.NOMINAL_VOLTAGE_1]?: RangeInputData | null;
+    [FieldConstants.NOMINAL_VOLTAGE_2]?: RangeInputData | null;
+    [FieldConstants.NOMINAL_VOLTAGE_3]?: RangeInputData | null;
+    [key: string]: any;
+};
 
 export function getCriteriaBasedSchema(extraFields: Record<string, yup.AnyObject | null> = {}) {
     return {
         [FieldConstants.CRITERIA_BASED]: yup.object().shape({
-            [FieldConstants.COUNTRIES]: yup.array().of(yup.string()),
-            [FieldConstants.COUNTRIES_1]: yup.array().of(yup.string()),
-            [FieldConstants.COUNTRIES_2]: yup.array().of(yup.string()),
+            [FieldConstants.COUNTRIES]: yup.array().of(yup.string().required()),
+            [FieldConstants.COUNTRIES_1]: yup.array().of(yup.string().required()),
+            [FieldConstants.COUNTRIES_2]: yup.array().of(yup.string().required()),
             ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE),
             ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_1),
             ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_2),
             ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_3),
             ...extraFields,
         }),
-    };
+    } as const satisfies Record<FieldConstants.CRITERIA_BASED, ObjectSchema<CriteriaBasedData>>;
 }
 
 export function getCriteriaBasedFormData(
