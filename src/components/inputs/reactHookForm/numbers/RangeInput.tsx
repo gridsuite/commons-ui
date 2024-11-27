@@ -30,35 +30,36 @@ export const RangeType = {
     LESS_THAN: { id: 'LESS_THAN', label: 'lessThan' },
     LESS_OR_EQUAL: { id: 'LESS_OR_EQUAL', label: 'lessOrEqual' },
     RANGE: { id: 'RANGE', label: 'range' },
-};
+} as const;
 
 export const DEFAULT_RANGE_VALUE = {
     [FieldConstants.OPERATION_TYPE]: RangeType.EQUALITY.id,
     [FieldConstants.VALUE_1]: null,
     [FieldConstants.VALUE_2]: null,
-};
-export const getRangeInputDataForm = (name: string, rangeValue: unknown) => ({
-    [name]: rangeValue,
-});
+} as const;
 
-export const getRangeInputSchema = (name: string) => ({
-    [name]: yup.object().shape(
-        {
-            [FieldConstants.OPERATION_TYPE]: yup.string(),
-            [FieldConstants.VALUE_1]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
-                is: (operationType: string, value2: unknown) => operationType === RangeType.RANGE.id && value2 !== null,
-                then: (schema) => schema.required(),
-                otherwise: (schema) => schema.nullable(),
-            }),
-            [FieldConstants.VALUE_2]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
-                is: (operationType: string, value1: unknown) => operationType === RangeType.RANGE.id && value1 !== null,
-                then: (schema) => schema.required(),
-                otherwise: (schema) => schema.nullable(),
-            }),
-        },
-        [[FieldConstants.VALUE_1, FieldConstants.VALUE_2]]
-    ),
-});
+export function getRangeInputSchema<TName extends string>(name: TName) {
+    return {
+        [name]: yup.object().shape(
+            {
+                [FieldConstants.OPERATION_TYPE]: yup.string(),
+                [FieldConstants.VALUE_1]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
+                    is: (operationType: string, value2: unknown) =>
+                        operationType === RangeType.RANGE.id && value2 !== null,
+                    then: (schema) => schema.required(),
+                    otherwise: (schema) => schema.nullable(),
+                }),
+                [FieldConstants.VALUE_2]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
+                    is: (operationType: string, value1: unknown) =>
+                        operationType === RangeType.RANGE.id && value1 !== null,
+                    then: (schema) => schema.required(),
+                    otherwise: (schema) => schema.nullable(),
+                }),
+            },
+            [[FieldConstants.VALUE_1, FieldConstants.VALUE_2]]
+        ),
+    } as const;
+}
 
 interface RangeInputProps {
     name: string;

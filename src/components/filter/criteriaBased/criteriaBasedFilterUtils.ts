@@ -10,49 +10,44 @@ import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } 
 import { FilterType } from '../constants/FilterConstants';
 import { PredefinedProperties } from '../../../utils/types/types';
 import yup from '../../../utils/yupConfig';
-import {
-    DEFAULT_RANGE_VALUE,
-    getRangeInputDataForm,
-    getRangeInputSchema,
-} from '../../inputs/reactHookForm/numbers/RangeInput';
+import { DEFAULT_RANGE_VALUE, getRangeInputSchema } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { FreePropertiesTypes } from './FilterFreeProperties';
 
-export const getCriteriaBasedSchema = (extraFields: Record<string, yup.AnyObject | null>) => ({
-    [FieldConstants.CRITERIA_BASED]: yup.object().shape({
-        [FieldConstants.COUNTRIES]: yup.array().of(yup.string()),
-        [FieldConstants.COUNTRIES_1]: yup.array().of(yup.string()),
-        [FieldConstants.COUNTRIES_2]: yup.array().of(yup.string()),
-        ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE),
-        ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_1),
-        ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_2),
-        ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_3),
-        ...extraFields,
-    }),
-});
-export const getCriteriaBasedFormData = (criteriaValues: any, extraFields: Record<string, yup.AnyObject | null>) => ({
-    [FieldConstants.CRITERIA_BASED]: {
-        [FieldConstants.COUNTRIES]: criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
-        [FieldConstants.COUNTRIES_1]: criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
-        [FieldConstants.COUNTRIES_2]: criteriaValues?.[FieldConstants.COUNTRIES_2] ?? [],
-        ...getRangeInputDataForm(
-            FieldConstants.NOMINAL_VOLTAGE,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE] ?? DEFAULT_RANGE_VALUE
-        ),
-        ...getRangeInputDataForm(
-            FieldConstants.NOMINAL_VOLTAGE_1,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_1] ?? DEFAULT_RANGE_VALUE
-        ),
-        ...getRangeInputDataForm(
-            FieldConstants.NOMINAL_VOLTAGE_2,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_2] ?? DEFAULT_RANGE_VALUE
-        ),
-        ...getRangeInputDataForm(
-            FieldConstants.NOMINAL_VOLTAGE_3,
-            criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_3] ?? DEFAULT_RANGE_VALUE
-        ),
-        ...extraFields,
-    },
-});
+export function getCriteriaBasedSchema(extraFields: Record<string, yup.AnyObject | null> = {}) {
+    return {
+        [FieldConstants.CRITERIA_BASED]: yup.object().shape({
+            [FieldConstants.COUNTRIES]: yup.array().of(yup.string()),
+            [FieldConstants.COUNTRIES_1]: yup.array().of(yup.string()),
+            [FieldConstants.COUNTRIES_2]: yup.array().of(yup.string()),
+            ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE),
+            ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_1),
+            ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_2),
+            ...getRangeInputSchema(FieldConstants.NOMINAL_VOLTAGE_3),
+            ...extraFields,
+        }),
+    };
+}
+
+export function getCriteriaBasedFormData(
+    criteriaValues?: Record<string, any>,
+    extraFields: Record<string, yup.AnyObject | null> = {}
+) {
+    return {
+        [FieldConstants.CRITERIA_BASED]: {
+            [FieldConstants.COUNTRIES]: criteriaValues?.[FieldConstants.COUNTRIES] ?? [],
+            [FieldConstants.COUNTRIES_1]: criteriaValues?.[FieldConstants.COUNTRIES_1] ?? [],
+            [FieldConstants.COUNTRIES_2]: criteriaValues?.[FieldConstants.COUNTRIES_2] ?? [],
+            [FieldConstants.NOMINAL_VOLTAGE]: criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE] ?? DEFAULT_RANGE_VALUE,
+            [FieldConstants.NOMINAL_VOLTAGE_1]:
+                criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_1] ?? DEFAULT_RANGE_VALUE,
+            [FieldConstants.NOMINAL_VOLTAGE_2]:
+                criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_2] ?? DEFAULT_RANGE_VALUE,
+            [FieldConstants.NOMINAL_VOLTAGE_3]:
+                criteriaValues?.[FieldConstants.NOMINAL_VOLTAGE_3] ?? DEFAULT_RANGE_VALUE,
+            ...extraFields,
+        },
+    } as const;
+}
 
 /**
  * Transform
@@ -65,7 +60,7 @@ export const getCriteriaBasedFormData = (criteriaValues: any, extraFields: Recor
  *  {name_property:namesB, prop_values:valuesB}]
  * @author Laurent LAUGARN modified by Florent MILLOT
  */
-export const backToFrontTweak = (response: any) => {
+export function backToFrontTweak(response: any) {
     const subProps = response.equipmentFilterForm.substationFreeProperties;
     const freeProps = response.equipmentFilterForm.freeProperties;
     const props1 = response.equipmentFilterForm.freeProperties1;
@@ -111,18 +106,17 @@ export const backToFrontTweak = (response: any) => {
         filterFreeProperties.push(prop);
     });
 
-    const ret = {
+    return {
         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
         ...getCriteriaBasedFormData(response.equipmentFilterForm, {
             [FieldConstants.ENERGY_SOURCE]: response.equipmentFilterForm[FieldConstants.ENERGY_SOURCE],
             [FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES]: filterSubstationProperties,
             [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: filterFreeProperties,
         }),
-    };
-    return ret;
-};
+    } as const;
+}
 
-function isNominalVoltageEmpty(nominalVoltage: Record<string, unknown>): boolean {
+function isNominalVoltageEmpty(nominalVoltage: Record<string, unknown>) {
     return nominalVoltage[FieldConstants.VALUE_1] === null && nominalVoltage[FieldConstants.VALUE_2] === null;
 }
 
@@ -155,20 +149,13 @@ function cleanNominalVoltages(formValues: any) {
  *  freeProperties2.{nameA:valuesC}}
  * @author Laurent LAUGARN modified by Florent MILLOT
  */
-export const frontToBackTweak = (id?: string, filter?: any) => {
+export function frontToBackTweak(id?: string, filter?: any) {
     const filterSubstationProperties =
         filter[FieldConstants.CRITERIA_BASED][FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES];
-    const ret = {
-        id,
-        type: FilterType.CRITERIA_BASED.id,
-        equipmentFilterForm: undefined,
-    };
     const eff = {
         [FieldConstants.EQUIPMENT_TYPE]: filter[FieldConstants.EQUIPMENT_TYPE],
         ...cleanNominalVoltages(filter[FieldConstants.CRITERIA_BASED]),
     };
-    // in the back end we store everything in a field called equipmentFilterForm
-    ret.equipmentFilterForm = eff;
     delete eff[FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES];
     const props: any = {};
     const props1: any = {};
@@ -194,7 +181,7 @@ export const frontToBackTweak = (id?: string, filter?: any) => {
     const filterFreeProperties = filter[FieldConstants.CRITERIA_BASED][FreePropertiesTypes.FREE_FILTER_PROPERTIES];
     // in the back end we store everything in a field called equipmentFilterForm
     delete eff[FreePropertiesTypes.FREE_FILTER_PROPERTIES];
-    const freeProps: any = {};
+    const freeProps: Record<string, unknown> = {};
     filterFreeProperties.forEach((prop: any) => {
         const values = prop[PROPERTY_VALUES];
         if (values) {
@@ -202,5 +189,10 @@ export const frontToBackTweak = (id?: string, filter?: any) => {
         }
     });
     eff.freeProperties = freeProps;
-    return ret;
-};
+    return {
+        id,
+        type: FilterType.CRITERIA_BASED.id,
+        // in the back end we store everything in a field called equipmentFilterForm
+        equipmentFilterForm: eff,
+    };
+}
