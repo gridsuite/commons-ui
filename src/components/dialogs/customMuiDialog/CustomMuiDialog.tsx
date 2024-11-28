@@ -5,28 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useState } from 'react';
+import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
-import * as yup from 'yup';
+import { type ObjectSchema } from 'yup';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
-import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
+import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
 export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     open: boolean;
-    formSchema: yup.AnySchema;
-    formMethods: UseFormReturn<T> | MergedFormContextProps;
-    onClose: (event?: React.MouseEvent) => void;
+    formSchema: ObjectSchema<T>;
+    formMethods: UseFormReturn<T>;
+    onClose: (event?: MouseEvent) => void;
     onSave: SubmitHandler<T>;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
     disabledSave?: boolean;
     removeOptional?: boolean;
     onCancel?: () => void;
-    children: React.ReactNode;
+    children: ReactNode;
     isDataFetching?: boolean;
     language?: string;
     confirmationMessageKey?: string;
@@ -98,14 +98,14 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     const { handleSubmit } = formMethods;
 
     const handleCancel = useCallback(
-        (event: React.MouseEvent) => {
+        (event: MouseEvent) => {
             onCancel?.();
             onClose(event);
         },
         [onCancel, onClose]
     );
 
-    const handleClose = (event: React.MouseEvent, reason?: string) => {
+    const handleClose = (event: MouseEvent, reason?: string) => {
         if (reason === 'backdropClick') {
             return;
         }
@@ -139,12 +139,15 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
         }
     }, [validate, validatedData]);
 
-    const handleValidationError = (errors: FieldErrors) => {
-        onValidationError?.(errors);
-    };
+    const handleValidationError = useCallback(
+        (errors: FieldErrors) => {
+            onValidationError?.(errors);
+        },
+        [onValidationError]
+    );
 
     return (
-        <CustomFormProvider
+        <CustomFormProvider<T>
             {...formMethods}
             validationSchema={formSchema}
             removeOptional={removeOptional}
