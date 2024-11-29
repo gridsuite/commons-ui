@@ -14,8 +14,8 @@ import { useListenerManager } from './hooks/useListenerManager';
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
-export type WebsocketProps = { urls: Record<string, string> };
-export function Websocket({ urls, children }: PropsWithChildren<WebsocketProps>) {
+export type WebsocketsProviderProps = { urls: Record<string, string> };
+export function WebsocketsProvider({ urls, children }: PropsWithChildren<WebsocketsProviderProps>) {
     const {
         broadcast: broadcastMessage,
         addListener: addListenerMessage,

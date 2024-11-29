@@ -4,7 +4,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export * from './Websocket';
+export * from './WebsocketsProvider';
 export * from './contexts/WSContext';
 export * from './hooks/useListener';
 export * from './hooks/useListenerManager';

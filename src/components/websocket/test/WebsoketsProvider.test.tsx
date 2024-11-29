@@ -8,7 +8,7 @@ import { createRoot } from 'react-dom/client';
 import { waitFor, act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { Websocket } from '../Websocket';
+import { WebsocketsProvider } from '../WebsocketsProvider';
 import { useListener } from '../hooks/useListener';
 
 jest.mock('reconnecting-websocket');
@@ -23,7 +23,7 @@ declare global {
 const WS_CONSUMER_ID = 'WS_CONSUMER_ID';
 const WS_KEY = 'WS_KEY';
 
-describe('Websocket', () => {
+describe('WebsocketsProvider', () => {
     beforeEach(() => {
         container = document.createElement('div');
         document.body.appendChild(container);
@@ -33,30 +33,30 @@ describe('Websocket', () => {
         container?.remove();
     });
 
-    test('renders Websocket component', () => {
+    test('renders WebsocketsProvider component', () => {
         const root = createRoot(container);
 
         act(() => {
-            root.render(<Websocket urls={{ [WS_KEY]: 'test' }} />);
+            root.render(<WebsocketsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
         expect(ReconnectingWebSocket).toBeCalled();
     });
 
-    test('renders Websocket children component ', () => {
+    test('renders WebsocketsProvider children component ', () => {
         const root = createRoot(container);
 
         act(() => {
             root.render(
-                <Websocket urls={{ [WS_KEY]: 'test' }}>
+                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
                     <p id={WS_CONSUMER_ID}>Child</p>
-                </Websocket>
+                </WebsocketsProvider>
             );
         });
         const lastMsg = document.querySelector(`#${WS_CONSUMER_ID}`);
         expect(lastMsg?.textContent).toEqual('Child');
     });
 
-    test('renders Websocket children component and updated by event ', async () => {
+    test('renders WebsocketsProvider children component and updated by event ', async () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
@@ -71,9 +71,9 @@ describe('Websocket', () => {
 
         act(() => {
             root.render(
-                <Websocket urls={{ [WS_KEY]: 'test' }}>
+                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
                     <WSConsumer />
-                </Websocket>
+                </WebsocketsProvider>
             );
         });
         const event = { test: 'test' };
@@ -85,7 +85,7 @@ describe('Websocket', () => {
         waitFor(() => expect(eventCallback).toBeCalledWith(event));
     });
 
-    test('renders Websocket children component not called with other key ', () => {
+    test('renders WebsocketsProvider children component not called with other key ', () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
@@ -100,9 +100,9 @@ describe('Websocket', () => {
 
         act(() => {
             root.render(
-                <Websocket urls={{ [WS_KEY]: 'test' }}>
+                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
                     <WSConsumer />
-                </Websocket>
+                </WebsocketsProvider>
             );
         });
         act(() => {
@@ -113,7 +113,7 @@ describe('Websocket', () => {
         expect(eventCallback).not.toBeCalled();
     });
 
-    test('renders Websocket component and calls onOpen callback', async () => {
+    test('renders WebsocketsProvider component and calls onOpen callback', async () => {
         const root = createRoot(container);
 
         const onOpenCallback = jest.fn();
@@ -131,9 +131,9 @@ describe('Websocket', () => {
 
         act(() => {
             root.render(
-                <Websocket urls={{ [WS_KEY]: 'test' }}>
+                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
                     <WSConsumer />
-                </Websocket>
+                </WebsocketsProvider>
             );
         });
 
