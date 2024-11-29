@@ -6,7 +6,7 @@
  */
 
 import { useCallback } from 'react';
-import { Resolver, useForm } from 'react-hook-form';
+import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
 import { saveCriteriaBasedFilter, saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
@@ -28,7 +28,7 @@ import { ElementExistsType } from '../../utils/types/elementType';
 const emptyFormData = {
     [FieldConstants.NAME]: '',
     [FieldConstants.DESCRIPTION]: '',
-    [FieldConstants.FILTER_TYPE]: FilterType.CRITERIA_BASED.id,
+    [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
     [FieldConstants.EQUIPMENT_TYPE]: null,
     ...criteriaBasedFilterEmptyFormData,
     ...getExplicitNamingFilterEmptyFormData(),
@@ -84,7 +84,7 @@ export function FilterCreationDialog({
     const isValidating = errors.root?.isValidating;
 
     const onSubmit = useCallback(
-        (filterForm: any) => {
+        (filterForm: FieldValues) => {
             if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPLICIT_NAMING.id) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
@@ -93,7 +93,7 @@ export function FilterCreationDialog({
                     filterForm[FieldConstants.NAME],
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
-                    (error: any) => {
+                    (error?: string) => {
                         snackError({
                             messageTxt: error,
                         });
@@ -102,7 +102,7 @@ export function FilterCreationDialog({
                     activeDirectory
                 );
             } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.CRITERIA_BASED.id) {
-                saveCriteriaBasedFilter(filterForm, activeDirectory, onClose, (error: any) => {
+                saveCriteriaBasedFilter(filterForm, activeDirectory, onClose, (error?: string) => {
                     snackError({
                         messageTxt: error,
                     });
@@ -117,7 +117,7 @@ export function FilterCreationDialog({
                     true,
                     activeDirectory,
                     onClose,
-                    (error: any) => {
+                    (error?: string) => {
                         snackError({
                             messageTxt: error,
                         });

@@ -8,7 +8,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldError, useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { saveFilter } from '../../../services/explore';
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
@@ -32,6 +32,7 @@ const formSchema = yup
     })
     .required();
 
+type FormSchemaType = yup.InferType<typeof formSchema>;
 export interface CriteriaBasedFilterEditionDialogProps {
     id: string;
     name: string;
@@ -74,7 +75,7 @@ export function CriteriaBasedFilterEditionDialog({
         formState: { errors },
     } = formMethods;
 
-    const nameError: any = errors[FieldConstants.NAME];
+    const nameError: FieldError | undefined = errors[FieldConstants.NAME];
     const isValidating = errors.root?.isValidating;
 
     // Fetch the filter data from back-end if necessary and fill the form with it
@@ -90,7 +91,7 @@ export function CriteriaBasedFilterEditionDialog({
                         ...backToFrontTweak(response),
                     });
                 })
-                .catch((error: any) => {
+                .catch((error: { message?: string }) => {
                     setDataFetchStatus(FetchStatus.FETCH_ERROR);
                     snackError({
                         messageTxt: error.message,
@@ -101,7 +102,7 @@ export function CriteriaBasedFilterEditionDialog({
     }, [id, name, open, reset, snackError, getFilterById]);
 
     const onSubmit = useCallback(
-        (filterForm: any) => {
+        (filterForm: FormSchemaType) => {
             saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
                     if (selectionForCopy.sourceItemUuid === id) {

@@ -8,7 +8,14 @@ import { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
-import { ElementSearchDialog, EquipmentItem, equipmentStyles, EquipmentType, useElementSearch } from '../../src/index';
+import {
+    ElementSearchDialog,
+    EquipmentItem,
+    EquipmentItemProps,
+    equipmentStyles,
+    EquipmentType,
+    useElementSearch,
+} from '../../src/index';
 
 interface AnyElementInterface {
     id: string;
@@ -56,11 +63,11 @@ export function EquipmentSearchDialog() {
                 open={isSearchOpen}
                 onClose={() => setIsSearchOpen(false)}
                 onSearchTermChange={updateSearchTerm}
-                onSelectionChange={(element: any) => {
+                onSelectionChange={(element: unknown) => {
                     console.log(element);
                 }}
                 elementsFound={elementsFound}
-                renderElement={(props: any) => (
+                renderElement={(props: EquipmentItemProps) => (
                     <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
                 )}
                 searchTerm={searchTerm}
