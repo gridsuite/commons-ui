@@ -8,24 +8,24 @@
 
 import { PropsWithChildren, useEffect, useMemo } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { ListenerEventWS, ListenerOnOpen, WSContext } from './contexts/WSContext';
+import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
-export type WebsocketsProviderProps = { urls: Record<string, string> };
-export function WebsocketsProvider({ urls, children }: PropsWithChildren<WebsocketsProviderProps>) {
+export type NotificationsProviderProps = { urls: Record<string, string> };
+export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
     const {
         broadcast: broadcastMessage,
         addListener: addListenerMessage,
         removeListener: removeListenerMessage,
     } = useListenerManager<ListenerEventWS, MessageEvent>(urls);
     const {
-        broadcast: broadcastOnOpen,
-        addListener: addListenerOnOpen,
-        removeListener: removeListenerOnOpen,
-    } = useListenerManager<ListenerOnOpen, never>(urls);
+        broadcast: broadcastOnReopen,
+        addListener: addListenerOnReopen,
+        removeListener: removeListenerOnReopen,
+    } = useListenerManager<ListenerOnReopen, never>(urls);
 
     useEffect(() => {
         const connections = Object.keys(urls).map((urlKey) => {
@@ -37,29 +37,32 @@ export function WebsocketsProvider({ urls, children }: PropsWithChildren<Websock
             rws.onmessage = broadcastMessage(urlKey);
 
             rws.onclose = (event) => {
-                console.error('Unexpected Notification WebSocket closed', event);
+                console.error(`Unexpected ${urlKey} Notification WebSocket closed`, event);
             };
             rws.onerror = (event) => {
-                console.error('Unexpected Notification WebSocket error', event);
+                console.error(`Unexpected ${urlKey} Notification WebSocket error`, event);
             };
 
-            rws.onopen = () => broadcastOnOpen(urlKey);
+            rws.onopen = () => {
+                console.info(`${urlKey} Notification Websocket connected`);
+                broadcastOnReopen(urlKey);
+            };
             return rws;
         });
 
         return () => {
             connections.forEach((c) => c.close());
         };
-    }, [broadcastMessage, broadcastOnOpen, urls]);
+    }, [broadcastMessage, broadcastOnReopen, urls]);
 
     const contextValue = useMemo(
         () => ({
             addListenerEvent: addListenerMessage,
             removeListenerEvent: removeListenerMessage,
-            addListenerOnOpen,
-            removeListenerOnOpen,
+            addListenerOnReopen,
+            removeListenerOnReopen,
         }),
-        [addListenerMessage, removeListenerMessage, addListenerOnOpen, removeListenerOnOpen]
+        [addListenerMessage, removeListenerMessage, addListenerOnReopen, removeListenerOnReopen]
     );
-    return <WSContext.Provider value={contextValue}>{children}</WSContext.Provider>;
+    return <NotificationsContext.Provider value={contextValue}>{children}</NotificationsContext.Provider>;
 }

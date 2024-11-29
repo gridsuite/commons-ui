@@ -8,8 +8,8 @@ import { createRoot } from 'react-dom/client';
 import { waitFor, act } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { WebsocketsProvider } from '../WebsocketsProvider';
-import { useListener } from '../hooks/useListener';
+import { NotificationsProvider } from '../NotificationsProvider';
+import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
 jest.mock('reconnecting-websocket');
 let container: Element;
@@ -23,7 +23,7 @@ declare global {
 const WS_CONSUMER_ID = 'WS_CONSUMER_ID';
 const WS_KEY = 'WS_KEY';
 
-describe('WebsocketsProvider', () => {
+describe('NotificationsProvider', () => {
     beforeEach(() => {
         container = document.createElement('div');
         document.body.appendChild(container);
@@ -33,35 +33,35 @@ describe('WebsocketsProvider', () => {
         container?.remove();
     });
 
-    test('renders WebsocketsProvider component', () => {
+    test('renders NotificationsProvider component', () => {
         const root = createRoot(container);
 
         act(() => {
-            root.render(<WebsocketsProvider urls={{ [WS_KEY]: 'test' }} />);
+            root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
         expect(ReconnectingWebSocket).toBeCalled();
     });
 
-    test('renders WebsocketsProvider children component ', () => {
+    test('renders NotificationsProvider children component ', () => {
         const root = createRoot(container);
 
         act(() => {
             root.render(
-                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
+                <NotificationsProvider urls={{ [WS_KEY]: 'test' }}>
                     <p id={WS_CONSUMER_ID}>Child</p>
-                </WebsocketsProvider>
+                </NotificationsProvider>
             );
         });
         const lastMsg = document.querySelector(`#${WS_CONSUMER_ID}`);
         expect(lastMsg?.textContent).toEqual('Child');
     });
 
-    test('renders WebsocketsProvider children component and updated by event ', async () => {
+    test('renders NotificationsProvider children component and updated by event ', async () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
-        function WSConsumer() {
-            useListener(WS_KEY, { listenerCallbackMessage: eventCallback });
+        function NotificationsConsumer() {
+            useNotificationsListener(WS_KEY, { listenerCallbackMessage: eventCallback });
             return <p>empty</p>;
         }
 
@@ -71,9 +71,9 @@ describe('WebsocketsProvider', () => {
 
         act(() => {
             root.render(
-                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
-                    <WSConsumer />
-                </WebsocketsProvider>
+                <NotificationsProvider urls={{ [WS_KEY]: 'test' }}>
+                    <NotificationsConsumer />
+                </NotificationsProvider>
             );
         });
         const event = { test: 'test' };
@@ -85,12 +85,12 @@ describe('WebsocketsProvider', () => {
         waitFor(() => expect(eventCallback).toBeCalledWith(event));
     });
 
-    test('renders WebsocketsProvider children component not called with other key ', () => {
+    test('renders NotificationsProvider children component not called with other key ', () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
-        function WSConsumer() {
-            useListener('Fake_Key', { listenerCallbackMessage: eventCallback });
+        function NotificationsConsumer() {
+            useNotificationsListener('Fake_Key', { listenerCallbackMessage: eventCallback });
             return <p>empty</p>;
         }
 
@@ -100,9 +100,9 @@ describe('WebsocketsProvider', () => {
 
         act(() => {
             root.render(
-                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
-                    <WSConsumer />
-                </WebsocketsProvider>
+                <NotificationsProvider urls={{ [WS_KEY]: 'test' }}>
+                    <NotificationsConsumer />
+                </NotificationsProvider>
             );
         });
         act(() => {
@@ -113,7 +113,7 @@ describe('WebsocketsProvider', () => {
         expect(eventCallback).not.toBeCalled();
     });
 
-    test('renders WebsocketsProvider component and calls onOpen callback', async () => {
+    test('renders NotificationsProvider component and calls onOpen callback', async () => {
         const root = createRoot(container);
 
         const onOpenCallback = jest.fn();
@@ -121,8 +121,8 @@ describe('WebsocketsProvider', () => {
             onopen: onOpenCallback,
         };
         const eventCallback = jest.fn();
-        function WSConsumer() {
-            useListener('Fake_Key', { listenerCallbackOnOpen: eventCallback });
+        function NotificationsConsumer() {
+            useNotificationsListener('Fake_Key', { listenerCallbackOnReopen: eventCallback });
             return <p>empty</p>;
         }
 
@@ -131,9 +131,9 @@ describe('WebsocketsProvider', () => {
 
         act(() => {
             root.render(
-                <WebsocketsProvider urls={{ [WS_KEY]: 'test' }}>
-                    <WSConsumer />
-                </WebsocketsProvider>
+                <NotificationsProvider urls={{ [WS_KEY]: 'test' }}>
+                    <NotificationsConsumer />
+                </NotificationsProvider>
             );
         });
 

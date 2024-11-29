@@ -13,23 +13,23 @@ export type ListenerEventWS = {
     callback: (event: MessageEvent) => void;
 };
 
-export type ListenerOnOpen = {
+export type ListenerOnReopen = {
     id: string;
     callback: () => void;
 };
 
-export type WSContextType = {
+export type NotificationsContextType = {
     addListenerEvent: (urlKey: string, l: ListenerEventWS) => void;
     removeListenerEvent: (urlKey: string, idListener: string) => void;
-    addListenerOnOpen: (urlKey: string, l: ListenerOnOpen) => void;
-    removeListenerOnOpen: (urlKey: string, idListener: string) => void;
+    addListenerOnReopen: (urlKey: string, l: ListenerOnReopen) => void;
+    removeListenerOnReopen: (urlKey: string, idListener: string) => void;
 };
 
-export type WSContextRecordType = Record<string, WSContextType>;
+export type NotificationsContextRecordType = Record<string, NotificationsContextType>;
 
-export const WSContext = createContext<WSContextType>({
+export const NotificationsContext = createContext<NotificationsContextType>({
     addListenerEvent: () => {},
     removeListenerEvent: () => {},
-    addListenerOnOpen: () => {},
-    removeListenerOnOpen: () => {},
+    addListenerOnReopen: () => {},
+    removeListenerOnReopen: () => {},
 });

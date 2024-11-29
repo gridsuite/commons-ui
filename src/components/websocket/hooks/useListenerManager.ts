@@ -6,10 +6,10 @@
  */
 // @author Quentin CAPY
 import { useCallback, useEffect, useRef } from 'react';
-import { ListenerEventWS, ListenerOnOpen } from '../contexts/WSContext';
+import { ListenerEventWS, ListenerOnReopen } from '../contexts/NotificationsContext';
 
 export const useListenerManager = <
-    TListener extends ListenerEventWS | ListenerOnOpen,
+    TListener extends ListenerEventWS | ListenerOnReopen,
     TMessage extends MessageEvent | never
 >(
     urls: Record<string, string>

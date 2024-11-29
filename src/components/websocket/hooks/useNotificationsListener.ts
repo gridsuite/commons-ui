@@ -8,21 +8,22 @@
 
 import { useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { WSContext } from '../contexts/WSContext';
+import { NotificationsContext } from '../contexts/NotificationsContext';
 
-export const useListener = (
+export const useNotificationsListener = (
     listenerKey: string,
     {
         listenerCallbackMessage,
-        listenerCallbackOnOpen,
+        listenerCallbackOnReopen,
         propsId,
     }: {
         listenerCallbackMessage?: (event: MessageEvent<any>) => void;
-        listenerCallbackOnOpen?: () => void;
+        listenerCallbackOnReopen?: () => void;
         propsId?: string;
     }
 ) => {
-    const { addListenerEvent, removeListenerEvent, addListenerOnOpen, removeListenerOnOpen } = useContext(WSContext);
+    const { addListenerEvent, removeListenerEvent, addListenerOnReopen, removeListenerOnReopen } =
+        useContext(NotificationsContext);
 
     useEffect(() => {
         const id = propsId ?? uuidv4();
@@ -37,12 +38,12 @@ export const useListener = (
 
     useEffect(() => {
         const id = propsId ?? uuidv4();
-        if (listenerCallbackOnOpen) {
-            addListenerOnOpen(listenerKey, {
+        if (listenerCallbackOnReopen) {
+            addListenerOnReopen(listenerKey, {
                 id,
-                callback: listenerCallbackOnOpen,
+                callback: listenerCallbackOnReopen,
             });
         }
-        return () => removeListenerOnOpen(listenerKey, id);
-    }, [addListenerOnOpen, removeListenerOnOpen, listenerKey, listenerCallbackOnOpen, propsId]);
+        return () => removeListenerOnReopen(listenerKey, id);
+    }, [addListenerOnReopen, removeListenerOnReopen, listenerKey, listenerCallbackOnReopen, propsId]);
 };
