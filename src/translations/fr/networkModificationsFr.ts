@@ -64,4 +64,5 @@ export const networkModificationsFr = {
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'modifications de sites',
     'network_modifications.TABULAR_CREATION': 'Création tabulaire - {computedLabel}',
     'network_modifications.tabular.GENERATOR_CREATION': 'créations de générateurs',
+    'network_modifications.LCC_CREATION': 'Création de la HVDC (LCC) {computedLabel}',
 };
