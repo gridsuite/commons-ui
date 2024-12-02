@@ -17,8 +17,8 @@ import { ElementExistsType } from '../../../utils/types/elementType';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterForm } from '../FilterForm';
-import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { SelectionForCopy } from '../filter.type';
+import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { ItemSelectionForCopy } from '../filter.type';
 import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
 import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
 
@@ -41,8 +41,8 @@ export interface CriteriaBasedFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
-    selectionForCopy: SelectionForCopy;
-    setSelectionForCopy: (selection: SelectionForCopy) => void;
+    itemSelectionForCopy: ItemSelectionForCopy;
+    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
@@ -56,8 +56,8 @@ export function CriteriaBasedFilterEditionDialog({
     onClose,
     broadcastChannel,
     getFilterById,
-    selectionForCopy,
-    setSelectionForCopy,
+    itemSelectionForCopy,
+    setItemSelectionForCopy,
     activeDirectory,
     elementExists,
     language,
@@ -105,11 +105,9 @@ export function CriteriaBasedFilterEditionDialog({
         (filterForm: FormSchemaType) => {
             saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
-                    if (selectionForCopy.sourceItemUuid === id) {
-                        setSelectionForCopy(NO_SELECTION_FOR_COPY);
-                        broadcastChannel.postMessage({
-                            NO_SELECTION_FOR_COPY,
-                        });
+                    if (itemSelectionForCopy.sourceItemUuid === id) {
+                        setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
+                        broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
                     }
                 })
                 .catch((error) => {
@@ -118,7 +116,7 @@ export function CriteriaBasedFilterEditionDialog({
                     });
                 });
         },
-        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]
+        [broadcastChannel, id, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

@@ -15,8 +15,8 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { ElementExistsType } from '../../../utils/types/elementType';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
-import { FilterType, NO_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { SelectionForCopy } from '../filter.type';
+import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { ItemSelectionForCopy } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
@@ -39,10 +39,9 @@ export interface ExpertFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-
-    selectionForCopy: SelectionForCopy;
+    itemSelectionForCopy: ItemSelectionForCopy;
+    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-    setSelectionForCopy: (selection: SelectionForCopy) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
@@ -55,13 +54,13 @@ export function ExpertFilterEditionDialog({
     open,
     onClose,
     broadcastChannel,
-    selectionForCopy,
+    itemSelectionForCopy,
     getFilterById,
-    setSelectionForCopy,
+    setItemSelectionForCopy,
     activeDirectory,
     elementExists,
     language,
-}: ExpertFilterEditionDialogProps) {
+}: Readonly<ExpertFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -119,14 +118,12 @@ export function ExpertFilterEditionDialog({
                     });
                 }
             );
-            if (selectionForCopy.sourceItemUuid === id) {
-                setSelectionForCopy(NO_SELECTION_FOR_COPY);
-                broadcastChannel.postMessage({
-                    NO_SELECTION_FOR_COPY,
-                });
+            if (itemSelectionForCopy.sourceItemUuid === id) {
+                setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
+                broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, onClose, selectionForCopy.sourceItemUuid, snackError, setSelectionForCopy]
+        [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
