@@ -7,9 +7,8 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import { Grid } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
+import { type ObjectSchema } from 'yup';
+import { FormControl, Grid, InputLabel } from '@mui/material';
 import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
@@ -30,19 +29,22 @@ export const RangeType = {
     LESS_THAN: { id: 'LESS_THAN', label: 'lessThan' },
     LESS_OR_EQUAL: { id: 'LESS_OR_EQUAL', label: 'lessOrEqual' },
     RANGE: { id: 'RANGE', label: 'range' },
+} as const;
+
+export type RangeInputData = {
+    [FieldConstants.OPERATION_TYPE]: string;
+    [FieldConstants.VALUE_1]: number | null;
+    [FieldConstants.VALUE_2]: number | null;
 };
 
-export const DEFAULT_RANGE_VALUE = {
+export const DEFAULT_RANGE_VALUE: RangeInputData = {
     [FieldConstants.OPERATION_TYPE]: RangeType.EQUALITY.id,
     [FieldConstants.VALUE_1]: null,
     [FieldConstants.VALUE_2]: null,
 };
-export const getRangeInputDataForm = (name: string, rangeValue: unknown) => ({
-    [name]: rangeValue,
-});
 
-export const getRangeInputSchema = (name: string) => ({
-    [name]: yup.object().shape(
+export function getRangeInputSchema<TName extends string>(name: TName) {
+    const result = yup.object().shape(
         {
             [FieldConstants.OPERATION_TYPE]: yup.string(),
             [FieldConstants.VALUE_1]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
@@ -57,8 +59,9 @@ export const getRangeInputSchema = (name: string) => ({
             }),
         },
         [[FieldConstants.VALUE_1, FieldConstants.VALUE_2]]
-    ),
-});
+    );
+    return { [name]: result } as Record<TName, ObjectSchema<RangeInputData>>;
+}
 
 interface RangeInputProps {
     name: string;
@@ -66,43 +69,9 @@ interface RangeInputProps {
 }
 
 export function RangeInput({ name, label }: RangeInputProps) {
-    const watchOperationType = useWatch({
-        name: `${name}.${FieldConstants.OPERATION_TYPE}`,
-    });
+    const watchOperationType = useWatch({ name: `${name}.${FieldConstants.OPERATION_TYPE}` });
 
     const isOperationTypeRange = useMemo(() => watchOperationType === RangeType.RANGE.id, [watchOperationType]);
-
-    const firstValueField = (
-        <FloatInput
-            label=""
-            name={`${name}.${FieldConstants.VALUE_1}`}
-            clearable={false}
-            formProps={{
-                size: 'medium',
-                placeholder: isOperationTypeRange ? 'Min' : '',
-            }}
-        />
-    );
-
-    const secondValueField = (
-        <FloatInput
-            name={`${name}.${FieldConstants.VALUE_2}`}
-            clearable={false}
-            label=""
-            formProps={{
-                size: 'medium',
-                placeholder: 'Max',
-            }}
-        />
-    );
-
-    const operationTypeField = (
-        <MuiSelectInput
-            name={`${name}.${FieldConstants.OPERATION_TYPE}`}
-            options={Object.values(RangeType)}
-            fullWidth
-        />
-    );
 
     return (
         <FormControl fullWidth>
@@ -110,20 +79,37 @@ export function RangeInput({ name, label }: RangeInputProps) {
                 <FormattedMessage id={label} />
             </InputLabel>
             <Grid container spacing={0}>
-                <Grid
-                    item
-                    style={
-                        isOperationTypeRange
-                            ? {
-                                  flex: 'min-content',
-                              }
-                            : {}
-                    }
-                >
-                    {operationTypeField}
+                <Grid item style={isOperationTypeRange ? { flex: 'min-content' } : {}}>
+                    <MuiSelectInput
+                        name={`${name}.${FieldConstants.OPERATION_TYPE}`}
+                        options={Object.values(RangeType)}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>{firstValueField}</Grid>
-                {isOperationTypeRange && <Grid item>{secondValueField}</Grid>}
+                <Grid item>
+                    <FloatInput
+                        label=""
+                        name={`${name}.${FieldConstants.VALUE_1}`}
+                        clearable={false}
+                        formProps={{
+                            size: 'medium',
+                            placeholder: isOperationTypeRange ? 'Min' : '',
+                        }}
+                    />
+                </Grid>
+                {isOperationTypeRange && (
+                    <Grid item>
+                        <FloatInput
+                            name={`${name}.${FieldConstants.VALUE_2}`}
+                            clearable={false}
+                            label=""
+                            formProps={{
+                                size: 'medium',
+                                placeholder: 'Max',
+                            }}
+                        />
+                    </Grid>
+                )}
             </Grid>
         </FormControl>
     );

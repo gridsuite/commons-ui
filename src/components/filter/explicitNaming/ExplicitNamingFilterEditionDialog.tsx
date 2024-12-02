@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
@@ -34,6 +34,7 @@ const formSchema = yup
     })
     .required();
 
+type FormSchemaType = yup.InferType<typeof formSchema>;
 export interface ExplicitNamingFilterEditionDialogProps {
     id: string;
     name: string;
@@ -67,7 +68,7 @@ export function ExplicitNamingFilterEditionDialog({
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = useForm({
+    const formMethods: UseFormReturn<FormSchemaType> = useForm({
         resolver: yupResolver(formSchema),
     });
 
@@ -105,10 +106,10 @@ export function ExplicitNamingFilterEditionDialog({
         }
     }, [id, name, open, reset, snackError, getFilterById]);
 
-    const onSubmit = useCallback(
-        (filterForm: any) => {
+    const onSubmit = useCallback<SubmitHandler<FormSchemaType>>(
+        (filterForm) => {
             saveExplicitNamingFilter(
-                filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
+                filterForm[FILTER_EQUIPMENTS_ATTRIBUTES] ?? [],
                 false,
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
