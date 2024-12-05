@@ -26,7 +26,6 @@ export const filterFr = {
     betweenRule: "La valeur de gauche d'une règle 'entre' doit être inférieure à la valeur de droite",
     emptyGroup: 'Le filtre contient un groupe vide. Supprimez le ou ajoutez des règles à ce groupe',
     Hvdc: 'HVDC',
-    'filter.criteriaBased': 'Par critères',
     'filter.expert': 'Expert',
     'filter.explicitNaming': 'Par nommage',
     nameEmpty: 'Le nom est vide',

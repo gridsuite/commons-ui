@@ -9,10 +9,10 @@ import { useCallback } from 'react';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import { saveCriteriaBasedFilter, saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
+import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
-import { criteriaBasedFilterEmptyFormData, criteriaBasedFilterSchema } from './criteriaBased/CriteriaBasedFilterForm';
+import { criteriaBasedFilterEmptyFormData } from './criteriaBased/CriteriaBasedFilterForm';
 import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
@@ -43,7 +43,6 @@ const formSchema = yup
         [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
         [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-        ...criteriaBasedFilterSchema,
         ...explicitNamingFilterSchema,
         ...expertFilterSchema,
     })
@@ -101,12 +100,6 @@ export function FilterCreationDialog({
                     onClose,
                     activeDirectory
                 );
-            } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.CRITERIA_BASED.id) {
-                saveCriteriaBasedFilter(filterForm, activeDirectory, onClose, (error?: string) => {
-                    snackError({
-                        messageTxt: error,
-                    });
-                });
             } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id) {
                 saveExpertFilter(
                     null,
