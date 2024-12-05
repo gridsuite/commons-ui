@@ -33,6 +33,7 @@ you need to follow the steps below:
 -   [Make a release action](https://github.com/gridsuite/commons-ui/actions/workflows/release.yml)
   - In the 'run workflow' combobox select, let the branch on main
   - Enter the type of evolution (major | minor | patch)
+  - Enter the node token (ask the organization's owners)
   - Click 'run workflow'
 
 #### License Headers and dependencies checking
