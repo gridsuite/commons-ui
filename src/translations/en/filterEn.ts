@@ -26,7 +26,7 @@ export const filterEn = {
     betweenRule: "Left value of 'between' rule have to be lower than the right value",
     emptyGroup: 'Filter contains an empty group. Consider removing it or adding rules to this group',
     Hvdc: 'HVDC',
-    'filter.expert': 'Expert',
+    'filter.expert': 'Criteria based',
     'filter.explicitNaming': 'Explicit naming',
     nameEmpty: 'The name is empty',
     equipmentType: 'Equipment type',
