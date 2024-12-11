@@ -24,29 +24,14 @@ import {
     CompositeField,
     CompositeGroup,
     DataType,
-    FieldType,
     OperatorOption,
     OperatorType,
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expertFilter.type';
 import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
-import {
-    isBlankOrEmpty,
-    kiloUnitToUnit,
-    microUnitToUnit,
-    unitToKiloUnit,
-    unitToMicroUnit,
-} from '../../../utils/conversionUtils';
-
-const microUnits = [
-    FieldType.SHUNT_CONDUCTANCE_1,
-    FieldType.SHUNT_CONDUCTANCE_2,
-    FieldType.SHUNT_SUSCEPTANCE_1,
-    FieldType.SHUNT_SUSCEPTANCE_2,
-];
-
-const kiloUnits = [FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT];
+import { convertInputValues, convertOutputValues, isBlankOrEmpty } from '../../../utils/conversionUtils';
+import { FieldType } from '../../../utils';
 
 interface TreeNode {
     [key: string]: any;
@@ -215,22 +200,6 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
     }
 };
 
-function changeValueUnit(value: any, field: FieldType) {
-    if (microUnits.includes(field)) {
-        if (!Array.isArray(value)) {
-            return microUnitToUnit(value);
-        }
-        return value.map((a: number) => microUnitToUnit(a));
-    }
-    if (kiloUnits.includes(field)) {
-        if (!Array.isArray(value)) {
-            return kiloUnitToUnit(value);
-        }
-        return value.map((a: number) => kiloUnitToUnit(a));
-    }
-    return value;
-}
-
 export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
     function transformRule(rule: RuleType): RuleTypeExport | RuleGroupTypeExport {
         const isValueAnArray = Array.isArray(rule.value);
@@ -256,11 +225,11 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
                 rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
                 rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name &&
                 dataType !== DataType.PROPERTY
-                    ? changeValueUnit(rule.value, rule.field as FieldType)
+                    ? convertOutputValues(rule.field as FieldType, rule.value)
                     : undefined,
             values:
                 isValueAnArray && dataType !== DataType.PROPERTY
-                    ? changeValueUnit(rule.value, rule.field as FieldType)
+                    ? convertOutputValues(rule.field as FieldType, rule.value)
                     : undefined,
             dataType,
             propertyName: dataType === DataType.PROPERTY ? rule.value.propertyName : undefined,
@@ -325,22 +294,12 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             if (rule.dataType === DataType.NUMBER) {
                 return rule.values
                     .map((value) => parseFloat(value as string))
-                    .map((numberValue) => {
-                        return microUnits.includes(rule.field) ? unitToMicroUnit(numberValue)! : numberValue;
-                    })
-                    .map((numberValue) => {
-                        return kiloUnits.includes(rule.field) ? unitToKiloUnit(numberValue)! : numberValue;
-                    })
+                    .map((numberValue) => convertInputValues(rule.field, numberValue))
                     .sort((a, b) => a - b);
             }
             return rule.values.sort();
         }
-        if (microUnits.includes(rule.field)) {
-            return unitToMicroUnit(parseFloat(rule.value as string));
-        }
-        if (kiloUnits.includes(rule.field)) {
-            return unitToKiloUnit(parseFloat(rule.value as string));
-        }
+        convertInputValues(rule.field, parseFloat(rule.value as string));
         return rule.value;
     }
 
