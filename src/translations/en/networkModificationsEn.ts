@@ -62,4 +62,5 @@ export const networkModificationsEn = {
     'network_modifications.TABULAR_CREATION': 'Tabular creation - {computedLabel}',
     'network_modifications.tabular.GENERATOR_CREATION': 'generator creations',
     'network_modifications.LCC_CREATION': 'Creating HVDC (LCC) {computedLabel}',
+    'network_modifications.CSPR_CREATION': 'Creating CSPR {computedLabel}',
 };
