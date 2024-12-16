@@ -103,7 +103,7 @@ export interface FlatParametersProps {
     paramsAsArray: Parameter[];
     initValues: Record<string, string>;
     onChange: (paramName: string, value: unknown, isInEdition: boolean) => void;
-    variant: TextFieldProps['variant'];
+    variant?: TextFieldProps['variant'];
     showSeparator?: boolean;
     selectionWithDialog?: (param: Parameter) => boolean;
 }
