@@ -14,6 +14,7 @@ export const useListenerManager = <
 >(
     urls: Record<string, string>
 ) => {
+    const prevUrlKeysRef = useRef<String[]>([]);
     const urlsListenersRef = useRef(
         Object.keys(urls).reduce((acc, urlKey) => {
             acc[urlKey] = [];
@@ -22,10 +23,26 @@ export const useListenerManager = <
     );
 
     useEffect(() => {
-        urlsListenersRef.current = Object.keys(urls).reduce((acc, urlKey) => {
-            acc[urlKey] = [];
-            return acc;
-        }, {} as Record<string, TListener[]>);
+        const urlKeys = Object.keys(urls);
+        const currentKeys = Object.keys(urlsListenersRef.current);
+        // Do not clean urlsListenersRef at initialization
+        // only when Urls and websockets are removed
+        // to keep listeners being registered before websocket url initialization
+        if (prevUrlKeysRef.current.length > urlKeys.length) {
+            // remove listeners from deleted URL keys
+            currentKeys.forEach((k) => {
+                if (!urlKeys.includes(k)) {
+                    delete urlsListenersRef.current[k];
+                }
+            });
+        }
+        // add empty list listeners from added URL keys
+        urlKeys.forEach((k) => {
+            if (!currentKeys.includes(k)) {
+                urlsListenersRef.current[k] = [];
+            }
+        });
+        prevUrlKeysRef.current = Object.keys(urls);
     }, [urls]);
 
     const addListenerEvent = useCallback((urlKey: string, listener: TListener) => {
