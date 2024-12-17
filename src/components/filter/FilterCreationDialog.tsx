@@ -12,7 +12,6 @@ import { UUID } from 'crypto';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
-import { criteriaBasedFilterEmptyFormData } from './criteriaBased/CriteriaBasedFilterForm';
 import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
@@ -30,7 +29,6 @@ const emptyFormData = {
     [FieldConstants.DESCRIPTION]: '',
     [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
     [FieldConstants.EQUIPMENT_TYPE]: null,
-    ...criteriaBasedFilterEmptyFormData,
     ...getExplicitNamingFilterEmptyFormData(),
     ...getExpertFilterEmptyFormData(),
 };

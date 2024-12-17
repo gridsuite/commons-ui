@@ -5,8 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './CriteriaBasedFilterForm';
 export * from './CriteriaBasedForm';
-export * from './FilterFreeProperties';
-export * from './FilterProperty';
-export * from './criteriaBasedFilterUtils';
+export * from './criteriaBasedUtils';
