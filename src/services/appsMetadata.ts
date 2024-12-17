@@ -32,9 +32,9 @@ export async function fetchAppsMetadata(): Promise<Metadata[]> {
     return res.json();
 }
 
-export const isStudyMetadata = (metadata: Metadata): metadata is StudyMetadata => {
+export function isStudyMetadata(metadata: Metadata): metadata is StudyMetadata {
     return metadata.name === 'Study';
-};
+}
 
 export async function fetchStudyMetadata(): Promise<StudyMetadata> {
     console.info(`Fetching study metadata...`);
