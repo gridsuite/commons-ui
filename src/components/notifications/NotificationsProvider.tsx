@@ -28,27 +28,29 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
     } = useListenerManager<ListenerOnReopen, never>(urls);
 
     useEffect(() => {
-        const connections = Object.keys(urls).map((urlKey) => {
-            const rws = new ReconnectingWebSocket(() => urls[urlKey], [], {
-                // this option set the minimum duration being connected before reset the retry count to 0
-                minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
+        const connections = Object.keys(urls)
+            .filter((u) => urls[u] != null)
+            .map((urlKey) => {
+                const rws = new ReconnectingWebSocket(() => urls[urlKey], [], {
+                    // this option set the minimum duration being connected before reset the retry count to 0
+                    minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
+                });
+
+                rws.onmessage = broadcastMessage(urlKey);
+
+                rws.onclose = (event) => {
+                    console.error(`Unexpected ${urlKey} Notification WebSocket closed`, event);
+                };
+                rws.onerror = (event) => {
+                    console.error(`Unexpected ${urlKey} Notification WebSocket error`, event);
+                };
+
+                rws.onopen = () => {
+                    console.info(`${urlKey} Notification Websocket connected`);
+                    broadcastOnReopen(urlKey);
+                };
+                return rws;
             });
-
-            rws.onmessage = broadcastMessage(urlKey);
-
-            rws.onclose = (event) => {
-                console.error(`Unexpected ${urlKey} Notification WebSocket closed`, event);
-            };
-            rws.onerror = (event) => {
-                console.error(`Unexpected ${urlKey} Notification WebSocket error`, event);
-            };
-
-            rws.onopen = () => {
-                console.info(`${urlKey} Notification Websocket connected`);
-                broadcastOnReopen(urlKey);
-            };
-            return rws;
-        });
 
         return () => {
             connections.forEach((c) => c.close());

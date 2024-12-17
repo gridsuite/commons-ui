@@ -14,12 +14,7 @@ export const useListenerManager = <
 >(
     urls: Record<string, string>
 ) => {
-    const urlsListenersRef = useRef(
-        Object.keys(urls).reduce((acc, urlKey) => {
-            acc[urlKey] = [];
-            return acc;
-        }, {} as Record<string, TListener[]>)
-    );
+    const urlsListenersRef = useRef<Record<string, TListener[]>>({});
 
     useEffect(() => {
         urlsListenersRef.current = Object.keys(urls).reduce((acc, urlKey) => {
