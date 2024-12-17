@@ -31,6 +31,8 @@ export const unitToKiloUnit = (num: number) => (isBlankOrEmpty(num) ? undefined 
 export const kiloUnitToUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e3));
 
 const microUnits = [
+    FieldType.MAX_Q_AT_NOMINAL_V,
+    FieldType.MAXIMUM_SUSCEPTANCE,
     FieldType.SHUNT_CONDUCTANCE_1,
     FieldType.SHUNT_CONDUCTANCE_2,
     FieldType.SHUNT_SUSCEPTANCE_1,
