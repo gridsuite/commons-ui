@@ -8,10 +8,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { ListenerEventWS, ListenerOnReopen } from '../contexts/NotificationsContext';
 
-export const useListenerManager = <
-    TListener extends ListenerEventWS | ListenerOnReopen,
-    TMessage extends MessageEvent | never
->(
+export const useListenerManager = <TListener extends ListenerEventWS | ListenerOnReopen, TMessage extends MessageEvent>(
     urls: Record<string, string>
 ) => {
     const urlsListenersRef = useRef<Record<string, TListener[]>>({});
