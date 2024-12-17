@@ -61,4 +61,6 @@ export const networkModificationsEn = {
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'substation modifications',
     'network_modifications.TABULAR_CREATION': 'Tabular creation - {computedLabel}',
     'network_modifications.tabular.GENERATOR_CREATION': 'generator creations',
+    'network_modifications.LCC_CREATION': 'Creating HVDC (LCC) {computedLabel}',
+    'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Creating static var compensator {computedLabel}',
 };

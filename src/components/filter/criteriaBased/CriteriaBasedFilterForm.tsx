@@ -17,7 +17,7 @@ export const criteriaBasedFilterSchema = getCriteriaBasedSchema({
     ...filterPropertiesYupSchema,
 });
 
-export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(null, {
+export const criteriaBasedFilterEmptyFormData = getCriteriaBasedFormData(undefined, {
     [FieldConstants.ENERGY_SOURCE]: null,
     [FreePropertiesTypes.SUBSTATION_FILTER_PROPERTIES]: [],
     [FreePropertiesTypes.FREE_FILTER_PROPERTIES]: [],

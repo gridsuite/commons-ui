@@ -37,13 +37,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
 };
 
 export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
-    const {
-        shouldHidePinnedHeaderRightBorder = false,
-        overlayNoRowsTemplate,
-        loadingOverlayComponent,
-        loadingOverlayComponentParams,
-        showOverlay = false,
-    } = props;
+    const { shouldHidePinnedHeaderRightBorder = false, showOverlay = false, ...agGridReactProps } = props;
     const theme = useTheme<Theme>();
     const intl = useIntl();
 
@@ -73,12 +67,9 @@ export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((pr
                 ref={ref}
                 getLocaleText={getLocaleText}
                 suppressPropertyNamesCheck
-                loadingOverlayComponent={loadingOverlayComponent}
-                loadingOverlayComponentParams={loadingOverlayComponentParams}
-                overlayNoRowsTemplate={overlayNoRowsTemplate}
                 onColumnResized={onColumnResized}
                 enableCellTextSelection
-                {...props}
+                {...agGridReactProps}
             />
         </Box>
     );

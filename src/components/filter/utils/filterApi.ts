@@ -20,7 +20,7 @@ export const saveExplicitNamingFilter = (
     name: string,
     description: string,
     id: string | null,
-    setCreateFilterErr: (value: any) => void,
+    setCreateFilterErr: (value?: string) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
     token?: string

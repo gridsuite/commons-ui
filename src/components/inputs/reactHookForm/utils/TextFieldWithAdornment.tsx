@@ -14,8 +14,8 @@ import { Input } from '../../../../utils/types/types';
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
     value: Input; // we override the default type of TextFieldProps which is unknown
-    adornmentPosition: string;
-    adornmentText: string;
+    adornmentPosition?: string;
+    adornmentText?: string;
     handleClearValue?: () => void;
 };
 
