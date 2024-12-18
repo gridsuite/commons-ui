@@ -60,4 +60,3 @@ export function getCriteriaBasedFormData(
         },
     } as const;
 }
-// The server expect them to be null if the user don't fill them, unlike contingency list
