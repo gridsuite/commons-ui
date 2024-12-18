@@ -10,20 +10,21 @@ import Grid from '@mui/material/Grid';
 import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
-import useValid from './hooks/useValid';
+import { useValid } from './hooks/useValid';
 
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import usePredefinedProperties from '../../../hooks/usePredefinedProperties';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
+import { EquipmentType } from '../../../utils';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
 interface ExpertFilterPropertyProps {
-    equipmentType: string;
+    equipmentType: EquipmentType;
     valueEditorProps: ValueEditorProps;
 }
 
-function PropertyValueEditor(props: ExpertFilterPropertyProps) {
+export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
@@ -89,6 +90,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Select
                     value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
                     size="small"
+                    title={valueEditorProps?.title}
                     error={!valid}
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
@@ -105,6 +107,7 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Autocomplete
                     value={propertyValues ?? []}
                     options={predefinedValues ?? []}
+                    title={valueEditorProps?.title}
                     multiple
                     renderInput={(params) => <TextField {...params} error={!valid} />}
                     freeSolo
@@ -118,5 +121,3 @@ function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         </Grid>
     );
 }
-
-export default PropertyValueEditor;

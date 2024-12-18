@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterExpertEn = {
+export const filterExpertEn = {
     id: 'ID',
     name: 'Name',
     energySource: 'Energy source',
@@ -95,7 +95,6 @@ const filterExpertEn = {
     substationProperty2: 'Substation property 2',
     substationProperty1Twt: 'Substation property 1',
     substationProperty2Twt: 'Substation property 2',
-    substationProperty3Twt: 'Substation property 3',
     ratedVoltage1KV: 'Rated Voltage 1 (kV)',
     ratedVoltage2KV: 'Rated Voltage 2 (kV)',
     ratedVoltage0KVTwt: 'Rated Voltage 0 (kV)',
@@ -188,6 +187,6 @@ const filterExpertEn = {
     YupNotTypeDefault: 'Field value format is incorrect',
     changeOperatorMessage:
         'The operator will be changed and will be applied to all the rules already created in the group.',
+    lowShortCircuitCurrentLimit: 'Low short-circuit current limit (kA)',
+    highShortCircuitCurrentLimit: 'High short-circuit current limit (kA)',
 };
-
-export default filterExpertEn;

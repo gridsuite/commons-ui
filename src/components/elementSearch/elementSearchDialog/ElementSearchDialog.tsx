@@ -30,5 +30,3 @@ export function ElementSearchDialog<T>(props: ElementSearchDialogProps<T>) {
         </Dialog>
     );
 }
-
-export default ElementSearchDialog;

@@ -20,12 +20,13 @@ import {
     VoltageLevel,
 } from '../../../utils/types/equipmentTypes';
 import { areArrayElementsUnique } from '../../../utils/functions';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
-import FilterFreeProperties, { FreePropertiesTypes } from './FilterFreeProperties';
+import { FilterFreeProperties, FreePropertiesTypes } from './FilterFreeProperties';
 import { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './FilterProperty';
-import usePredefinedProperties from '../../../hooks/usePredefinedProperties';
+import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { FilterType } from '../constants/FilterConstants';
+import { EquipmentType } from '../../../utils';
 
 function propertyValuesTest(
     values: (string | undefined)[] | undefined,
@@ -114,7 +115,7 @@ export const filterPropertiesYupSchema = {
         }),
 };
 
-function FilterProperties() {
+export function FilterProperties() {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
@@ -145,7 +146,7 @@ function FilterProperties() {
     }, [displayEquipmentProperties, watchEquipmentType, setEquipmentType]);
     useEffect(() => {
         if (displaySubstationProperties) {
-            setSubstationType(Substation.type);
+            setSubstationType(EquipmentType.SUBSTATION);
         }
     }, [displaySubstationProperties, setSubstationType]);
 
@@ -171,5 +172,3 @@ function FilterProperties() {
         )
     );
 }
-
-export default FilterProperties;

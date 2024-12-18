@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 import { fetchEnv } from '../services';
 
-const useConfidentialityWarning = () => {
+export const useConfidentialityWarning = () => {
     const [confidentialityWarningKey, setConfidentialityWarningKey] = useState<string>();
 
     useEffect(() => {
@@ -19,5 +19,3 @@ const useConfidentialityWarning = () => {
 
     return confidentialityWarningKey;
 };
-
-export default useConfidentialityWarning;

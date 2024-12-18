@@ -44,10 +44,3 @@ export const Substation = {
     label: 'Substations',
     type: 'SUBSTATION',
 };
-
-export const noSelectionForCopy = {
-    sourceCaseUuid: null,
-    name: null,
-    description: null,
-    parentDirectoryUuid: null,
-};

@@ -7,7 +7,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import ExpandableGroup from '../ExpandableGroup';
+import { ExpandableGroup } from '../ExpandableGroup';
 
 describe('ExpandableGroup', () => {
     it('renders the header correctly', () => {

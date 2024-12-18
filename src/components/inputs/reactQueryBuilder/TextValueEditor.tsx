@@ -8,23 +8,18 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Autocomplete, TextField } from '@mui/material';
-import useConvertValue from './hooks/useConvertValue';
-import useValid from './hooks/useValid';
+import { useConvertValue } from './hooks/useConvertValue';
+import { useValid } from './hooks/useValid';
 
-function TextValueEditor(props: ValueEditorProps) {
+export function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
 
     const valid = useValid(props);
 
-    const { value, handleOnChange } = props;
+    const { value, handleOnChange, title } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
     if (!Array.isArray(value)) {
-        return (
-            <MaterialValueEditor
-                {...props}
-                title={undefined} // disable the tooltip
-            />
-        );
+        return <MaterialValueEditor {...props} />;
     }
     return (
         <Autocomplete
@@ -36,7 +31,7 @@ function TextValueEditor(props: ValueEditorProps) {
             fullWidth
             renderInput={(params) => <TextField {...params} error={!valid} />}
             size="small"
+            title={title}
         />
     );
 }
-export default TextValueEditor;

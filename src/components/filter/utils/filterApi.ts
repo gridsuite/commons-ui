@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { frontToBackTweak } from '../criteriaBased/criteriaBasedFilterUtils';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
@@ -20,7 +20,7 @@ export const saveExplicitNamingFilter = (
     name: string,
     description: string,
     id: string | null,
-    setCreateFilterErr: (value: any) => void,
+    setCreateFilterErr: (value?: string) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
     token?: string

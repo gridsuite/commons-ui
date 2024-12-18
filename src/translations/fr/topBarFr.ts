@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const topBarFr = {
+export const topBarFr = {
     'top-bar/settings': 'Paramètres',
     'top-bar/logout': 'Se déconnecter',
     'top-bar/goFullScreen': 'Plein écran',
     'top-bar/exitFullScreen': 'Quitter mode plein écran',
+    'top-bar/userInformation': 'Informations utilisateur',
     'top-bar/about': 'À propos',
     'top-bar/displayMode': "Mode d'affichage",
     'top-bar/equipmentLabel': 'Label des ouvrages',
@@ -29,6 +30,15 @@ const topBarFr = {
     'about-dialog/module-tooltip-app': 'application',
     'about-dialog/module-tooltip-server': 'serveur',
     'about-dialog/module-tooltip-other': 'autre',
-};
 
-export default topBarFr;
+    'user-information-dialog/title': 'Informations utilisateur',
+    'user-information-dialog/role': 'Rôle',
+    'user-information-dialog/role-user': 'Utilisateur simple',
+    'user-information-dialog/role-admin': 'Admin',
+    'user-information-dialog/profile': 'Profil',
+    'user-information-dialog/no-profile': 'Pas de profil',
+    'user-information-dialog/quotas': 'Quotas',
+    'user-information-dialog/number-of-cases-or-studies': 'Nombre situations ou études',
+    'user-information-dialog/used': 'Utilisé',
+    'user-information-dialog/number-of-builds-per-study': 'Nombre réalisations par étude',
+};
