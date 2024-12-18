@@ -11,7 +11,7 @@ import { ReactElement, useEffect } from 'react';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import { FormEquipment, FormField } from '../utils/filterFormUtils';
+import { FormEquipment, FormField } from '../../filter/utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { unscrollableDialogStyles } from '../../dialogs';
 
