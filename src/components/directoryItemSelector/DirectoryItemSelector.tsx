@@ -8,11 +8,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
-import getFileIcon from '../../utils/mapper/elementIcon';
+import { getFileIcon } from '../../utils/mapper/getFileIcon';
 import { ElementType } from '../../utils/types/elementType';
-import TreeViewFinder, { TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
+import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
+import { ElementAttributes } from '../../utils';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -22,35 +23,49 @@ const styles = {
     }),
 };
 
-function sameRights(a: any, b: any) {
-    if (!a && !b) {
+// TODO: check avec Kevin / Sylvain
+type ElementAttributesBase = {
+    elementUuid: ElementAttributes['elementUuid'] | null;
+    subdirectoriesCount: ElementAttributes['subdirectoriesCount'];
+    parentUuid: ElementAttributes['parentUuid'];
+    children: ElementAttributes['children'];
+};
+
+function sameRights(
+    sourceAccessRights: ElementAttributes['accessRights'],
+    accessRightsToCompare: ElementAttributes['accessRights']
+) {
+    if (!sourceAccessRights && !accessRightsToCompare) {
         return true;
     }
-    if (!a || !b) {
+    if (!sourceAccessRights || !accessRightsToCompare) {
         return false;
     }
-    return a.isPrivate === b.isPrivate;
+    return sourceAccessRights.isPrivate === accessRightsToCompare.isPrivate;
 }
 
-function flattenDownNodes(n: any, cef: (n: any) => any[]): any[] {
+function flattenDownNodes<T>(n: T, cef: (n: T) => T[]): T[] {
     const subs = cef(n);
     if (subs.length === 0) {
         return [n];
     }
-    return Array.prototype.concat([n], ...subs.map((sn: any) => flattenDownNodes(sn, cef)));
+    return Array.prototype.concat([n], ...subs.map((sn) => flattenDownNodes(sn, cef)));
 }
 
-function refreshedUpNodes(m: any[], nn: any): any[] {
-    if (!nn?.elementUuid) {
+function refreshedUpNodes(
+    nodeMap: Record<UUID, ElementAttributesBase>,
+    newElement: ElementAttributesBase
+): ElementAttributesBase[] {
+    if (!newElement?.elementUuid) {
         return [];
     }
-    if (nn.parentUuid === null) {
-        return [nn];
+    if (newElement.parentUuid === null) {
+        return [newElement];
     }
-    const parent = m[nn.parentUuid];
-    const nextChildren = parent.children.map((c: any) => (c.elementUuid === nn.elementUuid ? nn : c));
+    const parent = nodeMap[newElement.parentUuid];
+    const nextChildren = parent.children.map((c) => (c.elementUuid === newElement.elementUuid ? newElement : c));
     const nextParent = { ...parent, children: nextChildren };
-    return [nn, ...refreshedUpNodes(m, nextParent)];
+    return [newElement, ...refreshedUpNodes(nodeMap, nextParent)];
 }
 
 /**
@@ -60,10 +75,15 @@ function refreshedUpNodes(m: any[], nn: any): any[] {
  * @param nodeId uuid of the node to update children, may be null or undefined (means root)
  * @param children new value of the node children (shallow nodes)
  */
-function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, children: any[]) {
+function updatedTree(
+    prevRoots: ElementAttributes[],
+    prevMap: Record<UUID, ElementAttributes>,
+    nodeId: UUID | null,
+    children: ElementAttributes[]
+) {
     const nextChildren = children
         .sort((a, b) => a.elementName.localeCompare(b.elementName))
-        .map((n: any) => {
+        .map((n) => {
             const pn = prevMap[n.elementUuid];
             if (!pn) {
                 return { ...n, children: [], parentUuid: nodeId };
@@ -89,15 +109,12 @@ function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, childr
         });
 
     const prevChildren = nodeId ? prevMap[nodeId]?.children : prevRoots;
-    if (
-        prevChildren?.length === nextChildren.length &&
-        prevChildren.every((e: any, i: number) => e === nextChildren[i])
-    ) {
+    if (prevChildren?.length === nextChildren.length && prevChildren.every((e, i) => e === nextChildren[i])) {
         return [prevRoots, prevMap];
     }
 
     const nextUuids = new Set(children ? children.map((n) => n.elementUuid) : []);
-    const prevUuids = prevChildren ? prevChildren.map((n: any) => n.elementUuid) : [];
+    const prevUuids = prevChildren ? prevChildren.map((n) => n.elementUuid) : [];
     const mayNodeId = nodeId ? [nodeId] : [];
 
     const nonCopyUuids = new Set([
@@ -117,7 +134,7 @@ function updatedTree(prevRoots: any[], prevMap: any, nodeId: UUID | null, childr
         ...prevNode,
         children: nextChildren,
         subdirectoriesCount: nextChildren.length,
-    };
+    } satisfies ElementAttributesBase;
 
     const nextMap = Object.fromEntries([
         ...Object.entries(prevMap).filter(([k]) => !nonCopyUuids.has(k)),
@@ -145,6 +162,7 @@ export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     onlyLeaves?: boolean;
     multiselect?: boolean;
     expanded?: UUID[];
+    selected?: UUID[];
 }
 
 function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps): number {
@@ -158,21 +176,22 @@ function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNo
     return a.name.localeCompare(b.name);
 }
 
-function DirectoryItemSelector({
+export function DirectoryItemSelector({
     open,
     types,
     equipmentTypes,
     itemFilter,
     expanded,
+    selected,
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
-    const [rootDirectories, setRootDirectories] = useState<any[]>([]);
-    const nodeMap = useRef<any>({});
-    const dataRef = useRef<any[]>([]);
+    const [rootDirectories, setRootDirectories] = useState<ElementAttributes[]>([]);
+    const nodeMap = useRef<Record<UUID, ElementAttributes>>({});
+    const dataRef = useRef<TreeViewFinderNodeProps[]>([]);
     dataRef.current = data;
 
-    const rootsRef = useRef<any[]>([]);
+    const rootsRef = useRef<ElementAttributes[]>([]);
     rootsRef.current = rootDirectories;
     const { snackError } = useSnackMessage();
     const contentFilter = useCallback(() => new Set([ElementType.DIRECTORY, ...types]), [types]);
@@ -191,7 +210,7 @@ function DirectoryItemSelector({
     }, []);
 
     const convertRoots = useCallback(
-        (newRoots: any[]): any[] => {
+        (newRoots: ElementAttributes[]) => {
             return newRoots.map((e) => {
                 return {
                     id: e.elementUuid,
@@ -209,7 +228,7 @@ function DirectoryItemSelector({
     );
 
     const addToDirectory = useCallback(
-        (nodeId: UUID, content: any[]) => {
+        (nodeId: UUID, content: ElementAttributes[]) => {
             const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, nodeId, content);
             setRootDirectories(nrs);
             nodeMap.current = mdr;
@@ -234,7 +253,7 @@ function DirectoryItemSelector({
             });
     }, [convertRoots, types, snackError]);
 
-    const fetchDirectory = useCallback(
+    const fetchDirectoryChildren = useCallback(
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
@@ -272,29 +291,41 @@ function DirectoryItemSelector({
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
+    // In this useEffect, we fetch the path (expanded array) of every selected node
     useEffect(() => {
-        if (open) {
-            updateRootDirectories();
-            if (expanded) {
+        if (open && expanded && selected) {
+            // we check if every selected item is already fetched
+            const isSelectedItemFetched = selected.every((id) => nodeMap.current[id]);
+            if (!isSelectedItemFetched) {
                 expanded.forEach((nodeId) => {
-                    fetchDirectory(nodeId);
+                    const node = nodeMap.current[nodeId];
+                    // we check that the node exist before fetching the children
+                    // And we check if there is already children (Because we are trying to reach a selected element, we know every node has at least one child)
+                    if (node?.children && node.children.length === 0) {
+                        fetchDirectoryChildren(nodeId);
+                    }
                 });
             }
         }
-    }, [open, updateRootDirectories, expanded, fetchDirectory]);
+    }, [open, expanded, fetchDirectoryChildren, selected, data]);
+
+    useEffect(() => {
+        if (open) {
+            updateRootDirectories();
+        }
+    }, [open, updateRootDirectories]);
 
     return (
         <TreeViewFinder
-            onTreeBrowse={fetchDirectory as (NodeId: string) => void}
+            onTreeBrowse={fetchDirectoryChildren as (NodeId: string) => void}
             sortMethod={sortHandlingDirectories}
             multiSelect // defaulted to true
             open={open}
             expanded={expanded as string[]}
             onlyLeaves // defaulted to true
+            selected={selected}
             {...otherTreeViewFinderProps}
             data={data}
         />
     );
 }
-
-export default DirectoryItemSelector;

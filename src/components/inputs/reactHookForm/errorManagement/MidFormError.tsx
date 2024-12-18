@@ -11,7 +11,7 @@ import { ReactNode } from 'react';
 export type MidFormErrorProps = { message: string | ReactNode };
 
 // component to display error message in the middle of dialog
-function MidFormError({ message }: Readonly<MidFormErrorProps>) {
+export function MidFormError({ message }: Readonly<MidFormErrorProps>) {
     return (
         <Box
             sx={(theme) => ({
@@ -25,5 +25,3 @@ function MidFormError({ message }: Readonly<MidFormErrorProps>) {
         </Box>
     );
 }
-
-export default MidFormError;

@@ -4,9 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { EquipmentType } from '../types/types';
 
-const mapEquipmentTypeForPredefinedProperties = (type: EquipmentType): string | undefined => {
+import { EquipmentType } from '../types';
+
+export const equipmentTypesForPredefinedPropertiesMapper = (type: EquipmentType): string | undefined => {
     switch (type) {
         case 'SUBSTATION':
             return 'substation';
@@ -36,5 +37,3 @@ const mapEquipmentTypeForPredefinedProperties = (type: EquipmentType): string | 
             return undefined;
     }
 };
-
-export default mapEquipmentTypeForPredefinedProperties;

@@ -24,7 +24,7 @@ import {
 } from '@mui/material';
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import MultipleSelectionDialog from '../multipleSelectionDialog/MultipleSelectionDialog';
+import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
 
 const styles = {
     paramList: {
@@ -103,7 +103,7 @@ export interface FlatParametersProps {
     paramsAsArray: Parameter[];
     initValues: Record<string, string>;
     onChange: (paramName: string, value: unknown, isInEdition: boolean) => void;
-    variant: TextFieldProps['variant'];
+    variant?: TextFieldProps['variant'];
     showSeparator?: boolean;
     selectionWithDialog?: (param: Parameter) => boolean;
 }
@@ -442,5 +442,3 @@ export function FlatParameters({
         </List>
     );
 }
-
-export default FlatParameters;

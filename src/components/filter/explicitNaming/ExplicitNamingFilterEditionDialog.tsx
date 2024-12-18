@@ -5,24 +5,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
-import { saveExplicitNamingFilter } from '../utils/filterApi';
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { v4 as uuid4 } from 'uuid';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
-import FieldConstants from '../../../utils/constants/fieldConstants';
 
-import FilterForm from '../FilterForm';
-import { noSelectionForCopy } from '../../../utils/types/equipmentTypes';
-import { FilterType } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { ElementExistsType } from '../../../utils/types/elementType';
+import { FilterForm } from '../FilterForm';
+import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { ItemSelectionForCopy } from '../filter.type';
 
 const formSchema = yup
     .object()
@@ -34,6 +34,7 @@ const formSchema = yup
     })
     .required();
 
+type FormSchemaType = yup.InferType<typeof formSchema>;
 export interface ExplicitNamingFilterEditionDialogProps {
     id: string;
     name: string;
@@ -41,23 +42,23 @@ export interface ExplicitNamingFilterEditionDialogProps {
     open: boolean;
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
-    selectionForCopy: any;
-    setSelectionForCopy: (selection: any) => void;
+    itemSelectionForCopy: ItemSelectionForCopy;
+    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     getFilterById: (id: string) => Promise<any>;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
 }
 
-function ExplicitNamingFilterEditionDialog({
+export function ExplicitNamingFilterEditionDialog({
     id,
     name,
     titleId,
     open,
     onClose,
     broadcastChannel,
-    selectionForCopy,
-    setSelectionForCopy,
+    itemSelectionForCopy,
+    setItemSelectionForCopy,
     getFilterById,
     activeDirectory,
     elementExists,
@@ -67,7 +68,7 @@ function ExplicitNamingFilterEditionDialog({
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
-    const formMethods = useForm({
+    const formMethods: UseFormReturn<FormSchemaType> = useForm({
         resolver: yupResolver(formSchema),
     });
 
@@ -105,10 +106,10 @@ function ExplicitNamingFilterEditionDialog({
         }
     }, [id, name, open, reset, snackError, getFilterById]);
 
-    const onSubmit = useCallback(
-        (filterForm: any) => {
+    const onSubmit = useCallback<SubmitHandler<FormSchemaType>>(
+        (filterForm) => {
             saveExplicitNamingFilter(
-                filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
+                filterForm[FILTER_EQUIPMENTS_ATTRIBUTES] ?? [],
                 false,
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
@@ -121,14 +122,12 @@ function ExplicitNamingFilterEditionDialog({
                 },
                 onClose
             );
-            if (selectionForCopy.sourceItemUuid === id) {
-                setSelectionForCopy(noSelectionForCopy);
-                broadcastChannel.postMessage({
-                    noSelectionForCopy,
-                });
+            if (itemSelectionForCopy.sourceItemUuid === id) {
+                setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
+                broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, selectionForCopy, onClose, snackError, setSelectionForCopy]
+        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -145,6 +144,7 @@ function ExplicitNamingFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            unscrollableFullHeight
         >
             {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
         </CustomMuiDialog>
@@ -158,5 +158,3 @@ ExplicitNamingFilterEditionDialog.prototype = {
     open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
 };
-
-export default ExplicitNamingFilterEditionDialog;

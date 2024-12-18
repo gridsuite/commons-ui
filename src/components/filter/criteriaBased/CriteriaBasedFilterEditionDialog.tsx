@@ -5,35 +5,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
-import CustomMuiDialog from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { useCallback, useEffect, useState } from 'react';
+import { FieldError, useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
-import yup from '../../../utils/yupConfig';
-import { FilterType } from '../constants/FilterConstants';
-import FetchStatus from '../../../utils/constants/fetchStatus';
 import { saveFilter } from '../../../services/explore';
+import { FetchStatus } from '../../../utils/constants/fetchStatus';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { ElementExistsType } from '../../../utils/types/elementType';
-import FilterForm from '../FilterForm';
-
-export type SelectionCopy = {
-    sourceItemUuid: UUID | null;
-    name: string | null;
-    description: string | null;
-    parentDirectoryUuid: UUID | null;
-};
-
-export const noSelectionForCopy: SelectionCopy = {
-    sourceItemUuid: null,
-    name: null,
-    description: null,
-    parentDirectoryUuid: null,
-};
+import yup from '../../../utils/yupConfig';
+import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
+import { FilterForm } from '../FilterForm';
+import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { ItemSelectionForCopy } from '../filter.type';
+import { criteriaBasedFilterSchema } from './CriteriaBasedFilterForm';
+import { backToFrontTweak, frontToBackTweak } from './criteriaBasedFilterUtils';
 
 const formSchema = yup
     .object()
@@ -45,6 +32,7 @@ const formSchema = yup
     })
     .required();
 
+type FormSchemaType = yup.InferType<typeof formSchema>;
 export interface CriteriaBasedFilterEditionDialogProps {
     id: string;
     name: string;
@@ -53,14 +41,14 @@ export interface CriteriaBasedFilterEditionDialogProps {
     onClose: () => void;
     broadcastChannel: BroadcastChannel;
     getFilterById: (id: string) => Promise<any>;
-    selectionForCopy: SelectionCopy;
-    setSelelectionForCopy: (selection: SelectionCopy) => Dispatch<SetStateAction<SelectionCopy>>;
+    itemSelectionForCopy: ItemSelectionForCopy;
+    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
 }
 
-function CriteriaBasedFilterEditionDialog({
+export function CriteriaBasedFilterEditionDialog({
     id,
     name,
     titleId,
@@ -68,8 +56,8 @@ function CriteriaBasedFilterEditionDialog({
     onClose,
     broadcastChannel,
     getFilterById,
-    selectionForCopy,
-    setSelelectionForCopy,
+    itemSelectionForCopy,
+    setItemSelectionForCopy,
     activeDirectory,
     elementExists,
     language,
@@ -87,7 +75,7 @@ function CriteriaBasedFilterEditionDialog({
         formState: { errors },
     } = formMethods;
 
-    const nameError: any = errors[FieldConstants.NAME];
+    const nameError: FieldError | undefined = errors[FieldConstants.NAME];
     const isValidating = errors.root?.isValidating;
 
     // Fetch the filter data from back-end if necessary and fill the form with it
@@ -103,7 +91,7 @@ function CriteriaBasedFilterEditionDialog({
                         ...backToFrontTweak(response),
                     });
                 })
-                .catch((error: any) => {
+                .catch((error: { message?: string }) => {
                     setDataFetchStatus(FetchStatus.FETCH_ERROR);
                     snackError({
                         messageTxt: error.message,
@@ -114,14 +102,12 @@ function CriteriaBasedFilterEditionDialog({
     }, [id, name, open, reset, snackError, getFilterById]);
 
     const onSubmit = useCallback(
-        (filterForm: any) => {
+        (filterForm: FormSchemaType) => {
             saveFilter(frontToBackTweak(id, filterForm), filterForm[FieldConstants.NAME])
                 .then(() => {
-                    if (selectionForCopy.sourceItemUuid === id) {
-                        setSelelectionForCopy(noSelectionForCopy);
-                        broadcastChannel.postMessage({
-                            noSelectionForCopy,
-                        });
+                    if (itemSelectionForCopy.sourceItemUuid === id) {
+                        setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
+                        broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
                     }
                 })
                 .catch((error) => {
@@ -130,7 +116,7 @@ function CriteriaBasedFilterEditionDialog({
                     });
                 });
         },
-        [broadcastChannel, id, selectionForCopy.sourceItemUuid, snackError, setSelelectionForCopy]
+        [broadcastChannel, id, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -147,10 +133,9 @@ function CriteriaBasedFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            unscrollableFullHeight
         >
             {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
         </CustomMuiDialog>
     );
 }
-
-export default CriteriaBasedFilterEditionDialog;

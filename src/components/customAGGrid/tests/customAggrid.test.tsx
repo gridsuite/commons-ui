@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ColDef, GridOptions } from 'ag-grid-community';
-import CustomAGGrid from '../customAggrid';
-import { RenderBuilder } from '../../../tests/testsUtils';
+import { CustomAGGrid } from '../customAggrid';
+import { RenderBuilder } from '../../../tests/testsUtils.test';
 
 const RenderBuilderInstance = new RenderBuilder().withTrad().withTheme();
 

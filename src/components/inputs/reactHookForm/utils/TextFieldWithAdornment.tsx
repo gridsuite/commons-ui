@@ -14,12 +14,12 @@ import { Input } from '../../../../utils/types/types';
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
     value: Input; // we override the default type of TextFieldProps which is unknown
-    adornmentPosition: string;
-    adornmentText: string;
+    adornmentPosition?: string;
+    adornmentText?: string;
     handleClearValue?: () => void;
 };
 
-function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
+export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const { adornmentPosition, adornmentText, value, variant, handleClearValue, ...otherProps } = props;
 
     const [isFocused, setIsFocused] = useState(false);
@@ -94,5 +94,3 @@ function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
         />
     );
 }
-
-export default TextFieldWithAdornment;

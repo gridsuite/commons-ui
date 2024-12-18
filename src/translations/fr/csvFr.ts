@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const csvFr = {
+export const csvFr = {
     ImportCSV: 'Import CSV',
     noDataInCsvFile: 'Aucune donnée trouvée dans ce fichier',
     wrongCsvHeadersError:
@@ -15,5 +15,3 @@ const csvFr = {
     UploadCSV: 'Télécharger le CSV',
     uploadMessage: ' Aucun fichier sélectionné',
 };
-
-export default csvFr;

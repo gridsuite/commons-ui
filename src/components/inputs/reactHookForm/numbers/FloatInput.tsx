@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import TextInput, { TextInputProps } from '../text/TextInput';
+import { TextInput, TextInputProps } from '../text/TextInput';
 import { isFloatNumber } from './utils';
 import { Input } from '../../../../utils/types/types';
 
@@ -37,7 +37,7 @@ const normalizeFixed = (number: number) => {
     });
 };
 
-function FloatInput(props: FloatInputProps) {
+export function FloatInput(props: FloatInputProps) {
     const inputTransform = (value: Input) => {
         if (typeof value === 'number' && !Number.isNaN(value)) {
             // if we have a parsed real number, normalize like we do after each
@@ -118,5 +118,3 @@ function FloatInput(props: FloatInputProps) {
         />
     );
 }
-
-export default FloatInput;

@@ -58,5 +58,3 @@ export function CheckBoxList<T>({
         checkBoxField
     );
 }
-
-export default CheckBoxList;

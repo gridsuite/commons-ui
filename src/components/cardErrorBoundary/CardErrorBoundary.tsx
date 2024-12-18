@@ -60,7 +60,7 @@ type CardErrorBoundaryState = (CardErrorBoundaryStateError | CardErrorBoundarySt
     expanded: boolean;
 };
 
-class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
+export class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -150,5 +150,3 @@ class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
         return children;
     }
 }
-
-export default CardErrorBoundary;

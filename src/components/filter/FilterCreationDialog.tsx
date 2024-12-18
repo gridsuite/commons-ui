@@ -6,21 +6,21 @@
  */
 
 import { useCallback } from 'react';
-import { Resolver, useForm } from 'react-hook-form';
+import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
 import { saveCriteriaBasedFilter, saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
-import CustomMuiDialog from '../dialogs/customMuiDialog/CustomMuiDialog';
+import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
 import { criteriaBasedFilterEmptyFormData, criteriaBasedFilterSchema } from './criteriaBased/CriteriaBasedFilterForm';
 import {
     explicitNamingFilterSchema,
     FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
 } from './explicitNaming/ExplicitNamingFilterForm';
-import FieldConstants from '../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../utils/constants/fieldConstants';
 import yup from '../../utils/yupConfig';
-import FilterForm from './FilterForm';
+import { FilterForm } from './FilterForm';
 import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { ElementExistsType } from '../../utils/types/elementType';
@@ -28,7 +28,7 @@ import { ElementExistsType } from '../../utils/types/elementType';
 const emptyFormData = {
     [FieldConstants.NAME]: '',
     [FieldConstants.DESCRIPTION]: '',
-    [FieldConstants.FILTER_TYPE]: FilterType.CRITERIA_BASED.id,
+    [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
     [FieldConstants.EQUIPMENT_TYPE]: null,
     ...criteriaBasedFilterEmptyFormData,
     ...getExplicitNamingFilterEmptyFormData(),
@@ -51,7 +51,7 @@ const formSchema = yup
 
 export interface FilterCreationDialogProps {
     open: boolean;
-    onClose: (e?: unknown, nextSelectedDirectoryId?: string | null) => void;
+    onClose: () => void;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
@@ -61,7 +61,7 @@ export interface FilterCreationDialogProps {
     };
 }
 
-function FilterCreationDialog({
+export function FilterCreationDialog({
     open,
     onClose,
     activeDirectory,
@@ -84,7 +84,7 @@ function FilterCreationDialog({
     const isValidating = errors.root?.isValidating;
 
     const onSubmit = useCallback(
-        (filterForm: any) => {
+        (filterForm: FieldValues) => {
             if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPLICIT_NAMING.id) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
@@ -93,7 +93,7 @@ function FilterCreationDialog({
                     filterForm[FieldConstants.NAME],
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
-                    (error: any) => {
+                    (error?: string) => {
                         snackError({
                             messageTxt: error,
                         });
@@ -102,7 +102,7 @@ function FilterCreationDialog({
                     activeDirectory
                 );
             } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.CRITERIA_BASED.id) {
-                saveCriteriaBasedFilter(filterForm, activeDirectory, onClose, (error: any) => {
+                saveCriteriaBasedFilter(filterForm, activeDirectory, onClose, (error?: string) => {
                     snackError({
                         messageTxt: error,
                     });
@@ -117,7 +117,7 @@ function FilterCreationDialog({
                     true,
                     activeDirectory,
                     onClose,
-                    (error: any) => {
+                    (error?: string) => {
                         snackError({
                             messageTxt: error,
                         });
@@ -139,6 +139,7 @@ function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            unscrollableFullHeight
         >
             <FilterForm
                 creation
@@ -149,5 +150,3 @@ function FilterCreationDialog({
         </CustomMuiDialog>
     );
 }
-
-export default FilterCreationDialog;

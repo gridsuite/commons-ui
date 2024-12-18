@@ -5,31 +5,32 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useState } from 'react';
-import { FieldErrors, UseFormReturn } from 'react-hook-form';
+import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
+import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
-import * as yup from 'yup';
-import SubmitButton from '../../inputs/reactHookForm/utils/SubmitButton';
-import CancelButton from '../../inputs/reactHookForm/utils/CancelButton';
-import CustomFormProvider, { MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
-import PopupConfirmationDialog from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { type ObjectSchema } from 'yup';
+import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
+import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
+import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
+import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
-export interface CustomMuiDialogProps {
+export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     open: boolean;
-    formSchema: yup.AnySchema;
-    formMethods: UseFormReturn<any> | MergedFormContextProps;
-    onClose: (event: React.MouseEvent) => void;
-    onSave: (data: any) => void;
+    formSchema: ObjectSchema<T>;
+    formMethods: UseFormReturn<T>;
+    onClose: (event?: MouseEvent) => void;
+    onSave: SubmitHandler<T>;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
     disabledSave?: boolean;
     removeOptional?: boolean;
     onCancel?: () => void;
-    children: React.ReactNode;
+    children: ReactNode;
     isDataFetching?: boolean;
     language?: string;
     confirmationMessageKey?: string;
+    unscrollableFullHeight?: boolean;
 }
 
 const styles = {
@@ -42,7 +43,40 @@ const styles = {
     },
 };
 
-function CustomMuiDialog({
+/**
+ * all those styles are made to work with each other in order to control the scroll behavior:
+ * <fullHeightDialog>
+ *   <unscrollableContainer>
+ *     <unscrollableHeader/> => there may be several unscrollableHeader one after another
+ *     <scrollableContent/>
+ *   </unscrollableContainer>
+ * </fullHeightDialog>
+ */
+export const unscrollableDialogStyles = {
+    fullHeightDialog: {
+        '.MuiDialog-paper': {
+            minWidth: '90vw',
+            margin: 'auto',
+            height: '95vh',
+        },
+    },
+    unscrollableContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        overflowY: 'hidden',
+    },
+    unscrollableHeader: {
+        flex: 'none',
+        padding: 1,
+    },
+    scrollableContent: {
+        flex: 'auto',
+        overflowY: 'auto',
+        padding: 1,
+    },
+};
+
+export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,
     formSchema,
     formMethods,
@@ -57,36 +91,37 @@ function CustomMuiDialog({
     children,
     language,
     confirmationMessageKey,
-}: Readonly<CustomMuiDialogProps>) {
+    unscrollableFullHeight = false,
+}: Readonly<CustomMuiDialogProps<T>>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
-    const [validatedData, setValidatedData] = useState(undefined);
+    const [validatedData, setValidatedData] = useState<T>();
     const { handleSubmit } = formMethods;
 
     const handleCancel = useCallback(
-        (event: React.MouseEvent) => {
+        (event: MouseEvent) => {
             onCancel?.();
             onClose(event);
         },
         [onCancel, onClose]
     );
 
-    const handleClose = (event: React.MouseEvent, reason?: string) => {
-        if (reason === 'backdropClick' && onCancel) {
-            onCancel();
+    const handleClose = (event: MouseEvent, reason?: string) => {
+        if (reason === 'backdropClick') {
+            return;
         }
         onClose(event);
     };
 
     const validate = useCallback(
-        (data: any) => {
+        (data: T) => {
             onSave(data);
-            onClose(data);
+            onClose();
         },
         [onClose, onSave]
     );
 
     const handleValidate = useCallback(
-        (data: any) => {
+        (data: T) => {
             if (confirmationMessageKey) {
                 setValidatedData(data);
                 setOpenConfirmationPopup(true);
@@ -99,28 +134,40 @@ function CustomMuiDialog({
 
     const handlePopupConfirmation = useCallback(() => {
         setOpenConfirmationPopup(false);
-        validate(validatedData);
+        if (validatedData) {
+            validate(validatedData);
+        }
     }, [validate, validatedData]);
 
-    const handleValidationError = (errors: FieldErrors) => {
-        onValidationError?.(errors);
-    };
+    const handleValidationError = useCallback(
+        (errors: FieldErrors) => {
+            onValidationError?.(errors);
+        },
+        [onValidationError]
+    );
 
     return (
-        <CustomFormProvider
+        <CustomFormProvider<T>
             {...formMethods}
             validationSchema={formSchema}
             removeOptional={removeOptional}
             language={language}
         >
-            <Dialog sx={styles.dialogPaper} open={open} onClose={handleClose} fullWidth>
+            <Dialog
+                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
+                open={open}
+                onClose={handleClose}
+                fullWidth
+            >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle>
                     <Grid item xs={11}>
                         <FormattedMessage id={titleId} />
                     </Grid>
                 </DialogTitle>
-                <DialogContent>{children}</DialogContent>
+                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
+                    {children}
+                </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancel} />
                     <SubmitButton
@@ -141,5 +188,3 @@ function CustomMuiDialog({
         </CustomFormProvider>
     );
 }
-
-export default CustomMuiDialog;
