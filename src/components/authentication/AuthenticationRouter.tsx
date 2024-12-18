@@ -5,17 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Grid } from '@mui/material';
-import { AuthenticationRouterProps } from './authenticationType';
-import AuthenticationRouterErrorDisplay from './AuthenticationRouterErrorDisplay';
-import { handleSigninCallback, handleSilentRenewCallback, login } from './utils/authService';
-import SignInCallbackHandler from './SignInCallbackHandler';
-import SilentRenewCallbackHandler from './SilentRenewCallbackHandler';
-import Login from './Login';
+import { Login } from './Login';
 
-function AuthenticationRouter({
+import AuthenticationRouterErrorDisplay from './AuthenticationRouterErrorDisplay';
+import { AuthenticationRouterProps } from './authenticationType';
+import { SignInCallbackHandler } from './SignInCallbackHandler';
+import { SilentRenewCallbackHandler } from './SilentRenewCallbackHandler';
+import { handleSigninCallback, handleSilentRenewCallback, login } from './utils/authService';
+
+export function AuthenticationRouter({
     userManager,
     signInCallbackError,
     authenticationRouterError,
@@ -87,5 +88,3 @@ function AuthenticationRouter({
         </Grid>
     );
 }
-
-export default AuthenticationRouter;

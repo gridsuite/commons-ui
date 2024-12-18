@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const loginEn = {
+export const loginEn = {
     'login/login': 'Login',
     'login/connection': 'Connection',
     'login/unauthorizedAccess': 'Unauthorized access',
@@ -16,5 +16,3 @@ const loginEn = {
     'login/errorInLogoutMessage': 'An unexpected error occured during user logout for {userName}.',
     'login/logout': 'Logout',
 };
-
-export default loginEn;

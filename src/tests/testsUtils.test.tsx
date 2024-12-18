@@ -9,47 +9,48 @@
 import { render as rtlRender } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { IntlProvider } from 'react-intl';
+import { Theme } from '@mui/system';
 import {
-    login_en,
-    report_viewer_en,
-    top_bar_en,
-    table_en,
-    treeview_finder_en,
-    element_search_en,
-    equipment_search_en,
-    filter_en,
-    filter_expert_en,
-    description_en,
-    equipments_en,
-    csv_en,
-    card_error_boundary_en,
-    flat_parameters_en,
-    multiple_selection_dialog_en,
-    common_button_en,
-    directory_items_input_en,
-} from '..';
+    loginEn,
+    reportViewerEn,
+    topBarEn,
+    tableEn,
+    treeviewFinderEn,
+    elementSearchEn,
+    equipmentSearchEn,
+    filterEn,
+    filterExpertEn,
+    descriptionEn,
+    equipmentsEn,
+    csvEn,
+    cardErrorBoundaryEn,
+    flatParametersEn,
+    multipleSelectionDialogEn,
+    commonButtonEn,
+    directoryItemsInputEn,
+} from '../translations/en';
 
 const fullTrad = {
-    ...report_viewer_en,
-    ...login_en,
-    ...top_bar_en,
-    ...table_en,
-    ...treeview_finder_en,
-    ...element_search_en,
-    ...equipment_search_en,
-    ...filter_en,
-    ...filter_expert_en,
-    ...description_en,
-    ...equipments_en,
-    ...csv_en,
-    ...card_error_boundary_en,
-    ...flat_parameters_en,
-    ...multiple_selection_dialog_en,
-    ...common_button_en,
-    ...directory_items_input_en,
+    ...reportViewerEn,
+    ...loginEn,
+    ...topBarEn,
+    ...tableEn,
+    ...treeviewFinderEn,
+    ...elementSearchEn,
+    ...equipmentSearchEn,
+    ...filterEn,
+    ...filterExpertEn,
+    ...descriptionEn,
+    ...equipmentsEn,
+    ...csvEn,
+    ...cardErrorBoundaryEn,
+    ...flatParametersEn,
+    ...multipleSelectionDialogEn,
+    ...commonButtonEn,
+    ...directoryItemsInputEn,
 };
-const renderWithTranslation = (ui: React.ReactElement) => (
-    <IntlProvider locale="en" messages={fullTrad}>
+const renderWithTranslation = (ui: React.ReactElement, trad: Record<string, string> = fullTrad) => (
+    <IntlProvider locale="en" messages={trad}>
         {ui}
     </IntlProvider>
 );
@@ -85,27 +86,39 @@ const lightTheme = createTheme(
         },
     }
 );
-const renderWithTheme = (ui: React.ReactElement) => <ThemeProvider theme={lightTheme}>{ui}</ThemeProvider>;
+const renderWithTheme = (ui: React.ReactElement, theme: Theme = lightTheme) => (
+    <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+);
 
 // eslint-disable-next-line import/prefer-default-export
 export class RenderBuilder {
     renderWithTheme: boolean = false;
 
+    theme: Theme = lightTheme;
+
     renderWithTrad: boolean = false;
 
-    withTrad() {
+    trad: Record<string, string> = fullTrad;
+
+    withTrad(trad?: Record<string, string>) {
         this.renderWithTrad = true;
+        if (trad) {
+            this.trad = trad;
+        }
         return this;
     }
 
-    withTheme() {
+    withTheme(theme?: Theme) {
         this.renderWithTheme = true;
+        if (theme) {
+            this.theme = theme;
+        }
         return this;
     }
 
     render(ui: React.ReactElement) {
-        let newUi = this.renderWithTrad ? renderWithTranslation(ui) : ui;
-        newUi = this.renderWithTheme ? renderWithTheme(newUi) : newUi;
+        let newUi = this.renderWithTrad ? renderWithTranslation(ui, this.trad) : ui;
+        newUi = this.renderWithTheme ? renderWithTheme(newUi, this.theme) : newUi;
         return rtlRender(newUi);
     }
 }

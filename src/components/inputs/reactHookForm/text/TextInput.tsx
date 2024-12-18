@@ -9,10 +9,10 @@ import { ReactElement } from 'react';
 import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
-import TextFieldWithAdornment, { TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
-import FieldLabel from '../utils/FieldLabel';
+import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
+import { FieldLabel } from '../utils/FieldLabel';
 import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
-import useCustomFormContext from '../provider/useCustomFormContext';
+import { useCustomFormContext } from '../provider/useCustomFormContext';
 
 import { Input } from '../../../../utils/types/types';
 
@@ -37,7 +37,7 @@ export interface TextInputProps {
     >;
 }
 
-function TextInput({
+export function TextInput({
     name,
     label,
     labelValues, // this prop is used to add a value to label. this value is displayed without being translated
@@ -113,9 +113,7 @@ function TextInput({
             {...genHelperPreviousValue(previousValue!, adornment)}
             {...genHelperError(error?.message)}
             {...formProps}
-            {...finalAdornment}
+            {...(adornment && { ...finalAdornment })}
         />
     );
 }
-
-export default TextInput;

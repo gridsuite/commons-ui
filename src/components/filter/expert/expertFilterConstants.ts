@@ -851,13 +851,6 @@ export const FIELDS_OPTIONS = {
         valueEditorType: 'select',
         defaultValue: '',
     },
-    SUBSTATION_PROPERTY_3: {
-        name: FieldType.SUBSTATION_PROPERTY_3,
-        label: 'substationProperty3Twt',
-        dataType: DataType.PROPERTY,
-        valueEditorType: 'select',
-        defaultValue: '',
-    },
     VOLTAGE_LEVEL_PROPERTY: {
         name: FieldType.VOLTAGE_LEVEL_PROPERTY,
         label: 'voltageLevelProperty',
@@ -1041,9 +1034,21 @@ export const FIELDS_OPTIONS = {
         label: 'tieLineId',
         dataType: DataType.STRING,
     },
+    LOW_SHORT_CIRCUIT_CURRENT_LIMIT: {
+        name: FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
+        label: 'lowShortCircuitCurrentLimit',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    HIGH_SHORT_CIRCUIT_CURRENT_LIMIT: {
+        name: FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
+        label: 'highShortCircuitCurrentLimit',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
 };
 
-export const fields: Record<string, Field[]> = {
+export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
     SUBSTATION: [FIELDS_OPTIONS.ID, FIELDS_OPTIONS.NAME, FIELDS_OPTIONS.COUNTRY, FIELDS_OPTIONS.PROPERTY],
     VOLTAGE_LEVEL: [
         FIELDS_OPTIONS.ID,
@@ -1054,6 +1059,8 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.HIGH_VOLTAGE_LIMIT,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
+        FIELDS_OPTIONS.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
     ],
     LINE: [
         FIELDS_OPTIONS.ID,
@@ -1103,8 +1110,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.PHASE_REGULATION_MODE,
         FIELDS_OPTIONS.PHASE_REGULATION_VALUE,
         FIELDS_OPTIONS.PROPERTY,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_2,
     ],
@@ -1186,15 +1192,7 @@ export const fields: Record<string, Field[]> = {
         FIELDS_OPTIONS.PHASE_REGULATION_MODE_2,
         FIELDS_OPTIONS.PHASE_REGULATION_MODE_3,
         FIELDS_OPTIONS.PROPERTY,
-        {
-            ...FIELDS_OPTIONS.SUBSTATION_PROPERTY_1,
-            label: `${FIELDS_OPTIONS.SUBSTATION_PROPERTY_1.label}Twt`,
-        },
-        {
-            ...FIELDS_OPTIONS.SUBSTATION_PROPERTY_2,
-            label: `${FIELDS_OPTIONS.SUBSTATION_PROPERTY_2.label}Twt`,
-        },
-        FIELDS_OPTIONS.SUBSTATION_PROPERTY_3,
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY,
         {
             ...FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1,
             label: `${FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY_1.label}Twt`,

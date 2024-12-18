@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
-import { ElementSearchInput, EquipmentItem, EquipmentType, equipmentStyles } from '../../src';
+import { ElementSearchInput, EquipmentItem, EquipmentItemProps, EquipmentType, equipmentStyles } from '../../src';
 
 export function InlineSearch() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -25,7 +25,7 @@ export function InlineSearch() {
     return (
         <ElementSearchInput
             onSearchTermChange={updateSearchTerm}
-            onSelectionChange={(element: any) => {
+            onSelectionChange={(element: unknown) => {
                 console.log(element);
             }}
             elementsFound={
@@ -46,7 +46,7 @@ export function InlineSearch() {
                       ]
                     : []
             }
-            renderElement={(props: any) => (
+            renderElement={(props: EquipmentItemProps) => (
                 <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
             )}
             searchTerm={searchTerm}

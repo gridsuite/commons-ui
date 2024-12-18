@@ -6,14 +6,14 @@
  */
 
 import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
 import yup from '../../../utils/yupConfig';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import CustomMuiDialog from '../customMuiDialog/CustomMuiDialog';
-import ExpandingTextField from '../../inputs/reactHookForm/text/ExpandingTextField';
+import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
+import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
 
 export interface DescriptionModificationDialogProps {
     elementUuid: string;
@@ -26,8 +26,9 @@ export interface DescriptionModificationDialogProps {
 const schema = yup.object().shape({
     [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
 });
+type SchemaType = yup.InferType<typeof schema>;
 
-function DescriptionModificationDialog({
+export function DescriptionModificationDialog({
     elementUuid,
     description,
     open,
@@ -54,15 +55,17 @@ function DescriptionModificationDialog({
         onClose();
     };
 
-    const onSubmit = useCallback(
-        (data: { description: string }) => {
+    const onSubmit = useCallback<SubmitHandler<SchemaType>>(
+        (data) => {
             updateElement(elementUuid, {
-                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION].trim(),
-            }).catch((error: any) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'descriptionModificationError',
-                });
+                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION]?.trim() ?? '',
+            }).catch((error: unknown) => {
+                if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+                    snackError({
+                        messageTxt: error.message,
+                        headerId: 'descriptionModificationError',
+                    });
+                }
             });
         },
         [elementUuid, updateElement, snackError]
@@ -89,5 +92,3 @@ function DescriptionModificationDialog({
         </CustomMuiDialog>
     );
 }
-
-export default DescriptionModificationDialog;

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, Tooltip } from '@mui/material';
+import { Box, Grid, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import { ArrowCircleDown, ArrowCircleUp, Upload } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/ControlPoint';
@@ -13,9 +13,9 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { styled } from '@mui/material/styles';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
-import ErrorInput from '../errorManagement/ErrorInput';
-import FieldErrorAlert from '../errorManagement/FieldErrorAlert';
-import CsvUploader from './csvUploader/CsvUploader';
+import { ErrorInput } from '../errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../errorManagement/FieldErrorAlert';
+import { CsvUploader } from './csvUploader/CsvUploader';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
     return {
@@ -36,7 +36,7 @@ export interface BottomRightButtonsProps {
     csvProps: any;
 }
 
-function BottomRightButtons({
+export function BottomRightButtons({
     name,
     disableUp,
     disableDown,
@@ -83,9 +83,9 @@ function BottomRightButtons({
                     </InnerColoredButton>
                 </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Box>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
-            </Grid>
+            </Box>
             <CsvUploader
                 open={uploaderOpen}
                 onClose={() => setUploaderOpen(false)}
@@ -96,5 +96,3 @@ function BottomRightButtons({
         </>
     );
 }
-
-export default BottomRightButtons;

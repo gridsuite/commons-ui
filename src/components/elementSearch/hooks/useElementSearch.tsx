@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useRef, useState } from 'react';
-import useDebounce from '../../../hooks/useDebounce';
+import { useDebounce } from '../../../hooks/useDebounce';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
@@ -32,7 +32,7 @@ interface UseElementSearch<T> {
     fetchElements: (newSearchTerm: string) => Promise<Paginated<T> | T[]>;
 }
 
-const useElementSearch = <T,>(
+export const useElementSearch = <T,>(
     props: UseElementSearch<T>
 ): {
     searchTerm: string;
@@ -116,5 +116,3 @@ const useElementSearch = <T,>(
         totalElements,
     };
 };
-
-export default useElementSearch;

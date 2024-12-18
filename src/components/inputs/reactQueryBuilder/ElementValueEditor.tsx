@@ -7,9 +7,9 @@
 
 import { validate as uuidValidate } from 'uuid';
 import { useEffect } from 'react';
-import useCustomFormContext from '../reactHookForm/provider/useCustomFormContext';
+import { useCustomFormContext } from '../reactHookForm/provider/useCustomFormContext';
 import { fetchElementsInfos } from '../../../services';
-import DirectoryItemsInput from '../reactHookForm/DirectoryItemsInput';
+import { DirectoryItemsInput } from '../reactHookForm/DirectoryItemsInput';
 
 interface ElementValueEditorProps {
     name: string;
@@ -22,7 +22,7 @@ interface ElementValueEditorProps {
     defaultValue?: any;
 }
 
-function ElementValueEditor(props: ElementValueEditorProps) {
+export function ElementValueEditor(props: ElementValueEditorProps) {
     const { defaultValue, name, elementType, equipmentTypes, titleId, hideErrorMessage, itemFilter, onChange } = props;
     const { setValue } = useCustomFormContext();
 
@@ -63,4 +63,3 @@ function ElementValueEditor(props: ElementValueEditorProps) {
         />
     );
 }
-export default ElementValueEditor;

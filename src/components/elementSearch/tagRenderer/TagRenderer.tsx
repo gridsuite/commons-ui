@@ -6,7 +6,7 @@
  */
 import clsx from 'clsx';
 import { SxProps, Theme } from '@mui/material';
-import OverflowableText from '../../overflowableText';
+import { OverflowableText } from '../../overflowableText';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
 import { mergeSx } from '../../../utils/styles';
 
@@ -22,7 +22,7 @@ export interface TagRendererProps {
     };
 }
 
-function TagRenderer({ element, ...props }: TagRendererProps) {
+export function TagRenderer({ element, ...props }: TagRendererProps) {
     if (element.type !== EQUIPMENT_TYPE.SUBSTATION?.name && element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name) {
         return (
             <OverflowableText
@@ -33,5 +33,3 @@ function TagRenderer({ element, ...props }: TagRendererProps) {
         );
     }
 }
-
-export default TagRenderer;

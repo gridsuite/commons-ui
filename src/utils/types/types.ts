@@ -6,23 +6,6 @@
  */
 import { UUID } from 'crypto';
 import { ElementType } from './elementType';
-import {
-    Battery,
-    BusBar,
-    DanglingLine,
-    Generator,
-    Hvdc,
-    LCC,
-    Line,
-    Load,
-    ShuntCompensator,
-    Substation,
-    SVC,
-    ThreeWindingTransfo,
-    TwoWindingTransfo,
-    VoltageLevel,
-    VSC,
-} from './equipmentTypes';
 
 export type Input = string | number;
 
@@ -34,39 +17,40 @@ export type ElementAttributes = {
     accessRights: {
         isPrivate: boolean;
     };
-    owner: string;
+    owner: string; // id
+    ownerLabel?: string; // enrich with user identity server
     subdirectoriesCount: number;
     creationDate: string;
     lastModificationDate: string;
-    lastModifiedBy: string;
+    lastModifiedBy: string; // id
+    lastModifiedByLabel?: string; // enrich with user identity server
     children: any[];
     parentUuid: null | UUID;
     specificMetadata: Record<string, object>;
     uploading?: boolean;
     hasMetadata?: boolean;
     subtype?: string;
+    // only uploading element have this field
+    id?: string;
 };
 
-export type Equipment =
-    | typeof Substation
-    | typeof Line
-    | typeof Generator
-    | typeof Load
-    | typeof Battery
-    | typeof SVC
-    | typeof DanglingLine
-    | typeof LCC
-    | typeof VSC
-    | typeof Hvdc
-    | typeof BusBar
-    | typeof TwoWindingTransfo
-    | typeof ThreeWindingTransfo
-    | typeof ShuntCompensator
-    | typeof VoltageLevel;
-
-export type EquipmentType = {
-    [Type in Equipment['type']]: Type;
-}[Equipment['type']];
+// TODO : Check where used
+// export type Equipment =
+//     | typeof Substation
+//     | typeof Line
+//     | typeof Generator
+//     | typeof Load
+//     | typeof Battery
+//     | typeof SVC
+//     | typeof DanglingLine
+//     | typeof LCC
+//     | typeof VSC
+//     | typeof Hvdc
+//     | typeof BusBar
+//     | typeof TwoWindingTransfo
+//     | typeof ThreeWindingTransfo
+//     | typeof ShuntCompensator
+//     | typeof VoltageLevel;
 
 export type Option =
     | {
@@ -77,4 +61,13 @@ export type Option =
 
 export type PredefinedProperties = {
     [propertyName: string]: string[];
+};
+
+export type UserDetail = {
+    sub: string;
+    isAdmin: boolean;
+    profileName?: string;
+    maxAllowedCases: number;
+    numberCasesUsed: number;
+    maxAllowedBuilds: number;
 };

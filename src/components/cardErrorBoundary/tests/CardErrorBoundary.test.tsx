@@ -6,8 +6,8 @@
  */
 import { screen } from '@testing-library/react';
 import { it } from '@jest/globals';
-import CardErrorBoundary from '../CardErrorBoundary';
-import { RenderBuilder } from '../../../tests/testsUtils';
+import { CardErrorBoundary } from '../CardErrorBoundary';
+import { RenderBuilder } from '../../../tests/testsUtils.test';
 
 const RenderBuilderInstance = new RenderBuilder().withTrad();
 

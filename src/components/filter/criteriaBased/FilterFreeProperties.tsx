@@ -10,10 +10,10 @@ import { useFieldArray, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import AddIcon from '@mui/icons-material/Add';
 import { useMemo } from 'react';
-import ErrorInput from '../../inputs/reactHookForm/errorManagement/ErrorInput';
-import FieldErrorAlert from '../../inputs/reactHookForm/errorManagement/FieldErrorAlert';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import FilterProperty, { PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './FilterProperty';
+import { ErrorInput } from '../../inputs/reactHookForm/errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../../inputs/reactHookForm/errorManagement/FieldErrorAlert';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { FilterProperty, PROPERTY_NAME, PROPERTY_VALUES, PROPERTY_VALUES_1, PROPERTY_VALUES_2 } from './FilterProperty';
 import { Hvdc, Line } from '../../../utils/types/equipmentTypes';
 
 import { PredefinedProperties } from '../../../utils/types/types';
@@ -28,7 +28,7 @@ interface FilterFreePropertiesProps {
     predefined: PredefinedProperties;
 }
 
-function FilterFreeProperties({ freePropertiesType, predefined }: FilterFreePropertiesProps) {
+export function FilterFreeProperties({ freePropertiesType, predefined }: FilterFreePropertiesProps) {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
@@ -96,5 +96,3 @@ function FilterFreeProperties({ freePropertiesType, predefined }: FilterFreeProp
         </>
     );
 }
-
-export default FilterFreeProperties;
