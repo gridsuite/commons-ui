@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { ListenerEventWS, ListenerOnReopen } from '../contexts/NotificationsContext';
 
 export const useListenerManager = <TListener extends ListenerEventWS | ListenerOnReopen, TMessage extends MessageEvent>(
-    urls: Record<string, string>
+    urls: Record<string, string | undefined>
 ) => {
     const urlsListenersRef = useRef<Record<string, TListener[]>>({});
 
