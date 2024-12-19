@@ -7,3 +7,4 @@
 export * from './browserConstants';
 export * from './fetchStatus';
 export * from './fieldConstants';
+export * from '../types/fieldType';

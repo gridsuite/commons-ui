@@ -24,13 +24,13 @@ import {
     RULES,
 } from './expertFilterConstants';
 
-import { FieldType } from './expertFilter.type';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 import { unscrollableDialogStyles } from '../../dialogs';
+import { FieldType } from '../../../utils';
 
 yup.setLocale({
     mixed: {
