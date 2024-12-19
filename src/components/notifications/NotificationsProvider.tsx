@@ -14,6 +14,10 @@ import { useListenerManager } from './hooks/useListenerManager';
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
+function isUrlTuple(tuple: [string, string | undefined]): tuple is [string, string] {
+    return tuple[1] !== undefined;
+}
+
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
 export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
     const {
@@ -28,10 +32,10 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
     } = useListenerManager<ListenerOnReopen, never>(urls);
 
     useEffect(() => {
-        const connections = Object.keys(urls)
-            .filter((urlKey) => urls[urlKey] !== undefined)
-            .map((urlKey) => {
-                const rws = new ReconnectingWebSocket(() => urls[urlKey], [], {
+        const connections = Object.entries(urls)
+            .filter(isUrlTuple)
+            .map(([urlKey, url]) => {
+                const rws = new ReconnectingWebSocket(() => url, [], {
                     // this option set the minimum duration being connected before reset the retry count to 0
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });
