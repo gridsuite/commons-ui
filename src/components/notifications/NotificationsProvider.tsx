@@ -14,7 +14,7 @@ import { useListenerManager } from './hooks/useListenerManager';
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
-export type NotificationsProviderProps = { urls: Record<string, string> };
+export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
 export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
     const {
         broadcast: broadcastMessage,
@@ -29,7 +29,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
 
     useEffect(() => {
         const connections = Object.keys(urls)
-            .filter((u) => urls[u] != null)
+            .filter((urlKey) => urls[urlKey] !== undefined)
             .map((urlKey) => {
                 const rws = new ReconnectingWebSocket(() => urls[urlKey], [], {
                     // this option set the minimum duration being connected before reset the retry count to 0
@@ -52,9 +52,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                 return rws;
             });
 
-        return () => {
-            connections.forEach((c) => c.close());
-        };
+        return () => connections.forEach((c) => c.close());
     }, [broadcastMessage, broadcastOnReopen, urls]);
 
     const contextValue = useMemo(
