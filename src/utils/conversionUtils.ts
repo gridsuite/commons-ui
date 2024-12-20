@@ -22,17 +22,23 @@ export function isBlankOrEmpty(value: unknown) {
     return false;
 }
 
-export const unitToMicroUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e6));
+export function unitToMicroUnit(num: number) {
+    return isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e6);
+}
 
-export const microUnitToUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e6));
+export function microUnitToUnit(num: number) {
+    return isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e6);
+}
 
-export const unitToKiloUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e3));
+export function unitToKiloUnit(num: number) {
+    return isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num / 1e3);
+}
 
-export const kiloUnitToUnit = (num: number) => (isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e3));
+export function kiloUnitToUnit(num: number) {
+    return isBlankOrEmpty(num) ? undefined : roundToDefaultPrecision(num * 1e3);
+}
 
-const microUnits = [
-    FieldType.MAX_Q_AT_NOMINAL_V,
-    FieldType.MAX_SUSCEPTANCE,
+const microToUnit = [
     FieldType.SHUNT_CONDUCTANCE_1,
     FieldType.SHUNT_CONDUCTANCE_2,
     FieldType.SHUNT_SUSCEPTANCE_1,
@@ -45,35 +51,50 @@ const microUnits = [
     FieldType.B2,
 ];
 
-const kiloUnits = [FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT];
+const kiloToUnit = [FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT];
+
+const unitToMicro = [FieldType.MAX_SUSCEPTANCE];
+
 export function convertInputValues(field: FieldType, value: any) {
-    if (microUnits.includes(field)) {
+    if (microToUnit.includes(field)) {
         if (!Array.isArray(value)) {
             return value ? unitToMicroUnit(value) : value;
         }
         return value.map((a: number) => unitToMicroUnit(a));
     }
-    if (kiloUnits.includes(field)) {
+    if (kiloToUnit.includes(field)) {
         if (!Array.isArray(value)) {
             return value ? unitToKiloUnit(value) : value;
         }
         return value.map((a: number) => unitToKiloUnit(a));
     }
-    return value;
-}
-
-export function convertOutputValues(field: FieldType, value: any) {
-    if (microUnits.includes(field)) {
+    if (unitToMicro.includes(field)) {
         if (!Array.isArray(value)) {
             return value ? microUnitToUnit(value) : value;
         }
         return value.map((a: number) => microUnitToUnit(a));
     }
-    if (kiloUnits.includes(field)) {
+    return value;
+}
+
+export function convertOutputValues(field: FieldType, value: any) {
+    if (microToUnit.includes(field)) {
+        if (!Array.isArray(value)) {
+            return value ? microUnitToUnit(value) : value;
+        }
+        return value.map((a: number) => microUnitToUnit(a));
+    }
+    if (kiloToUnit.includes(field)) {
         if (!Array.isArray(value)) {
             return value ? kiloUnitToUnit(value) : value;
         }
         return value.map((a: number) => kiloUnitToUnit(a));
+    }
+    if (unitToMicro.includes(field)) {
+        if (!Array.isArray(value)) {
+            return value ? unitToMicroUnit(value) : value;
+        }
+        return value.map((a: number) => unitToMicroUnit(a));
     }
     return value;
 }
