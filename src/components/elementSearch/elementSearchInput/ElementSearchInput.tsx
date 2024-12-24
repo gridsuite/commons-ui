@@ -4,9 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams } from '@mui/material';
+import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams, createFilterOptions } from '@mui/material';
 import { HTMLAttributes, ReactNode, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+
+function createGenericFilterOptions<T>() {
+    return createFilterOptions<T>({
+        matchFrom: 'any',
+        trim: true,
+        ignoreCase: true,
+    });
+}
 
 export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
     element: T;
@@ -53,7 +61,7 @@ export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>
     } = props;
 
     const intl = useIntl();
-
+    const filterOptions = useMemo(() => createGenericFilterOptions<T>(), []);
     const displayedValue = useMemo(() => {
         if (searchTermDisabled || searchTermDisableReason) {
             return (
@@ -120,6 +128,7 @@ export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>
             }}
             disabled={searchTermDisabled}
             PaperComponent={PaperComponent}
+            filterOptions={filterOptions}
         />
     );
 }
