@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams, createFilterOptions } from '@mui/material';
-import { HTMLAttributes, ReactNode, useMemo } from "react";
+import { HTMLAttributes, ReactNode, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
 export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
@@ -53,11 +53,15 @@ export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>
     } = props;
 
     const intl = useIntl();
-    const filterOptions = useMemo(() => createFilterOptions<T>({
-        matchFrom: 'any',
-        trim: true,
-        ignoreCase: true,
-    }), []);
+    const filterOptions = useMemo(
+        () =>
+            createFilterOptions<T>({
+                matchFrom: 'any',
+                trim: true,
+                ignoreCase: true,
+            }),
+        []
+    );
     const displayedValue = useMemo(() => {
         if (searchTermDisabled || searchTermDisableReason) {
             return (
