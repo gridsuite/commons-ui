@@ -16,6 +16,7 @@ import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
 
 export interface FilterFormProps {
     creation?: boolean;
+    description?: string;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     sourceFilterForExplicitNamingConversion?: {
@@ -28,13 +29,12 @@ export interface FilterFormProps {
 export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
+    description,
     activeDirectory,
     elementExists,
     handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
-    // TODO : remove this code after we remove Criteria Filter
-    const filterTypes = Object.values(FilterType).filter((value) => value.id !== 'CRITERIA');
-
+    const filterTypes = Object.values(FilterType);
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -47,22 +47,20 @@ export function HeaderFilterForm({
                     elementExists={elementExists}
                 />
             </Grid>
-            {creation && (
-                <>
-                    <Grid item xs={12}>
-                        <DescriptionField />
+            <>
+                <Grid item xs={12}>
+                    <DescriptionField showDescription description={description} />
+                </Grid>
+                {creation && !sourceFilterForExplicitNamingConversion && (
+                    <Grid item>
+                        <RadioInput
+                            name={FieldConstants.FILTER_TYPE}
+                            options={filterTypes}
+                            formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
+                        />
                     </Grid>
-                    {!sourceFilterForExplicitNamingConversion && (
-                        <Grid item>
-                            <RadioInput
-                                name={FieldConstants.FILTER_TYPE}
-                                options={filterTypes}
-                                formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
-                            />
-                        </Grid>
-                    )}
-                </>
-            )}
+                )}
+            </>
         </Grid>
     );
 }

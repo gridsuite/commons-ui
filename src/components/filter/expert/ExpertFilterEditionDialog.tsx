@@ -21,6 +21,7 @@ import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
+import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
 
 const formSchema = yup
     .object()
@@ -28,6 +29,7 @@ const formSchema = yup
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
         [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
         ...expertFilterSchema,
     })
     .required();
@@ -42,9 +44,11 @@ export interface ExpertFilterEditionDialogProps {
     itemSelectionForCopy: ItemSelectionForCopy;
     setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
+    elementUuid: UUID;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
+    description?: string;
 }
 
 export function ExpertFilterEditionDialog({
@@ -60,6 +64,8 @@ export function ExpertFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
+    description,
+    elementUuid,
 }: Readonly<ExpertFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -108,7 +114,7 @@ export function ExpertFilterEditionDialog({
                 filterForm[EXPERT_FILTER_QUERY],
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
-                '', // The description can not be edited from this dialog
+                filterForm[FieldConstants.DESCRIPTION],
                 false,
                 null,
                 onClose,
@@ -116,14 +122,23 @@ export function ExpertFilterEditionDialog({
                     snackError({
                         messageTxt: error,
                     });
-                }
+                },
+                elementUuid
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
+        [
+            broadcastChannel,
+            id,
+            onClose,
+            itemSelectionForCopy.sourceItemUuid,
+            snackError,
+            setItemSelectionForCopy,
+            elementUuid,
+        ]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -142,7 +157,9 @@ export function ExpertFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && (
+                <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} description={description} />
+            )}
         </CustomMuiDialog>
     );
 }

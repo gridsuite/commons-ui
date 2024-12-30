@@ -14,8 +14,14 @@ import { useFormContext } from 'react-hook-form'; // Import useFormContext
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 
-export function DescriptionField() {
-    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(false);
+interface DescriptionProps {
+    showDescription: boolean;
+    description?: string;
+}
+export function DescriptionField({ showDescription, description }: Readonly<DescriptionProps>) {
+    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(
+        showDescription && description && description !== ''
+    );
     const { setValue } = useFormContext();
 
     const handleOpenDescription = () => {
@@ -41,6 +47,7 @@ export function DescriptionField() {
                         minRows={3}
                         rows={3}
                         sx={{ flexGrow: 1 }}
+                        defaultValue={description}
                     />
                     <Button
                         sx={{

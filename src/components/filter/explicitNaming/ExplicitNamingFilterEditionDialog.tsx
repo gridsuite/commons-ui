@@ -23,6 +23,7 @@ import { ElementExistsType } from '../../../utils/types/elementType';
 import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { ItemSelectionForCopy } from '../filter.type';
+import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
 
 const formSchema = yup
     .object()
@@ -30,6 +31,7 @@ const formSchema = yup
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
         [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
         ...explicitNamingFilterSchema,
     })
     .required();
@@ -45,9 +47,11 @@ export interface ExplicitNamingFilterEditionDialogProps {
     itemSelectionForCopy: ItemSelectionForCopy;
     setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     getFilterById: (id: string) => Promise<any>;
+    elementUuid: UUID;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
+    description?: string;
 }
 
 export function ExplicitNamingFilterEditionDialog({
@@ -63,6 +67,8 @@ export function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
+    description,
+    elementUuid,
 }: Readonly<ExplicitNamingFilterEditionDialogProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -113,21 +119,22 @@ export function ExplicitNamingFilterEditionDialog({
                 false,
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
-                '', // The description can not be edited from this dialog
+                filterForm[FieldConstants.DESCRIPTION] ?? '',
                 id,
                 (error) => {
                     snackError({
                         messageTxt: error,
                     });
                 },
-                onClose
+                onClose,
+                elementUuid
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy]
+        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy, elementUuid]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
@@ -146,7 +153,9 @@ export function ExplicitNamingFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && (
+                <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} description={description} />
+            )}
         </CustomMuiDialog>
     );
 }

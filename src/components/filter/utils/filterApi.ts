@@ -21,6 +21,7 @@ export const saveExplicitNamingFilter = (
     id: string | null,
     setCreateFilterErr: (value?: string) => void,
     handleClose: () => void,
+    elementUuid?: UUID,
     activeDirectory?: UUID,
     token?: string
 ) => {
@@ -55,7 +56,7 @@ export const saveExplicitNamingFilter = (
             .catch((error) => {
                 setCreateFilterErr(error.message);
             });
-    } else {
+    } else if (elementUuid) {
         saveFilter(
             {
                 id,
@@ -64,6 +65,8 @@ export const saveExplicitNamingFilter = (
                 filterEquipmentsAttributes: cleanedTableValues,
             },
             name,
+            elementUuid,
+            description,
             token
         )
             .then(() => {
@@ -84,6 +87,7 @@ export const saveExpertFilter = (
     activeDirectory: any,
     onClose: () => void,
     onError: (message: string) => void,
+    elementUuid?: UUID,
     token?: string
 ) => {
     if (isFilterCreation) {
@@ -104,7 +108,7 @@ export const saveExpertFilter = (
             .catch((error: any) => {
                 onError(error.message);
             });
-    } else {
+    } else if (elementUuid) {
         saveFilter(
             {
                 id,
@@ -113,6 +117,8 @@ export const saveExpertFilter = (
                 rules: exportExpertRules(query),
             },
             name,
+            elementUuid,
+            description,
             token
         )
             .then(() => {

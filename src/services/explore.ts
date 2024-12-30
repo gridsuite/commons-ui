@@ -35,9 +35,11 @@ export function createFilter(
     );
 }
 
-export function saveFilter(filter: any, name: string, token?: string) {
+export function saveFilter(filter: any, name: string, elementUuid: UUID, description: string, token?: string) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
+    urlSearchParams.append('elementUuid', elementUuid);
+    urlSearchParams.append('description', description);
     return backendFetch(
         `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/filters/${filter.id}?${urlSearchParams.toString()}`,
         {
