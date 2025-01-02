@@ -14,6 +14,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
+import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
 
 export interface DescriptionModificationDialogProps {
     elementUuid: string;
@@ -24,7 +25,7 @@ export interface DescriptionModificationDialogProps {
 }
 
 const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
+    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
 });
 type SchemaType = yup.InferType<typeof schema>;
 
