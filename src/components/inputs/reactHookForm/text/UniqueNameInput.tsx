@@ -60,6 +60,7 @@ export function UniqueNameInput({
     const {
         setError,
         clearErrors,
+        trigger,
         formState: { errors },
     } = useFormContext();
 
@@ -89,10 +90,14 @@ export function UniqueNameInput({
                     })
                     .finally(() => {
                         clearErrors('root.isValidating');
+                        /* force form to validate, otherwise form
+                        will remain invalid (setError('root.isValidating') invalid form and clearErrors does not affect form isValid state :
+                        see documentation : https://react-hook-form.com/docs/useform/clearerrors) */
+                        trigger('root.isValidating');
                     });
             }
         },
-        [setError, clearErrors, name, elementType, elementExists, directory]
+        [setError, clearErrors, name, elementType, elementExists, directory, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
