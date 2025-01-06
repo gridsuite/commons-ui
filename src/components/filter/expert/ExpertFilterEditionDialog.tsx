@@ -15,19 +15,15 @@ import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { FilterProps } from '../filter.type';
-import { FilterForm } from '../FilterForm';
+import { FilterForm, FilterSchema } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
-import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
 
 const formSchema = yup
     .object()
     .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.FILTER_TYPE]: yup.string().required(),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+        ...FilterSchema,
         ...expertFilterSchema,
     })
     .required();

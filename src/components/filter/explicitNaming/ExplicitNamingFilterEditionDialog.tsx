@@ -18,18 +18,14 @@ import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
 
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
-import { FilterForm } from '../FilterForm';
+import { FilterForm, FilterSchema } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
 import { FilterProps } from '../filter.type';
 
 const formSchema = yup
     .object()
     .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.FILTER_TYPE]: yup.string().required(),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+        ...FilterSchema,
         ...explicitNamingFilterSchema,
     })
     .required();
