@@ -6,7 +6,6 @@
  */
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UUID } from 'crypto';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
@@ -19,11 +18,10 @@ import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
 
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
-import { ElementExistsType } from '../../../utils/types/elementType';
 import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { ItemSelectionForCopy } from '../filter.type';
 import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
+import { FilterProps } from '../filter.type';
 
 const formSchema = yup
     .object()
@@ -37,21 +35,8 @@ const formSchema = yup
     .required();
 
 type FormSchemaType = yup.InferType<typeof formSchema>;
-export interface ExplicitNamingFilterEditionDialogProps {
-    id: string;
-    name: string;
-    titleId: string;
-    open: boolean;
-    onClose: () => void;
-    broadcastChannel: BroadcastChannel;
-    itemSelectionForCopy: ItemSelectionForCopy;
-    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
+export interface ExplicitNamingFilterEditionDialogProps extends FilterProps {
     getFilterById: (id: string) => Promise<any>;
-    elementUuid: UUID;
-    activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
-    description?: string;
 }
 
 export function ExplicitNamingFilterEditionDialog({
