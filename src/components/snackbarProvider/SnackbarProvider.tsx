@@ -6,9 +6,10 @@
  */
 
 import { useRef } from 'react';
-import { IconButton, styled, Theme } from '@mui/material';
+import { IconButton, styled } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
-import { SnackbarProvider as OrigSnackbarProvider, SnackbarKey, SnackbarProviderProps } from 'notistack';
+import { SnackbarKey, SnackbarProvider as OrigSnackbarProvider, SnackbarProviderProps } from 'notistack';
+import { type MuiStyles } from '../../utils/styles';
 
 const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
     '&.notistack-MuiContent': {
@@ -21,10 +22,8 @@ const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
 }));
 
 const styles = {
-    buttonColor: (theme: Theme) => ({
-        color: theme.palette.common.white,
-    }),
-};
+    buttonColor: (theme) => ({ color: theme.palette.common.white }),
+} as const satisfies MuiStyles;
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
 export function SnackbarProvider(props: SnackbarProviderProps) {

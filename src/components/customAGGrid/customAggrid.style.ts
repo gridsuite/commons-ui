@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Theme } from '@mui/material/styles/createTheme';
-import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
+
+import { type MuiStyles } from '../../utils/styles';
 
 export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
 export const styles = {
-    grid: (theme: Theme): SystemStyleObject<Theme> => ({
+    grid: (theme) => ({
         width: 'auto',
         height: '100%',
         position: 'relative',
@@ -49,7 +49,7 @@ export const styles = {
             borderRight: 'none',
         },
     },
-    overlayBackground: (theme: Theme) => ({
+    overlayBackground: (theme) => ({
         '& .ag-overlay-loading-wrapper': {
             background: theme.aggrid.overlay.background,
         },
@@ -57,4 +57,4 @@ export const styles = {
             background: 'none',
         },
     }),
-};
+} as const satisfies MuiStyles;

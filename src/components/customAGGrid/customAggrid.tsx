@@ -6,16 +6,14 @@
  */
 
 import React, { useCallback } from 'react';
-import { Theme } from '@mui/material/styles/createTheme';
+import { Box, useTheme } from '@mui/material';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
-import { Box } from '@mui/system';
-import { SxProps, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
-import { styles, CUSTOM_AGGRID_THEME } from './customAggrid.style';
+import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
@@ -38,7 +36,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
 
 export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
     const { shouldHidePinnedHeaderRightBorder = false, showOverlay = false, ...agGridReactProps } = props;
-    const theme = useTheme<Theme>();
+    const theme = useTheme();
     const intl = useIntl();
 
     const GRID_PREFIX = 'grid.';
@@ -57,9 +55,9 @@ export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((pr
     return (
         <Box
             sx={mergeSx(
-                styles.grid as SxProps | undefined,
+                styles.grid,
                 shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined,
-                showOverlay ? (styles.overlayBackground as SxProps | undefined) : undefined
+                showOverlay ? styles.overlayBackground : undefined
             )}
             className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
         >

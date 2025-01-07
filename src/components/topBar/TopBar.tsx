@@ -23,7 +23,7 @@ import {
     MenuProps,
     Paper,
     Popper,
-    Theme,
+    styled,
     ToggleButton,
     ToggleButtonGroup,
     Toolbar,
@@ -37,13 +37,11 @@ import {
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
-    Person as PersonIcon,
     ManageAccounts,
+    Person as PersonIcon,
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
-import { styled } from '@mui/system';
-
 import { User } from 'oidc-client';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
@@ -58,6 +56,7 @@ import {
     LANG_SYSTEM,
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     grow: {
@@ -72,7 +71,7 @@ const styles = {
         textDecoration: 'none',
         color: 'inherit',
     },
-    name: (theme: Theme) => ({
+    name: (theme) => ({
         backgroundColor: darken(theme.palette.background.paper, 0.1),
         paddingTop: '10px',
         borderRadius: '100%',
@@ -119,7 +118,7 @@ const styles = {
         height: '30px',
         width: '48px',
     },
-};
+} as const satisfies MuiStyles;
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu

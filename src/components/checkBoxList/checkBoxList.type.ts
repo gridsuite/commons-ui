@@ -7,20 +7,19 @@
 
 import React from 'react';
 import { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material';
+import { type MuiStyle } from '../../utils/styles';
 
 export type CheckBoxListItemSx = {
-    checkBoxIcon?: SxProps<Theme>;
-    label?: SxProps<Theme>;
-    checkboxListItem?: SxProps<Theme>;
-    checkboxButton?: SxProps<Theme>;
-    checkbox?: SxProps<Theme>;
+    checkBoxIcon?: MuiStyle;
+    label?: MuiStyle;
+    checkboxListItem?: MuiStyle;
+    checkboxButton?: MuiStyle;
+    checkbox?: MuiStyle;
 };
 
 export type CheckBoxListSx = {
-    dragAndDropContainer?: SxProps<Theme>;
-    checkboxList?: SxProps<Theme>;
+    dragAndDropContainer?: MuiStyle;
+    checkboxList?: MuiStyle;
 };
 
 export type CheckBoxListItemSxMethod<T> = (item: T) => CheckBoxListItemSx;

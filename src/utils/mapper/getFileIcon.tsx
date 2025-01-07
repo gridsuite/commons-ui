@@ -14,10 +14,10 @@ import {
     Settings as SettingsIcon,
     TableView as TableViewIcon,
 } from '@mui/icons-material';
-import { SxProps, Theme } from '@mui/material';
+import { type MuiStyle } from '../styles';
 import { ElementType } from '../types/elementType';
 
-export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
+export function getFileIcon(type: ElementType, style: MuiStyle) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;

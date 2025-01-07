@@ -6,12 +6,12 @@
  */
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText, SxProps, Theme } from '@mui/material';
+import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { DraggableClickableRowItemProps } from './checkBoxList.type';
-import { mergeSx } from '../../utils';
+import { mergeSx, type MuiStyles } from '../../utils/styles';
 
-const styles: Record<string, SxProps<Theme>> = {
+const styles = {
     dragIcon: (theme) => ({
         padding: 'unset',
         border: theme.spacing(0),
@@ -24,7 +24,7 @@ const styles: Record<string, SxProps<Theme>> = {
         },
         cursor: 'inherit',
     },
-};
+} as const satisfies MuiStyles;
 
 export function DraggableClickableRowItem({
     sx,

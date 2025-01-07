@@ -14,6 +14,7 @@ import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { type MuiStyles } from '../../../utils/styles';
 
 export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     open: boolean;
@@ -41,7 +42,7 @@ const styles = {
             margin: 'auto',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 /**
  * all those styles are made to work with each other in order to control the scroll behavior:
@@ -74,7 +75,7 @@ export const unscrollableDialogStyles = {
         overflowY: 'auto',
         padding: 1,
     },
-};
+} as const satisfies MuiStyles;
 
 export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,

@@ -13,14 +13,15 @@ import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import { type MuiStyles } from '../../../../utils/styles';
 
-const style = {
-    inputLegend: (theme: any) => ({
+const styles = {
+    inputLegend: (theme) => ({
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
         backgroundColor: theme.palette.background.paper,
         padding: '0 8px 0 8px',
     }),
-};
+} as const satisfies MuiStyles;
 
 export const RangeType = {
     EQUALITY: { id: 'EQUALITY', label: 'equality' },
@@ -75,7 +76,7 @@ export function RangeInput({ name, label }: RangeInputProps) {
 
     return (
         <FormControl fullWidth>
-            <InputLabel sx={style.inputLegend} shrink>
+            <InputLabel sx={styles.inputLegend} shrink>
                 <FormattedMessage id={label} />
             </InputLabel>
             <Grid container spacing={0}>

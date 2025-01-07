@@ -19,9 +19,8 @@ import {
     Collapse,
     IconButton,
     IconButtonProps,
-    Theme,
-    Typography,
     styled,
+    Typography,
 } from '@mui/material';
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -33,7 +32,7 @@ export interface ExpandMoreProps extends IconButtonProps {
 const ExpandMore = styled((props: ExpandMoreProps) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
-})(({ theme, expand }: { theme: Theme; expand: boolean }) => ({
+})(({ theme, expand }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
     marginLeft: 'auto',
     transition: theme.transitions.create('transform', {

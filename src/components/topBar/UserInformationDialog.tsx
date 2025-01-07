@@ -5,14 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { User } from 'oidc-client';
 import { useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import fetchUserDetails from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     DialogTitle: { fontSize: '1.5rem' },
@@ -20,7 +20,7 @@ const styles = {
     quotasBox: { marginTop: '60px' },
     quotasTopography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
     usedTopography: { marginLeft: '15%' },
-};
+} as const satisfies MuiStyles;
 
 interface UserInformationDialogProps {
     openDialog: boolean;

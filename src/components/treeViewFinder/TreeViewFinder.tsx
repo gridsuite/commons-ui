@@ -7,9 +7,6 @@
 
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-
-import { styled } from '@mui/system';
-
 import {
     Button,
     ButtonProps,
@@ -18,17 +15,17 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Typography,
     ModalProps,
+    styled,
+    Typography,
 } from '@mui/material';
-
 import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 
 // As a bunch of individual variables to try to make it easier
@@ -61,7 +58,7 @@ const defaultStyles = {
         marginRight: '4px',
     },
     [cssIcon]: {},
-};
+} as const satisfies MuiStyles;
 
 export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);

@@ -7,9 +7,9 @@
 
 import { useCallback, useState } from 'react';
 import { Clear as ClearIcon } from '@mui/icons-material';
-import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
-
+import { IconButton, InputAdornment, TextField, TextFieldProps, TextFieldVariants } from '@mui/material';
 import { Input } from '../../../../utils/types/types';
+import { type MuiStyleObj } from '../../../../utils/styles';
 
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
@@ -19,25 +19,23 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
     handleClearValue?: () => void;
 };
 
+function getAdornmentStyle(innerVariant: TextFieldVariants) {
+    if (innerVariant === 'filled') {
+        return {
+            alignItems: 'start',
+            marginBottom: '0.4em',
+        } as const satisfies MuiStyleObj;
+    }
+    if (innerVariant === 'standard') {
+        return { marginBottom: '0.3em' } as const satisfies MuiStyleObj;
+    }
+    return undefined;
+}
+
 export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const { adornmentPosition, adornmentText, value, variant, handleClearValue, ...otherProps } = props;
 
     const [isFocused, setIsFocused] = useState(false);
-
-    const getAdornmentStyle = useCallback((innerVariant: 'standard' | 'filled' | 'outlined') => {
-        if (innerVariant === 'filled') {
-            return {
-                alignItems: 'start',
-                marginBottom: '0.4em',
-            };
-        }
-        if (innerVariant === 'standard') {
-            return {
-                marginBottom: '0.3em',
-            };
-        }
-        return undefined;
-    }, []);
 
     const getClearAdornment = useCallback(
         (position: 'start' | 'end') => {
@@ -60,7 +58,7 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
                 </InputAdornment>
             );
         },
-        [adornmentText, getAdornmentStyle, variant]
+        [adornmentText, variant]
     );
 
     const withEndAdornmentText = useCallback(() => {

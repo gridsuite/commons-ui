@@ -5,28 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { type ReactElement } from 'react';
 import { render as rtlRender } from '@testing-library/react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, type Theme, ThemeProvider } from '@mui/material';
 import { IntlProvider } from 'react-intl';
-import { Theme } from '@mui/system';
 import {
-    loginEn,
-    reportViewerEn,
-    topBarEn,
-    tableEn,
-    treeviewFinderEn,
+    cardErrorBoundaryEn,
+    commonButtonEn,
+    csvEn,
+    descriptionEn,
+    directoryItemsInputEn,
     elementSearchEn,
     equipmentSearchEn,
+    equipmentsEn,
     filterEn,
     filterExpertEn,
-    descriptionEn,
-    equipmentsEn,
-    csvEn,
-    cardErrorBoundaryEn,
     flatParametersEn,
+    loginEn,
     multipleSelectionDialogEn,
-    commonButtonEn,
-    directoryItemsInputEn,
+    reportViewerEn,
+    tableEn,
+    topBarEn,
+    treeviewFinderEn,
 } from '../translations/en';
 
 const fullTrad = {
@@ -48,7 +48,7 @@ const fullTrad = {
     ...commonButtonEn,
     ...directoryItemsInputEn,
 };
-const renderWithTranslation = (ui: React.ReactElement, trad: Record<string, string> = fullTrad) => (
+const renderWithTranslation = (ui: ReactElement, trad: Record<string, string> = fullTrad) => (
     <IntlProvider locale="en" messages={trad}>
         {ui}
     </IntlProvider>
@@ -85,7 +85,7 @@ const lightTheme = createTheme(
         },
     }
 );
-const renderWithTheme = (ui: React.ReactElement, theme: Theme = lightTheme) => (
+const renderWithTheme = (ui: ReactElement, theme: Theme = lightTheme) => (
     <ThemeProvider theme={theme}>{ui}</ThemeProvider>
 );
 

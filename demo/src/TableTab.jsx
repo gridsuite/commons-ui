@@ -6,8 +6,7 @@
  */
 
 import { useCallback, useMemo, useState } from 'react';
-import { styled } from '@mui/system';
-import { Box, Button, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
+import { Box, Button, FormControlLabel, Stack, styled, Switch, TextField } from '@mui/material';
 import { DEFAULT_CELL_PADDING } from '../../src';
 import {
     ChangeWays,
@@ -37,7 +36,7 @@ const evenThenOddOrderingKey = (n) => {
 };
 
 /**
- * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ * @param {import('@mui/material').Theme} theme Theme from ThemeProvider
  */
 const stylesVirtualizedTable = (theme) => ({
     '& .table': {

@@ -8,11 +8,11 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
-import { Box, SxProps, Theme } from '@mui/material';
+import { Box } from '@mui/material';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
 import { TagRenderer } from '../tagRenderer/TagRenderer';
 import { OverflowableText } from '../../overflowableText';
-import { mergeSx } from '../../../utils/styles';
+import { mergeSx, type MuiStyle } from '../../../utils/styles';
 
 export interface EquipmentItemProps {
     inputValue: string;
@@ -27,11 +27,11 @@ export interface EquipmentItemProps {
         equipmentVlTag?: string;
     };
     styles?: {
-        result?: SxProps<Theme>;
-        equipmentOption?: SxProps<Theme>;
-        equipmentTag?: SxProps<Theme>;
-        equipmentTypeTag?: SxProps<Theme>;
-        equipmentVlTag?: SxProps<Theme>;
+        result?: MuiStyle;
+        equipmentOption?: MuiStyle;
+        equipmentTag?: MuiStyle;
+        equipmentTypeTag?: MuiStyle;
+        equipmentVlTag?: MuiStyle;
     };
 }
 

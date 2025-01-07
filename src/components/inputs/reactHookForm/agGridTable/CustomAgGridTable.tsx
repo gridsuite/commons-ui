@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import { type MuiStyle, type MuiStyleObj } from '../../../../utils/styles';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {
@@ -25,8 +26,9 @@ export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     },
 ];
 
-const style = (customProps: any) => ({
-    grid: (theme: any) => ({
+const style =
+    (customProps: MuiStyleObj = {}): MuiStyle =>
+    (theme) => ({
         width: 'auto',
         height: '100%',
         position: 'relative',
@@ -36,10 +38,10 @@ const style = (customProps: any) => ({
         // https://www.ag-grid.com/react-data-grid/global-style-customisation/
         '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
         '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
-        '--ag-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-header-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-odd-row-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-modal-overlay-background-color': `${theme.agGridBackground.color} !important`,
+        '--ag-background-color': `${theme.aggrid.background.color} !important`,
+        '--ag-header-background-color': `${theme.aggrid.background.color} !important`,
+        '--ag-odd-row-background-color': `${theme.aggrid.background.color} !important`,
+        '--ag-modal-overlay-background-color': `${theme.aggrid.background.color} !important`,
         '--ag-selected-row-background-color': 'transparent !important',
         '--ag-range-selection-border-color': 'transparent !important',
 
@@ -71,24 +73,23 @@ const style = (customProps: any) => ({
             height: '100%',
             border: 'inherit',
             outline: 'inherit',
-            backgroundColor: theme.agGridBackground.color,
+            backgroundColor: theme.aggrid.background.color,
         },
         '& .Mui-focused .MuiOutlinedInput-root': {
             // borders moves row height
             outline: 'var(--ag-borders-input) var(--ag-input-focus-border-color)',
             outlineOffset: '-1px',
-            backgroundColor: theme.agGridBackground.color,
+            backgroundColor: theme.aggrid.background.color,
         },
         ...customProps,
-    }),
-});
+    });
 
 export interface CustomAgGridTableProps {
     name: string;
     columnDefs: any;
     makeDefaultRowData: any;
     csvProps: unknown;
-    cssProps: unknown;
+    cssProps?: MuiStyleObj;
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
@@ -111,8 +112,7 @@ export function CustomAgGridTable({
     stopEditingWhenCellsLoseFocus,
     ...props
 }: CustomAgGridTableProps) {
-    // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
-    const theme: any = useTheme();
+    const theme = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowAdded, setNewRowAdded] = useState(false);
@@ -237,7 +237,7 @@ export function CustomAgGridTable({
 
     return (
         <>
-            <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
+            <Box className={theme.aggrid.theme} sx={style(cssProps)}>
                 <AgGridReact
                     rowData={rowData}
                     onGridReady={onGridReady}

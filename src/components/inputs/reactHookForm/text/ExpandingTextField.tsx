@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { TextFieldProps, Theme, Typography } from '@mui/material';
+import { type TextFieldProps, Typography } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { TextInput, TextInputProps } from './TextInput';
@@ -47,10 +47,8 @@ export function ExpandingTextField({
     const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
     const descriptionCounter = `${descriptionLength}/${maxCharactersNumber}`;
-
     const rowsToDisplay = isFocused ? rows : minRows;
-
-    const formProps = {
+    const formProps: TextInputProps['formProps'] = {
         size: 'medium',
         multiline: true,
         onFocus: handleFocus,
@@ -67,7 +65,7 @@ export function ExpandingTextField({
         FormHelperTextProps: {
             sx: {
                 ml: 'auto',
-                color: (theme: Theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
+                color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
             },
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),

@@ -6,8 +6,8 @@
  */
 
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
-import type { PluginOption } from 'vite'; // eslint-disable-line no-unused-vars
+import { defineConfig, type PluginOption } from 'vite'; // eslint-disable-line no-unused-vars
+// @ts-expect-error TS7016: Could not find a declaration file for module vite-plugin-eslint implicitly has an any type.
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
@@ -44,7 +44,7 @@ export default defineConfig((config) => ({
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
-                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
+                    ignore: ['src/vite-env.d.ts', 'src/module-*.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
                 }).map((file) => [
                     // This remove `src/` as well as the file extension from each
                     // file, so e.g. src/nested/foo.js becomes nested/foo
