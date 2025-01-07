@@ -40,7 +40,7 @@ type CustomUserManager = UserManager & {
 };
 
 // set as a global variable to allow log level configuration at runtime
-// @ts-ignore
+// @ts-expect-error
 window.OIDCLog = Log;
 
 const hackAuthorityKey = 'oidc.hack.authority';
@@ -69,7 +69,7 @@ function reload() {
 
 function reloadTimerOnExpiresIn(user: User, userManager: UserManager, expiresIn: number) {
     // Not allowed by TS because expires_in is supposed to be readonly
-    // @ts-ignore
+    // @ts-expect-error
     // eslint-disable-next-line no-param-reassign
     user.expires_in = expiresIn;
     userManager.storeUser(user).then(() => {

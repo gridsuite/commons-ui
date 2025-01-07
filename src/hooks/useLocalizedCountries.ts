@@ -7,9 +7,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries, { LocalizedCountries } from 'localized-countries';
-// @ts-ignore
+// @ts-expect-error
 import countriesFr from 'localized-countries/data/fr';
-// @ts-ignore
+// @ts-expect-error
 import countriesEn from 'localized-countries/data/en';
 import { LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../utils/constants/browserConstants';
 

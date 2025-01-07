@@ -261,7 +261,7 @@ export function TopBar({
 
     const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
     const onAboutClicked = () => {
-        // @ts-ignore should be an Element, or maybe we should use null ?
+        // @ts-expect-error should be an Element, or maybe we should use null ?
         setAnchorElSettingsMenu(false);
         if (onAboutClick) {
             onAboutClick();
@@ -289,7 +289,7 @@ export function TopBar({
     );
 
     return (
-        // @ts-ignore appBar style is not defined
+        // @ts-expect-error appBar style is not defined
         <AppBar position="static" color="default" sx={styles.appBar}>
             <Toolbar>
                 {logoClickable}
@@ -363,7 +363,7 @@ export function TopBar({
                             <Box component="span" sx={styles.name}>
                                 {user !== null
                                     ? abbreviationFromUserName(
-                                          // @ts-ignore name could be undefined, how to handle this case ?
+                                          // @ts-expect-error name could be undefined, how to handle this case ?
                                           user.profile.name
                                       )
                                     : ''}

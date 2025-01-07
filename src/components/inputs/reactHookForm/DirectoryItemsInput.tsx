@@ -169,7 +169,7 @@ export function DirectoryItemsInput({
             <FormControl
                 sx={mergeSx(
                     styles.formDirectoryElements1,
-                    // @ts-ignore
+                    // @ts-expect-error
                     error?.message && styles.formDirectoryElementsError
                 )}
                 error={!!error?.message}

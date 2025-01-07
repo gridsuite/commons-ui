@@ -66,7 +66,7 @@ describe('NotificationsProvider', () => {
         }
 
         const reconnectingWebSocketClass = {};
-        // @ts-ignore
+        // @ts-expect-error
         ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
@@ -78,7 +78,7 @@ describe('NotificationsProvider', () => {
         });
         const event = { test: 'test' };
         act(() => {
-            // @ts-ignore
+            // @ts-expect-error
             reconnectingWebSocketClass.onmessage(event);
         });
 
@@ -95,7 +95,7 @@ describe('NotificationsProvider', () => {
         }
 
         const reconnectingWebSocketClass = {};
-        // @ts-ignore
+        // @ts-expect-error
         ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
@@ -106,7 +106,7 @@ describe('NotificationsProvider', () => {
             );
         });
         act(() => {
-            // @ts-ignore
+            // @ts-expect-error
             reconnectingWebSocketClass.onmessage({ test: 'test' });
         });
 
@@ -126,7 +126,7 @@ describe('NotificationsProvider', () => {
             return <p>empty</p>;
         }
 
-        // @ts-ignore
+        // @ts-expect-error
         ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {

@@ -382,7 +382,7 @@ export function FlatParameters({
                     />
                 );
 
-            // @ts-ignore fallthrough is the expected behavior
+            // @ts-expect-error fallthrough is the expected behavior
             case 'STRING':
                 if (param.possibleValues) {
                     return (
