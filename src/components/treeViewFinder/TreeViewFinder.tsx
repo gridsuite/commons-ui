@@ -26,7 +26,7 @@ import {
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import { makeComposeClasses, MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
-import CancelButton from '../inputs/reactHookForm/utils/CancelButton';
+import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -128,7 +128,7 @@ export interface TreeViewFinderProps {
  * @param {Object}          [selected] - ids of selected items
  * @param {Array}           [expanded] - ids of the expanded items
  */
-function TreeViewFinder(props: TreeViewFinderProps) {
+function TreeViewFinderComponant(props: TreeViewFinderProps) {
     const intl = useIntl();
     const {
         classes = {},
@@ -379,7 +379,10 @@ function TreeViewFinder(props: TreeViewFinderProps) {
         <Dialog
             open={open}
             onClose={(e, r) => {
-                if (r === 'escapeKeyDown' || r === 'backdropClick') {
+                if (r === 'backdropClick') {
+                    return;
+                }
+                if (r === 'escapeKeyDown') {
                     onClose?.([]);
                     setSelected([]);
                 }
@@ -439,4 +442,4 @@ function TreeViewFinder(props: TreeViewFinderProps) {
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
 
-export default styled(TreeViewFinder)(nestedGlobalSelectorsStyles);
+export const TreeViewFinder = styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);

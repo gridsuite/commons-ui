@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterFr = {
+export const filterFr = {
     OR: 'OU',
     AND: 'ET',
     rule: 'règle',
@@ -26,8 +26,7 @@ const filterFr = {
     betweenRule: "La valeur de gauche d'une règle 'entre' doit être inférieure à la valeur de droite",
     emptyGroup: 'Le filtre contient un groupe vide. Supprimez le ou ajoutez des règles à ce groupe',
     Hvdc: 'HVDC',
-    'filter.criteriaBased': 'Par critères',
-    'filter.expert': 'Expert',
+    'filter.expert': 'Par critères',
     'filter.explicitNaming': 'Par nommage',
     nameEmpty: 'Le nom est vide',
     equipmentType: "Type d'ouvrage",
@@ -56,5 +55,3 @@ const filterFr = {
     nameValidityCheckErrorMsg: 'Erreur lors de la vérification de la validité du nom',
     cantSubmitWhileValidating: "Impossible de soumettre le formulaire durant la validation d'un champ",
 };
-
-export default filterFr;

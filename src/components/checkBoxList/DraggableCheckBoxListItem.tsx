@@ -19,9 +19,10 @@ export function DraggableCheckBoxListItem<T>({
     isDragDisable,
     provided,
     divider,
-    isCheckboxClickableOnly,
+    onItemClick,
+    isItemClickable,
     ...props
-}: DraggableCheckBoxListItemProps<T>) {
+}: Readonly<DraggableCheckBoxListItemProps<T>>) {
     const [hover, setHover] = useState<string>('');
     return (
         <ListItem
@@ -29,27 +30,29 @@ export function DraggableCheckBoxListItem<T>({
             sx={{ minWidth: 0, ...sx?.checkboxListItem }}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
-            disablePadding={!isCheckboxClickableOnly}
+            disablePadding={!!onItemClick}
             disableGutters
             divider={divider}
             ref={provided.innerRef}
             {...provided.draggableProps}
         >
-            {isCheckboxClickableOnly ? (
+            {!onItemClick ? (
                 <DraggableClickableCheckBoxItem
                     provided={provided}
                     isHighlighted={hover === getItemId(item) && !isDragDisable}
+                    sx={sx}
                     {...props}
                 />
             ) : (
                 <DraggableClickableRowItem
                     provided={provided}
                     isHighlighted={hover === getItemId(item) && !isDragDisable}
+                    onItemClick={() => onItemClick(item)}
+                    isItemClickable={isItemClickable?.(item)}
+                    sx={sx}
                     {...props}
                 />
             )}
         </ListItem>
     );
 }
-
-export default DraggableCheckBoxListItem;

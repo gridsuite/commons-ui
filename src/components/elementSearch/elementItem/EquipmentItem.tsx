@@ -10,8 +10,8 @@ import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { Box } from '@mui/material';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
-import { TagRenderer } from '../index';
-import OverflowableText from '../../overflowableText';
+import { TagRenderer } from '../tagRenderer/TagRenderer';
+import { OverflowableText } from '../../overflowableText';
 import { mergeSx, MuiStyle } from '../../../utils/styles';
 
 export interface EquipmentItemProps {

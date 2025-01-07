@@ -6,7 +6,7 @@
  */
 
 import { Theme } from '@mui/material';
-import { LIGHT_THEME } from '../../components/topBar/TopBar';
+import { LIGHT_THEME } from '../constants/browserConstants';
 import { MuiStyles } from '../styles';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
@@ -74,6 +74,9 @@ export enum EquipmentType {
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
     DANGLING_LINE = 'DANGLING_LINE',
+    TIE_LINE = 'TIE_LINE',
+    DISCONNECTOR = 'DISCONNECTOR',
+    BREAKER = 'BREAKER',
 }
 
 // Must be equivalent as the back enum
@@ -150,6 +153,9 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
         name: EquipmentType.LCC_CONVERTER_STATION,
         tagLabel: 'equipment_search/lccConverterStationTag',
     },
+    [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
+    [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
+    [EquipmentType.BREAKER]: undefined, // Not used in the UI
 };
 
 export interface Identifiable {
@@ -168,7 +174,20 @@ export interface EquipmentInfos extends Identifiable {
     type: EquipmentType;
     voltageLevelLabel?: string;
     voltageLevelId?: string;
+    operatingStatus?: string;
+    terminal1Connected?: boolean;
+    terminal2Connected?: boolean;
+    voltageLevelId1?: string;
+    voltageLevelName1?: string;
+    voltageLevelId2?: string;
+    voltageLevelName2?: string;
 }
+
+export const OperatingStatus = {
+    IN_OPERATION: 'IN_OPERATION',
+    PLANNED_OUTAGE: 'PLANNED_OUTAGE',
+    FORCED_OUTAGE: 'FORCED_OUTAGE',
+};
 
 export const getEquipmentsInfosForSearchBar = (
     equipmentsInfos: Equipment[],

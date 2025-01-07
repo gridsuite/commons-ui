@@ -8,8 +8,8 @@
 import { useCallback, useState } from 'react';
 import { TextFieldProps, Typography } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import useCustomFormContext from '../provider/useCustomFormContext';
-import TextInput, { TextInputProps } from './TextInput';
+import { useCustomFormContext } from '../provider/useCustomFormContext';
+import { TextInput, TextInputProps } from './TextInput';
 
 export interface ExpandingTextFieldProps extends TextInputProps {
     name: string;
@@ -21,7 +21,7 @@ export interface ExpandingTextFieldProps extends TextInputProps {
     textFieldFormProps?: TextFieldProps;
 }
 
-function ExpandingTextField({
+export function ExpandingTextField({
     name,
     maxCharactersNumber = 500,
     rows,
@@ -73,5 +73,3 @@ function ExpandingTextField({
     };
     return <TextInput name={name} label={label} formProps={formProps} {...otherTexFieldProps} />;
 }
-
-export default ExpandingTextField;

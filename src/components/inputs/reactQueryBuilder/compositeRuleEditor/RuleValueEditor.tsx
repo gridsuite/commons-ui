@@ -23,7 +23,7 @@ type RuleValueEditorProps = ValueEditorProps & {
     handleOnChangeRule: (rule: CompositeRule) => void;
 };
 
-function RuleValueEditor(props: RuleValueEditorProps) {
+export function RuleValueEditor(props: RuleValueEditorProps) {
     const {
         schema: {
             controls: { valueEditor: ValueEditorControlElement },
@@ -84,5 +84,3 @@ function RuleValueEditor(props: RuleValueEditorProps) {
         </Grid>
     );
 }
-
-export default RuleValueEditor;

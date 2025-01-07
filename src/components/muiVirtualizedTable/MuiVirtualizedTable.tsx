@@ -18,7 +18,14 @@ import { AutoSizer, Column, ColumnProps, RowMouseEventHandlerParams, Table, Tabl
 import CsvDownloader from 'react-csv-downloader';
 import { OverflowableText } from '../overflowableText/OverflowableText';
 import { makeComposeClasses, MuiStyle, MuiStyles, MuiStyleObj, toNestedGlobalSelectors } from '../../utils/styles';
-import { ChangeWays, collectibleHelper, getHelper, KeyedColumnsRowIndexer } from './KeyedColumnsRowIndexer';
+import {
+    ChangeWays,
+    collectibleHelper,
+    CustomColumnProps,
+    getHelper,
+    KeyedColumnsRowIndexer,
+    RowProps,
+} from './KeyedColumnsRowIndexer';
 import { ColumnHeader } from './ColumnHeader';
 
 function getTextWidth(text: any): number {
@@ -152,22 +159,6 @@ function makeIndexRecord(
     };
 }
 
-export interface CustomColumnProps extends ColumnProps {
-    sortable?: boolean;
-    numeric?: boolean;
-    indexer?: KeyedColumnsRowIndexer;
-    label: string;
-    clickable?: boolean;
-    fractionDigits?: number;
-    unit?: number;
-    extra?: ReactElement;
-    nostat?: boolean;
-}
-
-export interface RowProps {
-    notClickable?: boolean;
-}
-
 const initIndexer = (props: CustomColumnProps, versionSetter: (version: number) => void) => {
     if (!props.sortable) {
         return null;
@@ -279,7 +270,7 @@ export interface MuiVirtualizedTableState {
     };
 }
 
-class MuiVirtualizedTable extends PureComponent<MuiVirtualizedTableProps, MuiVirtualizedTableState> {
+class MuiVirtualizedTableComponent extends PureComponent<MuiVirtualizedTableProps, MuiVirtualizedTableState> {
     static defaultProps = {
         headerHeight: DEFAULT_HEADER_HEIGHT,
         rowHeight: DEFAULT_ROW_HEIGHT,
@@ -893,4 +884,4 @@ class MuiVirtualizedTable extends PureComponent<MuiVirtualizedTableProps, MuiVir
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateMuiVirtualizedTableClass);
 
-export default styled(MuiVirtualizedTable)(nestedGlobalSelectorsStyles);
+export const MuiVirtualizedTable = styled(MuiVirtualizedTableComponent)(nestedGlobalSelectorsStyles);

@@ -5,25 +5,33 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
+import { Box } from '@mui/material';
 import { QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
-import { ActionWithRulesAndAddersProps, Field, formatQuery, QueryBuilder, RuleGroupTypeAny } from 'react-querybuilder';
+import {
+    ActionWithRulesAndAddersProps,
+    defaultTranslations,
+    Field,
+    formatQuery,
+    QueryBuilder,
+    RuleGroupTypeAny,
+} from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
-import CombinatorSelector from './CombinatorSelector';
-import AddButton from './AddButton';
-import ValueEditor from './ValueEditor';
-import ValueSelector from './ValueSelector';
+import { CombinatorSelector } from './CombinatorSelector';
+import { AddButton } from './AddButton';
+import { ValueEditor } from './ValueEditor';
+import { ValueSelector } from './ValueSelector';
 
 import { COMBINATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
-import ErrorInput from '../reactHookForm/errorManagement/ErrorInput';
-import FieldErrorAlert from '../reactHookForm/errorManagement/FieldErrorAlert';
+import { ErrorInput } from '../reactHookForm/errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../reactHookForm/errorManagement/FieldErrorAlert';
 import { countRules, getOperators, queryValidator } from '../../filter/expert/expertFilterUtils';
-import RemoveButton from './RemoveButton';
+import { RemoveButton } from './RemoveButton';
+import { FieldSelector } from './FieldSelector';
 
 export interface CustomReactQueryBuilderProps {
     name: string;
@@ -38,7 +46,21 @@ function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
     return <AddButton {...props} label="subGroup" />;
 }
 
-function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
+// titles for different components
+const customTranslations = {
+    ...defaultTranslations,
+    fields: { ...defaultTranslations.fields, title: '' },
+    operators: { ...defaultTranslations.operators, title: '' },
+    dragHandle: { ...defaultTranslations.dragHandle, title: '' },
+    addRule: { ...defaultTranslations.addRule, title: '' },
+    addGroup: { ...defaultTranslations.addGroup, title: '' },
+    removeRule: { ...defaultTranslations.removeRule, title: '' },
+    removeGroup: { ...defaultTranslations.removeGroup, title: '' },
+    value: { title: '' },
+    combinators: { title: '' },
+};
+
+export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
     const {
         getValues,
@@ -76,41 +98,39 @@ function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) 
 
     return (
         <>
-            <Grid item xs={12}>
-                <QueryBuilderMaterial>
-                    <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
-                        <QueryBuilder
-                            fields={fields}
-                            query={query}
-                            addRuleToNewGroups
-                            combinators={combinators}
-                            onQueryChange={handleQueryChange}
-                            getOperators={(fieldName) => getOperators(fieldName, intl)}
-                            validator={queryValidator}
-                            controlClassnames={{
-                                queryBuilder: 'queryBuilder-branches',
-                            }}
-                            controlElements={{
-                                addRuleAction: RuleAddButton,
-                                addGroupAction: GroupAddButton,
-                                combinatorSelector: CombinatorSelector,
-                                removeRuleAction: RemoveButton,
-                                removeGroupAction: RemoveButton,
-                                valueEditor: ValueEditor,
-                                operatorSelector: ValueSelector,
-                                fieldSelector: ValueSelector,
-                                valueSourceSelector: ValueSelector,
-                            }}
-                            listsAsArrays
-                        />
-                    </QueryBuilderDnD>
-                </QueryBuilderMaterial>
-            </Grid>
-            <Grid item xs={12}>
+            <QueryBuilderMaterial>
+                <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
+                    <QueryBuilder
+                        fields={fields}
+                        query={query}
+                        addRuleToNewGroups
+                        combinators={combinators}
+                        onQueryChange={handleQueryChange}
+                        getOperators={(fieldName) => getOperators(fieldName, intl)}
+                        validator={queryValidator}
+                        controlClassnames={{
+                            queryBuilder: 'queryBuilder-branches',
+                        }}
+                        controlElements={{
+                            addRuleAction: RuleAddButton,
+                            addGroupAction: GroupAddButton,
+                            combinatorSelector: CombinatorSelector,
+                            removeRuleAction: RemoveButton,
+                            removeGroupAction: RemoveButton,
+                            valueEditor: ValueEditor,
+                            operatorSelector: ValueSelector,
+                            fieldSelector: FieldSelector,
+                            valueSourceSelector: ValueSelector,
+                        }}
+                        listsAsArrays
+                        accessibleDescriptionGenerator={() => ''} // tooltip for querybuilder container and subgroups
+                        translations={customTranslations}
+                    />
+                </QueryBuilderDnD>
+            </QueryBuilderMaterial>
+            <Box>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
-            </Grid>
+            </Box>
         </>
     );
 }
-
-export default CustomReactQueryBuilder;

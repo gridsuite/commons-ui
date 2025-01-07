@@ -24,6 +24,7 @@
         "no-console": "off",
         "react/jsx-props-no-spreading": "off",
         "react/require-default-props": "off",
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "import/prefer-default-export":"off"
     }
 }

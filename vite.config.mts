@@ -30,6 +30,7 @@ export default defineConfig((config) => ({
         libInjectCss(),
         dts({
             include: ['src'],
+            exclude: '**/*.test.{ts,tsx}',
         }),
     ],
     build: {

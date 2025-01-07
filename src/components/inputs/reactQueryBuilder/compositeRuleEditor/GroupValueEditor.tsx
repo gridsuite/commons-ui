@@ -7,7 +7,7 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { Grid } from '@mui/material';
 import { useCallback } from 'react';
-import RuleValueEditor from './RuleValueEditor';
+import { RuleValueEditor } from './RuleValueEditor';
 import { CompositeField, CompositeGroup, CompositeRule } from '../../../filter/expert/expertFilter.type';
 import { MuiStyles } from '../../../../utils/styles';
 
@@ -19,7 +19,7 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
-function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
+export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
     const {
         fieldData: { combinator, children },
         value,
@@ -58,5 +58,3 @@ function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
         </Grid>
     );
 }
-
-export default GroupValueEditor;

@@ -5,38 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useEffect } from 'react';
+import { Box } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
-import { UUID } from 'crypto';
-import FieldConstants from '../../utils/constants/fieldConstants';
-import CriteriaBasedFilterForm from './criteriaBased/CriteriaBasedFilterForm';
-import ExplicitNamingFilterForm from './explicitNaming/ExplicitNamingFilterForm';
-import ExpertFilterForm from './expert/ExpertFilterForm';
+import React, { useEffect } from 'react';
+import { HeaderFilterForm, FilterFormProps } from './HeaderFilterForm';
+import { FieldConstants } from '../../utils/constants/fieldConstants';
+import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
+import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
-import RadioInput from '../inputs/reactHookForm/booleans/RadioInput';
-import { ElementExistsType, ElementType } from '../../utils/types/elementType';
-import UniqueNameInput from '../inputs/reactHookForm/text/UniqueNameInput';
-import DescriptionField from '../inputs/reactHookForm/text/DescriptionField';
+import { unscrollableDialogStyles } from '../dialogs';
 
-interface FilterFormProps {
-    creation?: boolean;
-    activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    sourceFilterForExplicitNamingConversion?: {
-        id: UUID;
-        equipmentType: string;
-    };
-}
-
-function FilterForm(props: FilterFormProps) {
-    const { sourceFilterForExplicitNamingConversion, creation, activeDirectory, elementExists } = props;
+export function FilterForm({
+    sourceFilterForExplicitNamingConversion,
+    creation,
+    activeDirectory,
+    elementExists,
+}: Readonly<FilterFormProps>) {
     const { setValue } = useFormContext();
 
     const filterType = useWatch({ name: FieldConstants.FILTER_TYPE });
 
     // We do this because setValue don't set the field dirty
-    const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+    const handleFilterTypeChange = (_event: React.ChangeEvent<HTMLInputElement>, value: string) => {
         setValue(FieldConstants.FILTER_TYPE, value);
     };
 
@@ -47,42 +37,22 @@ function FilterForm(props: FilterFormProps) {
     }, [sourceFilterForExplicitNamingConversion, setValue]);
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <UniqueNameInput
-                    name={FieldConstants.NAME}
-                    label="nameProperty"
-                    elementType={ElementType.FILTER}
-                    autoFocus={creation}
+        <>
+            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
+                <HeaderFilterForm
+                    creation={creation}
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
+                    sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                    handleFilterTypeChange={handleFilterTypeChange}
                 />
-            </Grid>
-            {creation && (
-                <>
-                    <Grid item xs={12}>
-                        <DescriptionField />
-                    </Grid>
-                    {!sourceFilterForExplicitNamingConversion && (
-                        <Grid item>
-                            <RadioInput
-                                name={FieldConstants.FILTER_TYPE}
-                                options={Object.values(FilterType)}
-                                formProps={{ onChange: handleChange }} // need to override this in order to do not activate the validate button when changing the filter type
-                            />
-                        </Grid>
-                    )}
-                </>
-            )}
-            {filterType === FilterType.CRITERIA_BASED.id && <CriteriaBasedFilterForm />}
+            </Box>
             {filterType === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
             )}
             {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
-        </Grid>
+        </>
     );
 }
-
-export default FilterForm;

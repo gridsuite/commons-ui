@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterEn = {
+export const filterEn = {
     OR: 'OR',
     AND: 'AND',
     rule: 'rule',
@@ -26,8 +26,7 @@ const filterEn = {
     betweenRule: "Left value of 'between' rule have to be lower than the right value",
     emptyGroup: 'Filter contains an empty group. Consider removing it or adding rules to this group',
     Hvdc: 'HVDC',
-    'filter.criteriaBased': 'Criteria based',
-    'filter.expert': 'Expert',
+    'filter.expert': 'Criteria based',
     'filter.explicitNaming': 'Explicit naming',
     nameEmpty: 'The name is empty',
     equipmentType: 'Equipment type',
@@ -56,5 +55,3 @@ const filterEn = {
     nameValidityCheckErrorMsg: 'Error while checking name validity',
     cantSubmitWhileValidating: 'Impossible to submit the form while validating a field',
 };
-
-export default filterEn;

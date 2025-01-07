@@ -10,18 +10,18 @@ import { useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import Box from '@mui/material/Box';
 import { useFormContext } from 'react-hook-form';
-import CountryValueEditor from './CountryValueEditor';
-import TranslatedValueEditor from './TranslatedValueEditor';
-import TextValueEditor from './TextValueEditor';
+import { CountryValueEditor } from './CountryValueEditor';
+import { TranslatedValueEditor } from './TranslatedValueEditor';
+import { TextValueEditor } from './TextValueEditor';
 
 import { DataType, FieldType } from '../../filter/expert/expertFilter.type';
-import FieldConstants from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Substation, VoltageLevel } from '../../../utils/types/equipmentTypes';
-import ElementValueEditor from './ElementValueEditor';
+import { ElementValueEditor } from './ElementValueEditor';
 import { ElementType } from '../../../utils/types/elementType';
-import PropertyValueEditor from './PropertyValueEditor';
+import { PropertyValueEditor } from './PropertyValueEditor';
 import { FilterType } from '../../filter/constants/FilterConstants';
-import GroupValueEditor from './compositeRuleEditor/GroupValueEditor';
+import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { MuiStyles } from '../../../utils/styles';
 
@@ -36,7 +36,7 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-function ValueEditor(props: ValueEditorProps) {
+export function ValueEditor(props: ValueEditorProps) {
     const { field, operator, value, rule, handleOnChange, inputType, fieldData } = props;
     const formContext = useFormContext();
     const { getValues } = formContext;
@@ -67,7 +67,7 @@ function ValueEditor(props: ValueEditorProps) {
     }
 
     if ([FieldType.COUNTRY, FieldType.COUNTRY_1, FieldType.COUNTRY_2].includes(field as FieldType)) {
-        return <CountryValueEditor {...props} />;
+        return <CountryValueEditor {...props} key={field} />;
     }
 
     if (fieldData.dataType === DataType.ENUM) {
@@ -112,8 +112,7 @@ function ValueEditor(props: ValueEditorProps) {
         if (
             field === FieldType.SUBSTATION_PROPERTY ||
             field === FieldType.SUBSTATION_PROPERTY_1 ||
-            field === FieldType.SUBSTATION_PROPERTY_2 ||
-            field === FieldType.SUBSTATION_PROPERTY_3
+            field === FieldType.SUBSTATION_PROPERTY_2
         ) {
             equipmentType = Substation.type;
         } else if (
@@ -136,11 +135,7 @@ function ValueEditor(props: ValueEditorProps) {
 
     return (
         <Box sx={inputType === 'number' ? styles.noArrows : undefined}>
-            <MaterialValueEditor
-                {...props}
-                title={undefined} // disable the tooltip
-            />
+            <MaterialValueEditor {...props} />
         </Box>
     );
 }
-export default ValueEditor;

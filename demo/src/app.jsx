@@ -29,62 +29,12 @@ import { useMatch } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import SnackbarProvider from '../../src/components/snackbarProvider';
-import { AuthenticationRouter } from '../../src/components/authentication';
-import CardErrorBoundary from '../../src/components/cardErrorBoundary';
-import {
-    card_error_boundary_en,
-    card_error_boundary_fr,
-    element_search_en,
-    element_search_fr,
-    ElementType,
-    equipment_search_en,
-    equipment_search_fr,
-    EQUIPMENT_TYPE,
-    EquipmentItem,
-    equipmentStyles,
-    filter_en,
-    filter_fr,
-    filter_expert_en,
-    filter_expert_fr,
-    description_en,
-    description_fr,
-    equipments_en,
-    equipments_fr,
-    csv_en,
-    csv_fr,
-    flat_parameters_en,
-    flat_parameters_fr,
-    getFileIcon,
-    initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-    login_en,
-    login_fr,
-    logout,
-    multiple_selection_dialog_en,
-    multiple_selection_dialog_fr,
-    report_viewer_en,
-    report_viewer_fr,
-    table_en,
-    table_fr,
-    top_bar_en,
-    top_bar_fr,
-    TopBar,
-    treeview_finder_en,
-    treeview_finder_fr,
-    useSnackMessage,
-} from '../../src';
-
 import translations from './demo_intl';
 
 // eslint-disable-next-line import/no-unresolved
 import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 
-import { generateTreeViewFinderClass, TreeViewFinder } from '../../src/components/treeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 
 import {
@@ -97,57 +47,111 @@ import {
 import LOGS_JSON from '../data/ReportViewer';
 
 import searchEquipments from '../data/EquipmentSearchBar';
-import OverflowableText from '../../src/components/overflowableText';
 
-import { setShowAuthenticationRouterLogin } from '../../src/redux/actions/authActions';
 import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
 
-import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import InputsTab from './InputsTab';
-import inputs_en from '../../src/translations/en/inputsEn';
-import inputs_fr from '../../src/translations/fr/inputsFr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
-import MultipleSelectionDialog from '../../src/components/multipleSelectionDialog';
+import {
+    MultipleSelectionDialog,
+    OverflowableText,
+    SnackbarProvider,
+    TopBar,
+    TreeViewFinder,
+    CardErrorBoundary,
+    EquipmentItem,
+    AuthenticationRouter,
+    reportViewerEn,
+    loginEn,
+    topBarEn,
+    tableEn,
+    treeviewFinderEn,
+    elementSearchEn,
+    equipmentSearchEn,
+    filterEn,
+    filterExpertEn,
+    descriptionEn,
+    equipmentsEn,
+    csvEn,
+    cardErrorBoundaryEn,
+    flatParametersEn,
+    multipleSelectionDialogEn,
+    inputsEn,
+    inputsFr,
+    multipleSelectionDialogFr,
+    flatParametersFr,
+    cardErrorBoundaryFr,
+    filterExpertFr,
+    csvFr,
+    equipmentsFr,
+    descriptionFr,
+    filterFr,
+    equipmentSearchFr,
+    elementSearchFr,
+    treeviewFinderFr,
+    tableFr,
+    topBarFr,
+    loginFr,
+    reportViewerFr,
+    LIGHT_THEME,
+    LANG_ENGLISH,
+    LANG_SYSTEM,
+    LANG_FRENCH,
+    ElementType,
+    getFileIcon,
+    initializeAuthenticationDev,
+    toNestedGlobalSelectors,
+    generateTreeViewFinderClass,
+    useSnackMessage,
+    commonButtonEn,
+    commonButtonFr,
+    networkModificationsEn,
+    networkModificationsFr,
+} from '../../src';
 
 const messages = {
     en: {
-        ...report_viewer_en,
-        ...login_en,
-        ...top_bar_en,
-        ...table_en,
-        ...treeview_finder_en,
-        ...element_search_en,
-        ...equipment_search_en,
-        ...filter_en,
-        ...filter_expert_en,
-        ...description_en,
-        ...equipments_en,
-        ...csv_en,
-        ...card_error_boundary_en,
-        ...flat_parameters_en,
-        ...multiple_selection_dialog_en,
-        ...inputs_en,
+        ...reportViewerEn,
+        ...loginEn,
+        ...topBarEn,
+        ...tableEn,
+        ...treeviewFinderEn,
+        ...elementSearchEn,
+        ...equipmentSearchEn,
+        ...filterEn,
+        ...filterExpertEn,
+        ...descriptionEn,
+        ...equipmentsEn,
+        ...csvEn,
+        ...cardErrorBoundaryEn,
+        ...flatParametersEn,
+        ...multipleSelectionDialogEn,
+        ...commonButtonEn,
+        ...networkModificationsEn,
+        ...inputsEn,
         ...translations.en,
     },
     fr: {
-        ...report_viewer_fr,
-        ...login_fr,
-        ...top_bar_fr,
-        ...table_fr,
-        ...treeview_finder_fr,
-        ...element_search_fr,
-        ...equipment_search_fr,
-        ...filter_fr,
-        ...description_fr,
-        ...equipments_fr,
-        ...csv_fr,
-        ...filter_expert_fr,
-        ...card_error_boundary_fr,
-        ...flat_parameters_fr,
-        ...multiple_selection_dialog_fr,
-        ...inputs_fr,
+        ...reportViewerFr,
+        ...loginFr,
+        ...topBarFr,
+        ...tableFr,
+        ...treeviewFinderFr,
+        ...elementSearchFr,
+        ...equipmentSearchFr,
+        ...filterFr,
+        ...descriptionFr,
+        ...equipmentsFr,
+        ...csvFr,
+        ...filterExpertFr,
+        ...cardErrorBoundaryFr,
+        ...flatParametersFr,
+        ...commonButtonFr,
+        ...networkModificationsFr,
+        ...multipleSelectionDialogFr,
+        ...inputsFr,
         ...translations.fr,
     },
 };
@@ -569,11 +573,12 @@ function AppContent({ language, onLanguageClick }) {
         },
     ]);
 
-    const secondaryAction = () => (
-        <IconButton aria-label="comment">
-            <CommentIcon />
-        </IconButton>
-    );
+    const secondaryAction = (item, isItemHovered) =>
+        isItemHovered && (
+            <IconButton aria-label="comment">
+                <CommentIcon />
+            </IconButton>
+        );
     const defaultTab = (
         <div>
             <Box mt={3}>
@@ -613,8 +618,6 @@ function AppContent({ language, onLanguageClick }) {
                 divider
                 secondaryAction={secondaryAction}
                 addSelectAllCheckbox
-                isCheckboxClickableOnly
-                enableSecondaryActionOnHover
             />
 
             <Button
@@ -639,7 +642,6 @@ function AppContent({ language, onLanguageClick }) {
                 divider
                 secondaryAction={secondaryAction}
                 isDndDragAndDropActive
-                enableSecondaryActionOnHover
                 onDragEnd={({ source, destination }) => {
                     if (destination !== null && source.index !== destination.index) {
                         const res = [...checkBoxListOption];
@@ -647,6 +649,15 @@ function AppContent({ language, onLanguageClick }) {
                         res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
                         setCheckBoxListOption(res);
                     }
+                }}
+                onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id.indexOf('i') >= 0}
+                sx={{
+                    items: (item) => ({
+                        label: {
+                            color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
+                        },
+                    }),
                 }}
             />
             <div

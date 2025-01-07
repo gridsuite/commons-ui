@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export { default as AuthenticationRouter } from './AuthenticationRouter';
+export * from './AuthenticationRouter';
 export { default as AuthenticationRouterErrorDisplay } from './AuthenticationRouterErrorDisplay';
-export { default as Login } from './Login';
-export { default as Logout } from './Logout';
-export { default as SignInCallbackHandler } from './SignInCallbackHandler';
-export { default as SilentRenewCallbackHandler } from './SilentRenewCallbackHandler';
+export * from './Login';
+export * from './Logout';
+export * from './SignInCallbackHandler';
+export * from './SilentRenewCallbackHandler';
 export * from './alert';
 export * from './authenticationType';
 export * from './utils';

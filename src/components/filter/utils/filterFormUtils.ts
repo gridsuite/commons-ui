@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FunctionComponent } from 'react';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import RangeInput from '../../inputs/reactHookForm/numbers/RangeInput';
-import CountriesInput from '../../inputs/reactHookForm/selectInputs/CountriesInput';
-import SelectInput from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
+import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 
 const countries = {
@@ -75,7 +75,7 @@ const energySource = {
         ],
     },
 };
-type FormField = {
+export type FormField = {
     renderer: FunctionComponent<any>;
     props: {
         label: string;
@@ -92,8 +92,12 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     | EquipmentType.BUSBAR_SECTION
     | EquipmentType.LINE
     | EquipmentType.TWO_WINDINGS_TRANSFORMER
+    | EquipmentType.THREE_WINDINGS_TRANSFORMER
     | EquipmentType.GENERATOR
+    | EquipmentType.BATTERY
+    | EquipmentType.LOAD
     | EquipmentType.SHUNT_COMPENSATOR
+    | EquipmentType.STATIC_VAR_COMPENSATOR
     | EquipmentType.HVDC_LINE
     | EquipmentType.DANGLING_LINE,
     FormEquipment
@@ -113,14 +117,34 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
         label: 'TwoWindingsTransformers',
         fields: [countries, nominalVoltage1, nominalVoltage2],
     },
+    THREE_WINDINGS_TRANSFORMER: {
+        id: 'THREE_WINDINGS_TRANSFORMER',
+        label: 'ThreeWindingsTransformers',
+        fields: [countries, nominalVoltage1, nominalVoltage2, nominalVoltage3],
+    },
     GENERATOR: {
         id: 'GENERATOR',
         label: 'Generators',
         fields: [countries, nominalVoltage],
     },
+    BATTERY: {
+        id: 'BATTERY',
+        label: 'Batteries',
+        fields: [countries, nominalVoltage],
+    },
+    LOAD: {
+        id: 'LOAD',
+        label: 'Loads',
+        fields: [countries, nominalVoltage],
+    },
     SHUNT_COMPENSATOR: {
         id: 'SHUNT_COMPENSATOR',
         label: 'ShuntCompensators',
+        fields: [countries, nominalVoltage],
+    },
+    STATIC_VAR_COMPENSATOR: {
+        id: 'STATIC_VAR_COMPENSATOR',
+        label: 'StaticVarCompensators',
         fields: [countries, nominalVoltage],
     },
     HVDC_LINE: {

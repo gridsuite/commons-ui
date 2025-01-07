@@ -30,7 +30,7 @@ interface AutocompleteWithFavoritesProps<Value>
  * Autocomplete component which allows to have a few "favorite" options always displayed
  * at the beginning of the selector and separated from the others options
  */
-function AutocompleteWithFavorites<Value>({
+export function AutocompleteWithFavorites<Value>({
     favorites,
     valid,
     options,
@@ -51,6 +51,8 @@ function AutocompleteWithFavorites<Value>({
             size="small"
             value={value}
             options={optionsWithFavorites}
+            // avoid warning in console MUI: The value provided to Autocomplete is invalid.
+            isOptionEqualToValue={(option, val) => option === val || val === ''}
             {...otherProps}
             /* props should not be overridden */
             groupBy={(option: Value) => (favorites.includes(option) ? 'fav' : 'not_fav')}
@@ -67,5 +69,3 @@ function AutocompleteWithFavorites<Value>({
         />
     );
 }
-
-export default AutocompleteWithFavorites;

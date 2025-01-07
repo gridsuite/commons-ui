@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Draggable } from 'react-beautiful-dnd';
 import { useCallback, useMemo } from 'react';
 import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { Draggable } from 'react-beautiful-dnd';
 import { CheckBoxListItem } from './CheckBoxListItem';
-import OverflowableText from '../overflowableText';
+import { OverflowableText } from '../overflowableText';
 import { DraggableCheckBoxListItem } from './DraggableCheckBoxListItem';
 import { CheckBoxListItemsProps } from './checkBoxList.type';
 
@@ -21,7 +21,6 @@ export function CheckBoxListItems<T>({
     getItemId,
     sx,
     secondaryAction,
-    enableSecondaryActionOnHover,
     addSelectAllCheckbox,
     selectAllCheckBoxLabel,
     getItemLabel,
@@ -29,9 +28,10 @@ export function CheckBoxListItems<T>({
     isDndDragAndDropActive,
     isDragDisable,
     divider,
-    isCheckboxClickableOnly,
+    onItemClick,
+    isItemClickable,
     ...props
-}: CheckBoxListItemsProps<T>) {
+}: Readonly<CheckBoxListItemsProps<T>>) {
     const handleOnchange = useCallback(
         (newValues: T[]) => {
             if (onSelectionChange) {
@@ -77,16 +77,8 @@ export function CheckBoxListItems<T>({
         if (!secondaryAction) {
             return null;
         }
-
-        if (!enableSecondaryActionOnHover) {
-            return secondaryAction(item);
-        }
-
-        if (hover === getItemId(item)) {
-            return secondaryAction(item);
-        }
-
-        return null;
+        const isItemHovered = hover === getItemId(item);
+        return secondaryAction(item, isItemHovered);
     };
 
     const selectAllLabel = useMemo(
@@ -126,6 +118,8 @@ export function CheckBoxListItems<T>({
                 const label = getItemLabel ? getItemLabel(item) : getItemId(item);
                 const disabled = isDisabled ? isDisabled(item) : false;
                 const addDivider = divider && index < items.length - 1;
+                // sx can be dependent on item or not
+                const calculatedItemSx = typeof sx?.items === 'function' ? sx?.items(item) : sx?.items;
 
                 if (isDndDragAndDropActive) {
                     return (
@@ -142,14 +136,15 @@ export function CheckBoxListItems<T>({
                                     checked={isChecked(item)}
                                     label={label}
                                     onClick={() => toggleSelection(getItemId(item))}
-                                    sx={sx}
+                                    sx={calculatedItemSx}
                                     disabled={disabled}
                                     getItemId={getItemId}
                                     secondaryAction={handleSecondaryAction}
                                     isDragDisable={isDragDisable}
                                     provided={provided}
                                     divider={addDivider}
-                                    isCheckboxClickableOnly={isCheckboxClickableOnly}
+                                    onItemClick={onItemClick}
+                                    isItemClickable={isItemClickable}
                                 />
                             )}
                         </Draggable>
@@ -164,15 +159,14 @@ export function CheckBoxListItems<T>({
                         onClick={() => toggleSelection(getItemId(item))}
                         disabled={disabled}
                         getItemId={getItemId}
-                        sx={sx}
+                        sx={calculatedItemSx}
                         secondaryAction={handleSecondaryAction}
                         divider={addDivider}
-                        isCheckboxClickableOnly={isCheckboxClickableOnly}
+                        onItemClick={onItemClick}
+                        isItemClickable={isItemClickable}
                     />
                 );
             })}
         </List>
     );
 }
-
-export default CheckBoxListItems;

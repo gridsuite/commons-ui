@@ -6,8 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import FieldConstants from '../../../utils/constants/fieldConstants';
-import { frontToBackTweak } from '../criteriaBased/criteriaBasedFilterUtils';
+import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
@@ -20,7 +19,7 @@ export const saveExplicitNamingFilter = (
     name: string,
     description: string,
     id: string | null,
-    setCreateFilterErr: (value: any) => void,
+    setCreateFilterErr: (value?: string) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
     token?: string
@@ -75,24 +74,6 @@ export const saveExplicitNamingFilter = (
             });
     }
 };
-
-export const saveCriteriaBasedFilter = (
-    filter: any,
-    activeDirectory: any,
-    onClose: () => void,
-    onError: (message: string) => void,
-    token?: string
-) => {
-    const filterForBack = frontToBackTweak(undefined, filter); // no need ID for creation
-    createFilter(filterForBack, filter[FieldConstants.NAME], filter[FieldConstants.DESCRIPTION], activeDirectory, token)
-        .then(() => {
-            onClose();
-        })
-        .catch((error) => {
-            onError(error.message);
-        });
-};
-
 export const saveExpertFilter = (
     id: string | null,
     query: any,

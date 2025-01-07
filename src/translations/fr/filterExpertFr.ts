@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-const filterExpertFr = {
+export const filterExpertFr = {
     id: 'ID',
     name: 'Nom',
     energySource: "Source d'énergie",
@@ -95,7 +95,6 @@ const filterExpertFr = {
     substationProperty2: 'Propriété site 2',
     substationProperty1Twt: 'Propriété site 1',
     substationProperty2Twt: 'Propriété site 2',
-    substationProperty3Twt: 'Propriété site 3',
     ratedVoltage1KV: "Tension d'enroulement 1 (kV)",
     ratedVoltage2KV: "Tension d'enroulement 2 (kV)",
     ratedVoltage0KVTwt: "Tension d'enroulement 0 (kV)",
@@ -187,6 +186,6 @@ const filterExpertFr = {
     YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
     YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
     changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur toutes les règles déjà créées dans le groupe.",
+    lowShortCircuitCurrentLimit: 'Limite ICC min (kA)',
+    highShortCircuitCurrentLimit: 'Limite ICC max (kA)',
 };
-
-export default filterExpertFr;

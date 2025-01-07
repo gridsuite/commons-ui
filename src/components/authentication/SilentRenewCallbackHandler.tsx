@@ -13,7 +13,10 @@ export interface SilentRenewCallbackHandlerProps {
     handleSilentRenewCallback: () => void;
 }
 
-function SilentRenewCallbackHandler({ userManager, handleSilentRenewCallback }: SilentRenewCallbackHandlerProps) {
+export function SilentRenewCallbackHandler({
+    userManager,
+    handleSilentRenewCallback,
+}: SilentRenewCallbackHandlerProps) {
     useEffect(() => {
         if (userManager !== null) {
             handleSilentRenewCallback();
@@ -22,5 +25,3 @@ function SilentRenewCallbackHandler({ userManager, handleSilentRenewCallback }: 
 
     return <h1>Technical token renew window, you should not see this</h1>;
 }
-
-export default SilentRenewCallbackHandler;

@@ -35,7 +35,7 @@ export interface LoginProps {
     disabled: boolean;
 }
 
-function Login({ onLoginClick, disabled }: Readonly<LoginProps>) {
+export function Login({ onLoginClick, disabled }: LoginProps) {
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -63,5 +63,3 @@ function Login({ onLoginClick, disabled }: Readonly<LoginProps>) {
         </Container>
     );
 }
-
-export default Login;

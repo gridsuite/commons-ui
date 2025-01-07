@@ -6,16 +6,18 @@
  */
 import {
     Article as ArticleIcon,
+    Calculate as CalculateIcon,
     NoteAlt as NoteAltIcon,
     OfflineBolt as OfflineBoltIcon,
     Photo as PhotoIcon,
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
+    TableView as TableViewIcon,
 } from '@mui/icons-material';
+import type { MuiStyle } from '../styles';
 import { ElementType } from '../types/elementType';
-import { MuiStyle } from '../styles';
 
-function getFileIcon(type: ElementType, style: MuiStyle) {
+export function getFileIcon(type: ElementType, style: MuiStyle) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
@@ -34,6 +36,10 @@ function getFileIcon(type: ElementType, style: MuiStyle) {
         case ElementType.SENSITIVITY_PARAMETERS:
         case ElementType.SHORT_CIRCUIT_PARAMETERS:
             return <SettingsIcon sx={style} />;
+        case ElementType.SPREADSHEET_CONFIG:
+            return <CalculateIcon sx={style} />;
+        case ElementType.SPREADSHEET_CONFIG_COLLECTION:
+            return <TableViewIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return undefined;
@@ -42,5 +48,3 @@ function getFileIcon(type: ElementType, style: MuiStyle) {
     }
     return undefined;
 }
-
-export default getFileIcon;

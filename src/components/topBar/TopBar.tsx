@@ -38,14 +38,24 @@ import {
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
     Person as PersonIcon,
+    ManageAccounts,
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
 import { User } from 'oidc-client';
-import GridLogo, { GridLogoProps } from './GridLogo';
-import AboutDialog, { AboutDialogProps } from './AboutDialog';
+import { GridLogo, GridLogoProps } from './GridLogo';
+import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
-import { CommonMetadata } from '../../services';
+import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
+import UserInformationDialog from './UserInformationDialog';
+import { Metadata } from '../../utils';
+import {
+    DARK_THEME,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
+} from '../../utils/constants/browserConstants';
 import { MuiStyles } from '../../utils/styles';
 
 const styles = {
@@ -144,11 +154,6 @@ const CustomListItemIcon = styled(ListItemIcon)({
     borderRadius: '25px',
 });
 
-export const DARK_THEME = 'Dark';
-export const LIGHT_THEME = 'Light';
-export const LANG_SYSTEM = 'sys';
-export const LANG_ENGLISH = 'en';
-export const LANG_FRENCH = 'fr';
 const EN = 'EN';
 const FR = 'FR';
 
@@ -164,7 +169,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         user?: User;
         onAboutClick?: () => void;
         logoAboutDialog?: ReactNode;
-        appsAndUrls: CommonMetadata[];
+        appsAndUrls: Metadata[];
         onThemeClick?: (theme: GsTheme) => void;
         theme?: GsTheme;
         onEquipmentLabellingClick?: (toggle: boolean) => void;
@@ -173,7 +178,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
     };
 
-function TopBar({
+export function TopBar({
     appName,
     appColor,
     appLogo,
@@ -198,6 +203,11 @@ function TopBar({
 }: PropsWithChildren<TopBarProps>) {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
+    const {
+        value: userInformationDialogOpen,
+        setFalse: closeUserInformationDialog,
+        setTrue: openUserInformationDialog,
+    } = useStateBoolean(false);
 
     const handleToggleSettingsMenu = (event: MouseEvent) => {
         setAnchorElSettingsMenu(event.currentTarget);
@@ -257,6 +267,19 @@ function TopBar({
         } else {
             setAboutDialogOpen(true);
         }
+    };
+
+    const isHiddenUserInformation = (): boolean => {
+        if (appsAndUrls) {
+            const app = appsAndUrls.find((item) => item.name === appName);
+            return app?.hiddenUserInformation ?? false;
+        }
+        return false;
+    };
+
+    const onUserInformationDialogClicked = () => {
+        setAnchorElSettingsMenu(null);
+        openUserInformationDialog();
     };
 
     const logoClickable = useMemo(
@@ -518,6 +541,27 @@ function TopBar({
                                             </StyledMenuItem>
                                         )}
 
+                                        {/* User information */}
+                                        {!isHiddenUserInformation() && (
+                                            <StyledMenuItem
+                                                sx={styles.borderBottom}
+                                                style={{ opacity: '1' }}
+                                                onClick={onUserInformationDialogClicked}
+                                            >
+                                                <CustomListItemIcon>
+                                                    <ManageAccounts fontSize="small" />
+                                                </CustomListItemIcon>
+                                                <ListItemText>
+                                                    <Typography sx={styles.sizeLabel}>
+                                                        <FormattedMessage
+                                                            id="top-bar/userInformation"
+                                                            defaultMessage="User information"
+                                                        />
+                                                    </Typography>
+                                                </ListItemText>
+                                            </StyledMenuItem>
+                                        )}
+
                                         {/* About */}
                                         {/* If the callback onAboutClick is undefined, we open default about dialog */}
                                         <StyledMenuItem
@@ -552,8 +596,17 @@ function TopBar({
                         </Popper>
                     </Box>
                 )}
+
+                {userInformationDialogOpen && (
+                    <UserInformationDialog
+                        openDialog={userInformationDialogOpen}
+                        user={user}
+                        onClose={closeUserInformationDialog}
+                    />
+                )}
+
                 <AboutDialog
-                    open={isAboutDialogOpen}
+                    open={isAboutDialogOpen && !!user}
                     onClose={() => setAboutDialogOpen(false)}
                     appName={appName}
                     appVersion={appVersion}
@@ -566,5 +619,3 @@ function TopBar({
         </AppBar>
     );
 }
-
-export default TopBar;

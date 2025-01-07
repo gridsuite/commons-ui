@@ -9,19 +9,28 @@ import { ReactElement } from 'react';
 import { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
 import { MuiStyle } from '../../utils/styles';
 
-export interface CheckBoxListItemSxProps {
+export type CheckBoxListItemSx = {
     checkBoxIcon?: MuiStyle;
     label?: MuiStyle;
     checkboxListItem?: MuiStyle;
     checkboxButton?: MuiStyle;
     checkbox?: MuiStyle;
+};
+
+export type CheckBoxListSx = {
     dragAndDropContainer?: MuiStyle;
     checkboxList?: MuiStyle;
-}
+};
+
+export type CheckBoxListItemSxMethod<T> = (item: T) => CheckBoxListItemSx;
+
+type CheckBoxListItemSxProps<T> = CheckBoxListSx & {
+    items: CheckBoxListItemSx | CheckBoxListItemSxMethod<T>;
+};
 
 export interface CheckBoxListItemProps<T> {
     item: T;
-    sx?: CheckBoxListItemSxProps;
+    sx?: CheckBoxListItemSx;
     label: string;
     onClick: () => void;
     secondaryAction?: (item: T, hover: string) => ReactElement | null;
@@ -29,7 +38,8 @@ export interface CheckBoxListItemProps<T> {
     disabled?: boolean;
     divider?: boolean;
     checked: boolean;
-    isCheckboxClickableOnly?: boolean;
+    onItemClick?: (item: T) => void;
+    isItemClickable?: (item: T) => boolean;
 }
 
 export interface DraggableCheckBoxListItemProps<T> extends CheckBoxListItemProps<T> {
@@ -43,16 +53,16 @@ export interface CheckBoxListItemsProps<T> {
     onSelectionChange?: (selectedItems: T[]) => void;
     getItemId: (item: T) => string;
     getItemLabel?: (item: T) => string;
-    secondaryAction?: (item: T) => ReactElement | null;
-    enableSecondaryActionOnHover?: boolean;
+    secondaryAction?: (item: T, hover: boolean) => React.ReactElement | null;
     isDisabled?: (item: T) => boolean;
     addSelectAllCheckbox?: boolean;
     selectAllCheckBoxLabel?: string;
-    sx?: CheckBoxListItemSxProps;
+    sx?: CheckBoxListItemSxProps<T>;
     isDndDragAndDropActive?: boolean;
     isDragDisable?: boolean;
     divider?: boolean;
-    isCheckboxClickableOnly?: boolean;
+    onItemClick?: (item: T) => void;
+    isItemClickable?: (item: T) => boolean;
 }
 
 export interface CheckboxListProps<T> extends CheckBoxListItemsProps<T> {
@@ -60,15 +70,24 @@ export interface CheckboxListProps<T> extends CheckBoxListItemsProps<T> {
     onDragEnd?: (dropResult: DropResult) => void;
 }
 
-export interface ClickableItemProps {
-    sx?: CheckBoxListItemSxProps;
+export interface ClickableCheckBoxItemProps {
+    sx?: CheckBoxListItemSx;
     label: string;
     onClick: () => void;
     disabled?: boolean;
     checked: boolean;
 }
 
-export interface DraggableClickableItemProps extends ClickableItemProps {
+export interface DraggableClickableCheckBoxItemProps extends ClickableCheckBoxItemProps {
     provided: DraggableProvided;
     isHighlighted: boolean;
 }
+
+interface ClickableItem {
+    onItemClick: () => void;
+    isItemClickable?: boolean;
+}
+
+export interface ClickableRowItemProps extends ClickableCheckBoxItemProps, ClickableItem {}
+
+export interface DraggableClickableRowItemProps extends DraggableClickableCheckBoxItemProps, ClickableItem {}

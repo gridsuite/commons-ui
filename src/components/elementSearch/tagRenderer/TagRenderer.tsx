@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import clsx from 'clsx';
-import OverflowableText from '../../overflowableText';
+import { OverflowableText } from '../../overflowableText';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
 import { mergeSx, MuiStyle } from '../../../utils/styles';
 
@@ -21,7 +21,7 @@ export interface TagRendererProps {
     };
 }
 
-function TagRenderer({ element, ...props }: Readonly<TagRendererProps>) {
+export function TagRenderer({ element, ...props }: TagRendererProps) {
     if (element.type !== EQUIPMENT_TYPE.SUBSTATION?.name && element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name) {
         return (
             <OverflowableText
@@ -32,5 +32,3 @@ function TagRenderer({ element, ...props }: Readonly<TagRendererProps>) {
         );
     }
 }
-
-export default TagRenderer;
