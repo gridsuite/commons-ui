@@ -15,7 +15,7 @@ import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 
 interface DescriptionProps {
-    showDescription: boolean;
+    showDescription?: boolean;
     description?: string;
 }
 export function DescriptionField({ showDescription, description }: Readonly<DescriptionProps>) {
