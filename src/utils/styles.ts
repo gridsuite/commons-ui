@@ -11,10 +11,12 @@ import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
  * Mui's {@link SxProps} preset with {@link Theme}.
  */
 export type MuiStyle = SxProps<Theme>;
+
 /**
  * Alias for `const styles = {}` definitions.
  */
 export type MuiStyles = Record<string, SxProps<Theme>>;
+
 /**
  * Same Mui's SxProps, but without the array and function version in possibilities.
  */

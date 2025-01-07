@@ -175,7 +175,7 @@ const getMuiTheme = (theme) => {
     return darkTheme;
 };
 
-const style = {
+const styles = {
     button: {
         float: 'left',
         margin: '5px',
@@ -196,6 +196,9 @@ const TreeViewFinderCustomStyles = (theme) => ({
     },
 });
 
+/**
+ * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ */
 const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
     toNestedGlobalSelectors(TreeViewFinderCustomStyles(theme), generateTreeViewFinderClass);
 const CustomTreeViewFinder = styled(TreeViewFinder)(TreeViewFinderCustomStylesEmotion);
@@ -215,7 +218,7 @@ function SnackErrorButton() {
         <Button
             variant="contained"
             color="error"
-            style={style.button}
+            style={styles.button}
             onClick={() => {
                 snackError({
                     messageTxt: 'Snack error message',
@@ -234,7 +237,7 @@ function SnackWarningButton() {
         <Button
             variant="contained"
             color="warning"
-            style={style.button}
+            style={styles.button}
             onClick={() => {
                 snackWarning({
                     messageTxt: 'Snack warning message',
@@ -253,7 +256,7 @@ function SnackInfoButton() {
         <Button
             variant="contained"
             color="info"
-            style={style.button}
+            style={styles.button}
             onClick={() => {
                 snackInfo({
                     messageTxt: 'Snack info message',
@@ -274,7 +277,7 @@ function PermanentSnackButton() {
             <Button
                 variant="contained"
                 color="info"
-                style={style.button}
+                style={styles.button}
                 onClick={() => {
                     const key = snackInfo({
                         messageTxt: 'Permanent Snack info message',
@@ -289,7 +292,7 @@ function PermanentSnackButton() {
             <Button
                 variant="contained"
                 color="info"
-                style={style.button}
+                style={styles.button}
                 onClick={() => {
                     closeSnackbar(snackKey);
                     setSnackKey(undefined);

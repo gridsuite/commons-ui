@@ -8,7 +8,7 @@
 /**
  * This class has been taken from 'Virtualized Table' example at https://material-ui.com/components/tables/
  */
-import { createRef, KeyboardEvent, MouseEvent, MutableRefObject, PureComponent, ReactElement, ReactNode } from 'react';
+import { createRef, KeyboardEvent, MouseEvent, MutableRefObject, PureComponent, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import clsx from 'clsx';
 import memoize from 'memoize-one';
@@ -17,7 +17,7 @@ import { GetApp as GetAppIcon } from '@mui/icons-material';
 import { AutoSizer, Column, ColumnProps, RowMouseEventHandlerParams, Table, TableCellProps } from 'react-virtualized';
 import CsvDownloader from 'react-csv-downloader';
 import { OverflowableText } from '../overflowableText/OverflowableText';
-import { makeComposeClasses, MuiStyle, MuiStyles, MuiStyleObj, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, MuiStyleObj, MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import {
     ChangeWays,
     collectibleHelper,
@@ -71,8 +71,8 @@ const defaultStyles = {
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
-        },
-    } as MuiStyle, // "flip" isn't recognized property
+        } as MuiStyleObj, // "flip" isn't recognized property
+    },
     [cssTableRow]: {
         cursor: 'pointer',
     },
@@ -98,7 +98,7 @@ const defaultStyles = {
 const defaultTooltipSx = {
     maxWidth: '1260px',
     fontSize: '0.9rem',
-};
+} as const satisfies MuiStyleObj;
 
 //TODO do we need to export this to clients (index.js) ?
 export const generateMuiVirtualizedTableClass = (className: string) => `MuiVirtualizedTable-${className}`;

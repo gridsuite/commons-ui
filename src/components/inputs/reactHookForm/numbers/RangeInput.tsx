@@ -15,7 +15,7 @@ import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { MuiStyles } from '../../../../utils/styles';
 
-const style = {
+const styles = {
     inputLegend: (theme) => ({
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
         backgroundColor: theme.palette.background.paper,
@@ -76,7 +76,7 @@ export function RangeInput({ name, label }: RangeInputProps) {
 
     return (
         <FormControl fullWidth>
-            <InputLabel sx={style.inputLegend} shrink>
+            <InputLabel sx={styles.inputLegend} shrink>
                 <FormattedMessage id={label} />
             </InputLabel>
             <Grid container spacing={0}>

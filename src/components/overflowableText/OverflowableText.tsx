@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Box, BoxProps, styled, Tooltip } from '@mui/material';
+import { Box, BoxProps, styled, Tooltip, TooltipProps } from '@mui/material';
 import { Style } from 'node:util';
 import { MuiStyle, MuiStyles } from '../../utils/styles';
 
@@ -26,7 +26,7 @@ const overflowStyle = {
 const multilineOverflowStyle = (numberOfLinesToDisplay?: number): MuiStyle => ({
     overflow: 'hidden',
     display: '-webkit-box',
-    WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
+    WebkitLineClamp: numberOfLinesToDisplay, // number of lines to show
     lineClamp: numberOfLinesToDisplay,
     WebkitBoxOrient: 'vertical',
     wordWrap: 'break-word', // prevent bug when writing a very long word
@@ -78,30 +78,32 @@ export const OverflowableText = styled(
             element.current?.clientHeight,
         ]);
 
-        const defaultTooltipSx = !tooltipStyle ? overflowStyle.tooltip : false;
         // the previous tooltipStyle classname API was replacing default, not
         // merging with the defaults, so keep the same behavior with the new tooltipSx API
-        const finalTooltipSx = tooltipSx || defaultTooltipSx;
-        const tooltipStyleProps = {
-            ...(tooltipStyle && { classes: { tooltip: tooltipStyle } }),
-            ...(finalTooltipSx && {
-                slotProps: { tooltip: { sx: finalTooltipSx } },
-            }),
-        };
+        const finalTooltipSx = tooltipSx ?? (!tooltipStyle ? overflowStyle.tooltip : undefined);
 
         return (
             <Tooltip
                 title={text || ''}
                 disableHoverListener={!overflowed}
-                {
-                    ...tooltipStyleProps /* legacy classes or newer slotProps API */
-                }
+                /* legacy classes or newer slotProps API */
+                classes={useMemo<TooltipProps['classes']>(
+                    () => tooltipStyle && { tooltip: tooltipStyle },
+                    [tooltipStyle]
+                )}
+                slotProps={useMemo<TooltipProps['slotProps']>(
+                    () => finalTooltipSx && { tooltip: { sx: finalTooltipSx } },
+                    [finalTooltipSx]
+                )}
             >
                 <Box
                     {...props}
                     ref={element}
                     className={className}
-                    sx={isMultiLine ? multilineOverflowStyle(maxLineCount) : overflowStyle.overflow}
+                    sx={useMemo(
+                        () => (isMultiLine ? multilineOverflowStyle(maxLineCount) : overflowStyle.overflow),
+                        [isMultiLine, maxLineCount]
+                    )}
                 >
                     {children || text}
                 </Box>

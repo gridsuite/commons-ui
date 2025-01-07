@@ -75,7 +75,7 @@ export const unscrollableDialogStyles = {
         overflowY: 'auto',
         padding: 1,
     },
-};
+} as const satisfies MuiStyles;
 
 export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,
