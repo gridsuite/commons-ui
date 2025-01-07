@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
@@ -68,30 +68,8 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
     };
 
     return (
-        <Grid
-            sx={{
-                marginTop: '10px',
-                display: 'flex',
-                alignItems: 'center',
-            }}
-        >
-            <Button
-                onClick={handleSelectFolder}
-                variant="contained"
-                sx={{
-                    padding: '10px 30px',
-                }}
-                color="primary"
-                component="label"
-            >
-                <FormattedMessage id={dialogOpeningButtonLabel} />
-            </Button>
-            <Typography
-                sx={{
-                    marginLeft: '10px',
-                    fontWeight: 'bold',
-                }}
-            >
+        <Box p={4} display="flex" justifyContent="space-between" flexDirection="column" height="100%">
+            <Typography>
                 {activeDirectoryName ||
                     (props?.noElementMessageLabel
                         ? intl.formatMessage({
@@ -115,6 +93,10 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
                     id: dialogMessageLabel,
                 })}
             />
-        </Grid>
+            <Box m={1} />
+            <Button onClick={handleSelectFolder} variant="outlined" type="submit" size="large">
+                <FormattedMessage id={dialogOpeningButtonLabel} />
+            </Button>
+        </Box>
     );
 }
