@@ -7,7 +7,7 @@
 import { Checkbox, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { ClickableRowItemProps } from './checkBoxList.type';
-import { MuiStyles } from '../../utils';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     unclickableItem: {

@@ -9,7 +9,7 @@ import { useRef } from 'react';
 import { IconButton, styled } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { SnackbarKey, SnackbarProvider as OrigSnackbarProvider, SnackbarProviderProps } from 'notistack';
-import { MuiStyles } from '../../utils';
+import { type MuiStyles } from '../../utils/styles';
 
 const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
     '&.notistack-MuiContent': {

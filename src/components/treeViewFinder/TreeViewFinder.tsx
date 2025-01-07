@@ -25,7 +25,7 @@ import {
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import { makeComposeClasses, MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 
 // As a bunch of individual variables to try to make it easier

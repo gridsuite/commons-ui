@@ -7,7 +7,7 @@
 import { ReactElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, BoxProps, styled, Tooltip, TooltipProps } from '@mui/material';
 import { Style } from 'node:util';
-import { MuiStyle, MuiStyles } from '../../utils/styles';
+import { type MuiStyle, type MuiStyles } from '../../utils/styles';
 
 const overflowStyle = {
     overflow: {

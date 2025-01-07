@@ -8,7 +8,7 @@
 import { Box, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { ReactNode } from 'react';
-import { mergeSx, MuiStyle, MuiStyles } from '../../utils/styles';
+import { mergeSx, type MuiStyle, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     logo: {

@@ -7,7 +7,7 @@
 import clsx from 'clsx';
 import { OverflowableText } from '../../overflowableText';
 import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
-import { mergeSx, MuiStyle } from '../../../utils/styles';
+import { mergeSx, type MuiStyle } from '../../../utils/styles';
 
 export interface TagRendererProps {
     element: EquipmentInfos;

@@ -14,7 +14,7 @@ import {
     Settings as SettingsIcon,
     TableView as TableViewIcon,
 } from '@mui/icons-material';
-import type { MuiStyle } from '../styles';
+import { type MuiStyle } from '../styles';
 import { ElementType } from '../types/elementType';
 
 export function getFileIcon(type: ElementType, style: MuiStyle) {

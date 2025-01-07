@@ -8,7 +8,7 @@ import { ValueEditorProps } from 'react-querybuilder';
 import { Grid, MenuItem, Select, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CompositeRule, OperatorOption } from '../../../filter/expert/expertFilter.type';
-import { MuiStyles } from '../../../../utils/styles';
+import { type MuiStyles } from '../../../../utils/styles';
 
 const styles = {
     gridItem: {

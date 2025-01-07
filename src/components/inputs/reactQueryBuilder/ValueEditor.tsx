@@ -23,7 +23,7 @@ import { PropertyValueEditor } from './PropertyValueEditor';
 import { FilterType } from '../../filter/constants/FilterConstants';
 import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
-import { MuiStyles } from '../../../utils/styles';
+import { type MuiStyles } from '../../../utils/styles';
 
 const styles = {
     noArrows: {

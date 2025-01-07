@@ -24,7 +24,7 @@ import {
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
-import { MuiStyles } from '../../utils/styles';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     paramList: {

@@ -7,7 +7,7 @@
 
 import { ReactElement } from 'react';
 import { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
-import { MuiStyle } from '../../utils/styles';
+import { type MuiStyle } from '../../utils/styles';
 
 export type CheckBoxListItemSx = {
     checkBoxIcon?: MuiStyle;

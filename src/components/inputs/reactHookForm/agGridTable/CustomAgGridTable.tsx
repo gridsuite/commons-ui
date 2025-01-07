@@ -15,7 +15,7 @@ import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import type { MuiStyle, MuiStyleObj } from '../../../../utils';
+import { type MuiStyle, type MuiStyleObj } from '../../../../utils/styles';
 
 export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
     {

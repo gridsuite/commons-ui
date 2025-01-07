@@ -8,7 +8,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import { MuiStyles } from '../../utils/styles';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     accordion: {

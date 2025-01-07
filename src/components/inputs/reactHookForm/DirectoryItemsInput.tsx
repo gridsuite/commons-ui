@@ -18,7 +18,7 @@ import { isFieldRequired } from './utils/functions';
 import { ErrorInput } from './errorManagement/ErrorInput';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { mergeSx, MuiStyles } from '../../../utils/styles';
+import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { OverflowableText } from '../../overflowableText';
 import { MidFormError } from './errorManagement/MidFormError';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';

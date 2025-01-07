@@ -7,7 +7,7 @@
 import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import { MuiStyles } from '../../utils/styles';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     paper: (theme) => ({

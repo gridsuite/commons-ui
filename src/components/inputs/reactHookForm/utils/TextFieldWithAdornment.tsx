@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField, TextFieldProps, TextFieldVariants } from '@mui/material';
 import { Input } from '../../../../utils/types/types';
-import { MuiStyleObj } from '../../../../utils';
+import { type MuiStyleObj } from '../../../../utils/styles';
 
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps

@@ -37,8 +37,8 @@ import {
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
-    Person as PersonIcon,
     ManageAccounts,
+    Person as PersonIcon,
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
@@ -56,7 +56,7 @@ import {
     LANG_SYSTEM,
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
-import { MuiStyles } from '../../utils/styles';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     grow: {

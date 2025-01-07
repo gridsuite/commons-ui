@@ -13,7 +13,7 @@ import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { MuiStyles } from '../../../../utils/styles';
+import { type MuiStyles } from '../../../../utils/styles';
 
 const styles = {
     inputLegend: (theme) => ({

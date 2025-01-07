@@ -14,7 +14,7 @@ import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
-import { MuiStyles } from '../../../utils/styles';
+import { type MuiStyles } from '../../../utils/styles';
 
 export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     open: boolean;

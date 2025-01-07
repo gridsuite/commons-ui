@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import fetchUserDetails from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
-import { MuiStyles } from '../../utils';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     DialogTitle: { fontSize: '1.5rem' },

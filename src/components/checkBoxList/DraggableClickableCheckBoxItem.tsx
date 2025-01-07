@@ -9,7 +9,7 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { Checkbox, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { DraggableClickableCheckBoxItemProps } from './checkBoxList.type';
-import { MuiStyles } from '../../utils/styles';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     dragIcon: (theme) => ({

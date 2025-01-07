@@ -9,7 +9,7 @@ import { Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { RuleValueEditor } from './RuleValueEditor';
 import { CompositeField, CompositeGroup, CompositeRule } from '../../../filter/expert/expertFilter.type';
-import { MuiStyles } from '../../../../utils/styles';
+import { type MuiStyles } from '../../../../utils/styles';
 
 const styles = {
     group: (theme) => ({

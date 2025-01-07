@@ -8,7 +8,7 @@
 import { Autocomplete, Box, TextField } from '@mui/material';
 import { useMemo } from 'react';
 import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
-import { MuiStyles } from '../../../utils/styles';
+import { type MuiStyles } from '../../../utils/styles';
 
 const styles = {
     favBox: (theme) => ({

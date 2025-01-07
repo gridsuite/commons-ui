@@ -12,7 +12,7 @@ import {
     FilterAltOutlined as FilterAltOutlinedIcon,
 } from '@mui/icons-material';
 import { Box, BoxProps, styled } from '@mui/material';
-import { mergeSx, MuiStyles } from '../../utils/styles';
+import { mergeSx, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     label: {

@@ -13,7 +13,7 @@ import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '..
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
 import { ElementAttributes } from '../../utils';
-import { MuiStyles } from '../../utils/styles';
+import { type MuiStyles } from '../../utils/styles';
 
 const styles = {
     icon: (theme) => ({
