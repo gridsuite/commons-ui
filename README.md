@@ -34,10 +34,13 @@ Then in the my-app project :
 - `npm install`
 - `npm start`
 
-*Warning* : with Create React App, we realised the library was not updating correctly if you try to install the library multiple times.
-To fix this, run this command from the app **after** running "npm install"
-- rm -Rf node_modules/.cache
- 
+> [!WARNING]
+> with Create React App, we realised the library was not updating correctly if you try to install the library multiple times.  
+> To fix this, run this command from the app **after** running "npm install"
+> ```shell
+> rm -Rf node_modules/.cache
+> ```
+
 
 ### For integrators
 
@@ -49,6 +52,7 @@ you need to follow the steps below:
   - Enter your NPM access token (it must be an **automation** access token to bypass 2FA, see the [access token documentation](https://docs.npmjs.com/creating-and-viewing-access-tokens) for details)
   - Click 'run workflow'
 
+
 ### License Headers and dependencies checking
 
 To check dependencies license compatibility with this project one locally, please run the following command :
@@ -56,6 +60,6 @@ To check dependencies license compatibility with this project one locally, pleas
 npm run licenses-check
 ```
 
-Notes:  
-Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
-If you need to update this list, please inform organization's owners.
+> [!NOTE]  
+> Check [license-checker-config.json](license-checker-config.json) for license whitelist and exclusion.
+> If you need to update this list, please inform organization's owners.
