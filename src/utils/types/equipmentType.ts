@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Theme } from '@mui/material';
-import { LIGHT_THEME } from '../constants/browserConstants';
 import { MuiStyles } from '../styles';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
@@ -22,16 +20,12 @@ export const equipmentStyles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    equipmentTag: (theme: string | Theme) => ({
+    equipmentTag: (theme) => ({
         borderRadius: '10px',
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
-        color:
-            // TODO remove first condition when gridstudy is updated
-            theme === LIGHT_THEME || (typeof theme !== 'string' && theme?.palette?.mode === 'light')
-                ? 'inherit'
-                : 'black',
+        color: theme.palette.mode === 'light' ? 'inherit' : 'black',
     }),
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,
