@@ -10,8 +10,8 @@ import { ItemSelectionForCopy } from '../filter.type';
 export const DISTRIBUTION_KEY = 'distributionKey';
 
 export const FilterType = {
-    EXPLICIT_NAMING: { id: 'IDENTIFIER_LIST', label: 'filter.explicitNaming' },
     EXPERT: { id: 'EXPERT', label: 'filter.expert' },
+    EXPLICIT_NAMING: { id: 'IDENTIFIER_LIST', label: 'filter.explicitNaming' },
 };
 
 export const NO_ITEM_SELECTION_FOR_COPY: ItemSelectionForCopy = {
