@@ -71,7 +71,7 @@ const defaultStyles = {
         // https://github.com/bvaughn/react-virtualized/issues/454
         '& .ReactVirtualized__Table__headerRow': {
             flip: false,
-        } as MuiStyleObj, // "flip" isn't recognized property
+        } as MuiStyleObj, // "flip" property isn't recognized
     },
     [cssTableRow]: {
         cursor: 'pointer',

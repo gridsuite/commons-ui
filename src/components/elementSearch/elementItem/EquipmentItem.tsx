@@ -41,7 +41,7 @@ export function EquipmentItem({
     element,
     showsJustText = false,
     ...props
-}: Readonly<EquipmentItemProps>) {
+}: EquipmentItemProps) {
     const matches = match(element.label, inputValue, {
         insideWords: true,
         findAllOccurrences: true,

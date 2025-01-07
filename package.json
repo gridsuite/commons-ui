@@ -67,7 +67,6 @@
         "@mui/icons-material": "^5.15.14",
         "@mui/lab": "5.0.0-alpha.169",
         "@mui/material": "^5.15.14",
-        "@mui/system": "^5.15.15",
         "@mui/x-tree-view": "^6.17.0",
         "ag-grid-community": "^31.0.0",
         "ag-grid-react": "^31.2.0",

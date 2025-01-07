@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SxProps, Theme } from '@mui/material';
-import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
+import type { SystemStyleObject } from '@mui/system';
 
 /**
  * Mui's {@link SxProps} preset with {@link Theme}.

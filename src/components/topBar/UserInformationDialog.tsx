@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { User } from 'oidc-client';
 import { useEffect, useState } from 'react';

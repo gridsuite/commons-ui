@@ -112,8 +112,7 @@ export function CustomAgGridTable({
     stopEditingWhenCellsLoseFocus,
     ...props
 }: CustomAgGridTableProps) {
-    // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
-    const theme: any = useTheme();
+    const theme = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowAdded, setNewRowAdded] = useState(false);

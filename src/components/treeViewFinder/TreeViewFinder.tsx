@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactElement, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {
     Button,
@@ -204,7 +204,7 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
         });
     };
 
-    const handleNodeToggle = (_e: SyntheticEvent, nodeIds: string[]) => {
+    const handleNodeToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
         nodeIds.every((nodeId) => {
             if (!expanded?.includes(nodeId)) {
@@ -260,7 +260,7 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
-    const handleNodeSelect = (_e: SyntheticEvent, values: string | string[]) => {
+    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[]) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
             setSelected(values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId])));

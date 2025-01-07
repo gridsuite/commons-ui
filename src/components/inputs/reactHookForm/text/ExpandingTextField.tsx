@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState } from 'react';
-import { TextFieldProps, Typography } from '@mui/material';
+import { useState } from 'react';
+import { type TextFieldProps, Typography } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { TextInput, TextInputProps } from './TextInput';
@@ -37,12 +37,13 @@ export function ExpandingTextField({
         name,
         control,
     });
-    const handleFocus = useCallback(() => {
+    const handleFocus = () => {
         setIsFocused(true);
-    }, []);
-    const handleBlur = useCallback(() => {
+    };
+
+    const handleBlur = () => {
         setIsFocused(false);
-    }, []);
+    };
     const isOverTheLimit = descriptionWatch?.length > maxCharactersNumber;
     const descriptionLength = descriptionWatch?.length ?? 0;
     const descriptionCounter = `${descriptionLength}/${maxCharactersNumber}`;

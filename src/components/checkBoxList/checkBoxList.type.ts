@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactElement } from 'react';
+import React from 'react';
 import { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
 import { type MuiStyle } from '../../utils/styles';
 
@@ -33,7 +33,7 @@ export interface CheckBoxListItemProps<T> {
     sx?: CheckBoxListItemSx;
     label: string;
     onClick: () => void;
-    secondaryAction?: (item: T, hover: string) => ReactElement | null;
+    secondaryAction?: (item: T, hover: string) => React.ReactElement | null;
     getItemId: (item: T) => string;
     disabled?: boolean;
     divider?: boolean;

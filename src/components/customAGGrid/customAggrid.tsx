@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { forwardRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
@@ -34,7 +34,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     }
 };
 
-export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
+export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
     const { shouldHidePinnedHeaderRightBorder = false, showOverlay = false, ...agGridReactProps } = props;
     const theme = useTheme();
     const intl = useIntl();

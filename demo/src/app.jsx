@@ -44,8 +44,6 @@ import {
     testDataTree,
 } from '../data/TreeViewFinder';
 
-import LOGS_JSON from '../data/ReportViewer';
-
 import searchEquipments from '../data/EquipmentSearchBar';
 
 import TableTab from './TableTab';
@@ -55,60 +53,60 @@ import InputsTab from './InputsTab';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 import {
-    MultipleSelectionDialog,
-    OverflowableText,
-    SnackbarProvider,
-    TopBar,
-    TreeViewFinder,
-    CardErrorBoundary,
-    EquipmentItem,
     AuthenticationRouter,
-    reportViewerEn,
-    loginEn,
-    topBarEn,
-    tableEn,
-    treeviewFinderEn,
-    elementSearchEn,
-    equipmentSearchEn,
-    filterEn,
-    filterExpertEn,
-    descriptionEn,
-    equipmentsEn,
-    csvEn,
+    CardErrorBoundary,
     cardErrorBoundaryEn,
-    flatParametersEn,
-    multipleSelectionDialogEn,
-    inputsEn,
-    inputsFr,
-    multipleSelectionDialogFr,
-    flatParametersFr,
     cardErrorBoundaryFr,
-    filterExpertFr,
-    csvFr,
-    equipmentsFr,
-    descriptionFr,
-    filterFr,
-    equipmentSearchFr,
-    elementSearchFr,
-    treeviewFinderFr,
-    tableFr,
-    topBarFr,
-    loginFr,
-    reportViewerFr,
-    LIGHT_THEME,
-    LANG_ENGLISH,
-    LANG_SYSTEM,
-    LANG_FRENCH,
-    ElementType,
-    getFileIcon,
-    initializeAuthenticationDev,
-    toNestedGlobalSelectors,
-    generateTreeViewFinderClass,
-    useSnackMessage,
     commonButtonEn,
     commonButtonFr,
+    csvEn,
+    csvFr,
+    descriptionEn,
+    descriptionFr,
+    elementSearchEn,
+    elementSearchFr,
+    ElementType,
+    EquipmentItem,
+    equipmentSearchEn,
+    equipmentSearchFr,
+    equipmentsEn,
+    equipmentsFr,
+    filterEn,
+    filterExpertEn,
+    filterExpertFr,
+    filterFr,
+    flatParametersEn,
+    flatParametersFr,
+    generateTreeViewFinderClass,
+    getFileIcon,
+    initializeAuthenticationDev,
+    inputsEn,
+    inputsFr,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
+    loginEn,
+    loginFr,
+    MultipleSelectionDialog,
+    multipleSelectionDialogEn,
+    multipleSelectionDialogFr,
     networkModificationsEn,
     networkModificationsFr,
+    OverflowableText,
+    reportViewerEn,
+    reportViewerFr,
+    SnackbarProvider,
+    tableEn,
+    tableFr,
+    toNestedGlobalSelectors,
+    TopBar,
+    topBarEn,
+    topBarFr,
+    TreeViewFinder,
+    treeviewFinderEn,
+    treeviewFinderFr,
+    useSnackMessage,
 } from '../../src';
 
 const messages = {
@@ -183,7 +181,7 @@ const styles = {
 };
 
 /**
- * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ * @param {import('@mui/material').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
     icon: {
@@ -197,7 +195,7 @@ const TreeViewFinderCustomStyles = (theme) => ({
 });
 
 /**
- * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ * @param {import('@mui/material').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
     toNestedGlobalSelectors(TreeViewFinderCustomStyles(theme), generateTreeViewFinderClass);
