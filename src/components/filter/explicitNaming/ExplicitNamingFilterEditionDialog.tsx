@@ -31,9 +31,6 @@ const formSchema = yup
     .required();
 
 type FormSchemaType = yup.InferType<typeof formSchema>;
-export interface ExplicitNamingFilterEditionDialogProps extends FilterProps {
-    getFilterById: (id: string) => Promise<any>;
-}
 
 export function ExplicitNamingFilterEditionDialog({
     id,
@@ -50,7 +47,7 @@ export function ExplicitNamingFilterEditionDialog({
     language,
     description,
     elementUuid,
-}: Readonly<ExplicitNamingFilterEditionDialogProps>) {
+}: Readonly<FilterProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

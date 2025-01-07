@@ -30,7 +30,7 @@ export function DescriptionField({ showDescription, description }: Readonly<Desc
 
     const handleCloseDescription = () => {
         setIsDescriptionFieldVisible(false);
-        setValue(FieldConstants.DESCRIPTION, '');
+        setValue(FieldConstants.DESCRIPTION, '', { shouldDirty: true });
     };
 
     return (

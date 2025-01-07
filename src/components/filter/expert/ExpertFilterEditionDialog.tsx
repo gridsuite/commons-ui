@@ -28,10 +28,6 @@ const formSchema = yup
     })
     .required();
 
-export interface ExpertFilterEditionDialogProps extends FilterProps {
-    getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-}
-
 export function ExpertFilterEditionDialog({
     id,
     name,
@@ -47,7 +43,7 @@ export function ExpertFilterEditionDialog({
     language,
     description,
     elementUuid,
-}: Readonly<ExpertFilterEditionDialogProps>) {
+}: Readonly<FilterProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
