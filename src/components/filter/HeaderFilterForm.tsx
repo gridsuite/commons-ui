@@ -32,8 +32,7 @@ export function HeaderFilterForm({
     elementExists,
     handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
-    // TODO : remove this code after we remove Criteria Filter
-    const filterTypes = Object.values(FilterType).filter((value) => value.id !== 'CRITERIA');
+    const filterTypes = Object.values(FilterType);
 
     return (
         <Grid container spacing={2}>
