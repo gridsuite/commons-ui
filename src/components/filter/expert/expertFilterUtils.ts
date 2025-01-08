@@ -30,7 +30,7 @@ import {
     RuleTypeExport,
 } from './expertFilter.type';
 import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
-import { convertInputValues, convertOutputValues, isBlankOrEmpty } from '../../../utils/conversionUtils';
+import { convertInputValue, convertOutputValue, isBlankOrEmpty } from '../../../utils/conversionUtils';
 import { FieldType } from '../../../utils';
 
 interface TreeNode {
@@ -225,11 +225,11 @@ export function exportExpertRules(query: RuleGroupType): RuleGroupTypeExport {
                 rule.operator !== OPERATOR_OPTIONS.EXISTS.name &&
                 rule.operator !== OPERATOR_OPTIONS.NOT_EXISTS.name &&
                 dataType !== DataType.PROPERTY
-                    ? convertOutputValues(rule.field as FieldType, rule.value)
+                    ? convertOutputValue(rule.field as FieldType, rule.value)
                     : undefined,
             values:
                 isValueAnArray && dataType !== DataType.PROPERTY
-                    ? convertOutputValues(rule.field as FieldType, rule.value)
+                    ? convertOutputValue(rule.field as FieldType, rule.value)
                     : undefined,
             dataType,
             propertyName: dataType === DataType.PROPERTY ? rule.value.propertyName : undefined,
@@ -294,12 +294,12 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             if (rule.dataType === DataType.NUMBER) {
                 return rule.values
                     .map((value) => parseFloat(value as string))
-                    .map((numberValue) => convertInputValues(rule.field, numberValue))
+                    .map((numberValue) => convertInputValue(rule.field, numberValue))
                     .sort((a, b) => a - b);
             }
             return rule.values.sort();
         }
-        convertInputValues(rule.field, parseFloat(rule.value as string));
+        convertInputValue(rule.field, parseFloat(rule.value as string));
         return rule.value;
     }
 

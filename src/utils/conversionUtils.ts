@@ -53,9 +53,7 @@ const microToUnit = [
 
 const kiloToUnit = [FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT];
 
-const unitToMicro = [FieldType.MAX_SUSCEPTANCE];
-
-export function convertInputValues(field: FieldType, value: any) {
+export function convertInputValue(field: FieldType, value: any) {
     if (microToUnit.includes(field)) {
         if (!Array.isArray(value)) {
             return value ? unitToMicroUnit(value) : value;
@@ -68,16 +66,10 @@ export function convertInputValues(field: FieldType, value: any) {
         }
         return value.map((a: number) => unitToKiloUnit(a));
     }
-    if (unitToMicro.includes(field)) {
-        if (!Array.isArray(value)) {
-            return value ? microUnitToUnit(value) : value;
-        }
-        return value.map((a: number) => microUnitToUnit(a));
-    }
     return value;
 }
 
-export function convertOutputValues(field: FieldType, value: any) {
+export function convertOutputValue(field: FieldType, value: any) {
     if (microToUnit.includes(field)) {
         if (!Array.isArray(value)) {
             return value ? microUnitToUnit(value) : value;
@@ -89,12 +81,6 @@ export function convertOutputValues(field: FieldType, value: any) {
             return value ? kiloUnitToUnit(value) : value;
         }
         return value.map((a: number) => kiloUnitToUnit(a));
-    }
-    if (unitToMicro.includes(field)) {
-        if (!Array.isArray(value)) {
-            return value ? unitToMicroUnit(value) : value;
-        }
-        return value.map((a: number) => unitToMicroUnit(a));
     }
     return value;
 }
