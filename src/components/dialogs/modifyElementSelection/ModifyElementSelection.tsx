@@ -6,10 +6,11 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
+import { FolderOutlined } from '@mui/icons-material';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
@@ -68,15 +69,28 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
     };
 
     return (
-        <Box p={4} display="flex" justifyContent="space-between" flexDirection="column" height="100%">
-            <Typography>
-                {activeDirectoryName ||
-                    (props?.noElementMessageLabel
-                        ? intl.formatMessage({
-                              id: noElementMessageLabel,
-                          })
-                        : '')}
-            </Typography>
+        <Grid
+            sx={{
+                marginTop: '10px',
+                alignItems: 'center',
+            }}
+        >
+            <Grid container>
+                <Typography m={1} component="span">
+                    <Box fontWeight="fontWeightBold" display="flex" justifyContent="center" alignItems="center">
+                        <FolderOutlined />
+                        {activeDirectoryName ||
+                            (props?.noElementMessageLabel
+                                ? intl.formatMessage({
+                                      id: noElementMessageLabel,
+                                  })
+                                : '')}
+                    </Box>
+                </Typography>
+                <Button onClick={handleSelectFolder} variant="contained" size="small">
+                    <FormattedMessage id={dialogOpeningButtonLabel} />
+                </Button>
+            </Grid>
             <DirectoryItemSelector
                 open={open}
                 onClose={handleClose}
@@ -93,10 +107,6 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
                     id: dialogMessageLabel,
                 })}
             />
-            <Box m={1} />
-            <Button onClick={handleSelectFolder} variant="outlined" type="submit" size="large">
-                <FormattedMessage id={dialogOpeningButtonLabel} />
-            </Button>
-        </Box>
+        </Grid>
     );
 }
