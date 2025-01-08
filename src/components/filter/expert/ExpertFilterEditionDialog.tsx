@@ -42,7 +42,6 @@ export function ExpertFilterEditionDialog({
     elementExists,
     language,
     description,
-    elementUuid,
 }: Readonly<FilterProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -69,6 +68,7 @@ export function ExpertFilterEditionDialog({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
+                        [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
                         [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]),
@@ -82,7 +82,7 @@ export function ExpertFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError, getFilterById, description]);
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
@@ -99,23 +99,14 @@ export function ExpertFilterEditionDialog({
                     snackError({
                         messageTxt: error,
                     });
-                },
-                elementUuid
+                }
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [
-            broadcastChannel,
-            id,
-            onClose,
-            itemSelectionForCopy.sourceItemUuid,
-            snackError,
-            setItemSelectionForCopy,
-            elementUuid,
-        ]
+        [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

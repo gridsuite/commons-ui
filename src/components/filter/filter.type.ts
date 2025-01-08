@@ -30,7 +30,6 @@ export interface FilterProps {
     itemSelectionForCopy: ItemSelectionForCopy;
     setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
     getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-    elementUuid: UUID;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;

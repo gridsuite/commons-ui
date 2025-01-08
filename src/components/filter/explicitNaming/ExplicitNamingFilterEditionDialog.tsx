@@ -46,7 +46,6 @@ export function ExplicitNamingFilterEditionDialog({
     elementExists,
     language,
     description,
-    elementUuid,
 }: Readonly<FilterProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -72,6 +71,7 @@ export function ExplicitNamingFilterEditionDialog({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
+                        [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPLICIT_NAMING.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
                         [FILTER_EQUIPMENTS_ATTRIBUTES]: response[FILTER_EQUIPMENTS_ATTRIBUTES].map((row: any) => ({
@@ -88,7 +88,7 @@ export function ExplicitNamingFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError, getFilterById, description]);
 
     const onSubmit = useCallback<SubmitHandler<FormSchemaType>>(
         (filterForm) => {
@@ -104,15 +104,14 @@ export function ExplicitNamingFilterEditionDialog({
                         messageTxt: error,
                     });
                 },
-                onClose,
-                elementUuid
+                onClose
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy, elementUuid]
+        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
