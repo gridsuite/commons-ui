@@ -35,6 +35,7 @@ export function HeaderFilterForm({
     handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
     const filterTypes = Object.values(FilterType);
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
