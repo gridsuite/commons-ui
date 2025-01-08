@@ -56,6 +56,7 @@ export function TextInput({
         field: { onChange, value, ref },
         fieldState: { error },
     } = useController({ name });
+
     const Field = adornment ? TextFieldWithAdornment : TextField;
     const finalAdornment = {
         adornmentPosition: adornment?.position ?? '',
