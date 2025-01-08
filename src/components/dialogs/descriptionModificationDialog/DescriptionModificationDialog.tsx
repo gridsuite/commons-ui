@@ -14,7 +14,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
-import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/UIconstants';
+import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/uiConstants';
 
 export interface DescriptionModificationDialogProps {
     elementUuid: string;

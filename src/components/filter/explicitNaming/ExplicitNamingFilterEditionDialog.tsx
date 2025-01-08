@@ -18,14 +18,15 @@ import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
 
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
-import { FilterForm, FilterSchema } from '../FilterForm';
+import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { FilterProps } from '../filter.type';
+import { FilterEditionProps } from '../filter.type';
+import { HeaderFilterSchema } from '../HeaderFilterForm';
 
 const formSchema = yup
     .object()
     .shape({
-        ...FilterSchema,
+        ...HeaderFilterSchema,
         ...explicitNamingFilterSchema,
     })
     .required();
@@ -46,7 +47,7 @@ export function ExplicitNamingFilterEditionDialog({
     elementExists,
     language,
     description,
-}: Readonly<FilterProps>) {
+}: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

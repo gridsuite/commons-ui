@@ -13,6 +13,8 @@ import { UniqueNameInput } from '../inputs/reactHookForm/text/UniqueNameInput';
 import { ElementExistsType, ElementType } from '../../utils/types/elementType';
 import { DescriptionField } from '../inputs/reactHookForm/text/DescriptionField';
 import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
+import yup from '../../utils/yupConfig';
+import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 
 export interface FilterFormProps {
     creation?: boolean;
@@ -24,6 +26,13 @@ export interface FilterFormProps {
     };
     handleFilterTypeChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
 }
+
+export const HeaderFilterSchema = {
+    [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
+    [FieldConstants.FILTER_TYPE]: yup.string().required(),
+    [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+};
 
 export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
@@ -48,7 +57,7 @@ export function HeaderFilterForm({
             </Grid>
             <>
                 <Grid item xs={12}>
-                    <DescriptionField showDescription />
+                    <DescriptionField />
                 </Grid>
                 {creation && !sourceFilterForExplicitNamingConversion && (
                     <Grid item>

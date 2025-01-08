@@ -14,16 +14,10 @@ import { useFormContext } from 'react-hook-form'; // Import useFormContext
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 
-interface DescriptionProps {
-    showDescription?: boolean;
-    description?: string;
-}
-export function DescriptionField({ showDescription }: Readonly<DescriptionProps>) {
+export function DescriptionField() {
     const { setValue, getValues } = useFormContext();
     const description = getValues(FieldConstants.DESCRIPTION);
-    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(
-        showDescription && description && description !== ''
-    );
+    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(!!description);
 
     const handleOpenDescription = () => {
         setIsDescriptionFieldVisible(true);

@@ -20,7 +20,7 @@ export type ItemSelectionForCopy = {
     specificTypeItem: string | null;
 };
 
-export interface FilterProps {
+export interface FilterEditionProps {
     id: string;
     name: string;
     titleId: string;

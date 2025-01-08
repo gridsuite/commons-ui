@@ -14,15 +14,6 @@ import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterF
 import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { unscrollableDialogStyles } from '../dialogs';
-import yup from '../../utils/yupConfig';
-import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/UIconstants';
-
-export const FilterSchema = {
-    [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-    [FieldConstants.FILTER_TYPE]: yup.string().required(),
-    [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-};
 
 export function FilterForm({
     sourceFilterForExplicitNamingConversion,

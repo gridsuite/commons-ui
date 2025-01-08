@@ -14,16 +14,17 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { FilterProps } from '../filter.type';
-import { FilterForm, FilterSchema } from '../FilterForm';
+import { FilterEditionProps } from '../filter.type';
+import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
+import { HeaderFilterSchema } from '../HeaderFilterForm';
 
 const formSchema = yup
     .object()
     .shape({
-        ...FilterSchema,
+        ...HeaderFilterSchema,
         ...expertFilterSchema,
     })
     .required();
@@ -42,7 +43,7 @@ export function ExpertFilterEditionDialog({
     elementExists,
     language,
     description,
-}: Readonly<FilterProps>) {
+}: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 

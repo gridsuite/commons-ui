@@ -23,7 +23,7 @@ import { FilterForm } from './FilterForm';
 import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { ElementExistsType } from '../../utils/types/elementType';
-import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/UIconstants';
+import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
