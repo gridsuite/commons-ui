@@ -92,7 +92,7 @@ export function ExpertFilterEditionDialog({
                 filterForm[EXPERT_FILTER_QUERY],
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
-                filterForm[FieldConstants.DESCRIPTION],
+                filterForm[FieldConstants.DESCRIPTION] ?? '',
                 false,
                 null,
                 onClose,
