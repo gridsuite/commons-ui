@@ -130,9 +130,7 @@ export function ExplicitNamingFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && (
-                <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} description={description} />
-            )}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
         </CustomMuiDialog>
     );
 }

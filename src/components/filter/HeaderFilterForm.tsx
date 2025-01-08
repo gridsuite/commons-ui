@@ -16,7 +16,6 @@ import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
 
 export interface FilterFormProps {
     creation?: boolean;
-    description?: string;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     sourceFilterForExplicitNamingConversion?: {
@@ -29,7 +28,6 @@ export interface FilterFormProps {
 export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
-    description,
     activeDirectory,
     elementExists,
     handleFilterTypeChange,
@@ -50,7 +48,7 @@ export function HeaderFilterForm({
             </Grid>
             <>
                 <Grid item xs={12}>
-                    <DescriptionField showDescription description={description} />
+                    <DescriptionField showDescription />
                 </Grid>
                 {creation && !sourceFilterForExplicitNamingConversion && (
                     <Grid item>

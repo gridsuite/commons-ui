@@ -35,7 +35,6 @@ export interface TextInputProps {
         TextFieldWithAdornmentProps | TextFieldProps,
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
-    defaultValue?: string;
 }
 
 export function TextInput({
@@ -51,7 +50,6 @@ export function TextInput({
     previousValue,
     clearable,
     formProps,
-    defaultValue,
 }: TextInputProps) {
     const { validationSchema, getValues, removeOptional } = useCustomFormContext();
     const {
@@ -115,7 +113,6 @@ export function TextInput({
             {...genHelperError(error?.message)}
             {...formProps}
             {...(adornment && { ...finalAdornment })}
-            defaultValue={defaultValue}
         />
     );
 }

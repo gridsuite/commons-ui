@@ -18,11 +18,12 @@ interface DescriptionProps {
     showDescription?: boolean;
     description?: string;
 }
-export function DescriptionField({ showDescription, description }: Readonly<DescriptionProps>) {
+export function DescriptionField({ showDescription }: Readonly<DescriptionProps>) {
+    const { setValue, getValues } = useFormContext();
+    const description = getValues(FieldConstants.DESCRIPTION);
     const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(
         showDescription && description && description !== ''
     );
-    const { setValue } = useFormContext();
 
     const handleOpenDescription = () => {
         setIsDescriptionFieldVisible(true);
@@ -47,7 +48,6 @@ export function DescriptionField({ showDescription, description }: Readonly<Desc
                         minRows={3}
                         rows={3}
                         sx={{ flexGrow: 1 }}
-                        defaultValue={description}
                     />
                     <Button
                         sx={{

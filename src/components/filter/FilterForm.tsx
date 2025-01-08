@@ -27,7 +27,6 @@ export const FilterSchema = {
 export function FilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
-    description,
     activeDirectory,
     elementExists,
 }: Readonly<FilterFormProps>) {
@@ -51,7 +50,6 @@ export function FilterForm({
             <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <HeaderFilterForm
                     creation={creation}
-                    description={description}
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
