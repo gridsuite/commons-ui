@@ -22,6 +22,7 @@ export enum ElementType {
     SHORT_CIRCUIT_PARAMETERS = 'SHORT_CIRCUIT_PARAMETERS',
     SPREADSHEET_CONFIG = 'SPREADSHEET_CONFIG',
     SPREADSHEET_CONFIG_COLLECTION = 'SPREADSHEET_CONFIG_COLLECTION',
+    ROOT_NETWORK = 'ROOT_NETWORK',
 }
 
 export type ElementExistsType = (directory: UUID, value: string, elementType: ElementType) => Promise<boolean>;
