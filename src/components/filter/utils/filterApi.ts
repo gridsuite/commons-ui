@@ -64,6 +64,7 @@ export const saveExplicitNamingFilter = (
                 filterEquipmentsAttributes: cleanedTableValues,
             },
             name,
+            description,
             token
         )
             .then(() => {
@@ -113,6 +114,7 @@ export const saveExpertFilter = (
                 rules: exportExpertRules(query),
             },
             name,
+            description,
             token
         )
             .then(() => {

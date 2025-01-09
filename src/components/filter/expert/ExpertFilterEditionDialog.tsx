@@ -6,46 +6,28 @@
  */
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UUID } from 'crypto';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import { ElementExistsType } from '../../../utils/types/elementType';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { ItemSelectionForCopy } from '../filter.type';
+import { FilterEditionProps } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
+import { HeaderFilterSchema } from '../HeaderFilterForm';
 
 const formSchema = yup
     .object()
     .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.FILTER_TYPE]: yup.string().required(),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+        ...HeaderFilterSchema,
         ...expertFilterSchema,
     })
     .required();
-
-export interface ExpertFilterEditionDialogProps {
-    id: string;
-    name: string;
-    titleId: string;
-    open: boolean;
-    onClose: () => void;
-    broadcastChannel: BroadcastChannel;
-    itemSelectionForCopy: ItemSelectionForCopy;
-    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
-    getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
-    activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
-}
 
 export function ExpertFilterEditionDialog({
     id,
@@ -60,7 +42,8 @@ export function ExpertFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: Readonly<ExpertFilterEditionDialogProps>) {
+    description,
+}: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -86,6 +69,7 @@ export function ExpertFilterEditionDialog({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
+                        [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
                         [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]),
@@ -99,7 +83,7 @@ export function ExpertFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError, getFilterById, description]);
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
@@ -108,7 +92,7 @@ export function ExpertFilterEditionDialog({
                 filterForm[EXPERT_FILTER_QUERY],
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
-                '', // The description can not be edited from this dialog
+                filterForm[FieldConstants.DESCRIPTION] ?? '',
                 false,
                 null,
                 onClose,

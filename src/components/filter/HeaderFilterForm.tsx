@@ -13,6 +13,8 @@ import { UniqueNameInput } from '../inputs/reactHookForm/text/UniqueNameInput';
 import { ElementExistsType, ElementType } from '../../utils/types/elementType';
 import { DescriptionField } from '../inputs/reactHookForm/text/DescriptionField';
 import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
+import yup from '../../utils/yupConfig';
+import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 
 export interface FilterFormProps {
     creation?: boolean;
@@ -24,6 +26,13 @@ export interface FilterFormProps {
     };
     handleFilterTypeChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
 }
+
+export const HeaderFilterSchema = {
+    [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
+    [FieldConstants.FILTER_TYPE]: yup.string().required(),
+    [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+};
 
 export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
@@ -46,22 +55,20 @@ export function HeaderFilterForm({
                     elementExists={elementExists}
                 />
             </Grid>
-            {creation && (
-                <>
-                    <Grid item xs={12}>
-                        <DescriptionField />
+            <>
+                <Grid item xs={12}>
+                    <DescriptionField />
+                </Grid>
+                {creation && !sourceFilterForExplicitNamingConversion && (
+                    <Grid item>
+                        <RadioInput
+                            name={FieldConstants.FILTER_TYPE}
+                            options={filterTypes}
+                            formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
+                        />
                     </Grid>
-                    {!sourceFilterForExplicitNamingConversion && (
-                        <Grid item>
-                            <RadioInput
-                                name={FieldConstants.FILTER_TYPE}
-                                options={filterTypes}
-                                formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
-                            />
-                        </Grid>
-                    )}
-                </>
-            )}
+                )}
+            </>
         </Grid>
     );
 }
