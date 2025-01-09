@@ -30,7 +30,7 @@ import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput
 import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 import { unscrollableDialogStyles } from '../../dialogs';
-import { FieldType } from '../../../utils';
+import { FieldType } from '../../../utils/types/fieldType';
 
 yup.setLocale({
     mixed: {

@@ -6,7 +6,7 @@
  */
 import { FullField } from 'react-querybuilder';
 import { UUID } from 'crypto';
-import { FieldType } from '../../../utils';
+import { FieldType } from '../../../utils/types/fieldType';
 
 export enum OperatorType {
     EQUALS = 'EQUALS',
