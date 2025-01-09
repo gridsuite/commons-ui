@@ -16,7 +16,7 @@ export function equalsArray(a: Array<any>, b: Array<any>) {
         return false;
     }
 
-    for (var i = 0, l = a.length; i < l; i++) {
+    for (let i = 0, l = a.length; i < l; i++) {
         if (a[i] instanceof Array && b[i] instanceof Array) {
             if (!equalsArray(a[i], b[i])) {
                 return false;

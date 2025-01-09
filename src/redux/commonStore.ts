@@ -7,8 +7,12 @@
 
 import { User } from 'oidc-client';
 
+export type CommonStoreState = {
+    user: User | null;
+};
+
 interface CommonStore {
-    getState: () => { user: User };
+    getState(): CommonStoreState;
 }
 
 let commonStore: CommonStore | undefined;
@@ -23,5 +27,5 @@ export function setCommonStore(store: CommonStore): void {
 }
 
 export function getUserToken() {
-    return commonStore?.getState().user.id_token;
+    return commonStore?.getState().user?.id_token;
 }

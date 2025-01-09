@@ -30,6 +30,7 @@ export default defineConfig((config) => ({
         libInjectCss(),
         dts({
             include: ['src'],
+            exclude: '**/*.test.{ts,tsx}',
         }),
     ],
     build: {
@@ -38,23 +39,16 @@ export default defineConfig((config) => ({
             formats: ['es'],
         },
         rollupOptions: {
-            external: (id: string) =>
-                !id.startsWith('.') && !path.isAbsolute(id),
+            external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
             // We do this to keep the same folder structure
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
-                    ignore: [
-                        'src/vite-env.d.ts',
-                        'src/**/*.test.{js,jsx,ts,tsx}',
-                    ],
+                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
                 }).map((file) => [
                     // This remove `src/` as well as the file extension from each
                     // file, so e.g. src/nested/foo.js becomes nested/foo
-                    path.relative(
-                        'src',
-                        file.slice(0, file.length - path.extname(file).length)
-                    ),
+                    path.relative('src', file.slice(0, file.length - path.extname(file).length)),
                     // This expands the relative paths to absolute paths, so e.g.
                     // src/nested/foo becomes /project/src/nested/foo.js
                     url.fileURLToPath(new URL(file, import.meta.url)),
@@ -84,19 +78,10 @@ function reactVirtualized(): PluginOption {
         configResolved: async () => {
             const require = createRequire(import.meta.url);
             const reactVirtualizedPath = require.resolve('react-virtualized');
-            const { pathname: reactVirtualizedFilePath } = new url.URL(
-                reactVirtualizedPath,
-                import.meta.url
-            );
+            const { pathname: reactVirtualizedFilePath } = new url.URL(reactVirtualizedPath, import.meta.url);
             const file = reactVirtualizedFilePath.replace(
                 path.join('dist', 'commonjs', 'index.js'),
-                path.join(
-                    'dist',
-                    'es',
-                    'WindowScroller',
-                    'utils',
-                    'onScroll.js'
-                )
+                path.join('dist', 'es', 'WindowScroller', 'utils', 'onScroll.js')
             );
             const code = await fs.readFile(file, 'utf-8');
             const modified = code.replace(WRONG_CODE, '');

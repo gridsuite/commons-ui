@@ -9,20 +9,22 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
-import AutocompleteInput from '../../src/components/inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
-import TextInput from '../../src/components/inputs/react-hook-form/text-input';
-import RadioInput from '../../src/components/inputs/react-hook-form/radio-input';
-import SliderInput from '../../src/components/inputs/react-hook-form/slider-input';
-import FloatInput from '../../src/components/inputs/react-hook-form/numbers/float-input';
-import IntegerInput from '../../src/components/inputs/react-hook-form/numbers/integer-input';
-import SelectInput from '../../src/components/inputs/react-hook-form/select-inputs/select-input';
-import CheckboxInput from '../../src/components/inputs/react-hook-form/booleans/checkbox-input';
-import SwitchInput from '../../src/components/inputs/react-hook-form/booleans/switch-input';
-import SubmitButton from '../../src/components/inputs/react-hook-form/utils/submit-button';
-import ExpandingTextField from '../../src/components/inputs/react-hook-form/ExpandingTextField';
-import CustomFormProvider from '../../src/components/inputs/react-hook-form/provider/custom-form-provider';
-import SelectClearable from '../../src/components/inputs/select-clearable';
 import { useState } from 'react';
+import {
+    AutocompleteInput,
+    TextInput,
+    RadioInput,
+    SliderInput,
+    FloatInput,
+    IntegerInput,
+    SelectInput,
+    CheckboxInput,
+    SwitchInput,
+    SubmitButton,
+    ExpandingTextField,
+    CustomFormProvider,
+    SelectClearable,
+} from '../../src';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
@@ -68,12 +70,7 @@ const options = [
     { id: 'ibra', label: 'inputs/ibra' },
 ];
 
-const basicOptions = [
-    'Kylian Mbappe',
-    'Neymar',
-    'Lionel Messi',
-    'Zlatan Ibrahimovic',
-];
+const basicOptions = ['Kylian Mbappe', 'Neymar', 'Lionel Messi', 'Zlatan Ibrahimovic'];
 
 const gridSize = 4;
 
@@ -84,7 +81,7 @@ const areIdsEqual = (val1, val2) => {
 const logWhenValuesChange = false;
 const logWhenValidate = true;
 
-export function InputsTab() {
+function InputsTab() {
     const formMethods = useForm({
         defaultValues: emptyFormData,
         resolver: yupResolver(formSchema),
@@ -124,73 +121,50 @@ export function InputsTab() {
                         <AutocompleteInput
                             name={AUTOCOMPLETE_INPUT}
                             options={basicOptions}
-                            label={'inputs/autocomplete'}
+                            label="inputs/autocomplete"
                             isOptionEqualToValue={areIdsEqual}
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <TextInput name={TEXT_INPUT} label={'inputs/text'} />
+                        <TextInput name={TEXT_INPUT} label="inputs/text" />
                     </Grid>
                     <Grid item xs={gridSize}>
                         <ExpandingTextField
                             name={DESCRIPTION_INPUT}
-                            label={'inputs/description'}
+                            label="inputs/description"
                             maxCharactersNumber={300}
                             minRows={2}
                             rows={4}
-                        ></ExpandingTextField>
-                    </Grid>
-                    <Grid item xs={gridSize}>
-                        <SliderInput
-                            name={SLIDER_INPUT}
-                            label={'inputs/slider'}
-                            min={0.0}
-                            max={100.0}
-                            step={0.1}
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SelectInput
-                            name={SELECT_INPUT}
-                            label={'inputs/select'}
-                            options={options}
-                        />
+                        <SliderInput name={SLIDER_INPUT} label="inputs/slider" min={0.0} max={100.0} step={0.1} />
+                    </Grid>
+                    <Grid item xs={gridSize}>
+                        <SelectInput name={SELECT_INPUT} label="inputs/select" options={options} />
                     </Grid>
                     <Grid item xs={gridSize}>
                         <SelectClearable
                             value={selectValue}
                             onChange={setSelectValue}
-                            label={'inputs/select'}
+                            label="inputs/select"
                             options={options}
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <RadioInput
-                            name={RADIO_INPUT}
-                            label={'inputs/radio'}
-                            options={options}
-                        />
+                        <RadioInput name={RADIO_INPUT} label="inputs/radio" options={options} />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <IntegerInput
-                            name={INTEGER_INPUT}
-                            label={'inputs/integer'}
-                        />
+                        <IntegerInput name={INTEGER_INPUT} label="inputs/integer" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <FloatInput name={FLOAT_INPUT} label={'inputs/float'} />
+                        <FloatInput name={FLOAT_INPUT} label="inputs/float" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <CheckboxInput
-                            name={CHECKBOX_INPUT}
-                            label={'inputs/checkbox'}
-                        />
+                        <CheckboxInput name={CHECKBOX_INPUT} label="inputs/checkbox" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SwitchInput
-                            name={SWITCH_INPUT}
-                            label={'inputs/switch'}
-                        />
+                        <SwitchInput name={SWITCH_INPUT} label="inputs/switch" />
                     </Grid>
                 </Grid>
                 <Box
@@ -206,3 +180,5 @@ export function InputsTab() {
         </CustomFormProvider>
     );
 }
+
+export default InputsTab;

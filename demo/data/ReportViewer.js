@@ -6,7 +6,7 @@
  */
 /* eslint-disable no-template-curly-in-string */
 
-export const LOGS_JSON = {
+const LOGS_JSON = {
     taskKey: 'Test',
     defaultName: 'Test',
     taskValues: {},
@@ -40,8 +40,7 @@ export const LOGS_JSON = {
                         },
                         {
                             taskKey: 'postLoading',
-                            defaultName:
-                                'Post loading process on network CC${numNetworkCc} SC${numNetworkSc}',
+                            defaultName: 'Post loading process on network CC${numNetworkCc} SC${numNetworkSc}',
                             taskValues: {
                                 numNetworkCc: {
                                     value: 0,
@@ -154,8 +153,7 @@ export const LOGS_JSON = {
                                 },
                                 {
                                     reportKey: 'NoMismatchDistribution',
-                                    defaultMessage:
-                                        'Iteration ${iteration}: already balanced',
+                                    defaultMessage: 'Iteration ${iteration}: already balanced',
                                     values: {
                                         reportSeverity: {
                                             value: 'FATAL',
@@ -194,8 +192,7 @@ export const LOGS_JSON = {
                             reports: [
                                 {
                                     reportKey: 'NoMismatchDistribution',
-                                    defaultMessage:
-                                        'Iteration ${iteration}: already balanced',
+                                    defaultMessage: 'Iteration ${iteration}: already balanced',
                                     values: {
                                         reportSeverity: {
                                             value: 'WARN',
@@ -230,3 +227,5 @@ export const LOGS_JSON = {
     ],
     reports: [],
 };
+
+export default LOGS_JSON;
