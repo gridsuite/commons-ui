@@ -23,6 +23,7 @@ import { FilterForm } from './FilterForm';
 import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { ElementExistsType } from '../../utils/types/elementType';
+import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -38,7 +39,7 @@ const formSchema = yup
     .object()
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.DESCRIPTION]: yup.string().max(500, 'descriptionLimitError'),
+        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
         [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
         ...explicitNamingFilterSchema,
