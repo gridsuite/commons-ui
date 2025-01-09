@@ -79,12 +79,15 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
                 <Typography m={1} component="span">
                     <Box fontWeight="fontWeightBold" display="flex" justifyContent="center" alignItems="center">
                         <FolderOutlined />
-                        {activeDirectoryName ||
-                            (props?.noElementMessageLabel
-                                ? intl.formatMessage({
-                                      id: noElementMessageLabel,
-                                  })
-                                : '')}
+                        <span>
+                            &nbsp;
+                            {activeDirectoryName ||
+                                (props?.noElementMessageLabel
+                                    ? intl.formatMessage({
+                                          id: noElementMessageLabel,
+                                      })
+                                    : '')}
+                        </span>
                     </Box>
                 </Typography>
                 <Button onClick={handleSelectFolder} variant="contained" size="small">
