@@ -6,7 +6,6 @@
  */
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UUID } from 'crypto';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
@@ -19,36 +18,20 @@ import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
 
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
-import { ElementExistsType } from '../../../utils/types/elementType';
 import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { ItemSelectionForCopy } from '../filter.type';
+import { FilterEditionProps } from '../filter.type';
+import { HeaderFilterSchema } from '../HeaderFilterForm';
 
 const formSchema = yup
     .object()
     .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.FILTER_TYPE]: yup.string().required(),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+        ...HeaderFilterSchema,
         ...explicitNamingFilterSchema,
     })
     .required();
 
 type FormSchemaType = yup.InferType<typeof formSchema>;
-export interface ExplicitNamingFilterEditionDialogProps {
-    id: string;
-    name: string;
-    titleId: string;
-    open: boolean;
-    onClose: () => void;
-    broadcastChannel: BroadcastChannel;
-    itemSelectionForCopy: ItemSelectionForCopy;
-    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
-    getFilterById: (id: string) => Promise<any>;
-    activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
-    language?: string;
-}
 
 export function ExplicitNamingFilterEditionDialog({
     id,
@@ -63,7 +46,8 @@ export function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     elementExists,
     language,
-}: Readonly<ExplicitNamingFilterEditionDialogProps>) {
+    description,
+}: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
@@ -88,6 +72,7 @@ export function ExplicitNamingFilterEditionDialog({
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
+                        [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPLICIT_NAMING.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
                         [FILTER_EQUIPMENTS_ATTRIBUTES]: response[FILTER_EQUIPMENTS_ATTRIBUTES].map((row: any) => ({
@@ -104,7 +89,7 @@ export function ExplicitNamingFilterEditionDialog({
                     });
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById]);
+    }, [id, name, open, reset, snackError, getFilterById, description]);
 
     const onSubmit = useCallback<SubmitHandler<FormSchemaType>>(
         (filterForm) => {
@@ -113,7 +98,7 @@ export function ExplicitNamingFilterEditionDialog({
                 false,
                 filterForm[FieldConstants.EQUIPMENT_TYPE],
                 filterForm[FieldConstants.NAME],
-                '', // The description can not be edited from this dialog
+                filterForm[FieldConstants.DESCRIPTION] ?? '',
                 id,
                 (error) => {
                     snackError({

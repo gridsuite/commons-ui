@@ -6,6 +6,7 @@
  */
 
 import { UUID } from 'crypto';
+import { ElementExistsType } from '../../utils';
 
 /**
  * Represent an item/object in directories.
@@ -18,3 +19,19 @@ export type ItemSelectionForCopy = {
     parentDirectoryUuid: UUID | null;
     specificTypeItem: string | null;
 };
+
+export interface FilterEditionProps {
+    id: string;
+    name: string;
+    titleId: string;
+    open: boolean;
+    onClose: () => void;
+    broadcastChannel: BroadcastChannel;
+    itemSelectionForCopy: ItemSelectionForCopy;
+    setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
+    getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
+    activeDirectory?: UUID;
+    elementExists?: ElementExistsType;
+    language?: string;
+    description?: string;
+}

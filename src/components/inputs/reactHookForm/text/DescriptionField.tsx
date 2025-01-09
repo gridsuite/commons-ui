@@ -15,8 +15,9 @@ import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 
 export function DescriptionField() {
-    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(false);
-    const { setValue } = useFormContext();
+    const { setValue, getValues } = useFormContext();
+    const description = getValues(FieldConstants.DESCRIPTION);
+    const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(!!description);
 
     const handleOpenDescription = () => {
         setIsDescriptionFieldVisible(true);
@@ -24,7 +25,7 @@ export function DescriptionField() {
 
     const handleCloseDescription = () => {
         setIsDescriptionFieldVisible(false);
-        setValue(FieldConstants.DESCRIPTION, '');
+        setValue(FieldConstants.DESCRIPTION, '', { shouldDirty: true });
     };
 
     return (
