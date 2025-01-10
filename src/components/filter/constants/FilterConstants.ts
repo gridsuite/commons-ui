@@ -8,6 +8,13 @@
 import { ItemSelectionForCopy } from '../filter.type';
 
 export const DISTRIBUTION_KEY = 'distributionKey';
+export const MICRO_SIEMENS = '(µS)';
+export const SIEMENS = '(S)';
+export const KILO_AMPERE = '(kA)';
+export const MEGA_VAR = '(MVar)';
+export const OHM = '(Ω)';
+export const MEGA_WATT = '(MW)';
+export const KILO_VOLT = '(kV)';
 
 export const FilterType = {
     EXPERT: { id: 'EXPERT', label: 'filter.expert' },
