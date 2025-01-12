@@ -92,7 +92,7 @@ export interface CustomAgGridTableProps {
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
-    suppressRowClickSelection: boolean;
+    enableClickSelection: boolean;
     alwaysShowVerticalScroll: boolean;
     stopEditingWhenCellsLoseFocus: boolean;
 }
@@ -106,11 +106,11 @@ export function CustomAgGridTable({
     defaultColDef,
     pagination,
     paginationPageSize,
-    suppressRowClickSelection,
+    enableClickSelection,
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}: CustomAgGridTableProps) {
+}: Readonly<CustomAgGridTableProps>) {
     // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
     const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
@@ -243,11 +243,13 @@ export function CustomAgGridTable({
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
-                    rowSelection="multiple"
+                    rowSelection={{
+                        mode: 'multiRow',
+                        enableClickSelection,
+                    }}
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    suppressBrowserResizeObserver
                     columnDefs={columnDefs}
                     detailRowAutoHeight
                     onSelectionChanged={() => {
@@ -259,7 +261,6 @@ export function CustomAgGridTable({
                     getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}
-                    suppressRowClickSelection={suppressRowClickSelection}
                     alwaysShowVerticalScroll={alwaysShowVerticalScroll}
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     {...props}

@@ -246,7 +246,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                     makeDefaultRowData={makeDefaultRowData}
                     pagination
                     paginationPageSize={100}
-                    suppressRowClickSelection
+                    enableClickSelection={false}
                     alwaysShowVerticalScroll
                     stopEditingWhenCellsLoseFocus
                     csvProps={{
