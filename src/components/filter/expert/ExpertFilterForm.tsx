@@ -12,10 +12,17 @@ import { formatQuery } from 'react-querybuilder';
 import './stylesExpertFilter.css';
 import { useFormContext, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
+import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
 import { Box } from '@mui/material';
 import { testQuery } from './expertFilterUtils';
-import { COMBINATOR_OPTIONS, EXPERT_FILTER_EQUIPMENTS, EXPERT_FILTER_FIELDS, RULES } from './expertFilterConstants';
+import {
+    COMBINATOR_OPTIONS,
+    EXPERT_FILTER_EQUIPMENTS,
+    EXPERT_FILTER_FIELDS,
+    OPERATOR_OPTIONS,
+    RULES,
+} from './expertFilterConstants';
 
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
@@ -23,6 +30,7 @@ import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput
 import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 import { unscrollableDialogStyles } from '../../dialogs';
+import { FieldType } from '../../../utils/types/fieldType';
 
 yup.setLocale({
     mixed: {
@@ -72,7 +80,14 @@ export const expertFilterSchema = {
 
 const defaultQuery = {
     combinator: COMBINATOR_OPTIONS.AND.name,
-    rules: [],
+    rules: [
+        {
+            id: uuid4(),
+            field: FieldType.ID,
+            operator: OPERATOR_OPTIONS.CONTAINS.name,
+            value: '',
+        },
+    ],
 };
 
 export function getExpertFilterEmptyFormData() {
