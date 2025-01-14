@@ -110,16 +110,16 @@ export function ValueEditor(props: ValueEditorProps) {
     if (fieldData.dataType === DataType.PROPERTY) {
         let equipmentType;
         if (
-            field === FieldType.SUBSTATION_PROPERTY ||
-            field === FieldType.SUBSTATION_PROPERTY_1 ||
-            field === FieldType.SUBSTATION_PROPERTY_2
+            field === FieldType.SUBSTATION_PROPERTIES ||
+            field === FieldType.SUBSTATION_PROPERTIES_1 ||
+            field === FieldType.SUBSTATION_PROPERTIES_2
         ) {
             equipmentType = Substation.type;
         } else if (
-            field === FieldType.VOLTAGE_LEVEL_PROPERTY ||
-            field === FieldType.VOLTAGE_LEVEL_PROPERTY_1 ||
-            field === FieldType.VOLTAGE_LEVEL_PROPERTY_2 ||
-            field === FieldType.VOLTAGE_LEVEL_PROPERTY_3
+            field === FieldType.VOLTAGE_LEVEL_PROPERTIES ||
+            field === FieldType.VOLTAGE_LEVEL_PROPERTIES_1 ||
+            field === FieldType.VOLTAGE_LEVEL_PROPERTIES_2 ||
+            field === FieldType.VOLTAGE_LEVEL_PROPERTIES_3
         ) {
             equipmentType = VoltageLevel.type;
         } else {
