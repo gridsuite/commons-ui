@@ -825,7 +825,7 @@ export const FIELDS_OPTIONS = {
         inputType: 'number',
     },
     PROPERTY: {
-        name: FieldType.PROPERTY,
+        name: FieldType.FREE_PROPERTIES,
         label: 'property',
         dataType: DataType.PROPERTY,
         valueEditorType: 'select',
