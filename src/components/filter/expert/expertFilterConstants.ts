@@ -8,7 +8,16 @@
 import { Field } from 'react-querybuilder';
 import { CombinatorType, DataType, OperatorType } from './expertFilter.type';
 import { FieldType } from '../../../utils/types/fieldType';
-import { KILO_AMPERE, KILO_VOLT, MEGA_VAR, MEGA_WATT, MICRO_SIEMENS, OHM, SIEMENS } from '../constants/FilterConstants';
+import {
+    KILO_AMPERE,
+    KILO_VOLT,
+    MEGA_VAR,
+    MEGA_VOLT_AMPERE,
+    MEGA_WATT,
+    MICRO_SIEMENS,
+    OHM,
+    SIEMENS,
+} from '../constants/FilterConstants';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',
@@ -288,28 +297,28 @@ export const FIELDS_OPTIONS = {
     RATED_S: {
         name: FieldType.RATED_S,
         label: 'ratedS',
-        unit: MEGA_VAR,
+        unit: MEGA_VOLT_AMPERE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     RATED_S1: {
         name: FieldType.RATED_S1,
         label: 'ratedS1',
-        unit: MEGA_VAR,
+        unit: MEGA_VOLT_AMPERE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     RATED_S2: {
         name: FieldType.RATED_S2,
         label: 'ratedS2',
-        unit: MEGA_VAR,
+        unit: MEGA_VOLT_AMPERE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     RATED_S3: {
         name: FieldType.RATED_S3,
         label: 'ratedS3',
-        unit: MEGA_VAR,
+        unit: MEGA_VOLT_AMPERE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
