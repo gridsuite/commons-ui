@@ -13,7 +13,7 @@ export function useFormatLabelWithUnit() {
     return useMemo(() => {
         return (value: string | { label: string; unit?: string }) => {
             if (typeof value === 'string') {
-                return value;
+                return `${intl.formatMessage({ id: value })}`;
             }
             return `${intl.formatMessage({ id: value.label })}${value.unit ? ` (${value.unit})` : ''}`;
         };
