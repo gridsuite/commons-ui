@@ -6,9 +6,12 @@
  */
 export const MICRO_SIEMENS = 'µS';
 export const SIEMENS = 'S';
+export const AMPERE = 'A';
 export const KILO_AMPERE = 'kA';
 export const MEGA_VAR = 'MVar';
 export const MEGA_VOLT_AMPERE = 'MVA';
 export const OHM = 'Ω';
 export const MEGA_WATT = 'MW';
 export const KILO_VOLT = 'kV';
+export const KILO_METER = 'km';
+export const PERCENTAGE = '%';
