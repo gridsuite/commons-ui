@@ -473,9 +473,6 @@ export const queryValidator: QueryValidator = (query) => {
     };
     const validateGroup = (ruleGroup: RuleGroupTypeAny) => {
         const reasons: any[] = [];
-        if (ruleGroup.rules.length === 0) {
-            reasons.push(RULES.EMPTY_GROUP);
-        }
         if (ruleGroup.id) {
             if (reasons.length) {
                 result[ruleGroup.id] = { valid: false, reasons };
