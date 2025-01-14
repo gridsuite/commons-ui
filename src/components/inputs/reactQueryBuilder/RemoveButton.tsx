@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useController } from 'react-hook-form';
 
-import { getNumberOfSiblings, recursiveRemove } from '../../filter/expert/expertFilterUtils';
+import { recursiveRemove } from '../../filter/expert/expertFilterUtils';
 
 const EXPERT_FILTER_QUERY = 'rules';
 
@@ -26,11 +26,9 @@ export function RemoveButton(props: ActionWithRulesProps) {
         onChange(recursiveRemove(query, path));
     }
 
-    const isLastRuleOrGroup = path.toString() === [0].toString() && getNumberOfSiblings(path, query) === 1;
-
     return (
         <IconButton size="small" onClick={() => handleDelete()} className={className} title={title}>
-            {!isLastRuleOrGroup && <DeleteIcon />}
+            <DeleteIcon />
         </IconButton>
     );
 }

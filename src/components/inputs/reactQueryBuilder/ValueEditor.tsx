@@ -14,7 +14,7 @@ import { CountryValueEditor } from './CountryValueEditor';
 import { TranslatedValueEditor } from './TranslatedValueEditor';
 import { TextValueEditor } from './TextValueEditor';
 
-import { DataType, FieldType } from '../../filter/expert/expertFilter.type';
+import { DataType } from '../../filter/expert/expertFilter.type';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Substation, VoltageLevel } from '../../../utils/types/equipmentTypes';
 import { ElementValueEditor } from './ElementValueEditor';
@@ -23,6 +23,7 @@ import { PropertyValueEditor } from './PropertyValueEditor';
 import { FilterType } from '../../filter/constants/FilterConstants';
 import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
+import { FieldType } from '../../../utils/types/fieldType';
 
 const styles = {
     noArrows: {

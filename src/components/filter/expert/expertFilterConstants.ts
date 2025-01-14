@@ -6,7 +6,8 @@
  */
 
 import { Field } from 'react-querybuilder';
-import { CombinatorType, DataType, FieldType, OperatorType } from './expertFilter.type';
+import { CombinatorType, DataType, OperatorType } from './expertFilter.type';
+import { FieldType } from '../../../utils/types/fieldType';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',
