@@ -30,7 +30,7 @@ import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
-import useFormatLabelWithUnit from '../../../hooks/useFormatLabelWithUnit';
+import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 
 yup.setLocale({
     mixed: {

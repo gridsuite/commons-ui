@@ -8,7 +8,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
-export default function useFormatLabelWithUnit() {
+export function useFormatLabelWithUnit() {
     const intl = useIntl();
     return useMemo(() => {
         return (value: string | { label: string; unit?: string }) => {
