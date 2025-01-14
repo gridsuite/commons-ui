@@ -17,7 +17,7 @@ import {
     MICRO_SIEMENS,
     OHM,
     SIEMENS,
-} from '../constants/FilterConstants';
+} from '../../../utils/constants/unitsConstants';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',

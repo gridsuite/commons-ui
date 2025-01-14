@@ -15,7 +15,7 @@ export default function useFormatLabelWithUnit() {
             if (typeof value === 'string') {
                 return value;
             }
-            return `${intl.formatMessage({ id: value.label })} ${value.unit ?? ''}`;
+            return `${intl.formatMessage({ id: value.label })}${value.unit ? ` (${value.unit})` : ''}`;
         };
     }, [intl]);
 }
