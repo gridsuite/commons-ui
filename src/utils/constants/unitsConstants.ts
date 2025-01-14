@@ -15,3 +15,4 @@ export const MEGA_WATT = 'MW';
 export const KILO_VOLT = 'kV';
 export const KILO_METER = 'km';
 export const PERCENTAGE = '%';
+export const DEGREE = '°';

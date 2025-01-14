@@ -9,6 +9,7 @@ import { Field } from 'react-querybuilder';
 import { CombinatorType, DataType, OperatorType } from './expertFilter.type';
 import { FieldType } from '../../../utils/types/fieldType';
 import {
+    DEGREE,
     KILO_AMPERE,
     KILO_VOLT,
     MEGA_VAR,
@@ -866,24 +867,28 @@ export const FIELDS_OPTIONS = {
     PHASE_REGULATION_VALUE: {
         name: FieldType.PHASE_REGULATION_VALUE,
         label: 'phaseRegulationValue',
+        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     PHASE_REGULATION_VALUE_1: {
         name: FieldType.PHASE_REGULATION_VALUE_1,
         label: 'phaseRegulationValue1',
+        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     PHASE_REGULATION_VALUE_2: {
         name: FieldType.PHASE_REGULATION_VALUE_2,
         label: 'phaseRegulationValue2',
+        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     PHASE_REGULATION_VALUE_3: {
         name: FieldType.PHASE_REGULATION_VALUE_3,
         label: 'phaseRegulationValue3',
+        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
@@ -1008,24 +1013,28 @@ export const FIELDS_OPTIONS = {
     LOW_VOLTAGE_SET_POINT: {
         name: FieldType.LOW_VOLTAGE_SET_POINT,
         label: 'lowVoltageSetPoint',
+        unit: KILO_VOLT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     HIGH_VOLTAGE_SET_POINT: {
         name: FieldType.HIGH_VOLTAGE_SET_POINT,
         label: 'highVoltageSetPoint',
+        unit: KILO_VOLT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     LOW_VOLTAGE_THRESHOLD: {
         name: FieldType.LOW_VOLTAGE_THRESHOLD,
         label: 'lowVoltageThreshold',
+        unit: KILO_VOLT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     HIGH_VOLTAGE_THRESHOLD: {
         name: FieldType.HIGH_VOLTAGE_THRESHOLD,
         label: 'highVoltageThreshold',
+        unit: KILO_VOLT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
