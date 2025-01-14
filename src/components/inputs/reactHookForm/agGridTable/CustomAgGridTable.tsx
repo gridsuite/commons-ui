@@ -12,18 +12,9 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
+import { CellEditingStoppedEvent, ColumnState, RowSelectionOptions, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-
-export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
-    {
-        rowDrag: true,
-        headerCheckboxSelection: true,
-        checkboxSelection: true,
-        maxWidth: 50,
-    },
-];
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -92,7 +83,7 @@ export interface CustomAgGridTableProps {
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
-    enableClickSelection: boolean;
+    rowSelection?: RowSelectionOptions | 'single' | 'multiple';
     alwaysShowVerticalScroll: boolean;
     stopEditingWhenCellsLoseFocus: boolean;
 }
@@ -106,7 +97,7 @@ export function CustomAgGridTable({
     defaultColDef,
     pagination,
     paginationPageSize,
-    enableClickSelection,
+    rowSelection,
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
@@ -243,10 +234,7 @@ export function CustomAgGridTable({
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
-                    rowSelection={{
-                        mode: 'multiRow',
-                        enableClickSelection,
-                    }}
+                    rowSelection={rowSelection || 'multiple'}
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
