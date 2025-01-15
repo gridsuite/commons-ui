@@ -9,7 +9,6 @@ import { Field } from 'react-querybuilder';
 import { CombinatorType, DataType, OperatorType } from './expertFilter.type';
 import { FieldType } from '../../../utils/types/fieldType';
 import {
-    DEGREE,
     KILO_AMPERE,
     KILO_VOLT,
     MEGA_VAR,
@@ -867,28 +866,24 @@ export const FIELDS_OPTIONS = {
     PHASE_REGULATION_VALUE: {
         name: FieldType.PHASE_REGULATION_VALUE,
         label: 'phaseRegulationValue',
-        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     PHASE_REGULATION_VALUE_1: {
         name: FieldType.PHASE_REGULATION_VALUE_1,
         label: 'phaseRegulationValue1',
-        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     PHASE_REGULATION_VALUE_2: {
         name: FieldType.PHASE_REGULATION_VALUE_2,
         label: 'phaseRegulationValue2',
-        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     PHASE_REGULATION_VALUE_3: {
         name: FieldType.PHASE_REGULATION_VALUE_3,
         label: 'phaseRegulationValue3',
-        unit: DEGREE,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
