@@ -954,6 +954,7 @@ export const FIELDS_OPTIONS = {
     VOLTAGE_SET_POINT: {
         name: FieldType.VOLTAGE_SET_POINT,
         label: 'voltageSetPoint',
+        unit: KILO_VOLT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
@@ -1036,6 +1037,7 @@ export const FIELDS_OPTIONS = {
     SUSCEPTANCE_FIX: {
         name: FieldType.SUSCEPTANCE_FIX,
         label: 'susceptanceFix',
+        unit: SIEMENS,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
