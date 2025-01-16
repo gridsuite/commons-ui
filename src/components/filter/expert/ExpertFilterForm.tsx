@@ -13,7 +13,6 @@ import './stylesExpertFilter.css';
 import { useFormContext, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { v4 as uuid4 } from 'uuid';
-import { useIntl } from 'react-intl';
 import { Box } from '@mui/material';
 import { testQuery } from './expertFilterUtils';
 import {
@@ -31,6 +30,7 @@ import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
+import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 
 yup.setLocale({
     mixed: {
@@ -97,8 +97,6 @@ export function getExpertFilterEmptyFormData() {
 }
 
 export function ExpertFilterForm() {
-    const intl = useIntl();
-
     const { getValues, setValue } = useFormContext();
 
     const openConfirmationPopup = useCallback(() => {
@@ -115,15 +113,15 @@ export function ExpertFilterForm() {
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
-
+    const formatLabelWithUnit = useFormatLabelWithUnit();
     const translatedFields = useMemo(() => {
         return EXPERT_FILTER_FIELDS[watchEquipmentType]?.map((field) => {
             return {
                 ...field,
-                label: intl.formatMessage({ id: field.label }),
+                label: formatLabelWithUnit(field),
             };
         });
-    }, [intl, watchEquipmentType]);
+    }, [formatLabelWithUnit, watchEquipmentType]);
 
     return (
         <>

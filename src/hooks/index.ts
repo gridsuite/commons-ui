@@ -14,3 +14,4 @@ export * from './useLocalizedCountries';
 export * from './usePredefinedProperties';
 export * from './usePrevious';
 export * from './useSnackMessage';
+export * from './useFormatLabelWithUnit';
