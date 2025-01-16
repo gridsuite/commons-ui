@@ -8,7 +8,7 @@
 export const filterEn = {
     OR: 'OR',
     AND: 'AND',
-    rule: 'rule',
+    rule: 'criterion',
     subGroup: 'subgroup',
     is: 'is',
     contains: 'contains',
