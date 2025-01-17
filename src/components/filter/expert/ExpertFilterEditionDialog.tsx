@@ -20,6 +20,7 @@ import { saveExpertFilter } from '../utils/filterApi';
 import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
+import { RuleGroupTypeExport } from './expertFilter.type';
 
 const formSchema = yup
     .object()
@@ -65,17 +66,17 @@ export function ExpertFilterEditionDialog({
         if (id && open) {
             setDataFetchStatus(FetchStatus.FETCHING);
             getFilterById(id)
-                .then((response: { [prop: string]: any }) => {
+                .then((response: { [prop: string]: RuleGroupTypeExport | string }) => {
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
-                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
-                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]),
+                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE] as string,
+                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY] as RuleGroupTypeExport),
                     });
                 })
-                .catch((error: { message: any }) => {
+                .catch((error: { message: string }) => {
                     setDataFetchStatus(FetchStatus.FETCH_ERROR);
                     snackError({
                         messageTxt: error.message,

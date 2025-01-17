@@ -26,13 +26,18 @@ export interface UseSnackMessageReturn {
     closeSnackbar: typeof closeSnackbarFromNotistack;
 }
 
-function checkInputs(txt?: string, id?: string, values?: any) {
+function checkInputs(txt?: string, id?: string, values?: { [key: string]: string } | Record<string, string>) {
     if (txt && (id || values)) {
         console.warn('Snack inputs should be [*Txt] OR [*Id, *Values]');
     }
 }
 
-function checkAndTranslateIfNecessary(intlRef: MutableRefObject<IntlShape>, txt?: string, id?: string, values?: any) {
+function checkAndTranslateIfNecessary(
+    intlRef: MutableRefObject<IntlShape>,
+    txt?: string,
+    id?: string,
+    values?: { [key: string]: string } | Record<string, string>
+) {
     checkInputs(txt, id, values);
     return (
         txt ??

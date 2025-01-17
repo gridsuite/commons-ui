@@ -40,6 +40,7 @@ export const saveExplicitNamingFilter = (
     if (isFilterCreation) {
         createFilter(
             {
+                id: null,
                 type: FilterType.EXPLICIT_NAMING.id,
                 equipmentType,
                 filterEquipmentsAttributes: cleanedTableValues,
@@ -82,7 +83,7 @@ export const saveExpertFilter = (
     name: string,
     description: string,
     isFilterCreation: boolean,
-    activeDirectory: any,
+    activeDirectory: UUID | undefined | null,
     onClose: () => void,
     onError: (message: string) => void,
     token?: string
@@ -90,6 +91,7 @@ export const saveExpertFilter = (
     if (isFilterCreation) {
         createFilter(
             {
+                id: null,
                 type: FilterType.EXPERT.id,
                 equipmentType,
                 rules: exportExpertRules(query),
@@ -102,7 +104,7 @@ export const saveExpertFilter = (
             .then(() => {
                 onClose();
             })
-            .catch((error: any) => {
+            .catch((error: Error) => {
                 onError(error.message);
             });
     } else {
@@ -120,7 +122,7 @@ export const saveExpertFilter = (
             .then(() => {
                 onClose();
             })
-            .catch((error: any) => {
+            .catch((error: Error) => {
                 onError(error.message);
             });
     }

@@ -6,8 +6,9 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SxProps, Theme } from '@mui/material';
+import { ButtonProps, SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
+import { TreeViewClasses } from '@mui/x-tree-view';
 import { getFileIcon } from '../../utils/mapper/getFileIcon';
 import { ElementType } from '../../utils/types/elementType';
 import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
@@ -65,7 +66,7 @@ function refreshedUpNodes(
     const parent = nodeMap[newElement.parentUuid];
     const nextChildren = parent.children.map((c) => (c.elementUuid === newElement.elementUuid ? newElement : c));
     const nextParent = { ...parent, children: nextChildren };
-    return [newElement, ...refreshedUpNodes(nodeMap, nextParent)];
+    return [newElement, ...refreshedUpNodes(nodeMap, nextParent as ElementAttributesBase)];
 }
 
 /**
@@ -151,14 +152,14 @@ export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     open: boolean;
     types: string[];
     equipmentTypes?: string[];
-    itemFilter?: any;
-    classes?: any;
+    itemFilter?: (val: ElementAttributes) => boolean;
+    classes?: Partial<TreeViewClasses>;
     contentText?: string;
     defaultExpanded?: string[];
     defaultSelected?: string[];
     validationButtonText?: string;
     className?: string;
-    cancelButtonProps?: any;
+    cancelButtonProps?: ButtonProps;
     onlyLeaves?: boolean;
     multiselect?: boolean;
     expanded?: UUID[];
@@ -196,7 +197,7 @@ export function DirectoryItemSelector({
     const { snackError } = useSnackMessage();
     const contentFilter = useCallback(() => new Set([ElementType.DIRECTORY, ...types]), [types]);
 
-    const convertChildren = useCallback((children: any[]): any[] => {
+    const convertChildren = useCallback((children: ElementAttributes[]): TreeViewFinderNodeProps[] => {
         return children.map((e) => {
             return {
                 id: e.elementUuid,
@@ -206,11 +207,11 @@ export function DirectoryItemSelector({
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
                 childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
             };
-        });
+        }) as TreeViewFinderNodeProps[];
     }, []);
 
     const convertRoots = useCallback(
-        (newRoots: ElementAttributes[]) => {
+        (newRoots: ElementAttributes[]): TreeViewFinderNodeProps[] => {
             return newRoots.map((e) => {
                 return {
                     id: e.elementUuid,
@@ -257,17 +258,19 @@ export function DirectoryItemSelector({
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
-                .then((children) => {
-                    const childrenMatchedTypes = children.filter((item: any) => contentFilter().has(item.type));
+                .then((children: ElementAttributes[]) => {
+                    const childrenMatchedTypes = children.filter((item: ElementAttributes) =>
+                        contentFilter().has(item.type)
+                    );
 
                     if (childrenMatchedTypes.length > 0 && equipmentTypes && equipmentTypes.length > 0) {
                         fetchElementsInfos(
-                            childrenMatchedTypes.map((e: any) => e.elementUuid),
+                            childrenMatchedTypes.map((e: ElementAttributes) => e.elementUuid),
                             types,
                             equipmentTypes
-                        ).then((childrenWithMetadata) => {
+                        ).then((childrenWithMetadata: ElementAttributes[]) => {
                             const filtredChildren = itemFilter
-                                ? childrenWithMetadata.filter((val: any) => {
+                                ? childrenWithMetadata.filter((val: ElementAttributes) => {
                                       // Accept every directory
                                       if (val.type === ElementType.DIRECTORY) {
                                           return true;

@@ -5,7 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export function equalsArray(a: Array<any>, b: Array<any>) {
+export function equalsArray(
+    a: [Record<string, number | string | undefined>, number][] | null,
+    b: [Record<string, number | string | undefined>, number][]
+) {
     if (b === a) {
         return true;
     }
@@ -18,7 +21,12 @@ export function equalsArray(a: Array<any>, b: Array<any>) {
 
     for (let i = 0, l = a.length; i < l; i++) {
         if (a[i] instanceof Array && b[i] instanceof Array) {
-            if (!equalsArray(a[i], b[i])) {
+            if (
+                !equalsArray(
+                    a[i] as unknown as [Record<string, number | string | undefined>, number][] | null,
+                    b[i] as unknown as [Record<string, number | string | undefined>, number][]
+                )
+            ) {
                 return false;
             }
         } else if (a[i] !== b[i]) {

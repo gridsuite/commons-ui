@@ -8,14 +8,15 @@
 import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils/types/types';
+import { NewFilterType } from '../components/filter/filter.type';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
 export function createFilter(
-    newFilter: any,
+    newFilter: NewFilterType,
     name: string,
     description: string,
-    parentDirectoryUuid?: UUID,
+    parentDirectoryUuid: UUID | undefined | null,
     token?: string
 ) {
     const urlSearchParams = new URLSearchParams();
@@ -35,7 +36,7 @@ export function createFilter(
     );
 }
 
-export function saveFilter(filter: any, name: string, description: string, token?: string) {
+export function saveFilter(filter: NewFilterType, name: string, description: string, token?: string) {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('name', name);
     urlSearchParams.append('description', description);

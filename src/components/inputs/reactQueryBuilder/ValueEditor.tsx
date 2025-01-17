@@ -24,6 +24,7 @@ import { FilterType } from '../../filter/constants/FilterConstants';
 import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldType } from '../../../utils/types/fieldType';
+import { ElementAttributes } from '../../../utils';
 
 const styles = {
     noArrows: {
@@ -41,19 +42,19 @@ export function ValueEditor(props: ValueEditorProps) {
     const formContext = useFormContext();
     const { getValues } = formContext;
     const itemFilter = useCallback(
-        (filterValue: any) => {
+        (filterValue: ElementAttributes) => {
             if (filterValue?.type === ElementType.FILTER) {
                 return (
                     // we do not authorize to use an expert filter in the rules of
                     // another expert filter, to prevent potential cycle problems
-                    filterValue?.specificMetadata?.type !== FilterType.EXPERT.id &&
+                    (filterValue?.specificMetadata?.type as unknown as string) !== FilterType.EXPERT.id &&
                     ((field === FieldType.ID &&
                         filterValue?.specificMetadata?.equipmentType === getValues(FieldConstants.EQUIPMENT_TYPE)) ||
                         ((field === FieldType.VOLTAGE_LEVEL_ID ||
                             field === FieldType.VOLTAGE_LEVEL_ID_1 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_2 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_3) &&
-                            filterValue?.specificMetadata?.equipmentType === VoltageLevel.type))
+                            (filterValue?.specificMetadata?.equipmentType as unknown as string) === VoltageLevel.type))
                 );
             }
             return true;

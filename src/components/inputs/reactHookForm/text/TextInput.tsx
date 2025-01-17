@@ -67,7 +67,7 @@ export function TextInput({
         onChange(outputTransform(''));
     };
 
-    const handleValueChanged = (e: any) => {
+    const handleValueChanged = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         if (acceptValue(e.target.value)) {
             onChange(outputTransform(e.target.value));
         }

@@ -7,6 +7,7 @@
 
 import { UUID } from 'crypto';
 import { ElementExistsType } from '../../utils';
+import { RuleGroupTypeExport } from './expert/expertFilter.type';
 
 /**
  * Represent an item/object in directories.
@@ -34,4 +35,15 @@ export interface FilterEditionProps {
     elementExists?: ElementExistsType;
     language?: string;
     description?: string;
+}
+
+export interface NewFilterType {
+    id: string | null;
+    type: string;
+    equipmentType: string;
+    rules?: RuleGroupTypeExport;
+    filterEquipmentsAttributes?: {
+        equipmentID: string;
+        distributionKey?: string;
+    }[];
 }
