@@ -71,7 +71,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     );
 
     return (
-        <Grid container item spacing={1}>
+        <Grid container spacing={1} item>
             <Grid item xs={5}>
                 <Autocomplete
                     value={propertyName ?? ''}
@@ -86,7 +86,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     size="small"
                 />
             </Grid>
-            <Grid item xs={2.5}>
+            <Grid item xs="auto">
                 <Select
                     value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
                     size="small"
@@ -103,14 +103,13 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     ))}
                 </Select>
             </Grid>
-            <Grid item xs={4.5}>
+            <Grid item xs>
                 <Autocomplete
                     value={propertyValues ?? []}
                     options={predefinedValues ?? []}
                     title={valueEditorProps?.title}
                     multiple
                     renderInput={(params) => {
-                        console.log('[FieldConstants.PROPERTY_VALUES] : ', [FieldConstants.PROPERTY_VALUES]);
                         return (
                             <TextField
                                 {...params}
