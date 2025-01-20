@@ -35,6 +35,7 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
         case ElementType.LOADFLOW_PARAMETERS:
         case ElementType.SENSITIVITY_PARAMETERS:
         case ElementType.SHORT_CIRCUIT_PARAMETERS:
+        case ElementType.NETWORK_VISUALIZATION_PARAMETERS:
             return <SettingsIcon sx={style} />;
         case ElementType.SPREADSHEET_CONFIG:
             return <CalculateIcon sx={style} />;
