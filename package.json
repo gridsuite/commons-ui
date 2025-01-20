@@ -42,7 +42,6 @@
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
         "react-querybuilder": "^7.2.0",
-        "react-virtualized": "^9.22.5",
         "reconnecting-websocket": "^4.4.0",
         "uuid": "^9.0.1"
     },
@@ -97,7 +96,6 @@
         "@types/react-beautiful-dnd": "^13.1.8",
         "@types/react-dom": "^18.2.24",
         "@types/react-resizable": "^3.0.7",
-        "@types/react-virtualized": "^9.21.29",
         "@types/utf-8-validate": "^5.0.2",
         "@types/uuid": "^9.0.8",
         "@typescript-eslint/eslint-plugin": "^7.0.0",
