@@ -109,7 +109,16 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     options={predefinedValues ?? []}
                     title={valueEditorProps?.title}
                     multiple
-                    renderInput={(params) => <TextField {...params} error={!valid} />}
+                    renderInput={(params) => {
+                        console.log('[FieldConstants.PROPERTY_VALUES] : ', [FieldConstants.PROPERTY_VALUES]);
+                        return (
+                            <TextField
+                                {...params}
+                                error={!valid}
+                                placeholder={valid ? '' : intl.formatMessage({ id: 'valuesList' })}
+                            />
+                        );
+                    }}
                     freeSolo
                     autoSelect
                     onChange={(event, value: any) => {
