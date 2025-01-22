@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UserManager } from 'oidc-client';
+import type { UserManager } from 'oidc-client';
 import { Dispatch } from 'react';
 import { NavigateFunction, Location } from 'react-router-dom';
 import { AuthenticationActions } from '../../redux/actions/authActions';

@@ -6,27 +6,27 @@
  */
 
 import { render as rtlRender } from '@testing-library/react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { type ReactElement } from 'react';
+import { createTheme, type Theme, ThemeProvider } from '@mui/material';
 import { IntlProvider } from 'react-intl';
-import { Theme } from '@mui/system';
 import {
-    loginEn,
-    reportViewerEn,
-    topBarEn,
-    tableEn,
-    treeviewFinderEn,
+    cardErrorBoundaryEn,
+    commonButtonEn,
+    csvEn,
+    descriptionEn,
+    directoryItemsInputEn,
     elementSearchEn,
     equipmentSearchEn,
+    equipmentsEn,
     filterEn,
     filterExpertEn,
-    descriptionEn,
-    equipmentsEn,
-    csvEn,
-    cardErrorBoundaryEn,
     flatParametersEn,
+    loginEn,
     multipleSelectionDialogEn,
-    commonButtonEn,
-    directoryItemsInputEn,
+    reportViewerEn,
+    tableEn,
+    topBarEn,
+    treeviewFinderEn,
 } from '../translations/en';
 
 const fullTrad = {
@@ -48,11 +48,13 @@ const fullTrad = {
     ...commonButtonEn,
     ...directoryItemsInputEn,
 };
-const renderWithTranslation = (ui: React.ReactElement, trad: Record<string, string> = fullTrad) => (
-    <IntlProvider locale="en" messages={trad}>
-        {ui}
-    </IntlProvider>
-);
+function renderWithTranslation(ui: ReactElement, trad: Record<string, string>) {
+    return (
+        <IntlProvider locale="en" messages={trad}>
+            {ui}
+        </IntlProvider>
+    );
+}
 
 const lightTheme = createTheme(
     {
@@ -85,19 +87,18 @@ const lightTheme = createTheme(
         },
     }
 );
-const renderWithTheme = (ui: React.ReactElement, theme: Theme = lightTheme) => (
-    <ThemeProvider theme={theme}>{ui}</ThemeProvider>
-);
+function renderWithTheme(ui: ReactElement, theme: Theme) {
+    return <ThemeProvider theme={theme}>{ui}</ThemeProvider>;
+}
 
-// eslint-disable-next-line import/prefer-default-export
 export class RenderBuilder {
-    renderWithTheme: boolean = false;
+    private renderWithTheme = false;
 
-    theme: Theme = lightTheme;
+    private theme = lightTheme;
 
-    renderWithTrad: boolean = false;
+    private renderWithTrad = false;
 
-    trad: Record<string, string> = fullTrad;
+    private trad: Record<string, string> = fullTrad;
 
     withTrad(trad?: Record<string, string>) {
         this.renderWithTrad = true;
@@ -115,7 +116,7 @@ export class RenderBuilder {
         return this;
     }
 
-    render(ui: React.ReactElement) {
+    render(ui: ReactElement) {
         let newUi = this.renderWithTrad ? renderWithTranslation(ui, this.trad) : ui;
         newUi = this.renderWithTheme ? renderWithTheme(newUi, this.theme) : newUi;
         return rtlRender(newUi);

@@ -34,7 +34,6 @@
         "clsx": "^2.1.0",
         "jwt-decode": "^4.0.0",
         "localized-countries": "^2.0.0",
-        "memoize-one": "^6.0.0",
         "oidc-client": "^1.11.5",
         "prop-types": "^15.8.1",
         "react-beautiful-dnd": "^13.1.1",
