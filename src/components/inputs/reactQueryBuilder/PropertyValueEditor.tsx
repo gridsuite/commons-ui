@@ -16,6 +16,7 @@ import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
+import { useSelectAppearance } from './useSelectAppearance';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
@@ -95,6 +96,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     onChange={(event, value: any) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
                     }}
+                    {...useSelectAppearance(PROPERTY_VALUE_OPERATORS.length)}
                 >
                     {PROPERTY_VALUE_OPERATORS.map((operator) => (
                         <MenuItem key={operator.customName} value={operator.customName}>
