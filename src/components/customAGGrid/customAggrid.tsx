@@ -31,7 +31,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     if (column && colDefinedMinWidth && finished) {
         const newWidth = column?.getActualWidth();
         if (newWidth < colDefinedMinWidth) {
-            column?.setActualWidth(colDefinedMinWidth, params.source);
+            params.api.setColumnWidths([{ key: column, newWidth: colDefinedMinWidth }], finished, params.source);
         }
     }
 };
@@ -66,7 +66,6 @@ export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((pr
             <AgGridReact
                 ref={ref}
                 getLocaleText={getLocaleText}
-                suppressPropertyNamesCheck
                 onColumnResized={onColumnResized}
                 enableCellTextSelection
                 {...agGridReactProps}
