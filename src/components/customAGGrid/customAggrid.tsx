@@ -68,6 +68,7 @@ export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((pr
                 getLocaleText={getLocaleText}
                 onColumnResized={onColumnResized}
                 enableCellTextSelection
+                theme="legacy"
                 {...agGridReactProps}
             />
         </Box>
