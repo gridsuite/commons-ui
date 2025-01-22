@@ -32,7 +32,6 @@ export function BooleanInput({ name, label, formProps, Input }: BooleanInputProp
     );
 
     const CustomInput = (
-        // @ts-ignore
         <Input
             checked={value}
             onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeValue(e)}

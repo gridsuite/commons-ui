@@ -6,9 +6,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ButtonProps, SxProps, Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
-import { TreeViewClasses } from '@mui/x-tree-view';
 import { getFileIcon } from '../../utils/mapper/getFileIcon';
 import { ElementType } from '../../utils/types/elementType';
 import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
@@ -149,19 +148,9 @@ function updatedTree(
 }
 
 export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
-    open: boolean;
     types: string[];
     equipmentTypes?: string[];
     itemFilter?: (val: ElementAttributes) => boolean;
-    classes?: Partial<TreeViewClasses>;
-    contentText?: string;
-    defaultExpanded?: string[];
-    defaultSelected?: string[];
-    validationButtonText?: string;
-    className?: string;
-    cancelButtonProps?: ButtonProps;
-    onlyLeaves?: boolean;
-    multiselect?: boolean;
     expanded?: UUID[];
     selected?: UUID[];
 }
@@ -207,7 +196,7 @@ export function DirectoryItemSelector({
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
                 childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
             };
-        }) as TreeViewFinderNodeProps[];
+        });
     }, []);
 
     const convertRoots = useCallback(
@@ -258,7 +247,7 @@ export function DirectoryItemSelector({
         (nodeId: UUID): void => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
-                .then((children: ElementAttributes[]) => {
+                .then((children) => {
                     const childrenMatchedTypes = children.filter((item: ElementAttributes) =>
                         contentFilter().has(item.type)
                     );

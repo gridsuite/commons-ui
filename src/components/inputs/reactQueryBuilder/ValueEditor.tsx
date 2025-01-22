@@ -47,14 +47,14 @@ export function ValueEditor(props: ValueEditorProps) {
                 return (
                     // we do not authorize to use an expert filter in the rules of
                     // another expert filter, to prevent potential cycle problems
-                    (filterValue?.specificMetadata?.type as unknown as string) !== FilterType.EXPERT.id &&
+                    filterValue?.specificMetadata?.type !== FilterType.EXPERT.id &&
                     ((field === FieldType.ID &&
                         filterValue?.specificMetadata?.equipmentType === getValues(FieldConstants.EQUIPMENT_TYPE)) ||
                         ((field === FieldType.VOLTAGE_LEVEL_ID ||
                             field === FieldType.VOLTAGE_LEVEL_ID_1 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_2 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_3) &&
-                            (filterValue?.specificMetadata?.equipmentType as unknown as string) === VoltageLevel.type))
+                            filterValue?.specificMetadata?.equipmentType === VoltageLevel.type))
                 );
             }
             return true;

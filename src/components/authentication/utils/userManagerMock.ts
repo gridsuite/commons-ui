@@ -26,8 +26,7 @@ class Events implements UserManagerEvents {
         this.userLoadedCallbacks.push(callback);
     }
 
-    // eslint-disable-next-line
-    addSilentRenewError(callback: (data: Error) => void) {
+    addSilentRenewError() {
         // Nothing to do
     }
 

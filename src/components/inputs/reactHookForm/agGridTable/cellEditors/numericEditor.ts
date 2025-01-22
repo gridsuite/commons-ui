@@ -35,7 +35,7 @@ export class NumericEditor implements ICellEditorComp {
             this.eInput.value = params.value;
         }
 
-        this.eInput.addEventListener('keydown', (event: KeyboardEvent) => {
+        this.eInput.addEventListener('keydown', (event) => {
             if (!event.key || event.key.length !== 1) {
                 return;
             }

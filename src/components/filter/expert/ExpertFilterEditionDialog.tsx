@@ -17,10 +17,12 @@ import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConst
 import { FilterEditionProps } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
-import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
+import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { RuleGroupTypeExport } from './expertFilter.type';
+import { catchErrorHandler } from '../../../services';
+import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 
 const formSchema = yup
     .object()
@@ -66,7 +68,7 @@ export function ExpertFilterEditionDialog({
         if (id && open) {
             setDataFetchStatus(FetchStatus.FETCHING);
             getFilterById(id)
-                .then((response: { [prop: string]: RuleGroupTypeExport | string }) => {
+                .then((response) => {
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
@@ -76,11 +78,13 @@ export function ExpertFilterEditionDialog({
                         [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY] as RuleGroupTypeExport),
                     });
                 })
-                .catch((error: { message: string }) => {
-                    setDataFetchStatus(FetchStatus.FETCH_ERROR);
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'cannotRetrieveFilter',
+                .catch((error: Error) => {
+                    catchErrorHandler(error, (message: string) => {
+                        setDataFetchStatus(FetchStatus.FETCH_ERROR);
+                        snackError({
+                            messageTxt: message,
+                            headerId: 'cannotRetrieveFilter',
+                        });
                     });
                 });
         }
