@@ -7,12 +7,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, useTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { CellEditingStoppedEvent, ColumnState, RowSelectionOptions, SortChangedEvent } from 'ag-grid-community';
+import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 
@@ -83,7 +83,7 @@ export interface CustomAgGridTableProps {
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
-    rowSelection?: RowSelectionOptions | 'single' | 'multiple';
+    rowSelection?: AgGridReactProps['rowSelection'];
     alwaysShowVerticalScroll: boolean;
     stopEditingWhenCellsLoseFocus: boolean;
 }
@@ -234,7 +234,7 @@ export function CustomAgGridTable({
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
-                    rowSelection={rowSelection || 'multiple'}
+                    rowSelection={rowSelection ?? 'multiple'}
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
@@ -251,6 +251,7 @@ export function CustomAgGridTable({
                     paginationPageSize={paginationPageSize}
                     alwaysShowVerticalScroll={alwaysShowVerticalScroll}
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
+                    theme="legacy"
                     {...props}
                 />
             </Box>
