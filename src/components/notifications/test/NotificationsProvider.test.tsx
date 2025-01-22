@@ -5,13 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { createRoot } from 'react-dom/client';
-import { waitFor, act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { NotificationsProvider } from '../NotificationsProvider';
 import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
 jest.mock('reconnecting-websocket');
+const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
+
 let container: Element;
 
 declare global {
@@ -65,9 +67,8 @@ describe('NotificationsProvider', () => {
             return <p>empty</p>;
         }
 
-        const reconnectingWebSocketClass = {};
-        // @ts-expect-error
-        ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
+        const reconnectingWebSocketClass = {} as jest.Mocked<ReconnectingWebSocket>;
+        MockedReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
             root.render(
@@ -76,10 +77,9 @@ describe('NotificationsProvider', () => {
                 </NotificationsProvider>
             );
         });
-        const event = { test: 'test' };
+        const event = { data: 'test' } as MessageEvent<any>;
         act(() => {
-            // @ts-expect-error
-            reconnectingWebSocketClass.onmessage(event);
+            reconnectingWebSocketClass.onmessage?.(event);
         });
 
         waitFor(() => expect(eventCallback).toBeCalledWith(event));
@@ -94,9 +94,8 @@ describe('NotificationsProvider', () => {
             return <p>empty</p>;
         }
 
-        const reconnectingWebSocketClass = {};
-        // @ts-expect-error
-        ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
+        const reconnectingWebSocketClass = {} as jest.Mocked<ReconnectingWebSocket>;
+        MockedReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
             root.render(
@@ -106,8 +105,7 @@ describe('NotificationsProvider', () => {
             );
         });
         act(() => {
-            // @ts-expect-error
-            reconnectingWebSocketClass.onmessage({ test: 'test' });
+            reconnectingWebSocketClass.onmessage?.({ data: 'test' } as MessageEvent<any>);
         });
 
         expect(eventCallback).not.toBeCalled();
@@ -119,15 +117,14 @@ describe('NotificationsProvider', () => {
         const onOpenCallback = jest.fn();
         const reconnectingWebSocketClass = {
             onopen: onOpenCallback,
-        };
+        } as Partial<ReconnectingWebSocket> as jest.Mocked<ReconnectingWebSocket>;
         const eventCallback = jest.fn();
         function NotificationsConsumer() {
             useNotificationsListener('Fake_Key', { listenerCallbackOnReopen: eventCallback });
             return <p>empty</p>;
         }
 
-        // @ts-expect-error
-        ReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
+        MockedReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
 
         act(() => {
             root.render(
