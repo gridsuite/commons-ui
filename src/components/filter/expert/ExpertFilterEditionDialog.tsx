@@ -20,7 +20,6 @@ import { saveExpertFilter } from '../utils/filterApi';
 import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
-import { RuleGroupTypeExport } from './expertFilter.type';
 import { catchErrorHandler } from '../../../services';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 
@@ -74,8 +73,8 @@ export function ExpertFilterEditionDialog({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
-                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE] as string,
-                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY] as RuleGroupTypeExport),
+                        [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
+                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]!),
                     });
                 })
                 .catch((error: Error) => {
