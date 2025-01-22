@@ -44,7 +44,7 @@ import {
 } from '@mui/icons-material';
 import { styled } from '@mui/system';
 
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';

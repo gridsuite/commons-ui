@@ -8,15 +8,15 @@
 /* eslint-disable max-classes-per-file, class-methods-use-this */
 
 import {
-    MetadataService,
-    SigninRequest,
-    SigninResponse,
-    SignoutRequest,
-    SignoutResponse,
-    User,
+    type MetadataService,
+    type SigninRequest,
+    type SigninResponse,
+    type SignoutRequest,
+    type SignoutResponse,
+    type User,
     UserManager,
     UserManagerEvents,
-    UserManagerSettings,
+    type UserManagerSettings,
 } from 'oidc-client';
 
 class Events implements UserManagerEvents {
