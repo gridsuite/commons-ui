@@ -262,6 +262,7 @@ export function FlatParameters({
 
     const renderField = (param: Parameter) => {
         const fieldValue = mixInitAndDefault(param);
+        // eslint-disable-next-line default-case
         switch (param.type) {
             case 'BOOLEAN':
                 return <Switch checked={!!fieldValue} onChange={(e) => onFieldChange(e.target.checked, param)} />;
@@ -381,8 +382,6 @@ export function FlatParameters({
                         renderInput={(inputProps) => <TextField {...inputProps} variant={variant} />}
                     />
                 );
-
-            // @ts-expect-error fallthrough is the expected behavior
             case 'STRING':
                 if (param.possibleValues) {
                     return (
@@ -404,20 +403,19 @@ export function FlatParameters({
                         </Select>
                     );
                 }
-            // else fallthrough to default
-            default:
-                return (
-                    <TextField
-                        sx={{ width: '50%' }}
-                        size="small"
-                        value={fieldValue || ''}
-                        onFocus={() => onUncommitted(param, true)}
-                        onBlur={() => onUncommitted(param, false)}
-                        onChange={(e) => onFieldChange(e.target.value, param)}
-                        variant={variant}
-                    />
-                );
+            // else continu/fallthrough to default
         }
+        return (
+            <TextField
+                sx={{ width: '50%' }}
+                size="small"
+                value={fieldValue || ''}
+                onFocus={() => onUncommitted(param, true)}
+                onBlur={() => onUncommitted(param, false)}
+                onChange={(e) => onFieldChange(e.target.value, param)}
+                variant={variant}
+            />
+        );
     };
 
     return (

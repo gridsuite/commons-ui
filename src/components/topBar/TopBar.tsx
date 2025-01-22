@@ -37,8 +37,8 @@ import {
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
-    Person as PersonIcon,
     ManageAccounts,
+    Person as PersonIcon,
     Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
@@ -155,12 +155,17 @@ const CustomListItemIcon = styled(ListItemIcon)({
     borderRadius: '25px',
 });
 
-const EN = 'EN';
-const FR = 'FR';
-
 export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
 export type GsLang = GsLangUser | typeof LANG_SYSTEM;
 export type GsTheme = typeof LIGHT_THEME | typeof DARK_THEME;
+
+function abbreviationFromUserName(name: string) {
+    const tab = name.split(' ').map((x) => x.charAt(0));
+    if (tab.length === 1) {
+        return tab[0];
+    }
+    return tab[0] + tab[tab.length - 1];
+}
 
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &
@@ -233,14 +238,6 @@ export function TopBar({
         }
     };
 
-    const abbreviationFromUserName = (name: string) => {
-        const tab = name.split(' ').map((x) => x.charAt(0));
-        if (tab.length === 1) {
-            return tab[0];
-        }
-        return tab[0] + tab[tab.length - 1];
-    };
-
     const changeTheme = (_: MouseEvent, value: GsTheme) => {
         if (onThemeClick && value !== null) {
             onThemeClick(value);
@@ -261,8 +258,7 @@ export function TopBar({
 
     const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
     const onAboutClicked = () => {
-        // @ts-expect-error should be an Element, or maybe we should use null ?
-        setAnchorElSettingsMenu(false);
+        setAnchorElSettingsMenu(null);
         if (onAboutClick) {
             onAboutClick();
         } else {
@@ -361,12 +357,7 @@ export function TopBar({
                             style={anchorElSettingsMenu ? { cursor: 'initial' } : { cursor: 'pointer' }}
                         >
                             <Box component="span" sx={styles.name}>
-                                {user !== null
-                                    ? abbreviationFromUserName(
-                                          // @ts-expect-error name could be undefined, how to handle this case ?
-                                          user.profile.name
-                                      )
-                                    : ''}
+                                {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
                             </Box>
                             {anchorElSettingsMenu ? (
                                 <ArrowDropUpIcon sx={styles.arrowIcon} />
@@ -512,14 +503,14 @@ export function TopBar({
                                                     aria-label={LANG_ENGLISH}
                                                     sx={styles.languageToggleButton}
                                                 >
-                                                    {EN}
+                                                    EN
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={LANG_FRENCH}
                                                     aria-label={LANG_FRENCH}
                                                     sx={styles.toggleButton}
                                                 >
-                                                    {FR}
+                                                    FR
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>
