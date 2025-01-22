@@ -44,11 +44,8 @@ import {
     testDataTree,
 } from '../data/TreeViewFinder';
 
-import LOGS_JSON from '../data/ReportViewer';
-
 import searchEquipments from '../data/EquipmentSearchBar';
 
-import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
 
 import InputsTab from './InputsTab';
@@ -876,12 +873,10 @@ function AppContent({ language, onLanguageClick }) {
                                 <div>
                                     <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />
-                                        <Tab label="virtual table" />
                                         <Tab label="parameters" />
                                         <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 1 && <TableTab />}
                                     {tabIndex === 2 && <FlatParametersTab />}
                                     {tabIndex === 3 && <InputsTab />}
                                 </div>
