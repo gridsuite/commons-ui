@@ -23,6 +23,11 @@ export type ItemSelectionForCopy = {
     specificTypeItem: string | null;
 };
 
+type EquipmentsFilter = {
+    equipmentID: string;
+    distributionKey?: number;
+};
+
 export interface FilterEditionProps {
     id: string;
     name: string;
@@ -35,7 +40,7 @@ export interface FilterEditionProps {
     getFilterById: (id: string) => Promise<{
         [FieldConstants.EQUIPMENT_TYPE]: string;
         [EXPERT_FILTER_QUERY]?: RuleGroupTypeExport;
-        [FILTER_EQUIPMENTS_ATTRIBUTES]?: any[];
+        [FILTER_EQUIPMENTS_ATTRIBUTES]?: EquipmentsFilter[];
     }>;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
@@ -48,8 +53,5 @@ export interface NewFilterType {
     type: string;
     equipmentType: string;
     rules?: RuleGroupTypeExport;
-    filterEquipmentsAttributes?: {
-        equipmentID: string;
-        distributionKey?: string;
-    }[];
+    filterEquipmentsAttributes?: EquipmentsFilter[];
 }

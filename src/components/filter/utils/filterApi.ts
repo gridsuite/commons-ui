@@ -105,7 +105,7 @@ export const saveExpertFilter = (
             .then(() => {
                 onClose();
             })
-            .catch((error: Error) => {
+            .catch((error: unknown) => {
                 catchErrorHandler(error, (message: string) => {
                     onError(message);
                 });
@@ -125,7 +125,7 @@ export const saveExpertFilter = (
             .then(() => {
                 onClose();
             })
-            .catch((error: Error) => {
+            .catch((error: unknown) => {
                 catchErrorHandler(error, (message: string) => {
                     onError(message);
                 });

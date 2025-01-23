@@ -77,7 +77,7 @@ export function ExpertFilterEditionDialog({
                         [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]!),
                     });
                 })
-                .catch((error: Error) => {
+                .catch((error: unknown) => {
                     catchErrorHandler(error, (message: string) => {
                         setDataFetchStatus(FetchStatus.FETCH_ERROR);
                         snackError({
