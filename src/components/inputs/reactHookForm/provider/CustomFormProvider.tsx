@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { createContext, PropsWithChildren } from 'react';
+import { createContext, PropsWithChildren, useMemo } from 'react';
 import { type FieldValues, FormProvider, type UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import { type ObjectSchema } from 'yup';
@@ -20,7 +20,6 @@ type CustomFormContextProps<TFieldValues extends FieldValues = FieldValues> = {
 export type MergedFormContextProps<TFieldValues extends FieldValues = FieldValues> = UseFormReturn<TFieldValues> &
     CustomFormContextProps<TFieldValues>;
 
-// TODO found how to manage generic type
 export const CustomFormContext = createContext<CustomFormContextProps>({
     removeOptional: false,
     validationSchema: yup.object(),
@@ -30,17 +29,16 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
 export function CustomFormProvider<TFieldValues extends FieldValues = FieldValues>(
     props: PropsWithChildren<MergedFormContextProps<TFieldValues>>
 ) {
-    const { validationSchema, removeOptional, language, children, ...formMethods } = props;
+    // TODO found how to manage generic type
+    const { validationSchema, removeOptional, language, children, ...formMethods } = props as PropsWithChildren<
+        MergedFormContextProps<FieldValues>
+    >;
 
     return (
         <FormProvider {...formMethods}>
             <CustomFormContext.Provider
-                value={React.useMemo(
-                    () => ({
-                        validationSchema,
-                        removeOptional,
-                        language,
-                    }),
+                value={useMemo(
+                    () => ({ validationSchema, removeOptional, language }),
                     [validationSchema, removeOptional, language]
                 )}
             >
