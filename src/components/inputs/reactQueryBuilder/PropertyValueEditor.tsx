@@ -16,7 +16,7 @@ import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
-import { useSelectAppearance } from './useSelectAppearance';
+import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
@@ -113,11 +113,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     multiple
                     renderInput={(params) => {
                         return (
-                            <TextField
-                                {...params}
-                                error={!valid}
-                                placeholder={valid ? '' : intl.formatMessage({ id: 'valuesList' })}
-                            />
+                            <TextField {...params} error={!valid} label={intl.formatMessage({ id: 'valuesList' })} />
                         );
                     }}
                     freeSolo

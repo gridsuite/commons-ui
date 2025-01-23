@@ -5,7 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-// useSelectAppearance
+/** Hooks used to modify appearance of Select as a readonly TextField,
+    by hiding display button and setting readOnly prop to true
+    if options list is only one element long.
+    P.S :  Not to used on AutoComplete.
+*/
 export function useSelectAppearance(listLength: number) {
     if (listLength === 1) {
         return { IconComponent: () => null, readOnly: true };

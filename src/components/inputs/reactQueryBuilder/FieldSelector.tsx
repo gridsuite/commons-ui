@@ -7,7 +7,7 @@
 
 import { ValueSelectorProps } from 'react-querybuilder';
 import { MaterialValueSelector } from '@react-querybuilder/material';
-import { useSelectAppearance } from './useSelectAppearance';
+import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
 
 const ITEM_HEIGHT = 32; // default value from React query builder defaultNativeSelectStyles that can't be accessed
 const ITEM_PADDING = 4;

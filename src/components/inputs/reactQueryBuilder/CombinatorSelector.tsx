@@ -9,9 +9,10 @@ import { CombinatorSelectorProps } from 'react-querybuilder';
 import { useCallback, useState } from 'react';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 import { PopupConfirmationDialog } from '../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
+import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
 
 export function CombinatorSelector(props: CombinatorSelectorProps) {
-    const { value, handleOnChange } = props;
+    const { options, value, handleOnChange } = props;
     const [tempCombinator, setTempCombinator] = useState(value);
     const [openPopup, setOpenPopup] = useState(false);
 
@@ -35,6 +36,7 @@ export function CombinatorSelector(props: CombinatorSelectorProps) {
                     setTempCombinator(newCombinator);
                     setOpenPopup(true);
                 }}
+                {...useSelectAppearance(options.length)}
             />
         </>
     );

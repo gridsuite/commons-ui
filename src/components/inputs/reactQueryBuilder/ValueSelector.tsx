@@ -7,7 +7,7 @@
 
 import { ValueSelectorProps } from 'react-querybuilder';
 import { MaterialValueSelector } from '@react-querybuilder/material';
-import { useSelectAppearance } from './useSelectAppearance';
+import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
 
 export function ValueSelector(props: ValueSelectorProps) {
     const { options } = props;
