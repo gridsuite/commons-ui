@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
-import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, createFilterOptions, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';
@@ -71,6 +71,8 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         [valueEditorProps]
     );
 
+    const filter = createFilterOptions<string>();
+
     return (
         <Grid container spacing={1} item>
             <Grid item xs={5}>
@@ -124,6 +126,16 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
                     size="small"
+                    filterOptions={(options, params) => {
+                        const filtered = filter(options, params);
+                        const { inputValue } = params;
+
+                        const isExisting = options.some((option) => inputValue === option.title);
+                        if (inputValue !== '' && !isExisting) {
+                            filtered.push(inputValue);
+                        }
+                        return filtered;
+                    }}
                 />
             </Grid>
         </Grid>
