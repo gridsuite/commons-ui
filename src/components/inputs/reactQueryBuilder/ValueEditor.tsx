@@ -24,6 +24,7 @@ import { FilterType } from '../../filter/constants/FilterConstants';
 import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldType } from '../../../utils/types/fieldType';
+import { ElementAttributes } from '../../../utils';
 
 const styles = {
     noArrows: {
@@ -41,7 +42,7 @@ export function ValueEditor(props: ValueEditorProps) {
     const formContext = useFormContext();
     const { getValues } = formContext;
     const itemFilter = useCallback(
-        (filterValue: any) => {
+        (filterValue: ElementAttributes) => {
             if (filterValue?.type === ElementType.FILTER) {
                 return (
                     // we do not authorize to use an expert filter in the rules of

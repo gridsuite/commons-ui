@@ -20,14 +20,13 @@ import {
 } from 'oidc-client';
 
 class Events implements UserManagerEvents {
-    userLoadedCallbacks: ((data: any) => void)[] = [];
+    userLoadedCallbacks: ((data: User) => void)[] = [];
 
-    addUserLoaded(callback: (data: any) => void) {
+    addUserLoaded(callback: (data: User) => void) {
         this.userLoadedCallbacks.push(callback);
     }
 
-    // eslint-disable-next-line
-    addSilentRenewError(callback: (data: any) => void) {
+    addSilentRenewError() {
         // Nothing to do
     }
 

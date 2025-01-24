@@ -6,7 +6,10 @@
  */
 
 import { UUID } from 'crypto';
-import { ElementExistsType } from '../../utils';
+import { ElementExistsType, FieldConstants } from '../../utils';
+import { RuleGroupTypeExport } from './expert/expertFilter.type';
+import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
+import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 
 /**
  * Represent an item/object in directories.
@@ -20,6 +23,11 @@ export type ItemSelectionForCopy = {
     specificTypeItem: string | null;
 };
 
+type EquipmentsFilter = {
+    equipmentID: string;
+    distributionKey?: number;
+};
+
 export interface FilterEditionProps {
     id: string;
     name: string;
@@ -29,9 +37,21 @@ export interface FilterEditionProps {
     broadcastChannel: BroadcastChannel;
     itemSelectionForCopy: ItemSelectionForCopy;
     setItemSelectionForCopy: (selection: ItemSelectionForCopy) => void;
-    getFilterById: (id: string) => Promise<{ [prop: string]: any }>;
+    getFilterById: (id: string) => Promise<{
+        [FieldConstants.EQUIPMENT_TYPE]: string;
+        [EXPERT_FILTER_QUERY]?: RuleGroupTypeExport;
+        [FILTER_EQUIPMENTS_ATTRIBUTES]?: EquipmentsFilter[];
+    }>;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
     language?: string;
     description?: string;
+}
+
+export interface NewFilterType {
+    id: string | null;
+    type: string;
+    equipmentType: string;
+    rules?: RuleGroupTypeExport;
+    filterEquipmentsAttributes?: EquipmentsFilter[];
 }

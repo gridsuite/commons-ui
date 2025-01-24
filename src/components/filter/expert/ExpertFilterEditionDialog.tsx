@@ -17,9 +17,11 @@ import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConst
 import { FilterEditionProps } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
-import { EXPERT_FILTER_QUERY, expertFilterSchema } from './ExpertFilterForm';
+import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
+import { catchErrorHandler } from '../../../services';
+import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 
 const formSchema = yup
     .object()
@@ -65,21 +67,23 @@ export function ExpertFilterEditionDialog({
         if (id && open) {
             setDataFetchStatus(FetchStatus.FETCHING);
             getFilterById(id)
-                .then((response: { [prop: string]: any }) => {
+                .then((response) => {
                     setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
                     reset({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
-                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]),
+                        [EXPERT_FILTER_QUERY]: importExpertRules(response[EXPERT_FILTER_QUERY]!),
                     });
                 })
-                .catch((error: { message: any }) => {
-                    setDataFetchStatus(FetchStatus.FETCH_ERROR);
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'cannotRetrieveFilter',
+                .catch((error: unknown) => {
+                    catchErrorHandler(error, (message: string) => {
+                        setDataFetchStatus(FetchStatus.FETCH_ERROR);
+                        snackError({
+                            messageTxt: message,
+                            headerId: 'cannotRetrieveFilter',
+                        });
                     });
                 });
         }
