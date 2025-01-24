@@ -11,6 +11,7 @@ import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
+import { catchErrorHandler } from '../../../services';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -40,6 +41,7 @@ export const saveExplicitNamingFilter = (
     if (isFilterCreation) {
         createFilter(
             {
+                id: null,
                 type: FilterType.EXPLICIT_NAMING.id,
                 equipmentType,
                 filterEquipmentsAttributes: cleanedTableValues,
@@ -82,7 +84,7 @@ export const saveExpertFilter = (
     name: string,
     description: string,
     isFilterCreation: boolean,
-    activeDirectory: any,
+    activeDirectory: UUID | undefined | null,
     onClose: () => void,
     onError: (message: string) => void,
     token?: string
@@ -90,6 +92,7 @@ export const saveExpertFilter = (
     if (isFilterCreation) {
         createFilter(
             {
+                id: null,
                 type: FilterType.EXPERT.id,
                 equipmentType,
                 rules: exportExpertRules(query),
@@ -102,8 +105,10 @@ export const saveExpertFilter = (
             .then(() => {
                 onClose();
             })
-            .catch((error: any) => {
-                onError(error.message);
+            .catch((error: unknown) => {
+                catchErrorHandler(error, (message: string) => {
+                    onError(message);
+                });
             });
     } else {
         saveFilter(
@@ -120,8 +125,10 @@ export const saveExpertFilter = (
             .then(() => {
                 onClose();
             })
-            .catch((error: any) => {
-                onError(error.message);
+            .catch((error: unknown) => {
+                catchErrorHandler(error, (message: string) => {
+                    onError(message);
+                });
             });
     }
 };

@@ -160,7 +160,7 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
     // Controlled selected for TreeView
     const [selected, setSelected] = useState<string[] | undefined>(defaultSelected ?? []);
 
-    const scrollRef = useRef<any>([]);
+    const scrollRef = useRef<(HTMLLIElement | null)[]>([]);
     const [autoScrollAllowed, setAutoScrollAllowed] = useState<boolean>(true);
 
     /* Utilities */

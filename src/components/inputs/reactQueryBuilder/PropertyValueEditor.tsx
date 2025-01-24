@@ -80,7 +80,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     autoSelect
                     forcePopupIcon
                     renderInput={(params) => <TextField {...params} error={!valid} />}
-                    onChange={(event, value: any) => {
+                    onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
@@ -92,7 +92,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     size="small"
                     title={valueEditorProps?.title}
                     error={!valid}
-                    onChange={(event, value: any) => {
+                    onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
                     }}
                 >
@@ -112,7 +112,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     renderInput={(params) => <TextField {...params} error={!valid} />}
                     freeSolo
                     autoSelect
-                    onChange={(event, value: any) => {
+                    onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
                     size="small"

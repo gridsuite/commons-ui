@@ -14,16 +14,17 @@ import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
 import {
     explicitNamingFilterSchema,
-    FILTER_EQUIPMENTS_ATTRIBUTES,
     getExplicitNamingFilterEmptyFormData,
 } from './explicitNaming/ExplicitNamingFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
 import yup from '../../utils/yupConfig';
 import { FilterForm } from './FilterForm';
-import { EXPERT_FILTER_QUERY, expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
+import { expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { ElementExistsType } from '../../utils/types/elementType';
 import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
+import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
+import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
