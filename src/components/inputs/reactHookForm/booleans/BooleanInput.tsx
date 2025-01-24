@@ -7,13 +7,13 @@
 
 import { ChangeEvent, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { Checkbox, FormControlLabel, Switch } from '@mui/material';
+import { Checkbox, CheckboxProps, FormControlLabel, Switch, SwitchProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 
 export interface BooleanInputProps {
     name: string;
     label?: string;
-    formProps?: any;
+    formProps?: SwitchProps | CheckboxProps;
     Input: typeof Switch | typeof Checkbox;
 }
 

@@ -6,3 +6,4 @@
  */
 export * from './ExplicitNamingFilterEditionDialog';
 export * from './ExplicitNamingFilterForm';
+export * from './ExplicitNamingFilterConstants';

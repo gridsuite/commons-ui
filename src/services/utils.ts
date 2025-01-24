@@ -7,6 +7,13 @@
 
 import { getUserToken } from '../redux/commonStore';
 
+export interface BackendFetchInit {
+    method: string;
+    headers?: HeadersInit;
+    body?: string | FormData;
+    signal?: AbortSignal;
+}
+
 const parseError = (text: string) => {
     try {
         return JSON.parse(text);
@@ -15,7 +22,7 @@ const parseError = (text: string) => {
     }
 };
 
-const prepareRequest = (init: any, token?: string) => {
+const prepareRequest = (init: BackendFetchInit, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
         throw new TypeError(`First argument of prepareRequest is not an object : ${typeof init}`);
     }
@@ -26,7 +33,7 @@ const prepareRequest = (init: any, token?: string) => {
     return initCopy;
 };
 
-const handleError = (response: any) => {
+const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
@@ -38,22 +45,22 @@ const handleError = (response: any) => {
             customError.status = errorJson.status;
         } else {
             customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
-            customError.status = response.status;
+            customError.status = response.statusText;
         }
         throw customError;
     });
 };
 
-const safeFetch = (url: string, initCopy: any) => {
+const safeFetch = (url: string, initCopy: BackendFetchInit) => {
     return fetch(url, initCopy).then((response) => (response.ok ? response : handleError(response)));
 };
 
-export const backendFetch = (url: string, init: any, token?: string) => {
+export const backendFetch = (url: string, init: BackendFetchInit, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy);
 };
 
-export const backendFetchJson = (url: string, init: any, token?: string) => {
+export const backendFetchJson = (url: string, init: BackendFetchInit, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy).then((safeResponse) => (safeResponse.status === 204 ? null : safeResponse.json()));
 };

@@ -11,7 +11,7 @@ import { identity } from '../utils/functions';
 
 export interface SliderInputProps extends SliderProps {
     name: string;
-    onValueChanged: (value: any) => void;
+    onValueChanged: (value: number | number[]) => void;
 }
 
 export function SliderInput({ name, min, max, step, size = 'small', onValueChanged = identity }: SliderInputProps) {

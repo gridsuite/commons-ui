@@ -15,13 +15,14 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { saveExplicitNamingFilter } from '../utils/filterApi';
-import { explicitNamingFilterSchema, FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterForm';
+import { explicitNamingFilterSchema } from './ExplicitNamingFilterForm';
 
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { FilterEditionProps } from '../filter.type';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
+import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 
 const formSchema = yup
     .object()
@@ -75,7 +76,7 @@ export function ExplicitNamingFilterEditionDialog({
                         [FieldConstants.DESCRIPTION]: description,
                         [FieldConstants.FILTER_TYPE]: FilterType.EXPLICIT_NAMING.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
-                        [FILTER_EQUIPMENTS_ATTRIBUTES]: response[FILTER_EQUIPMENTS_ATTRIBUTES].map((row: any) => ({
+                        [FILTER_EQUIPMENTS_ATTRIBUTES]: response[FILTER_EQUIPMENTS_ATTRIBUTES]?.map((row: any) => ({
                             [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
                             ...row,
                         })),

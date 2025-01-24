@@ -47,7 +47,7 @@ export function TranslatedValueEditor(props: ValueEditorProps) {
             options={Object.keys(translatedValuesAutocomplete)}
             title={title}
             getOptionLabel={(code: string) => translatedValuesAutocomplete[code]}
-            onChange={(event, newValue: any) => handleOnChange(newValue)}
+            onChange={(event, newValue) => handleOnChange(newValue)}
             multiple
             fullWidth
             renderInput={(params) => <TextField {...params} error={!valid} />}
