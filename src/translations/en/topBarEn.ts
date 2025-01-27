@@ -6,17 +6,18 @@
  */
 
 export const topBarEn = {
-    'top-bar/settings': 'Settings',
+    'top-bar/userSettings': 'User settings',
     'top-bar/logout': 'Logout',
     'top-bar/goFullScreen': 'Full screen',
     'top-bar/exitFullScreen': 'Exit full screen mode',
-    'top-bar/user-information': 'User information',
+    'top-bar/userInformation': 'User information',
     'top-bar/about': 'About',
     'top-bar/displayMode': 'Display mode',
     'top-bar/equipmentLabel': 'Equipment label',
     'top-bar/id': 'Id',
     'top-bar/name': 'Name',
     'top-bar/language': 'Language',
+    'top-bar/developerModeWarning': 'Developer mode: Some features are incomplete and may not work as expected.',
 
     'about-dialog/title': 'About',
     'about-dialog/version': 'Version {version}',
