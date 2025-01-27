@@ -27,8 +27,7 @@ import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/Mod
 import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
-
-export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
+import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;

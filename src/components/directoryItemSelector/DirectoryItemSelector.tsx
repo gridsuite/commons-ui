@@ -65,7 +65,7 @@ function refreshedUpNodes(
     const parent = nodeMap[newElement.parentUuid];
     const nextChildren = parent.children.map((c) => (c.elementUuid === newElement.elementUuid ? newElement : c));
     const nextParent = { ...parent, children: nextChildren };
-    return [newElement, ...refreshedUpNodes(nodeMap, nextParent)];
+    return [newElement, ...refreshedUpNodes(nodeMap, nextParent as ElementAttributesBase)];
 }
 
 /**
@@ -148,19 +148,9 @@ function updatedTree(
 }
 
 export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
-    open: boolean;
     types: string[];
     equipmentTypes?: string[];
-    itemFilter?: any;
-    classes?: any;
-    contentText?: string;
-    defaultExpanded?: string[];
-    defaultSelected?: string[];
-    validationButtonText?: string;
-    className?: string;
-    cancelButtonProps?: any;
-    onlyLeaves?: boolean;
-    multiselect?: boolean;
+    itemFilter?: (val: ElementAttributes) => boolean;
     expanded?: UUID[];
     selected?: UUID[];
 }
@@ -196,7 +186,7 @@ export function DirectoryItemSelector({
     const { snackError } = useSnackMessage();
     const contentFilter = useCallback(() => new Set([ElementType.DIRECTORY, ...types]), [types]);
 
-    const convertChildren = useCallback((children: any[]): any[] => {
+    const convertChildren = useCallback((children: ElementAttributes[]): TreeViewFinderNodeProps[] => {
         return children.map((e) => {
             return {
                 id: e.elementUuid,
@@ -210,7 +200,7 @@ export function DirectoryItemSelector({
     }, []);
 
     const convertRoots = useCallback(
-        (newRoots: ElementAttributes[]) => {
+        (newRoots: ElementAttributes[]): TreeViewFinderNodeProps[] => {
             return newRoots.map((e) => {
                 return {
                     id: e.elementUuid,
@@ -258,16 +248,18 @@ export function DirectoryItemSelector({
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
                 .then((children) => {
-                    const childrenMatchedTypes = children.filter((item: any) => contentFilter().has(item.type));
+                    const childrenMatchedTypes = children.filter((item: ElementAttributes) =>
+                        contentFilter().has(item.type)
+                    );
 
                     if (childrenMatchedTypes.length > 0 && equipmentTypes && equipmentTypes.length > 0) {
                         fetchElementsInfos(
-                            childrenMatchedTypes.map((e: any) => e.elementUuid),
+                            childrenMatchedTypes.map((e: ElementAttributes) => e.elementUuid),
                             types,
                             equipmentTypes
-                        ).then((childrenWithMetadata) => {
+                        ).then((childrenWithMetadata: ElementAttributes[]) => {
                             const filtredChildren = itemFilter
-                                ? childrenWithMetadata.filter((val: any) => {
+                                ? childrenWithMetadata.filter((val: ElementAttributes) => {
                                       // Accept every directory
                                       if (val.type === ElementType.DIRECTORY) {
                                           return true;

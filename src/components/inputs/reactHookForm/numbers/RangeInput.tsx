@@ -9,13 +9,14 @@ import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
 import { type ObjectSchema } from 'yup';
 import { FormControl, Grid, InputLabel } from '@mui/material';
+import { Theme } from '@mui/system';
 import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 
 const style = {
-    inputLegend: (theme: any) => ({
+    inputLegend: (theme: Theme) => ({
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
         backgroundColor: theme.palette.background.paper,
         padding: '0 8px 0 8px',
