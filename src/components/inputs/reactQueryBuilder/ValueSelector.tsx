@@ -11,5 +11,5 @@ import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
 
 export function ValueSelector(props: ValueSelectorProps) {
     const { options } = props;
-    return <MaterialValueSelector {...props} {...useSelectAppearance(options.length)} />;
+    return <MaterialValueSelector {...props} {...useSelectAppearance(options.length)} sx={{ border: 'none' }} />;
 }

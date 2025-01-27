@@ -12,7 +12,17 @@
 */
 export function useSelectAppearance(listLength: number) {
     if (listLength === 1) {
-        return { IconComponent: () => null, readOnly: true };
+        return {
+            IconComponent: () => null,
+            sx: {
+                boxShadow: 'none',
+                '.MuiOutlinedInput-notchedOutline': { border: 'none' },
+                pointerEvents: 'none',
+                border: 'none',
+            },
+            readOnly: true,
+            disableUnderline: true,
+        };
     }
-    return { IconComponent: undefined, readOnly: false };
+    return { IconComponent: undefined };
 }

@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
-import { Autocomplete, createFilterOptions, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, createFilterOptions, FilterOptionsState, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';
@@ -71,7 +71,26 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         [valueEditorProps]
     );
 
-    const filter = createFilterOptions<string>();
+    const filter = useMemo(() => {
+        return createFilterOptions<string>();
+    }, []);
+
+    const filterList = useCallback(
+        (options: string[], params: FilterOptionsState<string>) => {
+            let filtered = filter(options, params);
+            const { inputValue } = params;
+
+            const isExisting = options.some((option) => inputValue === option);
+            if (isExisting && options.length === 1 && options[0] === inputValue) {
+                // exact match : nothing to show
+                filtered = [];
+            } else if (inputValue !== '' && !isExisting) {
+                filtered.push(inputValue);
+            }
+            return filtered;
+        },
+        [filter]
+    );
 
     return (
         <Grid container spacing={1} item>
@@ -87,6 +106,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
+                    filterOptions={(options, params) => filterList(options, params)}
                 />
             </Grid>
             <Grid item xs="auto">
@@ -126,16 +146,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
                     size="small"
-                    filterOptions={(options, params) => {
-                        const filtered = filter(options, params);
-                        const { inputValue } = params;
-
-                        const isExisting = options.some((option) => inputValue === option.title);
-                        if (inputValue !== '' && !isExisting) {
-                            filtered.push(inputValue);
-                        }
-                        return filtered;
-                    }}
+                    filterOptions={(options, params) => filterList(options, params)}
                 />
             </Grid>
         </Grid>
