@@ -19,7 +19,7 @@ export const filterFr = {
     between: 'entre',
     in: 'dans',
     inFilter: 'dans le filtre',
-    notInFilter: "pas dans le filtre",
+    notInFilter: 'pas dans le filtre',
     emptyRule: 'Le filtre contient un champ vide',
     incorrectRule: 'Le filtre contient un champ incorrect',
     obsoleteFilter: "Ce filtre n'est plus supporté. Veuillez le supprimer ou changer son type d'équipement.",
