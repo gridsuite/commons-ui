@@ -18,7 +18,7 @@ export const topBarFr = {
     'top-bar/name': 'Nom',
     'top-bar/language': 'Langue',
     'top-bar/developerModeWarning':
-        'Mode développeur : Certaines fonctionnalités de sont pas complètes et peuvent de pas fonctionner comme prévu.',
+        'Mode développeur : Certaines fonctionnalités ne sont pas complètes et peuvent de pas fonctionner comme prévu.',
 
     'about-dialog/title': 'À propos',
     'about-dialog/version': 'Version {version}',
