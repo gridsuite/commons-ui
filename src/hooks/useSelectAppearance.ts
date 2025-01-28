@@ -24,5 +24,5 @@ export function useSelectAppearance(listLength: number) {
             disableUnderline: true,
         };
     }
-    return { IconComponent: undefined };
+    return {};
 }
