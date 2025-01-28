@@ -11,8 +11,20 @@ import { useController } from 'react-hook-form';
 
 export type MuiSelectInputProps = SelectProps & {
     name: string;
-    options: { id: string; label: string }[];
+    options: { id: string; label: string }[] | string[];
 };
+
+function renderMenuItem(option: { id: string; label: string } | string) {
+    const key = typeof option === 'string' ? option : option.id;
+    const value = key;
+    const label = typeof option === 'string' ? option : <FormattedMessage id={option.label} />;
+
+    return (
+        <MenuItem key={key} value={value}>
+            {label}
+        </MenuItem>
+    );
+}
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
 export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
@@ -24,11 +36,7 @@ export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps)
 
     return (
         <Select value={value} onChange={onChange} {...props}>
-            {options.map((option) => (
-                <MenuItem key={option.id ?? option.label} value={option.id ?? option}>
-                    <FormattedMessage id={option.label ?? option} />
-                </MenuItem>
-            ))}
+            {options.map(renderMenuItem)}
         </Select>
     );
 }
