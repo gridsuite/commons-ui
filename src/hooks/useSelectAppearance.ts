@@ -8,7 +8,7 @@
 /** Hooks used to modify appearance of Select as a readonly TextField,
     by hiding display button and setting readOnly prop to true
     if options list is only one element long.
-    P.S :  Not to used on AutoComplete.
+    P.S :  Do not use on AutoComplete.
 */
 export function useSelectAppearance(listLength: number) {
     if (listLength === 1) {
