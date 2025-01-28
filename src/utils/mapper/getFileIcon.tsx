@@ -29,12 +29,12 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
             return <NoteAltIcon sx={style} />;
         case ElementType.FILTER:
             return <ArticleIcon sx={style} />;
-        case ElementType.PARAMETERS:
         case ElementType.VOLTAGE_INIT_PARAMETERS:
         case ElementType.SECURITY_ANALYSIS_PARAMETERS:
         case ElementType.LOADFLOW_PARAMETERS:
         case ElementType.SENSITIVITY_PARAMETERS:
         case ElementType.SHORT_CIRCUIT_PARAMETERS:
+        case ElementType.NETWORK_VISUALIZATIONS_PARAMETERS:
             return <SettingsIcon sx={style} />;
         case ElementType.SPREADSHEET_CONFIG:
             return <CalculateIcon sx={style} />;

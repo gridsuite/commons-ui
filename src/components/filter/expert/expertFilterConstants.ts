@@ -26,6 +26,8 @@ export enum RULES {
     BETWEEN_RULE = 'betweenRule',
 }
 
+export const EXPERT_FILTER_QUERY = 'rules';
+
 export const EXPERT_FILTER_EQUIPMENTS = {
     SUBSTATION: {
         id: 'SUBSTATION',

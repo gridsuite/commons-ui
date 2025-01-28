@@ -56,11 +56,11 @@ export class NumericEditor implements ICellEditorComp {
         this.cancelBeforeStart = !!isNotANumber;
     }
 
-    static isBackspace(event: any) {
+    static isBackspace(event: KeyboardEvent) {
         return event.key === KEY_BACKSPACE;
     }
 
-    static isNavigationKey(event: any) {
+    static isNavigationKey(event: KeyboardEvent) {
         return event.key === 'ArrowLeft' || event.key === 'ArrowRight';
     }
 
@@ -92,7 +92,7 @@ export class NumericEditor implements ICellEditorComp {
         return charStr && !!/\d|,|\./.test(charStr);
     }
 
-    static isNumericKey(event: any) {
+    static isNumericKey(event: KeyboardEvent) {
         const charStr = event.key;
         return NumericEditor.isCharNumeric(charStr);
     }
