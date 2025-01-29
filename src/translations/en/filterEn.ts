@@ -23,7 +23,7 @@ export const filterEn = {
     emptyRule: 'Filter contains an empty field',
     incorrectRule: 'Filter contains an incorrect field',
     obsoleteFilter: 'This filter is no longer supported. Please remove it or change its equipment type.',
-    betweenRule: "Left value of 'between' criterium have to be lower than the right value",
+    betweenRule: "Left value of 'between' criterion have to be lower than the right value",
     emptyGroup: 'Filter contains an empty group. Consider removing it or adding criteria to this group',
     Hvdc: 'HVDC',
     'filter.expert': 'Criteria based',
