@@ -331,6 +331,8 @@ function AppContent({ language, onLanguageClick }) {
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
     const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
 
+    const [developerMode, setDeveloperMode] = useState(false);
+
     // Can't use lazy initializer because useMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(useMatch('/silent-renew-callback'));
 
@@ -812,6 +814,7 @@ function AppContent({ language, onLanguageClick }) {
             </div>
             <hr />
             <Crasher />
+            <Button onClick={() => setDeveloperMode(!developerMode)}>Toggle developer mode</Button>
         </div>
     );
 
@@ -825,7 +828,8 @@ function AppContent({ language, onLanguageClick }) {
                             appName="Demo"
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
-                            onParametersClick={() => console.log('settings')}
+                            onUserSettingsClick={() => console.log('user settings')}
+                            developerMode={developerMode}
                             onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
