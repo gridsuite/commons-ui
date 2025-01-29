@@ -51,7 +51,7 @@ it('renders', () => {
                     appName="Demo"
                     appColor="#808080"
                     appLogo={<PowsyblLogo />}
-                    onParametersClick={() => {}}
+                    onUserSettingsClick={() => {}}
                     onLogoutClick={() => {}}
                     onLogoClick={() => {}}
                     user={{

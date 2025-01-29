@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import '@mui/material/Switch';
 
 // used to customize mui theme
 // https://mui.com/material-ui/customization/theming/#typescript
@@ -17,5 +18,11 @@ declare module '@mui/material/styles/createTheme' {
                 background: string;
             };
         };
+    }
+}
+
+declare module '@mui/material/Switch' {
+    interface SwitchPropsSizeOverrides {
+        large: true;
     }
 }

@@ -17,7 +17,7 @@ export const useNotificationsListener = (
         listenerCallbackOnReopen,
         propsId,
     }: {
-        listenerCallbackMessage?: (event: MessageEvent<any>) => void;
+        listenerCallbackMessage?: (event: MessageEvent) => void;
         listenerCallbackOnReopen?: () => void;
         propsId?: string;
     }

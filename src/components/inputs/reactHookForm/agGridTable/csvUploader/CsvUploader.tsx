@@ -25,7 +25,7 @@ import { CancelButton } from '../../utils/CancelButton';
 export interface CsvUploaderProps {
     name: string;
     onClose: () => void;
-    open: true;
+    open: boolean;
     title: string[];
     fileHeaders: string[];
     fileName: string;

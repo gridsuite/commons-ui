@@ -8,7 +8,7 @@
 import { Chip, FormControl, Grid, IconButton, Theme, Tooltip } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import { useCallback, useMemo, useState } from 'react';
-import { useController, useFieldArray } from 'react-hook-form';
+import { FieldValues, useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { UUID } from 'crypto';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
@@ -23,6 +23,7 @@ import { OverflowableText } from '../../overflowableText';
 import { MidFormError } from './errorManagement/MidFormError';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
+import { ElementAttributes } from '../../../utils';
 
 export const NAME = 'name';
 
@@ -59,7 +60,7 @@ export interface DirectoryItemsInputProps {
     name: string;
     elementType: string;
     equipmentTypes?: string[];
-    itemFilter?: any;
+    itemFilter?: (val: ElementAttributes) => boolean;
     titleId?: string;
     hideErrorMessage?: boolean;
     onRowChanged?: (a: boolean) => void;
@@ -113,14 +114,14 @@ export function DirectoryItemsInput({
             // if we select a chip and return a new values, we remove it to be replaced
             if (selected?.length > 0 && values?.length > 0) {
                 selected.forEach((chip) => {
-                    remove(getValues(name).findIndex((item: any) => item.id === chip));
+                    remove(getValues(name).findIndex((item: FieldValues) => item.id === chip));
                 });
             }
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
                 // Check if the element is already present
-                if (getValues(name).find((v: any) => v?.id === otherElementAttributes.id) !== undefined) {
+                if (getValues(name).find((v: FieldValues) => v?.id === otherElementAttributes.id) !== undefined) {
                     snackError({
                         messageTxt: '',
                         headerId: 'directory_items_input/ElementAlreadyUsed',
@@ -148,10 +149,10 @@ export function DirectoryItemsInput({
 
     const handleChipClick = useCallback(
         (index: number) => {
-            const chips = getValues(name) as any[];
+            const chips = getValues(name);
             const chip = chips.at(index)?.id;
             if (chip) {
-                fetchDirectoryElementPath(chip).then((response: any[]) => {
+                fetchDirectoryElementPath(chip).then((response: ElementAttributes[]) => {
                     const path = response.filter((e) => e.elementUuid !== chip).map((e) => e.elementUuid);
 
                     setExpanded(path);

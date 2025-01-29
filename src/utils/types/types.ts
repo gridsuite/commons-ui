@@ -24,9 +24,14 @@ export type ElementAttributes = {
     lastModificationDate: string;
     lastModifiedBy: string; // id
     lastModifiedByLabel?: string; // enrich with user identity server
-    children: any[];
+    children: ElementAttributes[];
     parentUuid: null | UUID;
-    specificMetadata: Record<string, object>;
+    specificMetadata: {
+        type: string;
+        equipmentType: string;
+        sheetType?: string;
+        format?: string;
+    };
     uploading?: boolean;
     hasMetadata?: boolean;
     subtype?: string;

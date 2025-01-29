@@ -14,7 +14,6 @@ export * from './elementSearch';
 export * from './filter';
 export * from './flatParameters';
 export * from './inputs';
-export * from './muiVirtualizedTable';
 export * from './multipleSelectionDialog';
 export * from './overflowableText';
 export * from './snackbarProvider';

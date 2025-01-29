@@ -44,11 +44,8 @@ import {
     testDataTree,
 } from '../data/TreeViewFinder';
 
-import LOGS_JSON from '../data/ReportViewer';
-
 import searchEquipments from '../data/EquipmentSearchBar';
 
-import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
 
 import InputsTab from './InputsTab';
@@ -333,6 +330,8 @@ function AppContent({ language, onLanguageClick }) {
 
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
     const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
+
+    const [developerMode, setDeveloperMode] = useState(false);
 
     // Can't use lazy initializer because useMatch is a hook
     const [initialMatchSilentRenewCallbackUrl] = useState(useMatch('/silent-renew-callback'));
@@ -815,6 +814,7 @@ function AppContent({ language, onLanguageClick }) {
             </div>
             <hr />
             <Crasher />
+            <Button onClick={() => setDeveloperMode(!developerMode)}>Toggle developer mode</Button>
         </div>
     );
 
@@ -828,7 +828,8 @@ function AppContent({ language, onLanguageClick }) {
                             appName="Demo"
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
-                            onParametersClick={() => console.log('settings')}
+                            onUserSettingsClick={() => console.log('user settings')}
+                            developerMode={developerMode}
                             onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
@@ -876,12 +877,10 @@ function AppContent({ language, onLanguageClick }) {
                                 <div>
                                     <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />
-                                        <Tab label="virtual table" />
                                         <Tab label="parameters" />
                                         <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 1 && <TableTab />}
                                     {tabIndex === 2 && <FlatParametersTab />}
                                     {tabIndex === 3 && <InputsTab />}
                                 </div>

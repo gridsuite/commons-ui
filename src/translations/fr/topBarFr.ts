@@ -6,7 +6,7 @@
  */
 
 export const topBarFr = {
-    'top-bar/settings': 'Paramètres',
+    'top-bar/userSettings': 'Paramètres utilisateur',
     'top-bar/logout': 'Se déconnecter',
     'top-bar/goFullScreen': 'Plein écran',
     'top-bar/exitFullScreen': 'Quitter mode plein écran',
@@ -17,6 +17,8 @@ export const topBarFr = {
     'top-bar/id': 'Id',
     'top-bar/name': 'Nom',
     'top-bar/language': 'Langue',
+    'top-bar/developerModeWarning':
+        'Mode développeur : Certaines fonctionnalités ne sont pas complètes et peuvent ne pas fonctionner comme prévu.',
 
     'about-dialog/title': 'À propos',
     'about-dialog/version': 'Version {version}',
