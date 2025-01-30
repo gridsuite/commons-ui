@@ -71,26 +71,22 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         [valueEditorProps]
     );
 
-    const filter = useMemo(() => {
-        return createFilterOptions<string>();
+    const filterOptions = useCallback((options: string[], params: FilterOptionsState<string>) => {
+        const filter = createFilterOptions<string>();
+        const filteredOptions = filter(options, params);
+        const { inputValue } = params;
+
+        const isExisting = options.some((option) => inputValue === option);
+        if (isExisting && options.length === 1 && options[0] === inputValue) {
+            // exact match : nothing to show
+            return [];
+        }
+
+        if (inputValue !== '' && !isExisting) {
+            filteredOptions.push(inputValue);
+        }
+        return filteredOptions;
     }, []);
-
-    const filterList = useCallback(
-        (options: string[], params: FilterOptionsState<string>) => {
-            let filtered = filter(options, params);
-            const { inputValue } = params;
-
-            const isExisting = options.some((option) => inputValue === option);
-            if (isExisting && options.length === 1 && options[0] === inputValue) {
-                // exact match : nothing to show
-                filtered = [];
-            } else if (inputValue !== '' && !isExisting) {
-                filtered.push(inputValue);
-            }
-            return filtered;
-        },
-        [filter]
-    );
 
     return (
         <Grid container spacing={1} item>
@@ -106,7 +102,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
-                    filterOptions={(options, params) => filterList(options, params)}
+                    filterOptions={filterOptions}
                 />
             </Grid>
             <Grid item xs="auto">
@@ -146,7 +142,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
                     size="small"
-                    filterOptions={(options, params) => filterList(options, params)}
+                    filterOptions={filterOptions}
                 />
             </Grid>
         </Grid>
