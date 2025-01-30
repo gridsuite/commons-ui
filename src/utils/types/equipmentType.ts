@@ -78,8 +78,17 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
+export enum HvdcType {
+    LCC = 'LCC',
+    VSC = 'VSC',
+    ALL = 'ALL',
+}
+
 // Must be equivalent as the back enum
-export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+export const EQUIPMENT_TYPE: Record<
+    EquipmentType,
+    { name: EquipmentType; subtype?: HvdcType; tagLabel: string } | undefined
+> = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
@@ -102,6 +111,7 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
     },
     [EquipmentType.HVDC_LINE]: {
         name: EquipmentType.HVDC_LINE,
+        subtype: HvdcType.ALL,
         tagLabel: 'equipment_search/hvdcLineTag',
     },
     [EquipmentType.GENERATOR]: {
