@@ -8,8 +8,10 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Autocomplete, TextField } from '@mui/material';
+import { useIntl } from 'react-intl';
 import { useConvertValue } from './hooks/useConvertValue';
 import { useValid } from './hooks/useValid';
+import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
 
 export function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
@@ -18,6 +20,9 @@ export function TextValueEditor(props: ValueEditorProps) {
 
     const { value, handleOnChange, title } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
+    const customFilterOptions = useCustomFilterOptions();
+    const intl = useIntl();
+
     if (!Array.isArray(value)) {
         return <MaterialValueEditor {...props} />;
     }
@@ -29,9 +34,16 @@ export function TextValueEditor(props: ValueEditorProps) {
             onChange={(event, newValue: any) => handleOnChange(newValue)}
             multiple
             fullWidth
-            renderInput={(params) => <TextField {...params} error={!valid} />}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    error={!valid}
+                    placeholder={value?.length > 0 ? '' : intl.formatMessage({ id: 'valuesList' })}
+                />
+            )}
             size="small"
             title={title}
+            filterOptions={customFilterOptions}
         />
     );
 }

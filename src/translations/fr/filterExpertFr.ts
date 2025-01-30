@@ -188,4 +188,5 @@ export const filterExpertFr = {
     changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur tous les critères déjà créés dans le groupe.",
     lowShortCircuitCurrentLimit: 'Limite ICC min',
     highShortCircuitCurrentLimit: 'Limite ICC max',
+    valuesList: 'Liste de valeurs',
 };

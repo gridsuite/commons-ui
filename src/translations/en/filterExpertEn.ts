@@ -189,4 +189,5 @@ export const filterExpertEn = {
         'The operator will be changed and will be applied to all the criteria already created in the group.',
     lowShortCircuitCurrentLimit: 'Low short-circuit current limit',
     highShortCircuitCurrentLimit: 'High short-circuit current limit',
+    valuesList: 'Values list',
 };
