@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
-import { Autocomplete, createFilterOptions, FilterOptionsState, MenuItem, Select, TextField } from '@mui/material';
+import { Autocomplete, MenuItem, Select, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';
@@ -17,6 +17,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
 import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
+import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
@@ -71,23 +72,6 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         [valueEditorProps]
     );
 
-    const filterOptions = useCallback((options: string[], params: FilterOptionsState<string>) => {
-        const filter = createFilterOptions<string>();
-        const filteredOptions = filter(options, params);
-        const { inputValue } = params;
-
-        const isExisting = options.some((option) => inputValue === option);
-        if (isExisting && options.length === 1 && options[0] === inputValue) {
-            // exact match : nothing to show
-            return [];
-        }
-
-        if (inputValue !== '' && !isExisting) {
-            filteredOptions.push(inputValue);
-        }
-        return filteredOptions;
-    }, []);
-
     return (
         <Grid container spacing={1} item>
             <Grid item xs={5}>
@@ -102,7 +86,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
-                    filterOptions={filterOptions}
+                    filterOptions={useCustomFilterOptions()}
                 />
             </Grid>
             <Grid item xs="auto">
@@ -142,7 +126,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
                     size="small"
-                    filterOptions={filterOptions}
+                    filterOptions={useCustomFilterOptions()}
                 />
             </Grid>
         </Grid>
