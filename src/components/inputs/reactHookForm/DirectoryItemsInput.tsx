@@ -67,6 +67,7 @@ export interface DirectoryItemsInputProps {
     onChange?: (e: any) => void;
     disable?: boolean;
     labelRequiredFromContext?: boolean;
+    itemSelectorKey?: string;
 }
 
 export function DirectoryItemsInput({
@@ -81,6 +82,7 @@ export function DirectoryItemsInput({
     onChange,
     disable = false,
     labelRequiredFromContext = true,
+    itemSelectorKey = 'defaultKey',
 }: DirectoryItemsInputProps) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -221,6 +223,7 @@ export function DirectoryItemsInput({
             </FormControl>
             {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}
             <DirectoryItemSelector
+                key={itemSelectorKey}
                 open={directoryItemSelectorOpen}
                 onClose={addElements}
                 types={types}
