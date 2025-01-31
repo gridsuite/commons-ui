@@ -194,12 +194,12 @@ export const OPERATOR_OPTIONS = {
     IS_PART_OF: {
         name: OperatorType.IS_PART_OF,
         customName: OperatorType.IS_PART_OF,
-        label: 'isPartOf',
+        label: 'inFilter',
     },
     IS_NOT_PART_OF: {
         name: OperatorType.IS_NOT_PART_OF,
         customName: OperatorType.IS_NOT_PART_OF,
-        label: 'isNotPartOf',
+        label: 'notInFilter',
     },
 };
 
