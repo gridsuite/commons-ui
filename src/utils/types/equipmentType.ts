@@ -78,6 +78,11 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
+export enum HvdcType {
+    LCC = 'LCC',
+    VSC = 'VSC',
+}
+
 // Must be equivalent as the back enum
 export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
     [EquipmentType.SUBSTATION]: {
