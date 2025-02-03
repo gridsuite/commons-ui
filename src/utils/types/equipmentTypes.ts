@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { HvdcType } from './equipmentType';
 
 export const Line = { label: 'Lines', type: 'LINE' };
 export const Generator = { label: 'Generators', type: 'GENERATOR' };
@@ -23,7 +22,7 @@ export const VSC = {
     label: 'VscConverterStations',
     type: 'VSC_CONVERTER_STATION',
 };
-export const Hvdc = { label: 'HvdcLines', type: 'HVDC_LINE', subtype: HvdcType };
+export const Hvdc = { label: 'HvdcLines', type: 'HVDC_LINE' };
 export const BusBar = { label: 'BusBarSections', type: 'BUSBAR_SECTION' };
 export const TwoWindingTransfo = {
     label: 'TwoWindingsTransformers',
