@@ -16,6 +16,8 @@ import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
+import { useSelectAppearance } from '../../../hooks/useSelectAppearance';
+import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
 
 const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN];
 
@@ -71,7 +73,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     );
 
     return (
-        <Grid container item spacing={1}>
+        <Grid container spacing={1} item>
             <Grid item xs={5}>
                 <Autocomplete
                     value={propertyName ?? ''}
@@ -84,9 +86,10 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
+                    filterOptions={useCustomFilterOptions()}
                 />
             </Grid>
-            <Grid item xs={2.5}>
+            <Grid item xs="auto">
                 <Select
                     value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
                     size="small"
@@ -95,6 +98,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
                     }}
+                    {...useSelectAppearance(PROPERTY_VALUE_OPERATORS.length)}
                 >
                     {PROPERTY_VALUE_OPERATORS.map((operator) => (
                         <MenuItem key={operator.customName} value={operator.customName}>
@@ -103,19 +107,26 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     ))}
                 </Select>
             </Grid>
-            <Grid item xs={4.5}>
+            <Grid item xs>
                 <Autocomplete
                     value={propertyValues ?? []}
                     options={predefinedValues ?? []}
                     title={valueEditorProps?.title}
                     multiple
-                    renderInput={(params) => <TextField {...params} error={!valid} />}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            error={!valid}
+                            placeholder={propertyValues?.length > 0 ? '' : intl.formatMessage({ id: 'valuesList' })}
+                        />
+                    )}
                     freeSolo
                     autoSelect
                     onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_VALUES, value);
                     }}
                     size="small"
+                    filterOptions={useCustomFilterOptions()}
                 />
             </Grid>
         </Grid>

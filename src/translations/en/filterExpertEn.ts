@@ -186,7 +186,8 @@ export const filterExpertEn = {
     YupNotTypeNumber: 'This field only accepts numeric values',
     YupNotTypeDefault: 'Field value format is incorrect',
     changeOperatorMessage:
-        'The operator will be changed and will be applied to all the rules already created in the group.',
+        'The operator will be changed and will be applied to all the criteria already created in the group.',
     lowShortCircuitCurrentLimit: 'Low short-circuit current limit',
     highShortCircuitCurrentLimit: 'High short-circuit current limit',
+    valuesList: 'Values list',
 };
