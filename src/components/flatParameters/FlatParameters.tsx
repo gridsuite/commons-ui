@@ -50,7 +50,7 @@ const IntegerRE = /^-?\d*$/;
 const ListRE = /^\[(.*)]$/;
 const sepRE = /[, ]/;
 
-export function extractDefault(paramDescription: any) {
+export function extractDefault(paramDescription: Parameter) {
     const d = paramDescription.defaultValue;
     if (paramDescription.type === 'BOOLEAN') {
         return !!d;
@@ -95,7 +95,7 @@ export type Parameter = {
     type: 'BOOLEAN' | 'DOUBLE' | 'INTEGER' | 'STRING_LIST' | 'STRING';
     description?: string;
     name: string;
-    possibleValues: any;
+    possibleValues: string[];
     defaultValue: any;
 };
 

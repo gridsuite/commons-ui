@@ -26,6 +26,8 @@ export enum RULES {
     BETWEEN_RULE = 'betweenRule',
 }
 
+export const EXPERT_FILTER_QUERY = 'rules';
+
 export const EXPERT_FILTER_EQUIPMENTS = {
     SUBSTATION: {
         id: 'SUBSTATION',
@@ -192,12 +194,12 @@ export const OPERATOR_OPTIONS = {
     IS_PART_OF: {
         name: OperatorType.IS_PART_OF,
         customName: OperatorType.IS_PART_OF,
-        label: 'isPartOf',
+        label: 'inFilter',
     },
     IS_NOT_PART_OF: {
         name: OperatorType.IS_NOT_PART_OF,
         customName: OperatorType.IS_NOT_PART_OF,
-        label: 'isNotPartOf',
+        label: 'notInFilter',
     },
 };
 

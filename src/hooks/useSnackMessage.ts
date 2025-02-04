@@ -13,7 +13,7 @@ import { useIntlRef } from './useIntlRef';
 interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
-    messageValues?: { [key: string]: string };
+    messageValues?: Record<string, string>;
     headerTxt?: string;
     headerId?: string;
     headerValues?: Record<string, string>;
@@ -26,13 +26,18 @@ export interface UseSnackMessageReturn {
     closeSnackbar: typeof closeSnackbarFromNotistack;
 }
 
-function checkInputs(txt?: string, id?: string, values?: any) {
+function checkInputs(txt?: string, id?: string, values?: SnackInputs['messageValues']) {
     if (txt && (id || values)) {
         console.warn('Snack inputs should be [*Txt] OR [*Id, *Values]');
     }
 }
 
-function checkAndTranslateIfNecessary(intlRef: MutableRefObject<IntlShape>, txt?: string, id?: string, values?: any) {
+function checkAndTranslateIfNecessary(
+    intlRef: MutableRefObject<IntlShape>,
+    txt?: string,
+    id?: string,
+    values?: SnackInputs['messageValues']
+) {
     checkInputs(txt, id, values);
     return (
         txt ??

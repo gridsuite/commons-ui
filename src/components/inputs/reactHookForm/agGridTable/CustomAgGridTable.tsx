@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, useTheme } from '@mui/material';
@@ -15,15 +15,6 @@ import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-
-export const ROW_DRAGGING_SELECTION_COLUMN_DEF = [
-    {
-        rowDrag: true,
-        headerCheckboxSelection: true,
-        checkboxSelection: true,
-        maxWidth: 50,
-    },
-];
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -92,7 +83,7 @@ export interface CustomAgGridTableProps {
     defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
-    suppressRowClickSelection: boolean;
+    rowSelection?: AgGridReactProps['rowSelection'];
     alwaysShowVerticalScroll: boolean;
     stopEditingWhenCellsLoseFocus: boolean;
 }
@@ -106,11 +97,11 @@ export function CustomAgGridTable({
     defaultColDef,
     pagination,
     paginationPageSize,
-    suppressRowClickSelection,
+    rowSelection,
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
     ...props
-}: CustomAgGridTableProps) {
+}: Readonly<CustomAgGridTableProps>) {
     // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
     const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
@@ -243,11 +234,10 @@ export function CustomAgGridTable({
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
-                    rowSelection="multiple"
+                    rowSelection={rowSelection ?? 'multiple'}
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    suppressBrowserResizeObserver
                     columnDefs={columnDefs}
                     detailRowAutoHeight
                     onSelectionChanged={() => {
@@ -259,9 +249,9 @@ export function CustomAgGridTable({
                     getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
                     pagination={pagination}
                     paginationPageSize={paginationPageSize}
-                    suppressRowClickSelection={suppressRowClickSelection}
                     alwaysShowVerticalScroll={alwaysShowVerticalScroll}
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
+                    theme="legacy"
                     {...props}
                 />
             </Box>

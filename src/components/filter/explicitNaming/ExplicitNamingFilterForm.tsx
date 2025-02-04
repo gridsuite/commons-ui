@@ -13,10 +13,7 @@ import { v4 as uuid4 } from 'uuid';
 import { UUID } from 'crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
-import {
-    CustomAgGridTable,
-    ROW_DRAGGING_SELECTION_COLUMN_DEF,
-} from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
+import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
@@ -30,8 +27,7 @@ import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/Mod
 import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
-
-export const FILTER_EQUIPMENTS_ATTRIBUTES = 'filterEquipmentsAttributes';
+import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -129,11 +125,11 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
 
     const columnDefs = useMemo(() => {
         const newColumnDefs: any[] = [
-            ...ROW_DRAGGING_SELECTION_COLUMN_DEF,
             {
                 headerName: intl.formatMessage({
                     id: FieldConstants.EQUIPMENT_ID,
                 }),
+                rowDrag: true,
                 field: FieldConstants.EQUIPMENT_ID,
                 editable: true,
                 singleClickEdit: true,
@@ -246,7 +242,12 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                     makeDefaultRowData={makeDefaultRowData}
                     pagination
                     paginationPageSize={100}
-                    suppressRowClickSelection
+                    rowSelection={{
+                        mode: 'multiRow',
+                        enableClickSelection: false,
+                        checkboxes: true,
+                        headerCheckbox: true,
+                    }}
                     alwaysShowVerticalScroll
                     stopEditingWhenCellsLoseFocus
                     csvProps={{

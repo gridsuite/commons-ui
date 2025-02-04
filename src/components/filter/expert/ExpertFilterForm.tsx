@@ -19,6 +19,7 @@ import {
     COMBINATOR_OPTIONS,
     EXPERT_FILTER_EQUIPMENTS,
     EXPERT_FILTER_FIELDS,
+    EXPERT_FILTER_QUERY,
     OPERATOR_OPTIONS,
     RULES,
 } from './expertFilterConstants';
@@ -43,8 +44,6 @@ yup.setLocale({
         },
     },
 });
-
-export const EXPERT_FILTER_QUERY = 'rules';
 
 function isSupportedEquipmentType(equipmentType: string): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)

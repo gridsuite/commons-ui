@@ -7,7 +7,6 @@
 
 import { MouseEvent, PropsWithChildren, ReactNode, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-
 import {
     AppBar,
     Box,
@@ -33,13 +32,13 @@ import {
     Apps as AppsIcon,
     ArrowDropDown as ArrowDropDownIcon,
     ArrowDropUp as ArrowDropUpIcon,
+    Badge as BadgeIcon,
     Brightness3 as Brightness3Icon,
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
     ManageAccounts,
     Person as PersonIcon,
-    Settings as SettingsIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/system';
@@ -58,6 +57,7 @@ import {
     LANG_SYSTEM,
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
+import MessageBanner from './MessageBanner';
 
 const styles = {
     grow: {
@@ -170,7 +170,7 @@ function abbreviationFromUserName(name: string) {
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &
     Omit<AboutDialogProps, 'open' | 'onClose'> & {
-        onParametersClick?: () => void;
+        onUserSettingsClick?: () => void;
         onLogoClick: GridLogoProps['onClick'];
         user?: User;
         onAboutClick?: () => void;
@@ -182,6 +182,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         equipmentLabelling?: boolean;
         onLanguageClick: (value: GsLang) => void;
         language: GsLang;
+        developerMode?: boolean;
     };
 
 export function TopBar({
@@ -191,7 +192,7 @@ export function TopBar({
     appVersion,
     appLicense,
     logoAboutDialog,
-    onParametersClick,
+    onUserSettingsClick,
     onLogoutClick,
     onLogoClick,
     user,
@@ -202,6 +203,7 @@ export function TopBar({
     additionalModulesPromise,
     onThemeClick,
     theme,
+    developerMode,
     onEquipmentLabellingClick,
     equipmentLabelling,
     onLanguageClick,
@@ -231,10 +233,10 @@ export function TopBar({
         setAnchorElAppsMenu(null);
     };
 
-    const onParametersClicked = () => {
+    const onUserSettingsClicked = () => {
         setAnchorElSettingsMenu(null);
-        if (onParametersClick) {
-            onParametersClick();
+        if (onUserSettingsClick) {
+            onUserSettingsClick();
         }
     };
 
@@ -287,6 +289,11 @@ export function TopBar({
     return (
         // @ts-expect-error appBar style is not defined
         <AppBar position="static" color="default" sx={styles.appBar}>
+            {user && developerMode && (
+                <MessageBanner>
+                    <FormattedMessage id="top-bar/developerModeWarning" defaultMessage="Developer mode" />
+                </MessageBanner>
+            )}
             <Toolbar>
                 {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
@@ -392,6 +399,58 @@ export function TopBar({
                                             </ListItemText>
                                         </StyledMenuItem>
 
+                                        {/* User information */}
+                                        {!isHiddenUserInformation() && (
+                                            <StyledMenuItem
+                                                style={{ opacity: '1' }}
+                                                onClick={onUserInformationDialogClicked}
+                                            >
+                                                <CustomListItemIcon>
+                                                    <BadgeIcon fontSize="small" />
+                                                </CustomListItemIcon>
+                                                <ListItemText>
+                                                    <Typography sx={styles.sizeLabel}>
+                                                        <FormattedMessage
+                                                            id="top-bar/userInformation"
+                                                            defaultMessage="User information"
+                                                        />
+                                                    </Typography>
+                                                </ListItemText>
+                                            </StyledMenuItem>
+                                        )}
+
+                                        {/* User settings */}
+                                        <StyledMenuItem onClick={onUserSettingsClicked} sx={styles.borderBottom}>
+                                            <CustomListItemIcon>
+                                                <ManageAccounts fontSize="small" />
+                                            </CustomListItemIcon>
+                                            <ListItemText>
+                                                <Typography sx={styles.sizeLabel}>
+                                                    <FormattedMessage
+                                                        id="top-bar/userSettings"
+                                                        defaultMessage="Settings"
+                                                    />
+                                                </Typography>
+                                            </ListItemText>
+                                        </StyledMenuItem>
+
+                                        {/* About */}
+                                        {/* If the callback onAboutClick is undefined, we open default about dialog */}
+                                        <StyledMenuItem
+                                            sx={styles.borderBottom}
+                                            style={{ opacity: '1' }}
+                                            onClick={onAboutClicked}
+                                        >
+                                            <CustomListItemIcon>
+                                                <HelpOutlineIcon fontSize="small" />
+                                            </CustomListItemIcon>
+                                            <ListItemText>
+                                                <Typography sx={styles.sizeLabel}>
+                                                    <FormattedMessage id="top-bar/about" defaultMessage="About" />
+                                                </Typography>
+                                            </ListItemText>
+                                        </StyledMenuItem>
+
                                         {/* Display mode */}
                                         <StyledMenuItem
                                             disabled
@@ -434,8 +493,8 @@ export function TopBar({
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>
 
-                                        {/* /!* Equipment labelling *!/ */}
-                                        {/* If the callback onEquipmentLabellingClick is undefined, equipment labelling component should not be displayed */}
+                                        {/* Equipment labeling */}
+                                        {/* If the callback onEquipmentLabellingClick is undefined, equipment labeling component should not be displayed */}
                                         {onEquipmentLabellingClick && (
                                             <StyledMenuItem
                                                 disabled
@@ -473,6 +532,7 @@ export function TopBar({
                                         {/* Languages */}
                                         <StyledMenuItem
                                             disabled
+                                            sx={styles.borderBottom}
                                             style={{
                                                 opacity: '1',
                                                 paddingTop: '10px',
@@ -513,62 +573,6 @@ export function TopBar({
                                                     FR
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
-                                        </StyledMenuItem>
-
-                                        {/* Settings */}
-                                        {/* If the callback onParametersClicked is undefined, parameters component should be disabled */}
-                                        {onParametersClick && (
-                                            <StyledMenuItem onClick={onParametersClicked} sx={styles.borderTop}>
-                                                <CustomListItemIcon>
-                                                    <SettingsIcon fontSize="small" />
-                                                </CustomListItemIcon>
-                                                <ListItemText>
-                                                    <Typography sx={styles.sizeLabel}>
-                                                        <FormattedMessage
-                                                            id="top-bar/settings"
-                                                            defaultMessage="Settings"
-                                                        />
-                                                    </Typography>
-                                                </ListItemText>
-                                            </StyledMenuItem>
-                                        )}
-
-                                        {/* User information */}
-                                        {!isHiddenUserInformation() && (
-                                            <StyledMenuItem
-                                                sx={styles.borderBottom}
-                                                style={{ opacity: '1' }}
-                                                onClick={onUserInformationDialogClicked}
-                                            >
-                                                <CustomListItemIcon>
-                                                    <ManageAccounts fontSize="small" />
-                                                </CustomListItemIcon>
-                                                <ListItemText>
-                                                    <Typography sx={styles.sizeLabel}>
-                                                        <FormattedMessage
-                                                            id="top-bar/userInformation"
-                                                            defaultMessage="User information"
-                                                        />
-                                                    </Typography>
-                                                </ListItemText>
-                                            </StyledMenuItem>
-                                        )}
-
-                                        {/* About */}
-                                        {/* If the callback onAboutClick is undefined, we open default about dialog */}
-                                        <StyledMenuItem
-                                            sx={styles.borderBottom}
-                                            style={{ opacity: '1' }}
-                                            onClick={onAboutClicked}
-                                        >
-                                            <CustomListItemIcon>
-                                                <HelpOutlineIcon fontSize="small" />
-                                            </CustomListItemIcon>
-                                            <ListItemText>
-                                                <Typography sx={styles.sizeLabel}>
-                                                    <FormattedMessage id="top-bar/about" defaultMessage="About" />
-                                                </Typography>
-                                            </ListItemText>
                                         </StyledMenuItem>
 
                                         {/* Loggout */}

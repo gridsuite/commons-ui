@@ -48,7 +48,7 @@ export function CountryValueEditor(props: ValueEditorProps) {
             getOptionLabel={(code: string) => (code ? translate(code) : '')}
             valid={valid}
             title={title}
-            onChange={(event: SyntheticEvent, newValue: any) => {
+            onChange={(event: SyntheticEvent, newValue) => {
                 handleOnChange(newValue);
             }}
             fullWidth

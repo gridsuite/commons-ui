@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useCustomFormContext } from '../reactHookForm/provider/useCustomFormContext';
 import { fetchElementsInfos } from '../../../services';
 import { DirectoryItemsInput } from '../reactHookForm/DirectoryItemsInput';
+import { ElementAttributes } from '../../../utils';
 
 interface ElementValueEditorProps {
     name: string;
@@ -18,7 +19,7 @@ interface ElementValueEditorProps {
     titleId: string;
     hideErrorMessage: boolean;
     onChange?: (e: any) => void;
-    itemFilter?: any;
+    itemFilter?: (val: ElementAttributes) => boolean;
     defaultValue?: any;
 }
 
@@ -37,7 +38,7 @@ export function ElementValueEditor(props: ElementValueEditorProps) {
             fetchElementsInfos(defaultValue).then((childrenWithMetadata) => {
                 setValue(
                     name,
-                    childrenWithMetadata.map((v: any) => {
+                    childrenWithMetadata.map((v: ElementAttributes) => {
                         return {
                             id: v.elementUuid,
                             name: v.elementName,

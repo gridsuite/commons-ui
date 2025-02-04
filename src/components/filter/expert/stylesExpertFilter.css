@@ -95,6 +95,14 @@
     display: none;
 }
 
+.queryBuilder-branches .rule:hover .rule-remove {
+    visibility: visible;
+}
+
+.queryBuilder-branches .rule .rule-remove {
+    visibility: hidden;
+}
+
 .queryBuilder-branches .ruleGroup .ruleGroup::before,
 .queryBuilder-branches .ruleGroup .ruleGroup::after {
     left: calc(calc(-0.5rem - 1px) - 1px);
@@ -110,7 +118,6 @@
 }
 
 /* Justify layout */
-.queryBuilder .ruleGroup-remove,
 .queryBuilder .rule-remove {
     margin-left: auto;
 }
