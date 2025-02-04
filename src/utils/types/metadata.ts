@@ -25,9 +25,7 @@ export type StudyMetadata = Metadata & {
         [networkElementType: string]: PredefinedProperties;
     };
     defaultParametersValues?: {
-        fluxConvention?: string;
         enableDeveloperMode?: string; // maybe 'true'|'false' type?
-        mapManualRefresh?: string; // maybe 'true'|'false' type?
     };
     defaultCountry?: string;
     favoriteCountries?: string[];
