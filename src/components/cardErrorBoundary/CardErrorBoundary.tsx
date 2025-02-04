@@ -18,12 +18,12 @@ import {
     CardHeader,
     Collapse,
     IconButton,
-    IconButtonProps,
+    type IconButtonProps,
+    styled,
     Theme,
     Typography,
-    styled,
 } from '@mui/material';
-import { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, type ErrorInfo, type PropsWithChildren } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export interface ExpandMoreProps extends IconButtonProps {
@@ -43,10 +43,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 // Extracted from https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries/ for types
 
-interface Props {
-    children?: ReactNode;
-}
-
 type CardErrorBoundaryStateError = {
     hasError: true;
     error: Error;
@@ -60,8 +56,8 @@ type CardErrorBoundaryState = (CardErrorBoundaryStateError | CardErrorBoundarySt
     expanded: boolean;
 };
 
-export class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> {
-    constructor(props: Props) {
+export class CardErrorBoundary extends Component<PropsWithChildren<{}>, CardErrorBoundaryState> {
+    constructor(props: PropsWithChildren<{}>) {
         super(props);
         this.state = {
             hasError: false,
@@ -76,18 +72,16 @@ export class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> 
         return { hasError: true, error };
     }
 
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         // You can also log the error to an error reporting service
         console.error('CardErrorBoundary caught: ', error, errorInfo);
     }
 
-    handleExpandClick() {
-        this.setState((state: CardErrorBoundaryState) => ({
-            expanded: !state.expanded,
-        }));
+    private handleExpandClick() {
+        this.setState((state: CardErrorBoundaryState) => ({ expanded: !state.expanded }));
     }
 
-    handleReloadClick() {
+    private handleReloadClick() {
         this.setState(() => ({
             hasError: false,
             expanded: false,
@@ -95,7 +89,7 @@ export class CardErrorBoundary extends Component<Props, CardErrorBoundaryState> 
         }));
     }
 
-    render() {
+    override render() {
         const { hasError } = this.state;
         const { children } = this.props;
         if (hasError) {

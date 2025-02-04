@@ -4,10 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ICellEditorComp, ICellEditorParams } from 'ag-grid-community';
-
-// backspace starts the editor on Windows
-const KEY_BACKSPACE = 'Backspace';
+import { ICellEditorComp, type ICellEditorParams, KeyCode } from 'ag-grid-community';
 
 /**
  * This is a modified version of the cell editor proposed by AGGrid itself :
@@ -17,9 +14,9 @@ const KEY_BACKSPACE = 'Backspace';
  * https://www.ag-grid.com/react-data-grid/component-cell-editor/#cell-editor-example
  */
 export class NumericEditor implements ICellEditorComp {
-    eInput!: HTMLInputElement;
+    private eInput!: HTMLInputElement;
 
-    cancelBeforeStart!: boolean;
+    private cancelBeforeStart!: boolean;
 
     // gets called once before the renderer is used
     init(params: ICellEditorParams) {
@@ -27,7 +24,8 @@ export class NumericEditor implements ICellEditorComp {
         this.eInput = document.createElement('input');
         this.eInput.classList.add('numeric-input');
 
-        if (params.eventKey === KEY_BACKSPACE) {
+        // backspace starts the editor on Windows
+        if (params.eventKey === KeyCode.BACKSPACE) {
             this.eInput.value = '';
         } else if (NumericEditor.isCharNumeric(params.eventKey)) {
             this.eInput.value = params.eventKey!;
@@ -56,11 +54,11 @@ export class NumericEditor implements ICellEditorComp {
         this.cancelBeforeStart = !!isNotANumber;
     }
 
-    static isBackspace(event: KeyboardEvent) {
-        return event.key === KEY_BACKSPACE;
+    private static isBackspace(event: KeyboardEvent) {
+        return event.key === KeyCode.BACKSPACE;
     }
 
-    static isNavigationKey(event: KeyboardEvent) {
+    private static isNavigationKey(event: KeyboardEvent) {
         return event.key === 'ArrowLeft' || event.key === 'ArrowRight';
     }
 
@@ -81,24 +79,17 @@ export class NumericEditor implements ICellEditorComp {
 
     // returns the new value after editing
     getValue() {
-        const { value } = this.eInput;
         // FM : some modifications here
-        const tmp = value?.replace(',', '.') || '';
-        return parseFloat(tmp) || null;
+        const result = parseFloat(this.eInput.value.replace(',', '.'));
+        return Number.isNaN(result) ? null : result;
     }
 
-    static isCharNumeric(charStr: string | null) {
+    private static isCharNumeric(charStr: string | null) {
         // FM : I added ',' and '.'
-        return charStr && !!/\d|,|\./.test(charStr);
+        return charStr && /\d|,|\./.test(charStr);
     }
 
-    static isNumericKey(event: KeyboardEvent) {
-        const charStr = event.key;
-        return NumericEditor.isCharNumeric(charStr);
-    }
-
-    // force call when focus is leaving the editor
-    static focusOut() {
-        return true;
+    private static isNumericKey(event: KeyboardEvent) {
+        return NumericEditor.isCharNumeric(event.key);
     }
 }
