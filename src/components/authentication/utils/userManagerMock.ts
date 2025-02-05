@@ -8,39 +8,46 @@
 /* eslint-disable max-classes-per-file, class-methods-use-this */
 
 import {
-    MetadataService,
-    SigninRequest,
-    SigninResponse,
-    SignoutRequest,
-    SignoutResponse,
-    User,
+    type MetadataService,
+    type OidcClientSettings,
+    type Profile,
+    type SessionStatus,
+    type SigninRequest,
+    type SigninResponse,
+    type SignoutRequest,
+    type SignoutResponse,
+    type User,
     UserManager,
     UserManagerEvents,
-    UserManagerSettings,
+    type UserManagerSettings,
 } from 'oidc-client';
 
 class Events implements UserManagerEvents {
-    userLoadedCallbacks: ((data: User) => void)[] = [];
+    public userLoadedCallbacks: UserManagerEvents.UserLoadedCallback[] = [];
 
-    addUserLoaded(callback: (data: User) => void) {
-        this.userLoadedCallbacks.push(callback);
-    }
-
-    addSilentRenewError() {
-        // Nothing to do
-    }
-
-    load(/* container: User */) {
-        // not implemented
-    }
+    load() {}
 
     unload() {}
+
+    addAccessTokenExpiring() {}
+
+    removeAccessTokenExpiring() {}
+
+    addAccessTokenExpired() {}
+
+    removeAccessTokenExpired() {}
+
+    addUserLoaded(callback: UserManagerEvents.UserLoadedCallback) {
+        this.userLoadedCallbacks.push(callback);
+    }
 
     removeUserLoaded() {}
 
     addUserUnloaded() {}
 
     removeUserUnloaded() {}
+
+    addSilentRenewError() {}
 
     removeSilentRenewError() {}
 
@@ -55,23 +62,15 @@ class Events implements UserManagerEvents {
     addUserSessionChanged() {}
 
     removeUserSessionChanged() {}
-
-    addAccessTokenExpiring() {}
-
-    removeAccessTokenExpiring() {}
-
-    addAccessTokenExpired() {}
-
-    removeAccessTokenExpired() {}
 }
 
 export class UserManagerMock implements UserManager {
-    settings;
+    events: Events;
 
-    events;
+    readonly settings: OidcClientSettings;
 
-    user: User = {
-        profile: {
+    private static readonly user = Object.freeze<User>({
+        profile: Object.freeze<Profile>({
             name: 'John Doe',
             email: 'Jhon.Doe@rte-france.com',
             iss: '',
@@ -79,7 +78,7 @@ export class UserManagerMock implements UserManager {
             aud: '',
             exp: Number.MAX_SAFE_INTEGER,
             iat: 0,
-        },
+        }),
         id_token:
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IllNRUxIVDBndmIwbXhvU0RvWWZvbWpxZmpZVSJ9.eyJhdWQiOiI5YzQwMjQ2MS1iMmFiLTQ3NjctOWRiMy02Njg1OWJiMGZjZDAiLCJpc3MiOiJodHRwczovL2' +
             'xvZ2luLm1pY3Jvc29mdG9ubGluZS5jb20vNzUwMmRhZDUtZDY0Yy00NmM3LTlkNDctYjE2ZjU4MGZjZmE5L3YyLjAiLCJpYXQiOjE1ODUzMzEyNDksIm5iZiI6MTU4NTMzMTI0OSwiZXhwIjoyNTg1MzM1MTQ5LCJhaW8iOiJBV1FB' +
@@ -110,132 +109,123 @@ export class UserManagerMock implements UserManager {
         expired: false,
         state: null,
         toStorageString: () => 'Mock of UserManager',
-    };
+    });
 
-    readonly metadataService: MetadataService = null as unknown as MetadataService;
+    readonly metadataService = null as unknown as MetadataService;
+
+    private static readonly STORAGE_KEY = 'powsybl-gridsuite-mock-user';
 
     constructor(settings: UserManagerSettings) {
         this.settings = settings;
         this.events = new Events();
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    getUser() {
-        return Promise.resolve(JSON.parse(sessionStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null'));
+    async getUser() {
+        return JSON.parse(sessionStorage.getItem(UserManagerMock.STORAGE_KEY) ?? 'null') as User | null;
     }
 
-    async signinSilent(): Promise<User> {
+    async signinSilent() {
         console.info('signinSilent..............');
-        const localStorageUser = JSON.parse(localStorage.getItem('powsybl-gridsuite-mock-user') ?? 'null');
+        const localStorageUser = JSON.parse(localStorage.getItem(UserManagerMock.STORAGE_KEY) ?? 'null') as User | null;
         if (localStorageUser === null) {
             throw new Error('End-User authentication required');
         }
-        sessionStorage.setItem('powsybl-gridsuite-mock-user', JSON.stringify(localStorageUser));
+        sessionStorage.setItem(UserManagerMock.STORAGE_KEY, JSON.stringify(localStorageUser));
         this.events.userLoadedCallbacks.forEach((c) => c(localStorageUser));
         return localStorageUser;
     }
 
-    // eslint-disable-next-line class-methods-use-this
     signinSilentCallback() {
         console.error('Unsupported, iframe signinSilentCallback in UserManagerMock (dev mode)');
         return Promise.reject();
     }
 
-    signinRedirect() {
-        localStorage.setItem('powsybl-gridsuite-mock-user', JSON.stringify(this.user));
+    async signinRedirect() {
+        localStorage.setItem(UserManagerMock.STORAGE_KEY, JSON.stringify(UserManagerMock.user));
         window.location.href = './sign-in-callback';
-        return Promise.resolve();
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    signoutRedirect() {
-        sessionStorage.removeItem('powsybl-gridsuite-mock-user');
-        localStorage.removeItem('powsybl-gridsuite-mock-user');
+    async signoutRedirect() {
+        sessionStorage.removeItem(UserManagerMock.STORAGE_KEY);
+        localStorage.removeItem(UserManagerMock.STORAGE_KEY);
         window.location.href = '.';
-        return Promise.resolve();
     }
 
-    signinRedirectCallback() {
-        sessionStorage.setItem('powsybl-gridsuite-mock-user', JSON.stringify(this.user));
-        this.events.userLoadedCallbacks.forEach((c) => c(this.user));
-        return Promise.resolve(this.user);
+    async signinRedirectCallback() {
+        sessionStorage.setItem(UserManagerMock.STORAGE_KEY, JSON.stringify(UserManagerMock.user));
+        this.events.userLoadedCallbacks.forEach((c) => c(UserManagerMock.user));
+        return UserManagerMock.user;
     }
 
-    clearStaleState() {
-        return Promise.resolve();
+    async clearStaleState() {
+        // do nothing (@typescript-eslint/no-empty-function).
     }
 
-    storeUser() {
-        return Promise.resolve();
+    async storeUser() {
+        // do nothing (@typescript-eslint/no-empty-function).
     }
 
-    removeUser() {
-        return Promise.resolve();
+    async removeUser() {
+        // do nothing (@typescript-eslint/no-empty-function).
     }
 
-    signinPopup() {
-        return Promise.resolve(this.user);
+    async signinPopup() {
+        return UserManagerMock.user;
     }
 
-    signinPopupCallback() {
-        return Promise.resolve(undefined);
+    async signinPopupCallback() {
+        return undefined;
     }
 
-    signoutRedirectCallback() {
-        return Promise.resolve({} as SignoutResponse);
+    async signoutRedirectCallback() {
+        return {} as SignoutResponse;
     }
 
-    signoutPopup() {
-        return Promise.resolve();
+    async signoutPopup() {
+        // do nothing (@typescript-eslint/no-empty-function).
     }
 
-    signoutPopupCallback() {
-        return Promise.resolve();
+    async signoutPopupCallback() {
+        // do nothing (@typescript-eslint/no-empty-function).
     }
 
-    signinCallback() {
-        return Promise.resolve(this.user);
+    async signinCallback() {
+        return UserManagerMock.user;
     }
 
-    signoutCallback() {
-        return Promise.resolve(undefined);
+    async signoutCallback() {
+        return undefined;
     }
 
-    querySessionStatus() {
-        return Promise.resolve({
+    async querySessionStatus() {
+        return {
             session_state: '',
             sub: '',
             sid: undefined,
-        });
+        } satisfies SessionStatus;
     }
 
-    revokeAccessToken() {
-        return Promise.resolve();
+    async revokeAccessToken() {
+        // do nothing (@typescript-eslint/no-empty-function).
     }
 
-    startSilentRenew() {
-        return Promise.resolve();
+    startSilentRenew() {}
+
+    stopSilentRenew() {}
+
+    async createSigninRequest() {
+        return {} as SigninRequest;
     }
 
-    stopSilentRenew() {
-        return Promise.resolve();
+    async processSigninResponse() {
+        return {} as SigninResponse;
     }
 
-    createSigninRequest() {
-        return Promise.resolve({} as SigninRequest);
+    async createSignoutRequest() {
+        return {} as SignoutRequest;
     }
 
-    processSigninResponse() {
-        return Promise.resolve({} as SigninResponse);
-    }
-
-    createSignoutRequest() {
-        return Promise.resolve({} as SignoutRequest);
-    }
-
-    processSignoutResponse() {
-        return Promise.resolve({} as SignoutResponse);
+    async processSignoutResponse() {
+        return {} as SignoutResponse;
     }
 }
-
-export default UserManagerMock;

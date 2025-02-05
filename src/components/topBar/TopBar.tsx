@@ -7,7 +7,6 @@
 
 import { MouseEvent, PropsWithChildren, ReactNode, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-
 import {
     AppBar,
     Box,
@@ -33,18 +32,18 @@ import {
     Apps as AppsIcon,
     ArrowDropDown as ArrowDropDownIcon,
     ArrowDropUp as ArrowDropUpIcon,
+    Badge as BadgeIcon,
     Brightness3 as Brightness3Icon,
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
     HelpOutline as HelpOutlineIcon,
-    Person as PersonIcon,
     ManageAccounts,
+    Person as PersonIcon,
     WbSunny as WbSunnyIcon,
-    Badge as BadgeIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/system';
 
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
@@ -157,12 +156,17 @@ const CustomListItemIcon = styled(ListItemIcon)({
     borderRadius: '25px',
 });
 
-const EN = 'EN';
-const FR = 'FR';
-
 export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
 export type GsLang = GsLangUser | typeof LANG_SYSTEM;
 export type GsTheme = typeof LIGHT_THEME | typeof DARK_THEME;
+
+function abbreviationFromUserName(name: string) {
+    const tab = name.split(' ').map((x) => x.charAt(0));
+    if (tab.length === 1) {
+        return tab[0];
+    }
+    return tab[0] + tab[tab.length - 1];
+}
 
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &
@@ -236,12 +240,11 @@ export function TopBar({
         setAnchorElAppsMenu(null);
     };
 
-    const abbreviationFromUserName = (name: string) => {
-        const tab = name.split(' ').map((x) => x.charAt(0));
-        if (tab.length === 1) {
-            return tab[0];
+    const onUserSettingsClicked = () => {
+        setAnchorElSettingsMenu(null);
+        if (onUserSettingsClick) {
+            onUserSettingsClick();
         }
-        return tab[0] + tab[tab.length - 1];
     };
 
     const changeTheme = (_: MouseEvent, value: GsTheme) => {
@@ -264,8 +267,7 @@ export function TopBar({
 
     const [isAboutDialogOpen, setAboutDialogOpen] = useState(false);
     const onAboutClicked = () => {
-        // @ts-ignore should be an Element, or maybe we should use null ?
-        setAnchorElSettingsMenu(false);
+        setAnchorElSettingsMenu(null);
         if (onAboutClick) {
             onAboutClick();
         } else {
@@ -297,7 +299,7 @@ export function TopBar({
     );
 
     return (
-        // @ts-ignore appBar style is not defined
+        // @ts-expect-error appBar style is not defined
         <AppBar position="static" color="default" sx={styles.appBar}>
             {user && developerMode && (
                 <MessageBanner>
@@ -374,12 +376,7 @@ export function TopBar({
                             style={anchorElSettingsMenu ? { cursor: 'initial' } : { cursor: 'pointer' }}
                         >
                             <Box component="span" sx={styles.name}>
-                                {user !== null
-                                    ? abbreviationFromUserName(
-                                          // @ts-ignore name could be undefined, how to handle this case ?
-                                          user.profile.name
-                                      )
-                                    : ''}
+                                {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
                             </Box>
                             {anchorElSettingsMenu ? (
                                 <ArrowDropUpIcon sx={styles.arrowIcon} />
@@ -578,14 +575,14 @@ export function TopBar({
                                                     aria-label={LANG_ENGLISH}
                                                     sx={styles.languageToggleButton}
                                                 >
-                                                    {EN}
+                                                    EN
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={LANG_FRENCH}
                                                     aria-label={LANG_FRENCH}
                                                     sx={styles.toggleButton}
                                                 >
-                                                    {FR}
+                                                    FR
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>
