@@ -240,13 +240,6 @@ export function TopBar({
         setAnchorElAppsMenu(null);
     };
 
-    const onUserSettingsClicked = () => {
-        setAnchorElSettingsMenu(null);
-        if (onUserSettingsClick) {
-            onUserSettingsClick();
-        }
-    };
-
     const changeTheme = (_: MouseEvent, value: GsTheme) => {
         if (onThemeClick && value !== null) {
             onThemeClick(value);
