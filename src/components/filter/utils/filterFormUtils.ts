@@ -9,7 +9,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import { EquipmentType } from '../../../utils/types/equipmentType';
+import { EquipmentType, EquipmentHvdcType } from '../../../utils/types/equipmentType';
 
 const countries = {
     renderer: CountriesInput,
@@ -158,7 +158,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
         fields: [countries, nominalVoltage],
     },
 };
-export const FILTER_EQUIPMENTS: Record<
+export const FILTER_EQUIPMENTS_BASE: Record<
     | EquipmentType.SUBSTATION
     | EquipmentType.VOLTAGE_LEVEL
     | EquipmentType.LINE
@@ -169,7 +169,6 @@ export const FILTER_EQUIPMENTS: Record<
     | EquipmentType.LOAD
     | EquipmentType.SHUNT_COMPENSATOR
     | EquipmentType.STATIC_VAR_COMPENSATOR
-    | EquipmentType.HVDC_LINE
     | EquipmentType.DANGLING_LINE,
     FormEquipment
 > = {
@@ -223,14 +222,35 @@ export const FILTER_EQUIPMENTS: Record<
         label: 'StaticVarCompensators',
         fields: [countries, nominalVoltage],
     },
+    DANGLING_LINE: {
+        id: 'DANGLING_LINE',
+        label: 'DanglingLines',
+        fields: [countries, nominalVoltage],
+    },
+};
+
+export const FILTER_EQUIPMENTS: Record<EquipmentType.HVDC_LINE, FormEquipment> = {
+    ...FILTER_EQUIPMENTS_BASE,
     HVDC_LINE: {
         id: 'HVDC_LINE',
         label: 'Hvdc',
         fields: [countries1, countries2, nominalVoltage],
     },
-    DANGLING_LINE: {
-        id: 'DANGLING_LINE',
-        label: 'DanglingLines',
-        fields: [countries, nominalVoltage],
+};
+
+export const FILTER_INDEXED_EQUIPMENTS: Record<
+    EquipmentHvdcType.HVDC_LINE_LCC | EquipmentHvdcType.HVDC_LINE_VSC,
+    FormEquipment
+> = {
+    ...FILTER_EQUIPMENTS_BASE,
+    HVDC_LINE_LCC: {
+        id: 'HVDC_LINE_VSC',
+        label: 'VSC',
+        fields: [countries1, countries2, nominalVoltage],
+    },
+    HVDC_LINE_VSC: {
+        id: 'HVDC_LINE_LCC',
+        label: 'LCC',
+        fields: [countries1, countries2, nominalVoltage],
     },
 };

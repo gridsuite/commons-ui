@@ -78,9 +78,9 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
-export enum HvdcType {
-    LCC = 'LCC',
-    VSC = 'VSC',
+export enum EquipmentHvdcType {
+    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
+    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
 
 // Must be equivalent as the back enum
