@@ -39,8 +39,13 @@ type CustomUserManager = UserManager & {
     };
 };
 
+declare global {
+    interface Window {
+        OIDCLog?: Log;
+    }
+}
+
 // set as a global variable to allow log level configuration at runtime
-// @ts-ignore
 window.OIDCLog = Log;
 
 const hackAuthorityKey = 'oidc.hack.authority';
@@ -69,9 +74,8 @@ function reload() {
 
 function reloadTimerOnExpiresIn(user: User, userManager: UserManager, expiresIn: number) {
     // Not allowed by TS because expires_in is supposed to be readonly
-    // @ts-ignore
-    // eslint-disable-next-line no-param-reassign
-    user.expires_in = expiresIn;
+    // @ts-expect-error TS2540: Cannot assign to expires_in because it is a read-only property.
+    user.expires_in = expiresIn; // eslint-disable-line no-param-reassign
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
