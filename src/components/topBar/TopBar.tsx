@@ -49,6 +49,7 @@ import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
 import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
 import UserInformationDialog from './UserInformationDialog';
+import UserSettingsDialog from './UserSettingsDialog';
 import { Metadata } from '../../utils';
 import {
     DARK_THEME,
@@ -170,7 +171,6 @@ function abbreviationFromUserName(name: string) {
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &
     Omit<AboutDialogProps, 'open' | 'onClose'> & {
-        onUserSettingsClick?: () => void;
         onLogoClick: GridLogoProps['onClick'];
         user?: User;
         onAboutClick?: () => void;
@@ -182,7 +182,8 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         equipmentLabelling?: boolean;
         onLanguageClick: (value: GsLang) => void;
         language: GsLang;
-        developerMode?: boolean;
+        developerMode: boolean;
+        onDeveloperModeClick?: (value: boolean) => void;
     };
 
 export function TopBar({
@@ -192,7 +193,6 @@ export function TopBar({
     appVersion,
     appLicense,
     logoAboutDialog,
-    onUserSettingsClick,
     onLogoutClick,
     onLogoClick,
     user,
@@ -204,6 +204,7 @@ export function TopBar({
     onThemeClick,
     theme,
     developerMode,
+    onDeveloperModeClick,
     onEquipmentLabellingClick,
     equipmentLabelling,
     onLanguageClick,
@@ -215,6 +216,12 @@ export function TopBar({
         value: userInformationDialogOpen,
         setFalse: closeUserInformationDialog,
         setTrue: openUserInformationDialog,
+    } = useStateBoolean(false);
+
+    const {
+        value: userSettingsDialogOpen,
+        setFalse: closeUserSettingsDialog,
+        setTrue: openUserSettingsDialog,
     } = useStateBoolean(false);
 
     const handleToggleSettingsMenu = (event: MouseEvent) => {
@@ -231,13 +238,6 @@ export function TopBar({
 
     const handleCloseAppsMenu = () => {
         setAnchorElAppsMenu(null);
-    };
-
-    const onUserSettingsClicked = () => {
-        setAnchorElSettingsMenu(null);
-        if (onUserSettingsClick) {
-            onUserSettingsClick();
-        }
     };
 
     const changeTheme = (_: MouseEvent, value: GsTheme) => {
@@ -279,6 +279,11 @@ export function TopBar({
     const onUserInformationDialogClicked = () => {
         setAnchorElSettingsMenu(null);
         openUserInformationDialog();
+    };
+
+    const onUserSettingsDialogClicked = () => {
+        setAnchorElSettingsMenu(null);
+        openUserSettingsDialog();
     };
 
     const logoClickable = useMemo(
@@ -420,7 +425,7 @@ export function TopBar({
                                         )}
 
                                         {/* User settings */}
-                                        <StyledMenuItem onClick={onUserSettingsClicked} sx={styles.borderBottom}>
+                                        <StyledMenuItem onClick={onUserSettingsDialogClicked} sx={styles.borderBottom}>
                                             <CustomListItemIcon>
                                                 <ManageAccounts fontSize="small" />
                                             </CustomListItemIcon>
@@ -593,13 +598,18 @@ export function TopBar({
                     </Box>
                 )}
 
-                {userInformationDialogOpen && (
-                    <UserInformationDialog
-                        openDialog={userInformationDialogOpen}
-                        user={user}
-                        onClose={closeUserInformationDialog}
-                    />
-                )}
+                <UserInformationDialog
+                    openDialog={userInformationDialogOpen && !!user}
+                    user={user}
+                    onClose={closeUserInformationDialog}
+                />
+
+                <UserSettingsDialog
+                    openDialog={userSettingsDialogOpen && !!user}
+                    onClose={closeUserSettingsDialog}
+                    developerMode={developerMode}
+                    onDeveloperModeClick={onDeveloperModeClick}
+                />
 
                 <AboutDialog
                     open={isAboutDialogOpen && !!user}
