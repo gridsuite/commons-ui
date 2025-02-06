@@ -598,22 +598,18 @@ export function TopBar({
                     </Box>
                 )}
 
-                {userInformationDialogOpen && (
-                    <UserInformationDialog
-                        openDialog={userInformationDialogOpen}
-                        user={user}
-                        onClose={closeUserInformationDialog}
-                    />
-                )}
+                <UserInformationDialog
+                    openDialog={userInformationDialogOpen && !!user}
+                    user={user}
+                    onClose={closeUserInformationDialog}
+                />
 
-                {userSettingsDialogOpen && (
-                    <UserSettingsDialog
-                        openDialog={userSettingsDialogOpen}
-                        onClose={closeUserSettingsDialog}
-                        developerMode={developerMode}
-                        onDeveloperModeClick={onDeveloperModeClick}
-                    />
-                )}
+                <UserSettingsDialog
+                    openDialog={userSettingsDialogOpen && !!user}
+                    onClose={closeUserSettingsDialog}
+                    developerMode={developerMode}
+                    onDeveloperModeClick={onDeveloperModeClick}
+                />
 
                 <AboutDialog
                     open={isAboutDialogOpen && !!user}
