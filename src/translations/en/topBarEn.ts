@@ -48,4 +48,6 @@ export const topBarEn = {
     'user-settings-dialog/warning-developer-mode':
         'Some of the features are not complete, so they may not work as expected. To hide these features, disable developer mode.',
     'user-settings-dialog/close': 'Close',
+    'user-settings-dialog/active': 'Active',
+    'user-settings-dialog/inactive': 'Inactive',
 };
