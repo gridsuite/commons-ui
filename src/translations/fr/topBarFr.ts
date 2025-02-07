@@ -45,7 +45,7 @@ export const topBarFr = {
     'user-information-dialog/number-of-builds-per-study': 'Nombre réalisations par étude',
 
     'user-settings-dialog/title': 'Paramètres utilisateur',
-    'user-settings-dialog/label-developer-mode': 'Activer le mode développeur',
+    'user-settings-dialog/label-developer-mode': 'Mode développeur',
     'user-settings-dialog/warning-developer-mode':
         'Certaines fonctionnalités ne sont pas complètes et peuvent donc ne pas fonctionner comme prévu. Pour masquer ces fonctionnalités, désactivez le mode développeur.',
     'user-settings-dialog/close': 'Fermer',
