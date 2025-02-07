@@ -69,6 +69,8 @@ export enum EquipmentType {
     SHUNT_COMPENSATOR = 'SHUNT_COMPENSATOR',
     STATIC_VAR_COMPENSATOR = 'STATIC_VAR_COMPENSATOR',
     HVDC_LINE = 'HVDC_LINE',
+    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
+    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
     HVDC_CONVERTER_STATION = 'HVDC_CONVERTER_STATION',
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
@@ -76,11 +78,6 @@ export enum EquipmentType {
     TIE_LINE = 'TIE_LINE',
     DISCONNECTOR = 'DISCONNECTOR',
     BREAKER = 'BREAKER',
-}
-
-export enum EquipmentHvdcType {
-    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
-    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
 
 // Must be equivalent as the back enum
@@ -108,6 +105,14 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
     [EquipmentType.HVDC_LINE]: {
         name: EquipmentType.HVDC_LINE,
         tagLabel: 'equipment_search/hvdcLineTag',
+    },
+    [EquipmentType.HVDC_LINE_LCC]: {
+        name: EquipmentType.HVDC_LINE_LCC,
+        tagLabel: 'equipment_search/hvdcLineLccTag',
+    },
+    [EquipmentType.HVDC_LINE_VSC]: {
+        name: EquipmentType.HVDC_LINE_VSC,
+        tagLabel: 'equipment_search/hvdcLineVscTag',
     },
     [EquipmentType.GENERATOR]: {
         name: EquipmentType.GENERATOR,

@@ -9,7 +9,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import { EquipmentType, EquipmentHvdcType } from '../../../utils/types/equipmentType';
+import { EquipmentType } from '../../../utils/types/equipmentType';
 
 const countries = {
     renderer: CountriesInput,
@@ -239,7 +239,7 @@ export const FILTER_EQUIPMENTS: Record<EquipmentType.HVDC_LINE, FormEquipment> =
 };
 
 export const FILTER_INDEXED_EQUIPMENTS: Record<
-    EquipmentHvdcType.HVDC_LINE_LCC | EquipmentHvdcType.HVDC_LINE_VSC,
+    EquipmentType.HVDC_LINE_LCC | EquipmentType.HVDC_LINE_VSC,
     FormEquipment
 > = {
     ...FILTER_EQUIPMENTS_BASE,
