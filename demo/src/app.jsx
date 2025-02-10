@@ -814,7 +814,6 @@ function AppContent({ language, onLanguageClick }) {
             </div>
             <hr />
             <Crasher />
-            <Button onClick={() => setDeveloperMode(!developerMode)}>Toggle developer mode</Button>
         </div>
     );
 
@@ -828,7 +827,7 @@ function AppContent({ language, onLanguageClick }) {
                             appName="Demo"
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
-                            onUserSettingsClick={() => console.log('user settings')}
+                            onDeveloperModeClick={() => setDeveloperMode(!developerMode)}
                             developerMode={developerMode}
                             onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}

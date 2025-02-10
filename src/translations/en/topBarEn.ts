@@ -42,4 +42,10 @@ export const topBarEn = {
     'user-information-dialog/number-of-cases-or-studies': 'Number of cases or studies',
     'user-information-dialog/used': 'Used',
     'user-information-dialog/number-of-builds-per-study': 'Number of builds per study',
+
+    'user-settings-dialog/title': 'User settings',
+    'user-settings-dialog/label-developer-mode': 'Developer mode',
+    'user-settings-dialog/warning-developer-mode':
+        'Some of the features are not complete, so they may not work as expected. To hide these features, disable developer mode.',
+    'user-settings-dialog/close': 'Close',
 };
