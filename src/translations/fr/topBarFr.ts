@@ -49,4 +49,6 @@ export const topBarFr = {
     'user-settings-dialog/warning-developer-mode':
         'Certaines fonctionnalités ne sont pas complètes et peuvent donc ne pas fonctionner comme prévu. Pour masquer ces fonctionnalités, désactivez le mode développeur.',
     'user-settings-dialog/close': 'Fermer',
+    'user-settings-dialog/active': 'Activé',
+    'user-settings-dialog/inactive': 'Désactivé',
 };

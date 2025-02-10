@@ -17,6 +17,10 @@ const styles = {
     parameterLine: {
         display: 'flex',
     },
+    switchLabel: (theme: Theme) => ({
+        marginTop: theme.spacing(1),
+        color: 'rgba(170, 170, 170, 0.87)',
+    }),
 };
 
 interface UserSettingsDialogProps {
@@ -57,6 +61,13 @@ function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperMod
                             value={developerMode}
                             inputProps={{ 'aria-label': 'developer mode checkbox' }}
                         />
+                    </Box>
+                    <Box sx={styles.switchLabel}>
+                        {developerMode ? (
+                            <FormattedMessage id="user-settings-dialog/active" />
+                        ) : (
+                            <FormattedMessage id="user-settings-dialog/inactive" />
+                        )}
                     </Box>
                 </Box>
                 {developerMode && (
