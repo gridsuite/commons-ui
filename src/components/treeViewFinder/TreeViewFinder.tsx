@@ -7,22 +7,19 @@
 
 import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-
-import { styled } from '@mui/system';
-
 import {
     Button,
-    ButtonProps,
+    type ButtonProps,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
+    type ModalProps,
+    styled,
     Typography,
-    ModalProps,
 } from '@mui/material';
-
-import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
+import { TreeItem, TreeView, type TreeViewClasses } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
