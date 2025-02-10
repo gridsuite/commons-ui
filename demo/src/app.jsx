@@ -25,9 +25,8 @@ import {
     Typography,
 } from '@mui/material';
 import CommentIcon from '@mui/icons-material/Comment';
-import { useMatch } from 'react-router';
+import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
-import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import translations from './demo_intl';
 import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
@@ -173,7 +172,7 @@ const style = {
 };
 
 /**
- * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ * @param {import("@mui/material/styles").Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
     icon: {

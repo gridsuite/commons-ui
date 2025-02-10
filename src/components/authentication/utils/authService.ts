@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Dispatch } from 'react';
-import { Location, NavigateFunction } from 'react-router-dom';
+import { type Location, type NavigateFunction } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
 import { Log, User, UserManager } from 'oidc-client';
 import { UserManagerMock } from './userManagerMock';
