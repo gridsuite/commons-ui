@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
-import { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material';
+import type { ReactElement } from 'react';
+import type { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
+import type { SxProps, Theme } from '@mui/material';
 
 export type CheckBoxListItemSx = {
     checkBoxIcon?: SxProps<Theme>;
@@ -34,7 +33,7 @@ export interface CheckBoxListItemProps<T> {
     sx?: CheckBoxListItemSx;
     label: string;
     onClick: () => void;
-    secondaryAction?: (item: T, hover: string) => React.ReactElement | null;
+    secondaryAction?: (item: T, hover: string) => ReactElement | null;
     getItemId: (item: T) => string;
     disabled?: boolean;
     divider?: boolean;
@@ -54,7 +53,7 @@ export interface CheckBoxListItemsProps<T> {
     onSelectionChange?: (selectedItems: T[]) => void;
     getItemId: (item: T) => string;
     getItemLabel?: (item: T) => string;
-    secondaryAction?: (item: T, hover: boolean) => React.ReactElement | null;
+    secondaryAction?: (item: T, hover: boolean) => ReactElement | null;
     isDisabled?: (item: T) => boolean;
     addSelectAllCheckbox?: boolean;
     selectAllCheckBoxLabel?: string;
