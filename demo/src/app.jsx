@@ -172,7 +172,7 @@ const style = {
 };
 
 /**
- * @param {import("@mui/material/styles").Theme} theme Theme from ThemeProvider
+ * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
     icon: {

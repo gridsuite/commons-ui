@@ -22,7 +22,7 @@ export type UserManagerState = {
     error: string | null;
 };
 
-export type AuthenticationRouterProps = {
+export interface AuthenticationRouterProps {
     userManager: UserManagerState;
     signInCallbackError: Error | null;
     authenticationRouterError: AuthenticationRouterErrorState | null;
@@ -30,4 +30,4 @@ export type AuthenticationRouterProps = {
     dispatch: Dispatch<AuthenticationActions>;
     navigate: NavigateFunction;
     location: Location;
-};
+}
