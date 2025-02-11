@@ -39,7 +39,7 @@ interface UserSettingsDialogProps {
 
 function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperModeClick }: UserSettingsDialogProps) {
     const handleDeveloperModeClick = useCallback(
-        (event: ChangeEvent<HTMLInputElement>) => { onDeveloperModeClick?.(event.target.checked); },
+        (event: ChangeEvent<HTMLInputElement>) => onDeveloperModeClick?.(event.target.checked),
         [onDeveloperModeClick]
     );
 
