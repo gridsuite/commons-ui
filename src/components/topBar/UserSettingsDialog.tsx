@@ -4,9 +4,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { SyntheticEvent } from 'react';
+import { type ChangeEvent, type SyntheticEvent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Alert, Dialog, Switch, Button, DialogActions, DialogContent, DialogTitle, Box, Theme } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Switch,
+    type Theme,
+    useCallback,
+} from '@mui/material';
 
 const styles = {
     parameterName: (theme: Theme) => ({
@@ -22,23 +33,22 @@ const styles = {
 interface UserSettingsDialogProps {
     openDialog: boolean;
     onClose: () => void;
-    developerMode: boolean;
+    developerMode?: boolean;
     onDeveloperModeClick?: (value: boolean) => void;
 }
 
 function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperModeClick }: UserSettingsDialogProps) {
-    const handleDeveloperModeClick = (value: boolean) => {
-        if (onDeveloperModeClick) {
-            onDeveloperModeClick(value);
-        }
-    };
+    const handleDeveloperModeClick = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        onDeveloperModeClick?.(event.target.checked);
+    }, [onDeveloperModeClick]);
 
-    const handleClose = (_: SyntheticEvent, reason?: string) => {
+    //TODO: there is no 2nd argument for button on-click
+    const handleClose = useCallback((_: SyntheticEvent, reason?: string) => {
         if (reason === 'backdropClick') {
             return;
         }
         onClose();
-    };
+    }, [onClose]);
 
     return (
         <Dialog fullWidth open={openDialog} onClose={handleClose}>
@@ -52,9 +62,9 @@ function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperMod
                     </Box>
                     <Box>
                         <Switch
-                            checked={developerMode}
-                            onChange={(_event, isChecked) => handleDeveloperModeClick(isChecked)}
-                            value={developerMode}
+                            checked={developerMode ?? false}
+                            disabled={handleDeveloperModeClick !== undefined}
+                            onChange={handleDeveloperModeClick}
                             inputProps={{ 'aria-label': 'developer mode checkbox' }}
                         />
                     </Box>
