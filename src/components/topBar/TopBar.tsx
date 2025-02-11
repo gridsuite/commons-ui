@@ -42,7 +42,6 @@ import {
     Person as PersonIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
-
 import type { User } from 'oidc-client';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
@@ -182,7 +181,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         equipmentLabelling?: boolean;
         onLanguageClick: (value: GsLang) => void;
         language: GsLang;
-        developerMode: boolean;
+        developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
     };
 

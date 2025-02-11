@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { type ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Box, type Theme } from '@mui/material';
-import type { SystemStyleObject } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import type { SystemStyleObject } from '@mui/system';
 
 const styles = {
     banner: (theme: Theme): SystemStyleObject<Theme> => ({
