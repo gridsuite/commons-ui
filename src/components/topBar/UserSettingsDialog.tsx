@@ -38,17 +38,21 @@ interface UserSettingsDialogProps {
 }
 
 function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperModeClick }: UserSettingsDialogProps) {
-    const handleDeveloperModeClick = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        onDeveloperModeClick?.(event.target.checked);
-    }, [onDeveloperModeClick]);
+    const handleDeveloperModeClick = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => { onDeveloperModeClick?.(event.target.checked); },
+        [onDeveloperModeClick]
+    );
 
-    //TODO: there is no 2nd argument for button on-click
-    const handleClose = useCallback((_: SyntheticEvent, reason?: string) => {
-        if (reason === 'backdropClick') {
-            return;
-        }
-        onClose();
-    }, [onClose]);
+    // TODO: there is no 2nd argument for button on-click
+    const handleClose = useCallback(
+        (_: SyntheticEvent, reason?: string) => {
+            if (reason === 'backdropClick') {
+                return;
+            }
+            onClose();
+        },
+        [onClose]
+    );
 
     return (
         <Dialog fullWidth open={openDialog} onClose={handleClose}>
