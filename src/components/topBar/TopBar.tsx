@@ -182,7 +182,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         equipmentLabelling?: boolean;
         onLanguageClick: (value: GsLang) => void;
         language: GsLang;
-        developerMode: boolean;
+        developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
     };
 
