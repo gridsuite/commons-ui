@@ -6,13 +6,12 @@
  */
 
 import React, { useCallback } from 'react';
-import { Theme } from '@mui/material/styles/createTheme';
 import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
-import { Box, type SxProps, useTheme } from '@mui/material';
+import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 

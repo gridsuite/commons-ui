@@ -6,9 +6,9 @@
  */
 
 import type { UserManager } from 'oidc-client';
-import { Dispatch } from 'react';
-import { NavigateFunction, Location } from 'react-router-dom';
-import { AuthenticationActions } from '../../redux/actions/authActions';
+import type { Dispatch } from 'react';
+import type { Location, NavigateFunction } from 'react-router';
+import type { AuthenticationActions } from '../../redux/actions/authActions';
 
 export type AuthenticationRouterErrorState = {
     userName?: string;
