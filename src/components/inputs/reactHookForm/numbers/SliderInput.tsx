@@ -22,6 +22,7 @@ export function SliderInput({
     size = 'small',
     marks,
     valueLabelDisplay,
+    valueLabelFormat,
     onValueChanged = identity,
 }: SliderInputProps) {
     const {
@@ -48,6 +49,7 @@ export function SliderInput({
             onChange={handleValueChange}
             marks={marks}
             valueLabelDisplay={valueLabelDisplay}
+            valueLabelFormat={valueLabelFormat}
         />
     );
 }
