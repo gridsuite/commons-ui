@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { type Theme } from '@mui/material';
-import type { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
+import type { SystemStyleObject } from '@mui/system';
 
 export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 

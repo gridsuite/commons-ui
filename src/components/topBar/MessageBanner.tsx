@@ -6,7 +6,7 @@
  */
 import { type ReactNode, useState } from 'react';
 import { Box, type Theme } from '@mui/material';
-import type { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
+import type { SystemStyleObject } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
