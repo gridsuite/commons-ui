@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { type ChangeEvent, type SyntheticEvent } from 'react';
+import { type ChangeEvent, type SyntheticEvent, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
     Alert,
@@ -16,7 +16,6 @@ import {
     DialogTitle,
     Switch,
     type Theme,
-    useCallback,
 } from '@mui/material';
 
 const styles = {
@@ -67,7 +66,7 @@ function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperMod
                     <Box>
                         <Switch
                             checked={developerMode ?? false}
-                            disabled={handleDeveloperModeClick !== undefined}
+                            disabled={handleDeveloperModeClick === undefined}
                             onChange={handleDeveloperModeClick}
                             inputProps={{ 'aria-label': 'developer mode checkbox' }}
                         />
