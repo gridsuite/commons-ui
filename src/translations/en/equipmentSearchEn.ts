@@ -18,6 +18,8 @@ export const equipmentSearchEn = {
     'equipment_search/shuntTag': 'SHUNT',
     'equipment_search/svcTag': 'SVC',
     'equipment_search/hvdcLineTag': 'HVDC LINE',
+    'equipment_search/hvdcLineVscTag': 'HVDC LINE VSC',
+    'equipment_search/hvdcLineLccTag': 'HVDC LINE LCC',
     'equipment_search/hvdcStationTag': 'HVDC STATION',
     'equipment_search/voltageLevelTag': 'VOLTAGE LEVEL',
     'equipment_search/substationTag': 'SUBSTATION',
