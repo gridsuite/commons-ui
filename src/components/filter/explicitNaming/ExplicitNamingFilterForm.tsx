@@ -144,7 +144,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 editable: true,
                 singleClickEdit: true,
                 cellEditor: NumericEditor,
-                maxWidth: 200,
+                flex: 1,
             });
         }
         return newColumnDefs;
