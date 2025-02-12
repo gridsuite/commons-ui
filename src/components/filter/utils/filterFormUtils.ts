@@ -238,10 +238,7 @@ export const FILTER_EQUIPMENTS: Record<EquipmentType.HVDC_LINE, FormEquipment> =
     },
 };
 
-export const FILTER_INDEXED_EQUIPMENTS: Record<
-    EquipmentType.HVDC_LINE_LCC | EquipmentType.HVDC_LINE_VSC,
-    FormEquipment
-> = {
+export const FILTER_INDEXED_EQUIPMENTS = {
     ...FILTER_EQUIPMENTS_BASE,
     HVDC_LINE_LCC: {
         id: 'HVDC_LINE_VSC',

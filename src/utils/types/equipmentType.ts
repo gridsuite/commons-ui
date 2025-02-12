@@ -69,8 +69,6 @@ export enum EquipmentType {
     SHUNT_COMPENSATOR = 'SHUNT_COMPENSATOR',
     STATIC_VAR_COMPENSATOR = 'STATIC_VAR_COMPENSATOR',
     HVDC_LINE = 'HVDC_LINE',
-    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
-    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
     HVDC_CONVERTER_STATION = 'HVDC_CONVERTER_STATION',
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
@@ -81,7 +79,7 @@ export enum EquipmentType {
 }
 
 // Must be equivalent as the back enum
-export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+export const EQUIPMENT_TYPE_BASE = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
@@ -101,18 +99,6 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
     [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
         name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
-    },
-    [EquipmentType.HVDC_LINE]: {
-        name: EquipmentType.HVDC_LINE,
-        tagLabel: 'equipment_search/hvdcLineTag',
-    },
-    [EquipmentType.HVDC_LINE_LCC]: {
-        name: EquipmentType.HVDC_LINE_LCC,
-        tagLabel: 'equipment_search/hvdcLineLccTag',
-    },
-    [EquipmentType.HVDC_LINE_VSC]: {
-        name: EquipmentType.HVDC_LINE_VSC,
-        tagLabel: 'equipment_search/hvdcLineVscTag',
     },
     [EquipmentType.GENERATOR]: {
         name: EquipmentType.GENERATOR,
@@ -165,6 +151,14 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
     [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
     [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
     [EquipmentType.BREAKER]: undefined, // Not used in the UI
+};
+
+export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+    ...EQUIPMENT_TYPE_BASE,
+    [EquipmentType.HVDC_LINE]: {
+        name: EquipmentType.HVDC_LINE,
+        tagLabel: 'equipment_search/hvdcLineTag',
+    },
 };
 
 export interface Identifiable {
