@@ -29,18 +29,19 @@ interface ModificationValues {
     equipmentAttributeValue: string;
 }
 
-const getOperatingStatusModificationValues = (modification: ModificationValues, withFormat: boolean) => {
+const getOperatingStatusModificationValues = (modification: ModificationValues, formatBold: boolean) => {
     return {
         action: modification.action,
         energizedEnd: modification.energizedVoltageLevelId,
-        computedLabel: withFormat ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+        computedLabel: formatBold ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
     };
 };
-const getEquipmentAttributeModificationValues = (modification: ModificationValues, withFormat: boolean) => {
+
+const getEquipmentAttributeModificationValues = (modification: ModificationValues, formatBold: boolean) => {
     return {
         equipmentAttributeName: modification.equipmentAttributeName,
         equipmentAttributeValue: modification.equipmentAttributeValue,
-        computedLabel: withFormat ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+        computedLabel: formatBold ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
     };
 };
 
@@ -85,18 +86,16 @@ export const useModificationLabelComputer = () => {
     );
 
     const computeLabel = useCallback(
-        (modif: NetworkModificationMetadata, withFormat = true) => {
+        (modif: NetworkModificationMetadata, formatBold = true) => {
             const modificationValues = JSON.parse(modif.messageValues);
 
             switch (modif.messageType) {
                 case MODIFICATION_TYPES.OPERATING_STATUS_MODIFICATION.type:
-                    return getOperatingStatusModificationValues(modificationValues, withFormat);
+                    return getOperatingStatusModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.EQUIPMENT_ATTRIBUTE_MODIFICATION.type:
-                    return getEquipmentAttributeModificationValues(modificationValues, withFormat);
+                    return getEquipmentAttributeModificationValues(modificationValues, formatBold);
                 default:
-                    return {
-                        computedLabel: withFormat ? <strong>{getLabel(modif)}</strong> : getLabel(modif),
-                    };
+                    return { computedLabel: formatBold ? <strong>{getLabel(modif)}</strong> : getLabel(modif) };
             }
         },
         [getLabel]
