@@ -16,6 +16,7 @@ import {
     FormGroup,
     Grid,
     IconButton,
+    styled,
     StyledEngineProvider,
     Tab,
     Tabs,
@@ -24,30 +25,21 @@ import {
     Typography,
 } from '@mui/material';
 import CommentIcon from '@mui/icons-material/Comment';
-import { styled } from '@mui/system';
-import { useMatch } from 'react-router';
+import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
-import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import translations from './demo_intl';
-
-// eslint-disable-next-line import/no-unresolved
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
+import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
 import AppPackage from '../../package.json';
-
 import TreeViewFinderConfig from './TreeViewFinderConfig';
-
 import {
     fetchInfiniteTestDataList,
     fetchInfiniteTestDataTree,
     testDataList,
     testDataTree,
 } from '../data/TreeViewFinder';
-
 import searchEquipments from '../data/EquipmentSearchBar';
-
 import FlatParametersTab from './FlatParametersTab';
-
 import InputsTab from './InputsTab';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
@@ -814,7 +806,6 @@ function AppContent({ language, onLanguageClick }) {
             </div>
             <hr />
             <Crasher />
-            <Button onClick={() => setDeveloperMode(!developerMode)}>Toggle developer mode</Button>
         </div>
     );
 
@@ -828,7 +819,7 @@ function AppContent({ language, onLanguageClick }) {
                             appName="Demo"
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
-                            onUserSettingsClick={() => console.log('user settings')}
+                            onDeveloperModeClick={() => setDeveloperMode(!developerMode)}
                             developerMode={developerMode}
                             onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}
