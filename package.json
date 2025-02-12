@@ -127,6 +127,7 @@
         "react-papaparse": "^4.4.0",
         "react-resizable": "^3.0.5",
         "react-router": "^6.29.0",
+        "react-router-dom": "^6.29.0",
         "ts-node": "^10.9.2",
         "typescript": "~5.5.4",
         "vite": "^5.4.14",
