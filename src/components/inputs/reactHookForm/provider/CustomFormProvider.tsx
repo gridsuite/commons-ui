@@ -30,17 +30,16 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
 export function CustomFormProvider<TFieldValues extends FieldValues = FieldValues>(
     props: PropsWithChildren<MergedFormContextProps<TFieldValues>>
 ) {
-    const { validationSchema, removeOptional, language, children, ...formMethods } = props;
+    // TODO found how to manage generic type
+    const { validationSchema, removeOptional, language, children, ...formMethods } = props as PropsWithChildren<
+        MergedFormContextProps<FieldValues>
+    >;
 
     return (
         <FormProvider {...formMethods}>
             <CustomFormContext.Provider
                 value={React.useMemo(
-                    () => ({
-                        validationSchema,
-                        removeOptional,
-                        language,
-                    }),
+                    () => ({ validationSchema, removeOptional, language }),
                     [validationSchema, removeOptional, language]
                 )}
             >

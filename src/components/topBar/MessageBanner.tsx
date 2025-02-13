@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactNode, useState } from 'react';
-import { Box, Theme } from '@mui/material';
+import { Box, type Theme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { SystemStyleObject } from '@mui/system/styleFunctionSx/styleFunctionSx';
+import type { SystemStyleObject } from '@mui/system';
 
 const styles = {
     banner: (theme: Theme): SystemStyleObject<Theme> => ({
