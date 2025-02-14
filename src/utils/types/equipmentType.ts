@@ -78,13 +78,8 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
-export enum HvdcType {
-    LCC = 'LCC',
-    VSC = 'VSC',
-}
-
 // Must be equivalent as the back enum
-export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+export const EQUIPMENT_TYPE_BASE = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
@@ -104,10 +99,6 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
     [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
         name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
-    },
-    [EquipmentType.HVDC_LINE]: {
-        name: EquipmentType.HVDC_LINE,
-        tagLabel: 'equipment_search/hvdcLineTag',
     },
     [EquipmentType.GENERATOR]: {
         name: EquipmentType.GENERATOR,
@@ -160,6 +151,14 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
     [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
     [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
     [EquipmentType.BREAKER]: undefined, // Not used in the UI
+};
+
+export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+    ...EQUIPMENT_TYPE_BASE,
+    [EquipmentType.HVDC_LINE]: {
+        name: EquipmentType.HVDC_LINE,
+        tagLabel: 'equipment_search/hvdcLineTag',
+    },
 };
 
 export interface Identifiable {
