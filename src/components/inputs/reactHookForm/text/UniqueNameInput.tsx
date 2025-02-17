@@ -13,9 +13,9 @@ import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
-import { useDebounce } from '../../../../hooks/useDebounce';
-import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { ElementExistsType, ElementType } from '../../../../utils/types/elementType';
+import { useDebounce } from '../../../../hooks';
+import { ElementExistsType, ElementType, FieldConstants } from '../../../../utils';
+import { elementAlreadyExists } from '../../../../services';
 
 export interface UniqueNameInputProps {
     name: string;
@@ -42,7 +42,6 @@ export function UniqueNameInput({
     onManualChangeCallback,
     formProps,
     activeDirectory,
-    elementExists,
 }: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
@@ -72,7 +71,7 @@ export function UniqueNameInput({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue) {
-                elementExists?.(directory, nameValue, elementType)
+                elementAlreadyExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {
@@ -97,7 +96,7 @@ export function UniqueNameInput({
                     });
             }
         },
-        [setError, clearErrors, name, elementType, elementExists, directory, trigger]
+        [setError, clearErrors, name, elementType, directory, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
