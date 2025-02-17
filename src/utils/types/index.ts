@@ -11,4 +11,3 @@ export * from './metadata';
 export * from './types';
 export * from './modificationType';
 export * from './fieldType';
-export * from './extendedEquipmentType';

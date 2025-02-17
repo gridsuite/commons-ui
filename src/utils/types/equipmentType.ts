@@ -78,8 +78,18 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
+export enum ExtendedEquipmentType {
+    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
+    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
+}
+
 // Must be equivalent as the back enum
-export const EQUIPMENT_TYPE_BASE = {
+export const EQUIPMENT_TYPE: Partial<
+    Record<
+        EquipmentType | ExtendedEquipmentType,
+        { name: EquipmentType | ExtendedEquipmentType; tagLabel: string } | undefined
+    >
+> = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
@@ -99,6 +109,14 @@ export const EQUIPMENT_TYPE_BASE = {
     [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
         name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
+    },
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        name: ExtendedEquipmentType.HVDC_LINE_LCC,
+        tagLabel: 'equipment_search/hvdcLineLccTag',
+    },
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        name: ExtendedEquipmentType.HVDC_LINE_VSC,
+        tagLabel: 'equipment_search/hvdcLineVscTag',
     },
     [EquipmentType.GENERATOR]: {
         name: EquipmentType.GENERATOR,
@@ -147,17 +165,6 @@ export const EQUIPMENT_TYPE_BASE = {
     [EquipmentType.LCC_CONVERTER_STATION]: {
         name: EquipmentType.LCC_CONVERTER_STATION,
         tagLabel: 'equipment_search/lccConverterStationTag',
-    },
-    [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
-    [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
-    [EquipmentType.BREAKER]: undefined, // Not used in the UI
-};
-
-export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
-    ...EQUIPMENT_TYPE_BASE,
-    [EquipmentType.HVDC_LINE]: {
-        name: EquipmentType.HVDC_LINE,
-        tagLabel: 'equipment_search/hvdcLineTag',
     },
 };
 

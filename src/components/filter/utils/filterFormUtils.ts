@@ -8,8 +8,8 @@ import { FunctionComponent } from 'react';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
-import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { EquipmentType } from '../../../utils/types/equipmentType';
+import { ExtendedEquipmentType } from '../../../utils';
 
 const countries = {
     renderer: CountriesInput,
@@ -58,21 +58,6 @@ const nominalVoltage3 = {
     props: {
         label: 'nominalVoltage3',
         name: `${FieldConstants.CRITERIA_BASED}.${FieldConstants.NOMINAL_VOLTAGE_3}`,
-    },
-};
-const energySource = {
-    renderer: SelectInput,
-    props: {
-        label: 'EnergySourceText',
-        name: `${FieldConstants.CRITERIA_BASED}.${FieldConstants.ENERGY_SOURCE}`,
-        options: [
-            { id: 'HYDRO', label: 'Hydro' },
-            { id: 'NUCLEAR', label: 'Nuclear' },
-            { id: 'WIND', label: 'Wind' },
-            { id: 'THERMAL', label: 'Thermal' },
-            { id: 'SOLAR', label: 'Solar' },
-            { id: 'OTHER', label: 'Other' },
-        ],
     },
 };
 export type FormField = {
@@ -158,96 +143,72 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
         fields: [countries, nominalVoltage],
     },
 };
-export const FILTER_EQUIPMENTS_BASE: Record<
-    | EquipmentType.SUBSTATION
-    | EquipmentType.VOLTAGE_LEVEL
-    | EquipmentType.LINE
-    | EquipmentType.TWO_WINDINGS_TRANSFORMER
-    | EquipmentType.THREE_WINDINGS_TRANSFORMER
-    | EquipmentType.GENERATOR
-    | EquipmentType.BATTERY
-    | EquipmentType.LOAD
-    | EquipmentType.SHUNT_COMPENSATOR
-    | EquipmentType.STATIC_VAR_COMPENSATOR
-    | EquipmentType.DANGLING_LINE,
-    FormEquipment
-> = {
-    SUBSTATION: {
-        id: 'SUBSTATION',
+
+const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+    [EquipmentType.SUBSTATION]: {
+        id: EquipmentType.SUBSTATION,
         label: 'Substations',
-        fields: [countries],
     },
-    VOLTAGE_LEVEL: {
-        id: 'VOLTAGE_LEVEL',
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        id: EquipmentType.VOLTAGE_LEVEL,
         label: 'VoltageLevels',
-        fields: [countries, nominalVoltage],
     },
-    LINE: {
-        id: 'LINE',
+    [EquipmentType.LINE]: {
+        id: EquipmentType.LINE,
         label: 'Lines',
-        fields: [countries1, countries2, nominalVoltage1, nominalVoltage2],
     },
-    TWO_WINDINGS_TRANSFORMER: {
-        id: 'TWO_WINDINGS_TRANSFORMER',
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        id: EquipmentType.TWO_WINDINGS_TRANSFORMER,
         label: 'TwoWindingsTransformers',
-        fields: [countries, nominalVoltage1, nominalVoltage2],
     },
-    THREE_WINDINGS_TRANSFORMER: {
-        id: 'THREE_WINDINGS_TRANSFORMER',
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        id: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         label: 'ThreeWindingsTransformers',
-        fields: [countries, nominalVoltage1, nominalVoltage2, nominalVoltage3],
     },
-    GENERATOR: {
-        id: 'GENERATOR',
+    [EquipmentType.GENERATOR]: {
+        id: EquipmentType.GENERATOR,
         label: 'Generators',
-        fields: [countries, energySource, nominalVoltage],
     },
-    BATTERY: {
-        id: 'BATTERY',
+    [EquipmentType.BATTERY]: {
+        id: EquipmentType.BATTERY,
         label: 'Batteries',
-        fields: [countries, nominalVoltage],
     },
-    LOAD: {
-        id: 'LOAD',
+    [EquipmentType.LOAD]: {
+        id: EquipmentType.LOAD,
         label: 'Loads',
-        fields: [countries, nominalVoltage],
     },
-    SHUNT_COMPENSATOR: {
-        id: 'SHUNT_COMPENSATOR',
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        id: EquipmentType.SHUNT_COMPENSATOR,
         label: 'ShuntCompensators',
-        fields: [countries, nominalVoltage],
     },
-    STATIC_VAR_COMPENSATOR: {
-        id: 'STATIC_VAR_COMPENSATOR',
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        id: EquipmentType.STATIC_VAR_COMPENSATOR,
         label: 'StaticVarCompensators',
-        fields: [countries, nominalVoltage],
     },
-    DANGLING_LINE: {
-        id: 'DANGLING_LINE',
+    [EquipmentType.DANGLING_LINE]: {
+        id: EquipmentType.DANGLING_LINE,
         label: 'DanglingLines',
-        fields: [countries, nominalVoltage],
     },
 };
 
-export const FILTER_EQUIPMENTS: Record<EquipmentType.HVDC_LINE, FormEquipment> = {
-    ...FILTER_EQUIPMENTS_BASE,
-    HVDC_LINE: {
-        id: 'HVDC_LINE',
+export const FILTER_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+    ...BASE_EQUIPMENTS,
+    [EquipmentType.HVDC_LINE]: {
+        id: EquipmentType.HVDC_LINE,
         label: 'Hvdc',
-        fields: [countries1, countries2, nominalVoltage],
     },
 };
 
-export const FILTER_INDEXED_EQUIPMENTS = {
-    ...FILTER_EQUIPMENTS_BASE,
-    HVDC_LINE_LCC: {
-        id: 'HVDC_LINE_VSC',
+export const SEARCH_EQUIPMENTS: Partial<
+    Record<EquipmentType | ExtendedEquipmentType, { id: EquipmentType | ExtendedEquipmentType; label: string }>
+> = {
+    ...BASE_EQUIPMENTS,
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_LCC,
         label: 'VSC',
-        fields: [countries1, countries2, nominalVoltage],
     },
-    HVDC_LINE_VSC: {
-        id: 'HVDC_LINE_LCC',
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_VSC,
         label: 'LCC',
-        fields: [countries1, countries2, nominalVoltage],
     },
 };
