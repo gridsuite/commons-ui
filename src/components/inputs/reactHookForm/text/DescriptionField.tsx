@@ -8,7 +8,7 @@
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Button, SxProps, Theme } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from '@mui/icons-material/ControlPoint';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useFormContext } from 'react-hook-form'; // Import useFormContext
 import { FieldConstants } from '../../../../utils';
