@@ -13,9 +13,8 @@ import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
-import { useDebounce } from '../../../../hooks/useDebounce';
-import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { ElementExistsType, ElementType } from '../../../../utils/types/elementType';
+import { useDebounce } from '../../../../hooks';
+import { FieldConstants, ElementExistsType, ElementType } from '../../../../utils';
 
 export interface UniqueNameInputProps {
     name: string;
@@ -151,6 +150,7 @@ export function UniqueNameInput({
 
     return (
         <TextField
+            autoComplete="new-password" // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers
             onChange={handleManualChange}
             onBlur={onBlur}
             value={value}
