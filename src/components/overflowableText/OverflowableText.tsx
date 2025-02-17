@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactElement, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, BoxProps, SxProps, Theme, Tooltip, styled } from '@mui/material';
 import { Style } from 'node:util';
 
@@ -32,7 +32,7 @@ const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxProps => ({
 });
 
 export interface OverflowableTextProps extends BoxProps {
-    text?: ReactElement | string;
+    text?: ReactNode;
     maxLineCount?: number;
     tooltipStyle?: Style;
     tooltipSx?: SxProps<Theme>;

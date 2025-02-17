@@ -7,9 +7,8 @@
 
 import { Grid } from '@mui/material';
 import { useCallback } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 import { Login } from './Login';
-
 import AuthenticationRouterErrorDisplay from './AuthenticationRouterErrorDisplay';
 import { AuthenticationRouterProps } from './authenticationType';
 import { SignInCallbackHandler } from './SignInCallbackHandler';
