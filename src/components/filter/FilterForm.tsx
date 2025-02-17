@@ -7,7 +7,7 @@
 
 import { Box } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { HeaderFilterForm, FilterFormProps } from './HeaderFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
 import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';

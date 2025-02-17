@@ -7,7 +7,7 @@
 
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InputAdornment, TextFieldProps } from '@mui/material';
+import { InputAdornment, SxProps, TextFieldProps, Theme } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -28,6 +28,7 @@ export interface UniqueNameInputProps {
     >;
     activeDirectory?: UUID;
     elementExists?: ElementExistsType;
+    sx?: SxProps<Theme>;
 }
 
 /**
@@ -42,6 +43,7 @@ export function UniqueNameInput({
     formProps,
     activeDirectory,
     elementExists,
+    sx,
 }: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
@@ -160,7 +162,7 @@ export function UniqueNameInput({
             type="text"
             autoFocus={autoFocus}
             margin="dense"
-            fullWidth
+            sx={sx}
             error={!!error}
             helperText={translatedError}
             InputProps={{ endAdornment }}

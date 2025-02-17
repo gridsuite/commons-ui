@@ -16,6 +16,17 @@ import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
 import yup from '../../utils/yupConfig';
 import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 
+export const filterStyles = {
+    textField: {
+        minWidth: '250px',
+        width: '33%',
+    },
+    description: {
+        minWidth: '250px',
+        width: '50%',
+    },
+};
+
 export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
@@ -53,11 +64,12 @@ export function HeaderFilterForm({
                     autoFocus={creation}
                     activeDirectory={activeDirectory}
                     elementExists={elementExists}
+                    sx={filterStyles.textField}
                 />
             </Grid>
             <>
                 <Grid item xs={12}>
-                    <DescriptionField />
+                    <DescriptionField expandingTextSx={filterStyles.description} />
                 </Grid>
                 {creation && !sourceFilterForExplicitNamingConversion && (
                     <Grid item>
