@@ -18,7 +18,7 @@ export interface DescriptionFieldProps {
     expandingTextSx?: SxProps<Theme>;
 }
 
-export function DescriptionField({ expandingTextSx }: DescriptionFieldProps) {
+export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldProps>) {
     const { setValue, getValues } = useFormContext();
     const description = getValues(FieldConstants.DESCRIPTION);
     const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(!!description);
