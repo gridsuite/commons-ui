@@ -42,7 +42,6 @@ export function ExpertFilterEditionDialog({
     getFilterById,
     setItemSelectionForCopy,
     activeDirectory,
-    elementExists,
     language,
     description,
 }: Readonly<FilterEditionProps>) {
@@ -130,7 +129,7 @@ export function ExpertFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 }

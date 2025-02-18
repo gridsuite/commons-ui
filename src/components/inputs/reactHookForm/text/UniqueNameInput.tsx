@@ -14,7 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
 import { useDebounce } from '../../../../hooks';
-import { ElementExistsType, ElementType, FieldConstants } from '../../../../utils';
+import { ElementType, FieldConstants } from '../../../../utils';
 import { elementAlreadyExists } from '../../../../services';
 
 export interface UniqueNameInputProps {
@@ -28,7 +28,6 @@ export interface UniqueNameInputProps {
         'value' | 'onChange' | 'name' | 'label' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
 }
 
 /**
