@@ -205,10 +205,10 @@ export const SEARCH_EQUIPMENTS: Partial<
     ...BASE_EQUIPMENTS,
     [ExtendedEquipmentType.HVDC_LINE_LCC]: {
         id: ExtendedEquipmentType.HVDC_LINE_LCC,
-        label: 'VSC',
+        label: 'LCC',
     },
     [ExtendedEquipmentType.HVDC_LINE_VSC]: {
         id: ExtendedEquipmentType.HVDC_LINE_VSC,
-        label: 'LCC',
+        label: 'VSC',
     },
 };

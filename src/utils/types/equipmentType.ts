@@ -181,7 +181,7 @@ export interface Equipment extends Identifiable {
 export interface EquipmentInfos extends Identifiable {
     label: string;
     key: string;
-    type: EquipmentType;
+    type: EquipmentType | ExtendedEquipmentType;
     voltageLevelLabel?: string;
     voltageLevelId?: string;
     operatingStatus?: string;
