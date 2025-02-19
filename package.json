@@ -28,6 +28,18 @@
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
     },
     "dependencies": {
+        "@formatjs/intl-datetimeformat": "^6.17.3",
+        "@formatjs/intl-displaynames": "^6.8.10",
+        "@formatjs/intl-durationformat": "^0.7.3",
+        "@formatjs/intl-enumerator": "^1.8.9",
+        "@formatjs/intl-getcanonicallocales": "^2.5.4",
+        "@formatjs/intl-listformat": "^7.7.10",
+        "@formatjs/intl-locale": "^4.2.10",
+        "@formatjs/intl-localematcher": "^0.6.0",
+        "@formatjs/intl-numberformat": "^8.15.3",
+        "@formatjs/intl-pluralrules": "^5.4.3",
+        "@formatjs/intl-relativetimeformat": "^11.4.10",
+        "@formatjs/intl-segmenter": "^11.7.9",
         "@react-querybuilder/dnd": "^8.2.0",
         "@react-querybuilder/material": "^8.2.0",
         "autosuggest-highlight": "^3.3.4",
