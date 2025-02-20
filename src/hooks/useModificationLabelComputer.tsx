@@ -27,6 +27,8 @@ interface ModificationValues {
     energizedVoltageLevelId: string;
     equipmentAttributeName: string;
     equipmentAttributeValue: string;
+    voltageLevelEquipmentId: string;
+    substationEquipmentId: string;
 }
 
 const getOperatingStatusModificationValues = (modification: ModificationValues, withFormat: boolean) => {
@@ -41,6 +43,21 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
         equipmentAttributeName: modification.equipmentAttributeName,
         equipmentAttributeValue: modification.equipmentAttributeValue,
         computedLabel: withFormat ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+    };
+};
+
+const getVoltageLevelWithSubstationModificationValues = (modification: ModificationValues, withFormat: boolean) => {
+    return {
+        voltageLevelEquipmentId: withFormat ? (
+            <strong>{modification.voltageLevelEquipmentId}</strong>
+        ) : (
+            modification.voltageLevelEquipmentId
+        ),
+        substationEquipmentId: withFormat ? (
+            <strong>{modification.substationEquipmentId}</strong>
+        ) : (
+            modification.substationEquipmentId
+        ),
     };
 };
 
@@ -77,8 +94,6 @@ export const useModificationLabelComputer = () => {
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
                     });
-                case `${MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION.type}_${MODIFICATION_TYPES.SUBSTATION_CREATION.type}`:
-                    return `${modificationMetadata.voltageLevelEquipmentId}_${modificationMetadata.substationEquipmentId}`;
                 default:
                     return modificationMetadata.equipmentId || '';
             }
@@ -95,6 +110,8 @@ export const useModificationLabelComputer = () => {
                     return getOperatingStatusModificationValues(modificationValues, withFormat);
                 case MODIFICATION_TYPES.EQUIPMENT_ATTRIBUTE_MODIFICATION.type:
                     return getEquipmentAttributeModificationValues(modificationValues, withFormat);
+                case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
+                    return getVoltageLevelWithSubstationModificationValues(modificationValues, withFormat);
                 default:
                     return {
                         computedLabel: withFormat ? <strong>{getLabel(modif)}</strong> : getLabel(modif),

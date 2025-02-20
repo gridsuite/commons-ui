@@ -66,4 +66,6 @@ export const networkModificationsFr = {
     'network_modifications.tabular.GENERATOR_CREATION': 'créations de générateurs',
     'network_modifications.LCC_CREATION': 'Création de la HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Création de CSPR {computedLabel}',
+    'network_modifications.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION':
+        'Création du poste {voltageLevelEquipmentId} et du site {substationEquipmentId}',
 };
