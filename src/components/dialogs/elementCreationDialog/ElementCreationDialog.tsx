@@ -29,16 +29,25 @@ export interface IElementCreationDialog extends FormData {
     [FieldConstants.FOLDER_ID]: UUID;
 }
 
-interface ElementCreationDialogProps {
+export type ElementCreationDialogProps = {
     open: boolean;
     onSave: (data: IElementCreationDialog) => void;
     onClose: () => void;
     type: ElementType;
     titleId: string;
     prefixIdForGeneratedName?: string;
-    studyUuid?: UUID; // starting directory can be the same as a given study
-    initDirectory?: ElementAttributes; // or a specific directory
-}
+} & (
+    | {
+          /** starting directory can be the same as a given study */
+          studyUuid: UUID;
+          initDirectory?: never;
+      }
+    | {
+          studyUuid?: never;
+          /** or directly a given directory */
+          initDirectory: ElementAttributes;
+      }
+);
 
 const schema = yup
     .object()
@@ -82,10 +91,10 @@ export function ElementCreationDialog({
 
     const disableSave = Object.keys(errors).length > 0;
 
-    const onCancel = () => {
+    const onCancel = useCallback(() => {
         reset(emptyFormData);
         onClose();
-    };
+    }, [onClose, reset]);
 
     useEffect(() => {
         if (prefixIdForGeneratedName) {
@@ -133,17 +142,20 @@ export function ElementCreationDialog({
         }
     }, [initDirectory, open]);
 
-    const handleChangeFolder = () => {
+    const handleChangeFolder = useCallback(() => {
         setDirectorySelectorOpen(true);
-    };
+    }, []);
 
-    const setSelectedFolder = (folder: TreeViewFinderNodeProps[]) => {
-        if (folder?.length > 0 && folder[0].id !== destinationFolder?.id) {
-            const { id, name } = folder[0];
-            setDestinationFolder({ id, name });
-        }
-        setDirectorySelectorOpen(false);
-    };
+    const setSelectedFolder = useCallback(
+        (folder: TreeViewFinderNodeProps[]) => {
+            if (folder?.length > 0 && folder[0].id !== destinationFolder?.id) {
+                const { id, name } = folder[0];
+                setDestinationFolder({ id, name });
+            }
+            setDirectorySelectorOpen(false);
+        },
+        [destinationFolder?.id]
+    );
 
     const onSubmit = useCallback<SubmitHandler<SchemaType>>(
         (values) => {
