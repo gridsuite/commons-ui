@@ -80,7 +80,53 @@ export enum EquipmentType {
     HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
 
-// Must be equivalent as the back enum
+export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+    [EquipmentType.SUBSTATION]: {
+        id: EquipmentType.SUBSTATION,
+        label: 'Substations',
+    },
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        id: EquipmentType.VOLTAGE_LEVEL,
+        label: 'VoltageLevels',
+    },
+    [EquipmentType.LINE]: {
+        id: EquipmentType.LINE,
+        label: 'Lines',
+    },
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        id: EquipmentType.TWO_WINDINGS_TRANSFORMER,
+        label: 'TwoWindingsTransformers',
+    },
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        id: EquipmentType.THREE_WINDINGS_TRANSFORMER,
+        label: 'ThreeWindingsTransformers',
+    },
+    [EquipmentType.GENERATOR]: {
+        id: EquipmentType.GENERATOR,
+        label: 'Generators',
+    },
+    [EquipmentType.BATTERY]: {
+        id: EquipmentType.BATTERY,
+        label: 'Batteries',
+    },
+    [EquipmentType.LOAD]: {
+        id: EquipmentType.LOAD,
+        label: 'Loads',
+    },
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        id: EquipmentType.SHUNT_COMPENSATOR,
+        label: 'ShuntCompensators',
+    },
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        id: EquipmentType.STATIC_VAR_COMPENSATOR,
+        label: 'StaticVarCompensators',
+    },
+    [EquipmentType.DANGLING_LINE]: {
+        id: EquipmentType.DANGLING_LINE,
+        label: 'DanglingLines',
+    },
+};
+
 export const EQUIPMENT_TYPE: Partial<Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined>> = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
@@ -157,6 +203,18 @@ export const EQUIPMENT_TYPE: Partial<Record<EquipmentType, { name: EquipmentType
     [EquipmentType.LCC_CONVERTER_STATION]: {
         name: EquipmentType.LCC_CONVERTER_STATION,
         tagLabel: 'equipment_search/lccConverterStationTag',
+    },
+};
+
+export const SEARCH_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+    ...BASE_EQUIPMENTS,
+    [EquipmentType.HVDC_LINE_LCC]: {
+        id: EquipmentType.HVDC_LINE_LCC,
+        label: 'LCC',
+    },
+    [EquipmentType.HVDC_LINE_VSC]: {
+        id: EquipmentType.HVDC_LINE_VSC,
+        label: 'VSC',
     },
 };
 
