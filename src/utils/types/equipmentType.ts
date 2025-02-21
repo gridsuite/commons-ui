@@ -76,90 +76,158 @@ export enum EquipmentType {
     TIE_LINE = 'TIE_LINE',
     DISCONNECTOR = 'DISCONNECTOR',
     BREAKER = 'BREAKER',
+    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
+    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
 
-export enum HvdcType {
-    LCC = 'LCC',
-    VSC = 'VSC',
-}
-
-// Must be equivalent as the back enum
-export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+// order is not important,should cover all elements in EquipmentType
+export const BASE_INFOS_EQUIPMENT_TYPES: Partial<Record<EquipmentType, { label: string }>> = {
     [EquipmentType.SUBSTATION]: {
-        name: EquipmentType.SUBSTATION,
+        label: 'Substations',
+    },
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        label: 'VoltageLevels',
+    },
+    [EquipmentType.LINE]: {
+        label: 'Lines',
+    },
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        label: 'TwoWindingsTransformers',
+    },
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        label: 'ThreeWindingsTransformers',
+    },
+    [EquipmentType.GENERATOR]: {
+        label: 'Generators',
+    },
+    [EquipmentType.BATTERY]: {
+        label: 'Batteries',
+    },
+    [EquipmentType.LOAD]: {
+        label: 'Loads',
+    },
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        label: 'ShuntCompensators',
+    },
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        label: 'StaticVarCompensators',
+    },
+    [EquipmentType.DANGLING_LINE]: {
+        label: 'DanglingLines',
+    },
+    [EquipmentType.HVDC_LINE]: {
+        label: 'Hvdc',
+    },
+    [EquipmentType.HVDC_LINE_LCC]: {
+        label: 'LCC',
+    },
+    [EquipmentType.HVDC_LINE_VSC]: {
+        label: 'VSC',
+    },
+};
+
+// order is not important
+export const SEARCH_TAG_EQUIPMENT_TYPES: Partial<Record<EquipmentType, { tagLabel: string } | undefined>> = {
+    [EquipmentType.SUBSTATION]: {
         tagLabel: 'equipment_search/substationTag',
     },
     [EquipmentType.VOLTAGE_LEVEL]: {
-        name: EquipmentType.VOLTAGE_LEVEL,
         tagLabel: 'equipment_search/voltageLevelTag',
     },
     [EquipmentType.LINE]: {
-        name: EquipmentType.LINE,
         tagLabel: 'equipment_search/lineTag',
     },
     [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
-        name: EquipmentType.TWO_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/2wtTag',
     },
     [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
-        name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
     },
-    [EquipmentType.HVDC_LINE]: {
-        name: EquipmentType.HVDC_LINE,
-        tagLabel: 'equipment_search/hvdcLineTag',
+    [EquipmentType.HVDC_LINE_LCC]: {
+        tagLabel: 'equipment_search/hvdcLineLccTag',
+    },
+    [EquipmentType.HVDC_LINE_VSC]: {
+        tagLabel: 'equipment_search/hvdcLineVscTag',
     },
     [EquipmentType.GENERATOR]: {
-        name: EquipmentType.GENERATOR,
         tagLabel: 'equipment_search/generatorTag',
     },
     [EquipmentType.BATTERY]: {
-        name: EquipmentType.BATTERY,
         tagLabel: 'equipment_search/batteryTag',
     },
     [EquipmentType.LOAD]: {
-        name: EquipmentType.LOAD,
         tagLabel: 'equipment_search/loadTag',
     },
     [EquipmentType.SHUNT_COMPENSATOR]: {
-        name: EquipmentType.SHUNT_COMPENSATOR,
         tagLabel: 'equipment_search/shuntTag',
     },
     [EquipmentType.DANGLING_LINE]: {
-        name: EquipmentType.DANGLING_LINE,
         tagLabel: 'equipment_search/lineTag',
     },
     [EquipmentType.STATIC_VAR_COMPENSATOR]: {
-        name: EquipmentType.STATIC_VAR_COMPENSATOR,
         tagLabel: 'equipment_search/svcTag',
     },
     [EquipmentType.HVDC_CONVERTER_STATION]: {
-        name: EquipmentType.HVDC_CONVERTER_STATION,
         tagLabel: 'equipment_search/hvdcStationTag',
     },
     [EquipmentType.BUSBAR_SECTION]: {
-        name: EquipmentType.BUSBAR_SECTION,
         tagLabel: 'equipment_search/busbarSectionTag',
     },
     [EquipmentType.BUS]: {
-        name: EquipmentType.BUS,
         tagLabel: 'equipment_search/busTag',
     },
     [EquipmentType.SWITCH]: {
-        name: EquipmentType.SWITCH,
         tagLabel: 'equipment_search/switchTag',
     },
     [EquipmentType.VSC_CONVERTER_STATION]: {
-        name: EquipmentType.VSC_CONVERTER_STATION,
         tagLabel: 'equipment_search/vscConverterStationTag',
     },
     [EquipmentType.LCC_CONVERTER_STATION]: {
-        name: EquipmentType.LCC_CONVERTER_STATION,
         tagLabel: 'equipment_search/lccConverterStationTag',
     },
-    [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
-    [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
-    [EquipmentType.BREAKER]: undefined, // Not used in the UI
+};
+
+// order is important
+export const SEARCH_FILTER_EQUIPMENT_TYPES: Partial<Record<EquipmentType, { label?: string }>> = {
+    [EquipmentType.SUBSTATION]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.SUBSTATION],
+    },
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.VOLTAGE_LEVEL],
+    },
+    [EquipmentType.LINE]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.LINE],
+    },
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.TWO_WINDINGS_TRANSFORMER],
+    },
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.THREE_WINDINGS_TRANSFORMER],
+    },
+    [EquipmentType.GENERATOR]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.GENERATOR],
+    },
+    [EquipmentType.BATTERY]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.BATTERY],
+    },
+    [EquipmentType.LOAD]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.LOAD],
+    },
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.SHUNT_COMPENSATOR],
+    },
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.STATIC_VAR_COMPENSATOR],
+    },
+    [EquipmentType.DANGLING_LINE]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.DANGLING_LINE],
+    },
+    [EquipmentType.HVDC_LINE_LCC]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.HVDC_LINE_LCC],
+    },
+    [EquipmentType.HVDC_LINE_VSC]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.HVDC_LINE_VSC],
+    },
 };
 
 export interface Identifiable {

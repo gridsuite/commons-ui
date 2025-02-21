@@ -20,7 +20,7 @@ import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditor
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
-import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
+import { FILTER_EQUIPMENT_TYPES } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
 import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/ModifyElementSelection';
@@ -108,7 +108,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
     });
 
     useEffect(() => {
-        if (watchEquipmentType && !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENTS)) {
+        if (watchEquipmentType && !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENT_TYPES)) {
             snackError({
                 headerId: 'obsoleteFilter',
             });
@@ -216,7 +216,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 <InputWithPopupConfirmation
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
-                    options={Object.values(FILTER_EQUIPMENTS)}
+                    options={Object.values(FILTER_EQUIPMENT_TYPES)}
                     disabled={!!sourceFilterForExplicitNamingConversion}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
