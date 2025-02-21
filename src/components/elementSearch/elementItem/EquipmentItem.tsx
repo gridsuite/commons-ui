@@ -9,7 +9,7 @@ import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { Box, SxProps, Theme } from '@mui/material';
-import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
+import { EquipmentInfos, SEARCH_TAG_EQUIPMENT_TYPES } from '../../../utils/types/equipmentType';
 import { TagRenderer } from '../tagRenderer/TagRenderer';
 import { OverflowableText } from '../../overflowableText';
 import { mergeSx } from '../../../utils/styles';
@@ -57,7 +57,7 @@ export function EquipmentItem({
                         className={clsx(props.classes?.equipmentTag, props.classes?.equipmentTypeTag)}
                         sx={mergeSx(props.styles?.equipmentTag, props.styles?.equipmentTypeTag)}
                     >
-                        <FormattedMessage id={EQUIPMENT_TYPE[element.type]?.tagLabel} />
+                        <FormattedMessage id={SEARCH_TAG_EQUIPMENT_TYPES[element.type]?.tagLabel} />
                     </Box>
                 )}
                 <OverflowableText

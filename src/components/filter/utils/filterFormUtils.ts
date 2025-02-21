@@ -8,7 +8,7 @@ import { FunctionComponent } from 'react';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
-import { BASE_EQUIPMENTS, EquipmentType } from '../../../utils/types/equipmentType';
+import { BASE_INFOS_EQUIPMENT_TYPES, EquipmentType } from '../../../utils/types/equipmentType';
 
 const countries = {
     renderer: CountriesInput,
@@ -143,10 +143,42 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     },
 };
 
-export const FILTER_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
-    ...BASE_EQUIPMENTS,
+// order is important
+export const FILTER_EQUIPMENT_TYPES: Partial<Record<EquipmentType, { label?: string }>> = {
+    [EquipmentType.SUBSTATION]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.SUBSTATION],
+    },
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.VOLTAGE_LEVEL],
+    },
+    [EquipmentType.LINE]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.LINE],
+    },
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.TWO_WINDINGS_TRANSFORMER],
+    },
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.THREE_WINDINGS_TRANSFORMER],
+    },
+    [EquipmentType.GENERATOR]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.GENERATOR],
+    },
+    [EquipmentType.BATTERY]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.BATTERY],
+    },
+    [EquipmentType.LOAD]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.LOAD],
+    },
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.SHUNT_COMPENSATOR],
+    },
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.STATIC_VAR_COMPENSATOR],
+    },
+    [EquipmentType.DANGLING_LINE]: {
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.DANGLING_LINE],
+    },
     [EquipmentType.HVDC_LINE]: {
-        id: EquipmentType.HVDC_LINE,
-        label: 'Hvdc',
+        ...BASE_INFOS_EQUIPMENT_TYPES[EquipmentType.HVDC_LINE],
     },
 };
