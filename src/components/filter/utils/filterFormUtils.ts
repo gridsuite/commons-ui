@@ -9,7 +9,6 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { RangeInput } from '../../inputs/reactHookForm/numbers/RangeInput';
 import { CountriesInput } from '../../inputs/reactHookForm/selectInputs/CountriesInput';
 import { EquipmentType } from '../../../utils/types/equipmentType';
-import { ExtendedEquipmentType } from '../../../utils';
 
 const countries = {
     renderer: CountriesInput,
@@ -199,16 +198,14 @@ export const FILTER_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentTyp
     },
 };
 
-export const SEARCH_EQUIPMENTS: Partial<
-    Record<EquipmentType | ExtendedEquipmentType, { id: EquipmentType | ExtendedEquipmentType; label: string }>
-> = {
+export const SEARCH_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
     ...BASE_EQUIPMENTS,
-    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
-        id: ExtendedEquipmentType.HVDC_LINE_LCC,
+    [EquipmentType.HVDC_LINE_LCC]: {
+        id: EquipmentType.HVDC_LINE_LCC,
         label: 'LCC',
     },
-    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
-        id: ExtendedEquipmentType.HVDC_LINE_VSC,
+    [EquipmentType.HVDC_LINE_VSC]: {
+        id: EquipmentType.HVDC_LINE_VSC,
         label: 'VSC',
     },
 };
