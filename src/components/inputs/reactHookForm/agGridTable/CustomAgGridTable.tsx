@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
+import { AgGridReactProps } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, useTheme } from '@mui/material';
@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl';
 import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import { CustomAGGrid } from '../../../customAGGrid';
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -181,12 +182,6 @@ export function CustomAgGridTable({
         setNewRowAdded(true);
     };
 
-    useEffect(() => {
-        if (gridApi) {
-            gridApi.api.sizeColumnsToFit();
-        }
-    }, [columnDefs, gridApi]);
-
     const intl = useIntl();
     const getLocaleText = useCallback(
         (params: any) => {
@@ -229,7 +224,7 @@ export function CustomAgGridTable({
     return (
         <>
             <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
-                <AgGridReact
+                <CustomAGGrid
                     rowData={rowData}
                     onGridReady={onGridReady}
                     getLocaleText={getLocaleText}

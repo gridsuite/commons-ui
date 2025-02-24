@@ -6,8 +6,8 @@
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson, getRequestParamFromList } from './utils';
-import { ElementAttributes } from '../utils/types/types';
+import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
+import { ElementAttributes } from '../utils';
 
 const PREFIX_DIRECTORY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/directory`;
 
@@ -46,4 +46,13 @@ export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAtt
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
     });
+}
+
+export function elementAlreadyExists(directoryUuid: UUID, elementName: string, type: string) {
+    const elementNameEncoded = encodeURIComponent(elementName);
+    const existsElementUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements/${elementNameEncoded}/types/${type}`;
+    console.debug(existsElementUrl);
+    return backendFetch(existsElementUrl, { method: 'head' }).then(
+        (response) => response.status !== 204 // HTTP 204 : No-content
+    );
 }

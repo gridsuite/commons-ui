@@ -45,7 +45,6 @@ export function ExplicitNamingFilterEditionDialog({
     setItemSelectionForCopy,
     getFilterById,
     activeDirectory,
-    elementExists,
     language,
     description,
 }: Readonly<FilterEditionProps>) {
@@ -132,7 +131,7 @@ export function ExplicitNamingFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} elementExists={elementExists} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
         </CustomMuiDialog>
     );
 }

@@ -11,10 +11,20 @@ import { identity } from '../utils/functions';
 
 export interface SliderInputProps extends SliderProps {
     name: string;
-    onValueChanged: (value: number | number[]) => void;
+    onValueChanged?: (value: number | number[]) => void;
 }
 
-export function SliderInput({ name, min, max, step, size = 'small', onValueChanged = identity }: SliderInputProps) {
+export function SliderInput({
+    name,
+    min,
+    max,
+    step,
+    size = 'small',
+    marks,
+    valueLabelDisplay,
+    valueLabelFormat,
+    onValueChanged = identity,
+}: SliderInputProps) {
     const {
         field: { onChange, value },
     } = useController({ name });
@@ -25,9 +35,21 @@ export function SliderInput({ name, min, max, step, size = 'small', onValueChang
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         activeThumb: number
     ) => {
-        onValueChanged(newValue);
+        onValueChanged?.(newValue);
         onChange(newValue);
     };
 
-    return <Slider size={size} min={min} max={max} step={step} value={value} onChange={handleValueChange} />;
+    return (
+        <Slider
+            size={size}
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={handleValueChange}
+            marks={marks}
+            valueLabelDisplay={valueLabelDisplay}
+            valueLabelFormat={valueLabelFormat}
+        />
+    );
 }
