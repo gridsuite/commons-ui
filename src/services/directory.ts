@@ -52,7 +52,7 @@ export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAtt
 
 export function elementAlreadyExists(directoryUuid: UUID, elementName: string, type: string) {
     const elementNameEncoded = encodeURIComponent(elementName);
-    const existsElementUrl = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/directories/${directoryUuid}/elements/${elementNameEncoded}/types/${type}`;
+    const existsElementUrl = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/directories/${directoryUuid}/elements/${elementNameEncoded}/types/${type}`;
     console.debug(existsElementUrl);
     return backendFetch(existsElementUrl, { method: 'head' }).then(
         (response) => response.status !== 204 // HTTP 204 : No-content
