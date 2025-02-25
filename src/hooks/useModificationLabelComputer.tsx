@@ -11,6 +11,10 @@ import { UUID } from 'crypto';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
 import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
 
+export const formatBold = (text: string, bold: boolean) => {
+    return bold ? <strong>{text}</strong> : { text };
+};
+
 export interface NetworkModificationMetadata {
     uuid: UUID;
     type: string;
@@ -48,16 +52,8 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
 
 const getVoltageLevelWithSubstationModificationValues = (modification: ModificationValues, withFormat: boolean) => {
     return {
-        voltageLevelEquipmentId: withFormat ? (
-            <strong>{modification.voltageLevelEquipmentId}</strong>
-        ) : (
-            modification.voltageLevelEquipmentId
-        ),
-        substationEquipmentId: withFormat ? (
-            <strong>{modification.substationEquipmentId}</strong>
-        ) : (
-            modification.substationEquipmentId
-        ),
+        voltageLevelEquipmentId: formatBold(modification.voltageLevelEquipmentId, withFormat),
+        substationEquipmentId: formatBold(modification.substationEquipmentId, withFormat),
     };
 };
 
