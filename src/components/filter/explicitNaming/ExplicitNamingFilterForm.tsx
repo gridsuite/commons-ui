@@ -133,6 +133,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 field: FieldConstants.EQUIPMENT_ID,
                 editable: true,
                 singleClickEdit: true,
+                flex: 1,
                 valueParser: (params: ValueParserParams) => params.newValue?.trim() ?? null,
             },
         ];
@@ -143,7 +144,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 editable: true,
                 singleClickEdit: true,
                 cellEditor: NumericEditor,
-                maxWidth: 200,
+                flex: 1,
             });
         }
         return newColumnDefs;
