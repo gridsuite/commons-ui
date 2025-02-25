@@ -10,7 +10,7 @@ import { UUID } from 'crypto';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
 import { FilterType } from './constants/FilterConstants';
 import { UniqueNameInput } from '../inputs/reactHookForm/text/UniqueNameInput';
-import { ElementExistsType, ElementType } from '../../utils/types/elementType';
+import { ElementType } from '../../utils/types/elementType';
 import { DescriptionField } from '../inputs/reactHookForm/text/DescriptionField';
 import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
 import yup from '../../utils/yupConfig';
@@ -30,7 +30,6 @@ export const filterStyles = {
 export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
@@ -49,7 +48,6 @@ export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
-    elementExists,
     handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
     const filterTypes = Object.values(FilterType);

@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
-
 export enum ElementType {
     DIRECTORY = 'DIRECTORY',
     STUDY = 'STUDY',
@@ -23,5 +21,3 @@ export enum ElementType {
     SPREADSHEET_CONFIG = 'SPREADSHEET_CONFIG',
     SPREADSHEET_CONFIG_COLLECTION = 'SPREADSHEET_CONFIG_COLLECTION',
 }
-
-export type ElementExistsType = (directory: UUID, value: string, elementType: ElementType) => Promise<boolean>;

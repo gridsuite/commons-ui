@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
 import { useDebounce } from '../../../../hooks';
 import { FieldConstants, ElementExistsType, ElementType } from '../../../../utils';
+import { elementAlreadyExists } from '../../../../services';
 
 export interface UniqueNameInputProps {
     name: string;
@@ -73,7 +74,7 @@ export function UniqueNameInput({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue) {
-                elementExists?.(directory, nameValue, elementType)
+                elementAlreadyExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {
@@ -98,7 +99,7 @@ export function UniqueNameInput({
                     });
             }
         },
-        [setError, clearErrors, name, elementType, elementExists, directory, trigger]
+        [setError, clearErrors, name, elementType, directory, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
