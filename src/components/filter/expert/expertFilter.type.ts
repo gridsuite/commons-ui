@@ -17,6 +17,8 @@ export enum OperatorType {
     GREATER_OR_EQUALS = 'GREATER_OR_EQUALS',
     BETWEEN = 'BETWEEN',
     IN = 'IN',
+    IS_IN = 'IS_IN',
+    IS_NOT_IN = 'IS_NOT_IN',
     IS = 'IS',
     CONTAINS = 'CONTAINS',
     BEGINS_WITH = 'BEGINS_WITH',
