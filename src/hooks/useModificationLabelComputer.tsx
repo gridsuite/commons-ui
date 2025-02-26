@@ -11,6 +11,10 @@ import { UUID } from 'crypto';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
 import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
 
+export const format = (text: string, bold: boolean) => {
+    return bold ? <strong>{text}</strong> : { text };
+};
+
 export interface NetworkModificationMetadata {
     uuid: UUID;
     type: string;
@@ -27,6 +31,8 @@ interface ModificationValues {
     energizedVoltageLevelId: string;
     equipmentAttributeName: string;
     equipmentAttributeValue: string;
+    voltageLevelEquipmentId: string;
+    substationEquipmentId: string;
 }
 
 const getOperatingStatusModificationValues = (modification: ModificationValues, formatBold: boolean) => {
@@ -42,6 +48,13 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
         equipmentAttributeName: modification.equipmentAttributeName,
         equipmentAttributeValue: modification.equipmentAttributeValue,
         computedLabel: formatBold ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+    };
+};
+
+const getVoltageLevelWithSubstationModificationValues = (modification: ModificationValues, formatBold: boolean) => {
+    return {
+        voltageLevelEquipmentId: format(modification.voltageLevelEquipmentId, formatBold),
+        substationEquipmentId: format(modification.substationEquipmentId, formatBold),
     };
 };
 
@@ -94,6 +107,8 @@ export const useModificationLabelComputer = () => {
                     return getOperatingStatusModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.EQUIPMENT_ATTRIBUTE_MODIFICATION.type:
                     return getEquipmentAttributeModificationValues(modificationValues, formatBold);
+                case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
+                    return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
                 default:
                     return { computedLabel: formatBold ? <strong>{getLabel(modif)}</strong> : getLabel(modif) };
             }
