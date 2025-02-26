@@ -20,10 +20,12 @@ export function OperatorSelector(props: ValueSelectorProps) {
         FieldType.VOLTAGE_LEVEL_PROPERTIES_3,
         FieldType.SUBSTATION_PROPERTIES,
         FieldType.SUBSTATION_PROPERTIES_1,
-        FieldType.SUBSTATION_PROPERTIES_2
+        FieldType.SUBSTATION_PROPERTIES_2,
     ];
     const selectAppearance = useSelectAppearance(options?.length || 0);
 
-    if (excludedFields.includes(field)) {return null;}
+    if (excludedFields.includes(field)) {
+        return null;
+    }
     return <MaterialValueSelector {...props} {...selectAppearance} sx={{ border: 'none' }} />;
 }
