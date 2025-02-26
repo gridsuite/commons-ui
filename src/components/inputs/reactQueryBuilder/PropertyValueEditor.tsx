@@ -30,7 +30,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
 
-    const { propertyName, propertyOperator, propertyValues } = valueEditorProps?.value ?? {};
+    const { propertyName, propertyValues } = valueEditorProps?.value ?? {};
 
     const [equipmentPredefinedProps, setEquipmentType] = usePredefinedProperties(equipmentType);
 
@@ -53,12 +53,13 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
 
     const onChange = useCallback(
         (field: string, value: any) => {
+            let finalValue = value;
             if (field === FieldConstants.PROPERTY_OPERATOR) {
-              value = value?.customName;
+                finalValue = value?.customName;
             }
             let updatedValue = {
                 ...valueEditorProps?.value,
-                [field]: value,
+                [field]: finalValue,
             };
             // Reset the property values when the property name changes
             if (field === FieldConstants.PROPERTY_NAME) {
