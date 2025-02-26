@@ -12,17 +12,18 @@ import { useSelectAppearance } from '../../../hooks';
 
 export function OperatorSelector(props: ValueSelectorProps) {
     const { field, options } = props;
-    if (
-        field === FieldType.FREE_PROPERTIES ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTIES ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTIES_1 ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTIES_2 ||
-        field === FieldType.VOLTAGE_LEVEL_PROPERTIES_3 ||
-        field === FieldType.SUBSTATION_PROPERTIES ||
-        field === FieldType.SUBSTATION_PROPERTIES_1 ||
-        field === FieldType.SUBSTATION_PROPERTIES_2
-    ) {
-        return () => null;
-    }
-    return <MaterialValueSelector {...props} {...useSelectAppearance(options.length)} sx={{ border: 'none' }} />;
+    const excludedFields = [
+        FieldType.FREE_PROPERTIES,
+        FieldType.VOLTAGE_LEVEL_PROPERTIES,
+        FieldType.VOLTAGE_LEVEL_PROPERTIES_1,
+        FieldType.VOLTAGE_LEVEL_PROPERTIES_2,
+        FieldType.VOLTAGE_LEVEL_PROPERTIES_3,
+        FieldType.SUBSTATION_PROPERTIES,
+        FieldType.SUBSTATION_PROPERTIES_1,
+        FieldType.SUBSTATION_PROPERTIES_2
+    ];
+    const selectAppearance = useSelectAppearance(options?.length || 0);
+
+    if (excludedFields.includes(field)) {return null;}
+    return <MaterialValueSelector {...props} {...selectAppearance} sx={{ border: 'none' }} />;
 }
