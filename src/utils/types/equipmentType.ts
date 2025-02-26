@@ -76,10 +76,12 @@ export enum EquipmentType {
     TIE_LINE = 'TIE_LINE',
     DISCONNECTOR = 'DISCONNECTOR',
     BREAKER = 'BREAKER',
+}
+
+export enum ExtendedEquipmentType {
     HVDC_LINE_LCC = 'HVDC_LINE_LCC',
     HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
-
 export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
     [EquipmentType.SUBSTATION]: {
         id: EquipmentType.SUBSTATION,
@@ -127,7 +129,12 @@ export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType;
     },
 };
 
-export const EQUIPMENT_TYPE: Partial<Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined>> = {
+export const EQUIPMENT_TYPE: Partial<
+    Record<
+        EquipmentType | ExtendedEquipmentType,
+        { name: EquipmentType | ExtendedEquipmentType; tagLabel: string } | undefined
+    >
+> = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
@@ -148,12 +155,12 @@ export const EQUIPMENT_TYPE: Partial<Record<EquipmentType, { name: EquipmentType
         name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
     },
-    [EquipmentType.HVDC_LINE_LCC]: {
-        name: EquipmentType.HVDC_LINE_LCC,
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        name: ExtendedEquipmentType.HVDC_LINE_LCC,
         tagLabel: 'equipment_search/hvdcLineLccTag',
     },
-    [EquipmentType.HVDC_LINE_VSC]: {
-        name: EquipmentType.HVDC_LINE_VSC,
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        name: ExtendedEquipmentType.HVDC_LINE_VSC,
         tagLabel: 'equipment_search/hvdcLineVscTag',
     },
     [EquipmentType.GENERATOR]: {
@@ -206,14 +213,16 @@ export const EQUIPMENT_TYPE: Partial<Record<EquipmentType, { name: EquipmentType
     },
 };
 
-export const SEARCH_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+export const SEARCH_EQUIPMENTS: Partial<
+    Record<EquipmentType | ExtendedEquipmentType, { id: EquipmentType | ExtendedEquipmentType; label: string }>
+> = {
     ...BASE_EQUIPMENTS,
-    [EquipmentType.HVDC_LINE_LCC]: {
-        id: EquipmentType.HVDC_LINE_LCC,
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_LCC,
         label: 'LCC',
     },
-    [EquipmentType.HVDC_LINE_VSC]: {
-        id: EquipmentType.HVDC_LINE_VSC,
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_VSC,
         label: 'VSC',
     },
 };
@@ -231,7 +240,7 @@ export interface Equipment extends Identifiable {
 export interface EquipmentInfos extends Identifiable {
     label: string;
     key: string;
-    type: EquipmentType;
+    type: EquipmentType | ExtendedEquipmentType;
     voltageLevelLabel?: string;
     voltageLevelId?: string;
     operatingStatus?: string;
