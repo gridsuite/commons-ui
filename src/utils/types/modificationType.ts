@@ -177,4 +177,7 @@ export const MODIFICATION_TYPES = {
     LCC_CREATION: {
         type: ModificationType.LCC_CREATION,
     },
+    VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION: {
+        type: 'VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION',
+    },
 };
