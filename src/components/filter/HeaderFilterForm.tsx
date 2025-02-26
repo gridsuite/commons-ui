@@ -58,6 +58,7 @@ export function HeaderFilterForm({
                     autoFocus={creation}
                     activeDirectory={activeDirectory}
                     sx={filterStyles.textField}
+                    fullWidth={false}
                 />
             </Grid>
             <>

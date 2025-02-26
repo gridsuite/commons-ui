@@ -29,6 +29,7 @@ export interface UniqueNameInputProps {
     >;
     activeDirectory?: UUID;
     sx?: SxProps<Theme>;
+    fullWidth?: boolean;
 }
 
 /**
@@ -43,6 +44,7 @@ export function UniqueNameInput({
     formProps,
     activeDirectory,
     sx,
+    fullWidth = true,
 }: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
@@ -162,6 +164,7 @@ export function UniqueNameInput({
             autoFocus={autoFocus}
             margin="dense"
             sx={sx}
+            fullWidth={fullWidth}
             error={!!error}
             helperText={translatedError}
             InputProps={{ endAdornment }}
