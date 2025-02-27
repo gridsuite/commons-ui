@@ -32,6 +32,7 @@ import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomRe
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
+import { filterStyles } from '../HeaderFilterForm';
 
 yup.setLocale({
     mixed: {
@@ -134,6 +135,7 @@ export function ExpertFilterForm() {
                     resetOnConfirmation={handleResetOnConfirmation}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
+                    sx={filterStyles.textField}
                 />
             </Box>
             <Box sx={unscrollableDialogStyles.scrollableContent}>
