@@ -7,10 +7,12 @@
 
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useState } from 'react';
 import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
 import { FieldLabel } from '../utils/FieldLabel';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
+import { usePrevious } from '../../../../hooks';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -49,22 +51,33 @@ export function AutocompleteInput({
         fieldState: { error },
     } = useController({ name });
 
+    const oldValue = usePrevious(value);
+
+    const [isFirstInputChange, setIsFirstInputChange] = useState(true);
+
+    console.log('XXX oldValue, value', { name, oldValue, value });
+
     const handleChange = (newValue: Option) => {
+        console.log('XXX begin handleChange AutocompleteInput/newValue', { newValue });
         onChangeCallback?.();
         // if free solo not enabled or if value is not of string type, we call onChange right away
         if (!allowNewValue || typeof newValue !== 'string') {
+            console.log('XXX string or not solo', { newValue });
             onChange(outputTransform(newValue));
             return;
         }
 
+        console.log('XXX AutocompleteInput/options', { options });
         // otherwise, we check if user input matches with one of the options
         const matchingOption = options.find((option: Option) => typeof option !== 'string' && option.id === newValue);
         // if it does, we send the matching option to react hook form
+        console.log('XXX AutocompleteInput/matchingOption', { matchingOption });
         if (matchingOption) {
+            console.log('XXX matchingOption', { newValue });
             onChange(outputTransform(matchingOption));
             return;
         }
-
+        console.log('XXX end handleChange AutocompleteInput/newValue', { newValue });
         // otherwise, we send the user input
         onChange(outputTransform(newValue));
     };
@@ -72,14 +85,22 @@ export function AutocompleteInput({
     return (
         <Autocomplete
             value={inputTransform(value)}
-            onChange={(_, data) => handleChange(data as Option)}
+            onChange={(event, data) => {
+                console.log('XXX event onChange', { event, data });
+                handleChange(data as Option);
+            }}
             {...(allowNewValue && {
                 freeSolo: true,
                 autoComplete: true,
                 blurOnSelect: true,
                 autoSelect: false,
-                onInputChange: (_, data) => {
-                    handleChange(data);
+                onInputChange: (event, data) => {
+                    console.log('XXX event onInputChange', { event, data });
+                    if (isFirstInputChange) {
+                        setIsFirstInputChange(false);
+                    } else {
+                        handleChange(data);
+                    }
                 },
             })}
             options={options}
