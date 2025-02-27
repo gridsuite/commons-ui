@@ -78,13 +78,63 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
-export enum HvdcType {
-    LCC = 'LCC',
-    VSC = 'VSC',
+export enum ExtendedEquipmentType {
+    HVDC_LINE_LCC = 'HVDC_LINE_LCC',
+    HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
+export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+    [EquipmentType.SUBSTATION]: {
+        id: EquipmentType.SUBSTATION,
+        label: 'Substations',
+    },
+    [EquipmentType.VOLTAGE_LEVEL]: {
+        id: EquipmentType.VOLTAGE_LEVEL,
+        label: 'VoltageLevels',
+    },
+    [EquipmentType.LINE]: {
+        id: EquipmentType.LINE,
+        label: 'Lines',
+    },
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
+        id: EquipmentType.TWO_WINDINGS_TRANSFORMER,
+        label: 'TwoWindingsTransformers',
+    },
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
+        id: EquipmentType.THREE_WINDINGS_TRANSFORMER,
+        label: 'ThreeWindingsTransformers',
+    },
+    [EquipmentType.GENERATOR]: {
+        id: EquipmentType.GENERATOR,
+        label: 'Generators',
+    },
+    [EquipmentType.BATTERY]: {
+        id: EquipmentType.BATTERY,
+        label: 'Batteries',
+    },
+    [EquipmentType.LOAD]: {
+        id: EquipmentType.LOAD,
+        label: 'Loads',
+    },
+    [EquipmentType.SHUNT_COMPENSATOR]: {
+        id: EquipmentType.SHUNT_COMPENSATOR,
+        label: 'ShuntCompensators',
+    },
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
+        id: EquipmentType.STATIC_VAR_COMPENSATOR,
+        label: 'StaticVarCompensators',
+    },
+    [EquipmentType.DANGLING_LINE]: {
+        id: EquipmentType.DANGLING_LINE,
+        label: 'DanglingLines',
+    },
+};
 
-// Must be equivalent as the back enum
-export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLabel: string } | undefined> = {
+export const EQUIPMENT_TYPE: Partial<
+    Record<
+        EquipmentType | ExtendedEquipmentType,
+        { name: EquipmentType | ExtendedEquipmentType; tagLabel: string } | undefined
+    >
+> = {
     [EquipmentType.SUBSTATION]: {
         name: EquipmentType.SUBSTATION,
         tagLabel: 'equipment_search/substationTag',
@@ -105,9 +155,13 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
         name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
     },
-    [EquipmentType.HVDC_LINE]: {
-        name: EquipmentType.HVDC_LINE,
-        tagLabel: 'equipment_search/hvdcLineTag',
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        name: ExtendedEquipmentType.HVDC_LINE_LCC,
+        tagLabel: 'equipment_search/hvdcLineLccTag',
+    },
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        name: ExtendedEquipmentType.HVDC_LINE_VSC,
+        tagLabel: 'equipment_search/hvdcLineVscTag',
     },
     [EquipmentType.GENERATOR]: {
         name: EquipmentType.GENERATOR,
@@ -157,9 +211,20 @@ export const EQUIPMENT_TYPE: Record<EquipmentType, { name: EquipmentType; tagLab
         name: EquipmentType.LCC_CONVERTER_STATION,
         tagLabel: 'equipment_search/lccConverterStationTag',
     },
-    [EquipmentType.TIE_LINE]: undefined, // Not used in the UI
-    [EquipmentType.DISCONNECTOR]: undefined, // Not used in the UI
-    [EquipmentType.BREAKER]: undefined, // Not used in the UI
+};
+
+export const SEARCH_EQUIPMENTS: Partial<
+    Record<EquipmentType | ExtendedEquipmentType, { id: EquipmentType | ExtendedEquipmentType; label: string }>
+> = {
+    ...BASE_EQUIPMENTS,
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_LCC,
+        label: 'LCC',
+    },
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_VSC,
+        label: 'VSC',
+    },
 };
 
 export interface Identifiable {
@@ -168,14 +233,14 @@ export interface Identifiable {
 }
 
 export interface Equipment extends Identifiable {
-    type: EquipmentType;
+    type: EquipmentType | ExtendedEquipmentType;
     voltageLevels?: Identifiable[];
 }
 
 export interface EquipmentInfos extends Identifiable {
     label: string;
     key: string;
-    type: EquipmentType;
+    type: EquipmentType | ExtendedEquipmentType;
     voltageLevelLabel?: string;
     voltageLevelId?: string;
     operatingStatus?: string;

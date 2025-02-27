@@ -9,11 +9,7 @@ import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import { UUID } from 'crypto';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
-import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
-
-export const format = (text: string, bold: boolean) => {
-    return bold ? <strong>{text}</strong> : { text };
-};
+import { EquipmentType } from '../utils/types/equipmentType';
 
 export interface NetworkModificationMetadata {
     uuid: UUID;
@@ -53,8 +49,16 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
 
 const getVoltageLevelWithSubstationModificationValues = (modification: ModificationValues, formatBold: boolean) => {
     return {
-        voltageLevelEquipmentId: format(modification.voltageLevelEquipmentId, formatBold),
-        substationEquipmentId: format(modification.substationEquipmentId, formatBold),
+        voltageLevelEquipmentId: formatBold ? (
+            <strong>{modification.voltageLevelEquipmentId}</strong>
+        ) : (
+            modification.voltageLevelEquipmentId
+        ),
+        substationEquipmentId: formatBold ? (
+            <strong>{modification.substationEquipmentId}</strong>
+        ) : (
+            modification.substationEquipmentId
+        ),
     };
 };
 
@@ -83,7 +87,7 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.BY_FILTER_DELETION.type:
                     return intl.formatMessage({
                         id:
-                            modificationMetadata.equipmentType === EQUIPMENT_TYPE.HVDC_LINE
+                            modificationMetadata.equipmentType === EquipmentType.HVDC_LINE
                                 ? 'Hvdc'
                                 : modificationMetadata.equipmentType,
                     });
