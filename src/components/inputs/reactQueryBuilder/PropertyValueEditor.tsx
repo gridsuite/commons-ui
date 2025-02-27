@@ -94,7 +94,6 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Autocomplete
                     defaultValue={PROPERTY_VALUE_OPERATORS[0]}
                     size="small"
-                    formProps={{ variant: 'filled' }}
                     getOptionLabel={(option) => intl.formatMessage({ id: option.label })}
                     onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
