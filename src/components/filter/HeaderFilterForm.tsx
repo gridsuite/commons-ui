@@ -7,19 +7,25 @@
 
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
-import { FieldConstants } from '../../utils/constants/fieldConstants';
+import { FieldConstants, ElementType, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { FilterType } from './constants/FilterConstants';
-import { UniqueNameInput } from '../inputs/reactHookForm/text/UniqueNameInput';
-import { ElementExistsType, ElementType } from '../../utils/types/elementType';
-import { DescriptionField } from '../inputs/reactHookForm/text/DescriptionField';
-import { RadioInput } from '../inputs/reactHookForm/booleans/RadioInput';
+import { UniqueNameInput, DescriptionField, RadioInput } from '../inputs';
 import yup from '../../utils/yupConfig';
-import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
+
+export const filterStyles = {
+    textField: {
+        minWidth: '250px',
+        width: '33%',
+    },
+    description: {
+        minWidth: '250px',
+        width: '50%',
+    },
+};
 
 export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
@@ -38,7 +44,6 @@ export function HeaderFilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
-    elementExists,
     handleFilterTypeChange,
 }: Readonly<FilterFormProps>) {
     const filterTypes = Object.values(FilterType);
@@ -52,12 +57,13 @@ export function HeaderFilterForm({
                     elementType={ElementType.FILTER}
                     autoFocus={creation}
                     activeDirectory={activeDirectory}
-                    elementExists={elementExists}
+                    sx={filterStyles.textField}
+                    fullWidth={false}
                 />
             </Grid>
             <>
                 <Grid item xs={12}>
-                    <DescriptionField />
+                    <DescriptionField expandingTextSx={filterStyles.description} />
                 </Grid>
                 {creation && !sourceFilterForExplicitNamingConversion && (
                     <Grid item>
