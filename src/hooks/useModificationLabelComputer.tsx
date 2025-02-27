@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import { UUID } from 'crypto';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
-import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
+import { EquipmentType } from '../utils/types/equipmentType';
 
 export const format = (text: string, bold: boolean) => {
     return bold ? <strong>{text}</strong> : { text };
@@ -83,7 +83,7 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.BY_FILTER_DELETION.type:
                     return intl.formatMessage({
                         id:
-                            modificationMetadata.equipmentType === EQUIPMENT_TYPE.HVDC_LINE
+                            modificationMetadata.equipmentType === EquipmentType.HVDC_LINE
                                 ? 'Hvdc'
                                 : modificationMetadata.equipmentType,
                     });
