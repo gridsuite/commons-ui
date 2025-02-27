@@ -233,7 +233,7 @@ export interface Identifiable {
 }
 
 export interface Equipment extends Identifiable {
-    type: EquipmentType;
+    type: EquipmentType | ExtendedEquipmentType;
     voltageLevels?: Identifiable[];
 }
 
