@@ -16,6 +16,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { ElementType } from '../../../utils/types/elementType';
 import { fetchDirectoryElementPath } from '../../../services';
+import { ElementAttributes } from '../../../utils';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
@@ -26,26 +27,29 @@ export interface ModifyElementSelectionProps {
     onElementValidated?: (elementId: UUID) => void;
 }
 
-export function ModifyElementSelection({
-    elementType,
-    dialogTitleLabel,
-    dialogMessageLabel,
-    dialogOpeningButtonLabel,
-    noElementMessageLabel,
-    onElementValidated,
-}: Readonly<ModifyElementSelectionProps>) {
+export function ModifyElementSelection(props: ModifyElementSelectionProps) {
     const intl = useIntl();
+    const {
+        elementType,
+        dialogTitleLabel,
+        dialogMessageLabel,
+        dialogOpeningButtonLabel,
+        noElementMessageLabel,
+        onElementValidated,
+    } = props;
     const [open, setOpen] = useState<boolean>(false);
     const [activeDirectoryName, setActiveDirectoryName] = useState('');
 
     const {
         field: { onChange, value: directory },
-    } = useController({ name: FieldConstants.DIRECTORY });
+    } = useController({
+        name: FieldConstants.DIRECTORY,
+    });
 
     useEffect(() => {
         if (directory) {
-            fetchDirectoryElementPath(directory).then((res) => {
-                setActiveDirectoryName(res.map((element) => element.elementName.trim()).join('/'));
+            fetchDirectoryElementPath(directory).then((res: ElementAttributes[]) => {
+                setActiveDirectoryName(res.map((element: ElementAttributes) => element.elementName.trim()).join('/'));
             });
         }
     }, [directory]);
@@ -78,7 +82,11 @@ export function ModifyElementSelection({
                         <span>
                             &nbsp;
                             {activeDirectoryName ||
-                                (noElementMessageLabel ? intl.formatMessage({ id: noElementMessageLabel }) : '')}
+                                (props?.noElementMessageLabel
+                                    ? intl.formatMessage({
+                                          id: noElementMessageLabel,
+                                      })
+                                    : '')}
                         </span>
                     </Box>
                 </Typography>
@@ -92,9 +100,15 @@ export function ModifyElementSelection({
                 types={[elementType]}
                 onlyLeaves={elementType !== ElementType.DIRECTORY}
                 multiSelect={false}
-                validationButtonText={intl.formatMessage({ id: 'confirmDirectoryDialog' })}
-                title={intl.formatMessage({ id: dialogTitleLabel })}
-                contentText={intl.formatMessage({ id: dialogMessageLabel })}
+                validationButtonText={intl.formatMessage({
+                    id: 'confirmDirectoryDialog',
+                })}
+                title={intl.formatMessage({
+                    id: dialogTitleLabel,
+                })}
+                contentText={intl.formatMessage({
+                    id: dialogMessageLabel,
+                })}
             />
         </Grid>
     );

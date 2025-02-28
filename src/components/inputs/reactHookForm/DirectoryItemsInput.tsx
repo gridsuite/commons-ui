@@ -23,7 +23,7 @@ import { OverflowableText } from '../../overflowableText';
 import { MidFormError } from './errorManagement/MidFormError';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { type ElementAttributes, ElementType } from '../../../utils';
+import { ElementAttributes } from '../../../utils';
 
 export const NAME = 'name';
 
@@ -58,13 +58,9 @@ const styles = {
 export interface DirectoryItemsInputProps {
     label: string | undefined;
     name: string;
-    /** Used to specify type of element (Filter, Contingency list, ...) */
-    elementType: ElementType;
-    /** Mostly used for filters, it allows the user to get elements of specific equipment only */
+    elementType: string;
     equipmentTypes?: string[];
-    /** Used to further filter the results displayed according to specific requirement */
     itemFilter?: (val: ElementAttributes) => boolean;
-    /** title of directory item selector dialogue */
     titleId?: string;
     hideErrorMessage?: boolean;
     onRowChanged?: (a: boolean) => void;
@@ -76,16 +72,16 @@ export interface DirectoryItemsInputProps {
 export function DirectoryItemsInput({
     label,
     name,
-    elementType,
-    equipmentTypes,
-    itemFilter,
-    titleId,
+    elementType, // Used to specify type of element (Filter, Contingency list, ...)
+    equipmentTypes, // Mostly used for filters, it allows the user to get elements of specific equipment only
+    itemFilter, // Used to further filter the results displayed according to specific requirement
+    titleId, // title of directory item selector dialogue
     hideErrorMessage,
     onRowChanged,
     onChange,
     disable = false,
     labelRequiredFromContext = true,
-}: Readonly<DirectoryItemsInputProps>) {
+}: DirectoryItemsInputProps) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);
@@ -93,13 +89,22 @@ export function DirectoryItemsInput({
     const [multiSelect, setMultiSelect] = useState(true);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
-    const { fields: elements, append, remove } = useFieldArray({ name });
+    const {
+        fields: elements,
+        append,
+        remove,
+    } = useFieldArray({
+        name,
+    });
+
     const formContext = useCustomFormContext();
     const { getValues, validationSchema } = formContext;
 
     const {
         fieldState: { error },
-    } = useController({ name });
+    } = useController({
+        name,
+    });
 
     const addElements = useCallback(
         (values: TreeViewFinderNodeProps[] | undefined) => {
@@ -147,8 +152,9 @@ export function DirectoryItemsInput({
             const chips = getValues(name);
             const chip = chips.at(index)?.id;
             if (chip) {
-                fetchDirectoryElementPath(chip).then((response) => {
+                fetchDirectoryElementPath(chip).then((response: ElementAttributes[]) => {
                     const path = response.filter((e) => e.elementUuid !== chip).map((e) => e.elementUuid);
+
                     setExpanded(path);
                     setSelected([chip]);
                     setDirectoryItemSelectorOpen(true);

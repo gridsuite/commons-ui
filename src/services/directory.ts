@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { UUID } from 'crypto';
+import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
-import { type ElementAttributesAPI, type ElementType } from '../utils';
+import { ElementAttributes } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
-export function fetchRootFolders(types: ElementType[]): Promise<ElementAttributesAPI[]> {
+export function fetchRootFolders(types: string[]): Promise<ElementAttributes[]> {
     console.info('Fetching Root Directories');
 
     // Add params to Url
@@ -23,7 +23,7 @@ export function fetchRootFolders(types: ElementType[]): Promise<ElementAttribute
     });
 }
 
-export function fetchDirectoryContent(directoryUuid: UUID, types?: ElementType[]): Promise<ElementAttributesAPI[]> {
+export function fetchDirectoryContent(directoryUuid: UUID, types?: string[]): Promise<ElementAttributes[]> {
     console.info("Fetching Folder content '%s'", directoryUuid);
 
     // Add params to Url
@@ -38,9 +38,11 @@ export function fetchDirectoryContent(directoryUuid: UUID, types?: ElementType[]
     });
 }
 
-export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAttributesAPI[]> {
+export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAttributes[]> {
     console.info(`Fetching element '${elementUuid}' and its parents info ...`);
-    const fetchPathUrl = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/directories/elements/${elementUuid}/path`;
+    const fetchPathUrl = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/directories/elements/${encodeURIComponent(
+        elementUuid
+    )}/path`;
     console.debug(fetchPathUrl);
     return backendFetchJson(fetchPathUrl, {
         method: 'get',
@@ -48,7 +50,7 @@ export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAtt
     });
 }
 
-export function elementAlreadyExists(directoryUuid: UUID, elementName: string, type: ElementType) {
+export function elementAlreadyExists(directoryUuid: UUID, elementName: string, type: string) {
     const elementNameEncoded = encodeURIComponent(elementName);
     const existsElementUrl = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/directories/${directoryUuid}/elements/${elementNameEncoded}/types/${type}`;
     console.debug(existsElementUrl);

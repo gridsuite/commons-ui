@@ -10,11 +10,11 @@ import { useEffect } from 'react';
 import { useCustomFormContext } from '../reactHookForm/provider/useCustomFormContext';
 import { fetchElementsInfos } from '../../../services';
 import { DirectoryItemsInput } from '../reactHookForm/DirectoryItemsInput';
-import { type ElementAttributes, ElementType } from '../../../utils';
+import { ElementAttributes } from '../../../utils';
 
 interface ElementValueEditorProps {
     name: string;
-    elementType: ElementType;
+    elementType: string;
     equipmentTypes?: string[];
     titleId: string;
     hideErrorMessage: boolean;
@@ -23,16 +23,8 @@ interface ElementValueEditorProps {
     defaultValue?: any;
 }
 
-export function ElementValueEditor({
-    defaultValue,
-    name,
-    elementType,
-    equipmentTypes,
-    titleId,
-    hideErrorMessage,
-    itemFilter,
-    onChange,
-}: Readonly<ElementValueEditorProps>) {
+export function ElementValueEditor(props: ElementValueEditorProps) {
+    const { defaultValue, name, elementType, equipmentTypes, titleId, hideErrorMessage, itemFilter, onChange } = props;
     const { setValue } = useCustomFormContext();
 
     useEffect(() => {
