@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ValueSelectorProps } from 'react-querybuilder';
+import { ValueSelectorProps, ValueSourceSelectorProps } from 'react-querybuilder';
 import { MaterialValueSelector } from '@react-querybuilder/material';
 import { FieldType } from '../../../utils';
 import { useSelectAppearance } from '../../../hooks';
 
 export function OperatorSelector(props: ValueSelectorProps) {
-    const { field, options } = props;
+    const { options, field } = props as ValueSourceSelectorProps;
     const excludedFields = [
         FieldType.FREE_PROPERTIES,
         FieldType.VOLTAGE_LEVEL_PROPERTIES,
@@ -24,7 +24,7 @@ export function OperatorSelector(props: ValueSelectorProps) {
     ];
     const selectAppearance = useSelectAppearance(options?.length || 0);
 
-    if (excludedFields.includes(field)) {
+    if (excludedFields.includes(field as FieldType)) {
         return null;
     }
     return <MaterialValueSelector {...props} {...selectAppearance} sx={{ border: 'none' }} />;
