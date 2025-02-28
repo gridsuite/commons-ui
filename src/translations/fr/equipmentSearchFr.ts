@@ -18,6 +18,8 @@ export const equipmentSearchFr = {
     'equipment_search/shuntTag': 'MCS',
     'equipment_search/svcTag': 'CSPR',
     'equipment_search/hvdcLineTag': 'LIGNE HVDC',
+    'equipment_search/hvdcLineVscTag': 'LIGNE HVDC (VSC)',
+    'equipment_search/hvdcLineLccTag': 'LIGNE HVDC (LCC)',
     'equipment_search/hvdcStationTag': 'STATION HVDC',
     'equipment_search/voltageLevelTag': 'POSTE',
     'equipment_search/substationTag': 'SITE',
