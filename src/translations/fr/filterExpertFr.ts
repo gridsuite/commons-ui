@@ -189,4 +189,6 @@ export const filterExpertFr = {
     lowShortCircuitCurrentLimit: 'Limite ICC min',
     highShortCircuitCurrentLimit: 'Limite ICC max',
     valuesList: 'Liste de valeurs',
+    isIn: 'est parmi',
+    isNotIn: "n'est pas parmi",
 };

@@ -73,6 +73,19 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
         [valueEditorProps]
     );
 
+    const getOptionLabel = useCallback(
+        (label: string) => {
+            const labelId =
+                {
+                    [OPERATOR_OPTIONS.IN.label]: 'isIn',
+                    [OPERATOR_OPTIONS.NOT_IN.label]: 'isNotIn',
+                }[label] || label;
+
+            return intl.formatMessage({ id: labelId });
+        },
+        [intl]
+    );
+
     return (
         <Grid container spacing={1} item>
             <Grid item xs={4}>
@@ -94,7 +107,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                 <Autocomplete
                     defaultValue={PROPERTY_VALUE_OPERATORS[0]}
                     size="small"
-                    getOptionLabel={(option) => intl.formatMessage({ id: option.label })}
+                    getOptionLabel={(option) => getOptionLabel(option.label)}
                     onChange={(event, value) => {
                         onChange(FieldConstants.PROPERTY_OPERATOR, value);
                     }}

@@ -18,8 +18,6 @@ export const filterFr = {
     not_exists: "n'existe pas",
     between: 'entre',
     in: 'dans',
-    isIn: 'est parmi',
-    isNotIn: "n'est pas parmi",
     inFilter: 'dans le filtre',
     notInFilter: 'pas dans le filtre',
     emptyRule: 'Le filtre contient un champ vide',

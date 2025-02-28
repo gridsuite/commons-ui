@@ -190,4 +190,6 @@ export const filterExpertEn = {
     lowShortCircuitCurrentLimit: 'Low short-circuit current limit',
     highShortCircuitCurrentLimit: 'High short-circuit current limit',
     valuesList: 'Values list',
+    isIn: 'is in',
+    isNotIn: 'is not in',
 };

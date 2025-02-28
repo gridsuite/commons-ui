@@ -18,8 +18,6 @@ export const filterEn = {
     not_exists: 'not exists',
     between: 'between',
     in: 'in',
-    isIn: 'is in',
-    isNotIn: 'is not in',
     inFilter: 'in filter',
     notInFilter: 'not in filter',
     emptyRule: 'Filter contains an empty field',
