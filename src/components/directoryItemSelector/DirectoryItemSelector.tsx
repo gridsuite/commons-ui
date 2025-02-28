@@ -148,7 +148,7 @@ function updatedTree(
 }
 
 export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
-    types: string[];
+    types: ElementType[];
     equipmentTypes?: string[];
     itemFilter?: (val: ElementAttributes) => boolean;
     expanded?: UUID[];
@@ -230,6 +230,7 @@ export function DirectoryItemSelector({
     const updateRootDirectories = useCallback(() => {
         fetchRootFolders(types)
             .then((newData) => {
+                // @ts-expect-error TODO: this component seems to manipulate only ElementAttributesApi?
                 const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, null, newData);
                 setRootDirectories(nrs);
                 nodeMap.current = mdr;
@@ -248,18 +249,16 @@ export function DirectoryItemSelector({
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
             fetchDirectoryContent(nodeId, typeList)
                 .then((children) => {
-                    const childrenMatchedTypes = children.filter((item: ElementAttributes) =>
-                        contentFilter().has(item.type)
-                    );
+                    const childrenMatchedTypes = children.filter((item) => contentFilter().has(item.type));
 
                     if (childrenMatchedTypes.length > 0 && equipmentTypes && equipmentTypes.length > 0) {
                         fetchElementsInfos(
-                            childrenMatchedTypes.map((e: ElementAttributes) => e.elementUuid),
+                            childrenMatchedTypes.map((e) => e.elementUuid),
                             types,
                             equipmentTypes
-                        ).then((childrenWithMetadata: ElementAttributes[]) => {
+                        ).then((childrenWithMetadata) => {
                             const filtredChildren = itemFilter
-                                ? childrenWithMetadata.filter((val: ElementAttributes) => {
+                                ? childrenWithMetadata.filter((val) => {
                                       // Accept every directory
                                       if (val.type === ElementType.DIRECTORY) {
                                           return true;
@@ -273,6 +272,7 @@ export function DirectoryItemSelector({
                         });
                     } else {
                         // update directory content
+                        // @ts-expect-error TODO: this component seems to manipulate only ElementAttributesApi?
                         addToDirectory(nodeId, childrenMatchedTypes);
                     }
                 })

@@ -9,20 +9,23 @@ import { ElementType } from './elementType';
 
 export type Input = string | number;
 
-export type ElementAttributes = {
+export type ElementAttributesAPI = {
     elementUuid: UUID;
     elementName: string;
     description: string;
     type: ElementType;
-    accessRights: {
-        isPrivate: boolean;
-    };
     owner: string; // id
-    ownerLabel?: string; // enrich with user identity server
     subdirectoriesCount: number;
     creationDate: string;
     lastModificationDate: string;
     lastModifiedBy: string; // id
+};
+
+export type ElementAttributes = ElementAttributesAPI & {
+    accessRights: {
+        isPrivate: boolean;
+    };
+    ownerLabel?: string; // enrich with user identity server
     lastModifiedByLabel?: string; // enrich with user identity server
     children: ElementAttributes[];
     parentUuid: null | UUID;
