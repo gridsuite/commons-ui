@@ -78,7 +78,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
             const labelId =
                 {
                     [OPERATOR_OPTIONS.IN.label]: 'isIn',
-                    [OPERATOR_OPTIONS.NOT_IN.label]: 'isNotIn',
+                    [OPERATOR_OPTIONS.NOT_IN.label]: 'notIn',
                 }[label] || label;
 
             return intl.formatMessage({ id: labelId });
