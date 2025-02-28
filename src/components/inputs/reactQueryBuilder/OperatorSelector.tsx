@@ -10,7 +10,7 @@ import { MaterialValueSelector } from '@react-querybuilder/material';
 import { FieldType } from '../../../utils';
 import { useSelectAppearance } from '../../../hooks';
 
-export function OperatorSelector(props: ValueSelectorProps) {
+export function OperatorSelector(props: Readonly<ValueSelectorProps>) {
     const { options, field } = props as ValueSourceSelectorProps;
     const excludedFields = [
         FieldType.FREE_PROPERTIES,
