@@ -174,8 +174,7 @@ export const OPERATOR_OPTIONS = {
         label: 'between',
     },
     IN: { name: 'in', customName: OperatorType.IN, label: 'in' },
-    IS_IN: { name: 'isIn', customName: OperatorType.IS_IN, label: 'isIn' },
-    IS_NOT_IN: { name: 'isNotIn', customName: OperatorType.IS_NOT_IN, label: 'isNotIn' },
+    NOT_IN: { name: 'isNotIn', customName: OperatorType.NOT_IN, label: 'isNotIn' },
     // String
     IS: { name: OperatorType.IS, customName: OperatorType.IS, label: 'is' },
     CONTAINS: {

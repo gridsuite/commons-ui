@@ -18,7 +18,7 @@ import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties'
 import { EquipmentType } from '../../../utils';
 import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
 
-const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IS_IN, OPERATOR_OPTIONS.IS_NOT_IN];
+const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN, OPERATOR_OPTIONS.NOT_IN];
 
 interface ExpertFilterPropertyProps {
     equipmentType: EquipmentType;
