@@ -39,24 +39,6 @@ export type ElementAttributes = {
     id?: string;
 };
 
-// TODO : Check where used
-// export type Equipment =
-//     | typeof Substation
-//     | typeof Line
-//     | typeof Generator
-//     | typeof Load
-//     | typeof Battery
-//     | typeof SVC
-//     | typeof DanglingLine
-//     | typeof LCC
-//     | typeof VSC
-//     | typeof Hvdc
-//     | typeof BusBar
-//     | typeof TwoWindingTransfo
-//     | typeof ThreeWindingTransfo
-//     | typeof ShuntCompensator
-//     | typeof VoltageLevel;
-
 export type Option =
     | {
           id: string;

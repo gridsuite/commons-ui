@@ -39,6 +39,7 @@ export const equipmentStyles = {
 /**
  * The order of the equipments in this list is important, as many UI follow it directly.
  * When EquipmentType is used for an interface this order must be maintained.
+ * @deprecated move to a specialized subtype as this one is used everywhere and cause problems
  */
 export enum EquipmentType {
     SUBSTATION = 'SUBSTATION',
