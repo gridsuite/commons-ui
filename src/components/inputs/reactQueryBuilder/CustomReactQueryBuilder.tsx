@@ -32,6 +32,7 @@ import { FieldErrorAlert } from '../reactHookForm/errorManagement/FieldErrorAler
 import { countRules, getOperators, queryValidator } from '../../filter/expert/expertFilterUtils';
 import { RemoveButton } from './RemoveButton';
 import { FieldSelector } from './FieldSelector';
+import { OperatorSelector } from './OperatorSelector';
 
 export interface CustomReactQueryBuilderProps {
     name: string;
@@ -118,7 +119,7 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
                             removeRuleAction: RemoveButton,
                             removeGroupAction: RemoveButton,
                             valueEditor: ValueEditor,
-                            operatorSelector: ValueSelector,
+                            operatorSelector: OperatorSelector,
                             fieldSelector: FieldSelector,
                             valueSourceSelector: ValueSelector,
                         }}

@@ -174,13 +174,6 @@ export const getOperators = (fieldName: string, intl: IntlShape) => {
                 label: intl.formatMessage({ id: operator.label }),
             }));
         }
-        case DataType.PROPERTY: {
-            const propertiesOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
-            return propertiesOperators.map((operator) => ({
-                name: operator.name,
-                label: intl.formatMessage({ id: operator.label }),
-            }));
-        }
         case DataType.COMBINATOR: {
             const combinatorOperators: OperatorOption[] = [OPERATOR_OPTIONS.IS];
 
