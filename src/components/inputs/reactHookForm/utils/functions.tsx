@@ -4,18 +4,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { SchemaDescription, getIn } from 'yup';
 import { ReactElement } from 'react';
-import { Grid } from '@mui/material';
+import { FormHelperText, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
 
-export function genHelperPreviousValue(previousValue: number | string, adornment?: any) {
-    return {
-        ...((previousValue || previousValue === 0) && {
-            error: false,
-            helperText: previousValue + (adornment ? ` ${adornment?.text}` : ''),
-        }),
-    };
+export function HelperPreviousValue(
+    previousValue: number | string,
+    nodeIsBuilt?: boolean,
+    disableTooltip?: boolean,
+    adornment?: any
+) {
+    const intl = useIntl();
+    if (previousValue || previousValue === 0) {
+        return !disableTooltip ? (
+            <FormHelperText error={false}>
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                    {nodeIsBuilt ? (
+                        <InfoOutlined color="info" fontSize="small" />
+                    ) : (
+                        <WarningAmberRounded color="warning" fontSize="small" />
+                    )}
+                    <Tooltip
+                        title={intl.formatMessage({ id: nodeIsBuilt ? 'builtNodeTooltip' : 'UnBuiltNodeTooltip' })}
+                        placement="bottom-start"
+                        arrow
+                        PopperProps={{
+                            modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                        offset: [0, -10],
+                                    },
+                                },
+                            ],
+                        }}
+                    >
+                        <Typography noWrap fontSize={11} align="center">
+                            {previousValue + (adornment ? ` ${adornment?.text}` : '')}
+                        </Typography>
+                    </Tooltip>
+                </Stack>
+            </FormHelperText>
+        ) : (
+            <FormHelperText error={false}>{previousValue + (adornment ? ` ${adornment?.text}` : '')}</FormHelperText>
+        );
+    }
+    return undefined;
 }
 
 export function genHelperError(...errors: any[]) {
