@@ -11,7 +11,7 @@ import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
 import { FieldLabel } from '../utils/FieldLabel';
-import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
+import { genHelperError, HelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 
 import { Input } from '../../../../utils/types/types';
@@ -35,6 +35,7 @@ export interface TextInputProps {
         TextFieldWithAdornmentProps | TextFieldProps,
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
+    nodeIsBuilt?: boolean;
 }
 
 export function TextInput({
@@ -50,6 +51,7 @@ export function TextInput({
     previousValue,
     clearable,
     formProps,
+    nodeIsBuilt,
 }: TextInputProps) {
     const { validationSchema, getValues, removeOptional } = useCustomFormContext();
     const {
@@ -62,6 +64,7 @@ export function TextInput({
         adornmentPosition: adornment?.position ?? '',
         adornmentText: adornment?.text ?? '',
     };
+    console.log('-----------------removeOptional : ', removeOptional);
 
     const handleClearValue = () => {
         onChange(outputTransform(''));
@@ -110,7 +113,7 @@ export function TextInput({
                 adornment && {
                     handleClearValue,
                 })}
-            {...genHelperPreviousValue(previousValue!, adornment)}
+            helperText={HelperPreviousValue(previousValue!, !nodeIsBuilt, adornment)}
             {...genHelperError(error?.message)}
             {...formProps}
             {...(adornment && { ...finalAdornment })}
