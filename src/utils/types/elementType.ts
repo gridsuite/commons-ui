@@ -5,6 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/**
+ * All the elements we can find in the GridSuite storage system.
+ */
 export enum ElementType {
     DIRECTORY = 'DIRECTORY',
     STUDY = 'STUDY',
