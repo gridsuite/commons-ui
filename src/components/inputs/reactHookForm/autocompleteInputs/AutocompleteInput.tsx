@@ -99,7 +99,13 @@ export function AutocompleteInput({
                     })}
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly }}
-                    helperText={HelperPreviousValue(previousValue!, isNodeBuilt, disableTooltip)}
+                    helperText={
+                        <HelperPreviousValue
+                            previousValue={previousValue!}
+                            isNodeBuilt={isNodeBuilt}
+                            disabledTooltip={disableTooltip}
+                        />
+                    }
                     {...genHelperError(error?.message)}
                     {...formProps}
                     {...rest}

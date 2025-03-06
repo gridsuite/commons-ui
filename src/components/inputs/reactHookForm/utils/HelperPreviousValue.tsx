@@ -9,12 +9,19 @@ import { useIntl } from 'react-intl';
 import { FormHelperText, Stack, Tooltip, Typography } from '@mui/material';
 import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
 
-export function HelperPreviousValue(
-    previousValue: number | string,
-    isNodeBuilt?: boolean,
-    disabledTooltip?: boolean,
-    adornmentText?: string
-) {
+export interface HelperPreviousValueProps {
+    previousValue: number | string;
+    isNodeBuilt?: boolean;
+    disabledTooltip?: boolean;
+    adornmentText?: string;
+}
+
+export function HelperPreviousValue({
+    previousValue,
+    isNodeBuilt,
+    disabledTooltip,
+    adornmentText,
+}: Readonly<HelperPreviousValueProps>) {
     const intl = useIntl();
     if (previousValue || previousValue === 0) {
         return !disabledTooltip ? (

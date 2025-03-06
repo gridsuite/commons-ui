@@ -113,7 +113,14 @@ export function TextInput({
                 adornment && {
                     handleClearValue,
                 })}
-            helperText={HelperPreviousValue(previousValue!, isNodeBuilt, disableTooltip, adornment?.text)}
+            helperText={
+                <HelperPreviousValue
+                    previousValue={previousValue!}
+                    isNodeBuilt={isNodeBuilt}
+                    disabledTooltip={disableTooltip}
+                    adornmentText={adornment?.text}
+                />
+            }
             {...genHelperError(error?.message)}
             {...formProps}
             {...(adornment && { ...finalAdornment })}
