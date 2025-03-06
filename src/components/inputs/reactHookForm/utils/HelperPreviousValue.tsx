@@ -24,37 +24,39 @@ export function HelperPreviousValue({
 }: Readonly<HelperPreviousValueProps>) {
     const intl = useIntl();
     if (previousValue || previousValue === 0) {
-        return !disabledTooltip ? (
+        return (
             <FormHelperText error={false} sx={{ marginLeft: 0 }}>
-                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                    <Tooltip
-                        title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
-                        placement="right"
-                        arrow
-                        PopperProps={{
-                            modifiers: [
-                                {
-                                    name: 'offset',
-                                    options: {
-                                        offset: [0, -10],
+                {!disabledTooltip ? (
+                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                        <Tooltip
+                            title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
+                            placement="right"
+                            arrow
+                            PopperProps={{
+                                modifiers: [
+                                    {
+                                        name: 'offset',
+                                        options: {
+                                            offset: [0, -10],
+                                        },
                                     },
-                                },
-                            ],
-                        }}
-                    >
-                        {isNodeBuilt ? (
-                            <InfoOutlined color="info" fontSize="small" />
-                        ) : (
-                            <WarningAmberRounded color="warning" fontSize="small" />
-                        )}
-                    </Tooltip>
-                    <Typography noWrap fontSize={11} align="center">
-                        {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
-                    </Typography>
-                </Stack>
+                                ],
+                            }}
+                        >
+                            {isNodeBuilt ? (
+                                <InfoOutlined color="info" fontSize="small" />
+                            ) : (
+                                <WarningAmberRounded color="warning" fontSize="small" />
+                            )}
+                        </Tooltip>
+                        <Typography noWrap fontSize={11} align="center">
+                            {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
+                        </Typography>
+                    </Stack>
+                ) : (
+                    previousValue + (adornmentText ? ` ${adornmentText}` : '')
+                )}
             </FormHelperText>
-        ) : (
-            <FormHelperText error={false}>{previousValue + (adornmentText ? ` ${adornmentText}` : '')}</FormHelperText>
         );
     }
     return undefined;

@@ -36,7 +36,7 @@ export interface TextInputProps {
         TextFieldWithAdornmentProps | TextFieldProps,
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
-    disableTooltip?: boolean;
+    disabledTooltip?: boolean;
 }
 
 export function TextInput({
@@ -52,7 +52,7 @@ export function TextInput({
     previousValue,
     clearable,
     formProps,
-    disableTooltip, // In case we don't want to show tooltip on the value and warning/info icons
+    disabledTooltip, // In case we don't want to show tooltip on the value and warning/info icons
 }: TextInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
@@ -117,7 +117,7 @@ export function TextInput({
                 <HelperPreviousValue
                     previousValue={previousValue}
                     isNodeBuilt={isNodeBuilt}
-                    disabledTooltip={disableTooltip || (!isUpdate && isNodeBuilt)}
+                    disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
                     adornmentText={adornment?.text}
                 />
             }

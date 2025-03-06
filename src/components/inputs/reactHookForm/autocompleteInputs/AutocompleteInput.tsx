@@ -29,7 +29,7 @@ export interface AutocompleteInputProps
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
-    disableTooltip?: boolean;
+    disabledTooltip?: boolean;
 }
 
 export function AutocompleteInput({
@@ -43,7 +43,7 @@ export function AutocompleteInput({
     allowNewValue,
     onChangeCallback, // method called when input value is changing
     formProps,
-    disableTooltip,
+    disabledTooltip,
     ...props
 }: AutocompleteInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
@@ -103,7 +103,7 @@ export function AutocompleteInput({
                         <HelperPreviousValue
                             previousValue={previousValue}
                             isNodeBuilt={isNodeBuilt}
-                            disabledTooltip={disableTooltip || (!isUpdate && isNodeBuilt)}
+                            disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
                         />
                     }
                     {...genHelperError(error?.message)}
