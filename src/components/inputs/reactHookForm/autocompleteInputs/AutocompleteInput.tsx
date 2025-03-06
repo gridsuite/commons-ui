@@ -46,7 +46,7 @@ export function AutocompleteInput({
     disableTooltip,
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -101,9 +101,9 @@ export function AutocompleteInput({
                     inputProps={{ ...inputProps, readOnly }}
                     helperText={
                         <HelperPreviousValue
-                            previousValue={previousValue!}
+                            previousValue={previousValue}
                             isNodeBuilt={isNodeBuilt}
-                            disabledTooltip={disableTooltip}
+                            disabledTooltip={disableTooltip || (!isUpdate && isNodeBuilt)}
                         />
                     }
                     {...genHelperError(error?.message)}
