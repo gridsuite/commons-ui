@@ -54,7 +54,7 @@ export function TextInput({
     formProps,
     disableTooltip, // In case we don't want to show tooltip on the value and warning/info icons
 }: TextInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -115,9 +115,9 @@ export function TextInput({
                 })}
             helperText={
                 <HelperPreviousValue
-                    previousValue={previousValue!}
+                    previousValue={previousValue}
                     isNodeBuilt={isNodeBuilt}
-                    disabledTooltip={disableTooltip}
+                    disabledTooltip={disableTooltip || (!isUpdate && isNodeBuilt)}
                     adornmentText={adornment?.text}
                 />
             }

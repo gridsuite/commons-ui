@@ -10,7 +10,7 @@ import { FormHelperText, Stack, Tooltip, Typography } from '@mui/material';
 import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
 
 export interface HelperPreviousValueProps {
-    previousValue: number | string;
+    previousValue?: number | string;
     isNodeBuilt?: boolean;
     disabledTooltip?: boolean;
     adornmentText?: string;
@@ -25,16 +25,11 @@ export function HelperPreviousValue({
     const intl = useIntl();
     if (previousValue || previousValue === 0) {
         return !disabledTooltip ? (
-            <FormHelperText error={false}>
+            <FormHelperText error={false} sx={{ marginLeft: 0 }}>
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                    {isNodeBuilt ? (
-                        <InfoOutlined color="info" fontSize="small" />
-                    ) : (
-                        <WarningAmberRounded color="warning" fontSize="small" />
-                    )}
                     <Tooltip
                         title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
-                        placement="bottom-start"
+                        placement="right"
                         arrow
                         PopperProps={{
                             modifiers: [
@@ -47,10 +42,15 @@ export function HelperPreviousValue({
                             ],
                         }}
                     >
-                        <Typography noWrap fontSize={11} align="center">
-                            {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
-                        </Typography>
+                        {isNodeBuilt ? (
+                            <InfoOutlined color="info" fontSize="small" />
+                        ) : (
+                            <WarningAmberRounded color="warning" fontSize="small" />
+                        )}
                     </Tooltip>
+                    <Typography noWrap fontSize={11} align="center">
+                        {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
+                    </Typography>
                 </Stack>
             </FormHelperText>
         ) : (
