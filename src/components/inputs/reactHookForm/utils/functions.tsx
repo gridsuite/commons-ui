@@ -4,57 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { SchemaDescription, getIn } from 'yup';
 import { ReactElement } from 'react';
-import { Box, FormHelperText, Grid, Tooltip } from '@mui/material';
-import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
-
-export function HelperPreviousValue(previousValue: number | string, nodeIsBuilt?: boolean, adornment?: any) {
-    const intl = useIntl();
-
-    if (previousValue || previousValue === 0) {
-        return (
-            <Tooltip
-                title={intl.formatMessage({ id: nodeIsBuilt ? 'builtNodeTooltip' : 'UnBuiltNodeTooltip' })}
-                placement="bottom-start"
-                arrow
-                slotProps={{
-                    popper: {
-                        modifiers: [
-                            {
-                                name: 'offset',
-                                options: {
-                                    offset: [0, -14],
-                                },
-                            },
-                        ],
-                    },
-                    arrow: {
-                        sx: {
-                            left: '6px',
-                        },
-                    },
-                }}
-            >
-                <Box>
-                    <FormHelperText
-                        error={false}
-                        sx={{ display: 'flex', alignItems: 'end', justifyContent: 'flex-start' }}
-                    >
-                        {nodeIsBuilt ? (
-                            <InfoOutlined color="info" fontSize="small" sx={{ marginRight: '6px' }} />
-                        ) : (
-                            <WarningAmberRounded color="warning" fontSize="small" sx={{ marginRight: '6px' }} />
-                        )}
-                        {previousValue + (adornment ? ` ${adornment?.text}` : '')}
-                    </FormHelperText>
-                </Box>
-            </Tooltip>
-        );
-    }
-    return undefined;
-}
+import { Grid } from '@mui/material';
 
 export function genHelperError(...errors: any[]) {
     const inError = errors.find((e) => e);

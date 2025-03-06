@@ -11,10 +11,11 @@ import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
 import { FieldLabel } from '../utils/FieldLabel';
-import { genHelperError, HelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
+import { genHelperError, identity, isFieldRequired } from '../utils/functions';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 
 import { Input } from '../../../../utils/types/types';
+import { HelperPreviousValue } from '../utils/HelperPreviousValue';
 
 export interface TextInputProps {
     name: string;
@@ -35,7 +36,7 @@ export interface TextInputProps {
         TextFieldWithAdornmentProps | TextFieldProps,
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
-    nodeIsBuilt?: boolean;
+    disableTooltip?: boolean;
 }
 
 export function TextInput({
@@ -51,9 +52,9 @@ export function TextInput({
     previousValue,
     clearable,
     formProps,
-    nodeIsBuilt,
+    disableTooltip, // In case we don't want to show tooltip on the value and warning/info icons
 }: TextInputProps) {
-    const { validationSchema, getValues, removeOptional } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -64,7 +65,6 @@ export function TextInput({
         adornmentPosition: adornment?.position ?? '',
         adornmentText: adornment?.text ?? '',
     };
-    console.log('-----------------removeOptional : ', removeOptional);
 
     const handleClearValue = () => {
         onChange(outputTransform(''));
@@ -113,7 +113,7 @@ export function TextInput({
                 adornment && {
                     handleClearValue,
                 })}
-            helperText={HelperPreviousValue(previousValue!, !nodeIsBuilt, adornment)}
+            helperText={HelperPreviousValue(previousValue!, isNodeBuilt, disableTooltip, adornment?.text)}
             {...genHelperError(error?.message)}
             {...formProps}
             {...(adornment && { ...finalAdornment })}

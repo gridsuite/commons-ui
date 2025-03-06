@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Theme } from '@mui/material';
-import { LIGHT_THEME } from '../constants/browserConstants';
-
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
 
@@ -21,17 +18,6 @@ export const equipmentStyles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    equipmentTag: (theme: string | Theme) => ({
-        borderRadius: '10px',
-        padding: '4px',
-        fontSize: 'x-small',
-        textAlign: 'center',
-        color:
-            // TODO remove first condition when gridstudy is updated
-            theme === LIGHT_THEME || (typeof theme !== 'string' && theme?.palette?.mode === 'light')
-                ? 'inherit'
-                : 'black',
-    }),
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,
         maxWidth: TYPE_TAG_MAX_SIZE,
@@ -53,6 +39,7 @@ export const equipmentStyles = {
 /**
  * The order of the equipments in this list is important, as many UI follow it directly.
  * When EquipmentType is used for an interface this order must be maintained.
+ * @deprecated move to a specialized subtype as this one is used everywhere and cause problems
  */
 export enum EquipmentType {
     SUBSTATION = 'SUBSTATION',
@@ -78,10 +65,17 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
+// TODO move into powsybl-network-viewer
+export enum HvdcType {
+    LCC = 'LCC',
+    VSC = 'VSC',
+}
+
 export enum ExtendedEquipmentType {
     HVDC_LINE_LCC = 'HVDC_LINE_LCC',
     HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
+
 export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
     [EquipmentType.SUBSTATION]: {
         id: EquipmentType.SUBSTATION,
@@ -252,16 +246,14 @@ export interface EquipmentInfos extends Identifiable {
     voltageLevelName2?: string;
 }
 
-export const OperatingStatus = {
-    IN_OPERATION: 'IN_OPERATION',
-    PLANNED_OUTAGE: 'PLANNED_OUTAGE',
-    FORCED_OUTAGE: 'FORCED_OUTAGE',
-};
+// TODO move into powsybl-network-viewer
+export enum OperatingStatus {
+    IN_OPERATION = 'IN_OPERATION',
+    PLANNED_OUTAGE = 'PLANNED_OUTAGE',
+    FORCED_OUTAGE = 'FORCED_OUTAGE',
+}
 
-export const getEquipmentsInfosForSearchBar = (
-    equipmentsInfos: Equipment[],
-    getNameOrId: (e: Identifiable) => string
-) => {
+export function getEquipmentsInfosForSearchBar(equipmentsInfos: Equipment[], getNameOrId: (e: Identifiable) => string) {
     return equipmentsInfos.flatMap((e): EquipmentInfos[] => {
         const label = getNameOrId(e);
         return e.type === EquipmentType.SUBSTATION
@@ -273,15 +265,13 @@ export const getEquipmentsInfosForSearchBar = (
                       type: e.type,
                   },
               ]
-            : e.voltageLevels?.map((vli) => {
-                  return {
-                      label,
-                      id: e.id,
-                      key: `${e.id}_${vli.id}`,
-                      type: e.type,
-                      voltageLevelLabel: getNameOrId(vli),
-                      voltageLevelId: vli.id,
-                  };
-              }) ?? [];
+            : e.voltageLevels?.map((vli) => ({
+                  label,
+                  id: e.id,
+                  key: `${e.id}_${vli.id}`,
+                  type: e.type,
+                  voltageLevelLabel: getNameOrId(vli),
+                  voltageLevelId: vli.id,
+              })) ?? [];
     });
-};
+}

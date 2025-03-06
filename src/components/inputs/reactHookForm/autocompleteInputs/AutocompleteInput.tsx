@@ -7,10 +7,11 @@
 
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, HelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
+import { genHelperError, identity, isFieldRequired } from '../utils/functions';
 import { FieldLabel } from '../utils/FieldLabel';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
+import { HelperPreviousValue } from '../utils/HelperPreviousValue';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -28,7 +29,7 @@ export interface AutocompleteInputProps
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
-    nodeIsBuilt?: boolean;
+    disableTooltip?: boolean;
 }
 
 export function AutocompleteInput({
@@ -42,10 +43,10 @@ export function AutocompleteInput({
     allowNewValue,
     onChangeCallback, // method called when input value is changing
     formProps,
-    nodeIsBuilt,
+    disableTooltip,
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -98,7 +99,7 @@ export function AutocompleteInput({
                     })}
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly }}
-                    {...HelperPreviousValue(previousValue!, nodeIsBuilt)}
+                    helperText={HelperPreviousValue(previousValue!, isNodeBuilt, disableTooltip)}
                     {...genHelperError(error?.message)}
                     {...formProps}
                     {...rest}
