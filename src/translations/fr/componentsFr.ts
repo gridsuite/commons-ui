@@ -6,6 +6,6 @@
  */
 
 export const componentsFr = {
-    UnBuiltNodeTooltip: 'Valeur du dernier nœud réalisé de la branche courante',
+    notBuiltNodeTooltip: 'Valeur du dernier nœud réalisé de la branche courante',
     builtNodeTooltip: 'Valeur courante prenant en compte toutes les modifications réalisées',
 };

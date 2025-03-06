@@ -7,10 +7,11 @@
 
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, HelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
+import { genHelperError, identity, isFieldRequired } from '../utils/functions';
 import { FieldLabel } from '../utils/FieldLabel';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
+import { HelperPreviousValue } from '../utils/HelperPreviousValue';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -45,7 +46,7 @@ export function AutocompleteInput({
     disableTooltip,
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional, nodeIsBuilt } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -98,7 +99,7 @@ export function AutocompleteInput({
                     })}
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly }}
-                    helperText={HelperPreviousValue(previousValue!, nodeIsBuilt, disableTooltip)}
+                    helperText={HelperPreviousValue(previousValue!, isNodeBuilt, disableTooltip)}
                     {...genHelperError(error?.message)}
                     {...formProps}
                     {...rest}

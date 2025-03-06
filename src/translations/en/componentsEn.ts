@@ -6,6 +6,6 @@
  */
 
 export const componentsEn = {
-    UnBuiltNodeTooltip: 'Value from last builded node in current branch',
+    notBuiltNodeTooltip: 'Value from last builded node in current branch',
     builtNodeTooltip: 'Current value taking into account all applied modifications',
 };
