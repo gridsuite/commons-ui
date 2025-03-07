@@ -37,7 +37,7 @@ const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        let customError: Error & { status?: string };
+        let customError: Error & { status?: number };
         if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
             customError = new Error(
                 `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
@@ -45,7 +45,7 @@ const handleError = (response: Response) => {
             customError.status = errorJson.status;
         } else {
             customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
-            customError.status = response.statusText;
+            customError.status = response.status;
         }
         throw customError;
     });
