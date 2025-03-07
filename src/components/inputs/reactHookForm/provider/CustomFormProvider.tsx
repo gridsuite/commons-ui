@@ -5,16 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { createContext, PropsWithChildren } from 'react';
+import { createContext, PropsWithChildren, useMemo } from 'react';
 import { type FieldValues, FormProvider, type UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import { type ObjectSchema } from 'yup';
-import { getSystemLanguage } from '../../../../hooks/useLocalizedCountries';
+import { getSystemLanguage } from '../../../../hooks';
 
 type CustomFormContextProps<TFieldValues extends FieldValues = FieldValues> = {
     removeOptional?: boolean;
     validationSchema: ObjectSchema<TFieldValues>;
     language?: string;
+    isNodeBuilt?: boolean;
+    isUpdate?: boolean;
 };
 
 export type MergedFormContextProps<TFieldValues extends FieldValues = FieldValues> = UseFormReturn<TFieldValues> &
@@ -25,22 +27,23 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     removeOptional: false,
     validationSchema: yup.object(),
     language: getSystemLanguage(),
+    isNodeBuilt: false,
+    isUpdate: false,
 });
 
 export function CustomFormProvider<TFieldValues extends FieldValues = FieldValues>(
     props: PropsWithChildren<MergedFormContextProps<TFieldValues>>
 ) {
     // TODO found how to manage generic type
-    const { validationSchema, removeOptional, language, children, ...formMethods } = props as PropsWithChildren<
-        MergedFormContextProps<FieldValues>
-    >;
+    const { validationSchema, removeOptional, language, isNodeBuilt, isUpdate, children, ...formMethods } =
+        props as PropsWithChildren<MergedFormContextProps<FieldValues>>;
 
     return (
         <FormProvider {...formMethods}>
             <CustomFormContext.Provider
-                value={React.useMemo(
-                    () => ({ validationSchema, removeOptional, language }),
-                    [validationSchema, removeOptional, language]
+                value={useMemo(
+                    () => ({ validationSchema, removeOptional, language, isNodeBuilt, isUpdate }),
+                    [validationSchema, removeOptional, language, isNodeBuilt, isUpdate]
                 )}
             >
                 {children}
