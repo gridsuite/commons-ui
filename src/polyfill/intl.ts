@@ -1,21 +1,22 @@
-import {shouldPolyfill as shouldPolyfillDatetimeformat} from '@formatjs/intl-datetimeformat/should-polyfill'
-import {shouldPolyfill as shouldPolyfillDisplaynames} from '@formatjs/intl-displaynames/should-polyfill'
-import {shouldPolyfill as shouldPolyfillDurationformat} from '@formatjs/intl-durationformat/should-polyfill'
-import {shouldPolyfill as shouldPolyfillEnumerator} from '@formatjs/intl-enumerator/should-polyfill'
-import {shouldPolyfill as shouldPolyfillGetcanonicallocales} from '@formatjs/intl-getcanonicallocales/should-polyfill'
-import {shouldPolyfill as shouldPolyfillListformat} from '@formatjs/intl-listformat/should-polyfill'
-import {shouldPolyfill as shouldPolyfillLocale} from '@formatjs/intl-locale/should-polyfill'
-import {shouldPolyfill as shouldPolyfillNumberformat} from '@formatjs/intl-numberformat/should-polyfill'
-import {shouldPolyfill as shouldPolyfillPluralrules} from '@formatjs/intl-pluralrules/should-polyfill'
-import {shouldPolyfill as shouldPolyfillRelativetimeformat} from '@formatjs/intl-relativetimeformat/should-polyfill'
-import {shouldPolyfill as shouldPolyfillSegmenter} from '@formatjs/intl-segmenter/should-polyfill'
-import {match} from '@formatjs/intl-localematcher'
+import type { DateTimeFormat as DateTimeFormatPolyfill } from '@formatjs/intl-datetimeformat';
+import { shouldPolyfill as shouldPolyfillDatetimeformat } from '@formatjs/intl-datetimeformat/should-polyfill';
+import { shouldPolyfill as shouldPolyfillDisplaynames } from '@formatjs/intl-displaynames/should-polyfill';
+import { shouldPolyfill as shouldPolyfillDurationformat } from '@formatjs/intl-durationformat/should-polyfill';
+import { shouldPolyfill as shouldPolyfillEnumerator } from '@formatjs/intl-enumerator/should-polyfill';
+import { shouldPolyfill as shouldPolyfillGetcanonicallocales } from '@formatjs/intl-getcanonicallocales/should-polyfill';
+import { shouldPolyfill as shouldPolyfillListformat } from '@formatjs/intl-listformat/should-polyfill';
+import { shouldPolyfill as shouldPolyfillLocale } from '@formatjs/intl-locale/should-polyfill';
+import { shouldPolyfill as shouldPolyfillNumberformat } from '@formatjs/intl-numberformat/should-polyfill';
+import { shouldPolyfill as shouldPolyfillPluralrules } from '@formatjs/intl-pluralrules/should-polyfill';
+import { shouldPolyfill as shouldPolyfillRelativetimeformat } from '@formatjs/intl-relativetimeformat/should-polyfill';
+import { shouldPolyfill as shouldPolyfillSegmenter } from '@formatjs/intl-segmenter/should-polyfill';
+import { match } from '@formatjs/intl-localematcher';
 
-//TODO locale -> string[]
+// TODO locale -> string[]
 
 /**
  * https://formatjs.github.io/docs/polyfills
- * One of our goals is to provide developers with access to newest ECMA-402 Intl APIs. Therefore, FormatJS suite also provide multiple high quality polyfills that are fully tested using the [Official ECMAScript Conformance Test Suite](https://github.com/tc39/test262).
+ * <br/>Provide developers with access to newest ECMA-402 Intl APIs with multiple polyfills that are fully tested using the [Official ECMAScript Conformance Test Suite](https://github.com/tc39/test262).
  * @param locale The lang to test check
  */
 /* Tests: This library is [test262](https://github.com/tc39/test262/tree/master/test/intl402/Intl/supportedValuesOf)-compliant.
@@ -41,7 +42,7 @@ export default async function polyfillIntl(locale: string) {
      * Features: Everything in [intl-segmenter proposal](https://tc39.es/proposal-intl-segmenter)
      */
     if (shouldPolyfillSegmenter()) {
-        await import('@formatjs/intl-segmenter/polyfill-force')
+        await import('@formatjs/intl-segmenter/polyfill-force');
     }
 
     /*
@@ -49,10 +50,10 @@ export default async function polyfillIntl(locale: string) {
      */
     // This platform already supports Intl.getCanonicalLocales
     if (shouldPolyfillGetcanonicallocales()) {
-        await import('@formatjs/intl-getcanonicallocales/polyfill')
+        await import('@formatjs/intl-getcanonicallocales/polyfill');
     }
     // Alternatively, force the polyfill regardless of support
-    //await import('@formatjs/intl-getcanonicallocales/polyfill-force')
+    // await import('@formatjs/intl-getcanonicallocales/polyfill-force')
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-locale/
@@ -61,10 +62,10 @@ export default async function polyfillIntl(locale: string) {
      */
     // This platform already supports Intl.Locale
     if (shouldPolyfillLocale()) {
-        await import('@formatjs/intl-locale/polyfill')
+        await import('@formatjs/intl-locale/polyfill');
     }
     // Alternatively, force the polyfill regardless of support
-    //await import('@formatjs/intl-locale/polyfill-force')
+    // await import('@formatjs/intl-locale/polyfill-force')
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-pluralrules/
@@ -73,14 +74,14 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales)
      *   - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
      */
-    const unsupportedLocale = shouldPolyfillPluralrules(locale)
+    const unsupportedLocale = shouldPolyfillPluralrules(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    await import('@formatjs/intl-pluralrules/polyfill-force')
-    await import(`@formatjs/intl-pluralrules/locale-data/${unsupportedLocale}`)
+    await import('@formatjs/intl-pluralrules/polyfill-force');
+    await import(`@formatjs/intl-pluralrules/locale-data/${unsupportedLocale}`);
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-listformat/
@@ -88,14 +89,14 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales)
      *   - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
      */
-    const unsupportedLocale = shouldPolyfillListformat(locale)
+    const unsupportedLocale = shouldPolyfillListformat(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    await import('@formatjs/intl-listformat/polyfill-force')
-    await import(`@formatjs/intl-listformat/locale-data/${unsupportedLocale}`)
+    await import('@formatjs/intl-listformat/polyfill-force');
+    await import(`@formatjs/intl-listformat/locale-data/${unsupportedLocale}`);
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-displaynames/
@@ -105,14 +106,14 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales)
      *   - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
      */
-    const unsupportedLocale = shouldPolyfillDisplaynames(locale)
+    const unsupportedLocale = shouldPolyfillDisplaynames(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    await import('@formatjs/intl-displaynames/polyfill-force')
-    await import(`@formatjs/intl-displaynames/locale-data/${locale}`)
+    await import('@formatjs/intl-displaynames/polyfill-force');
+    await import(`@formatjs/intl-displaynames/locale-data/${locale}`);
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-numberformat/
@@ -124,14 +125,14 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
      *   - [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
      */
-    const unsupportedLocale = shouldPolyfillNumberformat(locale)
+    const unsupportedLocale = shouldPolyfillNumberformat(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    await import('@formatjs/intl-numberformat/polyfill-force')
-    await import(`@formatjs/intl-numberformat/locale-data/${unsupportedLocale}`)
+    await import('@formatjs/intl-numberformat/polyfill-force');
+    await import(`@formatjs/intl-numberformat/locale-data/${unsupportedLocale}`);
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-relativetimeformat/
@@ -141,16 +142,14 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)
      *   - If you need `formatToParts` and have to support IE11- or Node 10-, you'd need to polyfill using `@formatjs/intl-numberformat`.
      */
-    const unsupportedLocale = shouldPolyfillRelativetimeformat(locale)
+    const unsupportedLocale = shouldPolyfillRelativetimeformat(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    await import('@formatjs/intl-relativetimeformat/polyfill-force')
-    await import(
-        `@formatjs/intl-relativetimeformat/locale-data/${unsupportedLocale}`
-    )
+    await import('@formatjs/intl-relativetimeformat/polyfill-force');
+    await import(`@formatjs/intl-relativetimeformat/locale-data/${unsupportedLocale}`);
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-durationformat/
@@ -158,13 +157,13 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.ListFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat)
      *   - [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat)
      */
-    const unsupportedLocale = shouldPolyfillDurationformat(locale)
+    const unsupportedLocale = shouldPolyfillDurationformat(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    //await import('@formatjs/intl-durationformat/polyfill-force')
+    // await import('@formatjs/intl-durationformat/polyfill-force')
 
     /*
      * https://formatjs.github.io/docs/polyfills/intl-datetimeformat/
@@ -176,32 +175,32 @@ export default async function polyfillIntl(locale: string) {
      *   - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
      *   - [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat)
      */
-    //import '@formatjs/intl-datetimeformat/polyfill'
-    const unsupportedLocale = shouldPolyfillDatetimeformat(locale)
+    // import '@formatjs/intl-datetimeformat/polyfill'
+    const unsupportedLocale = shouldPolyfillDatetimeformat(locale);
     // This locale is supported
     if (!unsupportedLocale) {
-        return
+        return;
     }
     // Load the polyfill 1st BEFORE loading data
-    await import('@formatjs/intl-datetimeformat/polyfill-force')
+    await import('@formatjs/intl-datetimeformat/polyfill-force');
 
     // Parallelize CLDR data loading
     await Promise.all([
-        //import('@formatjs/intl-datetimeformat/add-all-tz'), // ALL Timezone from IANA database
+        // import('@formatjs/intl-datetimeformat/add-all-tz'), // ALL Timezone from IANA database
         import('@formatjs/intl-datetimeformat/add-golden-tz'), // popular set of timezones from IANA database
         import(`@formatjs/intl-datetimeformat/locale-data/${unsupportedLocale}`),
-    ])
+    ]);
 
     /* Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in.
      * Therefore, the default timezone in this polyfill is `UTC`.
      * You can change this by either calling `__setDefaultTimeZone` or always explicitly pass in `timeZone` option for accurate date time calculation.
      */
-    //Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded
+    // Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded
     if ('__setDefaultTimeZone' in Intl.DateTimeFormat) {
-        Intl.DateTimeFormat.__setDefaultTimeZone('Europe/Paris')
+        (Intl.DateTimeFormat as typeof DateTimeFormatPolyfill).__setDefaultTimeZone('Europe/Paris');
     }
 
-    //TODO Collator detection because no polyfill ?!
+    // TODO Collator detection because no polyfill ?!
     /*
      * https://formatjs.github.io/docs/polyfills/intl-supportedvaluesof/
      * Requirements:
@@ -211,10 +210,10 @@ export default async function polyfillIntl(locale: string) {
      */
     // This platform already supports Intl.supportedValuesOf
     if (shouldPolyfillEnumerator()) {
-        await import('@formatjs/intl-enumerator/polyfill')
+        await import('@formatjs/intl-enumerator/polyfill');
     }
     // Alternatively, force the polyfill regardless of support
-    //await import('@formatjs/intl-enumerator/polyfill-force')
+    // await import('@formatjs/intl-enumerator/polyfill-force')
 }
 
 /*
@@ -225,5 +224,4 @@ export default async function polyfillIntl(locale: string) {
  *   - [`Intl.getCanonicalLocales`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/getCanonicalLocales)
  *   - [`Intl.Locale`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale)
  */
-const matchIntl = match;
-export matchIntl;
+export const matchIntl = match;
