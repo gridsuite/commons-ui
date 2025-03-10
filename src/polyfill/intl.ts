@@ -164,7 +164,7 @@ export async function polyfillIntl(
             () => import('@formatjs/intl-pluralrules/polyfill-force'),
             locale,
             supportedLocalesPluralrules,
-            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-pluralrules/locale-data/*.js')
+            import.meta.glob<Awaited<DynamicImport>>('/node_modules/@formatjs/intl-pluralrules/locale-data/*.js')
         )
     );
 
@@ -181,7 +181,7 @@ export async function polyfillIntl(
             () => import('@formatjs/intl-listformat/polyfill-force'),
             locale,
             supportedLocalesListformat,
-            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-listformat/locale-data/*.js')
+            import.meta.glob<Awaited<DynamicImport>>('/node_modules/@formatjs/intl-listformat/locale-data/*.js')
         )
     );
 
@@ -200,7 +200,7 @@ export async function polyfillIntl(
             () => import('@formatjs/intl-displaynames/polyfill-force'),
             locale,
             supportedLocalesDisplaynames,
-            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-displaynames/locale-data/*.js')
+            import.meta.glob<Awaited<DynamicImport>>('/node_modules/@formatjs/intl-displaynames/locale-data/*.js')
         )
     );
 
@@ -225,7 +225,7 @@ export async function polyfillIntl(
             () => import('@formatjs/intl-numberformat/polyfill-force'),
             locale,
             supportedLocalesNumberformat,
-            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-numberformat/locale-data/*.js')
+            import.meta.glob<Awaited<DynamicImport>>('/node_modules/@formatjs/intl-numberformat/locale-data/*.js')
         )
     );
 
@@ -249,9 +249,7 @@ export async function polyfillIntl(
             () => import('@formatjs/intl-relativetimeformat/polyfill-force'),
             locale,
             supportedLocalesRelativetimeformat,
-            import.meta.glob<Awaited<DynamicImport>>(
-                './node_modules/@formatjs/intl-relativetimeformat/locale-data/*.js'
-            )
+            import.meta.glob<Awaited<DynamicImport>>('/node_modules/@formatjs/intl-relativetimeformat/locale-data/*.js')
         )
     );
 
@@ -290,7 +288,7 @@ export async function polyfillIntl(
             () => import('@formatjs/intl-datetimeformat/polyfill-force'),
             locale,
             supportedLocalesDatetimeformat,
-            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-datetimeformat/locale-data/*.js'),
+            import.meta.glob<Awaited<DynamicImport>>('/node_modules/@formatjs/intl-datetimeformat/locale-data/*.js'),
             // () => import('@formatjs/intl-datetimeformat/add-all-tz') // ALL Timezone from IANA database
             () =>
                 import('@formatjs/intl-datetimeformat/add-golden-tz') // popular set of timezones from IANA database
