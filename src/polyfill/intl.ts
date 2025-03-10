@@ -241,18 +241,21 @@ export default async function polyfillIntl(locale: string /* | string[] */, time
             () => import('@formatjs/intl-datetimeformat/polyfill-force'),
             () => import(`@formatjs/intl-datetimeformat/locale-data/${locale}`),
             // () => import('@formatjs/intl-datetimeformat/add-all-tz') // ALL Timezone from IANA database
-            () => import('@formatjs/intl-datetimeformat/add-golden-tz') // popular set of timezones from IANA database
-        ).finally(() => {
-            /* Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in.
-             * Therefore, the default timezone in this polyfill is `UTC`.
-             * You can change this by either calling `__setDefaultTimeZone` or always explicitly pass in `timeZone` option for accurate date time calculation.
-             */
-            // Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded
-            if ('__setDefaultTimeZone' in Intl.DateTimeFormat && timezone !== undefined) {
-                // eslint-disable-next-line no-underscore-dangle -- formatjs api, not our
-                (Intl.DateTimeFormat as typeof DateTimeFormatPolyfill).__setDefaultTimeZone(timezone);
-            }
-        })
+            () =>
+                import('@formatjs/intl-datetimeformat/add-golden-tz') // popular set of timezones from IANA database
+                    .then((result) => {
+                        /* Since JS Engines do not expose default timezone, there's currently no way for us to detect local timezone that a browser is in.
+                         * Therefore, the default timezone in this polyfill is `UTC`.
+                         * You can change this by either calling `__setDefaultTimeZone` or always explicitly pass in `timeZone` option for accurate date time calculation.
+                         */
+                        // Since `__setDefaultTimeZone` is not in the spec, you should make sure to check for its existence before calling it & after tz data has been loaded
+                        if ('__setDefaultTimeZone' in Intl.DateTimeFormat && timezone !== undefined) {
+                            // eslint-disable-next-line no-underscore-dangle -- formatjs api, not our
+                            (Intl.DateTimeFormat as typeof DateTimeFormatPolyfill).__setDefaultTimeZone(timezone);
+                        }
+                        return result;
+                    })
+        )
     );
 
     // Collator detection because no polyfill
