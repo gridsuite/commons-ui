@@ -8,9 +8,10 @@
 import { useIntl } from 'react-intl';
 import { FormHelperText, Stack, Tooltip, Typography } from '@mui/material';
 import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
+import { Input } from '../../../../utils';
 
 export interface HelperPreviousValueProps {
-    previousValue?: number | string;
+    previousValue?: Input;
     isNodeBuilt?: boolean;
     disabledTooltip?: boolean;
     adornmentText?: string;
@@ -23,41 +24,43 @@ export function HelperPreviousValue({
     adornmentText,
 }: Readonly<HelperPreviousValueProps>) {
     const intl = useIntl();
-    if (previousValue || previousValue === 0) {
-        return (
-            <FormHelperText error={false} sx={{ marginLeft: 0 }}>
-                {!disabledTooltip ? (
-                    <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                        <Tooltip
-                            title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
-                            placement="right"
-                            arrow
-                            PopperProps={{
-                                modifiers: [
-                                    {
-                                        name: 'offset',
-                                        options: {
-                                            offset: [0, -10],
-                                        },
-                                    },
-                                ],
-                            }}
-                        >
-                            {isNodeBuilt ? (
-                                <InfoOutlined color="info" fontSize="small" />
-                            ) : (
-                                <WarningAmberRounded color="warning" fontSize="small" />
-                            )}
-                        </Tooltip>
-                        <Typography noWrap fontSize={11} align="center">
-                            {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
-                        </Typography>
-                    </Stack>
-                ) : (
-                    previousValue + (adornmentText ? ` ${adornmentText}` : '')
-                )}
-            </FormHelperText>
-        );
+
+    if (previousValue === undefined) {
+        return undefined;
     }
-    return undefined;
+
+    return (
+        <FormHelperText error={false} sx={{ marginLeft: 0 }}>
+            {!disabledTooltip ? (
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                    <Tooltip
+                        title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
+                        placement="right"
+                        arrow
+                        PopperProps={{
+                            modifiers: [
+                                {
+                                    name: 'offset',
+                                    options: {
+                                        offset: [0, -10],
+                                    },
+                                },
+                            ],
+                        }}
+                    >
+                        {isNodeBuilt ? (
+                            <InfoOutlined color="info" fontSize="small" />
+                        ) : (
+                            <WarningAmberRounded color="warning" fontSize="small" />
+                        )}
+                    </Tooltip>
+                    <Typography noWrap fontSize={11} align="center">
+                        {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
+                    </Typography>
+                </Stack>
+            ) : (
+                previousValue + (adornmentText ? ` ${adornmentText}` : '')
+            )}
+        </FormHelperText>
+    );
 }
