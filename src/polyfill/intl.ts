@@ -25,14 +25,14 @@ async function doPolyfill(
     name: string,
     shouldPolyfill: ShouldPolyfillBasic,
     loadPolyfill: () => DynamicImport
-): Promise<void>;
+): Promise<boolean>;
 async function doPolyfill(
     name: string,
     shouldPolyfill: ShouldPolyfillWithLocaleSupport,
     loadPolyfill: () => DynamicImport,
     loadLocalePolyfill: () => DynamicImport | DynamicImport[],
     loadExtraPolyfill?: () => DynamicImport
-): Promise<void>;
+): Promise<boolean>;
 async function doPolyfill<Locale extends undefined | string>(
     name: string,
     shouldPolyfill: ShouldPolyfill<Locale>,
@@ -51,14 +51,16 @@ async function doPolyfill<Locale extends undefined | string>(
                     Array.isArray(dynamicImports) ? dynamicImports : [dynamicImports],
                 ]); // Parallelize data loading
             }
+            return true;
         }
+        return false;
     } catch (error) {
         console.error(`An error occurred during the polyfill of Intl.${name}:`, error);
         throw error;
     }
 }
 
-function withRequirements(...requirements: Promise<void>[]) {
+function withRequirements(...requirements: Promise<boolean>[]) {
     return Promise.all(requirements).catch(() => Promise.reject(new Error('One or more requirement(s) is in error')));
 }
 
@@ -83,7 +85,7 @@ function withRequirements(...requirements: Promise<void>[]) {
  * - [Intl.LocaleMatcher](https://formatjs.github.io/docs/polyfills/intl-localematcher)
  * - [Intl.Segmenter](https://formatjs.github.io/docs/polyfills/intl-segmenter)
  */
-export default async function polyfillIntl(locale: string /* | string[] */, timezone?: string /* = 'Europe/Paris' */) {
+export async function polyfillIntl(locale: string /* | string[] */, timezone?: string /* = 'Europe/Paris' */) {
     /*
      * https://formatjs.github.io/docs/polyfills/intl-segmenter/
      * A polyfill for [`Intl.Segmenter`](https://tc39.es/proposal-intl-segmenter).
@@ -260,7 +262,7 @@ export default async function polyfillIntl(locale: string /* | string[] */, time
 
     // Collator detection because no polyfill
     const isThereIntlCollator = (Intl?.Collator as unknown)
-        ? Promise.resolve()
+        ? Promise.resolve(false)
         : Promise.reject(new Error('No Intl.Collator present'));
 
     /*

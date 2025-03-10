@@ -7,6 +7,9 @@
         "plugin:prettier/recommended",
         "plugin:react/jsx-runtime"
     ],
+    "env": {
+        "browser": true // no-undef: 'document' is not defined
+    },
     "parserOptions": {
         "project": "./tsconfig.json"
     },
