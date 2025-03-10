@@ -10,20 +10,44 @@ import { shouldPolyfill as shouldPolyfillNumberformat } from '@formatjs/intl-num
 import { shouldPolyfill as shouldPolyfillPluralrules } from '@formatjs/intl-pluralrules/should-polyfill';
 import { shouldPolyfill as shouldPolyfillRelativetimeformat } from '@formatjs/intl-relativetimeformat/should-polyfill';
 import { shouldPolyfill as shouldPolyfillSegmenter } from '@formatjs/intl-segmenter/should-polyfill';
+import { supportedLocales as supportedLocalesDatetimeformat } from '@formatjs/intl-datetimeformat/supported-locales.generated';
+import { supportedLocales as supportedLocalesDisplaynames } from '@formatjs/intl-displaynames/supported-locales.generated';
+import { supportedLocales as supportedLocalesListformat } from '@formatjs/intl-listformat/supported-locales.generated';
+import { supportedLocales as supportedLocalesNumberformat } from '@formatjs/intl-numberformat/supported-locales.generated';
+import { supportedLocales as supportedLocalesPluralrules } from '@formatjs/intl-pluralrules/supported-locales.generated';
+import { supportedLocales as supportedLocalesRelativetimeformat } from '@formatjs/intl-relativetimeformat/supported-locales.generated';
 import { match } from '@formatjs/intl-localematcher';
 import type { timezones } from '@formatjs/intl-locale/timezones.generated';
 import { SupportedLocales } from './supported-locales';
 
 export type TimezoneName = (typeof timezones)[keyof typeof timezones][number];
+type DynamicImport = Promise<{ default: {} }>;
+
+/* Because of limitations of how dynamic imports are handled by Vite, it's simpler to use glob imports with relative path.
+ * https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations
+ * https://vite.dev/guide/features#glob-import
+ */
+function loadLocales(
+    name: string,
+    modules: Record<string, () => DynamicImport>,
+    supportedLocales: string[],
+    ...locales: SupportedLocales[]
+) {
+    return locales.map((locale) => {
+        if (supportedLocales.includes(locale)) {
+            return modules[`./node_modules/@formatjs/intl-${name}/locale-data/${locale}.js`]();
+        }
+        return Promise.reject(new Error(`Unsupported locale "${locale}" for polyfill of Intl.${name}`));
+    });
+}
 
 type ShouldPolyfillBasic = () => boolean;
 type ShouldPolyfillWithLocaleSupport =
     | ((locale?: string) => string | undefined)
     | ((locale?: string) => string | true | undefined);
-type ShouldPolyfill<Locale extends undefined | string> = Locale extends string
-    ? ShouldPolyfillWithLocaleSupport
-    : ShouldPolyfillBasic;
-type DynamicImport = Promise<{ default: {} }>;
+type ShouldPolyfill<Locale extends undefined | SupportedLocales | SupportedLocales[]> = Locale extends undefined
+    ? ShouldPolyfillBasic
+    : ShouldPolyfillWithLocaleSupport;
 
 async function doPolyfill(
     name: string,
@@ -34,25 +58,29 @@ async function doPolyfill(
     name: string,
     shouldPolyfill: ShouldPolyfillWithLocaleSupport,
     loadPolyfill: () => DynamicImport,
-    loadLocalePolyfill: () => DynamicImport | DynamicImport[],
+    locales: SupportedLocales | SupportedLocales[],
+    supportedLocales: string[],
+    modulesLocales: Record<string, () => DynamicImport>,
     loadExtraPolyfill?: () => DynamicImport
 ): Promise<boolean>;
-async function doPolyfill<Locale extends undefined | string>(
+async function doPolyfill<Locale extends undefined | SupportedLocales | SupportedLocales[]>(
     name: string,
     shouldPolyfill: ShouldPolyfill<Locale>,
     loadPolyfill: () => DynamicImport,
-    loadLocalePolyfill?: Locale extends undefined ? never : () => DynamicImport | DynamicImport[],
+    locales?: Locale,
+    supportedLocales?: Locale extends undefined ? never : string[],
+    modulesLocales?: Locale extends undefined ? never : Record<string, () => DynamicImport>,
     loadExtraPolyfill?: Locale extends undefined ? never : () => DynamicImport
 ) {
     try {
         // just check if we should polyfill Intl.*, not if locale supported
         if (shouldPolyfill()) {
             await loadPolyfill(); // Load the polyfill 1st BEFORE loading data
-            if (loadLocalePolyfill) {
-                const dynamicImports = loadLocalePolyfill();
+            if (locales) {
+                const l: SupportedLocales[] = Array.isArray(locales) ? locales : [locales]; // problems with ts infer
                 await Promise.all([
                     ...(loadExtraPolyfill ? [loadExtraPolyfill()] : []),
-                    Array.isArray(dynamicImports) ? dynamicImports : [dynamicImports],
+                    ...loadLocales(name, modulesLocales!, supportedLocales!, ...l),
                 ]); // Parallelize data loading
             }
             return true;
@@ -134,7 +162,9 @@ export async function polyfillIntl(
             'PluralRules',
             shouldPolyfillPluralrules,
             () => import('@formatjs/intl-pluralrules/polyfill-force'),
-            () => import(`@formatjs/intl-pluralrules/locale-data/${locale}`)
+            locale,
+            supportedLocalesPluralrules,
+            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-pluralrules/locale-data/*.js')
         )
     );
 
@@ -149,7 +179,9 @@ export async function polyfillIntl(
             'ListFormat',
             shouldPolyfillListformat,
             () => import('@formatjs/intl-listformat/polyfill-force'),
-            () => import(`@formatjs/intl-listformat/locale-data/${locale}`)
+            locale,
+            supportedLocalesListformat,
+            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-listformat/locale-data/*.js')
         )
     );
 
@@ -166,7 +198,9 @@ export async function polyfillIntl(
             'Displaynames',
             shouldPolyfillDisplaynames,
             () => import('@formatjs/intl-displaynames/polyfill-force'),
-            () => import(`@formatjs/intl-displaynames/locale-data/${locale}`)
+            locale,
+            supportedLocalesDisplaynames,
+            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-displaynames/locale-data/*.js')
         )
     );
 
@@ -189,7 +223,9 @@ export async function polyfillIntl(
             'NumberFormat',
             shouldPolyfillNumberformat,
             () => import('@formatjs/intl-numberformat/polyfill-force'),
-            () => import(`@formatjs/intl-numberformat/locale-data/${locale}`)
+            locale,
+            supportedLocalesNumberformat,
+            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-numberformat/locale-data/*.js')
         )
     );
 
@@ -211,7 +247,11 @@ export async function polyfillIntl(
             'RelativeTimeFormat',
             shouldPolyfillRelativetimeformat,
             () => import('@formatjs/intl-relativetimeformat/polyfill-force'),
-            () => import(`@formatjs/intl-relativetimeformat/locale-data/${locale}`)
+            locale,
+            supportedLocalesRelativetimeformat,
+            import.meta.glob<Awaited<DynamicImport>>(
+                './node_modules/@formatjs/intl-relativetimeformat/locale-data/*.js'
+            )
         )
     );
 
@@ -248,7 +288,9 @@ export async function polyfillIntl(
             'DateTimeFormat',
             shouldPolyfillDatetimeformat,
             () => import('@formatjs/intl-datetimeformat/polyfill-force'),
-            () => import(`@formatjs/intl-datetimeformat/locale-data/${locale}`),
+            locale,
+            supportedLocalesDatetimeformat,
+            import.meta.glob<Awaited<DynamicImport>>('./node_modules/@formatjs/intl-datetimeformat/locale-data/*.js'),
             // () => import('@formatjs/intl-datetimeformat/add-all-tz') // ALL Timezone from IANA database
             () =>
                 import('@formatjs/intl-datetimeformat/add-golden-tz') // popular set of timezones from IANA database
