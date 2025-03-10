@@ -5,18 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FormattedMessage } from 'react-intl';
-import { SchemaDescription, getIn } from 'yup';
+import { getIn, SchemaDescription } from 'yup';
 import { ReactElement } from 'react';
 import { Grid } from '@mui/material';
-
-export function genHelperPreviousValue(previousValue: number | string, adornment?: any) {
-    return {
-        ...((previousValue || previousValue === 0) && {
-            error: false,
-            helperText: previousValue + (adornment ? ` ${adornment?.text}` : ''),
-        }),
-    };
-}
 
 export function genHelperError(...errors: any[]) {
     const inError = errors.find((e) => e);
