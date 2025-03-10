@@ -11,6 +11,10 @@ import { shouldPolyfill as shouldPolyfillPluralrules } from '@formatjs/intl-plur
 import { shouldPolyfill as shouldPolyfillRelativetimeformat } from '@formatjs/intl-relativetimeformat/should-polyfill';
 import { shouldPolyfill as shouldPolyfillSegmenter } from '@formatjs/intl-segmenter/should-polyfill';
 import { match } from '@formatjs/intl-localematcher';
+import type { timezones } from '@formatjs/intl-locale/timezones.generated';
+import { SupportedLocales } from './supported-locales';
+
+export type TimezoneName = (typeof timezones)[keyof typeof timezones][number];
 
 type ShouldPolyfillBasic = () => boolean;
 type ShouldPolyfillWithLocaleSupport =
@@ -85,7 +89,10 @@ function withRequirements(...requirements: Promise<boolean>[]) {
  * - [Intl.LocaleMatcher](https://formatjs.github.io/docs/polyfills/intl-localematcher)
  * - [Intl.Segmenter](https://formatjs.github.io/docs/polyfills/intl-segmenter)
  */
-export async function polyfillIntl(locale: string /* | string[] */, timezone?: string /* = 'Europe/Paris' */) {
+export async function polyfillIntl(
+    locale: SupportedLocales | SupportedLocales[],
+    timezone?: TimezoneName /* = 'Europe/Paris' */
+) {
     /*
      * https://formatjs.github.io/docs/polyfills/intl-segmenter/
      * A polyfill for [`Intl.Segmenter`](https://tc39.es/proposal-intl-segmenter).
