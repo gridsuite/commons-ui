@@ -54,6 +54,7 @@ export function AutocompleteInput({
 
     const handleChange = (newValue: Option) => {
         const currentValue = getValues(name);
+        // Avoid to trigger onChange if objects have the same id
         if (currentValue?.id === newValue) {
             return;
         }
