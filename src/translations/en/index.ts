@@ -25,3 +25,4 @@ export * from './treeviewFinderEn';
 export * from './networkModificationsEn';
 export * from './external/exportParamsEn';
 export * from './external/importParamsEn';
+export * from './componentsEn';
