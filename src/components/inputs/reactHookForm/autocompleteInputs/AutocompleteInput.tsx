@@ -80,7 +80,10 @@ export function AutocompleteInput({
                 freeSolo: true,
                 autoComplete: true,
                 blurOnSelect: true,
-                autoSelect: true,
+                autoSelect: false,
+                onInputChange: (_, data) => {
+                    handleChange(data);
+                },
             })}
             options={options}
             renderInput={({ inputProps, ...rest }) => (
