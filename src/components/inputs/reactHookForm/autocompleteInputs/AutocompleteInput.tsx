@@ -53,6 +53,10 @@ export function AutocompleteInput({
     } = useController({ name });
 
     const handleChange = (newValue: Option) => {
+        const currentValue = getValues(name);
+        if (currentValue?.id === newValue) {
+            return;
+        }
         onChangeCallback?.();
         // if free solo not enabled or if value is not of string type, we call onChange right away
         if (!allowNewValue || typeof newValue !== 'string') {
