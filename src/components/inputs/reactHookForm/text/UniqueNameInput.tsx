@@ -7,15 +7,15 @@
 
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InputAdornment, TextFieldProps } from '@mui/material';
+import { InputAdornment, SxProps, TextFieldProps, Theme } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { useController, useFormContext } from 'react-hook-form';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
-import { useDebounce } from '../../../../hooks/useDebounce';
-import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { ElementExistsType, ElementType } from '../../../../utils/types/elementType';
+import { useDebounce } from '../../../../hooks';
+import { FieldConstants, ElementType } from '../../../../utils';
+import { elementAlreadyExists } from '../../../../services';
 
 export interface UniqueNameInputProps {
     name: string;
@@ -28,7 +28,8 @@ export interface UniqueNameInputProps {
         'value' | 'onChange' | 'name' | 'label' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
     activeDirectory?: UUID;
-    elementExists?: ElementExistsType;
+    sx?: SxProps<Theme>;
+    fullWidth?: boolean;
 }
 
 /**
@@ -42,7 +43,8 @@ export function UniqueNameInput({
     onManualChangeCallback,
     formProps,
     activeDirectory,
-    elementExists,
+    sx,
+    fullWidth = true,
 }: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
@@ -72,7 +74,7 @@ export function UniqueNameInput({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue) {
-                elementExists?.(directory, nameValue, elementType)
+                elementAlreadyExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {
@@ -97,7 +99,7 @@ export function UniqueNameInput({
                     });
             }
         },
-        [setError, clearErrors, name, elementType, elementExists, directory, trigger]
+        [setError, clearErrors, name, elementType, directory, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
@@ -151,6 +153,7 @@ export function UniqueNameInput({
 
     return (
         <TextField
+            autoComplete="new-password" // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers
             onChange={handleManualChange}
             onBlur={onBlur}
             value={value}
@@ -160,7 +163,8 @@ export function UniqueNameInput({
             type="text"
             autoFocus={autoFocus}
             margin="dense"
-            fullWidth
+            sx={sx}
+            fullWidth={fullWidth}
             error={!!error}
             helperText={translatedError}
             InputProps={{ endAdornment }}

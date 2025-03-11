@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import { UUID } from 'crypto';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
-import { EQUIPMENT_TYPE } from '../utils/types/equipmentType';
+import { EquipmentType } from '../utils/types/equipmentType';
 
 export interface NetworkModificationMetadata {
     uuid: UUID;
@@ -27,6 +27,8 @@ interface ModificationValues {
     energizedVoltageLevelId: string;
     equipmentAttributeName: string;
     equipmentAttributeValue: string;
+    voltageLevelEquipmentId: string;
+    substationEquipmentId: string;
 }
 
 const getOperatingStatusModificationValues = (modification: ModificationValues, formatBold: boolean) => {
@@ -42,6 +44,21 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
         equipmentAttributeName: modification.equipmentAttributeName,
         equipmentAttributeValue: modification.equipmentAttributeValue,
         computedLabel: formatBold ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+    };
+};
+
+const getVoltageLevelWithSubstationModificationValues = (modification: ModificationValues, formatBold: boolean) => {
+    return {
+        voltageLevelEquipmentId: formatBold ? (
+            <strong>{modification.voltageLevelEquipmentId}</strong>
+        ) : (
+            modification.voltageLevelEquipmentId
+        ),
+        substationEquipmentId: formatBold ? (
+            <strong>{modification.substationEquipmentId}</strong>
+        ) : (
+            modification.substationEquipmentId
+        ),
     };
 };
 
@@ -70,7 +87,7 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.BY_FILTER_DELETION.type:
                     return intl.formatMessage({
                         id:
-                            modificationMetadata.equipmentType === EQUIPMENT_TYPE.HVDC_LINE
+                            modificationMetadata.equipmentType === EquipmentType.HVDC_LINE
                                 ? 'Hvdc'
                                 : modificationMetadata.equipmentType,
                     });
@@ -94,6 +111,8 @@ export const useModificationLabelComputer = () => {
                     return getOperatingStatusModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.EQUIPMENT_ATTRIBUTE_MODIFICATION.type:
                     return getEquipmentAttributeModificationValues(modificationValues, formatBold);
+                case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
+                    return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
                 default:
                     return { computedLabel: formatBold ? <strong>{getLabel(modif)}</strong> : getLabel(modif) };
             }

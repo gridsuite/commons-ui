@@ -28,6 +28,7 @@ import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
+import { filterStyles } from '../HeaderFilterForm';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -223,6 +224,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                     resetOnConfirmation={handleResetOnConfirmation}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
+                    sx={filterStyles.textField}
                 />
                 {sourceFilterForExplicitNamingConversion && (
                     <ModifyElementSelection

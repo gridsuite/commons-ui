@@ -19,7 +19,6 @@ export function FilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
-    elementExists,
 }: Readonly<FilterFormProps>) {
     const { setValue } = useFormContext();
 
@@ -42,7 +41,6 @@ export function FilterForm({
                 <HeaderFilterForm
                     creation={creation}
                     activeDirectory={activeDirectory}
-                    elementExists={elementExists}
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                     handleFilterTypeChange={handleFilterTypeChange}
                 />

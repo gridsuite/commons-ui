@@ -7,14 +7,18 @@
 
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Button, SxProps, Theme } from '@mui/material';
+import AddIcon from '@mui/icons-material/ControlPoint';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useFormContext } from 'react-hook-form'; // Import useFormContext
-import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../../utils';
 import { ExpandingTextField } from './ExpandingTextField';
 
-export function DescriptionField() {
+export interface DescriptionFieldProps {
+    expandingTextSx?: SxProps<Theme>;
+}
+
+export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldProps>) {
     const { setValue, getValues } = useFormContext();
     const description = getValues(FieldConstants.DESCRIPTION);
     const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(!!description);
@@ -41,7 +45,7 @@ export function DescriptionField() {
                         label="descriptionProperty"
                         minRows={3}
                         rows={3}
-                        sx={{ flexGrow: 1 }}
+                        sx={expandingTextSx}
                     />
                     <Button
                         sx={{
