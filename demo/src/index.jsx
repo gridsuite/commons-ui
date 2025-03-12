@@ -6,10 +6,12 @@
  */
 
 import { createRoot } from 'react-dom/client';
-
+import { polyfillIntl } from '../../src';
 import App from './app';
 
 // eslint-disable-next-line no-undef
-const container = document.querySelector('#demo');
-const root = createRoot(container);
-root.render(<App />);
+polyfillIntl('en', 'Europe/Paris').finally(() => {
+    const container = document.querySelector('#demo');
+    const root = createRoot(container);
+    root.render(<App />);
+});

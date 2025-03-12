@@ -15,6 +15,8 @@ import { globSync } from 'glob';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
+const nodeModulesPath = path.resolve(__dirname, 'node_modules');
+
 export default defineConfig((config) => ({
     plugins: [
         react(),
@@ -28,6 +30,20 @@ export default defineConfig((config) => ({
             include: ['src'],
             exclude: '**/*.test.{ts,tsx}',
         }),
+        {
+            name: 'rewrite-import-glob-node_modules',
+            enforce: 'pre',
+            // we don't want `import('../../node_modules/@formatjs/......js')` but `import('@formatjs/......js')`
+            resolveDynamicImport(specifier, importer, options) {
+                if (typeof specifier !== 'string' || !specifier.includes('/node_modules/')) {
+                    return null;
+                }
+                const importee = path.isAbsolute(specifier)
+                    ? specifier
+                    : path.resolve(path.parse(importer!).dir, specifier);
+                return (importee.startsWith(nodeModulesPath) && path.relative(nodeModulesPath, importee)) || null;
+            },
+        },
     ],
     build: {
         lib: {
@@ -35,7 +51,8 @@ export default defineConfig((config) => ({
             formats: ['es'],
         },
         rollupOptions: {
-            external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
+            external: (importId: string) =>
+                importId.includes('/node_modules/') || (!importId.startsWith('.') && !path.isAbsolute(importId)),
             // We do this to keep the same folder structure
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
