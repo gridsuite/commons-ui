@@ -355,7 +355,7 @@ export async function polyfillIntl(
     console.table(
         [
             'Intl.Segmenter',
-            'Intl.GetCanonicalLocales',
+            'Intl.getCanonicalLocales',
             'Intl.Locale',
             'Intl.PluralRules',
             'Intl.ListFormat',
@@ -364,7 +364,7 @@ export async function polyfillIntl(
             'Intl.RelativeTimeFormat',
             'Intl.DurationFormat',
             'Intl.DateTimeFormat',
-            'Intl.SupportedValuesOf',
+            'Intl.supportedValuesOf',
         ].map((value, index) => ({ polyfill: value, ...results[index] }))
     );
     console.groupEnd();
