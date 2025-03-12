@@ -33,12 +33,12 @@ export const styles = {
             maxHeight: '300px !important',
         },
 
-        // allows to hide the scrollbar in the pinned rows section as it is unecessary to our implementation
+        // allows to hide the scrollbar in the pinned rows section as it is unnecessary to our implementation
         '& .ag-body-horizontal-scroll:not(.ag-scrollbar-invisible) .ag-horizontal-left-spacer:not(.ag-scroller-corner)':
             {
                 visibility: 'hidden',
             },
-        // removes border on focused cell - using "suppressCellFocus" Aggrid option causes side effects and breaks field edition
+        // removes border on focused cell - using "suppressCellFocus" AgGrid option causes side effects and breaks field edition
         '& .ag-cell-focus, .ag-cell': {
             border: 'none !important',
         },
