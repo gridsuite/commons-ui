@@ -1,3 +1,4 @@
+/vite.config.mts.timestamp-*
 /coverage
 /dist
 /node_modules

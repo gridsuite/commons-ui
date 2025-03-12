@@ -5,5 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/// <reference types="vite-plugin-svgr/client" />
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-svgr/client" />
+/// <reference types="vite-plugin-compile-time/client" />

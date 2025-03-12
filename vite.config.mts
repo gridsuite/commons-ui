@@ -5,18 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import dts from 'vite-plugin-dts';
+import compileTime from 'vite-plugin-compile-time';
 import { globSync } from 'glob';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
 export default defineConfig((config) => ({
     plugins: [
+        compileTime(),
         react(),
         eslint({
             failOnWarning: config.mode !== 'development',
