@@ -25,7 +25,9 @@ export function HelperPreviousValue({
 }: Readonly<HelperPreviousValueProps>) {
     const intl = useIntl();
 
-    if (previousValue === undefined) {
+    // this is not a real TS check as (previousValue === undefined)
+    // but prevent some bypassed TS checks from a parent which possibly sends null
+    if (!previousValue && previousValue !== 0) {
         return undefined;
     }
 
