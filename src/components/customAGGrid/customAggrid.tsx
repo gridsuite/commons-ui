@@ -6,29 +6,135 @@
  */
 
 import { forwardRef, useCallback } from 'react';
-import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
-import { useIntl } from 'react-intl';
+import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { type ColumnResizedEvent, type GetLocaleTextParams } from 'ag-grid-community';
+import {
+    CellApiModule,
+    CellStyleModule,
+    CheckboxEditorModule,
+    ClientSideRowModelModule,
+    ColumnApiModule,
+    ColumnAutoSizeModule,
+    type ColumnResizedEvent,
+    CsvExportModule,
+    CustomEditorModule,
+    CustomFilterModule,
+    DateEditorModule,
+    DateFilterModule,
+    ExternalFilterModule,
+    type GetLocaleTextParams,
+    type GridOptions,
+    GridStateModule,
+    HighlightChangesModule,
+    LargeTextEditorModule,
+    LocaleModule,
+    type Module,
+    NumberEditorModule,
+    NumberFilterModule,
+    PaginationModule,
+    QuickFilterModule,
+    RowApiModule,
+    RowAutoHeightModule,
+    RowDragModule,
+    RowSelectionModule,
+    RowStyleModule,
+    ScrollApiModule,
+    SelectEditorModule,
+    TextEditorModule,
+    TextFilterModule,
+    TooltipModule,
+    UndoRedoEditModule,
+    ValidationModule,
+    ValueCacheModule,
+} from 'ag-grid-community';
+import { useIntl } from 'react-intl';
 import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 import { I18N_GRID_PREFIX } from '../../translations/agGridLocales';
 
-export type CustomAGGridProps<TData = any> = AgGridReactProps<TData> & {
+/**
+ * AgGrid modules we used in apps.
+ * @remarks We don't use {@link import('ag-grid-community').AllCommunityModule AllCommunityModule} to optimize
+ *   bundle size and to exclude {@link ValidationModule} from production build
+ * @remarks We can't use `ModuleRegistry.registerModules()` because that would include AgGrid into the apps build
+ *   just by doing <code>import ... from '@gridsuite/commons-ui'</code> in apps code...
+ * @see https://www.ag-grid.com/react-data-grid/modules/
+ */
+const agGridModules: Module[] = [
+    /* ~~~ Row Model ~~~ */ // https://www.ag-grid.com/javascript-data-grid/row-models/
+    ClientSideRowModelModule, // (default)
+    // InfiniteRowModelModule, // https://www.ag-grid.com/javascript-data-grid/infinite-scrolling/
+    /* ~~~ Columns ~~~ */
+    ColumnAutoSizeModule, // https://www.ag-grid.com/react-data-grid/column-sizing/#auto-sizing-columns
+    // ColumnHoverModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-Visibility%20and%20Display-isColumnHovered
+    /* ~~~ Rows ~~~ */
+    // PinnedColumnModule, // https://www.ag-grid.com/react-data-grid/row-pinning/
+    RowAutoHeightModule, // https://www.ag-grid.com/react-data-grid/row-height/#auto-row-height
+    RowStyleModule, // https://www.ag-grid.com/react-data-grid/row-styles/
+    PaginationModule, // https://www.ag-grid.com/react-data-grid/row-pagination/
+    RowDragModule, // https://www.ag-grid.com/react-data-grid/row-dragging/
+    /* ~~~ Cells ~~~ */
+    CellStyleModule, // https://www.ag-grid.com/react-data-grid/cell-styles/
+    HighlightChangesModule, // https://www.ag-grid.com/react-data-grid/change-cell-renderers/
+    TooltipModule, // https://www.ag-grid.com/react-data-grid/tooltips/
+    /* ~~~ Filtering ~~~ */
+    TextFilterModule, // https://www.ag-grid.com/react-data-grid/filter-text/
+    NumberFilterModule, // https://www.ag-grid.com/react-data-grid/filter-number/
+    DateFilterModule, // https://www.ag-grid.com/react-data-grid/filter-date/
+    CustomFilterModule, // https://www.ag-grid.com/react-data-grid/component-filter/
+    ExternalFilterModule, // https://www.ag-grid.com/react-data-grid/filter-external/
+    QuickFilterModule, // https://www.ag-grid.com/react-data-grid/filter-quick/
+    /* ~~~ Selection ~~~ */
+    RowSelectionModule, // https://www.ag-grid.com/react-data-grid/row-selection/
+    /* ~~~ Editing ~~~ */
+    TextEditorModule, // https://www.ag-grid.com/react-data-grid/provided-cell-editors-text/
+    LargeTextEditorModule, // https://www.ag-grid.com/react-data-grid/provided-cell-editors-large-text/
+    SelectEditorModule, // https://www.ag-grid.com/react-data-grid/provided-cell-editors-select/
+    NumberEditorModule, // https://www.ag-grid.com/react-data-grid/provided-cell-editors-number/
+    DateEditorModule, // https://www.ag-grid.com/react-data-grid/provided-cell-editors-date/
+    CheckboxEditorModule, // https://www.ag-grid.com/react-data-grid/provided-cell-editors-checkbox/
+    CustomEditorModule, // https://www.ag-grid.com/react-data-grid/cell-editors/#custom-components
+    UndoRedoEditModule, // https://www.ag-grid.com/react-data-grid/undo-redo-edits/
+    /* ~~~ Interactivity ~~~ */
+    LocaleModule, // https://www.ag-grid.com/react-data-grid/localisation/
+    /* ~~~ Import & Export ~~~ */
+    CsvExportModule, // https://www.ag-grid.com/react-data-grid/csv-export/
+    // RowDragModule, // https://www.ag-grid.com/react-data-grid/drag-and-drop/
+    /* ~~~ Performance ~~~ */
+    ValueCacheModule, // https://www.ag-grid.com/react-data-grid/value-cache/
+    /* ~~~ Other ~~~ */
+    // AlignedGridsModule, // https://www.ag-grid.com/react-data-grid/aligned-grids/
+    /* ~~~ API ~~~ */
+    GridStateModule, // https://www.ag-grid.com/react-data-grid/grid-state/
+    ColumnApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-columns
+    RowApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-displayedRows
+    CellApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-miscellaneous-getCellValue
+    ScrollApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-scrolling
+    // RenderApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-rendering
+    // EventApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-events
+    // ClientSideRowModelApiModule, // https://www.ag-grid.com/react-data-grid/grid-api/#reference-data
+    /* ~~~ Dev Mode ~~~ */
+    ...(import.meta.env.DEV
+        ? [
+              ValidationModule, // https://www.ag-grid.com/react-data-grid/modules/#validation
+          ]
+        : []),
+];
+
+export type CustomAGGridProps<TData = any> = GridOptions<TData> & {
     shouldHidePinnedHeaderRightBorder?: boolean;
     showOverlay?: boolean;
 };
 
 // We have to define a minWidth to column to activate this feature
-function onColumnResized(params: ColumnResizedEvent) {
-    const { column, finished } = params;
-    const colDefinedMinWidth = column?.getColDef()?.minWidth;
-    if (column && colDefinedMinWidth && finished) {
-        const newWidth = column?.getActualWidth();
-        if (newWidth < colDefinedMinWidth) {
-            params.api.setColumnWidths([{ key: column, newWidth: colDefinedMinWidth }], finished, params.source);
+function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) {
+    if (column && finished) {
+        const { minWidth } = column.getColDef();
+        const actualWidth = column.getActualWidth();
+        if (minWidth !== undefined && actualWidth < minWidth) {
+            api.setColumnWidths([{ key: column, newWidth: minWidth }], finished, source);
         }
     }
 }
@@ -64,6 +170,7 @@ export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>((props, r
         >
             <AgGridReact
                 ref={ref}
+                modules={agGridModules}
                 getLocaleText={getLocaleText}
                 onColumnResized={onColumnResized}
                 enableCellTextSelection
