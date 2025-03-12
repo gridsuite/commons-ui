@@ -7,10 +7,11 @@
 
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, genHelperPreviousValue, identity, isFieldRequired } from '../utils/functions';
+import { genHelperError, identity, isFieldRequired } from '../utils/functions';
 import { FieldLabel } from '../utils/FieldLabel';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
+import { HelperPreviousValue } from '../utils/HelperPreviousValue';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -28,6 +29,7 @@ export interface AutocompleteInputProps
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
+    disabledTooltip?: boolean;
 }
 
 export function AutocompleteInput({
@@ -41,15 +43,21 @@ export function AutocompleteInput({
     allowNewValue,
     onChangeCallback, // method called when input value is changing
     formProps,
+    disabledTooltip,
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
     } = useController({ name });
 
     const handleChange = (newValue: Option) => {
+        const currentValue = getValues(name);
+        // Avoid to trigger onChange if objects have the same id
+        if (currentValue?.id === newValue) {
+            return;
+        }
         onChangeCallback?.();
         // if free solo not enabled or if value is not of string type, we call onChange right away
         if (!allowNewValue || typeof newValue !== 'string') {
@@ -96,7 +104,13 @@ export function AutocompleteInput({
                     })}
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly }}
-                    {...genHelperPreviousValue(previousValue!)}
+                    helperText={
+                        <HelperPreviousValue
+                            previousValue={previousValue}
+                            isNodeBuilt={isNodeBuilt}
+                            disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                        />
+                    }
                     {...genHelperError(error?.message)}
                     {...formProps}
                     {...rest}
