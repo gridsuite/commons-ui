@@ -33,6 +33,8 @@ export default defineConfig((config) => ({
         lib: {
             entry: path.resolve(__dirname, 'src/index.ts'),
             formats: ['es'],
+            name: 'GridSuite commons-UI',
+            fileName: 'gridsuite-commons-ui',
         },
         rollupOptions: {
             external: (importId: string) =>
