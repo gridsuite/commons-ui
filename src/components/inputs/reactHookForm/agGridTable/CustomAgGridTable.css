@@ -1,0 +1,59 @@
+/*
+ * Copyright © 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/* - AG Grid colors override -
+ * It shouldn't be exactly like this, but I couldn't make it works otherwise
+ * https://www.ag-grid.com/react-data-grid/global-style-customisation/ */
+/*'',*/
+
+.ag-root-wrapper * {
+    --ag-alpine-active-color: var(--mui-palette-primary-main) !important,
+    --ag-checkbox-indeterminate-color: var(--mui-palette-primary-main) !important;
+    --ag-background-color: var(--ag-custom-background-color) !important;
+    --ag-header-background-color: var(--ag-custom-background-color) !important;
+    --ag-odd-row-background-color: var(--ag-custom-background-color) !important;
+    --ag-modal-overlay-background-color: var(--ag-custom-background-color) !important;
+    --ag-selected-row-background-color: transparent !important;
+    --ag-range-selection-border-color: transparent !important;
+}
+
+/* overrides the default computed max height for ag grid default selector editor to make it more usable
+ * can be removed if a custom selector editor is implemented */
+.ag-select-list {
+    max-height: 300px !important;
+}
+.ag-root-wrapper-body {
+    max-height: 500px;
+}
+.ag-cell {
+    box-shadow: none;
+}
+.ag-cell-edit-wrapper {
+    height: inherit;
+}
+.ag-row-hover {
+    cursor: text;
+}
+.ag-overlay-loading-center {
+    border: none;
+    box-shadow: none;
+}
+.numeric-input {
+    font-size: calc(var(--ag-font-size) + 1px);
+    padding-left: calc(var(--ag-cell-horizontal-padding) - 1px);
+    width: 100%;
+    height: 100%;
+    border: inherit;
+    outline: inherit;
+    background-color: var(--ag-custom-background-color);
+}
+.Mui-focused .MuiOutlinedInput-root {
+    /* borders moves row height */
+    outline: var(--ag-borders-input) var(--ag-input-focus-border-color);
+    outline-offset: -1px;
+    background-color: var(--ag-custom-background-color);
+}

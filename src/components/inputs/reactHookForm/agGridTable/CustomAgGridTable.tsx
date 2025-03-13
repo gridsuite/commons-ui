@@ -7,87 +7,26 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { AgGridReactProps } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { Box, useTheme } from '@mui/material';
+import { type SxProps, type Theme as MuiTheme } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
+import {
+    type CellEditingStoppedEvent,
+    type ColumnState,
+    createPart,
+    type SortChangedEvent,
+    type ThemeDefaultParams,
+} from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { CustomAGGrid } from '../../../customAGGrid';
+import { CustomAGGrid, type CustomAgGridProps, type ExtendAgGridTheme } from '../../../customAGGrid';
+import css from './CustomAgGridTable.css?inline';
 
-const style = (customProps: any) => ({
-    grid: (theme: any) => ({
-        width: 'auto',
-        height: '100%',
-        position: 'relative',
-
-        // - AG Grid colors override -
-        // It shouldn't be exactly like this, but I couldn't make it works otherwise
-        // https://www.ag-grid.com/react-data-grid/global-style-customisation/
-        '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
-        '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
-        '--ag-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-header-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-odd-row-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-modal-overlay-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-selected-row-background-color': 'transparent !important',
-        '--ag-range-selection-border-color': 'transparent !important',
-
-        // overrides the default computed max height for ag grid default selector editor to make it more usable
-        // can be removed if a custom selector editor is implemented
-        '& .ag-select-list': {
-            maxHeight: '300px !important',
-        },
-        '& .ag-root-wrapper-body': {
-            maxHeight: '500px',
-        },
-        '& .ag-cell': {
-            boxShadow: 'none',
-        },
-        '& .ag-cell-edit-wrapper': {
-            height: 'inherit',
-        },
-        '& .ag-row-hover': {
-            cursor: 'text',
-        },
-        '& .ag-overlay-loading-center': {
-            border: 'none',
-            boxShadow: 'none',
-        },
-        '& .numeric-input': {
-            fontSize: 'calc(var(--ag-font-size) + 1px)',
-            paddingLeft: 'calc(var(--ag-cell-horizontal-padding) - 1px)',
-            width: '100%',
-            height: '100%',
-            border: 'inherit',
-            outline: 'inherit',
-            backgroundColor: theme.agGridBackground.color,
-        },
-        '& .Mui-focused .MuiOutlinedInput-root': {
-            // borders moves row height
-            outline: 'var(--ag-borders-input) var(--ag-input-focus-border-color)',
-            outlineOffset: '-1px',
-            backgroundColor: theme.agGridBackground.color,
-        },
-        ...customProps,
-    }),
-});
-
-export interface CustomAgGridTableProps {
+export type CustomAgGridTableProps = CustomAgGridProps & {
     name: string;
-    columnDefs: any;
     makeDefaultRowData: any;
     csvProps: unknown;
-    cssProps: unknown;
-    defaultColDef: unknown;
-    pagination: boolean;
-    paginationPageSize: number;
-    rowSelection?: AgGridReactProps['rowSelection'];
-    alwaysShowVerticalScroll: boolean;
-    stopEditingWhenCellsLoseFocus: boolean;
-}
+    cssProps?: SxProps<MuiTheme>;
+};
 
 export function CustomAgGridTable({
     name,
@@ -95,7 +34,6 @@ export function CustomAgGridTable({
     makeDefaultRowData,
     csvProps,
     cssProps,
-    defaultColDef,
     pagination,
     paginationPageSize,
     rowSelection,
@@ -103,12 +41,26 @@ export function CustomAgGridTable({
     stopEditingWhenCellsLoseFocus,
     ...props
 }: Readonly<CustomAgGridTableProps>) {
-    // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
-    const theme: any = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowAdded, setNewRowAdded] = useState(false);
     const [isSortApplied, setIsSortApplied] = useState(false);
+
+    const customizeGridTheme = useCallback<ExtendAgGridTheme<ThemeDefaultParams>>((agTheme, muiTheme) => {
+        // - AG Grid colors override -
+        // It shouldn't be exactly like this, but I couldn't make it works otherwise
+        // https://www.ag-grid.com/react-data-grid/global-style-customisation/
+        const customize = createPart({
+            feature: 'CustomAgGridTable',
+            params: {
+                muiPalettePrimaryMain: muiTheme.palette.primary.main,
+                customBackgroundColor:
+                    muiTheme.aggrid.defaultParams?.customBackgroundColor ?? muiTheme.palette.background.default,
+            },
+            css,
+        });
+        return agTheme.withPart(customize);
+    }, []);
 
     const { control, getValues, watch } = useFormContext();
     const useFieldArrayOutput = useFieldArray({
@@ -223,33 +175,32 @@ export function CustomAgGridTable({
 
     return (
         <>
-            <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
-                <CustomAGGrid
-                    rowData={rowData}
-                    onGridReady={onGridReady}
-                    getLocaleText={getLocaleText}
-                    cacheOverflowSize={10}
-                    rowSelection={rowSelection ?? 'multiple'}
-                    rowDragEntireRow
-                    rowDragManaged
-                    onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    columnDefs={columnDefs}
-                    detailRowAutoHeight
-                    onSelectionChanged={() => {
-                        setSelectedRows(gridApi.api.getSelectedRows());
-                    }}
-                    onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
-                    onCellEditingStopped={onCellEditingStopped}
-                    onSortChanged={onSortChanged}
-                    getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
-                    pagination={pagination}
-                    paginationPageSize={paginationPageSize}
-                    alwaysShowVerticalScroll={alwaysShowVerticalScroll}
-                    stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
-                    theme="legacy"
-                    {...props}
-                />
-            </Box>
+            <CustomAGGrid
+                rowData={rowData}
+                onGridReady={onGridReady}
+                getLocaleText={getLocaleText}
+                cacheOverflowSize={10}
+                rowSelection={rowSelection ?? 'multiple'}
+                rowDragEntireRow
+                rowDragManaged
+                onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
+                columnDefs={columnDefs}
+                detailRowAutoHeight
+                onSelectionChanged={() => {
+                    setSelectedRows(gridApi.api.getSelectedRows());
+                }}
+                onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
+                onCellEditingStopped={onCellEditingStopped}
+                onSortChanged={onSortChanged}
+                getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
+                pagination={pagination}
+                paginationPageSize={paginationPageSize}
+                alwaysShowVerticalScroll={alwaysShowVerticalScroll}
+                stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
+                sx={cssProps}
+                customizeGridTheme={customizeGridTheme}
+                {...props}
+            />
             <BottomRightButtons
                 name={name}
                 handleAddRow={handleAddRow}

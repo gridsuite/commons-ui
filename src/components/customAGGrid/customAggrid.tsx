@@ -5,22 +5,39 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
-import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
+import { forwardRef, useCallback, useMemo } from 'react';
+import { AgGridReact } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
-import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
-import { mergeSx } from '../../utils/styles';
-import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
+import {
+    colorSchemeDark,
+    colorSchemeLight,
+    type ColumnResizedEvent,
+    type GetLocaleTextParams,
+    type GridOptions,
+    iconSetMaterial,
+    styleMaterial,
+    type Theme as AgTheme,
+    themeAlpine,
+    type ThemeDefaultParams,
+} from 'ag-grid-community';
+import { Box, SxProps, type Theme as MuiTheme, useTheme } from '@mui/material';
+import { baseGridSuite, hidePinnedHeaderRightBorder, noBorderRight } from './styles/parts';
 
-interface CustomAGGGridStyleProps {
+export type ExtendAgGridTheme<TParams extends object, TOutput extends TParams = TParams> = (
+    agTheme: AgTheme<TParams>,
+    muiTheme: MuiTheme
+) => AgTheme<TOutput>;
+
+export type CustomAgGridProps = GridOptions & {
     shouldHidePinnedHeaderRightBorder?: boolean;
     showOverlay?: boolean;
-}
+    sx?: SxProps<MuiTheme>;
+    customizeGridTheme?: ExtendAgGridTheme<ThemeDefaultParams>;
+};
 
-export interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
+// TODO align with apps theme using https://www.ag-grid.com/theme-builder/
+// and share it with apps: https://www.ag-grid.com/react-data-grid/theming-distribution/
+const agGridTheme = themeAlpine.withPart(iconSetMaterial).withPart(styleMaterial /* colors only */);
 
 // We have to define a minWidth to column to activate this feature
 const onColumnResized = (params: ColumnResizedEvent) => {
@@ -34,9 +51,9 @@ const onColumnResized = (params: ColumnResizedEvent) => {
     }
 };
 
-export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
-    const { shouldHidePinnedHeaderRightBorder = false, showOverlay = false, ...agGridReactProps } = props;
-    const theme = useTheme<Theme>();
+export const CustomAGGrid = forwardRef<AgGridReact, CustomAgGridProps>((props, ref) => {
+    const { shouldHidePinnedHeaderRightBorder, showOverlay, sx, customizeGridTheme, ...agGridReactProps } = props;
+    const muiTheme = useTheme<MuiTheme>();
     const intl = useIntl();
 
     const GRID_PREFIX = 'grid.';
@@ -52,21 +69,39 @@ export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((pr
         [intl]
     );
 
+    const computedTheme = useMemo(() => {
+        let theme = agGridTheme
+            .withPart(muiTheme.palette.mode === 'light' ? colorSchemeLight : colorSchemeDark)
+            .withPart(baseGridSuite);
+        if (showOverlay) {
+            theme = theme.withPart(noBorderRight);
+        }
+        if (shouldHidePinnedHeaderRightBorder) {
+            theme = theme.withPart(hidePinnedHeaderRightBorder);
+            // .withParams({ loadingBackgroundColor: theme.aggrid.overlay.background });
+        }
+        if (muiTheme.aggrid.defaultParams !== undefined) {
+            // keep after parts are setup
+            theme = theme.withParams(muiTheme.aggrid.defaultParams ?? {});
+        }
+        if (customizeGridTheme) {
+            theme = customizeGridTheme(theme, muiTheme);
+        }
+        return theme /* .withParams({
+            valueChangeValueHighlightBackgroundColor: theme.aggrid.valueChangeHighlightBackgroundColor,
+            selectedRowBackgroundColor: theme.aggrid.highlightColor,
+            rowHoverColor: theme.aggrid.highlightColor,
+        }) */;
+    }, [muiTheme, showOverlay, shouldHidePinnedHeaderRightBorder, customizeGridTheme]);
+
     return (
-        <Box
-            sx={mergeSx(
-                styles.grid as SxProps | undefined,
-                shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined,
-                showOverlay ? (styles.overlayBackground as SxProps | undefined) : undefined
-            )}
-            className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
-        >
+        <Box width="auto" height="100%" position="relative" sx={sx}>
             <AgGridReact
                 ref={ref}
                 getLocaleText={getLocaleText}
                 onColumnResized={onColumnResized}
                 enableCellTextSelection
-                theme="legacy"
+                theme={computedTheme}
                 {...agGridReactProps}
             />
         </Box>

@@ -10,21 +10,27 @@ import { RenderBuilder } from '../../../tests/testsUtils.test';
 
 const RenderBuilderInstance = new RenderBuilder().withTrad().withTheme();
 
-const defaultColDef: ColDef = { flex: 1 };
+type Data = {
+    make: string;
+    model: string;
+    price: number;
+};
 
-const columnDefs: ColDef[] = [
+const defaultColDef: ColDef<Data> = { flex: 1 };
+
+const columnDefs: ColDef<Data>[] = [
     { headerName: 'Make', field: 'make' },
     { headerName: 'Model', field: 'model' },
     { headerName: 'Price', field: 'price' },
 ];
 
-const rowData = [
+const rowData: Data[] = [
     { make: 'Toyota', model: 'Celica', price: 35000 },
     { make: 'Ford', model: 'Mondeo', price: 32000 },
     { make: 'Porsche', model: 'Boxster', price: 72000 },
 ];
 
-const gridOptions: GridOptions = {
+const gridOptions: GridOptions<Data> = {
     defaultColDef,
     columnDefs,
     rowData,
@@ -32,6 +38,6 @@ const gridOptions: GridOptions = {
 
 describe('CustomAGGrid', () => {
     it('renders without crashing', () => {
-        RenderBuilderInstance.render(<CustomAGGrid gridOptions={gridOptions} />);
+        RenderBuilderInstance.render(<CustomAGGrid {...gridOptions} />);
     });
 });
