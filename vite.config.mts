@@ -35,7 +35,8 @@ export default defineConfig((config) => ({
             formats: ['es'],
         },
         rollupOptions: {
-            external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
+            external: (importId: string) =>
+                importId.includes('/node_modules/') || (!importId.startsWith('.') && !path.isAbsolute(importId)),
             // We do this to keep the same folder structure
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
