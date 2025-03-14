@@ -13,6 +13,7 @@ import {
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
     TableView as TableViewIcon,
+    Hub as HubIcon,
 } from '@mui/icons-material';
 import { SxProps, Theme } from '@mui/material';
 import { ElementType } from '../types/elementType';
@@ -40,6 +41,8 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
             return <CalculateIcon sx={style} />;
         case ElementType.SPREADSHEET_CONFIG_COLLECTION:
             return <TableViewIcon sx={style} />;
+        case ElementType.DIAGRAM_CONFIG:
+            return <HubIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return undefined;
