@@ -6,13 +6,13 @@
  */
 
 import { defineConfig } from 'vite';
-import defineReactLibConfig from './configs/react-library/vite.config';
+import defineReactConfig from './configs/react-library/vite.config';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import { globSync } from 'glob';
 import * as path from 'node:path';
 
 export default defineConfig((config) =>
-    defineReactLibConfig(config, {
+    defineReactConfig(config, {
         plugins: [libInjectCss()],
         build: {
             lib: {
