@@ -16,6 +16,6 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "types":["node","jest", "@testing-library/jest-dom"],
-    "include": ["src", "demo","jest.setup.ts"] // we can let demo because the file generation is managed my vite and we have noEmit anyway
+    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "include": ["configs", "src", "demo", "jest.setup.ts"] // we can let demo because the file generation is managed my vite and we have noEmit anyway
 }

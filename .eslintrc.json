@@ -26,5 +26,16 @@
         "react/require-default-props": "off",
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "import/prefer-default-export":"off"
-    }
+    },
+    "overrides": [
+        {
+            "parserOptions": {
+                "project": "./configs/tsconfig.json"
+            },
+            "files": ["./configs/**/*.ts"],
+            "rules": {
+                "import/no-extraneous-dependencies": ["error", {"optionalDependencies": true, "peerDependencies": true}]
+            }
+        }
+    ]
 }

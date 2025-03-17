@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "Node16",
+        "moduleResolution": "node16",
+        "target": "ESNext",
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "rootDir": ".",
+        "outDir": "../dist/configs",
+        "traceResolution": true
+    },
+    "include": ["./**/*.ts"]
+}
