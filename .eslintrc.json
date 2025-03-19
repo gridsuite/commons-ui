@@ -41,15 +41,6 @@
         //"formatjs/no-literal-string-in-jsx": ["warn", { "props": { "include": [["*", "{label,placeholder,title}"]] } }],
         "formatjs/blocklist-elements": ["error", ["selectordinal"]],
         // end of formatjs/recommended profile
-        //"no-restricted-imports": ["error", {
-        //    "paths": [
-        //        {
-        //            "name": "@formatjs/intl",
-        //            "importNames": ["formatDuration"],
-        //            "message": "\"Intl.DurationFormat\" isn't supported by some navigators we target."
-        //        }
-        //    ]
-        //}],
         "formatjs/no-invalid-icu": "error",
         "formatjs/prefer-formatted-message": "warn",
         "prettier/prettier": "warn",
