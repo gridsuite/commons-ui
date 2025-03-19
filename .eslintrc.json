@@ -7,6 +7,12 @@
         "plugin:prettier/recommended",
         "plugin:react/jsx-runtime"
     ],
+    "plugins": [
+        "formatjs"
+    ],
+    "settings": {
+        "formatjs": { "additionalFunctionNames": ["defineTranslations"] }
+    },
     "parserOptions": {
         "project": "./tsconfig.json"
     },
@@ -19,6 +25,33 @@
         "jest.setup.ts"
     ],
     "rules": {
+        // start of formatjs/recommended profile from next version
+        "formatjs/no-offset": "error",
+        //"formatjs/enforce-default-message": ["error", "literal"],
+        //"formatjs/enforce-description": ["error", "literal"],
+        "formatjs/enforce-placeholders": "error",
+        "formatjs/no-emoji": "error",
+        "formatjs/no-multiple-whitespaces": "error",
+        "formatjs/no-multiple-plurals": "error",
+        "formatjs/no-complex-selectors": ["error", { "limit": 20 }],
+        "formatjs/no-useless-message": "error",
+        "formatjs/prefer-pound-in-plural": "error",
+        //"formatjs/no-missing-icu-plural-one-placeholders": "error", //scan license header?...
+        "formatjs/enforce-plural-rules": ["error", { "one": true, "other": true }],
+        //"formatjs/no-literal-string-in-jsx": ["warn", { "props": { "include": [["*", "{label,placeholder,title}"]] } }],
+        "formatjs/blocklist-elements": ["error", ["selectordinal"]],
+        // end of formatjs/recommended profile
+        //"no-restricted-imports": ["error", {
+        //    "paths": [
+        //        {
+        //            "name": "@formatjs/intl",
+        //            "importNames": ["formatDuration"],
+        //            "message": "\"Intl.DurationFormat\" isn't supported by some navigators we target."
+        //        }
+        //    ]
+        //}],
+        "formatjs/no-invalid-icu": "error",
+        "formatjs/prefer-formatted-message": "warn",
         "prettier/prettier": "warn",
         "curly": "error",
         "no-console": "off",
