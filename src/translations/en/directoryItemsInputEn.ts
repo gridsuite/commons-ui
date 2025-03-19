@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { defineMessages } from '../utils';
 
-export const directoryItemsInputEn = {
-    'directory_items_input/ElementAlreadyUsed': 'This element is already used',
-};
+export const directoryItemsInputEn = defineMessages({
+    'directory_items_input/ElementAlreadyUsed': { defaultMessage: 'This element is already used' },
+});

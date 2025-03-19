@@ -4,9 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { defineMessages } from '../utils';
 
-export const multipleSelectionDialogEn = {
-    'multiple_selection_dialog/cancel': 'Cancel',
-    'multiple_selection_dialog/validate': 'Validate',
-    'multiple_selection_dialog/selectAll': 'Select all',
-};
+export const multipleSelectionDialogEn = defineMessages({
+    'multiple_selection_dialog/cancel': { defaultMessage: 'Cancel' },
+    'multiple_selection_dialog/validate': { defaultMessage: 'Validate' },
+    'multiple_selection_dialog/selectAll': { defaultMessage: 'Select all' },
+});

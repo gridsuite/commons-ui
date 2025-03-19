@@ -4,48 +4,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { defineMessages } from '../utils';
 
-export const topBarEn = {
-    'top-bar/userSettings': 'User settings',
-    'top-bar/logout': 'Logout',
-    'top-bar/goFullScreen': 'Full screen',
-    'top-bar/exitFullScreen': 'Exit full screen mode',
-    'top-bar/userInformation': 'User information',
-    'top-bar/about': 'About',
-    'top-bar/displayMode': 'Display mode',
-    'top-bar/equipmentLabel': 'Equipment label',
-    'top-bar/id': 'Id',
-    'top-bar/name': 'Name',
-    'top-bar/language': 'Language',
-    'top-bar/developerModeWarning': 'Developer mode: Some features are incomplete and may not work as expected.',
+export const topBarEn = defineMessages({
+    'top-bar/userSettings': { defaultMessage: 'User settings' },
+    'top-bar/logout': { defaultMessage: 'Logout' },
+    'top-bar/goFullScreen': { defaultMessage: 'Full screen' },
+    'top-bar/exitFullScreen': { defaultMessage: 'Exit full screen mode' },
+    'top-bar/userInformation': { defaultMessage: 'User information' },
+    'top-bar/about': { defaultMessage: 'About' },
+    'top-bar/displayMode': { defaultMessage: 'Display mode' },
+    'top-bar/equipmentLabel': { defaultMessage: 'Equipment label' },
+    'top-bar/id': { defaultMessage: 'Id' },
+    'top-bar/name': { defaultMessage: 'Name' },
+    'top-bar/language': { defaultMessage: 'Language' },
+    'top-bar/developerModeWarning': {
+        defaultMessage: 'Developer mode: Some features are incomplete and may not work as expected.',
+    },
 
-    'about-dialog/title': 'About',
-    'about-dialog/version': 'Version {version}',
-    'about-dialog/alert-running-old-version-msg':
-        'Running old version.\nSave your work and refresh the application to load the latest version.',
-    'about-dialog/license': 'License',
-    'about-dialog/modules-section': 'Modules details',
-    'about-dialog/label-version': 'Version',
-    'about-dialog/label-git-version': 'Tag',
-    'about-dialog/label-type': 'Type',
-    'about-dialog/module-tooltip-app': 'application',
-    'about-dialog/module-tooltip-server': 'server',
-    'about-dialog/module-tooltip-other': 'other',
+    'about-dialog/title': { defaultMessage: 'About' },
+    'about-dialog/version': { defaultMessage: 'Version {version}' },
+    'about-dialog/alert-running-old-version-msg': {
+        defaultMessage: 'Running old version.\nSave your work and refresh the application to load the latest version.',
+    },
+    'about-dialog/license': { defaultMessage: 'License' },
+    'about-dialog/modules-section': { defaultMessage: 'Modules details' },
+    'about-dialog/label-version': { defaultMessage: 'Version' },
+    'about-dialog/label-git-version': { defaultMessage: 'Tag' },
+    'about-dialog/label-type': { defaultMessage: 'Type' },
+    'about-dialog/module-tooltip-app': { defaultMessage: 'application' },
+    'about-dialog/module-tooltip-server': { defaultMessage: 'server' },
+    'about-dialog/module-tooltip-other': { defaultMessage: 'other' },
 
-    'user-information-dialog/title': 'User information',
-    'user-information-dialog/role': 'Role',
-    'user-information-dialog/role-user': 'Basic user',
-    'user-information-dialog/role-admin': 'Admin',
-    'user-information-dialog/profile': 'Profile',
-    'user-information-dialog/no-profile': 'No profile',
-    'user-information-dialog/quotas': 'User quotas',
-    'user-information-dialog/number-of-cases-or-studies': 'Number of cases or studies',
-    'user-information-dialog/used': 'Used',
-    'user-information-dialog/number-of-builds-per-study': 'Number of builds per study',
+    'user-information-dialog/title': { defaultMessage: 'User information' },
+    'user-information-dialog/role': { defaultMessage: 'Role' },
+    'user-information-dialog/role-user': { defaultMessage: 'Basic user' },
+    'user-information-dialog/role-admin': { defaultMessage: 'Admin' },
+    'user-information-dialog/profile': { defaultMessage: 'Profile' },
+    'user-information-dialog/no-profile': { defaultMessage: 'No profile' },
+    'user-information-dialog/quotas': { defaultMessage: 'User quotas' },
+    'user-information-dialog/number-of-cases-or-studies': { defaultMessage: 'Number of cases or studies' },
+    'user-information-dialog/used': { defaultMessage: 'Used: {nb}' },
+    'user-information-dialog/number-of-builds-per-study': { defaultMessage: 'Number of builds per study' },
 
-    'user-settings-dialog/title': 'User settings',
-    'user-settings-dialog/label-developer-mode': 'Developer mode',
-    'user-settings-dialog/warning-developer-mode':
-        'Some of the features are not complete, so they may not work as expected. To hide these features, disable developer mode.',
-    'user-settings-dialog/close': 'Close',
-};
+    'user-settings-dialog/title': { defaultMessage: 'User settings' },
+    'user-settings-dialog/label-developer-mode': { defaultMessage: 'Developer mode' },
+    'user-settings-dialog/warning-developer-mode': {
+        defaultMessage:
+            'Some of the features are not complete, so they may not work as expected. To hide these features, disable developer mode.',
+    },
+    'user-settings-dialog/close': { defaultMessage: 'Close' },
+});

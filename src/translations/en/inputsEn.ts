@@ -4,22 +4,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { defineMessages } from '../utils';
 
-export const inputsEn = {
-    'inputs/kiki': 'Kylian Mbappe',
-    'inputs/ney': 'Neymar',
-    'inputs/lapulga': 'Lionel Messi',
-    'inputs/ibra': 'Zlatan Ibrahimovic',
-    'inputs/float': 'Float',
-    'inputs/integer': 'Integer',
-    'inputs/radio': 'Radio',
-    'inputs/select': 'Select',
-    'inputs/slider': 'Slider',
-    'inputs/text': 'Text',
-    'inputs/description': 'Description',
-    'inputs/autocomplete': 'Autocomplete',
-    'inputs/boolean': 'Boolean',
-    'inputs/checkbox': 'Checkbox',
-    'inputs/switch': 'Switch',
-    Optional: 'Optional',
-};
+export const inputsEn = defineMessages({
+    'inputs/kiki': { defaultMessage: 'Kylian Mbappe' },
+    'inputs/ney': { defaultMessage: 'Neymar' },
+    'inputs/lapulga': { defaultMessage: 'Lionel Messi' },
+    'inputs/ibra': { defaultMessage: 'Zlatan Ibrahimovic' },
+    'inputs/float': { defaultMessage: 'Float' },
+    'inputs/integer': { defaultMessage: 'Integer' },
+    'inputs/radio': { defaultMessage: 'Radio' },
+    'inputs/select': { defaultMessage: 'Select' },
+    'inputs/slider': { defaultMessage: 'Slider' },
+    'inputs/text': { defaultMessage: 'Text' },
+    'inputs/description': { defaultMessage: 'Description' },
+    'inputs/autocomplete': { defaultMessage: 'Autocomplete' },
+    'inputs/boolean': { defaultMessage: 'Boolean' },
+    'inputs/checkbox': { defaultMessage: 'Checkbox' },
+    'inputs/switch': { defaultMessage: 'Switch' },
+    Optional: { defaultMessage: 'Optional' },
+});

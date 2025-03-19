@@ -152,7 +152,9 @@ export function CsvUploader({
             <Dialog open={isConfirmationPopupOpen} aria-labelledby="dialog-confirmation-csv-data">
                 <DialogTitle id="dialog-confirmation-csv-data">Confirmation</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>{intl.formatMessage({ id: 'keepCSVDataMessage' })}</DialogContentText>
+                    <DialogContentText>
+                        <FormattedMessage id="keepCSVDataMessage" />
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancelDialog} />

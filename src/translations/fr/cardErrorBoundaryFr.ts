@@ -4,11 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { defineMessages } from '../utils';
 
-export const cardErrorBoundaryFr = {
-    'card_error_boundary/title': 'Désolé, erreur inattendue :(',
-    'card_error_boundary/content':
-        'Veuillez recharger, ou fermer et réouvrir cette application, ou contacter le support.',
-    'card_error_boundary/expandederrorheader':
-        "Message d'erreur (et voir plus d'informations dans la console developpeur):",
-};
+export const cardErrorBoundaryFr = defineMessages({
+    'card_error_boundary/title': { defaultMessage: 'Désolé, erreur inattendue :(' },
+    'card_error_boundary/content': {
+        defaultMessage: 'Veuillez recharger, ou fermer et réouvrir cette application, ou contacter le support.',
+    },
+    'card_error_boundary/expandederrorheader': {
+        defaultMessage: "Message d'erreur (et voir plus d'informations dans la console développeur):",
+    },
+});

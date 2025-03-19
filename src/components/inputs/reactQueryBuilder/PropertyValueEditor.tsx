@@ -9,9 +9,8 @@ import { useCallback, useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
 import { Autocomplete, FormControl, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';
-
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
@@ -101,7 +100,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     >
                         {PROPERTY_VALUE_OPERATORS.map((operator) => (
                             <MenuItem key={operator.customName} value={operator.customName}>
-                                {intl.formatMessage({ id: operator.label })}
+                                <FormattedMessage id={operator.label} />
                             </MenuItem>
                         ))}
                     </Select>
