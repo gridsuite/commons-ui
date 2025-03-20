@@ -21,7 +21,7 @@ export function SelectInput(props: SelectInputProps) {
     const intl = useIntl();
     const { options } = props;
     const inputTransform = (value: Option | null) => {
-        if (value === null) {
+        if (!value) {
             return null;
         }
         if (typeof value === 'string') {
