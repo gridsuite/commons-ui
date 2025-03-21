@@ -1,3 +1,4 @@
+/vite.config.mts-timestamp-*
 /vite-config-mts-timestamp-*.js
 /coverage
 /dist
