@@ -99,8 +99,12 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
                             <Typography>
                                 {userDetails?.maxAllowedCases}
                                 <Box component="span" sx={styles.usedTopography}>
-                                    ( <FormattedMessage id="user-information-dialog/used" />:
-                                    {` ${userDetails?.numberCasesUsed}`} )
+                                    (
+                                    <FormattedMessage
+                                        id="user-information-dialog/used"
+                                        values={{ nb: userDetails?.numberCasesUsed }}
+                                    />
+                                    )
                                 </Box>
                             </Typography>
                         </Grid>

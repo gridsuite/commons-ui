@@ -4,10 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { defineMessages } from '../utils';
 
-export const commonButtonFr = {
-    cancel: 'Annuler',
-    validate: 'Valider',
-    'button.changeType': 'Modifier',
-    'button.changeOperator': 'Modifier',
-};
+export const commonButtonFr = defineMessages({
+    cancel: { defaultMessage: 'Annuler' },
+    validate: { defaultMessage: 'Valider' },
+    'button.changeType': { defaultMessage: 'Modifier' },
+    'button.changeOperator': { defaultMessage: 'Modifier' },
+});
