@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    uses: powsybl/github-ci/.github/workflows/build-frontend-lib-generic.yml@852670523f7fb3699d16efcbdd6d7500d5730b2f
+    uses: powsybl/github-ci/.github/workflows/build-frontend-lib-generic.yml@0f2f06b6f3a89497d4b7e1abe0c74503f3df9fda
     with:
       eventType: commons_ui_updated
       licensercPath: .github/config/.licenserc.yaml
