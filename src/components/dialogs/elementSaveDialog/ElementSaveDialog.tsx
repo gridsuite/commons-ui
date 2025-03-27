@@ -62,18 +62,18 @@ export type ElementSaveDialogProps = {
     selectorTitleId?: string;
     createLabelId?: string;
     updateLabelId?: string;
-    legacySaveMode?: boolean;
+    createOnlyMode?: boolean;
 } & (
     | {
-          /** Legacy mode uses only CREATE operation */
-          legacySaveMode: true;
+          /** createOnlyMode uses only CREATE operation */
+          createOnlyMode: true;
           selectorTitleId?: string;
           createLabelId?: string;
           updateLabelId?: string;
       }
     | {
           /** Standard mode requires label IDs for both operations and update callback */
-          legacySaveMode?: false;
+          createOnlyMode?: false;
           selectorTitleId: string;
           createLabelId: string;
           updateLabelId: string;
@@ -124,7 +124,7 @@ export function ElementSaveDialog({
     selectorTitleId,
     createLabelId,
     updateLabelId,
-    legacySaveMode = false,
+    createOnlyMode = false,
 }: Readonly<ElementSaveDialogProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
@@ -140,7 +140,7 @@ export function ElementSaveDialog({
     const formMethods = useForm({
         defaultValues: {
             ...emptyFormData,
-            [FieldConstants.OPERATION_TYPE]: legacySaveMode ? OperationType.CREATE : initialOperation,
+            [FieldConstants.OPERATION_TYPE]: createOnlyMode ? OperationType.CREATE : initialOperation,
         },
         resolver: yupResolver(schema),
     });
@@ -153,7 +153,7 @@ export function ElementSaveDialog({
     } = formMethods;
 
     // Force create mode if in legacy mode
-    const operationType = legacySaveMode ? OperationType.CREATE : watch(FieldConstants.OPERATION_TYPE);
+    const operationType = createOnlyMode ? OperationType.CREATE : watch(FieldConstants.OPERATION_TYPE);
     const isCreateMode = operationType === OperationType.CREATE;
 
     const disableSave =
@@ -315,7 +315,7 @@ export function ElementSaveDialog({
             formMethods={formMethods}
         >
             <Grid container spacing={2} marginTop="auto" direction="column">
-                {!legacySaveMode && (
+                {!createOnlyMode && (
                     <Grid item>
                         <RadioInput
                             name={FieldConstants.OPERATION_TYPE}
