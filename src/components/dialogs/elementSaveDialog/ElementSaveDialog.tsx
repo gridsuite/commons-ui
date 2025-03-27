@@ -77,7 +77,6 @@ export type ElementSaveDialogProps = {
           selectorTitleId: string;
           createLabelId: string;
           updateLabelId: string;
-          initialOperation: OperationType;
           OnUpdate: (data: IElementUpdateDialog) => void;
       }
 ) &
