@@ -34,8 +34,8 @@
         "test": "jest",
         "test:coverage": "jest --coverage",
         "test:watch": "jest --watch",
-        "lint": "cross-env NODE_OPTIONS=\"--experimental-strip-types\" eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0",
-        "lint:format": "cross-env NODE_OPTIONS=\"--experimental-strip-types\" prettier --check --cache .",
+        "lint": "eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0",
+        "lint:format": "prettier --check --cache .",
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
     },
     "dependencies": {
@@ -112,7 +112,6 @@
         "babel-eslint": "^10.1.0",
         "babel-preset-airbnb": "^5.0.0",
         "babel-preset-vite": "^1.1.3",
-        "cross-env": "^7.0.3",
         "eslint": "^8.57.1",
         "eslint-config-airbnb": "^19.0.4",
         "eslint-config-airbnb-typescript": "^18.0.0",
@@ -140,6 +139,7 @@
         "react-resizable": "^3.0.5",
         "react-router": "^6.29.0",
         "react-router-dom": "^6.29.0",
+        "svgo": "^3.3.2",
         "ts-node": "^10.9.2",
         "typescript": "~5.5.4",
         "vite": "^6.2.1",
