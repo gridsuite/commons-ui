@@ -10,9 +10,15 @@
         "node": ">=22",
         "npm": "^10.9.2"
     },
-    "exports": "./dist/index.js",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./package.json": "./package.json"
+    },
     "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
     "files": [
         "dist"
     ],
@@ -20,8 +26,8 @@
         "**/*.css"
     ],
     "scripts": {
-        "start": "vite demo/ --config vite.config.mts",
-        "start:open": "vite demo/ --config vite.config.mts --open",
+        "start": "vite demo/",
+        "start:open": "vite demo/ --open",
         "build": "tsc && vite build",
         "build:pack": "tsc && vite build && npm pack",
         "prepublishOnly": "npm run build",
