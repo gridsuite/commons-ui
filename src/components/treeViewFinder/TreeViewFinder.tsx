@@ -25,6 +25,7 @@ import {
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
+import { UUID } from 'crypto';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 
@@ -64,11 +65,13 @@ export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFi
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
 
 export interface TreeViewFinderNodeProps {
-    id: string;
+    id: UUID;
     name: string;
+    description?: string;
     icon?: ReactElement;
     childrenCount?: number;
     children?: TreeViewFinderNodeProps[];
+    parents?: TreeViewFinderNodeProps[];
 }
 
 interface TreeViewFinderNodeMapProps {
@@ -128,7 +131,7 @@ export interface TreeViewFinderProps {
  * @param {Object}          [selected] - ids of selected items
  * @param {Array}           [expanded] - ids of the expanded items
  */
-function TreeViewFinderComponant(props: TreeViewFinderProps) {
+function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     const intl = useIntl();
     const {
         classes = {},
@@ -187,6 +190,35 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
         return newMapPrintedNodes;
     }, []);
 
+    const findParents = (
+        nodeId: string,
+        nodes: TreeViewFinderNodeProps[],
+        parentPath: TreeViewFinderNodeProps[] = []
+    ): TreeViewFinderNodeProps[] | null => {
+        let result: TreeViewFinderNodeProps[] | null = null;
+
+        nodes.some((node) => {
+            // If the current node matches the selected node, set result and break
+            if (node.id === nodeId) {
+                result = parentPath;
+                return true;
+            }
+
+            // If the current node has children, recursively search them
+            if (node.children) {
+                const childResult = findParents(nodeId, node.children, [...parentPath, node]);
+                if (childResult) {
+                    result = childResult;
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        return result;
+    };
+
     // Effects
     useEffect(() => {
         // compute all mapPrintedNodes here from data prop
@@ -195,13 +227,25 @@ function TreeViewFinderComponant(props: TreeViewFinderProps) {
         setMapPrintedNodes(newMapPrintedNodes);
     }, [data, computeMapPrintedNodes]);
 
-    const computeSelectedNodes = () => {
+    const computeSelectedNodes = (): TreeViewFinderNodeProps[] => {
         if (!selected) {
             return [];
         }
-        return selected?.map((nodeId) => {
-            return mapPrintedNodes[nodeId];
-        });
+        return selected
+            .map((nodeId) => {
+                const selectedNode = mapPrintedNodes[nodeId];
+                if (!selectedNode) {
+                    return null;
+                }
+
+                const parents = findParents(nodeId, data ?? []);
+
+                return {
+                    ...selectedNode,
+                    parents: parents ?? [],
+                };
+            })
+            .filter((node) => node !== null);
     };
 
     const handleNodeToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {

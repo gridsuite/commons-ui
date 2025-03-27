@@ -28,6 +28,7 @@ export interface UniqueNameInputProps {
         'value' | 'onChange' | 'name' | 'label' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
     activeDirectory?: UUID;
+    currentName?: string;
     sx?: SxProps<Theme>;
     fullWidth?: boolean;
 }
@@ -42,6 +43,7 @@ export function UniqueNameInput({
     autoFocus,
     onManualChangeCallback,
     formProps,
+    currentName,
     activeDirectory,
     sx,
     fullWidth = true,
@@ -73,7 +75,7 @@ export function UniqueNameInput({
 
     const handleCheckName = useCallback(
         (nameValue: string) => {
-            if (nameValue) {
+            if (nameValue !== currentName && directory) {
                 elementAlreadyExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
@@ -97,9 +99,11 @@ export function UniqueNameInput({
                         see documentation : https://react-hook-form.com/docs/useform/clearerrors) */
                         trigger('root.isValidating');
                     });
+            } else {
+                trigger('root.isValidating');
             }
         },
-        [setError, clearErrors, name, elementType, directory, trigger]
+        [currentName, directory, elementType, setError, name, clearErrors, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);

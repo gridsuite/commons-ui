@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Button, SxProps, Theme } from '@mui/material';
 import AddIcon from '@mui/icons-material/ControlPoint';
@@ -31,6 +31,12 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
         setIsDescriptionFieldVisible(false);
         setValue(FieldConstants.DESCRIPTION, '', { shouldDirty: true });
     };
+
+    useEffect(() => {
+        if (description) {
+            setIsDescriptionFieldVisible(true);
+        }
+    }, [description]);
 
     return (
         <Box>
