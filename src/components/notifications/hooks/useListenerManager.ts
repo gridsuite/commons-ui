@@ -14,10 +14,13 @@ export const useListenerManager = <TListener extends ListenerEventWS | ListenerO
     const urlsListenersRef = useRef<Record<string, TListener[]>>({});
 
     useEffect(() => {
-        urlsListenersRef.current = Object.keys(urls).reduce((acc, urlKey) => {
-            acc[urlKey] = urlsListenersRef.current[urlKey] ?? [];
-            return acc;
-        }, {} as Record<string, TListener[]>);
+        urlsListenersRef.current = Object.keys(urls).reduce(
+            (acc, urlKey) => {
+                acc[urlKey] = urlsListenersRef.current[urlKey] ?? [];
+                return acc;
+            },
+            {} as Record<string, TListener[]>
+        );
     }, [urls]);
 
     const addListenerEvent = useCallback((urlKey: string, listener: TListener) => {
