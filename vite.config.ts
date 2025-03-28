@@ -7,6 +7,7 @@
 
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+// @ts-expect-error See https://github.com/gxmari007/vite-plugin-eslint/issues/79
 import eslint from 'vite-plugin-eslint';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';

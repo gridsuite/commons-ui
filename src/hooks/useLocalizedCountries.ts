@@ -19,7 +19,7 @@ export const getSystemLanguage = () => {
 };
 
 export const getComputedLanguage = (language: string | undefined) => {
-    return language === LANG_SYSTEM ? getSystemLanguage() : language ?? LANG_ENGLISH;
+    return language === LANG_SYSTEM ? getSystemLanguage() : (language ?? LANG_ENGLISH);
 };
 
 export const useLocalizedCountries = (language: string | undefined) => {

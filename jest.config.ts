@@ -14,9 +14,7 @@ const config: Config = {
         '^.+\\.(css|less|scss)$': 'identity-obj-proxy',
     },
     // see https://github.com/react-dnd/react-dnd/issues/3443
-    transformIgnorePatterns: [
-        'node_modules/(?!react-dnd|dnd-core|@react-dnd)',
-    ], // transform from ESM
+    transformIgnorePatterns: ['node_modules/(?!react-dnd|dnd-core|@react-dnd)'], // transform from ESM
     globals: {
         IS_REACT_ACT_ENVIRONMENT: true,
     },
