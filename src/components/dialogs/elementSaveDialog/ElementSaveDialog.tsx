@@ -26,26 +26,22 @@ enum OperationType {
     UPDATE = 'UPDATE',
 }
 
-// Base form data interface
-interface FormData {
+// Base interface with common fields used by all interfaces
+export interface IElementCommonFields {
     [FieldConstants.NAME]: string;
     [FieldConstants.DESCRIPTION]: string;
-    [FieldConstants.OPERATION_TYPE]: OperationType;
 }
 
-// Creation interface
-export interface IElementCreationDialog {
-    [FieldConstants.NAME]: string;
-    [FieldConstants.DESCRIPTION]: string;
+interface FormData extends IElementCommonFields {
+    [FieldConstants.OPERATION_TYPE]: OperationType;
+}
+export interface IElementCreationDialog extends IElementCommonFields {
     [FieldConstants.FOLDER_NAME]: string;
     [FieldConstants.FOLDER_ID]: UUID;
 }
 
-// Update interface
-export interface IElementUpdateDialog {
+export interface IElementUpdateDialog extends IElementCommonFields {
     [FieldConstants.ID]: UUID;
-    [FieldConstants.NAME]: string;
-    [FieldConstants.DESCRIPTION]: string;
     parentFolderId?: UUID;
     elementFullPath: string;
 }
