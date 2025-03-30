@@ -169,9 +169,15 @@ export function ElementSaveDialog({
                 id: prefixIdForGeneratedName,
             });
             const dateTime = getCurrentDateTime();
-            setValue(FieldConstants.NAME, `${formattedMessage}-${dateTime}`, { shouldDirty: true });
+            reset(
+                {
+                    ...emptyFormData,
+                    [FieldConstants.NAME]: `${formattedMessage}-${dateTime}`,
+                },
+                { keepDefaultValues: true }
+            );
         }
-    }, [prefixIdForGeneratedName, intl, setValue, isCreateMode]);
+    }, [prefixIdForGeneratedName, intl, reset, isCreateMode]);
 
     // Fetch study directory for creation if needed
     useEffect(() => {
