@@ -278,13 +278,13 @@ export function getEquipmentsInfosForSearchBar(equipmentsInfos: Equipment[], get
                       type: e.type,
                   },
               ]
-            : e.voltageLevels?.map((vli) => ({
+            : (e.voltageLevels?.map((vli) => ({
                   label,
                   id: e.id,
                   key: `${e.id}_${vli.id}`,
                   type: e.type,
                   voltageLevelLabel: getNameOrId(vli),
                   voltageLevelId: vli.id,
-              })) ?? [];
+              })) ?? []);
     });
 }
