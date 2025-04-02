@@ -26,8 +26,8 @@
         "**/*.css"
     ],
     "scripts": {
-        "start": "vite demo/",
-        "start:open": "vite demo/ --open",
+        "start": "vite demo/ --config vite.config.ts",
+        "start:open": "vite demo/ --config vite.config.ts --open",
         "build": "tsc && vite build",
         "build:pack": "tsc && vite build && npm pack",
         "prepublishOnly": "npm run build",
