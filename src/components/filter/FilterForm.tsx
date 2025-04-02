@@ -29,12 +29,12 @@ export function FilterForm({
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
             </Box>
-            {filterType === FilterType.EXPLICIT_NAMING.id && (
+            {filterType?.id === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 />
             )}
-            {filterType === FilterType.EXPERT.id && <ExpertFilterForm />}
+            {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm />}
         </>
     );
 }

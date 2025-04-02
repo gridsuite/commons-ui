@@ -45,24 +45,24 @@ export const explicitNamingFilterSchema = {
         )
         // we remove empty lines
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
-        .when([FieldConstants.FILTER_TYPE], {
-            is: FilterType.EXPLICIT_NAMING.id,
-            then: (schema) =>
-                schema.min(1, 'emptyFilterError').when([FieldConstants.EQUIPMENT_TYPE], {
-                    is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
-                    then: (innerSchema) =>
-                        innerSchema
-                            .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
-                                return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
-                            })
-                            .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
-                                return !(
-                                    array!.some((row) => row[DISTRIBUTION_KEY]) &&
-                                    array!.some((row) => !row[DISTRIBUTION_KEY])
-                                );
-                            }),
-                }),
-        }),
+        // .when([FieldConstants.FILTER_TYPE], {
+        //     is: FilterType.EXPLICIT_NAMING.id,
+        //     then: (schema) =>
+        //         schema.min(1, 'emptyFilterError').when([FieldConstants.EQUIPMENT_TYPE], {
+        //             is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
+        //             then: (innerSchema) =>
+        //                 innerSchema
+        //                     .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
+        //                         return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
+        //                     })
+        //                     .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
+        //                         return !(
+        //                             array!.some((row) => row[DISTRIBUTION_KEY]) &&
+        //                             array!.some((row) => !row[DISTRIBUTION_KEY])
+        //                         );
+        //                     }),
+        //         }),
+        // }),
 };
 
 interface FilterTableRow {

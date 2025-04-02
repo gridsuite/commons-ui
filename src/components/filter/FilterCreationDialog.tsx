@@ -54,7 +54,7 @@ export interface FilterCreationDialogProps {
         id: UUID;
         equipmentType: string;
     };
-    filterType?: string;
+    filterType?: { id: string, label: string };
 }
 
 export function FilterCreationDialog({
@@ -81,7 +81,7 @@ export function FilterCreationDialog({
 
     const onSubmit = useCallback(
         (filterForm: FieldValues) => {
-            if (filterType === FilterType.EXPLICIT_NAMING.id) {
+            if (filterType?.id === FilterType.EXPLICIT_NAMING.id) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
                     true,
@@ -97,7 +97,7 @@ export function FilterCreationDialog({
                     onClose,
                     activeDirectory,
                 );
-            } else if (filterType === FilterType.EXPERT.id) {
+            } else if (filterType?.id === FilterType.EXPERT.id) {
                 saveExpertFilter(
                     null,
                     filterForm[EXPERT_FILTER_QUERY],
@@ -117,7 +117,14 @@ export function FilterCreationDialog({
         },
         [activeDirectory, snackError, onClose],
     );
-
+    let title;
+    if (sourceFilterForExplicitNamingConversion) {
+        title = 'convertIntoExplicitNamingFilter';
+    } else if (filterType?.id === FilterType.EXPERT.id) {
+        title = 'createNewExpertFilter';
+    } else {
+        title = 'createNewExplicitNamingFilter';
+    }
     return (
         <CustomMuiDialog
             open={open}
@@ -125,7 +132,7 @@ export function FilterCreationDialog({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={sourceFilterForExplicitNamingConversion ? 'convertIntoExplicitNamingFilter' : 'createNewFilter'}
+            titleId={title}
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}

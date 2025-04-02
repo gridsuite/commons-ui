@@ -8,7 +8,6 @@
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
-import { FilterType } from './constants/FilterConstants';
 import { DescriptionField, UniqueNameInput } from '../inputs';
 import yup from '../../utils/yupConfig';
 
@@ -26,7 +25,7 @@ export const filterStyles = {
 export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    filterType?: FilterType;
+    filterType?: { id: string, label: string };
 }
 
 export const HeaderFilterSchema = {
