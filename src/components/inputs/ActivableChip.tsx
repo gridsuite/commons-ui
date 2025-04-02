@@ -22,18 +22,16 @@ export function ActivableChip(props: ActivableChipProps) {
 
     return (
         <Tooltip title={tooltipMessage} arrow>
-            <span>
-                <Chip
-                    label={label}
-                    deleteIcon={isActivated ? <CheckCircleOutlineIcon /> : <CancelIcon />}
-                    color="primary"
-                    size="small"
-                    variant={isActivated ? 'filled' : 'outlined'}
-                    onDelete={onClick}
-                    onClick={onClick}
-                    disabled={isDisabled}
-                />
-            </span>
+            <Chip
+                label={label}
+                deleteIcon={isActivated ? <CheckCircleOutlineIcon /> : <CancelIcon />}
+                color="primary"
+                size="small"
+                variant={isActivated ? 'filled' : 'outlined'}
+                onDelete={onClick}
+                onClick={onClick}
+                disabled={isDisabled}
+            />
         </Tooltip>
     );
 }
