@@ -28,7 +28,6 @@ import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFil
 const emptyFormData = {
     [FieldConstants.NAME]: '',
     [FieldConstants.DESCRIPTION]: '',
-    [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
     [FieldConstants.EQUIPMENT_TYPE]: null,
     ...getExplicitNamingFilterEmptyFormData(),
     ...getExpertFilterEmptyFormData(),
@@ -40,7 +39,6 @@ const formSchema = yup
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
         [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
         ...explicitNamingFilterSchema,
         ...expertFilterSchema,
@@ -56,15 +54,17 @@ export interface FilterCreationDialogProps {
         id: UUID;
         equipmentType: string;
     };
+    filterType?: string;
 }
 
 export function FilterCreationDialog({
-    open,
-    onClose,
-    activeDirectory,
-    language,
-    sourceFilterForExplicitNamingConversion = undefined,
-}: FilterCreationDialogProps) {
+                                         open,
+                                         onClose,
+                                         activeDirectory,
+                                         language,
+                                         sourceFilterForExplicitNamingConversion = undefined,
+                                         filterType,
+                                     }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({
@@ -81,7 +81,7 @@ export function FilterCreationDialog({
 
     const onSubmit = useCallback(
         (filterForm: FieldValues) => {
-            if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPLICIT_NAMING.id) {
+            if (filterType === FilterType.EXPLICIT_NAMING.id) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
                     true,
@@ -95,9 +95,9 @@ export function FilterCreationDialog({
                         });
                     },
                     onClose,
-                    activeDirectory
+                    activeDirectory,
                 );
-            } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id) {
+            } else if (filterType === FilterType.EXPERT.id) {
                 saveExpertFilter(
                     null,
                     filterForm[EXPERT_FILTER_QUERY],
@@ -111,11 +111,11 @@ export function FilterCreationDialog({
                         snackError({
                             messageTxt: error,
                         });
-                    }
+                    },
                 );
             }
         },
-        [activeDirectory, snackError, onClose]
+        [activeDirectory, snackError, onClose],
     );
 
     return (
@@ -132,9 +132,10 @@ export function FilterCreationDialog({
             unscrollableFullHeight
         >
             <FilterForm
+                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 creation
                 activeDirectory={activeDirectory}
-                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                filterType={filterType}
             />
         </CustomMuiDialog>
     );

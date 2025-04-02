@@ -7,9 +7,9 @@
 
 import { Grid } from '@mui/material';
 import { UUID } from 'crypto';
-import { FieldConstants, ElementType, MAX_CHAR_DESCRIPTION } from '../../utils';
+import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { FilterType } from './constants/FilterConstants';
-import { UniqueNameInput, DescriptionField, RadioInput } from '../inputs';
+import { DescriptionField, UniqueNameInput } from '../inputs';
 import yup from '../../utils/yupConfig';
 
 export const filterStyles = {
@@ -26,27 +26,19 @@ export const filterStyles = {
 export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    sourceFilterForExplicitNamingConversion?: {
-        id: UUID;
-        equipmentType: string;
-    };
-    handleFilterTypeChange?: (event: React.ChangeEvent<HTMLInputElement>, value: string) => void;
+    filterType?: FilterType;
 }
 
 export const HeaderFilterSchema = {
     [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-    [FieldConstants.FILTER_TYPE]: yup.string().required(),
     [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
     [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
 };
 
 export function HeaderFilterForm({
-    sourceFilterForExplicitNamingConversion,
-    creation,
-    activeDirectory,
-    handleFilterTypeChange,
-}: Readonly<FilterFormProps>) {
-    const filterTypes = Object.values(FilterType);
+                                     creation,
+                                     activeDirectory,
+                                 }: Readonly<FilterFormProps>) {
 
     return (
         <Grid container spacing={2}>
@@ -65,15 +57,6 @@ export function HeaderFilterForm({
                 <Grid item xs={12}>
                     <DescriptionField expandingTextSx={filterStyles.description} />
                 </Grid>
-                {creation && !sourceFilterForExplicitNamingConversion && (
-                    <Grid item>
-                        <RadioInput
-                            name={FieldConstants.FILTER_TYPE}
-                            options={filterTypes}
-                            formProps={{ onChange: handleFilterTypeChange }} // need to override this in order to do not activate the validate button when changing the filter type
-                        />
-                    </Grid>
-                )}
             </>
         </Grid>
     );
