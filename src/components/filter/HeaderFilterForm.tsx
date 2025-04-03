@@ -39,7 +39,6 @@ export const HeaderFilterSchema = {
 };
 
 export function HeaderFilterForm({ creation, activeDirectory }: Readonly<FilterFormProps>) {
-
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -53,11 +52,9 @@ export function HeaderFilterForm({ creation, activeDirectory }: Readonly<FilterF
                     fullWidth={false}
                 />
             </Grid>
-            <>
-                <Grid item xs={12}>
-                    <DescriptionField expandingTextSx={filterStyles.description} />
-                </Grid>
-            </>
+            <Grid item xs={12}>
+                <DescriptionField expandingTextSx={filterStyles.description} />
+            </Grid>
         </Grid>
     );
 }

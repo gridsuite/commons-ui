@@ -12,7 +12,12 @@ import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { unscrollableDialogStyles } from '../dialogs';
 
-export function FilterForm({ sourceFilterForExplicitNamingConversion, creation, activeDirectory, filterType }: Readonly<FilterFormProps>) {
+export function FilterForm({
+sourceFilterForExplicitNamingConversion,
+creation,
+activeDirectory,
+filterType,
+                           }: Readonly<FilterFormProps>) {
 
     return (
         <>
