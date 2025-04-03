@@ -139,10 +139,10 @@ export function FilterCreationDialog({
             unscrollableFullHeight
         >
             <FilterForm
-                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 creation
                 activeDirectory={activeDirectory}
                 filterType={filterType}
+                sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
             />
         </CustomMuiDialog>
     );

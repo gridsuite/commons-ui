@@ -26,6 +26,10 @@ export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
     filterType?: { id: string, label: string };
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
 }
 
 export const HeaderFilterSchema = {

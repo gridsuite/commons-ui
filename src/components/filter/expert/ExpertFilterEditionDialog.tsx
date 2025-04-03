@@ -13,7 +13,7 @@ import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
-import { NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { FilterEditionProps } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
@@ -128,7 +128,7 @@ export function ExpertFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} />}
         </CustomMuiDialog>
     );
 }
