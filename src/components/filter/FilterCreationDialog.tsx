@@ -63,7 +63,8 @@ export function FilterCreationDialog({
     activeDirectory,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
-    filterType, }: FilterCreationDialogProps) {
+    filterType,
+ }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({

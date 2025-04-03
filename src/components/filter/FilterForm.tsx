@@ -16,7 +16,8 @@ export function FilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
-    filterType, }: Readonly<FilterFormProps>) {
+    filterType,
+}: Readonly<FilterFormProps>) {
 
     return (
         <>
