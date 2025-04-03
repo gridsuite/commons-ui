@@ -38,10 +38,7 @@ export const HeaderFilterSchema = {
     [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
 };
 
-export function HeaderFilterForm({
-                                     creation,
-                                     activeDirectory,
-                                 }: Readonly<FilterFormProps>) {
+export function HeaderFilterForm({ creation, activeDirectory }: Readonly<FilterFormProps>) {
 
     return (
         <Grid container spacing={2}>

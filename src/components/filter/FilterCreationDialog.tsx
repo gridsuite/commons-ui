@@ -54,7 +54,7 @@ export interface FilterCreationDialogProps {
         id: UUID;
         equipmentType: string;
     };
-    filterType?: { id: string, label: string };
+    filterType?: { id: string; label: string };
 }
 
 export function FilterCreationDialog({
@@ -95,7 +95,7 @@ export function FilterCreationDialog({
                         });
                     },
                     onClose,
-                    activeDirectory,
+                    activeDirectory
                 );
             } else if (filterType?.id === FilterType.EXPERT.id) {
                 saveExpertFilter(
@@ -111,11 +111,11 @@ export function FilterCreationDialog({
                         snackError({
                             messageTxt: error,
                         });
-                    },
+                    }
                 );
             }
         },
-        [activeDirectory, snackError, onClose, filterType],
+        [activeDirectory, snackError, onClose, filterType]
     );
     let title;
     if (sourceFilterForExplicitNamingConversion) {
