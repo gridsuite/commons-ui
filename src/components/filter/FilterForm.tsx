@@ -18,7 +18,6 @@ export function FilterForm({
     activeDirectory,
     filterType,
 }: Readonly<FilterFormProps>) {
-
     return (
         <>
             <Box sx={unscrollableDialogStyles.unscrollableHeader}>

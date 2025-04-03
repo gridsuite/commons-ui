@@ -64,7 +64,7 @@ export function FilterCreationDialog({
     language,
     sourceFilterForExplicitNamingConversion = undefined,
     filterType,
- }: FilterCreationDialogProps) {
+}: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({
