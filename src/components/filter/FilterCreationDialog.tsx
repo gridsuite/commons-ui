@@ -58,13 +58,12 @@ export interface FilterCreationDialogProps {
 }
 
 export function FilterCreationDialog({
-open,
-onClose,
-activeDirectory,
-language,
-sourceFilterForExplicitNamingConversion = undefined,
-filterType,
-                                     }: FilterCreationDialogProps) {
+    open,
+    onClose,
+    activeDirectory,
+    language,
+    sourceFilterForExplicitNamingConversion = undefined,
+    filterType, }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
     const formMethods = useForm({
