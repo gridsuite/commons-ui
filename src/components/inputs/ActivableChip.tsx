@@ -17,7 +17,7 @@ export interface ActivableChipProps {
     isDisabled?: boolean;
 }
 
-export function ActivableChip(props: ActivableChipProps) {
+export function ActivableChip(props: Readonly<ActivableChipProps>) {
     const { isActivated, label, tooltipMessage, onClick, isDisabled } = props;
 
     return (
