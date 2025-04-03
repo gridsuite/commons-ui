@@ -17,7 +17,6 @@ import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 
 interface CustomAGGGridStyleProps {
     shouldHidePinnedHeaderRightBorder?: boolean;
-    showOverlay?: boolean;
 }
 
 export interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
@@ -35,7 +34,7 @@ const onColumnResized = (params: ColumnResizedEvent) => {
 };
 
 export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
-    const { shouldHidePinnedHeaderRightBorder = false, showOverlay = false, ...agGridReactProps } = props;
+    const { shouldHidePinnedHeaderRightBorder = false, ...agGridReactProps } = props;
     const theme = useTheme<Theme>();
     const intl = useIntl();
 
@@ -56,8 +55,7 @@ export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((pr
         <Box
             sx={mergeSx(
                 styles.grid as SxProps | undefined,
-                shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined,
-                showOverlay ? (styles.overlayBackground as SxProps | undefined) : undefined
+                shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined
             )}
             className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
         >

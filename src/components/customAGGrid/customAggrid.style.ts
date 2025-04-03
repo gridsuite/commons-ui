@@ -49,12 +49,4 @@ export const styles = {
             borderRight: 'none',
         },
     },
-    overlayBackground: (theme: Theme) => ({
-        '& .ag-overlay-loading-wrapper': {
-            background: theme.aggrid.overlay.background,
-        },
-        '& .ag-overlay-no-rows-wrapper': {
-            background: 'none',
-        },
-    }),
 };

@@ -43,7 +43,7 @@ export function UniqueNameInput({
     autoFocus,
     onManualChangeCallback,
     formProps,
-    currentName,
+    currentName = '',
     activeDirectory,
     sx,
     fullWidth = true,
