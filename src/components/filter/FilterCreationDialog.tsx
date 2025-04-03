@@ -115,7 +115,7 @@ export function FilterCreationDialog({
                 );
             }
         },
-        [activeDirectory, snackError, onClose],
+        [activeDirectory, snackError, onClose, filterType],
     );
     let title;
     if (sourceFilterForExplicitNamingConversion) {

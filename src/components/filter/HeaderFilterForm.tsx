@@ -25,7 +25,7 @@ export const filterStyles = {
 export interface FilterFormProps {
     creation?: boolean;
     activeDirectory?: UUID;
-    filterType?: { id: string, label: string };
+    filterType?: { id: string; label: string };
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;
