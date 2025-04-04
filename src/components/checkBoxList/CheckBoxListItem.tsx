@@ -22,7 +22,7 @@ const styles = {
             right: 0,
             transform: 'none',
         },
-        // this is the only way to unset a 48px right adding when ListItemButton is hovered
+        // this is the only way to unset a 48px right padding when ListItemButton is hovered
         '& .MuiListItemButton-root': {
             paddingRight: '0px',
         },
@@ -51,7 +51,7 @@ export function CheckBoxListItem<T>({
             }
             return;
         }
-        // otherwise, every items are clickables
+        // otherwise, every items are clickable
         onItemClick(item);
     }, [isItemClickable, item, onItemClick]);
     return (
