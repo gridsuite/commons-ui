@@ -28,8 +28,8 @@
             "error",
             {
                 "patterns": [{
-                        "group": ["@mui/icons-material/*"],
-                        "message": "Deep imports from \"@mui/icons-material\" are forbidden. Import only from the library root."
+                        "group": ["@mui/*/*", "!@mui/material/colors"],
+                        "message": "Deep imports from MUI libraries are forbidden. Import only from the library root."
                     }]
             }
         ],

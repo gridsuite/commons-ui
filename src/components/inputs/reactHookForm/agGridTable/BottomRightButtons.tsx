@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid, IconButton, Tooltip } from '@mui/material';
+import { Box, Grid, IconButton, styled, Tooltip } from '@mui/material';
 import {
     ArrowCircleDown,
     ArrowCircleUp,
@@ -14,7 +14,6 @@ import {
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { styled } from '@mui/material/styles';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
 import { ErrorInput } from '../errorManagement/ErrorInput';
 import { FieldErrorAlert } from '../errorManagement/FieldErrorAlert';
@@ -40,17 +39,17 @@ export interface BottomRightButtonsProps {
 }
 
 export function BottomRightButtons({
-                                       name,
-                                       disableUp,
-                                       disableDown,
-                                       disableDelete,
-                                       handleAddRow,
-                                       handleDeleteRows,
-                                       handleMoveRowUp,
-                                       handleMoveRowDown,
-                                       useFieldArrayOutput,
-                                       csvProps,
-                                   }: BottomRightButtonsProps) {
+    name,
+    disableUp,
+    disableDown,
+    disableDelete,
+    handleAddRow,
+    handleDeleteRows,
+    handleMoveRowUp,
+    handleMoveRowDown,
+    useFieldArrayOutput,
+    csvProps,
+}: BottomRightButtonsProps) {
     const [uploaderOpen, setUploaderOpen] = useState(false);
     const intl = useIntl();
 

@@ -35,17 +35,17 @@ export interface UniqueNameInputProps {
  * Input component that constantly check if the field's value is available or not
  */
 export function UniqueNameInput({
-                                    name,
-                                    label,
-                                    elementType,
-                                    autoFocus,
-                                    onManualChangeCallback,
-                                    formProps,
-                                    currentName = '',
-                                    activeDirectory,
-                                    sx,
-                                    fullWidth = true,
-                                }: Readonly<UniqueNameInputProps>) {
+    name,
+    label,
+    elementType,
+    autoFocus,
+    onManualChangeCallback,
+    formProps,
+    currentName = '',
+    activeDirectory,
+    sx,
+    fullWidth = true,
+}: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
         fieldState: { error, isDirty },
@@ -101,7 +101,7 @@ export function UniqueNameInput({
                 trigger('root.isValidating');
             }
         },
-        [currentName, directory, elementType, setError, name, clearErrors, trigger],
+        [currentName, directory, elementType, setError, name, clearErrors, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
