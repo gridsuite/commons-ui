@@ -7,3 +7,4 @@
 export * from './SelectClearable';
 export * from './reactHookForm';
 export * from './reactQueryBuilder';
+export * from './ActivableChip';
