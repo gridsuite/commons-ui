@@ -9,6 +9,7 @@ import { useCallback, useState } from 'react';
 import { ListItem, ListItemButton } from '@mui/material';
 import { DraggableCheckBoxListItemProps } from './checkBoxList.type';
 import { DraggableCheckBoxListItemContent } from './DraggableCheckBoxListItemContent';
+import { mergeSx } from '../../utils';
 
 const styles = {
     checkboxListItem: {
@@ -47,7 +48,7 @@ export function DraggableCheckBoxListItem<T>({
     return (
         <ListItem
             secondaryAction={secondaryAction?.(item, hover)}
-            sx={{ ...styles.checkboxListItem, ...sx?.checkboxListItem }}
+            sx={mergeSx(styles.checkboxListItem, sx?.checkboxListItem)}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
             disablePadding
@@ -57,7 +58,7 @@ export function DraggableCheckBoxListItem<T>({
             {isItemClickable?.(item) ? (
                 <ListItemButton
                     // this is to align checkbox and label
-                    sx={{ alignItems: 'flex-start', paddingTop: '0px', ...sx?.checkboxButton }}
+                    sx={mergeSx({ alignItems: 'flex-start', paddingTop: '0px' }, sx?.checkboxButton)}
                     disabled={disabled}
                     onClick={handleItemClick}
                     disableGutters

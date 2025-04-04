@@ -7,6 +7,7 @@
 import { Checkbox, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { CheckBoxListItemContentProps } from './checkBoxList.type';
+import { mergeSx } from '../../utils';
 
 export function CheckBoxListItemContent({
     sx,
@@ -21,22 +22,24 @@ export function CheckBoxListItemContent({
     };
     return (
         <>
-            <ListItemIcon sx={{ marginTop: '0px', ...sx?.checkBoxIcon }}>
+            <ListItemIcon sx={mergeSx({ marginTop: '0px' }, sx?.checkBoxIcon)}>
                 <Checkbox sx={sx?.checkbox} disableRipple onClick={onCheckboxClick} {...props} />
             </ListItemIcon>
             <ListItemText
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    paddingTop: '0px', // this is to align text with default padding/margin of the checkbox
-                    marginTop: '9px',
-                    ...sx?.listItemText,
-                }}
+                sx={mergeSx(
+                    {
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        paddingTop: '0px', // this is to align text with default padding/margin of the checkbox
+                        marginTop: '9px',
+                    },
+                    sx?.listItemText
+                )}
                 disableTypography
                 secondary={secondary}
             >
-                <OverflowableText sx={{ width: '100%', ...sx?.label }} text={label} />
+                <OverflowableText sx={mergeSx({ width: '100%' }, sx?.label)} text={label} />
             </ListItemText>
         </>
     );

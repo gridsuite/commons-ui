@@ -9,6 +9,7 @@ import { useCallback, useState } from 'react';
 import { ListItem, ListItemButton } from '@mui/material';
 import { CheckBoxListItemProps } from './checkBoxList.type';
 import { CheckBoxListItemContent } from './CheckBoxListItemContent';
+import { mergeSx } from '../../utils';
 
 const styles = {
     checkboxListItem: {
@@ -56,7 +57,7 @@ export function CheckBoxListItem<T>({
     return (
         <ListItem
             secondaryAction={secondaryAction?.(item, hover)}
-            sx={{ ...styles.checkboxListItem, ...sx?.checkboxListItem }}
+            sx={mergeSx(styles.checkboxListItem, sx?.checkboxListItem)}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
             disablePadding
@@ -65,7 +66,7 @@ export function CheckBoxListItem<T>({
             {onItemClick ? (
                 <ListItemButton
                     // this is to align checkbox and label
-                    sx={{ alignItems: 'flex-start', padding: 'unset', ...sx?.checkboxButton }}
+                    sx={mergeSx({ alignItems: 'flex-start', padding: 'unset' }, sx?.checkboxButton)}
                     disabled={disabled}
                     onClick={handleItemClick}
                 >

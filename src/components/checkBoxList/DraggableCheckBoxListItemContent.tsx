@@ -9,6 +9,7 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { IconButton } from '@mui/material';
 import { DraggableCheckBoxListItemContentProps } from './checkBoxList.type';
 import { CheckBoxListItemContent } from './CheckBoxListItemContent';
+import { mergeSx } from '../../utils';
 
 export function DraggableCheckBoxListItemContent({
     provided,
@@ -21,12 +22,14 @@ export function DraggableCheckBoxListItemContent({
             <IconButton
                 {...provided.dragHandleProps}
                 size="small"
-                sx={{
-                    opacity: isHighlighted ? '1' : '0', // TODO WHY ?
-                    padding: 'unset',
-                    marginTop: '9px', // this is to align drag button to the checkbox and label
-                    ...sx?.dragButton,
-                }}
+                sx={mergeSx(
+                    {
+                        opacity: isHighlighted ? '1' : '0', // TODO WHY ?
+                        padding: 'unset',
+                        marginTop: '9px', // this is to align drag button to the checkbox and label
+                    },
+                    sx?.dragButton
+                )}
             >
                 <DragIndicatorIcon />
             </IconButton>
