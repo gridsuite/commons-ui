@@ -13,7 +13,7 @@ import { mergeSx } from '../../utils';
 
 const styles = {
     checkboxListItem: {
-        // this is to align ListItem children and it's secondary action
+        // this is to align ListItem children and its secondary action
         alignItems: 'flex-start',
         // this is the only way to unset the absolute positionning of the secondary action
         '& .MuiListItemSecondaryAction-root': {
@@ -23,7 +23,7 @@ const styles = {
             right: 0,
             transform: 'none',
         },
-        // this is the only way to unset a 48px right adding when ListItemButton is hovered
+        // this is the only way to unset a 48px right padding when ListItemButton is hovered
         '& .MuiListItemButton-root': {
             paddingRight: '0px',
         },
