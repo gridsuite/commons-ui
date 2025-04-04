@@ -7,7 +7,14 @@
 
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CircularProgress, InputAdornment, SxProps, TextField, TextFieldProps, Theme } from '@mui/material';
+import {
+    CircularProgress,
+    InputAdornment,
+    type SxProps,
+    TextField,
+    type TextFieldProps,
+    type Theme,
+} from '@mui/material';
 import { Check as CheckIcon } from '@mui/icons-material';
 import { useController, useFormContext } from 'react-hook-form';
 import { UUID } from 'crypto';
