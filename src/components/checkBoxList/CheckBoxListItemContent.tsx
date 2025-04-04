@@ -8,7 +8,13 @@ import { Checkbox, ListItemIcon, ListItemText } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { CheckBoxListItemContentProps } from './checkBoxList.type';
 
-export function CheckBoxListItemContent({ sx, label, secondary, onClick, ...props }: Readonly<CheckBoxListItemContentProps>) {
+export function CheckBoxListItemContent({
+    sx,
+    label,
+    secondary,
+    onClick,
+    ...props
+}: Readonly<CheckBoxListItemContentProps>) {
     const onCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         onClick();
