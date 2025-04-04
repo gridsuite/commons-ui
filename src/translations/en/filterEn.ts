@@ -46,6 +46,8 @@ export const filterEn = {
     missingDistributionKeyError: 'Missing distribution key',
     filterCsvFileName: 'filterCreation',
     createNewFilter: 'Create a filter',
+    createNewExpertFilter: 'Create a criterium filter',
+    createNewExplicitNamingFilter: 'Create a explicit naming filter',
     nameProperty: 'Name',
     Countries: 'Countries',
     Countries1: 'Countries 1',

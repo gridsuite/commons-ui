@@ -73,7 +73,6 @@ export function ExplicitNamingFilterEditionDialog({
                     reset({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.DESCRIPTION]: description,
-                        [FieldConstants.FILTER_TYPE]: FilterType.EXPLICIT_NAMING.id,
                         [FieldConstants.EQUIPMENT_TYPE]: response[FieldConstants.EQUIPMENT_TYPE],
                         [FILTER_EQUIPMENTS_ATTRIBUTES]: response[FILTER_EQUIPMENTS_ATTRIBUTES]?.map((row: any) => ({
                             [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
@@ -131,7 +130,7 @@ export function ExplicitNamingFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPLICIT_NAMING} />}
         </CustomMuiDialog>
     );
 }

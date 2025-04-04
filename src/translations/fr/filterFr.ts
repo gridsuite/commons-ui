@@ -46,6 +46,8 @@ export const filterFr = {
     missingDistributionKeyError: 'Clé de répartition manquante',
     filterCsvFileName: 'creationFiltre',
     createNewFilter: 'Créer un filtre',
+    createNewExpertFilter: 'Créer un filtre par critères',
+    createNewExplicitNamingFilter: 'Créer un filtre par nommage',
     nameProperty: 'Nom',
     Countries: 'Pays',
     Countries1: 'Pays 1',
