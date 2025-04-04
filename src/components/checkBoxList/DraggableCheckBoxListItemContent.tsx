@@ -24,7 +24,7 @@ export function DraggableCheckBoxListItemContent({
                 size="small"
                 sx={mergeSx(
                     {
-                        opacity: isHighlighted ? '1' : '0', // TODO WHY ?
+                        display: isHighlighted ? 'block' : 'none',
                         padding: 'unset',
                         marginTop: '9px', // this is to align drag button to the checkbox and label
                     },
