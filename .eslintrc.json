@@ -23,6 +23,16 @@
         "react/require-default-props": "off",
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "import/prefer-default-export": "off",
+        // some
+        "no-restricted-imports": [
+            "error",
+            {
+                "patterns": [{
+                        "group": ["@mui/icons-material/*"],
+                        "message": "Deep imports from \"@mui/icons-material\" are forbidden. Import only from the library root."
+                    }]
+            }
+        ],
         // extend https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js
         "import/no-extraneous-dependencies": [
             "error",

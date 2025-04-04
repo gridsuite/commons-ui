@@ -24,7 +24,7 @@ import {
     ThemeProvider,
     Typography,
 } from '@mui/material';
-import CommentIcon from '@mui/icons-material/Comment';
+import { Comment as CommentIcon } from '@mui/icons-material';
 import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { useCallback, useEffect, useRef, useState } from 'react';

@@ -7,14 +7,12 @@
 
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InputAdornment, SxProps, TextFieldProps, Theme } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
+import { CircularProgress, InputAdornment, SxProps, TextField, TextFieldProps, Theme } from '@mui/material';
+import { Check as CheckIcon } from '@mui/icons-material';
 import { useController, useFormContext } from 'react-hook-form';
-import CircularProgress from '@mui/material/CircularProgress';
-import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
 import { useDebounce } from '../../../../hooks';
-import { FieldConstants, ElementType } from '../../../../utils';
+import { ElementType, FieldConstants } from '../../../../utils';
 import { elementAlreadyExists } from '../../../../services';
 
 export interface UniqueNameInputProps {
@@ -37,17 +35,17 @@ export interface UniqueNameInputProps {
  * Input component that constantly check if the field's value is available or not
  */
 export function UniqueNameInput({
-    name,
-    label,
-    elementType,
-    autoFocus,
-    onManualChangeCallback,
-    formProps,
-    currentName = '',
-    activeDirectory,
-    sx,
-    fullWidth = true,
-}: Readonly<UniqueNameInputProps>) {
+                                    name,
+                                    label,
+                                    elementType,
+                                    autoFocus,
+                                    onManualChangeCallback,
+                                    formProps,
+                                    currentName = '',
+                                    activeDirectory,
+                                    sx,
+                                    fullWidth = true,
+                                }: Readonly<UniqueNameInputProps>) {
     const {
         field: { onChange, onBlur, value, ref },
         fieldState: { error, isDirty },
@@ -103,7 +101,7 @@ export function UniqueNameInput({
                 trigger('root.isValidating');
             }
         },
-        [currentName, directory, elementType, setError, name, clearErrors, trigger]
+        [currentName, directory, elementType, setError, name, clearErrors, trigger],
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
