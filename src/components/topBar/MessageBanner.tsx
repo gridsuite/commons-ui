@@ -6,8 +6,7 @@
  */
 import { ReactNode, useState } from 'react';
 import { Box, type Theme } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { Close as CloseIcon, WarningAmber as WarningAmberIcon } from '@mui/icons-material';
 import type { SystemStyleObject } from '@mui/system';
 
 const styles = {
