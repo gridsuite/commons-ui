@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { Checkbox, IconButton, ListItemButton, ListItemIcon, ListItemText, SxProps, Theme } from '@mui/material';
 import { OverflowableText } from '../overflowableText';
 import { DraggableClickableRowItemProps } from './checkBoxList.type';

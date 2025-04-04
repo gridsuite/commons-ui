@@ -7,7 +7,7 @@
 
 import { useRef } from 'react';
 import { IconButton, styled, Theme } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Clear as ClearIcon } from '@mui/icons-material';
 import { SnackbarProvider as OrigSnackbarProvider, SnackbarKey, SnackbarProviderProps } from 'notistack';
 
 const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({

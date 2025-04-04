@@ -6,7 +6,7 @@
  */
 
 import { Chip, FormControl, Grid, IconButton, Theme, Tooltip } from '@mui/material';
-import FolderIcon from '@mui/icons-material/Folder';
+import { Folder as FolderIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';

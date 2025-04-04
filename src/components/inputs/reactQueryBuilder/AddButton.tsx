@@ -7,7 +7,7 @@
 
 import { ActionWithRulesAndAddersProps } from 'react-querybuilder';
 import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/ControlPoint';
+import { ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 
 interface ActionWithRulesAndAddersWithLabelProps extends ActionWithRulesAndAddersProps {
