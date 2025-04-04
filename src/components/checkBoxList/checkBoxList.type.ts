@@ -11,10 +11,12 @@ import type { SxProps, Theme } from '@mui/material';
 
 export type CheckBoxListItemSx = {
     checkBoxIcon?: SxProps<Theme>;
+    listItemText?: SxProps<Theme>;
     label?: SxProps<Theme>;
     checkboxListItem?: SxProps<Theme>;
     checkboxButton?: SxProps<Theme>;
     checkbox?: SxProps<Theme>;
+    dragButton?: SxProps<Theme>;
 };
 
 export type CheckBoxListSx = {
@@ -32,6 +34,7 @@ export interface CheckBoxListItemProps<T> {
     item: T;
     sx?: CheckBoxListItemSx;
     label: ReactNode;
+    secondary?: ReactNode;
     onClick: () => void;
     secondaryAction?: (item: T, hover: string) => ReactElement | null;
     getItemId: (item: T) => string;
@@ -53,12 +56,13 @@ export interface CheckBoxListItemsProps<T> {
     onSelectionChange?: (selectedItems: T[]) => void;
     getItemId: (item: T) => string;
     getItemLabel?: (item: T) => ReactNode;
+    getItemLabelSecondary?: (item: T) => ReactNode;
     secondaryAction?: (item: T, hover: boolean) => ReactElement | null;
     isDisabled?: (item: T) => boolean;
     addSelectAllCheckbox?: boolean;
     selectAllCheckBoxLabel?: string;
     sx?: CheckBoxListItemSxProps<T>;
-    isDndDragAndDropActive?: boolean;
+    isDndActive?: boolean;
     isDragDisable?: boolean;
     divider?: boolean;
     onItemClick?: (item: T) => void;
@@ -70,24 +74,17 @@ export interface CheckboxListProps<T> extends CheckBoxListItemsProps<T> {
     onDragEnd?: (dropResult: DropResult) => void;
 }
 
-export interface ClickableCheckBoxItemProps {
+export interface CheckBoxListItemContentProps {
     sx?: CheckBoxListItemSx;
     label: ReactNode;
+    secondary?: ReactNode;
     onClick: () => void;
     disabled?: boolean;
     checked: boolean;
+    indeterminate?: boolean;
 }
 
-export interface DraggableClickableCheckBoxItemProps extends ClickableCheckBoxItemProps {
+export interface DraggableCheckBoxListItemContentProps extends CheckBoxListItemContentProps {
     provided: DraggableProvided;
     isHighlighted: boolean;
 }
-
-interface ClickableItem {
-    onItemClick: () => void;
-    isItemClickable?: boolean;
-}
-
-export interface ClickableRowItemProps extends ClickableCheckBoxItemProps, ClickableItem {}
-
-export interface DraggableClickableRowItemProps extends DraggableClickableCheckBoxItemProps, ClickableItem {}
