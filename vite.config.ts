@@ -16,7 +16,7 @@ import { globSync } from 'glob';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
-const eslintCmd = 'eslint --report-unused-disable-directives';
+const eslintCmd = 'eslint --report-unused-disable-directives --report-unused-inline-configs warn';
 
 export default defineConfig((config) => ({
     plugins: [
@@ -26,11 +26,13 @@ export default defineConfig((config) => ({
                 typescript: true,
                 eslint: {
                     lintCommand:
+                        // eslint-disable-next-line no-nested-ternary
                         config.command === 'build'
                             ? `${eslintCmd} .`
                             : process.env.VITEST
                               ? `${eslintCmd} "./src/**/*.{spec,test}.{js,jsx,ts,tsx}"`
                               : `${eslintCmd} --ignore-pattern "**/*.{test,spec}.*" "./src/**/*.{js,jsx,ts,tsx}"`,
+                    useFlatConfig: true,
                     dev: {
                         logLevel: ['error'], // no warning in dev mode
                     },

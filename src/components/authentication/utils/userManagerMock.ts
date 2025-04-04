@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/* eslint-disable max-classes-per-file, class-methods-use-this */
+/* eslint-disable max-classes-per-file, @typescript-eslint/class-methods-use-this */
 
 import {
     type MetadataService,

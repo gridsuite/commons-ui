@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, no-undef, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types */
+/* eslint-disable func-names, no-nested-ternary, no-return-assign, no-unused-vars, no-promise-executor-return, no-unused-expressions, no-alert, no-undef, no-shadow, react/jsx-no-bind, react/prop-types */
 
 import {
     Box,
@@ -31,7 +31,7 @@ import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router'
 import { IntlProvider, useIntl } from 'react-intl';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import translations from './demo_intl';
-import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
+import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 import {
