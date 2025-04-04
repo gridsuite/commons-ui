@@ -62,7 +62,7 @@ export interface CheckBoxListItemsProps<T> {
     addSelectAllCheckbox?: boolean;
     selectAllCheckBoxLabel?: string;
     sx?: CheckBoxListItemSxProps<T>;
-    isDndDragAndDropActive?: boolean;
+    isDndActive?: boolean;
     isDragDisable?: boolean;
     divider?: boolean;
     onItemClick?: (item: T) => void;

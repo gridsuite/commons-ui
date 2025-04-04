@@ -26,7 +26,7 @@ export function CheckBoxListItems<T>({
     getItemLabel,
     getItemLabelSecondary,
     isDisabled,
-    isDndDragAndDropActive,
+    isDndActive,
     isDragDisable,
     divider,
     onItemClick,
@@ -101,7 +101,7 @@ export function CheckBoxListItems<T>({
                 >
                     <ListItemButton
                         onClick={toggleSelectAll}
-                        sx={{ alignItems: 'flex-start', paddingLeft: isDndDragAndDropActive ? '24px' : 0 }}
+                        sx={{ alignItems: 'flex-start', paddingLeft: isDndActive ? '24px' : 0 }}
                     >
                         <CheckBoxListItemContent
                             onClick={toggleSelectAll}
@@ -120,7 +120,7 @@ export function CheckBoxListItems<T>({
                 // sx can be dependent on item or not
                 const calculatedItemSx = typeof sx?.items === 'function' ? sx?.items(item) : sx?.items;
 
-                if (isDndDragAndDropActive) {
+                if (isDndActive) {
                     return (
                         <Draggable
                             draggableId={getItemId(item)}
