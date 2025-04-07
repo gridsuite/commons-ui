@@ -5,12 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import { DialogContentText } from '@mui/material';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 

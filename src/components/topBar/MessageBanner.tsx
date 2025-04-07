@@ -5,13 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactNode, useState } from 'react';
-import { Box, type Theme } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import type { SystemStyleObject } from '@mui/system';
+import { Box, type SxProps, type Theme } from '@mui/material';
+import { Close as CloseIcon, WarningAmber as WarningAmberIcon } from '@mui/icons-material';
 
 const styles = {
-    banner: (theme: Theme): SystemStyleObject<Theme> => ({
+    banner: (theme) => ({
         left: 0,
         width: '100%',
         backgroundColor: '#f6b26b',
@@ -24,7 +22,7 @@ const styles = {
         justifyContent: 'flex-start',
         alignItems: 'center',
     }),
-    icon: (theme: Theme): SystemStyleObject<Theme> => ({
+    icon: (theme) => ({
         paddingRight: theme.spacing(0.75),
         color: 'red',
         marginTop: theme.spacing(0.5),
@@ -32,7 +30,7 @@ const styles = {
     message: {
         flexGrow: 1,
     },
-    button: (theme: Theme): SystemStyleObject<Theme> => ({
+    button: (theme) => ({
         backgroundColor: '#f6b26b',
         border: 'none',
         cursor: 'pointer',
@@ -48,7 +46,7 @@ const styles = {
             height: '100%',
         },
     }),
-};
+} as const satisfies Record<string, SxProps<Theme>>;
 
 export interface MessageBannerProps {
     children: ReactNode;
