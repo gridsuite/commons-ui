@@ -7,14 +7,19 @@
 
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { InputAdornment, SxProps, TextFieldProps, Theme } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
+import {
+    CircularProgress,
+    InputAdornment,
+    type SxProps,
+    TextField,
+    type TextFieldProps,
+    type Theme,
+} from '@mui/material';
+import { Check as CheckIcon } from '@mui/icons-material';
 import { useController, useFormContext } from 'react-hook-form';
-import CircularProgress from '@mui/material/CircularProgress';
-import TextField from '@mui/material/TextField';
 import { UUID } from 'crypto';
 import { useDebounce } from '../../../../hooks';
-import { FieldConstants, ElementType } from '../../../../utils';
+import { ElementType, FieldConstants } from '../../../../utils';
 import { elementAlreadyExists } from '../../../../services';
 
 export interface UniqueNameInputProps {

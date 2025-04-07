@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Autocomplete, Box, TextField, Theme } from '@mui/material';
+import { Autocomplete, type AutocompleteProps, Box, TextField, type Theme } from '@mui/material';
 import { useMemo } from 'react';
-import { AutocompleteProps } from '@mui/material/Autocomplete/Autocomplete';
 
 const styles = {
     favBox: (theme: Theme) => ({
