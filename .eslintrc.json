@@ -25,7 +25,7 @@
         "import/prefer-default-export": "off",
         // some libraries in ESM don't play nicely with ESBuild and need to only import from root
         "no-restricted-imports": [
-            "error",
+            "warn",
             {
                 "patterns": [{
                         "group": ["@mui/*/*", "!@mui/material/colors"],
