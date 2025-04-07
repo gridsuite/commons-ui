@@ -8,12 +8,11 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { CountryValueEditor } from './CountryValueEditor';
 import { TranslatedValueEditor } from './TranslatedValueEditor';
 import { TextValueEditor } from './TextValueEditor';
-
 import { DataType } from '../../filter/expert/expertFilter.type';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Substation, VoltageLevel } from '../../../utils/types/equipmentTypes';

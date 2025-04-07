@@ -6,8 +6,8 @@
  */
 
 import { ActionWithRulesProps } from 'react-querybuilder';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton } from '@mui/material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 
 import { recursiveRemove } from '../../filter/expert/expertFilterUtils';
