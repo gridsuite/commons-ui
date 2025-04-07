@@ -122,7 +122,7 @@ function useAgGridLocale() {
     }, [intl.defaultLocale, intl.locale]);
 }
 
-export type CustomAGGridProps<TData = any> = AgGridReactProps<TData> & {
+export type CustomAGGridProps<TData = any> = Omit<AgGridReactProps<TData>, 'localeText' | 'getLocaleText'> & {
     shouldHidePinnedHeaderRightBorder?: boolean;
 };
 
