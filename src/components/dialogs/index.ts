@@ -6,6 +6,6 @@
  */
 export * from './customMuiDialog/CustomMuiDialog';
 export * from './descriptionModificationDialog';
-export * from './elementCreationDialog';
+export * from './elementSaveDialog';
 export * from './modifyElementSelection';
 export * from './popupConfirmationDialog';

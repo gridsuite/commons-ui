@@ -124,7 +124,6 @@ function useAgGridLocale() {
 
 export type CustomAGGridProps<TData = any> = AgGridReactProps<TData> & {
     shouldHidePinnedHeaderRightBorder?: boolean;
-    showOverlay?: boolean;
 };
 
 // We have to define a minWidth to column to activate this feature
@@ -138,15 +137,14 @@ function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) 
 }
 
 export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
-    ({ shouldHidePinnedHeaderRightBorder = false, showOverlay = false, ...agGridReactProps }, ref) => {
+    ({ shouldHidePinnedHeaderRightBorder = false, ...agGridReactProps }, ref) => {
         const theme = useTheme<Theme>();
 
         return (
             <Box
                 sx={mergeSx(
                     styles.grid as SxProps | undefined,
-                    shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined,
-                    showOverlay ? (styles.overlayBackground as SxProps | undefined) : undefined
+                    shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined
                 )}
                 className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
             >

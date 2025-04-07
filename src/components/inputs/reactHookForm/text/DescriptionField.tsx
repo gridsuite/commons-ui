@@ -5,12 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Button, SxProps, Theme } from '@mui/material';
-import AddIcon from '@mui/icons-material/ControlPoint';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useFormContext } from 'react-hook-form'; // Import useFormContext
+import { ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { useFormContext } from 'react-hook-form';
 import { FieldConstants } from '../../../../utils';
 import { ExpandingTextField } from './ExpandingTextField';
 
@@ -31,6 +30,12 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
         setIsDescriptionFieldVisible(false);
         setValue(FieldConstants.DESCRIPTION, '', { shouldDirty: true });
     };
+
+    useEffect(() => {
+        if (description) {
+            setIsDescriptionFieldVisible(true);
+        }
+    }, [description]);
 
     return (
         <Box>

@@ -5,19 +5,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ChangeEvent, useCallback } from 'react';
+import { type ChangeEvent, type JSX, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { Checkbox, CheckboxProps, FormControlLabel, Switch, SwitchProps } from '@mui/material';
+import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
 
-export interface BooleanInputProps {
+type InputTypes = typeof Switch | typeof Checkbox;
+type InputProps<TInput> = TInput extends (props: infer Props) => JSX.Element ? Props : never;
+
+export type BooleanInputProps<TInput extends InputTypes> = {
     name: string;
     label?: string;
-    formProps?: SwitchProps | CheckboxProps;
-    Input: typeof Switch | typeof Checkbox;
-}
+    formProps?: InputProps<TInput>;
+    Input: TInput;
+};
 
-export function BooleanInput({ name, label, formProps, Input }: BooleanInputProps) {
+export function BooleanInput<TInput extends InputTypes>({
+    name,
+    label,
+    formProps,
+    Input,
+}: Readonly<BooleanInputProps<TInput>>) {
     const {
         field: { onChange, value, ref },
     } = useController<Record<string, boolean>>({ name });
@@ -34,12 +42,10 @@ export function BooleanInput({ name, label, formProps, Input }: BooleanInputProp
     const CustomInput = (
         <Input
             checked={value}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeValue(e)}
+            onChange={handleChangeValue}
             inputRef={ref}
-            inputProps={{
-                'aria-label': 'primary checkbox',
-            }}
-            {...formProps}
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+            {...(formProps as any)}
         />
     );
 

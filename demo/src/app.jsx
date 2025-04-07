@@ -25,8 +25,8 @@ import {
     Typography,
 } from '@mui/material';
 import { enUS, frFR } from '@mui/material/locale';
-import CommentIcon from '@mui/icons-material/Comment';
-import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { Comment as CommentIcon } from '@mui/icons-material';
+import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import translations from './demo_intl';
@@ -175,7 +175,7 @@ const style = {
 };
 
 /**
- * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ * @param {import('@mui/material').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
     icon: {

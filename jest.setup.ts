@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
 
 // fix for ReferenceError: TextDecoder / TextEncoder is not defined

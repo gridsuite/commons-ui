@@ -16,6 +16,14 @@
         "noEmit": true,
         "jsx": "react-jsx"
     },
-    "types":["node","jest", "@testing-library/jest-dom"],
-    "include": ["src", "demo","jest.setup.ts"] // we can let demo because the file generation is managed my vite and we have noEmit anyway
+    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "include": [
+        "src",
+        "demo", // we can let demo because the file generation is managed by vite and we have noEmit anyway
+        "jest.setup.ts",
+        // We must list config files in typescript because needed by prettier when called by eslint as plugin
+        "jest.config.ts",
+        "prettier.config.js",
+        "vite.config.ts"
+    ]
 }

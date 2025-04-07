@@ -191,6 +191,7 @@ export function DirectoryItemSelector({
             return {
                 id: e.elementUuid,
                 name: e.elementName,
+                description: e.description,
                 specificMetadata: e.specificMetadata,
                 icon: getFileIcon(e.type, styles.icon as SxProps),
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
@@ -205,6 +206,7 @@ export function DirectoryItemSelector({
                 return {
                     id: e.elementUuid,
                     name: e.elementName,
+                    description: e.description,
                     icon: getFileIcon(e.type, styles.icon as SxProps),
                     children:
                         e.type === ElementType.DIRECTORY

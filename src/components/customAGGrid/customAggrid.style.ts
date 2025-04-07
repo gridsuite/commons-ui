@@ -4,13 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import type { Theme } from '@mui/material';
-import type { SystemStyleObject } from '@mui/system';
+import type { SxProps, Theme } from '@mui/material';
 
 export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
 export const styles = {
-    grid: (theme: Theme): SystemStyleObject<Theme> => ({
+    grid: (theme) => ({
         width: 'auto',
         height: '100%',
         position: 'relative',
@@ -49,12 +48,4 @@ export const styles = {
             borderRight: 'none',
         },
     },
-    overlayBackground: (theme: Theme) => ({
-        '& .ag-overlay-loading-wrapper': {
-            background: theme.aggrid.overlay.background,
-        },
-        '& .ag-overlay-no-rows-wrapper': {
-            background: 'none',
-        },
-    }),
-};
+} as const satisfies Record<string, SxProps<Theme>>;
