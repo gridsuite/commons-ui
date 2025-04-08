@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { Box } from '@mui/material';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { CheckBoxListItems } from './CheckBoxListItems';
 import { CheckboxListProps } from './checkBoxList.type';
 

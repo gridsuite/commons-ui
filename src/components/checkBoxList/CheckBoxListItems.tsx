@@ -8,7 +8,7 @@
 import { useCallback, useMemo } from 'react';
 import { List, ListItem, ListItemButton } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 import { CheckBoxListItem } from './CheckBoxListItem';
 import { DraggableCheckBoxListItem } from './DraggableCheckBoxListItem';
 import { CheckBoxListItemsProps } from './checkBoxList.type';
