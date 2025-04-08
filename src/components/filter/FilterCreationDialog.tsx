@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
@@ -120,12 +120,12 @@ export function FilterCreationDialog({
     const title = useMemo(() => {
         if (sourceFilterForExplicitNamingConversion) {
             return 'convertIntoExplicitNamingFilter';
-        } else if (filterType?.id === FilterType.EXPERT.id) {
-            return 'createNewExpertFilter';
-        } else {
-            return 'createNewExplicitNamingFilter';
         }
-    }, [sourceFilterForExplicitNamingConversion, filterType])
+        if (filterType?.id === FilterType.EXPERT.id) {
+            return 'createNewExpertFilter';
+        }
+        return 'createNewExplicitNamingFilter';
+    }, [sourceFilterForExplicitNamingConversion, filterType]);
     return (
         <CustomMuiDialog
             open={open}
