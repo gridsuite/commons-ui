@@ -117,14 +117,15 @@ export function FilterCreationDialog({
         },
         [activeDirectory, snackError, onClose, filterType]
     );
-    let title;
-    if (sourceFilterForExplicitNamingConversion) {
-        title = 'convertIntoExplicitNamingFilter';
-    } else if (filterType?.id === FilterType.EXPERT.id) {
-        title = 'createNewExpertFilter';
-    } else {
-        title = 'createNewExplicitNamingFilter';
-    }
+    const title = useMemo(() => {
+        if (sourceFilterForExplicitNamingConversion) {
+            return 'convertIntoExplicitNamingFilter';
+        } else if (filterType?.id === FilterType.EXPERT.id) {
+            return 'createNewExpertFilter';
+        } else {
+            return 'createNewExplicitNamingFilter';
+        }
+    }, [sourceFilterForExplicitNamingConversion, filterType])
     return (
         <CustomMuiDialog
             open={open}
