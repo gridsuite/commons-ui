@@ -19,12 +19,8 @@ import {
     styled,
     Typography,
 } from '@mui/material';
-import { TreeItem, TreeView, TreeViewClasses } from '@mui/x-tree-view';
-import {
-    Check as CheckIcon,
-    ChevronRight as ChevronRightIcon,
-    ExpandMore as ExpandMoreIcon,
-} from '@mui/icons-material';
+import { TreeItem, SimpleTreeView, SimpleTreeViewClasses } from '@mui/x-tree-view';
+import { Check as CheckIcon } from '@mui/icons-material';
 import { UUID } from 'crypto';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
@@ -85,7 +81,7 @@ export interface TreeViewFinderProps {
     selected?: string[];
     expanded?: string[];
     multiSelect?: boolean;
-    classes?: Partial<TreeViewClasses>;
+    classes?: Partial<SimpleTreeViewClasses>;
     className?: string;
 
     // dialog props
@@ -99,7 +95,7 @@ export interface TreeViewFinderProps {
     // data management props
     onlyLeaves?: boolean;
     data?: TreeViewFinderNodeProps[];
-    onTreeBrowse?: (nodeId: string) => void;
+    onTreeBrowse?: (itemId: string) => void;
     sortMethod?: (a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps) => number;
 }
 
@@ -175,7 +171,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     const isValidationDisabled = () => {
         return (
             selected?.length === 0 ||
-            (selected?.length === selectedProp?.length && selected?.every((nodeId) => selectedProp?.includes(nodeId)))
+            (selected?.length === selectedProp?.length && selected?.every((itemId) => selectedProp?.includes(itemId)))
         );
     };
 
@@ -191,7 +187,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     }, []);
 
     const findParents = (
-        nodeId: string,
+        itemId: string,
         nodes: TreeViewFinderNodeProps[],
         parentPath: TreeViewFinderNodeProps[] = []
     ): TreeViewFinderNodeProps[] | null => {
@@ -199,14 +195,14 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
 
         nodes.some((node) => {
             // If the current node matches the selected node, set result and break
-            if (node.id === nodeId) {
+            if (node.id === itemId) {
                 result = parentPath;
                 return true;
             }
 
             // If the current node has children, recursively search them
             if (node.children) {
-                const childResult = findParents(nodeId, node.children, [...parentPath, node]);
+                const childResult = findParents(itemId, node.children, [...parentPath, node]);
                 if (childResult) {
                     result = childResult;
                     return true;
@@ -232,34 +228,34 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             return [];
         }
         return selected
-            .map((nodeId) => {
-                const selectedNode = mapPrintedNodes[nodeId];
+            .map((itemId) => {
+                const selectedNode = mapPrintedNodes[itemId];
                 if (!selectedNode) {
                     return null;
                 }
 
-                const parents = findParents(nodeId, data ?? []);
+                const parents = findParents(itemId, data ?? []);
 
                 return {
                     ...selectedNode,
                     parents: parents ?? [],
                 };
             })
-            .filter((node) => node !== null);
+            .filter((node) => node !== null) as TreeViewFinderNodeProps[];
     };
 
-    const handleNodeToggle = (_e: React.SyntheticEvent, nodeIds: string[]) => {
+    const handleNodeToggle = (_e: React.SyntheticEvent, itemIds: string[]) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
-        nodeIds.every((nodeId) => {
-            if (!expanded?.includes(nodeId)) {
+        itemIds.every((itemId) => {
+            if (!expanded?.includes(itemId)) {
                 // proc onTreeBrowse here
-                onTreeBrowse?.(nodeId);
+                onTreeBrowse?.(itemId);
                 return false; // break loop to call onTreeBrowse only once
             }
             return true;
         });
 
-        setExpanded(nodeIds);
+        setExpanded(itemIds);
         // will proc onNodeSelect then ...
     };
 
@@ -288,7 +284,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         // if we have selected elements by default, we scroll to it
         if (selectedProp.length > 0 && autoScrollAllowed) {
             // we check if all expanded nodes by default all already expanded first
-            const isNodeExpanded = expandedProp?.every((nodeId) => expanded?.includes(nodeId));
+            const isNodeExpanded = expandedProp?.every((itemId) => expanded?.includes(itemId));
 
             // we got the last element that we suppose to scroll to
             const lastScrollRef = scrollRef.current[scrollRef.current.length - 1];
@@ -304,11 +300,11 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
-    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[]) => {
+    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[] | null) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
-            setSelected(values.filter((nodeId) => isSelectable(mapPrintedNodes[nodeId])));
-        } else if (!Array.isArray(values)) {
+            setSelected(values.filter((itemId) => isSelectable(mapPrintedNodes[itemId])));
+        } else if (typeof values === 'string') {
             // Toggle selection to allow unselection
             if (selected?.includes(values)) {
                 setSelected([]);
@@ -348,7 +344,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             return null;
         }
 
-        if (isSelectable(node) && selected?.find((nodeId) => nodeId === node.id)) {
+        if (isSelectable(node) && selected?.find((itemId) => itemId === node.id)) {
             return <CheckIcon className={composeClasses(classes, cssLabelIcon)} />;
         }
         if (node.icon) {
@@ -364,10 +360,6 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 <Typography className={composeClasses(classes, cssLabelText)}>{node.name}</Typography>
             </div>
         );
-    };
-    const showChevron = (node: TreeViewFinderNodeProps) => {
-        // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
-        return !!(node.childrenCount == null || (node.childrenCount && node.childrenCount > 0));
     };
 
     const renderTree = (node: TreeViewFinderNodeProps) => {
@@ -387,14 +379,8 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         return (
             <TreeItem
                 key={node.id}
-                nodeId={node.id}
+                itemId={node.id}
                 label={renderTreeItemLabel(node)}
-                expandIcon={
-                    showChevron(node) ? <ChevronRightIcon className={composeClasses(classes, cssIcon)} /> : null
-                }
-                collapseIcon={
-                    showChevron(node) ? <ExpandMoreIcon className={composeClasses(classes, cssIcon)} /> : null
-                }
                 ref={(element) => {
                     if (selectedProp?.includes(node.id)) {
                         scrollRef.current.push(element);
@@ -445,17 +431,15 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                     {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
                 </DialogContentText>
 
-                <TreeView
-                    // Controlled props
-                    expanded={expanded}
-                    // events
-                    onNodeToggle={handleNodeToggle}
-                    onNodeSelect={handleNodeSelect}
+                <SimpleTreeView
+                    expandedItems={expanded}
+                    onExpandedItemsChange={handleNodeToggle}
+                    onSelectedItemsChange={handleNodeSelect}
                     // Uncontrolled props
                     {...getTreeViewSelectionProps()}
                 >
                     {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
-                </TreeView>
+                </SimpleTreeView>
             </DialogContent>
             <DialogActions>
                 <CancelButton
