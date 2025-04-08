@@ -6,7 +6,7 @@
  */
 
 import type { ReactElement, ReactNode } from 'react';
-import type { DraggableProvided, DragStart, DropResult } from 'react-beautiful-dnd';
+import type { DraggableProvided, DragStart, DropResult } from '@hello-pangea/dnd';
 import type { SxProps, Theme } from '@mui/material';
 
 export type CheckBoxListItemSx = {
