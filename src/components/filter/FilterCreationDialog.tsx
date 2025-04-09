@@ -54,7 +54,7 @@ export interface FilterCreationDialogProps {
         id: UUID;
         equipmentType: string;
     };
-    filterType?: { id: string; label: string };
+    filterType: { id: string; label: string };
 }
 
 export function FilterCreationDialog({
@@ -117,7 +117,7 @@ export function FilterCreationDialog({
         },
         [activeDirectory, snackError, onClose, filterType]
     );
-    const title = useMemo(() => {
+    const titleId = useMemo(() => {
         if (sourceFilterForExplicitNamingConversion) {
             return 'convertIntoExplicitNamingFilter';
         }
@@ -133,7 +133,7 @@ export function FilterCreationDialog({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={title}
+            titleId={titleId}
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
