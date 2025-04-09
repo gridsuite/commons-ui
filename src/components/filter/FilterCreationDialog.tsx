@@ -122,7 +122,7 @@ export function FilterCreationDialog({
             return 'convertIntoExplicitNamingFilter';
         }
         if (filterType?.id === FilterType.EXPERT.id) {
-            return 'createNewExpertFilter';
+            return 'createNewCriteriaFilter';
         }
         return 'createNewExplicitNamingFilter';
     }, [sourceFilterForExplicitNamingConversion, filterType]);
