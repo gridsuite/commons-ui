@@ -6,8 +6,7 @@
  */
 
 import { Chip, Tooltip } from '@mui/material';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { CheckCircleOutline, Cancel } from '@mui/icons-material';
 
 export interface ActivableChipProps {
     isActivated: boolean;
@@ -24,7 +23,7 @@ export function ActivableChip(props: Readonly<ActivableChipProps>) {
         <Tooltip title={tooltipMessage} arrow>
             <Chip
                 label={label}
-                deleteIcon={isActivated ? <CheckCircleOutlineIcon /> : <CancelIcon />}
+                deleteIcon={isActivated ? <CheckCircleOutline /> : <Cancel />}
                 color="primary"
                 size="small"
                 variant={isActivated ? 'filled' : 'outlined'}
