@@ -82,7 +82,7 @@ export type CustomAgGridTableProps = Required<
         | 'stopEditingWhenCellsLoseFocus'
     >
 > &
-    Pick<CustomAGGridProps, 'rowSelection' | 'overrideLocale'> & {
+    Pick<CustomAGGridProps, 'rowSelection' | 'overrideLocales'> & {
         name: string;
         makeDefaultRowData: any;
         csvProps: unknown;
