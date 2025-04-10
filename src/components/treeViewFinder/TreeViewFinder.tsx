@@ -20,7 +20,11 @@ import {
     Typography,
 } from '@mui/material';
 import { TreeItem, SimpleTreeView, SimpleTreeViewClasses } from '@mui/x-tree-view';
-import { Check as CheckIcon } from '@mui/icons-material';
+import {
+    Check as CheckIcon,
+    ChevronRight as ChevronRightIcon,
+    ExpandMore as ExpandMoreIcon,
+} from '@mui/icons-material';
 import { UUID } from 'crypto';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
@@ -59,6 +63,14 @@ const defaultStyles = {
 
 export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
+
+function CustomExpandIcon({ className }: Readonly<{ className?: string }>) {
+    return <ChevronRightIcon className={className} />;
+}
+
+function CustomCollapseIcon({ className }: Readonly<{ className?: string }>) {
+    return <ExpandMoreIcon className={className} />;
+}
 
 export interface TreeViewFinderNodeProps {
     id: UUID;
@@ -362,25 +374,39 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         );
     };
 
+    const showChevron = (node: TreeViewFinderNodeProps) => {
+        // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
+        return !!(node.childrenCount == null || (node.childrenCount && node.childrenCount > 0));
+    };
+
     const renderTree = (node: TreeViewFinderNodeProps) => {
         if (!node) {
             return null;
         }
         let childrenNodes = null;
-
-        if (Array.isArray(node.children)) {
-            if (node.children.length) {
-                const sortedChildren = node.children.sort(sortMethod);
-                childrenNodes = sortedChildren.map((child) => renderTree(child));
-            } else {
-                childrenNodes = [false]; // Pass non empty Array here to simulate a child then this node isn't considered as a leaf.
-            }
+        const showExpandIcon = showChevron(node);
+        if (Array.isArray(node.children) && node.children.length > 0) {
+            childrenNodes = node.children.toSorted(sortMethod).map(renderTree);
+        } else if (showExpandIcon) {
+            childrenNodes = [<></>]; // simulate placeholder so expand icon is shown
         }
         return (
             <TreeItem
                 key={node.id}
                 itemId={node.id}
                 label={renderTreeItemLabel(node)}
+                slots={{
+                    expandIcon: CustomExpandIcon,
+                    collapseIcon: CustomCollapseIcon,
+                }}
+                slotProps={{
+                    expandIcon: {
+                        className: composeClasses(classes, cssIcon),
+                    },
+                    collapseIcon: {
+                        className: composeClasses(classes, cssIcon),
+                    },
+                }}
                 ref={(element) => {
                     if (selectedProp?.includes(node.id)) {
                         scrollRef.current.push(element);
