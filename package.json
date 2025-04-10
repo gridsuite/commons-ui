@@ -35,6 +35,7 @@
     },
     "dependencies": {
         "@ag-grid-community/locale": "^33.1.0",
+        "@hello-pangea/dnd": "^18.0.1",
         "@react-querybuilder/dnd": "^8.2.0",
         "@react-querybuilder/material": "^8.2.0",
         "autosuggest-highlight": "^3.3.4",
@@ -43,7 +44,6 @@
         "localized-countries": "^2.0.0",
         "oidc-client": "^1.11.5",
         "prop-types": "^15.8.1",
-        "react-beautiful-dnd": "^13.1.1",
         "react-csv-downloader": "^3.3.0",
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
@@ -97,7 +97,6 @@
         "@types/node": "^22.13.4",
         "@types/prop-types": "^15.7.14",
         "@types/react": "^18.3.18",
-        "@types/react-beautiful-dnd": "^13.1.8",
         "@types/react-dom": "^18.3.5",
         "@types/react-resizable": "^3.0.8",
         "@typescript-eslint/eslint-plugin": "^7.18.0",
