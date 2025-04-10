@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import type { LiteralUnion } from 'type-fest';
 import { forwardRef, useMemo } from 'react';
 import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
@@ -16,21 +17,24 @@ import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 
-function useAgGridLocale() {
+export type AgGridLocale = Partial<Record<LiteralUnion<keyof typeof AG_GRID_LOCALE_EN, string>, string>>;
+
+function useAgGridLocale(overrideLocale?: AgGridLocale) {
     const intl = useIntl();
     return useMemo(() => {
         switch ((intl.locale || intl.defaultLocale).toUpperCase().substring(0, 2)) {
             case 'FR':
-                return AG_GRID_LOCALE_FR;
+                return { ...AG_GRID_LOCALE_FR, ...overrideLocale };
             case 'EN':
             default:
-                return AG_GRID_LOCALE_EN;
+                return { ...AG_GRID_LOCALE_EN, ...overrideLocale };
         }
-    }, [intl.defaultLocale, intl.locale]);
+    }, [intl.defaultLocale, intl.locale, overrideLocale]);
 }
 
 export type CustomAGGridProps<TData = any> = Omit<AgGridReactProps<TData>, 'localeText' | 'getLocaleText'> & {
     shouldHidePinnedHeaderRightBorder?: boolean;
+    overrideLocale?: AgGridLocale;
 };
 
 // We have to define a minWidth to column to activate this feature
@@ -44,7 +48,7 @@ function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) 
 }
 
 export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
-    ({ shouldHidePinnedHeaderRightBorder = false, ...agGridReactProps }, ref) => {
+    ({ shouldHidePinnedHeaderRightBorder = false, overrideLocale, ...agGridReactProps }, ref) => {
         const theme = useTheme<Theme>();
 
         return (

@@ -7,15 +7,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { AgGridReactProps } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, useTheme } from '@mui/material';
-import { useIntl } from 'react-intl';
-import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
+import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { CustomAGGrid } from '../../../customAGGrid';
+import { type AgGridLocale, CustomAGGrid, type CustomAGGridProps } from '../../../customAGGrid';
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -81,12 +77,12 @@ export interface CustomAgGridTableProps {
     makeDefaultRowData: any;
     csvProps: unknown;
     cssProps: unknown;
-    defaultColDef: unknown;
     pagination: boolean;
     paginationPageSize: number;
-    rowSelection?: AgGridReactProps['rowSelection'];
+    rowSelection?: CustomAGGridProps['rowSelection'];
     alwaysShowVerticalScroll: boolean;
     stopEditingWhenCellsLoseFocus: boolean;
+    overrideLocale?: AgGridLocale;
 }
 
 export function CustomAgGridTable({
@@ -95,13 +91,12 @@ export function CustomAgGridTable({
     makeDefaultRowData,
     csvProps,
     cssProps,
-    defaultColDef,
     pagination,
     paginationPageSize,
     rowSelection,
     alwaysShowVerticalScroll,
     stopEditingWhenCellsLoseFocus,
-    ...props
+    overrideLocale,
 }: Readonly<CustomAgGridTableProps>) {
     // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
     const theme: any = useTheme();
@@ -182,15 +177,6 @@ export function CustomAgGridTable({
         setNewRowAdded(true);
     };
 
-    const intl = useIntl();
-    const getLocaleText = useCallback(
-        (params: any) => {
-            const key = `agGrid.${params.key}`;
-            return intl.messages[key] || params.defaultValue;
-        },
-        [intl]
-    );
-
     const onGridReady = (params: any) => {
         setGridApi(params);
     };
@@ -227,7 +213,6 @@ export function CustomAgGridTable({
                 <CustomAGGrid
                     rowData={rowData}
                     onGridReady={onGridReady}
-                    getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
                     rowSelection={rowSelection ?? 'multiple'}
                     rowDragEntireRow
@@ -247,7 +232,7 @@ export function CustomAgGridTable({
                     alwaysShowVerticalScroll={alwaysShowVerticalScroll}
                     stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     theme="legacy"
-                    {...props}
+                    overrideLocale={overrideLocale}
                 />
             </Box>
             <BottomRightButtons
