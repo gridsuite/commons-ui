@@ -15,7 +15,7 @@ import { TopBar } from '../TopBar';
 import { Metadata } from '../../..';
 
 import PowsyblLogo from './powsybl_logo.svg?react';
-import { LANG_ENGLISH } from '../../../utils/constants/browserConstants';
+import { LANG_ENGLISH } from '../../../utils/langs';
 import { topBarEn } from '../../../translations/en';
 
 const apps: Metadata[] = [

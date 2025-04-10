@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries, { LocalizedCountries } from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr';
 import countriesEn from 'localized-countries/data/en';
-import { LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../utils/constants/browserConstants';
+import { LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../utils/langs';
 
 const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
 

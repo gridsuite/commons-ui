@@ -49,14 +49,9 @@ import { LogoutProps } from '../authentication/Logout';
 import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
 import UserInformationDialog from './UserInformationDialog';
 import UserSettingsDialog from './UserSettingsDialog';
-import { Metadata } from '../../utils';
-import {
-    DARK_THEME,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-} from '../../utils/constants/browserConstants';
+import { type Metadata } from '../../utils/types/metadata';
+import { DARK_THEME, type GsTheme, LIGHT_THEME } from '../../utils/styles';
+import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
 import MessageBanner from './MessageBanner';
 
 const styles = {
@@ -154,10 +149,6 @@ const CustomListItemIcon = styled(ListItemIcon)({
     paddingRight: '15px',
     borderRadius: '25px',
 });
-
-export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
-export type GsLang = GsLangUser | typeof LANG_SYSTEM;
-export type GsTheme = typeof LIGHT_THEME | typeof DARK_THEME;
 
 function abbreviationFromUserName(name: string) {
     const tab = name.split(' ').map((x) => x.charAt(0));
