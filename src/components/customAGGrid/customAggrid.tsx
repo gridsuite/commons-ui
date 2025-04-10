@@ -26,7 +26,12 @@ function useAgGridLocale(overrideLocales?: AgGridLocales) {
     return useMemo((): Record<string, string> => {
         switch ((intl.locale || intl.defaultLocale).toLowerCase().substring(0, 2)) {
             case LANG_FRENCH:
-                return { ...AG_GRID_LOCALE_FR, ...overrideLocales?.[LANG_FRENCH] };
+                return {
+                    ...AG_GRID_LOCALE_FR,
+                    thousandSeparator: ' ',
+                    decimalSeparator: ',',
+                    ...overrideLocales?.[LANG_FRENCH],
+                };
             case LANG_ENGLISH:
             default:
                 return { ...AG_GRID_LOCALE_EN, ...overrideLocales?.[LANG_ENGLISH] };
