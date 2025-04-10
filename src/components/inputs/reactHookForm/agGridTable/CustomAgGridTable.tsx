@@ -11,7 +11,7 @@ import { Box, useTheme } from '@mui/material';
 import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { type AgGridLocale, CustomAGGrid, type CustomAGGridProps } from '../../../customAGGrid';
+import { CustomAGGrid, type CustomAGGridProps } from '../../../customAGGrid';
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -71,32 +71,31 @@ const style = (customProps: any) => ({
     }),
 });
 
-export interface CustomAgGridTableProps {
-    name: string;
-    columnDefs: any;
-    makeDefaultRowData: any;
-    csvProps: unknown;
-    cssProps: unknown;
-    pagination: boolean;
-    paginationPageSize: number;
-    rowSelection?: CustomAGGridProps['rowSelection'];
-    alwaysShowVerticalScroll: boolean;
-    stopEditingWhenCellsLoseFocus: boolean;
-    overrideLocale?: AgGridLocale;
-}
+export type CustomAgGridTableProps = Required<
+    Pick<
+        CustomAGGridProps,
+        | 'columnDefs'
+        | 'defaultColDef'
+        | 'pagination'
+        | 'paginationPageSize'
+        | 'alwaysShowVerticalScroll'
+        | 'stopEditingWhenCellsLoseFocus'
+    >
+> &
+    Pick<CustomAGGridProps, 'rowSelection' | 'overrideLocale'> & {
+        name: string;
+        makeDefaultRowData: any;
+        csvProps: unknown;
+        cssProps: unknown;
+    };
 
 export function CustomAgGridTable({
     name,
-    columnDefs,
     makeDefaultRowData,
     csvProps,
     cssProps,
-    pagination,
-    paginationPageSize,
     rowSelection,
-    alwaysShowVerticalScroll,
-    stopEditingWhenCellsLoseFocus,
-    overrideLocale,
+    ...props
 }: Readonly<CustomAgGridTableProps>) {
     // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
     const theme: any = useTheme();
@@ -218,7 +217,6 @@ export function CustomAgGridTable({
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    columnDefs={columnDefs}
                     detailRowAutoHeight
                     onSelectionChanged={() => {
                         setSelectedRows(gridApi.api.getSelectedRows());
@@ -227,12 +225,8 @@ export function CustomAgGridTable({
                     onCellEditingStopped={onCellEditingStopped}
                     onSortChanged={onSortChanged}
                     getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
-                    pagination={pagination}
-                    paginationPageSize={paginationPageSize}
-                    alwaysShowVerticalScroll={alwaysShowVerticalScroll}
-                    stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     theme="legacy"
-                    overrideLocale={overrideLocale}
+                    {...props}
                 />
             </Box>
             <BottomRightButtons
