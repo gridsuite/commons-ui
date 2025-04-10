@@ -388,7 +388,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         if (Array.isArray(node.children) && node.children.length > 0) {
             childrenNodes = node.children.toSorted(sortMethod).map(renderTree);
         } else if (showExpandIcon) {
-            childrenNodes = [<></>]; // simulate placeholder so expand icon is shown
+            childrenNodes = [<span key="placeholder" style={{ display: 'none' }} />]; // simulate placeholder so expand icon is shown
         }
         return (
             <TreeItem
