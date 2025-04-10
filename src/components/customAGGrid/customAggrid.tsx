@@ -16,18 +16,20 @@ import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale'
 import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
+import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
 
 export type AgGridLocale = Partial<Record<LiteralUnion<keyof typeof AG_GRID_LOCALE_EN, string>, string>>;
+export type AgGridLocales = Record<GsLangUser, AgGridLocale>;
 
-function useAgGridLocale(overrideLocale?: AgGridLocale) {
+function useAgGridLocale(overrideLocale?: AgGridLocales) {
     const intl = useIntl();
-    return useMemo(() => {
-        switch ((intl.locale || intl.defaultLocale).toUpperCase().substring(0, 2)) {
-            case 'FR':
-                return { ...AG_GRID_LOCALE_FR, ...overrideLocale };
-            case 'EN':
+    return useMemo((): Record<string, string> => {
+        switch ((intl.locale || intl.defaultLocale).toLowerCase().substring(0, 2)) {
+            case LANG_FRENCH:
+                return { ...AG_GRID_LOCALE_FR, ...overrideLocale?.[LANG_FRENCH] };
+            case LANG_ENGLISH:
             default:
-                return { ...AG_GRID_LOCALE_EN, ...overrideLocale };
+                return { ...AG_GRID_LOCALE_EN, ...overrideLocale?.[LANG_ENGLISH] };
         }
     }, [intl.defaultLocale, intl.locale, overrideLocale]);
 }
