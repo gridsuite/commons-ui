@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'crypto';
@@ -28,7 +28,6 @@ import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFil
 const emptyFormData = {
     [FieldConstants.NAME]: '',
     [FieldConstants.DESCRIPTION]: '',
-    [FieldConstants.FILTER_TYPE]: FilterType.EXPERT.id,
     [FieldConstants.EQUIPMENT_TYPE]: null,
     ...getExplicitNamingFilterEmptyFormData(),
     ...getExpertFilterEmptyFormData(),
@@ -40,7 +39,6 @@ const formSchema = yup
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
         [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.FILTER_TYPE]: yup.string().required(),
         [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
         ...explicitNamingFilterSchema,
         ...expertFilterSchema,
@@ -56,6 +54,7 @@ export interface FilterCreationDialogProps {
         id: UUID;
         equipmentType: string;
     };
+    filterType: { id: string; label: string };
 }
 
 export function FilterCreationDialog({
@@ -64,6 +63,7 @@ export function FilterCreationDialog({
     activeDirectory,
     language,
     sourceFilterForExplicitNamingConversion = undefined,
+    filterType,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
@@ -81,7 +81,7 @@ export function FilterCreationDialog({
 
     const onSubmit = useCallback(
         (filterForm: FieldValues) => {
-            if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPLICIT_NAMING.id) {
+            if (filterType?.id === FilterType.EXPLICIT_NAMING.id) {
                 saveExplicitNamingFilter(
                     filterForm[FILTER_EQUIPMENTS_ATTRIBUTES],
                     true,
@@ -97,7 +97,7 @@ export function FilterCreationDialog({
                     onClose,
                     activeDirectory
                 );
-            } else if (filterForm[FieldConstants.FILTER_TYPE] === FilterType.EXPERT.id) {
+            } else if (filterType?.id === FilterType.EXPERT.id) {
                 saveExpertFilter(
                     null,
                     filterForm[EXPERT_FILTER_QUERY],
@@ -115,9 +115,17 @@ export function FilterCreationDialog({
                 );
             }
         },
-        [activeDirectory, snackError, onClose]
+        [activeDirectory, snackError, onClose, filterType]
     );
-
+    const titleId = useMemo(() => {
+        if (sourceFilterForExplicitNamingConversion) {
+            return 'convertIntoExplicitNamingFilter';
+        }
+        if (filterType?.id === FilterType.EXPERT.id) {
+            return 'createNewCriteriaFilter';
+        }
+        return 'createNewExplicitNamingFilter';
+    }, [sourceFilterForExplicitNamingConversion, filterType]);
     return (
         <CustomMuiDialog
             open={open}
@@ -125,7 +133,7 @@ export function FilterCreationDialog({
             onSave={onSubmit}
             formSchema={formSchema}
             formMethods={formMethods}
-            titleId={sourceFilterForExplicitNamingConversion ? 'convertIntoExplicitNamingFilter' : 'createNewFilter'}
+            titleId={titleId}
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
@@ -134,6 +142,7 @@ export function FilterCreationDialog({
             <FilterForm
                 creation
                 activeDirectory={activeDirectory}
+                filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
             />
         </CustomMuiDialog>
