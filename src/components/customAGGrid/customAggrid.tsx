@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { LiteralUnion } from 'type-fest';
 import { forwardRef, useMemo } from 'react';
 import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
@@ -18,7 +17,7 @@ import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
 
-export type AgGridLocale = Partial<Record<LiteralUnion<keyof typeof AG_GRID_LOCALE_EN, string>, string>>;
+export type AgGridLocale = Partial<Record<keyof typeof AG_GRID_LOCALE_EN, string>>; // using EN for keyof because it's the only who has more keys, so more complete
 export type AgGridLocales = Record<GsLangUser, AgGridLocale>;
 
 function useAgGridLocale(overrideLocales?: AgGridLocales) {
