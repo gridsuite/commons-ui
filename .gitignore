@@ -1,9 +1,18 @@
-/vite.config.mts-timestamp-*
-/coverage
-/dist
+# dependencies
 /node_modules
-npm-debug.log*
-/.idea
+
+# production
+/dist
 *.tgz
-.vscode/
-.idea/
+
+# webstorm
+/.idea
+
+# vscode
+/.vscode
+
+# vite
+/vite.config.mts-timestamp-*
+
+# jest
+/coverage
