@@ -28,6 +28,7 @@ import {
     ToggleButtonGroup,
     Toolbar,
     Typography,
+    Tooltip
 } from '@mui/material';
 import {
     Apps as AppsIcon,
@@ -58,6 +59,7 @@ import {
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
 import MessageBanner from './MessageBanner';
+import { UUID } from 'crypto';
 
 const styles = {
     grow: {
@@ -167,6 +169,13 @@ function abbreviationFromUserName(name: string) {
     return tab[0] + tab[tab.length - 1];
 }
 
+export type AnnouncementProps = {
+    announcementId: UUID;
+    message: string;
+    duration: number;
+    severity: string;
+}
+
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &
     Omit<AboutDialogProps, 'open' | 'onClose'> & {
@@ -183,6 +192,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
         developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
+        announcementInfos?: AnnouncementProps;
     };
 
 export function TopBar({
@@ -208,6 +218,7 @@ export function TopBar({
     equipmentLabelling,
     onLanguageClick,
     language,
+    announcementInfos,
 }: PropsWithChildren<TopBarProps>) {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
@@ -296,6 +307,16 @@ export function TopBar({
             {user && developerMode && (
                 <MessageBanner>
                     <FormattedMessage id="top-bar/developerModeWarning" defaultMessage="Developer mode" />
+                </MessageBanner>
+            )}
+            {user && announcementInfos && (
+                <MessageBanner announcementInfos={announcementInfos}>
+                    <Tooltip
+                        title={announcementInfos.message}
+                        placement="bottom"
+                    >
+                        {announcementInfos.message}
+                    </Tooltip>
                 </MessageBanner>
             )}
             <Toolbar>

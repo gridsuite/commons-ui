@@ -4,15 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { Box, type SxProps, type Theme } from '@mui/material';
-import { Close as CloseIcon, WarningAmber as WarningAmberIcon } from '@mui/icons-material';
+import { Close as CloseIcon, WarningAmber as WarningAmberIcon, Campaign as CampaignIcon } from '@mui/icons-material';
+import { mergeSx } from "../../utils";
+import { AnnouncementProps } from "./TopBar";
 
 const styles = {
     banner: (theme) => ({
         left: 0,
         width: '100%',
-        backgroundColor: '#f6b26b',
+        backgroundColor: '#432ff7',
         color: 'black',
         padding: theme.spacing(1),
         textAlign: 'left',
@@ -22,16 +24,27 @@ const styles = {
         justifyContent: 'flex-start',
         alignItems: 'center',
     }),
+    warningBg: () => ({
+        backgroundColor: '#f6b26b',
+    }),
+    infoBg: () => ({
+        backgroundColor: '#432ff7',
+    }),
     icon: (theme) => ({
         paddingRight: theme.spacing(0.75),
-        color: 'red',
         marginTop: theme.spacing(0.5),
+    }),
+    warningIcon: () => ({
+        color: 'red',
+    }),
+    infoIcon: () => ({
+        color: 'darkblue',
     }),
     message: {
         flexGrow: 1,
+        overflow: 'hidden',
     },
     button: (theme) => ({
-        backgroundColor: '#f6b26b',
         border: 'none',
         cursor: 'pointer',
         borderRadius: theme.spacing(0.5),
@@ -50,24 +63,45 @@ const styles = {
 
 export interface MessageBannerProps {
     children: ReactNode;
+    announcementInfos?: AnnouncementProps;
 }
 
-function MessageBanner({ children }: MessageBannerProps) {
+function MessageBanner({ children, announcementInfos }: MessageBannerProps) {
     const [visible, setVisible] = useState(true);
 
-    return (
-        visible && (
-            <Box sx={styles.banner}>
-                <Box sx={styles.icon}>
-                    <WarningAmberIcon />
+    const [isInfo, setIsInfo] = useState(false);
+
+    useEffect(() => {
+        console.log(announcementInfos);
+        if (announcementInfos) {
+            setIsInfo(announcementInfos.severity === 'INFO');
+            setVisible(true);
+            if (announcementInfos?.duration) {
+                setTimeout(() => {
+                    setVisible(false);
+                }, announcementInfos.duration);
+            }
+        }
+    }, [announcementInfos]);
+
+    return (visible && (
+        <Box sx={mergeSx(styles.banner, isInfo ? styles.infoBg : styles.warningBg)}>
+            {isInfo && (
+                <Box sx={mergeSx(styles.icon, styles.infoIcon)}>
+                    <CampaignIcon/>
                 </Box>
-                <Box sx={styles.message}>{children}</Box>
-                <Box sx={styles.button} onClick={() => setVisible(false)}>
-                    <CloseIcon />
+            )}
+            {!isInfo && (
+                <Box sx={mergeSx(styles.icon, styles.warningIcon)}>
+                    <WarningAmberIcon/>
                 </Box>
+            )}
+            <Box sx={styles.message}>{children}</Box>
+            <Box sx={styles.button} onClick={() => setVisible(false)}>
+                <CloseIcon/>
             </Box>
-        )
-    );
+        </Box>
+    ));
 }
 
 export default MessageBanner;
