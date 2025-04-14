@@ -375,8 +375,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     };
 
     const showChevron = (node: TreeViewFinderNodeProps) => {
-        // by defaut show Chevron if childrenCount is null or undefined otherwise only if > 0
-        return !!(node.childrenCount == null || (node.childrenCount && node.childrenCount > 0));
+        return !!(node.childrenCount && node.childrenCount > 0);
     };
 
     const renderTree = (node: TreeViewFinderNodeProps) => {
