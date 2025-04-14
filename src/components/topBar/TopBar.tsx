@@ -28,7 +28,7 @@ import {
     ToggleButtonGroup,
     Toolbar,
     Typography,
-    Tooltip
+    Tooltip,
 } from '@mui/material';
 import {
     Apps as AppsIcon,
@@ -58,8 +58,7 @@ import {
     LANG_SYSTEM,
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
-import MessageBanner from './MessageBanner';
-import { UUID } from 'crypto';
+import MessageBanner, { AnnouncementProps } from './MessageBanner';
 
 const styles = {
     grow: {
@@ -167,13 +166,6 @@ function abbreviationFromUserName(name: string) {
         return tab[0];
     }
     return tab[0] + tab[tab.length - 1];
-}
-
-export type AnnouncementProps = {
-    announcementId: UUID;
-    message: string;
-    duration: number;
-    severity: string;
 }
 
 export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
@@ -311,10 +303,7 @@ export function TopBar({
             )}
             {user && announcementInfos && (
                 <MessageBanner announcementInfos={announcementInfos}>
-                    <Tooltip
-                        title={announcementInfos.message}
-                        placement="bottom"
-                    >
+                    <Tooltip title={announcementInfos.message} placement="bottom">
                         <span>{announcementInfos.message}</span>
                     </Tooltip>
                 </MessageBanner>

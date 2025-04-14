@@ -7,8 +7,8 @@
 import { ReactNode, useState, useEffect } from 'react';
 import { Box, type SxProps, type Theme } from '@mui/material';
 import { Close as CloseIcon, WarningAmber as WarningAmberIcon, Campaign as CampaignIcon } from '@mui/icons-material';
-import { mergeSx } from "../../utils";
-import { AnnouncementProps } from "./TopBar";
+import { UUID } from 'crypto';
+import { mergeSx } from '../../utils';
 
 const styles = {
     banner: (theme) => ({
@@ -66,6 +66,13 @@ export interface MessageBannerProps {
     announcementInfos?: AnnouncementProps;
 }
 
+export type AnnouncementProps = {
+    announcementId: UUID;
+    message: string;
+    duration: number;
+    severity: string;
+};
+
 function MessageBanner({ children, announcementInfos }: MessageBannerProps) {
     const [visible, setVisible] = useState(true);
 
@@ -84,24 +91,26 @@ function MessageBanner({ children, announcementInfos }: MessageBannerProps) {
         }
     }, [announcementInfos]);
 
-    return (visible && (
-        <Box sx={mergeSx(styles.banner, isInfo ? styles.infoBg : styles.warningBg)}>
-            {isInfo && (
-                <Box sx={mergeSx(styles.icon, styles.infoIcon)}>
-                    <CampaignIcon/>
+    return (
+        visible && (
+            <Box sx={mergeSx(styles.banner, isInfo ? styles.infoBg : styles.warningBg)}>
+                {isInfo && (
+                    <Box sx={mergeSx(styles.icon, styles.infoIcon)}>
+                        <CampaignIcon />
+                    </Box>
+                )}
+                {!isInfo && (
+                    <Box sx={mergeSx(styles.icon, styles.warningIcon)}>
+                        <WarningAmberIcon />
+                    </Box>
+                )}
+                <Box sx={styles.message}>{children}</Box>
+                <Box sx={styles.button} onClick={() => setVisible(false)}>
+                    <CloseIcon />
                 </Box>
-            )}
-            {!isInfo && (
-                <Box sx={mergeSx(styles.icon, styles.warningIcon)}>
-                    <WarningAmberIcon/>
-                </Box>
-            )}
-            <Box sx={styles.message}>{children}</Box>
-            <Box sx={styles.button} onClick={() => setVisible(false)}>
-                <CloseIcon/>
             </Box>
-        </Box>
-    ));
+        )
+    );
 }
 
 export default MessageBanner;
