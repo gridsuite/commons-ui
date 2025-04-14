@@ -69,5 +69,5 @@ export const networkModificationsFr = {
     'network_modifications.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION':
         'Création du poste {voltageLevelEquipmentId} et du site {substationEquipmentId}',
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION':
-        "Modification de la topologie d'un poste {computedLabel}",
+        'Modification de la topologie du poste {computedLabel}',
 };
