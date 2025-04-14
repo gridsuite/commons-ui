@@ -315,7 +315,7 @@ export function TopBar({
                         title={announcementInfos.message}
                         placement="bottom"
                     >
-                        {announcementInfos.message}
+                        <span>{announcementInfos.message}</span>
                     </Tooltip>
                 </MessageBanner>
             )}
