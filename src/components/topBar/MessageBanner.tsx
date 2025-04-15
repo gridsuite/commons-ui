@@ -14,7 +14,6 @@ const styles = {
     banner: (theme) => ({
         left: 0,
         width: '100%',
-        backgroundColor: '#432ff7',
         color: 'black',
         padding: theme.spacing(1),
         textAlign: 'left',
@@ -28,7 +27,7 @@ const styles = {
         backgroundColor: '#f6b26b',
     }),
     infoBg: () => ({
-        backgroundColor: '#432ff7',
+        backgroundColor: '#90caf9',
     }),
     icon: (theme) => ({
         paddingRight: theme.spacing(0.75),
