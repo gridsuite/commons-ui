@@ -5,11 +5,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
-import { ListItem } from '@mui/material';
+import { useCallback, useState } from 'react';
+import { ListItem, ListItemButton } from '@mui/material';
 import { CheckBoxListItemProps } from './checkBoxList.type';
-import { ClickableCheckBoxItem } from './ClickableCheckBoxItem';
-import { ClickableRowItem } from './ClickableRowItem';
+import { CheckBoxListItemContent } from './CheckBoxListItemContent';
+import { mergeSx } from '../../utils';
+
+const styles = {
+    checkboxListItem: {
+        alignItems: 'flex-start',
+        // this is the only way to unset the absolute positionning of the secondary action
+        '& .MuiListItemSecondaryAction-root': {
+            marginTop: '1px',
+            position: 'relative',
+            top: 0,
+            right: 0,
+            transform: 'none',
+        },
+        // this is the only way to unset a 48px right padding when ListItemButton is hovered
+        '& .MuiListItemButton-root': {
+            paddingRight: '0px',
+        },
+    },
+};
 
 export function CheckBoxListItem<T>({
     item,
@@ -19,28 +37,43 @@ export function CheckBoxListItem<T>({
     divider,
     onItemClick,
     isItemClickable,
+    disabled,
     ...props
 }: Readonly<CheckBoxListItemProps<T>>) {
     const [hover, setHover] = useState<string>('');
+    const handleItemClick = useCallback(() => {
+        if (!onItemClick) {
+            return; // nothing to do
+        }
+        if (isItemClickable) {
+            if (isItemClickable(item)) {
+                onItemClick(item); // only call on clickable items
+            }
+            return;
+        }
+        // otherwise, every items are clickable
+        onItemClick(item);
+    }, [isItemClickable, item, onItemClick]);
     return (
         <ListItem
             secondaryAction={secondaryAction?.(item, hover)}
-            sx={{ minWidth: 0, ...sx?.checkboxListItem }}
+            sx={mergeSx(styles.checkboxListItem, sx?.checkboxListItem)}
             onMouseEnter={() => setHover(getItemId(item))}
             onMouseLeave={() => setHover('')}
-            disablePadding={!!onItemClick}
-            disableGutters
+            disablePadding
             divider={divider}
         >
-            {!onItemClick ? (
-                <ClickableCheckBoxItem sx={sx} {...props} />
+            {onItemClick ? (
+                <ListItemButton
+                    // this is to align checkbox and label
+                    sx={mergeSx({ alignItems: 'flex-start', padding: 'unset' }, sx?.checkboxButton)}
+                    disabled={disabled}
+                    onClick={handleItemClick}
+                >
+                    <CheckBoxListItemContent sx={sx} {...props} />
+                </ListItemButton>
             ) : (
-                <ClickableRowItem
-                    isItemClickable={isItemClickable?.(item)}
-                    onItemClick={() => onItemClick(item)}
-                    sx={sx}
-                    {...props}
-                />
+                <CheckBoxListItemContent sx={sx} {...props} />
             )}
         </ListItem>
     );
