@@ -26,5 +26,5 @@ node_modules/
 # Jest
 /coverage/
 
-# GitHub Actions
+# GitHub Action: sonarqube-scan-action
 /.scannerwork/
