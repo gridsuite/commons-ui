@@ -79,7 +79,6 @@ function MessageBanner({ children, announcementInfos }: MessageBannerProps) {
     const [isInfo, setIsInfo] = useState(false);
 
     useEffect(() => {
-        console.log(announcementInfos);
         if (announcementInfos) {
             setIsInfo(announcementInfos.severity === 'INFO');
             setVisible(true);
