@@ -10,12 +10,9 @@ export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
 export const styles = {
     grid: (theme) => ({
-        width: 'auto', // TODO 100%
+        width: 'auto',
         height: '100%',
         position: 'relative',
-        '@media print': {
-            pageBreakInside: 'avoid',
-        },
 
         [`&.${CUSTOM_AGGRID_THEME}`]: {
             '--ag-value-change-value-highlight-background-color': theme.aggrid.valueChangeHighlightBackgroundColor,
