@@ -6,13 +6,13 @@
  */
 
 import { forwardRef, useMemo } from 'react';
-import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
-import { useIntl } from 'react-intl';
+import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import type { ColumnResizedEvent } from 'ag-grid-community';
+import type { ColumnResizedEvent, GridOptions } from 'ag-grid-community';
 import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
-import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
+import { useIntl } from 'react-intl';
+import { Box, type BoxProps, type Theme, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
@@ -38,10 +38,10 @@ function useAgGridLocale(overrideLocales?: AgGridLocales) {
     }, [intl.defaultLocale, intl.locale, overrideLocales]);
 }
 
-export type CustomAGGridProps<TData = any> = Omit<AgGridReactProps<TData>, 'localeText' | 'getLocaleText'> & {
-    shouldHidePinnedHeaderRightBorder?: boolean;
-    overrideLocales?: AgGridLocales;
-};
+export type CustomAGGridProps<TData = any> = Omit<GridOptions<TData>, 'localeText' | 'getLocaleText'> &
+    Pick<BoxProps, 'sx'> & {
+        overrideLocales?: AgGridLocales;
+    };
 
 // We have to define a minWidth to column to activate this feature
 function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) {
@@ -54,17 +54,11 @@ function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) 
 }
 
 export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
-    ({ shouldHidePinnedHeaderRightBorder = false, overrideLocales, ...agGridReactProps }, ref) => {
+    ({ overrideLocales, sx, ...agGridReactProps }, ref) => {
         const theme = useTheme<Theme>();
 
         return (
-            <Box
-                sx={mergeSx(
-                    styles.grid as SxProps | undefined,
-                    shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined
-                )}
-                className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
-            >
+            <Box sx={mergeSx(styles.grid, sx)} className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}>
                 <AgGridReact
                     ref={ref}
                     localeText={useAgGridLocale(overrideLocales)}

@@ -10,9 +10,12 @@ export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
 export const styles = {
     grid: (theme) => ({
-        width: 'auto',
+        width: 'auto', // TODO 100%
         height: '100%',
         position: 'relative',
+        '@media print': {
+            pageBreakInside: 'avoid',
+        },
 
         [`&.${CUSTOM_AGGRID_THEME}`]: {
             '--ag-value-change-value-highlight-background-color': theme.aggrid.valueChangeHighlightBackgroundColor,
@@ -42,10 +45,4 @@ export const styles = {
             border: 'none !important',
         },
     }),
-    noBorderRight: {
-        // hides right border for header of "Edit" column due to column being pinned
-        '& .ag-pinned-left-header': {
-            borderRight: 'none',
-        },
-    },
 } as const satisfies Record<string, SxProps<Theme>>;
