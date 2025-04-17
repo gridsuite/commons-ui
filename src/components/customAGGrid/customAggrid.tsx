@@ -58,7 +58,11 @@ export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
         const theme = useTheme<Theme>();
 
         return (
-            <Box sx={mergeSx(styles.grid, sx)} className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}>
+            <Box
+                component="div"
+                sx={mergeSx(styles.grid, sx)}
+                className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
+            >
                 <AgGridReact
                     ref={ref}
                     localeText={useAgGridLocale(overrideLocales)}
