@@ -7,15 +7,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { AgGridReactProps } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Box, useTheme } from '@mui/material';
-import { useIntl } from 'react-intl';
-import { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
+import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { CustomAGGrid } from '../../../customAGGrid';
+import { CustomAGGrid, type CustomAGGridProps } from '../../../customAGGrid';
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -75,32 +71,30 @@ const style = (customProps: any) => ({
     }),
 });
 
-export interface CustomAgGridTableProps {
-    name: string;
-    columnDefs: any;
-    makeDefaultRowData: any;
-    csvProps: unknown;
-    cssProps: unknown;
-    defaultColDef: unknown;
-    pagination: boolean;
-    paginationPageSize: number;
-    rowSelection?: AgGridReactProps['rowSelection'];
-    alwaysShowVerticalScroll: boolean;
-    stopEditingWhenCellsLoseFocus: boolean;
-}
+export type CustomAgGridTableProps = Required<
+    Pick<
+        CustomAGGridProps,
+        | 'columnDefs'
+        | 'defaultColDef'
+        | 'pagination'
+        | 'paginationPageSize'
+        | 'alwaysShowVerticalScroll'
+        | 'stopEditingWhenCellsLoseFocus'
+    >
+> &
+    Pick<CustomAGGridProps, 'rowSelection' | 'overrideLocales'> & {
+        name: string;
+        makeDefaultRowData: any;
+        csvProps: unknown;
+        cssProps: unknown;
+    };
 
 export function CustomAgGridTable({
     name,
-    columnDefs,
     makeDefaultRowData,
     csvProps,
     cssProps,
-    defaultColDef,
-    pagination,
-    paginationPageSize,
     rowSelection,
-    alwaysShowVerticalScroll,
-    stopEditingWhenCellsLoseFocus,
     ...props
 }: Readonly<CustomAgGridTableProps>) {
     // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
@@ -182,15 +176,6 @@ export function CustomAgGridTable({
         setNewRowAdded(true);
     };
 
-    const intl = useIntl();
-    const getLocaleText = useCallback(
-        (params: any) => {
-            const key = `agGrid.${params.key}`;
-            return intl.messages[key] || params.defaultValue;
-        },
-        [intl]
-    );
-
     const onGridReady = (params: any) => {
         setGridApi(params);
     };
@@ -227,13 +212,11 @@ export function CustomAgGridTable({
                 <CustomAGGrid
                     rowData={rowData}
                     onGridReady={onGridReady}
-                    getLocaleText={getLocaleText}
                     cacheOverflowSize={10}
                     rowSelection={rowSelection ?? 'multiple'}
                     rowDragEntireRow
                     rowDragManaged
                     onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    columnDefs={columnDefs}
                     detailRowAutoHeight
                     onSelectionChanged={() => {
                         setSelectedRows(gridApi.api.getSelectedRows());
@@ -242,10 +225,6 @@ export function CustomAgGridTable({
                     onCellEditingStopped={onCellEditingStopped}
                     onSortChanged={onSortChanged}
                     getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
-                    pagination={pagination}
-                    paginationPageSize={paginationPageSize}
-                    alwaysShowVerticalScroll={alwaysShowVerticalScroll}
-                    stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                     theme="legacy"
                     {...props}
                 />
