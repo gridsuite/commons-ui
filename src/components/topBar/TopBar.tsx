@@ -28,6 +28,7 @@ import {
     ToggleButtonGroup,
     Toolbar,
     Typography,
+    Tooltip,
 } from '@mui/material';
 import {
     Apps as AppsIcon,
@@ -57,7 +58,7 @@ import {
     LANG_SYSTEM,
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
-import MessageBanner from './MessageBanner';
+import { AnnouncementProps, MessageBanner } from './MessageBanner';
 
 const styles = {
     grow: {
@@ -183,6 +184,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
         developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
+        announcementInfos?: AnnouncementProps;
     };
 
 export function TopBar({
@@ -208,6 +210,7 @@ export function TopBar({
     equipmentLabelling,
     onLanguageClick,
     language,
+    announcementInfos,
 }: PropsWithChildren<TopBarProps>) {
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
@@ -296,6 +299,13 @@ export function TopBar({
             {user && developerMode && (
                 <MessageBanner>
                     <FormattedMessage id="top-bar/developerModeWarning" defaultMessage="Developer mode" />
+                </MessageBanner>
+            )}
+            {user && announcementInfos && (
+                <MessageBanner announcementInfos={announcementInfos}>
+                    <Tooltip title={announcementInfos.message} placement="bottom">
+                        <span>{announcementInfos.message}</span>
+                    </Tooltip>
                 </MessageBanner>
             )}
             <Toolbar>
