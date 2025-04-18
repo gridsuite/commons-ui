@@ -58,3 +58,17 @@ export type UserDetail = {
     numberCasesUsed: number;
     maxAllowedBuilds: number;
 };
+
+export enum AnnouncementSeverity {
+    INFO = 'INFO',
+    WARN = 'WARN',
+}
+
+export type AnnouncementDto = {
+    id: UUID;
+    startDate: Date;
+    endDate: Date;
+    message: string;
+    severity: AnnouncementSeverity;
+    remainingDuration: number;
+};

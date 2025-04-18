@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import type { User } from 'oidc-client';
 import { useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
-import fetchUserDetails from '../../services/userAdmin';
+import { fetchUserDetails } from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
 
 const styles = {

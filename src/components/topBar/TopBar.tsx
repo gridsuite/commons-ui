@@ -58,7 +58,7 @@ import {
     LANG_SYSTEM,
     LIGHT_THEME,
 } from '../../utils/constants/browserConstants';
-import MessageBanner, { AnnouncementProps } from './MessageBanner';
+import { AnnouncementProps, MessageBanner } from './MessageBanner';
 
 const styles = {
     grow: {

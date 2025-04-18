@@ -4,10 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode, useState, useEffect } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, type SxProps, type Theme } from '@mui/material';
-import { Close as CloseIcon, WarningAmber as WarningAmberIcon, Campaign as CampaignIcon } from '@mui/icons-material';
-import { UUID } from 'crypto';
+import { Campaign as CampaignIcon, Close as CloseIcon, WarningAmber as WarningAmberIcon } from '@mui/icons-material';
 import { mergeSx } from '../../utils';
 
 const styles = {
@@ -61,33 +60,35 @@ const styles = {
 } as const satisfies Record<string, SxProps<Theme>>;
 
 export interface MessageBannerProps {
-    children: ReactNode;
     announcementInfos?: AnnouncementProps;
 }
 
 export type AnnouncementProps = {
-    announcementId: UUID;
     message: string;
     duration: number;
     severity: string;
 };
 
-function MessageBanner({ children, announcementInfos }: MessageBannerProps) {
+export function MessageBanner({ children, announcementInfos }: PropsWithChildren<MessageBannerProps>) {
     const [visible, setVisible] = useState(true);
-
-    const [isInfo, setIsInfo] = useState(false);
+    const isInfo = useMemo(() => announcementInfos?.severity === 'INFO', [announcementInfos]);
+    const removeBannerRef = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
         if (announcementInfos) {
-            setIsInfo(announcementInfos.severity === 'INFO');
             setVisible(true);
             if (announcementInfos?.duration) {
-                setTimeout(() => {
+                removeBannerRef.current = setTimeout(() => {
                     setVisible(false);
                 }, announcementInfos.duration);
             }
         }
     }, [announcementInfos]);
+
+    const handleClose = useCallback(() => {
+        clearTimeout(removeBannerRef.current);
+        setVisible(false);
+    }, []);
 
     return (
         visible && (
@@ -103,12 +104,10 @@ function MessageBanner({ children, announcementInfos }: MessageBannerProps) {
                     </Box>
                 )}
                 <Box sx={styles.message}>{children}</Box>
-                <Box sx={styles.button} onClick={() => setVisible(false)}>
+                <Box sx={styles.button} onClick={handleClose}>
                     <CloseIcon />
                 </Box>
             </Box>
         )
     );
 }
-
-export default MessageBanner;
