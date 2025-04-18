@@ -9,3 +9,4 @@ export * from './fetchStatus';
 export * from './fieldConstants';
 export * from './uiConstants';
 export * from './unitsConstants';
+export * from './notificationsProvider';
