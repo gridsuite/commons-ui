@@ -6,10 +6,10 @@
  */
 
 import { forwardRef, useMemo } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import type { ColumnResizedEvent, GridOptions } from 'ag-grid-community';
+import type { ColumnResizedEvent } from 'ag-grid-community';
 import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
 import { useIntl } from 'react-intl';
 import { Box, type BoxProps, type Theme, useTheme } from '@mui/material';
@@ -38,7 +38,7 @@ function useAgGridLocale(overrideLocales?: AgGridLocales) {
     }, [intl.defaultLocale, intl.locale, overrideLocales]);
 }
 
-export type CustomAGGridProps<TData = any> = Omit<GridOptions<TData>, 'localeText' | 'getLocaleText'> &
+export type CustomAGGridProps<TData = any> = Omit<AgGridReactProps<TData>, 'localeText' | 'getLocaleText'> &
     Pick<BoxProps, 'sx'> & {
         overrideLocales?: AgGridLocales;
     };
