@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { User } from 'oidc-client';
 import { catchErrorHandler, fetchCurrentAnnouncement } from '../../services';
-import { NotificationUrlKeys } from '../../utils/notificationsProvider';
+import { NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { AnnouncementProps } from './MessageBanner';
 import { useNotificationsListener } from '../notifications';
 
@@ -49,7 +49,7 @@ export function useGlobalAnnouncement(user: User | null) {
         }
     }, []);
 
-    useNotificationsListener(NotificationUrlKeys.GLOBAL_CONFIG, {
+    useNotificationsListener(NotificationsUrlKeys.GLOBAL_CONFIG, {
         listenerCallbackMessage: handleAnnouncementMessage,
     });
 
