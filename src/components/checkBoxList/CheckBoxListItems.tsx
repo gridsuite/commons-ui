@@ -6,13 +6,13 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { Checkbox, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { List, ListItem, ListItemButton } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Draggable } from '@hello-pangea/dnd';
 import { CheckBoxListItem } from './CheckBoxListItem';
-import { OverflowableText } from '../overflowableText';
 import { DraggableCheckBoxListItem } from './DraggableCheckBoxListItem';
 import { CheckBoxListItemsProps } from './checkBoxList.type';
+import { CheckBoxListItemContent } from './CheckBoxListItemContent';
 
 export function CheckBoxListItems<T>({
     items,
@@ -24,8 +24,9 @@ export function CheckBoxListItems<T>({
     addSelectAllCheckbox,
     selectAllCheckBoxLabel,
     getItemLabel,
+    getItemLabelSecondary,
     isDisabled,
-    isDndDragAndDropActive,
+    isDndActive,
     isDragDisable,
     divider,
     onItemClick,
@@ -98,30 +99,28 @@ export function CheckBoxListItems<T>({
                         },
                     }}
                 >
-                    <ListItemButton onClick={toggleSelectAll} sx={{ paddingLeft: 0 }}>
-                        <ListItemIcon sx={{ minWidth: 0 }}>
-                            <Checkbox
-                                sx={{ paddingLeft: 0 }}
-                                checked={selectedItems.length !== 0}
-                                indeterminate={selectedItems.length > 0 && selectedItems.length !== items.length}
-                            />
-                        </ListItemIcon>
-                        <ListItemText sx={{ display: 'flex' }} disableTypography>
-                            <OverflowableText
-                                text={<FormattedMessage id={selectAllLabel} defaultMessage={selectAllLabel} />}
-                            />
-                        </ListItemText>
+                    <ListItemButton
+                        onClick={toggleSelectAll}
+                        sx={{ alignItems: 'flex-start', paddingLeft: isDndActive ? '24px' : 0 }}
+                    >
+                        <CheckBoxListItemContent
+                            onClick={toggleSelectAll}
+                            checked={selectedItems.length !== 0}
+                            indeterminate={selectedItems.length > 0 && selectedItems.length !== items.length}
+                            label={<FormattedMessage id={selectAllLabel} defaultMessage={selectAllLabel} />}
+                        />
                     </ListItemButton>
                 </ListItem>
             )}
             {items?.map((item, index) => {
                 const label = getItemLabel ? getItemLabel(item) : getItemId(item);
+                const secondary = getItemLabelSecondary ? getItemLabelSecondary(item) : null;
                 const disabled = isDisabled ? isDisabled(item) : false;
                 const addDivider = divider && index < items.length - 1;
                 // sx can be dependent on item or not
                 const calculatedItemSx = typeof sx?.items === 'function' ? sx?.items(item) : sx?.items;
 
-                if (isDndDragAndDropActive) {
+                if (isDndActive) {
                     return (
                         <Draggable
                             draggableId={getItemId(item)}
@@ -135,6 +134,7 @@ export function CheckBoxListItems<T>({
                                     item={item}
                                     checked={isChecked(item)}
                                     label={label}
+                                    secondary={secondary}
                                     onClick={() => toggleSelection(getItemId(item))}
                                     sx={calculatedItemSx}
                                     disabled={disabled}
@@ -156,6 +156,7 @@ export function CheckBoxListItems<T>({
                         item={item}
                         checked={isChecked(item)}
                         label={label}
+                        secondary={secondary}
                         onClick={() => toggleSelection(getItemId(item))}
                         disabled={disabled}
                         getItemId={getItemId}
