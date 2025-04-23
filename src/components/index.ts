@@ -20,3 +20,4 @@ export * from './snackbarProvider';
 export * from './topBar';
 export * from './treeViewFinder';
 export * from './notifications';
+export * from './menus';
