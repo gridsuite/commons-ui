@@ -151,11 +151,17 @@ const lightTheme = createTheme({
     palette: {
         mode: 'light',
     },
+    icon: {
+        color: 'red',
+    },
 });
 
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
+    },
+    icon: {
+        color: 'green',
     },
 });
 
