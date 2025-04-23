@@ -12,7 +12,7 @@ import { CheckBoxListItems } from './CheckBoxListItems';
 import { CheckboxListProps } from './checkBoxList.type';
 
 export function CheckBoxList<T>({
-    isDndDragAndDropActive = false,
+    isDndActive = false,
     onDragStart,
     onDragEnd,
     isDragDisable = false,
@@ -22,15 +22,10 @@ export function CheckBoxList<T>({
     const [isDragging, setIsDragging] = useState(false);
 
     const checkBoxField = (
-        <CheckBoxListItems
-            isDndDragAndDropActive={isDndDragAndDropActive}
-            isDragDisable={isDragDisable || isDragging}
-            sx={sx}
-            {...props}
-        />
+        <CheckBoxListItems isDndActive={isDndActive} isDragDisable={isDragDisable || isDragging} sx={sx} {...props} />
     );
 
-    return isDndDragAndDropActive ? (
+    return isDndActive ? (
         <DragDropContext
             onDragEnd={(dropResult) => {
                 if (onDragEnd) {

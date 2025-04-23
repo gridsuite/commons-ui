@@ -10,6 +10,7 @@ import {
     Box,
     Button,
     Checkbox,
+    Chip,
     createTheme,
     CssBaseline,
     FormControlLabel,
@@ -22,6 +23,7 @@ import {
     Tabs,
     TextField,
     ThemeProvider,
+    Tooltip,
     Typography,
 } from '@mui/material';
 import { enUS, frFR } from '@mui/material/locale';
@@ -558,12 +560,39 @@ function AppContent({ language, onLanguageClick }) {
 
     const [checkBoxListOption, setCheckBoxListOption] = useState([
         { id: 'kiki', label: 'Kylian Mbappe' },
-        { id: 'ney', label: 'Neymar' },
+        {
+            id: 'ney',
+            label: 'Neymar',
+            labelSecondary: (
+                <Tooltip title="this is the Chip tooltip">
+                    <Chip
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("Chip click doesn't proc click in list item");
+                        }}
+                        size="small"
+                        label="GOAT"
+                    />
+                </Tooltip>
+            ),
+        },
         { id: 'lapulga', label: 'Lionel Messi' },
         { id: 'ibra', label: 'Zlatan Ibrahimovic' },
         {
             id: 'john',
             label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
+            labelSecondary: (
+                <Tooltip title="this is the Chip tooltip">
+                    <Chip
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("Chip click doesn't proc click in list item");
+                        }}
+                        size="small"
+                        label="GOAT"
+                    />
+                </Tooltip>
+            ),
         },
     ]);
 
@@ -605,6 +634,7 @@ function AppContent({ language, onLanguageClick }) {
                 selectedItems={[]}
                 open={openMultiChoiceDialog}
                 getItemLabel={(o) => o.label}
+                getItemLabelSecondary={(o) => o.labelSecondary}
                 getItemId={(o) => o.id}
                 handleClose={() => setOpenMultiChoiceDialog(false)}
                 handleValidate={() => setOpenMultiChoiceDialog(false)}
@@ -612,6 +642,8 @@ function AppContent({ language, onLanguageClick }) {
                 divider
                 secondaryAction={secondaryAction}
                 addSelectAllCheckbox
+                onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
             />
 
             <Button
@@ -629,13 +661,14 @@ function AppContent({ language, onLanguageClick }) {
                 selectedItems={[]}
                 open={openDraggableMultiChoiceDialog}
                 getItemLabel={(o) => o.label}
+                getItemLabelSecondary={(o) => o.labelSecondary}
                 getItemId={(o) => o.id}
                 handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
                 handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
                 titleId="Draggable checkbox list"
                 divider
                 secondaryAction={secondaryAction}
-                isDndDragAndDropActive
+                isDndActive
                 onDragEnd={({ source, destination }) => {
                     if (destination !== null && source.index !== destination.index) {
                         const res = [...checkBoxListOption];
@@ -644,6 +677,7 @@ function AppContent({ language, onLanguageClick }) {
                         setCheckBoxListOption(res);
                     }
                 }}
+                addSelectAllCheckbox
                 onItemClick={(item) => console.log('clicked', item)}
                 isItemClickable={(item) => item.id.indexOf('i') >= 0}
                 sx={{
