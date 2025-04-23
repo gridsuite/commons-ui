@@ -10,6 +10,7 @@ import {
     Box,
     Button,
     Checkbox,
+    Chip,
     createTheme,
     CssBaseline,
     FormControlLabel,
@@ -22,12 +23,14 @@ import {
     Tabs,
     TextField,
     ThemeProvider,
+    Tooltip,
     Typography,
 } from '@mui/material';
+import { enUS, frFR } from '@mui/material/locale';
 import { Comment as CommentIcon } from '@mui/icons-material';
 import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import translations from './demo_intl';
 import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
 import AppPackage from '../../package.json';
@@ -98,6 +101,8 @@ import {
     commonButtonFr,
     networkModificationsEn,
     networkModificationsFr,
+    logout,
+    equipmentStyles,
 } from '../../src';
 
 const messages = {
@@ -145,23 +150,23 @@ const messages = {
     },
 };
 
-const lightTheme = createTheme({
+const lightTheme = {
     palette: {
         mode: 'light',
     },
-});
+};
 
-const darkTheme = createTheme({
+const darkTheme = {
     palette: {
         mode: 'dark',
     },
-});
+};
 
-const getMuiTheme = (theme) => {
-    if (theme === LIGHT_THEME) {
-        return lightTheme;
-    }
-    return darkTheme;
+const useMuiTheme = (theme, language) => {
+    return useMemo(
+        () => createTheme(theme === LIGHT_THEME ? lightTheme : darkTheme, language === LANG_FRENCH ? frFR : enUS),
+        [language, theme]
+    );
 };
 
 const style = {
@@ -555,12 +560,39 @@ function AppContent({ language, onLanguageClick }) {
 
     const [checkBoxListOption, setCheckBoxListOption] = useState([
         { id: 'kiki', label: 'Kylian Mbappe' },
-        { id: 'ney', label: 'Neymar' },
+        {
+            id: 'ney',
+            label: 'Neymar',
+            labelSecondary: (
+                <Tooltip title="this is the Chip tooltip">
+                    <Chip
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("Chip click doesn't proc click in list item");
+                        }}
+                        size="small"
+                        label="GOAT"
+                    />
+                </Tooltip>
+            ),
+        },
         { id: 'lapulga', label: 'Lionel Messi' },
         { id: 'ibra', label: 'Zlatan Ibrahimovic' },
         {
             id: 'john',
             label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
+            labelSecondary: (
+                <Tooltip title="this is the Chip tooltip">
+                    <Chip
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("Chip click doesn't proc click in list item");
+                        }}
+                        size="small"
+                        label="GOAT"
+                    />
+                </Tooltip>
+            ),
         },
     ]);
 
@@ -602,6 +634,7 @@ function AppContent({ language, onLanguageClick }) {
                 selectedItems={[]}
                 open={openMultiChoiceDialog}
                 getItemLabel={(o) => o.label}
+                getItemLabelSecondary={(o) => o.labelSecondary}
                 getItemId={(o) => o.id}
                 handleClose={() => setOpenMultiChoiceDialog(false)}
                 handleValidate={() => setOpenMultiChoiceDialog(false)}
@@ -609,6 +642,8 @@ function AppContent({ language, onLanguageClick }) {
                 divider
                 secondaryAction={secondaryAction}
                 addSelectAllCheckbox
+                onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
             />
 
             <Button
@@ -626,13 +661,14 @@ function AppContent({ language, onLanguageClick }) {
                 selectedItems={[]}
                 open={openDraggableMultiChoiceDialog}
                 getItemLabel={(o) => o.label}
+                getItemLabelSecondary={(o) => o.labelSecondary}
                 getItemId={(o) => o.id}
                 handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
                 handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
                 titleId="Draggable checkbox list"
                 divider
                 secondaryAction={secondaryAction}
-                isDndDragAndDropActive
+                isDndActive
                 onDragEnd={({ source, destination }) => {
                     if (destination !== null && source.index !== destination.index) {
                         const res = [...checkBoxListOption];
@@ -641,6 +677,7 @@ function AppContent({ language, onLanguageClick }) {
                         setCheckBoxListOption(res);
                     }
                 }}
+                addSelectAllCheckbox
                 onItemClick={(item) => console.log('clicked', item)}
                 isItemClickable={(item) => item.id.indexOf('i') >= 0}
                 sx={{
@@ -811,7 +848,7 @@ function AppContent({ language, onLanguageClick }) {
 
     return (
         <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={getMuiTheme(theme)}>
+            <ThemeProvider theme={useMuiTheme(theme, language)}>
                 <SnackbarProvider hideIconVariant={false}>
                     <CssBaseline />
                     <CardErrorBoundary>

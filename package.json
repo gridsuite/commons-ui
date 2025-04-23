@@ -1,6 +1,6 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.93.1",
+    "version": "0.95.0",
     "description": "common react components for gridsuite applications",
     "author": "gridsuite team",
     "homepage": "https://github.com/gridsuite",
@@ -34,6 +34,7 @@
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
     },
     "dependencies": {
+        "@ag-grid-community/locale": "^33.1.0",
         "@hello-pangea/dnd": "^18.0.1",
         "@react-querybuilder/dnd": "^8.2.0",
         "@react-querybuilder/material": "^8.2.0",
@@ -58,7 +59,7 @@
         "@mui/icons-material": "^5.16.14",
         "@mui/lab": "5.0.0-alpha.175",
         "@mui/material": "^5.16.14",
-        "@mui/x-tree-view": "^6.17.0",
+        "@mui/x-tree-view": "^7.28.1",
         "ag-grid-community": "^33.0.3",
         "ag-grid-react": "^33.0.4",
         "notistack": "^3.0.2",

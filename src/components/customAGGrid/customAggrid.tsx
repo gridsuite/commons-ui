@@ -5,68 +5,73 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback } from 'react';
-import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
-import { useIntl } from 'react-intl';
+import { forwardRef, useMemo } from 'react';
+import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { ColumnResizedEvent, GetLocaleTextParams } from 'ag-grid-community';
-import { Box, type SxProps, type Theme, useTheme } from '@mui/material';
+import type { ColumnResizedEvent } from 'ag-grid-community';
+import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
+import { useIntl } from 'react-intl';
+import { Box, type BoxProps, type Theme, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
+import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
 
-interface CustomAGGGridStyleProps {
-    shouldHidePinnedHeaderRightBorder?: boolean;
+export type AgGridLocale = Partial<Record<keyof typeof AG_GRID_LOCALE_EN, string>>; // using EN for keyof because it's the only who has more keys, so more complete
+export type AgGridLocales = Record<GsLangUser, AgGridLocale>;
+
+function useAgGridLocale(overrideLocales?: AgGridLocales) {
+    const intl = useIntl();
+    return useMemo((): Record<string, string> => {
+        switch ((intl.locale || intl.defaultLocale).toLowerCase().substring(0, 2)) {
+            case LANG_FRENCH:
+                return {
+                    ...AG_GRID_LOCALE_FR,
+                    thousandSeparator: ' ',
+                    decimalSeparator: ',',
+                    ...overrideLocales?.[LANG_FRENCH],
+                };
+            case LANG_ENGLISH:
+            default:
+                return { ...AG_GRID_LOCALE_EN, ...overrideLocales?.[LANG_ENGLISH] };
+        }
+    }, [intl.defaultLocale, intl.locale, overrideLocales]);
 }
 
-export interface CustomAGGridProps extends AgGridReactProps, CustomAGGGridStyleProps {}
+export type CustomAGGridProps<TData = any> = Omit<AgGridReactProps<TData>, 'localeText' | 'getLocaleText'> &
+    Pick<BoxProps, 'sx'> & {
+        overrideLocales?: AgGridLocales;
+    };
 
 // We have to define a minWidth to column to activate this feature
-const onColumnResized = (params: ColumnResizedEvent) => {
-    const { column, finished } = params;
-    const colDefinedMinWidth = column?.getColDef()?.minWidth;
-    if (column && colDefinedMinWidth && finished) {
-        const newWidth = column?.getActualWidth();
-        if (newWidth < colDefinedMinWidth) {
-            params.api.setColumnWidths([{ key: column, newWidth: colDefinedMinWidth }], finished, params.source);
+function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) {
+    if (column) {
+        const colDefinedMinWidth = column.getColDef().minWidth;
+        if (colDefinedMinWidth && finished && column.getActualWidth() < colDefinedMinWidth) {
+            api.setColumnWidths([{ key: column, newWidth: colDefinedMinWidth }], finished, source);
         }
     }
-};
+}
 
-export const CustomAGGrid = React.forwardRef<AgGridReact, CustomAGGridProps>((props, ref) => {
-    const { shouldHidePinnedHeaderRightBorder = false, ...agGridReactProps } = props;
-    const theme = useTheme<Theme>();
-    const intl = useIntl();
+export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
+    ({ overrideLocales, sx, ...agGridReactProps }, ref) => {
+        const theme = useTheme<Theme>();
 
-    const GRID_PREFIX = 'grid.';
-
-    const getLocaleText = useCallback(
-        (params: GetLocaleTextParams) => {
-            const key = GRID_PREFIX + params.key;
-            return intl.formatMessage({
-                id: key,
-                defaultMessage: params.defaultValue,
-            });
-        },
-        [intl]
-    );
-
-    return (
-        <Box
-            sx={mergeSx(
-                styles.grid as SxProps | undefined,
-                shouldHidePinnedHeaderRightBorder ? styles.noBorderRight : undefined
-            )}
-            className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
-        >
-            <AgGridReact
-                ref={ref}
-                getLocaleText={getLocaleText}
-                onColumnResized={onColumnResized}
-                enableCellTextSelection
-                theme="legacy"
-                {...agGridReactProps}
-            />
-        </Box>
-    );
-});
+        return (
+            <Box
+                component="div"
+                sx={mergeSx(styles.grid, sx)}
+                className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
+            >
+                <AgGridReact
+                    ref={ref}
+                    localeText={useAgGridLocale(overrideLocales)}
+                    onColumnResized={onColumnResized}
+                    enableCellTextSelection
+                    theme="legacy"
+                    {...agGridReactProps}
+                />
+            </Box>
+        );
+    }
+);

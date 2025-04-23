@@ -1,9 +1,30 @@
-/vite.config.mts-timestamp-*
-/coverage
-/dist
-/node_modules
+# NPM
 npm-debug.log*
-/.idea
+
+# NodeJS dependencies
+node_modules/
+
+# production
+/dist/
 *.tgz
-.vscode/
-.idea/
+
+# JetBrains IDE
+/.idea/
+
+# VSCode
+/.vscode/
+
+# Vite
+/vite.config.ts-timestamp-*
+
+# misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Jest
+/coverage/
+
+# GitHub Action: sonarqube-scan-action
+/.scannerwork/
