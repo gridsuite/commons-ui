@@ -103,7 +103,6 @@ import {
     networkModificationsFr,
     logout,
     equipmentStyles,
-    LeftPanelCloseIcon,
 } from '../../src';
 
 const messages = {
@@ -207,12 +206,7 @@ function Crasher() {
         // eslint-disable-next-line no-undef
         window.foonotexists.bar();
     }
-    return (
-        <Button onClick={() => setCrash(true)}>
-            CRASH ME
-            <LeftPanelCloseIcon />
-        </Button>
-    );
+    return <Button onClick={() => setCrash(true)}>CRASH ME</Button>;
 }
 
 function SnackErrorButton() {
