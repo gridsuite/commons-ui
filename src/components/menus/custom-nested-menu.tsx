@@ -7,7 +7,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { NestedMenuItem, NestedMenuItemProps } from 'mui-nested-menu';
 import { Box, MenuItem, MenuItemProps, SxProps, Theme } from '@mui/material';
-import { mergeSx } from '@gridsuite/commons-ui';
+import { mergeSx } from '../../utils';
 
 const styles = {
     highlightedParentLine: {
