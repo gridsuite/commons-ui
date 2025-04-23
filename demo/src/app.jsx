@@ -26,10 +26,11 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
+import { enUS, frFR } from '@mui/material/locale';
 import { Comment as CommentIcon } from '@mui/icons-material';
 import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import translations from './demo_intl';
 import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
 import AppPackage from '../../package.json';
@@ -100,6 +101,8 @@ import {
     commonButtonFr,
     networkModificationsEn,
     networkModificationsFr,
+    logout,
+    equipmentStyles,
 } from '../../src';
 
 const messages = {
@@ -147,29 +150,27 @@ const messages = {
     },
 };
 
-const lightTheme = createTheme({
+const lightTheme = {
     palette: {
         mode: 'light',
     },
     icon: {
-        color: 'red',
+        color: '#757575',
     },
-});
-
-const darkTheme = createTheme({
+};
+const darkTheme = {
     palette: {
         mode: 'dark',
     },
     icon: {
-        color: 'green',
+        color: 'white',
     },
-});
-
-const getMuiTheme = (theme) => {
-    if (theme === LIGHT_THEME) {
-        return lightTheme;
-    }
-    return darkTheme;
+};
+const useMuiTheme = (theme, language) => {
+    return useMemo(
+        () => createTheme(theme === LIGHT_THEME ? lightTheme : darkTheme, language === LANG_FRENCH ? frFR : enUS),
+        [language, theme]
+    );
 };
 
 const style = {
@@ -851,7 +852,7 @@ function AppContent({ language, onLanguageClick }) {
 
     return (
         <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={getMuiTheme(theme)}>
+            <ThemeProvider theme={useMuiTheme(theme, language)}>
                 <SnackbarProvider hideIconVariant={false}>
                     <CssBaseline />
                     <CardErrorBoundary>
