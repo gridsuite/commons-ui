@@ -103,6 +103,7 @@ import {
     networkModificationsFr,
     logout,
     equipmentStyles,
+    LeftPanelCloseIcon,
 } from '../../src';
 
 const messages = {
@@ -154,11 +155,17 @@ const lightTheme = {
     palette: {
         mode: 'light',
     },
+    icon: {
+        color: '#757575',
+    },
 };
 
 const darkTheme = {
     palette: {
         mode: 'dark',
+    },
+    icon: {
+        color: 'white',
     },
 };
 
@@ -200,7 +207,12 @@ function Crasher() {
         // eslint-disable-next-line no-undef
         window.foonotexists.bar();
     }
-    return <Button onClick={() => setCrash(true)}>CRASH ME</Button>;
+    return (
+        <Button onClick={() => setCrash(true)}>
+            CRASH ME
+            <LeftPanelCloseIcon />
+        </Button>
+    );
 }
 
 function SnackErrorButton() {

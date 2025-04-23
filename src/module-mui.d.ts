@@ -19,5 +19,8 @@ declare module '@mui/material/styles' {
                 background: string;
             };
         };
+        icon: {
+            color: string;
+        };
     }
 }
