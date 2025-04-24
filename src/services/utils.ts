@@ -17,7 +17,7 @@ export interface BackendFetchInit {
 const parseError = (text: string) => {
     try {
         return JSON.parse(text);
-    } catch (err) {
+    } catch {
         return null;
     }
 };

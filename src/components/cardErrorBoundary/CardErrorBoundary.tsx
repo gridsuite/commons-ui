@@ -72,6 +72,7 @@ export class CardErrorBoundary extends Component<PropsWithChildren<{}>, CardErro
         return { hasError: true, error };
     }
 
+    // eslint-disable-next-line @typescript-eslint/class-methods-use-this -- just log, so no this called
     override componentDidCatch(error: Error, errorInfo: ErrorInfo) {
         // You can also log the error to an error reporting service
         console.error('CardErrorBoundary caught: ', error, errorInfo);

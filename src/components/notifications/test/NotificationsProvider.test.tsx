@@ -25,6 +25,7 @@ declare global {
 const WS_CONSUMER_ID = 'WS_CONSUMER_ID';
 const WS_KEY = 'WS_KEY';
 
+/* eslint-disable testing-library/no-unnecessary-act */
 describe('NotificationsProvider', () => {
     beforeEach(() => {
         container = document.createElement('div');
@@ -41,10 +42,10 @@ describe('NotificationsProvider', () => {
         act(() => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
-        expect(ReconnectingWebSocket).toBeCalled();
+        expect(ReconnectingWebSocket).toHaveBeenCalled();
     });
 
-    test('renders NotificationsProvider children component ', () => {
+    test('renders NotificationsProvider children component', () => {
         const root = createRoot(container);
 
         act(() => {
@@ -54,11 +55,12 @@ describe('NotificationsProvider', () => {
                 </NotificationsProvider>
             );
         });
+        // eslint-disable-next-line testing-library/no-node-access -- Avoid direct Node access. Prefer using the methods from Testing Library
         const lastMsg = document.querySelector(`#${WS_CONSUMER_ID}`);
         expect(lastMsg?.textContent).toEqual('Child');
     });
 
-    test('renders NotificationsProvider children component and updated by event ', async () => {
+    test('renders NotificationsProvider children component and updated by event', async () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
@@ -82,10 +84,10 @@ describe('NotificationsProvider', () => {
             reconnectingWebSocketClass.onmessage?.(event);
         });
 
-        waitFor(() => expect(eventCallback).toBeCalledWith(event));
+        await waitFor(() => expect(eventCallback).toHaveBeenCalledWith(event));
     });
 
-    test('renders NotificationsProvider children component not called with other key ', () => {
+    test('renders NotificationsProvider children component not called with other key', () => {
         const root = createRoot(container);
 
         const eventCallback = jest.fn();
@@ -108,7 +110,7 @@ describe('NotificationsProvider', () => {
             reconnectingWebSocketClass.onmessage?.({ data: 'test' } as MessageEvent<any>);
         });
 
-        expect(eventCallback).not.toBeCalled();
+        expect(eventCallback).not.toHaveBeenCalled();
     });
 
     test('renders NotificationsProvider component and calls onOpen callback', async () => {
@@ -134,6 +136,6 @@ describe('NotificationsProvider', () => {
             );
         });
 
-        waitFor(() => expect(onOpenCallback).toBeCalled());
+        await waitFor(() => expect(onOpenCallback).toHaveBeenCalled());
     });
 });

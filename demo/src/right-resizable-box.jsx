@@ -64,7 +64,7 @@ function RightResizableBox(props) {
             setResizedTreePercentage(newPercentage);
         }
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     const onResize = (event, { element, size }) => {
         updateResizedTreePercentage(size.width, windowWidth);
     };
