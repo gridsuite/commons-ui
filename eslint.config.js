@@ -15,6 +15,8 @@ import tsEslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginImport from 'eslint-plugin-import';
+import pluginJest from 'eslint-plugin-jest';
+import pluginTestingLibrary from 'eslint-plugin-testing-library';
 import { getSupportInfo, resolveConfig, resolveConfigFile } from 'prettier';
 
 /**
@@ -34,6 +36,7 @@ const JsFiles = [`**/*.{${braceExpand('{,c,m}js{,x}').join(',')}}`];
 const TsFiles = [`**/*.{${braceExpand('{,m}ts{,x}').join(',')}}`];
 // const JsTsFiles = [`**/*.{${['cjs', 'cjsx', ...braceExpand('{,m}{j,t}s{,x}')].join(',')}}`];
 const JsTsFiles = [...JsFiles, ...TsFiles];
+const TestFiles = ['**/__tests__/**/*.{js,cjs,mjs,jsx,ts,mts,tsx}', '**/*.{spec,test}.{js,cjs,mjs,jsx,ts,mts,tsx}'];
 
 function setRuleLevel(rules, rule, level) {
     if (Array.isArray(rules[rule])) {
@@ -85,6 +88,16 @@ export default defineConfig([
         name: 'eslint-plugin-import/typescript rules',
         files: TsFiles,
         rules: pluginImport.flatConfigs.typescript.rules,
+    },
+    {
+        name: 'eslint-plugin-testing-library/react',
+        files: TestFiles,
+        ...pluginTestingLibrary.configs['flat/react'],
+    },
+    {
+        name: 'eslint-plugin-jest/recommended',
+        files: TestFiles,
+        ...pluginJest.configs['flat/recommended'],
     },
     // eslint-plugin-jsx-a11y is re-declared in airbnb config and eslint don't let redeclaration of plugins
     // requires eslint, eslint-plugin-import, eslint-plugin-react, eslint-plugin-react-hooks, and eslint-plugin-jsx-a11y

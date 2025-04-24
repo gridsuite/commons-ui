@@ -31,6 +31,7 @@ const gridOptions: GridOptions = {
 };
 
 describe('CustomAGGrid', () => {
+    // eslint-disable-next-line jest/expect-expect
     it('renders without crashing', () => {
         RenderBuilderInstance.render(<CustomAGGrid gridOptions={gridOptions} />);
     });
