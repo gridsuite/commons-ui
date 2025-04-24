@@ -186,7 +186,7 @@ export default defineConfig([
                 {
                     patterns: [
                         {
-                            group: ['@mui/*/*', '!@mui/material/colors'],
+                            group: ['@mui/*/*', '!@mui/material/colors', '!@mui/material/locale'],
                             message:
                                 'Deep imports from MUI libraries are forbidden. Import only from the library root.',
                         },
