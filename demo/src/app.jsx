@@ -154,17 +154,11 @@ const lightTheme = {
     palette: {
         mode: 'light',
     },
-    icon: {
-        color: '#757575',
-    },
 };
 
 const darkTheme = {
     palette: {
         mode: 'dark',
-    },
-    icon: {
-        color: 'white',
     },
 };
 

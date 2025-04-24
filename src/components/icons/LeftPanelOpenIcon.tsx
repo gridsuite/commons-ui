@@ -16,7 +16,7 @@ export function LeftPanelOpenIcon() {
             style={{
                 width: 24,
                 height: 24,
-                fill: theme.icon?.color,
+                fill: theme.palette.text.primary,
             }}
         />
     );
