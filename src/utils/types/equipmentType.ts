@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { type Theme } from '@mui/material';
-import { LIGHT_THEME } from '../constants';
+import { LIGHT_THEME } from '../styles';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';

@@ -68,4 +68,6 @@ export const networkModificationsFr = {
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Création de CSPR {computedLabel}',
     'network_modifications.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION':
         'Création du poste {voltageLevelEquipmentId} et du site {substationEquipmentId}',
+    'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION':
+        'Modification de la topologie du poste {computedLabel}',
 };
