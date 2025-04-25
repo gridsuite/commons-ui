@@ -29,7 +29,7 @@ export function CreateParameterDialog<T extends FieldValues>({
     parameterValues,
     parameterType,
     parameterFormatter,
-}: CreateParameterProps<T>) {
+}: Readonly<CreateParameterProps<T>>) {
     const { snackError, snackInfo } = useSnackMessage();
 
     const saveParameters = useCallback(

@@ -18,12 +18,12 @@ function LoadFlowParametersHeader({
     handleTabChange,
     tabIndexesWithError,
     formattedProviders,
-}: {
+}: Readonly<{
     selectedTab: string;
     handleTabChange: (event: React.SyntheticEvent, newValue: TabValues) => void;
     tabIndexesWithError: TabValues[];
     formattedProviders: { id: string; label: string }[];
-}) {
+}>) {
     return (
         <Box sx={{ flexGrow: 0, paddingLeft: 1, paddingTop: 1 }}>
             <Grid

@@ -8,7 +8,7 @@
 import { useState, ReactNode, useMemo } from 'react';
 import { LoadFlowContext } from './load-flow-parameters-context';
 
-export function LoadFlowProvider({ children }: { children: ReactNode }) {
+export function LoadFlowProvider({ children }: Readonly<{ children: ReactNode }>) {
     const [showAdvancedLfParams, setShowAdvancedLfParams] = useState(false);
     const [showSpecificLfParams, setShowSpecificLfParams] = useState(false);
 

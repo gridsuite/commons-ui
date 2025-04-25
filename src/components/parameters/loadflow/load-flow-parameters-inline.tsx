@@ -30,12 +30,12 @@ export function LoadFlowParametersInline({
     parametersBackend,
     setHaveDirtyFields,
     enableDeveloperMode,
-}: {
+}: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
     enableDeveloperMode: boolean;
-}) {
+}>) {
     const [, , , resetProvider, , , resetParameters, , ,] = parametersBackend;
     const loadflowParameters = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
 

@@ -14,7 +14,7 @@ interface TableRowComponentProps {
     index: number;
 }
 
-export function LimitReductionTableRow({ columnsDefinition, index }: TableRowComponentProps) {
+export function LimitReductionTableRow({ columnsDefinition, index }: Readonly<TableRowComponentProps>) {
     return (
         <TableRow>
             {columnsDefinition.map((column: IColumnsDef) => (

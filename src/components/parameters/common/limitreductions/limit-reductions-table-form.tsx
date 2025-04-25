@@ -24,7 +24,7 @@ const getLabelColumn = (limit: ITemporaryLimitReduction) => {
     return `${lowerBoundClosed}${lowBound}, ${highBound}${highBoundClosed}`;
 };
 
-export function LimitReductionsTableForm({ limits }: { limits: ILimitReductionsByVoltageLevel[] }) {
+export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitReductionsByVoltageLevel[] }>) {
     const intl = useIntl();
 
     const getToolTipColumn = useCallback(

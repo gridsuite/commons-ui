@@ -15,7 +15,7 @@ interface TableRowComponentProps {
     index: number;
 }
 
-export function CustomVoltageLevelTableRow({ formName, columnsDefinition, index }: TableRowComponentProps) {
+export function CustomVoltageLevelTableRow({ formName, columnsDefinition, index }: Readonly<TableRowComponentProps>) {
     return (
         <TableRow>
             {columnsDefinition.map((column: IColumnsDef) => (

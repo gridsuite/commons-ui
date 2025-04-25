@@ -152,7 +152,7 @@ interface LoadFlowGeneralParametersProps {
     specificParams: SpecificParameterInfos[];
 }
 
-function LoadFlowGeneralParameters({ provider, specificParams }: LoadFlowGeneralParametersProps) {
+function LoadFlowGeneralParameters({ provider, specificParams }: Readonly<LoadFlowGeneralParametersProps>) {
     const { showAdvancedLfParams, setShowAdvancedLfParams, showSpecificLfParams, setShowSpecificLfParams } =
         useLoadFlowContext();
     return (

@@ -30,7 +30,14 @@ interface LoadFlowParameterFieldProps {
     possibleValues?: { id: string; label: string }[] | string[];
 }
 
-function LoadFlowParameterField({ id, name, type, label, description, possibleValues }: LoadFlowParameterFieldProps) {
+function LoadFlowParameterField({
+    id,
+    name,
+    type,
+    label,
+    description,
+    possibleValues,
+}: Readonly<LoadFlowParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:

@@ -15,7 +15,7 @@ interface LabelledButtonProps extends ButtonProps {
     label: string;
 }
 
-export function LabelledButton({ callback, label, ...props }: LabelledButtonProps) {
+export function LabelledButton({ callback, label, ...props }: Readonly<LabelledButtonProps>) {
     return (
         <Button onClick={callback} {...props}>
             <FormattedMessage id={label} />
@@ -29,7 +29,7 @@ interface SwitchWithLabelProps {
     callback?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-export function SwitchWithLabel({ value, label, callback }: SwitchWithLabelProps) {
+export function SwitchWithLabel({ value, label, callback }: Readonly<SwitchWithLabelProps>) {
     return (
         <>
             <Grid item xs={8} sx={parametersStyles.parameterName}>

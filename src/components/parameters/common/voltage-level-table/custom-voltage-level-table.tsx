@@ -17,7 +17,11 @@ interface LimitReductionsTableProps {
     formName: string;
 }
 
-export function CustomVoltageLevelTable({ formName, columnsDefinition, tableHeight }: LimitReductionsTableProps) {
+export function CustomVoltageLevelTable({
+    formName,
+    columnsDefinition,
+    tableHeight,
+}: Readonly<LimitReductionsTableProps>) {
     const { fields: rows } = useFieldArray({
         name: formName,
     });

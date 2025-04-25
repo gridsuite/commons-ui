@@ -13,11 +13,11 @@ export function CustomVoltageLevelTableCell({
     formName,
     rowIndex,
     column,
-}: {
+}: Readonly<{
     formName: string;
     rowIndex: number;
     column: IColumnsDef;
-}) {
+}>) {
     return (
         <TableCell sx={{ fontWeight: 'bold' }}>
             {column.dataKey === VOLTAGE_LEVEL ? (

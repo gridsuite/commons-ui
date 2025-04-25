@@ -18,7 +18,11 @@ interface LoadFlowParametersFormProps {
     renderActions?: () => ReactNode;
 }
 
-export function LoadFlowParametersForm({ hook, renderTitleFields, renderActions }: LoadFlowParametersFormProps) {
+export function LoadFlowParametersForm({
+    hook,
+    renderTitleFields,
+    renderActions,
+}: Readonly<LoadFlowParametersFormProps>) {
     const {
         formMethods,
         formSchema,
