@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import { EquipmentType } from './equipmentType';
+import type { EQUIPMENT_TYPES as NetworkViewerEquipmentType } from '@powsybl/network-viewer';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 
 export enum NotificationType {
@@ -22,7 +22,7 @@ export enum NotificationType {
 // Payloads
 export interface DeletedEquipment {
     equipmentId: string;
-    equipmentType: EquipmentType;
+    equipmentType: NetworkViewerEquipmentType;
 }
 
 export interface NetworkImpactsInfos {
