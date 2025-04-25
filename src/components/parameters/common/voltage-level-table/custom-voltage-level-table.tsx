@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { IColumnsDef, LIMIT_REDUCTIONS_FORM } from '../limitreductions/columns-definitions';
-import LimitReductionTableRow from '../limitreductions/limit-reduction-table-row';
+import { LimitReductionTableRow } from '../limitreductions/limit-reduction-table-row';
 import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
 interface LimitReductionsTableProps {
@@ -17,7 +17,7 @@ interface LimitReductionsTableProps {
     formName: string;
 }
 
-function CustomVoltageLevelTable({ formName, columnsDefinition, tableHeight }: LimitReductionsTableProps) {
+export function CustomVoltageLevelTable({ formName, columnsDefinition, tableHeight }: LimitReductionsTableProps) {
     const { fields: rows } = useFieldArray({
         name: formName,
     });
@@ -65,5 +65,3 @@ function CustomVoltageLevelTable({ formName, columnsDefinition, tableHeight }: L
         </TableContainer>
     );
 }
-
-export default CustomVoltageLevelTable;

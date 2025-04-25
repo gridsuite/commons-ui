@@ -7,6 +7,6 @@
 
 export * from './parameter-float';
 export * from './parameter-group';
-export { default as parameterLineDirectoryItemsInput } from './parameter-line-directory-items-input';
-export { default as parameterLineSlider } from './parameter-line-slider';
+export * from './parameter-line-directory-items-input';
+export * from './parameter-line-slider';
 export * from './parameter-switch';

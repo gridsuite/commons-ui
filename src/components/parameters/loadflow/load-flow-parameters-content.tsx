@@ -8,7 +8,7 @@
 import { Box, Grid } from '@mui/material';
 import { TabValues } from './load-flow-parameters-utils';
 import LoadFlowGeneralParameters from './load-flow-general-parameters';
-import LimitReductionsTableForm from '../common/limitreductions/limit-reductions-table-form';
+import { LimitReductionsTableForm } from '../common';
 import {
     alertThresholdMarks,
     MAX_VALUE_ALLOWED_FOR_LIMIT_REDUCTION,
@@ -21,7 +21,7 @@ import { parametersStyles } from '../parameters-style';
 import { SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { LoadFlowParametersInfos } from '../../../utils/types/loadflow.type';
 import { mergeSx } from '../../../utils';
-import ParameterLineSlider from '../common/widget/parameter-line-slider';
+import { ParameterLineSlider } from '../common/widget/parameter-line-slider';
 import { TabPanel } from '../common/parameters';
 
 type LoadFlowParametersContentProps = {

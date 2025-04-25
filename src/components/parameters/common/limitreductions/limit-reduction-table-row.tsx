@@ -6,7 +6,7 @@
  */
 
 import { TableRow } from '@mui/material';
-import LimitReductionTableCell from './limit-reduction-table-cell';
+import { LimitReductionTableCell } from './limit-reduction-table-cell';
 import { IColumnsDef } from './columns-definitions';
 
 interface TableRowComponentProps {
@@ -14,7 +14,7 @@ interface TableRowComponentProps {
     index: number;
 }
 
-function LimitReductionTableRow({ columnsDefinition, index }: TableRowComponentProps) {
+export function LimitReductionTableRow({ columnsDefinition, index }: TableRowComponentProps) {
     return (
         <TableRow>
             {columnsDefinition.map((column: IColumnsDef) => (
@@ -23,5 +23,3 @@ function LimitReductionTableRow({ columnsDefinition, index }: TableRowComponentP
         </TableRow>
     );
 }
-
-export default LimitReductionTableRow;

@@ -9,7 +9,7 @@ import { TableCell } from '@mui/material';
 import { IColumnsDef, LIMIT_REDUCTIONS_FORM, VOLTAGE_LEVELS_FORM } from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../inputs';
 
-function LimitReductionTableCell({ rowIndex, column }: { rowIndex: number; column: IColumnsDef }) {
+export function LimitReductionTableCell({ rowIndex, column }: { rowIndex: number; column: IColumnsDef }) {
     return (
         <TableCell sx={{ fontWeight: 'bold' }}>
             {column.dataKey === VOLTAGE_LEVELS_FORM ? (
@@ -20,5 +20,3 @@ function LimitReductionTableCell({ rowIndex, column }: { rowIndex: number; colum
         </TableCell>
     );
 }
-
-export default LimitReductionTableCell;

@@ -25,7 +25,7 @@ type SliderParameterLineProps = {
     maxValue?: number; // default = 100;
 };
 
-function ParameterLineSlider({
+export function ParameterLineSlider({
     name,
     label,
     marks,
@@ -54,5 +54,3 @@ function ParameterLineSlider({
         </>
     );
 }
-
-export default ParameterLineSlider;

@@ -18,7 +18,7 @@ type DirectoryItemsInputLineProps = {
     hideErrorMessage: boolean;
 };
 
-function ParameterLineDirectoryItemsInput({
+export function ParameterLineDirectoryItemsInput({
     label,
     name,
     equipmentTypes,
@@ -44,5 +44,3 @@ function ParameterLineDirectoryItemsInput({
         </Grid>
     );
 }
-
-export default ParameterLineDirectoryItemsInput;

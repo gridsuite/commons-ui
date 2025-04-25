@@ -13,7 +13,7 @@ import {
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
 } from './columns-definitions';
-import CustomVoltageLevelTable from '../voltage-level-table/custom-voltage-level-table';
+import { CustomVoltageLevelTable } from '../voltage-level-table';
 
 const getLabelColumn = (limit: ITemporaryLimitReduction) => {
     const lowBound = `${Math.trunc(limit.limitDuration.lowBound / 60)} min`;
@@ -24,7 +24,7 @@ const getLabelColumn = (limit: ITemporaryLimitReduction) => {
     return `${lowerBoundClosed}${lowBound}, ${highBound}${highBoundClosed}`;
 };
 
-function LimitReductionsTableForm({ limits }: { limits: ILimitReductionsByVoltageLevel[] }) {
+export function LimitReductionsTableForm({ limits }: { limits: ILimitReductionsByVoltageLevel[] }) {
     const intl = useIntl();
 
     const getToolTipColumn = useCallback(
@@ -74,5 +74,3 @@ function LimitReductionsTableForm({ limits }: { limits: ILimitReductionsByVoltag
         />
     );
 }
-
-export default LimitReductionsTableForm;
