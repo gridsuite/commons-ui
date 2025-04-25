@@ -15,42 +15,28 @@ import {
     type SxProps,
     type Theme,
     Tooltip,
+    useTheme,
 } from '@mui/material';
 import { Campaign as CampaignIcon } from '@mui/icons-material';
 import type { User } from 'oidc-client';
 import { AnnouncementSeverity } from '../../utils/types';
 
+// Pick the same color than Snackbar
+const snackbarInfo = '#2196f3';
+const snackbarWarning = '#ff9800';
+// const snackbarError = '#d32f2f';
+
 const styles = {
-    alert: {
-        '& .MuiAlert-root.no-title, & .MuiAlert-action': {
-            alignItems: 'center', // vertically align
+    alert: (theme) => ({
+        '&.MuiAlert-colorWarning': {
+            color: theme.palette.getContrastText(snackbarWarning),
+            backgroundColor: snackbarWarning,
         },
-        '& .MuiAlert-colorInfo': {
-            backgroundColor: '#90caf9',
-            '& .MuiAlert-message, & .MuiAlert-action': {
-                color: 'black',
-            },
-            '& .MuiAlert-icon': {
-                color: 'darkblue',
-            },
+        '&.MuiAlert-colorInfo': {
+            color: theme.palette.getContrastText(snackbarInfo),
+            backgroundColor: snackbarInfo,
         },
-        '& .MuiAlert-colorWarning': {
-            backgroundColor: '#f6b26b',
-            '& .MuiAlert-message, & .MuiAlert-action': {
-                color: 'black',
-            },
-            '& .MuiAlert-icon': {
-                color: 'red',
-            },
-        },
-        // MUI IconButton: square ripple
-        '& .MuiAlert-action .MuiIconButton-root': {
-            borderRadius: 1,
-            '& .MuiTouchRipple-root .MuiTouchRipple-child ': {
-                borderRadius: '8px',
-            },
-        },
-    },
+    }),
 } as const satisfies Record<string, SxProps<Theme>>;
 
 export type AnnouncementBannerProps = PropsWithChildren<{
@@ -88,6 +74,7 @@ export function AnnouncementBanner({
     duration,
     sx,
 }: Readonly<AnnouncementBannerProps>) {
+    const theme = useTheme();
     const [visible, setVisible] = useState(true);
     const removeBannerRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -117,18 +104,16 @@ export function AnnouncementBanner({
     }, []);
 
     return (
-        <Collapse in={user !== undefined && visible} sx={styles.alert}>
+        <Collapse in={user !== undefined && visible} sx={sx} style={{ margin: theme.spacing(1) }}>
             <Alert
                 variant="filled"
-                square
                 elevation={0}
                 severity={convertSeverity(severity)}
                 onClose={handleClose}
                 iconMapping={iconMapping}
-                // slotProps={{ closeButton: { size: 'large' } }}
                 hidden={!visible}
                 className={title ? undefined : 'no-title'}
-                sx={sx}
+                sx={styles.alert}
             >
                 {title && <AlertTitle>{title}</AlertTitle>}
                 <Tooltip title={children} placement="bottom">
