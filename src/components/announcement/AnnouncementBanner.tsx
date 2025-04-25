@@ -125,9 +125,7 @@ export function AnnouncementBanner({
                 severity={convertSeverity(severity)}
                 onClose={handleClose}
                 iconMapping={iconMapping}
-                slotProps={{
-                    closeButton: { size: 'large' },
-                }}
+                // slotProps={{ closeButton: { size: 'large' } }}
                 hidden={!visible}
                 className={title ? undefined : 'no-title'}
                 sx={sx}
