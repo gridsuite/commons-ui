@@ -37,6 +37,7 @@
         "@ag-grid-community/locale": "^33.1.0",
         "@hello-pangea/dnd": "^18.0.1",
         "@material-symbols/svg-400": "^0.31.2",
+        "@mui/base": "^5.0.0-beta.40-0",
         "@react-querybuilder/dnd": "^8.2.0",
         "@react-querybuilder/material": "^8.2.0",
         "autosuggest-highlight": "^3.3.4",

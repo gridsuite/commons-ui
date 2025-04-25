@@ -1,0 +1,70 @@
+import { Box, LinearProgress } from '@mui/material';
+import { ReactNode } from 'react';
+import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
+import LoadFlowParametersHeader from './load-flow-parameters-header';
+import LoadFlowParametersContent from './load-flow-parameters-content';
+import { CustomFormProvider } from '../../inputs';
+
+interface LoadFlowParametersFormProps {
+    hook: UseLoadFlowParametersFormReturn;
+    renderTitleFields?: () => ReactNode;
+    renderActions?: () => ReactNode;
+}
+
+export function LoadFlowParametersForm({ hook, renderTitleFields, renderActions }: LoadFlowParametersFormProps) {
+    const {
+        formMethods,
+        formSchema,
+        selectedTab,
+        handleTabChange,
+        tabIndexesWithError,
+        formattedProviders,
+        specificParameters,
+        params,
+        currentProvider,
+        defaultLimitReductions,
+        paramsLoaded,
+    } = hook;
+
+    return (
+        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
+            {renderTitleFields?.()}
+            <Box
+                sx={{
+                    height: '100%',
+                    display: 'flex',
+                    position: 'relative',
+                    flexDirection: 'column',
+                }}
+            >
+                {paramsLoaded ? (
+                    <Box
+                        sx={{
+                            height: '100%',
+                            display: 'flex',
+                            position: 'relative',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <LoadFlowParametersHeader
+                            selectedTab={selectedTab}
+                            handleTabChange={handleTabChange}
+                            tabIndexesWithError={tabIndexesWithError}
+                            formattedProviders={formattedProviders}
+                        />
+                        <LoadFlowParametersContent
+                            selectedTab={selectedTab}
+                            currentProvider={currentProvider ?? ''}
+                            specificParameters={specificParameters}
+                            params={params}
+                            defaultLimitReductions={defaultLimitReductions}
+                        />
+                    </Box>
+                ) : (
+                    <LinearProgress />
+                )}
+                {renderActions?.()}
+            </Box>
+        </CustomFormProvider>
+    );
+}
