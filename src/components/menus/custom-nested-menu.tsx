@@ -29,13 +29,13 @@ interface CustomNestedMenuItemProps extends PropsWithChildren, Omit<NestedMenuIt
 }
 
 export function CustomNestedMenuItem({ sx, children, ...other }: Readonly<CustomNestedMenuItemProps>) {
-    const [isSubMenuActive, setSubMenuActive] = useState(false);
+    const [subMenuActive, setSubMenuActive] = useState(false);
 
     return (
         <NestedMenuItem
             {...other}
             parentMenuOpen
-            sx={mergeSx(isSubMenuActive ? styles.highlightedParentLine : styles.highlightedLine, sx)}
+            sx={mergeSx(subMenuActive ? styles.highlightedParentLine : styles.highlightedLine, sx)}
         >
             <Box onMouseEnter={() => setSubMenuActive(true)} onMouseLeave={() => setSubMenuActive(false)}>
                 {children}
