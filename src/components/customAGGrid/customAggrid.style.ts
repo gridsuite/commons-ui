@@ -42,10 +42,4 @@ export const styles = {
             border: 'none !important',
         },
     }),
-    noBorderRight: {
-        // hides right border for header of "Edit" column due to column being pinned
-        '& .ag-pinned-left-header': {
-            borderRight: 'none',
-        },
-    },
 } as const satisfies Record<string, SxProps<Theme>>;
