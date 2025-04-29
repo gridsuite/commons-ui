@@ -1,6 +1,6 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.96.0",
+    "version": "0.97.0",
     "description": "common react components for gridsuite applications",
     "author": "gridsuite team",
     "homepage": "https://github.com/gridsuite",
@@ -42,6 +42,7 @@
         "@react-querybuilder/material": "^8.2.0",
         "autosuggest-highlight": "^3.3.4",
         "clsx": "^2.1.1",
+        "mui-nested-menu": "^4.0.0",
         "jwt-decode": "^4.0.0",
         "localized-countries": "^2.0.0",
         "oidc-client": "^1.11.5",
