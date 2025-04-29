@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './computation-parameters-util';
 export * from './computing-type';
 export * from './constant';
 export * from './line-separator';

@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'crypto';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
@@ -55,9 +56,11 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
 export type UseParametersBackendReturnProps<T extends ComputingType> = [
     Record<string, string>,
     string | undefined,
+    (studyUuid: UUID) => void,
     (newProvider: string) => void,
     () => void,
     ParametersInfos<T> | null,
+    (studyUuid: UUID) => void,
     (newParams: ParametersInfos<T>) => void,
     () => Promise<void> | undefined,
     Record<string, any> | null,

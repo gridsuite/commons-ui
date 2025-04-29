@@ -12,9 +12,7 @@ import { User } from 'oidc-client';
 
 import { useSnackMessage } from './useSnackMessage';
 import { useDebounce } from './useDebounce';
-import { StudyUpdated } from '../utils';
 import { ComputingType, formatComputingTypeLabel } from '../components/parameters/common/computing-type';
-import { isComputationParametersUpdated } from '../components/parameters/common/computation-parameters-util';
 import { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
 import {
     ParametersInfos,
@@ -33,7 +31,6 @@ export enum OptionalServicesStatus {
 export const useParametersBackend = <T extends ComputingType>(
     user: User | null,
     studyUuid: UUID | null,
-    studyUpdated: StudyUpdated | null,
     type: T,
     optionalServiceStatus: OptionalServicesStatus | undefined,
     backendFetchProviders: () => Promise<string[]>,
@@ -157,20 +154,6 @@ export const useParametersBackend = <T extends ComputingType>(
             fetchAvailableProviders().then(() => fetchProvider(studyUuid));
         }
     }, [fetchAvailableProviders, fetchProvider, optionalServiceStatus, studyUuid, user]);
-
-    // we need to fetch provider when ever a computationParametersUpdated notification received.
-    // use optionalServiceStatusRef here to avoid double effects proc
-    // other dependencies don't change this much
-    useEffect(() => {
-        if (
-            studyUpdated &&
-            isComputationParametersUpdated(type, studyUpdated) &&
-            studyUuid &&
-            optionalServiceStatusRef.current === OptionalServicesStatus.Up
-        ) {
-            fetchProvider(studyUuid);
-        }
-    }, [fetchProvider, studyUpdated, studyUuid, type]);
 
     // SPECIFIC PARAMETERS DESCRIPTION
     const fetchSpecificParametersDescription = useCallback(() => {
@@ -305,26 +288,14 @@ export const useParametersBackend = <T extends ComputingType>(
         }
     }, [optionalServiceStatus, studyUuid, fetchParameters]);
 
-    // we need to fetch parameters when ever a computationParametersUpdated notification received.
-    // use optionalServiceStatusRef here to avoid double effects proc
-    // other dependencies don't change this much
-    useEffect(() => {
-        if (
-            studyUpdated &&
-            isComputationParametersUpdated(type, studyUpdated) &&
-            studyUuid &&
-            optionalServiceStatusRef.current === OptionalServicesStatus.Up
-        ) {
-            fetchParameters(studyUuid);
-        }
-    }, [fetchParameters, studyUuid, type, studyUpdated]);
-
     return [
         providersRef.current,
         provider,
+        fetchProvider,
         updateProvider,
         resetProvider,
         currentParams,
+        fetchParameters,
         updateParameter,
         resetParameters,
         specificParamsDescription,

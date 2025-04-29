@@ -73,8 +73,19 @@ export const useLoadFlowParametersForm = (
     name: string | null,
     description: string | null
 ): UseLoadFlowParametersFormReturn => {
-    const [providers, provider, , , params, updateParameters, , specificParamsDescriptions, defaultLimitReductions] =
-        parametersBackend;
+    const [
+        providers,
+        provider,
+        ,
+        ,
+        ,
+        params,
+        ,
+        updateParameters,
+        ,
+        specificParamsDescriptions,
+        defaultLimitReductions,
+    ] = parametersBackend;
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);

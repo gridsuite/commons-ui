@@ -54,7 +54,6 @@ export function LoadFlowParametersEditionDialog({
     const parametersBackend = useParametersBackend(
         user,
         id,
-        null,
         ComputingType.LOAD_FLOW,
         OptionalServicesStatus.Up,
         getLoadFlowProviders,

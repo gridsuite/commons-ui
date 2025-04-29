@@ -47,5 +47,3 @@ export const formatComputingTypeLabel = (type: ComputingType): string | undefine
             return undefined;
     }
 };
-
-export default ComputingType;

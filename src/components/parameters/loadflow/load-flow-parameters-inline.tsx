@@ -36,7 +36,7 @@ export function LoadFlowParametersInline({
     setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
     enableDeveloperMode: boolean;
 }>) {
-    const [, , , resetProvider, , , resetParameters, , ,] = parametersBackend;
+    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
     const loadflowParameters = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
 
     const intl = useIntl();

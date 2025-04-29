@@ -11,7 +11,6 @@ export * from './metadata';
 export * from './types';
 export * from './modificationType';
 export * from './fieldType';
-export * from './custom-types';
 export * from './parameters.type';
 export * from './dynamic-security-analysis.type';
 export * from './dynamic-simulation.type';
