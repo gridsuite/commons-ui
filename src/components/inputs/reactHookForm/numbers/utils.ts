@@ -8,6 +8,29 @@ export const isIntegerNumber = (val: string) => {
     return /^-?[0-9]*$/.test(val);
 };
 
+// checks if it is a prefix
 export const isFloatNumber = (val: string) => {
-    return /^-?[0-9]*[.,]?[0-9]*$/.test(val);
+    // no possessive qualifier in javascripts native regexp,
+    // replace /^-?[0-9]*[.,]?[0-9]*$/ with code not
+    // vulnerable to catastrophic backtracking (ON^2)
+    // TODO find a better way for this code
+    let idx = 0;
+    if (idx < val.length && val.charAt(idx) === '-') {
+        idx += 1;
+    }
+    while (idx < val.length && val.charCodeAt(idx) >= 48 && val.charCodeAt(idx) <= 57) {
+        // [0-9]
+        idx += 1;
+    }
+    if (idx === val.length) {
+        return true;
+    }
+    if (val.charAt(idx) === '.' || val.charAt(idx) === ',') {
+        idx += 1;
+        while (idx < val.length && val.charCodeAt(idx) >= 48 && val.charCodeAt(idx) <= 57) {
+            // [0-9]
+            idx += 1;
+        }
+    }
+    return idx === val.length;
 };
