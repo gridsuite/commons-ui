@@ -64,8 +64,6 @@ export interface UseLoadFlowParametersFormReturn {
     onSaveDialog: (formData: Record<string, any>) => void;
 }
 
-// TODO EXPORTER formatNewParams
-// pour la version inline du formulaire
 export const useLoadFlowParametersForm = (
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>,
     enableDeveloperMode: boolean,

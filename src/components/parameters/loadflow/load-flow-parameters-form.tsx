@@ -13,13 +13,13 @@ import LoadFlowParametersContent from './load-flow-parameters-content';
 import { CustomFormProvider } from '../../inputs';
 
 interface LoadFlowParametersFormProps {
-    hook: UseLoadFlowParametersFormReturn;
+    parametersBackend: UseLoadFlowParametersFormReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
 }
 
 export function LoadFlowParametersForm({
-    hook,
+    parametersBackend,
     renderTitleFields,
     renderActions,
 }: Readonly<LoadFlowParametersFormProps>) {
@@ -35,7 +35,7 @@ export function LoadFlowParametersForm({
         currentProvider,
         defaultLimitReductions,
         paramsLoaded,
-    } = hook;
+    } = parametersBackend;
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
