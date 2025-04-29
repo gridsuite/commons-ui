@@ -87,7 +87,7 @@ export function LoadFlowParametersInline({
     return (
         <LoadFlowProvider>
             <LoadFlowParametersForm
-                hook={loadflowParameters}
+                parametersBackend={loadflowParameters}
                 renderActions={() => {
                     return (
                         <Box>
