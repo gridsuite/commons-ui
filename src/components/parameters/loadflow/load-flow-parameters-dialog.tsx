@@ -82,7 +82,7 @@ export function LoadFlowParametersEditionDialog({
         >
             <LoadFlowProvider>
                 <LoadFlowParametersForm
-                    hook={loadflowParameters}
+                    parametersBackend={loadflowParameters}
                     renderTitleFields={() => {
                         return (
                             <Grid item sx={{ height: '100%' }}>
