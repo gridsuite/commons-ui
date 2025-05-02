@@ -103,7 +103,7 @@ export function AnnouncementBanner({
     const handleClose = useCallback(() => setVisible(false), []);
 
     return (
-        <Collapse in={user !== undefined && visible} sx={sx} style={{ margin: theme.spacing(1) }}>
+        <Collapse in={user !== undefined && visible} unmountOnExit sx={sx} style={{ margin: theme.spacing(1) }}>
             <Alert
                 variant="filled"
                 elevation={0}
