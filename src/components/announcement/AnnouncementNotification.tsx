@@ -7,16 +7,17 @@
 
 import type { User } from 'oidc-client';
 import { useGlobalAnnouncement } from './useGlobalAnnouncement';
-import { AnnouncementBanner } from './AnnouncementBanner';
+import { AnnouncementBanner, type AnnouncementBannerProps } from './AnnouncementBanner';
 
 export type AnnouncementNotificationProps = {
     user: User | null;
+    sx?: AnnouncementBannerProps['sx'];
 };
 
-export function AnnouncementNotification({ user }: Readonly<AnnouncementNotificationProps>) {
+export function AnnouncementNotification({ user, sx }: Readonly<AnnouncementNotificationProps>) {
     const { id, severity, message, duration } = useGlobalAnnouncement(user) ?? {};
     return (
-        <AnnouncementBanner user={user ?? undefined} id={id} severity={severity} duration={duration}>
+        <AnnouncementBanner user={user ?? undefined} id={id} severity={severity} duration={duration} sx={sx}>
             {message}
         </AnnouncementBanner>
     );
