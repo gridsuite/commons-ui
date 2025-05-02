@@ -66,23 +66,23 @@ export function LoadFlowParametersEditionDialog({
         getLoadFlowDefaultLimitReductions
     );
 
-    const loadflowParameters = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, id, name, description);
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, id, name, description);
 
     return (
         <CustomMuiDialog
             open={open}
             onClose={onClose}
-            onSave={loadflowParameters.onSaveDialog}
-            onValidationError={loadflowParameters.onValidationError}
-            formSchema={loadflowParameters.formSchema}
-            formMethods={loadflowParameters.formMethods}
+            onSave={loadflowMethods.onSaveDialog}
+            onValidationError={loadflowMethods.onValidationError}
+            formSchema={loadflowMethods.formSchema}
+            formMethods={loadflowMethods.formMethods}
             titleId={titleId}
             removeOptional
             language={language}
         >
             <LoadFlowProvider>
                 <LoadFlowParametersForm
-                    parametersBackend={loadflowParameters}
+                    loadflowMethods={loadflowMethods}
                     renderTitleFields={() => {
                         return (
                             <Grid item sx={{ height: '100%' }}>

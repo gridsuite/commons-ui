@@ -37,7 +37,7 @@ export function LoadFlowParametersInline({
     enableDeveloperMode: boolean;
 }>) {
     const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
-    const loadflowParameters = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
@@ -53,7 +53,7 @@ export function LoadFlowParametersInline({
         resetParameters();
     }, [resetParameters]);
 
-    const { reset, getValues, formState, handleSubmit } = loadflowParameters.formMethods;
+    const { reset, getValues, formState, handleSubmit } = loadflowMethods.formMethods;
 
     const handleLoadParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
@@ -61,9 +61,9 @@ export function LoadFlowParametersInline({
                 setOpenSelectParameterDialog(false);
                 fetchLoadFlowParameters(newParams[0].id)
                     .then((parameters) => {
-                        loadflowParameters.setCurrentProvider(parameters.provider);
+                        loadflowMethods.setCurrentProvider(parameters.provider);
                         console.info(`loading the following loadflow parameters : ${parameters.uuid}`);
-                        reset(loadflowParameters.toLoadFlowFormValues(parameters), {
+                        reset(loadflowMethods.toLoadFlowFormValues(parameters), {
                             keepDefaultValues: true,
                         });
                     })
@@ -77,7 +77,7 @@ export function LoadFlowParametersInline({
             }
             setOpenSelectParameterDialog(false);
         },
-        [loadflowParameters, reset, snackError]
+        [loadflowMethods, reset, snackError]
     );
 
     useEffect(() => {
@@ -87,7 +87,7 @@ export function LoadFlowParametersInline({
     return (
         <LoadFlowProvider>
             <LoadFlowParametersForm
-                parametersBackend={loadflowParameters}
+                loadflowMethods={loadflowMethods}
                 renderActions={() => {
                     return (
                         <Box>
@@ -108,8 +108,8 @@ export function LoadFlowParametersInline({
                                 <LabelledButton label="resetProviderValuesToDefault" callback={resetLFParameters} />
                                 <SubmitButton
                                     onClick={handleSubmit(
-                                        loadflowParameters.onSaveInline,
-                                        loadflowParameters.onValidationError
+                                        loadflowMethods.onSaveInline,
+                                        loadflowMethods.onValidationError
                                     )}
                                     variant="outlined"
                                 >
@@ -121,7 +121,7 @@ export function LoadFlowParametersInline({
                                     studyUuid={studyUuid}
                                     open={openCreateParameterDialog}
                                     onClose={() => setOpenCreateParameterDialog(false)}
-                                    parameterValues={() => loadflowParameters.formatNewParams(getValues())}
+                                    parameterValues={() => loadflowMethods.formatNewParams(getValues())}
                                     parameterFormatter={(newParams) => newParams}
                                     parameterType={ElementType.LOADFLOW_PARAMETERS}
                                 />
