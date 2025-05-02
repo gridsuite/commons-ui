@@ -54,7 +54,7 @@ export function useGlobalAnnouncement(user: User | null) {
                 severity: eventData.headers.severity,
                 duration: eventData.headers.duration,
             };
-            console.trace('announcement incoming:', announcement);
+            console.debug('announcement incoming:', announcement);
             setAnnouncementInfos(announcement);
         } else if (eventData.headers.messageType === 'cancelAnnouncement') {
             setAnnouncementInfos(undefined);
