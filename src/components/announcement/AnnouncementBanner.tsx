@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'crypto';
-import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useState } from 'react';
 import {
     Alert,
-    AlertColor,
+    type AlertColor,
     type AlertProps,
     AlertTitle,
     Collapse,
@@ -42,8 +42,8 @@ const styles = {
 export type AnnouncementBannerProps = PropsWithChildren<{
     // message only visible if user logged
     user?: User | {};
-    // only to detect if new msg
-    id: UUID;
+    /** only field used to detect if msg change */
+    id?: UUID;
     duration?: number;
     severity?: AnnouncementSeverity;
     title?: ReactNode;
@@ -75,33 +75,32 @@ export function AnnouncementBanner({
     sx,
 }: Readonly<AnnouncementBannerProps>) {
     const theme = useTheme();
-    const [visible, setVisible] = useState(true);
-    const removeBannerRef = useRef<ReturnType<typeof setTimeout>>();
+    const [visible, setVisible] = useState(false);
 
     useEffect(
         () => {
             // If the message to show changed
-            setVisible(true);
-            if (duration) {
-                if (removeBannerRef.current) {
-                    clearTimeout(removeBannerRef.current); // clear previous timer
+            if (id) {
+                setVisible(true);
+                if (duration) {
+                    // the previous timer is normally already cleared
+                    const bannerTimer = setTimeout(() => {
+                        setVisible(false);
+                    }, duration);
+                    return () => {
+                        clearTimeout(bannerTimer); // clear previous timer
+                    };
                 }
-                removeBannerRef.current = setTimeout(() => {
-                    setVisible(false);
-                }, duration);
+            } else {
+                setVisible(false);
             }
+            return () => {};
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps -- we check msg id in cas of an announcement
         [id]
     );
 
-    const handleClose = useCallback(() => {
-        if (removeBannerRef.current) {
-            clearTimeout(removeBannerRef.current);
-            removeBannerRef.current = undefined;
-        }
-        setVisible(false);
-    }, []);
+    const handleClose = useCallback(() => setVisible(false), []);
 
     return (
         <Collapse in={user !== undefined && visible} sx={sx} style={{ margin: theme.spacing(1) }}>

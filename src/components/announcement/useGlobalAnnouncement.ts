@@ -34,9 +34,14 @@ export function useGlobalAnnouncement(user: User | null) {
                             duration: announcementDto.remainingDuration,
                             severity: announcementDto.severity,
                         });
+                    } else {
+                        setAnnouncementInfos(undefined); // no message currently shown
+                        // TODO: is events still coming even if user disconnect by token expiration? if yes then no need for this "else" case
                     }
                 })
                 .catch((error: unknown) => console.error('Failed to retrieve global announcement:', error));
+        } else {
+            setAnnouncementInfos(undefined); // user disconnected
         }
     }, [user]);
 

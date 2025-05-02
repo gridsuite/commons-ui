@@ -16,7 +16,7 @@ export type AnnouncementNotificationProps = {
 export function AnnouncementNotification({ user }: Readonly<AnnouncementNotificationProps>) {
     const { id, severity, message, duration } = useGlobalAnnouncement(user) ?? {};
     return (
-        <AnnouncementBanner user={user ?? undefined} id={id ?? '0-0-0-0-0'} severity={severity} duration={duration}>
+        <AnnouncementBanner user={user ?? undefined} id={id} severity={severity} duration={duration}>
             {message}
         </AnnouncementBanner>
     );
