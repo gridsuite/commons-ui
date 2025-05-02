@@ -126,7 +126,6 @@ export const getSpecificLoadFlowParametersFormSchema = (specificParameters: Spec
     });
 };
 
-// TODO REPORT CHANGES MADE TO NAN DETECTION
 export const getDefaultSpecificParamsValues = (
     specificParams: SpecificParameterInfos[]
 ): SpecificParametersPerProvider => {

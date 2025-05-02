@@ -194,7 +194,6 @@ export const useLoadFlowParametersForm = (
         [specificParametersValues, toLimitReductions]
     );
 
-    // TODO REPORT CHANGES MADE TO hasOwnProperty USAGE
     const toLoadFlowFormValues = useCallback(
         (_params: LoadFlowParametersInfos) => {
             const specificParams = _params.provider ? specificParamsDescriptions?.[_params.provider] : undefined;
