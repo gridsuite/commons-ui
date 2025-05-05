@@ -76,12 +76,10 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
     });
 };
 
-export const getDialogLoadFlowParametersFormSchema = (name: string | null, description: string | null) => {
+export const getDialogLoadFlowParametersFormSchema = (name: string | null) => {
     const shape: { [key: string]: yup.AnySchema } = {};
     if (name) {
         shape[NAME] = yup.string().required();
-    }
-    if (description) {
         shape[DESCRIPTION_INPUT] = yup.string();
     }
     return shape;

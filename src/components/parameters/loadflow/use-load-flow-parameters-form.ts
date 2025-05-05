@@ -111,7 +111,7 @@ export const useLoadFlowParametersForm = (
 
     const formSchema = useMemo(() => {
         return yup.object({
-            ...getDialogLoadFlowParametersFormSchema(name, description),
+            ...getDialogLoadFlowParametersFormSchema(name),
             [PROVIDER]: yup.string().required(),
             [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
             ...getCommonLoadFlowParametersFormSchema().fields,
@@ -120,7 +120,7 @@ export const useLoadFlowParametersForm = (
             ).fields,
             ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
         });
-    }, [description, name, params?.limitReductions, specificParameters]);
+    }, [name, params?.limitReductions, specificParameters]);
 
     const formMethods = useForm({
         defaultValues: {
