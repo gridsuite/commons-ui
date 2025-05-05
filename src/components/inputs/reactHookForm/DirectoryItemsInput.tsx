@@ -167,6 +167,10 @@ export function DirectoryItemsInput({
         [getValues, name]
     );
 
+    const shouldReplaceElement = useMemo(() => {
+        return allowMultiSelect === false && elements?.length === 1;
+    }, [allowMultiSelect, elements]);
+
     return (
         <>
             <FormControl
@@ -208,10 +212,12 @@ export function DirectoryItemsInput({
                                 <IconButton
                                     sx={styles.addDirectoryElements}
                                     size="small"
-                                    disabled={disable || (allowMultiSelect === false && elements?.length === 1)}
+                                    disabled={disable}
                                     onClick={() => {
-                                        setDirectoryItemSelectorOpen(true);
-                                        if (allowMultiSelect) {
+                                        if (shouldReplaceElement) {
+                                            handleChipClick(0);
+                                        } else {
+                                            setDirectoryItemSelectorOpen(true);
                                             setMultiSelect(true);
                                         }
                                     }}
