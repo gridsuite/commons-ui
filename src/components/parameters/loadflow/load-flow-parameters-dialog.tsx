@@ -79,7 +79,6 @@ export function LoadFlowParametersEditionDialog({
             titleId={titleId}
             removeOptional
             language={language}
-            unscrollableFullHeight
         >
             <LoadFlowProvider>
                 <LoadFlowParametersForm
