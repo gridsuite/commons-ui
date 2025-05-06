@@ -218,7 +218,9 @@ export function DirectoryItemsInput({
                                             handleChipClick(0);
                                         } else {
                                             setDirectoryItemSelectorOpen(true);
-                                            setMultiSelect(true);
+                                            if (allowMultiSelect) {
+                                                setMultiSelect(true);
+                                            }
                                         }
                                     }}
                                 >
