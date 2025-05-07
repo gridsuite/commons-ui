@@ -27,7 +27,11 @@ export function HelperPreviousValue({
 
     // this is not a real TS check as (previousValue === undefined)
     // but prevent some bypassed TS checks from a parent which possibly sends null
-    if ((!previousValue && previousValue !== 0) || Number.isNaN(previousValue)) {
+    if (
+        (!previousValue && previousValue !== 0) ||
+        Number.isNaN(previousValue) ||
+        previousValue === 'NaN' /* TODO to remove when network-map-server never return string 'NaN' */
+    ) {
         return undefined;
     }
 
