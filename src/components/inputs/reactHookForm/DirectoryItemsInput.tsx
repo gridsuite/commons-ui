@@ -26,6 +26,7 @@ import { fetchDirectoryElementPath } from '../../../services';
 import { ElementAttributes } from '../../../utils';
 
 export const NAME = 'name';
+export const DESCRIPTION_INPUT = 'description';
 
 const styles = {
     formDirectoryElements1: {
