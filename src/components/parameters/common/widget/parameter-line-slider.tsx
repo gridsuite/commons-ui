@@ -10,7 +10,6 @@ import { FormattedMessage } from 'react-intl';
 import { Mark } from '@mui/base';
 import { parametersStyles } from '../../parameters-style';
 import { SliderInput } from '../../../inputs';
-import { mergeSx } from '../../../../utils';
 
 export function sanitizePercentageValue(value: number) {
     return Math.round(value * 10) / 10;
