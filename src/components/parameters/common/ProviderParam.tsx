@@ -15,18 +15,17 @@ export interface ProviderParamProps {
     options: { id: string; label: string }[];
 }
 
+const styles = {
+    providerParam: {
+        height: 'fit-content',
+        justifyContent: 'space-between',
+    },
+};
+
 export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
     return (
         <>
-            <Grid
-                xl={8}
-                container
-                sx={{
-                    height: 'fit-content',
-                    justifyContent: 'space-between',
-                }}
-                paddingRight={1}
-            >
+            <Grid xl={8} container sx={styles.providerParam} paddingRight={1}>
                 <Grid item xs sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>

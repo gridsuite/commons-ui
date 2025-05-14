@@ -87,9 +87,9 @@ export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: IColumnsDef[] = [
     },
 ];
 
-// TODO: a cleaner solution can be done by using yup.array()
-// Instead of creating a schema for each limit duration individually,
-// we can use yup.array() to define an array of limit durations directly.
+/* TODO: a cleaner solution can be done by using yup.array()
+ Instead of creating a schema for each limit duration individually,
+ we can use yup.array() to define an array of limit durations directly. */
 const getLimitDurationsFormSchema = (nbLimits: number) => {
     const limitDurationsFormSchema: Record<string, NumberSchema> = {};
     for (let i = 0; i < nbLimits; i++) {

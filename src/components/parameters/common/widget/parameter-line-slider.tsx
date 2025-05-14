@@ -25,6 +25,13 @@ type SliderParameterLineProps = {
     maxValue?: number; // default = 100;
 };
 
+const styles = {
+    container: {
+        ...parametersStyles.controlItem,
+        paddingRight: 2,
+    },
+};
+
 export function ParameterLineSlider({
     name,
     label,
@@ -38,7 +45,7 @@ export function ParameterLineSlider({
             <Grid item xs={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item container xs={4} sx={mergeSx(parametersStyles.controlItem, { paddingRight: 2 })}>
+            <Grid item container xs={4} sx={styles.container}>
                 <SliderInput
                     name={name}
                     min={minValue}

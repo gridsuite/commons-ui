@@ -22,42 +22,30 @@ import {
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
 } from '../constant';
 
-const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) => {
-    const formValues: Record<string, number> = {};
-    limits.forEach((limit, index) => {
-        formValues[LIMIT_DURATION_FORM + index] = limit.reduction;
-    });
-    return formValues;
-};
+const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
+    limits.reduce((acc: Record<string, number>, limit, index) => {
+        acc[LIMIT_DURATION_FORM + index] = limit.reduction;
+        return acc;
+    }, {});
 
-export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) => {
-    if (!limits) {
-        return {};
-    }
-    return {
-        [LIMIT_REDUCTIONS_FORM]: limits.map((vlLimits) => ({
-            [VOLTAGE_LEVELS_FORM]: `${vlLimits.voltageLevel.nominalV} kV`,
-            [IST_FORM]: vlLimits.permanentLimitReduction,
-            ...toFormValuesFromTemporaryLimits(vlLimits.temporaryLimitReductions),
-        })),
-    };
-};
+export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) =>
+    !limits
+        ? {}
+        : {
+              [LIMIT_REDUCTIONS_FORM]: limits.map((vlLimits) => ({
+                  [VOLTAGE_LEVELS_FORM]: `${vlLimits.voltageLevel.nominalV} kV`,
+                  [IST_FORM]: vlLimits.permanentLimitReduction,
+                  ...toFormValuesFromTemporaryLimits(vlLimits.temporaryLimitReductions),
+              })),
+          };
 
-export const toFormValueSaParameters = (params: ISAParameters) => {
-    const providerFormValues = {
-        [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
-    };
-    const limitReductionFormValues = toFormValuesLimitReductions(params?.limitReductions);
-    const SASpecificFormValues = {
-        [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] * 100,
-        [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
-        [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
-    };
-    return {
-        ...providerFormValues,
-        ...limitReductionFormValues,
-        ...SASpecificFormValues,
-    };
-};
+export const toFormValueSaParameters = (params: ISAParameters) => ({
+    [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
+    ...toFormValuesLimitReductions(params?.limitReductions),
+    // SA specific form values
+    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] * 100,
+    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
+    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
+    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
+    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+});

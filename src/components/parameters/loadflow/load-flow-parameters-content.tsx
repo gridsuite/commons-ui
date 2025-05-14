@@ -20,7 +20,6 @@ import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/column
 import { parametersStyles } from '../parameters-style';
 import { SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { LoadFlowParametersInfos } from '../../../utils/types/loadflow.type';
-import { mergeSx } from '../../../utils';
 import { ParameterLineSlider } from '../common/widget/parameter-line-slider';
 import { TabPanel } from '../common/parameters';
 
@@ -30,6 +29,16 @@ type LoadFlowParametersContentProps = {
     specificParameters: SpecificParameterInfos[];
     params: LoadFlowParametersInfos | null;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+};
+
+const styles = {
+    container: {
+        ...parametersStyles.scrollableGrid,
+        maxHeight: '100%',
+    },
+    maxWidth: {
+        width: '100%',
+    },
 };
 
 function LoadFlowParametersContent({
@@ -47,13 +56,8 @@ function LoadFlowParametersContent({
                 paddingLeft: 1,
             }}
         >
-            <Grid
-                container
-                sx={mergeSx(parametersStyles.scrollableGrid, {
-                    maxHeight: '100%',
-                })}
-            >
-                <Grid item sx={{ width: '100%' }}>
+            <Grid container sx={styles.container}>
+                <Grid item sx={styles.maxWidth}>
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
                         <LoadFlowGeneralParameters provider={currentProvider} specificParams={specificParameters} />
                     </TabPanel>
