@@ -66,6 +66,7 @@ export interface DirectoryItemsInputProps {
     onRowChanged?: (a: boolean) => void;
     onChange?: (e: any) => void;
     disable?: boolean;
+    allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
 }
 
@@ -80,13 +81,14 @@ export function DirectoryItemsInput({
     onRowChanged,
     onChange,
     disable = false,
+    allowMultiSelect = true,
     labelRequiredFromContext = true,
-}: DirectoryItemsInputProps) {
+}: Readonly<DirectoryItemsInputProps>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);
     const [expanded, setExpanded] = useState<UUID[]>([]);
-    const [multiSelect, setMultiSelect] = useState(true);
+    const [multiSelect, setMultiSelect] = useState(allowMultiSelect);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
     const {
@@ -165,6 +167,10 @@ export function DirectoryItemsInput({
         [getValues, name]
     );
 
+    const shouldReplaceElement = useMemo(() => {
+        return allowMultiSelect === false && elements?.length === 1;
+    }, [allowMultiSelect, elements]);
+
     return (
         <>
             <FormControl
@@ -208,8 +214,14 @@ export function DirectoryItemsInput({
                                     size="small"
                                     disabled={disable}
                                     onClick={() => {
-                                        setDirectoryItemSelectorOpen(true);
-                                        setMultiSelect(true);
+                                        if (shouldReplaceElement) {
+                                            handleChipClick(0);
+                                        } else {
+                                            setDirectoryItemSelectorOpen(true);
+                                            if (allowMultiSelect) {
+                                                setMultiSelect(true);
+                                            }
+                                        }
                                     }}
                                 >
                                     <FolderIcon />
