@@ -22,4 +22,5 @@ export * from './topBar';
 export * from './treeViewFinder';
 export * from './notifications';
 export * from './icons';
+export * from './parameters';
 export * from './menus';

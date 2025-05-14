@@ -16,3 +16,4 @@ export * from './usePrevious';
 export * from './useSnackMessage';
 export * from './useFormatLabelWithUnit';
 export * from './useSelectAppearance';
+export * from './use-parameters-backend';
