@@ -7,13 +7,6 @@
 
 import { getUserToken } from '../redux/commonStore';
 
-export interface BackendFetchInit {
-    method: string;
-    headers?: HeadersInit;
-    body?: string | FormData;
-    signal?: AbortSignal;
-}
-
 const parseError = (text: string) => {
     try {
         return JSON.parse(text);
@@ -22,7 +15,7 @@ const parseError = (text: string) => {
     }
 };
 
-const prepareRequest = (init: BackendFetchInit, token?: string) => {
+const prepareRequest = (init: RequestInit | undefined, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
         throw new TypeError(`First argument of prepareRequest is not an object : ${typeof init}`);
     }
@@ -51,19 +44,24 @@ const handleError = (response: Response) => {
     });
 };
 
-const safeFetch = (url: string, initCopy: BackendFetchInit) => {
+const safeFetch = (url: string, initCopy: RequestInit) => {
     return fetch(url, initCopy).then((response) => (response.ok ? response : handleError(response)));
 };
 
-export const backendFetch = (url: string, init: BackendFetchInit, token?: string) => {
+export const backendFetch = (url: string, init: RequestInit, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy);
 };
 
-export const backendFetchJson = (url: string, init: BackendFetchInit, token?: string) => {
+export const backendFetchJson = (url: string, init?: RequestInit, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy).then((safeResponse) => (safeResponse.status === 204 ? null : safeResponse.json()));
 };
+
+export function backendFetchText(url: string, init?: RequestInit, token?: string) {
+    const initCopy = prepareRequest(init, token);
+    return safeFetch(url, initCopy).then((safeResponse) => safeResponse.text());
+}
 
 export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));

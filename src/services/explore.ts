@@ -9,6 +9,7 @@ import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils/types/types';
 import { NewFilterType } from '../components/filter/filter.type';
+import { ElementType } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
@@ -84,4 +85,41 @@ export async function fetchElementsInfos(
         final = final.concat(result);
     }
     return final;
+}
+
+export function createParameter(
+    newParameter: any,
+    name: string,
+    parameterType: ElementType,
+    description: string,
+    parentDirectoryUuid: UUID
+) {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('name', name);
+    urlSearchParams.append('type', parameterType);
+    urlSearchParams.append('description', description);
+    urlSearchParams.append('parentDirectoryUuid', parentDirectoryUuid);
+    return backendFetch(`${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/parameters?${urlSearchParams.toString()}`, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newParameter),
+    });
+}
+
+export function updateParameter(
+    id: UUID,
+    newParameter: any,
+    name: string,
+    parameterType: ElementType,
+    description: string
+) {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('name', name);
+    urlSearchParams.append('type', parameterType);
+    urlSearchParams.append('description', description);
+    return backendFetch(`${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/parameters/${id}?${urlSearchParams.toString()}`, {
+        method: 'put',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newParameter),
+    });
 }
