@@ -6,3 +6,4 @@
  */
 export { LeftPanelOpenIcon } from './LeftPanelOpenIcon';
 export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
+export { NetworkNodeIcon } from './NetworkNodeIcon';
