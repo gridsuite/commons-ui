@@ -29,4 +29,5 @@ export type StudyMetadata = Metadata & {
     };
     defaultCountry?: string;
     favoriteCountries?: string[];
+    substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
 };
