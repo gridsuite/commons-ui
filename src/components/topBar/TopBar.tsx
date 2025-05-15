@@ -52,7 +52,7 @@ import UserSettingsDialog from './UserSettingsDialog';
 import { type Metadata } from '../../utils/types/metadata';
 import { DARK_THEME, type GsTheme, LIGHT_THEME } from '../../utils/styles';
 import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
-import MessageBanner from './MessageBanner';
+import { DevModeBanner } from './DevModeBanner';
 
 const styles = {
     grow: {
@@ -282,13 +282,8 @@ export function TopBar({
     );
 
     return (
-        // @ts-expect-error appBar style is not defined
-        <AppBar position="static" color="default" sx={styles.appBar}>
-            {user && developerMode && (
-                <MessageBanner>
-                    <FormattedMessage id="top-bar/developerModeWarning" defaultMessage="Developer mode" />
-                </MessageBanner>
-            )}
+        <AppBar position="static" color="default">
+            {user && developerMode && <DevModeBanner />}
             <Toolbar>
                 {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
@@ -311,39 +306,38 @@ export function TopBar({
                             open={Boolean(anchorElAppsMenu)}
                             onClose={handleCloseAppsMenu}
                         >
-                            {appsAndUrls &&
-                                appsAndUrls
-                                    .filter((item) => !item.hiddenInAppsMenu)
-                                    .map((item) => (
-                                        <Box
-                                            component="a"
-                                            key={item.name}
-                                            href={item.url?.toString()}
-                                            sx={styles.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            <StyledMenuItem onClick={handleCloseAppsMenu}>
-                                                <ListItemText>
-                                                    <span
-                                                        style={{
-                                                            fontWeight: 'bold',
-                                                        }}
-                                                    >
-                                                        Grid
-                                                    </span>
-                                                    <span
-                                                        style={{
-                                                            color: item.appColor === undefined ? 'grey' : item.appColor,
-                                                            fontWeight: 'bold',
-                                                        }}
-                                                    >
-                                                        {item.name}
-                                                    </span>
-                                                </ListItemText>
-                                            </StyledMenuItem>
-                                        </Box>
-                                    ))}
+                            {appsAndUrls
+                                ?.filter((item) => !item.hiddenInAppsMenu)
+                                .map((item) => (
+                                    <Box
+                                        component="a"
+                                        key={item.name}
+                                        href={item.url?.toString()}
+                                        sx={styles.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <StyledMenuItem onClick={handleCloseAppsMenu}>
+                                            <ListItemText>
+                                                <span
+                                                    style={{
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    Grid
+                                                </span>
+                                                <span
+                                                    style={{
+                                                        color: item.appColor ?? 'grey',
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    {item.name}
+                                                </span>
+                                            </ListItemText>
+                                        </StyledMenuItem>
+                                    </Box>
+                                ))}
                         </StyledMenu>
                     </Box>
                 )}
@@ -383,14 +377,12 @@ export function TopBar({
                                                 <PersonIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
-                                                {user !== null && (
-                                                    <Box component="span" sx={styles.sizeLabel}>
-                                                        {user.profile.name} <br />
-                                                        <Box component="span" sx={styles.userMail}>
-                                                            {user.profile.email}
-                                                        </Box>
+                                                <Box component="span" sx={styles.sizeLabel}>
+                                                    {user.profile.name} <br />
+                                                    <Box component="span" sx={styles.userMail}>
+                                                        {user.profile.email}
                                                     </Box>
-                                                )}
+                                                </Box>
                                             </ListItemText>
                                         </StyledMenuItem>
 

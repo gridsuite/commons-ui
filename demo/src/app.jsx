@@ -869,9 +869,7 @@ function AppContent({ language, onLanguageClick }) {
                             onEquipmentLabellingClick={handleEquipmentLabellingClick}
                             equipmentLabelling={equipmentLabelling}
                             withElementsSearch
-                            searchingLabel={intl.formatMessage({
-                                id: 'equipment_search/label',
-                            })}
+                            searchingLabel={intl.formatMessage({ id: 'equipment_search/label' })}
                             onSearchTermChange={searchMatchingEquipments}
                             onSelectionChange={displayEquipment}
                             searchDisabled={searchDisabled}
