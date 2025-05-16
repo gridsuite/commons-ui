@@ -9,3 +9,4 @@ export * from './explore';
 export * from './appsMetadata';
 export * from './directory';
 export * from './study';
+export * from './userAdmin';
