@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import NetworkNode from '@material-symbols/svg-400/outlined/network_node.svg?react';
+import DeviceHub from '@material-symbols/svg-400/outlined/device_hub.svg?react';
 import { useTheme } from '@mui/material';
 
-interface NetworkNodeProps {
+interface DeviceHubProps {
     style?: React.CSSProperties;
 }
-export function NetworkNodeIcon({ style }: NetworkNodeProps) {
+export function DeviceHubIcon({ style }: DeviceHubProps) {
     const theme = useTheme();
 
     const defaultStyle: React.CSSProperties = {
@@ -19,5 +19,5 @@ export function NetworkNodeIcon({ style }: NetworkNodeProps) {
         height: 15,
         fill: theme.palette.text.primary,
     };
-    return <NetworkNode style={{ ...defaultStyle, ...style }} />;
+    return <DeviceHub style={{ ...defaultStyle, ...style }} />;
 }
