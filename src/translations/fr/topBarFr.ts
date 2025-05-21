@@ -35,8 +35,10 @@ export const topBarFr = {
 
     'user-information-dialog/title': 'Informations utilisateur',
     'user-information-dialog/role': 'Rôle',
-    'user-information-dialog/role-user': 'Utilisateur simple',
-    'user-information-dialog/role-admin': 'Admin',
+    'user-information-dialog/UTILISATEURS': 'Utilisateur',
+    'user-information-dialog/ADMIN': 'Admin',
+    'user-information-dialog/ADMIN_EXPLORE': 'Admin Explore',
+    'user-information-dialog/no-roles': 'Pas de rôle',
     'user-information-dialog/profile': 'Profil',
     'user-information-dialog/no-profile': 'Pas de profil',
     'user-information-dialog/quotas': 'Quotas',
