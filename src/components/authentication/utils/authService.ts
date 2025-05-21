@@ -16,11 +16,8 @@ import {
     setLogoutError,
     setShowAuthenticationRouterLogin,
     setSignInCallbackError,
-    setUnauthorizedUserInfo,
-    setUserValidationError,
 } from '../../../redux/actions/authActions';
 
-type UserValidationFunc = (user: User) => Promise<boolean>;
 type IdpSettingsGetter = () => Promise<IdpSettings>;
 
 export type IdpSettings = {
@@ -165,11 +162,7 @@ export function logout(dispatch: Dispatch<AuthenticationActions>, userManagerIns
     });
 }
 
-export function dispatchUser(
-    dispatch: Dispatch<AuthenticationActions>,
-    userManagerInstance: CustomUserManager,
-    validateUser: UserValidationFunc
-) {
+export function dispatchUser(dispatch: Dispatch<AuthenticationActions>, userManagerInstance: CustomUserManager) {
     return userManagerInstance.getUser().then((user) => {
         if (user) {
             // If session storage contains a expired token at initialization
@@ -179,36 +172,15 @@ export function dispatchUser(
                 console.debug('User token is expired and will not be dispatched');
                 return Promise.resolve();
             }
-            // without validateUser defined, valid user by default
-            const validateUserPromise = validateUser?.(user) || Promise.resolve(true);
-            return validateUserPromise
-                .then((valid) => {
-                    if (!valid) {
-                        console.debug("User isn't authorized to log in and will not be dispatched");
-                        return dispatch(setUnauthorizedUserInfo(user?.profile?.name, ''));
-                    }
-                    console.debug('User has been successfully loaded from store.');
-                    // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
-                    // because it is not hacked at page loading on the fragment before oidc-client lib initialization
-                    reloadTimerOnExpiresIn(
-                        user,
-                        userManagerInstance,
-                        computeMinExpiresIn(
-                            user.expires_in,
-                            user.id_token,
-                            userManagerInstance.idpSettings?.maxExpiresIn
-                        )
-                    );
-                    return dispatch(setLoggedUser(user));
-                })
-                .catch((e: Error) => {
-                    console.log('Error in dispatchUser', e);
-                    return dispatch(
-                        setUserValidationError(user?.profile?.name, {
-                            error: e,
-                        })
-                    );
-                });
+            console.debug('User has been successfully loaded from store.');
+            // In authorization code flow we have to make the oidc-client lib re-evaluate the date of the token renewal timers
+            // because it is not hacked at page loading on the fragment before oidc-client lib initialization
+            reloadTimerOnExpiresIn(
+                user,
+                userManagerInstance,
+                computeMinExpiresIn(user.expires_in, user.id_token, userManagerInstance.idpSettings?.maxExpiresIn)
+            );
+            return dispatch(setLoggedUser(user));
         }
         console.debug('You are not logged in.');
         return Promise.resolve();
@@ -263,14 +235,10 @@ export function handleSilentRenewCallback(userManagerInstance: UserManager) {
     userManagerInstance.signinSilentCallback();
 }
 
-function handleUser(
-    dispatch: Dispatch<AuthenticationActions>,
-    userManager: CustomUserManager,
-    validateUser: UserValidationFunc
-) {
+function handleUser(dispatch: Dispatch<AuthenticationActions>, userManager: CustomUserManager) {
     userManager.events.addUserLoaded((user) => {
         console.debug('user loaded', user);
-        dispatchUser(dispatch, userManager, validateUser);
+        dispatchUser(dispatch, userManager);
     });
 
     userManager.events.addSilentRenewError((error) => {
@@ -328,18 +296,17 @@ function handleUser(
     });
 
     console.debug('dispatch user');
-    dispatchUser(dispatch, userManager, validateUser);
+    dispatchUser(dispatch, userManager);
 }
 
 export async function initializeAuthenticationDev(
     dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
-    validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
     const userManager: UserManager = new UserManagerMock({});
     if (!isSilentRenew) {
-        handleUser(dispatch, userManager, validateUser);
+        handleUser(dispatch, userManager);
         if (!isSigninCallback) {
             handleSigninSilent(dispatch, userManager);
         }
@@ -351,7 +318,6 @@ export async function initializeAuthenticationProd(
     dispatch: Dispatch<AuthenticationActions>,
     isSilentRenew: boolean,
     idpSettingsGetter: IdpSettingsGetter,
-    validateUser: UserValidationFunc,
     isSigninCallback: boolean
 ) {
     const idpSettings = await idpSettingsGetter();
@@ -371,7 +337,7 @@ export async function initializeAuthenticationProd(
         // Hack to enrich UserManager object
         userManager.idpSettings = idpSettings; // store our settings in there as well to use it later
         if (!isSilentRenew) {
-            handleUser(dispatch, userManager, validateUser);
+            handleUser(dispatch, userManager);
             if (!isSigninCallback) {
                 handleSigninSilent(dispatch, userManager);
             }
