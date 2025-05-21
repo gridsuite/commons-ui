@@ -42,9 +42,9 @@
         "@react-querybuilder/material": "^8.2.0",
         "autosuggest-highlight": "^3.3.4",
         "clsx": "^2.1.1",
-        "mui-nested-menu": "^4.0.0",
         "jwt-decode": "^4.0.0",
         "localized-countries": "^2.0.0",
+        "mui-nested-menu": "^4.0.0",
         "oidc-client": "^1.11.5",
         "prop-types": "^15.8.1",
         "react-csv-downloader": "^3.3.0",
@@ -53,7 +53,8 @@
         "react-querybuilder": "^8.2.0",
         "reconnecting-websocket": "^4.4.0",
         "type-fest": "^4.34.1",
-        "uuid": "^11.0.5"
+        "uuid": "^11.0.5",
+        "yup-locales": "^1.2.28"
     },
     "peerDependencies": {
         "@emotion/react": "^11.14.0",

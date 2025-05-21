@@ -8,15 +8,14 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import yup from 'yup';
+import { type SubmitHandler, useForm, type UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema } from './ExplicitNamingFilterForm';
-
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';

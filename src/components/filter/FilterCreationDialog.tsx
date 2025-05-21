@@ -6,9 +6,10 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { FieldValues, Resolver, useForm } from 'react-hook-form';
+import { type FieldValues, type Resolver, useForm } from 'react-hook-form';
+import yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'crypto';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
@@ -17,7 +18,6 @@ import {
     getExplicitNamingFilterEmptyFormData,
 } from './explicitNaming/ExplicitNamingFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
-import yup from '../../utils/yupConfig';
 import { FilterForm } from './FilterForm';
 import { expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';

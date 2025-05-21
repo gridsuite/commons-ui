@@ -7,12 +7,12 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
+import yup from 'yup';
 import { Box } from '@mui/material';
-import { ValueParserParams } from 'ag-grid-community';
+import type { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
-import { UUID } from 'crypto';
+import type { UUID } from 'crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
 import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';

@@ -8,8 +8,8 @@
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import yup, { type ObjectSchema } from 'yup';
+import type { UUID } from 'crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
     getDefaultSpecificParamsValues,
@@ -38,7 +38,6 @@ import {
     PARAM_PROVIDER_OPENLOADFLOW,
     SPECIFIC_PARAMETERS,
 } from './constants';
-import yup from '../../../utils/yupConfig';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
 import { DESCRIPTION_INPUT, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';

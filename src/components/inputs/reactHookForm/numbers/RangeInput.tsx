@@ -7,10 +7,9 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import { type ObjectSchema } from 'yup';
+import yup, { type ObjectSchema } from 'yup';
 import { FormControl, Grid, InputLabel, type Theme } from '@mui/material';
 import { FloatInput } from './FloatInput';
-import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 

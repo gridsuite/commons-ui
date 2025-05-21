@@ -6,10 +6,10 @@
  */
 
 import { Grid } from '@mui/material';
-import { UUID } from 'crypto';
+import type { UUID } from 'crypto';
+import yup from 'yup';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
-import yup from '../../utils/yupConfig';
 
 export const filterStyles = {
     textField: {

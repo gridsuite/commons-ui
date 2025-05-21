@@ -183,8 +183,6 @@ export const filterExpertFr = {
     greaterOrEqual: '>=',
     lessThan: '<',
     lessOrEqual: '<=',
-    YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
-    YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
     changeOperatorMessage: "L'opérateur sera modifié et s'appliquera sur tous les critères déjà créés dans le groupe.",
     lowShortCircuitCurrentLimit: 'Limite ICC min',
     highShortCircuitCurrentLimit: 'Limite ICC max',

@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
+import yup from 'yup';
 import {
     ILimitReductionsByVoltageLevel,
     IST_FORM,
@@ -36,7 +37,6 @@ import {
     WRITE_SLACK_BUS,
 } from './constants';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
-import yup from '../../../utils/yupConfig';
 import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
 import { DESCRIPTION_INPUT, NAME } from '../../inputs';

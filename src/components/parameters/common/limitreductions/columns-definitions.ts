@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { NumberSchema } from 'yup';
-import { UUID } from 'crypto';
-import yup from '../../../../utils/yupConfig';
+import yup, { type NumberSchema } from 'yup';
+import type { UUID } from 'crypto';
 import {
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
