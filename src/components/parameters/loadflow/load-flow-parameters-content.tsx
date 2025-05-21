@@ -39,6 +39,12 @@ const styles = {
     maxWidth: {
         width: '100%',
     },
+    wrapper: {
+        flexGrow: 1,
+        overflow: 'auto',
+        paddingLeft: 1,
+        height: '60vh',
+    },
 };
 
 function LoadFlowParametersContent({
@@ -49,13 +55,7 @@ function LoadFlowParametersContent({
     defaultLimitReductions,
 }: Readonly<LoadFlowParametersContentProps>) {
     return (
-        <Box
-            sx={{
-                flexGrow: 1,
-                overflow: 'auto',
-                paddingLeft: 1,
-            }}
-        >
+        <Box sx={styles.wrapper}>
             <Grid container sx={styles.container}>
                 <Grid item sx={styles.maxWidth}>
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
