@@ -33,7 +33,7 @@ export interface ParametersEditionDialogProps {
     titleId: string;
     name: string;
     description: string | null;
-    activeDirectory?: UUID;
+    activeDirectory: UUID;
     language?: string;
     user: User | null;
     enableDeveloperMode: boolean;
@@ -68,6 +68,11 @@ export function LoadFlowParametersEditionDialog({
 
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, id, name, description);
 
+    const {
+        formState: { errors, dirtyFields },
+    } = loadflowMethods.formMethods;
+    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
+
     return (
         <CustomMuiDialog
             open={open}
@@ -79,6 +84,7 @@ export function LoadFlowParametersEditionDialog({
             titleId={titleId}
             removeOptional
             language={language}
+            disabledSave={disableSave}
         >
             <LoadFlowProvider>
                 <LoadFlowParametersForm
@@ -90,6 +96,7 @@ export function LoadFlowParametersEditionDialog({
                                     <Grid item xs={12}>
                                         <UniqueNameInput
                                             name={FieldConstants.NAME}
+                                            currentName={name}
                                             label="nameProperty"
                                             elementType={ElementType.LOADFLOW_PARAMETERS}
                                             activeDirectory={activeDirectory}
