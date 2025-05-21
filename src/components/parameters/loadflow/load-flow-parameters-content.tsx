@@ -43,7 +43,6 @@ const styles = {
         flexGrow: 1,
         overflow: 'auto',
         paddingLeft: 1,
-        height: '60vh',
     },
 };
 
