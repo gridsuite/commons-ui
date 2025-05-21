@@ -422,7 +422,7 @@ function AppContent({ language, onLanguageClick }) {
     ];
 
     useEffect(() => {
-        initializeAuthenticationDev(dispatch, initialMatchSilentRenewCallbackUrl != null, validateUser)
+        initializeAuthenticationDev(dispatch, initialMatchSilentRenewCallbackUrl != null)
             .then((userManager) => {
                 setUserManager({
                     instance: userManager,
