@@ -8,5 +8,7 @@ export * from './utils';
 export * from './explore';
 export * from './appsMetadata';
 export * from './directory';
+export * from './loadflow';
 export * from './study';
+export * from './study-config';
 export * from './userAdmin';
