@@ -8,6 +8,7 @@
 import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
+import { ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
@@ -43,5 +44,29 @@ export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParam
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(newParams),
+    });
+}
+
+export function getStudyShortCircuitParameters(studyUuid: UUID): Promise<ShortCircuitParametersInfos> {
+    console.info('get study short-circuit parameters');
+    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit-analysis/parameters`);
+}
+
+export function setStudyShortCircuitParameters(studyUuid: UUID | null, newParams: Record<string, any>) {
+    console.info('set study short-circuit parameters', newParams);
+    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit-analysis/parameters`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: newParams ? JSON.stringify(newParams) : null,
+    });
+}
+
+export function invalidateStudyShortCircuitStatus(studyUuid: UUID | null) {
+    console.info('invalidate study short circuit status');
+    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit/invalidate-status`, {
+        method: 'PUT',
     });
 }

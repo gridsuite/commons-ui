@@ -117,6 +117,7 @@ export function updateParameter(
     urlSearchParams.append('name', name);
     urlSearchParams.append('type', parameterType);
     urlSearchParams.append('description', description);
+    console.info('update Parameter', parameterType, newParameter);
     return backendFetch(`${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/parameters/${id}?${urlSearchParams.toString()}`, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
