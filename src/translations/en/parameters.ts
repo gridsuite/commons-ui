@@ -51,7 +51,7 @@ export const parametersEn = {
     descLfCountries: 'Countries',
     descLfAllCountries: 'All countries',
     descLfCountriesToBalance: 'Countries participating in balancing',
-    editParameters: 'Edit parameter',
+    editParameters: 'Edit parameters',
     RealPercentage: 'This value must be between 0 and 1',
 
     General: 'General',
