@@ -7,7 +7,8 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import yup, { type ObjectSchema } from 'yup';
+import * as yup from 'yup';
+import type { ObjectSchema } from 'yup';
 import { FormControl, Grid, InputLabel, type Theme } from '@mui/material';
 import { FloatInput } from './FloatInput';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';

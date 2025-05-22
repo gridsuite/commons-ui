@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import yup, { type NumberSchema } from 'yup';
+import * as yup from 'yup';
+import type { NumberSchema } from 'yup';
 import type { UUID } from 'crypto';
 import { type IntlShape } from 'react-intl';
 import {

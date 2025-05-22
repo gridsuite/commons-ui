@@ -6,7 +6,7 @@
  */
 
 import { type UseFormReturn } from 'react-hook-form';
-import yup from 'yup';
+import * as yup from 'yup';
 import { type IntlShape } from 'react-intl';
 import {
     ILimitReductionsByVoltageLevel,

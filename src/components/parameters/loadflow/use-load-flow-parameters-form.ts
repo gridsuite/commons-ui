@@ -16,7 +16,8 @@ import {
     useMemo,
     useState,
 } from 'react';
-import yup, { type ObjectSchema } from 'yup';
+import * as yup from 'yup';
+import type { ObjectSchema } from 'yup';
 import type { UUID } from 'crypto';
 import { useIntl } from 'react-intl';
 import {

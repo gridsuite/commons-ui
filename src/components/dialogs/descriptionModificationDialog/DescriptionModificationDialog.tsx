@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
-import yup from 'yup';
+import * as yup from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';

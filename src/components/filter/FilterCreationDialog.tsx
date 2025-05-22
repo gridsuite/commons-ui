@@ -8,7 +8,7 @@
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { type FieldValues, type Resolver, useForm } from 'react-hook-form';
-import yup from 'yup';
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { UUID } from 'crypto';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';

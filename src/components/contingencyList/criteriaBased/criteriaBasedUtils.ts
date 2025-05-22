@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import yup, { type ObjectSchema } from 'yup';
+import * as yup from 'yup';
+import type { ObjectSchema } from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import {
     DEFAULT_RANGE_VALUE,

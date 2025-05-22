@@ -7,7 +7,7 @@
 
 import { Grid } from '@mui/material';
 import type { UUID } from 'crypto';
-import yup from 'yup';
+import * as yup from 'yup';
 import { type IntlShape } from 'react-intl';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';

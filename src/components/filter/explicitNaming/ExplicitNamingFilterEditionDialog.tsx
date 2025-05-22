@@ -8,7 +8,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import yup from 'yup';
+import * as yup from 'yup';
 import { type SubmitHandler, useForm, type UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 import { useIntl } from 'react-intl';
