@@ -53,6 +53,7 @@ export const parametersEn = {
     descLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
     RealPercentage: 'This value must be between 0 and 1',
+    NormalizedPercentage: 'This percentage must be between 0 and 100',
 
     General: 'General',
     LimitReductions: 'Limit reductions',
