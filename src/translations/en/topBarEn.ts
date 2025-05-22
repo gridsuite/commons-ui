@@ -34,8 +34,10 @@ export const topBarEn = {
 
     'user-information-dialog/title': 'User information',
     'user-information-dialog/role': 'Role',
-    'user-information-dialog/role-user': 'Basic user',
-    'user-information-dialog/role-admin': 'Admin',
+    'user-information-dialog/UTILISATEURS': 'User',
+    'user-information-dialog/ADMIN': 'Admin',
+    'user-information-dialog/ADMIN_EXPLORE': 'Admin Explore',
+    'user-information-dialog/no-roles': 'No roles',
     'user-information-dialog/profile': 'Profile',
     'user-information-dialog/no-profile': 'No profile',
     'user-information-dialog/quotas': 'User quotas',

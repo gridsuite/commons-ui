@@ -8,7 +8,7 @@
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { User } from 'oidc-client';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
@@ -46,6 +46,9 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
         }
     }, [openDialog, user]);
 
+    const rolesString = user?.profile?.profile ?? '';
+    const rolesList = rolesString ? rolesString.split('|').map((role) => role.trim()) : [];
+
     return (
         <Dialog open={openDialog && !!user && !!userDetails} onClose={onClose}>
             <DialogTitle fontWeight="bold" sx={styles.DialogTitle}>
@@ -60,15 +63,23 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography>
-                            <FormattedMessage
-                                id={
-                                    userDetails?.isAdmin
-                                        ? 'user-information-dialog/role-admin'
-                                        : 'user-information-dialog/role-user'
-                                }
-                            />
-                        </Typography>
+                        {rolesList.length > 0 ? (
+                            <Typography>
+                                {rolesList.map((role, index) => (
+                                    <Fragment key={role}>
+                                        {index > 0 && ' | '}
+                                        <FormattedMessage
+                                            id={`user-information-dialog/${role}`}
+                                            defaultMessage={role}
+                                        />
+                                    </Fragment>
+                                ))}
+                            </Typography>
+                        ) : (
+                            <Typography>
+                                <FormattedMessage id="user-information-dialog/no-roles" />
+                            </Typography>
+                        )}
                     </Grid>
 
                     <Grid item xs={6}>
