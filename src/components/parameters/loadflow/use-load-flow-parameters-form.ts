@@ -5,11 +5,20 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
+import { type FieldErrors, useForm, type UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    type Dispatch,
+    type SetStateAction,
+    type SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import yup, { type ObjectSchema } from 'yup';
 import type { UUID } from 'crypto';
+import { useIntl } from 'react-intl';
 import {
     getCommonLoadFlowParametersFormSchema,
     getDefaultSpecificParamsValues,
@@ -20,16 +29,16 @@ import {
     setSpecificParameters,
     TabValues,
 } from './load-flow-parameters-utils';
-import { LoadFlowParametersInfos, SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
+import type { LoadFlowParametersInfos, SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
 import {
     ParameterType,
-    SpecificParameterInfos,
-    UseParametersBackendReturnProps,
+    type SpecificParameterInfos,
+    type UseParametersBackendReturnProps,
 } from '../../../utils/types/parameters.type';
 import { ComputingType, PROVIDER } from '../common';
 import {
     getLimitReductionsFormSchema,
-    ILimitReductionsByVoltageLevel,
+    type ILimitReductionsByVoltageLevel,
     LIMIT_REDUCTIONS_FORM,
 } from '../common/limitreductions/columns-definitions';
 import {
@@ -63,13 +72,14 @@ export interface UseLoadFlowParametersFormReturn {
     onSaveDialog: (formData: Record<string, any>) => void;
 }
 
-export const useLoadFlowParametersForm = (
+export function useLoadFlowParametersForm(
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>,
     enableDeveloperMode: boolean,
     parametersUuid: UUID | null,
     name: string | null,
     description: string | null
-): UseLoadFlowParametersFormReturn => {
+): UseLoadFlowParametersFormReturn {
+    const intl = useIntl();
     const [
         providers,
         provider,
@@ -108,18 +118,21 @@ export const useLoadFlowParametersForm = (
         }));
     }, [currentProvider, specificParamsDescriptions]);
 
-    const formSchema = useMemo(() => {
-        return yup.object({
-            ...getDialogLoadFlowParametersFormSchema(name),
-            [PROVIDER]: yup.string().required(),
-            [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
-            ...getCommonLoadFlowParametersFormSchema().fields,
-            ...getLimitReductionsFormSchema(
-                params?.limitReductions ? params.limitReductions[0]?.temporaryLimitReductions.length : 0
-            ).fields,
-            ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
-        });
-    }, [name, params?.limitReductions, specificParameters]);
+    const formSchema = useMemo(
+        () =>
+            yup.object({
+                ...getDialogLoadFlowParametersFormSchema(name),
+                [PROVIDER]: yup.string().required(),
+                [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
+                ...getCommonLoadFlowParametersFormSchema(intl).fields,
+                ...getLimitReductionsFormSchema(
+                    intl,
+                    params?.limitReductions ? params.limitReductions[0]?.temporaryLimitReductions.length : 0
+                ).fields,
+                ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
+            }),
+        [intl, name, params?.limitReductions, specificParameters]
+    );
 
     const formMethods = useForm({
         defaultValues: {
@@ -321,4 +334,4 @@ export const useLoadFlowParametersForm = (
         onSaveInline,
         onSaveDialog,
     };
-};
+}

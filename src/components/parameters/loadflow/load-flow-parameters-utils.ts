@@ -7,6 +7,7 @@
 
 import { type UseFormReturn } from 'react-hook-form';
 import yup from 'yup';
+import { type IntlShape } from 'react-intl';
 import {
     ILimitReductionsByVoltageLevel,
     IST_FORM,
@@ -58,7 +59,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
     });
 };
 
-export const getAdvancedLoadFlowParametersFormSchema = () => {
+export function getAdvancedLoadFlowParametersFormSchema(intl: IntlShape) {
     return yup.object().shape({
         [VOLTAGE_INIT_MODE]: yup.string().required(),
         [USE_REACTIVE_LIMITS]: yup.boolean().required(),
@@ -71,10 +72,10 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
         [DC_POWER_FACTOR]: yup
             .number()
             .required()
-            .positive('dcPowerFactorGreaterThan0')
-            .max(1, 'dcPowerFactorLessOrEqualThan1'),
+            .positive(intl.formatMessage({ id: 'dcPowerFactorGreaterThan0' }))
+            .max(1, intl.formatMessage({ id: 'dcPowerFactorLessOrEqualThan1' })),
     });
-};
+}
 
 export const getDialogLoadFlowParametersFormSchema = (name: string | null) => {
     const shape: { [key: string]: yup.AnySchema } = {};
@@ -85,19 +86,19 @@ export const getDialogLoadFlowParametersFormSchema = (name: string | null) => {
     return shape;
 };
 
-export const getCommonLoadFlowParametersFormSchema = () => {
+export function getCommonLoadFlowParametersFormSchema(intl: IntlShape) {
     return yup.object().shape({
         [COMMON_PARAMETERS]: yup.object().shape({
             ...getBasicLoadFlowParametersFormSchema().fields,
-            ...getAdvancedLoadFlowParametersFormSchema().fields,
+            ...getAdvancedLoadFlowParametersFormSchema(intl).fields,
         }),
     });
-};
+}
 
 export const getSpecificLoadFlowParametersFormSchema = (specificParameters: SpecificParameterInfos[]) => {
     const shape: { [key: string]: yup.AnySchema } = {};
 
-    specificParameters?.forEach((param: SpecificParameterInfos) => {
+    specificParameters?.forEach((param) => {
         switch (param.type) {
             case ParameterType.STRING:
                 shape[param.name] = yup.string().required();

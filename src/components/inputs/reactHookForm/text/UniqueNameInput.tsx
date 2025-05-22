@@ -148,10 +148,6 @@ export function UniqueNameInput({
         onManualChangeCallback?.();
     };
 
-    const translatedLabel = <FormattedMessage id={label} />;
-
-    const translatedError = error && <FormattedMessage id={error.message} />;
-
     const showOk = value?.trim() && !isValidating && !error;
     const endAdornment = (
         <InputAdornment position="end">
@@ -168,14 +164,14 @@ export function UniqueNameInput({
             value={value}
             name={name}
             inputRef={ref}
-            label={translatedLabel}
+            label={<FormattedMessage id={label} />}
             type="text"
             autoFocus={autoFocus}
             margin="dense"
             sx={sx}
             fullWidth={fullWidth}
             error={!!error}
-            helperText={translatedError}
+            helperText={error?.message}
             InputProps={{ endAdornment }}
             {...formProps}
         />

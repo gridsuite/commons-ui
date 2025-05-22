@@ -6,6 +6,7 @@
  */
 
 import { useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { type FieldValues, type Resolver, useForm } from 'react-hook-form';
 import yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,8 +15,8 @@ import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
 import {
-    explicitNamingFilterSchema,
     getExplicitNamingFilterEmptyFormData,
+    getExplicitNamingFilterSchema,
 } from './explicitNaming/ExplicitNamingFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
 import { FilterForm } from './FilterForm';
@@ -32,18 +33,6 @@ const emptyFormData = {
     ...getExplicitNamingFilterEmptyFormData(),
     ...getExpertFilterEmptyFormData(),
 };
-
-// we use both schemas then we can change the type of filter without losing the filled form fields
-const formSchema = yup
-    .object()
-    .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-        ...explicitNamingFilterSchema,
-        ...expertFilterSchema,
-    })
-    .required();
 
 export interface FilterCreationDialogProps {
     open: boolean;
@@ -66,6 +55,28 @@ export function FilterCreationDialog({
     filterType,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
+    const intl = useIntl();
+
+    // we use both schemas then we can change the type of filter without losing the filled form fields
+    const formSchema = useMemo(
+        () =>
+            yup
+                .object()
+                .shape({
+                    [FieldConstants.NAME]: yup
+                        .string()
+                        .trim()
+                        .required(intl.formatMessage({ id: 'nameEmpty' })),
+                    [FieldConstants.DESCRIPTION]: yup
+                        .string()
+                        .max(MAX_CHAR_DESCRIPTION, intl.formatMessage({ id: 'descriptionLimitError' })),
+                    [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+                    ...getExplicitNamingFilterSchema(intl),
+                    ...expertFilterSchema,
+                })
+                .required(),
+        [intl]
+    );
 
     const formMethods = useForm({
         defaultValues: emptyFormData,
