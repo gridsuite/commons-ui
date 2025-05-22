@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, LinearProgress } from '@mui/material';
+import { Box, Grid, LinearProgress, Theme } from '@mui/material';
 import { ReactNode } from 'react';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
@@ -17,6 +17,32 @@ interface LoadFlowParametersFormProps {
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
 }
+
+const styles = {
+    form: {
+        height: '100%',
+        display: 'flex',
+        position: 'relative',
+        flexDirection: 'column',
+    },
+    loadflowParameters: {
+        flexGrow: 1,
+        paddingLeft: 1,
+        overflow: 'auto',
+    },
+    actions: {
+        flexGrow: 0,
+    },
+    content: (theme: Theme) => ({
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        maxHeight: 'calc(100% - 15vh)',
+        paddingRight: theme.spacing(2),
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(1),
+        flexGrow: 1,
+    }),
+};
 
 export function LoadFlowParametersForm({
     loadflowMethods,
@@ -39,42 +65,30 @@ export function LoadFlowParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            {renderTitleFields?.()}
-            <Box
-                sx={{
-                    height: '100%',
-                    display: 'flex',
-                    position: 'relative',
-                    flexDirection: 'column',
-                }}
-            >
+            <Box sx={styles.form}>
+                {renderTitleFields?.()}
                 {paramsLoaded ? (
-                    <Box
-                        sx={{
-                            height: '100%',
-                            display: 'flex',
-                            position: 'relative',
-                            flexDirection: 'column',
-                        }}
-                    >
+                    <Box sx={styles.loadflowParameters}>
                         <LoadFlowParametersHeader
                             selectedTab={selectedTab}
                             handleTabChange={handleTabChange}
                             tabIndexesWithError={tabIndexesWithError}
                             formattedProviders={formattedProviders}
                         />
-                        <LoadFlowParametersContent
-                            selectedTab={selectedTab}
-                            currentProvider={currentProvider ?? ''}
-                            specificParameters={specificParameters}
-                            params={params}
-                            defaultLimitReductions={defaultLimitReductions}
-                        />
+                        <Grid container sx={styles.content}>
+                            <LoadFlowParametersContent
+                                selectedTab={selectedTab}
+                                currentProvider={currentProvider ?? ''}
+                                specificParameters={specificParameters}
+                                params={params}
+                                defaultLimitReductions={defaultLimitReductions}
+                            />
+                        </Grid>
                     </Box>
                 ) : (
                     <LinearProgress />
                 )}
-                {renderActions?.()}
+                {renderActions && <Box sx={styles.actions}>{renderActions?.()}</Box>}
             </Box>
         </CustomFormProvider>
     );
