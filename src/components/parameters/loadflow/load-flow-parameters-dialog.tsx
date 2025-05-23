@@ -17,7 +17,7 @@ import {
     getLoadFlowProviders,
     getLoadFlowSpecificParametersDescription,
     setLoadFlowParameters,
-} from '../../../services/loadflow';
+} from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import { DescriptionField, UniqueNameInput } from '../../inputs';
 import { ElementType, FieldConstants } from '../../../utils';
