@@ -67,5 +67,5 @@ export const networkModificationsEn = {
     'network_modifications.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION':
         'Creating voltage level {voltageLevelEquipmentId} and substation {substationEquipmentId}',
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION': 'Modifying voltage level topology {computedLabel}',
-    'network_modifications.COUPLING_DEVICE_CREATION': 'Creating a coupling device in voltage level {computedLabel}',
+    'network_modifications.ADD_COUPLING_DEVICE': 'Creating a coupling device in voltage level {computedLabel}',
 };
