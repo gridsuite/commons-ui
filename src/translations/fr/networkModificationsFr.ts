@@ -71,5 +71,5 @@ export const networkModificationsFr = {
         'Création du poste {voltageLevelEquipmentId} et du site {substationEquipmentId}',
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION':
         'Modification de la topologie du poste {computedLabel}',
-    'network_modifications.ADD_COUPLING_DEVICE': 'Création de couplage / omnibus dans le poste {computedLabel}',
+    'network_modifications.CREATE_COUPLING_DEVICE': 'Création de couplage / omnibus dans le poste {computedLabel}',
 };
