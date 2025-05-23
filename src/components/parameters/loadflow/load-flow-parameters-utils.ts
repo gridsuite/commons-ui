@@ -5,7 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UseFormReturn } from 'react-hook-form';
+import { type UseFormReturn } from 'react-hook-form';
+import * as yup from 'yup';
+import { type IntlShape } from 'react-intl';
 import {
     ILimitReductionsByVoltageLevel,
     IST_FORM,
@@ -36,7 +38,6 @@ import {
     WRITE_SLACK_BUS,
 } from './constants';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
-import yup from '../../../utils/yupConfig';
 import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
 import { DESCRIPTION_INPUT, NAME } from '../../inputs';
@@ -58,7 +59,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
     });
 };
 
-export const getAdvancedLoadFlowParametersFormSchema = () => {
+export function getAdvancedLoadFlowParametersFormSchema(intl: IntlShape) {
     return yup.object().shape({
         [VOLTAGE_INIT_MODE]: yup.string().required(),
         [USE_REACTIVE_LIMITS]: yup.boolean().required(),
@@ -71,10 +72,10 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
         [DC_POWER_FACTOR]: yup
             .number()
             .required()
-            .positive('dcPowerFactorGreaterThan0')
-            .max(1, 'dcPowerFactorLessOrEqualThan1'),
+            .positive(intl.formatMessage({ id: 'dcPowerFactorGreaterThan0' }))
+            .max(1, intl.formatMessage({ id: 'dcPowerFactorLessOrEqualThan1' })),
     });
-};
+}
 
 export const getDialogLoadFlowParametersFormSchema = (name: string | null) => {
     const shape: { [key: string]: yup.AnySchema } = {};
@@ -85,19 +86,19 @@ export const getDialogLoadFlowParametersFormSchema = (name: string | null) => {
     return shape;
 };
 
-export const getCommonLoadFlowParametersFormSchema = () => {
+export function getCommonLoadFlowParametersFormSchema(intl: IntlShape) {
     return yup.object().shape({
         [COMMON_PARAMETERS]: yup.object().shape({
             ...getBasicLoadFlowParametersFormSchema().fields,
-            ...getAdvancedLoadFlowParametersFormSchema().fields,
+            ...getAdvancedLoadFlowParametersFormSchema(intl).fields,
         }),
     });
-};
+}
 
 export const getSpecificLoadFlowParametersFormSchema = (specificParameters: SpecificParameterInfos[]) => {
     const shape: { [key: string]: yup.AnySchema } = {};
 
-    specificParameters?.forEach((param: SpecificParameterInfos) => {
+    specificParameters?.forEach((param) => {
         switch (param.type) {
             case ParameterType.STRING:
                 shape[param.name] = yup.string().required();

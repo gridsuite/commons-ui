@@ -9,7 +9,7 @@ import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
-import { type ObjectSchema } from 'yup';
+import type { ObjectSchema } from 'yup';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';

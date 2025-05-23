@@ -55,6 +55,7 @@ export const parametersFr = {
     descLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
     RealPercentage: 'Cette valeur doit être comprise entre 0 et 1',
+    NormalizedPercentage: 'Ce pourcentage doit être compris entre 0 et 100',
 
     General: 'Général',
     LimitReductions: 'Abattements',

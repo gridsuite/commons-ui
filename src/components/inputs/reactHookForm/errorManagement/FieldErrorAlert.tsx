@@ -6,11 +6,11 @@
  */
 
 import { Alert, Grid } from '@mui/material';
-import React from 'react';
+import { type ReactNode } from 'react';
 
-export interface FieldErrorAlertProps {
-    message: string | React.ReactNode;
-}
+export type FieldErrorAlertProps = {
+    message: ReactNode;
+};
 
 // component to display alert when a specific rhf field is in error
 // this component needs to be isolated to avoid too many rerenders

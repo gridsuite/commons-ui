@@ -6,7 +6,6 @@
  */
 
 import { useCallback, useMemo } from 'react';
-
 import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 import './stylesExpertFilter.css';
@@ -23,7 +22,6 @@ import {
     OPERATOR_OPTIONS,
     RULES,
 } from './expertFilterConstants';
-
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
@@ -33,18 +31,6 @@ import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
-
-yup.setLocale({
-    mixed: {
-        required: 'YupRequired',
-        notType: ({ type }) => {
-            if (type === 'number') {
-                return 'YupNotTypeNumber';
-            }
-            return 'YupNotTypeDefault';
-        },
-    },
-});
 
 function isSupportedEquipmentType(equipmentType: string): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)

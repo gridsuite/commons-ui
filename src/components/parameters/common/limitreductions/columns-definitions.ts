@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { NumberSchema } from 'yup';
-import { UUID } from 'crypto';
-import yup from '../../../../utils/yupConfig';
+import * as yup from 'yup';
+import type { NumberSchema } from 'yup';
+import type { UUID } from 'crypto';
+import { type IntlShape } from 'react-intl';
 import {
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
@@ -88,68 +89,72 @@ export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: IColumnsDef[] = [
 ];
 
 /* TODO: a cleaner solution can be done by using yup.array()
- Instead of creating a schema for each limit duration individually,
- we can use yup.array() to define an array of limit durations directly. */
-const getLimitDurationsFormSchema = (nbLimits: number) => {
-    const limitDurationsFormSchema: Record<string, NumberSchema> = {};
-    for (let i = 0; i < nbLimits; i++) {
-        limitDurationsFormSchema[LIMIT_DURATION_FORM + i] = yup
-            .number()
-            .min(0, 'RealPercentage')
-            .max(1, 'RealPercentage')
-            .nullable()
-            .required();
-    }
-    return limitDurationsFormSchema;
-};
+ * Instead of creating a schema for each limit duration individually,
+ * we can use yup.array() to define an array of limit durations directly. */
+function getLimitDurationsFormSchema(intl: IntlShape, nbLimits: number) {
+    return Array.from<never>({ length: nbLimits }).reduce(
+        (acc, _, idx) => {
+            acc[`${LIMIT_DURATION_FORM}${idx}`] = yup
+                .number()
+                .min(0, intl.formatMessage({ id: 'RealPercentage' }))
+                .max(1, intl.formatMessage({ id: 'RealPercentage' }))
+                .nullable()
+                .required();
+            return acc;
+        },
+        {} as Record<`${typeof LIMIT_DURATION_FORM}${number}`, NumberSchema>
+    );
+}
 
-export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
+export function getLimitReductionsFormSchema(intl: IntlShape, nbTemporaryLimits: number) {
     return yup
         .object()
         .shape({
             [LIMIT_REDUCTIONS_FORM]: yup.array().of(
                 yup.object().shape({
                     [VOLTAGE_LEVELS_FORM]: yup.string(),
-                    [IST_FORM]: yup.number().min(0, 'RealPercentage').max(1, 'RealPercentage').nullable().required(),
-                    ...getLimitDurationsFormSchema(nbTemporaryLimits),
+                    [IST_FORM]: yup
+                        .number()
+                        .min(0, intl.formatMessage({ id: 'RealPercentage' }))
+                        .max(1, intl.formatMessage({ id: 'RealPercentage' }))
+                        .nullable()
+                        .required(),
+                    ...getLimitDurationsFormSchema(intl, nbTemporaryLimits),
                 })
             ),
         })
         .required();
-};
+}
 
-export const getSAParametersFromSchema = (limitReductions?: ILimitReductionsByVoltageLevel[]) => {
-    const providerSchema = yup.object().shape({
+export function getSAParametersFromSchema(intl: IntlShape, limitReductions?: ILimitReductionsByVoltageLevel[]) {
+    return yup.object().shape({
+        // providerSchema fields
         [PARAM_SA_PROVIDER]: yup.string().required(),
-    });
-
-    const limitReductionsSchema = getLimitReductionsFormSchema(
-        limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
-    );
-
-    const thresholdsSchema = yup.object().shape({
+        // limitReductionsSchema fields
+        ...getLimitReductionsFormSchema(
+            intl,
+            limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
+        ).fields,
+        // thresholdsSchema fields
         [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .max(100, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .nullable()
             .required(),
         [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .max(100, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .nullable()
             .required(),
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().nullable().required(),
         [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .max(100, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .nullable()
             .required(),
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().nullable().required(),
     });
-
-    return yup.object().shape({
-        ...providerSchema.fields,
-        ...limitReductionsSchema.fields,
-        ...thresholdsSchema.fields,
-    });
-};
+}

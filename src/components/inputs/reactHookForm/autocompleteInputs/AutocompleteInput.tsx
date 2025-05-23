@@ -7,7 +7,7 @@
 
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, identity, isFieldRequired } from '../utils/functions';
+import { identity, isFieldRequired } from '../utils/functions';
 import { FieldLabel } from '../utils/FieldLabel';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 import { Option } from '../../../../utils/types/types';
@@ -104,14 +104,18 @@ export function AutocompleteInput({
                     })}
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly }}
+                    error={error !== undefined}
                     helperText={
-                        <HelperPreviousValue
-                            previousValue={previousValue}
-                            isNodeBuilt={isNodeBuilt}
-                            disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
-                        />
+                        error !== undefined ? (
+                            error.message
+                        ) : (
+                            <HelperPreviousValue
+                                previousValue={previousValue}
+                                isNodeBuilt={isNodeBuilt}
+                                disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                            />
+                        )
                     }
-                    {...genHelperError(error?.message)}
                     {...formProps}
                     {...rest}
                 />

@@ -5,31 +5,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
-import { FilterEditionProps } from '../filter.type';
+import type { FilterEditionProps } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
 import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
-import { HeaderFilterSchema } from '../HeaderFilterForm';
+import { getHeaderFilterSchema } from '../HeaderFilterForm';
 import { catchErrorHandler } from '../../../services';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
-
-const formSchema = yup
-    .object()
-    .shape({
-        ...HeaderFilterSchema,
-        ...expertFilterSchema,
-    })
-    .required();
 
 export function ExpertFilterEditionDialog({
     id,
@@ -45,8 +38,21 @@ export function ExpertFilterEditionDialog({
     language,
     description,
 }: Readonly<FilterEditionProps>) {
+    const intl = useIntl();
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
+
+    const formSchema = useMemo(
+        () =>
+            yup
+                .object()
+                .shape({
+                    ...getHeaderFilterSchema(intl),
+                    ...expertFilterSchema,
+                })
+                .required(),
+        [intl]
+    );
 
     // default values are set via reset when we fetch data
     const formMethods = useForm({

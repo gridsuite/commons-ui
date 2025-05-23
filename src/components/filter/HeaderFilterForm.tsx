@@ -6,10 +6,11 @@
  */
 
 import { Grid } from '@mui/material';
-import { UUID } from 'crypto';
+import type { UUID } from 'crypto';
+import * as yup from 'yup';
+import { type IntlShape } from 'react-intl';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
-import yup from '../../utils/yupConfig';
 
 export const filterStyles = {
     textField: {
@@ -32,11 +33,18 @@ export interface FilterFormProps {
     };
 }
 
-export const HeaderFilterSchema = {
-    [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-    [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-};
+export function getHeaderFilterSchema(intl: IntlShape) {
+    return {
+        [FieldConstants.NAME]: yup
+            .string()
+            .trim()
+            .required(intl.formatMessage({ id: 'nameEmpty' })),
+        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+        [FieldConstants.DESCRIPTION]: yup
+            .string()
+            .max(MAX_CHAR_DESCRIPTION, intl.formatMessage({ id: 'descriptionLimitError' })),
+    };
+}
 
 export function HeaderFilterForm({ creation, activeDirectory }: Readonly<FilterFormProps>) {
     return (

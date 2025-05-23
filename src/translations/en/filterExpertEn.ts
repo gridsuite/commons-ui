@@ -183,8 +183,6 @@ export const filterExpertEn = {
     greaterOrEqual: '>=',
     lessThan: '<',
     lessOrEqual: '<=',
-    YupNotTypeNumber: 'This field only accepts numeric values',
-    YupNotTypeDefault: 'Field value format is incorrect',
     changeOperatorMessage:
         'The operator will be changed and will be applied to all the criteria already created in the group.',
     lowShortCircuitCurrentLimit: 'Low short-circuit current limit',
