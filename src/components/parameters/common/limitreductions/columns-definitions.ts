@@ -140,18 +140,21 @@ export function getSAParametersFromSchema(intl: IntlShape, limitReductions?: ILi
             .number()
             .min(0, intl.formatMessage({ id: 'NormalizedPercentage' }))
             .max(100, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .nullable()
             .required(),
         [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
             .min(0, intl.formatMessage({ id: 'NormalizedPercentage' }))
             .max(100, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .nullable()
             .required(),
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().nullable().required(),
         [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
             .min(0, intl.formatMessage({ id: 'NormalizedPercentage' }))
             .max(100, intl.formatMessage({ id: 'NormalizedPercentage' }))
+            .nullable()
             .required(),
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().nullable().required(),
     });
 }
