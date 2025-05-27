@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
@@ -24,11 +25,6 @@ export interface DescriptionModificationDialogProps {
     updateElement: (uuid: string, data: Record<string, string>) => Promise<void>;
 }
 
-const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-});
-type SchemaType = yup.InferType<typeof schema>;
-
 export function DescriptionModificationDialog({
     elementUuid,
     description,
@@ -37,13 +33,23 @@ export function DescriptionModificationDialog({
     updateElement,
 }: Readonly<DescriptionModificationDialogProps>) {
     const { snackError } = useSnackMessage();
+    const intl = useIntl();
 
-    const emptyFormData = {
-        [FieldConstants.DESCRIPTION]: description ?? '',
-    };
+    const schema = useMemo(
+        () =>
+            yup.object().shape({
+                [FieldConstants.DESCRIPTION]: yup
+                    .string()
+                    .max(MAX_CHAR_DESCRIPTION, intl.formatMessage({ id: 'descriptionLimitError' })),
+            }),
+        [intl]
+    );
+    type SchemaType = yup.InferType<typeof schema>;
 
     const methods = useForm({
-        defaultValues: emptyFormData,
+        defaultValues: {
+            [FieldConstants.DESCRIPTION]: description ?? '',
+        },
         resolver: yupResolver(schema),
     });
 

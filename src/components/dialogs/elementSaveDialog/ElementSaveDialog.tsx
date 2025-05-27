@@ -7,11 +7,11 @@
 
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UUID } from 'crypto';
-import { useCallback, useEffect, useState } from 'react';
-import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
@@ -89,17 +89,6 @@ export type ElementSaveDialogProps = {
           }
     );
 
-const schema = yup
-    .object()
-    .shape({
-        [FieldConstants.NAME]: yup.string().trim().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
-    })
-    .required();
-
-type SchemaType = yup.InferType<typeof schema>;
-
 const emptyFormData: FormData = {
     [FieldConstants.NAME]: '',
     [FieldConstants.DESCRIPTION]: '',
@@ -131,6 +120,24 @@ export function ElementSaveDialog({
     const [selectedItem, setSelectedItem] = useState<
         TreeViewFinderNodeProps & { parentFolderId: UUID; fullPath: string }
     >();
+
+    const schema = useMemo(
+        () =>
+            yup
+                .object()
+                .shape({
+                    [FieldConstants.NAME]: yup.string().trim().required(),
+                    [FieldConstants.DESCRIPTION]: yup
+                        .string()
+                        .optional()
+                        .max(MAX_CHAR_DESCRIPTION, intl.formatMessage({ id: 'descriptionLimitError' })),
+                    [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
+                })
+                .required(),
+        [intl]
+    );
+
+    type SchemaType = yup.InferType<typeof schema>;
 
     // Form handling with conditional defaultValues
     const formMethods = useForm({
@@ -170,10 +177,7 @@ export function ElementSaveDialog({
             });
             const dateTime = getCurrentDateTime();
             reset(
-                {
-                    ...emptyFormData,
-                    [FieldConstants.NAME]: `${formattedMessage}-${dateTime}`,
-                },
+                { ...emptyFormData, [FieldConstants.NAME]: `${formattedMessage}-${dateTime}` },
                 { keepDefaultValues: true }
             );
         }
@@ -184,18 +188,12 @@ export function ElementSaveDialog({
         if (open && isCreateMode && studyUuid) {
             fetchDirectoryElementPath(studyUuid).then((res) => {
                 if (!res || res.length < 2) {
-                    snackError({
-                        messageTxt: 'unknown study directory',
-                        headerId: 'studyDirectoryFetchingError',
-                    });
+                    snackError({ messageTxt: 'unknown study directory', headerId: 'studyDirectoryFetchingError' });
                     return;
                 }
                 const parentFolderIndex = res.length - 2;
                 const { elementUuid, elementName } = res[parentFolderIndex];
-                setDestinationFolder({
-                    id: elementUuid,
-                    name: elementName,
-                });
+                setDestinationFolder({ id: elementUuid, name: elementName });
             });
         }
     }, [studyUuid, open, snackError, isCreateMode]);
@@ -203,10 +201,7 @@ export function ElementSaveDialog({
     // Set initial directory for creation if provided
     useEffect(() => {
         if (open && isCreateMode && initDirectory) {
-            setDestinationFolder({
-                id: initDirectory.elementUuid,
-                name: initDirectory.elementName,
-            });
+            setDestinationFolder({ id: initDirectory.elementUuid, name: initDirectory.elementName });
         }
     }, [initDirectory, open, isCreateMode]);
 
@@ -229,10 +224,7 @@ export function ElementSaveDialog({
                 const { id, name, description, parents } = items[0];
 
                 if (!parents) {
-                    snackError({
-                        messageTxt: 'errorNoParent',
-                        headerId: 'error',
-                    });
+                    snackError({ messageTxt: 'errorNoParent', headerId: 'error' });
                     return;
                 }
                 const fullPath = [...parents.map((parent) => parent.name), name].join('/');
@@ -327,9 +319,7 @@ export function ElementSaveDialog({
                             ]}
                             formProps={{
                                 sx: {
-                                    '& .MuiFormControlLabel-root': {
-                                        marginRight: 15,
-                                    },
+                                    '& .MuiFormControlLabel-root': { marginRight: 15 },
                                 },
                             }}
                         />
@@ -357,12 +347,8 @@ export function ElementSaveDialog({
                 types={isCreateMode ? [ElementType.DIRECTORY] : [type]}
                 onlyLeaves={isCreateMode ? false : undefined}
                 multiSelect={false}
-                validationButtonText={intl.formatMessage({
-                    id: 'validate',
-                })}
-                title={intl.formatMessage({
-                    id: isCreateMode ? 'showSelectDirectoryDialog' : selectorTitleId,
-                })}
+                validationButtonText={intl.formatMessage({ id: 'validate' })}
+                title={intl.formatMessage({ id: isCreateMode ? 'showSelectDirectoryDialog' : selectorTitleId })}
             />
         </CustomMuiDialog>
     );

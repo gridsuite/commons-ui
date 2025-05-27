@@ -7,32 +7,22 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import * as yup from 'yup';
+import { type SubmitHandler, useForm, type UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
+import { useIntl } from 'react-intl';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { saveExplicitNamingFilter } from '../utils/filterApi';
-import { explicitNamingFilterSchema } from './ExplicitNamingFilterForm';
-
+import { getExplicitNamingFilterSchema } from './ExplicitNamingFilterForm';
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FilterForm } from '../FilterForm';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { FilterEditionProps } from '../filter.type';
-import { HeaderFilterSchema } from '../HeaderFilterForm';
+import { getHeaderFilterSchema } from '../HeaderFilterForm';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
-
-const formSchema = yup
-    .object()
-    .shape({
-        ...HeaderFilterSchema,
-        ...explicitNamingFilterSchema,
-    })
-    .required();
-
-type FormSchemaType = yup.InferType<typeof formSchema>;
 
 export function ExplicitNamingFilterEditionDialog({
     id,
@@ -48,8 +38,22 @@ export function ExplicitNamingFilterEditionDialog({
     language,
     description,
 }: Readonly<FilterEditionProps>) {
+    const intl = useIntl();
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
+
+    const formSchema = useMemo(
+        () =>
+            yup
+                .object()
+                .shape({
+                    ...getHeaderFilterSchema(intl),
+                    ...getExplicitNamingFilterSchema(intl),
+                })
+                .required(),
+        [intl]
+    );
+    type FormSchemaType = yup.InferType<typeof formSchema>;
 
     // default values are set via reset when we fetch data
     const formMethods: UseFormReturn<FormSchemaType> = useForm({

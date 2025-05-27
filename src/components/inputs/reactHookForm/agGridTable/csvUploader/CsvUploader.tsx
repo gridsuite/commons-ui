@@ -201,17 +201,10 @@ export function CsvUploader({
                                             <Button {...getRootProps()} variant="contained">
                                                 <FormattedMessage id="UploadCSV" />
                                             </Button>
-                                            <span
-                                                style={{
-                                                    marginLeft: '10px',
-                                                    fontWeight: 'bold',
-                                                }}
-                                            >
+                                            <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>
                                                 {acceptedFile
                                                     ? acceptedFile.name
-                                                    : intl.formatMessage({
-                                                          id: 'uploadMessage',
-                                                      })}
+                                                    : intl.formatMessage({ id: 'uploadMessage' })}
                                             </span>
                                         </Grid>
                                     )}

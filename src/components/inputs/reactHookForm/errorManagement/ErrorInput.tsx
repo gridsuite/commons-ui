@@ -5,20 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { MutableRefObject, useEffect, useRef } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { type ComponentType, type MutableRefObject, type ReactNode, useEffect, useRef } from 'react';
 import { useController } from 'react-hook-form';
-
-export type ErrorMessage =
-    | {
-          id: string;
-          value: string;
-      }
-    | string;
 
 export interface ErrorInputProps {
     name: string;
-    InputField: ({ message }: { message: string | React.ReactNode }) => React.ReactNode;
+    InputField: ComponentType<{ message: ReactNode }>;
 }
 
 export function ErrorInput({ name, InputField }: ErrorInputProps) {
@@ -30,23 +22,6 @@ export function ErrorInput({ name, InputField }: ErrorInputProps) {
     });
 
     const errorRef: MutableRefObject<any> = useRef(null);
-
-    const errorProps = (errorMsg: ErrorMessage | undefined) => {
-        if (typeof errorMsg === 'string') {
-            return {
-                id: errorMsg,
-            };
-        }
-        if (typeof errorMsg === 'object') {
-            return {
-                id: errorMsg.id,
-                values: {
-                    value: errorMsg.value,
-                },
-            };
-        }
-        return {};
-    };
 
     useEffect(() => {
         // the scroll should be done only when the form is submitting
@@ -62,9 +37,7 @@ export function ErrorInput({ name, InputField }: ErrorInputProps) {
     return (
         errorMsg && (
             <div ref={errorRef}>
-                {InputField({
-                    message: <FormattedMessage {...errorProps(errorMsg)} />,
-                })}
+                <InputField message={errorMsg} />
             </div>
         )
     );

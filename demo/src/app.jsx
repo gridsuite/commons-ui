@@ -103,6 +103,7 @@ import {
     networkModificationsFr,
     logout,
     equipmentStyles,
+    useYupIntl,
 } from '../../src';
 
 const messages = {
@@ -307,6 +308,7 @@ function AppContent({ language, onLanguageClick }) {
     const navigate = useNavigate();
     const location = useLocation();
     const intl = useIntl();
+    useYupIntl();
     const [searchDisabled, setSearchDisabled] = useState(false);
     const [userManager, setUserManager] = useState({
         instance: null,

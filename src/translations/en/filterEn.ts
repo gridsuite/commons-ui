@@ -40,6 +40,8 @@ export const filterEn = {
     FreeProps: 'Equipment properties',
     SubstationFreeProps: 'Equipment substation properties',
     YupRequired: 'This field is required',
+    YupNotTypeNumber: 'This field only accepts numeric values',
+    YupNotTypeDefault: 'Field value format is incorrect',
     filterPropertiesNameUniquenessError: 'It is not possible to add multiple filters for the same property',
     emptyFilterError: 'Filter should contain at least one equipment',
     distributionKeyWithMissingIdError: 'Missing ID with defined distribution key',

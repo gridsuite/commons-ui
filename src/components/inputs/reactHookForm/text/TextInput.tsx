@@ -5,16 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactElement } from 'react';
-import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { type ReactElement } from 'react';
+import { IconButton, InputAdornment, TextField, type TextFieldProps } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
-import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
+import { TextFieldWithAdornment, type TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
 import { FieldLabel } from '../utils/FieldLabel';
-import { genHelperError, identity, isFieldRequired } from '../utils/functions';
+import { identity, isFieldRequired } from '../utils/functions';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
-
-import { Input } from '../../../../utils/types/types';
+import type { Input } from '../../../../utils/types/types';
 import { HelperPreviousValue } from '../utils/HelperPreviousValue';
 
 export interface TextInputProps {
@@ -113,15 +112,19 @@ export function TextInput({
                 adornment && {
                     handleClearValue,
                 })}
+            error={error !== undefined}
             helperText={
-                <HelperPreviousValue
-                    previousValue={previousValue}
-                    isNodeBuilt={isNodeBuilt}
-                    disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
-                    adornmentText={adornment?.text}
-                />
+                error !== undefined ? (
+                    error.message
+                ) : (
+                    <HelperPreviousValue
+                        previousValue={previousValue}
+                        isNodeBuilt={isNodeBuilt}
+                        disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                        adornmentText={adornment?.text}
+                    />
+                )
             }
-            {...genHelperError(error?.message)}
             {...formProps}
             {...(adornment && { ...finalAdornment })}
         />

@@ -4,21 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FormattedMessage } from 'react-intl';
-import { getIn, SchemaDescription } from 'yup';
-import { ReactElement } from 'react';
+import { getIn, type SchemaDescription } from 'yup';
+import { type ReactElement } from 'react';
 import { Grid } from '@mui/material';
-
-export function genHelperError(...errors: any[]) {
-    const inError = errors.find((e) => e);
-    if (inError) {
-        return {
-            error: true,
-            helperText: <FormattedMessage id={inError} />,
-        };
-    }
-    return {};
-}
 
 export function identity(x: any) {
     return x;

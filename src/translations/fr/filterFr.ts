@@ -40,6 +40,8 @@ export const filterFr = {
     FreeProps: "Propriétés de l'ouvrage",
     SubstationFreeProps: "Propriétés du site de l'ouvrage",
     YupRequired: 'Ce champ doit être renseigné',
+    YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
+    YupNotTypeDefault: "La valeur du champ n'est pas au bon format",
     filterPropertiesNameUniquenessError: "Il n'est pas possible d'ajouter plusieurs filtres pour la même propriété",
     emptyFilterError: 'Le filtre doit contenir au moins un ouvrage',
     distributionKeyWithMissingIdError: 'ID manquant avec une clé de répartition définie',

@@ -59,12 +59,7 @@ export function BottomRightButtons({
                 <Grid item xs={1}>
                     {csvProps && (
                         <InnerColoredButton onClick={() => setUploaderOpen(true)}>
-                            <Tooltip
-                                title={intl.formatMessage({
-                                    id: 'ImportCSV',
-                                })}
-                                placement="bottom"
-                            >
+                            <Tooltip title={intl.formatMessage({ id: 'ImportCSV' })} placement="bottom">
                                 <Upload />
                             </Tooltip>
                         </InnerColoredButton>

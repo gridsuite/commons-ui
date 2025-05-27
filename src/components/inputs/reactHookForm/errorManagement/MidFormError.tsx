@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { type ReactNode } from 'react';
 import { Box } from '@mui/material';
-import { ReactNode } from 'react';
 
-export type MidFormErrorProps = { message: string | ReactNode };
+export type MidFormErrorProps = { message: ReactNode };
 
 // component to display error message in the middle of dialog
 export function MidFormError({ message }: Readonly<MidFormErrorProps>) {
