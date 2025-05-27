@@ -6,6 +6,7 @@
  */
 
 import { useCallback } from 'react';
+import { UUID } from 'crypto';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
@@ -17,11 +18,11 @@ import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTex
 import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/uiConstants';
 
 export interface DescriptionModificationDialogProps {
-    elementUuid: string;
+    elementUuid: UUID;
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement: (uuid: string, data: Record<string, string>) => Promise<void>;
+    updateElement: (uuid: UUID, data: Record<string, string>) => Promise<void>;
 }
 
 const schema = yup.object().shape({

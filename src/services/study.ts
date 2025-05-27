@@ -6,7 +6,8 @@
  */
 
 import { UUID } from 'crypto';
-import { backendFetchJson } from './utils';
+import { backendFetch, backendFetchJson } from './utils';
+import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
@@ -21,4 +22,26 @@ export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string)
         },
         token
     );
+}
+
+export function getAvailableComponentLibraries(): Promise<string[]> {
+    console.info('get available component libraries for diagrams');
+    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/svg-component-libraries`);
+}
+
+export function getStudyNetworkVisualizationsParameters(studyUuid: UUID): Promise<NetworkVisualizationParameters> {
+    console.info('get study network visualization parameters');
+    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/network-visualizations/parameters`);
+}
+
+export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParams: Record<string, any>) {
+    console.info('set study network visualization parameters');
+    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/network-visualizations/parameters`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newParams),
+    });
 }
