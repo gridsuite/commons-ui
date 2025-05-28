@@ -24,6 +24,7 @@ const styles = {
         display: 'flex',
         position: 'relative',
         flexDirection: 'column',
+        maxHeight: 'calc(100% - 5vh)',
     },
     loadflowParameters: {
         flexGrow: 1,
@@ -36,7 +37,6 @@ const styles = {
     content: (theme: Theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
-        maxHeight: 'calc(100% - 15vh)',
         paddingRight: theme.spacing(2),
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(1),
