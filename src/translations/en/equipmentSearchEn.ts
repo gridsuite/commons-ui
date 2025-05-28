@@ -24,4 +24,5 @@ export const equipmentSearchEn = {
     'equipment_search/voltageLevelTag': 'VOLTAGE LEVEL',
     'equipment_search/substationTag': 'SUBSTATION',
     'equipment_search/busTag': 'BUS',
+    'equipment_search/tieLineTag': 'TIE LINE',
 };

@@ -218,6 +218,10 @@ export const EQUIPMENT_TYPE: Partial<
         name: EquipmentType.LCC_CONVERTER_STATION,
         tagLabel: 'equipment_search/lccConverterStationTag',
     },
+    [EquipmentType.TIE_LINE]: {
+        name: EquipmentType.TIE_LINE,
+        tagLabel: 'equipment_search/tieLineTag',
+    },
 };
 
 export const SEARCH_EQUIPMENTS: Partial<

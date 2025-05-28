@@ -24,4 +24,5 @@ export const equipmentSearchFr = {
     'equipment_search/voltageLevelTag': 'POSTE',
     'equipment_search/substationTag': 'SITE',
     'equipment_search/busTag': 'NOEUD',
+    'equipment_search/tieLineTag': 'INTERCONNEXION',
 };
