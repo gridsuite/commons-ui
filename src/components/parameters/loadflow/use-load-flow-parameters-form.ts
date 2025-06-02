@@ -111,20 +111,18 @@ export const useLoadFlowParametersForm = (
     }, [currentProvider, specificParamsDescriptions]);
 
     const formSchema = useMemo(() => {
-        let schema = yup.object({
-            ...getDialogLoadFlowParametersFormSchema(name),
-            [PROVIDER]: yup.string().required(),
-            [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
-            ...getCommonLoadFlowParametersFormSchema().fields,
-            ...getLimitReductionsFormSchema(
-                params?.limitReductions ? params.limitReductions[0]?.temporaryLimitReductions.length : 0
-            ).fields,
-            ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
-        });
-        if (name) {
-            schema = schema.concat(getNameElementEditorSchema());
-        }
-        return schema;
+        return yup
+            .object({
+                ...getDialogLoadFlowParametersFormSchema(name),
+                [PROVIDER]: yup.string().required(),
+                [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
+                ...getCommonLoadFlowParametersFormSchema().fields,
+                ...getLimitReductionsFormSchema(
+                    params?.limitReductions ? params.limitReductions[0]?.temporaryLimitReductions.length : 0
+                ).fields,
+                ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
+            })
+            .concat(getNameElementEditorSchema(name));
     }, [name, params?.limitReductions, specificParameters]);
 
     const formMethods = useForm({

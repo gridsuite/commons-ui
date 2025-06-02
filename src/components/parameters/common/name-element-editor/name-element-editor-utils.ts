@@ -7,15 +7,23 @@
 import yup from '../../../../utils/yupConfig';
 import { DESCRIPTION_INPUT, NAME } from '../../../inputs';
 
-export function getNameElementEditorEmptyFormData(elementName: string | null, elementdescripton: string | null) {
+export function getNameElementEditorEmptyFormData(
+    initialElementName: string | null,
+    initialElementdescripton: string | null
+) {
     return {
-        [NAME]: elementName,
-        [DESCRIPTION_INPUT]: elementdescripton,
+        [NAME]: initialElementName,
+        [DESCRIPTION_INPUT]: initialElementdescripton,
     };
 }
 
-export const getNameElementEditorSchema = () =>
-    yup.object().shape({
-        [NAME]: yup.string().required(),
+export function getNameElementEditorSchema(initialElementName: string | null) {
+    return yup.object().shape({
+        [NAME]: yup.string().when('nameRequiredWhenInitialNameIsSet', {
+            is: () => initialElementName !== null,
+            then: () => yup.string().required(),
+            otherwise: () => yup.string(),
+        }),
         [DESCRIPTION_INPUT]: yup.string(),
     });
+}
