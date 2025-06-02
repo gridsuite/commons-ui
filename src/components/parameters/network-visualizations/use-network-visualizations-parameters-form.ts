@@ -33,7 +33,7 @@ import {
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
-import {getNameElementEditorEmptyFormData, getNameElementEditorSchema} from "../common/name-element-editor";
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 
 export interface UseNetworkVisualizationParametersFormReturn {
     formMethods: UseFormReturn;

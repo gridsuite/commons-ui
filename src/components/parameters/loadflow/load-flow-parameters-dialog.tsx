@@ -93,7 +93,7 @@ export function LoadFlowParametersEditionDialog({
                                 initialElementName={name}
                                 activeDirectory={activeDirectory}
                                 elementType={ElementType.LOADFLOW_PARAMETERS}
-                            ></NameElementEditorForm>
+                            />
                         );
                     }}
                 />

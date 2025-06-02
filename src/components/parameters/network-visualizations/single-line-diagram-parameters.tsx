@@ -24,7 +24,11 @@ import {
 import { MuiSelectInput, SwitchInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 
-export function SingleLineDiagramParameters({ componentLibraries }: { componentLibraries: string[] }) {
+export interface SingleLineDiagramParametersProps {
+    componentLibraries: string[];
+}
+
+export function SingleLineDiagramParameters({ componentLibraries }: Readonly<SingleLineDiagramParametersProps>) {
     const componentLibsRenderCache = useMemo(
         () => Object.fromEntries(componentLibraries.filter(Boolean).map((libLabel) => [libLabel, libLabel])),
         [componentLibraries]

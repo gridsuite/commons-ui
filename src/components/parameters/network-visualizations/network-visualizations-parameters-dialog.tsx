@@ -64,7 +64,7 @@ export function NetworkVisualizationsParametersEditionDialog({
                             initialElementName={name}
                             activeDirectory={activeDirectory}
                             elementType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
-                        ></NameElementEditorForm>
+                        />
                     );
                 }}
             />

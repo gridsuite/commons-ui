@@ -5,12 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
-import { FunctionComponent } from 'react';
+import { UUID } from 'crypto';
+import { Grid } from '@mui/material';
 import { DescriptionField, UniqueNameInput } from '../../../inputs';
 import { ElementType, FieldConstants } from '../../../../utils';
 import { filterStyles } from '../../../filter/HeaderFilterForm';
-import { UUID } from 'crypto';
 
 export interface NameElementEditorFormProps {
     initialElementName: string;
@@ -18,11 +17,11 @@ export interface NameElementEditorFormProps {
     elementType: ElementType;
 }
 
-export const NameElementEditorForm: FunctionComponent<NameElementEditorFormProps> = ({
+export function NameElementEditorForm({
     initialElementName,
     activeDirectory,
     elementType,
-}) => {
+}: Readonly<NameElementEditorFormProps>) {
     return (
         <Grid item sx={{ height: '100%' }}>
             <Grid container spacing={2}>
@@ -43,4 +42,4 @@ export const NameElementEditorForm: FunctionComponent<NameElementEditorFormProps
             </Grid>
         </Grid>
     );
-};
+}
