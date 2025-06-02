@@ -33,7 +33,6 @@ import {
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
-import {getNameElementEditorEmptyFormData, getNameElementEditorSchema} from "../common/name-element-editor";
 
 export interface UseNetworkVisualizationParametersFormReturn {
     formMethods: UseFormReturn;
@@ -44,6 +43,12 @@ export interface UseNetworkVisualizationParametersFormReturn {
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
 }
+
+export const getNameElementEditorSchema = () =>
+    yup.object().shape({
+        [NAME]: yup.string().required(),
+        [DESCRIPTION_INPUT]: yup.string(),
+    });
 
 export const useNetworkVisualizationParametersForm = (
     parametersUuid: UUID | null,
@@ -60,6 +65,7 @@ export const useNetworkVisualizationParametersForm = (
         setSelectedTab(newValue);
     }, []);
 
+    // TODO DBR mutualiser getDialogLoadFlowParametersFormSchema + composant unique/desc ?
     const formSchema = useMemo(() => {
         let schema = yup.object({
             [TabValues.MAP]: yup.object().shape({
@@ -85,9 +91,11 @@ export const useNetworkVisualizationParametersForm = (
         return schema;
     }, [name]);
 
+    // TODO DBR mutualiser dft name/descr
     const formMethods = useForm({
         defaultValues: {
-            ...getNameElementEditorEmptyFormData(name, description),
+            [NAME]: name,
+            [DESCRIPTION_INPUT]: description,
             [TabValues.MAP]: {
                 [PARAM_LINE_FULL_PATH]: false,
                 [PARAM_LINE_PARALLEL_PATH]: false,

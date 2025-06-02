@@ -43,6 +43,7 @@ import { toFormValuesLimitReductions } from '../common/limitreductions/limit-red
 import { DESCRIPTION_INPUT, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
@@ -110,7 +111,7 @@ export const useLoadFlowParametersForm = (
     }, [currentProvider, specificParamsDescriptions]);
 
     const formSchema = useMemo(() => {
-        return yup.object({
+        let schema = yup.object({
             ...getDialogLoadFlowParametersFormSchema(name),
             [PROVIDER]: yup.string().required(),
             [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
@@ -120,12 +121,15 @@ export const useLoadFlowParametersForm = (
             ).fields,
             ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
         });
+        if (name) {
+            schema = schema.concat(getNameElementEditorSchema());
+        }
+        return schema;
     }, [name, params?.limitReductions, specificParameters]);
 
     const formMethods = useForm({
         defaultValues: {
-            [NAME]: name,
-            [DESCRIPTION_INPUT]: description,
+            ...getNameElementEditorEmptyFormData(name, description),
             [PROVIDER]: provider,
             [PARAM_LIMIT_REDUCTION]: null,
             [COMMON_PARAMETERS]: {

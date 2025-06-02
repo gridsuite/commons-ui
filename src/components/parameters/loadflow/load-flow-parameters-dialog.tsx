@@ -7,7 +7,6 @@
 
 import { UUID } from 'crypto';
 import { User } from 'oidc-client';
-import { Grid } from '@mui/material';
 import { CustomMuiDialog } from '../../dialogs';
 import { ComputingType } from '../common';
 import {
@@ -19,12 +18,11 @@ import {
     setLoadFlowParameters,
 } from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
-import { DescriptionField, UniqueNameInput } from '../../inputs';
-import { ElementType, FieldConstants } from '../../../utils';
-import { filterStyles } from '../../filter/HeaderFilterForm';
+import { ElementType } from '../../../utils';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
+import { NameElementEditorForm } from '../common/name-element-editor';
 
 export interface ParametersEditionDialogProps {
     id: UUID;
@@ -91,24 +89,11 @@ export function LoadFlowParametersEditionDialog({
                     loadflowMethods={loadflowMethods}
                     renderTitleFields={() => {
                         return (
-                            <Grid item sx={{ height: '100%' }}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <UniqueNameInput
-                                            name={FieldConstants.NAME}
-                                            currentName={name}
-                                            label="nameProperty"
-                                            elementType={ElementType.LOADFLOW_PARAMETERS}
-                                            activeDirectory={activeDirectory}
-                                            sx={filterStyles.textField}
-                                            fullWidth={false}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <DescriptionField expandingTextSx={filterStyles.description} />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
+                            <NameElementEditorForm
+                                initialElementName={name}
+                                activeDirectory={activeDirectory}
+                                elementType={ElementType.LOADFLOW_PARAMETERS}
+                            ></NameElementEditorForm>
                         );
                     }}
                 />

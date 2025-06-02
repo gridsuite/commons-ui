@@ -7,13 +7,11 @@
 
 import { UUID } from 'crypto';
 import { User } from 'oidc-client';
-import { Grid } from '@mui/material';
 import { CustomMuiDialog } from '../../dialogs';
-import { DescriptionField, UniqueNameInput } from '../../inputs';
-import { ElementType, FieldConstants } from '../../../utils';
-import { filterStyles } from '../../filter/HeaderFilterForm';
+import { ElementType } from '../../../utils';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
+import { NameElementEditorForm } from '../common/name-element-editor';
 
 export interface NetworkVisualizationsParametersEditionDialogProps {
     id: UUID;
@@ -62,24 +60,11 @@ export function NetworkVisualizationsParametersEditionDialog({
                 networkVisuMethods={networkVisuMethods}
                 renderTitleFields={() => {
                     return (
-                        <Grid item sx={{ height: '100%' }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <UniqueNameInput
-                                        name={FieldConstants.NAME}
-                                        currentName={name}
-                                        label="nameProperty"
-                                        elementType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
-                                        activeDirectory={activeDirectory}
-                                        sx={filterStyles.textField}
-                                        fullWidth={false}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <DescriptionField expandingTextSx={filterStyles.description} />
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <NameElementEditorForm
+                            initialElementName={name}
+                            activeDirectory={activeDirectory}
+                            elementType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
+                        ></NameElementEditorForm>
                     );
                 }}
             />
