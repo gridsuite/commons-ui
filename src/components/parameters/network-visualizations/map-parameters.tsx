@@ -39,7 +39,7 @@ export function MapParameters() {
 
     const lineFlow = (name: string, label: string, options: { id: LineFlowMode; label: string }[]) => (
         <>
-            <Grid item xs={5} sx={parametersStyles.parameterName}>
+            <Grid item xs={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
             <Grid item xs={4} sx={parametersStyles.controlItem}>
@@ -55,7 +55,7 @@ export function MapParameters() {
 
     const mapBaseMap = (
         <>
-            <Grid item xs={5} sx={parametersStyles.parameterName}>
+            <Grid item xs={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={MAP_BASE_MAP} />
             </Grid>
             <Grid item xs={4} sx={parametersStyles.controlItem}>
@@ -71,7 +71,6 @@ export function MapParameters() {
 
     return (
         <Grid
-            xl={6}
             container
             spacing={1}
             sx={parametersStyles.scrollableGrid}
@@ -81,13 +80,10 @@ export function MapParameters() {
         >
             {lineSwitch(PARAM_LINE_FULL_PATH, PARAM_LINE_FULL_PATH)}
             <LineSeparator />
-
             {lineSwitch(PARAM_LINE_PARALLEL_PATH, PARAM_LINE_PARALLEL_PATH)}
             <LineSeparator />
-
             {lineFlow(PARAM_LINE_FLOW_MODE, LINE_FLOW_MODE, INTL_LINE_FLOW_MODE_OPTIONS)}
             <LineSeparator />
-
             {lineSwitch(PARAM_MAP_MANUAL_REFRESH, MAP_MANUAL_REFRESH)}
             <LineSeparator />
             {mapBaseMap}

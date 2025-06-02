@@ -17,7 +17,6 @@ import { SwitchInput } from '../../inputs';
 export function NetworkAreaDiagramParameters() {
     return (
         <Grid
-            xl={6}
             container
             spacing={1}
             sx={parametersStyles.scrollableGrid}

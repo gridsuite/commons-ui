@@ -10,12 +10,11 @@ import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UUID } from 'crypto';
 import { User } from 'oidc-client';
-import { parametersStyles } from '../parameters-style';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../inputs';
-import { ElementType, mergeSx } from '../../../utils';
-import { LabelledButton, LineSeparator } from '../common';
+import { ElementType } from '../../../utils';
+import { LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
@@ -77,14 +76,7 @@ export function NetworkVisualizationParametersInline({
             renderActions={() => {
                 return (
                     <Box>
-                        <LineSeparator />
-                        <Grid
-                            container
-                            item
-                            sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
-                                paddingBottom: 0,
-                            })}
-                        >
+                        <Grid container item>
                             <LabelledButton
                                 callback={() => setOpenSelectParameterDialog(true)}
                                 label="settings.button.chooseSettings"

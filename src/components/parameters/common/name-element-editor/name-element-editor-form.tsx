@@ -24,8 +24,8 @@ export function NameElementEditorForm({
 }: Readonly<NameElementEditorFormProps>) {
     return (
         <Grid item sx={{ height: '100%' }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
+            <Grid container spacing={2} direction="column" marginBottom="8px">
+                <Grid item>
                     <UniqueNameInput
                         name={FieldConstants.NAME}
                         currentName={initialElementName}
@@ -36,7 +36,7 @@ export function NameElementEditorForm({
                         fullWidth={false}
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item>
                     <DescriptionField expandingTextSx={filterStyles.description} />
                 </Grid>
             </Grid>

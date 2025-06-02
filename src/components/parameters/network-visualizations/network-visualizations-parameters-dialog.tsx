@@ -54,6 +54,11 @@ export function NetworkVisualizationsParametersEditionDialog({
             removeOptional
             language={language}
             disabledSave={disableSave}
+            PaperProps={{
+                sx: {
+                    height: '65vh', // we want the dialog height to be fixed even when switching tabs
+                },
+            }}
         >
             <NetworkVisualizationParametersForm
                 user={user}

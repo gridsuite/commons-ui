@@ -51,7 +51,7 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
     );
     const substationLineDropDown = (
         <>
-            <Grid item xs={5} sx={parametersStyles.parameterName}>
+            <Grid item xs={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={SUBSTATION_LAYOUT} />
             </Grid>
             <Grid item xs={4} sx={parametersStyles.controlItem}>
@@ -66,7 +66,7 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
     );
     const componentLineDropDown = (
         <>
-            <Grid item xs={5} sx={parametersStyles.parameterName}>
+            <Grid item xs={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={COMPONENT_LIBRARY} />
             </Grid>
             <Grid item xs={4} sx={parametersStyles.controlItem}>
@@ -84,20 +84,18 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
 
     return (
         <Grid
-            xl={6}
             container
             spacing={1}
             sx={parametersStyles.scrollableGrid}
+            key="singleLineDiagramParameters"
             marginTop={-3}
             justifyContent="space-between"
         >
             {labelPosition(PARAM_DIAGONAL_LABEL, DIAGONAL_LABEL)}
             <LineSeparator />
             {labelPosition(PARAM_CENTER_LABEL, CENTER_LABEL)}
-
             <LineSeparator />
             {substationLineDropDown}
-
             <LineSeparator />
             {componentLineDropDown}
         </Grid>
