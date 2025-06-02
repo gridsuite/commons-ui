@@ -37,7 +37,6 @@ export interface TextInputProps {
         'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
     >;
     disabledTooltip?: boolean;
-    disabled?: boolean;
 }
 
 export function TextInput({
@@ -54,7 +53,6 @@ export function TextInput({
     clearable,
     formProps,
     disabledTooltip, // In case we don't want to show tooltip on the value and warning/info icons
-    disabled,
 }: TextInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
@@ -126,7 +124,6 @@ export function TextInput({
             {...genHelperError(error?.message)}
             {...formProps}
             {...(adornment && { ...finalAdornment })}
-            disabled={disabled}
         />
     );
 }
