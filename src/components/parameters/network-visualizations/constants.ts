@@ -11,7 +11,7 @@ import {
     SubstationLayout,
 } from './network-visualizations.types';
 
-// TODO DBR import from network-viewer
+// Defined in powsybl/network-viewer, duplicated here
 export enum LineFlowMode {
     STATIC_ARROWS = 'staticArrows',
     ANIMATED_ARROWS = 'animatedArrows',
