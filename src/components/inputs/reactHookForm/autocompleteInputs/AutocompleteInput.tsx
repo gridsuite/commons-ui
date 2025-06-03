@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useMemo } from 'react';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { genHelperError, identity, isFieldRequired } from '../utils/functions';
@@ -77,9 +78,11 @@ export function AutocompleteInput({
         onChange(outputTransform(newValue));
     };
 
+    const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
+
     return (
         <Autocomplete
-            value={inputTransform(value)}
+            value={selectedValues}
             onChange={(_, data) => handleChange(data as Option)}
             {...(allowNewValue && {
                 freeSolo: true,
@@ -105,11 +108,13 @@ export function AutocompleteInput({
                     inputRef={ref}
                     inputProps={{ ...inputProps, readOnly }}
                     helperText={
-                        <HelperPreviousValue
-                            previousValue={previousValue}
-                            isNodeBuilt={isNodeBuilt}
-                            disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
-                        />
+                        previousValue && (
+                            <HelperPreviousValue
+                                previousValue={previousValue}
+                                isNodeBuilt={isNodeBuilt}
+                                disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                            />
+                        )
                     }
                     {...genHelperError(error?.message)}
                     {...formProps}
