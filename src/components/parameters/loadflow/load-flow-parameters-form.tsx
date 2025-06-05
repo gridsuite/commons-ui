@@ -88,7 +88,7 @@ export function LoadFlowParametersForm({
                 ) : (
                     <LinearProgress />
                 )}
-                {renderActions && <Box sx={styles.actions}>{renderActions?.()}</Box>}
+                {renderActions && <Box sx={styles.actions}>{renderActions()}</Box>}
             </Box>
         </CustomFormProvider>
     );
