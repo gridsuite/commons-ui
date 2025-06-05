@@ -110,7 +110,6 @@ export const useNetworkVisualizationParametersForm = (
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
-            console.log('DBG DBR saveinline', formData);
             if (studyUuid) {
                 setStudyNetworkVisualizationParameters(studyUuid, formData).catch((error) => {
                     snackError({
@@ -125,7 +124,6 @@ export const useNetworkVisualizationParametersForm = (
 
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
-            console.log('DBG DBR saveDialog', formData);
             if (parametersUuid) {
                 updateParameter(
                     parametersUuid,
