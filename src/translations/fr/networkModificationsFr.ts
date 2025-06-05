@@ -64,6 +64,7 @@ export const networkModificationsFr = {
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'modifications de sites',
     'network_modifications.TABULAR_CREATION': 'Création tabulaire - {computedLabel}',
     'network_modifications.tabular.GENERATOR_CREATION': 'créations de générateurs',
+    'network_modifications.tabular.SHUNT_COMPENSATOR_CREATION': 'créations de MCS linéaires',
     'network_modifications.LCC_CREATION': 'Création de la HVDC (LCC) {computedLabel}',
     'network_modifications.LCC_MODIFICATION': 'Modification de la HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Création de CSPR {computedLabel}',
