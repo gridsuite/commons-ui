@@ -8,14 +8,14 @@
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Grid, LinearProgress } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import { type ObjectSchema } from 'yup';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 
-export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
+export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogProps & {
     open: boolean;
     formSchema: ObjectSchema<T>;
     formMethods: UseFormReturn<T>;
@@ -31,7 +31,7 @@ export interface CustomMuiDialogProps<T extends FieldValues = FieldValues> {
     language?: string;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
-}
+};
 
 const styles = {
     dialogPaper: {
@@ -92,6 +92,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     language,
     confirmationMessageKey,
     unscrollableFullHeight = false,
+    ...dialogProps
 }: Readonly<CustomMuiDialogProps<T>>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState<T>();
@@ -158,6 +159,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
                 open={open}
                 onClose={handleClose}
                 fullWidth
+                {...dialogProps}
             >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle>
