@@ -13,7 +13,6 @@ import { UUID } from 'crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
     getDefaultSpecificParamsValues,
-    getDialogLoadFlowParametersFormSchema,
     getSpecificLoadFlowParametersFormSchema,
     mapLimitReductions,
     setLimitReductions,
@@ -113,7 +112,6 @@ export const useLoadFlowParametersForm = (
     const formSchema = useMemo(() => {
         return yup
             .object({
-                ...getDialogLoadFlowParametersFormSchema(name),
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,

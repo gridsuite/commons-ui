@@ -149,14 +149,14 @@ export const useNetworkVisualizationParametersForm = (
             getNetworkVisualizationsParameters(parametersUuid)
                 .then((params) => {
                     reset(params);
-                    setParamsLoaded(true);
                 })
                 .catch((error) => {
                     snackError({
                         messageTxt: error.message,
                         headerId: 'getNetworkVisualizationsParametersError',
                     });
-                });
+                })
+                .finally(() => setParamsLoaded(true));
         }
     }, [parametersUuid, reset, snackError]);
 

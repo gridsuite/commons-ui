@@ -14,6 +14,7 @@ export * from './directoryItemSelector/DirectoryItemSelector';
 export * from './elementSearch';
 export * from './filter';
 export * from './flatParameters';
+export * from './grid';
 export * from './inputs';
 export * from './multipleSelectionDialog';
 export * from './overflowableText';

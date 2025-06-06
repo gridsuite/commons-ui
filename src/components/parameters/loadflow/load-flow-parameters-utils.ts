@@ -39,7 +39,6 @@ import { toFormValuesLimitReductions } from '../common/limitreductions/limit-red
 import yup from '../../../utils/yupConfig';
 import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
-import { DESCRIPTION_INPUT, NAME } from '../../inputs';
 
 export enum TabValues {
     GENERAL = 'General',
@@ -74,15 +73,6 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
             .positive('dcPowerFactorGreaterThan0')
             .max(1, 'dcPowerFactorLessOrEqualThan1'),
     });
-};
-
-export const getDialogLoadFlowParametersFormSchema = (name: string | null) => {
-    const shape: { [key: string]: yup.AnySchema } = {};
-    if (name) {
-        shape[NAME] = yup.string().required();
-        shape[DESCRIPTION_INPUT] = yup.string();
-    }
-    return shape;
 };
 
 export const getCommonLoadFlowParametersFormSchema = () => {

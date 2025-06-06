@@ -94,4 +94,37 @@ export const parametersFr = {
     FlatDesign: 'Flat_Design',
     Carto: 'Carto',
     CartoNoLabel: 'Carto sans labels',
+    getNetworkVisualizationsParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres des images réseau',
+    updateNetworkVisualizationsParametersError:
+        'Une erreur est survenue lors de la mise a jour des paramètres des images réseau',
+    paramsChangingError: 'Une erreur est survenue lors de la modification des paramètres',
+    paramsChangingDenied: 'Les changements demandés ont été rejetés',
+    paramsRetrievingError: 'Une erreur est survenue lors de la récupération des paramètres',
+    paramsCreatingError: 'Une erreur est survenue lors de la création des paramètres',
+    paramsUpdateError: 'Une erreur est survenue lors de la mise à jour des paramètres {item}',
+    paramsCreationMsg: 'Création de paramètres dans {directory}',
+    paramsUpdateMsg: 'Mise à jour des paramètres {item}',
+    optionalServicesRetrievingError:
+        "Une erreur est survenue lors de la récupération de l'état des services optionnels",
+    defaultSensiResultsThresholdRetrievingError:
+        "Une erreur est survenue lors de la récupération du seuil par défaut des résultats de l'analyse de sensibilité",
+    fetchDefaultLimitReductionsError: 'Une erreur est survenue lors de la récupération des abattements par défaut',
+
+    descWithFeederResult: 'Avec apports',
+    ShortCircuitPredefinedParameters: 'Paramètres prédéfinis',
+    ShortCircuitCharacteristics: 'Caractéristiques prises en compte',
+    ShortCircuitVoltageProfileMode: 'Plan de tension initial',
+    shortCircuitLoads: 'Charges',
+    shortCircuitHvdc: 'HVDC (VSC)',
+    shortCircuitShuntCompensators: 'MCS',
+    shortCircuitNeutralPosition: 'Prises courantes des régleurs en charge',
+    shortCircuitNominalVoltage: 'Tension nominale (kV)',
+    shortCircuitInitialVoltage: 'Tension initiale (kV)',
+    iccMawWithNominalVoltageMapPredefinedParams: 'ICC max avec plan de tension normalisé',
+    iccMaxWithCEIPredefinedParams: 'ICC max avec norme CEI 909',
+    iscMinWithNominalVoltageMapPredefinedParams: 'Pcc min à tension normalisée',
+    nominalInitialVoltageProfileMode: 'Normalisé',
+    cei909InitialVoltageProfileMode: 'CEI 909',
+    Or: 'ou',
 };

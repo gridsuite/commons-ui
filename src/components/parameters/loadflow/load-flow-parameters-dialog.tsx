@@ -5,10 +5,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
-import { User } from 'oidc-client';
 import { CustomMuiDialog } from '../../dialogs';
-import { ComputingType } from '../common';
+import { ComputingType, ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,
     getDefaultLoadFlowProvider,
@@ -24,19 +22,6 @@ import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
 import { NameElementEditorForm } from '../common/name-element-editor';
 
-export interface ParametersEditionDialogProps {
-    id: UUID;
-    open: boolean;
-    onClose: () => void;
-    titleId: string;
-    name: string;
-    description: string | null;
-    activeDirectory: UUID;
-    language?: string;
-    user: User | null;
-    enableDeveloperMode: boolean;
-}
-
 export function LoadFlowParametersEditionDialog({
     id,
     open,
@@ -47,7 +32,7 @@ export function LoadFlowParametersEditionDialog({
     activeDirectory,
     language,
     user,
-    enableDeveloperMode,
+    enableDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
         user,
