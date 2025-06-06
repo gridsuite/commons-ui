@@ -190,4 +190,7 @@ export const filterExpertEn = {
     lowShortCircuitCurrentLimit: 'Low short-circuit current limit',
     highShortCircuitCurrentLimit: 'High short-circuit current limit',
     valuesList: 'Values list',
+    substationId: 'Substation ID',
+    substationId1: 'Substation ID 1',
+    substationId2: 'Substation ID 2',
 };
