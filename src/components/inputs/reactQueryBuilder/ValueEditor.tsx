@@ -53,7 +53,11 @@ export function ValueEditor(props: ValueEditorProps) {
                             field === FieldType.VOLTAGE_LEVEL_ID_1 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_2 ||
                             field === FieldType.VOLTAGE_LEVEL_ID_3) &&
-                            filterValue?.specificMetadata?.equipmentType === VoltageLevel.type))
+                            filterValue?.specificMetadata?.equipmentType === VoltageLevel.type) ||
+                        ((field === FieldType.SUBSTATION_ID ||
+                            field === FieldType.SUBSTATION_ID_1 ||
+                            field === FieldType.SUBSTATION_ID_2) &&
+                            filterValue?.specificMetadata?.equipmentType === Substation.type))
                 );
             }
             return true;
@@ -83,6 +87,12 @@ export function ValueEditor(props: ValueEditorProps) {
             field === FieldType.VOLTAGE_LEVEL_ID_3
         ) {
             equipmentTypes = [VoltageLevel.type];
+        } else if (
+            field === FieldType.SUBSTATION_ID ||
+            field === FieldType.SUBSTATION_ID_1 ||
+            field === FieldType.SUBSTATION_ID_2
+        ) {
+            equipmentTypes = [Substation.type];
         } else if (field === FieldType.ID) {
             equipmentTypes = [getValues(FieldConstants.EQUIPMENT_TYPE)];
         }
