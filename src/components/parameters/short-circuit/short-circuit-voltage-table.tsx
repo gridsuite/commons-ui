@@ -4,28 +4,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { INITIAL_VOLTAGE } from './constants';
+import { InitialVoltage } from './constants';
 
 export interface VoltageTableProps {
-    voltageProfileMode: INITIAL_VOLTAGE;
+    voltageProfileMode: InitialVoltage;
 }
 
-const VoltageTable: FunctionComponent<VoltageTableProps> = ({ voltageProfileMode }) => {
+export function VoltageTable({ voltageProfileMode }: Readonly<VoltageTableProps>) {
     const intl = useIntl();
 
     const rows = useMemo(
         () => [
             {
                 name: intl.formatMessage({ id: 'shortCircuitNominalVoltage' }),
-                values: ['380 ' + intl.formatMessage({ id: 'Or' }) + ' 400', 225, 150, 90, 63, 45, 20],
+                values: [`380 ${intl.formatMessage({ id: 'Or' })} 400`, 225, 150, 90, 63, 45, 20],
             },
             {
                 name: intl.formatMessage({ id: 'shortCircuitInitialVoltage' }),
                 values:
-                    voltageProfileMode === INITIAL_VOLTAGE.NOMINAL
+                    voltageProfileMode === InitialVoltage.NOMINAL
                         ? [400, 225, 150, 90, 63, 45, 20]
                         : [420, 245, 165, 99, 69.3, 49.5, 22],
             },
@@ -54,6 +54,4 @@ const VoltageTable: FunctionComponent<VoltageTableProps> = ({ voltageProfileMode
             </TableBody>
         </Table>
     );
-};
-
-export default VoltageTable;
+}

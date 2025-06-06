@@ -13,8 +13,8 @@ import { UUID } from 'crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION_INPUT, NAME } from '../../inputs';
 import {
-    INITIAL_VOLTAGE,
-    PREDEFINED_PARAMETERS,
+    InitialVoltage,
+    PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -40,7 +40,7 @@ export interface UseShortCircuitParametersFormReturn {
     paramsLoaded: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
-    resetAll: (predefinedParameter: PREDEFINED_PARAMETERS) => void;
+    resetAll: (predefinedParameter: PredefinedParameters) => void;
     getCurrentValues: () => FieldValues;
 }
 
@@ -63,16 +63,16 @@ export const useShortCircuitParametersForm = (
             .shape({
                 [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: yup.boolean().required(),
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: yup
-                    .mixed<PREDEFINED_PARAMETERS>()
-                    .oneOf(Object.values(PREDEFINED_PARAMETERS))
+                    .mixed<PredefinedParameters>()
+                    .oneOf(Object.values(PredefinedParameters))
                     .required(),
                 [SHORT_CIRCUIT_WITH_LOADS]: yup.boolean().required(),
                 [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: yup.boolean().required(),
                 [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: yup.boolean().required(),
                 [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: yup.boolean().required(),
                 [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: yup
-                    .mixed<INITIAL_VOLTAGE>()
-                    .oneOf(Object.values(INITIAL_VOLTAGE))
+                    .mixed<InitialVoltage>()
+                    .oneOf(Object.values(InitialVoltage))
                     .required(),
             })
             .required()
@@ -93,24 +93,24 @@ export const useShortCircuitParametersForm = (
                   [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: parameters.withShuntCompensators,
                   [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !parameters.withNeutralPosition,
                   [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                      parameters.initialVoltageProfileMode === INITIAL_VOLTAGE.CONFIGURED
-                          ? INITIAL_VOLTAGE.CEI909
+                      parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
+                          ? InitialVoltage.CEI909
                           : parameters.initialVoltageProfileMode,
               }
             : {
                   ...getNameElementEditorEmptyFormData(name, description),
                   [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
-                  [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PREDEFINED_PARAMETERS.ICC_MAX_WITH_CEI909,
+                  [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PredefinedParameters.ICC_MAX_WITH_CEI909,
                   [SHORT_CIRCUIT_WITH_LOADS]: false,
                   [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: false,
                   [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
                   [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
-                  [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: INITIAL_VOLTAGE.CEI909 as
-                      | INITIAL_VOLTAGE.NOMINAL
-                      | INITIAL_VOLTAGE.CEI909
+                  [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: InitialVoltage.CEI909 as
+                      | InitialVoltage.NOMINAL
+                      | InitialVoltage.CEI909
                       | undefined,
               };
-    }, [shortCircuitParameters]);
+    }, [name, description, shortCircuitParameters]);
 
     const formMethods = useForm({
         defaultValues: emptyFormData,
@@ -121,21 +121,21 @@ export const useShortCircuitParametersForm = (
 
     // when ever the predefined parameter is manually changed, we need to reset all parameters
     const resetAll = useCallback(
-        (predefinedParameter: PREDEFINED_PARAMETERS) => {
+        (predefinedParameter: PredefinedParameters) => {
             const dirty = { shouldDirty: true };
             setValue(SHORT_CIRCUIT_WITH_FEEDER_RESULT, true, dirty);
             setValue(SHORT_CIRCUIT_WITH_LOADS, false, dirty);
             setValue(
                 SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
-                predefinedParameter !== PREDEFINED_PARAMETERS.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
             setValue(SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS, false, dirty);
             setValue(SHORT_CIRCUIT_WITH_NEUTRAL_POSITION, false, dirty);
             const initialVoltageProfileMode =
-                predefinedParameter === PREDEFINED_PARAMETERS.ICC_MAX_WITH_CEI909
-                    ? INITIAL_VOLTAGE.CEI909
-                    : INITIAL_VOLTAGE.NOMINAL;
+                predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
+                    ? InitialVoltage.CEI909
+                    : InitialVoltage.NOMINAL;
 
             setValue(SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE, initialVoltageProfileMode, dirty);
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
@@ -148,7 +148,12 @@ export const useShortCircuitParametersForm = (
         newParameters: FieldValues
     ): ShortCircuitParameters => {
         const oldParameters = { ...shortCircuitParams.parameters };
-        const { predefinedParameters: omit, [NAME]: omit2, [DESCRIPTION_INPUT]: omit3, ...newParametersWithoutPredefinedParameters } = newParameters;
+        const {
+            predefinedParameters: omit,
+            [NAME]: omit2,
+            [DESCRIPTION_INPUT]: omit3,
+            ...newParametersWithoutPredefinedParameters
+        } = newParameters;
         let parameters = {
             ...oldParameters,
             ...newParametersWithoutPredefinedParameters,
@@ -156,16 +161,16 @@ export const useShortCircuitParametersForm = (
             voltageRanges: undefined,
             withNeutralPosition: !newParameters.withNeutralPosition,
         };
-        if (newParameters.initialVoltageProfileMode === INITIAL_VOLTAGE.CEI909) {
+        if (newParameters.initialVoltageProfileMode === InitialVoltage.CEI909) {
             parameters = {
                 ...parameters,
                 voltageRanges: shortCircuitParams.cei909VoltageRanges,
-                initialVoltageProfileMode: INITIAL_VOLTAGE.CONFIGURED,
+                initialVoltageProfileMode: InitialVoltage.CONFIGURED,
             };
         }
         return {
             predefinedParameters: newParameters.predefinedParameters,
-            parameters: parameters,
+            parameters,
         };
     };
 
@@ -179,7 +184,7 @@ export const useShortCircuitParametersForm = (
 
     const formatShortCircuitParameters = (
         parameters: ShortCircuitParametersDto,
-        predefinedParameters: PREDEFINED_PARAMETERS
+        predefinedParameters: PredefinedParameters
     ): Object => {
         console.log('DBG DBR formatShortCircuitParameters', parameters, predefinedParameters);
         return {
@@ -190,8 +195,8 @@ export const useShortCircuitParametersForm = (
             [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: parameters.withShuntCompensators,
             [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !parameters.withNeutralPosition,
             [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                parameters.initialVoltageProfileMode === INITIAL_VOLTAGE.CONFIGURED
-                    ? INITIAL_VOLTAGE.CEI909
+                parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
+                    ? InitialVoltage.CEI909
                     : parameters.initialVoltageProfileMode,
         };
     };
@@ -204,14 +209,13 @@ export const useShortCircuitParametersForm = (
                     ...prepareDataToSend(shortCircuitParameters, formData),
                 })
                     .then(() => {
-                        // invalidate the short circuit status
                         invalidateStudyShortCircuitStatus(studyUuid).catch((error) => {
                             snackError({
                                 messageTxt: error.message,
                                 headerId: 'invalidateShortCircuitStatusError',
                             });
                         });
-                        //used to update isDirty after submit
+                        // used to update isDirty after submit
                         reset({}, { keepValues: true });
                     })
                     .catch((error) => {

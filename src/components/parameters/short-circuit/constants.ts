@@ -5,18 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export enum STATUS {
-    SUCCESS = 'SUCCESS',
-    ERROR = 'ERROR',
-}
-
-export enum INITIAL_VOLTAGE {
+export enum InitialVoltage {
     NOMINAL = 'NOMINAL',
     CEI909 = 'CEI909',
     CONFIGURED = 'CONFIGURED',
 }
 
-export enum PREDEFINED_PARAMETERS {
+export enum PredefinedParameters {
     ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP = 'ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP',
     ICC_MAX_WITH_CEI909 = 'ICC_MAX_WITH_CEI909',
     ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP = 'ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP',

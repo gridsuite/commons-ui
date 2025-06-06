@@ -19,7 +19,7 @@ export default function GridItem({ children, size = 6, alignItem = 'flex-start',
             {children &&
                 (tooltip ? (
                     <Tooltip title={tooltip}>
-                        <>{children}</>
+                        <div>{children}</div>
                     </Tooltip>
                 ) : (
                     children

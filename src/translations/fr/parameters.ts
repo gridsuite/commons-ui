@@ -94,8 +94,10 @@ export const parametersFr = {
     FlatDesign: 'Flat_Design',
     Carto: 'Carto',
     CartoNoLabel: 'Carto sans labels',
-    getNetworkVisualizationsParametersError: 'Une erreur est survenue lors de la récupération des paramètres des images réseau',
-    updateNetworkVisualizationsParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres des images réseau',
+    getNetworkVisualizationsParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres des images réseau',
+    updateNetworkVisualizationsParametersError:
+        'Une erreur est survenue lors de la mise a jour des paramètres des images réseau',
     paramsChangingError: 'Une erreur est survenue lors de la modification des paramètres',
     paramsChangingDenied: 'Les changements demandés ont été rejetés',
     paramsRetrievingError: 'Une erreur est survenue lors de la récupération des paramètres',
@@ -103,8 +105,10 @@ export const parametersFr = {
     paramsUpdateError: 'Une erreur est survenue lors de la mise à jour des paramètres {item}',
     paramsCreationMsg: 'Création de paramètres dans {directory}',
     paramsUpdateMsg: 'Mise à jour des paramètres {item}',
-    optionalServicesRetrievingError: "Une erreur est survenue lors de la récupération de l'état des services optionnels",
-    defaultSensiResultsThresholdRetrievingError: "Une erreur est survenue lors de la récupération du seuil par défaut des résultats de l'analyse de sensibilité",
+    optionalServicesRetrievingError:
+        "Une erreur est survenue lors de la récupération de l'état des services optionnels",
+    defaultSensiResultsThresholdRetrievingError:
+        "Une erreur est survenue lors de la récupération du seuil par défaut des résultats de l'analyse de sensibilité",
     fetchDefaultLimitReductionsError: 'Une erreur est survenue lors de la récupération des abattements par défaut',
 
     descWithFeederResult: 'Avec apports',

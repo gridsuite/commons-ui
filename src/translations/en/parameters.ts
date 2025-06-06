@@ -93,7 +93,8 @@ export const parametersEn = {
     Carto: 'Carto',
     CartoNoLabel: 'Carto without labels',
     getNetworkVisualizationsParametersError: 'An error occurred while reading the network visualizations parameters',
-    updateNetworkVisualizationsParametersError: 'An error occurred while updating the network visualizations parameters',
+    updateNetworkVisualizationsParametersError:
+        'An error occurred while updating the network visualizations parameters',
     paramsChangingError: 'An error occurred when changing the parameters',
     paramsChangingDenied: 'The requested changes have been rejected',
     paramsRetrievingError: 'An error occurred while retrieving the parameters',
@@ -102,7 +103,8 @@ export const parametersEn = {
     paramsCreationMsg: 'Parameters created in {directory}',
     paramsUpdateMsg: 'Parameters {item} updated',
     optionalServicesRetrievingError: 'An error occurred while retrieving the status of optional services',
-    defaultSensiResultsThresholdRetrievingError: 'An error occurred while retrieving the sensitivity analysis results default threshold',
+    defaultSensiResultsThresholdRetrievingError:
+        'An error occurred while retrieving the sensitivity analysis results default threshold',
     fetchDefaultLimitReductionsError: 'An error occurred while fetching the default limit reductions',
 
     descWithFeederResult: 'With feeder results',

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from "crypto";
+import { UUID } from 'crypto';
 import { User } from 'oidc-client';
 
 export interface ParametersEditionDialogProps {

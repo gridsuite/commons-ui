@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { INITIAL_VOLTAGE, PREDEFINED_PARAMETERS } from './constants';
+import { InitialVoltage, PredefinedParameters } from './constants';
 
 export interface VoltageRange {
     minimumNominalVoltage: number;
@@ -17,13 +17,13 @@ export interface ShortCircuitParametersDto {
     withVSCConverterStations: boolean;
     withShuntCompensators: boolean;
     withNeutralPosition: boolean;
-    initialVoltageProfileMode: INITIAL_VOLTAGE;
+    initialVoltageProfileMode: InitialVoltage;
     voltageRanges?: VoltageRange[];
 }
 
 export interface ShortCircuitParametersInfos {
     parameters: ShortCircuitParametersDto;
-    predefinedParameters: PREDEFINED_PARAMETERS;
+    predefinedParameters: PredefinedParameters;
     cei909VoltageRanges?: any;
 }
 
@@ -34,14 +34,14 @@ interface VoltageRanges {
     voltageRangeCoefficient: number;
 }
 export interface ShortCircuitParameters {
-    predefinedParameters: NonNullable<PREDEFINED_PARAMETERS | undefined>;
+    predefinedParameters: NonNullable<PredefinedParameters | undefined>;
     parameters: {
         withFeederResult: boolean;
         withLoads: boolean;
         withVSCConverterStations: boolean;
         withShuntCompensators: boolean;
         withNeutralPosition: boolean;
-        initialVoltageProfileMode: NonNullable<INITIAL_VOLTAGE | undefined>;
+        initialVoltageProfileMode: NonNullable<InitialVoltage | undefined>;
         voltageRanges?: VoltageRanges;
     };
 }

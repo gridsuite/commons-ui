@@ -18,7 +18,7 @@ import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import {
-    INITIAL_VOLTAGE,
+    InitialVoltage,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -61,8 +61,8 @@ export function ShortCircuitParametersInLine({
             setValue(SHORT_CIRCUIT_WITH_NEUTRAL_POSITION, !param.parameters.withNeutralPosition, dirty);
             setValue(
                 SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-                param.parameters.initialVoltageProfileMode === INITIAL_VOLTAGE.CONFIGURED
-                    ? INITIAL_VOLTAGE.CEI909
+                param.parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
+                    ? InitialVoltage.CEI909
                     : param.parameters.initialVoltageProfileMode,
                 dirty
             );
@@ -77,7 +77,6 @@ export function ShortCircuitParametersInLine({
                 const paramUuid = newParams[0].id;
                 fetchShortCircuitParameters(paramUuid)
                     .then((parameters: ShortCircuitParametersInfos) => {
-                        console.info('loading the following shortcircuit parameters : ' + paramUuid);
                         // Replace form data with fetched data
                         replaceFormValues(parameters);
                     })

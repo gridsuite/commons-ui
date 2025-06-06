@@ -9,7 +9,7 @@ import { Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
-import ShortCircuitFields from './short-circuit-fields';
+import { ShortCircuitFields } from './short-circuit-fields';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 
 interface ShortCircuitParametersFormProps {

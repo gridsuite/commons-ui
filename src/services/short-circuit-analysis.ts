@@ -6,16 +6,16 @@
  */
 
 import { backendFetchJson } from './utils';
-import { ShortCircuitParametersInfos } from '../components';
+import { ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 
-const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = import.meta.env.VITE_API_GATEWAY + '/shortcircuit';
+const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
 
 function getShortCircuitUrl() {
-    return `${PREFIX_SHORT_CIRCUIT_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_SHORT_CIRCUIT_SERVER_QUERIES}/v1`;
 }
 
 export function fetchShortCircuitParameters(parameterUuid: string): Promise<ShortCircuitParametersInfos> {
     console.info('get short circuit analysis parameters');
-    const url = getShortCircuitUrl() + 'parameters/' + encodeURIComponent(parameterUuid);
+    const url = `${getShortCircuitUrl()}/parameters/${encodeURIComponent(parameterUuid)}`;
     return backendFetchJson(url);
 }
