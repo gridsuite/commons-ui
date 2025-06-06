@@ -120,4 +120,5 @@ export const parametersEn = {
     iscMinWithNominalVoltageMapPredefinedParams: 'ISC min with nominal voltage profile',
     nominalInitialVoltageProfileMode: 'Nominal',
     cei909InitialVoltageProfileMode: 'IEC 909',
+    Or: 'or',
 };

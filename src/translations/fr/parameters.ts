@@ -122,4 +122,5 @@ export const parametersFr = {
     iscMinWithNominalVoltageMapPredefinedParams: 'Pcc min à tension normalisée',
     nominalInitialVoltageProfileMode: 'Normalisé',
     cei909InitialVoltageProfileMode: 'CEI 909',
+    Or: 'ou',
 };

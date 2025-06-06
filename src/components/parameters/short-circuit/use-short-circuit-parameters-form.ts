@@ -23,11 +23,15 @@ import {
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
-import { setStudyShortCircuitParameters, updateParameter } from '../../../services';
+import { invalidateStudyShortCircuitStatus, setStudyShortCircuitParameters, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
-import { ShortCircuitParametersDto, ShortCircuitParametersInfos } from './short-circuit-parameters.type';
+import {
+    ShortCircuitParameters,
+    ShortCircuitParametersDto,
+    ShortCircuitParametersInfos,
+} from './short-circuit-parameters.type';
 import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
 
 export interface UseShortCircuitParametersFormReturn {
@@ -43,12 +47,14 @@ export interface UseShortCircuitParametersFormReturn {
 export const useShortCircuitParametersForm = (
     parametersUuid: UUID | null,
     studyUuid: UUID | null,
-    shortCircuitParameters: ShortCircuitParametersInfos | null,
+    studyShortCircuitParameters: ShortCircuitParametersInfos | null,
     name: string | null,
     description: string | null
 ): UseShortCircuitParametersFormReturn => {
     const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
-    const [loadedShortCircuitParameters, setLoadedShortCircuitParameters] = useState<ShortCircuitParametersInfos>();
+    const [shortCircuitParameters, setShortCircuitParameters] = useState<ShortCircuitParametersInfos | null>(
+        studyShortCircuitParameters
+    );
     const { snackError } = useSnackMessage();
 
     const formSchema = useMemo(() => {
@@ -75,23 +81,36 @@ export const useShortCircuitParametersForm = (
 
     // get default values based on shortCircuitParams
     const emptyFormData = useMemo(() => {
-        const shortCircuitParams = shortCircuitParameters ?? loadedShortCircuitParameters;
-        const { parameters, predefinedParameters } = shortCircuitParams || {};
-        console.log('DBG DBR emptyFormData useMemo', shortCircuitParams);
-        return {
-            ...getNameElementEditorEmptyFormData(name, description),
-            [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: parameters?.withFeederResult,
-            [SHORT_CIRCUIT_PREDEFINED_PARAMS]: predefinedParameters,
-            [SHORT_CIRCUIT_WITH_LOADS]: parameters?.withLoads,
-            [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: parameters?.withVSCConverterStations,
-            [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: parameters?.withShuntCompensators,
-            [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !parameters?.withNeutralPosition,
-            [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                parameters?.initialVoltageProfileMode === INITIAL_VOLTAGE.CONFIGURED
-                    ? INITIAL_VOLTAGE.CEI909
-                    : parameters?.initialVoltageProfileMode,
-        };
-    }, [shortCircuitParameters, loadedShortCircuitParameters]);
+        const { parameters, predefinedParameters } = shortCircuitParameters || {};
+        console.log('DBG DBR emptyFormData useMemo', shortCircuitParameters);
+        return parameters
+            ? {
+                  ...getNameElementEditorEmptyFormData(name, description),
+                  [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: parameters.withFeederResult,
+                  [SHORT_CIRCUIT_PREDEFINED_PARAMS]: predefinedParameters,
+                  [SHORT_CIRCUIT_WITH_LOADS]: parameters.withLoads,
+                  [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: parameters.withVSCConverterStations,
+                  [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: parameters.withShuntCompensators,
+                  [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !parameters.withNeutralPosition,
+                  [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
+                      parameters.initialVoltageProfileMode === INITIAL_VOLTAGE.CONFIGURED
+                          ? INITIAL_VOLTAGE.CEI909
+                          : parameters.initialVoltageProfileMode,
+              }
+            : {
+                  ...getNameElementEditorEmptyFormData(name, description),
+                  [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
+                  [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PREDEFINED_PARAMETERS.ICC_MAX_WITH_CEI909,
+                  [SHORT_CIRCUIT_WITH_LOADS]: false,
+                  [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: false,
+                  [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
+                  [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
+                  [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: INITIAL_VOLTAGE.CEI909 as
+                      | INITIAL_VOLTAGE.NOMINAL
+                      | INITIAL_VOLTAGE.CEI909
+                      | undefined,
+              };
+    }, [shortCircuitParameters]);
 
     const formMethods = useForm({
         defaultValues: emptyFormData,
@@ -124,9 +143,12 @@ export const useShortCircuitParametersForm = (
         [setValue]
     );
 
-    const prepareDataToSend = (shortCircuitParams: ShortCircuitParametersInfos | null, newParameters: FieldValues) => {
-        const oldParameters = { ...shortCircuitParams?.parameters };
-        const { predefinedParameters: omit, ...newParametersWithoutPredefinedParameters } = newParameters;
+    const prepareDataToSend = (
+        shortCircuitParams: ShortCircuitParametersInfos,
+        newParameters: FieldValues
+    ): ShortCircuitParameters => {
+        const oldParameters = { ...shortCircuitParams.parameters };
+        const { predefinedParameters: omit, [NAME]: omit2, [DESCRIPTION_INPUT]: omit3, ...newParametersWithoutPredefinedParameters } = newParameters;
         let parameters = {
             ...oldParameters,
             ...newParametersWithoutPredefinedParameters,
@@ -137,7 +159,7 @@ export const useShortCircuitParametersForm = (
         if (newParameters.initialVoltageProfileMode === INITIAL_VOLTAGE.CEI909) {
             parameters = {
                 ...parameters,
-                voltageRanges: shortCircuitParams?.cei909VoltageRanges,
+                voltageRanges: shortCircuitParams.cei909VoltageRanges,
                 initialVoltageProfileMode: INITIAL_VOLTAGE.CONFIGURED,
             };
         }
@@ -148,8 +170,11 @@ export const useShortCircuitParametersForm = (
     };
 
     const getCurrentValues = useCallback(() => {
-        const currentValues = getValues();
-        return { ...prepareDataToSend(shortCircuitParameters, currentValues) };
+        if (shortCircuitParameters) {
+            const currentValues = getValues();
+            return { ...prepareDataToSend(shortCircuitParameters, currentValues) };
+        }
+        return {};
     }, [shortCircuitParameters, getValues]);
 
     const formatShortCircuitParameters = (
@@ -173,24 +198,40 @@ export const useShortCircuitParametersForm = (
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
-            if (studyUuid) {
-                setStudyShortCircuitParameters(studyUuid, formData).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsChangingError',
+            if (studyUuid && shortCircuitParameters) {
+                const oldParams = shortCircuitParameters;
+                setStudyShortCircuitParameters(studyUuid, {
+                    ...prepareDataToSend(shortCircuitParameters, formData),
+                })
+                    .then(() => {
+                        // invalidate the short circuit status
+                        invalidateStudyShortCircuitStatus(studyUuid).catch((error) => {
+                            snackError({
+                                messageTxt: error.message,
+                                headerId: 'invalidateShortCircuitStatusError',
+                            });
+                        });
+                        //used to update isDirty after submit
+                        reset({}, { keepValues: true });
+                    })
+                    .catch((error) => {
+                        setShortCircuitParameters(oldParams);
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'paramsChangingError',
+                        });
                     });
-                });
             }
         },
-        [snackError, studyUuid]
+        [shortCircuitParameters, setShortCircuitParameters, snackError, studyUuid, reset]
     );
 
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
-            if (parametersUuid) {
+            if (parametersUuid && shortCircuitParameters) {
                 updateParameter(
                     parametersUuid,
-                    formData,
+                    prepareDataToSend(shortCircuitParameters, formData),
                     formData[NAME],
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
                     formData[DESCRIPTION_INPUT] ?? ''
@@ -202,10 +243,10 @@ export const useShortCircuitParametersForm = (
                 });
             }
         },
-        [parametersUuid, snackError]
+        [parametersUuid, shortCircuitParameters, snackError]
     );
 
-    // GridExplore init case
+    // GridExplore case: fetch params from uuid
     useEffect(() => {
         if (parametersUuid) {
             setParamsLoaded(false);
@@ -213,9 +254,7 @@ export const useShortCircuitParametersForm = (
             fetchShortCircuitParameters(parametersUuid)
                 .then((params) => {
                     console.log('DBG DBR useEff EXPL fetch=', params);
-                    setLoadedShortCircuitParameters(params);
-                    const { parameters, predefinedParameters } = params;
-                    reset(formatShortCircuitParameters(parameters, predefinedParameters));
+                    setShortCircuitParameters(params);
                 })
                 .catch((error) => {
                     snackError({
@@ -227,10 +266,9 @@ export const useShortCircuitParametersForm = (
         }
     }, [parametersUuid, reset, snackError]);
 
-    // GridStudy init case
     useEffect(() => {
         if (shortCircuitParameters) {
-            console.log('DBG DBR useEff STUDY params=', shortCircuitParameters);
+            console.log('DBG DBR useEff STUDY/EXPL params=', shortCircuitParameters);
             const { parameters, predefinedParameters } = shortCircuitParameters;
             reset(formatShortCircuitParameters(parameters, predefinedParameters));
             setParamsLoaded(true);

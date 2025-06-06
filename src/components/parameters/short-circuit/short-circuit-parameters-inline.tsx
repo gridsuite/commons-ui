@@ -47,7 +47,8 @@ export function ShortCircuitParametersInLine({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const { setValue, formState, handleSubmit } = shortCircuitMethods.formMethods;
+    const { getCurrentValues, formMethods } = shortCircuitMethods;
+    const { setValue, formState, handleSubmit } = formMethods;
 
     const replaceFormValues = useCallback(
         (param: ShortCircuitParametersInfos) => {
@@ -71,7 +72,7 @@ export function ShortCircuitParametersInLine({
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
-            if (newParams && newParams.length > 0) {
+            if (newParams?.length) {
                 setOpenSelectParameterDialog(false);
                 const paramUuid = newParams[0].id;
                 fetchShortCircuitParameters(paramUuid)
