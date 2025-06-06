@@ -28,6 +28,7 @@ import {
 import { UUID } from 'crypto';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
+import { ElementType } from '../../utils';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -75,6 +76,7 @@ function CustomCollapseIcon({ className }: Readonly<{ className?: string }>) {
 export interface TreeViewFinderNodeProps {
     id: UUID;
     name: string;
+    type?: ElementType;
     description?: string;
     icon?: ReactElement;
     childrenCount?: number;
