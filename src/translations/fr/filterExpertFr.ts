@@ -189,4 +189,7 @@ export const filterExpertFr = {
     lowShortCircuitCurrentLimit: 'Limite ICC min',
     highShortCircuitCurrentLimit: 'Limite ICC max',
     valuesList: 'Liste de valeurs',
+    substationId: 'ID Site',
+    substationId1: 'ID Site 1',
+    substationId2: 'ID Site 2',
 };
