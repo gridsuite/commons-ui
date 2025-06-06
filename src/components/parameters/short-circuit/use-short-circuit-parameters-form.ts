@@ -51,11 +51,9 @@ export const useShortCircuitParametersForm = (
     name: string | null,
     description: string | null
 ): UseShortCircuitParametersFormReturn => {
-    const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
-    const [shortCircuitParameters, setShortCircuitParameters] = useState<ShortCircuitParametersInfos | null>(
-        studyShortCircuitParameters
-    );
     const { snackError } = useSnackMessage();
+    const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
+    const [shortCircuitParameters, setShortCircuitParameters] = useState<ShortCircuitParametersInfos>();
 
     const formSchema = useMemo(() => {
         return yup
@@ -79,38 +77,21 @@ export const useShortCircuitParametersForm = (
             .concat(getNameElementEditorSchema(name));
     }, [name]);
 
-    // get default values based on shortCircuitParams
     const emptyFormData = useMemo(() => {
-        const { parameters, predefinedParameters } = shortCircuitParameters || {};
-        console.log('DBG DBR emptyFormData useMemo', shortCircuitParameters);
-        return parameters
-            ? {
-                  ...getNameElementEditorEmptyFormData(name, description),
-                  [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: parameters.withFeederResult,
-                  [SHORT_CIRCUIT_PREDEFINED_PARAMS]: predefinedParameters,
-                  [SHORT_CIRCUIT_WITH_LOADS]: parameters.withLoads,
-                  [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: parameters.withVSCConverterStations,
-                  [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: parameters.withShuntCompensators,
-                  [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !parameters.withNeutralPosition,
-                  [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                      parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
-                          ? InitialVoltage.CEI909
-                          : parameters.initialVoltageProfileMode,
-              }
-            : {
-                  ...getNameElementEditorEmptyFormData(name, description),
-                  [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
-                  [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PredefinedParameters.ICC_MAX_WITH_CEI909,
-                  [SHORT_CIRCUIT_WITH_LOADS]: false,
-                  [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: false,
-                  [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
-                  [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
-                  [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: InitialVoltage.CEI909 as
-                      | InitialVoltage.NOMINAL
-                      | InitialVoltage.CEI909
-                      | undefined,
-              };
-    }, [name, description, shortCircuitParameters]);
+        return {
+            ...getNameElementEditorEmptyFormData(name, description),
+            [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
+            [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PredefinedParameters.ICC_MAX_WITH_CEI909,
+            [SHORT_CIRCUIT_WITH_LOADS]: false,
+            [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: false,
+            [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
+            [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
+            [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: InitialVoltage.CEI909 as
+                | InitialVoltage.NOMINAL
+                | InitialVoltage.CEI909
+                | undefined,
+        };
+    }, [name, description]);
 
     const formMethods = useForm({
         defaultValues: emptyFormData,
@@ -186,7 +167,6 @@ export const useShortCircuitParametersForm = (
         parameters: ShortCircuitParametersDto,
         predefinedParameters: PredefinedParameters
     ): Object => {
-        console.log('DBG DBR formatShortCircuitParameters', parameters, predefinedParameters);
         return {
             [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: parameters.withFeederResult,
             [SHORT_CIRCUIT_PREDEFINED_PARAMS]: predefinedParameters,
@@ -215,8 +195,6 @@ export const useShortCircuitParametersForm = (
                                 headerId: 'invalidateShortCircuitStatusError',
                             });
                         });
-                        // used to update isDirty after submit
-                        reset({}, { keepValues: true });
                     })
                     .catch((error) => {
                         setShortCircuitParameters(oldParams);
@@ -227,7 +205,7 @@ export const useShortCircuitParametersForm = (
                     });
             }
         },
-        [shortCircuitParameters, setShortCircuitParameters, snackError, studyUuid, reset]
+        [shortCircuitParameters, setShortCircuitParameters, snackError, studyUuid]
     );
 
     const onSaveDialog = useCallback(
@@ -250,14 +228,12 @@ export const useShortCircuitParametersForm = (
         [parametersUuid, shortCircuitParameters, snackError]
     );
 
-    // GridExplore case: fetch params from uuid
+    // GridExplore init case
     useEffect(() => {
         if (parametersUuid) {
             setParamsLoaded(false);
-            console.log('DBG DBR useEff EXPL');
             fetchShortCircuitParameters(parametersUuid)
                 .then((params) => {
-                    console.log('DBG DBR useEff EXPL fetch=', params);
                     setShortCircuitParameters(params);
                 })
                 .catch((error) => {
@@ -268,11 +244,18 @@ export const useShortCircuitParametersForm = (
                 })
                 .finally(() => setParamsLoaded(true));
         }
-    }, [parametersUuid, reset, snackError]);
+    }, [parametersUuid, snackError]);
 
+    // GridStudy init/update case
+    useEffect(() => {
+        if (studyShortCircuitParameters) {
+            setShortCircuitParameters(studyShortCircuitParameters);
+        }
+    }, [studyShortCircuitParameters]);
+
+    // common form reset
     useEffect(() => {
         if (shortCircuitParameters) {
-            console.log('DBG DBR useEff STUDY/EXPL params=', shortCircuitParameters);
             const { parameters, predefinedParameters } = shortCircuitParameters;
             reset(formatShortCircuitParameters(parameters, predefinedParameters));
             setParamsLoaded(true);
