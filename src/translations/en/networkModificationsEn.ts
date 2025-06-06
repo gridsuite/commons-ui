@@ -61,6 +61,7 @@ export const networkModificationsEn = {
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'substation modifications',
     'network_modifications.TABULAR_CREATION': 'Tabular creation - {computedLabel}',
     'network_modifications.tabular.GENERATOR_CREATION': 'generator creations',
+    'network_modifications.tabular.BATTERY_CREATION': 'battery creations',
     'network_modifications.tabular.LOAD_CREATION': 'load creations',
     'network_modifications.tabular.SHUNT_COMPENSATOR_CREATION': 'linear shunt compensator creations',
     'network_modifications.LCC_CREATION': 'Creating HVDC (LCC) {computedLabel}',
