@@ -40,7 +40,13 @@ export function ShortCircuitParametersInLine({
     setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
     shortCircuitParameters: ShortCircuitParametersInfos | null;
 }>) {
-    const shortCircuitMethods = useShortCircuitParametersForm(null, studyUuid, shortCircuitParameters, null, null);
+    const shortCircuitMethods = useShortCircuitParametersForm({
+        parametersUuid: null,
+        name: null,
+        description: null,
+        studyUuid,
+        studyShortCircuitParameters: shortCircuitParameters,
+    });
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);

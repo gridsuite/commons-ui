@@ -22,7 +22,13 @@ export function ShortCircuitParametersEditionDialog({
     activeDirectory,
     language,
 }: Readonly<ParametersEditionDialogProps>) {
-    const shortCircuitMethods = useShortCircuitParametersForm(id, null, null, name, description);
+    const shortCircuitMethods = useShortCircuitParametersForm({
+        parametersUuid: id,
+        name,
+        description,
+        studyUuid: null,
+        studyShortCircuitParameters: null,
+    });
 
     const {
         formState: { errors, dirtyFields },

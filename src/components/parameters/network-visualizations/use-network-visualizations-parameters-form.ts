@@ -45,13 +45,30 @@ export interface UseNetworkVisualizationParametersFormReturn {
     onSaveDialog: (formData: Record<string, any>) => void;
 }
 
-export const useNetworkVisualizationParametersForm = (
-    parametersUuid: UUID | null,
-    studyUuid: UUID | null,
-    parameters: NetworkVisualizationParameters | null,
-    name: string | null,
-    description: string | null
-): UseNetworkVisualizationParametersFormReturn => {
+// GridExplore versus GridStudy exclusive input params
+type UseNetworkVisualizationParametersFormProps =
+    | {
+          parametersUuid: UUID;
+          name: string;
+          description: string | null;
+          studyUuid: null;
+          parameters: null;
+      }
+    | {
+          parametersUuid: null;
+          name: null;
+          description: null;
+          studyUuid: UUID | null;
+          parameters: NetworkVisualizationParameters | null;
+      };
+
+export const useNetworkVisualizationParametersForm = ({
+    parametersUuid,
+    name,
+    description,
+    studyUuid,
+    parameters,
+}: UseNetworkVisualizationParametersFormProps): UseNetworkVisualizationParametersFormReturn => {
     const [selectedTab, setSelectedTab] = useState(TabValues.MAP);
     const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
     const { snackError } = useSnackMessage();

@@ -44,13 +44,30 @@ export interface UseShortCircuitParametersFormReturn {
     getCurrentValues: () => FieldValues;
 }
 
-export const useShortCircuitParametersForm = (
-    parametersUuid: UUID | null,
-    studyUuid: UUID | null,
-    studyShortCircuitParameters: ShortCircuitParametersInfos | null,
-    name: string | null,
-    description: string | null
-): UseShortCircuitParametersFormReturn => {
+// GridExplore versus GridStudy exclusive input params
+type UseShortCircuitParametersFormProps =
+    | {
+          parametersUuid: UUID;
+          name: string;
+          description: string | null;
+          studyUuid: null;
+          studyShortCircuitParameters: null;
+      }
+    | {
+          parametersUuid: null;
+          name: null;
+          description: null;
+          studyUuid: UUID | null;
+          studyShortCircuitParameters: ShortCircuitParametersInfos | null;
+      };
+
+export const useShortCircuitParametersForm = ({
+    parametersUuid,
+    name,
+    description,
+    studyUuid,
+    studyShortCircuitParameters,
+}: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
     const { snackError } = useSnackMessage();
     const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
     const [shortCircuitParameters, setShortCircuitParameters] = useState<ShortCircuitParametersInfos>();
@@ -250,6 +267,7 @@ export const useShortCircuitParametersForm = (
     useEffect(() => {
         if (studyShortCircuitParameters) {
             setShortCircuitParameters(studyShortCircuitParameters);
+            setParamsLoaded(true);
         }
     }, [studyShortCircuitParameters]);
 
@@ -258,7 +276,6 @@ export const useShortCircuitParametersForm = (
         if (shortCircuitParameters) {
             const { parameters, predefinedParameters } = shortCircuitParameters;
             reset(formatShortCircuitParameters(parameters, predefinedParameters));
-            setParamsLoaded(true);
         }
     }, [reset, shortCircuitParameters]);
 

@@ -33,7 +33,13 @@ export function NetworkVisualizationParametersInline({
     user: User | null;
     parameters: NetworkVisualizationParameters | null;
 }>) {
-    const networkVisuMethods = useNetworkVisualizationParametersForm(null, studyUuid, parameters, null, null);
+    const networkVisuMethods = useNetworkVisualizationParametersForm({
+        parametersUuid: null,
+        name: null,
+        description: null,
+        studyUuid,
+        parameters,
+    });
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);

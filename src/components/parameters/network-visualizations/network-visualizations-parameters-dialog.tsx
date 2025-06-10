@@ -23,7 +23,13 @@ export function NetworkVisualizationsParametersEditionDialog({
     language,
     user,
 }: Readonly<ParametersEditionDialogProps>) {
-    const networkVisuMethods = useNetworkVisualizationParametersForm(id, null, null, name, description);
+    const networkVisuMethods = useNetworkVisualizationParametersForm({
+        parametersUuid: id,
+        name,
+        description,
+        studyUuid: null,
+        parameters: null,
+    });
 
     const {
         formState: { errors, dirtyFields },
