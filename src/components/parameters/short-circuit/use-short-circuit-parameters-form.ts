@@ -37,7 +37,7 @@ import { fetchShortCircuitParameters } from '../../../services/short-circuit-ana
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
-    paramsLoaded: boolean;
+    paramsLoading: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
     resetAll: (predefinedParameter: PredefinedParameters) => void;
@@ -69,7 +69,7 @@ export const useShortCircuitParametersForm = ({
     studyShortCircuitParameters,
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
     const { snackError } = useSnackMessage();
-    const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
+    const [paramsLoading, setParamsLoading] = useState<boolean>(false);
     const [shortCircuitParameters, setShortCircuitParameters] = useState<ShortCircuitParametersInfos>();
 
     const formSchema = useMemo(() => {
@@ -248,7 +248,9 @@ export const useShortCircuitParametersForm = ({
     // GridExplore init case
     useEffect(() => {
         if (parametersUuid) {
-            setParamsLoaded(false);
+            const timer = setTimeout(() => {
+                setParamsLoading(true);
+            }, 700);
             fetchShortCircuitParameters(parametersUuid)
                 .then((params) => {
                     setShortCircuitParameters(params);
@@ -259,7 +261,10 @@ export const useShortCircuitParametersForm = ({
                         headerId: 'paramsRetrievingError',
                     });
                 })
-                .finally(() => setParamsLoaded(true));
+                .finally(() => {
+                    clearTimeout(timer);
+                    setParamsLoading(false);
+                });
         }
     }, [parametersUuid, snackError]);
 
@@ -267,7 +272,6 @@ export const useShortCircuitParametersForm = ({
     useEffect(() => {
         if (studyShortCircuitParameters) {
             setShortCircuitParameters(studyShortCircuitParameters);
-            setParamsLoaded(true);
         }
     }, [studyShortCircuitParameters]);
 
@@ -282,7 +286,7 @@ export const useShortCircuitParametersForm = ({
     return {
         formMethods,
         formSchema,
-        paramsLoaded,
+        paramsLoading,
         onSaveInline,
         onSaveDialog,
         resetAll,

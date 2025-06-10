@@ -40,7 +40,7 @@ export interface UseNetworkVisualizationParametersFormReturn {
     formSchema: ObjectSchema<any>;
     selectedTab: TabValues;
     handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
-    paramsLoaded: boolean;
+    paramsLoading: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
 }
@@ -70,7 +70,7 @@ export const useNetworkVisualizationParametersForm = ({
     parameters,
 }: UseNetworkVisualizationParametersFormProps): UseNetworkVisualizationParametersFormReturn => {
     const [selectedTab, setSelectedTab] = useState(TabValues.MAP);
-    const [paramsLoaded, setParamsLoaded] = useState<boolean>(false);
+    const [paramsLoading, setParamsLoading] = useState<boolean>(false);
     const { snackError } = useSnackMessage();
 
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
@@ -162,7 +162,9 @@ export const useNetworkVisualizationParametersForm = ({
     // Gridexplore init case
     useEffect(() => {
         if (parametersUuid) {
-            setParamsLoaded(false);
+            const timer = setTimeout(() => {
+                setParamsLoading(true);
+            }, 700);
             getNetworkVisualizationsParameters(parametersUuid)
                 .then((params) => {
                     reset(params);
@@ -173,7 +175,10 @@ export const useNetworkVisualizationParametersForm = ({
                         headerId: 'getNetworkVisualizationsParametersError',
                     });
                 })
-                .finally(() => setParamsLoaded(true));
+                .finally(() => {
+                    clearTimeout(timer);
+                    setParamsLoading(false);
+                });
         }
     }, [parametersUuid, reset, snackError]);
 
@@ -181,7 +186,6 @@ export const useNetworkVisualizationParametersForm = ({
     useEffect(() => {
         if (parameters) {
             reset(parameters);
-            setParamsLoaded(true);
         }
     }, [parameters, reset]);
 
@@ -190,7 +194,7 @@ export const useNetworkVisualizationParametersForm = ({
         formSchema,
         selectedTab,
         handleTabChange,
-        paramsLoaded,
+        paramsLoading,
         onSaveInline,
         onSaveDialog,
     };
