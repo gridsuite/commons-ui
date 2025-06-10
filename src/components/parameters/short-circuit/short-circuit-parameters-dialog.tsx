@@ -46,11 +46,6 @@ export function ShortCircuitParametersEditionDialog({
             removeOptional
             language={language}
             disabledSave={disableSave}
-            PaperProps={{
-                sx: {
-                    height: '80vh', // we want the dialog height to be fixed even when switching tabs
-                },
-            }}
         >
             <ShortCircuitParametersForm
                 shortCircuitMethods={shortCircuitMethods}

@@ -168,12 +168,12 @@ export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProp
     return (
         <Grid container spacing={2} paddingLeft={2}>
             <Grid container paddingTop={2} xl={6}>
-                <GridItem size={9}>{feederResult}</GridItem>
+                <GridItem size={10}>{feederResult}</GridItem>
             </Grid>
             <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
             <Grid xl={6} container spacing={1} alignItems="center">
-                <GridItem size={8}>{predefinedParameters}</GridItem>
-                <GridItem size={4}>{statusToShow}</GridItem>
+                <GridItem size={9}>{predefinedParameters}</GridItem>
+                <GridItem size={2}>{statusToShow}</GridItem>
             </Grid>
             <GridSection title="ShortCircuitCharacteristics" heading={4} />
             <Grid container spacing={5}>
