@@ -72,4 +72,5 @@ export const networkModificationsEn = {
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION': 'Modifying voltage level topology {computedLabel}',
     'network_modifications.CREATE_COUPLING_DEVICE': 'Creating a coupling device in voltage level {computedLabel}',
     'network_modifications.BALANCES_ADJUSTMENT_MODIFICATION': 'Balances adjustment modification',
+    'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': 'Creating a bus bar in voltage level {computedLabel}',
 };
