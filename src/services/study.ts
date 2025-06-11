@@ -12,6 +12,7 @@ import {
     ShortCircuitParameters,
     ShortCircuitParametersInfos,
 } from '../components/parameters/short-circuit/short-circuit-parameters.type';
+import { VoltageInitStudyParameters } from '../components/parameters/voltage-init';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
@@ -71,5 +72,22 @@ export function invalidateStudyShortCircuitStatus(studyUuid: UUID) {
     console.info('invalidate study short circuit status');
     return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit/invalidate-status`, {
         method: 'PUT',
+    });
+}
+
+export function updateVoltageInitParameters(
+    studyUuid: UUID | null,
+    newParams: VoltageInitStudyParameters
+) {
+    console.info('set study voltage init parameters');
+    const url = `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/voltage-init/parameters`;
+    console.debug(url);
+    return backendFetch(url, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newParams),
     });
 }
