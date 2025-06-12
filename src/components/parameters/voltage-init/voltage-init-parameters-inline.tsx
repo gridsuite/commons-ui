@@ -18,6 +18,9 @@ import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
 import { VoltageInitStudyParameters } from './voltage-init.type';
+import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
+import { fromVoltageInitParamsDataToFormValues } from './voltage-init-form-utils';
+import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
 
 export function VoltageInitParametersInLine({
     studyUuid,
@@ -42,19 +45,42 @@ export function VoltageInitParametersInLine({
     const { snackError } = useSnackMessage();
 
     const { formMethods } = voltageInitMethods;
-    const { formState, handleSubmit } = formMethods;
+    const { formState, handleSubmit, reset } = formMethods;
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams?.length) {
                 setOpenSelectParameterDialog(false);
-                const paramUuid = newParams[0].id;
-                //fetchShortCircuitParameters(paramUuid)
+                const parametersUuid = newParams[0].id;
+                getVoltageInitParameters(parametersUuid)
+                    .then((params) => {
+                        reset(fromVoltageInitParamsDataToFormValues(params), {
+                            keepDefaultValues: true,
+                        });
+                    })
+                    .catch((error: Error) => {
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'paramsRetrievingError',
+                        });
+                    });
             }
             setOpenSelectParameterDialog(false);
         },
         [snackError]
     );
+
+    const resetVoltageInitParameters = useCallback(() => {
+        updateVoltageInitParameters(studyUuid, {
+            applyModifications: DEFAULT_GENERAL_APPLY_MODIFICATIONS,
+            computationParameters: null, // null means Reset
+        }).catch((error) => {
+            snackError({
+                messageTxt: error.message,
+                headerId: 'updateVoltageInitParametersError',
+            });
+        });
+    }, [studyUuid, snackError]);
 
     useEffect(() => {
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
@@ -72,6 +98,7 @@ export function VoltageInitParametersInLine({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
+                            <LabelledButton callback={() => resetVoltageInitParameters()} label="resetToDefault" />
                             <SubmitButton onClick={handleSubmit(voltageInitMethods.onSaveInline)} variant="outlined">
                                 <FormattedMessage id="validate" />
                             </SubmitButton>

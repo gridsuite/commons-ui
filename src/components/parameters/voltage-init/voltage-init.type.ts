@@ -55,8 +55,8 @@ export type VoltageInitParameters = {
     [VARIABLE_SHUNT_COMPENSATORS]: FilterIdentifier[];
 };
 
-// Dto exchanged with study server, with study-specific applyModifications parameter
+// Dto exchanged with study server, with study-specific 'applyModifications' parameter
 export type VoltageInitStudyParameters = {
     applyModifications: boolean;
-    computationParameters: VoltageInitParameters;
+    computationParameters: VoltageInitParameters | null;
 };
