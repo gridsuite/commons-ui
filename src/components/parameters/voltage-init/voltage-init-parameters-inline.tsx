@@ -19,7 +19,10 @@ import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
 import { VoltageInitStudyParameters } from './voltage-init.type';
 import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
-import { fromVoltageInitParamsDataToFormValues } from './voltage-init-form-utils';
+import {
+    fromVoltageInitParametersFormToParamValues,
+    fromVoltageInitParamsDataToFormValues,
+} from './voltage-init-form-utils';
 import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
 
 export function VoltageInitParametersInLine({
@@ -44,8 +47,7 @@ export function VoltageInitParametersInLine({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const { formMethods } = voltageInitMethods;
-    const { formState, handleSubmit, reset } = formMethods;
+    const { formState, getValues, handleSubmit, reset, trigger } = voltageInitMethods.formMethods;
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
@@ -86,6 +88,14 @@ export function VoltageInitParametersInLine({
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
     }, [formState, setHaveDirtyFields]);
 
+    const handleOpenSaveDialog = useCallback(() => {
+        trigger().then((isValid) => {
+            if (isValid) {
+                setOpenCreateParameterDialog(true);
+            }
+        });
+    }, [trigger]);
+
     return (
         <VoltageInitParametersForm
             voltageInitMethods={voltageInitMethods}
@@ -97,8 +107,8 @@ export function VoltageInitParametersInLine({
                                 callback={() => setOpenSelectParameterDialog(true)}
                                 label="settings.button.chooseSettings"
                             />
-                            <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <LabelledButton callback={() => resetVoltageInitParameters()} label="resetToDefault" />
+                            <LabelledButton callback={handleOpenSaveDialog} label="save" />
+                            <LabelledButton callback={resetVoltageInitParameters} label="resetToDefault" />
                             <SubmitButton onClick={handleSubmit(voltageInitMethods.onSaveInline)} variant="outlined">
                                 <FormattedMessage id="validate" />
                             </SubmitButton>
@@ -108,8 +118,10 @@ export function VoltageInitParametersInLine({
                                 studyUuid={studyUuid}
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => getCurrentValues()}
-                                parameterFormatter={(newParams) => newParams}
+                                parameterValues={getValues}
+                                parameterFormatter={(params: Record<string, any>) =>
+                                    fromVoltageInitParametersFormToParamValues(params).computationParameters
+                                }
                                 parameterType={ElementType.VOLTAGE_INIT_PARAMETERS}
                             />
                         )}
