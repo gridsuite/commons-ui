@@ -48,7 +48,7 @@ export function NetworkVisualizationParametersForm({
     user,
 }: Readonly<NetworkVisualizationParametersFormProps>) {
     const componentLibraries = useGetAvailableComponentLibraries(user);
-    const { formMethods, formSchema, selectedTab, handleTabChange, paramsLoaded } = networkVisuMethods;
+    const { formMethods, formSchema, selectedTab, handleTabChange, paramsLoading } = networkVisuMethods;
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
@@ -56,7 +56,9 @@ export function NetworkVisualizationParametersForm({
                 <Grid item container direction="column">
                     {renderTitleFields?.()}
                 </Grid>
-                {paramsLoaded ? (
+                {paramsLoading ? (
+                    <LinearProgress />
+                ) : (
                     <Grid item container direction="column">
                         <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                             <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
@@ -79,8 +81,6 @@ export function NetworkVisualizationParametersForm({
                             <NetworkAreaDiagramParameters />
                         </TabPanel>
                     </Grid>
-                ) : (
-                    <LinearProgress />
                 )}
                 <Grid
                     item

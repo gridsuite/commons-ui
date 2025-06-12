@@ -9,7 +9,6 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'reac
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UUID } from 'crypto';
-import { User } from 'oidc-client';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../inputs';
@@ -17,28 +16,36 @@ import { ElementType } from '../../../utils';
 import { LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
-import { NetworkVisualizationParametersForm } from './network-visualizations-form';
-import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
-import { getNetworkVisualizationsParameters } from '../../../services';
-import { NetworkVisualizationParameters } from './network-visualizations.types';
+import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
+import {
+    InitialVoltage,
+    SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_PREDEFINED_PARAMS,
+    SHORT_CIRCUIT_WITH_FEEDER_RESULT,
+    SHORT_CIRCUIT_WITH_LOADS,
+    SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
+    SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
+    SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
+} from './constants';
+import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
+import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
+import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 
-export function NetworkVisualizationParametersInline({
+export function ShortCircuitParametersInLine({
     studyUuid,
     setHaveDirtyFields,
-    user,
-    parameters,
+    shortCircuitParameters,
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
-    user: User | null;
-    parameters: NetworkVisualizationParameters | null;
+    shortCircuitParameters: ShortCircuitParametersInfos | null;
 }>) {
-    const networkVisuMethods = useNetworkVisualizationParametersForm({
+    const shortCircuitMethods = useShortCircuitParametersForm({
         parametersUuid: null,
         name: null,
         description: null,
         studyUuid,
-        parameters,
+        studyShortCircuitParameters: shortCircuitParameters,
     });
 
     const intl = useIntl();
@@ -46,17 +53,38 @@ export function NetworkVisualizationParametersInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const { reset, getValues, formState, handleSubmit } = networkVisuMethods.formMethods;
+    const { getCurrentValues, formMethods } = shortCircuitMethods;
+    const { setValue, formState, handleSubmit } = formMethods;
+
+    const replaceFormValues = useCallback(
+        (param: ShortCircuitParametersInfos) => {
+            const dirty = { shouldDirty: true };
+            setValue(SHORT_CIRCUIT_WITH_FEEDER_RESULT, param.parameters.withFeederResult, dirty);
+            setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, param.predefinedParameters, dirty);
+            setValue(SHORT_CIRCUIT_WITH_LOADS, param.parameters.withLoads, dirty);
+            setValue(SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS, param.parameters.withVSCConverterStations, dirty);
+            setValue(SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS, param.parameters.withShuntCompensators, dirty);
+            setValue(SHORT_CIRCUIT_WITH_NEUTRAL_POSITION, !param.parameters.withNeutralPosition, dirty);
+            setValue(
+                SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+                param.parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
+                    ? InitialVoltage.CEI909
+                    : param.parameters.initialVoltageProfileMode,
+                dirty
+            );
+        },
+        [setValue]
+    );
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
-            if (newParams && newParams.length > 0) {
+            if (newParams?.length) {
                 setOpenSelectParameterDialog(false);
-                getNetworkVisualizationsParameters(newParams[0].id)
-                    .then((result) => {
-                        reset(result, {
-                            keepDefaultValues: true,
-                        });
+                const paramUuid = newParams[0].id;
+                fetchShortCircuitParameters(paramUuid)
+                    .then((parameters: ShortCircuitParametersInfos) => {
+                        // Replace form data with fetched data
+                        replaceFormValues(parameters);
                     })
                     .catch((error) => {
                         console.error(error);
@@ -68,7 +96,7 @@ export function NetworkVisualizationParametersInline({
             }
             setOpenSelectParameterDialog(false);
         },
-        [reset, snackError]
+        [snackError, replaceFormValues]
     );
 
     useEffect(() => {
@@ -76,9 +104,8 @@ export function NetworkVisualizationParametersInline({
     }, [formState, setHaveDirtyFields]);
 
     return (
-        <NetworkVisualizationParametersForm
-            user={user}
-            networkVisuMethods={networkVisuMethods}
+        <ShortCircuitParametersForm
+            shortCircuitMethods={shortCircuitMethods}
             renderActions={() => {
                 return (
                     <Box>
@@ -88,7 +115,7 @@ export function NetworkVisualizationParametersInline({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <SubmitButton onClick={handleSubmit(networkVisuMethods.onSaveInline)} variant="outlined">
+                            <SubmitButton onClick={handleSubmit(shortCircuitMethods.onSaveInline)} variant="outlined">
                                 <FormattedMessage id="validate" />
                             </SubmitButton>
                         </Grid>
@@ -97,16 +124,16 @@ export function NetworkVisualizationParametersInline({
                                 studyUuid={studyUuid}
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => getValues()}
+                                parameterValues={() => getCurrentValues()}
                                 parameterFormatter={(newParams) => newParams}
-                                parameterType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
+                                parameterType={ElementType.SHORT_CIRCUIT_PARAMETERS}
                             />
                         )}
                         {openSelectParameterDialog && (
                             <DirectoryItemSelector
                                 open={openSelectParameterDialog}
                                 onClose={handleLoadParameters}
-                                types={[ElementType.NETWORK_VISUALIZATIONS_PARAMETERS]}
+                                types={[ElementType.SHORT_CIRCUIT_PARAMETERS]}
                                 title={intl.formatMessage({
                                     id: 'showSelectParameterDialog',
                                 })}
