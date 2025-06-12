@@ -7,12 +7,12 @@
 
 import { CustomMuiDialog } from '../../dialogs';
 import { ElementType } from '../../../utils';
-import { NetworkVisualizationParametersForm } from './network-visualizations-form';
-import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
 import { NameElementEditorForm } from '../common/name-element-editor';
+import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
+import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
 import { ParametersEditionDialogProps } from '../common';
 
-export function NetworkVisualizationsParametersEditionDialog({
+export function ShortCircuitParametersEditionDialog({
     id,
     open,
     onClose,
@@ -21,47 +21,40 @@ export function NetworkVisualizationsParametersEditionDialog({
     description,
     activeDirectory,
     language,
-    user,
 }: Readonly<ParametersEditionDialogProps>) {
-    const networkVisuMethods = useNetworkVisualizationParametersForm({
+    const shortCircuitMethods = useShortCircuitParametersForm({
         parametersUuid: id,
         name,
         description,
         studyUuid: null,
-        parameters: null,
+        studyShortCircuitParameters: null,
     });
 
     const {
         formState: { errors, dirtyFields },
-    } = networkVisuMethods.formMethods;
+    } = shortCircuitMethods.formMethods;
     const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
             open={open}
             onClose={onClose}
-            onSave={networkVisuMethods.onSaveDialog}
-            formSchema={networkVisuMethods.formSchema}
-            formMethods={networkVisuMethods.formMethods}
+            onSave={shortCircuitMethods.onSaveDialog}
+            formSchema={shortCircuitMethods.formSchema}
+            formMethods={shortCircuitMethods.formMethods}
             titleId={titleId}
             removeOptional
             language={language}
             disabledSave={disableSave}
-            PaperProps={{
-                sx: {
-                    height: '65vh', // we want the dialog height to be fixed even when switching tabs
-                },
-            }}
         >
-            <NetworkVisualizationParametersForm
-                user={user}
-                networkVisuMethods={networkVisuMethods}
+            <ShortCircuitParametersForm
+                shortCircuitMethods={shortCircuitMethods}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm
                             initialElementName={name}
                             activeDirectory={activeDirectory}
-                            elementType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
+                            elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
                         />
                     );
                 }}
