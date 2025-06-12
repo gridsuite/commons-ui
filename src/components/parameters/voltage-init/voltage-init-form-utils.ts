@@ -50,13 +50,13 @@ export const fromVoltageInitParametersFormToParamValues = (
                 newParams?.[TabValues.GENERAL]?.[SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD] ??
                 DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
             [VOLTAGE_LIMITS_MODIFICATION]:
-                newParams.voltageLimitsModification?.map((voltageLimit) => {
+                newParams.voltageLimitsModification?.map((voltageLimit: any) => {
                     return {
                         [PRIORITY]: newParams.voltageLimitsModification?.indexOf(voltageLimit),
                         [LOW_VOLTAGE_LIMIT]: voltageLimit[LOW_VOLTAGE_LIMIT] ?? 0,
                         [HIGH_VOLTAGE_LIMIT]: voltageLimit[HIGH_VOLTAGE_LIMIT] ?? 0,
                         [FILTERS]:
-                            voltageLimit[FILTERS]?.map((filter) => {
+                            voltageLimit[FILTERS]?.map((filter: any) => {
                                 return {
                                     [FILTER_ID]: filter[ID] as UUID,
                                     [FILTER_NAME]: filter[NAME],
@@ -65,13 +65,13 @@ export const fromVoltageInitParametersFormToParamValues = (
                     };
                 }) ?? [],
             [VOLTAGE_LIMITS_DEFAULT]:
-                newParams.voltageLimitsDefault?.map((voltageLimit) => {
+                newParams.voltageLimitsDefault?.map((voltageLimit: any) => {
                     return {
                         [PRIORITY]: newParams.voltageLimitsDefault?.indexOf(voltageLimit),
                         [LOW_VOLTAGE_LIMIT]: voltageLimit[LOW_VOLTAGE_LIMIT] ?? 0,
                         [HIGH_VOLTAGE_LIMIT]: voltageLimit[HIGH_VOLTAGE_LIMIT] ?? 0,
                         [FILTERS]:
-                            voltageLimit[FILTERS]?.map((filter) => {
+                            voltageLimit[FILTERS]?.map((filter: any) => {
                                 return {
                                     [FILTER_ID]: filter[ID] as UUID,
                                     [FILTER_NAME]: filter[NAME],
@@ -82,7 +82,7 @@ export const fromVoltageInitParametersFormToParamValues = (
             [GENERATORS_SELECTION_TYPE]:
                 (newParams[GENERATORS_SELECTION_TYPE] as EquipmentsSelectionType) ?? EquipmentsSelectionType.ALL_EXCEPT,
             [VARIABLE_Q_GENERATORS]:
-                newParams[VARIABLE_Q_GENERATORS]?.map((filter) => {
+                newParams[VARIABLE_Q_GENERATORS]?.map((filter: any) => {
                     return {
                         [FILTER_ID]: filter[ID] as UUID,
                         [FILTER_NAME]: filter[NAME],
@@ -92,7 +92,7 @@ export const fromVoltageInitParametersFormToParamValues = (
                 (newParams[TRANSFORMERS_SELECTION_TYPE] as EquipmentsSelectionType) ??
                 EquipmentsSelectionType.NONE_EXCEPT,
             [VARIABLE_TRANSFORMERS]:
-                newParams[VARIABLE_TRANSFORMERS]?.map((filter) => {
+                newParams[VARIABLE_TRANSFORMERS]?.map((filter: any) => {
                     return {
                         [FILTER_ID]: filter[ID] as UUID,
                         [FILTER_NAME]: filter[NAME],
@@ -102,7 +102,7 @@ export const fromVoltageInitParametersFormToParamValues = (
                 (newParams[SHUNT_COMPENSATORS_SELECTION_TYPE] as EquipmentsSelectionType) ??
                 EquipmentsSelectionType.NONE_EXCEPT,
             [VARIABLE_SHUNT_COMPENSATORS]:
-                newParams[VARIABLE_SHUNT_COMPENSATORS]?.map((filter) => {
+                newParams[VARIABLE_SHUNT_COMPENSATORS]?.map((filter: any) => {
                     return {
                         [FILTER_ID]: filter[ID] as UUID,
                         [FILTER_NAME]: filter[NAME],
