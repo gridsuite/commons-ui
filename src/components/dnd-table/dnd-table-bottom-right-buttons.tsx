@@ -14,7 +14,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { FieldConstants } from '../../utils';
+import { SELECTED } from './dnd-table.type';
 
 export interface DndTableBottomRightButtonsProps {
     arrayFormName: string;
@@ -43,9 +43,9 @@ export const DndTableBottomRightButtons = ({
         name: arrayFormName,
     });
 
-    const noRowsSelected = currentRows ? !currentRows.some((row) => row[FieldConstants.SELECTED]) : true;
-    const firstRowSelected = currentRows[0]?.[FieldConstants.SELECTED];
-    const lastRowSelected = currentRows[currentRows.length - 1]?.[FieldConstants.SELECTED];
+    const noRowsSelected = currentRows ? !currentRows.some((row) => row[SELECTED]) : true;
+    const firstRowSelected = currentRows[0]?.[SELECTED];
+    const lastRowSelected = currentRows[currentRows.length - 1]?.[SELECTED];
 
     return (
         <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end' }}>

@@ -34,7 +34,7 @@ import {
     PRIORITY,
 } from './constants';
 import { NAME } from '../../inputs';
-import { FieldConstants } from '../../../utils';
+import { SELECTED } from '../../dnd-table';
 
 export const fromVoltageInitParametersFormToParamValues = (
     newParams: Record<string, any>
@@ -124,7 +124,7 @@ export const fromVoltageInitParamsDataToFormValues = (parameters: VoltageInitPar
         [VOLTAGE_LIMITS_MODIFICATION]:
             parameters?.voltageLimitsModification?.map((voltageLimit) => {
                 return {
-                    [FieldConstants.SELECTED]: false,
+                    [SELECTED]: false,
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
@@ -138,7 +138,7 @@ export const fromVoltageInitParamsDataToFormValues = (parameters: VoltageInitPar
         [VOLTAGE_LIMITS_DEFAULT]:
             parameters?.voltageLimitsDefault?.map((voltageLimit) => {
                 return {
-                    [FieldConstants.SELECTED]: false,
+                    [SELECTED]: false,
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
@@ -189,7 +189,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
         [VOLTAGE_LIMITS_MODIFICATION]:
             parameters?.computationParameters?.voltageLimitsModification?.map((voltageLimit) => {
                 return {
-                    [FieldConstants.SELECTED]: false,
+                    [SELECTED]: false,
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
@@ -203,7 +203,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
         [VOLTAGE_LIMITS_DEFAULT]:
             parameters?.computationParameters?.voltageLimitsDefault?.map((voltageLimit) => {
                 return {
-                    [FieldConstants.SELECTED]: false,
+                    [SELECTED]: false,
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],

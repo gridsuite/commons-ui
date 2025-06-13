@@ -18,10 +18,10 @@ import {
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
-import { ElementType, EquipmentType, FieldConstants } from '../../../utils';
+import { ElementType, EquipmentType } from '../../../utils';
 import { parametersStyles } from '../parameters-style';
 import { VoltageAdornment } from '../common';
-import { DndColumn, DndColumnType, DndTable } from '../../dnd-table';
+import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
 
 export const VoltageLimitsParameters = () => {
     const intl = useIntl();
@@ -127,7 +127,7 @@ export const VoltageLimitsParameters = () => {
 
     const newModificationRowData = useMemo(() => {
         const newRowData: Record<string, any> = {};
-        newRowData[FieldConstants.SELECTED] = false;
+        newRowData[SELECTED] = false;
         VOLTAGE_LIMITS_MODIFICATION_COLUMNS_DEFINITIONS.forEach(
             (column) => (newRowData[column.dataKey] = column.initialValue)
         );
@@ -138,7 +138,7 @@ export const VoltageLimitsParameters = () => {
 
     const newDefaultRowData = useMemo(() => {
         const newRowData: Record<string, any> = {};
-        newRowData[FieldConstants.SELECTED] = false;
+        newRowData[SELECTED] = false;
         VOLTAGE_LIMITS_DEFAULT_COLUMNS_DEFINITIONS.forEach(
             (column) => (newRowData[column.dataKey] = column.initialValue)
         );

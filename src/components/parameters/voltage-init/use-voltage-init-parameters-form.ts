@@ -38,7 +38,7 @@ import {
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType, FieldConstants, isBlankOrEmpty } from '../../../utils';
+import { ElementType, isBlankOrEmpty } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
@@ -46,6 +46,7 @@ import {
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
+import { SELECTED } from '../../dnd-table';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -109,7 +110,7 @@ export const useVoltageInitParametersForm = ({
                 }),
                 [VOLTAGE_LIMITS_MODIFICATION]: yup.array().of(
                     yup.object().shape({
-                        [FieldConstants.SELECTED]: yup.boolean().required(),
+                        [SELECTED]: yup.boolean().required(),
                         [FILTERS]: yup
                             .array()
                             .of(
@@ -125,7 +126,7 @@ export const useVoltageInitParametersForm = ({
                 ),
                 [VOLTAGE_LIMITS_DEFAULT]: yup.array().of(
                     yup.object().shape({
-                        [FieldConstants.SELECTED]: yup.boolean().required(),
+                        [SELECTED]: yup.boolean().required(),
                         [FILTERS]: yup
                             .array()
                             .of(

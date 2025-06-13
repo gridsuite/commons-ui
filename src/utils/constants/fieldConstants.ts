@@ -41,7 +41,6 @@ export enum FieldConstants {
     PROPERTY_OPERATOR = 'propertyOperator',
     PROPERTY = 'PROPERTY',
     PROPERTY_VALUES = 'propertyValues',
-    SELECTED = 'selected',
     SCRIPT = 'script',
     STUDY_NAME = 'studyName',
     VALUE_1 = 'value1',

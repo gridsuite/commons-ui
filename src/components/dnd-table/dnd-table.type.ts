@@ -8,6 +8,8 @@
 import { ReactNode } from 'react';
 import { ElementType, EquipmentType } from '../../utils';
 
+export const SELECTED = 'selected';
+
 export enum DndColumnType {
     TEXT = 'TEXT',
     NUMERIC = 'NUMERIC',

@@ -23,7 +23,10 @@ import {
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { DragDropContext, Draggable, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
-import { ColumnBase, DndColumn, DndColumnType } from './dnd-table.type';
+import { ColumnBase, DndColumn, DndColumnType, SELECTED } from './dnd-table.type';
+import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
+import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
+import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
 import {
     AutocompleteInput,
     CheckboxInput,
@@ -35,10 +38,6 @@ import {
     TableTextInput,
 } from '../inputs';
 import { ChipItemsInput } from '../inputs/reactHookForm/chip-items-input';
-import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
-import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
-import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
-import { FieldConstants } from '../../utils';
 
 export const MAX_ROWS_NUMBER = 100;
 const styles = {
@@ -68,11 +67,11 @@ function MultiCheckbox({
     });
 
     const allRowSelected = useMemo(
-        () => (arrayToWatch ? arrayToWatch?.every((row) => row[FieldConstants.SELECTED]) : false),
+        () => (arrayToWatch ? arrayToWatch?.every((row) => row[SELECTED]) : false),
         [arrayToWatch]
     );
     const someRowSelected = useMemo(
-        () => (arrayToWatch ? arrayToWatch?.some((row) => row[FieldConstants.SELECTED]) : false),
+        () => (arrayToWatch ? arrayToWatch?.some((row) => row[SELECTED]) : false),
         [arrayToWatch]
     );
 
@@ -299,10 +298,10 @@ export const DndTable = (props: DndTableProps) => {
         clearErrors(arrayFormName);
 
         const rowsToAdd = createRows?.(numberOfRows).map((row) => {
-            return { ...row, [FieldConstants.SELECTED]: false };
+            return { ...row, [SELECTED]: false };
         });
 
-        // note : an id prop is automatically added in each row
+        // note: an id prop is automatically added in each row
         append(rowsToAdd);
     }
 
@@ -311,7 +310,7 @@ export const DndTable = (props: DndTableProps) => {
 
         let rowsToDelete = [];
         for (let i = 0; i < currentRowsValues.length; i++) {
-            if (currentRowsValues[i][FieldConstants.SELECTED]) {
+            if (currentRowsValues[i][SELECTED]) {
                 rowsToDelete.push(i);
             }
         }
@@ -321,26 +320,26 @@ export const DndTable = (props: DndTableProps) => {
 
     function selectAllRows() {
         for (let i = 0; i < currentRows.length; i++) {
-            setValue(`${arrayFormName}[${i}].${FieldConstants.SELECTED}`, true);
+            setValue(`${arrayFormName}[${i}].${SELECTED}`, true);
         }
     }
 
     function unselectAllRows() {
         for (let i = 0; i < currentRows.length; i++) {
-            setValue(`${arrayFormName}[${i}].${FieldConstants.SELECTED}`, false);
+            setValue(`${arrayFormName}[${i}].${SELECTED}`, false);
         }
     }
 
     function moveUpSelectedRows() {
         const currentRowsValues = getValues(arrayFormName);
 
-        if (currentRowsValues[0][FieldConstants.SELECTED]) {
+        if (currentRowsValues[0][SELECTED]) {
             // we can't move up more the rows, so we stop
             return;
         }
 
         for (let i = 1; i < currentRowsValues.length; i++) {
-            if (currentRowsValues[i][FieldConstants.SELECTED]) {
+            if (currentRowsValues[i][SELECTED]) {
                 swap(i - 1, i);
             }
         }
@@ -349,13 +348,13 @@ export const DndTable = (props: DndTableProps) => {
     function moveDownSelectedRows() {
         const currentRowsValues = getValues(arrayFormName);
 
-        if (currentRowsValues[currentRowsValues.length - 1][FieldConstants.SELECTED]) {
+        if (currentRowsValues[currentRowsValues.length - 1][SELECTED]) {
             // we can't move down more the rows, so we stop
             return;
         }
 
         for (let i = currentRowsValues.length - 2; i >= 0; i--) {
-            if (currentRowsValues[i][FieldConstants.SELECTED]) {
+            if (currentRowsValues[i][SELECTED]) {
                 swap(i, i + 1);
             }
         }
@@ -408,7 +407,7 @@ export const DndTable = (props: DndTableProps) => {
                         index={index}
                         isDragDisabled={disableDragAndDrop}
                     >
-                        {(provided, snapshot) => (
+                        {(provided, _snapshot) => (
                             <TableRow ref={provided.innerRef} {...provided.draggableProps}>
                                 {!disableDragAndDrop && (
                                     <Tooltip
@@ -427,7 +426,7 @@ export const DndTable = (props: DndTableProps) => {
                                 )}
                                 <TableCell sx={{ textAlign: 'center' }}>
                                     <CheckboxInput
-                                        name={`${arrayFormName}[${index}].${FieldConstants.SELECTED}`}
+                                        name={`${arrayFormName}[${index}].${SELECTED}`}
                                         formProps={{ disabled }}
                                     />
                                 </TableCell>
@@ -446,7 +445,7 @@ export const DndTable = (props: DndTableProps) => {
             <Grid item container>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
-                        {(provided, snapshot) => (
+                        {(provided, _snapshot) => (
                             <TableContainer
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
