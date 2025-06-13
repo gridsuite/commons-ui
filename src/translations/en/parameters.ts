@@ -7,7 +7,6 @@
 
 export const parametersEn = {
     descLfVoltageInitMode: 'Voltage initialisation mode',
-    descLfTransformerVoltageControlOn: 'Activate on-load tap changers',
     descLfUseReactiveLimits: 'Take the reactive limits of generators into account',
     descLfPhaseShifterRegulationOn: 'Enable automatic power flow control with phase shifting transformers',
     descLfTwtSplitShuntAdmittance: 'Split shunt admittance of two winding transformers',
