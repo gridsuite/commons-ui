@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+export * from './chip-items-input';
 export * from './DirectoryItemsInput';
 export * from './RawReadOnlyInput';
 export * from './agGridTable';
@@ -14,5 +15,6 @@ export * from './errorManagement';
 export * from './numbers';
 export * from './provider';
 export * from './selectInputs';
+export * from './tableInputs';
 export * from './text';
 export * from './utils';
