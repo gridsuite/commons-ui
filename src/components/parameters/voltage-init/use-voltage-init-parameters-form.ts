@@ -109,6 +109,7 @@ export const useVoltageInitParametersForm = ({
                 }),
                 [VOLTAGE_LIMITS_MODIFICATION]: yup.array().of(
                     yup.object().shape({
+                        [FieldConstants.SELECTED]: yup.boolean().required(),
                         [FILTERS]: yup
                             .array()
                             .of(
@@ -124,6 +125,7 @@ export const useVoltageInitParametersForm = ({
                 ),
                 [VOLTAGE_LIMITS_DEFAULT]: yup.array().of(
                     yup.object().shape({
+                        [FieldConstants.SELECTED]: yup.boolean().required(),
                         [FILTERS]: yup
                             .array()
                             .of(
@@ -147,7 +149,6 @@ export const useVoltageInitParametersForm = ({
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);
                             }),
-                        [FieldConstants.SELECTED]: yup.boolean().required(),
                     })
                 ),
                 [GENERATORS_SELECTION_TYPE]: yup.mixed<keyof typeof EquipmentsSelectionType>().required(),

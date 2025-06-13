@@ -124,7 +124,7 @@ export const fromVoltageInitParamsDataToFormValues = (parameters: VoltageInitPar
         [VOLTAGE_LIMITS_MODIFICATION]:
             parameters?.voltageLimitsModification?.map((voltageLimit) => {
                 return {
-                    // [FieldConstants.SELECTED]: false,
+                    [FieldConstants.SELECTED]: false,
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
@@ -189,7 +189,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
         [VOLTAGE_LIMITS_MODIFICATION]:
             parameters?.computationParameters?.voltageLimitsModification?.map((voltageLimit) => {
                 return {
-                    // [FieldConstants.SELECTED]: false,
+                    [FieldConstants.SELECTED]: false,
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
