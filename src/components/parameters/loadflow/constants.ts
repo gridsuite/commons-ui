@@ -12,7 +12,6 @@ export const COMMON_PARAMETERS = 'commonParameters';
 export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
 
 // BasicLoadFlowParameters
-export const TRANSFORMER_VOLTAGE_CONTROL_ON = 'transformerVoltageControlOn';
 export const PHASE_SHIFTER_REGULATION_ON = 'phaseShifterRegulationOn';
 export const DC = 'dc';
 export const BALANCE_TYPE = 'balanceType';

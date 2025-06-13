@@ -21,7 +21,6 @@ import {
     READ_SLACK_BUS,
     SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON,
     SPECIFIC_PARAMETERS,
-    TRANSFORMER_VOLTAGE_CONTROL_ON,
     TWT_SPLIT_SHUNT_ADMITTANCE,
     USE_REACTIVE_LIMITS,
     VOLTAGE_INIT_MODE,
@@ -32,11 +31,6 @@ import { ParameterType, SpecificParameterInfos } from '../../../utils/types/para
 import { ParameterGroup } from '../common/widget';
 
 const basicParams: SpecificParameterInfos[] = [
-    {
-        name: TRANSFORMER_VOLTAGE_CONTROL_ON,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfTransformerVoltageControlOn',
-    },
     {
         name: PHASE_SHIFTER_REGULATION_ON,
         type: ParameterType.BOOLEAN,
