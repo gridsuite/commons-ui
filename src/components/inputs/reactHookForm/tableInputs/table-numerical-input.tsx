@@ -7,7 +7,7 @@
 
 import { IconButton, InputAdornment, InputBaseComponentProps, StandardTextFieldProps, TextField } from '@mui/material';
 import { useController, useFormContext } from 'react-hook-form';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Clear as ClearIcon } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { validateValueIsANumber } from '../../../../utils';
 
@@ -20,7 +20,7 @@ export interface TableNumericalInputProps extends StandardTextFieldProps {
     isClearable?: boolean;
 }
 
-export const TableNumericalInput = ({
+export function TableNumericalInput({
     name,
     style,
     inputProps,
@@ -29,26 +29,26 @@ export const TableNumericalInput = ({
     adornment,
     isClearable = true,
     ...props
-}: TableNumericalInputProps) => {
+}: Readonly<TableNumericalInputProps>) {
     const { trigger } = useFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
     } = useController({ name });
 
-    const inputTransform = (value: string | null) => {
-        if (value === null) {
+    const inputTransform = (str: string | null) => {
+        if (str === null) {
             return '';
         }
-        if (['-', '.'].includes(value)) {
-            return value;
+        if (['-', '.'].includes(str)) {
+            return str;
         }
-        return isNaN(Number(value)) ? '' : value.toString();
+        return Number.isNaN(Number(str)) ? '' : str.toString();
     };
 
     const clearable = useMemo(
         () =>
-            /** we add the clear button only if the field is clearable and the previous value is different from the current one **/
+            // We add the clear button only if the field is clearable and the previous value is different from the current one
             isClearable &&
             (previousValue === Number.MAX_VALUE
                 ? validateValueIsANumber(value)
@@ -56,22 +56,22 @@ export const TableNumericalInput = ({
         [isClearable, previousValue, value]
     );
 
-    const outputTransform = (value?: string | number) => {
-        if (typeof value === 'string') {
-            if (value === '-') {
-                return value;
+    const outputTransform = (str?: string | number) => {
+        if (typeof str === 'string') {
+            if (str === '-') {
+                return str;
             }
-            if (value === '') {
+            if (str === '') {
                 return null;
             }
 
-            const tmp = value?.replace(',', '.') || '';
+            const tmp = str?.replace(',', '.') || '';
             if (tmp.endsWith('.') || tmp.endsWith('0')) {
-                return value;
+                return str;
             }
             return parseFloat(tmp) || null;
         }
-        return value === Number.MAX_VALUE ? null : value;
+        return str === Number.MAX_VALUE ? null : str;
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -90,23 +90,9 @@ export const TableNumericalInput = ({
             value={transformedValue}
             onChange={handleInputChange}
             error={!!error?.message}
-            size={'small'}
+            size="small"
             fullWidth
             inputRef={ref}
-            inputProps={{
-                style: {
-                    fontSize: 'small',
-                    color:
-                        previousValue !== undefined && previousValue === parseFloat(value) && !valueModified
-                            ? 'grey'
-                            : undefined, // grey out the value if it is the same as the previous one
-                    textAlign: style?.textAlign ?? 'left',
-                },
-                inputMode: 'numeric',
-                pattern: '[0-9]*',
-                lang: 'en-US', // to have . as decimal separator
-                ...inputProps,
-            }}
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
@@ -124,8 +110,22 @@ export const TableNumericalInput = ({
                     </InputAdornment>
                 ),
                 disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
+                inputProps: {
+                    style: {
+                        fontSize: 'small',
+                        color:
+                            previousValue !== undefined && previousValue === parseFloat(value) && !valueModified
+                                ? 'grey'
+                                : undefined, // grey out the value if it is the same as the previous one
+                        textAlign: style?.textAlign ?? 'left',
+                    },
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                    lang: 'en-US', // to have '.' as decimal separator
+                    ...inputProps,
+                },
             }}
             {...props}
         />
     );
-};
+}

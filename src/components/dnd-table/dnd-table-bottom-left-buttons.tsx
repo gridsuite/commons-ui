@@ -5,11 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import UploadIcon from '@mui/icons-material/Upload';
-import ReplayIcon from '@mui/icons-material/Replay';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Replay as ReplayIcon, Upload as UploadIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 
 interface DndTableBottomLeftButtonsProps {
@@ -22,7 +19,7 @@ interface DndTableBottomLeftButtonsProps {
     disabled?: boolean;
 }
 
-export const DndTableBottomLeftButtons = ({
+export function DndTableBottomLeftButtons({
     handleUploadButton,
     uploadButtonMessageId,
     handleResetButton,
@@ -30,7 +27,7 @@ export const DndTableBottomLeftButtons = ({
     withResetButton,
     disableUploadButton,
     disabled,
-}: DndTableBottomLeftButtonsProps) => {
+}: Readonly<DndTableBottomLeftButtonsProps>) {
     const intl = useIntl();
 
     return (
@@ -71,4 +68,4 @@ export const DndTableBottomLeftButtons = ({
             )}
         </Grid>
     );
-};
+}

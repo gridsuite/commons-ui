@@ -7,10 +7,9 @@
 
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import InfoIcon from '@mui/icons-material/Info';
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { Info as InfoIcon } from '@mui/icons-material';
+import { Alert, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Alert from '@mui/material/Alert';
 import {
     FILTERS,
     HIGH_VOLTAGE_LIMIT,
@@ -23,7 +22,7 @@ import { parametersStyles } from '../parameters-style';
 import { VoltageAdornment } from '../common';
 import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
 
-export const VoltageLimitsParameters = () => {
+export function VoltageLimitsParameters() {
     const intl = useIntl();
     const VoltageLevelFilterTooltip = useMemo(() => {
         return (
@@ -128,9 +127,9 @@ export const VoltageLimitsParameters = () => {
     const newModificationRowData = useMemo(() => {
         const newRowData: Record<string, any> = {};
         newRowData[SELECTED] = false;
-        VOLTAGE_LIMITS_MODIFICATION_COLUMNS_DEFINITIONS.forEach(
-            (column) => (newRowData[column.dataKey] = column.initialValue)
-        );
+        VOLTAGE_LIMITS_MODIFICATION_COLUMNS_DEFINITIONS.forEach((column) => {
+            newRowData[column.dataKey] = column.initialValue;
+        });
         return newRowData;
     }, [VOLTAGE_LIMITS_MODIFICATION_COLUMNS_DEFINITIONS]);
 
@@ -139,9 +138,9 @@ export const VoltageLimitsParameters = () => {
     const newDefaultRowData = useMemo(() => {
         const newRowData: Record<string, any> = {};
         newRowData[SELECTED] = false;
-        VOLTAGE_LIMITS_DEFAULT_COLUMNS_DEFINITIONS.forEach(
-            (column) => (newRowData[column.dataKey] = column.initialValue)
-        );
+        VOLTAGE_LIMITS_DEFAULT_COLUMNS_DEFINITIONS.forEach((column) => {
+            newRowData[column.dataKey] = column.initialValue;
+        });
         return newRowData;
     }, [VOLTAGE_LIMITS_DEFAULT_COLUMNS_DEFINITIONS]);
 
@@ -170,7 +169,6 @@ export const VoltageLimitsParameters = () => {
                 createRows={createVoltageLimitModificationRows}
                 tableHeight={270}
                 withAddRowsDialog={false}
-                withLeftButtons={false}
             />
 
             <Typography component="span" variant="h6">
@@ -183,8 +181,7 @@ export const VoltageLimitsParameters = () => {
                 createRows={createVoltageLimitDefaultRows}
                 tableHeight={270}
                 withAddRowsDialog={false}
-                withLeftButtons={false}
             />
         </Grid>
     );
-};
+}

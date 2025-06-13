@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import FormControl from '@mui/material/FormControl';
-import Chip from '@mui/material/Chip';
-import TextField from '@mui/material/TextField';
+import { Chip, FormControl, TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks';
@@ -23,7 +21,7 @@ interface ChipItemsInputProps {
     hideErrorMessage: boolean;
 }
 
-export const ChipItemsInput = ({ label, name, hideErrorMessage }: ChipItemsInputProps) => {
+export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipItemsInputProps>) {
     const [textEntered, setTextEntered] = useState('');
     const { snackError } = useSnackMessage();
 
@@ -138,9 +136,9 @@ export const ChipItemsInput = ({ label, name, hideErrorMessage }: ChipItemsInput
                     onKeyDown={keyPress}
                     onChange={handleChange}
                     onBlur={onBlur}
-                ></TextField>
+                />
             </FormControl>
             {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}
         </>
     );
-};
+}

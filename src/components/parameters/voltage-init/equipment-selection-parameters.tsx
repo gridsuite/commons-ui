@@ -44,7 +44,7 @@ const initialEquipmentsSelectionType = {
     },
 };
 
-const EquipmentSelectionParameters = () => {
+export function EquipmentSelectionParameters() {
     return (
         <DialogContent>
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
@@ -62,7 +62,7 @@ const EquipmentSelectionParameters = () => {
                 name={VARIABLE_Q_GENERATORS}
                 equipmentTypes={[EquipmentType.GENERATOR]}
                 elementType={ElementType.FILTER}
-                label={'VariableGenerators'}
+                label="VariableGenerators"
                 hideErrorMessage
             />
             <Grid item container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
@@ -77,7 +77,7 @@ const EquipmentSelectionParameters = () => {
                 name={VARIABLE_TRANSFORMERS}
                 equipmentTypes={[EquipmentType.TWO_WINDINGS_TRANSFORMER]}
                 elementType={ElementType.FILTER}
-                label={'VariableTransformers'}
+                label="VariableTransformers"
                 hideErrorMessage
             />
             <Grid item container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
@@ -92,11 +92,9 @@ const EquipmentSelectionParameters = () => {
                 name={VARIABLE_SHUNT_COMPENSATORS}
                 equipmentTypes={[EquipmentType.SHUNT_COMPENSATOR]}
                 elementType={ElementType.FILTER}
-                label={'VariableShuntCompensators'}
+                label="VariableShuntCompensators"
                 hideErrorMessage
             />
         </DialogContent>
     );
-};
-
-export default EquipmentSelectionParameters;
+}

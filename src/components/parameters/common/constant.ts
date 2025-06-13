@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { KILO_VOLT, MEGA_VAR } from '../../../utils';
+import { KILO_VOLT, MEGA_VAR } from '../../../utils/constants/unitsConstants';
 
 export const PROVIDER = 'provider';
 export const VOLTAGE_LEVEL = 'voltageLevel';

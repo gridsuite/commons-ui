@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import {
+    AddCircle as AddCircleIcon,
+    ArrowDownward as ArrowDownwardIcon,
+    ArrowUpward as ArrowUpwardIcon,
+    Delete as DeleteIcon,
+} from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { SELECTED } from './dnd-table.type';
@@ -27,7 +27,7 @@ export interface DndTableBottomRightButtonsProps {
     disabled?: boolean;
 }
 
-export const DndTableBottomRightButtons = ({
+export function DndTableBottomRightButtons({
     arrayFormName,
     handleAddButton,
     handleDeleteButton,
@@ -36,7 +36,7 @@ export const DndTableBottomRightButtons = ({
     disableAddingRows,
     showMoveArrow,
     disabled,
-}: DndTableBottomRightButtonsProps) => {
+}: Readonly<DndTableBottomRightButtonsProps>) {
     const intl = useIntl();
 
     const currentRows: ({ selected: boolean } & Record<string, any>)[] = useWatch({
@@ -127,4 +127,4 @@ export const DndTableBottomRightButtons = ({
             )}
         </Grid>
     );
-};
+}

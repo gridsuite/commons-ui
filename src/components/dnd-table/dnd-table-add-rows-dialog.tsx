@@ -19,13 +19,13 @@ interface DndTableAddRowsDialogProps {
 export function DndTableAddRowsDialog({ open, handleAddButton, onClose }: Readonly<DndTableAddRowsDialogProps>) {
     const [rowNumber, setRowNumber] = useState(1);
 
-    function handleOnClose() {
+    const handleClose = () => {
         setRowNumber(1);
         onClose();
-    }
+    };
 
     return (
-        <Dialog open={open} onClose={handleOnClose}>
+        <Dialog open={open} onClose={handleClose}>
             <DialogTitle>
                 <FormattedMessage id="AddRowsDialogTitle" />
             </DialogTitle>
@@ -35,16 +35,16 @@ export function DndTableAddRowsDialog({ open, handleAddButton, onClose }: Readon
                     type="Number"
                     value={rowNumber}
                     onChange={(event) => {
-                        setRowNumber(!event.target.value ? 0 : parseInt(event.target.value));
+                        setRowNumber(!event.target.value ? 0 : parseInt(event.target.value, 10));
                     }}
                 />
             </DialogContent>
             <DialogActions>
-                <CancelButton onClick={handleOnClose} />
+                <CancelButton onClick={handleClose} />
                 <Button
                     onClick={() => {
                         handleAddButton(rowNumber);
-                        handleOnClose();
+                        handleClose();
                     }}
                     variant="outlined"
                     disabled={rowNumber <= 0}

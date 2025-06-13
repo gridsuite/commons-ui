@@ -12,7 +12,7 @@ import {
     ShortCircuitParameters,
     ShortCircuitParametersInfos,
 } from '../components/parameters/short-circuit/short-circuit-parameters.type';
-import { VoltageInitStudyParameters } from '../components/parameters/voltage-init';
+import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
@@ -75,10 +75,7 @@ export function invalidateStudyShortCircuitStatus(studyUuid: UUID) {
     });
 }
 
-export function updateVoltageInitParameters(
-    studyUuid: UUID | null,
-    newParams: VoltageInitStudyParameters
-) {
+export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: VoltageInitStudyParameters) {
     console.info('set study voltage init parameters');
     const url = `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/voltage-init/parameters`;
     console.debug(url);

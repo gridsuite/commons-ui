@@ -20,7 +20,7 @@ import {
     TableRow,
     Tooltip,
 } from '@mui/material';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { DragDropContext, Draggable, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { ColumnBase, DndColumn, DndColumnType, SELECTED } from './dnd-table.type';
@@ -80,7 +80,11 @@ function MultiCheckbox({
             checked={arrayToWatch?.length > 0 && allRowSelected}
             indeterminate={someRowSelected && !allRowSelected}
             onChange={(event) => {
-                event.target.checked ? handleClickCheck() : handleClickUncheck();
+                if (event.target.checked) {
+                    handleClickCheck();
+                } else {
+                    handleClickUncheck();
+                }
             }}
             {...props}
         />
@@ -148,7 +152,7 @@ function EditableTableCell({
                     options={column.options}
                     inputTransform={(value) => value ?? ''}
                     outputTransform={(value) => value}
-                    size={'small'}
+                    size="small"
                 />
             )}
             {column.type === DndColumnType.DIRECTORY_ITEMS && (
@@ -157,19 +161,19 @@ function EditableTableCell({
                     equipmentTypes={column.equipmentTypes}
                     elementType={column.elementType}
                     titleId={column.titleId}
-                    hideErrorMessage={true}
+                    hideErrorMessage
                     label={undefined}
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && (
-                <ChipItemsInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} hideErrorMessage={true} />
+                <ChipItemsInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} hideErrorMessage />
             )}
             {column.type === DndColumnType.CUSTOM && column.component(rowIndex)}
         </TableCell>
     );
 }
 
-interface DndTableBaseProps {
+interface DndTableProps {
     arrayFormName: string;
     useFieldArrayOutput: UseFieldArrayReturn;
     columnsDefinition: DndColumn[];
@@ -180,7 +184,6 @@ interface DndTableBaseProps {
     }[];
     disabled?: boolean;
     withResetButton?: boolean;
-    withLeftButtons?: boolean;
     withAddRowsDialog?: boolean;
     previousValues?: any[];
     disableTableCell?: (rowIndex: number, column: any, arrayFormName: string, temporaryLimits?: any[]) => boolean;
@@ -194,23 +197,13 @@ interface DndTableBaseProps {
     disableAddingRows?: boolean;
     showMoveArrow?: boolean;
     disableDragAndDrop?: boolean;
+    handleUploadButton?: () => void;
+    uploadButtonMessageId?: string;
+    handleResetButton?: () => void;
+    resetButtonMessageId?: string;
 }
 
-interface DndTableWithLeftButtonsProps extends DndTableBaseProps {
-    withLeftButtons?: true;
-    handleUploadButton: () => void;
-    uploadButtonMessageId: string;
-    handleResetButton: () => void;
-    resetButtonMessageId: string;
-}
-
-interface DndTableWithoutLeftButtonsProps extends DndTableBaseProps {
-    withLeftButtons: false;
-}
-
-type DndTableProps = DndTableWithLeftButtonsProps | DndTableWithoutLeftButtonsProps;
-
-export const DndTable = (props: DndTableProps) => {
+export function DndTable(props: Readonly<DndTableProps>) {
     const {
         arrayFormName,
         useFieldArrayOutput,
@@ -228,6 +221,10 @@ export const DndTable = (props: DndTableProps) => {
         disableAddingRows = false,
         showMoveArrow = true,
         disableDragAndDrop = false,
+        handleUploadButton = undefined,
+        uploadButtonMessageId = undefined,
+        handleResetButton = undefined,
+        resetButtonMessageId = undefined,
     } = props;
     const intl = useIntl();
 
@@ -244,7 +241,7 @@ export const DndTable = (props: DndTableProps) => {
     const [openAddRowsDialog, setOpenAddRowsDialog] = useState(false);
 
     function renderTableCell(rowId: string, rowIndex: number, column: DndColumn) {
-        let CustomTableCell = column.editable ? EditableTableCell : DefaultTableCell;
+        const CustomTableCell = column.editable ? EditableTableCell : DefaultTableCell;
         return (
             <CustomTableCell
                 key={rowId + column.dataKey}
@@ -262,24 +259,7 @@ export const DndTable = (props: DndTableProps) => {
         );
     }
 
-    function handleAddRowsButton() {
-        allowedToAddRows().then((isAllowed) => {
-            if (isAllowed) {
-                if (withAddRowsDialog) {
-                    setOpenAddRowsDialog(true);
-                } else {
-                    // directly add a single row
-                    addNewRows(1);
-                }
-            }
-        });
-    }
-
-    function handleCloseAddRowsDialog() {
-        setOpenAddRowsDialog(false);
-    }
-
-    function addNewRows(numberOfRows: number) {
+    const addNewRows = (numberOfRows: number) => {
         // checking if not exceeding 100 steps
         if (currentRows.length + numberOfRows > MAX_ROWS_NUMBER) {
             setError(arrayFormName, {
@@ -303,12 +283,29 @@ export const DndTable = (props: DndTableProps) => {
 
         // note: an id prop is automatically added in each row
         append(rowsToAdd);
-    }
+    };
 
-    function deleteSelectedRows() {
+    const handleAddRowsButton = () => {
+        allowedToAddRows().then((isAllowed) => {
+            if (isAllowed) {
+                if (withAddRowsDialog) {
+                    setOpenAddRowsDialog(true);
+                } else {
+                    // directly add a single row
+                    addNewRows(1);
+                }
+            }
+        });
+    };
+
+    const handleCloseAddRowsDialog = () => {
+        setOpenAddRowsDialog(false);
+    };
+
+    const deleteSelectedRows = () => {
         const currentRowsValues = getValues(arrayFormName);
 
-        let rowsToDelete = [];
+        const rowsToDelete = [];
         for (let i = 0; i < currentRowsValues.length; i++) {
             if (currentRowsValues[i][SELECTED]) {
                 rowsToDelete.push(i);
@@ -316,21 +313,21 @@ export const DndTable = (props: DndTableProps) => {
         }
 
         remove(rowsToDelete);
-    }
+    };
 
-    function selectAllRows() {
+    const selectAllRows = () => {
         for (let i = 0; i < currentRows.length; i++) {
             setValue(`${arrayFormName}[${i}].${SELECTED}`, true);
         }
-    }
+    };
 
-    function unselectAllRows() {
+    const unselectAllRows = () => {
         for (let i = 0; i < currentRows.length; i++) {
             setValue(`${arrayFormName}[${i}].${SELECTED}`, false);
         }
-    }
+    };
 
-    function moveUpSelectedRows() {
+    const moveUpSelectedRows = () => {
         const currentRowsValues = getValues(arrayFormName);
 
         if (currentRowsValues[0][SELECTED]) {
@@ -343,31 +340,28 @@ export const DndTable = (props: DndTableProps) => {
                 swap(i - 1, i);
             }
         }
-    }
+    };
 
-    function moveDownSelectedRows() {
+    const moveDownSelectedRows = () => {
         const currentRowsValues = getValues(arrayFormName);
-
         if (currentRowsValues[currentRowsValues.length - 1][SELECTED]) {
             // we can't move down more the rows, so we stop
             return;
         }
-
         for (let i = currentRowsValues.length - 2; i >= 0; i--) {
             if (currentRowsValues[i][SELECTED]) {
                 swap(i, i + 1);
             }
         }
-    }
+    };
 
-    function onDragEnd(result: DropResult) {
+    const onDragEnd = (result: DropResult) => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
-
         move(result.source.index, result.destination.index);
-    }
+    };
 
     function renderTableHead() {
         return (
@@ -407,7 +401,7 @@ export const DndTable = (props: DndTableProps) => {
                         index={index}
                         isDragDisabled={disableDragAndDrop}
                     >
-                        {(provided, _snapshot) => (
+                        {(provided) => (
                             <TableRow ref={provided.innerRef} {...provided.draggableProps}>
                                 {!disableDragAndDrop && (
                                     <Tooltip
@@ -445,7 +439,7 @@ export const DndTable = (props: DndTableProps) => {
             <Grid item container>
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
-                        {(provided, _snapshot) => (
+                        {(provided) => (
                             <TableContainer
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
@@ -465,15 +459,15 @@ export const DndTable = (props: DndTableProps) => {
                 <ErrorInput name={arrayFormName} InputField={FieldErrorAlert} />
             </Grid>
             <Grid container item>
-                {props.withLeftButtons === undefined || props.withLeftButtons ? (
+                {handleResetButton && handleUploadButton && resetButtonMessageId && uploadButtonMessageId ? (
                     <DndTableBottomLeftButtons
                         withResetButton={withResetButton}
                         disableUploadButton={disableAddingRows}
                         disabled={disabled}
-                        handleUploadButton={props.handleResetButton}
-                        uploadButtonMessageId={props.uploadButtonMessageId}
-                        handleResetButton={props.handleResetButton}
-                        resetButtonMessageId={props.resetButtonMessageId}
+                        handleUploadButton={handleUploadButton}
+                        uploadButtonMessageId={uploadButtonMessageId}
+                        handleResetButton={handleResetButton}
+                        resetButtonMessageId={resetButtonMessageId}
                     />
                 ) : null}
                 <DndTableBottomRightButtons
@@ -494,4 +488,4 @@ export const DndTable = (props: DndTableProps) => {
             />
         </Grid>
     );
-};
+}

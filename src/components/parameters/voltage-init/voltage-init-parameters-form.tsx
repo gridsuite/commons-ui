@@ -7,14 +7,14 @@
 
 import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
-import { CustomFormProvider } from '../../inputs';
+import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
+import { CustomFormProvider } from '../../inputs';
+import { TabPanel } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
 import { VoltageInitTabValues as TabValues } from './constants';
-import { TabPanel } from '../common';
-import { FormattedMessage } from 'react-intl';
 import { GeneralParameters } from './general-parameters';
-import EquipmentSelectionParameters from './equipment-selection-parameters';
+import { EquipmentSelectionParameters } from './equipment-selection-parameters';
 import { VoltageLimitsParameters } from './voltage-limits-parameters';
 
 interface VoltageInitParametersFormProps {

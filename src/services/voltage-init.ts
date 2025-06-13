@@ -6,17 +6,15 @@
  */
 import { UUID } from 'crypto';
 import { backendFetchJson } from './utils';
-import { VoltageInitParameters } from '../components/parameters/voltage-init';
-
-export const PREFIX_VOLTAGE_INIT_QUERIES = import.meta.env.VITE_API_GATEWAY + '/voltage-init';
+import { VoltageInitParameters } from '../components/parameters/voltage-init/voltage-init.type';
 
 export function getVoltageInitUrl() {
-    return `${PREFIX_VOLTAGE_INIT_QUERIES}/v1/`;
+    return `${import.meta.env.VITE_API_GATEWAY}/voltage-init/v1/`;
 }
 
 export function getVoltageInitParameters(parameterUuid: UUID): Promise<VoltageInitParameters> {
     console.info('get voltage init parameters');
-    const getVoltageInitParams = getVoltageInitUrl() + 'parameters/' + encodeURIComponent(parameterUuid);
+    const getVoltageInitParams = `${getVoltageInitUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
     console.debug(getVoltageInitParams);
     return backendFetchJson(getVoltageInitParams);
 }

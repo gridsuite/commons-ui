@@ -60,7 +60,7 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
                     </Alert>
                     <ParameterSwitch
                         value={applyModificationsWatched}
-                        label={'VoltageInitParametersGeneralApplyModificationsLabel'}
+                        label="VoltageInitParametersGeneralApplyModificationsLabel"
                         onChange={setApplyModificationsValue}
                     />
                     <Box my={2}>
@@ -70,13 +70,13 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
             )}
             <ParameterSwitch
                 value={updateBusVoltageWatched}
-                label={'VoltageInitParametersGeneralUpdateBusVoltageLabel'}
+                label="VoltageInitParametersGeneralUpdateBusVoltageLabel"
                 onChange={setUpdateBusVoltageValue}
             />
             <ParameterFloat
                 name={`${GENERAL}.${REACTIVE_SLACKS_THRESHOLD}`}
                 style={parametersStyles.parameterName}
-                label={'ReactiveSlacksThreshold'}
+                label="ReactiveSlacksThreshold"
                 adornment={ReactivePowerAdornment}
                 labelSize={8}
                 inputSize={4}
@@ -84,9 +84,9 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
             <ParameterFloat
                 name={`${GENERAL}.${SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD}`}
                 style={parametersStyles.parameterName}
-                label={'ShuntCompensatorActivationThreshold'}
+                label="ShuntCompensatorActivationThreshold"
                 adornment={ReactivePowerAdornment}
-                tooltip={'ShuntCompensatorActivationThresholdDescription'}
+                tooltip="ShuntCompensatorActivationThresholdDescription"
                 labelSize={8}
                 inputSize={4}
             />

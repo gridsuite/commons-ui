@@ -14,7 +14,8 @@
 export function toNumber(value: unknown) {
     if (typeof value === 'number') {
         return value;
-    } else if (typeof value === 'string') {
+    }
+    if (typeof value === 'string') {
         const sanitizedString = value.replace(',', '.').trim();
         if (value.length > 0) {
             return Number(sanitizedString);
@@ -31,5 +32,5 @@ export function validateValueIsANumber(value?: string | number | null | boolean)
     if (value == null || value === '') {
         return false;
     }
-    return !isNaN(toNumber(value));
+    return !Number.isNaN(toNumber(value));
 }

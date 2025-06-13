@@ -150,7 +150,8 @@ export const parametersEn = {
         'Threshold (in MVar) above which the difference between discretized and optimal value for shunt compensator activation is considered significant (and will thus be recorded in the functional logs)',
     VoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
     AdjustExistingLimits: 'Adjust existing limits',
-    AdjustExistingLimitsInfo: 'Please enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
+    AdjustExistingLimitsInfo:
+        'Please enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
     SetDefaultLimits: 'Default values to fill missing limits',
     allExcept: 'All except',
     noneExcept: 'None except',

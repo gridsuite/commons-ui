@@ -69,7 +69,7 @@ export function VoltageInitParametersInLine({
             }
             setOpenSelectParameterDialog(false);
         },
-        [snackError]
+        [reset, snackError]
     );
 
     const resetVoltageInitParameters = useCallback(() => {

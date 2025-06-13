@@ -15,7 +15,7 @@ interface TableTextInputProps {
     inputProps?: InputBaseComponentProps;
 }
 
-export const TableTextInput = ({ name, showErrorMsg, inputProps, ...props }: TableTextInputProps) => {
+export function TableTextInput({ name, showErrorMsg, inputProps, ...props }: Readonly<TableTextInputProps>) {
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -23,8 +23,8 @@ export const TableTextInput = ({ name, showErrorMsg, inputProps, ...props }: Tab
 
     const intl = useIntl();
 
-    const outputTransform = (value: string) => {
-        return value?.trim() === '' ? '' : value;
+    const outputTransform = (str: string) => {
+        return str?.trim() === '' ? '' : str;
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -37,19 +37,19 @@ export const TableTextInput = ({ name, showErrorMsg, inputProps, ...props }: Tab
             onChange={handleInputChange}
             error={!!error?.message}
             helperText={showErrorMsg && (error?.message ? intl.formatMessage({ id: error.message }) : '')}
-            size={'small'}
+            size="small"
             fullWidth
             inputRef={ref}
-            inputProps={{
-                style: {
-                    fontSize: 'small',
-                },
-                ...inputProps,
-            }}
             InputProps={{
                 disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
+                inputProps: {
+                    style: {
+                        fontSize: 'small',
+                    },
+                    ...inputProps,
+                },
             }}
             {...props}
         />
     );
-};
+}
