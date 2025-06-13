@@ -23,7 +23,7 @@ import {
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { DragDropContext, Draggable, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
-import { ColumnBase, DndColumn, DndColumnType, SELECTED } from './dnd-table.type';
+import { ColumnBase, DndColumn, DndColumnType, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
 import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
@@ -39,7 +39,6 @@ import {
 } from '../inputs';
 import { ChipItemsInput } from '../inputs/reactHookForm/chip-items-input';
 
-export const MAX_ROWS_NUMBER = 100;
 const styles = {
     columnsStyle: {
         display: 'inline-flex',

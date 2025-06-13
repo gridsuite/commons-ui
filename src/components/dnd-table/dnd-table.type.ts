@@ -9,6 +9,7 @@ import { ReactNode } from 'react';
 import { ElementType, EquipmentType } from '../../utils';
 
 export const SELECTED = 'selected';
+export const MAX_ROWS_NUMBER = 100;
 
 export enum DndColumnType {
     TEXT = 'TEXT',
