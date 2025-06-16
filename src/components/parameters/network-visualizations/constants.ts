@@ -7,6 +7,7 @@
 import {
     MAP_BASEMAP_CARTO,
     MAP_BASEMAP_CARTO_NOLABEL,
+    MAP_BASEMAP_ETALAB,
     MAP_BASEMAP_MAPBOX,
     SubstationLayout,
 } from './network-visualizations.types';
@@ -71,6 +72,10 @@ export const INTL_MAP_BASE_MAP_OPTIONS = [
     {
         id: MAP_BASEMAP_CARTO_NOLABEL,
         label: 'CartoNoLabel',
+    },
+    {
+        id: MAP_BASEMAP_ETALAB,
+        label: 'Etalab',
     },
 ];
 

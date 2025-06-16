@@ -92,6 +92,7 @@ export const parametersEn = {
     FlatDesign: 'Flat_Design',
     Carto: 'Carto',
     CartoNoLabel: 'Carto without labels',
+    Etalab: 'Etalab',
     getNetworkVisualizationsParametersError: 'An error occurred while reading the network visualizations parameters',
     updateNetworkVisualizationsParametersError:
         'An error occurred while updating the network visualizations parameters',
