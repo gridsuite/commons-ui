@@ -8,7 +8,7 @@
 import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
+import { getTabIndicatorStyle, getTabStyle, parametersStyles } from '../parameters-style';
 import { CustomFormProvider } from '../../inputs';
 import { TabPanel } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
@@ -36,9 +36,7 @@ export function VoltageInitParametersForm({
             <Box
                 sx={{
                     height: '100%',
-                    display: 'flex',
                     position: 'relative',
-                    flexDirection: 'column',
                 }}
             >
                 <Grid item container direction="column">
@@ -47,7 +45,7 @@ export function VoltageInitParametersForm({
                 {paramsLoading ? (
                     <LinearProgress />
                 ) : (
-                    <Grid item container direction="column">
+                    <Grid item container sx={parametersStyles.scrollableGrid}>
                         <Tabs
                             value={selectedTab}
                             variant="scrollable"

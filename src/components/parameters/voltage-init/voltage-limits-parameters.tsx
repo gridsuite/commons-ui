@@ -156,12 +156,14 @@ export function VoltageLimitsParameters() {
 
     return (
         <Grid container>
-            <Typography component="span" variant="h6" sx={{ alignSelf: 'center', marginRight: 2 }}>
-                <FormattedMessage id="AdjustExistingLimits" />
-            </Typography>
-            <Alert sx={parametersStyles.adjustExistingLimitsInfo} severity="info" variant="outlined">
-                <FormattedMessage id="AdjustExistingLimitsInfo" />
-            </Alert>
+            <Grid container justifyContent="space-between">
+                <Typography component="span" variant="h6" sx={{ alignSelf: 'center' }}>
+                    <FormattedMessage id="AdjustExistingLimits" />
+                </Typography>
+                <Alert sx={parametersStyles.adjustExistingLimitsInfo} severity="info" variant="outlined">
+                    <FormattedMessage id="AdjustExistingLimitsInfo" />
+                </Alert>
+            </Grid>
             <DndTable
                 arrayFormName={`${VOLTAGE_LIMITS_MODIFICATION}`}
                 columnsDefinition={VOLTAGE_LIMITS_MODIFICATION_COLUMNS_DEFINITIONS}
