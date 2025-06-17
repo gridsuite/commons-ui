@@ -127,4 +127,42 @@ export const parametersFr = {
     nominalInitialVoltageProfileMode: 'Normalisé',
     cei909InitialVoltageProfileMode: 'CEI 909',
     Or: 'ou',
+
+    updateVoltageInitParametersError:
+        "Une erreur est survenue lors de la mise a jour des paramètres de l'initialisation du plan de tension",
+    VoltageInitParametersGeneralTabLabel: 'Général',
+    VoltageInitParametersGeneralApplyModificationsLabel: 'Appliquer automatiquement la modification du plan de tension',
+    VoltageInitParametersGeneralSaveInfo:
+        "Cette option ne sera pas enregistrée et sera mise à la valeur par défaut en cas d'insertion de paramètres depuis GridExplore",
+    VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Mettre à jour tension des nœuds électriques',
+    VoltageInitParametersEquipmentsSelectionAlert:
+        'Les consignes des CSPR et des stations VSC sont toujours considérées comme variables',
+    VoltageLimits: 'Limites de tension',
+    VoltageLevelFilter: 'Filtre poste',
+    LowVoltageLimitDefault: 'Valeur par défaut limite basse',
+    HighVoltageLimitDefault: 'Valeur par défaut limite haute',
+    LowVoltageLimitAdjustment: 'Modification limite basse',
+    HighVoltageLimitAdjustment: 'Modification limite haute',
+    VoltageLevelFilterTooltip:
+        "Les saisies sont appliquées dans l'ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un poste est inclus dans plusieurs filtres)",
+    FilterInputMinError: 'Vous devez sélectionner au moins un filtre',
+    EquipmentSelection: 'Sélection des ouvrages',
+    ReactiveSlacksThreshold: "Seuil d'alerte sur les investissements réactifs",
+    ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
+    ShuntCompensatorActivationThreshold: "Seuil d'alerte sur l'enclenchement des MCS",
+    ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
+    ShuntCompensatorActivationThresholdDescription:
+        "Seuil (en MVar) au-dessus duquel on considère qu'il y a un écart significatif (et donc tracé dans les logs fonctionnels) entre valeur arrondie et valeur théorique pour l'enclenchement d'un MCS",
+    VoltageInitParametersError: "Erreur lors de la mise à jour des paramètres d'initialisation du plan de tension",
+    voltageInitCancelError: "L'initialisation du plan de tension n'a pas pu être annulée",
+    AdjustExistingLimits: 'Modifier les limites existantes',
+    AdjustExistingLimitsInfo:
+        'Merci de saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
+    SetDefaultLimits: 'Valeurs par défaut pour compléter les limites manquantes',
+    allExcept: 'Tous sauf',
+    noneExcept: 'Aucun sauf',
+    FiltersListsSelection: 'Sélection des listes de filtres',
+    VariableGenerators: 'Groupes à puissance réactive variable',
+    VariableTransformers: 'Transformateurs variables',
+    VariableShuntCompensators: 'MCS variables',
 };
