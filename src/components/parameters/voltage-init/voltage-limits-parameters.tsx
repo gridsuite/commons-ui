@@ -161,7 +161,7 @@ export function VoltageLimitsParameters() {
                 </Typography>
                 <Tooltip
                     title={<FormattedMessage id="AdjustExistingLimitsInfo" />}
-                    placement="left-start"
+                    placement="right-start"
                     sx={{ marginLeft: 1 }}
                 >
                     <InfoIcon />
