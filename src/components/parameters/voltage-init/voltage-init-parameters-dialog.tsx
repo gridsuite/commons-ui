@@ -48,7 +48,7 @@ export function VoltageInitParametersEditionDialog({
             disabledSave={disableSave}
             PaperProps={{
                 sx: {
-                    height: '85vh', // we want the dialog height to be fixed even when switching tabs
+                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
                 },
             }}
         >

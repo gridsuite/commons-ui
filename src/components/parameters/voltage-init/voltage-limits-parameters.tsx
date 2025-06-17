@@ -8,7 +8,7 @@
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { Alert, Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
     FILTERS,
@@ -18,7 +18,6 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { parametersStyles } from '../parameters-style';
 import { VoltageAdornment } from '../common';
 import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
 
@@ -156,13 +155,17 @@ export function VoltageLimitsParameters() {
 
     return (
         <Grid container>
-            <Grid container justifyContent="space-between">
-                <Typography component="span" variant="h6" sx={{ alignSelf: 'center' }}>
+            <Grid container alignItems="center">
+                <Typography component="span" variant="h6">
                     <FormattedMessage id="AdjustExistingLimits" />
                 </Typography>
-                <Alert sx={parametersStyles.adjustExistingLimitsInfo} severity="info" variant="outlined">
-                    <FormattedMessage id="AdjustExistingLimitsInfo" />
-                </Alert>
+                <Tooltip
+                    title={<FormattedMessage id={'AdjustExistingLimitsInfo'} />}
+                    placement="left-start"
+                    sx={{ marginLeft: 1 }}
+                >
+                    <InfoIcon />
+                </Tooltip>
             </Grid>
             <DndTable
                 arrayFormName={`${VOLTAGE_LIMITS_MODIFICATION}`}
