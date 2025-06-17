@@ -46,7 +46,7 @@ const initialEquipmentsSelectionType = {
 
 export function EquipmentSelectionParameters() {
     return (
-        <DialogContent>
+        <Grid item container direction="column">
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
             </Alert>
@@ -95,6 +95,6 @@ export function EquipmentSelectionParameters() {
                 label="VariableShuntCompensators"
                 hideErrorMessage
             />
-        </DialogContent>
+        </Grid>
     );
 }
