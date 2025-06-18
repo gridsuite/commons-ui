@@ -16,5 +16,4 @@ export * from './provider';
 export * from './selectInputs';
 export * from './text';
 export * from './utils';
-export { DESCRIPTION } from './constants';
-export { NAME } from './constants';
+export * from './constants';
