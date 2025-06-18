@@ -11,7 +11,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ObjectSchema } from 'yup';
 import { UUID } from 'crypto';
 import yup from '../../../utils/yupConfig';
-import { Constants, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../inputs';
 import {
     PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
@@ -147,7 +147,7 @@ export const useNetworkVisualizationParametersForm = ({
                     formData,
                     formData[NAME],
                     ElementType.NETWORK_VISUALIZATIONS_PARAMETERS,
-                    formData[Constants] ?? ''
+                    formData[DESCRIPTION] ?? ''
                 ).catch((error) => {
                     snackError({
                         messageTxt: error.message,

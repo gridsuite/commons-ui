@@ -6,4 +6,4 @@
  */
 
 export const NAME = 'name';
-export const Constants = 'description';
+export const DESCRIPTION = 'description';

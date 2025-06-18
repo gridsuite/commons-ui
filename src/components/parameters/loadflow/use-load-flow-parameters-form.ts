@@ -39,7 +39,7 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
-import { Constants, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
@@ -283,7 +283,7 @@ export const useLoadFlowParametersForm = (
                     formatNewParams(formData),
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
-                    formData[Constants] ?? ''
+                    formData[DESCRIPTION] ?? ''
                 );
             }
         },
