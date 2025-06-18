@@ -29,7 +29,6 @@ import {
     READ_SLACK_BUS,
     SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON,
     SPECIFIC_PARAMETERS,
-    TRANSFORMER_VOLTAGE_CONTROL_ON,
     TWT_SPLIT_SHUNT_ADMITTANCE,
     USE_REACTIVE_LIMITS,
     VOLTAGE_INIT_MODE,
@@ -47,7 +46,6 @@ export enum TabValues {
 
 export const getBasicLoadFlowParametersFormSchema = () => {
     return yup.object().shape({
-        [TRANSFORMER_VOLTAGE_CONTROL_ON]: yup.boolean().required(),
         [PHASE_SHIFTER_REGULATION_ON]: yup.boolean().required(),
         [DC]: yup.boolean().required(),
         [BALANCE_TYPE]: yup.string().required(),
