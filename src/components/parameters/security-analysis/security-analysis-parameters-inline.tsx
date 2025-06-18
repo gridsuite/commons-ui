@@ -1,0 +1,151 @@
+/**
+ * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Box, Grid } from '@mui/material';
+import { FormattedMessage, useIntl } from 'react-intl';
+
+import { UUID } from 'crypto';
+import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
+import {
+    ComputingType,
+    CreateParameterDialog,
+    ISAParameters,
+    LabelledButton,
+    LineSeparator,
+    toFormValueSaParameters,
+} from '../common';
+import { useSnackMessage } from '../../../hooks';
+import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { SubmitButton } from '../../inputs';
+import { parametersStyles } from '../parameters-style';
+import { DirectoryItemSelector } from '../../directoryItemSelector';
+import { fetchSecurityAnalysisParameters } from '../../../services/security-analysis';
+import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
+import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
+
+export function SecurityAnalysisParametersInline({
+    studyUuid,
+    parametersBackend,
+    setHaveDirtyFields,
+    enableDeveloperMode,
+}: Readonly<{
+    studyUuid: UUID | null;
+    parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
+    setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
+    enableDeveloperMode: boolean;
+}>) {
+    const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
+
+    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
+    const intl = useIntl();
+    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
+    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+
+    const { snackError } = useSnackMessage();
+
+    const { handleSubmit, formState, reset, getValues } = securityAnalysisMethods.formMethods;
+
+    const resetSAParametersAndProvider = useCallback(() => {
+        resetParameters();
+        resetProvider();
+    }, [resetParameters, resetProvider]);
+
+    const resetSAParameters = useCallback(() => {
+        resetParameters();
+    }, [resetParameters]);
+
+    const handleLoadParameter = useCallback(
+        (newParams: TreeViewFinderNodeProps[]) => {
+            if (newParams && newParams.length > 0) {
+                setOpenSelectParameterDialog(false);
+                fetchSecurityAnalysisParameters(newParams[0].id)
+                    .then((parameters: ISAParameters) => {
+                        console.info(`loading the following security analysis parameters :  ${parameters.uuid}`);
+                        reset(toFormValueSaParameters(parameters), {
+                            keepDefaultValues: true,
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'paramsRetrievingError',
+                        });
+                    });
+            }
+            setOpenSelectParameterDialog(false);
+        },
+        [reset, snackError]
+    );
+
+    useEffect(() => {
+        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+    }, [formState, setHaveDirtyFields]);
+
+    return (
+        <SecurityAnalysisParametersForm
+            securityAnalysisMethods={securityAnalysisMethods}
+            enableDeveloperMode={enableDeveloperMode}
+            renderActions={() => {
+                return (
+                    <>
+                        <Box sx={{ flexGrow: 0 }}>
+                            <LineSeparator />
+                            <Grid
+                                container
+                                item
+                                sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
+                                    paddingBottom: 0,
+                                })}
+                            >
+                                <LabelledButton
+                                    callback={() => setOpenSelectParameterDialog(true)}
+                                    label="settings.button.chooseSettings"
+                                />
+                                <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
+                                <LabelledButton callback={resetSAParametersAndProvider} label="resetToDefault" />
+                                <LabelledButton label="resetProviderValuesToDefault" callback={resetSAParameters} />
+                                <SubmitButton
+                                    onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
+                                    variant="outlined"
+                                >
+                                    <FormattedMessage id="validate" />
+                                </SubmitButton>
+                            </Grid>
+                        </Box>
+                        {openCreateParameterDialog && (
+                            <CreateParameterDialog
+                                studyUuid={studyUuid}
+                                open={openCreateParameterDialog}
+                                onClose={() => setOpenCreateParameterDialog(false)}
+                                parameterValues={() => securityAnalysisMethods.formatNewParams(getValues())}
+                                parameterFormatter={(newParams) => newParams}
+                                parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
+                            />
+                        )}
+                        {openSelectParameterDialog && (
+                            <DirectoryItemSelector
+                                open={openSelectParameterDialog}
+                                onClose={handleLoadParameter}
+                                types={[ElementType.SECURITY_ANALYSIS_PARAMETERS]}
+                                title={intl.formatMessage({
+                                    id: 'showSelectParameterDialog',
+                                })}
+                                onlyLeaves
+                                multiSelect={false}
+                                validationButtonText={intl.formatMessage({
+                                    id: 'validate',
+                                })}
+                            />
+                        )}
+                    </>
+                );
+            }}
+        />
+    );
+}

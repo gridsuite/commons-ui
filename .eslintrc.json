@@ -28,7 +28,7 @@
             "warn",
             {
                 "patterns": [{
-                        "group": ["@mui/*/*", "!@mui/material/colors", "!@mui/material/locale"],
+                        "group": ["@mui/*/*", "!@mui/material/colors", "!@mui/material/locale", "!@mui/icons-material/*"],
                         "message": "Deep imports from MUI libraries are forbidden. Import only from the library root."
                     }]
             }

@@ -6,12 +6,7 @@
  */
 
 import { UseFormReturn } from 'react-hook-form';
-import {
-    ILimitReductionsByVoltageLevel,
-    IST_FORM,
-    LIMIT_DURATION_FORM,
-    LIMIT_REDUCTIONS_FORM,
-} from '../common/limitreductions/columns-definitions';
+import { ILimitReductionsByVoltageLevel, IST_FORM, LIMIT_DURATION_FORM, LIMIT_REDUCTIONS_FORM } from '../common';
 import {
     BALANCE_TYPE,
     COMMON_PARAMETERS,

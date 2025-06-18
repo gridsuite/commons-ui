@@ -25,7 +25,7 @@ import {
     SpecificParameterInfos,
     UseParametersBackendReturnProps,
 } from '../../../utils/types/parameters.type';
-import { ComputingType, PROVIDER } from '../common';
+import { ComputingType, getDialogParametersFormSchema, PROVIDER } from '../common';
 import {
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
@@ -84,6 +84,7 @@ export const useLoadFlowParametersForm = (
         specificParamsDescriptions,
         defaultLimitReductions,
     ] = parametersBackend;
+
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
@@ -112,6 +113,7 @@ export const useLoadFlowParametersForm = (
     const formSchema = useMemo(() => {
         return yup
             .object({
+                ...getDialogParametersFormSchema(name),
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,

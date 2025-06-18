@@ -16,3 +16,5 @@ export * from './provider';
 export * from './selectInputs';
 export * from './text';
 export * from './utils';
+export { DESCRIPTION_INPUT } from './DESCRIPTION_INPUT';
+export { NAME } from './DESCRIPTION_INPUT';
