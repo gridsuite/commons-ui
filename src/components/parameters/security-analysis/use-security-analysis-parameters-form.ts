@@ -29,7 +29,7 @@ import {
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
-import { DESCRIPTION_INPUT, NAME } from '../../inputs';
+import { Constants, NAME } from '../../inputs';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -143,7 +143,7 @@ export const useSecurityAnalysisParametersForm = (
                     formatNewParams(formData),
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
-                    formData[DESCRIPTION_INPUT] ?? ''
+                    formData[Constants] ?? ''
                 );
             }
         },

@@ -11,7 +11,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 import { UUID } from 'crypto';
 import yup from '../../../utils/yupConfig';
-import { DESCRIPTION_INPUT, NAME } from '../../inputs';
+import { Constants, NAME } from '../../inputs';
 import {
     InitialVoltage,
     PredefinedParameters,
@@ -149,7 +149,7 @@ export const useShortCircuitParametersForm = ({
         const {
             predefinedParameters: omit,
             [NAME]: omit2,
-            [DESCRIPTION_INPUT]: omit3,
+            [Constants]: omit3,
             ...newParametersWithoutPredefinedParameters
         } = newParameters;
         let parameters = {
@@ -233,7 +233,7 @@ export const useShortCircuitParametersForm = ({
                     prepareDataToSend(shortCircuitParameters, formData),
                     formData[NAME],
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
-                    formData[DESCRIPTION_INPUT] ?? ''
+                    formData[Constants] ?? ''
                 ).catch((error) => {
                     snackError({
                         messageTxt: error.message,
