@@ -10,6 +10,7 @@ import { UUID } from 'crypto';
 export const MAP_BASEMAP_MAPBOX = 'mapbox';
 export const MAP_BASEMAP_CARTO = 'carto';
 export const MAP_BASEMAP_CARTO_NOLABEL = 'cartonolabel';
+export const MAP_BASEMAP_ETALAB = 'etalab';
 
 export enum SubstationLayout {
     HORIZONTAL = 'horizontal',
@@ -24,7 +25,11 @@ type MapParameters = {
     lineParallelPath: boolean;
     lineFlowMode: string;
     mapManualRefresh: boolean;
-    mapBaseMap: typeof MAP_BASEMAP_MAPBOX | typeof MAP_BASEMAP_CARTO | typeof MAP_BASEMAP_CARTO_NOLABEL;
+    mapBaseMap:
+        | typeof MAP_BASEMAP_MAPBOX
+        | typeof MAP_BASEMAP_CARTO
+        | typeof MAP_BASEMAP_CARTO_NOLABEL
+        | typeof MAP_BASEMAP_ETALAB;
 };
 
 type SingleLineDiagramParameters = {
