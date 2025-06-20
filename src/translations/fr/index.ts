@@ -9,6 +9,7 @@ export * from './commonButtonFr';
 export * from './csvFr';
 export * from './descriptionFr';
 export * from './directoryItemsInputFr';
+export * from './dndTableFr';
 export * from './elementSearchFr';
 export * from './equipmentSearchFr';
 export * from './equipmentsFr';

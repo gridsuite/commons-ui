@@ -11,6 +11,7 @@ export * from './checkBoxList';
 export * from './customAGGrid';
 export * from './dialogs';
 export * from './directoryItemSelector/DirectoryItemSelector';
+export * from './dnd-table';
 export * from './elementSearch';
 export * from './filter';
 export * from './flatParameters';
