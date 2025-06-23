@@ -19,11 +19,14 @@ export function getNameElementEditorEmptyFormData(
 
 export function getNameElementEditorSchema(initialElementName: string | null) {
     return yup.object().shape({
-        [FieldConstants.NAME]: yup.string().when('nameRequiredWhenInitialNameIsSet', {
-            is: () => initialElementName !== null,
-            then: () => yup.string().required(),
-            otherwise: () => yup.string(),
-        }),
-        [FieldConstants.DESCRIPTION]: yup.string(),
+        [FieldConstants.NAME]: yup
+            .string()
+            .nullable()
+            .when('nameRequiredWhenInitialNameIsSet', {
+                is: () => initialElementName !== null,
+                then: () => yup.string().required(),
+                otherwise: () => yup.string(),
+            }),
+        [FieldConstants.DESCRIPTION]: yup.string().nullable(),
     });
 }

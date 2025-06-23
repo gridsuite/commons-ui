@@ -32,7 +32,8 @@ import {
 import { DistributionType, SensitivityType } from '../../../utils';
 import { PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
-import { ID, NAME } from '../../inputs';
+import { NAME } from '../../inputs';
+import { ID } from '../voltage-init';
 
 export const getSensiHVDCsFormSchema = () => ({
     [PARAMETER_SENSI_HVDC]: yup.array().of(

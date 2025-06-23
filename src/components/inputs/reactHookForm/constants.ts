@@ -5,6 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const ID = 'id';
 export const NAME = 'name';
 export const DESCRIPTION = 'description';

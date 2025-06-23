@@ -48,15 +48,15 @@ export function SensitivityAnalysisParametersInline({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm(
+    const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
         studyUuid,
         currentNodeUuid,
         currentRootNetworkUuid,
         parametersBackend,
-        null,
-        null,
-        null
-    );
+        name: null,
+        description: null,
+        parametersUuid: null,
+    });
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);

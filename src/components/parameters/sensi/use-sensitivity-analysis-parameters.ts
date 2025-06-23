@@ -84,15 +84,35 @@ export interface UseSensitivityAnalysisParametersReturn {
 
 const numberMax = 500000;
 
-export const useSensitivityAnalysisParametersForm = (
-    studyUuid: UUID | null,
-    currentNodeUuid: UUID | null,
-    currentRootNetworkUuid: UUID | null,
-    parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>,
-    parametersUuid: UUID | null,
-    name: string | null,
-    description: string | null
-): UseSensitivityAnalysisParametersReturn => {
+type UseVoltageInitParametersFormProps =
+    | {
+          name: string;
+          description: string | null;
+          studyUuid: null;
+          currentNodeUuid: null;
+          currentRootNetworkUuid: null;
+          parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
+          parametersUuid: UUID;
+      }
+    | {
+          name: null;
+          description: null;
+          studyUuid: UUID | null;
+          currentNodeUuid: UUID | null;
+          currentRootNetworkUuid: UUID | null;
+          parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
+          parametersUuid: null;
+      };
+
+export const useSensitivityAnalysisParametersForm = ({
+    studyUuid,
+    currentNodeUuid,
+    currentRootNetworkUuid,
+    parametersBackend,
+    parametersUuid,
+    name,
+    description,
+}: UseVoltageInitParametersFormProps): UseSensitivityAnalysisParametersReturn => {
     const [providers, , , , , params, , updateParameters] = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
 

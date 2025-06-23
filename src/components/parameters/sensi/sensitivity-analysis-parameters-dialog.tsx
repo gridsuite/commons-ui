@@ -43,15 +43,15 @@ export function SensitivityAnalysisParametersDialog({
         updateSensitivityAnalysisParameters
     );
 
-    const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm(
-        null,
-        null,
-        null,
+    const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
+        studyUuid: null,
+        currentNodeUuid: null,
+        currentRootNetworkUuid: null,
         parametersBackend,
-        id,
+        parametersUuid: id,
         name,
-        description
-    );
+        description,
+    });
     const {
         formState: { errors, dirtyFields },
     } = sensitivityAnalysisMethods.formMethods;
