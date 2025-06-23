@@ -13,7 +13,7 @@ import {
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
 } from './constants';
-import {FloatInput} from "../../inputs";
+import { FloatInput } from '../../inputs';
 
 export function SensitivityAnalysisFields() {
     return (
