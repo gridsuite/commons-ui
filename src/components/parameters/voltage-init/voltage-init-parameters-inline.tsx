@@ -24,6 +24,7 @@ import {
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
 import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
+import { PopupConfirmationDialog } from '../../dialogs';
 
 export function VoltageInitParametersInLine({
     studyUuid,
@@ -45,6 +46,7 @@ export function VoltageInitParametersInLine({
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
     const { snackError } = useSnackMessage();
 
     const { formState, getValues, handleSubmit, reset, trigger } = voltageInitMethods.formMethods;
@@ -76,13 +78,25 @@ export function VoltageInitParametersInLine({
         updateVoltageInitParameters(studyUuid, {
             applyModifications: DEFAULT_GENERAL_APPLY_MODIFICATIONS,
             computationParameters: null, // null means Reset
-        }).catch((error) => {
-            snackError({
-                messageTxt: error.message,
-                headerId: 'updateVoltageInitParametersError',
+        })
+            .catch((error) => {
+                snackError({
+                    messageTxt: error.message,
+                    headerId: 'updateVoltageInitParametersError',
+                });
+            })
+            .finally(() => {
+                setOpenResetConfirmation(false);
             });
-        });
     }, [studyUuid, snackError]);
+
+    const handleResetClick = useCallback(() => {
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleCancelReset = useCallback(() => {
+        setOpenResetConfirmation(false);
+    }, []);
 
     useEffect(() => {
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
@@ -108,7 +122,7 @@ export function VoltageInitParametersInLine({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={handleOpenSaveDialog} label="save" />
-                            <LabelledButton callback={resetVoltageInitParameters} label="resetToDefault" />
+                            <LabelledButton callback={handleResetClick} label="resetToDefault" />
                             <SubmitButton onClick={handleSubmit(voltageInitMethods.onSaveInline)} variant="outlined">
                                 <FormattedMessage id="validate" />
                             </SubmitButton>
@@ -137,6 +151,17 @@ export function VoltageInitParametersInLine({
                                 validationButtonText={intl.formatMessage({
                                     id: 'validate',
                                 })}
+                            />
+                        )}
+
+                        {/* Reset Confirmation Dialog */}
+                        {openResetConfirmation && (
+                            <PopupConfirmationDialog
+                                message="resetParamsConfirmation"
+                                validateButtonLabel="validate"
+                                openConfirmationPopup={openResetConfirmation}
+                                setOpenConfirmationPopup={handleCancelReset}
+                                handlePopupConfirmation={resetVoltageInitParameters}
                             />
                         )}
                     </Box>

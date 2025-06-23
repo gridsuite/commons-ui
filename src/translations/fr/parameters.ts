@@ -18,6 +18,7 @@ export const parametersFr = {
     descLfDcValues: 'DC',
     resetToDefault: 'Tout réinitialiser ',
     resetProviderValuesToDefault: 'Réinitialiser les paramètres du simulateur',
+    resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
     showAdvancedParameters: 'Paramètres avancés',
     showSpecificParameters: 'Paramètres spécifiques',
     save: 'Enregistrer',
