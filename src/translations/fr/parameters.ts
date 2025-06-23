@@ -93,6 +93,7 @@ export const parametersFr = {
     FlatDesign: 'Flat_Design',
     Carto: 'Carto',
     CartoNoLabel: 'Carto sans labels',
+    Etalab: 'Etalab',
     getNetworkVisualizationsParametersError:
         'Une erreur est survenue lors de la récupération des paramètres des images réseau',
     updateNetworkVisualizationsParametersError:
