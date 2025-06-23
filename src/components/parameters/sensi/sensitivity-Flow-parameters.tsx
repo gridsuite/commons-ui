@@ -8,12 +8,12 @@
 import { Grid } from '@mui/material';
 
 import { FormattedMessage } from 'react-intl';
-import { FloatInput } from '@gridsuite/commons-ui';
 import {
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
 } from './constants';
+import {FloatInput} from "../../inputs";
 
 export function SensitivityAnalysisFields() {
     return (
