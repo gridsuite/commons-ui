@@ -8,7 +8,6 @@ import { ReactNode } from 'react';
 import { Box, Grid, LinearProgress, Theme } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
-import { formSchema } from './utils';
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
@@ -54,7 +53,10 @@ export function SensitivityAnalysisParametersForm({
     enableDeveloperMode: boolean;
 }>) {
     return (
-        <CustomFormProvider validationSchema={formSchema} {...sensitivityAnalysisMethods.formMethods}>
+        <CustomFormProvider
+            validationSchema={sensitivityAnalysisMethods.formSchema}
+            {...sensitivityAnalysisMethods.formMethods}
+        >
             <Grid container sx={{ height: '100%' }} justifyContent="space-between">
                 {renderTitleFields?.()}
                 {sensitivityAnalysisMethods.paramsLoaded ? (
