@@ -22,8 +22,7 @@ import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
 import { ACTIVATED, COUNT, HVDC_LINES, INJECTIONS, MONITORED_BRANCHES, PSTS } from './constants';
-
-export const MAX_ROWS_NUMBER = 100;
+import { MAX_ROWS_NUMBER } from '../../dnd-table';
 
 interface SensitivityTableProps {
     arrayFormName: string;

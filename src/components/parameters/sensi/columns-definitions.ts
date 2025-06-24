@@ -320,7 +320,7 @@ export const SensiNodes: ISensiParameters = {
     name: PARAMETER_SENSI_NODES,
 };
 
-export enum TabValues {
+export enum SensiTabValues {
     'SensitivityBranches' = 0,
     'SensitivityNodes' = 1,
     'SensiInjectionsSet' = 0,
