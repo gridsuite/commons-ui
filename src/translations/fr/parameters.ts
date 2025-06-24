@@ -7,7 +7,6 @@
 
 export const parametersFr = {
     descLfVoltageInitMode: "Mode d'initialisation du plan de tension",
-    descLfTransformerVoltageControlOn: 'Simuler les régleurs en charge',
     descLfUseReactiveLimits: 'Prise en compte des limites de réactif des groupes',
     descLfPhaseShifterRegulationOn: 'Activer les régulations des transformateurs déphaseurs',
     descLfTwtSplitShuntAdmittance:
