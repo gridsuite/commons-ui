@@ -131,9 +131,7 @@ export function SensitivityAnalysisParametersInline({
                                     <FormattedMessage id="resetToDefault" />
                                 </Button>
                                 <SubmitButton
-                                    onClick={handleSubmit(sensitivityAnalysisMethods.onSaveInline, (errors) =>
-                                        console.log(errors)
-                                    )}
+                                    onClick={handleSubmit(sensitivityAnalysisMethods.onSaveInline)}
                                     variant="outlined"
                                     disabled={
                                         sensitivityAnalysisMethods.launchLoader ||
