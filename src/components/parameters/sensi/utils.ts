@@ -78,29 +78,6 @@ const getContingenciesSchema = () => {
     };
 };
 
-export const getMonitoredBranchesformatNewParams = (newParams: SensitivityAnalysisParametersFormSchema) => {
-    return newParams.sensitivityHVDC?.map((rows) => ({
-        [MONITORED_BRANCHES]: rows[MONITORED_BRANCHES].map((container) => {
-            return {
-                [CONTAINER_ID]: container[ID],
-                [CONTAINER_NAME]: container[NAME],
-            };
-        }),
-    }));
-};
-
-export const getContingenciesformatNewParams = (newParams: SensitivityAnalysisParametersFormSchema) => {
-    return newParams.sensitivityHVDC?.map((rows) => ({
-        [CONTINGENCIES]: rows[CONTINGENCIES]?.map((container) => {
-            return {
-                [CONTAINER_ID]: container[ID],
-                [CONTAINER_NAME]: container[NAME],
-            };
-        }),
-        [ACTIVATED]: rows[ACTIVATED],
-    }));
-};
-
 export const getSensiHVDCsFormSchema = () => ({
     [PARAMETER_SENSI_HVDC]: yup.array().of(
         yup.object().shape({
@@ -128,7 +105,12 @@ export const getSensiHvdcformatNewParams = (newParams: SensitivityAnalysisParame
     return {
         [PARAMETER_SENSI_HVDC]: newParams.sensitivityHVDC?.map((sensitivityHVDCs) => {
             return {
-                ...getMonitoredBranchesformatNewParams(newParams),
+                [MONITORED_BRANCHES]: sensitivityHVDCs[MONITORED_BRANCHES].map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
                 [HVDC_LINES]: sensitivityHVDCs[HVDC_LINES].map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
@@ -136,7 +118,13 @@ export const getSensiHvdcformatNewParams = (newParams: SensitivityAnalysisParame
                     };
                 }),
                 [SENSITIVITY_TYPE]: sensitivityHVDCs[SENSITIVITY_TYPE],
-                ...getContingenciesformatNewParams(newParams),
+                [CONTINGENCIES]: sensitivityHVDCs[CONTINGENCIES]?.map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
+                [ACTIVATED]: sensitivityHVDCs[ACTIVATED],
             };
         }),
     };
@@ -168,14 +156,25 @@ export const getSensiInjectionsformatNewParams = (newParams: SensitivityAnalysis
     return {
         [PARAMETER_SENSI_INJECTION]: newParams.sensitivityInjection?.map((sensitivityInjections) => {
             return {
-                ...getMonitoredBranchesformatNewParams(newParams),
+                [MONITORED_BRANCHES]: sensitivityInjections[MONITORED_BRANCHES].map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
                 [INJECTIONS]: sensitivityInjections[INJECTIONS].map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
                         [CONTAINER_NAME]: container[NAME],
                     };
                 }),
-                ...getContingenciesformatNewParams(newParams),
+                [CONTINGENCIES]: sensitivityInjections[CONTINGENCIES]?.map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
+                [ACTIVATED]: sensitivityInjections[ACTIVATED],
             };
         }),
     };
@@ -247,7 +246,12 @@ export const getSensiInjectionsSetformatNewParams = (newParams: SensitivityAnaly
     return {
         [PARAMETER_SENSI_INJECTIONS_SET]: newParams.sensitivityInjectionsSet?.map((sensitivityInjectionSet) => {
             return {
-                ...getMonitoredBranchesformatNewParams(newParams),
+                [MONITORED_BRANCHES]: sensitivityInjectionSet[MONITORED_BRANCHES].map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
                 [INJECTIONS]: sensitivityInjectionSet[INJECTIONS].map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
@@ -255,7 +259,13 @@ export const getSensiInjectionsSetformatNewParams = (newParams: SensitivityAnaly
                     };
                 }),
                 [DISTRIBUTION_TYPE]: sensitivityInjectionSet[DISTRIBUTION_TYPE],
-                ...getContingenciesformatNewParams(newParams),
+                [CONTINGENCIES]: sensitivityInjectionSet[CONTINGENCIES]?.map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
+                [ACTIVATED]: sensitivityInjectionSet[ACTIVATED],
             };
         }),
     };
@@ -299,7 +309,13 @@ export const getSensiNodesformatNewParams = (newParams: SensitivityAnalysisParam
                         };
                     }
                 ),
-                ...getContingenciesformatNewParams(newParams),
+                [CONTINGENCIES]: sensitivityNode[CONTINGENCIES]?.map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
+                [ACTIVATED]: sensitivityNode[ACTIVATED],
             };
         }),
     };
@@ -332,7 +348,12 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
     return {
         [PARAMETER_SENSI_PST]: newParams.sensitivityPST?.map((sensitivityPSTs) => {
             return {
-                ...getMonitoredBranchesformatNewParams(newParams),
+                [MONITORED_BRANCHES]: sensitivityPSTs[MONITORED_BRANCHES].map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
                 [PSTS]: sensitivityPSTs[PSTS].map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
@@ -340,7 +361,13 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
                     };
                 }),
                 [SENSITIVITY_TYPE]: sensitivityPSTs[SENSITIVITY_TYPE],
-                ...getContingenciesformatNewParams(newParams),
+                [CONTINGENCIES]: sensitivityPSTs[CONTINGENCIES]?.map((container) => {
+                    return {
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    };
+                }),
+                [ACTIVATED]: sensitivityPSTs[ACTIVATED],
             };
         }),
     };
