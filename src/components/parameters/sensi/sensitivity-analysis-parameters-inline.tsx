@@ -27,6 +27,7 @@ import {
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
+import { PopupConfirmationDialog } from '../../dialogs';
 
 interface SensitivityAnalysisParametersProps {
     studyUuid: UUID | null;
@@ -60,6 +61,7 @@ export function SensitivityAnalysisParametersInline({
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     const { reset, handleSubmit, formState, getValues } = sensitivityAnalysisMethods.formMethods;
 
@@ -101,7 +103,16 @@ export function SensitivityAnalysisParametersInline({
         reset(sensitivityAnalysisMethods.emptyFormData);
         resetSensitivityAnalysisParameters();
         sensitivityAnalysisMethods.setAnalysisComputeComplexity(0);
-    }, [reset, resetSensitivityAnalysisParameters, sensitivityAnalysisMethods]);
+        setOpenResetConfirmation(false);
+    }, [reset, sensitivityAnalysisMethods, resetSensitivityAnalysisParameters]);
+
+    const handleResetClick = useCallback(() => {
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleCancelReset = useCallback(() => {
+        setOpenResetConfirmation(false);
+    }, []);
 
     useEffect(() => {
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
@@ -127,7 +138,7 @@ export function SensitivityAnalysisParametersInline({
                                 <Button onClick={() => setOpenCreateParameterDialog(true)}>
                                     <FormattedMessage id="save" />
                                 </Button>
-                                <Button onClick={clear}>
+                                <Button onClick={handleResetClick}>
                                     <FormattedMessage id="resetToDefault" />
                                 </Button>
                                 <SubmitButton
@@ -165,6 +176,17 @@ export function SensitivityAnalysisParametersInline({
                                 validationButtonText={intl.formatMessage({
                                     id: 'validate',
                                 })}
+                            />
+                        )}
+
+                        {/* Reset Confirmation Dialog */}
+                        {openResetConfirmation && (
+                            <PopupConfirmationDialog
+                                message="resetParamsConfirmation"
+                                validateButtonLabel="validate"
+                                openConfirmationPopup={openResetConfirmation}
+                                setOpenConfirmationPopup={handleCancelReset}
+                                handlePopupConfirmation={clear}
                             />
                         )}
                     </>
