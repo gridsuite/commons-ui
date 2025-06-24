@@ -27,6 +27,7 @@ import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchSecurityAnalysisParameters } from '../../../services/security-analysis';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
+import { PopupConfirmationDialog } from '../../dialogs';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
@@ -45,19 +46,38 @@ export function SecurityAnalysisParametersInline({
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
+    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
 
     const { snackError } = useSnackMessage();
 
     const { handleSubmit, formState, reset, getValues } = securityAnalysisMethods.formMethods;
 
-    const resetSAParametersAndProvider = useCallback(() => {
-        resetParameters();
-        resetProvider();
-    }, [resetParameters, resetProvider]);
+    const executeResetAction = useCallback(() => {
+        if (pendingResetAction === 'all') {
+            resetParameters();
+            resetProvider();
+        } else if (pendingResetAction === 'parameters') {
+            resetParameters();
+        }
+        setOpenResetConfirmation(false);
+        setPendingResetAction(null);
+    }, [pendingResetAction, resetParameters, resetProvider]);
 
-    const resetSAParameters = useCallback(() => {
-        resetParameters();
-    }, [resetParameters]);
+    const handleResetAllClick = useCallback(() => {
+        setPendingResetAction('all');
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleResetParametersClick = useCallback(() => {
+        setPendingResetAction('parameters');
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleCancelReset = useCallback(() => {
+        setOpenResetConfirmation(false);
+        setPendingResetAction(null);
+    }, []);
 
     const handleLoadParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
@@ -108,8 +128,11 @@ export function SecurityAnalysisParametersInline({
                                     label="settings.button.chooseSettings"
                                 />
                                 <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={resetSAParametersAndProvider} label="resetToDefault" />
-                                <LabelledButton label="resetProviderValuesToDefault" callback={resetSAParameters} />
+                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
+                                <LabelledButton
+                                    label="resetProviderValuesToDefault"
+                                    callback={handleResetParametersClick}
+                                />
                                 <SubmitButton
                                     onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
                                     variant="outlined"
@@ -141,6 +164,17 @@ export function SecurityAnalysisParametersInline({
                                 validationButtonText={intl.formatMessage({
                                     id: 'validate',
                                 })}
+                            />
+                        )}
+
+                        {/* Reset Confirmation Dialog */}
+                        {openResetConfirmation && (
+                            <PopupConfirmationDialog
+                                message="resetParamsConfirmation"
+                                validateButtonLabel="validate"
+                                openConfirmationPopup={openResetConfirmation}
+                                setOpenConfirmationPopup={handleCancelReset}
+                                handlePopupConfirmation={executeResetAction}
                             />
                         )}
                     </>
