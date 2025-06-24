@@ -47,7 +47,7 @@ export function SensitivityTable({
     disableDelete = false,
     onFormChanged,
     onChangeParams,
-}: SensitivityTableProps) {
+}: Readonly<SensitivityTableProps>) {
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;

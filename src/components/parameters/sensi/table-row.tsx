@@ -28,7 +28,7 @@ export function TableRowComponent({
     handleDeleteButton,
     disableDelete = false,
     fetchCount,
-}: TableRowComponentProps) {
+}: Readonly<TableRowComponentProps>) {
     const [isHover, setIsHover] = useState(false);
     const intl = useIntl();
 

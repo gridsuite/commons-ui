@@ -44,7 +44,7 @@ export function SensitivityAnalysisParametersInline({
     parametersBackend,
     setHaveDirtyFields,
     enableDeveloperMode,
-}: SensitivityAnalysisParametersProps) {
+}: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 

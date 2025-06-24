@@ -185,7 +185,7 @@ export const useSensitivityAnalysisParametersForm = ({
             'sensitivityPST',
         ];
         tabsToCheck.forEach((tab) => {
-            const tabToCheck = values[tab] as any[] | undefined;
+            const tabToCheck = values[tab] as any[];
             // TODO: not easy to fix any here since values[SubTabsValues] have each time different type which causes problems with "filter"
             // "none of those signatures are compatible with each other
             if (tabToCheck) {
