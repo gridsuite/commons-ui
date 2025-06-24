@@ -78,16 +78,13 @@ export function VoltageInitParametersInLine({
         updateVoltageInitParameters(studyUuid, {
             applyModifications: DEFAULT_GENERAL_APPLY_MODIFICATIONS,
             computationParameters: null, // null means Reset
-        })
-            .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'updateVoltageInitParametersError',
-                });
-            })
-            .finally(() => {
-                setOpenResetConfirmation(false);
+        }).catch((error) => {
+            snackError({
+                messageTxt: error.message,
+                headerId: 'updateVoltageInitParametersError',
             });
+        });
+        setOpenResetConfirmation(false);
     }, [studyUuid, snackError]);
 
     const handleResetClick = useCallback(() => {
