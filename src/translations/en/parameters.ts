@@ -7,7 +7,6 @@
 
 export const parametersEn = {
     descLfVoltageInitMode: 'Voltage initialisation mode',
-    descLfTransformerVoltageControlOn: 'Activate on-load tap changers',
     descLfUseReactiveLimits: 'Take the reactive limits of generators into account',
     descLfPhaseShifterRegulationOn: 'Enable automatic power flow control with phase shifting transformers',
     descLfTwtSplitShuntAdmittance: 'Split shunt admittance of two winding transformers',
@@ -17,6 +16,7 @@ export const parametersEn = {
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
     resetProviderValuesToDefault: 'Reset provider default values',
+    resetParamsConfirmation: 'Do you really want to reset these parameters ?',
     showAdvancedParameters: 'Advanced settings',
     showSpecificParameters: 'Specific settings',
     save: 'Save',

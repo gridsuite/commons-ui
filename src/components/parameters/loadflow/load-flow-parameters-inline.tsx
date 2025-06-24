@@ -24,6 +24,7 @@ import { fetchLoadFlowParameters } from '../../../services/loadflow';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
+import { PopupConfirmationDialog } from '../../dialogs';
 
 export function LoadFlowParametersInline({
     studyUuid,
@@ -42,16 +43,35 @@ export function LoadFlowParametersInline({
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
+    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
 
-    const resetLFParametersAndProvider = useCallback(() => {
-        resetParameters();
-        resetProvider();
-    }, [resetParameters, resetProvider]);
+    const executeResetAction = useCallback(() => {
+        if (pendingResetAction === 'all') {
+            resetParameters();
+            resetProvider();
+        } else if (pendingResetAction === 'parameters') {
+            resetParameters();
+        }
+        setOpenResetConfirmation(false);
+        setPendingResetAction(null);
+    }, [pendingResetAction, resetParameters, resetProvider]);
 
-    const resetLFParameters = useCallback(() => {
-        resetParameters();
-    }, [resetParameters]);
+    const handleResetAllClick = useCallback(() => {
+        setPendingResetAction('all');
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleResetParametersClick = useCallback(() => {
+        setPendingResetAction('parameters');
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleCancelReset = useCallback(() => {
+        setOpenResetConfirmation(false);
+        setPendingResetAction(null);
+    }, []);
 
     const { reset, getValues, formState, handleSubmit } = loadflowMethods.formMethods;
 
@@ -104,8 +124,11 @@ export function LoadFlowParametersInline({
                                     label="settings.button.chooseSettings"
                                 />
                                 <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={resetLFParametersAndProvider} label="resetToDefault" />
-                                <LabelledButton label="resetProviderValuesToDefault" callback={resetLFParameters} />
+                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
+                                <LabelledButton
+                                    label="resetProviderValuesToDefault"
+                                    callback={handleResetParametersClick}
+                                />
                                 <SubmitButton
                                     onClick={handleSubmit(
                                         loadflowMethods.onSaveInline,
@@ -140,6 +163,17 @@ export function LoadFlowParametersInline({
                                     validationButtonText={intl.formatMessage({
                                         id: 'validate',
                                     })}
+                                />
+                            )}
+
+                            {/* Reset Confirmation Dialog */}
+                            {openResetConfirmation && (
+                                <PopupConfirmationDialog
+                                    message="resetParamsConfirmation"
+                                    validateButtonLabel="validate"
+                                    openConfirmationPopup={openResetConfirmation}
+                                    setOpenConfirmationPopup={handleCancelReset}
+                                    handlePopupConfirmation={executeResetAction}
                                 />
                             )}
                         </Box>
