@@ -16,6 +16,7 @@ export const parametersEn = {
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
     resetProviderValuesToDefault: 'Reset provider default values',
+    resetParamsConfirmation: 'Do you really want to reset these parameters ?',
     showAdvancedParameters: 'Advanced settings',
     showSpecificParameters: 'Specific settings',
     save: 'Save',
