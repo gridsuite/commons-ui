@@ -28,11 +28,13 @@ import { PopupConfirmationDialog } from '../../dialogs';
 
 export function LoadFlowParametersInline({
     studyUuid,
+    language,
     parametersBackend,
     setHaveDirtyFields,
     enableDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
+    language: string;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
     enableDeveloperMode: boolean;
@@ -108,6 +110,7 @@ export function LoadFlowParametersInline({
         <LoadFlowProvider>
             <LoadFlowParametersForm
                 loadflowMethods={loadflowMethods}
+                language={language}
                 renderActions={() => {
                     return (
                         <Box>
