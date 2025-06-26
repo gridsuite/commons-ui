@@ -16,7 +16,7 @@ import {
     setLoadFlowParameters,
 } from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
-import { ElementType } from '../../../utils';
+import { ElementType, LANG_ENGLISH } from '../../../utils';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
@@ -30,8 +30,8 @@ export function LoadFlowParametersEditionDialog({
     name,
     description,
     activeDirectory,
-    language,
     user,
+    language = LANG_ENGLISH,
     enableDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
@@ -72,6 +72,7 @@ export function LoadFlowParametersEditionDialog({
             <LoadFlowProvider>
                 <LoadFlowParametersForm
                     loadflowMethods={loadflowMethods}
+                    language={language}
                     renderTitleFields={() => {
                         return (
                             <NameElementEditorForm

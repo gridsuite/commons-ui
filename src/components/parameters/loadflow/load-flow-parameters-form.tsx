@@ -14,6 +14,7 @@ import { CustomFormProvider } from '../../inputs';
 
 interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
+    language: string;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
 }
@@ -46,6 +47,7 @@ const styles = {
 
 export function LoadFlowParametersForm({
     loadflowMethods,
+    language,
     renderTitleFields,
     renderActions,
 }: Readonly<LoadFlowParametersFormProps>) {
@@ -64,7 +66,7 @@ export function LoadFlowParametersForm({
     } = loadflowMethods;
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
+        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>
             <Box sx={styles.form}>
                 {renderTitleFields?.()}
                 {paramsLoaded ? (
