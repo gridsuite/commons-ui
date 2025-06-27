@@ -68,14 +68,14 @@ export const TAB_INFO = [
     { label: TabValues[TabValues.LimitReductions], developerModeOnly: false },
 ];
 
-export interface IColumnsDef {
+export interface LimitReductionIColumnsDef {
     label: string;
     dataKey: string;
     tooltip: string;
     width?: string;
 }
 
-export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: IColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: LimitReductionIColumnsDef[] = [
     {
         label: 'voltageRange',
         dataKey: VOLTAGE_LEVELS_FORM,

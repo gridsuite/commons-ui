@@ -9,7 +9,6 @@ import { Theme } from '@mui/material';
 
 /**
  * Styles use in parameter forms
- * @deprecated to discourage its use outside of intended components
  */
 export const parametersStyles = {
     title: (theme: Theme) => ({
