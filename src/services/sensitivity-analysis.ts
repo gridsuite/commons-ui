@@ -6,8 +6,9 @@
  */
 import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, backendFetchText } from './utils';
-import { PREFIX_STUDY_QUERIES, safeEncodeURIComponent } from './security-analysis';
+import { safeEncodeURIComponent } from './security-analysis';
 import { SensitivityAnalysisFactorsCountParameters, SensitivityAnalysisParametersInfos } from '../utils';
+import { PREFIX_STUDY_QUERIES } from './loadflow';
 
 const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
 const PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis`;
