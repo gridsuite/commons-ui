@@ -7,13 +7,14 @@
 
 import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, backendFetchText } from './utils';
+import { PREFIX_STUDY_QUERIES } from './loadflow';
 
 export function safeEncodeURIComponent(value: string | null | undefined): string {
     return value != null ? encodeURIComponent(value) : '';
 }
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
-export const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
+
 export const getStudyUrl = (studyUuid: UUID | null) =>
     `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
