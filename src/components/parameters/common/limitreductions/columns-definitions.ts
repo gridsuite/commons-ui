@@ -16,6 +16,7 @@ import {
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
 } from '../constant';
+import { getDialogParametersFormSchema } from '../parameters-edition-dialog-props';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
@@ -118,7 +119,7 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
         .required();
 };
 
-export const getSAParametersFromSchema = (limitReductions?: ILimitReductionsByVoltageLevel[]) => {
+export const getSAParametersFromSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
         [PARAM_SA_PROVIDER]: yup.string().required(),
     });
@@ -148,6 +149,7 @@ export const getSAParametersFromSchema = (limitReductions?: ILimitReductionsByVo
     });
 
     return yup.object().shape({
+        ...getDialogParametersFormSchema(name),
         ...providerSchema.fields,
         ...limitReductionsSchema.fields,
         ...thresholdsSchema.fields,

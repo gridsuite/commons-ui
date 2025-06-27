@@ -24,9 +24,7 @@ import { MidFormError } from './errorManagement/MidFormError';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
 import { ElementAttributes } from '../../../utils';
-
-export const NAME = 'name';
-export const DESCRIPTION_INPUT = 'description';
+import { NAME } from './constants';
 
 const styles = {
     formDirectoryElements1: {

@@ -11,7 +11,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ObjectSchema } from 'yup';
 import { UUID } from 'crypto';
 import yup from '../../../utils/yupConfig';
-import { DESCRIPTION_INPUT, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../inputs';
 import {
     FILTERS,
     GENERAL_APPLY_MODIFICATIONS,
@@ -236,7 +236,7 @@ export const useVoltageInitParametersForm = ({
                     fromVoltageInitParametersFormToParamValues(formData).computationParameters,
                     formData[NAME],
                     ElementType.VOLTAGE_INIT_PARAMETERS,
-                    formData[DESCRIPTION_INPUT] ?? ''
+                    formData[DESCRIPTION] ?? ''
                 ).catch((error: Error) => {
                     snackError({
                         messageTxt: error.message,
