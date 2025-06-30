@@ -7,7 +7,6 @@
 
 export const parametersFr = {
     descLfVoltageInitMode: "Mode d'initialisation du plan de tension",
-    descLfTransformerVoltageControlOn: 'Simuler les régleurs en charge',
     descLfUseReactiveLimits: 'Prise en compte des limites de réactif des groupes',
     descLfPhaseShifterRegulationOn: 'Activer les régulations des transformateurs déphaseurs',
     descLfTwtSplitShuntAdmittance:
@@ -18,6 +17,7 @@ export const parametersFr = {
     descLfDcValues: 'DC',
     resetToDefault: 'Tout réinitialiser ',
     resetProviderValuesToDefault: 'Réinitialiser les paramètres du simulateur',
+    resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
     showAdvancedParameters: 'Paramètres avancés',
     showSpecificParameters: 'Paramètres spécifiques',
     save: 'Enregistrer',
@@ -166,4 +166,17 @@ export const parametersFr = {
     VariableGenerators: 'Groupes à puissance réactive variable',
     VariableTransformers: 'Transformateurs variables',
     VariableShuntCompensators: 'MCS variables',
+
+    'securityAnalysis.violationsHiding': 'Masquage des contraintes en N-k',
+    'securityAnalysis.current': 'Intensité',
+    'securityAnalysis.lowVoltage': 'Tension basse',
+    'securityAnalysis.highVoltage': 'Tension haute',
+    'securityAnalysis.toolTip.violationsHiding':
+        "Cette section permet de paramétrer le niveau d'aggravation à partir duquel les contraintes calculées en N réapparaissent en N-k.",
+    'securityAnalysis.toolTip.current':
+        "L'aggravation de contrainte en intensité est déterminée uniquement en pourcentage de la valeur calculée en N pour les ouvrages en contrainte. Par exemple, si l'aggravation en pourcentage correspond à 10 A alors la contrainte en N réapparaitra en N-k pour une augmentation d'intensité de plus de 10 A par rapport à la valeur calculée en N.",
+    'securityAnalysis.toolTip.lowVoltage':
+        "L'aggravation de contrainte en tension basse peut être calculée en pourcentage ou en définie en valeur absolue par rapport à la valeur calculée en N. La valeur prise en compte sera la plus conservative des deux. Par exemple, si l'aggravation en pourcentage correspond à 1 kV et celle renseignée en absolu est de 2 kV, alors la contrainte en tension basse réapparaitra en N-k pour une chute de tension de plus de 1 kV par rapport à la valeur calculée en N.",
+    'securityAnalysis.toolTip.highVoltage':
+        "L'aggravation de contrainte en tension haute peut être calculée en pourcentage ou en définie en valeur absolue par rapport à la valeur calculée en N. La valeur prise en compte sera la plus conservative des deux. Par exemple, si l'aggravation en pourcentage correspond à 1 kV et celle renseignée en absolu est de 2 kV, alors la contrainte en tension haute réapparaitra en N-k pour une élévation de tension de plus de 1 kV par rapport à la valeur calculée en N.",
 };

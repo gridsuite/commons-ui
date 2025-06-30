@@ -7,7 +7,6 @@
 
 export const parametersEn = {
     descLfVoltageInitMode: 'Voltage initialisation mode',
-    descLfTransformerVoltageControlOn: 'Activate on-load tap changers',
     descLfUseReactiveLimits: 'Take the reactive limits of generators into account',
     descLfPhaseShifterRegulationOn: 'Enable automatic power flow control with phase shifting transformers',
     descLfTwtSplitShuntAdmittance: 'Split shunt admittance of two winding transformers',
@@ -17,6 +16,7 @@ export const parametersEn = {
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
     resetProviderValuesToDefault: 'Reset provider default values',
+    resetParamsConfirmation: 'Do you really want to reset these parameters ?',
     showAdvancedParameters: 'Advanced settings',
     showSpecificParameters: 'Specific settings',
     save: 'Save',
@@ -160,4 +160,17 @@ export const parametersEn = {
     VariableGenerators: 'Generators with variable reactive power',
     VariableTransformers: 'Variable transformers',
     VariableShuntCompensators: 'Variable shunt compensators',
+
+    'securityAnalysis.violationsHiding': 'Post-contingency violations hiding',
+    'securityAnalysis.current': 'Current',
+    'securityAnalysis.lowVoltage': 'Low voltage',
+    'securityAnalysis.highVoltage': 'High voltage',
+    'securityAnalysis.toolTip.violationsHiding':
+        'This section configures thresholds to determine which violations that already exist in the pre-contingency state are redisplayed in the post-contingency state as aggravated violations.',
+    'securityAnalysis.toolTip.current':
+        'For current violations, the value can only be proportional. For example, if the proportional value corresponds to 10 A, a 1000 A current preexisting violation will be displayed in the post-contingency state only if the new value is above 1010 A.',
+    'securityAnalysis.toolTip.lowVoltage':
+        'For low voltage violations, the value of the threshold can be either proportional or absolute. If both values are defined, the smallest value is used. For example, if the proportional value corresponds to 1 kV and the absolute value is 2 kV, a 200 kV low voltage preexisting violation will be displayed in the post-contingency state only if the new value is below 199 kV.',
+    'securityAnalysis.toolTip.highVoltage':
+        'For high voltage violations, the value of the threshold can be either proportional or absolute. If both values are defined, the smallest value is used. For example, if the proportional value corresponds to 1 kV and the absolute value is 2 kV, a 250 kV high voltage preexisting violation will be displayed in the post-contingency state only if the new value is above 251 kV.',
 };
