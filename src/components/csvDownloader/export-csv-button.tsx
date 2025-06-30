@@ -21,7 +21,7 @@ export function ExportCsvButton({
     disabled = false,
     isDownloadLoading: isCsvLoading = false,
     isDownloadSuccessful = false,
-}: ExportButtonProps) {
+}: Readonly<ExportButtonProps>) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <FormattedMessage id="MuiVirtualizedTable/exportCSV" />
