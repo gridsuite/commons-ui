@@ -24,7 +24,7 @@ export function NameElementEditorForm({
     elementType,
 }: Readonly<NameElementEditorFormProps>) {
     return (
-        <Grid item sx={{ height: '100%' }}>
+        <Grid item>
             <Grid container spacing={2} direction="column" marginBottom="8px">
                 <Grid item>
                     <UniqueNameInput

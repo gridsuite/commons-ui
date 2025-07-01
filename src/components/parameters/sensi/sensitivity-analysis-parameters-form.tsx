@@ -11,9 +11,9 @@ import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analys
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
-import { mergeSx } from '../../../utils';
 import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
+import { mergeSx } from '../../../utils';
 
 const styles = {
     form: {
@@ -27,16 +27,18 @@ const styles = {
         overflow: 'auto',
         display: 'flex',
         flexDirection: 'column',
+        height: '100%',
     },
-    actions: {
+    actions: (theme: Theme) => ({
         flexGrow: 0,
-    },
+        paddingBottom: theme.spacing(3),
+    }),
     content: (theme: Theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
         paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(1),
+        paddingBottom: theme.spacing(2),
         flexGrow: 1,
     }),
 };
@@ -57,11 +59,20 @@ export function SensitivityAnalysisParametersForm({
             validationSchema={sensitivityAnalysisMethods.formSchema}
             {...sensitivityAnalysisMethods.formMethods}
         >
-            <Grid container sx={{ height: '100%' }} justifyContent="space-between">
+            <Box sx={styles.sensibilityAnalysisParameters}>
                 {renderTitleFields?.()}
                 {sensitivityAnalysisMethods.paramsLoaded ? (
-                    <Box>
-                        <Grid item container>
+                    <Box sx={mergeSx(parametersStyles.scrollableGrid, { paddingTop: 0, maxHeight: '100%' })}>
+                        <Grid
+                            container
+                            spacing={1}
+                            sx={{
+                                padding: 0,
+                                paddingBottom: 2,
+                                height: 'fit-content',
+                            }}
+                            justifyContent="space-between"
+                        >
                             <Grid item xs={8} xl={4} sx={parametersStyles.parameterName}>
                                 <FormattedMessage id="Provider" />
                             </Grid>
@@ -73,40 +84,39 @@ export function SensitivityAnalysisParametersForm({
                                 />
                             </Grid>
                         </Grid>
-                        <Grid
-                            xs
-                            item
-                            container
-                            sx={mergeSx(parametersStyles.scrollableGrid, {
-                                paddingTop: 0,
-                                display: 'unset',
-                            })}
-                            key="sensitivityAnalysisParameters"
+                        <Box
+                            sx={{
+                                flexGrow: 1,
+                                overflow: 'auto',
+                                paddingLeft: 1,
+                            }}
                         >
-                            <Grid xl={6}>
-                                <Grid container paddingTop={1} paddingBottom={1}>
+                            <Grid container key="sensitivityAnalysisParameters">
+                                <Grid xl={6}>
+                                    <Grid container paddingTop={1} paddingBottom={1}>
+                                        <LineSeparator />
+                                    </Grid>
+                                    <SensitivityAnalysisFields />
+                                </Grid>
+                                <Grid container paddingTop={4} paddingBottom={2}>
                                     <LineSeparator />
                                 </Grid>
-                                <SensitivityAnalysisFields />
+                                <SensitivityParametersSelector
+                                    onFormChanged={sensitivityAnalysisMethods.onFormChanged}
+                                    onChangeParams={sensitivityAnalysisMethods.onChangeParams}
+                                    launchLoader={sensitivityAnalysisMethods.launchLoader}
+                                    analysisComputeComplexity={sensitivityAnalysisMethods.analysisComputeComplexity}
+                                    enableDeveloperMode={enableDeveloperMode}
+                                    isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
+                                />
                             </Grid>
-                            <Grid container paddingTop={4} paddingBottom={2}>
-                                <LineSeparator />
-                            </Grid>
-                            <SensitivityParametersSelector
-                                onFormChanged={sensitivityAnalysisMethods.onFormChanged}
-                                onChangeParams={sensitivityAnalysisMethods.onChangeParams}
-                                launchLoader={sensitivityAnalysisMethods.launchLoader}
-                                analysisComputeComplexity={sensitivityAnalysisMethods.analysisComputeComplexity}
-                                enableDeveloperMode={enableDeveloperMode}
-                                isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
-                            />
-                        </Grid>
+                        </Box>
                     </Box>
                 ) : (
                     <LinearProgress />
                 )}
                 {renderActions && <Box sx={styles.actions}>{renderActions()}</Box>}
-            </Grid>
+            </Box>
         </CustomFormProvider>
     );
 }
