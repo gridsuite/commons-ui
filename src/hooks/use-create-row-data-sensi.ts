@@ -7,7 +7,7 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { useMemo } from 'react';
-import { ISensiParameters } from '../components/parameters/sensi/columns-definitions';
+import type { ISensiParameters } from '../components/parameters/sensi/columns-definitions';
 import { COUNT } from '../components/parameters/sensi/constants';
 
 export function useCreateRowDataSensi(sensiParam: ISensiParameters) {

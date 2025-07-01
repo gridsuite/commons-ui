@@ -20,6 +20,7 @@ import {
     SensiNodes,
     SensiPsts,
     SensiTabValues,
+    SensiBranchesTabValues,
 } from './columns-definitions';
 import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
@@ -82,7 +83,7 @@ function SensitivityParametersSelector({
     const intl = useIntl();
 
     const [tabValue, setTabValue] = useState(SensiTabValues.SensitivityBranches);
-    const [subTabValue, setSubTabValue] = useState(SensiTabValues.SensiInjectionsSet);
+    const [subTabValue, setSubTabValue] = useState(SensiBranchesTabValues.SensiInjectionsSet);
     const handleTabChange = useCallback((event: React.SyntheticEvent<Element, Event>, newValue: number) => {
         setTabValue(newValue);
     }, []);
@@ -234,7 +235,7 @@ function SensitivityParametersSelector({
                                 </Box>
                             )}
 
-                            <TabPanel index={SensiTabValues.SensiInjectionsSet} value={subTabValue}>
+                            <TabPanel index={SensiBranchesTabValues.SensiInjectionsSet} value={subTabValue}>
                                 <SensitivityTable
                                     arrayFormName={`${SensiInjectionsSet.name}`}
                                     columnsDefinition={getColumnsDefinition(
@@ -247,7 +248,7 @@ function SensitivityParametersSelector({
                                     onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
-                            <TabPanel index={SensiTabValues.SensiInjection} value={subTabValue}>
+                            <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
                                 <SensitivityTable
                                     arrayFormName={`${SensiInjection.name}`}
                                     columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_INJECTIONS)}
@@ -258,7 +259,7 @@ function SensitivityParametersSelector({
                                     onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
-                            <TabPanel index={SensiTabValues.SensiHVDC} value={subTabValue}>
+                            <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
                                 <SensitivityTable
                                     arrayFormName={`${SensiHvdcs.name}`}
                                     columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_HVDCS)}
@@ -269,7 +270,7 @@ function SensitivityParametersSelector({
                                     onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
-                            <TabPanel index={SensiTabValues.SensiPST} value={subTabValue}>
+                            <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
                                 <SensitivityTable
                                     arrayFormName={`${SensiPsts.name}`}
                                     columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_PSTS)}

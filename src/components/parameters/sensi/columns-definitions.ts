@@ -323,6 +323,9 @@ export const SensiNodes: ISensiParameters = {
 export enum SensiTabValues {
     'SensitivityBranches' = 0,
     'SensitivityNodes' = 1,
+}
+
+export enum SensiBranchesTabValues {
     'SensiInjectionsSet' = 0,
     'SensiInjection' = 1,
     'SensiHVDC' = 2,

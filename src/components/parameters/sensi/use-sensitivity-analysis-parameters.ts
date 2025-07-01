@@ -84,7 +84,7 @@ export interface UseSensitivityAnalysisParametersReturn {
 
 const numberMax = 500000;
 
-type UseVoltageInitParametersFormProps =
+type UseSensitivityAnalysisParametersFormProps =
     | {
           name: string;
           description: string | null;
@@ -112,7 +112,7 @@ export const useSensitivityAnalysisParametersForm = ({
     parametersUuid,
     name,
     description,
-}: UseVoltageInitParametersFormProps): UseSensitivityAnalysisParametersReturn => {
+}: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
     const [providers, , , , , params, , updateParameters] = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
 
