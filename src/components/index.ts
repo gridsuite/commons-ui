@@ -8,6 +8,7 @@ export * from './announcement';
 export * from './authentication';
 export * from './cardErrorBoundary';
 export * from './checkBoxList';
+export * from './csvDownloader';
 export * from './customAGGrid';
 export * from './dialogs';
 export * from './directoryItemSelector/DirectoryItemSelector';
