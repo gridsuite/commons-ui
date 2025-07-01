@@ -56,13 +56,14 @@ export function SecurityAnalysisParametersForm({
             validationSchema={securityAnalysisMethods.formSchema}
             {...securityAnalysisMethods.formMethods}
         >
-            <Grid item sx={{ height: '100%', display: 'flex' }} xl={9} lg={11} md={12}>
+            <Grid item sx={{ height: '100%' }} xl={9} lg={11} md={12}>
                 <Box
                     sx={{
                         height: '100%',
                         display: 'flex',
                         position: 'relative',
                         flexDirection: 'column',
+                        width: '100%',
                     }}
                 >
                     <Box sx={styles.securityAnalysisParameters}>
