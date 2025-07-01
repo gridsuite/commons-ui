@@ -11,7 +11,6 @@ import { useCsvExport } from './use-csv-export';
 import { ExportCsvButton } from './export-csv-button';
 
 export function CsvExport({
-    gridRef,
     columns,
     tableNamePrefix = '',
     tableName,
@@ -22,8 +21,8 @@ export function CsvExport({
 }: CsvExportProps): JSX.Element {
     const { downloadCSVData } = useCsvExport();
     const download = useCallback(() => {
-        downloadCSVData({ gridRef, columns, tableName, tableNamePrefix, skipColumnHeaders, language, exportDataAsCsv });
-    }, [downloadCSVData, gridRef, columns, tableName, tableNamePrefix, skipColumnHeaders, language, exportDataAsCsv]);
+        downloadCSVData({ columns, tableName, tableNamePrefix, skipColumnHeaders, language, exportDataAsCsv });
+    }, [downloadCSVData, columns, tableName, tableNamePrefix, skipColumnHeaders, language, exportDataAsCsv]);
 
     return <ExportCsvButton disabled={disabled} onClick={download} />;
 }

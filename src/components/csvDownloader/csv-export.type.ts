@@ -5,13 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { RefObject } from 'react';
-import { AgGridReact } from 'ag-grid-react';
 import { ColDef, CsvExportParams } from 'ag-grid-community';
 import { GsLang } from '../../utils';
 
 export type CsvDownloadProps = {
-    gridRef: RefObject<AgGridReact>;
     columns: ColDef[];
     tableName: string;
     tableNamePrefix?: string;
