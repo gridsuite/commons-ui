@@ -13,8 +13,8 @@ import { User } from 'oidc-client';
 import { useSnackMessage } from './useSnackMessage';
 import { useDebounce } from './useDebounce';
 import { ComputingType, formatComputingTypeLabel } from '../components/parameters/common/computing-type';
-import { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
-import {
+import type { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
+import type {
     ParametersInfos,
     SpecificParametersInfos,
     UseParametersBackendReturnProps,

@@ -9,7 +9,7 @@ import { UUID } from 'crypto';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
-import {
+import type {
     ILimitReductionsByVoltageLevel,
     ISAParameters,
 } from '../../components/parameters/common/limitreductions/columns-definitions';

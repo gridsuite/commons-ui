@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { Box, Button, SxProps, Theme } from '@mui/material';
 import { ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useFormContext } from 'react-hook-form';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 
 export interface DescriptionFieldProps {

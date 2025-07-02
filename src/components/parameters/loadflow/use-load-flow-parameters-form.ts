@@ -25,7 +25,7 @@ import {
     SpecificParameterInfos,
     UseParametersBackendReturnProps,
 } from '../../../utils/types/parameters.type';
-import { ComputingType, getDialogParametersFormSchema, PROVIDER } from '../common';
+import { ComputingType, PROVIDER } from '../common';
 import {
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
@@ -113,7 +113,6 @@ export const useLoadFlowParametersForm = (
     const formSchema = useMemo(() => {
         return yup
             .object({
-                ...getDialogParametersFormSchema(name),
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,

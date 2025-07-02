@@ -63,6 +63,7 @@ export function SecurityAnalysisParametersForm({
                         display: 'flex',
                         position: 'relative',
                         flexDirection: 'column',
+                        width: '100%',
                     }}
                 >
                     <Box sx={styles.securityAnalysisParameters}>

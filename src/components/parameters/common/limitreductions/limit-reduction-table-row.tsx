@@ -7,17 +7,17 @@
 
 import { TableRow } from '@mui/material';
 import { LimitReductionTableCell } from './limit-reduction-table-cell';
-import { IColumnsDef } from './columns-definitions';
+import { LimitReductionIColumnsDef } from './columns-definitions';
 
 interface TableRowComponentProps {
-    columnsDefinition: IColumnsDef[];
+    columnsDefinition: LimitReductionIColumnsDef[];
     index: number;
 }
 
 export function LimitReductionTableRow({ columnsDefinition, index }: Readonly<TableRowComponentProps>) {
     return (
         <TableRow>
-            {columnsDefinition.map((column: IColumnsDef) => (
+            {columnsDefinition.map((column: LimitReductionIColumnsDef) => (
                 <LimitReductionTableCell key={`${column.dataKey}`} rowIndex={index} column={column} />
             ))}
         </TableRow>

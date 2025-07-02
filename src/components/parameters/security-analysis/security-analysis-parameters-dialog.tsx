@@ -63,6 +63,11 @@ export function SecurityAnalysisParametersDialog({
             removeOptional
             language={language}
             disabledSave={disableSave}
+            PaperProps={{
+                sx: {
+                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
+                },
+            }}
         >
             <SecurityAnalysisParametersForm
                 securityAnalysisMethods={securityAnalysisMethods}

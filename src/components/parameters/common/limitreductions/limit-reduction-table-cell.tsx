@@ -6,10 +6,16 @@
  */
 
 import { TableCell } from '@mui/material';
-import { IColumnsDef, LIMIT_REDUCTIONS_FORM, VOLTAGE_LEVELS_FORM } from './columns-definitions';
+import { LimitReductionIColumnsDef, LIMIT_REDUCTIONS_FORM, VOLTAGE_LEVELS_FORM } from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../inputs';
 
-export function LimitReductionTableCell({ rowIndex, column }: Readonly<{ rowIndex: number; column: IColumnsDef }>) {
+export function LimitReductionTableCell({
+    rowIndex,
+    column,
+}: Readonly<{
+    rowIndex: number;
+    column: LimitReductionIColumnsDef;
+}>) {
     return (
         <TableCell sx={{ fontWeight: 'bold' }}>
             {column.dataKey === VOLTAGE_LEVELS_FORM ? (
