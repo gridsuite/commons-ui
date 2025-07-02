@@ -7,8 +7,6 @@
 
 import { UUID } from 'crypto';
 import { User } from 'oidc-client';
-import yup from '../../../utils/yupConfig';
-import { DESCRIPTION, NAME } from '../../inputs/reactHookForm/constants';
 
 export interface ParametersEditionDialogProps {
     id: UUID;
@@ -22,12 +20,3 @@ export interface ParametersEditionDialogProps {
     user: User | null;
     enableDeveloperMode?: boolean;
 }
-
-export const getDialogParametersFormSchema = (name: string | null) => {
-    const shape: { [key: string]: yup.AnySchema } = {};
-    if (name) {
-        shape[NAME] = yup.string().required();
-        shape[DESCRIPTION] = yup.string();
-    }
-    return shape;
-};

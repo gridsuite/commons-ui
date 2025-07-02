@@ -7,7 +7,7 @@
 
 import { useFormContext } from 'react-hook-form';
 import { useContext } from 'react';
-import { CustomFormContext, MergedFormContextProps } from './CustomFormProvider';
+import { CustomFormContext, type MergedFormContextProps } from './CustomFormProvider';
 
 // TODO found how to manage generic type
 export const useCustomFormContext = (): MergedFormContextProps => {

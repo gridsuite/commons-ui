@@ -7,12 +7,12 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import { IColumnsDef, LIMIT_REDUCTIONS_FORM } from '../limitreductions/columns-definitions';
+import { LimitReductionIColumnsDef, LIMIT_REDUCTIONS_FORM } from '../limitreductions/columns-definitions';
 import { LimitReductionTableRow } from '../limitreductions/limit-reduction-table-row';
 import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
 interface LimitReductionsTableProps {
-    columnsDefinition: IColumnsDef[];
+    columnsDefinition: LimitReductionIColumnsDef[];
     tableHeight: number;
     formName: string;
 }

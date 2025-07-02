@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
+import type { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
 
 export interface LoadFlowParametersInfos {
     uuid?: UUID;
