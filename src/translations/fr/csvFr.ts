@@ -9,9 +9,9 @@ export const csvFr = {
     ImportCSV: 'Import CSV',
     noDataInCsvFile: 'Aucune donnée trouvée dans ce fichier',
     wrongCsvHeadersError:
-        'Les en-têtes du fichier CSV sont incorrects. Utilisez le bouton Générer le squelette CSV pour obtenir le format CSV pris en charge',
+        'Les en-têtes du fichier CSV sont incorrects. Utilisez le bouton Générer le modèle CSV pour obtenir le format CSV pris en charge',
     keepCSVDataMessage: 'Voulez-vous remplacer la liste existante ou y ajouter les nouvelles données ?',
-    GenerateCSV: 'Générer le squelette CSV',
+    GenerateCSV: 'Générer le modèle CSV',
     UploadCSV: 'Télécharger le CSV',
     uploadMessage: ' Aucun fichier sélectionné',
 };
