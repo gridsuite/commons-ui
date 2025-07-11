@@ -64,6 +64,7 @@ export const networkModificationsEn = {
     'network_modifications.tabular.BATTERY_CREATION': 'batteries',
     'network_modifications.tabular.LOAD_CREATION': 'loads',
     'network_modifications.tabular.SHUNT_COMPENSATOR_CREATION': 'linear shunt compensators',
+    'network_modifications.LIMIT_SETS_TABULAR_MODIFICATION': 'Limit sets tabular modification ({computedLabel})',
     'network_modifications.LCC_CREATION': 'Creating HVDC (LCC) {computedLabel}',
     'network_modifications.LCC_MODIFICATION': 'Modifying HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Creating static var compensator {computedLabel}',
