@@ -66,6 +66,8 @@ export const networkModificationsFr = {
     'network_modifications.tabular.BATTERY_CREATION': 'batteries',
     'network_modifications.tabular.LOAD_CREATION': 'consommations',
     'network_modifications.tabular.SHUNT_COMPENSATOR_CREATION': 'MCS linéaires',
+    'network_modifications.LIMIT_SETS_TABULAR_MODIFICATION':
+        'Modification tabulaire de sets de limites ({computedLabel})',
     'network_modifications.LCC_CREATION': 'Création de la HVDC (LCC) {computedLabel}',
     'network_modifications.LCC_MODIFICATION': 'Modification de la HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Création de CSPR {computedLabel}',
