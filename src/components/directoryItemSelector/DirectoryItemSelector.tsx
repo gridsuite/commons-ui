@@ -288,19 +288,16 @@ export function DirectoryItemSelector({
 
     // In this useEffect, we fetch the path (expanded array) of every selected node
     useEffect(() => {
-        if (open && expanded && selected) {
+        if (open && expanded) {
             // we check if every selected item is already fetched
-            const isSelectedItemFetched = selected.every((id) => nodeMap.current[id]);
-            if (!isSelectedItemFetched) {
-                expanded.forEach((nodeId) => {
-                    const node = nodeMap.current[nodeId];
-                    // we check that the node exist before fetching the children
-                    // And we check if there is already children (Because we are trying to reach a selected element, we know every node has at least one child)
-                    if (node?.children && node.children.length === 0) {
-                        fetchDirectoryChildren(nodeId);
-                    }
-                });
-            }
+            expanded.forEach((nodeId) => {
+                const node = nodeMap.current[nodeId];
+                // we check that the node exist before fetching the children
+                // And we check if there is already children (Because we are trying to reach a selected element, we know every node has at least one child)
+                if (node?.children && node.children.length === 0) {
+                    fetchDirectoryChildren(nodeId);
+                }
+            });
         }
     }, [open, expanded, fetchDirectoryChildren, selected, data]);
 

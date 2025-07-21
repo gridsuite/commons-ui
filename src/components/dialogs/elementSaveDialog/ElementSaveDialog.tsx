@@ -16,7 +16,13 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
-import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
+import {
+    ElementAttributes,
+    ElementType,
+    FieldConstants,
+    LAST_SELECTED_DIRECTORY,
+    MAX_CHAR_DESCRIPTION,
+} from '../../../utils';
 import { useSnackMessage } from '../../../hooks';
 import { fetchDirectoryElementPath } from '../../../services';
 
@@ -126,6 +132,7 @@ export function ElementSaveDialog({
     const { snackError } = useSnackMessage();
 
     // Directory/Item selector states
+    const [expanded, setExpanded] = useState<UUID[]>([]);
     const [directorySelectorOpen, setDirectorySelectorOpen] = useState(false);
     const [destinationFolder, setDestinationFolder] = useState<TreeViewFinderNodeProps>();
     const [selectedItem, setSelectedItem] = useState<
@@ -181,8 +188,12 @@ export function ElementSaveDialog({
 
     // Fetch study directory for creation if needed
     useEffect(() => {
-        if (open && isCreateMode && studyUuid) {
-            fetchDirectoryElementPath(studyUuid).then((res) => {
+        let directoryUuid = localStorage.getItem(LAST_SELECTED_DIRECTORY) as UUID;
+        if (!directoryUuid && studyUuid) {
+            directoryUuid = studyUuid;
+        }
+        if (open && isCreateMode && directoryUuid) {
+            fetchDirectoryElementPath(directoryUuid).then((res) => {
                 if (!res || res.length < 2) {
                     snackError({
                         messageTxt: 'unknown study directory',
@@ -196,6 +207,10 @@ export function ElementSaveDialog({
                     id: elementUuid,
                     name: elementName,
                 });
+                const path = res
+                    .filter((e) => (e.type !== ElementType.DIRECTORY ? e.elementUuid !== elementUuid : true))
+                    .map((e) => e.elementUuid);
+                setExpanded(path);
             });
         }
     }, [studyUuid, open, snackError, isCreateMode]);
@@ -363,6 +378,8 @@ export function ElementSaveDialog({
                 title={intl.formatMessage({
                     id: isCreateMode ? 'showSelectDirectoryDialog' : selectorTitleId,
                 })}
+                expanded={expanded}
+                selected={isCreateMode ? [destinationFolder?.id] : [selectedItem?.id]}
             />
         </CustomMuiDialog>
     );
