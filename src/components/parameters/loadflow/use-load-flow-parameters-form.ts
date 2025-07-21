@@ -39,7 +39,7 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
-import { DESCRIPTION_INPUT, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
@@ -84,6 +84,7 @@ export const useLoadFlowParametersForm = (
         specificParamsDescriptions,
         defaultLimitReductions,
     ] = parametersBackend;
+
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
@@ -281,7 +282,7 @@ export const useLoadFlowParametersForm = (
                     formatNewParams(formData),
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
-                    formData[DESCRIPTION_INPUT] ?? ''
+                    formData[DESCRIPTION] ?? ''
                 );
             }
         },

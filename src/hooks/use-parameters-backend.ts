@@ -13,8 +13,8 @@ import { User } from 'oidc-client';
 import { useSnackMessage } from './useSnackMessage';
 import { useDebounce } from './useDebounce';
 import { ComputingType, formatComputingTypeLabel } from '../components/parameters/common/computing-type';
-import { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
-import {
+import type { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
+import type {
     ParametersInfos,
     SpecificParametersInfos,
     UseParametersBackendReturnProps,
@@ -36,7 +36,7 @@ export const useParametersBackend = <T extends ComputingType>(
     backendFetchProviders: () => Promise<string[]>,
     backendFetchProvider: ((studyUuid: UUID) => Promise<string>) | null,
     backendFetchDefaultProvider: () => Promise<string>,
-    backendUpdateProvider: ((studyUuid: UUID, newProvider: string) => Promise<void>) | null,
+    backendUpdateProvider: ((studyUuid: UUID, newProvider: string) => Promise<any>) | null,
     backendFetchParameters: (studyUuid: UUID) => Promise<ParametersInfos<T>>,
     backendUpdateParameters?: (studyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>,
     backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersInfos>,

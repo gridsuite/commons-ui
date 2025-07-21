@@ -7,7 +7,6 @@
 
 export const parametersFr = {
     descLfVoltageInitMode: "Mode d'initialisation du plan de tension",
-    descLfTransformerVoltageControlOn: 'Simuler les régleurs en charge',
     descLfUseReactiveLimits: 'Prise en compte des limites de réactif des groupes',
     descLfPhaseShifterRegulationOn: 'Activer les régulations des transformateurs déphaseurs',
     descLfTwtSplitShuntAdmittance:
@@ -18,6 +17,7 @@ export const parametersFr = {
     descLfDcValues: 'DC',
     resetToDefault: 'Tout réinitialiser ',
     resetProviderValuesToDefault: 'Réinitialiser les paramètres du simulateur',
+    resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
     showAdvancedParameters: 'Paramètres avancés',
     showSpecificParameters: 'Paramètres spécifiques',
     save: 'Enregistrer',
@@ -166,4 +166,111 @@ export const parametersFr = {
     VariableGenerators: 'Groupes à puissance réactive variable',
     VariableTransformers: 'Transformateurs variables',
     VariableShuntCompensators: 'MCS variables',
+
+    'securityAnalysis.violationsHiding': 'Masquage des contraintes en N-k',
+    'securityAnalysis.current': 'Intensité',
+    'securityAnalysis.lowVoltage': 'Tension basse',
+    'securityAnalysis.highVoltage': 'Tension haute',
+    'securityAnalysis.toolTip.violationsHiding':
+        "Cette section permet de paramétrer le niveau d'aggravation à partir duquel les contraintes calculées en N réapparaissent en N-k.",
+    'securityAnalysis.toolTip.current':
+        "L'aggravation de contrainte en intensité est déterminée uniquement en pourcentage de la valeur calculée en N pour les ouvrages en contrainte. Par exemple, si l'aggravation en pourcentage correspond à 10 A alors la contrainte en N réapparaitra en N-k pour une augmentation d'intensité de plus de 10 A par rapport à la valeur calculée en N.",
+    'securityAnalysis.toolTip.lowVoltage':
+        "L'aggravation de contrainte en tension basse peut être calculée en pourcentage ou en définie en valeur absolue par rapport à la valeur calculée en N. La valeur prise en compte sera la plus conservative des deux. Par exemple, si l'aggravation en pourcentage correspond à 1 kV et celle renseignée en absolu est de 2 kV, alors la contrainte en tension basse réapparaitra en N-k pour une chute de tension de plus de 1 kV par rapport à la valeur calculée en N.",
+    'securityAnalysis.toolTip.highVoltage':
+        "L'aggravation de contrainte en tension haute peut être calculée en pourcentage ou en définie en valeur absolue par rapport à la valeur calculée en N. La valeur prise en compte sera la plus conservative des deux. Par exemple, si l'aggravation en pourcentage correspond à 1 kV et celle renseignée en absolu est de 2 kV, alors la contrainte en tension haute réapparaitra en N-k pour une élévation de tension de plus de 1 kV par rapport à la valeur calculée en N.",
+
+    SupervisedBranches: 'Quadripôles surveillés',
+    flowSensitivityValue: 'Valeur du seuil de sensibilité',
+    flowFlowSensitivityValueThreshold: 'ΔMW ou ΔA / MW',
+    angleFlowSensitivityValueThreshold: 'ΔMW ou ΔA / Δ°',
+    flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
+
+    ContingencyListsSelection: "Sélection des listes d'aléas",
+    Execute: 'Exécuter',
+    AddContingencyList: 'Ajouter',
+    DeleteContingencyList: 'Supprimer',
+    getContingencyListError: "Impossible de récupérer les listes d'aléas",
+    xContingenciesWillBeSimulated: '{x} aléas seront simulés',
+
+    resultsThreshold: 'Seuil minimal de sensibilité',
+    SensitivityBranches: 'Quadripôles',
+    SensitivityInjectionsSet: "Par rapport à un ensemble d'injections :",
+    SensitivityInjection: 'Par rapport à chaque injection :',
+    SensitivityHVDC: 'Par rapport à chaque HVDC :',
+    SensitivityPST: 'Par rapport à chaque TD :',
+    SensitivityNodes: 'Nœuds',
+    SensiInjectionsSet: 'Set injections',
+    SensiInjection: 'Injection',
+    SensiHVDC: 'Hvdc',
+    SensiPST: 'TD',
+    Proportional: 'Proportionnel',
+    ProportionalMaxP: 'Proportionnel à Pmax',
+    Regular: 'Équirépartition',
+    Ventilation: 'Ventilation',
+    DistributionType: 'Type de répartition',
+    SensitivityType: 'Type de sensibilité',
+    DeltaMW: '\u0394 MW',
+    DeltaA: '\u0394 A',
+    ContingencyLists: 'Aléas',
+    Injections: 'Injections',
+    MonitoredVoltageLevels: 'Postes surveillés',
+    EquipmentsInVoltageRegulation: 'Ouvrages en réglage tension',
+    PSTS: 'TDs',
+    Active: 'Actif',
+    'sensitivityAnalysis.simulatedComputations': '{count, plural, =0 {0 calcul} =1 {1 calcul} other {# calculs}}',
+    'sensitivityAnalysis.moreThanOneMillionComputations': '999 999+ calculs',
+    'sensitivityAnalysis.maximumSimulatedComputations': '500 000 max',
+    'sensitivityAnalysis.separator': '  |  ',
+    loadingComputing: 'Evaluation en cours...',
+
+    AddRows: 'Ajouter',
+    Optional: ' (optionnel)',
+
+    // Computed translations used in the snackbars
+    // LoadFlow
+    fetchDefaultLoadFlowProviderError:
+        'Une erreur est survenue lors de la récupération du fournisseur de calcul de répartition par défaut',
+    fetchLoadFlowParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres de calcul de répartition',
+    fetchLoadFlowProviderError:
+        'Une erreur est survenue lors de la récupération du fournisseur de calcul de répartition',
+    fetchLoadFlowProvidersError:
+        'Une erreur est survenue lors de la récupération des fournisseurs de calcul de répartition',
+    fetchLoadFlowSpecificParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres spécifiques de calcul de répartition',
+    updateLoadFlowParametersError:
+        'Une erreur est survenue lors de la mise à jour des paramètres de calcul de répartition',
+    updateLoadFlowProviderError:
+        'Une erreur est survenue lors de la mise à jour du fournisseur courant de calcul de répartition',
+    // SecurityAnalysis
+    fetchDefaultSecurityAnalysisProviderError:
+        "Une erreur est survenue lors de la récupération du fournisseur d'analyse de sécurité par défaut",
+    fetchSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sécurité",
+    fetchSecurityAnalysisProviderError:
+        "Une erreur est survenue lors de la récupération du fournisseur courant d'analyse de sécurité",
+    fetchSecurityAnalysisProvidersError:
+        "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
+    updateSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    updateSecurityAnalysisProviderError:
+        "Une erreur est survenue lors de la mise a jour du fournisseur courant d'analyse de sécurité",
+    // SensitivityAnalysis
+    fetchDefaultSensitivityAnalysisProviderError:
+        "Une erreur est survenue lors de la récupération du fournisseur d'analyse de sensibilité par défaut",
+    fetchSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sensibilité",
+    fetchSensitivityAnalysisProviderError:
+        "Une erreur est survenue lors de la récupération du fournisseur courant d'analyse de sensibilité",
+    fetchSensitivityAnalysisProvidersError:
+        "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sensibilité",
+    updateSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sensibilité",
+    updateSensitivityAnalysisProviderError:
+        "Une erreur est survenue lors de la mise a jour du fournisseur courant d'analyse de sensibilité",
+    getSensitivityAnalysisFactorsCountError: "Une erreur est survenue lors de l'estimation du nombre de calculs",
+    // Other
+    resetLoadFlowParametersWarning:
+        'Impossible de récupérer les paramètres de calcul de répartition définis dans le profil utilisateur (les valeurs par défaut sont appliquées)',
 };

@@ -16,6 +16,7 @@ import {
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
 } from '../constant';
+import { getNameElementEditorSchema } from '../name-element-editor';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
@@ -67,14 +68,14 @@ export const TAB_INFO = [
     { label: TabValues[TabValues.LimitReductions], developerModeOnly: false },
 ];
 
-export interface IColumnsDef {
+export interface LimitReductionIColumnsDef {
     label: string;
     dataKey: string;
     tooltip: string;
     width?: string;
 }
 
-export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: IColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: LimitReductionIColumnsDef[] = [
     {
         label: 'voltageRange',
         dataKey: VOLTAGE_LEVELS_FORM,
@@ -118,7 +119,7 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
         .required();
 };
 
-export const getSAParametersFromSchema = (limitReductions?: ILimitReductionsByVoltageLevel[]) => {
+export const getSAParametersFromSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
         [PARAM_SA_PROVIDER]: yup.string().required(),
     });
@@ -147,9 +148,12 @@ export const getSAParametersFromSchema = (limitReductions?: ILimitReductionsByVo
         [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
     });
 
-    return yup.object().shape({
-        ...providerSchema.fields,
-        ...limitReductionsSchema.fields,
-        ...thresholdsSchema.fields,
-    });
+    return yup
+        .object()
+        .shape({
+            ...providerSchema.fields,
+            ...limitReductionsSchema.fields,
+            ...thresholdsSchema.fields,
+        })
+        .concat(getNameElementEditorSchema(name));
 };

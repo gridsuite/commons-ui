@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import yup from '../../../../utils/yupConfig';
-import { DESCRIPTION_INPUT, NAME } from '../../../inputs';
+import { DESCRIPTION, NAME } from '../../../inputs';
 
 export function getNameElementEditorEmptyFormData(
     initialElementName: string | null,
@@ -13,17 +13,20 @@ export function getNameElementEditorEmptyFormData(
 ) {
     return {
         [NAME]: initialElementName,
-        [DESCRIPTION_INPUT]: initialElementdescripton,
+        [DESCRIPTION]: initialElementdescripton,
     };
 }
 
 export function getNameElementEditorSchema(initialElementName: string | null) {
     return yup.object().shape({
-        [NAME]: yup.string().when('nameRequiredWhenInitialNameIsSet', {
-            is: () => initialElementName !== null,
-            then: () => yup.string().required(),
-            otherwise: () => yup.string(),
-        }),
-        [DESCRIPTION_INPUT]: yup.string(),
+        [NAME]: yup
+            .string()
+            .nullable()
+            .when('nameRequiredWhenInitialNameIsSet', {
+                is: () => initialElementName !== null,
+                then: () => yup.string().required(),
+                otherwise: () => yup.string(),
+            }),
+        [DESCRIPTION]: yup.string().nullable(),
     });
 }

@@ -7,7 +7,8 @@
 
 import { UUID } from 'crypto';
 import { Grid } from '@mui/material';
-import { DescriptionField, UniqueNameInput } from '../../../inputs';
+import { DescriptionField } from '../../../inputs/reactHookForm/text/DescriptionField';
+import { UniqueNameInput } from '../../../inputs/reactHookForm/text/UniqueNameInput';
 import { ElementType, FieldConstants } from '../../../../utils';
 import { filterStyles } from '../../../filter/HeaderFilterForm';
 
@@ -23,7 +24,7 @@ export function NameElementEditorForm({
     elementType,
 }: Readonly<NameElementEditorFormProps>) {
     return (
-        <Grid item sx={{ height: '100%' }}>
+        <Grid item>
             <Grid container spacing={2} direction="column" marginBottom="8px">
                 <Grid item>
                     <UniqueNameInput

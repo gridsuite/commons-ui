@@ -7,4 +7,5 @@
 
 export const tableEn = {
     'MuiVirtualizedTable/exportCSV': 'Download CSV',
+    'export/undefined': 'Undefined',
 };

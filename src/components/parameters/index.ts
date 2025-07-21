@@ -7,7 +7,8 @@
 
 export * from './common';
 export * from './network-visualizations';
-export * from './parameters-style';
 export * from './loadflow';
 export * from './short-circuit';
 export * from './voltage-init';
+export * from './security-analysis';
+export * from './sensi';
