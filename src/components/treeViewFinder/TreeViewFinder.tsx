@@ -285,7 +285,10 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             return;
         }
         if (selectedProp.length > 0) {
-            setSelected((oldSelectedNodes) => [...(oldSelectedNodes ?? []), ...selectedProp]);
+            setSelected((oldSelectedNodes) => {
+                const prev = oldSelectedNodes ?? [];
+                return Array.from(new Set([...prev, ...selectedProp]));
+            });
         }
     }, [selectedProp]);
 
