@@ -449,11 +449,10 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             }}
             aria-labelledby="TreeViewFindertitle"
             className={className}
-            classes={{
-                paper: composeClasses(classes, cssDialogPaper),
-            }}
+            classes={{ paper: composeClasses(classes, cssDialogPaper) }}
+            data-testid="Dialog"
         >
-            <DialogTitle id="TreeViewFindertitle">
+            <DialogTitle id="TreeViewFindertitle" data-testid="DialogTitle">
                 {title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect })}
             </DialogTitle>
             <DialogContent>
@@ -490,6 +489,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                         setAutoScrollAllowed(true);
                     }}
                     disabled={isValidationDisabled()}
+                    data-testid="SubmitButton"
                 >
                     {getValidationButtonText()}
                 </Button>
