@@ -107,11 +107,9 @@ export const RATIO_REGULATION_MODE_OPTIONS = [
 export const PHASE_REGULATION_MODE_OPTIONS = [
     { name: 'CURRENT_LIMITER', label: 'CurrentLimiter' },
     { name: 'ACTIVE_POWER_CONTROL', label: 'ActivePowerControl' },
-    { name: 'FIXED_TAP', label: 'FixedTap' },
 ];
 
 export const SVAR_REGULATION_MODE_OPTIONS = [
-    { name: 'OFF', label: 'regulationMode.off' },
     { name: 'VOLTAGE', label: 'regulationMode.voltage' },
     { name: 'REACTIVE_POWER', label: 'regulationMode.reactivePower' },
 ];
