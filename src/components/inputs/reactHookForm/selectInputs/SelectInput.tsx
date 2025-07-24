@@ -6,8 +6,8 @@
  */
 
 import { useIntl } from 'react-intl';
-import { AutocompleteInput, AutocompleteInputProps } from '../autocompleteInputs/AutocompleteInput';
-import { Option } from '../../../../utils/types/types';
+import { AutocompleteInput, AutocompleteInputProps } from '../autocompleteInputs';
+import { Option } from '../../../../utils';
 
 export interface SelectInputProps
     extends Omit<
@@ -15,6 +15,7 @@ export interface SelectInputProps
         'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
     > {
     options: Option[];
+    onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
 }
 
 export function SelectInput(props: SelectInputProps) {
