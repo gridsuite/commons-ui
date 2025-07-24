@@ -10,6 +10,7 @@ import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils
 import { ElementAttributes } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
+const PREFIX_CONFIG_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/config`;
 
 export function fetchRootFolders(types: string[]): Promise<ElementAttributes[]> {
     console.info('Fetching Root Directories');
@@ -48,6 +49,13 @@ export function fetchDirectoryElementPath(elementUuid: UUID): Promise<ElementAtt
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
     });
+}
+
+export function updateConfigParameter(name: string, value: string) {
+    const appName = 'common';
+    console.info("Updating config parameter '%s=%s' for app '%s' ", name, value, appName);
+    const updateParams = `${PREFIX_CONFIG_QUERIES}/v1/applications/${appName}/parameters/${name}?value=${encodeURIComponent(value)}`;
+    return backendFetch(updateParams, { method: 'put' });
 }
 
 export function elementAlreadyExists(directoryUuid: UUID, elementName: string, type: string) {

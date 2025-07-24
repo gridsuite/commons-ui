@@ -16,7 +16,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { ElementType } from '../../../utils/types/elementType';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ElementAttributes } from '../../../utils';
+import { ElementAttributes, LAST_SELECTED_DIRECTORY } from '../../../utils';
 
 export interface ModifyElementSelectionProps {
     elementType: ElementType;
@@ -39,6 +39,7 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
     } = props;
     const [open, setOpen] = useState<boolean>(false);
     const [activeDirectoryName, setActiveDirectoryName] = useState('');
+    const [expanded, setExpanded] = useState<UUID[]>([]);
 
     const {
         field: { onChange, value: directory },
@@ -47,9 +48,20 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
     });
 
     useEffect(() => {
+        const lastSelected = localStorage.getItem(LAST_SELECTED_DIRECTORY);
+        if (lastSelected) {
+            onChange(lastSelected);
+        }
+    }, []);
+
+    useEffect(() => {
         if (directory) {
             fetchDirectoryElementPath(directory).then((res: ElementAttributes[]) => {
                 setActiveDirectoryName(res.map((element: ElementAttributes) => element.elementName.trim()).join('/'));
+                const path = res
+                    .filter((e) => (e.type !== ElementType.DIRECTORY ? e.elementUuid !== directory : true))
+                    .map((e) => e.elementUuid);
+                setExpanded(path);
             });
         }
     }, [directory]);
@@ -109,6 +121,8 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
                 contentText={intl.formatMessage({
                     id: dialogMessageLabel,
                 })}
+                expanded={expanded}
+                selected={directory ? [directory] : []}
             />
         </Grid>
     );

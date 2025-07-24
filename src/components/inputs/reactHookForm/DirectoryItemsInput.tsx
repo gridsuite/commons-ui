@@ -7,7 +7,7 @@
 
 import { Chip, FormControl, Grid, IconButton, Theme, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { UUID } from 'crypto';
@@ -23,7 +23,7 @@ import { OverflowableText } from '../../overflowableText';
 import { MidFormError } from './errorManagement/MidFormError';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ElementAttributes } from '../../../utils';
+import { ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../../utils';
 import { NAME } from './constants';
 
 const styles = {
@@ -169,6 +169,18 @@ export function DirectoryItemsInput({
     const shouldReplaceElement = useMemo(() => {
         return allowMultiSelect === false && elements?.length === 1;
     }, [allowMultiSelect, elements]);
+
+    useEffect(() => {
+        const lastSelectedDirectory = localStorage.getItem(LAST_SELECTED_DIRECTORY) as UUID;
+        if (directoryItemSelectorOpen && lastSelectedDirectory) {
+            fetchDirectoryElementPath(lastSelectedDirectory).then((response: ElementAttributes[]) => {
+                const path = response
+                    .filter((e) => (e.type !== ElementType.DIRECTORY ? e.elementUuid !== lastSelectedDirectory : true))
+                    .map((e) => e.elementUuid);
+                setExpanded(path);
+            });
+        }
+    }, [directoryItemSelectorOpen]);
 
     return (
         <>
