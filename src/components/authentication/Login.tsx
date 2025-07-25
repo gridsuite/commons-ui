@@ -45,7 +45,14 @@ export function Login({ onLoginClick, disabled }: LoginProps) {
                     <FormattedMessage id="login/login" defaultMessage="login" /> ?
                 </Typography>
 
-                <Button disabled={disabled} fullWidth variant="contained" sx={styles.submit} onClick={onLoginClick}>
+                <Button
+                    data-testid="LoginButton"
+                    disabled={disabled}
+                    fullWidth
+                    variant="contained"
+                    sx={styles.submit}
+                    onClick={onLoginClick}
+                >
                     <FormattedMessage id="login/connection" defaultMessage="connection" />
                 </Button>
             </Box>

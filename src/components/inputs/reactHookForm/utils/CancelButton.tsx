@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 export function CancelButton(inProps: Readonly<Omit<ButtonProps, 'children'>>) {
     const props = useThemeProps({ props: inProps, name: 'CancelButton' });
     return (
-        <Button {...props}>
+        <Button data-testid="CancelButton" {...props}>
             <FormattedMessage id="cancel" />
         </Button>
     );
