@@ -6,9 +6,8 @@
  */
 
 import { UUID } from 'crypto';
-import { ElementAttributes, ElementType, fetchDirectoryElementPath } from '@gridsuite/commons-ui';
-import { LAST_SELECTED_DIRECTORY } from '../../utils';
-import { updateConfigParameter } from '../../services';
+import { ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../utils';
+import { fetchDirectoryElementPath, updateConfigParameter } from '../../services';
 
 /**
  * Gets the last selected directory ID from localStorage with proper null handling
