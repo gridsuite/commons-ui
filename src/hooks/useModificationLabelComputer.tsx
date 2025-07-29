@@ -81,6 +81,7 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.DELETE_ATTACHING_LINE.type:
                     return `${modificationMetadata.attachedLineId}/${modificationMetadata.lineToAttachTo1Id}/${modificationMetadata.lineToAttachTo2Id}`;
                 case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
+                case MODIFICATION_TYPES.LIMIT_SETS_TABULAR_MODIFICATION.type:
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularModificationType}`,
                     });
