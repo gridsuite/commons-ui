@@ -28,7 +28,7 @@ export const PARAM_CENTER_LABEL = 'centerLabel';
 export const PARAM_COMPONENT_LIBRARY = 'componentLibrary';
 export const PARAM_DIAGONAL_LABEL = 'diagonalLabel';
 export const PARAM_SUBSTATION_LAYOUT = 'substationLayout';
-export const PARAM_INIT_NAD_WITH_GEO_DATA = 'initNadWithGeoData';
+export const PARAM_NAD_GENERATION_MODE = 'nadGenerationMode';
 
 export enum NetworkVisualizationTabValues {
     MAP = 'mapParameters',
@@ -87,5 +87,16 @@ export const INTL_SUBSTATION_LAYOUT_OPTIONS = [
     {
         id: SubstationLayout.VERTICAL,
         label: 'VerticalSubstationLayout',
+    },
+];
+
+export const NAD_GENERATION_MODE_OPTIONS = [
+    {
+        id: 'GEOGRAPHICAL_COORDINATES',
+        label: 'GeoDATA',
+    },
+    {
+        id: 'PROVIDED_POSITIONS',
+        label: 'ProvidedPositions',
     },
 ];

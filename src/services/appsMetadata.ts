@@ -58,6 +58,15 @@ export async function fetchFavoriteAndDefaultCountries(): Promise<{
     };
 }
 
+export async function fetchNadGenerationMode(): Promise<{
+    nadGenerationMode: string;
+}> {
+    const { nadGenerationMode } = await fetchStudyMetadata();
+    return {
+        nadGenerationMode
+    };
+}
+
 export const fetchDefaultCountry = async (): Promise<string | undefined> => {
     const studyMetadata = await fetchStudyMetadata();
     return studyMetadata.defaultCountry;

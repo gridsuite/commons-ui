@@ -6,15 +6,29 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useMemo } from 'react';
 import {
     INIT_NAD_WITH_GEO_DATA,
+    NAD_GENERATION_MODE_OPTIONS,
     NetworkVisualizationTabValues as TabValues,
-    PARAM_INIT_NAD_WITH_GEO_DATA,
+    PARAM_NAD_GENERATION_MODE,
 } from './constants';
 import { parametersStyles } from '../parameters-style';
-import { SwitchInput } from '../../inputs';
+import { MuiSelectInput } from '../../inputs';
+import {useNadeGenerationMode} from "../../../hooks/useNadGenerationMode";
 
 export function NetworkAreaDiagramParameters() {
+    const { nadGenerationMode } = useNadeGenerationMode();
+    // the translation of values
+    const nadGenerationModeOptions = useMemo(() => {
+        return [
+            ...NAD_GENERATION_MODE_OPTIONS,
+            {
+                id: nadGenerationMode,
+                label: nadGenerationMode,
+            },
+        ]
+    }, [nadGenerationMode]);
     return (
         <Grid
             container
@@ -28,7 +42,12 @@ export function NetworkAreaDiagramParameters() {
                 <FormattedMessage id={INIT_NAD_WITH_GEO_DATA} />
             </Grid>
             <Grid item container xs={4} sx={parametersStyles.controlItem}>
-                <SwitchInput name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_INIT_NAD_WITH_GEO_DATA}`} />
+                <MuiSelectInput
+                    fullWidth
+                    name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_GENERATION_MODE}`}
+                    size="small"
+                    options={Object.values(nadGenerationModeOptions)?.map((option) => option)}
+                />
             </Grid>
         </Grid>
     );

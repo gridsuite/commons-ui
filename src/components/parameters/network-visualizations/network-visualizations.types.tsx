@@ -40,7 +40,7 @@ type SingleLineDiagramParameters = {
 };
 
 type NetworkAreaDiagramParameters = {
-    initNadWithGeoData: boolean;
+    nadGenerationMode: string;
 };
 
 export type NetworkVisualizationParameters = {

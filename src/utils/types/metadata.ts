@@ -28,6 +28,7 @@ export type StudyMetadata = Metadata & {
         enableDeveloperMode?: boolean;
     };
     defaultCountry?: string;
+    nadGenerationMode: string;
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
 };
