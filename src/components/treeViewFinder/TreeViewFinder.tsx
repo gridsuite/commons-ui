@@ -28,7 +28,8 @@ import {
 import { UUID } from 'crypto';
 import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
-import { ElementType } from '../../utils';
+import { ElementType, LAST_SELECTED_DIRECTORY } from '../../utils';
+import { updateConfigParameter } from '../../services';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -249,6 +250,12 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 }
 
                 const parents = findParents(itemId, data ?? []);
+                updateConfigParameter(
+                    LAST_SELECTED_DIRECTORY,
+                    selectedNode.type === ElementType.DIRECTORY || selectedNode.type === undefined
+                        ? selectedNode.id
+                        : (parents?.[parents.length - 1]?.id ?? '')
+                );
 
                 return {
                     ...selectedNode,
