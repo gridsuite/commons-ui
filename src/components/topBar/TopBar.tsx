@@ -295,6 +295,7 @@ export function TopBar({
                             aria-haspopup="true"
                             onClick={handleClickAppsMenu}
                             color="inherit"
+                            data-testid="AppsMenu"
                         >
                             <AppsIcon />
                         </IconButton>
@@ -351,6 +352,7 @@ export function TopBar({
                             onClick={handleToggleSettingsMenu}
                             color="inherit"
                             style={anchorElSettingsMenu ? { cursor: 'initial' } : { cursor: 'pointer' }}
+                            data-testid="SettingsMenu"
                         >
                             <Box component="span" sx={styles.name}>
                                 {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
