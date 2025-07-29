@@ -15,20 +15,21 @@ import {
 } from './constants';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
-import {useNadeGenerationMode} from "../../../hooks/useNadGenerationMode";
+import { useNadeGenerationMode } from '../../../hooks/useNadGenerationMode';
 
 export function NetworkAreaDiagramParameters() {
-    const { nadGenerationMode } = useNadeGenerationMode();
+    const { nadMode } = useNadeGenerationMode();
     // the translation of values
     const nadGenerationModeOptions = useMemo(() => {
         return [
             ...NAD_GENERATION_MODE_OPTIONS,
             {
-                id: nadGenerationMode,
-                label: nadGenerationMode,
+                id: nadMode,
+                label: nadMode,
             },
-        ]
-    }, [nadGenerationMode]);
+        ];
+    }, [nadMode]);
+
     return (
         <Grid
             container

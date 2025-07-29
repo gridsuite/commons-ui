@@ -63,7 +63,7 @@ export async function fetchNadGenerationMode(): Promise<{
 }> {
     const { nadGenerationMode } = await fetchStudyMetadata();
     return {
-        nadGenerationMode
+        nadGenerationMode,
     };
 }
 

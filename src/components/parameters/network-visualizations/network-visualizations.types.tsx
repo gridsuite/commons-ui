@@ -41,6 +41,7 @@ type SingleLineDiagramParameters = {
 
 type NetworkAreaDiagramParameters = {
     nadGenerationMode: string;
+    nadConfigUuid: UUID | null;
 };
 
 export type NetworkVisualizationParameters = {
