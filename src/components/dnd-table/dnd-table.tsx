@@ -200,6 +200,7 @@ interface DndTableProps {
     uploadButtonMessageId?: string;
     handleResetButton?: () => void;
     resetButtonMessageId?: string;
+    maxRows?: number;
 }
 
 export function DndTable(props: Readonly<DndTableProps>) {
@@ -224,6 +225,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
         uploadButtonMessageId = undefined,
         handleResetButton = undefined,
         resetButtonMessageId = undefined,
+        maxRows = MAX_ROWS_NUMBER,
     } = props;
     const intl = useIntl();
 
@@ -260,7 +262,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
 
     const addNewRows = (numberOfRows: number) => {
         // checking if not exceeding 100 steps
-        if (currentRows.length + numberOfRows > MAX_ROWS_NUMBER) {
+        if (currentRows.length + numberOfRows > maxRows) {
             setError(arrayFormName, {
                 type: 'custom',
                 message: intl.formatMessage(
@@ -268,7 +270,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         id: 'MaximumRowNumberError',
                     },
                     {
-                        value: MAX_ROWS_NUMBER,
+                        value: maxRows,
                     }
                 ),
             });
