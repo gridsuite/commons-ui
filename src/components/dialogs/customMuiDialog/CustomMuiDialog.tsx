@@ -162,7 +162,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
                 {...dialogProps}
             >
                 {isDataFetching && <LinearProgress />}
-                <DialogTitle>
+                <DialogTitle data-testid="DialogTitle">
                     <Grid item xs={11}>
                         <FormattedMessage id={titleId} />
                     </Grid>
@@ -171,11 +171,12 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
                     {children}
                 </DialogContent>
                 <DialogActions>
-                    <CancelButton onClick={handleCancel} />
+                    <CancelButton onClick={handleCancel} data-testid="CancelButton" />
                     <SubmitButton
                         variant="outlined"
                         disabled={disabledSave}
                         onClick={handleSubmit(handleValidate, handleValidationError)}
+                        data-testid="ValidateButton"
                     />
                 </DialogActions>
             </Dialog>

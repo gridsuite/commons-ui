@@ -64,6 +64,7 @@ export const networkModificationsEn = {
     'network_modifications.tabular.BATTERY_CREATION': 'batteries',
     'network_modifications.tabular.LOAD_CREATION': 'loads',
     'network_modifications.tabular.SHUNT_COMPENSATOR_CREATION': 'linear shunt compensators',
+    'network_modifications.LIMIT_SETS_TABULAR_MODIFICATION': 'Limit sets tabular modification ({computedLabel})',
     'network_modifications.LCC_CREATION': 'Creating HVDC (LCC) {computedLabel}',
     'network_modifications.LCC_MODIFICATION': 'Modifying HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Creating static var compensator {computedLabel}',
@@ -72,4 +73,5 @@ export const networkModificationsEn = {
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION': 'Modifying voltage level topology {computedLabel}',
     'network_modifications.CREATE_COUPLING_DEVICE': 'Creating a coupling device in voltage level {computedLabel}',
     'network_modifications.BALANCES_ADJUSTMENT_MODIFICATION': 'Balances adjustment modification',
+    'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': 'Creating a bus bar in voltage level {computedLabel}',
 };
