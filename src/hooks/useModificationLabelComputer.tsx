@@ -97,6 +97,7 @@ export const useModificationLabelComputer = () => {
                         id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
                     });
                 case MODIFICATION_TYPES.CREATE_COUPLING_DEVICE.type:
+                case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_TOPOLOGY.type:
                     return modificationMetadata.voltageLevelId;
                 default:
                     return modificationMetadata.equipmentId || '';
