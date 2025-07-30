@@ -128,7 +128,6 @@ export const useNetworkVisualizationParametersForm = ({
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
             if (studyUuid) {
-                console.info(' formData to save: ', formData);
                 setStudyNetworkVisualizationParameters(studyUuid, formData).catch((error) => {
                     snackError({
                         messageTxt: error.message,
@@ -186,7 +185,6 @@ export const useNetworkVisualizationParametersForm = ({
     // GridStudy init case
     useEffect(() => {
         if (parameters) {
-            console.info(' parameters: ', parameters);
             reset(parameters);
         }
     }, [parameters, reset]);
