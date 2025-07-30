@@ -58,12 +58,12 @@ export async function fetchFavoriteAndDefaultCountries(): Promise<{
     };
 }
 
-export async function fetchNadGenerationMode(): Promise<{
-    nadGenerationMode: string;
+export async function fetchNadPositionsGenerationMode(): Promise<{
+    enableProvidedNadPositionsGenerationMode: boolean;
 }> {
-    const { nadGenerationMode } = await fetchStudyMetadata();
+    const { enableProvidedNadPositionsGenerationMode } = await fetchStudyMetadata();
     return {
-        nadGenerationMode,
+        enableProvidedNadPositionsGenerationMode,
     };
 }
 

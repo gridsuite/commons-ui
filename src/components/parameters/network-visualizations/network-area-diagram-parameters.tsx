@@ -6,29 +6,30 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import {
-    INIT_NAD_WITH_GEO_DATA,
-    NAD_GENERATION_MODE_OPTIONS,
+    NAD_POSITIONS_GENERATION_MODE_LABEL,
+    NAD_POSITIONS_GENERATION_MODE,
     NetworkVisualizationTabValues as TabValues,
-    PARAM_NAD_GENERATION_MODE,
+    PARAM_NAD_POSITIONS_GENERATION_MODE,
 } from './constants';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
-import { useNadeGenerationMode } from '../../../hooks/useNadGenerationMode';
+import { fetchNadPositionsGenerationMode } from '../../../services';
 
 export function NetworkAreaDiagramParameters() {
-    const { nadMode } = useNadeGenerationMode();
+    const [isNadPositionsProvided, setIsNadPositionsProvided] = useState<boolean>(false);
+
+    useEffect(() => {
+        fetchNadPositionsGenerationMode().then(({ enableProvidedNadPositionsGenerationMode }) => {
+            setIsNadPositionsProvided(enableProvidedNadPositionsGenerationMode);
+        });
+    }, []);
+
     // the translation of values
-    const nadGenerationModeOptions = useMemo(() => {
-        return [
-            ...NAD_GENERATION_MODE_OPTIONS,
-            {
-                id: nadMode,
-                label: nadMode,
-            },
-        ];
-    }, [nadMode]);
+    const nadPositionsGenerationMode = NAD_POSITIONS_GENERATION_MODE.filter(
+        (option) => !(isNadPositionsProvided && option.id === 'PROVIDED')
+    );
 
     return (
         <Grid
@@ -40,14 +41,14 @@ export function NetworkAreaDiagramParameters() {
             justifyContent="space-between"
         >
             <Grid item xs={8} sx={parametersStyles.parameterName}>
-                <FormattedMessage id={INIT_NAD_WITH_GEO_DATA} />
+                <FormattedMessage id={NAD_POSITIONS_GENERATION_MODE_LABEL} />
             </Grid>
             <Grid item container xs={4} sx={parametersStyles.controlItem}>
                 <MuiSelectInput
                     fullWidth
-                    name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_GENERATION_MODE}`}
+                    name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_POSITIONS_GENERATION_MODE}`}
                     size="small"
-                    options={Object.values(nadGenerationModeOptions)?.map((option) => option)}
+                    options={Object.values(nadPositionsGenerationMode)?.map((option) => option)}
                 />
             </Grid>
         </Grid>

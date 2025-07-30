@@ -28,7 +28,7 @@ export const PARAM_CENTER_LABEL = 'centerLabel';
 export const PARAM_COMPONENT_LIBRARY = 'componentLibrary';
 export const PARAM_DIAGONAL_LABEL = 'diagonalLabel';
 export const PARAM_SUBSTATION_LAYOUT = 'substationLayout';
-export const PARAM_NAD_GENERATION_MODE = 'nadGenerationMode';
+export const PARAM_NAD_POSITIONS_GENERATION_MODE = 'nadPositionsGenerationMode';
 
 export enum NetworkVisualizationTabValues {
     MAP = 'mapParameters',
@@ -43,7 +43,7 @@ export const DIAGONAL_LABEL = 'diagonalLabel';
 export const CENTER_LABEL = 'centerLabel';
 export const SUBSTATION_LAYOUT = 'SubstationLayout';
 export const COMPONENT_LIBRARY = 'ComponentLibrary';
-export const INIT_NAD_WITH_GEO_DATA = 'initNadWithGeoData';
+export const NAD_POSITIONS_GENERATION_MODE_LABEL = 'nadPositionsGenerationModeLabel';
 
 export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {
@@ -90,13 +90,17 @@ export const INTL_SUBSTATION_LAYOUT_OPTIONS = [
     },
 ];
 
-export const NAD_GENERATION_MODE_OPTIONS = [
+export const NAD_POSITIONS_GENERATION_MODE = [
     {
         id: 'GEOGRAPHICAL_COORDINATES',
         label: 'GeoDATA',
     },
     {
-        id: 'PROVIDED_POSITIONS',
+        id: 'AUTOMATIC',
+        label: 'Automatic',
+    },
+    {
+        id: 'PROVIDED',
         label: 'ProvidedPositions',
     },
 ];
