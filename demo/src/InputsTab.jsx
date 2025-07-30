@@ -10,19 +10,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
 import { useState } from 'react';
-import AutocompleteInput from '../../src/components/inputs/react-hook-form/autocomplete-inputs/autocomplete-input';
-import TextInput from '../../src/components/inputs/react-hook-form/text-input';
-import RadioInput from '../../src/components/inputs/react-hook-form/radio-input';
-import SliderInput from '../../src/components/inputs/react-hook-form/slider-input';
-import FloatInput from '../../src/components/inputs/react-hook-form/numbers/float-input';
-import IntegerInput from '../../src/components/inputs/react-hook-form/numbers/integer-input';
-import SelectInput from '../../src/components/inputs/react-hook-form/select-inputs/select-input';
-import CheckboxInput from '../../src/components/inputs/react-hook-form/booleans/checkbox-input';
-import SwitchInput from '../../src/components/inputs/react-hook-form/booleans/switch-input';
-import SubmitButton from '../../src/components/inputs/react-hook-form/utils/submit-button';
-import ExpandingTextField from '../../src/components/inputs/react-hook-form/ExpandingTextField';
-import CustomFormProvider from '../../src/components/inputs/react-hook-form/provider/custom-form-provider';
-import SelectClearable from '../../src/components/inputs/select-clearable';
+import {
+    AutocompleteInput,
+    TextInput,
+    RadioInput,
+    SliderInput,
+    FloatInput,
+    IntegerInput,
+    SelectInput,
+    CheckboxInput,
+    SwitchInput,
+    SubmitButton,
+    ExpandingTextField,
+    CustomFormProvider,
+    SelectClearable,
+} from '../../src';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
 const TEXT_INPUT = 'text';
@@ -68,12 +70,7 @@ const options = [
     { id: 'ibra', label: 'inputs/ibra' },
 ];
 
-const basicOptions = [
-    'Kylian Mbappe',
-    'Neymar',
-    'Lionel Messi',
-    'Zlatan Ibrahimovic',
-];
+const basicOptions = ['Kylian Mbappe', 'Neymar', 'Lionel Messi', 'Zlatan Ibrahimovic'];
 
 const gridSize = 4;
 
@@ -141,20 +138,10 @@ function InputsTab() {
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SliderInput
-                            name={SLIDER_INPUT}
-                            label="inputs/slider"
-                            min={0.0}
-                            max={100.0}
-                            step={0.1}
-                        />
+                        <SliderInput name={SLIDER_INPUT} label="inputs/slider" min={0.0} max={100.0} step={0.1} />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SelectInput
-                            name={SELECT_INPUT}
-                            label="inputs/select"
-                            options={options}
-                        />
+                        <SelectInput name={SELECT_INPUT} label="inputs/select" options={options} />
                     </Grid>
                     <Grid item xs={gridSize}>
                         <SelectClearable
@@ -165,32 +152,19 @@ function InputsTab() {
                         />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <RadioInput
-                            name={RADIO_INPUT}
-                            label="inputs/radio"
-                            options={options}
-                        />
+                        <RadioInput name={RADIO_INPUT} label="inputs/radio" options={options} />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <IntegerInput
-                            name={INTEGER_INPUT}
-                            label="inputs/integer"
-                        />
+                        <IntegerInput name={INTEGER_INPUT} label="inputs/integer" />
                     </Grid>
                     <Grid item xs={gridSize}>
                         <FloatInput name={FLOAT_INPUT} label="inputs/float" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <CheckboxInput
-                            name={CHECKBOX_INPUT}
-                            label="inputs/checkbox"
-                        />
+                        <CheckboxInput name={CHECKBOX_INPUT} label="inputs/checkbox" />
                     </Grid>
                     <Grid item xs={gridSize}>
-                        <SwitchInput
-                            name={SWITCH_INPUT}
-                            label="inputs/switch"
-                        />
+                        <SwitchInput name={SWITCH_INPUT} label="inputs/switch" />
                     </Grid>
                 </Grid>
                 <Box

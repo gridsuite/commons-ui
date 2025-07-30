@@ -11,6 +11,7 @@ import { useIntl } from 'react-intl';
 import {
     ElementSearchDialog,
     EquipmentItem,
+    EquipmentItemProps,
     equipmentStyles,
     EquipmentType,
     useElementSearch,
@@ -49,10 +50,9 @@ const searchEquipmentPromise = () => {
 export function EquipmentSearchDialog() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    const { elementsFound, isLoading, searchTerm, updateSearchTerm } =
-        useElementSearch({
-            fetchElements: searchEquipmentPromise,
-        });
+    const { elementsFound, isLoading, searchTerm, updateSearchTerm } = useElementSearch({
+        fetchElements: searchEquipmentPromise,
+    });
 
     const intl = useIntl();
 
@@ -63,23 +63,17 @@ export function EquipmentSearchDialog() {
                 open={isSearchOpen}
                 onClose={() => setIsSearchOpen(false)}
                 onSearchTermChange={updateSearchTerm}
-                onSelectionChange={(element: any) => {
+                onSelectionChange={(element: unknown) => {
                     console.log(element);
                 }}
                 elementsFound={elementsFound}
-                renderElement={(props: any) => (
-                    <EquipmentItem
-                        styles={equipmentStyles}
-                        {...props}
-                        key={props.element.key}
-                    />
+                renderElement={(props: EquipmentItemProps) => (
+                    <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
                 )}
                 searchTerm={searchTerm}
                 loading={isLoading}
                 getOptionLabel={(option) => option.label}
-                isOptionEqualToValue={(option1, option2) =>
-                    option1.id === option2.id
-                }
+                isOptionEqualToValue={(option1, option2) => option1.id === option2.id}
                 renderInput={(displayedValue, params) => (
                     <TextField
                         autoFocus

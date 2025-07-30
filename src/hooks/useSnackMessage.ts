@@ -6,19 +6,14 @@
  */
 
 import { MutableRefObject, useCallback } from 'react';
-import {
-    BaseVariant,
-    OptionsObject,
-    closeSnackbar as closeSnackbarFromNotistack,
-    useSnackbar,
-} from 'notistack';
+import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
-import useIntlRef from './useIntlRef';
+import { useIntlRef } from './useIntlRef';
 
 interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
-    messageValues?: { [key: string]: string };
+    messageValues?: Record<string, string>;
     headerTxt?: string;
     headerId?: string;
     headerValues?: Record<string, string>;
@@ -31,7 +26,7 @@ export interface UseSnackMessageReturn {
     closeSnackbar: typeof closeSnackbarFromNotistack;
 }
 
-function checkInputs(txt?: string, id?: string, values?: any) {
+function checkInputs(txt?: string, id?: string, values?: SnackInputs['messageValues']) {
     if (txt && (id || values)) {
         console.warn('Snack inputs should be [*Txt] OR [*Id, *Values]');
     }
@@ -41,7 +36,7 @@ function checkAndTranslateIfNecessary(
     intlRef: MutableRefObject<IntlShape>,
     txt?: string,
     id?: string,
-    values?: any
+    values?: SnackInputs['messageValues']
 ) {
     checkInputs(txt, id, values);
     return (
@@ -57,10 +52,7 @@ function checkAndTranslateIfNecessary(
     );
 }
 
-function makeMessage(
-    intlRef: MutableRefObject<IntlShape>,
-    snackInputs: SnackInputs
-): string | null {
+function makeMessage(intlRef: MutableRefObject<IntlShape>, snackInputs: SnackInputs): string | null {
     const message = checkAndTranslateIfNecessary(
         intlRef,
         snackInputs.messageTxt,
@@ -80,7 +72,7 @@ function makeMessage(
     }
     if (message) {
         if (header) {
-            fullMessage += '\n\n';
+            fullMessage += '\n';
         }
         fullMessage += message;
     }
@@ -121,21 +113,15 @@ export function useSnackMessage(): UseSnackMessageReturn {
             }
    */
     const snackError = useCallback(
-        (snackInputs: SnackInputs) => enqueue(snackInputs, 'error'),
+        (snackInputs: SnackInputs) => enqueue({ ...snackInputs, persist: true }, 'error'),
         [enqueue]
     );
 
     /* see snackError */
-    const snackWarning = useCallback(
-        (snackInputs: SnackInputs) => enqueue(snackInputs, 'warning'),
-        [enqueue]
-    );
+    const snackWarning = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'warning'), [enqueue]);
 
     /* see snackError */
-    const snackInfo = useCallback(
-        (snackInputs: SnackInputs) => enqueue(snackInputs, 'info'),
-        [enqueue]
-    );
+    const snackInfo = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'info'), [enqueue]);
 
     return { snackError, snackInfo, snackWarning, closeSnackbar };
 }

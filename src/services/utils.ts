@@ -15,11 +15,9 @@ const parseError = (text: string) => {
     }
 };
 
-const prepareRequest = (init: any, token?: string) => {
+const prepareRequest = (init: RequestInit | undefined, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
-        throw new TypeError(
-            `First argument of prepareRequest is not an object : ${typeof init}`
-        );
+        throw new TypeError(`First argument of prepareRequest is not an object : ${typeof init}`);
     }
     const initCopy = { ...init };
     initCopy.headers = new Headers(initCopy.headers || {});
@@ -28,56 +26,51 @@ const prepareRequest = (init: any, token?: string) => {
     return initCopy;
 };
 
-const handleError = (response: any) => {
+const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        let customError: Error & { status?: string };
-        if (
-            errorJson &&
-            errorJson.status &&
-            errorJson.error &&
-            errorJson.message
-        ) {
+        let customError: Error & { status?: number };
+        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
             customError = new Error(
-                `${errorName + errorJson.status} ${
-                    errorJson.error
-                }, message : ${errorJson.message}`
+                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
             );
             customError.status = errorJson.status;
         } else {
-            customError = new Error(
-                `${errorName + response.status} ${
-                    response.statusText
-                }, message : ${text}`
-            );
+            customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
             customError.status = response.status;
         }
         throw customError;
     });
 };
 
-const safeFetch = (url: string, initCopy: any) => {
-    return fetch(url, initCopy).then((response) =>
-        response.ok ? response : handleError(response)
-    );
+const safeFetch = (url: string, initCopy: RequestInit) => {
+    return fetch(url, initCopy).then((response) => (response.ok ? response : handleError(response)));
 };
 
-export const backendFetch = (url: string, init: any, token?: string) => {
+export const backendFetch = (url: string, init: RequestInit, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy);
 };
 
-export const backendFetchJson = (url: string, init: any, token?: string) => {
+export const backendFetchJson = (url: string, init?: RequestInit, token?: string) => {
     const initCopy = prepareRequest(init, token);
-    return safeFetch(url, initCopy).then((safeResponse) =>
-        safeResponse.status === 204 ? null : safeResponse.json()
-    );
+    return safeFetch(url, initCopy).then((safeResponse) => (safeResponse.status === 204 ? null : safeResponse.json()));
 };
 
-export const getRequestParamFromList = (
-    paramName: string,
-    params: string[] = []
-) => {
+export function backendFetchText(url: string, init?: RequestInit, token?: string) {
+    const initCopy = prepareRequest(init, token);
+    return safeFetch(url, initCopy).then((safeResponse) => safeResponse.text());
+}
+
+export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
+};
+
+export const catchErrorHandler = (error: unknown, callback: (message: string) => void) => {
+    if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+        callback(error.message);
+    } else {
+        callback('unknown error');
+    }
 };

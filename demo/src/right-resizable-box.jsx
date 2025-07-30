@@ -11,8 +11,7 @@ import { MoreVert as ResizePanelHandleIcon } from '@mui/icons-material';
 import { ResizableBox } from 'react-resizable';
 import { useWindowWidth } from '@react-hook/window-size';
 import PropTypes from 'prop-types';
-import { Box } from '@mui/material';
-import { styled } from '@mui/system';
+import { Box, styled } from '@mui/material';
 import { mergeSx } from '../../src/utils/styles';
 
 const styles = {
@@ -73,13 +72,8 @@ function RightResizableBox(props) {
     return (
         <ResizableBoxSx
             style={{ display: hide ? 'none' : undefined }}
-            width={
-                fullscreen ? windowWidth : windowWidth * resizedTreePercentage
-            }
-            sx={mergeSx(
-                styles.panel,
-                !disableResize && styles.resizePanelHandle
-            )}
+            width={fullscreen ? windowWidth : windowWidth * resizedTreePercentage}
+            sx={mergeSx(styles.panel, !disableResize && styles.resizePanelHandle)}
             resizeHandles={['e']}
             axis={disableResize ? 'none' : 'x'}
             onResize={onResize}

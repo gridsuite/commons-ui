@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client';
 
 export type CommonStoreState = {
     user: User | null;

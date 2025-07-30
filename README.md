@@ -8,37 +8,38 @@ The commons-ui library have a demo app in which you can call your components to 
 The `npm start` command install the library's dependencies then launches the demo app.
 
 If you want to test your library integration with a consumer application my-app you have first
-to build commons-ui via 
+to build commons-ui via
+
 - `npm install` (if not already done to get `tsc`)
 - `npm run build:pack`
 
 Then in the my-app project :
-- Change the commons-ui dependency in my-app's package.json from    
-`@gridsuite/commons-ui:"^x.x.x"`    
-to     
-`@gridsuite/commons-ui:"file:{PATH_TO_LIBRARY}/gridsuite-commons-ui-{LIBRARY_VERSION}.tgz"` 
+
+- Change the commons-ui dependency in my-app's package.json from  
+  `@gridsuite/commons-ui:"^x.x.x"`  
+  to  
+  `@gridsuite/commons-ui:"file:{PATH_TO_LIBRARY}/gridsuite-commons-ui-{LIBRARY_VERSION}.tgz"`
 - `npm install`
 - `npm start`
 
-*Warning* : with Create React App, we realised the library was not updating correctly if you try to install the library multiple times.
+_Warning_ : with Create React App, we realised the library was not updating correctly if you try to install the library multiple times.
 To fix this, run this command from the app **after** running "npm install"
+
 - rm -Rf node_modules/.cache
- 
 
 #### For integrators
 
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
-you need to follow the steps below:
+first you need **some permissions**. You need to be a member of the *gridsuite* organization and a member of the *'developers'* team.
+Only in this case, you need to follow the steps below:
 
--   Update to the new version in [package.json](https://github.com/gridsuite/commons-ui/blob/main/package.json) (example `0.6.0`)
--   Build it: `npm install`
--   Commit the package.json and package-lock.json files, push to a branch, make a PR, have it reviewed and merged to main.
--   [Make a release](https://github.com/gridsuite/commons-ui/releases/new) on GitHub by creating a new tag on the last commit. On the release creation page:
-    - In "Choose a tag": type the tag you want to create (ex.: v0.6.0) and select "create new tag"
-    - In "Target": click on "recent commit" tab and select your release commit
-    - Click on "Generate release note"
-    - Click on "Publish release"
--   It will trigger a job that will publish the release on NPM
+- [Make a release action](https://github.com/gridsuite/commons-ui/actions/workflows/release.yml)
+- In the 'run workflow' combobox select, let the branch on main
+- Enter the type of evolution (major | minor | patch)
+- Enter your NPM access token (it must be an **automation** access token to bypass 2FA, see the [access token documentation](https://docs.npmjs.com/creating-and-viewing-access-tokens) for details)
+- Click 'run workflow'
+
+Otherwise ask someone who has the permission.
 
 #### License Headers and dependencies checking
 
@@ -48,6 +49,7 @@ To check dependencies license compatibility with this project one locally, pleas
 npm run licenses-check
 ```
 
-Notes : 
-* Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
-If you need to update this list, please inform organization's owners.
+Notes :
+
+- Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
+  If you need to update this list, please inform organization's owners.

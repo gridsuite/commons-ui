@@ -10,154 +10,163 @@ import {
     Box,
     Button,
     Checkbox,
+    Chip,
     createTheme,
     CssBaseline,
     FormControlLabel,
     FormGroup,
     Grid,
+    IconButton,
+    styled,
     StyledEngineProvider,
     Tab,
     Tabs,
     TextField,
     ThemeProvider,
+    Tooltip,
     Typography,
 } from '@mui/material';
-import { styled } from '@mui/system';
-import { useMatch } from 'react-router';
+import { enUS, frFR } from '@mui/material/locale';
+import { Comment as CommentIcon } from '@mui/icons-material';
+import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
 import { IntlProvider, useIntl } from 'react-intl';
-import { BrowserRouter, useLocation, useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import SnackbarProvider from '../../src/components/SnackbarProvider';
-import AuthenticationRouter from '../../src/components/AuthenticationRouter';
-import CardErrorBoundary from '../../src/components/CardErrorBoundary';
-import {
-    ElementType,
-    EQUIPMENT_TYPE,
-    equipmentStyles,
-    getFileIcon,
-    initializeAuthenticationDev,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    LANG_SYSTEM,
-    LIGHT_THEME,
-    logout,
-    card_error_boundary_en,
-    card_error_boundary_fr,
-    element_search_en,
-    element_search_fr,
-    equipment_search_en,
-    equipment_search_fr,
-    filter_en,
-    filter_fr,
-    filter_expert_en,
-    filter_expert_fr,
-    flat_parameters_en,
-    flat_parameters_fr,
-    login_en,
-    login_fr,
-    multiple_selection_dialog_en,
-    multiple_selection_dialog_fr,
-    report_viewer_en,
-    report_viewer_fr,
-    table_en,
-    table_fr,
-    top_bar_en,
-    top_bar_fr,
-    treeview_finder_en,
-    treeview_finder_fr,
-    TopBar,
-} from '../../src';
-import { useSnackMessage } from '../../src/hooks/useSnackMessage';
-
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import translations from './demo_intl';
-
-// eslint-disable-next-line import/no-unresolved
-import PowsyblLogo from '../images/powsybl_logo.svg?react';
+import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
 import AppPackage from '../../package.json';
-
-import ReportViewerDialog from '../../src/components/ReportViewerDialog';
-import {
-    TreeViewFinder,
-    generateTreeViewFinderClass,
-} from '../../src/components/TreeViewFinder';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
-
 import {
     fetchInfiniteTestDataList,
     fetchInfiniteTestDataTree,
     testDataList,
     testDataTree,
 } from '../data/TreeViewFinder';
-
-import LOGS_JSON from '../data/ReportViewer';
-
 import searchEquipments from '../data/EquipmentSearchBar';
-import { EquipmentItem } from '../../src/components/ElementSearchDialog/equipment-item';
-import OverflowableText from '../../src/components/OverflowableText';
-
-import { setShowAuthenticationRouterLogin } from '../../src/redux/authActions';
-import TableTab from './TableTab';
 import FlatParametersTab from './FlatParametersTab';
-
-import { toNestedGlobalSelectors } from '../../src/utils/styles';
 import InputsTab from './InputsTab';
-import inputs_en from '../../src/components/translations/inputs-en';
-import inputs_fr from '../../src/components/translations/inputs-fr';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
+import {
+    MultipleSelectionDialog,
+    OverflowableText,
+    SnackbarProvider,
+    TopBar,
+    TreeViewFinder,
+    CardErrorBoundary,
+    EquipmentItem,
+    AuthenticationRouter,
+    reportViewerEn,
+    loginEn,
+    topBarEn,
+    tableEn,
+    treeviewFinderEn,
+    elementSearchEn,
+    equipmentSearchEn,
+    filterEn,
+    filterExpertEn,
+    descriptionEn,
+    equipmentsEn,
+    csvEn,
+    cardErrorBoundaryEn,
+    flatParametersEn,
+    multipleSelectionDialogEn,
+    inputsEn,
+    inputsFr,
+    multipleSelectionDialogFr,
+    flatParametersFr,
+    cardErrorBoundaryFr,
+    filterExpertFr,
+    csvFr,
+    equipmentsFr,
+    descriptionFr,
+    filterFr,
+    equipmentSearchFr,
+    elementSearchFr,
+    treeviewFinderFr,
+    tableFr,
+    topBarFr,
+    loginFr,
+    reportViewerFr,
+    LIGHT_THEME,
+    LANG_ENGLISH,
+    LANG_SYSTEM,
+    LANG_FRENCH,
+    ElementType,
+    getFileIcon,
+    initializeAuthenticationDev,
+    toNestedGlobalSelectors,
+    generateTreeViewFinderClass,
+    useSnackMessage,
+    commonButtonEn,
+    commonButtonFr,
+    networkModificationsEn,
+    networkModificationsFr,
+    logout,
+    equipmentStyles,
+} from '../../src';
 
 const messages = {
     en: {
-        ...report_viewer_en,
-        ...login_en,
-        ...top_bar_en,
-        ...table_en,
-        ...treeview_finder_en,
-        ...element_search_en,
-        ...equipment_search_en,
-        ...filter_en,
-        ...filter_expert_en,
-        ...card_error_boundary_en,
-        ...flat_parameters_en,
-        ...multiple_selection_dialog_en,
-        ...inputs_en,
+        ...reportViewerEn,
+        ...loginEn,
+        ...topBarEn,
+        ...tableEn,
+        ...treeviewFinderEn,
+        ...elementSearchEn,
+        ...equipmentSearchEn,
+        ...filterEn,
+        ...filterExpertEn,
+        ...descriptionEn,
+        ...equipmentsEn,
+        ...csvEn,
+        ...cardErrorBoundaryEn,
+        ...flatParametersEn,
+        ...multipleSelectionDialogEn,
+        ...commonButtonEn,
+        ...networkModificationsEn,
+        ...inputsEn,
         ...translations.en,
     },
     fr: {
-        ...report_viewer_fr,
-        ...login_fr,
-        ...top_bar_fr,
-        ...table_fr,
-        ...treeview_finder_fr,
-        ...element_search_fr,
-        ...equipment_search_fr,
-        ...filter_fr,
-        ...filter_expert_fr,
-        ...card_error_boundary_fr,
-        ...flat_parameters_fr,
-        ...multiple_selection_dialog_fr,
-        ...inputs_fr,
+        ...reportViewerFr,
+        ...loginFr,
+        ...topBarFr,
+        ...tableFr,
+        ...treeviewFinderFr,
+        ...elementSearchFr,
+        ...equipmentSearchFr,
+        ...filterFr,
+        ...descriptionFr,
+        ...equipmentsFr,
+        ...csvFr,
+        ...filterExpertFr,
+        ...cardErrorBoundaryFr,
+        ...flatParametersFr,
+        ...commonButtonFr,
+        ...networkModificationsFr,
+        ...multipleSelectionDialogFr,
+        ...inputsFr,
         ...translations.fr,
     },
 };
 
-const lightTheme = createTheme({
+const lightTheme = {
     palette: {
         mode: 'light',
     },
-});
+};
 
-const darkTheme = createTheme({
+const darkTheme = {
     palette: {
         mode: 'dark',
     },
-});
+};
 
-const getMuiTheme = (theme) => {
-    if (theme === LIGHT_THEME) {
-        return lightTheme;
-    }
-    return darkTheme;
+const useMuiTheme = (theme, language) => {
+    return useMemo(
+        () => createTheme(theme === LIGHT_THEME ? lightTheme : darkTheme, language === LANG_FRENCH ? frFR : enUS),
+        [language, theme]
+    );
 };
 
 const style = {
@@ -168,7 +177,7 @@ const style = {
 };
 
 /**
- * @param {import('@mui/material/styles').Theme} theme Theme from ThemeProvider
+ * @param {import('@mui/material').Theme} theme Theme from ThemeProvider
  */
 const TreeViewFinderCustomStyles = (theme) => ({
     icon: {
@@ -182,13 +191,8 @@ const TreeViewFinderCustomStyles = (theme) => ({
 });
 
 const TreeViewFinderCustomStylesEmotion = ({ theme }) =>
-    toNestedGlobalSelectors(
-        TreeViewFinderCustomStyles(theme),
-        generateTreeViewFinderClass
-    );
-const CustomTreeViewFinder = styled(TreeViewFinder)(
-    TreeViewFinderCustomStylesEmotion
-);
+    toNestedGlobalSelectors(TreeViewFinderCustomStyles(theme), generateTreeViewFinderClass);
+const CustomTreeViewFinder = styled(TreeViewFinder)(TreeViewFinderCustomStylesEmotion);
 
 function Crasher() {
     const [crash, setCrash] = useState(false);
@@ -309,12 +313,8 @@ function AppContent({ language, onLanguageClick }) {
         error: null,
     });
     const [user, setUser] = useState(null);
-    const [authenticationRouterError, setAuthenticationRouterError] =
-        useState(null);
-    const [
-        showAuthenticationRouterLoginState,
-        setShowAuthenticationRouterLoginState,
-    ] = useState(false);
+    const [authenticationRouterError, setAuthenticationRouterError] = useState(null);
+    const [showAuthenticationRouterLoginState, setShowAuthenticationRouterLoginState] = useState(false);
 
     const [theme, setTheme] = useState(LIGHT_THEME);
 
@@ -322,18 +322,16 @@ function AppContent({ language, onLanguageClick }) {
 
     const [equipmentLabelling, setEquipmentLabelling] = useState(false);
 
-    const [openReportViewer, setOpenReportViewer] = useState(false);
-    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] =
-        useState(false);
-    const [
-        openTreeViewFinderDialogCustomDialog,
-        setOpenTreeViewFinderDialogCustomDialog,
-    ] = useState(false);
+    const [openMultiChoiceDialog, setOpenMultiChoiceDialog] = useState(false);
+    const [openDraggableMultiChoiceDialog, setOpenDraggableMultiChoiceDialog] = useState(false);
+
+    const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
+    const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
+
+    const [developerMode, setDeveloperMode] = useState(false);
 
     // Can't use lazy initializer because useMatch is a hook
-    const [initialMatchSilentRenewCallbackUrl] = useState(
-        useMatch('/silent-renew-callback')
-    );
+    const [initialMatchSilentRenewCallbackUrl] = useState(useMatch('/silent-renew-callback'));
 
     // TreeViewFinder data
     const [nodesTree, setNodesTree] = useState(testDataTree);
@@ -382,9 +380,7 @@ function AppContent({ language, onLanguageClick }) {
         if (equipment != null) {
             equipment.type === EQUIPMENT_TYPE.SUBSTATION.name
                 ? alert(`Equipment ${equipment.label} found !`)
-                : alert(
-                      `Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`
-                  );
+                : alert(`Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`);
         }
     };
     const [searchTermDisableReason] = useState('search disabled');
@@ -402,9 +398,7 @@ function AppContent({ language, onLanguageClick }) {
         } else if (e.type === 'RESET_AUTHENTICATION_ROUTER_ERROR') {
             setAuthenticationRouterError(null);
         } else if (e.type === 'SHOW_AUTH_INFO_LOGIN') {
-            setShowAuthenticationRouterLoginState(
-                e.showAuthenticationRouterLogin
-            );
+            setShowAuthenticationRouterLoginState(e.showAuthenticationRouterLogin);
         }
     };
 
@@ -428,11 +422,7 @@ function AppContent({ language, onLanguageClick }) {
     ];
 
     useEffect(() => {
-        initializeAuthenticationDev(
-            dispatch,
-            initialMatchSilentRenewCallbackUrl != null,
-            validateUser
-        )
+        initializeAuthenticationDev(dispatch, initialMatchSilentRenewCallbackUrl != null)
             .then((userManager) => {
                 setUserManager({
                     instance: userManager,
@@ -471,23 +461,18 @@ function AppContent({ language, onLanguageClick }) {
         return a.name.localeCompare(b.name);
     }
 
-    const handleToggleDisableSearch = useCallback(
-        () => setSearchDisabled((oldState) => !oldState),
-        []
-    );
+    const handleToggleDisableSearch = useCallback(() => setSearchDisabled((oldState) => !oldState), []);
 
     const aboutTimerVersion = useRef();
     const aboutTimerCmpnt = useRef();
+
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
-            (resolve, reject) =>
-                (aboutTimerVersion.current = window.setTimeout(
-                    () => resolve('1.0.0-demo'),
-                    1250
-                ))
+            (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
+
     function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
         return new Promise(
@@ -573,6 +558,50 @@ function AppContent({ language, onLanguageClick }) {
         );
     }
 
+    const [checkBoxListOption, setCheckBoxListOption] = useState([
+        { id: 'kiki', label: 'Kylian Mbappe' },
+        {
+            id: 'ney',
+            label: 'Neymar',
+            labelSecondary: (
+                <Tooltip title="this is the Chip tooltip">
+                    <Chip
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("Chip click doesn't proc click in list item");
+                        }}
+                        size="small"
+                        label="GOAT"
+                    />
+                </Tooltip>
+            ),
+        },
+        { id: 'lapulga', label: 'Lionel Messi' },
+        { id: 'ibra', label: 'Zlatan Ibrahimovic' },
+        {
+            id: 'john',
+            label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
+            labelSecondary: (
+                <Tooltip title="this is the Chip tooltip">
+                    <Chip
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("Chip click doesn't proc click in list item");
+                        }}
+                        size="small"
+                        label="GOAT"
+                    />
+                </Tooltip>
+            ),
+        },
+    ]);
+
+    const secondaryAction = (item, isItemHovered) =>
+        isItemHovered && (
+            <IconButton aria-label="comment">
+                <CommentIcon />
+            </IconButton>
+        );
     const defaultTab = (
         <div>
             <Box mt={3}>
@@ -596,15 +625,68 @@ function AppContent({ language, onLanguageClick }) {
                     float: 'left',
                     margin: '5px',
                 }}
-                onClick={() => setOpenReportViewer(true)}
+                onClick={() => setOpenMultiChoiceDialog(true)}
             >
-                Logs
+                Checkbox list
             </Button>
-            <ReportViewerDialog
-                title="Logs test"
-                open={openReportViewer}
-                onClose={() => setOpenReportViewer(false)}
-                jsonReport={LOGS_JSON}
+            <MultipleSelectionDialog
+                items={checkBoxListOption}
+                selectedItems={[]}
+                open={openMultiChoiceDialog}
+                getItemLabel={(o) => o.label}
+                getItemLabelSecondary={(o) => o.labelSecondary}
+                getItemId={(o) => o.id}
+                handleClose={() => setOpenMultiChoiceDialog(false)}
+                handleValidate={() => setOpenMultiChoiceDialog(false)}
+                titleId="Checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                addSelectAllCheckbox
+                onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
+            />
+
+            <Button
+                variant="contained"
+                style={{
+                    float: 'left',
+                    margin: '5px',
+                }}
+                onClick={() => setOpenDraggableMultiChoiceDialog(true)}
+            >
+                Draggable checkbox list
+            </Button>
+            <MultipleSelectionDialog
+                items={checkBoxListOption}
+                selectedItems={[]}
+                open={openDraggableMultiChoiceDialog}
+                getItemLabel={(o) => o.label}
+                getItemLabelSecondary={(o) => o.labelSecondary}
+                getItemId={(o) => o.id}
+                handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
+                handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
+                titleId="Draggable checkbox list"
+                divider
+                secondaryAction={secondaryAction}
+                isDndActive
+                onDragEnd={({ source, destination }) => {
+                    if (destination !== null && source.index !== destination.index) {
+                        const res = [...checkBoxListOption];
+                        const [item] = res.splice(source.index, 1);
+                        res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
+                        setCheckBoxListOption(res);
+                    }
+                }}
+                addSelectAllCheckbox
+                onItemClick={(item) => console.log('clicked', item)}
+                isItemClickable={(item) => item.id.indexOf('i') >= 0}
+                sx={{
+                    items: (item) => ({
+                        label: {
+                            color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
+                        },
+                    }),
+                }}
             />
             <div
                 style={{
@@ -619,21 +701,11 @@ function AppContent({ language, onLanguageClick }) {
                     multiSelect={multiSelect}
                     onlyLeaves={onlyLeaves}
                     sortedAlphabetically={sortedAlphabetically}
-                    onDynamicDataChange={(event) =>
-                        setDynamicData(event.target.value === 'dynamic')
-                    }
-                    onDataFormatChange={(event) =>
-                        setDataFormat(event.target.value)
-                    }
-                    onSelectionTypeChange={(event) =>
-                        setMultiSelect(event.target.value === 'multiselect')
-                    }
-                    onOnlyLeavesChange={(event) =>
-                        setOnlyLeaves(event.target.checked)
-                    }
-                    onSortedAlphabeticallyChange={(event) =>
-                        setSortedAlphabetically(event.target.checked)
-                    }
+                    onDynamicDataChange={(event) => setDynamicData(event.target.value === 'dynamic')}
+                    onDataFormatChange={(event) => setDataFormat(event.target.value)}
+                    onSelectionTypeChange={(event) => setMultiSelect(event.target.value === 'multiselect')}
+                    onOnlyLeavesChange={(event) => setOnlyLeaves(event.target.checked)}
+                    onSortedAlphabeticallyChange={(event) => setSortedAlphabetically(event.target.checked)}
                 />
                 <Button
                     variant="contained"
@@ -671,13 +743,9 @@ function AppContent({ language, onLanguageClick }) {
                             : undefined
                     }
                     onlyLeaves={onlyLeaves}
-                    sortMethod={
-                        sortedAlphabetically ? sortAlphabetically : undefined
-                    }
+                    sortMethod={sortedAlphabetically ? sortAlphabetically : undefined}
                     // Customisation props to pass the counter in the title
-                    title={`Number of nodes : ${countNodes(
-                        dataFormat === 'Tree' ? nodesTree : nodesList
-                    )}`}
+                    title={`Number of nodes : ${countNodes(dataFormat === 'Tree' ? nodesTree : nodesList)}`}
                 />
                 <Button
                     variant="contained"
@@ -685,9 +753,7 @@ function AppContent({ language, onLanguageClick }) {
                         float: 'left',
                         margin: '5px',
                     }}
-                    onClick={() =>
-                        setOpenTreeViewFinderDialogCustomDialog(true)
-                    }
+                    onClick={() => setOpenTreeViewFinderDialogCustomDialog(true)}
                 >
                     Open Custom TreeViewFinder…
                 </Button>
@@ -766,10 +832,7 @@ function AppContent({ language, onLanguageClick }) {
                                 onChange={() => {
                                     setSearchTermDisabled(!searchTermDisabled);
                                     // TO TEST search activation after some times
-                                    setTimeout(
-                                        () => setSearchTermDisabled(false),
-                                        4000
-                                    );
+                                    setTimeout(() => setSearchTermDisabled(false), 4000);
                                 }}
                                 name="search-disabled"
                             />
@@ -785,7 +848,7 @@ function AppContent({ language, onLanguageClick }) {
 
     return (
         <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={getMuiTheme(theme)}>
+            <ThemeProvider theme={useMuiTheme(theme, language)}>
                 <SnackbarProvider hideIconVariant={false}>
                     <CssBaseline />
                     <CardErrorBoundary>
@@ -793,27 +856,20 @@ function AppContent({ language, onLanguageClick }) {
                             appName="Demo"
                             appColor="#808080"
                             appLogo={<PowsyblLogo />}
-                            onParametersClick={() => console.log('settings')}
-                            onLogoutClick={() =>
-                                logout(dispatch, userManager.instance)
-                            }
+                            onDeveloperModeClick={() => setDeveloperMode(!developerMode)}
+                            developerMode={developerMode}
+                            onLogoutClick={() => logout(dispatch, userManager.instance)}
                             onLogoClick={() => console.log('logo')}
                             onThemeClick={handleThemeClick}
                             theme={theme}
                             appVersion={AppPackage.version}
                             appLicense={AppPackage.license}
                             globalVersionPromise={simulateGetGlobalVersion}
-                            additionalModulesPromise={
-                                simulateGetAdditionalComponents
-                            }
-                            onEquipmentLabellingClick={
-                                handleEquipmentLabellingClick
-                            }
+                            additionalModulesPromise={simulateGetAdditionalComponents}
+                            onEquipmentLabellingClick={handleEquipmentLabellingClick}
                             equipmentLabelling={equipmentLabelling}
                             withElementsSearch
-                            searchingLabel={intl.formatMessage({
-                                id: 'equipment_search/label',
-                            })}
+                            searchingLabel={intl.formatMessage({ id: 'equipment_search/label' })}
                             onSearchTermChange={searchMatchingEquipments}
                             onSelectionChange={displayEquipment}
                             searchDisabled={searchDisabled}
@@ -821,11 +877,7 @@ function AppContent({ language, onLanguageClick }) {
                             searchTermDisableReason={searchTermDisableReason}
                             elementsFound={equipmentsFound}
                             renderElement={(props) => (
-                                <EquipmentItem
-                                    styles={equipmentStyles}
-                                    {...props}
-                                    key={props.element.key}
-                                />
+                                <EquipmentItem styles={equipmentStyles} {...props} key={props.element.key} />
                             )}
                             onLanguageClick={onLanguageClick}
                             language={language}
@@ -849,19 +901,12 @@ function AppContent({ language, onLanguageClick }) {
                         <CardErrorBoundary>
                             {user !== null ? (
                                 <div>
-                                    <Tabs
-                                        value={tabIndex}
-                                        onChange={(event, newTabIndex) =>
-                                            setTabIndex(newTabIndex)
-                                        }
-                                    >
+                                    <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />
-                                        <Tab label="virtual table" />
                                         <Tab label="parameters" />
                                         <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 1 && <TableTab />}
                                     {tabIndex === 2 && <FlatParametersTab />}
                                     {tabIndex === 3 && <InputsTab />}
                                 </div>
@@ -869,12 +914,8 @@ function AppContent({ language, onLanguageClick }) {
                                 <AuthenticationRouter
                                     userManager={userManager}
                                     signInCallbackError={null}
-                                    authenticationRouterError={
-                                        authenticationRouterError
-                                    }
-                                    showAuthenticationRouterLogin={
-                                        showAuthenticationRouterLoginState
-                                    }
+                                    authenticationRouterError={authenticationRouterError}
+                                    showAuthenticationRouterLogin={showAuthenticationRouterLoginState}
                                     dispatch={dispatch}
                                     navigate={navigate}
                                     location={location}
@@ -896,11 +937,7 @@ function App() {
         setLanguage(pickedLanguage);
         if (pickedLanguage === LANG_SYSTEM) {
             const sysLanguage = navigator.language.split(/[-_]/)[0];
-            setComputedLanguage(
-                [LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage)
-                    ? sysLanguage
-                    : LANG_ENGLISH
-            );
+            setComputedLanguage([LANG_FRENCH, LANG_ENGLISH].includes(sysLanguage) ? sysLanguage : LANG_ENGLISH);
         } else {
             setComputedLanguage(pickedLanguage);
         }
@@ -908,14 +945,8 @@ function App() {
 
     return (
         <BrowserRouter basename="/">
-            <IntlProvider
-                locale={computedLanguage}
-                messages={messages[computedLanguage]}
-            >
-                <AppContent
-                    language={language}
-                    onLanguageClick={handleLanguageClick}
-                />
+            <IntlProvider locale={computedLanguage} messages={messages[computedLanguage]}>
+                <AppContent language={language} onLanguageClick={handleLanguageClick} />
             </IntlProvider>
         </BrowserRouter>
     );
