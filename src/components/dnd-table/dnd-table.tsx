@@ -261,7 +261,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     }
 
     const addNewRows = (numberOfRows: number) => {
-        // checking if not exceeding 100 steps
+        // checking if not exceeding the max allowed
         if (currentRows.length + numberOfRows > maxRows) {
             setError(arrayFormName, {
                 type: 'custom',
