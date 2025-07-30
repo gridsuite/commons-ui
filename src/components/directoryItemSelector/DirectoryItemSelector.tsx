@@ -14,6 +14,12 @@ import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '..
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
 import { ElementAttributes } from '../../utils';
+import {
+    fetchChildrenForExpandedNodes,
+    getExpansionPathsForSelected,
+    initializeFromLastSelected,
+    saveLastSelectedDirectoryFromNode,
+} from './utils';
 
 const styles = {
     icon: (theme: Theme) => ({
@@ -173,10 +179,13 @@ export function DirectoryItemSelector({
     itemFilter,
     expanded,
     selected,
+    onClose,
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
     const [rootDirectories, setRootDirectories] = useState<ElementAttributes[]>([]);
+    const [isRootsLoaded, setIsRootsLoaded] = useState(false);
+    const [autoExpandedNodes, setAutoExpandedNodes] = useState<UUID[]>([]);
     const nodeMap = useRef<Record<UUID, ElementAttributes>>({});
     const dataRef = useRef<TreeViewFinderNodeProps[]>([]);
     dataRef.current = data;
@@ -231,6 +240,7 @@ export function DirectoryItemSelector({
     );
 
     const updateRootDirectories = useCallback(() => {
+        setIsRootsLoaded(false);
         fetchRootFolders(types)
             .then((newData) => {
                 const [nrs, mdr] = updatedTree(rootsRef.current, nodeMap.current, null, newData);
@@ -243,6 +253,9 @@ export function DirectoryItemSelector({
                     messageTxt: error.message,
                     headerId: 'DirectoryItemSelector',
                 });
+            })
+            .finally(() => {
+                setIsRootsLoaded(true);
             });
     }, [convertRoots, types, snackError]);
 
@@ -286,29 +299,102 @@ export function DirectoryItemSelector({
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
-    // In this useEffect, we fetch the path (expanded array) of every selected node
-    useEffect(() => {
-        if (open && expanded && selected) {
-            // we check if every selected item is already fetched
-            const isSelectedItemFetched = selected.every((id) => nodeMap.current[id]);
-            if (!isSelectedItemFetched) {
-                expanded.forEach((nodeId) => {
-                    const node = nodeMap.current[nodeId];
-                    // we check that the node exist before fetching the children
-                    // And we check if there is already children (Because we are trying to reach a selected element, we know every node has at least one child)
-                    if (node?.children && node.children.length === 0) {
-                        fetchDirectoryChildren(nodeId);
-                    }
-                });
-            }
-        }
-    }, [open, expanded, fetchDirectoryChildren, selected, data]);
+    // Helper function to fetch children for a node if not already loaded
+    const fetchNodeChildrenIfNeeded = useCallback(
+        (nodeId: UUID, delay: number = 0) => {
+            setTimeout(() => {
+                const node = nodeMap.current[nodeId];
+                if (node && (!node.children || node.children.length === 0) && node.type === ElementType.DIRECTORY) {
+                    fetchDirectoryChildren(nodeId);
+                }
+            }, delay);
+        },
+        [fetchDirectoryChildren]
+    );
 
-    useEffect(() => {
-        if (open) {
-            updateRootDirectories();
+    // Handle expansion from selected items
+    const handleSelectedExpansion = useCallback(async (): Promise<boolean> => {
+        if (!selected || selected.length === 0) {
+            return false;
         }
-    }, [open, updateRootDirectories]);
+
+        const expandedArray = await getExpansionPathsForSelected(selected, expanded);
+        setAutoExpandedNodes(expandedArray);
+        fetchChildrenForExpandedNodes(expandedArray, fetchNodeChildrenIfNeeded);
+        return true;
+    }, [selected, expanded, fetchNodeChildrenIfNeeded]);
+
+    // Handle expansion from provided expanded prop
+    const handleProvidedExpansion = useCallback((): boolean => {
+        if (!expanded || expanded.length === 0) {
+            return false;
+        }
+
+        setAutoExpandedNodes(expanded);
+        fetchChildrenForExpandedNodes(expanded, fetchNodeChildrenIfNeeded);
+
+        return true;
+    }, [expanded, fetchNodeChildrenIfNeeded]);
+
+    // Handle expansion from last selected directory
+    const handleLastSelectedExpansion = useCallback(async (): Promise<boolean> => {
+        const expandPath = await initializeFromLastSelected();
+
+        if (!expandPath) {
+            return false;
+        }
+
+        setAutoExpandedNodes(expandPath);
+        fetchChildrenForExpandedNodes(expandPath, fetchNodeChildrenIfNeeded);
+
+        return true;
+    }, [fetchNodeChildrenIfNeeded]);
+
+    // Main expansion orchestrator
+    const initializeExpansion = useCallback(async () => {
+        // Priority 1: Handle selected items
+        const selectedSuccess = await handleSelectedExpansion();
+        if (selectedSuccess) return;
+
+        // Priority 2: Handle provided expanded items
+        const expandedSuccess = handleProvidedExpansion();
+        if (expandedSuccess) return;
+
+        // Priority 3: Fall back to last selected directory
+        await handleLastSelectedExpansion();
+    }, [handleSelectedExpansion, handleProvidedExpansion, handleLastSelectedExpansion]);
+
+    // Handle root loading and expansion initialization
+    useEffect(() => {
+        if (!open) {
+            setIsRootsLoaded(false);
+            setAutoExpandedNodes([]);
+            return;
+        }
+
+        // Phase 1: Load root directories if not already loaded
+        if (!isRootsLoaded) {
+            updateRootDirectories();
+            return;
+        }
+
+        // Phase 2: Initialize expansion once roots are loaded
+        initializeExpansion();
+    }, [open, isRootsLoaded, updateRootDirectories, initializeExpansion]);
+
+    const handleClose = useCallback(
+        (nodes: TreeViewFinderNodeProps[]) => {
+            if (nodes && nodes.length > 0) {
+                const lastSelectedNode = nodes[0];
+                saveLastSelectedDirectoryFromNode(lastSelectedNode);
+            }
+
+            setAutoExpandedNodes([]);
+
+            onClose(nodes);
+        },
+        [onClose]
+    );
 
     return (
         <TreeViewFinder
@@ -316,9 +402,10 @@ export function DirectoryItemSelector({
             sortMethod={sortHandlingDirectories}
             multiSelect // defaulted to true
             open={open}
-            expanded={expanded as string[]}
+            expanded={autoExpandedNodes}
             onlyLeaves // defaulted to true
             selected={selected}
+            onClose={handleClose}
             {...otherTreeViewFinderProps}
             data={data}
         />
