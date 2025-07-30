@@ -18,7 +18,7 @@ import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
 import { useSnackMessage } from '../../../hooks';
-import { fetchDirectoryElementPath } from '../../../services';
+import { DirectoryInitConfig, initializeDirectory } from './utils';
 
 // Define operation types
 enum OperationType {
@@ -131,6 +131,7 @@ export function ElementSaveDialog({
     const [selectedItem, setSelectedItem] = useState<
         TreeViewFinderNodeProps & { parentFolderId: UUID; fullPath: string }
     >();
+    const [expanded, setExpanded] = useState<UUID[]>([]);
 
     // Form handling with conditional defaultValues
     const formMethods = useForm({
@@ -155,9 +156,42 @@ export function ElementSaveDialog({
     const disableSave =
         Object.keys(errors).length > 0 || (isCreateMode && !destinationFolder) || (!isCreateMode && !selectedItem);
 
+    const setDestinationFolderWithPath = useCallback(
+        (elementUuid: UUID, elementName: string, path?: ElementAttributes[]) => {
+            setDestinationFolder({
+                id: elementUuid,
+                name: elementName,
+            });
+
+            if (path && path.length > 0) {
+                // Set expanded path to show the selected directory
+                const expandPath = path.map((element) => element.elementUuid);
+                setExpanded(expandPath);
+            }
+        },
+        []
+    );
+
+    const initializeDestinationFolder = useCallback(async () => {
+        const config: DirectoryInitConfig = {
+            studyUuid,
+            initDirectory,
+            onError: (messageTxt, headerId) => {
+                snackError({ messageTxt, headerId });
+            },
+        };
+
+        const result = await initializeDirectory(config);
+
+        if (result) {
+            setDestinationFolderWithPath(result.element.elementUuid, result.element.elementName, result.path);
+        }
+    }, [studyUuid, initDirectory, snackError, setDestinationFolderWithPath]);
+
     // Handle cancellation
     const onCancel = useCallback(() => {
         reset({ ...emptyFormData, [FieldConstants.OPERATION_TYPE]: initialOperation });
+        setExpanded([]);
         onClose();
     }, [onClose, reset, initialOperation]);
 
@@ -179,36 +213,14 @@ export function ElementSaveDialog({
         }
     }, [prefixIdForGeneratedName, intl, reset, isCreateMode]);
 
-    // Fetch study directory for creation if needed
+    // Destination folder initialization for create mode
     useEffect(() => {
-        if (open && isCreateMode && studyUuid) {
-            fetchDirectoryElementPath(studyUuid).then((res) => {
-                if (!res || res.length < 2) {
-                    snackError({
-                        messageTxt: 'unknown study directory',
-                        headerId: 'studyDirectoryFetchingError',
-                    });
-                    return;
-                }
-                const parentFolderIndex = res.length - 2;
-                const { elementUuid, elementName } = res[parentFolderIndex];
-                setDestinationFolder({
-                    id: elementUuid,
-                    name: elementName,
-                });
-            });
+        if (!open || !isCreateMode) {
+            return;
         }
-    }, [studyUuid, open, snackError, isCreateMode]);
 
-    // Set initial directory for creation if provided
-    useEffect(() => {
-        if (open && isCreateMode && initDirectory) {
-            setDestinationFolder({
-                id: initDirectory.elementUuid,
-                name: initDirectory.elementName,
-            });
-        }
-    }, [initDirectory, open, isCreateMode]);
+        initializeDestinationFolder();
+    }, [open, isCreateMode, initializeDestinationFolder]);
 
     // Open selector dialog
     const handleChangeFolder = useCallback(() => {
@@ -223,6 +235,7 @@ export function ElementSaveDialog({
                 if (items?.length > 0 && items[0].id !== destinationFolder?.id) {
                     const { id, name } = items[0];
                     setDestinationFolder({ id, name });
+                    setExpanded([]);
                 }
             } else if (items?.length > 0 && items[0].id !== selectedItem?.id) {
                 // Handle item selection for update
@@ -357,6 +370,7 @@ export function ElementSaveDialog({
                 types={isCreateMode ? [ElementType.DIRECTORY] : [type]}
                 onlyLeaves={isCreateMode ? false : undefined}
                 multiSelect={false}
+                expanded={isCreateMode ? expanded : []}
                 validationButtonText={intl.formatMessage({
                     id: 'validate',
                 })}
