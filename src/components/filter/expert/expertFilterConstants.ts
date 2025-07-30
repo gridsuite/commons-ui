@@ -239,6 +239,30 @@ export const FIELDS_OPTIONS = {
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
+    P: {
+        name: FieldType.P,
+        label: 'p',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    Q: {
+        name: FieldType.Q,
+        label: 'q',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    P_ABSOLUTE: {
+        name: FieldType.P_ABSOLUTE,
+        label: 'pAbsolute',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
+    Q_ABSOLUTE: {
+        name: FieldType.Q_ABSOLUTE,
+        label: 'qAbsolute',
+        dataType: DataType.NUMBER,
+        inputType: 'number',
+    },
     TARGET_P: {
         name: FieldType.TARGET_P,
         label: 'targetP',
@@ -257,12 +281,6 @@ export const FIELDS_OPTIONS = {
         name: FieldType.TARGET_Q,
         label: 'targetQ',
         unit: MEGA_VAR,
-        dataType: DataType.NUMBER,
-        inputType: 'number',
-    },
-    P_ABSOLUTE: {
-        name: FieldType.P_ABSOLUTE,
-        label: 'pAbsolute',
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
