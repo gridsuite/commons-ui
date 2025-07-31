@@ -242,24 +242,28 @@ export const FIELDS_OPTIONS = {
     P: {
         name: FieldType.P,
         label: 'p',
+        unit: MEGA_WATT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     Q: {
         name: FieldType.Q,
         label: 'q',
+        unit: MEGA_WATT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     P_ABSOLUTE: {
         name: FieldType.P_ABSOLUTE,
         label: 'pAbsolute',
+        unit: MEGA_WATT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
     Q_ABSOLUTE: {
         name: FieldType.Q_ABSOLUTE,
         label: 'qAbsolute',
+        unit: MEGA_WATT,
         dataType: DataType.NUMBER,
         inputType: 'number',
     },
