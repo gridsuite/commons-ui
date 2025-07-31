@@ -295,24 +295,26 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     }, [expandedProp]);
 
     useEffect(() => {
-        if (!selectedProp) {
+        const hasSelected = selectedProp && selectedProp.length > 0;
+        const hasExpanded = expandedProp && expandedProp.length > 0;
+
+        // Only proceed if we have either selected or expanded elements and auto scroll is allowed
+        if ((!hasSelected && !hasExpanded) || !autoScrollAllowed) {
             return;
         }
-        // if we have selected elements by default, we scroll to it
-        if (selectedProp.length > 0 && autoScrollAllowed) {
-            // we check if all expanded nodes by default all already expanded first
-            const isNodeExpanded = expandedProp?.every((itemId) => expanded?.includes(itemId));
 
-            // we got the last element that we suppose to scroll to
-            const lastScrollRef = scrollRef.current[scrollRef.current.length - 1];
-            if (isNodeExpanded && lastScrollRef) {
-                lastScrollRef.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'center',
-                });
-                setAutoScrollAllowed(false);
-            }
+        // we check if all expanded nodes by default all already expanded first
+        const isNodeExpanded = expandedProp?.every((itemId) => expanded?.includes(itemId));
+
+        // we got the last element that we suppose to scroll to
+        const lastScrollRef = scrollRef.current[scrollRef.current.length - 1];
+        if (isNodeExpanded && lastScrollRef) {
+            lastScrollRef.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center',
+            });
+            setAutoScrollAllowed(false);
         }
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
@@ -412,7 +414,13 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                     },
                 }}
                 ref={(element) => {
-                    if (selectedProp?.includes(node.id)) {
+                    // Add to scroll ref if it's a selected element, or if no selected elements and it's an expanded element
+                    const shouldAddToScrollRef =
+                        selectedProp && selectedProp.length > 0
+                            ? selectedProp.includes(node.id)
+                            : (expandedProp?.includes(node.id) ?? false);
+
+                    if (shouldAddToScrollRef) {
                         scrollRef.current.push(element);
                     }
                 }}
