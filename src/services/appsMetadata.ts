@@ -57,16 +57,6 @@ export async function fetchFavoriteAndDefaultCountries(): Promise<{
         defaultCountry,
     };
 }
-
-export async function fetchNadPositionsGenerationMode(): Promise<{
-    enableProvidedNadPositionsGenerationMode: boolean;
-}> {
-    const { enableProvidedNadPositionsGenerationMode } = await fetchStudyMetadata();
-    return {
-        enableProvidedNadPositionsGenerationMode,
-    };
-}
-
 export const fetchDefaultCountry = async (): Promise<string | undefined> => {
     const studyMetadata = await fetchStudyMetadata();
     return studyMetadata.defaultCountry;

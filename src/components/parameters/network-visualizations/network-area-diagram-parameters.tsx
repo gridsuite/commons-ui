@@ -6,7 +6,6 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { useEffect, useState } from 'react';
 import {
     NAD_POSITIONS_GENERATION_MODE_LABEL,
     NAD_POSITIONS_GENERATION_MODE,
@@ -15,23 +14,8 @@ import {
 } from './constants';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
-import { fetchNadPositionsGenerationMode } from '../../../services';
-import { NadPositionsGenerationMode } from './network-visualizations.types';
 
 export function NetworkAreaDiagramParameters() {
-    const [isNadPositionsProvided, setIsNadPositionsProvided] = useState<boolean>(false);
-
-    useEffect(() => {
-        fetchNadPositionsGenerationMode().then(({ enableProvidedNadPositionsGenerationMode }) => {
-            setIsNadPositionsProvided(enableProvidedNadPositionsGenerationMode);
-        });
-    }, []);
-
-    // the translation of values
-    const nadPositionsGenerationMode = NAD_POSITIONS_GENERATION_MODE.filter(
-        (option) => !(isNadPositionsProvided && option.id === NadPositionsGenerationMode.PROVIDED)
-    );
-
     return (
         <Grid
             container
@@ -49,7 +33,7 @@ export function NetworkAreaDiagramParameters() {
                     fullWidth
                     name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_POSITIONS_GENERATION_MODE}`}
                     size="small"
-                    options={Object.values(nadPositionsGenerationMode)?.map((option) => option)}
+                    options={Object.values(NAD_POSITIONS_GENERATION_MODE)?.map((option) => option)}
                 />
             </Grid>
         </Grid>
