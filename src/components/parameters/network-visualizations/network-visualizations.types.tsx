@@ -47,7 +47,6 @@ type SingleLineDiagramParameters = {
 
 type NetworkAreaDiagramParameters = {
     nadPositionsGenerationMode: string;
-    positionsConfigUuid: UUID | null;
 };
 
 export type NetworkVisualizationParameters = {
