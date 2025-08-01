@@ -9,6 +9,7 @@ import {
     MAP_BASEMAP_CARTO_NOLABEL,
     MAP_BASEMAP_ETALAB,
     MAP_BASEMAP_MAPBOX,
+    NadPositionsGenerationMode,
     SubstationLayout,
 } from './network-visualizations.types';
 
@@ -92,15 +93,15 @@ export const INTL_SUBSTATION_LAYOUT_OPTIONS = [
 
 export const NAD_POSITIONS_GENERATION_MODE = [
     {
-        id: 'GEOGRAPHICAL_COORDINATES',
+        id: NadPositionsGenerationMode.GEOGRAPHICAL_COORDINATES,
         label: 'GeoDATA',
     },
     {
-        id: 'AUTOMATIC',
+        id: NadPositionsGenerationMode.AUTOMATIC,
         label: 'Automatic',
     },
     {
-        id: 'PROVIDED',
+        id: NadPositionsGenerationMode.PROVIDED,
         label: 'ProvidedPositions',
     },
 ];

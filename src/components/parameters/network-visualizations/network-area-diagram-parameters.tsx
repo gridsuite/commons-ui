@@ -16,6 +16,7 @@ import {
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
 import { fetchNadPositionsGenerationMode } from '../../../services';
+import { NadPositionsGenerationMode } from './network-visualizations.types';
 
 export function NetworkAreaDiagramParameters() {
     const [isNadPositionsProvided, setIsNadPositionsProvided] = useState<boolean>(false);
@@ -28,7 +29,7 @@ export function NetworkAreaDiagramParameters() {
 
     // the translation of values
     const nadPositionsGenerationMode = NAD_POSITIONS_GENERATION_MODE.filter(
-        (option) => !(isNadPositionsProvided && option.id === 'PROVIDED')
+        (option) => !(isNadPositionsProvided && option.id === NadPositionsGenerationMode.PROVIDED)
     );
 
     return (
