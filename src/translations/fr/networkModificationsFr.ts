@@ -77,6 +77,5 @@ export const networkModificationsFr = {
         'Modification de la topologie du poste {computedLabel}',
     'network_modifications.CREATE_COUPLING_DEVICE': 'Création de couplage / omnibus dans le poste {computedLabel}',
     'network_modifications.BALANCES_ADJUSTMENT_MODIFICATION': "Modification d'équilibrage bilan",
-    'network_modifications.VOLTAGE_LEVEL_BUS_BAR_SECTIONS_CREATION':
-        'Création des Busbar sections dans le poste {computedLabel}',
+    'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Création des Busbar sections dans le poste {computedLabel}',
 };
