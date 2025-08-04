@@ -92,29 +92,40 @@ export async function initializeFromLastSelected(): Promise<UUID[] | null> {
 }
 
 /**
- * Fetches expansion paths for multiple selected items
+ * Fetches expansion paths for multiple selected items, collecting unique parent directories
+ * (excluding the selected items themselves) and sorting them by their minimum depth across
+ * all paths. This ensures parents appear before their descendants in the returned array,
+ * which is crucial for sequential fetching to avoid loading children before parents are
+ * fully populated in the node map.
  * @param selectedIds Array of selected item UUIDs
  * @param expanded Optional existing expanded nodes
- * @returns Promise resolving to combined expansion array
+ * @returns Promise resolving to combined expansion array sorted by depth
  */
 export async function getExpansionPathsForSelected(selectedIds: UUID[], expanded: UUID[] = []): Promise<UUID[]> {
     const expandedSet = new Set<UUID>(expanded);
+    const idToMinIndex = new Map<UUID, number>();
 
-    const fetchPromises = selectedIds.map(async (selectedId) => {
-        const path = await fetchDirectoryPathSafe(selectedId);
+    const paths = await Promise.all(selectedIds.map(fetchDirectoryPathSafe));
 
-        if (path && path.length > 0) {
-            // Add all parent directories to the expanded set (exclude the item itself)
+    paths
+        .filter((p): p is ElementAttributes[] => !!p && p.length > 0)
+        .forEach((path) => {
             path.forEach((element, index) => {
                 if (index < path.length - 1) {
-                    expandedSet.add(element.elementUuid);
+                    const id = element.elementUuid;
+                    expandedSet.add(id);
+                    if (!idToMinIndex.has(id) || index < idToMinIndex.get(id)!) {
+                        idToMinIndex.set(id, index);
+                    }
                 }
             });
-        }
-    });
+        });
 
-    await Promise.all(fetchPromises);
-    return Array.from(expandedSet);
+    const expandedArray = Array.from(expandedSet).sort(
+        (a, b) => (idToMinIndex.get(a) ?? Infinity) - (idToMinIndex.get(b) ?? Infinity)
+    );
+
+    return expandedArray;
 }
 
 /**
@@ -142,17 +153,16 @@ export async function saveLastSelectedDirectoryFromNode(node: {
 }
 
 /**
- * Fetches children for expanded nodes with staggered delay to avoid overwhelming the server
+ * Fetches children for expanded nodes sequentially to ensure parent nodes are loaded before children
  * @param expandedNodes Array of node UUIDs to fetch children for
  * @param fetchChildrenCallback Function to fetch children for a single node
- * @param delayBetweenRequests Delay in milliseconds between requests (default: 100ms)
  */
-export function fetchChildrenForExpandedNodes(
+export async function fetchChildrenForExpandedNodes(
     expandedNodes: UUID[],
-    fetchChildrenCallback: (nodeId: UUID, delay: number) => void,
-    delayBetweenRequests: number = 100
-): void {
-    expandedNodes.forEach((nodeId, index) => {
-        fetchChildrenCallback(nodeId, index * delayBetweenRequests);
-    });
+    fetchChildrenCallback: (nodeId: UUID) => Promise<void>
+): Promise<void> {
+    await expandedNodes.reduce(async (promise, nodeId) => {
+        await promise;
+        return fetchChildrenCallback(nodeId);
+    }, Promise.resolve());
 }
