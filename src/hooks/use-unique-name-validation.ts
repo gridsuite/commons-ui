@@ -90,10 +90,15 @@ export function useUniqueNameValidation({
         const trimmedValue = value?.trim?.();
         if (!trimmedValue) {
             clearErrors('root.isValidating');
-            setError(name, {
-                type: 'validate',
-                message: 'nameEmpty',
-            });
+
+            if (isDirty) {
+                setError(name, {
+                    type: 'validate',
+
+                    message: 'nameEmpty',
+                });
+            }
+
             return;
         }
 
