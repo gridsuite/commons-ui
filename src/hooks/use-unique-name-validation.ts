@@ -88,7 +88,7 @@ export function useUniqueNameValidation({
     // We have to use an useEffect because the name can change from outside of this component (when we upload a case file for instance)
     useEffect(() => {
         const trimmedValue = value?.trim?.();
-        if (!trimmedValue) {
+        if (!trimmedValue && isDirty) {
             clearErrors('root.isValidating');
             setError(name, {
                 type: 'validate',
