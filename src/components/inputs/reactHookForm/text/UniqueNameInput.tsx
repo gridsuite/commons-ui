@@ -176,7 +176,12 @@ export function UniqueNameInput({
             fullWidth={fullWidth}
             error={!!error}
             helperText={translatedError}
-            InputProps={{ endAdornment }}
+            InputProps={{
+                endAdornment,
+                inputProps: {
+                    'data-testid': 'NameInputField',
+                },
+            }}
             {...formProps}
         />
     );
