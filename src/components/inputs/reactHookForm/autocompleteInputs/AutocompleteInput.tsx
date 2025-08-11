@@ -59,7 +59,7 @@ export function AutocompleteInput({
         if (currentValue?.id === newValue) {
             return;
         }
-        if (!onCheckNewValue?.(newValue)) {
+        if (onCheckNewValue && !onCheckNewValue(newValue)) {
             return;
         }
         onChangeCallback?.();
