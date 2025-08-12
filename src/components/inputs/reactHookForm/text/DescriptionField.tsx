@@ -51,7 +51,6 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
                         minRows={3}
                         rows={3}
                         sx={expandingTextSx}
-                        data-testid="DescriptionInputField"
                     />
                     <Button
                         sx={{

@@ -89,7 +89,6 @@ export function DescriptionModificationDialog({
                     label="descriptionProperty"
                     minRows={3}
                     rows={3}
-                    data-testid="DescriptionInputField"
                 />
             </Box>
         </CustomMuiDialog>
