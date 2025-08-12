@@ -23,7 +23,7 @@ export enum SubstationLayout {
 export enum NadPositionsGenerationMode {
     GEOGRAPHICAL_COORDINATES = 'GEOGRAPHICAL_COORDINATES',
     AUTOMATIC = 'AUTOMATIC',
-    PROVIDED = 'PROVIDED',
+    CONFIGURED = 'CONFIGURED',
 }
 
 type MapParameters = {

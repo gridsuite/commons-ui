@@ -93,15 +93,15 @@ export const INTL_SUBSTATION_LAYOUT_OPTIONS = [
 
 export const NAD_POSITIONS_GENERATION_MODE = [
     {
+        id: NadPositionsGenerationMode.CONFIGURED,
+        label: 'ConfiguredPositions',
+    },
+    {
         id: NadPositionsGenerationMode.GEOGRAPHICAL_COORDINATES,
-        label: 'GeoDATA',
+        label: 'GeographicalCoordinates',
     },
     {
         id: NadPositionsGenerationMode.AUTOMATIC,
         label: 'Automatic',
-    },
-    {
-        id: NadPositionsGenerationMode.PROVIDED,
-        label: 'ProvidedPositions',
     },
 ];
