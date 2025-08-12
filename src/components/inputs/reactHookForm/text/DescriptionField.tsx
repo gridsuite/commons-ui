@@ -40,7 +40,7 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
     return (
         <Box>
             {!isDescriptionFieldVisible ? (
-                <Button startIcon={<AddIcon />} onClick={handleOpenDescription}>
+                <Button startIcon={<AddIcon />} onClick={handleOpenDescription} data-testid="AddDescriptionButton">
                     <FormattedMessage id="AddDescription" />
                 </Button>
             ) : (
