@@ -8,11 +8,9 @@
 import { useMemo } from 'react';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, identity, isFieldRequired } from '../utils/functions';
-import { FieldLabel } from '../utils/FieldLabel';
-import { useCustomFormContext } from '../provider/useCustomFormContext';
-import { Option } from '../../../../utils/types/types';
-import { HelperPreviousValue } from '../utils/HelperPreviousValue';
+import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
+import { useCustomFormContext } from '../provider';
+import { Option } from '../../../../utils';
 
 export interface AutocompleteInputProps
     extends Omit<
@@ -31,6 +29,7 @@ export interface AutocompleteInputProps
     onChangeCallback?: () => void;
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
     disabledTooltip?: boolean;
+    onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
 }
 
 export function AutocompleteInput({
@@ -45,6 +44,7 @@ export function AutocompleteInput({
     onChangeCallback, // method called when input value is changing
     formProps,
     disabledTooltip,
+    onCheckNewValue,
     ...props
 }: AutocompleteInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
@@ -57,6 +57,9 @@ export function AutocompleteInput({
         const currentValue = getValues(name);
         // Avoid to trigger onChange if objects have the same id
         if (currentValue?.id === newValue) {
+            return;
+        }
+        if (onCheckNewValue && !onCheckNewValue(newValue)) {
             return;
         }
         onChangeCallback?.();
