@@ -62,6 +62,7 @@ export function ExpandingTextField({
                 whiteSpace: 'pre',
                 resize: 'none', // or 'horizontal' for horizontal resizing
             },
+            inputProps: { 'data-testid': 'DescriptionInputField' },
         },
         helperText: <Typography variant="caption">{descriptionCounter}</Typography>,
         FormHelperTextProps: {
