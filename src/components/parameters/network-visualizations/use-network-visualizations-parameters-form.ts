@@ -96,14 +96,10 @@ export const useNetworkVisualizationParametersForm = ({
                 [TabValues.NETWORK_AREA_DIAGRAM]: yup.object().shape({
                     [PARAM_NAD_POSITIONS_GENERATION_MODE]: yup
                         .string()
-                        .test(
-                            'nadPositionsConfigRequired',
-                            'nadPositionsConfigRequiredError',
-                            function nadPositionsConfigRequired(value) {
-                                const { nadPositionsConfigUuid } = this.parent || {};
-                                return !(value === 'CONFIGURED' && nadPositionsConfigUuid === null);
-                            }
-                        ),
+                        .test('nadPositionsConfigRequiredError', function nadPositionsConfigRequired(value) {
+                            const { nadPositionsConfigUuid } = this.parent || {};
+                            return !(value === 'CONFIGURED' && nadPositionsConfigUuid === null);
+                        }),
                 }),
             })
             .concat(getNameElementEditorSchema(name));
