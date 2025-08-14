@@ -544,6 +544,7 @@ export function TopBar({
                                                     value={LANG_SYSTEM}
                                                     aria-label={LANG_SYSTEM}
                                                     sx={styles.languageToggleButton}
+                                                    data-testid="LangSystem"
                                                 >
                                                     <ComputerIcon />
                                                 </ToggleButton>
@@ -551,6 +552,7 @@ export function TopBar({
                                                     value={LANG_ENGLISH}
                                                     aria-label={LANG_ENGLISH}
                                                     sx={styles.languageToggleButton}
+                                                    data-testid="LangEnglish"
                                                 >
                                                     EN
                                                 </ToggleButton>
@@ -558,6 +560,7 @@ export function TopBar({
                                                     value={LANG_FRENCH}
                                                     aria-label={LANG_FRENCH}
                                                     sx={styles.toggleButton}
+                                                    data-testid="LangFrench"
                                                 >
                                                     FR
                                                 </ToggleButton>
