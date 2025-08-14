@@ -94,14 +94,14 @@ export const INTL_SUBSTATION_LAYOUT_OPTIONS = [
 export const NAD_POSITIONS_GENERATION_MODE = [
     {
         id: NadPositionsGenerationMode.CONFIGURED,
-        label: 'ConfiguredPositions',
+        label: 'NadConfiguredPositionsModeLabel',
     },
     {
         id: NadPositionsGenerationMode.GEOGRAPHICAL_COORDINATES,
-        label: 'GeographicalCoordinates',
+        label: 'NadGeoPositionsModeLabel',
     },
     {
         id: NadPositionsGenerationMode.AUTOMATIC,
-        label: 'Automatic',
+        label: 'NadAutoPositionsModeLabel',
     },
 ];

@@ -6,6 +6,7 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useFormContext } from 'react-hook-form';
 import {
     NAD_POSITIONS_GENERATION_MODE_LABEL,
     NAD_POSITIONS_GENERATION_MODE,
@@ -16,6 +17,13 @@ import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
 
 export function NetworkAreaDiagramParameters() {
+    const {
+        formState: { errors },
+    } = useFormContext();
+    const fieldError = errors?.[TabValues.NETWORK_AREA_DIAGRAM]?.[
+        PARAM_NAD_POSITIONS_GENERATION_MODE as keyof (typeof errors)[TabValues.NETWORK_AREA_DIAGRAM]
+    ] as { message?: string } | undefined;
+
     return (
         <Grid
             container
@@ -34,6 +42,8 @@ export function NetworkAreaDiagramParameters() {
                     name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_POSITIONS_GENERATION_MODE}`}
                     size="small"
                     options={Object.values(NAD_POSITIONS_GENERATION_MODE)?.map((option) => option)}
+                    error={!!fieldError}
+                    helperText={fieldError?.message}
                 />
             </Grid>
         </Grid>
