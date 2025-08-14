@@ -6,14 +6,12 @@
  */
 
 import { FormattedMessage } from 'react-intl';
-import { FormControl, FormHelperText, MenuItem, Select, SelectProps } from '@mui/material';
+import { MenuItem, Select, SelectProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 
 export type MuiSelectInputProps = SelectProps & {
     name: string;
     options: { id: string; label: string }[] | string[];
-    error?: boolean;
-    helperText?: string;
 };
 
 function renderMenuItem(option: { id: string; label: string } | string) {
@@ -29,7 +27,7 @@ function renderMenuItem(option: { id: string; label: string } | string) {
 }
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-export function MuiSelectInput({ name, options, error, helperText, ...props }: MuiSelectInputProps) {
+export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
     const {
         field: { value, onChange },
     } = useController({
@@ -37,11 +35,8 @@ export function MuiSelectInput({ name, options, error, helperText, ...props }: M
     });
 
     return (
-        <FormControl fullWidth error={error} size={props.size}>
-            <Select value={value} onChange={onChange} {...props}>
-                {options.map(renderMenuItem)}
-            </Select>
-            {helperText && <FormHelperText>{helperText}</FormHelperText>}
-        </FormControl>
+        <Select value={value} onChange={onChange} {...props}>
+            {options.map(renderMenuItem)}
+        </Select>
     );
 }

@@ -90,7 +90,6 @@ export const parametersEn = {
     NadGeoPositionsModeLabel: 'Geographical',
     NadAutoPositionsModeLabel: 'Automatic',
     NadConfiguredPositionsModeLabel: 'Configured',
-    nadPositionsConfigRequiredError: 'No position has been configured',
     GridSuiteAndConvergence: 'GridSuite_And_Convergence',
     Convergence: 'Convergence',
     FlatDesign: 'Flat_Design',
