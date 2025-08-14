@@ -59,6 +59,7 @@ export function CriteriaBasedForm({ equipments, defaultValues, children }: Reado
                     resetOnConfirmation={handleResetOnConfirmation}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
+                    data-testid="EquipmentTypeSelector"
                 />
             </Box>
             <Box sx={unscrollableDialogStyles.scrollableContent}>
