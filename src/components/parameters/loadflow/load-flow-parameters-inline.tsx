@@ -17,7 +17,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../inputs';
 import { LabelledButton } from '../common/parameters';
-import { ElementType, mergeSx } from '../../../utils';
+import { ElementType, GsLang, mergeSx } from '../../../utils';
 import { LineSeparator } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchLoadFlowParameters } from '../../../services/loadflow';
@@ -34,7 +34,7 @@ export function LoadFlowParametersInline({
     enableDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
-    language: string;
+    language: GsLang;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
     enableDeveloperMode: boolean;

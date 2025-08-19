@@ -24,6 +24,7 @@ import { FilterType } from './constants/FilterConstants';
 import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
+import { GsLang } from '../../utils';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -49,7 +50,7 @@ export interface FilterCreationDialogProps {
     open: boolean;
     onClose: () => void;
     activeDirectory?: UUID;
-    language?: string;
+    language?: GsLang;
     sourceFilterForExplicitNamingConversion?: {
         id: UUID;
         equipmentType: string;

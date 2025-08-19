@@ -11,10 +11,11 @@ import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
 import { CustomFormProvider } from '../../inputs';
+import { GsLang } from '../../../utils';
 
 interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
-    language: string;
+    language: GsLang;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
 }
