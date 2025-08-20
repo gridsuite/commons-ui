@@ -18,7 +18,7 @@ export function CountryValueEditor(props: ValueEditorProps) {
     const { value, handleOnChange, title } = props;
 
     const { language } = useCustomFormContext();
-    const { translate, countryCodes } = useLocalizedCountries(language);
+    const { translate, countryCodes } = useLocalizedCountries(language!);
     const [favoriteCountryCodes, setFavoriteCountryCodes] = useState<string[]>([]);
     const [initialized, setInitialized] = useState<boolean>(false);
 
