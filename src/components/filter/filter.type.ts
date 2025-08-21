@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import { FieldConstants } from '../../utils';
+import { FieldConstants, GsLang } from '../../utils';
 import { RuleGroupTypeExport } from './expert/expertFilter.type';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
@@ -43,7 +43,7 @@ export interface FilterEditionProps {
         [FILTER_EQUIPMENTS_ATTRIBUTES]?: EquipmentsFilter[];
     }>;
     activeDirectory?: UUID;
-    language?: string;
+    language?: GsLang;
     description?: string;
 }
 
