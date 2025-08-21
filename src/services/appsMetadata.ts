@@ -57,7 +57,6 @@ export async function fetchFavoriteAndDefaultCountries(): Promise<{
         defaultCountry,
     };
 }
-
 export const fetchDefaultCountry = async (): Promise<string | undefined> => {
     const studyMetadata = await fetchStudyMetadata();
     return studyMetadata.defaultCountry;
