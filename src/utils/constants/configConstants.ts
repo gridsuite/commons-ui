@@ -9,3 +9,12 @@ export const PARAM_THEME = 'theme';
 export const PARAM_LANGUAGE = 'language';
 export const PARAM_DEVELOPER_MODE = 'enableDeveloperMode';
 export const LAST_SELECTED_DIRECTORY = 'lastSelectedDirectory';
+
+export const COMMON_CONFIG_PARAMS_NAMES = new Set([
+    PARAM_THEME,
+    PARAM_LANGUAGE,
+    LAST_SELECTED_DIRECTORY,
+    PARAM_DEVELOPER_MODE,
+]);
+
+export const COMMON_APP_NAME = 'common';
