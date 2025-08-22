@@ -98,6 +98,7 @@ export const useModificationLabelComputer = () => {
                     });
                 case MODIFICATION_TYPES.CREATE_COUPLING_DEVICE.type:
                 case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_TOPOLOGY.type:
+                case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_SECTION.type:
                     return modificationMetadata.voltageLevelId;
                 default:
                     return modificationMetadata.equipmentId || '';

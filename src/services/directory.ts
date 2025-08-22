@@ -7,16 +7,33 @@
 
 import { UUID } from 'crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
-import { ElementAttributes } from '../utils';
+import { COMMON_APP_NAME, COMMON_CONFIG_PARAMS_NAMES, ElementAttributes } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 const PREFIX_CONFIG_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/config`;
 
-export function updateConfigParameter(name: string, value: string) {
-    const appName = 'common';
-    console.info("Updating config parameter '%s=%s' for app '%s' ", name, value, appName);
-    const updateParams = `${PREFIX_CONFIG_QUERIES}/v1/applications/${appName}/parameters/${name}?value=${encodeURIComponent(value)}`;
+export function getAppName(appName: string, name: string) {
+    return COMMON_CONFIG_PARAMS_NAMES.has(name) ? COMMON_APP_NAME : appName;
+}
+
+export function updateConfigParameter(appName: string, name: string, value: string) {
+    const targetAppName = getAppName(appName, name);
+    console.info(`Updating config parameter '${name}=${value}' for app '${targetAppName}'`);
+    const updateParams = `${PREFIX_CONFIG_QUERIES}/v1/applications/${targetAppName}/parameters/${name}?value=${encodeURIComponent(value)}`;
     return backendFetch(updateParams, { method: 'put' });
+}
+
+export function fetchConfigParameters(appName: string) {
+    console.info(`Fetching UI configuration params for app : ${appName}`);
+    const fetchParams = `${PREFIX_CONFIG_QUERIES}/v1/applications/${appName}/parameters`;
+    return backendFetchJson(fetchParams);
+}
+
+export function fetchConfigParameter(appName: string, name: string) {
+    const targetAppName = getAppName(appName, name);
+    console.info(`Fetching UI config parameter '${name}' for app '${targetAppName}'`);
+    const fetchParams = `${PREFIX_CONFIG_QUERIES}/v1/applications/${targetAppName}/parameters/${name}`;
+    return backendFetchJson(fetchParams);
 }
 
 export function fetchRootFolders(types: string[]): Promise<ElementAttributes[]> {

@@ -225,6 +225,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={filterStyles.textField}
+                    data-testid="EquipmentTypeSelector"
                 />
                 {sourceFilterForExplicitNamingConversion && (
                     <ModifyElementSelection

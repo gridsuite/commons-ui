@@ -262,9 +262,9 @@ export function DirectoryItemSelector({
     }, [convertRoots, types, snackError]);
 
     const fetchDirectoryChildren = useCallback(
-        (nodeId: UUID): void => {
+        (nodeId: UUID): Promise<void> => {
             const typeList = types.includes(ElementType.DIRECTORY) ? [] : types;
-            fetchDirectoryContent(nodeId, typeList)
+            return fetchDirectoryContent(nodeId, typeList)
                 .then((children) => {
                     const childrenMatchedTypes = children.filter((item: ElementAttributes) =>
                         contentFilter().has(item.type)
@@ -279,7 +279,7 @@ export function DirectoryItemSelector({
                             types,
                             equipmentTypes
                         ).then((childrenWithMetadata: ElementAttributes[]) => {
-                            const filtredChildren = itemFilter
+                            const filteredChildren = itemFilter
                                 ? childrenWithMetadata.filter((val: ElementAttributes) => {
                                       // Accept every directory
                                       if (val.type === ElementType.DIRECTORY) {
@@ -290,12 +290,12 @@ export function DirectoryItemSelector({
                                   })
                                 : childrenWithMetadata;
                             // update directory content
-                            addToDirectory(nodeId, filtredChildren);
+                            addToDirectory(nodeId, filteredChildren);
                         });
-                    } else {
-                        // update directory content
-                        addToDirectory(nodeId, childrenMatchedTypes);
                     }
+                    // update directory content
+                    addToDirectory(nodeId, childrenMatchedTypes);
+                    return Promise.resolve();
                 })
                 .catch((error) => {
                     console.warn(`Could not update subs (and content) of '${nodeId}' : ${error.message}`);
@@ -306,13 +306,11 @@ export function DirectoryItemSelector({
 
     // Helper function to fetch children for a node if not already loaded
     const fetchNodeChildrenIfNeeded = useCallback(
-        (nodeId: UUID, delay: number = 0) => {
-            setTimeout(() => {
-                const node = nodeMap.current[nodeId];
-                if (node && (!node.children || node.children.length === 0) && node.type === ElementType.DIRECTORY) {
-                    fetchDirectoryChildren(nodeId);
-                }
-            }, delay);
+        async (nodeId: UUID): Promise<void> => {
+            const node = nodeMap.current[nodeId];
+            if (node && (!node.children || node.children.length === 0) && node.type === ElementType.DIRECTORY) {
+                await fetchDirectoryChildren(nodeId);
+            }
         },
         [fetchDirectoryChildren]
     );
@@ -325,18 +323,18 @@ export function DirectoryItemSelector({
 
         const expandedArray = await getExpansionPathsForSelected(selected, expanded);
         setAutoExpandedNodes(expandedArray);
-        fetchChildrenForExpandedNodes(expandedArray, fetchNodeChildrenIfNeeded);
+        await fetchChildrenForExpandedNodes(expandedArray, fetchNodeChildrenIfNeeded);
         return true;
     }, [selected, expanded, fetchNodeChildrenIfNeeded]);
 
     // Handle expansion from provided expanded prop
-    const handleProvidedExpansion = useCallback((): boolean => {
+    const handleProvidedExpansion = useCallback(async (): Promise<boolean> => {
         if (!expanded || expanded.length === 0) {
             return false;
         }
 
         setAutoExpandedNodes(expanded);
-        fetchChildrenForExpandedNodes(expanded, fetchNodeChildrenIfNeeded);
+        await fetchChildrenForExpandedNodes(expanded, fetchNodeChildrenIfNeeded);
 
         return true;
     }, [expanded, fetchNodeChildrenIfNeeded]);
@@ -350,7 +348,7 @@ export function DirectoryItemSelector({
         }
 
         setAutoExpandedNodes(expandPath);
-        fetchChildrenForExpandedNodes(expandPath, fetchNodeChildrenIfNeeded);
+        await fetchChildrenForExpandedNodes(expandPath, fetchNodeChildrenIfNeeded);
 
         return true;
     }, [fetchNodeChildrenIfNeeded]);
@@ -359,11 +357,15 @@ export function DirectoryItemSelector({
     const initializeExpansion = useCallback(async () => {
         // Priority 1: Handle selected items
         const selectedSuccess = await handleSelectedExpansion();
-        if (selectedSuccess) return;
+        if (selectedSuccess) {
+            return;
+        }
 
         // Priority 2: Handle provided expanded items
-        const expandedSuccess = handleProvidedExpansion();
-        if (expandedSuccess) return;
+        const expandedSuccess = await handleProvidedExpansion();
+        if (expandedSuccess) {
+            return;
+        }
 
         // Priority 3: Fall back to last selected directory
         await handleLastSelectedExpansion();

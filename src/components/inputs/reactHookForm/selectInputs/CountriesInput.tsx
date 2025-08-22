@@ -18,7 +18,7 @@ export interface CountryInputProps {
 
 export function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
     const { language } = useCustomFormContext();
-    const { translate, countryCodes } = useLocalizedCountries(language);
+    const { translate, countryCodes } = useLocalizedCountries(language!);
 
     const translateOption = useCallback(
         (option: Option) => {

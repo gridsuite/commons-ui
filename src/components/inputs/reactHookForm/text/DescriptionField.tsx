@@ -40,7 +40,7 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
     return (
         <Box>
             {!isDescriptionFieldVisible ? (
-                <Button startIcon={<AddIcon />} onClick={handleOpenDescription}>
+                <Button startIcon={<AddIcon />} onClick={handleOpenDescription} data-testid="AddDescriptionButton">
                     <FormattedMessage id="AddDescription" />
                 </Button>
             ) : (
@@ -51,7 +51,6 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
                         minRows={3}
                         rows={3}
                         sx={expandingTextSx}
-                        data-testid="DescriptionInputField"
                     />
                     <Button
                         sx={{

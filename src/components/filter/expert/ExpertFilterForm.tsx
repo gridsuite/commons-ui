@@ -136,6 +136,7 @@ export function ExpertFilterForm() {
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={filterStyles.textField}
+                    data-testid="EquipmentTypeSelector"
                 />
             </Box>
             <Box sx={unscrollableDialogStyles.scrollableContent}>
