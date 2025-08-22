@@ -24,4 +24,5 @@ export const equipmentsEn = {
     LccConverterStations: 'LCC converter stations',
     VscConverterStations: 'VSC converter stations',
     StaticVarCompensators: 'Static var compensators',
+    HvdcLines: 'HVDC lines',
 };

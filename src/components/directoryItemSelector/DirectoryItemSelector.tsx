@@ -159,6 +159,7 @@ export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     itemFilter?: (val: ElementAttributes) => boolean;
     expanded?: UUID[];
     selected?: UUID[];
+    fetchMetaData?: boolean;
 }
 
 function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps): number {
@@ -180,6 +181,7 @@ export function DirectoryItemSelector({
     expanded,
     selected,
     onClose,
+    fetchMetaData,
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
@@ -268,7 +270,10 @@ export function DirectoryItemSelector({
                         contentFilter().has(item.type)
                     );
 
-                    if (childrenMatchedTypes.length > 0 && equipmentTypes && equipmentTypes.length > 0) {
+                    if (
+                        childrenMatchedTypes.length > 0 &&
+                        ((equipmentTypes && equipmentTypes.length > 0) || fetchMetaData)
+                    ) {
                         fetchElementsInfos(
                             childrenMatchedTypes.map((e: ElementAttributes) => e.elementUuid),
                             types,
@@ -296,7 +301,7 @@ export function DirectoryItemSelector({
                     console.warn(`Could not update subs (and content) of '${nodeId}' : ${error.message}`);
                 });
         },
-        [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
+        [types, equipmentTypes, fetchMetaData, contentFilter, itemFilter, addToDirectory]
     );
 
     // Helper function to fetch children for a node if not already loaded
