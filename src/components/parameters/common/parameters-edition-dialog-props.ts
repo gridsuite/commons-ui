@@ -7,6 +7,7 @@
 
 import { UUID } from 'crypto';
 import { User } from 'oidc-client';
+import { GsLang } from '../../../utils';
 
 export interface ParametersEditionDialogProps {
     id: UUID;
@@ -16,7 +17,7 @@ export interface ParametersEditionDialogProps {
     name: string;
     description: string | null;
     activeDirectory: UUID;
-    language?: string;
+    language?: GsLang;
     user: User | null;
     enableDeveloperMode?: boolean;
 }

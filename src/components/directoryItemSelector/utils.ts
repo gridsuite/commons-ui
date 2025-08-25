@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'crypto';
-import { ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../utils';
+import { COMMON_APP_NAME, ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../utils';
 import { fetchDirectoryElementPath, updateConfigParameter } from '../../services';
 
 /**
@@ -30,7 +30,7 @@ export async function clearLastSelectedDirectory(): Promise<void> {
     localStorage.removeItem(LAST_SELECTED_DIRECTORY);
 
     try {
-        await updateConfigParameter(LAST_SELECTED_DIRECTORY, 'null');
+        await updateConfigParameter(COMMON_APP_NAME, LAST_SELECTED_DIRECTORY, 'null');
     } catch (error) {
         console.error('Failed to clear last selected directory:', error);
     }
@@ -42,7 +42,7 @@ export async function clearLastSelectedDirectory(): Promise<void> {
  */
 export async function saveLastSelectedDirectory(directoryId: UUID): Promise<void> {
     try {
-        await updateConfigParameter(LAST_SELECTED_DIRECTORY, directoryId);
+        await updateConfigParameter(COMMON_APP_NAME, LAST_SELECTED_DIRECTORY, directoryId);
     } catch (error) {
         console.error('Failed to save last selected directory:', error);
     }
