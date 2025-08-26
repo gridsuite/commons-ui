@@ -10,11 +10,12 @@ import { type FieldValues, FormProvider, type UseFormReturn } from 'react-hook-f
 import * as yup from 'yup';
 import { type ObjectSchema } from 'yup';
 import { getSystemLanguage } from '../../../../hooks/useLocalizedCountries';
+import { GsLang } from '../../../../utils';
 
 type CustomFormContextProps<TFieldValues extends FieldValues = FieldValues> = {
     removeOptional?: boolean;
     validationSchema: ObjectSchema<TFieldValues>;
-    language?: string;
+    language?: GsLang;
     isNodeBuilt?: boolean;
     isUpdate?: boolean;
 };

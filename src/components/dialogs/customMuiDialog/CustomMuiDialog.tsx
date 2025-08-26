@@ -14,6 +14,7 @@ import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
+import { GsLang } from '../../../utils';
 
 export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogProps & {
     open: boolean;
@@ -28,7 +29,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     onCancel?: () => void;
     children: ReactNode;
     isDataFetching?: boolean;
-    language?: string;
+    language?: GsLang;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
 };

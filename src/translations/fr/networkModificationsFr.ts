@@ -78,5 +78,5 @@ export const networkModificationsFr = {
     'network_modifications.CREATE_COUPLING_DEVICE': 'Création de couplage / omnibus dans le poste {computedLabel}',
     'network_modifications.BALANCES_ADJUSTMENT_MODIFICATION': "Modification d'équilibrage bilan",
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': "Ajout d'un jeu de barre dans le poste {computedLabel}",
-    'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Création des Busbar sections dans le poste {computedLabel}',
+    'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Ajout de section / tronçon dans le poste {computedLabel}',
 };
