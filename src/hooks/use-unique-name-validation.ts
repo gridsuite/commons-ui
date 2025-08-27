@@ -87,30 +87,42 @@ export function useUniqueNameValidation({
 
     // We have to use an useEffect because the name can change from outside of this component (when we upload a case file for instance)
     useEffect(() => {
-        const trimmedValue = value?.trim?.();
-        if (!trimmedValue && isDirty) {
+        const trimmedValue = value.trim();
+
+        if (selectedDirectory) {
+            debouncedHandleCheckName(trimmedValue);
+        }
+
+        // if the name is unchanged, we don't do custom validation
+        if (!isDirty) {
+            clearErrors(name);
+            return;
+        }
+        if (trimmedValue) {
+            clearErrors(name);
+            setError('root.isValidating', {
+                type: 'validate',
+                message: 'cantSubmitWhileValidating',
+            });
+            debouncedHandleCheckName(trimmedValue);
+        } else {
             clearErrors('root.isValidating');
             setError(name, {
                 type: 'validate',
                 message: 'nameEmpty',
             });
-            return;
         }
-
-        if (!isDirty || defaultFieldValue?.trim?.() === trimmedValue) {
-            clearErrors(name);
-            return;
-        }
-
-        setError('root.isValidating', {
-            type: 'validate',
-            message: 'cantSubmitWhileValidating',
-        });
-
-        if (directory) {
-            debouncedHandleCheckName(trimmedValue);
-        }
-    }, [value, debouncedHandleCheckName, setError, clearErrors, name, isDirty, defaultFieldValue, directory]);
+    }, [
+        value,
+        debouncedHandleCheckName,
+        setError,
+        clearErrors,
+        name,
+        isDirty,
+        defaultFieldValue,
+        directory,
+        selectedDirectory,
+    ]);
 
     return {
         isValidating,
