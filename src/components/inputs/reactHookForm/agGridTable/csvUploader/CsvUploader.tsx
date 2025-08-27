@@ -20,8 +20,8 @@ import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
 import { useWatch } from 'react-hook-form';
-import { FieldConstants } from '../../../../../utils/constants/fieldConstants';
-import { CancelButton } from '../../utils/CancelButton';
+import { FieldConstants, GsLang, LANG_FRENCH } from '../../../../../utils';
+import { CancelButton } from '../../utils';
 
 export interface CsvUploaderProps {
     name: string;
@@ -34,6 +34,7 @@ export interface CsvUploaderProps {
     validateData: (rows: string[][]) => boolean;
     getDataFromCsv: any;
     useFieldArrayOutput: any;
+    language: GsLang;
 }
 
 export function CsvUploader({
@@ -47,6 +48,7 @@ export function CsvUploader({
     validateData = () => true,
     getDataFromCsv,
     useFieldArrayOutput,
+    language,
 }: Readonly<CsvUploaderProps>) {
     const watchTableValues = useWatch({ name });
     const { append, replace } = useFieldArrayOutput;
@@ -178,7 +180,11 @@ export function CsvUploader({
                         <Grid container spacing={2}>
                             <Grid container item>
                                 <Grid item xs={6}>
-                                    <CsvDownloader datas={data} filename={fileName} separator=",">
+                                    <CsvDownloader
+                                        datas={data}
+                                        filename={fileName}
+                                        separator={language === LANG_FRENCH ? ';' : ','}
+                                    >
                                         <Button variant="contained">
                                             <FormattedMessage id="GenerateCSV" />
                                         </Button>
@@ -194,6 +200,7 @@ export function CsvUploader({
                                     config={{
                                         // We use | for multi values in one cell, then we remove it from the default value for this config, to avoid delimiter autodetection
                                         delimitersToGuess: [',', '	', ';', RECORD_SEP, UNIT_SEP],
+                                        delimiter: language === LANG_FRENCH ? ';' : ',',
                                     }}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (
