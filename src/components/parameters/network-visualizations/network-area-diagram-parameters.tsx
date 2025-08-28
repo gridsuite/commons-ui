@@ -7,12 +7,13 @@
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import {
-    INIT_NAD_WITH_GEO_DATA,
+    NAD_POSITIONS_GENERATION_MODE_LABEL,
+    NAD_POSITIONS_GENERATION_MODE,
     NetworkVisualizationTabValues as TabValues,
-    PARAM_INIT_NAD_WITH_GEO_DATA,
+    PARAM_NAD_POSITIONS_GENERATION_MODE,
 } from './constants';
 import { parametersStyles } from '../parameters-style';
-import { SwitchInput } from '../../inputs';
+import { MuiSelectInput } from '../../inputs';
 
 export function NetworkAreaDiagramParameters() {
     return (
@@ -25,10 +26,15 @@ export function NetworkAreaDiagramParameters() {
             justifyContent="space-between"
         >
             <Grid item xs={8} sx={parametersStyles.parameterName}>
-                <FormattedMessage id={INIT_NAD_WITH_GEO_DATA} />
+                <FormattedMessage id={NAD_POSITIONS_GENERATION_MODE_LABEL} />
             </Grid>
             <Grid item container xs={4} sx={parametersStyles.controlItem}>
-                <SwitchInput name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_INIT_NAD_WITH_GEO_DATA}`} />
+                <MuiSelectInput
+                    fullWidth
+                    name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_POSITIONS_GENERATION_MODE}`}
+                    size="small"
+                    options={Object.values(NAD_POSITIONS_GENERATION_MODE)?.map((option) => option)}
+                />
             </Grid>
         </Grid>
     );

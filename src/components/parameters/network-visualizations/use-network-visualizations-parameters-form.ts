@@ -16,7 +16,6 @@ import {
     PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
     PARAM_DIAGONAL_LABEL,
-    PARAM_INIT_NAD_WITH_GEO_DATA,
     PARAM_LINE_FLOW_MODE,
     PARAM_LINE_FULL_PATH,
     PARAM_LINE_PARALLEL_PATH,
@@ -24,6 +23,7 @@ import {
     PARAM_MAP_MANUAL_REFRESH,
     PARAM_SUBSTATION_LAYOUT,
     NetworkVisualizationTabValues as TabValues,
+    PARAM_NAD_POSITIONS_GENERATION_MODE,
 } from './constants';
 import {
     getNetworkVisualizationsParameters,
@@ -94,7 +94,7 @@ export const useNetworkVisualizationParametersForm = ({
                     [PARAM_COMPONENT_LIBRARY]: yup.string(),
                 }),
                 [TabValues.NETWORK_AREA_DIAGRAM]: yup.object().shape({
-                    [PARAM_INIT_NAD_WITH_GEO_DATA]: yup.boolean(),
+                    [PARAM_NAD_POSITIONS_GENERATION_MODE]: yup.string(),
                 }),
             })
             .concat(getNameElementEditorSchema(name));
@@ -117,7 +117,7 @@ export const useNetworkVisualizationParametersForm = ({
                 [PARAM_COMPONENT_LIBRARY]: '',
             },
             [TabValues.NETWORK_AREA_DIAGRAM]: {
-                [PARAM_INIT_NAD_WITH_GEO_DATA]: false,
+                [PARAM_NAD_POSITIONS_GENERATION_MODE]: '',
             },
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
