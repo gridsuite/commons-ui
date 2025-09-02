@@ -123,7 +123,8 @@ export function DirectoryItemsInput({
                     remove(getValues(name).findIndex((item: FieldValues) => item.id === chip));
                 });
             }
-            const currentColors = [...elementsMetadata];
+
+            const currentElementsMetadata = elementsMetadata ? [...elementsMetadata] : [];
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
@@ -137,7 +138,7 @@ export function DirectoryItemsInput({
                     append(otherElementAttributes);
                     if (equipmentColorsMap && value?.specificMetadata?.equipmentType) {
                         const type: EquipmentType = value?.specificMetadata?.equipmentType as EquipmentType;
-                        currentColors.push({
+                        currentElementsMetadata.push({
                             color: equipmentColorsMap.get(value.specificMetadata.equipmentType) ?? '',
                             translateLabel:
                                 type !== EquipmentType.HVDC_LINE ? BASE_EQUIPMENTS[type]?.label : 'HvdcLines',
@@ -150,7 +151,7 @@ export function DirectoryItemsInput({
             setDirectoryItemSelectorOpen(false);
             setSelected([]);
             if (equipmentColorsMap) {
-                setElementsMetadata(currentColors);
+                setElementsMetadata(currentElementsMetadata);
             }
         },
         [
@@ -172,7 +173,7 @@ export function DirectoryItemsInput({
             remove(index);
             onRowChanged?.(true);
             onChange?.(getValues(name));
-            if (elementsMetadata.length > 0) {
+            if (elementsMetadata?.length > 0) {
                 const currentColors = [...elementsMetadata.slice(0, index), ...elementsMetadata.slice(index + 1)];
                 setElementsMetadata(currentColors);
             }
@@ -225,7 +226,12 @@ export function DirectoryItemsInput({
                                 <Chip
                                     key={item.id}
                                     size="small"
-                                    sx={{ backgroundColor: elementsMetadata?.[index].color }}
+                                    sx={{
+                                        backgroundColor:
+                                            elementsMetadata?.length > index
+                                                ? elementsMetadata?.[index]?.color
+                                                : undefined,
+                                    }}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
                                     label={
@@ -237,7 +243,13 @@ export function DirectoryItemsInput({
                                 />
                                 <FormHelperText>
                                     {elementsMetadata?.[index]?.translateLabel ? (
-                                        <FormattedMessage id={elementsMetadata?.[index]?.translateLabel} />
+                                        <FormattedMessage
+                                            id={
+                                                elementsMetadata?.length > index
+                                                    ? elementsMetadata?.[index]?.translateLabel
+                                                    : undefined
+                                            }
+                                        />
                                     ) : (
                                         ''
                                     )}

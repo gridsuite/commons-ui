@@ -274,7 +274,7 @@ export function DirectoryItemSelector({
                         childrenMatchedTypes.length > 0 &&
                         ((equipmentTypes && equipmentTypes.length > 0) || fetchMetaData)
                     ) {
-                        fetchElementsInfos(
+                        return fetchElementsInfos(
                             childrenMatchedTypes.map((e: ElementAttributes) => e.elementUuid),
                             types,
                             equipmentTypes
