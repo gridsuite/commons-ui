@@ -36,7 +36,7 @@ export function useUniqueNameValidation({
 
     const {
         field: { value },
-        fieldState: { isTouched },
+        formState: { isDirty },
     } = useController({ name });
 
     const {
@@ -91,10 +91,11 @@ export function useUniqueNameValidation({
 
         if (selectedDirectory) {
             debouncedHandleCheckName(trimmedValue);
+            console.log('directory selected');
         }
 
         // if the name is unchanged, we don't do custom validation
-        if (!isTouched) {
+        if (!isDirty) {
             clearErrors(name);
             return;
         }
@@ -118,7 +119,7 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         name,
-        isTouched,
+        isDirty,
         defaultFieldValue,
         directory,
         selectedDirectory,
