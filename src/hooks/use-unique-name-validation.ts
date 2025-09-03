@@ -91,7 +91,6 @@ export function useUniqueNameValidation({
 
         if (selectedDirectory) {
             debouncedHandleCheckName(trimmedValue);
-            console.log('directory selected');
         }
 
         // if the name is unchanged, we don't do custom validation
