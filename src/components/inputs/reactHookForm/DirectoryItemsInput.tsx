@@ -20,7 +20,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { OverflowableText } from '../../overflowableText';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { BASE_EQUIPMENTS, ElementAttributes, EquipmentType, mergeSx } from '../../../utils';
+import { getBasicEquipmentLabel, ElementAttributes, EquipmentType, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 
 const styles = {
@@ -67,11 +67,6 @@ export interface DirectoryItemsInputProps {
     equipmentColorsMap?: Map<string, string>;
 }
 
-interface EquipmentMetaData {
-    color: string;
-    translateLabel: string | undefined;
-}
-
 export function DirectoryItemsInput({
     label,
     name,
@@ -94,7 +89,6 @@ export function DirectoryItemsInput({
     const [multiSelect, setMultiSelect] = useState(allowMultiSelect);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
-    const [elementsMetadata, setElementsMetadata] = useState<EquipmentMetaData[]>([]);
     const {
         fields: elements,
         append,
@@ -102,6 +96,7 @@ export function DirectoryItemsInput({
     } = useFieldArray({
         name,
     });
+    const elementsWithMetaData: TreeViewFinderNodeProps[] = elements as unknown as TreeViewFinderNodeProps[];
 
     const formContext = useCustomFormContext();
     const { getValues, validationSchema } = formContext;
@@ -124,7 +119,6 @@ export function DirectoryItemsInput({
                 });
             }
 
-            const currentElementsMetadata = elementsMetadata ? [...elementsMetadata] : [];
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
@@ -136,36 +130,14 @@ export function DirectoryItemsInput({
                     });
                 } else {
                     append(otherElementAttributes);
-                    if (equipmentColorsMap && value?.specificMetadata?.equipmentType) {
-                        const type: EquipmentType = value?.specificMetadata?.equipmentType as EquipmentType;
-                        currentElementsMetadata.push({
-                            color: equipmentColorsMap.get(value.specificMetadata.equipmentType) ?? '',
-                            translateLabel:
-                                type !== EquipmentType.HVDC_LINE ? BASE_EQUIPMENTS[type]?.label : 'HvdcLines',
-                        });
-                    }
                     onRowChanged?.(true);
                     onChange?.(getValues(name));
                 }
             });
             setDirectoryItemSelectorOpen(false);
             setSelected([]);
-            if (equipmentColorsMap) {
-                setElementsMetadata(currentElementsMetadata);
-            }
         },
-        [
-            selected,
-            elementsMetadata,
-            equipmentColorsMap,
-            remove,
-            getValues,
-            name,
-            snackError,
-            append,
-            onRowChanged,
-            onChange,
-        ]
+        [selected, remove, getValues, name, snackError, append, onRowChanged, onChange]
     );
 
     const removeElements = useCallback(
@@ -173,12 +145,8 @@ export function DirectoryItemsInput({
             remove(index);
             onRowChanged?.(true);
             onChange?.(getValues(name));
-            if (elementsMetadata?.length > 0) {
-                const currentColors = [...elementsMetadata.slice(0, index), ...elementsMetadata.slice(index + 1)];
-                setElementsMetadata(currentColors);
-            }
         },
-        [remove, onRowChanged, onChange, getValues, name, elementsMetadata]
+        [remove, onRowChanged, onChange, getValues, name]
     );
 
     const handleChipClick = useCallback(
@@ -213,23 +181,24 @@ export function DirectoryItemsInput({
                 )}
                 error={!!error?.message}
             >
-                {elements?.length === 0 && label && (
+                {elementsWithMetaData?.length === 0 && label && (
                     <FieldLabel
                         label={label}
                         optional={labelRequiredFromContext && !isFieldRequired(name, validationSchema, getValues())}
                     />
                 )}
-                {elements?.length > 0 && (
+                {elementsWithMetaData?.length > 0 && (
                     <FormControl sx={styles.formDirectoryElements2}>
-                        {elements.map((item, index) => (
+                        {elementsWithMetaData.map((item, index) => (
                             <Box key={`Box${item.id}`} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                 <Chip
                                     key={item.id}
                                     size="small"
                                     sx={{
                                         backgroundColor:
-                                            elementsMetadata?.length > index
-                                                ? elementsMetadata?.[index]?.color
+                                            item.specificMetadata?.equipmentType &&
+                                            equipmentColorsMap?.has(item.specificMetadata?.equipmentType)
+                                                ? equipmentColorsMap.get(item.specificMetadata.equipmentType)
                                                 : undefined,
                                     }}
                                     onDelete={() => removeElements(index)}
@@ -242,12 +211,12 @@ export function DirectoryItemsInput({
                                     }
                                 />
                                 <FormHelperText>
-                                    {elementsMetadata?.[index]?.translateLabel ? (
+                                    {item?.specificMetadata?.equipmentType ? (
                                         <FormattedMessage
                                             id={
-                                                elementsMetadata?.length > index
-                                                    ? elementsMetadata?.[index]?.translateLabel
-                                                    : undefined
+                                                item.specificMetadata.equipmentType !== EquipmentType.HVDC_LINE
+                                                    ? getBasicEquipmentLabel(item.specificMetadata.equipmentType)
+                                                    : 'HvdcLines'
                                             }
                                         />
                                     ) : (

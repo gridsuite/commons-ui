@@ -136,6 +136,10 @@ export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType;
     },
 };
 
+export function getBasicEquipmentLabel(equipmentType: string | undefined): string {
+    return equipmentType ? (BASE_EQUIPMENTS[equipmentType as EquipmentType]?.label ?? '') : '';
+}
+
 export const EQUIPMENT_TYPE: Partial<
     Record<
         EquipmentType | ExtendedEquipmentType,
