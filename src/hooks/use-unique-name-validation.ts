@@ -36,7 +36,8 @@ export function useUniqueNameValidation({
 
     const {
         field: { value },
-        formState: { isDirty },
+        fieldState: { isDirty: fieldIsDirty },
+        formState: { isDirty: formIsDirty },
     } = useController({ name });
 
     const {
@@ -94,7 +95,7 @@ export function useUniqueNameValidation({
         }
 
         // if the name is unchanged, we don't do custom validation
-        if (!isDirty) {
+        if (!formIsDirty) {
             clearErrors(name);
             return;
         }
@@ -118,7 +119,8 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         name,
-        isDirty,
+        fieldIsDirty,
+        formIsDirty,
         defaultFieldValue,
         directory,
         selectedDirectory,
