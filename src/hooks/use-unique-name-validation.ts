@@ -94,7 +94,7 @@ export function useUniqueNameValidation({
             debouncedHandleCheckName(trimmedValue);
         }
 
-        // if the name is unchanged, we don't do custom validation
+        // if the form is unchanged, we don't do custom validation
         if (!formIsDirty) {
             clearErrors(name);
             return;
