@@ -31,13 +31,12 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         trigger,
-        formState: { errors, defaultValues },
+        formState: { errors, defaultValues, isDirty: formIsDirty },
     } = useFormContext();
 
     const {
         field: { value },
         fieldState: { isDirty: fieldIsDirty },
-        formState: { isDirty: formIsDirty },
     } = useController({ name });
 
     const {
