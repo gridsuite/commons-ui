@@ -9,6 +9,7 @@ import {
     MAP_BASEMAP_CARTO_NOLABEL,
     MAP_BASEMAP_ETALAB,
     MAP_BASEMAP_MAPBOX,
+    NadPositionsGenerationMode,
     SubstationLayout,
 } from './network-visualizations.types';
 
@@ -28,7 +29,7 @@ export const PARAM_CENTER_LABEL = 'centerLabel';
 export const PARAM_COMPONENT_LIBRARY = 'componentLibrary';
 export const PARAM_DIAGONAL_LABEL = 'diagonalLabel';
 export const PARAM_SUBSTATION_LAYOUT = 'substationLayout';
-export const PARAM_INIT_NAD_WITH_GEO_DATA = 'initNadWithGeoData';
+export const PARAM_NAD_POSITIONS_GENERATION_MODE = 'nadPositionsGenerationMode';
 
 export enum NetworkVisualizationTabValues {
     MAP = 'mapParameters',
@@ -43,7 +44,7 @@ export const DIAGONAL_LABEL = 'diagonalLabel';
 export const CENTER_LABEL = 'centerLabel';
 export const SUBSTATION_LAYOUT = 'SubstationLayout';
 export const COMPONENT_LIBRARY = 'ComponentLibrary';
-export const INIT_NAD_WITH_GEO_DATA = 'initNadWithGeoData';
+export const NAD_POSITIONS_GENERATION_MODE_LABEL = 'nadPositionsGenerationModeLabel';
 
 export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {
@@ -87,5 +88,20 @@ export const INTL_SUBSTATION_LAYOUT_OPTIONS = [
     {
         id: SubstationLayout.VERTICAL,
         label: 'VerticalSubstationLayout',
+    },
+];
+
+export const NAD_POSITIONS_GENERATION_MODE = [
+    {
+        id: NadPositionsGenerationMode.CONFIGURED,
+        label: 'NadConfiguredPositionsModeLabel',
+    },
+    {
+        id: NadPositionsGenerationMode.GEOGRAPHICAL_COORDINATES,
+        label: 'NadGeoPositionsModeLabel',
+    },
+    {
+        id: NadPositionsGenerationMode.AUTOMATIC,
+        label: 'NadAutoPositionsModeLabel',
     },
 ];
