@@ -98,6 +98,9 @@ export function useUniqueNameValidation({
             clearErrors(name);
             return;
         }
+        if (trimmedValue === defaultFieldValue && trimmedValue.length > 0) {
+            return;
+        }
         if (trimmedValue) {
             clearErrors(name);
             setError('root.isValidating', {
