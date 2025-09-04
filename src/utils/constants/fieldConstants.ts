@@ -27,6 +27,7 @@ export enum FieldConstants {
     EQUIPMENT_TABLE = 'equipmentTable',
     EQUIPMENT_TYPE = 'equipmentType',
     FILTER_TYPE = 'filterType',
+    FILTERS = 'filters',
     FOLDER_ID = 'folderId',
     FOLDER_NAME = 'folderName',
     FORMATTED_CASE_PARAMETERS = 'formattedCaseParameters',
