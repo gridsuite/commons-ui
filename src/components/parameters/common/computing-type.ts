@@ -34,6 +34,8 @@ export const formatComputingTypeLabel = (type: ComputingType): string | undefine
             return 'NonEvacuatedEnergy';
         case ComputingType.SHORT_CIRCUIT:
             return 'ShortCircuit';
+        case ComputingType.SHORT_CIRCUIT_ONE_BUS:
+            return 'OneBusShortCircuitAnalysis';
         case ComputingType.VOLTAGE_INITIALIZATION:
             return 'VoltageInit';
         case ComputingType.DYNAMIC_SIMULATION:
