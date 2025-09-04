@@ -36,7 +36,6 @@ export function useUniqueNameValidation({
 
     const {
         field: { value },
-        fieldState: { isDirty: fieldIsDirty },
     } = useController({ name });
 
     const {
@@ -121,7 +120,6 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         name,
-        fieldIsDirty,
         formIsDirty,
         defaultFieldValue,
         directory,
