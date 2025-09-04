@@ -263,7 +263,6 @@ export function DirectoryItemsInput({
                 selected={selected}
                 expanded={expanded}
                 multiSelect={multiSelect}
-                fetchMetaData={!!equipmentColorsMap}
             />
         </>
     );
