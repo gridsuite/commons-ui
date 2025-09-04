@@ -118,7 +118,6 @@ export function DirectoryItemsInput({
                     remove(getValues(name).findIndex((item: FieldValues) => item.id === chip));
                 });
             }
-
             values.forEach((value) => {
                 const { icon, children, ...otherElementAttributes } = value;
 
@@ -137,7 +136,7 @@ export function DirectoryItemsInput({
             setDirectoryItemSelectorOpen(false);
             setSelected([]);
         },
-        [selected, remove, getValues, name, snackError, append, onRowChanged, onChange]
+        [append, getValues, snackError, name, onRowChanged, onChange, selected, remove]
     );
 
     const removeElements = useCallback(
@@ -146,7 +145,7 @@ export function DirectoryItemsInput({
             onRowChanged?.(true);
             onChange?.(getValues(name));
         },
-        [remove, onRowChanged, onChange, getValues, name]
+        [onRowChanged, remove, getValues, name, onChange]
     );
 
     const handleChipClick = useCallback(
