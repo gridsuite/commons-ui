@@ -20,6 +20,12 @@ export enum SubstationLayout {
     SMARTVERTICALCOMPACTION = 'smartVerticalCompaction',
 }
 
+export enum NadPositionsGenerationMode {
+    GEOGRAPHICAL_COORDINATES = 'GEOGRAPHICAL_COORDINATES',
+    AUTOMATIC = 'AUTOMATIC',
+    CONFIGURED = 'CONFIGURED',
+}
+
 type MapParameters = {
     lineFullPath: boolean;
     lineParallelPath: boolean;
@@ -40,7 +46,7 @@ type SingleLineDiagramParameters = {
 };
 
 type NetworkAreaDiagramParameters = {
-    initNadWithGeoData: boolean;
+    nadPositionsGenerationMode: string;
 };
 
 export type NetworkVisualizationParameters = {
