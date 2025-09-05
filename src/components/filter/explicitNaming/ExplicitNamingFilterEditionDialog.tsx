@@ -101,7 +101,7 @@ export function ExplicitNamingFilterEditionDialog({
                 id,
                 (error) => {
                     snackError({
-                        messageTxt: error,
+                        messageTxt: error.message,
                     });
                 },
                 onClose

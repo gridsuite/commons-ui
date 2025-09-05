@@ -179,6 +179,7 @@ export const filterExpertFr = {
     pairingKey: 'Xnode',
     tieLineId: "ID de l'interconnexion",
     cannotRetrieveFilter: "Erreur d'accès au filtre : ",
+    cannotSaveFilter: 'Erreur lors de la mise à jour du filtre : ',
     equality: '=',
     notEquality: '!=',
     greaterThan: '>',

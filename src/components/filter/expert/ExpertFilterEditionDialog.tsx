@@ -98,9 +98,10 @@ export function ExpertFilterEditionDialog({
                 false,
                 null,
                 onClose,
-                (error: string) => {
+                (error: Error) => {
                     snackError({
-                        messageTxt: error,
+                        messageTxt: error.message,
+                        headerId: 'cannotSaveFilter',
                     });
                 }
             );

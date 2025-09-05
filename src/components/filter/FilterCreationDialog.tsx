@@ -90,9 +90,9 @@ export function FilterCreationDialog({
                     filterForm[FieldConstants.NAME],
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
-                    (error?: string) => {
+                    (error: Error) => {
                         snackError({
-                            messageTxt: error,
+                            messageTxt: error.message,
                         });
                     },
                     onClose,
@@ -108,9 +108,9 @@ export function FilterCreationDialog({
                     true,
                     activeDirectory,
                     onClose,
-                    (error?: string) => {
+                    (error: Error) => {
                         snackError({
-                            messageTxt: error,
+                            messageTxt: error.message,
                         });
                     }
                 );

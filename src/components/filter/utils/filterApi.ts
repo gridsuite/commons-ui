@@ -20,7 +20,7 @@ export const saveExplicitNamingFilter = (
     name: string,
     description: string,
     id: string | null,
-    setCreateFilterErr: (value?: string) => void,
+    setCreateFilterErr: (error: Error) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
     token?: string
@@ -54,8 +54,8 @@ export const saveExplicitNamingFilter = (
             .then(() => {
                 handleClose();
             })
-            .catch((error) => {
-                setCreateFilterErr(error.message);
+            .catch((error: unknown) => {
+                setCreateFilterErr(error instanceof Error ? error : new Error('unknown error'));
             });
     } else {
         saveFilter(
@@ -72,8 +72,8 @@ export const saveExplicitNamingFilter = (
             .then(() => {
                 handleClose();
             })
-            .catch((error) => {
-                setCreateFilterErr(error.message);
+            .catch((error: unknown) => {
+                setCreateFilterErr(error instanceof Error ? error : new Error('unknown error'));
             });
     }
 };
@@ -86,7 +86,7 @@ export const saveExpertFilter = (
     isFilterCreation: boolean,
     activeDirectory: UUID | undefined | null,
     onClose: () => void,
-    onError: (message: string) => void,
+    onError: (error: Error) => void,
     token?: string
 ) => {
     if (isFilterCreation) {
@@ -107,7 +107,7 @@ export const saveExpertFilter = (
             })
             .catch((error: unknown) => {
                 catchErrorHandler(error, (message: string) => {
-                    onError(message);
+                    onError(new Error(message));
                 });
             });
     } else {
@@ -127,7 +127,7 @@ export const saveExpertFilter = (
             })
             .catch((error: unknown) => {
                 catchErrorHandler(error, (message: string) => {
-                    onError(message);
+                    onError(new Error(message));
                 });
             });
     }
