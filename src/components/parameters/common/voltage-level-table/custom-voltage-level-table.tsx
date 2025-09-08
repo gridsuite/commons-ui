@@ -7,7 +7,11 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import { LimitReductionIColumnsDef, LIMIT_REDUCTIONS_FORM } from '../limitreductions/columns-definitions';
+import {
+    LimitReductionIColumnsDef,
+    LIMIT_REDUCTIONS_FORM,
+    ILimitReductionsByVoltageLevel,
+} from '../limitreductions/columns-definitions';
 import { LimitReductionTableRow } from '../limitreductions/limit-reduction-table-row';
 import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
@@ -15,12 +19,14 @@ interface LimitReductionsTableProps {
     columnsDefinition: LimitReductionIColumnsDef[];
     tableHeight: number;
     formName: string;
+    limits?: ILimitReductionsByVoltageLevel[];
 }
 
 export function CustomVoltageLevelTable({
     formName,
     columnsDefinition,
     tableHeight,
+    limits
 }: Readonly<LimitReductionsTableProps>) {
     const { fields: rows } = useFieldArray({
         name: formName,
@@ -62,6 +68,7 @@ export function CustomVoltageLevelTable({
                             columnsDefinition={columnsDefinition}
                             index={index}
                             formName={formName}
+                            limits={limits}
                         />
                     ))}
                 </TableBody>

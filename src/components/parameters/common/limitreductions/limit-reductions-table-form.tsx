@@ -15,31 +15,43 @@ import {
 } from './columns-definitions';
 import { CustomVoltageLevelTable } from '../voltage-level-table';
 
-const getLabelColumn = (limit: ITemporaryLimitReduction) => {
-    const lowBound = `${Math.trunc(limit.limitDuration.lowBound / 60)} min`;
-    const highBoundValue = Math.trunc(limit.limitDuration.highBound / 60);
-    const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limit.limitDuration.highBound / 60)} min`;
-    const lowerBoundClosed = limit.limitDuration.lowClosed ? '[' : ']';
-    const highBoundClosed = limit.limitDuration.highClosed || null ? ']' : '[';
-    return `${lowerBoundClosed}${lowBound}, ${highBound}${highBoundClosed}`;
-};
-
 export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitReductionsByVoltageLevel[] }>) {
     const intl = useIntl();
 
-    const getToolTipColumn = useCallback(
+    const getLabelColumn = useCallback(
         (limit: ITemporaryLimitReduction) => {
-            const lowBound = Math.trunc(limit.limitDuration.lowBound / 60);
-            const highBound = Math.trunc(limit.limitDuration.highBound / 60);
+            const highBound = Math.trunc(limit.limitDuration.lowBound / 60);
+            const lowBound = Math.trunc(limit.limitDuration.highBound / 60);
+
             if (lowBound === 0) {
-                return intl.formatMessage({ id: 'LimitDurationAfterIST' }, { value: highBound });
+                return intl.formatMessage({ id: 'LimitVoltageAfterIST' }, { highBound: `${highBound}` });
             }
 
             return intl.formatMessage(
+                { id: 'LimitVoltageInterval' },
+                {
+                    lowBound: `${lowBound}`,
+                    highBound: `${highBound}`,
+                }
+            );
+        },
+        [intl]
+    );
+
+    const getToolTipColumn = useCallback(
+        (limit: ITemporaryLimitReduction) => {
+            const lowBound = `${Math.trunc(limit.limitDuration.lowBound / 60)} min`;
+            const highBoundValue = Math.trunc(limit.limitDuration.highBound / 60);
+            const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limit.limitDuration.highBound / 60)} min`;
+            const lowerBoundClosed = limit.limitDuration.lowClosed ? '[' : ']';
+            const higherBoundClosed = limit.limitDuration.highClosed || null ? ']' : '[';
+            return intl.formatMessage(
                 { id: 'LimitDurationInterval' },
                 {
-                    lowBound: `IT${lowBound}`,
-                    highBound: highBound === 0 ? 'IST' : `IT${highBound}`,
+                    lowBound: `${lowBound}`,
+                    highBound: `${highBound}`,
+                    higherBoundClosed: `${higherBoundClosed}`,
+                    lowerBoundClosed: `${lowerBoundClosed}`,
                 }
             );
         },
@@ -64,13 +76,14 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
         }
 
         return columnsDef;
-    }, [intl, limits, getToolTipColumn]);
+    }, [intl, limits, getLabelColumn, getToolTipColumn]);
 
     return (
         <CustomVoltageLevelTable
             formName={LIMIT_REDUCTIONS_FORM}
             columnsDefinition={columnsDefinition}
             tableHeight={450}
+            limits={limits}
         />
     );
 }

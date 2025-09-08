@@ -59,9 +59,11 @@ export const parametersFr = {
     General: 'Général',
     LimitReductions: 'Abattements',
     IST: 'IST',
-    LimitDurationInterval: 'Entre {highBound} et {lowBound}',
-    LimitDurationAfterIST: 'Au-delà de IT{value}',
+    LimitVoltageInterval: 'Entre IT{lowBound} et IT{highBound}',
+    LimitVoltageAfterIST: 'Entre IST et IT{highBound}',
+    LimitDurationInterval: 'Tempo {lowerBoundClosed}{lowBound}, {highBound}{higherBoundClosed}',
     voltageRange: 'Niveau de tension',
+    VoltageRangeInterval: 'Plage de tension [{lowBound} kV,{highBound} kV]',
 
     Provider: 'Simulateur',
     LimitReduction: 'Abattement des seuils',
