@@ -109,7 +109,13 @@ export function AutocompleteInput({
                         }),
                     })}
                     inputRef={ref}
-                    inputProps={{ ...inputProps, readOnly }}
+                    inputProps={{
+                        style: {
+                            fontSize: 'small',
+                        },
+                        ...inputProps,
+                        readOnly,
+                    }}
                     helperText={
                         previousValue && (
                             <HelperPreviousValue
