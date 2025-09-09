@@ -26,7 +26,15 @@ export const useListenerManager = <TListener extends ListenerEventWS | ListenerO
     const addListenerEvent = useCallback((urlKey: string, listener: TListener) => {
         const urlsListeners = urlsListenersRef.current;
         if (urlKey in urlsListeners) {
-            urlsListeners[urlKey].push(listener);
+            const existingIndex = urlsListeners[urlKey].findIndex((l) => l.id === listener.id);
+
+            if (existingIndex !== -1) {
+                console.warn(`🔄 Replacing existing listener ${listener.id} on ${urlKey}`);
+                urlsListeners[urlKey][existingIndex] = listener;
+            } else {
+                // Add new listener
+                urlsListeners[urlKey].push(listener);
+            }
         } else {
             urlsListeners[urlKey] = [listener];
         }
