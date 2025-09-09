@@ -38,6 +38,7 @@ export enum FieldConstants {
     NOMINAL_VOLTAGE_3 = 'nominalVoltage3',
     NOMINAL_VOLTAGE = 'nominalVoltage',
     OPERATION_TYPE = 'type',
+    TYPE = 'type',
     PROPERTY_NAME = 'propertyName',
     PROPERTY_OPERATOR = 'propertyOperator',
     PROPERTY = 'PROPERTY',
