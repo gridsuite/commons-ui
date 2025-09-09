@@ -7,13 +7,18 @@
 
 import { TableCell } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { LimitReductionIColumnsDef, LIMIT_REDUCTIONS_FORM, VOLTAGE_LEVELS_FORM, ILimitReductionsByVoltageLevel } from './columns-definitions';
+import {
+    LimitReductionIColumnsDef,
+    LIMIT_REDUCTIONS_FORM,
+    VOLTAGE_LEVELS_FORM,
+    ILimitReductionsByVoltageLevel,
+} from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../inputs';
 
 export function LimitReductionTableCell({
     rowIndex,
     column,
-    limits
+    limits,
 }: Readonly<{
     rowIndex: number;
     column: LimitReductionIColumnsDef;
