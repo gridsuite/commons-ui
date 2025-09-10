@@ -20,7 +20,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { OverflowableText } from '../../overflowableText';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { getBasicEquipmentLabel, ElementAttributes, EquipmentType, mergeSx } from '../../../utils';
+import { getBasicEquipmentLabel, ElementAttributes, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 
 const styles = {
@@ -212,11 +212,7 @@ export function DirectoryItemsInput({
                                 <FormHelperText>
                                     {item?.specificMetadata?.equipmentType ? (
                                         <FormattedMessage
-                                            id={
-                                                item.specificMetadata.equipmentType !== EquipmentType.HVDC_LINE
-                                                    ? getBasicEquipmentLabel(item.specificMetadata.equipmentType)
-                                                    : 'HvdcLines'
-                                            }
+                                            id={getBasicEquipmentLabel(item.specificMetadata.equipmentType)}
                                         />
                                     ) : (
                                         ''
