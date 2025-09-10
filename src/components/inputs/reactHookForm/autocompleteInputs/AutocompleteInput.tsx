@@ -30,6 +30,7 @@ export interface AutocompleteInputProps
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
     disabledTooltip?: boolean;
     onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
+    inputFontSize?: string; // Optional fontSize for input text
 }
 
 export function AutocompleteInput({
@@ -45,6 +46,7 @@ export function AutocompleteInput({
     formProps,
     disabledTooltip,
     onCheckNewValue,
+    inputFontSize,
     ...props
 }: AutocompleteInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
@@ -110,10 +112,8 @@ export function AutocompleteInput({
                     })}
                     inputRef={ref}
                     inputProps={{
-                        style: {
-                            fontSize: 'small',
-                        },
                         ...inputProps,
+                        ...(inputFontSize ? { style: { fontSize: inputFontSize } } : {}),
                         readOnly,
                     }}
                     helperText={
