@@ -121,7 +121,7 @@ export const useShortCircuitParametersForm = ({
     const resetAll = useCallback(
         (predefinedParameter: PredefinedParameters) => {
             const dirty = { shouldDirty: true };
-            setValue(SHORT_CIRCUIT_WITH_FEEDER_RESULT, true, dirty);
+            setValue(SHORT_CIRCUIT_WITH_FEEDER_RESULT, false, dirty);
             setValue(SHORT_CIRCUIT_WITH_LOADS, false, dirty);
             setValue(
                 SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
