@@ -28,9 +28,9 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
         if (limits !== null && limits.length > 0) {
             limits[0].temporaryLimitReductions.forEach((tlimit, index) => {
                 columnsDef.push({
-                    label: LimitReductionsLabelColumn(tlimit),
+                    label: <LimitReductionsLabelColumn limits={tlimit} />,
                     dataKey: LIMIT_DURATION_FORM + index,
-                    tooltip: LimitReductionsToolTipColumn(tlimit),
+                    tooltip: <LimitReductionsToolTipColumn limits={tlimit} />,
                 });
             });
         }
