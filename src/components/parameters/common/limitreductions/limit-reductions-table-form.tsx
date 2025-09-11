@@ -4,7 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 import { useMemo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import {
     COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS,
     ILimitReductionsByVoltageLevel,
@@ -19,8 +21,8 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
     const columnsDefinition = useMemo(() => {
         const columnsDef = COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS.map((column) => ({
             ...column,
-            label: column.label,
-            tooltip: column.tooltip,
+            label: <FormattedMessage id={column.label as string} />,
+            tooltip: <FormattedMessage id={column.tooltip as string} />,
         }));
 
         if (limits !== null && limits.length > 0) {
