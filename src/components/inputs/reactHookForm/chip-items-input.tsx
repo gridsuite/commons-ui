@@ -6,7 +6,7 @@
  */
 
 import { Chip, FormControl, TextField } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
 import type { MuiStyles } from '../../../utils/styles';
 import { useSnackMessage } from '../../../hooks';
@@ -15,6 +15,27 @@ import { FieldLabel, isFieldRequired } from './utils';
 import { OverflowableText } from '../../overflowableText';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
 import { ErrorInput, MidFormError } from './errorManagement';
+
+const styles = {
+    chipContainer: {
+        display: 'flex',
+        gap: '8px',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        border: '2px solid lightgray',
+        borderRadius: '4px',
+        overflow: 'hidden',
+    },
+    chipItem: {
+        display: 'flex',
+        gap: '8px',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        marginTop: 0,
+        padding: 1,
+        overflow: 'hidden',
+    },
+} as const satisfies MuiStyles;
 
 interface ChipItemsInputProps {
     label?: string;
@@ -75,31 +96,15 @@ export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipI
         setTextEntered(e.target.value);
     };
 
-    const styles = {
-        chipContainer: {
-            display: 'flex',
-            gap: '8px',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            border: '2px solid lightgray',
-            borderRadius: '4px',
-            overflow: 'hidden',
-            borderColor: error?.message ? 'error.main' : null,
-        },
-        chipItem: {
-            display: 'flex',
-            gap: '8px',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            marginTop: 0,
-            padding: 1,
-            overflow: 'hidden',
-        },
-    } as const satisfies MuiStyles;
+    const hasError = !!error?.message;
+    const containerStyle = useMemo(
+        () => ({ ...styles.chipContainer, borderColor: hasError ? 'error.main' : null }),
+        [hasError]
+    );
 
     return (
         <>
-            <FormControl sx={styles.chipContainer} error={!!error?.message}>
+            <FormControl sx={containerStyle} error={hasError}>
                 {elements?.length === 0 && label && (
                     <FieldLabel label={label} optional={!isFieldRequired(name, validationSchema, getValues())} />
                 )}

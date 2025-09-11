@@ -27,6 +27,7 @@ import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
 import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
+import type { MuiStyle } from '../../../utils/styles';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
@@ -75,22 +76,11 @@ export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProp
         return intlInitialVoltageProfileMode();
     }, []);
 
-    const getStatus = (state: Status, styles: any) => {
-        const color = state === Status.SUCCESS ? styles.succeed : styles.fail;
-        return <Lens fontSize="medium" sx={color} />;
-    };
-
-    const statusToShow = useMemo(() => {
-        const styles = {
-            succeed: {
-                color: green[500],
-            },
-            fail: {
-                color: red[500],
-            },
-        };
-        return getStatus(status, styles);
-    }, [status]);
+    const statusColor = useMemo(
+        () => ({ color: status === Status.SUCCESS ? green[500] : red[500] }) as const satisfies MuiStyle,
+        [status]
+    );
+    const statusToShow = <Lens fontSize="medium" sx={statusColor} />;
 
     const onPredefinedParametersManualChange = (event: any) => {
         const newPredefinedParameters = event.target.value;
