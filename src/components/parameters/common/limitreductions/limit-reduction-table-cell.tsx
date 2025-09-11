@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { TableCell } from '@mui/material';
-import { useIntl } from 'react-intl';
+import { TableCell, Tooltip } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 import {
     LimitReductionIColumnsDef,
     LIMIT_REDUCTIONS_FORM,
@@ -24,20 +24,22 @@ export function LimitReductionTableCell({
     column: LimitReductionIColumnsDef;
     limits: ILimitReductionsByVoltageLevel[];
 }>) {
-    const intl = useIntl();
     return column.dataKey === VOLTAGE_LEVELS_FORM ? (
-        <TableCell
-            sx={{ fontWeight: 'bold' }}
-            title={intl.formatMessage(
-                { id: 'VoltageRangeInterval' },
-                {
-                    lowBound: `${limits[rowIndex].voltageLevel.lowBound}`,
-                    highBound: `${limits[rowIndex].voltageLevel.highBound}`,
-                }
-            )}
+        <Tooltip
+            title={
+                <FormattedMessage
+                    id="VoltageRangeInterval"
+                    values={{
+                        lowBound: `${limits[rowIndex].voltageLevel.lowBound}`,
+                        highBound: `${limits[rowIndex].voltageLevel.highBound}`,
+                    }}
+                />
+            }
         >
-            <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
-        </TableCell>
+            <TableCell sx={{ fontWeight: 'bold' }}>
+                <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
+            </TableCell>
+        </Tooltip>
     ) : (
         <TableCell sx={{ fontWeight: 'bold' }}>
             <FloatInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />

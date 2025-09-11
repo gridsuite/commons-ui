@@ -63,7 +63,7 @@ export const parametersFr = {
     LimitVoltageAfterIST: 'Entre IST et IT{highBound}',
     LimitDurationInterval: 'Tempo {lowerBoundClosed}{lowBound}, {highBound}{higherBoundClosed}',
     voltageRange: 'Niveau de tension',
-    VoltageRangeInterval: 'Plage de tension [{lowBound} kV,{highBound} kV]',
+    VoltageRangeInterval: 'Plage de tension ]{lowBound} kV,{highBound} kV]',
 
     Provider: 'Simulateur',
     LimitReduction: 'Abattement des seuils',

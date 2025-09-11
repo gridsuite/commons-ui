@@ -69,9 +69,9 @@ export const TAB_INFO = [
 ];
 
 export interface LimitReductionIColumnsDef {
-    label: string;
+    label: React.ReactNode;
     dataKey: string;
-    tooltip: string;
+    tooltip: React.ReactNode;
     width?: string;
 }
 

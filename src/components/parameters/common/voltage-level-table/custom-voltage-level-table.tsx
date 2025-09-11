@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import {
@@ -49,15 +49,16 @@ export function CustomVoltageLevelTable({
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
-                            <TableCell
-                                key={column.dataKey}
-                                sx={{
-                                    textAlign: 'center',
-                                }}
-                                title={column.tooltip}
-                            >
-                                {column.label}
-                            </TableCell>
+                            <Tooltip title={column.tooltip}>
+                                <TableCell
+                                    key={column.dataKey}
+                                    sx={{
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            </Tooltip>
                         ))}
                     </TableRow>
                 </TableHead>

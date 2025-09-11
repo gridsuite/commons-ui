@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useMemo } from 'react';
-import { useIntl } from 'react-intl';
+import { useMemo } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
     COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS,
     ILimitReductionsByVoltageLevel,
@@ -15,48 +15,47 @@ import {
 } from './columns-definitions';
 import { CustomVoltageLevelTable } from '../voltage-level-table';
 
+const getLabelColumn = (limit: ITemporaryLimitReduction) => {
+    const highBound = Math.trunc(limit.limitDuration.lowBound / 60);
+    const lowBound = Math.trunc(limit.limitDuration.highBound / 60);
+
+    if (lowBound === 0) {
+        return <FormattedMessage id="LimitVoltageAfterIST" values={{ highBound: `${highBound}` }} />;
+        // return intl.formatMessage({ id: 'LimitVoltageAfterIST' }, { highBound: `${highBound}` });
+    }
+
+    return (
+        <FormattedMessage
+            id="LimitVoltageInterval"
+            values={{
+                lowBound: `${lowBound}`,
+                highBound: `${highBound}`,
+            }}
+        />
+    );
+};
+
+const getToolTipColumn = (limit: ITemporaryLimitReduction) => {
+    const lowBound = `${Math.trunc(limit.limitDuration.lowBound / 60)} min`;
+    const highBoundValue = Math.trunc(limit.limitDuration.highBound / 60);
+    const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limit.limitDuration.highBound / 60)} min`;
+    const lowerBoundClosed = limit.limitDuration.lowClosed ? '[' : ']';
+    const higherBoundClosed = limit.limitDuration.highClosed || null ? ']' : '[';
+    return (
+        <FormattedMessage
+            id="LimitDurationInterval"
+            values={{
+                lowBound: `${lowBound}`,
+                highBound: `${highBound}`,
+                higherBoundClosed: `${higherBoundClosed}`,
+                lowerBoundClosed: `${lowerBoundClosed}`,
+            }}
+        />
+    );
+};
+
 export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitReductionsByVoltageLevel[] }>) {
     const intl = useIntl();
-
-    const getLabelColumn = useCallback(
-        (limit: ITemporaryLimitReduction) => {
-            const highBound = Math.trunc(limit.limitDuration.lowBound / 60);
-            const lowBound = Math.trunc(limit.limitDuration.highBound / 60);
-
-            if (lowBound === 0) {
-                return intl.formatMessage({ id: 'LimitVoltageAfterIST' }, { highBound: `${highBound}` });
-            }
-
-            return intl.formatMessage(
-                { id: 'LimitVoltageInterval' },
-                {
-                    lowBound: `${lowBound}`,
-                    highBound: `${highBound}`,
-                }
-            );
-        },
-        [intl]
-    );
-
-    const getToolTipColumn = useCallback(
-        (limit: ITemporaryLimitReduction) => {
-            const lowBound = `${Math.trunc(limit.limitDuration.lowBound / 60)} min`;
-            const highBoundValue = Math.trunc(limit.limitDuration.highBound / 60);
-            const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limit.limitDuration.highBound / 60)} min`;
-            const lowerBoundClosed = limit.limitDuration.lowClosed ? '[' : ']';
-            const higherBoundClosed = limit.limitDuration.highClosed || null ? ']' : '[';
-            return intl.formatMessage(
-                { id: 'LimitDurationInterval' },
-                {
-                    lowBound: `${lowBound}`,
-                    highBound: `${highBound}`,
-                    higherBoundClosed: `${higherBoundClosed}`,
-                    lowerBoundClosed: `${lowerBoundClosed}`,
-                }
-            );
-        },
-        [intl]
-    );
 
     const columnsDefinition = useMemo(() => {
         const columnsDef = COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS.map((column) => ({
@@ -76,7 +75,7 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
         }
 
         return columnsDef;
-    }, [intl, limits, getLabelColumn, getToolTipColumn]);
+    }, [intl, limits]);
 
     return (
         <CustomVoltageLevelTable
