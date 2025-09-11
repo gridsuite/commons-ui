@@ -8,7 +8,7 @@
 import { FormattedMessage } from 'react-intl';
 import { ITemporaryLimitReduction } from './columns-definitions';
 
-export function LimitReductionsLabelColumn({ limitDuration }: ITemporaryLimitReduction) {
+export function LimitReductionsLabelColumn({ limitDuration }: Readonly<ITemporaryLimitReduction>) {
     const highBound = Math.trunc(limitDuration.lowBound / 60);
     const lowBound = Math.trunc(limitDuration.highBound / 60);
 
