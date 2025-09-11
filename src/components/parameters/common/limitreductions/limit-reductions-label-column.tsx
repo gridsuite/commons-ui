@@ -8,9 +8,13 @@
 import { FormattedMessage } from 'react-intl';
 import { ITemporaryLimitReduction } from './columns-definitions';
 
-export function LimitReductionsLabelColumn({ limitDuration }: Readonly<ITemporaryLimitReduction>) {
-    const highBound = Math.trunc(limitDuration.lowBound / 60);
-    const lowBound = Math.trunc(limitDuration.highBound / 60);
+type LimitReductionsLabelColumnProps = {
+    limits: ITemporaryLimitReduction;
+};
+
+export function LimitReductionsLabelColumn({ limits }: Readonly<LimitReductionsLabelColumnProps>) {
+    const highBound = Math.trunc(limits.limitDuration.lowBound / 60);
+    const lowBound = Math.trunc(limits.limitDuration.highBound / 60);
 
     if (lowBound === 0) {
         return <FormattedMessage id="LimitVoltageAfterIST" values={{ highBound: `${highBound}` }} />;

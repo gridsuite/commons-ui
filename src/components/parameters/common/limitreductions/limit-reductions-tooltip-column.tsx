@@ -8,12 +8,16 @@
 import { FormattedMessage } from 'react-intl';
 import { ITemporaryLimitReduction } from './columns-definitions';
 
-export function LimitReductionsToolTipColumn({ limitDuration }: Readonly<ITemporaryLimitReduction>) {
-    const lowBound = `${Math.trunc(limitDuration.lowBound / 60)} min`;
-    const highBoundValue = Math.trunc(limitDuration.highBound / 60);
-    const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limitDuration.highBound / 60)} min`;
-    const lowerBoundClosed = limitDuration.lowClosed ? '[' : ']';
-    const higherBoundClosed = limitDuration.highClosed || null ? ']' : '[';
+type LimitReductionsLabelColumnProps = {
+    limits: ITemporaryLimitReduction;
+};
+
+export function LimitReductionsToolTipColumn({ limits }: Readonly<LimitReductionsLabelColumnProps>) {
+    const lowBound = `${Math.trunc(limits.limitDuration.lowBound / 60)} min`;
+    const highBoundValue = Math.trunc(limits.limitDuration.highBound / 60);
+    const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limits.limitDuration.highBound / 60)} min`;
+    const lowerBoundClosed = limits.limitDuration.lowClosed ? '[' : ']';
+    const higherBoundClosed = limits.limitDuration.highClosed || null ? ']' : '[';
     return (
         <FormattedMessage
             id="LimitDurationInterval"
