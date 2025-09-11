@@ -12,10 +12,10 @@ import { ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-materi
 import { useFormContext } from 'react-hook-form';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
-import type { MuiStyle } from '../../../../utils/styles';
+import type { SxStyle } from '../../../../utils/styles';
 
 export interface DescriptionFieldProps {
-    expandingTextSx?: MuiStyle;
+    expandingTextSx?: SxStyle;
 }
 
 export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldProps>) {

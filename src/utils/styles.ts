@@ -29,5 +29,5 @@ const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
 // same as [{}, ...(Array.isArray(sx) ? sx : [sx])]
 export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) => allSx.filter(isSxProps).flat();
 
-export type MuiStyle = SxProps<Theme>;
-export type MuiStyles = Record<string, MuiStyle>;
+export type SxStyle = SxProps<Theme>;
+export type MuiStyles = Record<string, SxStyle>;

@@ -8,7 +8,7 @@
 import { Box, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { ReactNode } from 'react';
-import { mergeSx, type MuiStyle, type MuiStyles } from '../../utils/styles';
+import { mergeSx, type SxStyle, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     logo: {
@@ -53,6 +53,6 @@ export function GridLogo({ appLogo, appName, appColor, onClick }: Partial<GridLo
 export interface LogoTextProps {
     appName: string;
     appColor: string;
-    style: MuiStyle;
+    style: SxStyle;
     onClick: () => void;
 }

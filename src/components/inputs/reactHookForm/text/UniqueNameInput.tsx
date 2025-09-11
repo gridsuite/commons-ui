@@ -12,7 +12,7 @@ import { Check as CheckIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
 import type { ElementType } from '../../../../utils';
-import type { MuiStyle } from '../../../../utils/styles';
+import type { SxStyle } from '../../../../utils/styles';
 import { useUniqueNameValidation } from '../../../../hooks/use-unique-name-validation';
 
 export interface UniqueNameInputProps {
@@ -27,7 +27,7 @@ export interface UniqueNameInputProps {
     >;
     activeDirectory?: UUID;
     currentName?: string;
-    sx?: MuiStyle;
+    sx?: SxStyle;
     fullWidth?: boolean;
 }
 

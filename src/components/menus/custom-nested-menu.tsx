@@ -7,7 +7,7 @@
 import { PropsWithChildren, useState } from 'react';
 import { NestedMenuItem, NestedMenuItemProps } from 'mui-nested-menu';
 import { Box, MenuItem, type MenuItemProps } from '@mui/material';
-import { mergeSx, type MuiStyle, type MuiStyles } from '../../utils/styles';
+import { mergeSx, type SxStyle, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     highlightedParentLine: {
@@ -25,7 +25,7 @@ const styles = {
 } as const satisfies MuiStyles;
 
 interface CustomNestedMenuItemProps extends PropsWithChildren, Omit<NestedMenuItemProps, 'parentMenuOpen'> {
-    sx?: MuiStyle;
+    sx?: SxStyle;
 }
 
 export function CustomNestedMenuItem({ sx, children, ...other }: Readonly<CustomNestedMenuItemProps>) {

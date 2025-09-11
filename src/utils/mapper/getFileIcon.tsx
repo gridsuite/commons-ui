@@ -16,9 +16,9 @@ import {
     TableView as TableViewIcon,
 } from '@mui/icons-material';
 import { ElementType } from '../types/elementType';
-import type { MuiStyle } from '../styles';
+import type { SxStyle } from '../styles';
 
-export function getFileIcon(type: ElementType, style: MuiStyle) {
+export function getFileIcon(type: ElementType, style: SxStyle) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;

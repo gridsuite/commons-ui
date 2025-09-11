@@ -6,13 +6,13 @@
  */
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import type { MuiStyle } from '../../utils/styles';
+import type { SxStyle } from '../../utils/styles';
 
 export interface GridSectionProps {
     title: string;
     heading?: 1 | 2 | 3 | 4 | 5 | 6;
     size?: number;
-    customStyle?: MuiStyle;
+    customStyle?: SxStyle;
 }
 
 export default function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {

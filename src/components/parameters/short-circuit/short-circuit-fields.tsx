@@ -27,7 +27,7 @@ import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
 import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
-import type { MuiStyle } from '../../../utils/styles';
+import type { SxStyle } from '../../../utils/styles';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
@@ -77,7 +77,7 @@ export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProp
     }, []);
 
     const statusColor = useMemo(
-        () => ({ color: status === Status.SUCCESS ? green[500] : red[500] }) as const satisfies MuiStyle,
+        () => ({ color: status === Status.SUCCESS ? green[500] : red[500] }) as const satisfies SxStyle,
         [status]
     );
     const statusToShow = <Lens fontSize="medium" sx={statusColor} />;

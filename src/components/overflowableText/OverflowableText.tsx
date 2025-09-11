@@ -7,7 +7,7 @@
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, type BoxProps, styled, Tooltip } from '@mui/material';
 import { Style } from 'node:util';
-import type { MuiStyle, MuiStyles } from '../../utils/styles';
+import type { SxStyle, MuiStyles } from '../../utils/styles';
 
 const overflowStyle = {
     overflow: {
@@ -23,7 +23,7 @@ const overflowStyle = {
     },
 } as const satisfies MuiStyles;
 
-const multilineOverflowStyle = (numberOfLinesToDisplay?: number): MuiStyle => ({
+const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxStyle => ({
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
@@ -36,7 +36,7 @@ export interface OverflowableTextProps extends BoxProps {
     text?: ReactNode;
     maxLineCount?: number;
     tooltipStyle?: Style;
-    tooltipSx?: MuiStyle;
+    tooltipSx?: SxStyle;
 }
 
 export const OverflowableText = styled(
