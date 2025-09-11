@@ -7,6 +7,7 @@
 
 import { NumberSchema } from 'yup';
 import { UUID } from 'crypto';
+import { FormattedMessage } from 'react-intl';
 import yup from '../../../../utils/yupConfig';
 import {
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
@@ -77,14 +78,14 @@ export interface LimitReductionIColumnsDef {
 
 export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: LimitReductionIColumnsDef[] = [
     {
-        label: 'voltageRange',
+        label: <FormattedMessage id="voltageRange" />,
         dataKey: VOLTAGE_LEVELS_FORM,
-        tooltip: 'voltageRange',
+        tooltip: <FormattedMessage id="voltageRange" />,
     },
     {
-        label: 'IST',
+        label: <FormattedMessage id="IST" />,
         dataKey: IST_FORM,
-        tooltip: 'IST',
+        tooltip: <FormattedMessage id="IST" />,
     },
 ];
 
