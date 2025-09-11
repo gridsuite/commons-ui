@@ -179,6 +179,7 @@ export const filterExpertEn = {
     pairingKey: 'Xnode',
     tieLineId: 'Tie line ID',
     cannotRetrieveFilter: 'Could not retrieve filter: ',
+    cannotSaveFilter: 'Error while saving filter: ',
     equality: '=',
     notEquality: '!=',
     greaterThan: '>',
