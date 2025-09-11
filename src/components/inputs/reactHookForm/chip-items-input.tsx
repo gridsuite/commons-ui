@@ -8,6 +8,7 @@
 import { Chip, FormControl, TextField } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
+import type { MuiStyles } from '../../../utils/styles';
 import { useSnackMessage } from '../../../hooks';
 import { useCustomFormContext } from './provider';
 import { FieldLabel, isFieldRequired } from './utils';
@@ -94,7 +95,7 @@ export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipI
             padding: 1,
             overflow: 'hidden',
         },
-    };
+    } as const satisfies MuiStyles;
 
     return (
         <>

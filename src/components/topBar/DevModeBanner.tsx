@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useCallback, useState } from 'react';
-import { Alert, Collapse, type SxProps, type Theme, Typography } from '@mui/material';
+import { Alert, Collapse, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     alert: {
@@ -28,7 +29,7 @@ const styles = {
             },
         },
     },
-} as const satisfies Record<string, SxProps<Theme>>;
+} as const satisfies MuiStyles;
 
 export function DevModeBanner() {
     const [visible, setVisible] = useState(true);

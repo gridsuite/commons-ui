@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Box, BoxProps, SxProps, Theme, Tooltip, styled } from '@mui/material';
+import { Box, type BoxProps, styled, Tooltip } from '@mui/material';
 import { Style } from 'node:util';
+import type { MuiStyle } from '../../utils/styles';
 
 const overflowStyle = {
     overflow: {
@@ -22,7 +23,7 @@ const overflowStyle = {
     },
 };
 
-const multilineOverflowStyle = (numberOfLinesToDisplay?: number): SxProps => ({
+const multilineOverflowStyle = (numberOfLinesToDisplay?: number): MuiStyle => ({
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitLineClamp: numberOfLinesToDisplay /* number of lines to show */,
@@ -35,7 +36,7 @@ export interface OverflowableTextProps extends BoxProps {
     text?: ReactNode;
     maxLineCount?: number;
     tooltipStyle?: Style;
-    tooltipSx?: SxProps<Theme>;
+    tooltipSx?: MuiStyle;
 }
 
 export const OverflowableText = styled(

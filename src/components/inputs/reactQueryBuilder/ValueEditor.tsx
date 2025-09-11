@@ -24,6 +24,7 @@ import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldType } from '../../../utils/types/fieldType';
 import { ElementAttributes } from '../../../utils';
+import type { MuiStyles } from '../../../utils/styles';
 
 const styles = {
     noArrows: {
@@ -34,7 +35,7 @@ const styles = {
             MozAppearance: 'textfield',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 export function ValueEditor(props: ValueEditorProps) {
     const { field, operator, value, rule, handleOnChange, inputType, fieldData } = props;

@@ -6,45 +6,44 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { FormattedMessage, useIntl } from 'react-intl';
-
-import { Box, Tab, Tabs, Theme, CircularProgress, Grid } from '@mui/material';
+import { Box, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import * as sensiParam from './columns-definitions';
 import {
     IColumnsDef,
+    SensiBranchesTabValues,
     SensiHvdcs,
     SensiInjection,
     SensiInjectionsSet,
     SensiNodes,
     SensiPsts,
     SensiTabValues,
-    SensiBranchesTabValues,
 } from './columns-definitions';
 import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
 import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
+import type { MuiStyles } from '../../../utils/styles';
 
 const styles = {
-    circularProgress: (theme: Theme) => ({
+    circularProgress: (theme) => ({
         display: 'flex',
         marginRight: theme.spacing(1),
         color: theme.palette.primary.main,
     }),
-    errorOutlineIcon: (theme: Theme) => ({
+    errorOutlineIcon: (theme) => ({
         marginRight: theme.spacing(1),
         color: theme.palette.error.main,
         display: 'flex',
     }),
-    textInfo: (theme: Theme) => ({
+    textInfo: (theme) => ({
         color: theme.palette.primary.main,
         display: 'flex',
     }),
     textInitial: {
         color: 'grey',
     },
-    textAlert: (theme: Theme) => ({
+    textAlert: (theme) => ({
         color: theme.palette.error.main,
         display: 'flex',
     }),
@@ -56,7 +55,7 @@ const styles = {
         flexGrow: '1',
         whiteSpace: 'pre-wrap',
     },
-};
+} as const satisfies MuiStyles;
 
 interface SensitivityParametersSelectorProps {
     onFormChanged: (hasFormChanged: boolean) => void;

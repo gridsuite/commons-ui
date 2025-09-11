@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactNode } from 'react';
-import { Box, Grid, LinearProgress, Theme } from '@mui/material';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
@@ -13,7 +13,7 @@ import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
-import { mergeSx } from '../../../utils';
+import { mergeSx, type MuiStyles } from '../../../utils/styles';
 
 const styles = {
     form: {
@@ -29,11 +29,11 @@ const styles = {
         flexDirection: 'column',
         height: '100%',
     },
-    actions: (theme: Theme) => ({
+    actions: (theme) => ({
         flexGrow: 0,
         paddingBottom: theme.spacing(3),
     }),
-    content: (theme: Theme) => ({
+    content: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
@@ -41,7 +41,7 @@ const styles = {
         paddingBottom: theme.spacing(2),
         flexGrow: 1,
     }),
-};
+} as const satisfies MuiStyles;
 
 export function SensitivityAnalysisParametersForm({
     sensitivityAnalysisMethods,

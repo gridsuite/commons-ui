@@ -5,26 +5,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Avatar, Box, Button, Container, Link, Theme, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material';
 import { LogoutOutlined as LogoutOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
-    paper: (theme: Theme) => ({
+    paper: (theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     }),
-    avatar: (theme: Theme) => ({
+    avatar: (theme) => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.error.main,
     }),
-    submit: (theme: Theme) => ({
+    submit: (theme) => ({
         margin: theme.spacing(3, 0, 2),
         borderRadius: '30px',
     }),
-};
+} as const satisfies MuiStyles;
 
 export interface LogoutProps {
     onLogoutClick: () => void;

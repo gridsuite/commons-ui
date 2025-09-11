@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { Mark } from '@mui/base';
 import { parametersStyles } from '../../parameters-style';
 import { SliderInput } from '../../../inputs';
+import type { MuiStyles } from '../../../../utils/styles';
 
 export function sanitizePercentageValue(value: number) {
     return Math.round(value * 10) / 10;
@@ -29,7 +30,7 @@ const styles = {
         ...parametersStyles.controlItem,
         paddingRight: 2,
     },
-};
+} as const satisfies MuiStyles;
 
 export function ParameterLineSlider({
     name,
