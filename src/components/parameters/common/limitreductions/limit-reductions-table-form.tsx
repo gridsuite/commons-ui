@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useMemo } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import {
     COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS,
     ILimitReductionsByVoltageLevel,
@@ -55,13 +55,11 @@ const getToolTipColumn = (limit: ITemporaryLimitReduction) => {
 };
 
 export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitReductionsByVoltageLevel[] }>) {
-    const intl = useIntl();
-
     const columnsDefinition = useMemo(() => {
         const columnsDef = COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS.map((column) => ({
             ...column,
-            label: intl.formatMessage({ id: column.label }),
-            tooltip: intl.formatMessage({ id: column.tooltip }),
+            label: column.label,
+            tooltip: column.tooltip,
         }));
 
         if (limits !== null && limits.length > 0) {
@@ -75,7 +73,7 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
         }
 
         return columnsDef;
-    }, [intl, limits]);
+    }, [limits]);
 
     return (
         <CustomVoltageLevelTable
