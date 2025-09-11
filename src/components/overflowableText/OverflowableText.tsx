@@ -7,7 +7,7 @@
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, type BoxProps, styled, Tooltip } from '@mui/material';
 import { Style } from 'node:util';
-import type { MuiStyle } from '../../utils/styles';
+import type { MuiStyle, MuiStyles } from '../../utils/styles';
 
 const overflowStyle = {
     overflow: {
@@ -21,7 +21,7 @@ const overflowStyle = {
         width: 'fit-content',
         maxWidth: 'fit-content',
     },
-};
+} as const satisfies MuiStyles;
 
 const multilineOverflowStyle = (numberOfLinesToDisplay?: number): MuiStyle => ({
     overflow: 'hidden',

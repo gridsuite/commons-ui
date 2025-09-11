@@ -24,7 +24,7 @@ const styles = {
     clickable: {
         cursor: 'pointer',
     },
-}  as const satisfies MuiStyles;
+} as const satisfies MuiStyles;
 
 export interface GridLogoProps extends Omit<LogoTextProps, 'style'> {
     appLogo: ReactNode;
