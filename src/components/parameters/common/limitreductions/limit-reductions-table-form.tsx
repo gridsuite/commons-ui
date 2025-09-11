@@ -21,7 +21,6 @@ const getLabelColumn = (limit: ITemporaryLimitReduction) => {
 
     if (lowBound === 0) {
         return <FormattedMessage id="LimitVoltageAfterIST" values={{ highBound: `${highBound}` }} />;
-        // return intl.formatMessage({ id: 'LimitVoltageAfterIST' }, { highBound: `${highBound}` });
     }
 
     return (
