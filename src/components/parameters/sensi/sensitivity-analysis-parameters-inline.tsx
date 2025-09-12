@@ -34,7 +34,7 @@ interface SensitivityAnalysisParametersProps {
     currentNodeUuid: UUID | null;
     currentRootNetworkUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
-    setHaveDirtyFields: any;
+    setHaveDirtyFields: (isDirty: boolean) => void;
     enableDeveloperMode: boolean;
 }
 
