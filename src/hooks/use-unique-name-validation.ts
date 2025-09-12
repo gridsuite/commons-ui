@@ -31,12 +31,11 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         trigger,
-        formState: { errors, defaultValues },
+        formState: { errors, defaultValues, isDirty: formIsDirty },
     } = useFormContext();
 
     const {
         field: { value },
-        fieldState: { isDirty },
     } = useController({ name });
 
     const {
@@ -93,9 +92,12 @@ export function useUniqueNameValidation({
             debouncedHandleCheckName(trimmedValue);
         }
 
-        // if the name is unchanged, we don't do custom validation
-        if (!isDirty) {
+        // if the form is unchanged, we don't do custom validation
+        if (!formIsDirty) {
             clearErrors(name);
+            return;
+        }
+        if (trimmedValue === defaultFieldValue && trimmedValue.length > 0) {
             return;
         }
         if (trimmedValue) {
@@ -118,7 +120,7 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         name,
-        isDirty,
+        formIsDirty,
         defaultFieldValue,
         directory,
         selectedDirectory,
