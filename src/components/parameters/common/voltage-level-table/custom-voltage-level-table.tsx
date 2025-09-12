@@ -19,7 +19,7 @@ interface LimitReductionsTableProps {
     columnsDefinition: LimitReductionIColumnsDef[];
     tableHeight: number;
     formName: string;
-    limits: ILimitReductionsByVoltageLevel[];
+    limits?: ILimitReductionsByVoltageLevel[];
 }
 
 export function CustomVoltageLevelTable({

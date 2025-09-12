@@ -12,7 +12,7 @@ import { ILimitReductionsByVoltageLevel, LimitReductionIColumnsDef } from './col
 interface TableRowComponentProps {
     columnsDefinition: LimitReductionIColumnsDef[];
     index: number;
-    limits: ILimitReductionsByVoltageLevel[];
+    limits?: ILimitReductionsByVoltageLevel[];
 }
 
 export function LimitReductionTableRow({ columnsDefinition, index, limits }: Readonly<TableRowComponentProps>) {
