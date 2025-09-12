@@ -6,9 +6,8 @@
  */
 
 import { useCallback, useMemo } from 'react';
-
 import type { RuleGroupTypeAny } from 'react-querybuilder';
-import { formatQuery } from 'react-querybuilder';
+import { formatQuery } from 'react-querybuilder/formatQuery';
 import './stylesExpertFilter.css';
 import { useFormContext, useWatch } from 'react-hook-form';
 import * as yup from 'yup';
