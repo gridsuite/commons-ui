@@ -19,7 +19,6 @@ import { Substation, VoltageLevel } from '../../../utils/types/equipmentTypes';
 import { ElementValueEditor } from './ElementValueEditor';
 import { ElementType } from '../../../utils/types/elementType';
 import { PropertyValueEditor } from './PropertyValueEditor';
-import { FilterType } from '../../filter/constants/FilterConstants';
 import { GroupValueEditor } from './compositeRuleEditor/GroupValueEditor';
 import { OPERATOR_OPTIONS } from '../../filter/expert/expertFilterConstants';
 import { FieldType } from '../../../utils/types/fieldType';
@@ -45,20 +44,17 @@ export function ValueEditor(props: ValueEditorProps) {
         (filterValue: ElementAttributes) => {
             if (filterValue?.type === ElementType.FILTER) {
                 return (
-                    // we do not authorize to use an expert filter in the rules of
-                    // another expert filter, to prevent potential cycle problems
-                    filterValue?.specificMetadata?.type !== FilterType.EXPERT.id &&
-                    ((field === FieldType.ID &&
+                    (field === FieldType.ID &&
                         filterValue?.specificMetadata?.equipmentType === getValues(FieldConstants.EQUIPMENT_TYPE)) ||
-                        ((field === FieldType.VOLTAGE_LEVEL_ID ||
-                            field === FieldType.VOLTAGE_LEVEL_ID_1 ||
-                            field === FieldType.VOLTAGE_LEVEL_ID_2 ||
-                            field === FieldType.VOLTAGE_LEVEL_ID_3) &&
-                            filterValue?.specificMetadata?.equipmentType === VoltageLevel.type) ||
-                        ((field === FieldType.SUBSTATION_ID ||
-                            field === FieldType.SUBSTATION_ID_1 ||
-                            field === FieldType.SUBSTATION_ID_2) &&
-                            filterValue?.specificMetadata?.equipmentType === Substation.type))
+                    ((field === FieldType.VOLTAGE_LEVEL_ID ||
+                        field === FieldType.VOLTAGE_LEVEL_ID_1 ||
+                        field === FieldType.VOLTAGE_LEVEL_ID_2 ||
+                        field === FieldType.VOLTAGE_LEVEL_ID_3) &&
+                        filterValue?.specificMetadata?.equipmentType === VoltageLevel.type) ||
+                    ((field === FieldType.SUBSTATION_ID ||
+                        field === FieldType.SUBSTATION_ID_1 ||
+                        field === FieldType.SUBSTATION_ID_2) &&
+                        filterValue?.specificMetadata?.equipmentType === Substation.type)
                 );
             }
             return true;

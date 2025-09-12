@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UUID } from 'crypto';
@@ -36,7 +36,7 @@ export function LoadFlowParametersInline({
     studyUuid: UUID | null;
     language: GsLang;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
-    setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
+    setHaveDirtyFields: (isDirty: boolean) => void;
     enableDeveloperMode: boolean;
 }>) {
     const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;

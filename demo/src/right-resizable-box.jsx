@@ -53,7 +53,7 @@ const styles = {
 const ResizableBoxSx = styled(ResizableBox)({});
 
 function RightResizableBox(props) {
-    const { children, disableResize, fullscreen, hide } = props;
+    const { children, disableResize = false, fullscreen = false, hide = false } = props;
     const windowWidth = useWindowWidth();
 
     const [resizedTreePercentage, setResizedTreePercentage] = useState(0.5);
@@ -85,12 +85,6 @@ function RightResizableBox(props) {
         </ResizableBoxSx>
     );
 }
-
-RightResizableBox.defaultProps = {
-    disableResize: false,
-    fullscreen: false,
-    hide: false,
-};
 
 RightResizableBox.propTypes = {
     children: PropTypes.node,

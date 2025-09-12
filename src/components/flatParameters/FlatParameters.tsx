@@ -356,7 +356,11 @@ export function FlatParameters({
                             value={fieldValue}
                             renderTags={(values, getTagProps) => {
                                 return values.map((value, index) => (
-                                    <Chip label={getTranslatedValue(param.name, value)} {...getTagProps({ index })} />
+                                    <Chip
+                                        label={getTranslatedValue(param.name, value)}
+                                        {...getTagProps({ index })}
+                                        key={`chip_${value}`}
+                                    />
                                 ));
                             }}
                             renderInput={(inputProps) => <TextField {...inputProps} variant={variant} />}
@@ -376,7 +380,13 @@ export function FlatParameters({
                         value={fieldValue}
                         renderTags={(values, getTagProps) => {
                             return values.map((value, index) => (
-                                <Chip id={`chip_${value}`} size="small" label={value} {...getTagProps({ index })} />
+                                <Chip
+                                    id={`chip_${value}`}
+                                    size="small"
+                                    label={value}
+                                    {...getTagProps({ index })}
+                                    key={`chip_${value}`}
+                                />
                             ));
                         }}
                         renderInput={(inputProps) => <TextField {...inputProps} variant={variant} />}
