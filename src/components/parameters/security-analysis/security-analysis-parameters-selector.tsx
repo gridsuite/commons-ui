@@ -61,7 +61,6 @@ export function SecurityAnalysisParametersSelector({
                                 sx={{
                                     fontSize: 17,
                                     fontWeight: 'bold',
-                                    textTransform: 'capitalize',
                                 }}
                             />
                         )

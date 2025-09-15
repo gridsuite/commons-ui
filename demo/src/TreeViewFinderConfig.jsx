@@ -24,16 +24,16 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Radio, R
  */
 function TreeViewFinderConfig(props) {
     const {
-        dynamicData,
-        dataFormat,
-        multiSelect,
-        onlyLeaves,
-        sortedAlphabetically,
-        onDynamicDataChange,
-        onDataFormatChange,
-        onSelectionTypeChange,
-        onOnlyLeavesChange,
-        onSortedAlphabeticallyChange,
+        dynamicData = false,
+        dataFormat = 'Tree',
+        multiSelect = false,
+        onlyLeaves = false,
+        sortedAlphabetically = false,
+        onDynamicDataChange = () => {},
+        onDataFormatChange = () => {},
+        onSelectionTypeChange = () => {},
+        onOnlyLeavesChange = () => {},
+        onSortedAlphabeticallyChange = () => {},
     } = props;
 
     return (
@@ -131,19 +131,6 @@ TreeViewFinderConfig.propTypes = {
     onSelectionTypeChange: PropTypes.func,
     onOnlyLeavesChange: PropTypes.func,
     onSortedAlphabeticallyChange: PropTypes.func,
-};
-
-TreeViewFinderConfig.defaultProps = {
-    dynamicData: false,
-    dataFormat: 'Tree',
-    multiSelect: false,
-    onlyLeaves: false,
-    sortedAlphabetically: false,
-    onDynamicDataChange: () => {},
-    onDataFormatChange: () => {},
-    onSelectionTypeChange: () => {},
-    onOnlyLeavesChange: () => {},
-    onSortedAlphabeticallyChange: () => {},
 };
 
 export default TreeViewFinderConfig;
