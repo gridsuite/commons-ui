@@ -56,10 +56,12 @@ export const parametersEn = {
 
     General: 'General',
     LimitReductions: 'Limit reductions',
-    IST: 'IST',
-    LimitDurationInterval: 'Between {highBound} and {lowBound}',
-    LimitDurationAfterIST: 'Beyond IT{value}',
+    IST: 'PATL',
+    LimitVoltageInterval: 'Between TATL{lowBound} and TATL{highBound}',
+    LimitVoltageAfterIST: 'Between PATL and TATL{highBound}',
+    LimitDurationInterval: 'Duration {lowerBoundClosed}{lowBound}, {highBound}{higherBoundClosed}',
     voltageRange: 'Voltage range',
+    VoltageRangeInterval: 'Voltage interval ]{lowBound} kV,{highBound} kV]',
 
     Provider: 'Provider',
     LimitReduction: 'Limit reduction',
