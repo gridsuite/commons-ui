@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
-import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import {
     LimitReductionIColumnsDef,
@@ -19,7 +18,7 @@ interface LimitReductionsTableProps {
     columnsDefinition: LimitReductionIColumnsDef[];
     tableHeight: number;
     formName: string;
-    limits: ILimitReductionsByVoltageLevel[];
+    limits?: ILimitReductionsByVoltageLevel[];
 }
 
 export function CustomVoltageLevelTable({
@@ -31,11 +30,6 @@ export function CustomVoltageLevelTable({
     const { fields: rows } = useFieldArray({
         name: formName,
     });
-
-    const TableRowComponent = useMemo(
-        () => (formName === LIMIT_REDUCTIONS_FORM ? LimitReductionTableRow : CustomVoltageLevelTableRow),
-        [formName]
-    );
 
     return (
         <TableContainer
@@ -63,15 +57,23 @@ export function CustomVoltageLevelTable({
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row, index) => (
-                        <TableRowComponent
-                            key={`${row.id}`}
-                            columnsDefinition={columnsDefinition}
-                            index={index}
-                            formName={formName}
-                            limits={limits}
-                        />
-                    ))}
+                    {rows.map((row, index) =>
+                        formName === LIMIT_REDUCTIONS_FORM && limits ? (
+                            <LimitReductionTableRow
+                                key={`${row.id}`}
+                                columnsDefinition={columnsDefinition}
+                                index={index}
+                                limits={limits}
+                            />
+                        ) : (
+                            <CustomVoltageLevelTableRow
+                                key={`${row.id}`}
+                                columnsDefinition={columnsDefinition}
+                                index={index}
+                                formName={formName}
+                            />
+                        )
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>
