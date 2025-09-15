@@ -58,7 +58,7 @@ export function CustomVoltageLevelTable({
                 </TableHead>
                 <TableBody>
                     {rows.map((row, index) =>
-                        formName === LIMIT_REDUCTIONS_FORM && limits?.[index] ? (
+                        formName === LIMIT_REDUCTIONS_FORM && limits ? (
                             <LimitReductionTableRow
                                 key={`${row.id}`}
                                 columnsDefinition={columnsDefinition}

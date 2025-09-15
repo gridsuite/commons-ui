@@ -24,7 +24,7 @@ export function LimitReductionTableCell({
     column: LimitReductionIColumnsDef;
     limits: ILimitReductionsByVoltageLevel[];
 }>) {
-    return column.dataKey === VOLTAGE_LEVELS_FORM && limits?.[rowIndex] ? (
+    return column.dataKey === VOLTAGE_LEVELS_FORM && limits[rowIndex] ? (
         <Tooltip
             title={
                 <FormattedMessage
