@@ -22,7 +22,7 @@ export function LimitReductionTableCell({
 }: Readonly<{
     rowIndex: number;
     column: LimitReductionIColumnsDef;
-    limits?: ILimitReductionsByVoltageLevel[];
+    limits: ILimitReductionsByVoltageLevel[];
 }>) {
     return column.dataKey === VOLTAGE_LEVELS_FORM && limits?.[rowIndex] ? (
         <Tooltip
