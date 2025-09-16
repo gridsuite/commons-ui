@@ -4,10 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { useMemo } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
-import { LimitReductionIColumnsDef, LIMIT_REDUCTIONS_FORM } from '../limitreductions/columns-definitions';
+import {
+    LimitReductionIColumnsDef,
+    LIMIT_REDUCTIONS_FORM,
+    ILimitReductionsByVoltageLevel,
+} from '../limitreductions/columns-definitions';
 import { LimitReductionTableRow } from '../limitreductions/limit-reduction-table-row';
 import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
@@ -15,21 +18,18 @@ interface LimitReductionsTableProps {
     columnsDefinition: LimitReductionIColumnsDef[];
     tableHeight: number;
     formName: string;
+    limits?: ILimitReductionsByVoltageLevel[];
 }
 
 export function CustomVoltageLevelTable({
     formName,
     columnsDefinition,
     tableHeight,
+    limits,
 }: Readonly<LimitReductionsTableProps>) {
     const { fields: rows } = useFieldArray({
         name: formName,
     });
-
-    const TableRowComponent = useMemo(
-        () => (formName === LIMIT_REDUCTIONS_FORM ? LimitReductionTableRow : CustomVoltageLevelTableRow),
-        [formName]
-    );
 
     return (
         <TableContainer
@@ -43,27 +43,37 @@ export function CustomVoltageLevelTable({
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
-                            <TableCell
-                                key={column.dataKey}
-                                sx={{
-                                    textAlign: 'center',
-                                }}
-                                title={column.tooltip}
-                            >
-                                {column.label}
-                            </TableCell>
+                            <Tooltip title={column.tooltip}>
+                                <TableCell
+                                    key={column.dataKey}
+                                    sx={{
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            </Tooltip>
                         ))}
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row, index) => (
-                        <TableRowComponent
-                            key={`${row.id}`}
-                            columnsDefinition={columnsDefinition}
-                            index={index}
-                            formName={formName}
-                        />
-                    ))}
+                    {rows.map((row, index) =>
+                        formName === LIMIT_REDUCTIONS_FORM && limits ? (
+                            <LimitReductionTableRow
+                                key={`${row.id}`}
+                                columnsDefinition={columnsDefinition}
+                                index={index}
+                                limits={limits}
+                            />
+                        ) : (
+                            <CustomVoltageLevelTableRow
+                                key={`${row.id}`}
+                                columnsDefinition={columnsDefinition}
+                                index={index}
+                                formName={formName}
+                            />
+                        )
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>
