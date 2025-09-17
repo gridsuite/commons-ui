@@ -33,6 +33,7 @@ export interface UniqueNameInputProps {
     >;
     activeDirectory?: UUID;
     currentName?: string;
+    isPrefilled?: boolean;
     sx?: SxProps<Theme>;
     fullWidth?: boolean;
 }
@@ -48,6 +49,7 @@ export function UniqueNameInput({
     onManualChangeCallback,
     formProps,
     currentName = '',
+    isPrefilled = false,
     activeDirectory,
     sx,
     fullWidth = true,
@@ -64,6 +66,7 @@ export function UniqueNameInput({
         currentName,
         elementType,
         activeDirectory,
+        isPrefilled,
     });
 
     // Handle on user's change
