@@ -6,11 +6,11 @@
  */
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Grid, LinearProgress, Theme } from '@mui/material';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
-import { mergeSx } from '../../../utils';
+import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 
@@ -30,7 +30,7 @@ const styles = {
     actions: {
         flexGrow: 0,
     },
-    content: (theme: Theme) => ({
+    content: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
@@ -38,7 +38,7 @@ const styles = {
         paddingBottom: theme.spacing(1),
         flexGrow: 1,
     }),
-};
+} as const satisfies MuiStyles;
 
 export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,

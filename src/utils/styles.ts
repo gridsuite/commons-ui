@@ -28,3 +28,6 @@ const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
 // You cannot spread or concat directly because `SxProps` (typeof sx) can be an array. */
 // same as [{}, ...(Array.isArray(sx) ? sx : [sx])]
 export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) => allSx.filter(isSxProps).flat();
+
+export type SxStyle = SxProps<Theme>;
+export type MuiStyles = Record<string, SxStyle>;

@@ -26,7 +26,7 @@ import {
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import { UUID } from 'crypto';
-import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
+import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { ElementType } from '../../utils';
 
@@ -60,7 +60,7 @@ const defaultStyles = {
         marginRight: '4px',
     },
     [cssIcon]: {},
-};
+} as const satisfies MuiStyles;
 
 export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);

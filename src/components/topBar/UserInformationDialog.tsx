@@ -12,6 +12,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     DialogTitle: { fontSize: '1.5rem' },
@@ -19,7 +20,7 @@ const styles = {
     quotasBox: { marginTop: '60px' },
     quotasTopography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
     usedTopography: { marginLeft: '15%' },
-};
+} as const satisfies MuiStyles;
 
 interface UserInformationDialogProps {
     openDialog: boolean;

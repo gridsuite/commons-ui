@@ -5,18 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ValueEditorProps } from 'react-querybuilder';
-import { Grid, Theme } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { RuleValueEditor } from './RuleValueEditor';
 import { CompositeField, CompositeGroup, CompositeRule } from '../../../filter/expert/expertFilter.type';
+import type { MuiStyles } from '../../../../utils';
 
 const styles = {
-    group: (theme: Theme) => ({
+    group: (theme) => ({
         border: 1,
         borderRadius: 1,
         borderColor: theme.palette.grey[500],
     }),
-};
+} as const satisfies MuiStyles;
 
 export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
     const {
