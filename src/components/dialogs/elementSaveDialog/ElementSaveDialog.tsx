@@ -335,8 +335,8 @@ export function ElementSaveDialog({
                         <RadioInput
                             name={FieldConstants.OPERATION_TYPE}
                             options={[
-                                { id: OperationType.CREATE, label: intl.formatMessage({ id: createLabelId }) },
-                                { id: OperationType.UPDATE, label: intl.formatMessage({ id: updateLabelId }) },
+                                { id: OperationType.CREATE, label: createLabelId ?? 'createLabelId' },
+                                { id: OperationType.UPDATE, label: updateLabelId ?? 'updateLabelId' },
                             ]}
                             formProps={{
                                 sx: {
