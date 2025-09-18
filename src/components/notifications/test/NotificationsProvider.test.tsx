@@ -8,12 +8,11 @@ import { createRoot } from 'react-dom/client';
 import { act, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { NIL as NIL_UUID } from 'uuid';
 import { NotificationsProvider } from '../NotificationsProvider';
 import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
 jest.mock('reconnecting-websocket');
-jest.mock('uuid', () => ({ v4: () => NIL_UUID }));
+jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
 
 let container: Element;
