@@ -7,7 +7,7 @@
 
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { Mark } from '@mui/base';
+import type { Mark } from '@mui/material/Slider/useSlider.types'; // eslint-disable-line no-restricted-imports
 import { parametersStyles } from '../../parameters-style';
 import { SliderInput } from '../../../inputs';
 
