@@ -22,7 +22,6 @@ import {
     Fade,
     Grid,
     Stack,
-    Theme,
     Tooltip,
     tooltipClasses,
     Typography,
@@ -34,6 +33,7 @@ import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { LogoText } from './GridLogo';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     general: {
@@ -52,21 +52,14 @@ const styles = {
         textAlign: 'center',
         marginTop: 0,
     },
-    versionField: (isUnknown: boolean) =>
-        isUnknown
-            ? {
-                  fontSize: '1.5em',
-                  fontWeight: 'bold',
-              }
-            : {
-                  fontStyle: 'italic',
-              },
+    versionField: { fontStyle: 'italic' },
+    versionFieldUnknown: { fontSize: '1.5em', fontWeight: 'bold' },
     detailsSection: {
         '.MuiAccordionSummary-content > .MuiSvgIcon-root': {
             marginRight: '0.5rem',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 function getGlobalVersion(
     fnPromise: (() => Promise<string>) | undefined,
@@ -153,7 +146,7 @@ const moduleStyles = {
         alignSelf: 'flex-end',
         flexShrink: 0,
     },
-    tooltip: (theme: Theme) => ({
+    tooltip: (theme) => ({
         [`& .${tooltipClasses.tooltip}`]: {
             border: '1px solid #dadde9',
             boxShadow: theme.shadows[1],
@@ -174,7 +167,7 @@ const moduleStyles = {
             paddingLeft: '0.5em',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 const ModuleTypesIcons = {
     app: <WidgetsOutlined sx={moduleStyles.icons} fontSize="small" color="primary" />,
@@ -410,7 +403,11 @@ export function AboutDialog({
                                         version: (
                                             <Typography
                                                 component="span"
-                                                sx={styles.versionField(!loadingGlobalVersion && !!actualGlobalVersion)}
+                                                sx={
+                                                    !loadingGlobalVersion && !!actualGlobalVersion
+                                                        ? styles.versionFieldUnknown
+                                                        : styles.versionField
+                                                }
                                             >
                                                 {actualGlobalVersion || 'unknown'}
                                             </Typography>

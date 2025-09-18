@@ -4,22 +4,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Avatar, Box, Button, Container, Link, Theme, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
-    paper: (theme: Theme) => ({
+    paper: (theme) => ({
         marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     }),
-    avatar: (theme: Theme) => ({
+    avatar: (theme) => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
     }),
-    submit: (theme: Theme) => ({
+    submit: (theme) => ({
         margin: theme.spacing(3, 0, 2),
         borderRadius: '30px',
     }),
@@ -27,7 +28,7 @@ const styles = {
         width: 64,
         height: 64,
     },
-};
+} as const satisfies MuiStyles;
 
 export interface LoginProps {
     onLoginClick: () => void;
