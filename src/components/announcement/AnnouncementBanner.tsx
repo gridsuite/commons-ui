@@ -6,20 +6,11 @@
  */
 import type { UUID } from 'crypto';
 import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useState } from 'react';
-import {
-    Alert,
-    type AlertColor,
-    type AlertProps,
-    AlertTitle,
-    Collapse,
-    type SxProps,
-    type Theme,
-    Tooltip,
-    useTheme,
-} from '@mui/material';
+import { Alert, type AlertColor, type AlertProps, AlertTitle, Collapse, Tooltip, useTheme } from '@mui/material';
 import { Campaign as CampaignIcon } from '@mui/icons-material';
 import type { User } from 'oidc-client';
 import { AnnouncementSeverity } from '../../utils/types';
+import type { MuiStyles } from '../../utils/styles';
 
 // Pick the same color than Snackbar
 const snackbarInfo = '#2196f3';
@@ -37,7 +28,7 @@ const styles = {
             backgroundColor: snackbarInfo,
         },
     }),
-} as const satisfies Record<string, SxProps<Theme>>;
+} as const satisfies MuiStyles;
 
 export type AnnouncementBannerProps = PropsWithChildren<{
     // message only visible if user logged

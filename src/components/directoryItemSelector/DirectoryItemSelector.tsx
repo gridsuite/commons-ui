@@ -6,8 +6,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SxProps, Theme } from '@mui/material';
 import { UUID } from 'crypto';
+import type { MuiStyles } from '../../utils/styles';
 import { getFileIcon } from '../../utils/mapper/getFileIcon';
 import { ElementType } from '../../utils/types/elementType';
 import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
@@ -22,12 +22,12 @@ import {
 } from './utils';
 
 const styles = {
-    icon: (theme: Theme) => ({
+    icon: (theme) => ({
         marginRight: theme.spacing(1),
         width: '18px',
         height: '18px',
     }),
-};
+} as const satisfies MuiStyles;
 
 // TODO: check avec Kevin / Sylvain
 type ElementAttributesBase = {
@@ -203,7 +203,7 @@ export function DirectoryItemSelector({
                 type: e.type,
                 description: e.description,
                 specificMetadata: e.specificMetadata,
-                icon: getFileIcon(e.type, styles.icon as SxProps),
+                icon: getFileIcon(e.type, styles.icon),
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
                 childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
             };
@@ -217,7 +217,7 @@ export function DirectoryItemSelector({
                     id: e.elementUuid,
                     name: e.elementName,
                     description: e.description,
-                    icon: getFileIcon(e.type, styles.icon as SxProps),
+                    icon: getFileIcon(e.type, styles.icon),
                     children:
                         e.type === ElementType.DIRECTORY
                             ? convertChildren(nodeMap.current[e.elementUuid].children)
