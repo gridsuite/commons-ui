@@ -92,6 +92,7 @@
         "@types/autosuggest-highlight": "^3.2.3",
         "@types/eslint": "^8.56.12",
         "@types/eslint-config-prettier": "^6.11.3",
+        "@types/jest": "^30.0.0",
         "@types/json-logic-js": "^2.0.8",
         "@types/license-checker": "^25.0.6",
         "@types/localized-countries": "^2.0.3",
