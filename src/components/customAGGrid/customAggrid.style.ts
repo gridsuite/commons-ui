@@ -15,9 +15,9 @@ export const styles = {
         position: 'relative',
 
         [`&.${CUSTOM_AGGRID_THEME}`]: {
-            '--ag-value-change-value-highlight-background-color': theme.aggrid.valueChangeHighlightBackgroundColor,
-            '--ag-selected-row-background-color': theme.aggrid.highlightColor,
-            '--ag-row-hover-color': theme.aggrid.highlightColor,
+            '--ag-value-change-value-highlight-background-color': theme.agGrid.valueChangeHighlightBackgroundColor,
+            '--ag-selected-row-background-color': theme.agGrid.highlightColor,
+            '--ag-row-hover-color': theme.agGrid.highlightColor,
         },
 
         '& .ag-checkbox-input': {
