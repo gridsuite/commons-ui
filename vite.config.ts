@@ -32,14 +32,19 @@ export default defineConfig((config) => ({
             exclude: ['**/*.test.{ts,tsx}'],
             copyDtsFiles: true, // copy existing .d.ts files from src to outDir
             beforeWriteFile: (filePath, content) => {
-                if (filePath === `${outDir}/index.d.ts`) {
-                    // vite doesn't support "import './f.d.ts'" and dts plugin doesn't keep "import type {}", so we inject it manually
-                    return {
-                        filePath,
-                        content: `${content}\n// Ensure the module augmentation is loaded whenever a project imports '@gridsuite/commons-ui'\nimport './module-mui';\n`,
-                    };
+                switch (filePath) {
+                    case `${outDir}/index.d.ts`:
+                        // vite doesn't support "import './f.d.ts'" and dts plugin doesn't keep "import type {}", so we inject it manually
+                        return {
+                            filePath,
+                            content: `${content}\n// Ensure the module augmentation is loaded whenever a project imports '@gridsuite/commons-ui'\nimport './module-mui';\n`,
+                        };
+                    case `${outDir}/module-localized-countries.d.ts`:
+                    case `${outDir}/vite-env.d.ts`:
+                        return false;
+                    default:
+                        return undefined;
                 }
-                return undefined;
             },
         }),
     ],
