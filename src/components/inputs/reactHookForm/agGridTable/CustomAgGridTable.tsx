@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Box, type CSSObject, useTheme } from '@mui/material';
+import { type CSSObject } from '@mui/material';
 import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
@@ -26,10 +26,12 @@ const style = (customProps: CSSObject) =>
             // https://www.ag-grid.com/react-data-grid/global-style-customisation/
             '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
             '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
-            '--ag-background-color': `${theme.agGrid.backgroundColor} !important`,
-            '--ag-header-background-color': `${theme.agGrid.backgroundColor} !important`,
-            '--ag-odd-row-background-color': `${theme.agGrid.backgroundColor} !important`,
-            '--ag-modal-overlay-background-color': `${theme.agGrid.backgroundColor} !important`,
+            ...(theme.agGrid?.backgroundColor && {
+                '--ag-background-color': `${theme.agGrid.backgroundColor} !important`,
+                '--ag-header-background-color': `${theme.agGrid.backgroundColor} !important`,
+                '--ag-odd-row-background-color': `${theme.agGrid.backgroundColor} !important`,
+                '--ag-modal-overlay-background-color': `${theme.agGrid.backgroundColor} !important`,
+            }),
             '--ag-selected-row-background-color': 'transparent !important',
             '--ag-range-selection-border-color': 'transparent !important',
 
@@ -61,13 +63,13 @@ const style = (customProps: CSSObject) =>
                 height: '100%',
                 border: 'inherit',
                 outline: 'inherit',
-                backgroundColor: theme.agGrid.backgroundColor,
+                ...(theme.agGrid?.backgroundColor && { backgroundColor: theme.agGrid.backgroundColor }),
             },
             '& .Mui-focused .MuiOutlinedInput-root': {
                 // borders moves row height
                 outline: 'var(--ag-borders-input) var(--ag-input-focus-border-color)',
                 outlineOffset: '-1px',
-                backgroundColor: theme.agGrid.backgroundColor,
+                ...(theme.agGrid?.backgroundColor && { backgroundColor: theme.agGrid.backgroundColor }),
             },
             ...customProps,
         }),
@@ -99,7 +101,6 @@ export function CustomAgGridTable({
     rowSelection,
     ...props
 }: Readonly<CustomAgGridTableProps>) {
-    const theme = useTheme();
     const [gridApi, setGridApi] = useState<any>(null);
     const [selectedRows, setSelectedRows] = useState([]);
     const [newRowAdded, setNewRowAdded] = useState(false);
@@ -209,27 +210,26 @@ export function CustomAgGridTable({
 
     return (
         <>
-            <Box className={theme.agGrid.theme} sx={useMemo(() => style(cssProps).grid, [cssProps])}>
-                <CustomAGGrid
-                    rowData={rowData}
-                    onGridReady={onGridReady}
-                    cacheOverflowSize={10}
-                    rowSelection={rowSelection ?? 'multiple'}
-                    rowDragEntireRow
-                    rowDragManaged
-                    onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    detailRowAutoHeight
-                    onSelectionChanged={() => {
-                        setSelectedRows(gridApi.api.getSelectedRows());
-                    }}
-                    onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
-                    onCellEditingStopped={onCellEditingStopped}
-                    onSortChanged={onSortChanged}
-                    getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
-                    theme="legacy"
-                    {...props}
-                />
-            </Box>
+            <CustomAGGrid
+                rowData={rowData}
+                onGridReady={onGridReady}
+                cacheOverflowSize={10}
+                rowSelection={rowSelection ?? 'multiple'}
+                rowDragEntireRow
+                rowDragManaged
+                onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
+                detailRowAutoHeight
+                onSelectionChanged={() => {
+                    setSelectedRows(gridApi.api.getSelectedRows());
+                }}
+                onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
+                onCellEditingStopped={onCellEditingStopped}
+                onSortChanged={onSortChanged}
+                getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
+                theme="legacy"
+                sx={useMemo(() => style(cssProps).grid, [cssProps])}
+                {...props}
+            />
             <BottomRightButtons
                 name={name}
                 handleAddRow={handleAddRow}

@@ -27,11 +27,11 @@ import type {} from '@mui/lab/themeAugmentation';
 declare module '@mui/material/styles' {
     // https://mui.com/material-ui/customization/theming/#typescript
     interface Theme {
-        agGrid: {
+        agGrid?: {
             theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
-            highlightColor: Property.Color;
-            valueChangeHighlightBackgroundColor: Property.BackgroundColor;
-            backgroundColor: Property.BackgroundColor;
+            highlightColor?: Property.Color;
+            valueChangeHighlightBackgroundColor?: Property.BackgroundColor;
+            backgroundColor?: Property.BackgroundColor;
         };
     }
 
@@ -41,9 +41,9 @@ declare module '@mui/material/styles' {
         agGrid?: {
             // There is no default/fallback values, so all variables must be specified
             theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
-            highlightColor: Property.Color;
-            valueChangeHighlightBackgroundColor: Property.BackgroundColor;
-            backgroundColor: Property.BackgroundColor;
+            highlightColor?: Property.Color;
+            valueChangeHighlightBackgroundColor?: Property.BackgroundColor;
+            backgroundColor?: Property.BackgroundColor;
         };
     }
 

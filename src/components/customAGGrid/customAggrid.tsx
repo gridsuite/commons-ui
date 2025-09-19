@@ -62,7 +62,7 @@ export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
             <Box
                 component="div"
                 sx={mergeSx(styles.grid, sx)}
-                className={`${theme.agGrid.theme} ${CUSTOM_AGGRID_THEME}`}
+                className={`${theme.agGrid?.theme} ${CUSTOM_AGGRID_THEME}`}
             >
                 <AgGridReact
                     ref={ref}
