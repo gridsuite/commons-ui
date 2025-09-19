@@ -5,15 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Autocomplete, type AutocompleteProps, Box, TextField, type Theme } from '@mui/material';
+import { Autocomplete, type AutocompleteProps, Box, TextField } from '@mui/material';
 import { useMemo } from 'react';
+import type { MuiStyles } from '../../../utils/styles';
 
 const styles = {
-    favBox: (theme: Theme) => ({
+    favBox: (theme) => ({
         borderBottom: '1px solid',
         borderColor: theme.palette.divider,
     }),
-};
+} as const satisfies MuiStyles;
 
 interface AutocompleteWithFavoritesProps<Value>
     extends Omit<

@@ -23,7 +23,6 @@ import {
     Paper,
     Popper,
     styled,
-    type Theme,
     ToggleButton,
     ToggleButtonGroup,
     Toolbar,
@@ -50,7 +49,7 @@ import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
 import UserInformationDialog from './UserInformationDialog';
 import UserSettingsDialog from './UserSettingsDialog';
 import { type Metadata } from '../../utils/types/metadata';
-import { DARK_THEME, type GsTheme, LIGHT_THEME } from '../../utils/styles';
+import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles } from '../../utils/styles';
 import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
 import { DevModeBanner } from './DevModeBanner';
 
@@ -67,7 +66,7 @@ const styles = {
         textDecoration: 'none',
         color: 'inherit',
     },
-    name: (theme: Theme) => ({
+    name: (theme) => ({
         backgroundColor: darken(theme.palette.background.paper, 0.1),
         paddingTop: '10px',
         borderRadius: '100%',
@@ -114,7 +113,7 @@ const styles = {
         height: '30px',
         width: '48px',
     },
-};
+} as const satisfies MuiStyles;
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu

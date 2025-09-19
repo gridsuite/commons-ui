@@ -10,6 +10,7 @@ import { UUID } from 'crypto';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
 import yup from '../../utils/yupConfig';
+import type { MuiStyles } from '../../utils/styles';
 
 export const filterStyles = {
     textField: {
@@ -20,7 +21,7 @@ export const filterStyles = {
         minWidth: '250px',
         width: '50%',
     },
-};
+} as const satisfies MuiStyles;
 
 export interface FilterFormProps {
     creation?: boolean;

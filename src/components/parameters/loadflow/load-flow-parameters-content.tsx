@@ -22,6 +22,7 @@ import { SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { LoadFlowParametersInfos } from '../../../utils/types/loadflow.type';
 import { ParameterLineSlider } from '../common/widget/parameter-line-slider';
 import { TabPanel } from '../common/parameters';
+import type { MuiStyles } from '../../../utils/styles';
 
 type LoadFlowParametersContentProps = {
     selectedTab: TabValues;
@@ -44,7 +45,7 @@ const styles = {
         overflow: 'auto',
         paddingLeft: 1,
     },
-};
+} as const satisfies MuiStyles;
 
 function LoadFlowParametersContent({
     selectedTab,
