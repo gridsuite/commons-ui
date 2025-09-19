@@ -9,6 +9,7 @@
 // noinspection ES6UnusedImports
 import type {} from '@mui/material'; // dunno why we need to import like that for module augmentation to work
 import type { Property } from 'csstype';
+import type { ComponentsOverrides, ComponentsVariants, Theme as MuiTheme } from '@mui/material/styles';
 
 // https://mui.com/x/react-charts/quickstart/#typescript
 // import type {} from '@mui/x-charts/themeAugmentation';
@@ -22,6 +23,9 @@ import type {} from '@mui/x-tree-view/themeAugmentation';
 
 // https://mui.com/material-ui/about-the-lab/#typescript
 import type {} from '@mui/lab/themeAugmentation';
+import { CancelButtonProps } from './components';
+
+type ThemeWithoutComponents = Omit<MuiTheme, 'components'>;
 
 // used to customize mui theme & colors
 declare module '@mui/material/styles' {
@@ -54,6 +58,21 @@ declare module '@mui/material/styles' {
     // https://mui.com/material-ui/customization/palette/#typescript-2
     // interface PaletteColor {}
     // interface SimplePaletteColorOptions {}
+
+    // https://mui.com/material-ui/customization/creating-themed-components/#typescript
+    interface ComponentNameToClassKey {
+        CancelButton: never; // what here?
+    }
+    interface ComponentsPropsList {
+        CancelButton: Partial<CancelButtonProps>;
+    }
+    interface Components {
+        CancelButton?: {
+            defaultProps?: ComponentsPropsList['CancelButton'];
+            styleOverrides?: ComponentsOverrides<ThemeWithoutComponents>['CancelButton'];
+            variants?: ComponentsVariants['CancelButton'];
+        };
+    }
 }
 
 declare module '@mui/utils/capitalize' {
