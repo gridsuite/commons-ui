@@ -193,8 +193,10 @@ export const useParametersBackend = <T extends ComputingType>(
 
     // We just need to fetch default limit reductions once
     useEffect(() => {
-        fetchDefaultLimitReductions();
-    }, [fetchDefaultLimitReductions]);
+        if (optionalServiceStatus === OptionalServicesStatus.Up) {
+            fetchDefaultLimitReductions();
+        }
+    }, [optionalServiceStatus, fetchDefaultLimitReductions]);
 
     // PARAMETERS UPDATE
     const backendUpdateParametersCb = useCallback(
