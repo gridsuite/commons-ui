@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { UUID } from 'crypto';
+import { UUID } from 'node:crypto';
 import { User } from 'oidc-client';
 
 import { useSnackMessage } from './useSnackMessage';
