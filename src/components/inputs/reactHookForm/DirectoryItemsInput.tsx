@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Chip, FormControl, FormHelperText, Grid, IconButton, Theme, Tooltip } from '@mui/material';
+import { Box, Chip, FormControl, FormHelperText, Grid, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray } from 'react-hook-form';
@@ -17,10 +17,11 @@ import { useCustomFormContext } from './provider';
 import { ErrorInput, MidFormError } from './errorManagement';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { type MuiStyles } from '../../../utils/styles';
 import { OverflowableText } from '../../overflowableText';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { getBasicEquipmentLabel, ElementAttributes, mergeSx } from '../../../utils';
+import { ElementAttributes, getBasicEquipmentLabel, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 
 const styles = {
@@ -34,7 +35,7 @@ const styles = {
         borderRadius: '4px',
         overflow: 'hidden',
     },
-    formDirectoryElementsError: (theme: Theme) => ({
+    formDirectoryElementsError: (theme) => ({
         borderColor: theme.palette.error.main,
     }),
     formDirectoryElements2: {
@@ -49,7 +50,7 @@ const styles = {
     addDirectoryElements: {
         marginTop: '-5px',
     },
-};
+} as const satisfies MuiStyles;
 
 export interface DirectoryItemsInputProps {
     label: string | undefined;

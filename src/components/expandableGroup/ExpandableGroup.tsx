@@ -4,19 +4,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Accordion, AccordionDetails, AccordionSummary, Theme, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
-    accordion: () => ({
+    accordion: {
         '&:before': {
             display: 'none',
         },
         background: 'none',
-    }),
-    accordionSummary: (theme: Theme) => ({
+    },
+    accordionSummary: (theme) => ({
         flexDirection: 'row-reverse', // place icon at the left
         padding: 0, // reset default left right space in summary
         '.MuiAccordionSummary-content': {
@@ -35,10 +36,10 @@ const styles = {
             transform: 'rotate(0deg)',
         },
     }),
-    accordionDetails: () => ({
+    accordionDetails: {
         padding: 0, // reset default left right space in details
-    }),
-};
+    },
+} as const satisfies MuiStyles;
 
 export interface ExpandableGroupProps extends PropsWithChildren {
     renderHeader: ReactNode;

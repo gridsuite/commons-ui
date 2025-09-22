@@ -4,8 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { type Theme } from '@mui/material';
-import { LIGHT_THEME } from '../styles';
+import type { MuiStyles } from '../styles';
 
 export const TYPE_TAG_MAX_SIZE = '90px';
 export const VL_TAG_MAX_SIZE = '100px';
@@ -20,16 +19,12 @@ export const equipmentStyles = {
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    equipmentTag: (theme: string | Theme) => ({
+    equipmentTag: (theme) => ({
         borderRadius: '10px',
         padding: '4px',
         fontSize: 'x-small',
         textAlign: 'center',
-        color:
-            // TODO remove first condition when gridstudy is updated
-            theme === LIGHT_THEME || (typeof theme !== 'string' && theme?.palette?.mode === 'light')
-                ? 'inherit'
-                : 'black',
+        color: theme?.palette?.mode === 'light' ? 'inherit' : 'black',
     }),
     equipmentTypeTag: {
         minWidth: TYPE_TAG_MAX_SIZE,
@@ -47,7 +42,7 @@ export const equipmentStyles = {
         width: '100%',
         padding: '2px',
     },
-};
+} as const satisfies MuiStyles;
 
 /**
  * The order of the equipments in this list is important, as many UI follow it directly.

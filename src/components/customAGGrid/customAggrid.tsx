@@ -12,7 +12,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import type { ColumnResizedEvent } from 'ag-grid-community';
 import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
 import { useIntl } from 'react-intl';
-import { Box, type BoxProps, type Theme, useTheme } from '@mui/material';
+import { Box, type BoxProps, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
@@ -55,7 +55,7 @@ function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) 
 
 export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
     ({ overrideLocales, sx, ...agGridReactProps }, ref) => {
-        const theme = useTheme<Theme>();
+        const theme = useTheme();
 
         return (
             <Box

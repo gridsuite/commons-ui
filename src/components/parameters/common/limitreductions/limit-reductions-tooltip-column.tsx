@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { ITemporaryLimitReduction } from './columns-definitions';
 
 type LimitReductionsLabelColumnProps = {
@@ -13,11 +13,13 @@ type LimitReductionsLabelColumnProps = {
 };
 
 export function LimitReductionsToolTipColumn({ limits }: Readonly<LimitReductionsLabelColumnProps>) {
+    const intl = useIntl();
     const lowBound = `${Math.trunc(limits.limitDuration.lowBound / 60)} min`;
     const highBoundValue = Math.trunc(limits.limitDuration.highBound / 60);
     const highBound = highBoundValue === 0 ? '∞' : `${Math.trunc(limits.limitDuration.highBound / 60)} min`;
-    const lowerBoundClosed = limits.limitDuration.lowClosed ? '[' : ']';
-    const higherBoundClosed = limits.limitDuration.highClosed || null ? ']' : '[';
+    const lowerBoundClosed = limits.limitDuration.lowClosed ? '[' : intl.formatMessage({ id: 'leftOpenBracket' });
+    const higherBoundClosed =
+        limits.limitDuration.highClosed || null ? ']' : intl.formatMessage({ id: 'rightOpenBracket' });
     return (
         <FormattedMessage
             id="LimitDurationInterval"
