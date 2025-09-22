@@ -7,21 +7,21 @@
 
 import type { ReactElement, ReactNode } from 'react';
 import type { DraggableProvided, DragStart, DropResult } from '@hello-pangea/dnd';
-import type { SxProps, Theme } from '@mui/material';
+import type { SxStyle } from '../../utils/styles';
 
 export type CheckBoxListItemSx = {
-    checkBoxIcon?: SxProps<Theme>;
-    listItemText?: SxProps<Theme>;
-    label?: SxProps<Theme>;
-    checkboxListItem?: SxProps<Theme>;
-    checkboxButton?: SxProps<Theme>;
-    checkbox?: SxProps<Theme>;
-    dragButton?: SxProps<Theme>;
+    checkBoxIcon?: SxStyle;
+    listItemText?: SxStyle;
+    label?: SxStyle;
+    checkboxListItem?: SxStyle;
+    checkboxButton?: SxStyle;
+    checkbox?: SxStyle;
+    dragButton?: SxStyle;
 };
 
 export type CheckBoxListSx = {
-    dragAndDropContainer?: SxProps<Theme>;
-    checkboxList?: SxProps<Theme>;
+    dragAndDropContainer?: SxStyle;
+    checkboxList?: SxStyle;
 };
 
 export type CheckBoxListItemSxMethod<T> = (item: T) => CheckBoxListItemSx;

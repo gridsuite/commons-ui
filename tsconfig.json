@@ -9,6 +9,7 @@
         "target": "es6",
         "lib": ["dom", "dom.iterable", "esnext"],
         "strict": true,
+        "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "resolveJsonModule": true,

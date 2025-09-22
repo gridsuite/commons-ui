@@ -7,18 +7,19 @@
 
 import { TableRow } from '@mui/material';
 import { LimitReductionTableCell } from './limit-reduction-table-cell';
-import { LimitReductionIColumnsDef } from './columns-definitions';
+import { ILimitReductionsByVoltageLevel, LimitReductionIColumnsDef } from './columns-definitions';
 
 interface TableRowComponentProps {
     columnsDefinition: LimitReductionIColumnsDef[];
     index: number;
+    limits: ILimitReductionsByVoltageLevel[];
 }
 
-export function LimitReductionTableRow({ columnsDefinition, index }: Readonly<TableRowComponentProps>) {
+export function LimitReductionTableRow({ columnsDefinition, index, limits }: Readonly<TableRowComponentProps>) {
     return (
         <TableRow>
             {columnsDefinition.map((column: LimitReductionIColumnsDef) => (
-                <LimitReductionTableCell key={`${column.dataKey}`} rowIndex={index} column={column} />
+                <LimitReductionTableCell key={`${column.dataKey}`} rowIndex={index} column={column} limits={limits} />
             ))}
         </TableRow>
     );

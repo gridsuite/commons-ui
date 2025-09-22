@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UUID } from 'crypto';
@@ -29,7 +29,7 @@ export function NetworkVisualizationParametersInline({
     parameters,
 }: Readonly<{
     studyUuid: UUID | null;
-    setHaveDirtyFields: Dispatch<SetStateAction<boolean>>;
+    setHaveDirtyFields: (isDirty: boolean) => void;
     user: User | null;
     parameters: NetworkVisualizationParameters | null;
 }>) {

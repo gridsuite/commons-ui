@@ -5,19 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Theme } from '@mui/material';
+import type { MuiStyles } from '../../utils/styles';
 
 /**
  * Styles use in parameter forms
  */
 export const parametersStyles = {
-    title: (theme: Theme) => ({
+    title: (theme) => ({
         padding: theme.spacing(2),
     }),
-    minWidthMedium: (theme: Theme) => ({
+    minWidthMedium: (theme) => ({
         minWidth: theme.spacing(20),
     }),
-    parameterName: (theme: Theme) => ({
+    parameterName: (theme) => ({
         fontWeight: 'bold',
         marginTop: theme.spacing(1),
     }),
@@ -31,11 +31,11 @@ export const parametersStyles = {
         height: 'fit-content',
         paddingBottom: 4,
     },
-    button: (theme: Theme) => ({
+    button: (theme) => ({
         marginBottom: theme.spacing(2),
         marginLeft: theme.spacing(1),
     }),
-    subgroupParameters: (theme: Theme) => ({
+    subgroupParameters: (theme) => ({
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(1),
     }),
@@ -45,7 +45,7 @@ export const parametersStyles = {
         },
         background: 'none',
     },
-    subgroupParametersAccordionSummary: (theme: Theme) => ({
+    subgroupParametersAccordionSummary: (theme) => ({
         flexDirection: 'row-reverse',
         '& .MuiAccordionSummary-expandIconWrapper': {
             transform: 'rotate(-90deg)',
@@ -57,7 +57,7 @@ export const parametersStyles = {
             marginLeft: theme.spacing(0),
         },
     }),
-    subgroupParametersAccordionDetails: (theme: Theme) => ({
+    subgroupParametersAccordionDetails: (theme) => ({
         padding: theme.spacing(0),
     }),
     marginTopButton: {
@@ -65,7 +65,7 @@ export const parametersStyles = {
         position: 'sticky',
         bottom: 0,
     },
-    scrollableGrid: (theme: Theme) => ({
+    scrollableGrid: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         maxHeight: '85%', // TODO This needs to be refactored
@@ -74,7 +74,7 @@ export const parametersStyles = {
         paddingBottom: theme.spacing(1),
         flexGrow: 1,
     }),
-    singleItem: (theme: Theme) => ({
+    singleItem: (theme) => ({
         display: 'flex',
         flex: 'auto',
         alignItems: 'flex-start',
@@ -82,27 +82,27 @@ export const parametersStyles = {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     }),
-    firstTextField: (theme: Theme) => ({
+    firstTextField: (theme) => ({
         marginLeft: theme.spacing(3),
     }),
-    secondTextField: (theme: Theme) => ({
+    secondTextField: (theme) => ({
         marginLeft: theme.spacing(3),
         marginRight: theme.spacing(2),
     }),
-    singleTextField: (theme: Theme) => ({
+    singleTextField: (theme) => ({
         display: 'flex',
         marginRight: theme.spacing(2),
         marginLeft: theme.spacing(1),
     }),
-    tooltip: (theme: Theme) => ({
+    tooltip: (theme) => ({
         marginLeft: theme.spacing(1),
     }),
-    text: (theme: Theme) => ({
+    text: (theme) => ({
         display: 'flex',
         marginBottom: theme.spacing(1),
         marginTop: theme.spacing(1),
     }),
-    multipleItems: (theme: Theme) => ({
+    multipleItems: (theme) => ({
         display: 'flex',
         flex: 'auto',
         alignItems: 'flex-start',
@@ -110,31 +110,31 @@ export const parametersStyles = {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     }),
-    tabWithError: (theme: Theme) => ({
+    tabWithError: (theme) => ({
         '&.Mui-selected': { color: theme.palette.error.main },
         color: theme.palette.error.main,
     }),
-    tabWithErrorIndicator: (theme: Theme) => ({
+    tabWithErrorIndicator: (theme) => ({
         backgroundColor: theme.palette.error.main,
     }),
-    panel: (theme: Theme) => ({
+    panel: (theme) => ({
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(1),
     }),
-    adjustExistingLimitsInfo: (theme: Theme) => ({
+    adjustExistingLimitsInfo: (theme) => ({
         display: 'flex',
         alignItems: 'center',
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
     }),
-    circularProgress: (theme: Theme) => ({
+    circularProgress: (theme) => ({
         marginRight: theme.spacing(2),
         color: theme.palette.primary.contrastText,
     }),
-    icon: (theme: Theme) => ({
+    icon: (theme) => ({
         width: theme.spacing(3),
     }),
-    modificationsTitle: (theme: Theme) => ({
+    modificationsTitle: (theme) => ({
         display: 'flex',
         alignItems: 'center',
         margin: theme.spacing(0),
@@ -143,7 +143,7 @@ export const parametersStyles = {
         color: theme.palette.primary.contrastText,
         overflow: 'hidden',
     }),
-};
+} as const satisfies MuiStyles;
 
 export function getTabIndicatorStyle<T extends number | string>(tabIndexesWithError: T[], index: T) {
     return tabIndexesWithError.includes(index) ? parametersStyles.tabWithErrorIndicator : undefined;
