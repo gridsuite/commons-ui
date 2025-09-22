@@ -189,9 +189,8 @@ export function DirectoryItemsInput({
                 {elementsWithMetaData?.length > 0 && (
                     <FormControl sx={styles.formDirectoryElements2}>
                         {elementsWithMetaData.map((item, index) => (
-                            <Box key={`Box${item.id}`} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                            <Box key={item.id} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                 <Chip
-                                    key={item.id}
                                     size="small"
                                     sx={{
                                         backgroundColor:
