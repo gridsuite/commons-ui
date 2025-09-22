@@ -203,7 +203,13 @@ export function DirectoryItemsInput({
                                     onClick={() => handleChipClick(index)}
                                     label={
                                         <OverflowableText
-                                            text={<RawReadOnlyInput name={`${name}.${index}.${NAME}`} />}
+                                            text={
+                                                getValues(`${name}.${index}.${NAME}`) ? (
+                                                    <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                                                ) : (
+                                                    intl.formatMessage({ id: 'elementNotFound' })
+                                                )
+                                            }
                                             sx={{ width: '100%' }}
                                         />
                                     }
