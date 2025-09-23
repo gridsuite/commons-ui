@@ -91,14 +91,10 @@ export function DirectoryItemsInput({
     const [multiSelect, setMultiSelect] = useState(allowMultiSelect);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
-    const {
-        fields: elements,
-        append,
-        remove,
-    } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         name,
     });
-    const elementsWithMetaData: TreeViewFinderNodeProps[] = elements as unknown as TreeViewFinderNodeProps[];
+    const elementsWithMetaData: TreeViewFinderNodeProps[] = fields as unknown as TreeViewFinderNodeProps[];
 
     const formContext = useCustomFormContext();
     const { getValues, validationSchema } = formContext;
@@ -169,8 +165,8 @@ export function DirectoryItemsInput({
     );
 
     const shouldReplaceElement = useMemo(() => {
-        return allowMultiSelect === false && elements?.length === 1;
-    }, [allowMultiSelect, elements]);
+        return allowMultiSelect === false && elementsWithMetaData?.length === 1;
+    }, [allowMultiSelect, elementsWithMetaData]);
 
     return (
         <>
