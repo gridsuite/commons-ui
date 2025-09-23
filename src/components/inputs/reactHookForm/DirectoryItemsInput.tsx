@@ -94,7 +94,7 @@ export function DirectoryItemsInput({
     const { fields, append, remove } = useFieldArray({
         name,
     });
-    const elementsWithMetaData: TreeViewFinderNodeProps[] = fields as unknown as TreeViewFinderNodeProps[];
+    const elements: TreeViewFinderNodeProps[] = fields as unknown as TreeViewFinderNodeProps[];
 
     const formContext = useCustomFormContext();
     const { getValues, validationSchema } = formContext;
@@ -165,8 +165,8 @@ export function DirectoryItemsInput({
     );
 
     const shouldReplaceElement = useMemo(() => {
-        return allowMultiSelect === false && elementsWithMetaData?.length === 1;
-    }, [allowMultiSelect, elementsWithMetaData]);
+        return allowMultiSelect === false && elements?.length === 1;
+    }, [allowMultiSelect, elements]);
 
     return (
         <>
@@ -178,15 +178,15 @@ export function DirectoryItemsInput({
                 )}
                 error={!!error?.message}
             >
-                {elementsWithMetaData?.length === 0 && label && (
+                {elements?.length === 0 && label && (
                     <FieldLabel
                         label={label}
                         optional={labelRequiredFromContext && !isFieldRequired(name, validationSchema, getValues())}
                     />
                 )}
-                {elementsWithMetaData?.length > 0 && (
+                {elements?.length > 0 && (
                     <FormControl sx={styles.formDirectoryElements2}>
-                        {elementsWithMetaData.map((item, index) => (
+                        {elements.map((item, index) => (
                             <Box key={item.id} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                 <Chip
                                     size="small"
