@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import type { MuiStyles } from '../../utils/styles';
 import { getFileIcon } from '../../utils/mapper/getFileIcon';
 import { ElementType } from '../../utils/types/elementType';

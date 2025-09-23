@@ -18,7 +18,7 @@ import {
 } from 'react-querybuilder';
 import { IntlShape } from 'react-intl';
 import { validate as uuidValidate } from 'uuid';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import {
     CombinatorType,
     CompositeField,

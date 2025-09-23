@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import {
