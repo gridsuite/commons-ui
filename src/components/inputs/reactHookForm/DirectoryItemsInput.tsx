@@ -91,7 +91,13 @@ export function DirectoryItemsInput({
     const [multiSelect, setMultiSelect] = useState(allowMultiSelect);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
-    const { fields, append, remove } = useFieldArray({
+        const {
+        fields: elements,
+        append,
+        remove,
+    } = useFieldArray<{ [key: string]: TreeViewFinderNodeProps[] }>({
+        name,
+    });
         name,
     });
     const elements: TreeViewFinderNodeProps[] = fields as unknown as TreeViewFinderNodeProps[];
