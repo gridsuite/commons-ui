@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Chip, FormControl, Grid, IconButton, Theme, Tooltip } from '@mui/material';
+import { Chip, FormControl, Grid, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray } from 'react-hook-form';
@@ -18,7 +18,7 @@ import { isFieldRequired } from './utils/functions';
 import { ErrorInput } from './errorManagement/ErrorInput';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { mergeSx } from '../../../utils/styles';
+import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { OverflowableText } from '../../overflowableText';
 import { MidFormError } from './errorManagement/MidFormError';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
@@ -37,7 +37,7 @@ const styles = {
         borderRadius: '4px',
         overflow: 'hidden',
     },
-    formDirectoryElementsError: (theme: Theme) => ({
+    formDirectoryElementsError: (theme) => ({
         borderColor: theme.palette.error.main,
     }),
     formDirectoryElements2: {
@@ -52,7 +52,7 @@ const styles = {
     addDirectoryElements: {
         marginTop: '-5px',
     },
-};
+} as const satisfies MuiStyles;
 
 export interface DirectoryItemsInputProps {
     label: string | undefined;

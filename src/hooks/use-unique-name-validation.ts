@@ -61,14 +61,14 @@ export function useUniqueNameValidation({
                         if (alreadyExist) {
                             setError(name, {
                                 type: 'validate',
-                                message: 'nameAlreadyUsed',
+                                message: 'use-unique-name-validation/nameAlreadyUsed',
                             });
                         }
                     })
                     .catch(() => {
                         setError(name, {
                             type: 'validate',
-                            message: 'nameValidityCheckErrorMsg',
+                            message: 'use-unique-name-validation/nameValidityCheckErrorMsg',
                         });
                     })
                     .finally(() => {
@@ -113,14 +113,14 @@ export function useUniqueNameValidation({
             clearErrors(name);
             setError('root.isValidating', {
                 type: 'validate',
-                message: 'cantSubmitWhileValidating',
+                message: 'use-unique-name-validation/cantSubmitWhileValidating',
             });
             debouncedHandleCheckName(trimmedValue);
         } else {
             clearErrors('root.isValidating');
             setError(name, {
                 type: 'validate',
-                message: 'nameEmpty',
+                message: 'use-unique-name-validation/nameEmpty',
             });
         }
     }, [

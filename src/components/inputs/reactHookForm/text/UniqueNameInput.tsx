@@ -7,18 +7,12 @@
 
 import { ChangeEvent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import {
-    CircularProgress,
-    InputAdornment,
-    type SxProps,
-    TextField,
-    type TextFieldProps,
-    type Theme,
-} from '@mui/material';
+import { CircularProgress, InputAdornment, TextField, type TextFieldProps } from '@mui/material';
 import { Check as CheckIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 import { UUID } from 'crypto';
-import { ElementType } from '../../../../utils';
+import type { ElementType } from '../../../../utils';
+import type { SxStyle } from '../../../../utils/styles';
 import { useUniqueNameValidation } from '../../../../hooks/use-unique-name-validation';
 
 export interface UniqueNameInputProps {
@@ -34,7 +28,7 @@ export interface UniqueNameInputProps {
     activeDirectory?: UUID;
     currentName?: string;
     isPrefilled?: boolean;
-    sx?: SxProps<Theme>;
+    sx?: SxStyle;
     fullWidth?: boolean;
 }
 

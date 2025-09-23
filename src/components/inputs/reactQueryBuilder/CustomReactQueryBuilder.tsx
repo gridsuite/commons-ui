@@ -14,10 +14,10 @@ import {
     ActionWithRulesAndAddersProps,
     defaultTranslations,
     Field,
-    formatQuery,
     QueryBuilder,
     RuleGroupTypeAny,
 } from 'react-querybuilder';
+import { formatQuery } from 'react-querybuilder/formatQuery';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';

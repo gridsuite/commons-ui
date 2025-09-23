@@ -38,6 +38,7 @@ import {
     TableTextInput,
 } from '../inputs';
 import { ChipItemsInput } from '../inputs/reactHookForm/chip-items-input';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     columnsStyle: {
@@ -47,7 +48,7 @@ const styles = {
         margin: 1,
         textTransform: 'none',
     },
-};
+} as const satisfies MuiStyles;
 
 interface MultiCheckboxProps extends Omit<CheckboxProps, 'checked' | 'indeterminate' | 'onChange'> {
     arrayFormName: string;
