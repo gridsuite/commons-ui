@@ -131,15 +131,6 @@ export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType;
     },
 };
 
-export function getBasicEquipmentLabel(equipmentType: string | undefined): string {
-    if (!equipmentType) {
-        return '';
-    }
-    return equipmentType !== EquipmentType.HVDC_LINE
-        ? (BASE_EQUIPMENTS[equipmentType as EquipmentType]?.label ?? '')
-        : 'HvdcLines';
-}
-
 export const EQUIPMENT_TYPE: Partial<
     Record<
         EquipmentType | ExtendedEquipmentType,

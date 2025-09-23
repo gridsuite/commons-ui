@@ -21,8 +21,9 @@ import { type MuiStyles } from '../../../utils/styles';
 import { OverflowableText } from '../../overflowableText';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ElementAttributes, getBasicEquipmentLabel, mergeSx } from '../../../utils';
+import { ElementAttributes, mergeSx } from '../../../utils';
 import { NAME } from './constants';
+import { getFilterEquipmentTypeLabel } from '../../filter/expert/expertFilterUtils';
 
 const styles = {
     formDirectoryElements1: {
@@ -195,10 +196,8 @@ export function DirectoryItemsInput({
                                     size="small"
                                     sx={{
                                         backgroundColor:
-                                            item.specificMetadata?.equipmentType &&
-                                            equipmentColorsMap?.has(item.specificMetadata?.equipmentType)
-                                                ? equipmentColorsMap.get(item.specificMetadata.equipmentType)
-                                                : undefined,
+                                            item?.specificMetadata?.equipmentType &&
+                                            equipmentColorsMap?.get(item?.specificMetadata?.equipmentType),
                                     }}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
@@ -218,7 +217,7 @@ export function DirectoryItemsInput({
                                 <FormHelperText>
                                     {item?.specificMetadata?.equipmentType ? (
                                         <FormattedMessage
-                                            id={getBasicEquipmentLabel(item.specificMetadata.equipmentType)}
+                                            id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
                                         />
                                     ) : (
                                         ''
