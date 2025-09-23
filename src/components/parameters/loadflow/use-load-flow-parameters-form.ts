@@ -9,7 +9,7 @@ import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
     getDefaultSpecificParamsValues,

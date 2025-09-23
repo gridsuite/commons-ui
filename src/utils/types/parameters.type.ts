@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';

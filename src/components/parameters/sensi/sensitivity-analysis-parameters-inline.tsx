@@ -8,7 +8,7 @@
 import { Button, DialogActions, Grid } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import {
     ElementType,
     mergeSx,

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { COMMON_APP_NAME, ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../utils';
 import { fetchDirectoryElementPath, updateConfigParameter } from '../../services';
 

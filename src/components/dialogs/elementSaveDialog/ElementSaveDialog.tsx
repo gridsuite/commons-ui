@@ -6,7 +6,7 @@
  */
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
 import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';

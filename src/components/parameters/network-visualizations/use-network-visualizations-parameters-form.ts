@@ -9,7 +9,7 @@ import { useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {

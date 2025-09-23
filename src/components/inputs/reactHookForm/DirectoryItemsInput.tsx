@@ -10,7 +10,7 @@ import { Folder as FolderIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
 import { FieldLabel } from './utils/FieldLabel';
 import { useCustomFormContext } from './provider/useCustomFormContext';

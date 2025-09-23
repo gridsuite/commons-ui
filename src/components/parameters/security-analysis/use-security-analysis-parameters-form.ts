@@ -7,7 +7,7 @@
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {

@@ -6,7 +6,7 @@
  */
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { useCallback } from 'react';
 import { useSnackMessage } from '../../../hooks';
 import { ElementSaveDialog, IElementCreationDialog, IElementUpdateDialog } from '../../dialogs';

@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { ElementType, FieldConstants } from '../utils';
 import { useDebounce } from './useDebounce';
 import { elementAlreadyExists } from '../services';

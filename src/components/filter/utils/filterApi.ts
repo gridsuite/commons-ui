@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
