@@ -29,7 +29,7 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expertFilter.type';
-import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
+import { EXPERT_FILTER_EQUIPMENTS, FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
 import { convertInputValue, convertOutputValue, isBlankOrEmpty } from '../../../utils/conversionUtils';
 import { FieldType } from '../../../utils/types/fieldType';
 
@@ -523,4 +523,11 @@ export function recursiveRemove(query: RuleGroupTypeAny, path: number[]): RuleGr
     // Otherwise, we can safely remove it
 
     return remove(query, path);
+}
+
+export function getFilterEquipmentTypeLabel(equipmentType: string | undefined): string {
+    if (!equipmentType) {
+        return '';
+    }
+    return EXPERT_FILTER_EQUIPMENTS[equipmentType as keyof typeof EXPERT_FILTER_EQUIPMENTS]?.label ?? '';
 }
