@@ -190,7 +190,10 @@ export function DirectoryItemsInput({
                 {elements?.length > 0 && (
                     <FormControl sx={styles.formDirectoryElements2}>
                         {elements.map((item, index) => (
-                            <Box key={item.id} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                            <Box
+                                key={item.id}
+                                sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}
+                            >
                                 <Chip
                                     size="small"
                                     sx={{
