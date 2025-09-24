@@ -91,16 +91,13 @@ export function DirectoryItemsInput({
     const [multiSelect, setMultiSelect] = useState(allowMultiSelect);
     const types = useMemo(() => [elementType], [elementType]);
     const [directoryItemSelectorOpen, setDirectoryItemSelectorOpen] = useState(false);
-        const {
+    const {
         fields: elements,
         append,
         remove,
     } = useFieldArray<{ [key: string]: TreeViewFinderNodeProps[] }>({
         name,
     });
-        name,
-    });
-    const elements: TreeViewFinderNodeProps[] = fields as unknown as TreeViewFinderNodeProps[];
 
     const formContext = useCustomFormContext();
     const { getValues, validationSchema } = formContext;
