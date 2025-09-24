@@ -216,8 +216,9 @@ export function DirectoryItemsInput({
                                         />
                                     }
                                 />
+
                                 <FormHelperText>
-                                    {item?.specificMetadata?.equipmentType ? (
+                                    {equipmentColorsMap && item?.specificMetadata?.equipmentType ? (
                                         <FormattedMessage
                                             id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
                                         />
