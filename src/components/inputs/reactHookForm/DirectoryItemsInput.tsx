@@ -216,16 +216,17 @@ export function DirectoryItemsInput({
                                         />
                                     }
                                 />
-
-                                <FormHelperText>
-                                    {equipmentColorsMap && item?.specificMetadata?.equipmentType ? (
-                                        <FormattedMessage
-                                            id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
-                                        />
-                                    ) : (
-                                        ''
-                                    )}
-                                </FormHelperText>
+                                {equipmentColorsMap && (
+                                    <FormHelperText>
+                                        {item?.specificMetadata?.equipmentType ? (
+                                            <FormattedMessage
+                                                id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+                                    </FormHelperText>
+                                )}
                             </Box>
                         ))}
                     </FormControl>
