@@ -5,26 +5,25 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Chip, FormControl, Grid, IconButton, Tooltip } from '@mui/material';
+import { Box, Chip, FormControl, FormHelperText, Grid, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { UUID } from 'crypto';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
-import { FieldLabel } from './utils/FieldLabel';
-import { useCustomFormContext } from './provider/useCustomFormContext';
-import { isFieldRequired } from './utils/functions';
-import { ErrorInput } from './errorManagement/ErrorInput';
-import { useSnackMessage } from '../../../hooks/useSnackMessage';
+import { FieldLabel, isFieldRequired } from './utils';
+import { useCustomFormContext } from './provider';
+import { ErrorInput, MidFormError } from './errorManagement';
+import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { mergeSx, type MuiStyles } from '../../../utils/styles';
+import { type MuiStyles } from '../../../utils/styles';
 import { OverflowableText } from '../../overflowableText';
-import { MidFormError } from './errorManagement/MidFormError';
-import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
+import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ElementAttributes } from '../../../utils';
+import { ElementAttributes, mergeSx } from '../../../utils';
 import { NAME } from './constants';
+import { getFilterEquipmentTypeLabel } from '../../filter/expert/expertFilterUtils';
 
 const styles = {
     formDirectoryElements1: {
@@ -67,6 +66,7 @@ export interface DirectoryItemsInputProps {
     disable?: boolean;
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
+    equipmentColorsMap?: Map<string, string>;
 }
 
 export function DirectoryItemsInput({
@@ -82,6 +82,7 @@ export function DirectoryItemsInput({
     disable = false,
     allowMultiSelect = true,
     labelRequiredFromContext = true,
+    equipmentColorsMap,
 }: Readonly<DirectoryItemsInputProps>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -94,7 +95,7 @@ export function DirectoryItemsInput({
         fields: elements,
         append,
         remove,
-    } = useFieldArray({
+    } = useFieldArray<{ [key: string]: TreeViewFinderNodeProps[] }>({
         name,
     });
 
@@ -189,18 +190,44 @@ export function DirectoryItemsInput({
                 {elements?.length > 0 && (
                     <FormControl sx={styles.formDirectoryElements2}>
                         {elements.map((item, index) => (
-                            <Chip
+                            <Box
                                 key={item.id}
-                                size="small"
-                                onDelete={() => removeElements(index)}
-                                onClick={() => handleChipClick(index)}
-                                label={
-                                    <OverflowableText
-                                        text={<RawReadOnlyInput name={`${name}.${index}.${NAME}`} />}
-                                        sx={{ width: '100%' }}
-                                    />
-                                }
-                            />
+                                sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}
+                            >
+                                <Chip
+                                    size="small"
+                                    sx={{
+                                        backgroundColor:
+                                            item?.specificMetadata?.equipmentType &&
+                                            equipmentColorsMap?.get(item?.specificMetadata?.equipmentType),
+                                    }}
+                                    onDelete={() => removeElements(index)}
+                                    onClick={() => handleChipClick(index)}
+                                    label={
+                                        <OverflowableText
+                                            text={
+                                                getValues(`${name}.${index}.${NAME}`) ? (
+                                                    <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                                                ) : (
+                                                    intl.formatMessage({ id: 'elementNotFound' })
+                                                )
+                                            }
+                                            sx={{ width: '100%' }}
+                                        />
+                                    }
+                                />
+                                {equipmentColorsMap && (
+                                    <FormHelperText>
+                                        {item?.specificMetadata?.equipmentType ? (
+                                            <FormattedMessage
+                                                id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+                                    </FormHelperText>
+                                )}
+                            </Box>
                         ))}
                     </FormControl>
                 )}
