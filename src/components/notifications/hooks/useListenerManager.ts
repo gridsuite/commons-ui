@@ -52,14 +52,15 @@ export const useListenerManager = <TListener extends { id: string; callback: (..
     }, []);
 
     const broadcast = useCallback(
-        (urlKey: string) => (...args: Parameters<TListener["callback"]>) => {
-            const listeners = urlsListenersRef.current?.[urlKey];
-            if (listeners) {
-                listeners.forEach(({ callback }) => {
-                    callback(...args);
-                });
-            }
-        },
+        (urlKey: string) =>
+            (...args: Parameters<TListener['callback']>) => {
+                const listeners = urlsListenersRef.current?.[urlKey];
+                if (listeners) {
+                    listeners.forEach(({ callback }) => {
+                        callback(...args);
+                    });
+                }
+            },
         []
     );
 
