@@ -6,10 +6,9 @@
  */
 // @author Quentin CAPY
 import { useCallback, useEffect, useRef } from 'react';
+import { ListenerEventBase } from '../contexts/NotificationsContext';
 
-export const useListenerManager = <TListener extends { id: string; callback: (...args: any[]) => void }>(
-    urls: Record<string, string | undefined>
-) => {
+export const useListenerManager = <TListener extends ListenerEventBase>(urls: Record<string, string | undefined>) => {
     const urlsListenersRef = useRef<Record<string, TListener[]>>({});
 
     useEffect(() => {
