@@ -18,6 +18,7 @@ interface UseUniqueNameValidationParams {
     elementType: ElementType;
     activeDirectory?: string;
     elementExists?: (directory: UUID, name: string, type: ElementType) => Promise<boolean>;
+    isPrefilled?: boolean;
 }
 
 export function useUniqueNameValidation({
@@ -26,6 +27,7 @@ export function useUniqueNameValidation({
     elementType,
     activeDirectory,
     elementExists = elementAlreadyExists,
+    isPrefilled = false,
 }: UseUniqueNameValidationParams) {
     const {
         setError,
@@ -36,6 +38,7 @@ export function useUniqueNameValidation({
 
     const {
         field: { value },
+        fieldState: { isDirty: fieldIsDirty },
     } = useController({ name });
 
     const {
@@ -58,14 +61,14 @@ export function useUniqueNameValidation({
                         if (alreadyExist) {
                             setError(name, {
                                 type: 'validate',
-                                message: 'nameAlreadyUsed',
+                                message: 'use-unique-name-validation/nameAlreadyUsed',
                             });
                         }
                     })
                     .catch(() => {
                         setError(name, {
                             type: 'validate',
-                            message: 'nameValidityCheckErrorMsg',
+                            message: 'use-unique-name-validation/nameValidityCheckErrorMsg',
                         });
                     })
                     .finally(() => {
@@ -92,26 +95,32 @@ export function useUniqueNameValidation({
             debouncedHandleCheckName(trimmedValue);
         }
 
-        // if the form is unchanged, we don't do custom validation
-        if (!formIsDirty) {
+        // if the name is unchanged, we don't do custom validation
+        if (!isPrefilled && !fieldIsDirty) {
             clearErrors(name);
             return;
         }
-        if (trimmedValue === defaultFieldValue && trimmedValue.length > 0) {
+        if (isPrefilled && !formIsDirty) {
+            clearErrors(name);
             return;
         }
+
+        if (isPrefilled && trimmedValue === defaultFieldValue && trimmedValue.length > 0) {
+            return;
+        }
+
         if (trimmedValue) {
             clearErrors(name);
             setError('root.isValidating', {
                 type: 'validate',
-                message: 'cantSubmitWhileValidating',
+                message: 'use-unique-name-validation/cantSubmitWhileValidating',
             });
             debouncedHandleCheckName(trimmedValue);
         } else {
             clearErrors('root.isValidating');
             setError(name, {
                 type: 'validate',
-                message: 'nameEmpty',
+                message: 'use-unique-name-validation/nameEmpty',
             });
         }
     }, [
@@ -120,7 +129,9 @@ export function useUniqueNameValidation({
         setError,
         clearErrors,
         name,
+        fieldIsDirty,
         formIsDirty,
+        isPrefilled,
         defaultFieldValue,
         directory,
         selectedDirectory,
