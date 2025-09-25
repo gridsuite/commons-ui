@@ -41,7 +41,7 @@ describe('NotificationsProvider', () => {
         act(() => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
-        expect(ReconnectingWebSocket).toBeCalled();
+        expect(ReconnectingWebSocket).toHaveBeenCalled();
     });
 
     test('renders NotificationsProvider children component ', () => {
@@ -82,7 +82,7 @@ describe('NotificationsProvider', () => {
             reconnectingWebSocketClass.onmessage?.(event);
         });
 
-        waitFor(() => expect(eventCallback).toBeCalledWith(event));
+        waitFor(() => expect(eventCallback).toHaveBeenCalledWith(event));
     });
 
     test('renders NotificationsProvider children component not called with other key ', () => {
@@ -108,7 +108,7 @@ describe('NotificationsProvider', () => {
             reconnectingWebSocketClass.onmessage?.({ data: 'test' } as MessageEvent<any>);
         });
 
-        expect(eventCallback).not.toBeCalled();
+        expect(eventCallback).not.toHaveBeenCalled();
     });
 
     test('renders NotificationsProvider component and calls onOpen callback', async () => {
@@ -134,6 +134,6 @@ describe('NotificationsProvider', () => {
             );
         });
 
-        waitFor(() => expect(onOpenCallback).toBeCalled());
+        waitFor(() => expect(onOpenCallback).toHaveBeenCalled());
     });
 });
