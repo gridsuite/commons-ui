@@ -52,7 +52,7 @@
         "react-querybuilder": "^8.2.0",
         "reconnecting-websocket": "^4.4.0",
         "type-fest": "^4.41.0",
-        "uuid": "^11.1.0"
+        "uuid": "^13.0.0"
     },
     "peerDependencies": {
         "@emotion/react": "^11.14.0",
