@@ -6,9 +6,8 @@
  */
 // @author Quentin CAPY
 import { useCallback, useEffect, useRef } from 'react';
-import { ListenerEventWS, ListenerOnReopen } from '../contexts/NotificationsContext';
 
-export const useListenerManager = <TListener extends ListenerEventWS | ListenerOnReopen, TMessage extends MessageEvent>(
+export const useListenerManager = <TListener extends { id: string; callback: (...args: any[]) => void }>(
     urls: Record<string, string | undefined>
 ) => {
     const urlsListenersRef = useRef<Record<string, TListener[]>>({});
@@ -40,6 +39,7 @@ export const useListenerManager = <TListener extends ListenerEventWS | ListenerO
         }
         urlsListenersRef.current = urlsListeners;
     }, []);
+
     const removeListenerEvent = useCallback((urlKey: string, id: string) => {
         const listeners = urlsListenersRef.current?.[urlKey];
         if (listeners) {
@@ -50,12 +50,13 @@ export const useListenerManager = <TListener extends ListenerEventWS | ListenerO
             };
         }
     }, []);
+
     const broadcast = useCallback(
-        (urlKey: string) => (event: TMessage) => {
+        (urlKey: string) => (...args: Parameters<TListener["callback"]>) => {
             const listeners = urlsListenersRef.current?.[urlKey];
             if (listeners) {
                 listeners.forEach(({ callback }) => {
-                    callback(event);
+                    callback(...args);
                 });
             }
         },
