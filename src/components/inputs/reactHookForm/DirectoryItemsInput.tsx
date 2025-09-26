@@ -51,6 +51,11 @@ const styles = {
     addDirectoryElements: {
         marginTop: '-5px',
     },
+    chipStyles: {
+        borderRadius: '100px solid',
+        margin: '4px 2px 4px 2px',
+        padding: '0',
+    },
 } as const satisfies MuiStyles;
 
 export interface DirectoryItemsInputProps {
@@ -192,15 +197,15 @@ export function DirectoryItemsInput({
                         {elements.map((item, index) => (
                             <Box
                                 key={item.id}
-                                sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}
+                                sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '1px' }}
                             >
                                 <Chip
                                     size="small"
-                                    sx={{
+                                    sx={mergeSx(styles.chipStyles, {
                                         backgroundColor:
                                             item?.specificMetadata?.equipmentType &&
                                             equipmentColorsMap?.get(item?.specificMetadata?.equipmentType),
-                                    }}
+                                    })}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
                                     label={
@@ -212,12 +217,12 @@ export function DirectoryItemsInput({
                                                     intl.formatMessage({ id: 'elementNotFound' })
                                                 )
                                             }
-                                            sx={{ width: '100%' }}
+                                            sx={{ width: '100%', display: 'flex' }}
                                         />
                                     }
                                 />
                                 {equipmentColorsMap && (
-                                    <FormHelperText>
+                                    <FormHelperText sx={{ padding: '1px' }}>
                                         {item?.specificMetadata?.equipmentType ? (
                                             <FormattedMessage
                                                 id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
