@@ -53,7 +53,6 @@ const styles = {
     },
     chipStyles: {
         borderRadius: '100px solid',
-        margin: '4px 2px 4px 2px',
         padding: '0',
     },
 } as const satisfies MuiStyles;
