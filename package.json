@@ -22,6 +22,7 @@
     ],
     "scripts": {
         "start": "vite demo/ --config vite.config.ts",
+        "start:lint": "vite demo/ --config vite.config-lint.ts",
         "start:open": "vite demo/ --config vite.config.ts --open",
         "build": "tsc && vite build",
         "build:pack": "tsc && vite build && npm pack",
