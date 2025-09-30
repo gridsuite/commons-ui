@@ -20,7 +20,6 @@ export type BackendErrorDetailLabels = Record<keyof BackendErrorDetails, string>
 
 export interface BackendErrorSnackbarContentProps {
     message: string;
-    detailsLabel: string;
     detailLabels: BackendErrorDetailLabels;
     details: BackendErrorDetails;
     showDetailsLabel: string;
@@ -64,7 +63,7 @@ const DetailRow = styled(Stack)(({ theme }) => ({
 }));
 
 export const BackendErrorSnackbarContent = forwardRef<HTMLDivElement, BackendErrorSnackbarContentProps>(
-    ({ message, detailsLabel, detailLabels, details, showDetailsLabel, hideDetailsLabel, snackbarKey }, ref) => {
+    ({ message, detailLabels, details, showDetailsLabel, hideDetailsLabel, snackbarKey }, ref) => {
         const { closeSnackbar } = useSnackbar();
         const [isExpanded, setIsExpanded] = useState(false);
         const detailsId = useId();
@@ -96,7 +95,7 @@ export const BackendErrorSnackbarContent = forwardRef<HTMLDivElement, BackendErr
                     </IconButton>
                 </Header>
                 <ToggleButton
-                    onClick={toggleDetails}
+                    onClick={toggleDetails} 
                     endIcon={isExpanded ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
                     aria-expanded={isExpanded}
                     aria-controls={detailsId}
@@ -105,9 +104,6 @@ export const BackendErrorSnackbarContent = forwardRef<HTMLDivElement, BackendErr
                 </ToggleButton>
                 <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                     <DetailsList spacing={0.5} id={detailsId}>
-                        <Typography variant="subtitle2" component="h3">
-                            {detailsLabel}
-                        </Typography>
                         {detailEntries.map(({ key, label, value }) => (
                             <DetailRow key={key} alignItems="flex-start">
                                 <Typography
