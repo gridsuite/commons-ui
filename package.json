@@ -23,14 +23,15 @@
     "scripts": {
         "start": "vite demo/ --config vite.config.ts",
         "start:open": "vite demo/ --config vite.config.ts --open",
-        "build": "tsc && vite build",
-        "build:pack": "tsc && vite build && npm pack",
+        "build": "vite build",
+        "build:pack": "vite build && npm pack",
         "prepublishOnly": "npm run build",
         "test": "jest",
         "test:coverage": "jest --coverage",
         "test:watch": "jest --watch",
         "lint": "eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0",
         "lint:format": "prettier --check --cache .",
+        "lint:ts": "tsc",
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
     },
     "dependencies": {
@@ -139,8 +140,8 @@
         "ts-node": "^10.9.2",
         "typescript": "~5.6.3",
         "vite": "^6.3.6",
+        "vite-plugin-checker": "^0.11.0",
         "vite-plugin-dts": "^4.5.4",
-        "vite-plugin-eslint": "^1.8.1",
         "vite-plugin-lib-inject-css": "^2.2.2",
         "vite-plugin-svgr": "^4.5.0",
         "yup": "^1.7.0"

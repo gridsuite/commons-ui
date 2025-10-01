@@ -7,8 +7,7 @@
 
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-// @ts-expect-error See https://github.com/gxmari007/vite-plugin-eslint/issues/79
-import eslint from 'vite-plugin-eslint';
+import checker from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import dts from 'vite-plugin-dts';
@@ -19,9 +18,17 @@ import * as url from 'node:url';
 export default defineConfig((config) => ({
     plugins: [
         react(),
-        eslint({
-            failOnWarning: config.mode !== 'development',
-            lintOnStart: true,
+        checker({
+            overlay: { initialIsOpen: 'error' },
+            typescript: true,
+            eslint: {
+                dev: {
+                    logLevel: config.command === 'serve' ? ['error'] : ['error', 'warning'],
+                },
+                // lintCommand: 'eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0',
+                lintCommand: 'eslint "./**/*.{js,mjs,jsx,ts,mts,tsx}" --max-warnings 0',
+                watchPath: ['./src', './demo'],
+            },
         }),
         svgr(), // works on every import with the pattern "**/*.svg?react"
         libInjectCss(),
