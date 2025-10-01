@@ -23,8 +23,3 @@ export const areArrayElementsUnique = (array: unknown[]) => {
 };
 
 export const isObjectEmpty = (object: object) => object && Object.keys(object).length === 0;
-
-export function reorderObject(obj: any, firstKey: string) {
-    const { [firstKey]: key, ...otherKeys } = obj;
-    return { [firstKey]: key, ...otherKeys };
-}
