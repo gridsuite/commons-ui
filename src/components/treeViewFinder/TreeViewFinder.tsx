@@ -82,6 +82,9 @@ export interface TreeViewFinderNodeProps {
     childrenCount?: number;
     children?: TreeViewFinderNodeProps[];
     parents?: TreeViewFinderNodeProps[];
+    specificMetadata?: {
+        equipmentType: string;
+    };
 }
 
 interface TreeViewFinderNodeMapProps {
