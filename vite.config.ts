@@ -25,8 +25,8 @@ export default defineConfig((config) => ({
                 dev: {
                     logLevel: config.command === 'serve' ? ['error'] : ['error', 'warning'],
                 },
-                // lintCommand: 'eslint . --ext js,mjs,jsx,ts,mts,tsx --max-warnings 0',
-                lintCommand: 'eslint "./**/*.{js,mjs,jsx,ts,mts,tsx}" --max-warnings 0',
+                lintCommand:
+                    'eslint "./**/*.{js,mjs,jsx,ts,mts,tsx}" --report-unused-disable-directives --max-warnings 0',
                 watchPath: ['./src', './demo'],
             },
         }),
