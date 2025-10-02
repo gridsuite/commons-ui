@@ -57,4 +57,5 @@ export const filterEn = {
     nameAlreadyUsed: 'This name is already used',
     nameValidityCheckErrorMsg: 'Error while checking name validity',
     cantSubmitWhileValidating: 'Impossible to submit the form while validating a field',
+    elementNotFound: 'element not found',
 };

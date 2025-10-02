@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { UUID } from 'crypto';
+import { UUID } from 'node:crypto';
 import { User } from 'oidc-client';
 
 import { useSnackMessage } from './useSnackMessage';
@@ -193,8 +193,10 @@ export const useParametersBackend = <T extends ComputingType>(
 
     // We just need to fetch default limit reductions once
     useEffect(() => {
-        fetchDefaultLimitReductions();
-    }, [fetchDefaultLimitReductions]);
+        if (optionalServiceStatus === OptionalServicesStatus.Up) {
+            fetchDefaultLimitReductions();
+        }
+    }, [optionalServiceStatus, fetchDefaultLimitReductions]);
 
     // PARAMETERS UPDATE
     const backendUpdateParametersCb = useCallback(
