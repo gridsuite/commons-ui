@@ -12,6 +12,7 @@ import { NotificationsProvider } from '../NotificationsProvider';
 import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
 jest.mock('reconnecting-websocket');
+jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
 
 let container: Element;
