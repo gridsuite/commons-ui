@@ -25,6 +25,7 @@ export function BooleanInput<TInput extends InputTypes>({
     label,
     formProps,
     Input,
+    ...props
 }: Readonly<BooleanInputProps<TInput>>) {
     const {
         field: { onChange, value, ref },
@@ -46,6 +47,7 @@ export function BooleanInput<TInput extends InputTypes>({
             inputRef={ref}
             inputProps={{ 'aria-label': 'primary checkbox' }}
             {...(formProps as any)}
+            {...props}
         />
     );
 
