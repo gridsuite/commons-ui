@@ -7,7 +7,7 @@
 
 import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { MODIFICATION_TYPES } from '../utils/types/modificationType';
 import { EquipmentType } from '../utils/types/equipmentType';
 

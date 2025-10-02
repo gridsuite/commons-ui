@@ -6,7 +6,7 @@
  */
 
 import { NumberSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import yup from '../../../../utils/yupConfig';
 import {
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
