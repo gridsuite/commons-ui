@@ -10,7 +10,7 @@ import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack
 import { IntlShape } from 'react-intl';
 import { useIntlRef } from './useIntlRef';
 
-interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
+export interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
     messageValues?: Record<string, string>;

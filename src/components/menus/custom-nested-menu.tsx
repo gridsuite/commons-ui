@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { PropsWithChildren, useState } from 'react';
+import { useState } from 'react';
 import { NestedMenuItem, NestedMenuItemProps } from 'mui-nested-menu';
 import { Box, MenuItem, type MenuItemProps } from '@mui/material';
 import { mergeSx, type SxStyle, type MuiStyles } from '../../utils/styles';
@@ -24,9 +24,10 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-interface CustomNestedMenuItemProps extends PropsWithChildren, Omit<NestedMenuItemProps, 'parentMenuOpen'> {
+type CustomNestedMenuItemProps = Omit<NestedMenuItemProps, 'parentMenuOpen' | 'children'> & {
+    children?: NestedMenuItemProps['children'];
     sx?: SxStyle;
-}
+};
 
 export function CustomNestedMenuItem({ sx, children, ...other }: Readonly<CustomNestedMenuItemProps>) {
     const [subMenuActive, setSubMenuActive] = useState(false);

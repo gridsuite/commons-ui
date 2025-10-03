@@ -20,6 +20,7 @@ export * from './grid';
 export * from './inputs';
 export * from './multipleSelectionDialog';
 export * from './overflowableText';
+export * from './snackbars';
 export * from './snackbarProvider';
 export * from './topBar';
 export * from './treeViewFinder';

@@ -5,10 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useRef } from 'react';
 import { IconButton, styled } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
-import { type SnackbarKey, SnackbarProvider as OrigSnackbarProvider, type SnackbarProviderProps } from 'notistack';
+import {
+    type SnackbarKey,
+    SnackbarProvider as OrigSnackbarProvider,
+    type SnackbarProviderProps,
+    closeSnackbar as closeSnackbarFromNotistack,
+} from 'notistack';
 import type { MuiStyles } from '../../utils/styles';
 
 const StyledOrigSnackbarProvider = styled(OrigSnackbarProvider)(() => ({
@@ -29,11 +33,9 @@ const styles = {
 
 /* A wrapper around notistack's SnackbarProvider that provides defaults props */
 export function SnackbarProvider(props: SnackbarProviderProps) {
-    const ref = useRef<OrigSnackbarProvider>(null);
-
     const action = (key: SnackbarKey) => (
         <IconButton
-            onClick={() => ref.current?.closeSnackbar(key)}
+            onClick={() => closeSnackbarFromNotistack(key)}
             aria-label="clear-snack"
             size="small"
             sx={styles.buttonColor}
@@ -44,7 +46,6 @@ export function SnackbarProvider(props: SnackbarProviderProps) {
 
     return (
         <StyledOrigSnackbarProvider
-            ref={ref}
             anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             hideIconVariant
             action={action}
