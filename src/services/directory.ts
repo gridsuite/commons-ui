@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
 import { COMMON_APP_NAME, COMMON_CONFIG_PARAMS_NAMES, ElementAttributes } from '../utils';
 

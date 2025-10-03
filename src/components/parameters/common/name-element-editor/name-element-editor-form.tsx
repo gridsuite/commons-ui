@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { Grid } from '@mui/material';
 import { DescriptionField } from '../../../inputs/reactHookForm/text/DescriptionField';
 import { UniqueNameInput } from '../../../inputs/reactHookForm/text/UniqueNameInput';
