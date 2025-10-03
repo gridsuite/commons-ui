@@ -9,7 +9,6 @@ export enum ComputingType {
     LOAD_FLOW = 'LOAD_FLOW',
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
     SENSITIVITY_ANALYSIS = 'SENSITIVITY_ANALYSIS',
-    NON_EVACUATED_ENERGY_ANALYSIS = 'NON_EVACUATED_ENERGY_ANALYSIS',
     SHORT_CIRCUIT = 'SHORT_CIRCUIT',
     SHORT_CIRCUIT_ONE_BUS = 'SHORT_CIRCUIT_ONE_BUS',
     DYNAMIC_SIMULATION = 'DYNAMIC_SIMULATION',
@@ -30,8 +29,6 @@ export const formatComputingTypeLabel = (type: ComputingType): string | undefine
             return 'SecurityAnalysis';
         case ComputingType.SENSITIVITY_ANALYSIS:
             return 'SensitivityAnalysis';
-        case ComputingType.NON_EVACUATED_ENERGY_ANALYSIS:
-            return 'NonEvacuatedEnergy';
         case ComputingType.SHORT_CIRCUIT:
             return 'ShortCircuit';
         case ComputingType.SHORT_CIRCUIT_ONE_BUS:
