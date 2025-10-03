@@ -13,6 +13,7 @@ export * from './dndTableEn';
 export * from './elementSearchEn';
 export * from './equipmentSearchEn';
 export * from './equipmentsEn';
+export * from './errorsEn';
 export * from './filterEn';
 export * from './filterExpertEn';
 export * from './flatParametersEn';
