@@ -22,10 +22,8 @@
     ],
     "scripts": {
         "start": "vite demo/ --config vite.config.ts",
-        "start:lint": "vite demo/ --config vite.config-lint.ts",
         "start:open": "vite demo/ --config vite.config.ts --open",
         "build": "tsc && vite build",
-        "build:watch": "tsc && vite build --watch --mode watch",
         "build:pack": "tsc && vite build && npm pack",
         "prepublishOnly": "npm run build",
         "test": "jest",
