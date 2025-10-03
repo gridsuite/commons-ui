@@ -8,7 +8,7 @@
 import { useCallback, useMemo } from 'react';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';

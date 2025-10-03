@@ -6,7 +6,7 @@
  */
 
 import { Grid } from '@mui/material';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
 import yup from '../../utils/yupConfig';
