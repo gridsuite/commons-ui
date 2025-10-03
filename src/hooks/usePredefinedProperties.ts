@@ -11,8 +11,11 @@ import { PredefinedProperties } from '../utils/types/types';
 import { fetchStudyMetadata } from '../services';
 import { EquipmentType } from '../utils';
 
-const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<PredefinedProperties | undefined> => {
-    const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType);
+const fetchPredefinedProperties = async (
+    equipmentType: EquipmentType,
+    propertyField: string | null
+): Promise<PredefinedProperties | undefined> => {
+    const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType, propertyField);
     if (networkEquipmentType === undefined) {
         return Promise.resolve(undefined);
     }
@@ -21,15 +24,17 @@ const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<
 };
 
 export const usePredefinedProperties = (
-    initialType: EquipmentType | null
-): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>] => {
+    initialType: EquipmentType | null,
+    editedField: string | null = null
+): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>, Dispatch<SetStateAction<string | null>>] => {
     const [type, setType] = useState<EquipmentType | null>(initialType);
+    const [propertyField, setPropertyField] = useState<string | null>(editedField);
     const [equipmentPredefinedProps, setEquipmentPredefinedProps] = useState<PredefinedProperties>({});
     const { snackError } = useSnackMessage();
 
     useEffect(() => {
         if (type !== null) {
-            fetchPredefinedProperties(type)
+            fetchPredefinedProperties(type, propertyField)
                 .then((p) => {
                     if (p !== undefined) {
                         setEquipmentPredefinedProps(p);
@@ -41,7 +46,7 @@ export const usePredefinedProperties = (
                     });
                 });
         }
-    }, [type, setEquipmentPredefinedProps, snackError]);
+    }, [type, setEquipmentPredefinedProps, snackError, propertyField]);
 
-    return [equipmentPredefinedProps, setType];
+    return [equipmentPredefinedProps, setType, setPropertyField];
 };

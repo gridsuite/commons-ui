@@ -7,7 +7,17 @@
 
 import { EquipmentType } from '../types';
 
-export const equipmentTypesForPredefinedPropertiesMapper = (type: EquipmentType): string | undefined => {
+export const equipmentTypesForPredefinedPropertiesMapper = (
+    type: EquipmentType,
+    propertyField: string | null
+): string | undefined => {
+    console.log('equipmentTypesForPredefinedPropertiesMapper', propertyField);
+    if (
+        propertyField === 'OPERATIONAL_LIMITS_GROUP_1_WITH_PROPERTIES' ||
+        propertyField === 'OPERATIONAL_LIMITS_GROUP_2_WITH_PROPERTIES'
+    ) {
+        return 'limitsGroup';
+    }
     switch (type) {
         case 'SUBSTATION':
             return 'substation';
