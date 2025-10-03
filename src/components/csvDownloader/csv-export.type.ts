@@ -6,6 +6,7 @@
  */
 
 import { ColDef, CsvExportParams } from 'ag-grid-community';
+import type { UUID } from 'crypto';
 import { GsLang } from '../../utils';
 
 export type CsvDownloadProps = {
@@ -18,5 +19,8 @@ export type CsvDownloadProps = {
 };
 
 export type CsvExportProps = CsvDownloadProps & {
+    studyUuid: UUID;
+    nodeUuid: UUID;
+    rootNetworkUuid: UUID;
     disabled: boolean;
 };
