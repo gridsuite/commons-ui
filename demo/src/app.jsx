@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, no-undef, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types, import/no-extraneous-dependencies */
+/* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types */
 
 import {
     Box,
@@ -47,6 +47,7 @@ import InputsTab from './InputsTab';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 import {
+    EQUIPMENT_TYPE,
     MultipleSelectionDialog,
     OverflowableText,
     SnackbarProvider,
@@ -103,6 +104,7 @@ import {
     networkModificationsFr,
     logout,
     equipmentStyles,
+    setShowAuthenticationRouterLogin,
 } from '../../src';
 
 const messages = {
@@ -197,7 +199,6 @@ const CustomTreeViewFinder = styled(TreeViewFinder)(TreeViewFinderCustomStylesEm
 function Crasher() {
     const [crash, setCrash] = useState(false);
     if (crash) {
-        // eslint-disable-next-line no-undef
         window.foonotexists.bar();
     }
     return <Button onClick={() => setCrash(true)}>CRASH ME</Button>;
@@ -298,7 +299,6 @@ function PermanentSnackButton() {
 const validateUser = () => {
     // change to false to simulate user unauthorized access
     return new Promise((resolve) => {
-        // eslint-disable-next-line no-undef
         window.setTimeout(() => resolve(true), 500);
     });
 };

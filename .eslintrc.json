@@ -10,6 +10,9 @@
     "parserOptions": {
         "project": "./tsconfig.json"
     },
+    "env": {
+        "browser": true // allow usage of window.*, navigator.*, etc...
+    },
     "ignorePatterns": [
         // node_modules is implicitly always ignored
         "dist",
