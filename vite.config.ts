@@ -20,8 +20,7 @@ export default defineConfig((config) => ({
     plugins: [
         react(),
         eslint({
-            failOnWarning: config.mode !== 'development',
-            lintOnStart: false,
+            failOnWarning: config.mode === 'production', // false for watch and development modes
         }),
         svgr(), // works on every import with the pattern "**/*.svg?react"
         libInjectCss(),

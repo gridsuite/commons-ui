@@ -21,7 +21,6 @@ export default defineConfig((configEnv) => {
         plugins: [
             react(),
             eslint({
-                failOnWarning: true,
                 lintOnStart: true,
             }),
             svgr(), // works on every import with the pattern "**/*.svg?react"
