@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FullField } from 'react-querybuilder';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { FieldType } from '../../../utils/types/fieldType';
 
 export enum OperatorType {

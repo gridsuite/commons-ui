@@ -9,7 +9,7 @@ import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
     getDefaultSpecificParamsValues,
@@ -36,6 +36,7 @@ import {
     PARAM_LIMIT_REDUCTION,
     PARAM_PROVIDER_OPENLOADFLOW,
     SPECIFIC_PARAMETERS,
+    VERSION_PARAMETER,
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
@@ -184,6 +185,7 @@ export const useLoadFlowParametersForm = (
                 provider: formData[PROVIDER],
                 limitReduction: formData[PARAM_LIMIT_REDUCTION],
                 commonParameters: {
+                    [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
                 },
                 specificParametersPerProvider: {

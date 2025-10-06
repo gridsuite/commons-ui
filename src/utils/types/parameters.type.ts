@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
@@ -14,7 +14,6 @@ import type {
     ISAParameters,
 } from '../../components/parameters/common/limitreductions/columns-definitions';
 import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
-import { NonEvacuatedEnergyParametersInfos } from './non-evacuated-energy.type';
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
 
 export enum ParameterType {
@@ -43,15 +42,13 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
     ? SensitivityAnalysisParametersInfos
     : T extends ComputingType.SECURITY_ANALYSIS
       ? ISAParameters
-      : T extends ComputingType.NON_EVACUATED_ENERGY_ANALYSIS
-        ? NonEvacuatedEnergyParametersInfos
-        : T extends ComputingType.LOAD_FLOW
-          ? LoadFlowParametersInfos
-          : T extends ComputingType.DYNAMIC_SIMULATION
-            ? DynamicSimulationParametersFetchReturn
-            : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
-              ? DynamicSecurityAnalysisParametersFetchReturn
-              : Record<string, any>;
+      : T extends ComputingType.LOAD_FLOW
+        ? LoadFlowParametersInfos
+        : T extends ComputingType.DYNAMIC_SIMULATION
+          ? DynamicSimulationParametersFetchReturn
+          : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
+            ? DynamicSecurityAnalysisParametersFetchReturn
+            : Record<string, any>;
 
 export type UseParametersBackendReturnProps<T extends ComputingType> = [
     Record<string, string>,

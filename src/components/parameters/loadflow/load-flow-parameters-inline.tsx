@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { parametersStyles } from '../parameters-style';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
