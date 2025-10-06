@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { FolderOutlined } from '@mui/icons-material';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';

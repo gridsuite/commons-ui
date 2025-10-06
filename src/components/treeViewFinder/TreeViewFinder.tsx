@@ -25,7 +25,7 @@ import {
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { ElementType } from '../../utils';
