@@ -7,7 +7,7 @@
 
 import { getUserToken } from '../redux/commonStore';
 
-const DEFAULT_TIMEOUT_MS = 30_000;
+const DEFAULT_TIMEOUT_MS = 50_000;
 
 /** Optional convenience: allow per-call timeout override without crafting a signal manually. */
 type FetchInitWithTimeout = RequestInit & {
