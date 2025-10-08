@@ -8,15 +8,23 @@
 import Tune from '@material-symbols/svg-400/outlined/tune.svg?react';
 import { useTheme } from '@mui/material';
 
-export function TuneIcon() {
+type TuneIconProps = {
+    disabled?: boolean;
+    size?: number;
+    color?: string;
+};
+
+export function TuneIcon({ disabled = false, size = 14.4, color }: TuneIconProps) {
     const theme = useTheme();
+
+    const fillColor = color ?? (disabled ? theme.palette.action.disabled : theme.palette.text.primary);
 
     return (
         <Tune
             style={{
-                width: 14.4,
-                height: 14.4,
-                fill: theme.palette.text.primary,
+                width: size,
+                height: size,
+                fill: fillColor,
             }}
         />
     );
