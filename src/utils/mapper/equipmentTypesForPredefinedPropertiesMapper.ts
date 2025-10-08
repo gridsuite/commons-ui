@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { EquipmentType } from '../types';
-
-export const equipmentTypesForPredefinedPropertiesMapper = (type: EquipmentType): string | undefined => {
+export const equipmentTypesForPredefinedPropertiesMapper = (type: string): string | undefined => {
     switch (type) {
         case 'SUBSTATION':
             return 'substation';
@@ -34,6 +32,6 @@ export const equipmentTypesForPredefinedPropertiesMapper = (type: EquipmentType)
         case 'VSC_CONVERTER_STATION':
             return undefined;
         default:
-            return undefined;
+            return type;
     }
 };

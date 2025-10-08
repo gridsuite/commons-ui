@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Autocomplete, FormControl, Grid, MenuItem, Select, type SelectChangeEvent, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
@@ -30,11 +30,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
 
     const { propertyName, propertyOperator, propertyValues } = valueEditorProps?.value ?? {};
 
-    const [equipmentPredefinedProps, setEquipmentType] = usePredefinedProperties(equipmentType);
-
-    useEffect(() => {
-        setEquipmentType(equipmentType);
-    }, [equipmentType, setEquipmentType]);
+    const [equipmentPredefinedProps] = usePredefinedProperties(equipmentType);
 
     const predefinedNames = useMemo(() => {
         return Object.keys(equipmentPredefinedProps ?? {}).sort();
