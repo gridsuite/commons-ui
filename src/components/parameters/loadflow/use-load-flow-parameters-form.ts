@@ -44,6 +44,7 @@ import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { useSnackMessage } from '../../../hooks';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
@@ -89,6 +90,7 @@ export const useLoadFlowParametersForm = (
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
+    const { snackError } = useSnackMessage();
 
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
         setSelectedTab(newValue);
@@ -285,10 +287,15 @@ export const useLoadFlowParametersForm = (
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                );
+                ).catch((errmsg) => {
+                    snackError({
+                        messageTxt: errmsg,
+                        headerId: 'updateLoadFlowParametersError',
+                    });
+                });
             }
         },
-        [parametersUuid, formatNewParams]
+        [parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {
