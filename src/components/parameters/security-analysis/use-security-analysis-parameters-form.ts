@@ -30,6 +30,7 @@ import {
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
 import { DESCRIPTION, NAME } from '../../inputs';
+import { useSnackMessage } from '../../../hooks';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -54,6 +55,7 @@ export const useSecurityAnalysisParametersForm = (
 ): UseSecurityAnalysisParametersFormReturn => {
     const [providers, provider, , , , params, , updateParameters, , , defaultLimitReductions] = parametersBackend;
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
+    const { snackError } = useSnackMessage();
 
     // TODO: remove this when DynaFlow is supported
     // DynaFlow is not supported at the moment for security analysis
@@ -144,10 +146,15 @@ export const useSecurityAnalysisParametersForm = (
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                );
+                ).catch((errmsg) => {
+                    snackError({
+                        messageTxt: errmsg,
+                        headerId: 'updateSecurityAnalysisParametersError',
+                    });
+                });
             }
         },
-        [parametersUuid, formatNewParams]
+        [parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {

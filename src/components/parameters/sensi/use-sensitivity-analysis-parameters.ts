@@ -115,12 +115,10 @@ export const useSensitivityAnalysisParametersForm = ({
 }: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
     const [providers, , , , , params, , updateParameters] = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
-
+    const { snackError } = useSnackMessage();
     const [analysisComputeComplexity, setAnalysisComputeComplexity] = useState(0);
     const [launchLoader, setLaunchLoader] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
-
-    const { snackError } = useSnackMessage();
 
     const emptyFormData = useMemo(() => {
         return {
@@ -471,10 +469,15 @@ export const useSensitivityAnalysisParametersForm = ({
                     formData[FieldConstants.NAME],
                     ElementType.SENSITIVITY_PARAMETERS,
                     formData[FieldConstants.DESCRIPTION] ?? ''
-                );
+                ).catch((error) => {
+                    snackError({
+                        messageTxt: error.message,
+                        headerId: 'updateSensitivityAnalysisParametersError',
+                    });
+                });
             }
         },
-        [parametersUuid, formatNewParams]
+        [parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {
