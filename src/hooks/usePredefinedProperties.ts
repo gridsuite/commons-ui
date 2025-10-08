@@ -4,18 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { equipmentTypesForPredefinedPropertiesMapper } from '../utils/mapper/equipmentTypesForPredefinedPropertiesMapper';
 import { useSnackMessage } from './useSnackMessage';
 import { PredefinedProperties } from '../utils/types/types';
 import { fetchStudyMetadata } from '../services';
-import { EquipmentType } from '../utils';
 
-const fetchPredefinedProperties = async (
-    equipmentType: EquipmentType,
-    propertyField: string | null
-): Promise<PredefinedProperties | undefined> => {
-    const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType, propertyField);
+const fetchPredefinedProperties = async (equipmentType: string): Promise<PredefinedProperties | undefined> => {
+    const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType);
     if (networkEquipmentType === undefined) {
         return Promise.resolve(undefined);
     }
@@ -23,18 +19,13 @@ const fetchPredefinedProperties = async (
     return studyMetadata.predefinedEquipmentProperties?.[networkEquipmentType];
 };
 
-export const usePredefinedProperties = (
-    initialType: EquipmentType | null,
-    editedField: string | null = null
-): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>, Dispatch<SetStateAction<string | null>>] => {
-    const [type, setType] = useState<EquipmentType | null>(initialType);
-    const [propertyField, setPropertyField] = useState<string | null>(editedField);
+export const usePredefinedProperties = (type: string | null): [PredefinedProperties] => {
     const [equipmentPredefinedProps, setEquipmentPredefinedProps] = useState<PredefinedProperties>({});
     const { snackError } = useSnackMessage();
 
     useEffect(() => {
         if (type !== null) {
-            fetchPredefinedProperties(type, propertyField)
+            fetchPredefinedProperties(type)
                 .then((p) => {
                     if (p !== undefined) {
                         setEquipmentPredefinedProps(p);
@@ -46,7 +37,7 @@ export const usePredefinedProperties = (
                     });
                 });
         }
-    }, [type, setEquipmentPredefinedProps, snackError, propertyField]);
+    }, [type, setEquipmentPredefinedProps, snackError]);
 
-    return [equipmentPredefinedProps, setType, setPropertyField];
+    return [equipmentPredefinedProps];
 };
