@@ -55,12 +55,11 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     const initWithSignal = ensureSignal(init);
 
     // Add Authorization header
-    const initCopy: RequestInit = { ...initWithSignal };
-    initCopy.headers = new Headers(initCopy.headers || {});
+    initWithSignal.headers = new Headers(initWithSignal.headers || {});
     const tokenCopy = token ?? getUserToken();
-    initCopy.headers.append('Authorization', `Bearer ${tokenCopy}`);
+    initWithSignal.headers.append('Authorization', `Bearer ${tokenCopy}`);
 
-    return initCopy;
+    return initWithSignal;
 };
 
 const handleError = (response: Response) => {
