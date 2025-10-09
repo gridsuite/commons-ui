@@ -36,16 +36,14 @@ const parseError = (text: string) => {
  * otherwise apply a default timeout (30s by default, overridable via timeoutMs).
  */
 const ensureSignal = (init?: FetchInitWithTimeout): RequestInit => {
-    const copy: RequestInit = { ...(init ?? {}) };
-
-    if (copy.signal) return copy;
+    if (init?.signal) return init;
 
     const timeoutMs = typeof init?.timeoutMs === 'number' ? init.timeoutMs : DEFAULT_TIMEOUT_MS;
 
-    // We assume environment supports AbortSignal.timeout
-    copy.signal = AbortSignal.timeout(timeoutMs);
-
-    return copy;
+    return {
+        ...init,
+        signal: AbortSignal.timeout(timeoutMs),
+    };
 };
 
 const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) => {
