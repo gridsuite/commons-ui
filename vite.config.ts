@@ -16,6 +16,8 @@ import { globSync } from 'glob';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
+const outDir = path.join(__dirname, 'dist');
+
 export default defineConfig((config) => ({
     plugins: [
         react(),
@@ -26,7 +28,23 @@ export default defineConfig((config) => ({
         libInjectCss(),
         dts({
             include: ['src'],
-            exclude: '**/*.test.{ts,tsx}',
+            exclude: ['**/*.test.{ts,tsx}'],
+            copyDtsFiles: true, // copy existing .d.ts files from src to outDir
+            beforeWriteFile: (filePath, content) => {
+                switch (filePath) {
+                    case `${outDir}/index.d.ts`:
+                        // vite doesn't support "import './f.d.ts'" and dts plugin doesn't keep "import type {}", so we inject it manually
+                        return {
+                            filePath,
+                            content: `${content}\n// Ensure the module augmentation is loaded whenever a project imports '@gridsuite/commons-ui'\nimport './module-mui';\n`,
+                        };
+                    case `${outDir}/module-localized-countries.d.ts`:
+                    case `${outDir}/vite-env.d.ts`:
+                        return false;
+                    default:
+                        return undefined;
+                }
+            },
         }),
     ],
     build: {
@@ -40,7 +58,7 @@ export default defineConfig((config) => ({
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
-                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
+                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}', 'src/**/*.d.ts'],
                 }).map((file) => [
                     // This remove `src/` as well as the file extension from each
                     // file, so e.g. src/nested/foo.js becomes nested/foo
