@@ -7,23 +7,59 @@
 
 import { getUserToken } from '../redux/commonStore';
 
+const DEFAULT_TIMEOUT_MS = 50_000;
+
+/** Optional convenience: allow per-call timeout override without crafting a signal manually. */
+type FetchInitWithTimeout = RequestInit & {
+    /** If provided and no signal is set, use this as the timeout override (ms). */
+    timeoutMs?: number;
+};
+
+/** Custom error type thrown when AbortSignal.timeout triggers. */
+export class NetworkTimeoutError extends Error {
+    constructor(messageKey: string = 'errors.network.timeout') {
+        super(messageKey);
+        this.name = 'NetworkTimeoutError';
+    }
+}
+
 const parseError = (text: string) => {
     try {
         return JSON.parse(text);
-    } catch (err) {
+    } catch {
         return null;
     }
 };
 
-const prepareRequest = (init: RequestInit | undefined, token?: string) => {
+/**
+ * Ensure we always have an AbortSignal: use caller-provided signal if any,
+ * otherwise apply a default timeout (30s by default, overridable via timeoutMs).
+ */
+const ensureSignal = (init?: FetchInitWithTimeout): RequestInit => {
+    if (init?.signal) return init;
+
+    const timeoutMs = typeof init?.timeoutMs === 'number' ? init.timeoutMs : DEFAULT_TIMEOUT_MS;
+
+    return {
+        ...init,
+        signal: AbortSignal.timeout(timeoutMs),
+    };
+};
+
+const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) => {
     if (!(typeof init === 'undefined' || typeof init === 'object')) {
         throw new TypeError(`First argument of prepareRequest is not an object : ${typeof init}`);
     }
-    const initCopy = { ...init };
-    initCopy.headers = new Headers(initCopy.headers || {});
+
+    // Apply default/global timeout signal logic
+    const initWithSignal = ensureSignal(init);
+
+    // Add Authorization header
+    initWithSignal.headers = new Headers(initWithSignal.headers || {});
     const tokenCopy = token ?? getUserToken();
-    initCopy.headers.append('Authorization', `Bearer ${tokenCopy}`);
-    return initCopy;
+    initWithSignal.headers.append('Authorization', `Bearer ${tokenCopy}`);
+
+    return initWithSignal;
 };
 
 const handleError = (response: Response) => {
@@ -44,21 +80,30 @@ const handleError = (response: Response) => {
     });
 };
 
-const safeFetch = (url: string, initCopy: RequestInit) => {
-    return fetch(url, initCopy).then((response) => (response.ok ? response : handleError(response)));
+const handleTimeoutError = (error: unknown) => {
+    if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError')) {
+        throw new NetworkTimeoutError();
+    }
+    throw error;
 };
 
-export const backendFetch = (url: string, init: RequestInit, token?: string) => {
+const safeFetch = (url: string, initCopy: RequestInit) => {
+    return fetch(url, initCopy)
+        .then((response) => (response.ok ? response : handleError(response)))
+        .catch(handleTimeoutError);
+};
+
+export const backendFetch = (url: string, init: FetchInitWithTimeout, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy);
 };
 
-export const backendFetchJson = (url: string, init?: RequestInit, token?: string) => {
+export const backendFetchJson = (url: string, init?: FetchInitWithTimeout, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy).then((safeResponse) => (safeResponse.status === 204 ? null : safeResponse.json()));
 };
 
-export function backendFetchText(url: string, init?: RequestInit, token?: string) {
+export function backendFetchText(url: string, init?: FetchInitWithTimeout, token?: string) {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy).then((safeResponse) => safeResponse.text());
 }
