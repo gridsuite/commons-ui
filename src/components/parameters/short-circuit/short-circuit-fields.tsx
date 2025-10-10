@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import {
     InitialVoltage,
     intlInitialVoltageProfileMode,
@@ -31,6 +31,7 @@ import type { SxStyle } from '../../../utils/styles';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
+    enableDeveloperMode: boolean;
 }
 
 export enum Status {
@@ -38,9 +39,8 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProps>) {
+export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
-
     const watchInitialVoltageProfileMode = useWatch({
         name: SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     });
@@ -70,8 +70,15 @@ export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProp
 
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
-        return intlPredefinedParametersOptions();
-    }, []);
+        const options = intlPredefinedParametersOptions();
+
+        if (!enableDeveloperMode) {
+            return options.filter((opt) => opt.id !== 'ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP');
+        }
+
+        return options;
+    }, [enableDeveloperMode]);
+
     const initialVoltageProfileMode = useMemo(() => {
         return intlInitialVoltageProfileMode();
     }, []);
@@ -87,6 +94,21 @@ export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProp
         console.debug('onPredefinedParametersManualChange new:', newPredefinedParameters);
         resetAll(newPredefinedParameters);
     };
+    //
+    const { setValue } = useFormContext();
+
+    // ✅ Automatically adjust default predefined parameter depending on enableDeveloperMode
+    useEffect(() => {
+        if (!enableDeveloperMode) {
+            // In developer mode → force ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP
+            if (watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP) {
+                setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP, {
+                    shouldDirty: false,
+                    shouldValidate: true,
+                });
+            }
+        }
+    }, [enableDeveloperMode, watchPredefinedParams, setValue]);
 
     // fields definition
     const feederResult = (
