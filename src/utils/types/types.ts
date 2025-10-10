@@ -72,3 +72,8 @@ export type AnnouncementDto = {
     severity: AnnouncementSeverity;
     remainingDuration: number;
 };
+
+export enum ArrayAction {
+    ADD = 'ADD',
+    REMOVE = 'REMOVE',
+}
