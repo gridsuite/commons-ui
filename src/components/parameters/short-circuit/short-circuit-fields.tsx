@@ -73,7 +73,7 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
         const options = intlPredefinedParametersOptions();
 
         if (!enableDeveloperMode) {
-            return options.filter((opt) => opt.id !== 'ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP');
+            return options.filter((opt) => opt.id !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP);
         }
 
         return options;
