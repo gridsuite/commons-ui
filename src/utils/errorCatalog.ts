@@ -6,22 +6,43 @@
  */
 
 import { IntlShape } from 'react-intl';
-import catalog from './businessErrorCatalog.json';
+import { businessErrorsEn } from '../translations/en/businessErrorsEn';
+import { businessErrorsFr } from '../translations/fr/businessErrorsFr';
 
 const DEFAULT_LOCALE = 'en';
 
 type CatalogTranslations = Record<string, string>;
 type Catalog = Record<string, CatalogTranslations>;
 
-const errorCatalogMessages: Catalog = catalog;
+const localizedErrorCatalogMessages: Record<string, CatalogTranslations> = {
+    en: businessErrorsEn,
+    fr: businessErrorsFr,
+};
 
-const errorCatalogDefaultMessages: Record<string, string> = Object.entries(errorCatalogMessages).reduce(
-    (accumulator, [code, translations]) => {
-        accumulator[code] = translations[DEFAULT_LOCALE] ?? Object.values(translations)[0] ?? '';
-        return accumulator;
-    },
-    {} as Record<string, string>
-);
+const errorCatalogMessages: Catalog = (() => {
+    const catalog: Catalog = {};
+
+    Object.entries(localizedErrorCatalogMessages).forEach(([locale, translations]) => {
+        Object.entries(translations).forEach(([code, message]) => {
+            if (!catalog[code]) {
+                catalog[code] = {};
+            }
+            catalog[code][locale] = message;
+        });
+    });
+
+    return catalog;
+})();
+
+const errorCatalogDefaultMessages: Record<string, string> = (() => {
+    const defaults: Record<string, string> = {};
+
+    Object.entries(errorCatalogMessages).forEach(([code, translations]) => {
+        defaults[code] = translations[DEFAULT_LOCALE] ?? Object.values(translations)[0] ?? '';
+    });
+
+    return defaults;
+})();
 
 export type ErrorCatalogCode = keyof typeof errorCatalogMessages & string;
 

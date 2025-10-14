@@ -6,6 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
+import { IntlShape } from 'react-intl';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
@@ -87,6 +88,7 @@ export const saveExpertFilter = (
     activeDirectory: UUID | undefined | null,
     onClose: () => void,
     onError: (error: Error) => void,
+    intl?: IntlShape,
     token?: string
 ) => {
     if (isFilterCreation) {
@@ -106,9 +108,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                catchErrorHandler(
+                    error,
+                    (message: string) => {
+                        onError(new Error(message));
+                    },
+                    { intl }
+                );
             });
     } else {
         saveFilter(
@@ -126,9 +132,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                catchErrorHandler(
+                    error,
+                    (message: string) => {
+                        onError(new Error(message));
+                    },
+                    { intl }
+                );
             });
     }
 };

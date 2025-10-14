@@ -7,6 +7,7 @@
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
@@ -46,6 +47,7 @@ export function ExpertFilterEditionDialog({
     description,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
+    const intl = useIntl();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
 
     // default values are set via reset when we fetch data
@@ -76,16 +78,20 @@ export function ExpertFilterEditionDialog({
                     });
                 })
                 .catch((error: unknown) => {
-                    catchErrorHandler(error, (message: string) => {
-                        setDataFetchStatus(FetchStatus.FETCH_ERROR);
-                        snackError({
-                            messageTxt: message,
-                            headerId: 'cannotRetrieveFilter',
-                        });
-                    });
+                    catchErrorHandler(
+                        error,
+                        (message: string) => {
+                            setDataFetchStatus(FetchStatus.FETCH_ERROR);
+                            snackError({
+                                messageTxt: message,
+                                headerId: 'cannotRetrieveFilter',
+                            });
+                        },
+                        { intl }
+                    );
                 });
         }
-    }, [id, name, open, reset, snackError, getFilterById, description]);
+    }, [description, getFilterById, id, intl, name, open, reset, snackError]);
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
@@ -103,14 +109,15 @@ export function ExpertFilterEditionDialog({
                         messageTxt: error.message,
                         headerId: 'cannotSaveFilter',
                     });
-                }
+                },
+                intl
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
+        [broadcastChannel, id, intl, itemSelectionForCopy.sourceItemUuid, onClose, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
