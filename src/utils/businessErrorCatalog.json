@@ -1,0 +1,98 @@
+{
+    "directory.permissionDenied": {
+        "en": "You are not allowed to perform this action.",
+        "fr": "Vous n'êtes pas autorisé à effectuer cette action."
+    },
+    "directory.elementNameBlank": {
+        "en": "Element name must not be blank.",
+        "fr": "Le nom de l'élément ne doit pas être vide."
+    },
+    "directory.rootAlreadyExists": {
+        "en": "A root directory with the same name already exists.",
+        "fr": "Un répertoire racine portant le même nom existe déjà."
+    },
+    "directory.notDirectory": {
+        "en": "The selected element is not a directory.",
+        "fr": "L'élément sélectionné n'est pas un répertoire."
+    },
+    "directory.elementNameConflict": {
+        "en": "An element with the same name already exists in the directory.",
+        "fr": "Un élément portant le même nom existe déjà dans le répertoire."
+    },
+    "directory.moveInDescendantNotAllowed": {
+        "en": "Cannot move an element inside one of its descendants.",
+        "fr": "Impossible de déplacer un élément dans l'un de ses descendants."
+    },
+    "directory.moveSelectionEmpty": {
+        "en": "Cannot move elements because the selection is empty.",
+        "fr": "Impossible de déplacer des éléments car la sélection est vide."
+    },
+    "directory.elementNotFound": {
+        "en": "The requested directory element could not be found.",
+        "fr": "L'élément de répertoire demandé est introuvable."
+    },
+    "directory.directoryNotFoundInPath": {
+        "en": "A directory in the requested path could not be found.",
+        "fr": "Un répertoire du chemin demandé est introuvable."
+    },
+    "directory.notificationUnknown": {
+        "en": "The notification type is unknown.",
+        "fr": "Le type de notification est inconnu."
+    },
+    "directory.cannotDeleteElement": {
+        "en": "The directory element cannot be deleted.",
+        "fr": "L'élément du répertoire ne peut pas être supprimé."
+    },
+    "directory.remoteError": {
+        "en": "An unexpected error occurred while calling a remote service.",
+        "fr": "Une erreur inattendue est survenue lors de l'appel à un service distant."
+    },
+    "explore.permissionDenied": {
+        "en": "You are not allowed to perform this action.",
+        "fr": "Vous n'êtes pas autorisé à effectuer cette action."
+    },
+    "explore.elementNotFound": {
+        "en": "The requested element could not be found.",
+        "fr": "L'élément demandé est introuvable."
+    },
+    "explore.unknownElementType": {
+        "en": "The requested element type is unknown.",
+        "fr": "Le type d'élément demandé est inconnu."
+    },
+    "explore.importCaseFailed": {
+        "en": "The case import failed.",
+        "fr": "L'import du cas a échoué."
+    },
+    "explore.incorrectCaseFile": {
+        "en": "The provided case file is incorrect.",
+        "fr": "Le fichier de cas fourni est incorrect."
+    },
+    "explore.maxElementsExceeded": {
+        "en": "The number of allowed elements has been exceeded.",
+        "fr": "Le nombre d'éléments autorisés a été dépassé."
+    },
+    "explore.caseCountUnavailable": {
+        "en": "The number of cases could not be retrieved.",
+        "fr": "Le nombre de cas n'a pas pu être récupéré."
+    },
+    "explore.remoteError": {
+        "en": "An unexpected error occurred while calling a remote service.",
+        "fr": "Une erreur inattendue est survenue lors de l'appel à un service distant."
+    },
+    "useradmin.groupNotFound": {
+        "en": "Users's group not found.",
+        "fr": "Groupe de l'utilisateur non trouvé."
+    },
+    "useradmin.remoteError": {
+        "en": "An unexpected error occurred while calling a remote service.",
+        "fr": "Une erreur inattendue est survenue lors de l'appel à un service distant."
+    },
+    "filter.filterCycleDetected": {
+        "en": "Filter cycle detected.",
+        "fr": "Cycle de filtre détecté."
+    },
+    "filter.remoteError": {
+        "en": "An unexpected error occurred while calling a remote service.",
+        "fr": "Une erreur inattendue est survenue lors de l'appel à un service distant."
+    }
+}
