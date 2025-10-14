@@ -71,7 +71,6 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
         const options = intlPredefinedParametersOptions();
-
         if (!enableDeveloperMode) {
             return options.filter((opt) => opt.id !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP);
         }
@@ -94,13 +93,12 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
         console.debug('onPredefinedParametersManualChange new:', newPredefinedParameters);
         resetAll(newPredefinedParameters);
     };
-    //
+
     const { setValue } = useFormContext();
 
     // Adjust default predefined parameter depending on enableDeveloperMode
     useEffect(() => {
         if (!enableDeveloperMode) {
-            // force ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP for developer mode
             if (watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP) {
                 setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP, {
                     shouldDirty: false,
