@@ -97,10 +97,10 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
     //
     const { setValue } = useFormContext();
 
-    // ✅ Automatically adjust default predefined parameter depending on enableDeveloperMode
+    // Adjust default predefined parameter depending on enableDeveloperMode
     useEffect(() => {
         if (!enableDeveloperMode) {
-            // In developer mode → force ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP
+            // force ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP for developer mode
             if (watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP) {
                 setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP, {
                     shouldDirty: false,
