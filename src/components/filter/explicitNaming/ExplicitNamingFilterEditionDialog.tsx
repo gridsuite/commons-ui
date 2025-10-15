@@ -99,10 +99,8 @@ export function ExplicitNamingFilterEditionDialog({
                 filterForm[FieldConstants.NAME],
                 filterForm[FieldConstants.DESCRIPTION] ?? '',
                 id,
-                (error) => {
-                    snackError({
-                        messageTxt: error.message,
-                    });
+                (payload) => {
+                    snackError(payload);
                 },
                 onClose
             );

@@ -5,13 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { IntlShape } from 'react-intl';
 import { getUserToken } from '../redux/commonStore';
-import {
-    getErrorCatalogDefaultMessage,
-    isKnownErrorCatalogCode,
-    resolveErrorCatalogMessage,
-} from '../utils/errorCatalog';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -37,53 +31,66 @@ const parseError = (text: string) => {
     }
 };
 
-type BackendProblemDetail = {
-    type?: string;
-    title?: string;
+export type BackendProblemDetail = {
     status?: number;
-    detail?: string;
-    instance?: string;
     businessErrorCode?: string;
-    server?: string;
-    timestamp?: string;
-    path?: string;
 };
 
-type ErrorWithStatus = Error & {
+type SpringErrorPayload = {
+    status?: number;
+    message?: string;
+};
+
+export interface CustomError extends Error {
     status?: number;
     businessErrorCode?: string;
     problemDetail?: BackendProblemDetail;
-};
+    springErrorPayload?: SpringErrorPayload;
+}
 
-const firstNonEmpty = (...values: Array<string | undefined | null>): string | undefined =>
-    values.find((value): value is string => typeof value === 'string' && value.trim().length > 0);
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
 
-const isProblemDetail = (value: unknown): value is BackendProblemDetail => {
-    if (!value || typeof value !== 'object') {
-        return false;
-    }
-    const candidate = value as BackendProblemDetail;
-    return (
-        typeof candidate.detail === 'string' ||
-        typeof candidate.title === 'string' ||
-        typeof candidate.businessErrorCode === 'string' ||
-        typeof candidate.status === 'number'
-    );
-};
-
-const isSpringErrorPayload = (value: unknown): value is { status?: number; error?: string; message?: string } => {
-    if (!value || typeof value !== 'object') {
-        return false;
-    }
-    const candidate = value as { status?: number; error?: string; message?: string };
-    return typeof candidate.error === 'string' && typeof candidate.message === 'string';
-};
-
-const getNavigatorLocale = (): string | undefined => {
-    if (typeof navigator === 'undefined') {
+const toProblemDetail = (value: unknown): BackendProblemDetail | undefined => {
+    if (!isRecord(value)) {
         return undefined;
     }
-    return navigator.language;
+    const businessErrorCode = typeof value.businessErrorCode === 'string' ? value.businessErrorCode : undefined;
+    const status = typeof value.status === 'number' ? value.status : undefined;
+    return {
+        status,
+        businessErrorCode,
+    };
+};
+
+const toSpringErrorPayload = (value: unknown): SpringErrorPayload | undefined => {
+    if (!isRecord(value)) {
+        return undefined;
+    }
+    const status = typeof value.status === 'number' ? value.status : undefined;
+    const message = typeof value.message === 'string' ? value.message : undefined;
+    return {
+        status,
+        message,
+    };
+};
+
+export const isProblemDetail = (error: unknown): error is CustomError & { problemDetail: BackendProblemDetail } => {
+    if (!isRecord(error) || !('problemDetail' in error)) {
+        return false;
+    }
+    return Boolean(toProblemDetail((error as { problemDetail?: unknown }).problemDetail));
+};
+
+export const isJsonSpringError = (
+    error: unknown
+): error is CustomError & { springErrorPayload: SpringErrorPayload } => {
+    if (toSpringErrorPayload(error)) {
+        return true;
+    }
+    if (!isRecord(error) || !('springErrorPayload' in error)) {
+        return false;
+    }
+    return Boolean(toSpringErrorPayload((error as { springErrorPayload?: unknown }).springErrorPayload));
 };
 
 /**
@@ -122,32 +129,26 @@ const handleError = (response: Response) => {
         const errorJson = parseError(text);
         const fallbackStatus = response.status;
 
-        if (isProblemDetail(errorJson)) {
-            const message =
-                firstNonEmpty(errorJson.detail, errorJson.title, response.statusText) ?? `${fallbackStatus}`;
-            const problemDetailError: ErrorWithStatus = new Error(message);
-            problemDetailError.status = errorJson.status ?? fallbackStatus;
-            if (typeof errorJson.businessErrorCode === 'string') {
-                problemDetailError.businessErrorCode = errorJson.businessErrorCode;
-            }
-            problemDetailError.problemDetail = errorJson;
+        const problemDetail = toProblemDetail(errorJson);
+        if (problemDetail) {
+            const problemDetailError: CustomError = new Error(problemDetail.businessErrorCode);
+            problemDetailError.status = problemDetail.status ?? fallbackStatus;
+            problemDetailError.businessErrorCode = problemDetail.businessErrorCode;
+            problemDetailError.problemDetail = problemDetail;
             throw problemDetailError;
         }
 
-        if (isSpringErrorPayload(errorJson)) {
-            const status = errorJson.status ?? fallbackStatus;
-            const springErrorMessage = firstNonEmpty(errorJson.message, response.statusText) ?? `${status}`;
-            const springError: ErrorWithStatus = new Error(springErrorMessage);
+        const springErrorPayload = toSpringErrorPayload(errorJson);
+        if (springErrorPayload) {
+            const status = springErrorPayload.status ?? fallbackStatus;
+            const springError: CustomError = new Error(springErrorPayload.message);
             springError.status = status;
+            springError.springErrorPayload = springErrorPayload;
             throw springError;
         }
 
         const rawMessage = text.trim();
-        const fallbackMessage =
-            rawMessage.length > 0
-                ? rawMessage
-                : (firstNonEmpty(response.statusText, `${fallbackStatus}`) ?? `${fallbackStatus}`);
-        const fallbackError: ErrorWithStatus = new Error(fallbackMessage);
+        const fallbackError: CustomError = new Error(rawMessage);
         fallbackError.status = fallbackStatus;
         throw fallbackError;
     });
@@ -185,44 +186,34 @@ export const getRequestParamFromList = (paramName: string, params: string[] = []
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };
 
-type CatchErrorHandlerOptions = {
-    intl?: IntlShape;
-};
-
-const resolveBusinessErrorMessage = (
-    error: unknown,
-    options?: CatchErrorHandlerOptions
-): { message: string | undefined; code: string | undefined } => {
-    if (!error || typeof error !== 'object') {
-        return { message: undefined, code: undefined };
-    }
-    const candidate = error as Partial<ErrorWithStatus>;
-    const businessErrorCode = candidate.businessErrorCode ?? candidate.problemDetail?.businessErrorCode;
-    if (!businessErrorCode || !isKnownErrorCatalogCode(businessErrorCode)) {
-        return { message: undefined, code: businessErrorCode };
-    }
-    const locale = options?.intl?.locale ?? getNavigatorLocale();
-    const message = locale
-        ? resolveErrorCatalogMessage(locale, businessErrorCode)
-        : getErrorCatalogDefaultMessage(businessErrorCode);
-    return { message, code: businessErrorCode };
-};
-
 export const catchErrorHandler = (
     error: unknown,
-    callback: (message: string) => void,
-    options?: CatchErrorHandlerOptions
+    callback: (payload: { messageId?: string; messageTxt?: string }) => void
 ) => {
-    const { message: businessMessage } = resolveBusinessErrorMessage(error, options);
-    const fallbackMessage =
-        error instanceof Object && 'message' in error && typeof (error as { message: unknown }).message === 'string'
-            ? (error as { message: string }).message
-            : undefined;
-    const resolvedMessage = businessMessage ?? fallbackMessage ?? 'unknown error';
+    const candidate = isRecord(error) ? (error as Partial<CustomError>) : undefined;
+    const directBusinessCode =
+        typeof candidate?.businessErrorCode === 'string' ? candidate.businessErrorCode.trim() : undefined;
 
-    if (error instanceof Error && resolvedMessage !== error.message) {
-        Object.defineProperty(error, 'message', { value: resolvedMessage, configurable: true, writable: true });
+    if (directBusinessCode) {
+        callback({ messageId: directBusinessCode });
+        return;
     }
 
-    callback(resolvedMessage);
+    const problemDetail = toProblemDetail(candidate?.problemDetail) ?? toProblemDetail(error);
+    const detailBusinessCode =
+        typeof problemDetail?.businessErrorCode === 'string' ? problemDetail.businessErrorCode.trim() : undefined;
+
+    if (detailBusinessCode) {
+        callback({ messageId: detailBusinessCode });
+        return;
+    }
+    const springMessageRaw =
+        toSpringErrorPayload(candidate?.springErrorPayload)?.message ?? toSpringErrorPayload(error)?.message;
+    const springMessage = springMessageRaw?.trim();
+    if (springMessage) {
+        callback({ messageTxt: springMessage });
+        return;
+    }
+
+    callback({ messageTxt: 'unknown error' });
 };

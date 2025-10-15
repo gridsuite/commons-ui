@@ -6,13 +6,14 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { IntlShape } from 'react-intl';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
 import { catchErrorHandler } from '../../../services';
+
+type SnackPayload = { messageId?: string; messageTxt?: string };
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -21,7 +22,7 @@ export const saveExplicitNamingFilter = (
     name: string,
     description: string,
     id: string | null,
-    setCreateFilterErr: (error: Error) => void,
+    setCreateFilterErr: (payload: SnackPayload) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
     token?: string
@@ -56,7 +57,9 @@ export const saveExplicitNamingFilter = (
                 handleClose();
             })
             .catch((error: unknown) => {
-                setCreateFilterErr(error instanceof Error ? error : new Error('unknown error'));
+                catchErrorHandler(error, (payload) => {
+                    setCreateFilterErr(payload);
+                });
             });
     } else {
         saveFilter(
@@ -74,10 +77,13 @@ export const saveExplicitNamingFilter = (
                 handleClose();
             })
             .catch((error: unknown) => {
-                setCreateFilterErr(error instanceof Error ? error : new Error('unknown error'));
+                catchErrorHandler(error, (payload) => {
+                    setCreateFilterErr(payload);
+                });
             });
     }
 };
+
 export const saveExpertFilter = (
     id: string | null,
     query: any,
@@ -87,8 +93,7 @@ export const saveExpertFilter = (
     isFilterCreation: boolean,
     activeDirectory: UUID | undefined | null,
     onClose: () => void,
-    onError: (error: Error) => void,
-    intl?: IntlShape,
+    onError: (payload: SnackPayload) => void,
     token?: string
 ) => {
     if (isFilterCreation) {
@@ -108,13 +113,9 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(
-                    error,
-                    (message: string) => {
-                        onError(new Error(message));
-                    },
-                    { intl }
-                );
+                catchErrorHandler(error, (payload) => {
+                    onError(payload);
+                });
             });
     } else {
         saveFilter(
@@ -132,13 +133,9 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(
-                    error,
-                    (message: string) => {
-                        onError(new Error(message));
-                    },
-                    { intl }
-                );
+                catchErrorHandler(error, (payload) => {
+                    onError(payload);
+                });
             });
     }
 };

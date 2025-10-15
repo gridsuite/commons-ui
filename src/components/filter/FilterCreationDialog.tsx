@@ -6,7 +6,6 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { UUID } from 'node:crypto';
@@ -68,8 +67,6 @@ export function FilterCreationDialog({
     filterType,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
-    const intl = useIntl();
-
     const formMethods = useForm({
         defaultValues: emptyFormData,
         resolver: yupResolver(formSchema) as unknown as Resolver,
@@ -92,10 +89,8 @@ export function FilterCreationDialog({
                     filterForm[FieldConstants.NAME],
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
-                    (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
+                    (payload) => {
+                        snackError(payload);
                     },
                     onClose,
                     activeDirectory
@@ -110,16 +105,13 @@ export function FilterCreationDialog({
                     true,
                     activeDirectory,
                     onClose,
-                    (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
-                    },
-                    intl
+                    (payload) => {
+                        snackError(payload);
+                    }
                 );
             }
         },
-        [activeDirectory, intl, snackError, onClose, filterType]
+        [activeDirectory, snackError, onClose, filterType]
     );
     const titleId = useMemo(() => {
         if (sourceFilterForExplicitNamingConversion) {
