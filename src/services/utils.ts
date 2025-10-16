@@ -93,7 +93,7 @@ const safeFetch = (url: string, initCopy: RequestInit) => {
         .catch(handleTimeoutError);
 };
 
-export const backendFetch = (url: string, init: FetchInitWithTimeout, token?: string) => {
+export const backendFetch = (url: string, init?: FetchInitWithTimeout, token?: string) => {
     const initCopy = prepareRequest(init, token);
     return safeFetch(url, initCopy);
 };
