@@ -6,6 +6,7 @@
  */
 
 import { Theme, Typography, TypographyProps } from '@mui/material';
+import { mergeSx } from '../../utils';
 
 const styles = {
     separator: (theme: Theme) => ({
@@ -16,9 +17,9 @@ const styles = {
     }),
 };
 
-export function SeparatorCellRenderer({ children, ...otherProps }: Readonly<TypographyProps>) {
+export function SeparatorCellRenderer({ children, sx, ...otherProps }: Readonly<TypographyProps>) {
     return (
-        <Typography variant="subtitle1" color="primary" sx={styles.separator} {...otherProps}>
+        <Typography variant="subtitle1" color="primary" sx={mergeSx(styles.separator, sx)} {...otherProps}>
             {children}
         </Typography>
     );
