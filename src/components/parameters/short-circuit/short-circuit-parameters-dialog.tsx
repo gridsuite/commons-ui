@@ -59,7 +59,7 @@ export function ShortCircuitParametersEditionDialog({
                         />
                     );
                 }}
-                enableDeveloperMode={enableDeveloperMode ?? true}
+                enableDeveloperMode={enableDeveloperMode ?? false}
             />
         </CustomMuiDialog>
     );
