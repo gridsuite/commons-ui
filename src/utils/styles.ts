@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { SxProps, Theme } from '@mui/material';
+import { type SxProps, type Theme } from '@mui/material';
+import { type SystemStyleObject } from '@mui/system';
 
 export const DARK_THEME = 'Dark';
 export const LIGHT_THEME = 'Light';
@@ -30,4 +31,5 @@ const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
 export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) => allSx.filter(isSxProps).flat();
 
 export type SxStyle = SxProps<Theme>;
+export type SxStyleObject = SystemStyleObject<Theme>;
 export type MuiStyles = Record<string, SxStyle>;

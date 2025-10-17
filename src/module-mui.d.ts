@@ -4,20 +4,79 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+/* eslint-disable no-restricted-imports */
 
-import '@mui/material'; // dunno why we need to import like that for module augmentation to work
+// noinspection ES6UnusedImports
+import type {} from '@mui/material'; // dunno why we need to import like that for module augmentation to work
+import type { Property } from 'csstype';
+import type { ComponentsOverrides, ComponentsVariants, Theme as MuiTheme } from '@mui/material/styles';
 
-// used to customize mui theme
-// https://mui.com/material-ui/customization/theming/#typescript
+// https://mui.com/x/react-charts/quickstart/#typescript
+// import type {} from '@mui/x-charts/themeAugmentation';
+
+// https://mui.com/x/react-date-pickers/quickstart/#typescript
+// import type {} from '@mui/x-date-pickers/themeAugmentation';
+// import type {} from '@mui/x-date-pickers/AdapterDayjs'; // replace `AdapterDayjs` with the adapter you're using
+
+// https://mui.com/x/react-tree-view/quickstart/#typescript
+import type {} from '@mui/x-tree-view/themeAugmentation';
+
+// https://mui.com/material-ui/about-the-lab/#typescript
+import type {} from '@mui/lab/themeAugmentation';
+import { CancelButtonProps } from './components';
+
+type ThemeWithoutComponents = Omit<MuiTheme, 'components'>;
+
+// used to customize mui theme & colors
 declare module '@mui/material/styles' {
+    // https://mui.com/material-ui/customization/theming/#typescript
     interface Theme {
-        aggrid: {
-            theme: string;
-            highlightColor: string;
-            valueChangeHighlightBackgroundColor: string;
-            overlay: {
-                background: string;
-            };
+        agGrid?: {
+            theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
+            highlightColor?: Property.Color;
+            valueChangeHighlightBackgroundColor?: Property.BackgroundColor;
+            backgroundColor?: Property.BackgroundColor;
+        };
+    }
+
+    // options of createTheme({...})
+    interface ThemeOptions {
+        // do you use AgGrid component(s)?
+        agGrid?: {
+            // There is no default/fallback values, so all variables must be specified
+            theme: 'ag-theme-alpine' | 'ag-theme-alpine-dark';
+            highlightColor?: Property.Color;
+            valueChangeHighlightBackgroundColor?: Property.BackgroundColor;
+            backgroundColor?: Property.BackgroundColor;
+        };
+    }
+
+    // https://mui.com/material-ui/customization/palette/#typescript
+    // interface Palette {}
+    // interface PaletteOptions {}
+
+    // https://mui.com/material-ui/customization/palette/#typescript-2
+    // interface PaletteColor {}
+    // interface SimplePaletteColorOptions {}
+
+    // https://mui.com/material-ui/customization/creating-themed-components/#typescript
+    interface ComponentNameToClassKey {
+        CancelButton: never; // what here?
+    }
+    interface ComponentsPropsList {
+        CancelButton: Partial<CancelButtonProps>;
+    }
+    interface Components {
+        CancelButton?: {
+            defaultProps?: ComponentsPropsList['CancelButton'];
+            styleOverrides?: ComponentsOverrides<ThemeWithoutComponents>['CancelButton'];
+            variants?: ComponentsVariants['CancelButton'];
         };
     }
 }
+
+declare module '@mui/utils/capitalize' {
+    export default function capitalize<S extends string>(string: S): Capitalize<S>;
+}
+
+export {}; // keep this file a module
