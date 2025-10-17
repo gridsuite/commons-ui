@@ -182,6 +182,11 @@ export function backendFetchText(url: string, init?: FetchInitWithTimeout, token
     return safeFetch(url, initCopy).then((safeResponse) => safeResponse.text());
 }
 
+export const backendFetchFile = (url: string, init: RequestInit, token?: string) => {
+    const initCopy = prepareRequest(init, token);
+    return safeFetch(url, initCopy).then((safeResponse) => safeResponse.blob());
+};
+
 export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };

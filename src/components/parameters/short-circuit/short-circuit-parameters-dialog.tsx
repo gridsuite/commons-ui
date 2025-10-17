@@ -21,6 +21,7 @@ export function ShortCircuitParametersEditionDialog({
     description,
     activeDirectory,
     language,
+    enableDeveloperMode,
 }: Readonly<ParametersEditionDialogProps>) {
     const shortCircuitMethods = useShortCircuitParametersForm({
         parametersUuid: id,
@@ -58,6 +59,7 @@ export function ShortCircuitParametersEditionDialog({
                         />
                     );
                 }}
+                enableDeveloperMode={enableDeveloperMode ?? false}
             />
         </CustomMuiDialog>
     );
