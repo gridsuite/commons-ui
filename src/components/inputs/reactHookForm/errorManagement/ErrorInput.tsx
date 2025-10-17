@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { MutableRefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 
@@ -29,7 +29,7 @@ export function ErrorInput({ name, InputField }: ErrorInputProps) {
         name,
     });
 
-    const errorRef: MutableRefObject<any> = useRef(null);
+    const errorRef: RefObject<any> = useRef(null);
 
     const errorProps = (errorMsg: ErrorMessage | undefined) => {
         if (typeof errorMsg === 'string') {

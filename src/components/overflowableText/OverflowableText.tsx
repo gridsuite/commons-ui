@@ -7,7 +7,7 @@
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, type BoxProps, styled, Tooltip } from '@mui/material';
 import { Style } from 'node:util';
-import type { SxStyle, MuiStyles } from '../../utils/styles';
+import type { SxStyle, MuiStyles } from '../../utils';
 
 const overflowStyle = {
     overflow: {
@@ -49,7 +49,7 @@ export const OverflowableText = styled(
         children,
         ...props
     }: OverflowableTextProps) => {
-        const element = useRef<HTMLHeadingElement>();
+        const element = useRef<HTMLHeadingElement>(undefined);
 
         const isMultiLine = useMemo(() => maxLineCount && maxLineCount > 1, [maxLineCount]);
 
