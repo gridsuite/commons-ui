@@ -6,6 +6,7 @@
  */
 
 import { getUserToken } from '../redux/commonStore';
+import { CustomError } from './businessErrorCode';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -29,68 +30,6 @@ const parseError = (text: string) => {
     } catch {
         return null;
     }
-};
-
-export type BackendProblemDetail = {
-    status?: number;
-    businessErrorCode?: string;
-};
-
-type SpringErrorPayload = {
-    status?: number;
-    message?: string;
-};
-
-export interface CustomError extends Error {
-    status?: number;
-    businessErrorCode?: string;
-    problemDetail?: BackendProblemDetail;
-    springErrorPayload?: SpringErrorPayload;
-}
-
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
-
-const toProblemDetail = (value: unknown): BackendProblemDetail | undefined => {
-    if (!isRecord(value)) {
-        return undefined;
-    }
-    const businessErrorCode = typeof value.businessErrorCode === 'string' ? value.businessErrorCode : undefined;
-    const status = typeof value.status === 'number' ? value.status : undefined;
-    return {
-        status,
-        businessErrorCode,
-    };
-};
-
-const toSpringErrorPayload = (value: unknown): SpringErrorPayload | undefined => {
-    if (!isRecord(value)) {
-        return undefined;
-    }
-    const status = typeof value.status === 'number' ? value.status : undefined;
-    const message = typeof value.message === 'string' ? value.message : undefined;
-    return {
-        status,
-        message,
-    };
-};
-
-export const isProblemDetail = (error: unknown): error is CustomError & { problemDetail: BackendProblemDetail } => {
-    if (!isRecord(error) || !('problemDetail' in error)) {
-        return false;
-    }
-    return Boolean(toProblemDetail((error as { problemDetail?: unknown }).problemDetail));
-};
-
-export const isJsonSpringError = (
-    error: unknown
-): error is CustomError & { springErrorPayload: SpringErrorPayload } => {
-    if (toSpringErrorPayload(error)) {
-        return true;
-    }
-    if (!isRecord(error) || !('springErrorPayload' in error)) {
-        return false;
-    }
-    return Boolean(toSpringErrorPayload((error as { springErrorPayload?: unknown }).springErrorPayload));
 };
 
 /**
@@ -126,31 +65,22 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
 
 const handleError = (response: Response) => {
     return response.text().then((text: string) => {
+        const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        const fallbackStatus = response.status;
-
-        const problemDetail = toProblemDetail(errorJson);
-        if (problemDetail) {
-            const problemDetailError: CustomError = new Error(problemDetail.businessErrorCode);
-            problemDetailError.status = problemDetail.status ?? fallbackStatus;
-            problemDetailError.businessErrorCode = problemDetail.businessErrorCode;
-            problemDetailError.problemDetail = problemDetail;
-            throw problemDetailError;
+        let customError: CustomError & { status?: number; businessErrorCode?: string };
+        if (errorJson.businessErrorCode != null) {
+            throw new CustomError(errorJson.message, errorJson.status, errorJson.businessErrorCode);
         }
-
-        const springErrorPayload = toSpringErrorPayload(errorJson);
-        if (springErrorPayload) {
-            const status = springErrorPayload.status ?? fallbackStatus;
-            const springError: CustomError = new Error(springErrorPayload.message);
-            springError.status = status;
-            springError.springErrorPayload = springErrorPayload;
-            throw springError;
+        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
+            customError = new CustomError(
+                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
+            );
+            customError.status = errorJson.status;
+        } else {
+            customError = new CustomError(`${errorName + response.status} ${response.statusText}, message : ${text}`);
+            customError.status = response.status;
         }
-
-        const rawMessage = text.trim();
-        const fallbackError: CustomError = new Error(rawMessage);
-        fallbackError.status = fallbackStatus;
-        throw fallbackError;
+        throw customError;
     });
 };
 
@@ -191,34 +121,12 @@ export const getRequestParamFromList = (paramName: string, params: string[] = []
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };
 
-export const catchErrorHandler = (
-    error: unknown,
-    callback: (payload: { messageId?: string; messageTxt?: string }) => void
-) => {
-    const candidate = isRecord(error) ? (error as Partial<CustomError>) : undefined;
-    const directBusinessCode =
-        typeof candidate?.businessErrorCode === 'string' ? candidate.businessErrorCode.trim() : undefined;
-
-    if (directBusinessCode) {
-        callback({ messageId: directBusinessCode });
-        return;
+export const catchErrorHandler = (error: unknown, callback: (message: string) => void) => {
+    if (error instanceof CustomError && 'businessErrorCode' in error && typeof error.businessErrorCode === 'string') {
+        callback(error.businessErrorCode);
+    } else if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+        callback(error.message);
+    } else {
+        callback('unknown error');
     }
-
-    const problemDetail = toProblemDetail(candidate?.problemDetail) ?? toProblemDetail(error);
-    const detailBusinessCode =
-        typeof problemDetail?.businessErrorCode === 'string' ? problemDetail.businessErrorCode.trim() : undefined;
-
-    if (detailBusinessCode) {
-        callback({ messageId: detailBusinessCode });
-        return;
-    }
-    const springMessageRaw =
-        toSpringErrorPayload(candidate?.springErrorPayload)?.message ?? toSpringErrorPayload(error)?.message;
-    const springMessage = springMessageRaw?.trim();
-    if (springMessage) {
-        callback({ messageTxt: springMessage });
-        return;
-    }
-
-    callback({ messageTxt: 'unknown error' });
 };

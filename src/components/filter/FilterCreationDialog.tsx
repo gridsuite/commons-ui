@@ -25,6 +25,7 @@ import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { GsLang } from '../../utils';
+import { CustomError } from '../../services';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -67,6 +68,7 @@ export function FilterCreationDialog({
     filterType,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
+
     const formMethods = useForm({
         defaultValues: emptyFormData,
         resolver: yupResolver(formSchema) as unknown as Resolver,
@@ -89,8 +91,10 @@ export function FilterCreationDialog({
                     filterForm[FieldConstants.NAME],
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
-                    (payload) => {
-                        snackError(payload);
+                    (error: Error) => {
+                        snackError({
+                            messageTxt: error.message,
+                        });
                     },
                     onClose,
                     activeDirectory
@@ -105,8 +109,16 @@ export function FilterCreationDialog({
                     true,
                     activeDirectory,
                     onClose,
-                    (payload) => {
-                        snackError(payload);
+                    (error: Error) => {
+                        if (error instanceof CustomError) {
+                            snackError({
+                                messageId: error.businessErrorCode,
+                            });
+                        } else {
+                            snackError({
+                                messageTxt: error.message,
+                            });
+                        }
                     }
                 );
             }

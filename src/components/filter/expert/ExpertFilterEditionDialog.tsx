@@ -20,7 +20,7 @@ import { saveExpertFilter } from '../utils/filterApi';
 import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
-import { catchErrorHandler } from '../../../services';
+import { catchErrorHandler, CustomError } from '../../../services';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 
 const formSchema = yup
@@ -76,16 +76,16 @@ export function ExpertFilterEditionDialog({
                     });
                 })
                 .catch((error: unknown) => {
-                    catchErrorHandler(error, (payload) => {
+                    catchErrorHandler(error, (message: string) => {
                         setDataFetchStatus(FetchStatus.FETCH_ERROR);
                         snackError({
-                            ...payload,
+                            messageTxt: message,
                             headerId: 'cannotRetrieveFilter',
                         });
                     });
                 });
         }
-    }, [description, getFilterById, id, name, open, reset, snackError]);
+    }, [id, name, open, reset, snackError, getFilterById, description]);
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
@@ -98,11 +98,18 @@ export function ExpertFilterEditionDialog({
                 false,
                 null,
                 onClose,
-                (payload) => {
-                    snackError({
-                        ...payload,
-                        headerId: 'cannotSaveFilter',
-                    });
+                (error: Error) => {
+                    if (error instanceof CustomError) {
+                        snackError({
+                            messageId: error.businessErrorCode,
+                            headerId: 'cannotSaveFilter',
+                        });
+                    } else {
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'cannotSaveFilter',
+                        });
+                    }
                 }
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
@@ -110,7 +117,7 @@ export function ExpertFilterEditionDialog({
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, itemSelectionForCopy.sourceItemUuid, onClose, snackError, setItemSelectionForCopy]
+        [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

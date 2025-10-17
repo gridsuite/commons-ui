@@ -11,9 +11,7 @@ import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
-import { catchErrorHandler } from '../../../services';
-
-type SnackPayload = { messageId?: string; messageTxt?: string };
+import { catchErrorHandler, CustomError } from '../../../services';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -22,7 +20,7 @@ export const saveExplicitNamingFilter = (
     name: string,
     description: string,
     id: string | null,
-    setCreateFilterErr: (payload: SnackPayload) => void,
+    setCreateFilterErr: (error: Error) => void,
     handleClose: () => void,
     activeDirectory?: UUID,
     token?: string
@@ -57,9 +55,7 @@ export const saveExplicitNamingFilter = (
                 handleClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (payload) => {
-                    setCreateFilterErr(payload);
-                });
+                setCreateFilterErr(error instanceof Error ? error : new Error('unknown error'));
             });
     } else {
         saveFilter(
@@ -77,13 +73,10 @@ export const saveExplicitNamingFilter = (
                 handleClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (payload) => {
-                    setCreateFilterErr(payload);
-                });
+                setCreateFilterErr(error instanceof Error ? error : new Error('unknown error'));
             });
     }
 };
-
 export const saveExpertFilter = (
     id: string | null,
     query: any,
@@ -93,7 +86,7 @@ export const saveExpertFilter = (
     isFilterCreation: boolean,
     activeDirectory: UUID | undefined | null,
     onClose: () => void,
-    onError: (payload: SnackPayload) => void,
+    onError: (error: Error) => void,
     token?: string
 ) => {
     if (isFilterCreation) {
@@ -113,9 +106,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (payload) => {
-                    onError(payload);
-                });
+                if (error instanceof CustomError) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     } else {
         saveFilter(
@@ -133,9 +130,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (payload) => {
-                    onError(payload);
-                });
+                if (error instanceof CustomError) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     }
 };
