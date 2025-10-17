@@ -6,6 +6,7 @@
  */
 
 import { getUserToken } from '../redux/commonStore';
+import { CustomError } from './businessErrorCode';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -66,14 +67,17 @@ const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        let customError: Error & { status?: number };
+        let customError: CustomError & { status?: number; businessErrorCode?: string };
+        if (errorJson.businessErrorCode != null) {
+            throw new CustomError(errorJson.message, errorJson.status, errorJson.businessErrorCode);
+        }
         if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
-            customError = new Error(
+            customError = new CustomError(
                 `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
             );
             customError.status = errorJson.status;
         } else {
-            customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
+            customError = new CustomError(`${errorName + response.status} ${response.statusText}, message : ${text}`);
             customError.status = response.status;
         }
         throw customError;
@@ -118,7 +122,9 @@ export const getRequestParamFromList = (paramName: string, params: string[] = []
 };
 
 export const catchErrorHandler = (error: unknown, callback: (message: string) => void) => {
-    if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+    if (error instanceof CustomError && 'businessErrorCode' in error && typeof error.businessErrorCode === 'string') {
+        callback(error.businessErrorCode);
+    } else if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
         callback(error.message);
     } else {
         callback('unknown error');

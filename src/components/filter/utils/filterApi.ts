@@ -11,7 +11,7 @@ import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
-import { catchErrorHandler } from '../../../services';
+import { catchErrorHandler, CustomError } from '../../../services';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -106,9 +106,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                if (error instanceof CustomError) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     } else {
         saveFilter(
@@ -126,9 +130,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                if (error instanceof CustomError) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     }
 };
