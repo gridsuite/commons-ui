@@ -21,7 +21,7 @@ import { type MuiStyles } from '../../../utils/styles';
 import { OverflowableText } from '../../overflowableText';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ElementAttributes, mergeSx } from '../../../utils';
+import { ArrayAction, ElementAttributes, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { getFilterEquipmentTypeLabel } from '../../filter/expert/expertFilterUtils';
 
@@ -62,7 +62,7 @@ export interface DirectoryItemsInputProps {
     titleId?: string;
     hideErrorMessage?: boolean;
     onRowChanged?: (a: boolean) => void;
-    onChange?: (e: any) => void;
+    onChange?: (e: any, action?: ArrayAction, element?: any) => void;
     disable?: boolean;
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
@@ -131,7 +131,7 @@ export function DirectoryItemsInput({
                 } else {
                     append(otherElementAttributes);
                     onRowChanged?.(true);
-                    onChange?.(getValues(name));
+                    onChange?.(getValues(name), ArrayAction.ADD, otherElementAttributes);
                 }
             });
             setDirectoryItemSelectorOpen(false);
@@ -142,9 +142,10 @@ export function DirectoryItemsInput({
 
     const removeElements = useCallback(
         (index: number) => {
+            const currentValues = getValues(name);
             remove(index);
             onRowChanged?.(true);
-            onChange?.(getValues(name));
+            onChange?.(currentValues, ArrayAction.REMOVE, currentValues[index]);
         },
         [onRowChanged, remove, getValues, name, onChange]
     );
