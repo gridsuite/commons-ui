@@ -106,7 +106,7 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                if (error instanceof CustomError) {
+                if (error instanceof Error) {
                     onError(error);
                 } else {
                     catchErrorHandler(error, (message: string) => {
@@ -130,7 +130,7 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                if (error instanceof CustomError) {
+                if (error instanceof Error) {
                     onError(error);
                 } else {
                     catchErrorHandler(error, (message: string) => {

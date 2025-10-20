@@ -122,9 +122,7 @@ export const getRequestParamFromList = (paramName: string, params: string[] = []
 };
 
 export const catchErrorHandler = (error: unknown, callback: (message: string) => void) => {
-    if (error instanceof CustomError && 'businessErrorCode' in error && typeof error.businessErrorCode === 'string') {
-        callback(error.businessErrorCode);
-    } else if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+    if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
         callback(error.message);
     } else {
         callback('unknown error');
