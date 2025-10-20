@@ -103,7 +103,6 @@ export function ExpertFilterEditionDialog({
                         messageId: error instanceof CustomError ? error.businessErrorCode : error.message,
                         headerId: 'cannotSaveFilter',
                     });
-                    }
                 }
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
