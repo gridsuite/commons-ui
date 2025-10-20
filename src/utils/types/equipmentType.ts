@@ -85,7 +85,7 @@ export enum ExtendedEquipmentType {
     HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
 
-export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+export const ALL_EQUIPMENTS = {
     [EquipmentType.SUBSTATION]: {
         id: EquipmentType.SUBSTATION,
         label: 'Substations',
@@ -130,6 +130,36 @@ export const BASE_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType;
         id: EquipmentType.DANGLING_LINE,
         label: 'DanglingLines',
     },
+    [EquipmentType.BUSBAR_SECTION]: {
+        id: EquipmentType.BUSBAR_SECTION,
+        label: 'BusBarSections',
+    },
+    [EquipmentType.HVDC_LINE]: {
+        id: EquipmentType.HVDC_LINE,
+        label: 'Hvdc',
+    },
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_LCC,
+        label: 'LCC',
+    },
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
+        id: ExtendedEquipmentType.HVDC_LINE_VSC,
+        label: 'VSC',
+    },
+};
+
+export const BASE_EQUIPMENTS = {
+    [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
+    [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
+    [EquipmentType.LINE]: ALL_EQUIPMENTS[EquipmentType.LINE],
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: ALL_EQUIPMENTS[EquipmentType.TWO_WINDINGS_TRANSFORMER],
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: ALL_EQUIPMENTS[EquipmentType.THREE_WINDINGS_TRANSFORMER],
+    [EquipmentType.GENERATOR]: ALL_EQUIPMENTS[EquipmentType.GENERATOR],
+    [EquipmentType.BATTERY]: ALL_EQUIPMENTS[EquipmentType.BATTERY],
+    [EquipmentType.LOAD]: ALL_EQUIPMENTS[EquipmentType.LOAD],
+    [EquipmentType.SHUNT_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.SHUNT_COMPENSATOR],
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.STATIC_VAR_COMPENSATOR],
+    [EquipmentType.DANGLING_LINE]: ALL_EQUIPMENTS[EquipmentType.DANGLING_LINE],
 };
 
 export const EQUIPMENT_TYPE: Partial<
@@ -216,18 +246,10 @@ export const EQUIPMENT_TYPE: Partial<
     },
 };
 
-export const SEARCH_EQUIPMENTS: Partial<
-    Record<EquipmentType | ExtendedEquipmentType, { id: EquipmentType | ExtendedEquipmentType; label: string }>
-> = {
+export const SEARCH_EQUIPMENTS = {
     ...BASE_EQUIPMENTS,
-    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
-        id: ExtendedEquipmentType.HVDC_LINE_LCC,
-        label: 'LCC',
-    },
-    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
-        id: ExtendedEquipmentType.HVDC_LINE_VSC,
-        label: 'VSC',
-    },
+    [ExtendedEquipmentType.HVDC_LINE_LCC]: ALL_EQUIPMENTS[ExtendedEquipmentType.HVDC_LINE_LCC],
+    [ExtendedEquipmentType.HVDC_LINE_VSC]: ALL_EQUIPMENTS[ExtendedEquipmentType.HVDC_LINE_VSC],
 };
 
 export interface Identifiable {
