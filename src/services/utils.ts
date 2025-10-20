@@ -67,7 +67,7 @@ const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        let customError: CustomError & { status?: number; businessErrorCode?: string };
+        let customError: CustomError;
         if (errorJson.businessErrorCode != null) {
             throw new CustomError(errorJson.message, errorJson.status, errorJson.businessErrorCode);
         }
