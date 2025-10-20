@@ -99,10 +99,17 @@ export function ExpertFilterEditionDialog({
                 null,
                 onClose,
                 (error: Error) => {
-                    snackError({
-                        messageId: error instanceof CustomError ? error.businessErrorCode : error.message,
-                        headerId: 'cannotSaveFilter',
-                    });
+                    if (error instanceof CustomError) {
+                        snackError({
+                            messageId: error.businessErrorCode,
+                            headerId: 'cannotSaveFilter',
+                        });
+                    } else {
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'cannotSaveFilter',
+                        });
+                    }
                 }
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
