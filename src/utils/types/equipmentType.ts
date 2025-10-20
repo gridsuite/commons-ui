@@ -148,6 +148,9 @@ export const ALL_EQUIPMENTS = {
     },
 };
 
+// We could have used
+// Object.fromEntries(Object.entries(ALL_EQUIPMENTS).filter(([key]) => ...
+// but this is more readable with better TypeScript inference
 export const BASE_EQUIPMENTS = {
     [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
     [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
