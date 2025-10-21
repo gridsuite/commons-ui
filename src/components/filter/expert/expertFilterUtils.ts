@@ -29,9 +29,10 @@ import {
     RuleGroupTypeExport,
     RuleTypeExport,
 } from './expertFilter.type';
-import { EXPERT_FILTER_EQUIPMENTS, FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
+import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
 import { convertInputValue, convertOutputValue, isBlankOrEmpty } from '../../../utils/conversionUtils';
 import { FieldType } from '../../../utils/types/fieldType';
+import { ALL_EQUIPMENTS } from '../../../utils';
 
 interface TreeNode {
     [key: string]: any;
@@ -529,5 +530,5 @@ export function getFilterEquipmentTypeLabel(equipmentType: string | undefined): 
     if (!equipmentType) {
         return '';
     }
-    return EXPERT_FILTER_EQUIPMENTS[equipmentType as keyof typeof EXPERT_FILTER_EQUIPMENTS]?.label ?? '';
+    return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.label ?? '';
 }
