@@ -1,8 +1,9 @@
 /**
- * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * Copyright (c) 2021-2025, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
 import type { MuiStyles } from '../styles';
 
@@ -148,9 +149,6 @@ export const ALL_EQUIPMENTS = {
     },
 };
 
-// We could have used
-// Object.fromEntries(Object.entries(ALL_EQUIPMENTS).filter(([key]) => ...
-// but this is more readable with better TypeScript inference
 export const BASE_EQUIPMENTS = {
     [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
     [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
