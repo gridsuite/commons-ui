@@ -32,6 +32,7 @@ import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
+import { EquipmentType } from '../../../utils';
 
 yup.setLocale({
     mixed: {
@@ -45,7 +46,7 @@ yup.setLocale({
     },
 });
 
-function isSupportedEquipmentType(equipmentType: string): boolean {
+function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)
         .map((equipments) => equipments.id)
         .includes(equipmentType);
@@ -71,7 +72,7 @@ export const expertFilterSchema = {
         is: FilterType.EXPERT.id,
         then: (schema: yup.Schema) =>
             schema.when([FieldConstants.EQUIPMENT_TYPE], {
-                is: (equipmentType: string) => isSupportedEquipmentType(equipmentType),
+                is: (equipmentType: EquipmentType) => isSupportedEquipmentType(equipmentType),
                 then: rqbQuerySchemaValidator,
             }),
     }),
