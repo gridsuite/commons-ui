@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export class CustomError extends Error {
-    status?: number;
+    status: number;
 
     businessErrorCode?: string;
 
-    constructor(message: string, status?: number, businessErrorCode?: string) {
+    constructor(message: string, status: number, businessErrorCode?: string) {
         super(message);
         this.status = status;
         this.businessErrorCode = businessErrorCode;

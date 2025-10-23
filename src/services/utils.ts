@@ -73,12 +73,14 @@ const handleError = (response: Response) => {
         }
         if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
             customError = new CustomError(
-                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
+                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`,
+                errorJson.status
             );
-            customError.status = errorJson.status;
         } else {
-            customError = new CustomError(`${errorName + response.status} ${response.statusText}, message : ${text}`);
-            customError.status = response.status;
+            customError = new CustomError(
+                `${errorName + response.status} ${response.statusText}, message : ${text}`,
+                response.status
+            );
         }
         throw customError;
     });
