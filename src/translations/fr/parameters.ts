@@ -235,6 +235,12 @@ export const parametersFr = {
     Optional: ' (optionnel)',
 
     // Computed translations used in the snackbars
+    serverLabel: 'Serveur',
+    messageLabel: 'Message',
+    pathLabel: 'Chemin',
+    showDetails: 'Afficher les détails',
+    hideDetails: 'Masquer les détails',
+    genericMessage: "Nous n'avons pas pu finaliser votre requête.",
     // LoadFlow
     fetchDefaultLoadFlowProviderError:
         'Une erreur est survenue lors de la récupération du fournisseur de calcul de répartition par défaut',

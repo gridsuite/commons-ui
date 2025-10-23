@@ -230,6 +230,12 @@ export const parametersEn = {
     Optional: ' (optional)',
 
     // Computed translations used in the snackbars
+    serverLabel: 'Server',
+    messageLabel: 'Message',
+    pathLabel: 'Path',
+    showDetails: 'Show details',
+    hideDetails: 'Hide details',
+    genericMessage: 'We were unable to complete your request.',
     // LoadFlow
     fetchDefaultLoadFlowProviderError: 'An error occured when fetching default load flow provider',
     fetchLoadFlowParametersError: 'An error occured when fetching the load flow parameters',

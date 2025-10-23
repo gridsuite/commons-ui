@@ -6,6 +6,11 @@
  */
 
 import { getUserToken } from '../redux/commonStore';
+import {
+    isBackendErrorLike,
+    normalizeBackendErrorPayload,
+    type HttpErrorWithBackendDetails,
+} from '../utils/backendErrors';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -62,18 +67,45 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     return initWithSignal;
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null;
+
 const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
-        const errorJson = parseError(text);
-        let customError: Error & { status?: number };
-        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
+        const errorJson = parseError(text) as unknown;
+        let customError: HttpErrorWithBackendDetails;
+
+        if (isBackendErrorLike(errorJson)) {
+            const backendError = normalizeBackendErrorPayload(errorJson);
+            const status = backendError.status ?? response.status;
+            const jsonRecord = errorJson as Record<string, unknown>;
+            const errorLabel =
+                typeof jsonRecord.error === 'string'
+                    ? (jsonRecord.error as string)
+                    : (backendError.errorCode ?? response.statusText);
+            const message =
+                backendError.message ??
+                (typeof jsonRecord.message === 'string' ? (jsonRecord.message as string) : text);
             customError = new Error(
-                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
-            );
+                `${errorName + status} ${errorLabel}, message : ${message}`
+            ) as HttpErrorWithBackendDetails;
+            customError.status = status;
+            customError.backendError = backendError;
+        } else if (
+            isRecord(errorJson) &&
+            typeof errorJson.status === 'number' &&
+            (typeof errorJson.error === 'string' || typeof errorJson.message === 'string')
+        ) {
+            const errorLabel = typeof errorJson.error === 'string' ? errorJson.error : response.statusText;
+            const message = typeof errorJson.message === 'string' ? errorJson.message : text;
+            customError = new Error(
+                `${errorName + errorJson.status} ${errorLabel}, message : ${message}`
+            ) as HttpErrorWithBackendDetails;
             customError.status = errorJson.status;
         } else {
-            customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
+            customError = new Error(
+                `${errorName + response.status} ${response.statusText}, message : ${text}`
+            ) as HttpErrorWithBackendDetails;
             customError.status = response.status;
         }
         throw customError;
