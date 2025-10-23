@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MutableRefObject, useCallback } from 'react';
+import { RefObject, useCallback } from 'react';
 import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
 import { useIntlRef } from './useIntlRef';
@@ -33,7 +33,7 @@ function checkInputs(txt?: string, id?: string, values?: SnackInputs['messageVal
 }
 
 function checkAndTranslateIfNecessary(
-    intlRef: MutableRefObject<IntlShape>,
+    intlRef: RefObject<IntlShape>,
     txt?: string,
     id?: string,
     values?: SnackInputs['messageValues']
@@ -52,7 +52,7 @@ function checkAndTranslateIfNecessary(
     );
 }
 
-function makeMessage(intlRef: MutableRefObject<IntlShape>, snackInputs: SnackInputs): string | null {
+function makeMessage(intlRef: RefObject<IntlShape>, snackInputs: SnackInputs): string | null {
     const message = checkAndTranslateIfNecessary(
         intlRef,
         snackInputs.messageTxt,
