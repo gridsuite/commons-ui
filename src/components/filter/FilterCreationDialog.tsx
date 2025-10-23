@@ -110,7 +110,7 @@ export function FilterCreationDialog({
                     activeDirectory,
                     onClose,
                     (error: Error) => {
-                        if (error instanceof CustomError) {
+                        if (error instanceof CustomError && error.businessErrorCode != null) {
                             snackError({
                                 messageId: error.businessErrorCode,
                             });
