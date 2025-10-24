@@ -1,8 +1,9 @@
 /**
- * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * Copyright (c) 2023-2025, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
 
 import { useCallback, useMemo } from 'react';
@@ -26,7 +27,6 @@ import {
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import { FilterType } from '../constants/FilterConstants';
 import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
@@ -52,8 +52,9 @@ function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
         .includes(equipmentType);
 }
 
-export const rqbQuerySchemaValidator = (schema: yup.Schema) =>
-    schema
+export const expertFilterSchema = {
+    [EXPERT_FILTER_QUERY]: yup
+        .object()
         .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
             return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
         })
@@ -65,17 +66,7 @@ export const rqbQuerySchemaValidator = (schema: yup.Schema) =>
         })
         .test(RULES.BETWEEN_RULE, RULES.BETWEEN_RULE, (query: any) => {
             return testQuery(RULES.BETWEEN_RULE, query as RuleGroupTypeAny);
-        });
-
-export const expertFilterSchema = {
-    [EXPERT_FILTER_QUERY]: yup.object().when([FieldConstants.FILTER_TYPE], {
-        is: FilterType.EXPERT.id,
-        then: (schema: yup.Schema) =>
-            schema.when([FieldConstants.EQUIPMENT_TYPE], {
-                is: (equipmentType: EquipmentType) => isSupportedEquipmentType(equipmentType),
-                then: rqbQuerySchemaValidator,
-            }),
-    }),
+        }),
 };
 
 const defaultQuery = {
