@@ -16,7 +16,6 @@ import { VoltageInitStudyParameters } from '../components/parameters/voltage-ini
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
-// eslint-disable-next-line import/prefer-default-export
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
     return backendFetchJson(
