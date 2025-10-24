@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Theme, Typography } from '@mui/material';
+import { Theme, Typography, TypographyProps } from '@mui/material';
+import { mergeSx } from '../../utils';
 
 const styles = {
     separator: (theme: Theme) => ({
@@ -16,14 +17,10 @@ const styles = {
     }),
 };
 
-type SeparatorCellRendererProps = {
-    value: string;
-};
-
-export function SeparatorCellRenderer({ value }: Readonly<SeparatorCellRendererProps>) {
+export function SeparatorCellRenderer({ children, sx, ...otherProps }: Readonly<TypographyProps>) {
     return (
-        <Typography variant="subtitle1" color="primary" sx={styles.separator}>
-            {value}
+        <Typography variant="subtitle1" color="primary" sx={mergeSx(styles.separator, sx)} {...otherProps}>
+            {children}
         </Typography>
     );
 }

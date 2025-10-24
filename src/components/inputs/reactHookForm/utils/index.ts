@@ -8,7 +8,6 @@
 export * from './CancelButton';
 export * from './FieldLabel';
 export * from './SubmitButton';
-export * from './RefreshButton';
 export * from './TextFieldWithAdornment';
 export * from './functions';
 export * from './HelperPreviousValue';
