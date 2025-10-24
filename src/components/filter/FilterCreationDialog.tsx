@@ -25,6 +25,7 @@ import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { GsLang } from '../../utils';
+import { CustomError } from '../../services';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -109,9 +110,15 @@ export function FilterCreationDialog({
                     activeDirectory,
                     onClose,
                     (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
+                        if (error instanceof CustomError && error.businessErrorCode != null) {
+                            snackError({
+                                messageId: error.businessErrorCode,
+                            });
+                        } else {
+                            snackError({
+                                messageTxt: error.message,
+                            });
+                        }
                     }
                 );
             }

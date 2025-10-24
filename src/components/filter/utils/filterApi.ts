@@ -106,9 +106,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                if (error instanceof Error) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     } else {
         saveFilter(
@@ -126,9 +130,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                if (error instanceof Error) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     }
 };

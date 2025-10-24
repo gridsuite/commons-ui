@@ -6,6 +6,7 @@
  */
 
 import { getUserToken } from '../redux/commonStore';
+import { CustomError } from './businessErrorCode';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -66,15 +67,20 @@ const handleError = (response: Response) => {
     return response.text().then((text: string) => {
         const errorName = 'HttpResponseError : ';
         const errorJson = parseError(text);
-        let customError: Error & { status?: number };
+        let customError: CustomError;
+        if (errorJson?.businessErrorCode != null) {
+            throw new CustomError(errorJson.message, errorJson.status, errorJson.businessErrorCode);
+        }
         if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
-            customError = new Error(
-                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`
+            customError = new CustomError(
+                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`,
+                errorJson.status
             );
-            customError.status = errorJson.status;
         } else {
-            customError = new Error(`${errorName + response.status} ${response.statusText}, message : ${text}`);
-            customError.status = response.status;
+            customError = new CustomError(
+                `${errorName + response.status} ${response.statusText}, message : ${text}`,
+                response.status
+            );
         }
         throw customError;
     });
