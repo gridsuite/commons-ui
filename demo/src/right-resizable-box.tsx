@@ -4,15 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable import/no-extraneous-dependencies */
 
-import { useState } from 'react';
+import { type PropsWithChildren, useState } from 'react';
 import { MoreVert as ResizePanelHandleIcon } from '@mui/icons-material';
-import { ResizableBox } from 'react-resizable';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ResizableBox, type ResizableBoxProps } from 'react-resizable';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useWindowWidth } from '@react-hook/window-size';
-import PropTypes from 'prop-types';
 import { Box, styled } from '@mui/material';
-import { mergeSx } from '../../src/utils/styles';
+import { mergeSx, type MuiStyles } from '../../src/utils/styles';
 
 const styles = {
     panel: {
@@ -47,25 +47,35 @@ const styles = {
         color: theme.palette.text.disabled,
         transform: 'scale(0.5, 1.5)',
     }),
-};
+} as const satisfies MuiStyles;
 
 // TODO can we avoid to define a component just to add sx support ?
 const ResizableBoxSx = styled(ResizableBox)({});
 
-function RightResizableBox(props) {
-    const { children, disableResize = false, fullscreen = false, hide = false } = props;
+export type RightResizableBoxProps = PropsWithChildren<{
+    disableResize?: boolean;
+    fullscreen?: boolean;
+    hide?: boolean;
+}>;
+
+export default function RightResizableBox({
+    children,
+    disableResize = false,
+    fullscreen = false,
+    hide = false,
+}: Readonly<RightResizableBoxProps>) {
     const windowWidth = useWindowWidth();
 
     const [resizedTreePercentage, setResizedTreePercentage] = useState(0.5);
 
-    const updateResizedTreePercentage = (treePanelWidth, totalWidth) => {
+    const updateResizedTreePercentage = (treePanelWidth: number, totalWidth: number) => {
         if (totalWidth > 0) {
             const newPercentage = treePanelWidth / totalWidth;
             setResizedTreePercentage(newPercentage);
         }
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const onResize = (event, { element, size }) => {
+    const onResize: NonNullable<ResizableBoxProps['onResize']> = (_event, { size }) => {
         updateResizedTreePercentage(size.width, windowWidth);
     };
 
@@ -73,7 +83,7 @@ function RightResizableBox(props) {
         <ResizableBoxSx
             style={{ display: hide ? 'none' : undefined }}
             width={fullscreen ? windowWidth : windowWidth * resizedTreePercentage}
-            sx={mergeSx(styles.panel, !disableResize && styles.resizePanelHandle)}
+            sx={mergeSx(styles.panel, (!disableResize && styles.resizePanelHandle) || undefined)}
             resizeHandles={['e']}
             axis={disableResize ? 'none' : 'x'}
             onResize={onResize}
@@ -85,12 +95,3 @@ function RightResizableBox(props) {
         </ResizableBoxSx>
     );
 }
-
-RightResizableBox.propTypes = {
-    children: PropTypes.node,
-    disableResize: PropTypes.bool,
-    fullscreen: PropTypes.bool,
-    hide: PropTypes.bool,
-};
-
-export default RightResizableBox;

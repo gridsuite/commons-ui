@@ -8,7 +8,9 @@
 import { Button, type ButtonProps, useThemeProps } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 
-export function CancelButton(inProps: Readonly<Omit<ButtonProps, 'children'>>) {
+export type CancelButtonProps = Omit<ButtonProps, 'children'>;
+
+export function CancelButton(inProps: Readonly<CancelButtonProps>) {
     const props = useThemeProps({ props: inProps, name: 'CancelButton' });
     return (
         <Button data-testid="CancelButton" {...props}>

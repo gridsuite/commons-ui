@@ -53,6 +53,7 @@ function onColumnResized({ api, column, finished, source }: ColumnResizedEvent) 
     }
 }
 
+// TODO try to expose <TData> of props that forwardRef don't permit
 export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
     ({ overrideLocales, sx, ...agGridReactProps }, ref) => {
         const theme = useTheme();
@@ -61,7 +62,7 @@ export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
             <Box
                 component="div"
                 sx={mergeSx(styles.grid, sx)}
-                className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
+                className={`${theme.agGrid?.theme} ${CUSTOM_AGGRID_THEME}`}
             >
                 <AgGridReact
                     ref={ref}
