@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { JSX, useCallback } from 'react';
+import { useCallback } from 'react';
 import { CsvExportProps } from './csv-export.type';
 import { useCsvExport } from './use-csv-export';
 import { ExportCsvButton } from './export-csv-button';

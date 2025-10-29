@@ -25,6 +25,7 @@ import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { GsLang } from '../../utils';
+import { CustomError } from '../../services';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -34,17 +35,18 @@ const emptyFormData = {
     ...getExpertFilterEmptyFormData(),
 };
 
-// we use both schemas then we can change the type of filter without losing the filled form fields
-const formSchema = yup
-    .object()
-    .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-        ...explicitNamingFilterSchema,
-        ...expertFilterSchema,
-    })
-    .required();
+// the schema depends of the type of the filter
+const formSchemaByFilterType = (filterType: { id: string }) =>
+    yup
+        .object()
+        .shape({
+            [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
+            [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+            [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+            ...(filterType?.id === FilterType.EXPLICIT_NAMING.id ? explicitNamingFilterSchema : {}),
+            ...(filterType?.id === FilterType.EXPERT.id ? expertFilterSchema : {}),
+        })
+        .required();
 
 export interface FilterCreationDialogProps {
     open: boolean;
@@ -67,6 +69,8 @@ export function FilterCreationDialog({
     filterType,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
+
+    const formSchema = useMemo(() => formSchemaByFilterType(filterType), [filterType]);
 
     const formMethods = useForm({
         defaultValues: emptyFormData,
@@ -109,9 +113,15 @@ export function FilterCreationDialog({
                     activeDirectory,
                     onClose,
                     (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
+                        if (error instanceof CustomError && error.businessErrorCode != null) {
+                            snackError({
+                                messageId: error.businessErrorCode,
+                            });
+                        } else {
+                            snackError({
+                                messageTxt: error.message,
+                            });
+                        }
                     }
                 );
             }
