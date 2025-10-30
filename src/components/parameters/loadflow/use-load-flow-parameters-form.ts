@@ -324,7 +324,14 @@ export const useLoadFlowParametersForm = (
                 setLimitReductionNumber(0);
             }
         }
-    }, [currentProvider, defaultLimitReductions, formMethods, specificParamsDescriptions, watchProvider]);
+    }, [
+        currentProvider,
+        defaultLimitReductions,
+        formMethods,
+        params?.limitReductions,
+        specificParamsDescriptions,
+        watchProvider,
+    ]);
 
     return {
         formMethods,
