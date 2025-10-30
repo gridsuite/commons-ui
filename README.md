@@ -7,6 +7,16 @@ Library for sharing GridSuite apps commons components
 The commons-ui library have a demo app in which you can call your components to test them.
 The `npm start` command install the library's dependencies then launches the demo app.
 
+##### Development Scripts
+
+- **`npm run type-check`** - Runs TypeScript type checking without emitting files. This ensures all developers use the project's local TypeScript version from `node_modules` rather than a potentially different globally-installed version. Run this to verify your code has no type errors before committing.
+
+- **`npm run build`** - Builds the library. Note: This automatically runs `npm run prebuild` first.
+
+- **`npm run prebuild`** - Runs linting and type checking before the build. This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
+
+##### Local Testing
+
 If you want to test your library integration with a consumer application my-app you have first
 to build commons-ui via
 
