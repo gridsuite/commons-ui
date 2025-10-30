@@ -89,6 +89,7 @@ export const useLoadFlowParametersForm = (
 
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
+    const [limitReductionNumber, setLimitReductionNumber] = useState(0);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
     const { snackError } = useSnackMessage();
 
@@ -119,13 +120,11 @@ export const useLoadFlowParametersForm = (
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,
-                ...getLimitReductionsFormSchema(
-                    params?.limitReductions ? params.limitReductions[0]?.temporaryLimitReductions.length : 0
-                ).fields,
+                ...getLimitReductionsFormSchema(limitReductionNumber).fields,
                 ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
             })
             .concat(getNameElementEditorSchema(name));
-    }, [name, params?.limitReductions, specificParameters]);
+    }, [name, limitReductionNumber, specificParameters]);
 
     const formMethods = useForm({
         defaultValues: {
@@ -306,10 +305,24 @@ export const useLoadFlowParametersForm = (
     }, [paramsLoaded, params, reset, specificParamsDescriptions, toLoadFlowFormValues]);
 
     useEffect(() => {
-        if (watchProvider !== currentProvider) {
+        if (watchProvider && watchProvider !== currentProvider) {
             setCurrentProvider(watchProvider);
             setSpecificParameters(watchProvider, specificParamsDescriptions, formMethods);
             setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
+
+            // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
+            // (formSchema has a dep on limitReductionNumber)
+            if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
+                if (currentProvider) {
+                    // providerX -> OLF: use default value
+                    setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+                } else {
+                    // nothing -> OLF: use editing params value
+                    setLimitReductionNumber(params?.limitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+                }
+            } else {
+                setLimitReductionNumber(0);
+            }
         }
     }, [currentProvider, defaultLimitReductions, formMethods, specificParamsDescriptions, watchProvider]);
 
