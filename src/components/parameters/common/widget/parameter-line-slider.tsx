@@ -28,7 +28,8 @@ type SliderParameterLineProps = {
 const styles = {
     container: {
         ...parametersStyles.controlItem,
-        paddingRight: 2,
+        paddingTop: 3,
+        paddingRight: 3,
     },
 } as const satisfies MuiStyles;
 
@@ -41,11 +42,11 @@ export function ParameterLineSlider({
     maxValue = 100,
 }: Readonly<SliderParameterLineProps>) {
     return (
-        <>
+        <Grid container sx={styles.container}>
             <Grid item xs={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item container xs={4} sx={styles.container}>
+            <Grid item xs={4}>
                 <SliderInput
                     name={name}
                     min={minValue}
@@ -58,6 +59,6 @@ export function ParameterLineSlider({
                     valueLabelFormat={(value) => sanitizePercentageValue(value * 100)}
                 />
             </Grid>
-        </>
+        </Grid>
     );
 }
