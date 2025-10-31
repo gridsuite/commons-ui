@@ -8,7 +8,6 @@ export * from './filter.type';
 export * from './FilterCreationDialog';
 export * from './FilterForm';
 export * from './constants/FilterConstants';
-export * from '../contingencyList/criteriaBased';
 export * from './expert';
 export * from './explicitNaming';
 export * from './utils';
