@@ -31,6 +31,7 @@ import {
     DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     FILTER_ID,
     FILTER_NAME,
+    IS_VALID,
     PRIORITY,
 } from './constants';
 import { NAME } from '../../inputs';
@@ -193,7 +194,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
-                            [NAME]: filter[FILTER_NAME],
+                            [NAME]: (filter[IS_VALID] ?? true) ? filter[FILTER_NAME] : null,
                         };
                     }),
                     [LOW_VOLTAGE_LIMIT]: voltageLimit[LOW_VOLTAGE_LIMIT],
@@ -207,7 +208,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
                     [FILTERS]: voltageLimit[FILTERS]?.map((filter) => {
                         return {
                             [ID]: filter[FILTER_ID],
-                            [NAME]: filter[FILTER_NAME],
+                            [NAME]: (filter[IS_VALID] ?? true) ? filter[FILTER_NAME] : null,
                         };
                     }),
                     [LOW_VOLTAGE_LIMIT]: voltageLimit[LOW_VOLTAGE_LIMIT],
@@ -219,7 +220,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
         [VARIABLE_Q_GENERATORS]: parameters?.computationParameters?.[VARIABLE_Q_GENERATORS]?.map((filter) => {
             return {
                 [ID]: filter[FILTER_ID],
-                [NAME]: filter[FILTER_NAME],
+                [NAME]: (filter[IS_VALID] ?? true) ? filter[FILTER_NAME] : null,
             };
         }),
         [TRANSFORMERS_SELECTION_TYPE]:
@@ -227,7 +228,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
         [VARIABLE_TRANSFORMERS]: parameters?.computationParameters?.[VARIABLE_TRANSFORMERS]?.map((filter) => {
             return {
                 [ID]: filter[FILTER_ID],
-                [NAME]: filter[FILTER_NAME],
+                [NAME]: (filter[IS_VALID] ?? true) ? filter[FILTER_NAME] : null,
             };
         }),
         [SHUNT_COMPENSATORS_SELECTION_TYPE]:
@@ -237,7 +238,7 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
             (filter) => {
                 return {
                     [ID]: filter[FILTER_ID],
-                    [NAME]: filter[FILTER_NAME],
+                    [NAME]: (filter[IS_VALID] ?? true) ? filter[FILTER_NAME] : null,
                 };
             }
         ),
