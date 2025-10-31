@@ -23,6 +23,7 @@ export const ID = 'id';
 export const PRIORITY = 'priority';
 export const FILTER_ID = 'filterId';
 export const FILTER_NAME = 'filterName';
+export const IS_VALID = 'isValid';
 export const SELECTION_TYPE = 'selectionType';
 export const UPDATE_BUS_VOLTAGE = 'updateBusVoltage';
 export const VOLTAGE_LIMITS_MODIFICATION = 'voltageLimitsModification';
