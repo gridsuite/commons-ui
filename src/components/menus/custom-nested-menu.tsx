@@ -4,10 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { NestedMenuItem, NestedMenuItemProps } from 'mui-nested-menu';
 import { Box, MenuItem, type MenuItemProps } from '@mui/material';
-import { mergeSx, type SxStyle, type MuiStyles } from '../../utils/styles';
+import { mergeSx, type MuiStyles, type SxStyle } from '../../utils/styles';
 
 const styles = {
     highlightedParentLine: {
@@ -30,11 +30,43 @@ interface CustomNestedMenuItemProps extends PropsWithChildren, Omit<NestedMenuIt
 
 export function CustomNestedMenuItem({ sx, children, ...other }: Readonly<CustomNestedMenuItemProps>) {
     const [subMenuActive, setSubMenuActive] = useState(false);
+    const [menuPosition, setMenuPosition] = useState<'left' | 'right'>('right');
+    const parentRef = useRef<HTMLLIElement | null>(null);
+    const submenuRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (parentRef.current && submenuRef.current) {
+            const parentRect = parentRef.current.getBoundingClientRect();
+            const submenuWidth = submenuRef.current.offsetWidth;
+            const windowWidth = window.innerWidth;
+
+            if (parentRect.right + submenuWidth > windowWidth) {
+                setMenuPosition('left');
+            } else {
+                setMenuPosition('right');
+            }
+        }
+    }, [children]);
+
+    const anchorOrigin: { vertical: 'top' | 'center' | 'bottom'; horizontal: 'left' | 'center' | 'right' } = {
+        vertical: 'top',
+        horizontal: menuPosition === 'right' ? 'right' : 'left',
+    };
+
+    const transformOrigin: { vertical: 'top' | 'center' | 'bottom'; horizontal: 'left' | 'center' | 'right' } = {
+        vertical: 'top',
+        horizontal: menuPosition === 'right' ? 'left' : 'right',
+    };
 
     return (
         <NestedMenuItem
             {...other}
             parentMenuOpen
+            MenuProps={{
+                anchorOrigin,
+                transformOrigin,
+                PaperProps: { ref: submenuRef },
+            }}
             sx={mergeSx(subMenuActive ? styles.highlightedParentLine : styles.highlightedLine, sx)}
         >
             <Box onMouseEnter={() => setSubMenuActive(true)} onMouseLeave={() => setSubMenuActive(false)}>
