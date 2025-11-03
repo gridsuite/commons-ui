@@ -1,8 +1,9 @@
 /**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * Copyright (c) 2024-2025, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
@@ -19,7 +20,7 @@ import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
-import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
+import { DISTRIBUTION_KEY } from '../constants/FilterConstants';
 import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
@@ -45,23 +46,19 @@ export const explicitNamingFilterSchema = {
         )
         // we remove empty lines
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
-        .when([FieldConstants.FILTER_TYPE], {
-            is: FilterType.EXPLICIT_NAMING.id,
-            then: (schema) =>
-                schema.min(1, 'emptyFilterError').when([FieldConstants.EQUIPMENT_TYPE], {
-                    is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
-                    then: (innerSchema) =>
-                        innerSchema
-                            .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
-                                return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
-                            })
-                            .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
-                                return !(
-                                    array!.some((row) => row[DISTRIBUTION_KEY]) &&
-                                    array!.some((row) => !row[DISTRIBUTION_KEY])
-                                );
-                            }),
-                }),
+        .min(1, 'emptyFilterError')
+        .when([FieldConstants.EQUIPMENT_TYPE], {
+            is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
+            then: (innerSchema) =>
+                innerSchema
+                    .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
+                        return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
+                    })
+                    .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
+                        return !(
+                            array!.some((row) => row[DISTRIBUTION_KEY]) && array!.some((row) => !row[DISTRIBUTION_KEY])
+                        );
+                    }),
         }),
 };
 
