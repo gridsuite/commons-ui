@@ -6,7 +6,7 @@
  */
 import { BASE_EQUIPMENTS, EquipmentType } from '../../../utils';
 
-export type FormEquipment = {
+export type ContingencyListEquipment = {
     id: string;
     label: string;
 };
@@ -23,7 +23,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     | EquipmentType.STATIC_VAR_COMPENSATOR
     | EquipmentType.HVDC_LINE
     | EquipmentType.DANGLING_LINE,
-    FormEquipment
+    ContingencyListEquipment
 > = {
     BUSBAR_SECTION: {
         id: 'BUSBAR_SECTION',
