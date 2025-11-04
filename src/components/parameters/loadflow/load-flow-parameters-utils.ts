@@ -149,6 +149,7 @@ export const setLimitReductions = (
     } else {
         formMethods.setValue(PARAM_LIMIT_REDUCTION, DEFAULT_LIMIT_REDUCTION_VALUE);
         formMethods.setValue(LIMIT_REDUCTIONS_FORM, []);
+        formMethods.clearErrors(LIMIT_REDUCTIONS_FORM);
     }
 };
 
