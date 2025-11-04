@@ -16,13 +16,14 @@ export function CsvExport({
     tableName,
     disabled,
     skipColumnHeaders = false,
+    skipPinnedBottom = false,
     language,
     exportDataAsCsv,
 }: CsvExportProps): JSX.Element {
     const { downloadCSVData } = useCsvExport();
     const download = useCallback(() => {
-        downloadCSVData({ columns, tableName, tableNamePrefix, skipColumnHeaders, language, exportDataAsCsv });
-    }, [downloadCSVData, columns, tableName, tableNamePrefix, skipColumnHeaders, language, exportDataAsCsv]);
+        downloadCSVData({ columns, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, exportDataAsCsv });
+    }, [downloadCSVData, columns, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, exportDataAsCsv]);
 
     return <ExportCsvButton disabled={disabled} onClick={download} />;
 }
