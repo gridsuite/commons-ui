@@ -24,6 +24,7 @@ export const SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS = 'withVSCConverterStatio
 export const SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS = 'withShuntCompensators';
 export const SHORT_CIRCUIT_WITH_NEUTRAL_POSITION = 'withNeutralPosition';
 export const SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE = 'initialVoltageProfileMode';
+export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS = 'onlyStartedGenerators';
 
 export const intlPredefinedParametersOptions = () => [
     {
@@ -51,4 +52,15 @@ export const intlInitialVoltageProfileMode = () => {
             label: 'cei909InitialVoltageProfileMode',
         },
     };
+};
+
+export const onlyStartedGeneratorsOptions = {
+    ALL: {
+        id: false,
+        label: 'ShortCircuitAllLabel',
+    },
+    STARTED: {
+        id: true,
+        label: 'ShortCircuitStartedLabel',
+    },
 };

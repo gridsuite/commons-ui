@@ -66,6 +66,8 @@ export function LoadFlowParametersForm({
         defaultLimitReductions,
         paramsLoaded,
     } = loadflowMethods;
+    console.log('SBO LoadFlowParametersForm paramsLoaded', paramsLoaded);
+    console.log('SBO LoadFlowParametersForm formState', formMethods.formState);
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>

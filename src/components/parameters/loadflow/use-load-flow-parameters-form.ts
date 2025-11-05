@@ -12,11 +12,8 @@ import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
-    getDefaultSpecificParamsValues,
-    getSpecificLoadFlowParametersFormSchema,
     mapLimitReductions,
     setLimitReductions,
-    setSpecificParameters,
     TabValues,
 } from './load-flow-parameters-utils';
 import { LoadFlowParametersInfos, SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
@@ -25,19 +22,13 @@ import {
     SpecificParameterInfos,
     UseParametersBackendReturnProps,
 } from '../../../utils/types/parameters.type';
-import { ComputingType, PROVIDER } from '../common';
+import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import {
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
     LIMIT_REDUCTIONS_FORM,
 } from '../common/limitreductions/columns-definitions';
-import {
-    COMMON_PARAMETERS,
-    PARAM_LIMIT_REDUCTION,
-    PARAM_PROVIDER_OPENLOADFLOW,
-    SPECIFIC_PARAMETERS,
-    VERSION_PARAMETER,
-} from './constants';
+import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import yup from '../../../utils/yupConfig';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
 import { DESCRIPTION, NAME } from '../../inputs';
@@ -45,6 +36,11 @@ import { updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { useSnackMessage } from '../../../hooks';
+import {
+    getDefaultSpecificParamsValues,
+    getSpecificParametersFormSchema,
+    setSpecificParameters,
+} from '../common/utils';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
@@ -121,11 +117,12 @@ export const useLoadFlowParametersForm = (
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,
                 ...getLimitReductionsFormSchema(limitReductionNumber).fields,
-                ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
+                ...getSpecificParametersFormSchema(specificParameters).fields,
             })
             .concat(getNameElementEditorSchema(name));
     }, [name, limitReductionNumber, specificParameters]);
 
+    console.log('SBO LF params?.commonParameters', params?.commonParameters);
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
@@ -204,17 +201,14 @@ export const useLoadFlowParametersForm = (
             const specificParamsPerProvider = _params.specificParametersPerProvider[_params.provider];
 
             const formatted = specificParams?.reduce((acc: Record<string, unknown>, param: SpecificParameterInfos) => {
-                if (
-                    specificParamsPerProvider &&
-                    Object.prototype.hasOwnProperty.call(specificParamsPerProvider, param.name)
-                ) {
+                if (specificParamsPerProvider && Object.hasOwn(specificParamsPerProvider, param.name)) {
                     if (param.type === ParameterType.BOOLEAN) {
                         acc[param.name] = specificParamsPerProvider[param.name] === 'true';
                     } else if (param.type === ParameterType.STRING_LIST) {
                         acc[param.name] =
-                            specificParamsPerProvider[param.name] !== ''
-                                ? specificParamsPerProvider[param.name].split(',')
-                                : [];
+                            specificParamsPerProvider[param.name] === ''
+                                ? []
+                                : specificParamsPerProvider[param.name].split(',');
                     } else {
                         acc[param.name] = specificParamsPerProvider[param.name];
                     }
@@ -286,9 +280,9 @@ export const useLoadFlowParametersForm = (
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                ).catch((errmsg) => {
+                ).catch((error_) => {
                     snackError({
-                        messageTxt: errmsg,
+                        messageTxt: error_,
                         headerId: 'updateLoadFlowParametersError',
                     });
                 });
