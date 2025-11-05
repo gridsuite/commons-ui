@@ -299,8 +299,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             }
             return rule.values.sort();
         }
-        convertInputValue(rule.field, parseFloat(rule.value as string));
-        return rule.value;
+        return convertInputValue(rule.field, parseFloat(rule.value as string));
     }
 
     function transformRule(rule: RuleTypeExport): RuleType {
@@ -312,7 +311,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                     ? (Object.values(OPERATOR_OPTIONS).find((operator) => operator.customName === rule.operator)
                           ?.name as string)
                     : OPERATOR_OPTIONS.IS.name,
-            value: convertInputValue(rule.field, parseValue(rule)),
+            value: parseValue(rule),
         };
     }
 
