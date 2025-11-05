@@ -56,11 +56,11 @@ export const intlInitialVoltageProfileMode = () => {
 
 export const onlyStartedGeneratorsOptions = {
     ALL: {
-        id: false,
+        id: 'false',
         label: 'ShortCircuitAllLabel',
     },
     STARTED: {
-        id: true,
+        id: 'true',
         label: 'ShortCircuitStartedLabel',
     },
 };

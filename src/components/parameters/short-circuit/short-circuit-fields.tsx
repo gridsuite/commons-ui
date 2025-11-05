@@ -14,6 +14,7 @@ import {
     InitialVoltage,
     intlInitialVoltageProfileMode,
     intlPredefinedParametersOptions,
+    onlyStartedGeneratorsOptions,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
@@ -157,14 +158,10 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
     );
 
     const onlyStartedGenerators = (
-        <CheckboxInput
+        <RadioInput
             name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
-            label="ShortCircuitAllLabel"
+            options={Object.values(onlyStartedGeneratorsOptions)}
         />
-        // <RadioInput
-        //     name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
-        //     options={Object.values(onlyStartedGeneratorsOptions)}
-        // />
     );
 
     useEffect(() => {
