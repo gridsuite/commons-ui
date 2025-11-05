@@ -312,7 +312,7 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
                     ? (Object.values(OPERATOR_OPTIONS).find((operator) => operator.customName === rule.operator)
                           ?.name as string)
                     : OPERATOR_OPTIONS.IS.name,
-            value: parseValue(rule),
+            value: convertInputValue(rule.field, parseValue(rule)),
         };
     }
 
