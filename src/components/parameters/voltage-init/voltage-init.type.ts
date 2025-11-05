@@ -11,7 +11,6 @@ import {
     FILTERS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
-    IS_VALID,
     LOW_VOLTAGE_LIMIT,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
@@ -33,7 +32,6 @@ export enum EquipmentsSelectionType {
 type FilterIdentifier = {
     [FILTER_ID]: UUID;
     [FILTER_NAME]: string;
-    [IS_VALID]?: boolean;
 };
 
 type VoltageLimitParam = {
