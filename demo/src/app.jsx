@@ -259,6 +259,25 @@ function SnackInfoButton() {
     );
 }
 
+function SnackSuccessButton() {
+    const { snackSuccess } = useSnackMessage();
+    return (
+        <Button
+            variant="contained"
+            color="success"
+            style={style.button}
+            onClick={() => {
+                snackSuccess({
+                    messageTxt: 'Snack success message',
+                    headerTxt: 'Header',
+                });
+            }}
+        >
+            success snack hook
+        </Button>
+    );
+}
+
 function PermanentSnackButton() {
     const { snackInfo, closeSnackbar } = useSnackMessage();
     const [snackKey, setSnackKey] = useState(undefined);
@@ -618,6 +637,7 @@ function AppContent({ language, onLanguageClick }) {
             <SnackErrorButton />
             <SnackWarningButton />
             <SnackInfoButton />
+            <SnackSuccessButton />
 
             <Button
                 variant="contained"
