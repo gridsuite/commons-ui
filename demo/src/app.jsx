@@ -273,7 +273,7 @@ function SnackSuccessButton() {
                 });
             }}
         >
-            info snack hook
+            success snack hook
         </Button>
     );
 }
