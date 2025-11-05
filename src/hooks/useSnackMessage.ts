@@ -100,19 +100,19 @@ export function useSnackMessage(): UseSnackMessageReturn {
     );
 
     /*
-      There is two kind of messages : the message itself (bottom of snackbar), and the header (top of snackbar).
-      As inputs, you can give either a text message, or an ID with optional values (for translation with intl).
-        snackInputs: {
-            messageTxt,
-            messageId,
-            messageValues,
-            headerTxt,
-            headerId,
-            headerValues,
-            key?, // optional key to close the snackbar
-            persist
-          }
- */
+        There is two kind of messages : the message itself (bottom of snackbar), and the header (top of snackbar).
+        As inputs, you can give either a text message, or an ID with optional values (for translation with intl).
+          snackInputs: {
+              messageTxt,
+              messageId,
+              messageValues,
+              headerTxt,
+              headerId,
+              headerValues,
+              key?, // optional key to close the snackbar
+              persist
+            }
+   */
     const snackError = useCallback(
         (snackInputs: SnackInputs) => enqueue({ ...snackInputs, persist: true }, 'error'),
         [enqueue]
