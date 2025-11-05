@@ -22,8 +22,25 @@ export function CsvExport({
 }: CsvExportProps): JSX.Element {
     const { downloadCSVData } = useCsvExport();
     const download = useCallback(() => {
-        downloadCSVData({ columns, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, exportDataAsCsv });
-    }, [downloadCSVData, columns, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, exportDataAsCsv]);
+        downloadCSVData({
+            columns,
+            tableName,
+            tableNamePrefix,
+            skipColumnHeaders,
+            skipPinnedBottom,
+            language,
+            exportDataAsCsv,
+        });
+    }, [
+        downloadCSVData,
+        columns,
+        tableName,
+        tableNamePrefix,
+        skipColumnHeaders,
+        skipPinnedBottom,
+        language,
+        exportDataAsCsv,
+    ]);
 
     return <ExportCsvButton disabled={disabled} onClick={download} />;
 }
