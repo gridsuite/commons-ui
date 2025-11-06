@@ -6,7 +6,7 @@
  */
 
 import { MutableRefObject, useCallback } from 'react';
-import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack, useSnackbar } from 'notistack';
+import { BaseVariant, closeSnackbar as closeSnackbarFromNotistack, OptionsObject, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
 import { useIntlRef } from './useIntlRef';
 
@@ -23,6 +23,7 @@ export interface UseSnackMessageReturn {
     snackError: (snackInputs: SnackInputs) => void;
     snackWarning: (snackInputs: SnackInputs) => void;
     snackInfo: (snackInputs: SnackInputs) => void;
+    snackSuccess: (snackInputs: SnackInputs) => void;
     closeSnackbar: typeof closeSnackbarFromNotistack;
 }
 
@@ -123,5 +124,7 @@ export function useSnackMessage(): UseSnackMessageReturn {
     /* see snackError */
     const snackInfo = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'info'), [enqueue]);
 
-    return { snackError, snackInfo, snackWarning, closeSnackbar };
+    const snackSuccess = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'success'), [enqueue]);
+
+    return { snackError, snackInfo, snackWarning, snackSuccess, closeSnackbar };
 }
