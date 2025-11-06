@@ -37,7 +37,6 @@ export const useCsvExport = () => {
                 if (params.column.getColId() === 'limitName') {
                     return formatNAValue(params.value, intl);
                 }
-
                 // If the language is in French, we change the decimal separator
                 if (props.language === LANG_FRENCH && typeof params.value === 'number') {
                     return params.value.toString().replace('.', ',');
@@ -48,6 +47,7 @@ export const useCsvExport = () => {
 
             props.exportDataAsCsv({
                 suppressQuotes: false,
+                skipPinnedBottom: props.skipPinnedBottom,
                 columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
                 columnKeys: props.columns.map((col) => col.colId).filter(hasColId),
                 skipColumnHeaders: props.skipColumnHeaders,
