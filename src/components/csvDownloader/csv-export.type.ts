@@ -13,6 +13,7 @@ export type CsvDownloadProps = {
     tableName: string;
     tableNamePrefix?: string;
     skipColumnHeaders?: boolean;
+    skipPinnedBottom?: boolean;
     language: GsLang;
     exportDataAsCsv: (params?: CsvExportParams) => void;
 };
