@@ -18,6 +18,7 @@ import {
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
+    SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
@@ -160,23 +161,24 @@ export const useShortCircuitParametersForm = ({
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
+                    // this should be inverted for API compatibility
+                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]:
+                        !formData[COMMON_PARAMETERS][SHORT_CIRCUIT_WITH_NEUTRAL_POSITION],
                     [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
                         formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] ===
                         InitialVoltage.CEI909
                             ? InitialVoltage.CONFIGURED
                             : formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE],
-                    // this should be inverted for API compatibility
-                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]:
-                        !formData[COMMON_PARAMETERS][SHORT_CIRCUIT_WITH_NEUTRAL_POSITION],
+                    // we need to add voltageRanges to the parameters only when initialVoltageProfileMode is equals to CEI909
+                    [SHORT_CIRCUIT_VOLTAGE_RANGES]:
+                        formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] ===
+                        InitialVoltage.CEI909
+                            ? params?.cei909VoltageRanges
+                            : undefined,
                 },
                 specificParametersPerProvider: {
                     Courcirc: getAllSpecificParametersValues(formData, specificParametersDefaultValues),
                 },
-                // we need to add voltageRanges to the parameters only when initialVoltageProfileMode is equals to CEI909
-                cei909VoltageRanges:
-                    formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] === InitialVoltage.CEI909
-                        ? params?.cei909VoltageRanges
-                        : undefined,
             };
         },
         [params?.cei909VoltageRanges, specificParametersDefaultValues]

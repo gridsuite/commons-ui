@@ -10,6 +10,8 @@ import { InitialVoltage, PredefinedParameters } from './constants';
 export interface VoltageRange {
     minimumNominalVoltage: number;
     maximumNominalVoltage: number;
+    voltage: number;
+    voltageRangeCoefficient: number;
 }
 
 export interface ShortCircuitParametersDto {
@@ -26,5 +28,5 @@ export interface ShortCircuitParametersInfos {
     predefinedParameters: PredefinedParameters;
     commonParameters: ShortCircuitParametersDto;
     specificParametersPerProvider: SpecificParametersPerProvider;
-    cei909VoltageRanges?: any;
+    cei909VoltageRanges?: VoltageRange[];
 }
