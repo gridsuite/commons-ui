@@ -19,6 +19,7 @@ import type {
     SpecificParametersInfos,
     UseParametersBackendReturnProps,
 } from '../utils/types/parameters.type';
+import { snackWithFallback } from '../utils/error';
 
 const INITIAL_PROVIDERS = {};
 
@@ -74,8 +75,7 @@ export const useParametersBackend = <T extends ComputingType>(
             setProvider(newProvider); // local state
             backendUpdateProvider?.(studyUuid, newProvider).catch((error) => {
                 setProvider(oldProvider);
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `update${formatComputingTypeLabel(type)}ProviderError`,
                 });
             });
@@ -96,8 +96,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 }
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `fetchDefault${formatComputingTypeLabel(type)}ProviderError`,
                 });
             });
@@ -118,8 +117,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 providersRef.current = providersObj;
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `fetch${formatComputingTypeLabel(type)}ProvidersError`,
                 });
             });
@@ -137,8 +135,7 @@ export const useParametersBackend = <T extends ComputingType>(
                     }
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
+                    snackWithFallback(snackError, error, {
                         headerId: `fetch${formatComputingTypeLabel(type)}ProviderError`,
                     });
                 });
@@ -162,8 +159,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 setSpecificParamsDescription(specificParams);
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `fetch${formatComputingTypeLabel(type)}SpecificParametersError`,
                 });
             });
@@ -184,10 +180,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 setDefaultLimitReductions(defaultLimits);
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'fetchDefaultLimitReductionsError',
-                });
+                snackWithFallback(snackError, error, { headerId: 'fetchDefaultLimitReductionsError' });
             });
     }, [backendFetchDefaultLimitReductions, snackError]);
 
@@ -209,8 +202,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 } else {
                     setProvider(undefined);
                 }
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `update${formatComputingTypeLabel(type)}ParametersError`,
                 });
             });
@@ -255,8 +247,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 // because a reset call with a button don't need an intermediate render like for forms
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `update${formatComputingTypeLabel(type)}ParametersError`,
                 });
             });
@@ -273,8 +264,7 @@ export const useParametersBackend = <T extends ComputingType>(
                     }
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
+                    snackWithFallback(snackError, error, {
                         headerId: `fetch${formatComputingTypeLabel(type)}ParametersError`,
                     });
                 });
