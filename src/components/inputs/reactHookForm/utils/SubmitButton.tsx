@@ -10,11 +10,10 @@ import { useFormState } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 
 export function SubmitButton(buttonProps: Readonly<ButtonProps>) {
-    const { isDirty, errors } = useFormState();
-    const hasErrors = Object.keys(errors ?? {}).length > 0;
+    const { isDirty } = useFormState();
 
     return (
-        <Button {...buttonProps} disabled={!isDirty || hasErrors || (buttonProps?.disabled ?? false)}>
+        <Button {...buttonProps} disabled={!isDirty || (buttonProps?.disabled ?? false)}>
             <FormattedMessage id="validate" />
         </Button>
     );
