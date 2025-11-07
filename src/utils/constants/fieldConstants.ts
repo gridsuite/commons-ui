@@ -17,7 +17,6 @@ export enum FieldConstants {
     COUNTRIES_1 = 'countries1',
     COUNTRIES_2 = 'countries2',
     COUNTRIES = 'countries',
-    CRITERIA_BASED = 'criteriaBased',
     CURRENT_PARAMETERS = 'currentParameters',
     DESCRIPTION = 'description',
     DIRECTORY = 'directory',
