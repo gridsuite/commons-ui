@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UseFormReturn } from 'react-hook-form';
-import { ParameterType, SpecificParameterInfos, SpecificParametersPerProvider } from '../../../utils';
+import { ParameterType, SpecificParameterInfos, SpecificParametersDescription, SpecificParametersValues } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constant';
 import yup from '../../../utils/yupConfig';
 
-export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[]) => {
+export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
     const shape: { [key: string]: yup.AnySchema } = {};
 
     specificParameters?.forEach((param: SpecificParameterInfos) => {
@@ -40,18 +40,59 @@ export const getSpecificParametersFormSchema = (specificParameters: SpecificPara
 };
 
 export const getDefaultSpecificParamsValues = (
-    specificParams: SpecificParameterInfos[]
-): SpecificParametersPerProvider => {
-    return specificParams?.reduce((acc: Record<string, any>, param: SpecificParameterInfos) => {
-        if (param.type === ParameterType.STRING_LIST && param.defaultValue === null) {
-            acc[param.name] = [];
-        } else if (
-            (param.type === ParameterType.DOUBLE || param.type === ParameterType.INTEGER) &&
-            Number.isNaN(Number(param.defaultValue))
-        ) {
-            acc[param.name] = 0;
-        } else {
-            acc[param.name] = param.defaultValue;
+    specificParametersDescriptionForProvider: SpecificParameterInfos[]
+): SpecificParametersValues => {
+    return specificParametersDescriptionForProvider.reduce(
+        (acc: SpecificParametersValues, param: SpecificParameterInfos) => {
+            if (param.type === ParameterType.STRING_LIST && param.defaultValue === null) {
+                acc[param.name] = [];
+            } else if (
+                (param.type === ParameterType.DOUBLE || param.type === ParameterType.INTEGER) &&
+                Number.isNaN(Number(param.defaultValue))
+            ) {
+                acc[param.name] = 0;
+            } else {
+                acc[param.name] = param.defaultValue;
+            }
+            return acc;
+        },
+        {}
+    );
+};
+
+export const formatSpecificParameters = (
+    specificParametersDescriptionForProvider: SpecificParameterInfos[],
+    specificParamsList: SpecificParametersValues
+): SpecificParametersValues => {
+    return specificParametersDescriptionForProvider.reduce(
+        (acc: SpecificParametersValues, param: SpecificParameterInfos) => {
+            if (specificParamsList && Object.hasOwn(specificParamsList, param.name)) {
+                if (param.type === ParameterType.BOOLEAN) {
+                    acc[param.name] = specificParamsList[param.name] === 'true';
+                } else if (param.type === ParameterType.STRING_LIST) {
+                    acc[param.name] =
+                        specificParamsList[param.name] === ''
+                            ? []
+                            : (specificParamsList[param.name] as string).split(',');
+                } else {
+                    acc[param.name] = specificParamsList[param.name];
+                }
+            } else {
+                acc[param.name] = getDefaultSpecificParamsValues([param])?.[param.name];
+            }
+            return acc;
+        },
+        {}
+    );
+};
+
+export const getAllSpecificParametersValues = (
+    formData: Record<string, any>,
+    _specificParametersValues: SpecificParametersValues
+): SpecificParametersValues => {
+    return Object.keys(formData[SPECIFIC_PARAMETERS]).reduce((acc: SpecificParametersValues, key: string) => {
+        if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
+            acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
         }
         return acc;
     }, {});
@@ -59,7 +100,7 @@ export const getDefaultSpecificParamsValues = (
 
 export const setSpecificParameters = (
     provider: string,
-    specificParamsDescriptions: Record<string, SpecificParameterInfos[]> | null,
+    specificParamsDescriptions: SpecificParametersDescription | null,
     formMethods: UseFormReturn
 ) => {
     const specificParams = provider ? (specificParamsDescriptions?.[provider] ?? []) : [];

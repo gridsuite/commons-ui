@@ -16,7 +16,7 @@ import { ComputingType, formatComputingTypeLabel } from '../components/parameter
 import type { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
 import type {
     ParametersInfos,
-    SpecificParametersInfos,
+    SpecificParametersDescription,
     UseParametersBackendReturnProps,
 } from '../utils/types/parameters.type';
 
@@ -39,7 +39,7 @@ export const useParametersBackend = <T extends ComputingType>(
     backendUpdateProvider: ((studyUuid: UUID, newProvider: string) => Promise<any>) | null,
     backendFetchParameters: (studyUuid: UUID) => Promise<ParametersInfos<T>>,
     backendUpdateParameters?: (studyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>,
-    backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersInfos>,
+    backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>,
     backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>
 ): UseParametersBackendReturnProps<T> => {
     const { snackError, snackWarning } = useSnackMessage();
@@ -50,7 +50,9 @@ export const useParametersBackend = <T extends ComputingType>(
     providerRef.current = provider;
 
     const [params, setParams] = useState<ParametersInfos<T> | null>(null);
-    const [specificParamsDescription, setSpecificParamsDescription] = useState<Record<string, any> | null>(null);
+    const [specificParamsDescription, setSpecificParamsDescription] = useState<SpecificParametersDescription | null>(
+        null
+    );
     const [defaultLimitReductions, setDefaultLimitReductions] = useState<ILimitReductionsByVoltageLevel[]>([]);
 
     const optionalServiceStatusRef = useRef(optionalServiceStatus);

@@ -60,7 +60,7 @@ export function LoadFlowParametersForm({
         handleTabChange,
         tabIndexesWithError,
         formattedProviders,
-        specificParameters,
+        specificParametersDescriptionForProvider,
         params,
         currentProvider,
         defaultLimitReductions,
@@ -85,7 +85,7 @@ export function LoadFlowParametersForm({
                             <LoadFlowParametersContent
                                 selectedTab={selectedTab}
                                 currentProvider={currentProvider ?? ''}
-                                specificParameters={specificParameters}
+                                specificParameters={specificParametersDescriptionForProvider}
                                 params={params}
                                 defaultLimitReductions={defaultLimitReductions}
                             />

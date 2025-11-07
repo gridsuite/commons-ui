@@ -24,15 +24,19 @@ import {
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
-import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType, ParameterType, SpecificParameterInfos, SpecificParametersPerProvider } from '../../../utils';
+import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { COMMON_PARAMETERS, ComputingType, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import { getCommonShortCircuitParametersFormSchema } from './short-circuit-parameters-utils';
-import { getDefaultSpecificParamsValues, getSpecificParametersFormSchema } from '../common/utils';
+import {
+    formatSpecificParameters,
+    getDefaultSpecificParamsValues,
+    getSpecificParametersFormSchema,
+    getAllSpecificParametersValues,
+} from '../common/utils';
 
 const ManagedSpecificParameters = new Set([SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]);
 
@@ -40,7 +44,7 @@ export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     resetAll: (predefinedParameter: PredefinedParameters) => void;
-    specificParameters: SpecificParameterInfos[];
+    specificParametersDescriptionForProvider: SpecificParameterInfos[];
     toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => ShortCircuitParametersInfos;
     params: ShortCircuitParametersInfos | null;
@@ -70,26 +74,17 @@ export const useShortCircuitParametersForm = ({
     const [currentProvider, setCurrentProvider] = useState('Courcirc');
     const { snackError } = useSnackMessage();
 
-    const filteredSpecificParamsDescriptions = useMemo(() => {
-        return specificParamsDescriptions?.[currentProvider].filter((sp: SpecificParameterInfos) =>
-            ManagedSpecificParameters.has(sp.name)
-        );
+    const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
+        return currentProvider && specificParamsDescriptions
+            ? specificParamsDescriptions[currentProvider].filter((sp: SpecificParameterInfos) =>
+                  ManagedSpecificParameters.has(sp.name)
+              )
+            : [];
     }, [currentProvider, specificParamsDescriptions]);
 
-    const defaultSpecificParametersValues = useMemo(() => {
-        return getDefaultSpecificParamsValues(filteredSpecificParamsDescriptions);
-    }, [filteredSpecificParamsDescriptions]);
-
-    const specificParameters = useMemo<SpecificParameterInfos[]>(() => {
-        return filteredSpecificParamsDescriptions?.map((param: SpecificParameterInfos) => ({
-            name: param.name,
-            type: param.type,
-            label: param.label,
-            description: param.description,
-            possibleValues: param.possibleValues,
-            defaultValue: param.defaultValue,
-        }));
-    }, [filteredSpecificParamsDescriptions]);
+    const specificParametersDefaultValues = useMemo(() => {
+        return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
+    }, [specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
         return yup
@@ -99,10 +94,10 @@ export const useShortCircuitParametersForm = ({
                     .oneOf(Object.values(PredefinedParameters))
                     .required(),
                 ...getCommonShortCircuitParametersFormSchema().fields,
-                ...getSpecificParametersFormSchema(specificParameters).fields,
+                ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
-    }, [name, specificParameters]);
+    }, [name, specificParametersDescriptionForProvider]);
 
     console.log('SBO SC params?.commonParameters', params?.commonParameters);
 
@@ -114,7 +109,7 @@ export const useShortCircuitParametersForm = ({
                 ...params?.commonParameters,
             },
             [SPECIFIC_PARAMETERS]: {
-                ...defaultSpecificParametersValues,
+                ...specificParametersDefaultValues,
             },
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
@@ -147,30 +142,15 @@ export const useShortCircuitParametersForm = ({
             setValue(
                 SPECIFIC_PARAMETERS,
                 {
-                    ...defaultSpecificParametersValues,
+                    ...specificParametersDefaultValues,
                     [SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]:
                         predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 },
                 dirty
             );
         },
-        [defaultSpecificParametersValues, params?.commonParameters, setValue]
+        [specificParametersDefaultValues, params?.commonParameters, setValue]
     );
-
-    const getSpecificParametersPerProvider = (
-        formData: Record<string, any>,
-        _specificParametersValues: SpecificParametersPerProvider
-    ) => {
-        return Object.keys(formData[SPECIFIC_PARAMETERS]).reduce(
-            (acc: Record<string, any>, key: string) => {
-                if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
-                    acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
-                }
-                return acc;
-            },
-            {} as Record<string, any>
-        );
-    };
 
     const formatNewParams = useCallback(
         (formData: Record<string, any>): ShortCircuitParametersInfos => {
@@ -180,38 +160,31 @@ export const useShortCircuitParametersForm = ({
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
+                    [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
+                        formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] ===
+                        InitialVoltage.CEI909
+                            ? InitialVoltage.CONFIGURED
+                            : formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE],
+                    // this should be inverted for API compatibility
+                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]:
+                        !formData[COMMON_PARAMETERS][SHORT_CIRCUIT_WITH_NEUTRAL_POSITION],
                 },
                 specificParametersPerProvider: {
-                    Courcirc: getSpecificParametersPerProvider(formData, defaultSpecificParametersValues),
+                    Courcirc: getAllSpecificParametersValues(formData, specificParametersDefaultValues),
                 },
+                // we need to add voltageRanges to the parameters only when initialVoltageProfileMode is equals to CEI909
+                cei909VoltageRanges:
+                    formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] === InitialVoltage.CEI909
+                        ? params?.cei909VoltageRanges
+                        : undefined,
             };
         },
-        [defaultSpecificParametersValues]
+        [params?.cei909VoltageRanges, specificParametersDefaultValues]
     );
 
     const toShortCircuitFormValues = useCallback(
         (_params: ShortCircuitParametersInfos) => {
-            const specificParams = filteredSpecificParamsDescriptions;
-            const specificParamsPerProvider = _params.specificParametersPerProvider[currentProvider];
-
-            const formatted = specificParams?.reduce((acc: Record<string, unknown>, param: SpecificParameterInfos) => {
-                if (specificParamsPerProvider && Object.hasOwn(specificParamsPerProvider, param.name)) {
-                    if (param.type === ParameterType.BOOLEAN) {
-                        acc[param.name] = specificParamsPerProvider[param.name] === 'true';
-                    } else if (param.type === ParameterType.STRING_LIST) {
-                        acc[param.name] =
-                            specificParamsPerProvider[param.name] === ''
-                                ? []
-                                : specificParamsPerProvider[param.name].split(',');
-                    } else {
-                        acc[param.name] = specificParamsPerProvider[param.name];
-                    }
-                } else {
-                    acc[param.name] = getDefaultSpecificParamsValues([param])[param.name];
-                }
-                return acc;
-            }, {});
-            console.log('SBO toShortCircuitFormValues specificParams', formatted);
+            const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[currentProvider];
             return {
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
@@ -220,13 +193,18 @@ export const useShortCircuitParametersForm = ({
                         _params.commonParameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
                             ? InitialVoltage.CEI909
                             : _params.commonParameters.initialVoltageProfileMode,
+                    // invert back the value for the form
+                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !_params.commonParameters.withNeutralPosition,
                 },
                 [SPECIFIC_PARAMETERS]: {
-                    ...formatted,
+                    ...formatSpecificParameters(
+                        specificParametersDescriptionForProvider,
+                        specificParamsListForCurrentProvider
+                    ),
                 },
             };
         },
-        [currentProvider, filteredSpecificParamsDescriptions]
+        [currentProvider, specificParametersDescriptionForProvider]
     );
 
     const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
@@ -275,7 +253,7 @@ export const useShortCircuitParametersForm = ({
     return {
         formMethods,
         formSchema,
-        specificParameters,
+        specificParametersDescriptionForProvider,
         toShortCircuitFormValues,
         formatNewParams,
         params,

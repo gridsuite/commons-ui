@@ -37,7 +37,9 @@ export type SpecificParameterInfos = {
     label?: string;
 };
 
-export type SpecificParametersInfos = Record<string, SpecificParameterInfos>;
+export type SpecificParametersDescription = Record<string, SpecificParameterInfos[]>;
+export type SpecificParametersValues = Record<string, any>;
+export type SpecificParametersPerProvider = Record<string, SpecificParametersValues>;
 
 export type ParametersInfos<T extends ComputingType> = T extends ComputingType.SENSITIVITY_ANALYSIS
     ? SensitivityAnalysisParametersInfos
@@ -63,6 +65,6 @@ export type UseParametersBackendReturnProps<T extends ComputingType> = [
     (studyUuid: UUID) => void,
     (newParams: ParametersInfos<T>) => void,
     () => Promise<void> | undefined,
-    Record<string, any> | null,
+    SpecificParametersDescription | null,
     ILimitReductionsByVoltageLevel[],
 ];
