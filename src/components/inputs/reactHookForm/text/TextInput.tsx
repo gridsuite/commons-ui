@@ -30,6 +30,7 @@ export interface TextInputProps {
     outputTransform?: (value: string) => Input | null;
     inputTransform?: (value: Input) => string;
     acceptValue?: (value: string) => boolean;
+    onChange?: (value: string) => void;
     previousValue?: Input;
     clearable?: boolean;
     formProps?: Omit<
@@ -50,6 +51,7 @@ export function TextInput({
     outputTransform = identity, // transform materialUi input value before sending it to react hook form, mostly used to deal with number fields
     inputTransform = identity, // transform react hook form value before sending it to materialUi input, mostly used to deal with number fields
     acceptValue = () => true, // used to check user entry before committing the input change, used mostly to prevent user from typing a character in number field
+    onChange, // method called when input value changed, if you want to manually trigger validation for example (do not update the form here unless you know what you do, it's already done by RHF)
     previousValue,
     clearable,
     formProps,
@@ -58,7 +60,7 @@ export function TextInput({
 }: TextInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
-        field: { onChange, value, ref },
+        field: { onChange: onChangeRhf, value, ref },
         fieldState: { error },
     } = useController({ name });
 
@@ -69,12 +71,13 @@ export function TextInput({
     };
 
     const handleClearValue = () => {
-        onChange(outputTransform(''));
+        onChangeRhf(outputTransform(''));
     };
 
     const handleValueChanged = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         if (acceptValue(e.target.value)) {
-            onChange(outputTransform(e.target.value));
+            onChangeRhf(outputTransform(e.target.value));
+            onChange?.(e.target.value);
         }
     };
 
