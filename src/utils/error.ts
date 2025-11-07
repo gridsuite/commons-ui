@@ -4,11 +4,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { catchErrorHandler, CustomError } from '../services';
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
+import { CustomError } from './types/CustomError';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
+
+export function catchErrorHandler(error: unknown, callback: (message: string) => void) {
+    if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
+        callback(error.message);
+    } else {
+        callback('unknown error');
+    }
+}
 
 export function snackWithFallback(
     snackError: UseSnackMessageReturn['snackError'],
