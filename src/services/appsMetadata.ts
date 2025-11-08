@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { BaseVoltagesCongig, Metadata, StudyMetadata } from '../utils';
+import { Metadata, StudyMetadata } from '../utils';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
@@ -61,7 +61,3 @@ export const fetchDefaultCountry = async (): Promise<string | undefined> => {
     const studyMetadata = await fetchStudyMetadata();
     return studyMetadata.defaultCountry;
 };
-export async function fetchBaseVoltagesConfig(): Promise<BaseVoltagesCongig | undefined> {
-    const studyMetadata = await fetchStudyMetadata();
-    return studyMetadata.baseVoltagesCongig;
-}
