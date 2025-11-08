@@ -21,7 +21,7 @@ export type Metadata = {
 
 type ThemeColors = Record<string, string>;
 
-type BaseVoltageCongig = {
+export type BaseVoltageConfig = {
     name: string;
     vlValue: number;
     minValue: number;
@@ -31,9 +31,7 @@ type BaseVoltageCongig = {
     darkThemeColors: ThemeColors;
     lightThemeColors: ThemeColors;
     profile: string;
-}
-
-export type BaseVoltagesCongig = BaseVoltageCongig[];
+};
 
 export type StudyMetadata = Metadata & {
     name: 'Study';
@@ -46,5 +44,5 @@ export type StudyMetadata = Metadata & {
     defaultCountry?: string;
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
-    baseVoltagesCongig?: BaseVoltagesCongig;
+    baseVoltagesConfig?: BaseVoltageConfig[];
 };
