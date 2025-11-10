@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useRef, useState } from 'react';
 import { NestedMenuItem, NestedMenuItemProps } from 'mui-nested-menu';
 import { Box, MenuItem, type MenuItemProps } from '@mui/material';
 import { mergeSx, type MuiStyles, type SxStyle } from '../../utils/styles';
@@ -30,42 +30,36 @@ interface CustomNestedMenuItemProps extends PropsWithChildren, Omit<NestedMenuIt
 
 export function CustomNestedMenuItem({ sx, children, ...other }: Readonly<CustomNestedMenuItemProps>) {
     const [subMenuActive, setSubMenuActive] = useState(false);
-    const [menuPosition, setMenuPosition] = useState<'left' | 'right'>('right');
-    const parentRef = useRef<HTMLLIElement | null>(null);
-    const submenuRef = useRef<HTMLDivElement | null>(null);
+    const [shouldLiftLeft, setShouldLiftLeft] = useState(false);
+    const containerRef = useRef<HTMLLIElement | null>(null);
+    const calculatePosition = () => {
+        if (!containerRef.current) return;
 
-    useEffect(() => {
-        if (parentRef.current && submenuRef.current) {
-            const parentRect = parentRef.current.getBoundingClientRect();
-            const submenuWidth = submenuRef.current.offsetWidth;
-            const windowWidth = window.innerWidth;
-
-            if (parentRect.right + submenuWidth > windowWidth) {
-                setMenuPosition('left');
-            } else {
-                setMenuPosition('right');
-            }
-        }
-    }, [children]);
-
-    const anchorOrigin: { vertical: 'top' | 'center' | 'bottom'; horizontal: 'left' | 'center' | 'right' } = {
-        vertical: 'top',
-        horizontal: menuPosition === 'right' ? 'right' : 'left',
+        const rect = containerRef.current.getBoundingClientRect();
+        const estimatedWidth = rect.width;
+        const spaceRight = window.innerWidth - rect.right;
+        setShouldLiftLeft(estimatedWidth > spaceRight);
     };
 
-    const transformOrigin: { vertical: 'top' | 'center' | 'bottom'; horizontal: 'left' | 'center' | 'right' } = {
-        vertical: 'top',
-        horizontal: menuPosition === 'right' ? 'left' : 'right',
+    const handleMouseEnter = () => {
+        calculatePosition();
     };
 
     return (
         <NestedMenuItem
             {...other}
             parentMenuOpen
+            ref={containerRef}
+            onMouseEnter={handleMouseEnter}
             MenuProps={{
-                anchorOrigin,
-                transformOrigin,
-                PaperProps: { ref: submenuRef },
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: shouldLiftLeft ? 'left' : 'right',
+                },
+                transformOrigin: {
+                    vertical: 'top',
+                    horizontal: shouldLiftLeft ? 'right' : 'left',
+                },
             }}
             sx={mergeSx(subMenuActive ? styles.highlightedParentLine : styles.highlightedLine, sx)}
         >
