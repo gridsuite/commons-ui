@@ -6,7 +6,7 @@
  */
 
 import { useCallback } from 'react';
-import { ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
+import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
 import { useIntl, IntlShape } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
 import { LANG_FRENCH } from '../../utils';
@@ -45,7 +45,7 @@ export const useCsvExport = () => {
             };
             const prefix = props.tableNamePrefix ?? '';
 
-            props.exportDataAsCsv({
+            const csvExportParams: CsvExportParams = {
                 suppressQuotes: false,
                 skipPinnedBottom: props.skipPinnedBottom,
                 columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
@@ -57,10 +57,45 @@ export const useCsvExport = () => {
                     params.column.getColId(),
                 fileName: prefix.concat(getCSVFilename(props.tableName)),
                 processCellCallback: processCell,
-            });
+            };
+            props.exportDataAsCsv?.(csvExportParams);
         },
         [getCSVFilename, intl]
     );
 
-    return { downloadCSVData };
+    const getCSVData = useCallback(
+        (props: CsvDownloadProps): string | undefined => {
+            const hasColId = (colId: string | undefined): colId is string => {
+                return colId !== undefined;
+            };
+
+            const processCell = (params: ProcessCellForExportParams): string => {
+                if (params.column.getColId() === 'limitName') {
+                    return formatNAValue(params.value, intl);
+                }
+                // If the language is in French, we change the decimal separator
+                if (props.language === LANG_FRENCH && typeof params.value === 'number') {
+                    return params.value.toString().replace('.', ',');
+                }
+                return params.value;
+            };
+
+            const csvExportParams: CsvExportParams = {
+                suppressQuotes: false,
+                skipPinnedBottom: props.skipPinnedBottom,
+                columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
+                columnKeys: props.columns.map((col) => col.colId).filter(hasColId),
+                skipColumnHeaders: props.skipColumnHeaders,
+                processHeaderCallback: (params: ProcessHeaderForExportParams) =>
+                    params.column.getColDef().headerComponentParams?.displayName ??
+                    params.column.getColDef().headerName ??
+                    params.column.getColId(),
+                processCellCallback: processCell,
+            };
+            return props.getDataAsCsv?.(csvExportParams);
+        },
+        [intl]
+    );
+
+    return { downloadCSVData, getCSVData };
 };
