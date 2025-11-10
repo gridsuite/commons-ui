@@ -7,8 +7,8 @@
 
 import { Box, Chip, FormControl, FormHelperText, Grid, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
+import { useCallback, useMemo, useState } from 'react';
+import { FieldValues, useController, useFieldArray } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
@@ -100,8 +100,7 @@ export function DirectoryItemsInput({
     });
 
     const formContext = useCustomFormContext();
-    const { getValues, validationSchema, setError, clearErrors, getFieldState } = formContext;
-    const watchedElements = useWatch({ name }) as FieldValues[] | undefined;
+    const { getValues, validationSchema } = formContext;
 
     const {
         fieldState: { error },
@@ -173,28 +172,6 @@ export function DirectoryItemsInput({
         return allowMultiSelect === false && elements?.length === 1;
     }, [allowMultiSelect, elements]);
 
-    const hasElementsWithoutName = useMemo(() => {
-        const elementsToCheck = (watchedElements ?? elements) as FieldValues[] | undefined;
-
-        return (elementsToCheck ?? []).some((item) => !item?.[NAME]);
-    }, [elements, watchedElements]);
-
-    useEffect(() => {
-        const errorMessage = intl.formatMessage({ id: 'elementNotFound' });
-        const fieldState = getFieldState(name);
-
-        if (hasElementsWithoutName) {
-            if (fieldState.error?.message !== errorMessage) {
-                setError(name as any, {
-                    type: 'manual',
-                    message: errorMessage,
-                });
-            }
-        } else if (fieldState.error?.type === 'manual' && fieldState.error?.message === errorMessage) {
-            clearErrors(name as any);
-        }
-    }, [clearErrors, getFieldState, hasElementsWithoutName, intl, name, setError]);
-
     return (
         <>
             <FormControl
@@ -213,64 +190,46 @@ export function DirectoryItemsInput({
                 )}
                 {elements?.length > 0 && (
                     <FormControl sx={styles.formDirectoryElements2}>
-                        {elements.map((item, index) => {
-                            const elementName =
-                                watchedElements?.[index]?.[NAME] ??
-                                getValues(`${name}.${index}.${NAME}`) ??
-                                (item as FieldValues)?.[NAME];
-
-                            return (
-                                <Box
-                                    key={item.id}
-                                    sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}
-                                >
-                                    <Chip
-                                        size="small"
-                                        sx={mergeSx(
-                                            {
-                                                backgroundColor:
-                                                    item?.specificMetadata?.equipmentType &&
-                                                    equipmentColorsMap?.get(item?.specificMetadata?.equipmentType),
-                                            },
-                                            !elementName
-                                                ? (theme) => ({
-                                                      backgroundColor: theme.palette.error.light,
-                                                      borderColor: theme.palette.error.main,
-                                                      color: theme.palette.error.contrastText,
-                                                  })
-                                                : undefined
-                                        )}
-                                        onDelete={() => removeElements(index)}
-                                        onClick={() => handleChipClick(index)}
-                                        label={
-                                            <OverflowableText
-                                                text={
-                                                    elementName ? (
-                                                        <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                                                    ) : (
-                                                        intl.formatMessage({ id: 'elementNotFound' })
-                                                    )
-                                                }
-                                                sx={{ width: '100%' }}
+                        {elements.map((item, index) => (
+                            <Box
+                                key={item.id}
+                                sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}
+                            >
+                                <Chip
+                                    size="small"
+                                    sx={{
+                                        backgroundColor:
+                                            item?.specificMetadata?.equipmentType &&
+                                            equipmentColorsMap?.get(item?.specificMetadata?.equipmentType),
+                                    }}
+                                    onDelete={() => removeElements(index)}
+                                    onClick={() => handleChipClick(index)}
+                                    label={
+                                        <OverflowableText
+                                            text={
+                                                getValues(`${name}.${index}.${NAME}`) ? (
+                                                    <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                                                ) : (
+                                                    intl.formatMessage({ id: 'elementNotFound' })
+                                                )
+                                            }
+                                            sx={{ width: '100%' }}
+                                        />
+                                    }
+                                />
+                                {equipmentColorsMap && (
+                                    <FormHelperText>
+                                        {item?.specificMetadata?.equipmentType ? (
+                                            <FormattedMessage
+                                                id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)}
                                             />
-                                        }
-                                    />
-                                    {equipmentColorsMap && (
-                                        <FormHelperText>
-                                            {item?.specificMetadata?.equipmentType ? (
-                                                <FormattedMessage
-                                                    id={getFilterEquipmentTypeLabel(
-                                                        item.specificMetadata.equipmentType
-                                                    )}
-                                                />
-                                            ) : (
-                                                ''
-                                            )}
-                                        </FormHelperText>
-                                    )}
-                                </Box>
-                            );
-                        })}
+                                        ) : (
+                                            ''
+                                        )}
+                                    </FormHelperText>
+                                )}
+                            </Box>
+                        ))}
                     </FormControl>
                 )}
                 <Grid item xs>
