@@ -66,6 +66,7 @@ export interface DirectoryItemsInputProps {
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
     ChipComponent?: React.ComponentType<DirectoryItemChipProps & DirectoryItemChipWithHelperTextProps>;
+    chipProps?: DirectoryItemChipProps & DirectoryItemChipWithHelperTextProps;
 }
 
 export function DirectoryItemsInput({
@@ -82,6 +83,7 @@ export function DirectoryItemsInput({
     allowMultiSelect = true,
     labelRequiredFromContext = true,
     ChipComponent,
+    chipProps,
 }: Readonly<DirectoryItemsInputProps>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -223,12 +225,13 @@ export function DirectoryItemsInput({
                             return (
                                 <ChipToRender
                                     key={item.id}
-                                    item={item}
+                                    helperText={item?.specificMetadata?.equipmentType}
                                     index={index}
                                     name={name}
                                     elementName={elementName}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
+                                    {...chipProps}
                                 />
                             );
                         })}

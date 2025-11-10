@@ -11,36 +11,18 @@ import { getFilterEquipmentTypeLabel } from '../../filter/expert/expertFilterUti
 import { DirectoryItemChip, DirectoryItemChipProps } from './DirectoryItemChip';
 
 export interface DirectoryItemChipWithHelperTextProps extends DirectoryItemChipProps {
-    item: {
-        specificMetadata?: {
-            equipmentType?: string;
-        };
-    };
+    helperText?: string;
 }
 
 export function DirectoryItemChipWithHelperText({
-    item,
-    index,
-    name,
-    elementName,
-    onDelete,
-    onClick,
+    helperText,
+    ...otherProps
 }: Readonly<DirectoryItemChipWithHelperTextProps>) {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
-            <DirectoryItemChip
-                index={index}
-                name={name}
-                elementName={elementName}
-                onDelete={onDelete}
-                onClick={onClick}
-            />
+        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+            <DirectoryItemChip {...otherProps} />
             <FormHelperText>
-                {item?.specificMetadata?.equipmentType ? (
-                    <FormattedMessage id={getFilterEquipmentTypeLabel(item.specificMetadata.equipmentType)} />
-                ) : (
-                    ''
-                )}
+                {helperText ? <FormattedMessage id={getFilterEquipmentTypeLabel(helperText)} /> : ''}
             </FormHelperText>
         </Box>
     );

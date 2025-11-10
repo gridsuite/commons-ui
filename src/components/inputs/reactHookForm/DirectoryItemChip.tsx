@@ -6,21 +6,17 @@
  */
 
 import { useIntl } from 'react-intl';
-import { Chip } from '@mui/material';
-import { OverflowableText } from '../../overflowableText';
+import { Chip, type ChipProps } from '@mui/material';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
 import { NAME } from './constants';
 
-// interface shared by DirectoryItemChip and its variants
-export interface DirectoryItemChipProps {
+export interface DirectoryItemChipProps extends Omit<ChipProps, 'label'> {
     index: number;
     name: string;
     elementName?: string;
-    onDelete: () => void;
-    onClick: () => void;
 }
 
-export function DirectoryItemChip({ index, name, elementName, onDelete, onClick }: Readonly<DirectoryItemChipProps>) {
+export function DirectoryItemChip({ index, name, elementName, ...otherProps }: Readonly<DirectoryItemChipProps>) {
     const intl = useIntl();
     return (
         <Chip
@@ -34,20 +30,14 @@ export function DirectoryItemChip({ index, name, elementName, onDelete, onClick 
                       })
                     : undefined
             }
-            onDelete={onDelete}
-            onClick={onClick}
             label={
-                <OverflowableText
-                    text={
-                        elementName ? (
-                            <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                        ) : (
-                            intl.formatMessage({ id: 'elementNotFound' })
-                        )
-                    }
-                    sx={{ width: '100%' }}
-                />
+                elementName ? (
+                    <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                ) : (
+                    intl.formatMessage({ id: 'elementNotFound' })
+                )
             }
+            {...otherProps}
         />
     );
 }
