@@ -299,7 +299,10 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             }
             return rule.values.sort();
         }
-        return convertInputValue(rule.field, parseFloat(rule.value as string));
+        if (rule.dataType === DataType.NUMBER) {
+            return convertInputValue(rule.field, rule.value);
+        }
+        return rule.value;
     }
 
     function transformRule(rule: RuleTypeExport): RuleType {
