@@ -21,6 +21,11 @@ export type Metadata = {
 
 type ThemeColors = Record<string, string>;
 
+type SldAndNadColors = {
+    darkThemeColors: ThemeColors;
+    lightThemeColors: ThemeColors;
+};
+
 export type BaseVoltageConfig = {
     name: string;
     vlValue: number;
@@ -28,8 +33,7 @@ export type BaseVoltageConfig = {
     maxValue: number;
     label: string;
     mapColor: string;
-    darkThemeColors: ThemeColors;
-    lightThemeColors: ThemeColors;
+    sldAndNadColors: SldAndNadColors;
     profile: string;
 };
 
@@ -44,5 +48,5 @@ export type StudyMetadata = Metadata & {
     defaultCountry?: string;
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
-    baseVoltagesConfig?: BaseVoltageConfig[];
+    baseVoltagesConfig?: BaseVoltageConfig[]; // use to define the voltage ranges and their colors
 };
