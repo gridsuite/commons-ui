@@ -49,71 +49,110 @@ import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
 import UserInformationDialog from './UserInformationDialog';
 import UserSettingsDialog from './UserSettingsDialog';
 import { type Metadata } from '../../utils/types/metadata';
-import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles } from '../../utils/styles';
+import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles, type DensityType } from '../../utils/styles';
 import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
 import { DevModeBanner } from './DevModeBanner';
 
-const styles = {
-    grow: {
-        flexGrow: 1,
-        display: 'flex',
-        overflow: 'hidden',
+const DENSITY_CONFIG: Record<DensityType, { showAppsMenu: boolean; showArrowIcons: boolean }> = {
+    default: {
+        showAppsMenu: true,
+        showArrowIcons: true,
     },
-    menuContainer: {
-        marginLeft: 1,
+    compact: {
+        showAppsMenu: false,
+        showArrowIcons: false,
     },
-    link: {
-        textDecoration: 'none',
-        color: 'inherit',
-    },
-    name: (theme) => ({
-        backgroundColor: darken(theme.palette.background.paper, 0.1),
-        paddingTop: '10px',
-        borderRadius: '100%',
-        fontWeight: '400',
-        textTransform: 'uppercase',
-        height: '48px',
-        width: '48px',
-    }),
-    arrowIcon: {
-        fontSize: '40px',
-    },
-    userMail: {
-        fontSize: '14px',
-        display: 'block',
-    },
-    borderBottom: {
-        borderBottom: '1px solid #ccc',
-    },
-    borderTop: {
-        borderTop: '1px solid #ccc',
-    },
-    settingsMenu: {
-        maxWidth: '385px',
-        zIndex: 60,
-    },
-    sizeLabel: {
-        fontSize: '16px',
-    },
-    showHideMenu: {
-        padding: '0',
-        borderRadius: '25px',
-    },
-    toggleButtonGroup: {
-        marginLeft: '15px',
-        pointerEvents: 'auto',
-    },
-    toggleButton: {
-        height: '30px',
-        width: '48px',
-        padding: '7px',
-        textTransform: 'capitalize',
-    },
-    languageToggleButton: {
-        height: '30px',
-        width: '48px',
-    },
-} as const satisfies MuiStyles;
+} as const;
+
+const getStyles = (density: DensityType = 'default') => {
+    const isCompact = density === 'compact';
+
+    // Density-based size constants
+    const sizes = {
+        avatar: {
+            size: isCompact ? 36 : 48,
+            button: isCompact ? 40 : 55,
+            padding: isCompact ? 5 : 10,
+        },
+        spacing: {
+            menu: isCompact ? 0.5 : 1,
+        },
+        icon: {
+            arrow: isCompact ? 32 : 40,
+        },
+    };
+
+    return {
+        toolbar: {
+            ...(isCompact && {
+                minHeight: '48px !important',
+                paddingLeft: '7px !important',
+                paddingRight: '7px !important',
+            }),
+        },
+        grow: {
+            flexGrow: 1,
+            display: 'flex',
+            overflow: 'hidden',
+        },
+        menuContainer: {
+            marginLeft: sizes.spacing.menu,
+        },
+        link: {
+            textDecoration: 'none',
+            color: 'inherit',
+        },
+        name: (theme) => ({
+            backgroundColor: darken(theme.palette.background.paper, 0.1),
+            paddingTop: `${sizes.avatar.padding}px`,
+            borderRadius: '100%',
+            fontWeight: '400',
+            textTransform: 'uppercase',
+            height: `${sizes.avatar.size}px`,
+            width: `${sizes.avatar.size}px`,
+        }),
+        arrowIcon: {
+            fontSize: `${sizes.icon.arrow}px`,
+        },
+        userMail: {
+            fontSize: '14px',
+            display: 'block',
+        },
+        borderBottom: {
+            borderBottom: '1px solid #ccc',
+        },
+        borderTop: {
+            borderTop: '1px solid #ccc',
+        },
+        settingsMenu: {
+            maxWidth: '385px',
+            zIndex: 60,
+        },
+        sizeLabel: {
+            fontSize: '16px',
+        },
+        showHideMenu: {
+            padding: '0',
+            borderRadius: '50%',
+            minWidth: `${sizes.avatar.button}px`,
+            minHeight: `${sizes.avatar.button}px`,
+        },
+        toggleButtonGroup: {
+            marginLeft: '15px',
+            pointerEvents: 'auto',
+        },
+        toggleButton: {
+            height: '30px',
+            width: '48px',
+            padding: '7px',
+            textTransform: 'capitalize',
+        },
+        languageToggleButton: {
+            height: '30px',
+            width: '48px',
+        },
+    } as const satisfies MuiStyles;
+};
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -173,6 +212,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
         developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
+        density?: DensityType;
     };
 
 export function TopBar({
@@ -198,7 +238,10 @@ export function TopBar({
     equipmentLabelling,
     onLanguageClick,
     language,
+    density = 'default',
 }: PropsWithChildren<TopBarProps>) {
+    const styles = useMemo(() => getStyles(density), [density]);
+    const densityConfig = useMemo(() => DENSITY_CONFIG[density], [density]);
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
     const {
@@ -276,17 +319,19 @@ export function TopBar({
     };
 
     const logoClickable = useMemo(
-        () => <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} />,
-        [onLogoClick, appLogo, appName, appColor]
+        () => (
+            <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} density={density} />
+        ),
+        [onLogoClick, appLogo, appName, appColor, density]
     );
 
     return (
         <AppBar position="static" color="default">
             {user && developerMode && <DevModeBanner />}
-            <Toolbar>
+            <Toolbar sx={styles.toolbar}>
                 {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
-                {user && (
+                {user && densityConfig.showAppsMenu && (
                     <Box>
                         <IconButton
                             aria-label="apps"
@@ -356,11 +401,12 @@ export function TopBar({
                             <Box component="span" sx={styles.name}>
                                 {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
                             </Box>
-                            {anchorElSettingsMenu ? (
-                                <ArrowDropUpIcon sx={styles.arrowIcon} />
-                            ) : (
-                                <ArrowDropDownIcon sx={styles.arrowIcon} />
-                            )}
+                            {densityConfig.showArrowIcons &&
+                                (anchorElSettingsMenu ? (
+                                    <ArrowDropUpIcon sx={styles.arrowIcon} />
+                                ) : (
+                                    <ArrowDropDownIcon sx={styles.arrowIcon} />
+                                ))}
                         </Button>
 
                         {/* Settings menu */}
