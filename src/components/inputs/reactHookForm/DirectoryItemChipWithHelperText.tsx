@@ -7,7 +7,6 @@
 
 import { Box, FormHelperText } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { getFilterEquipmentTypeLabel } from '../../filter/expert/expertFilterUtils';
 import { DirectoryItemChip, DirectoryItemChipProps } from './DirectoryItemChip';
 
 export interface DirectoryItemChipWithHelperTextProps extends DirectoryItemChipProps {
@@ -21,9 +20,11 @@ export function DirectoryItemChipWithHelperText({
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
             <DirectoryItemChip {...otherProps} />
-            <FormHelperText>
-                {helperText ? <FormattedMessage id={getFilterEquipmentTypeLabel(helperText)} /> : ''}
-            </FormHelperText>
+            {helperText && (
+                <FormHelperText>
+                    <FormattedMessage id={helperText} />
+                </FormHelperText>
+            )}
         </Box>
     );
 }

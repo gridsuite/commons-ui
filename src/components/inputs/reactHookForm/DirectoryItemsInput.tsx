@@ -19,7 +19,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { type MuiStyles } from '../../../utils/styles';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ArrayAction, ElementAttributes, mergeSx } from '../../../utils';
+import { ArrayAction, ElementAttributes, EQUIPMENT_TYPE, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { DirectoryItemChip, DirectoryItemChipProps } from './DirectoryItemChip';
 import { DirectoryItemChipWithHelperTextProps } from './DirectoryItemChipWithHelperText';
@@ -222,15 +222,25 @@ export function DirectoryItemsInput({
 
                             const ChipToRender = ChipComponent ?? DirectoryItemChip;
 
+                            const equipmentTypeTagLabel =
+                                (item?.specificMetadata?.equipmentType &&
+                                    EQUIPMENT_TYPE[item.specificMetadata.equipmentType as keyof typeof EQUIPMENT_TYPE]
+                                        ?.tagLabel) ??
+                                '';
+
                             return (
                                 <ChipToRender
                                     key={item.id}
-                                    helperText={item?.specificMetadata?.equipmentType}
                                     index={index}
                                     name={name}
                                     elementName={elementName}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
+                                    {...(equipmentTypeTagLabel && {
+                                        helperText: intl.formatMessage({
+                                            id: equipmentTypeTagLabel,
+                                        }),
+                                    })}
                                     {...chipProps}
                                 />
                             );
