@@ -56,7 +56,7 @@ export interface GridLogoProps extends Omit<LogoTextProps, 'style'> {
     density?: DensityType;
 }
 
-export function LogoText({ appName, appColor, style, onClick, density = 'default' }: Partial<LogoTextProps>) {
+export function LogoText({ appName, appColor, style, onClick, density = 'default' }: Readonly<Partial<LogoTextProps>>) {
     const styles = useMemo(() => getStyles(density), [density]);
     return (
         <Typography sx={mergeSx(style, onClick && styles.clickable)} onClick={onClick}>
@@ -66,7 +66,13 @@ export function LogoText({ appName, appColor, style, onClick, density = 'default
     );
 }
 
-export function GridLogo({ appLogo, appName, appColor, onClick, density = 'default' }: Partial<GridLogoProps>) {
+export function GridLogo({
+    appLogo,
+    appName,
+    appColor,
+    onClick,
+    density = 'default',
+}: Readonly<Partial<GridLogoProps>>) {
     const styles = useMemo(() => getStyles(density), [density]);
     return (
         <Box sx={mergeSx(styles.container, onClick && styles.clickable)} onClick={onClick}>
