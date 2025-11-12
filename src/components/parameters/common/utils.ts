@@ -5,7 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UseFormReturn } from 'react-hook-form';
-import { ParameterType, SpecificParameterInfos, SpecificParametersDescription, SpecificParametersValues } from '../../../utils';
+import {
+    ParameterType,
+    SpecificParameterInfos,
+    SpecificParametersDescription,
+    SpecificParametersValues,
+} from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constant';
 import yup from '../../../utils/yupConfig';
 
