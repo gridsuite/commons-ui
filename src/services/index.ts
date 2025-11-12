@@ -14,4 +14,5 @@ export * from './study-config';
 export * from './userAdmin';
 export * from './voltage-init';
 export * from './security-analysis';
+export * from './short-circuit-analysis';
 export { CustomError } from './businessErrorCode';

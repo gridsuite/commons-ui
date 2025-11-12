@@ -60,12 +60,14 @@ export function LoadFlowParametersForm({
         handleTabChange,
         tabIndexesWithError,
         formattedProviders,
-        specificParameters,
+        specificParametersDescriptionForProvider,
         params,
         currentProvider,
         defaultLimitReductions,
         paramsLoaded,
     } = loadflowMethods;
+    console.log('SBO LoadFlowParametersForm paramsLoaded', paramsLoaded);
+    console.log('SBO LoadFlowParametersForm formState', formMethods.formState);
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>
@@ -83,7 +85,7 @@ export function LoadFlowParametersForm({
                             <LoadFlowParametersContent
                                 selectedTab={selectedTab}
                                 currentProvider={currentProvider ?? ''}
-                                specificParameters={specificParameters}
+                                specificParameters={specificParametersDescriptionForProvider}
                                 params={params}
                                 defaultLimitReductions={defaultLimitReductions}
                             />
