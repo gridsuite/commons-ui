@@ -28,6 +28,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 interface SensitivityAnalysisParametersProps {
     studyUuid: UUID | null;
@@ -78,11 +79,7 @@ export function SensitivityAnalysisParametersInline({
                         sensitivityAnalysisMethods.initRowsCount();
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
@@ -92,10 +89,7 @@ export function SensitivityAnalysisParametersInline({
 
     const resetSensitivityAnalysisParameters = useCallback(() => {
         setSensitivityAnalysisParameters(studyUuid, null).catch((error) => {
-            snackError({
-                messageTxt: error.message,
-                headerId: 'paramsChangingError',
-            });
+            snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
         });
     }, [studyUuid, snackError]);
 

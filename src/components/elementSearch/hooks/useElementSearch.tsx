@@ -8,6 +8,7 @@
 import { useCallback, useRef, useState } from 'react';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
+import { snackWithFallback } from '../../../utils/error';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
 
@@ -77,10 +78,7 @@ export const useElementSearch = <T,>(
                         setElementsFound([]);
                         setTotalElements(0);
                         setIsLoading(false);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'equipmentsSearchingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'equipmentsSearchingError' });
                     }
                 });
         },

@@ -33,6 +33,7 @@ import {
     ShortCircuitParametersInfos,
 } from './short-circuit-parameters.type';
 import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -207,18 +208,12 @@ export const useShortCircuitParametersForm = ({
                 })
                     .then(() => {
                         invalidateStudyShortCircuitStatus(studyUuid).catch((error) => {
-                            snackError({
-                                messageTxt: error.message,
-                                headerId: 'invalidateShortCircuitStatusError',
-                            });
+                            snackWithFallback(snackError, error, { headerId: 'invalidateShortCircuitStatusError' });
                         });
                     })
                     .catch((error) => {
                         setShortCircuitParameters(oldParams);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsChangingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
                     });
             }
         },
@@ -235,10 +230,7 @@ export const useShortCircuitParametersForm = ({
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsChangingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
                 });
             }
         },
@@ -256,10 +248,7 @@ export const useShortCircuitParametersForm = ({
                     setShortCircuitParameters(params);
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsRetrievingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                 })
                 .finally(() => {
                     clearTimeout(timer);

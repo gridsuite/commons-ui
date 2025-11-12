@@ -58,6 +58,7 @@ import {
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
+import { snackWithFallback } from '../../../utils/error';
 
 type SubTabsValues = 'sensitivityInjectionsSet' | 'sensitivityInjection' | 'sensitivityHVDC' | 'sensitivityPST';
 
@@ -243,10 +244,7 @@ export const useSensitivityAnalysisParametersForm = ({
                 })
                 .catch((error) => {
                     setLaunchLoader(false);
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'getSensitivityAnalysisFactorsCountError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
                 });
         },
         [snackError, studyUuid, currentRootNetworkUuid, formatFilteredParams, setValue, getResultCount, currentNodeUuid]
@@ -451,10 +449,7 @@ export const useSensitivityAnalysisParametersForm = ({
                     initRowsCount();
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updateSensitivityAnalysisParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'updateSensitivityAnalysisParametersError' });
                 });
         },
         [setSensitivityAnalysisParams, snackError, studyUuid, formatNewParams, initRowsCount, updateParameters]
@@ -470,10 +465,7 @@ export const useSensitivityAnalysisParametersForm = ({
                     ElementType.SENSITIVITY_PARAMETERS,
                     formData[FieldConstants.DESCRIPTION] ?? ''
                 ).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updateSensitivityAnalysisParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'updateSensitivityAnalysisParametersError' });
                 });
             }
         },
