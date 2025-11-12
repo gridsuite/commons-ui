@@ -6,9 +6,10 @@
  */
 
 import { useIntl } from 'react-intl';
-import { Chip, type ChipProps } from '@mui/material';
+import { Box, Chip, type ChipProps } from '@mui/material';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
 import { NAME } from './constants';
+import { OverflowableText } from '../../overflowableText';
 
 export interface DirectoryItemChipProps extends Omit<ChipProps, 'label'> {
     index: number;
@@ -31,11 +32,21 @@ export function DirectoryItemChip({ index, name, elementName, ...otherProps }: R
                     : undefined
             }
             label={
-                elementName ? (
-                    <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                ) : (
-                    intl.formatMessage({ id: 'elementNotFound' })
-                )
+                <Box sx={{ display: 'flex' }}>
+                    <OverflowableText
+                        text={
+                            elementName ? (
+                                <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                            ) : (
+                                intl.formatMessage({ id: 'elementNotFound' })
+                            )
+                        }
+                        sx={{
+                            maxWidth: '20ch',
+                            mx: 'auto',
+                        }}
+                    />
+                </Box>
             }
             {...otherProps}
         />
