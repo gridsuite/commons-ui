@@ -103,6 +103,7 @@ import {
     networkModificationsFr,
     logout,
     equipmentStyles,
+    LeftPanelOpenIcon,
 } from '../../src';
 
 const messages = {
@@ -631,6 +632,7 @@ function AppContent({ language, onLanguageClick }) {
             <hr />
             <hr />
             {testIcons()}
+            <LeftPanelOpenIcon fontSize="large" color="secondary" />
             <hr />
 
             <PermanentSnackButton />
