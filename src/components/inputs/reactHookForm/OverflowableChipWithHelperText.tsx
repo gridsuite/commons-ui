@@ -7,19 +7,19 @@
 
 import { Box, FormHelperText } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { DirectoryItemChip, DirectoryItemChipProps } from './DirectoryItemChip';
+import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
 
-export interface DirectoryItemChipWithHelperTextProps extends DirectoryItemChipProps {
+export interface OverflowableChipWithHelperTextProps extends OverflowableChipProps {
     helperText?: string;
 }
 
-export function DirectoryItemChipWithHelperText({
+export function OverflowableChipWithHelperText({
     helperText,
     ...otherProps
-}: Readonly<DirectoryItemChipWithHelperTextProps>) {
+}: Readonly<OverflowableChipWithHelperTextProps>) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <DirectoryItemChip {...otherProps} />
+            <OverflowableChip {...otherProps} />
             {helperText && (
                 <FormHelperText>
                     <FormattedMessage id={helperText} />

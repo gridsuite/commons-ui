@@ -21,8 +21,9 @@ import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
 import { ArrayAction, ElementAttributes, EQUIPMENT_TYPE, mergeSx } from '../../../utils';
 import { NAME } from './constants';
-import { DirectoryItemChip, DirectoryItemChipProps } from './DirectoryItemChip';
-import { DirectoryItemChipWithHelperTextProps } from './DirectoryItemChipWithHelperText';
+import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
+import { OverflowableChipWithHelperTextProps } from './OverflowableChipWithHelperText';
+import { RawReadOnlyInput } from './RawReadOnlyInput';
 
 const styles = {
     formDirectoryElements1: {
@@ -65,8 +66,8 @@ export interface DirectoryItemsInputProps {
     disable?: boolean;
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
-    ChipComponent?: React.ComponentType<DirectoryItemChipProps & DirectoryItemChipWithHelperTextProps>;
-    chipProps?: DirectoryItemChipProps & DirectoryItemChipWithHelperTextProps;
+    ChipComponent?: React.ComponentType<OverflowableChipProps & OverflowableChipWithHelperTextProps>;
+    chipProps?: OverflowableChipProps & OverflowableChipWithHelperTextProps;
 }
 
 export function DirectoryItemsInput({
@@ -220,7 +221,7 @@ export function DirectoryItemsInput({
                                 getValues(`${name}.${index}.${NAME}`) ??
                                 (item as FieldValues)?.[NAME];
 
-                            const ChipToRender = ChipComponent ?? DirectoryItemChip;
+                            const ChipToRender = ChipComponent ?? OverflowableChip;
 
                             const equipmentTypeTagLabel =
                                 (item?.specificMetadata?.equipmentType &&
@@ -228,20 +229,36 @@ export function DirectoryItemsInput({
                                         ?.tagLabel) ??
                                 '';
 
+                            const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
+
                             return (
                                 <ChipToRender
                                     key={item.id}
-                                    index={index}
-                                    name={name}
-                                    elementName={elementName}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
+                                    label={
+                                        elementName ? (
+                                            <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                                        ) : (
+                                            intl.formatMessage({ id: 'elementNotFound' })
+                                        )
+                                    }
                                     {...(equipmentTypeTagLabel && {
                                         helperText: intl.formatMessage({
                                             id: equipmentTypeTagLabel,
                                         }),
                                     })}
-                                    {...chipProps}
+                                    sx={mergeSx(
+                                        !elementName
+                                            ? (theme) => ({
+                                                  backgroundColor: theme.palette.error.light,
+                                                  borderColor: theme.palette.error.main,
+                                                  color: theme.palette.error.contrastText,
+                                              })
+                                            : undefined,
+                                        chipSx
+                                    )}
+                                    {...otherChipProps}
                                 />
                             );
                         })}
