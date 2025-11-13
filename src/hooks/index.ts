@@ -7,6 +7,7 @@
 
 export * from './customStates';
 export * from './useModificationLabelComputer';
+export * from './use-clipboard';
 export * from './useConfidentialityWarning';
 export * from './useDebounce';
 export * from './useIntlRef';

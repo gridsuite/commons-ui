@@ -7,35 +7,26 @@
 
 import { useCallback } from 'react';
 import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
-import { useIntl, IntlShape } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
 import { LANG_FRENCH } from '../../utils';
 
 const NA_VALUE = 'N/A';
 
-const formatNAValue = (value: string, intl: IntlShape): string => {
-    return value === NA_VALUE ? intl.formatMessage({ id: 'export/undefined' }) : value;
-};
-
 export const useCsvExport = () => {
     const intl = useIntl();
 
-    const getCSVFilename = useCallback((tableName: string) => {
-        return tableName
-            .trim()
-            .replace(/[\\/:"*?<>|\s]/g, '-') // Removes the filesystem sensible characters
-            .substring(0, 27); // Best practice : limits the filename size to 31 characters (27+'.csv')
-    }, []);
-
-    const downloadCSVData = useCallback(
+    const getCsvProps = useCallback(
         (props: CsvDownloadProps) => {
+            const formatNAValue = (value: string): string => {
+                return value === NA_VALUE ? intl.formatMessage({ id: 'export/undefined' }) : value;
+            };
             const hasColId = (colId: string | undefined): colId is string => {
                 return colId !== undefined;
             };
-
             const processCell = (params: ProcessCellForExportParams): string => {
                 if (params.column.getColId() === 'limitName') {
-                    return formatNAValue(params.value, intl);
+                    return formatNAValue(params.value);
                 }
                 // If the language is in French, we change the decimal separator
                 if (props.language === LANG_FRENCH && typeof params.value === 'number') {
@@ -43,9 +34,15 @@ export const useCsvExport = () => {
                 }
                 return params.value;
             };
+            const getCSVFilename = (tableName: string) => {
+                return tableName
+                    .trim()
+                    .replace(/[\\/:"*?<>|\s]/g, '-') // Removes the filesystem sensible characters
+                    .substring(0, 27); // Best practice: limits the filename size to 31 characters (27+'.csv')
+            };
             const prefix = props.tableNamePrefix ?? '';
 
-            const csvExportParams: CsvExportParams = {
+            return {
                 suppressQuotes: false,
                 skipPinnedBottom: props.skipPinnedBottom,
                 columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
@@ -55,46 +52,25 @@ export const useCsvExport = () => {
                     params.column.getColDef().headerComponentParams?.displayName ??
                     params.column.getColDef().headerName ??
                     params.column.getColId(),
-                fileName: prefix.concat(getCSVFilename(props.tableName)),
+                fileName: props.exportDataAsCsv ? prefix.concat(getCSVFilename(props.tableName)) : undefined,
                 processCellCallback: processCell,
-            };
-            props.exportDataAsCsv?.(csvExportParams);
+            } as CsvExportParams;
         },
-        [getCSVFilename, intl]
+        [intl]
+    );
+
+    const downloadCSVData = useCallback(
+        (props: CsvDownloadProps) => {
+            props.exportDataAsCsv?.(getCsvProps(props));
+        },
+        [getCsvProps]
     );
 
     const getCSVData = useCallback(
         (props: CsvDownloadProps): string | undefined => {
-            const hasColId = (colId: string | undefined): colId is string => {
-                return colId !== undefined;
-            };
-
-            const processCell = (params: ProcessCellForExportParams): string => {
-                if (params.column.getColId() === 'limitName') {
-                    return formatNAValue(params.value, intl);
-                }
-                // If the language is in French, we change the decimal separator
-                if (props.language === LANG_FRENCH && typeof params.value === 'number') {
-                    return params.value.toString().replace('.', ',');
-                }
-                return params.value;
-            };
-
-            const csvExportParams: CsvExportParams = {
-                suppressQuotes: false,
-                skipPinnedBottom: props.skipPinnedBottom,
-                columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
-                columnKeys: props.columns.map((col) => col.colId).filter(hasColId),
-                skipColumnHeaders: props.skipColumnHeaders,
-                processHeaderCallback: (params: ProcessHeaderForExportParams) =>
-                    params.column.getColDef().headerComponentParams?.displayName ??
-                    params.column.getColDef().headerName ??
-                    params.column.getColId(),
-                processCellCallback: processCell,
-            };
-            return props.getDataAsCsv?.(csvExportParams);
+            return props.getDataAsCsv?.(getCsvProps(props));
         },
-        [intl]
+        [getCsvProps]
     );
 
     return { downloadCSVData, getCSVData };
