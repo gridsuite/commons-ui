@@ -13,10 +13,9 @@ import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../inputs';
 import { LabelledButton } from '../common';
 import { PopupConfirmationDialog } from '../../dialogs';
-import { PccMinParameters } from './pcc-min.type';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
-import { updatePccMinParameters } from './pcc-min';
+import { PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 
 export function PccMinParametersInLine({
     studyUuid,

@@ -5,10 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson } from '../../../services/utils';
-import { getStudyUrl } from '../../../services/security-analysis';
-import { PREFIX_STUDY_QUERIES } from '../../../services/loadflow';
-import { PccMinParameters } from './pcc-min.type';
+import { backendFetch, backendFetchJson } from './utils';
+import { getStudyUrl } from './security-analysis';
+import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { FilterIdentifier, FILTERS } from '../utils/constants/filterConstant';
+
+export type PccMinParameters = {
+    [FILTERS]: FilterIdentifier[];
+};
 
 export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParameters | null> {
     console.info('get pcc min study parameters');

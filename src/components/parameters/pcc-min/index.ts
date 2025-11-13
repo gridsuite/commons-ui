@@ -5,6 +5,4 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export * from './pcc-min.type';
 export * from './pcc-min-parameters-inline';
-export * from './pcc-min';

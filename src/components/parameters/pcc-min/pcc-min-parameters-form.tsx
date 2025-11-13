@@ -12,7 +12,7 @@ import { ParameterLineDirectoryItemsInput } from '../common';
 import type { MuiStyles } from '../../../utils/styles';
 import { ElementType, EquipmentType } from '../../../utils';
 import { UsePccMinParametersFormReturn } from './use-pcc-min-parameters-form';
-import { FILTERS } from '../voltage-init';
+import { FILTERS } from '../../../utils/constants/filterConstant';
 
 export const styles = {
     gridWithActions: (theme) => ({

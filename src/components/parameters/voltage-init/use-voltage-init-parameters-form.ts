@@ -13,11 +13,9 @@ import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
-    FILTERS,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
-    ID,
     LOW_VOLTAGE_LIMIT,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
@@ -47,6 +45,7 @@ import {
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
 import { SELECTED } from '../../dnd-table';
+import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;

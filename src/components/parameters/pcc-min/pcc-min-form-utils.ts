@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { PccMinParameters } from '../../../services';
+import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { NAME } from '../../inputs';
-import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../voltage-init';
-import { PccMinParameters } from './pcc-min.type';
 
 export const fromPccMinParametersFormToParamValues = (newParams: Record<string, any>): PccMinParameters | null => ({
     filters:

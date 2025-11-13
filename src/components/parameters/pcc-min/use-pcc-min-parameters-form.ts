@@ -16,11 +16,10 @@ import {
     fromPccMinParamsDataToFormValues,
     fromStudyPccMinParamsDataToFormValues,
 } from './pcc-min-form-utils';
-import { PccMinParameters } from './pcc-min.type';
-import { FILTERS, ID } from '../voltage-init';
-import { getPccMinStudyParameters, updatePccMinParameters } from './pcc-min';
 import { useSnackMessage } from '../../../hooks';
 import { NAME } from '../../inputs';
+import { FILTERS, ID } from '../../../utils/constants/filterConstant';
+import { getPccMinStudyParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 
 export interface UsePccMinParametersFormReturn {
     formMethods: UseFormReturn;
