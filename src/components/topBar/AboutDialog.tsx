@@ -22,6 +22,7 @@ import {
     Fade,
     Grid,
     Stack,
+    Theme,
     Tooltip,
     tooltipClasses,
     Typography,
@@ -33,7 +34,7 @@ import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { LogoText } from './GridLogo';
-import type { MuiStyles } from '../../utils/styles';
+import { mergeSx, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     general: {
@@ -252,10 +253,11 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                     </Typography>
                     <Typography
                         variant="caption"
-                        color={(theme) => theme.palette.text.secondary}
+                        sx={mergeSx(moduleStyles.version, (theme: Theme) => ({
+                            color: theme.palette.text.secondary,
+                        }))}
                         display="inline"
                         noWrap
-                        sx={moduleStyles.version}
                     >
                         {gitTag || version || null}
                     </Typography>
@@ -460,7 +462,9 @@ export function AboutDialog({
                                             ))}
                                         </>
                                     )) || (
-                                        <Typography color={(selectedTheme) => selectedTheme.palette.error.main}>
+                                        <Typography
+                                            sx={{ color: (selectedTheme: Theme) => selectedTheme.palette.error.main }}
+                                        >
                                             Error
                                         </Typography>
                                     )
