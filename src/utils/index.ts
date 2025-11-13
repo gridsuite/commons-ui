@@ -10,6 +10,7 @@ export * from './conversionUtils';
 export * from './functions';
 export * from './langs';
 export * from './mapper';
+export * from './navigator-clipboard';
 export * from './constants/notificationsProvider';
 export * from './styles';
 export * from './types';
