@@ -53,6 +53,9 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
+// Props used by the chip component rendered by DirectoryItemsInput
+type DirectoryChipProps = OverflowableChipProps & OverflowableChipWithHelperTextProps;
+
 export interface DirectoryItemsInputProps {
     label: string | undefined;
     name: string;
@@ -66,8 +69,8 @@ export interface DirectoryItemsInputProps {
     disable?: boolean;
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
-    ChipComponent?: React.ComponentType<OverflowableChipProps & OverflowableChipWithHelperTextProps>;
-    chipProps?: OverflowableChipProps & OverflowableChipWithHelperTextProps;
+    ChipComponent?: React.ComponentType<DirectoryChipProps>;
+    chipProps?: Partial<DirectoryChipProps>;
 }
 
 export function DirectoryItemsInput({
