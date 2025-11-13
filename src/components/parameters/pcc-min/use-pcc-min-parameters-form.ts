@@ -28,22 +28,13 @@ export interface UsePccMinParametersFormReturn {
     onSaveInline: (formData: Record<string, any>) => void;
 }
 
-// GridExplore versus GridStudy exclusive input params
-type UsePccMinParametersFormProps =
-    | {
-          parametersUuid: UUID;
-          name: string;
-          description: string | null;
-          studyUuid: null;
-          parameters: null;
-      }
-    | {
-          parametersUuid: null;
-          name: null;
-          description: null;
-          studyUuid: UUID | null;
-          parameters: PccMinParameters | null;
-      };
+type UsePccMinParametersFormProps = {
+    parametersUuid: UUID | null;
+    name: string | null;
+    description: string | null;
+    studyUuid: UUID | null;
+    parameters: PccMinParameters | null;
+};
 
 export const UsePccMinParametersForm = ({
     parametersUuid,
