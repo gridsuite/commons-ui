@@ -5,25 +5,24 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Chip, FormControl, FormHelperText, Grid, IconButton, Tooltip } from '@mui/material';
+import { FormControl, Grid, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
-import { RawReadOnlyInput } from './RawReadOnlyInput';
 import { FieldLabel, isFieldRequired } from './utils';
 import { useCustomFormContext } from './provider';
 import { ErrorInput, MidFormError } from './errorManagement';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { type MuiStyles } from '../../../utils/styles';
-import { OverflowableText } from '../../overflowableText';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ArrayAction, ElementAttributes, mergeSx } from '../../../utils';
+import { ArrayAction, ElementAttributes, EQUIPMENT_TYPE, mergeSx } from '../../../utils';
 import { NAME } from './constants';
-import { getFilterEquipmentTypeLabel } from '../../filter/expert/expertFilterUtils';
+import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
+import { RawReadOnlyInput } from './RawReadOnlyInput';
 
 const styles = {
     formDirectoryElements1: {
@@ -53,7 +52,7 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-export interface DirectoryItemsInputProps {
+export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = OverflowableChipProps> {
     label: string | undefined;
     name: string;
     elementType: string;
@@ -66,10 +65,11 @@ export interface DirectoryItemsInputProps {
     disable?: boolean;
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
-    equipmentColorsMap?: Map<string, string>;
+    ChipComponent?: ComponentType<CP>;
+    chipProps?: Partial<CP>;
 }
 
-export function DirectoryItemsInput({
+export function DirectoryItemsInput<CP extends OverflowableChipProps = OverflowableChipProps>({
     label,
     name,
     elementType, // Used to specify type of element (Filter, Contingency list, ...)
@@ -82,8 +82,9 @@ export function DirectoryItemsInput({
     disable = false,
     allowMultiSelect = true,
     labelRequiredFromContext = true,
-    equipmentColorsMap,
-}: Readonly<DirectoryItemsInputProps>) {
+    ChipComponent = OverflowableChip,
+    chipProps,
+}: Readonly<DirectoryItemsInputProps<CP>>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);
@@ -219,56 +220,43 @@ export function DirectoryItemsInput({
                                 getValues(`${name}.${index}.${NAME}`) ??
                                 (item as FieldValues)?.[NAME];
 
+                            const equipmentTypeTagLabel =
+                                (item?.specificMetadata?.equipmentType &&
+                                    EQUIPMENT_TYPE[item.specificMetadata.equipmentType as keyof typeof EQUIPMENT_TYPE]
+                                        ?.tagLabel) ??
+                                '';
+
+                            const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
+
                             return (
-                                <Box
+                                <ChipComponent
                                     key={item.id}
-                                    sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}
-                                >
-                                    <Chip
-                                        size="small"
-                                        sx={mergeSx(
-                                            {
-                                                backgroundColor:
-                                                    item?.specificMetadata?.equipmentType &&
-                                                    equipmentColorsMap?.get(item?.specificMetadata?.equipmentType),
-                                            },
-                                            !elementName
-                                                ? (theme) => ({
-                                                      backgroundColor: theme.palette.error.light,
-                                                      borderColor: theme.palette.error.main,
-                                                      color: theme.palette.error.contrastText,
-                                                  })
-                                                : undefined
-                                        )}
-                                        onDelete={() => removeElements(index)}
-                                        onClick={() => handleChipClick(index)}
-                                        label={
-                                            <OverflowableText
-                                                text={
-                                                    elementName ? (
-                                                        <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                                                    ) : (
-                                                        intl.formatMessage({ id: 'elementNotFound' })
-                                                    )
-                                                }
-                                                sx={{ width: '100%' }}
-                                            />
-                                        }
-                                    />
-                                    {equipmentColorsMap && (
-                                        <FormHelperText>
-                                            {item?.specificMetadata?.equipmentType ? (
-                                                <FormattedMessage
-                                                    id={getFilterEquipmentTypeLabel(
-                                                        item.specificMetadata.equipmentType
-                                                    )}
-                                                />
-                                            ) : (
-                                                ''
-                                            )}
-                                        </FormHelperText>
+                                    onDelete={() => removeElements(index)}
+                                    onClick={() => handleChipClick(index)}
+                                    label={
+                                        elementName ? (
+                                            <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
+                                        ) : (
+                                            intl.formatMessage({ id: 'elementNotFound' })
+                                        )
+                                    }
+                                    {...(equipmentTypeTagLabel && {
+                                        helperText: intl.formatMessage({
+                                            id: equipmentTypeTagLabel,
+                                        }),
+                                    })}
+                                    sx={mergeSx(
+                                        !elementName
+                                            ? (theme) => ({
+                                                  backgroundColor: theme.palette.error.light,
+                                                  borderColor: theme.palette.error.main,
+                                                  color: theme.palette.error.contrastText,
+                                              })
+                                            : undefined,
+                                        chipSx
                                     )}
-                                </Box>
+                                    {...(otherChipProps as CP)}
+                                />
                             );
                         })}
                     </FormControl>

@@ -7,7 +7,7 @@
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, type BoxProps, styled, Tooltip } from '@mui/material';
 import { Style } from 'node:util';
-import type { SxStyle, MuiStyles } from '../../utils/styles';
+import { mergeSx, MuiStyles, SxStyle } from '../../utils';
 
 const overflowStyle = {
     overflow: {
@@ -47,6 +47,7 @@ export const OverflowableText = styled(
         tooltipSx,
         className,
         children,
+        sx,
         ...props
     }: OverflowableTextProps) => {
         const element = useRef<HTMLHeadingElement>();
@@ -89,6 +90,8 @@ export const OverflowableText = styled(
             }),
         };
 
+        const boxSx = mergeSx(isMultiLine ? multilineOverflowStyle(maxLineCount) : overflowStyle.overflow, sx);
+
         return (
             <Tooltip
                 title={text || ''}
@@ -97,12 +100,7 @@ export const OverflowableText = styled(
                     ...tooltipStyleProps /* legacy classes or newer slotProps API */
                 }
             >
-                <Box
-                    {...props}
-                    ref={element}
-                    className={className}
-                    sx={isMultiLine ? multilineOverflowStyle(maxLineCount) : overflowStyle.overflow}
-                >
+                <Box ref={element} className={className} sx={boxSx} {...props}>
                     {children || text}
                 </Box>
             </Tooltip>
