@@ -7,7 +7,7 @@
 
 import { FormControl, Grid, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
@@ -22,7 +22,6 @@ import { fetchDirectoryElementPath } from '../../../services';
 import { ArrayAction, ElementAttributes, EQUIPMENT_TYPE, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
-import { OverflowableChipWithHelperTextProps } from './OverflowableChipWithHelperText';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
 
 const styles = {
@@ -53,10 +52,7 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-// Props used by the chip component rendered by DirectoryItemsInput
-type DirectoryChipProps = OverflowableChipProps & OverflowableChipWithHelperTextProps;
-
-export interface DirectoryItemsInputProps {
+export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = OverflowableChipProps> {
     label: string | undefined;
     name: string;
     elementType: string;
@@ -69,11 +65,11 @@ export interface DirectoryItemsInputProps {
     disable?: boolean;
     allowMultiSelect?: boolean;
     labelRequiredFromContext?: boolean;
-    ChipComponent?: React.ComponentType<DirectoryChipProps>;
-    chipProps?: Partial<DirectoryChipProps>;
+    ChipComponent?: ComponentType<CP>;
+    chipProps?: Partial<CP>;
 }
 
-export function DirectoryItemsInput({
+export function DirectoryItemsInput<CP extends OverflowableChipProps = OverflowableChipProps>({
     label,
     name,
     elementType, // Used to specify type of element (Filter, Contingency list, ...)
@@ -86,9 +82,9 @@ export function DirectoryItemsInput({
     disable = false,
     allowMultiSelect = true,
     labelRequiredFromContext = true,
-    ChipComponent,
+    ChipComponent = OverflowableChip,
     chipProps,
-}: Readonly<DirectoryItemsInputProps>) {
+}: Readonly<DirectoryItemsInputProps<CP>>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
     const [selected, setSelected] = useState<UUID[]>([]);
@@ -224,8 +220,6 @@ export function DirectoryItemsInput({
                                 getValues(`${name}.${index}.${NAME}`) ??
                                 (item as FieldValues)?.[NAME];
 
-                            const ChipToRender = ChipComponent ?? OverflowableChip;
-
                             const equipmentTypeTagLabel =
                                 (item?.specificMetadata?.equipmentType &&
                                     EQUIPMENT_TYPE[item.specificMetadata.equipmentType as keyof typeof EQUIPMENT_TYPE]
@@ -235,7 +229,7 @@ export function DirectoryItemsInput({
                             const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
 
                             return (
-                                <ChipToRender
+                                <ChipComponent
                                     key={item.id}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
@@ -261,7 +255,7 @@ export function DirectoryItemsInput({
                                             : undefined,
                                         chipSx
                                     )}
-                                    {...otherChipProps}
+                                    {...(otherChipProps as CP)}
                                 />
                             );
                         })}
