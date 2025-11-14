@@ -18,10 +18,10 @@ export function OverflowableChipWithHelperText({
     ...otherProps
 }: Readonly<OverflowableChipWithHelperTextProps>) {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
             <OverflowableChip {...otherProps} />
             {helperText && (
-                <FormHelperText>
+                <FormHelperText sx={{ paddingLeft: 1.5, fontSize: 'x-small' }}>
                     <FormattedMessage id={helperText} />
                 </FormHelperText>
             )}
