@@ -21,9 +21,6 @@ export class CustomError extends Error {
 
 export function formatMessageValues(properties: Record<string, unknown>): Record<string, string> {
     return Object.fromEntries(
-        Object.entries(properties).map(([key, value]) => [
-            key,
-            typeof value === 'object' ? JSON.stringify(value) : String(value),
-        ])
+        Object.entries(properties).map(([key, value]) => [key, typeof value === 'object' ? JSON.stringify(value) : ''])
     );
 }

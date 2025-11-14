@@ -102,10 +102,9 @@ export function ExpertFilterEditionDialog({
                     if (error instanceof CustomError && error.businessErrorCode != null) {
                         snackError({
                             messageId: error.businessErrorCode,
-                            messageValues:
-                                error.businessErrorValues != null
-                                    ? formatMessageValues(error.businessErrorValues)
-                                    : undefined,
+                            messageValues: error.businessErrorValues
+                                ? formatMessageValues(error.businessErrorValues)
+                                : undefined,
                             headerId: 'cannotSaveFilter',
                         });
                     } else {
