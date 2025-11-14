@@ -20,12 +20,10 @@ export class CustomError extends Error {
 }
 
 export function formatMessageValues(properties: Record<string, unknown>): Record<string, string> {
-    return Object.entries(properties).reduce<Record<string, string>>((acc, [key, value]) => {
-        if (typeof value === 'object') {
-            acc[key] = JSON.stringify(value);
-            return acc;
-        }
-        acc[key] = `${value}`;
-        return acc;
-    }, {});
+    return Object.fromEntries(
+        Object.entries(properties).map(([key, value]) => [
+            key,
+            typeof value === 'object' ? JSON.stringify(value) : String(value),
+        ])
+    );
 }
