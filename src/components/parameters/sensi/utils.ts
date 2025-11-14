@@ -33,7 +33,7 @@ import { DistributionType, SensitivityType } from '../../../utils';
 import { PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
-import { ID } from '../voltage-init';
+import { ID } from '../../../utils/constants/filterConstant';
 
 const getMonitoredBranchesSchema = () => {
     return {

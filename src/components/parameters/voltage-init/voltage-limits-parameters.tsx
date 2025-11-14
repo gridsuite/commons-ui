@@ -11,7 +11,6 @@ import { Info as InfoIcon } from '@mui/icons-material';
 import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {
-    FILTERS,
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
     VOLTAGE_LIMITS_DEFAULT,
@@ -20,6 +19,7 @@ import {
 import { ElementType, EquipmentType } from '../../../utils';
 import { VoltageAdornment } from '../common';
 import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
+import { FILTERS } from '../../../utils/constants/filterConstant';
 
 export function VoltageLimitsParameters() {
     const intl = useIntl();
