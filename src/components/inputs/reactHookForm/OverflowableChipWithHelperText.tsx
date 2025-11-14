@@ -6,7 +6,6 @@
  */
 
 import { Box, FormHelperText } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
 
 export interface OverflowableChipWithHelperTextProps extends OverflowableChipProps {
@@ -20,11 +19,7 @@ export function OverflowableChipWithHelperText({
     return (
         <Box sx={{ display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
             <OverflowableChip {...otherProps} />
-            {helperText && (
-                <FormHelperText sx={{ paddingLeft: 1.5, fontSize: 'x-small' }}>
-                    <FormattedMessage id={helperText} />
-                </FormHelperText>
-            )}
+            {helperText && <FormHelperText sx={{ paddingLeft: 1.5, fontSize: 'x-small' }}>{helperText}</FormHelperText>}
         </Box>
     );
 }
