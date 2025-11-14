@@ -7,7 +7,6 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { getStudyUrl } from './security-analysis';
-import { PREFIX_STUDY_QUERIES } from './loadflow';
 import { FilterIdentifier, FILTERS } from '../utils/constants/filterConstant';
 
 export type PccMinParameters = {
@@ -23,7 +22,7 @@ export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParamet
 
 export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMinParameters | null) {
     console.info('set study pcc min parameters');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/pcc-min/parameters`;
+    const url = `${getStudyUrl(studyUuid)}/pcc-min/parameters`;
     console.debug(url);
     return backendFetch(url, {
         method: 'POST',
