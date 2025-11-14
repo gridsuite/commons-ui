@@ -69,7 +69,12 @@ const handleError = (response: Response) => {
         const errorJson = parseError(text);
         let customError: CustomError;
         if (errorJson?.businessErrorCode != null) {
-            throw new CustomError(errorJson.message, errorJson.status, errorJson.businessErrorCode);
+            throw new CustomError(
+                errorJson.message,
+                errorJson.status,
+                errorJson.businessErrorCode,
+                errorJson.businessErrorValues
+            );
         }
         if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
             customError = new CustomError(

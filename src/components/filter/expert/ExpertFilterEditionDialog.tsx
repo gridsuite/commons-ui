@@ -20,7 +20,7 @@ import { saveExpertFilter } from '../utils/filterApi';
 import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
-import { catchErrorHandler, CustomError } from '../../../services';
+import { catchErrorHandler, CustomError, formatMessageValues } from '../../../services';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 
 const formSchema = yup
@@ -102,6 +102,10 @@ export function ExpertFilterEditionDialog({
                     if (error instanceof CustomError && error.businessErrorCode != null) {
                         snackError({
                             messageId: error.businessErrorCode,
+                            messageValues:
+                                error.businessErrorValues != null
+                                    ? formatMessageValues(error.businessErrorValues)
+                                    : undefined,
                             headerId: 'cannotSaveFilter',
                         });
                     } else {

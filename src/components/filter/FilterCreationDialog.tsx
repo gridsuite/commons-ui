@@ -25,7 +25,7 @@ import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { GsLang } from '../../utils';
-import { CustomError } from '../../services';
+import { CustomError, formatMessageValues } from '../../services';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -116,6 +116,10 @@ export function FilterCreationDialog({
                         if (error instanceof CustomError && error.businessErrorCode != null) {
                             snackError({
                                 messageId: error.businessErrorCode,
+                                messageValues:
+                                    error.businessErrorValues != null
+                                        ? formatMessageValues(error.businessErrorValues)
+                                        : undefined,
                             });
                         } else {
                             snackError({
