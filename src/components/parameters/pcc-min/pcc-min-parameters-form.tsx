@@ -76,6 +76,7 @@ export function PccMinParametersForm({
                                     elementType={ElementType.FILTER}
                                     label="pccMinParamFilter"
                                     hideErrorMessage
+                                    allowMultiSelect={false}
                                 />
                             </Grid>
                         </Box>
