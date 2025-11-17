@@ -39,7 +39,6 @@ import {
     getAllSpecificParametersValues,
 } from '../common/utils';
 
-
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
