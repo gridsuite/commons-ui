@@ -69,7 +69,7 @@ export function CreateParameterDialog<T extends FieldValues>({
             })
             .catch((error) => {
                 snackWithFallback(snackError, error, {
-                    headerId: 'paramsUpdatingError',
+                    headerId: 'paramsUpdateError',
                     headerValues: {
                         item: elementFullPath,
                     },
