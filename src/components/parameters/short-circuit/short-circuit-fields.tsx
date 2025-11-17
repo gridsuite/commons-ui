@@ -157,6 +157,7 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
         />
     );
 
+    // Forced to specificly manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
     const onlyStartedGenerators = (
         <RadioInput
             name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}

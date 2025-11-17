@@ -39,7 +39,6 @@ import {
     getAllSpecificParametersValues,
 } from '../common/utils';
 
-const ManagedSpecificParameters = new Set([SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]);
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -77,11 +76,7 @@ export const useShortCircuitParametersForm = ({
     const { snackError } = useSnackMessage();
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
-        return currentProvider && specificParamsDescriptions
-            ? specificParamsDescriptions[currentProvider].filter((sp: SpecificParameterInfos) =>
-                  ManagedSpecificParameters.has(sp.name)
-              )
-            : [];
+        return currentProvider && specificParamsDescriptions ? specificParamsDescriptions[currentProvider] : [];
     }, [currentProvider, specificParamsDescriptions]);
 
     const specificParametersDefaultValues = useMemo(() => {
@@ -143,6 +138,7 @@ export const useShortCircuitParametersForm = ({
                 SPECIFIC_PARAMETERS,
                 {
                     ...specificParametersDefaultValues,
+                    // Forced to override specificly this param here because its default value depends of the PredefinedParameters value
                     [SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]:
                         predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 },
