@@ -194,7 +194,7 @@ export const ALL_EQUIPMENTS: Partial<
     },
 };
 
-export const BASE_EQUIPMENTS = {
+export const BASE_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
     [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
     [EquipmentType.LINE]: ALL_EQUIPMENTS[EquipmentType.LINE],
@@ -208,7 +208,7 @@ export const BASE_EQUIPMENTS = {
     [EquipmentType.DANGLING_LINE]: ALL_EQUIPMENTS[EquipmentType.DANGLING_LINE],
 };
 
-export const SEARCH_EQUIPMENTS = {
+export const SEARCH_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     ...BASE_EQUIPMENTS,
     [ExtendedEquipmentType.HVDC_LINE_LCC]: ALL_EQUIPMENTS[ExtendedEquipmentType.HVDC_LINE_LCC],
     [ExtendedEquipmentType.HVDC_LINE_VSC]: ALL_EQUIPMENTS[ExtendedEquipmentType.HVDC_LINE_VSC],
