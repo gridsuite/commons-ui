@@ -189,6 +189,10 @@ export const EQUIPMENT_TYPE: Partial<
         name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         tagLabel: 'equipment_search/3wtTag',
     },
+    [EquipmentType.HVDC_LINE]: {
+        name: EquipmentType.HVDC_LINE,
+        tagLabel: 'equipment_search/hvdcLineTag',
+    },
     [ExtendedEquipmentType.HVDC_LINE_LCC]: {
         name: ExtendedEquipmentType.HVDC_LINE_LCC,
         tagLabel: 'equipment_search/hvdcLineLccTag',
