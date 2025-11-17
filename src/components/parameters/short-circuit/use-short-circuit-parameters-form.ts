@@ -203,7 +203,7 @@ export const useShortCircuitParametersForm = ({
         [currentProvider, description, name, specificParametersDescriptionForProvider]
     );
 
-    const onValidationError = useCallback((errors: FieldErrors) => {}, []);
+    const onValidationError = useCallback((_errors: FieldErrors) => {}, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
