@@ -110,7 +110,6 @@ export const useLoadFlowParametersForm = (
             .concat(getNameElementEditorSchema(name));
     }, [name, limitReductionNumber, specificParametersDescriptionForProvider]);
 
-    console.log('SBO LF params?.commonParameters', params?.commonParameters);
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),

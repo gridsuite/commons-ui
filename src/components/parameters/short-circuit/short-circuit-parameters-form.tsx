@@ -26,8 +26,6 @@ export function ShortCircuitParametersForm({
     enableDeveloperMode,
 }: Readonly<ShortCircuitParametersFormProps>) {
     const { formMethods, formSchema, paramsLoaded, resetAll } = shortCircuitMethods;
-    console.log('SBO ShortCircuitParametersForm schema', formSchema);
-    console.log('SBO ShortCircuitParametersForm formState', formMethods.formState);
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
