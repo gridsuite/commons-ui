@@ -223,7 +223,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                             const equipmentTypeTagLabel =
                                 (item?.specificMetadata?.equipmentType &&
                                     ALL_EQUIPMENTS[item.specificMetadata.equipmentType as keyof typeof ALL_EQUIPMENTS]
-                                        ?.tagLabel) ||
+                                        ?.shortLabel) ||
                                 '';
 
                             const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
