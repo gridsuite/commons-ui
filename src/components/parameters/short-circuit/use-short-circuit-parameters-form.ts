@@ -73,6 +73,7 @@ export const useShortCircuitParametersForm = ({
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
     const [, , , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
     const [currentProvider, setCurrentProvider] = useState('Courcirc');
+    const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
@@ -99,8 +100,6 @@ export const useShortCircuitParametersForm = ({
             })
             .concat(getNameElementEditorSchema(name));
     }, [name, specificParametersDescriptionForProvider]);
-
-    console.log('SBO SC params?.commonParameters', params?.commonParameters);
 
     const formMethods = useForm({
         defaultValues: {
@@ -155,7 +154,6 @@ export const useShortCircuitParametersForm = ({
 
     const formatNewParams = useCallback(
         (formData: Record<string, any>): ShortCircuitParametersInfos => {
-            console.log('SBO formatNewParams formData', formData);
             return {
                 predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],
                 commonParameters: {
@@ -188,6 +186,7 @@ export const useShortCircuitParametersForm = ({
         (_params: ShortCircuitParametersInfos) => {
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[currentProvider];
             return {
+                ...getNameElementEditorEmptyFormData(name, description),
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
                     ..._params.commonParameters,
@@ -206,20 +205,14 @@ export const useShortCircuitParametersForm = ({
                 },
             };
         },
-        [currentProvider, specificParametersDescriptionForProvider]
+        [currentProvider, description, name, specificParametersDescriptionForProvider]
     );
 
-    const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
-
-    const onValidationError = useCallback((errors: FieldErrors) => {
-        console.log('SBO onValidationError errors', errors);
-    }, []);
+    const onValidationError = useCallback((errors: FieldErrors) => {}, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
-            console.log('SBO onSaveInline', formData);
             const data = formatNewParams(formData);
-            console.log('SBO onSaveInline data', data);
             updateParameters(data);
         },
         [updateParameters, formatNewParams]
@@ -246,11 +239,15 @@ export const useShortCircuitParametersForm = ({
     );
 
     useEffect(() => {
-        if (!params) {
+        if (!params || !currentProvider || !specificParamsDescriptions) {
             return;
         }
         reset(toShortCircuitFormValues(params));
-    }, [paramsLoaded, params, reset, specificParamsDescriptions, toShortCircuitFormValues]);
+        // Now that we have params and specific parameters description we can init
+        // form Schema and default values. this paramsLoaded State is used to determine
+        // if form is correctly initialized and that we are able to render form inputs
+        setParamsLoaded(true);
+    }, [currentProvider, params, reset, specificParamsDescriptions, toShortCircuitFormValues]);
 
     return {
         formMethods,
