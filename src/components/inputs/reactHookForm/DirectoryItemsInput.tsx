@@ -19,7 +19,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { type MuiStyles } from '../../../utils/styles';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ArrayAction, ElementAttributes, EQUIPMENT_TYPE, mergeSx } from '../../../utils';
+import { ALL_EQUIPMENTS, ArrayAction, ElementAttributes, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
@@ -222,8 +222,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
 
                             const equipmentTypeTagLabel =
                                 (item?.specificMetadata?.equipmentType &&
-                                    EQUIPMENT_TYPE[item.specificMetadata.equipmentType as keyof typeof EQUIPMENT_TYPE]
-                                        ?.tagLabel) ??
+                                    ALL_EQUIPMENTS[item.specificMetadata.equipmentType as keyof typeof ALL_EQUIPMENTS]
+                                        ?.tagLabel) ||
                                 '';
 
                             const { sx: chipSx, ...otherChipProps } = chipProps ?? {};

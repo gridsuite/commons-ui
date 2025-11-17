@@ -29,7 +29,7 @@ export enum RULES {
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
-export const EXPERT_FILTER_EQUIPMENTS = {
+export const EXPERT_FILTER_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
     [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
     [EquipmentType.LINE]: ALL_EQUIPMENTS[EquipmentType.LINE],
