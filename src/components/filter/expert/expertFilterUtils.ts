@@ -32,7 +32,6 @@ import {
 import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
 import { convertInputValue, convertOutputValue, isBlankOrEmpty } from '../../../utils/conversionUtils';
 import { FieldType } from '../../../utils/types/fieldType';
-import { ALL_EQUIPMENTS } from '../../../utils';
 
 interface TreeNode {
     [key: string]: any;
