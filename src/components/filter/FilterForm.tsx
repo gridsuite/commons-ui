@@ -6,11 +6,24 @@
  */
 
 import { Box } from '@mui/material';
-import { FilterFormProps, HeaderFilterForm } from './HeaderFilterForm';
+import { UUID } from 'node:crypto';
+import { HeaderFilterForm } from './HeaderFilterForm';
 import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
 import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { unscrollableDialogStyles } from '../dialogs';
+import { GsLang } from '../../utils';
+
+export interface FilterFormProps {
+    creation?: boolean;
+    activeDirectory?: UUID;
+    filterType?: { id: string; label: string };
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
+    language?: GsLang;
+}
 
 export function FilterForm({
     sourceFilterForExplicitNamingConversion,
@@ -22,11 +35,7 @@ export function FilterForm({
     return (
         <>
             <Box sx={unscrollableDialogStyles.unscrollableHeader}>
-                <HeaderFilterForm
-                    creation={creation}
-                    activeDirectory={activeDirectory}
-                    sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                />
+                <HeaderFilterForm creation={creation} activeDirectory={activeDirectory} />
             </Box>
             {filterType?.id === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm

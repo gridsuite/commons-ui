@@ -7,7 +7,7 @@
 
 import { Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import { ElementType, FieldConstants, GsLang, MAX_CHAR_DESCRIPTION } from '../../utils';
+import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
 import yup from '../../utils/yupConfig';
 import type { MuiStyles } from '../../utils/styles';
@@ -23,24 +23,22 @@ export const filterStyles = {
     },
 } as const satisfies MuiStyles;
 
-export interface FilterFormProps {
-    creation?: boolean;
-    activeDirectory?: UUID;
-    filterType?: { id: string; label: string };
-    sourceFilterForExplicitNamingConversion?: {
-        id: UUID;
-        equipmentType: string;
-    };
-    language?: GsLang;
-}
-
 export const HeaderFilterSchema = {
     [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
     [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
     [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
 };
 
-export function HeaderFilterForm({ creation, activeDirectory }: Readonly<FilterFormProps>) {
+export interface HeaderFilterFormProps {
+    creation?: boolean;
+    activeDirectory?: UUID;
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
+}
+
+export function HeaderFilterForm({ creation, activeDirectory }: Readonly<HeaderFilterFormProps>) {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
