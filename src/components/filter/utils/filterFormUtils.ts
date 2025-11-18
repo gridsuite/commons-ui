@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { BASE_EQUIPMENTS, EquipmentType } from '../../../utils';
+import { ALL_EQUIPMENTS, BASE_EQUIPMENTS, EquipmentType } from '../../../utils';
 
 export type ContingencyListEquipment = {
     id: string;
@@ -71,10 +71,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     },
 };
 
-export const FILTER_EQUIPMENTS: Partial<Record<EquipmentType, { id: EquipmentType; label: string }>> = {
+export const FILTER_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     ...BASE_EQUIPMENTS,
-    [EquipmentType.HVDC_LINE]: {
-        id: EquipmentType.HVDC_LINE,
-        label: 'Hvdc',
-    },
+    [EquipmentType.HVDC_LINE]: ALL_EQUIPMENTS[EquipmentType.HVDC_LINE],
 };

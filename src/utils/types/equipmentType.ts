@@ -86,70 +86,140 @@ export enum ExtendedEquipmentType {
     HVDC_LINE_VSC = 'HVDC_LINE_VSC',
 }
 
-export const ALL_EQUIPMENTS = {
+export const ALL_EQUIPMENTS: Partial<
+    Record<
+        EquipmentType | ExtendedEquipmentType,
+        {
+            id: EquipmentType | ExtendedEquipmentType;
+            label: string;
+            tagLabel: string;
+            shortLabel: string;
+        }
+    >
+> = {
     [EquipmentType.SUBSTATION]: {
         id: EquipmentType.SUBSTATION,
         label: 'Substations',
+        tagLabel: 'equipment_tag/substation',
+        shortLabel: 'equipment_short/substation',
     },
     [EquipmentType.VOLTAGE_LEVEL]: {
         id: EquipmentType.VOLTAGE_LEVEL,
         label: 'VoltageLevels',
+        tagLabel: 'equipment_tag/voltageLevel',
+        shortLabel: 'equipment_short/voltageLevel',
     },
     [EquipmentType.LINE]: {
         id: EquipmentType.LINE,
         label: 'Lines',
+        tagLabel: 'equipment_tag/line',
+        shortLabel: 'equipment_short/line',
     },
     [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
         id: EquipmentType.TWO_WINDINGS_TRANSFORMER,
         label: 'TwoWindingsTransformers',
+        tagLabel: 'equipment_tag/2wt',
+        shortLabel: 'equipment_short/2wt',
     },
     [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
         id: EquipmentType.THREE_WINDINGS_TRANSFORMER,
         label: 'ThreeWindingsTransformers',
+        tagLabel: 'equipment_tag/3wt',
+        shortLabel: 'equipment_short/3wt',
     },
     [EquipmentType.GENERATOR]: {
         id: EquipmentType.GENERATOR,
         label: 'Generators',
+        tagLabel: 'equipment_tag/generator',
+        shortLabel: 'equipment_short/generator',
     },
     [EquipmentType.BATTERY]: {
         id: EquipmentType.BATTERY,
         label: 'Batteries',
+        tagLabel: 'equipment_tag/battery',
+        shortLabel: 'equipment_short/battery',
     },
     [EquipmentType.LOAD]: {
         id: EquipmentType.LOAD,
         label: 'Loads',
+        tagLabel: 'equipment_tag/load',
+        shortLabel: 'equipment_short/load',
     },
     [EquipmentType.SHUNT_COMPENSATOR]: {
         id: EquipmentType.SHUNT_COMPENSATOR,
         label: 'ShuntCompensators',
+        tagLabel: 'equipment_tag/shunt',
+        shortLabel: 'equipment_short/shunt',
     },
     [EquipmentType.STATIC_VAR_COMPENSATOR]: {
         id: EquipmentType.STATIC_VAR_COMPENSATOR,
         label: 'StaticVarCompensators',
+        tagLabel: 'equipment_tag/svc',
+        shortLabel: 'equipment_short/svc',
     },
     [EquipmentType.DANGLING_LINE]: {
         id: EquipmentType.DANGLING_LINE,
         label: 'DanglingLines',
+        tagLabel: 'equipment_tag/danglingLine',
+        shortLabel: 'equipment_short/danglingLine',
     },
     [EquipmentType.BUSBAR_SECTION]: {
         id: EquipmentType.BUSBAR_SECTION,
         label: 'BusBarSections',
+        tagLabel: 'equipment_tag/busbarSection',
+        shortLabel: 'equipment_short/busbarSection',
+    },
+    [EquipmentType.BUS]: {
+        id: EquipmentType.BUS,
+        label: 'Buses',
+        tagLabel: 'equipment_tag/bus',
+        shortLabel: 'equipment_short/bus',
+    },
+    [EquipmentType.SWITCH]: {
+        id: EquipmentType.SWITCH,
+        label: 'Switches',
+        tagLabel: 'equipment_tag/switch',
+        shortLabel: 'equipment_short/switch',
     },
     [EquipmentType.HVDC_LINE]: {
         id: EquipmentType.HVDC_LINE,
         label: 'Hvdc',
+        tagLabel: 'equipment_tag/hvdcLine',
+        shortLabel: 'equipment_short/hvdcLine',
+    },
+    [EquipmentType.HVDC_CONVERTER_STATION]: {
+        id: EquipmentType.HVDC_CONVERTER_STATION,
+        label: 'HvdcConverterStations',
+        tagLabel: 'equipment_tag/hvdcStation',
+        shortLabel: 'equipment_short/hvdcStation',
+    },
+    [EquipmentType.VSC_CONVERTER_STATION]: {
+        id: EquipmentType.VSC_CONVERTER_STATION,
+        label: 'VscConverterStations',
+        tagLabel: 'equipment_tag/vscConverterStation',
+        shortLabel: 'equipment_short/vscConverterStation',
+    },
+    [EquipmentType.LCC_CONVERTER_STATION]: {
+        id: EquipmentType.LCC_CONVERTER_STATION,
+        label: 'LccConverterStations',
+        tagLabel: 'equipment_tag/lccConverterStation',
+        shortLabel: 'equipment_short/lccConverterStation',
     },
     [ExtendedEquipmentType.HVDC_LINE_LCC]: {
         id: ExtendedEquipmentType.HVDC_LINE_LCC,
         label: 'LCC',
+        tagLabel: 'equipment_tag/hvdcLineLcc',
+        shortLabel: 'equipment_short/hvdcLineLcc',
     },
     [ExtendedEquipmentType.HVDC_LINE_VSC]: {
         id: ExtendedEquipmentType.HVDC_LINE_VSC,
         label: 'VSC',
+        tagLabel: 'equipment_tag/hvdcLineVsc',
+        shortLabel: 'equipment_short/hvdcLineVsc',
     },
 };
 
-export const BASE_EQUIPMENTS = {
+export const BASE_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
     [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
     [EquipmentType.LINE]: ALL_EQUIPMENTS[EquipmentType.LINE],
@@ -163,95 +233,7 @@ export const BASE_EQUIPMENTS = {
     [EquipmentType.DANGLING_LINE]: ALL_EQUIPMENTS[EquipmentType.DANGLING_LINE],
 };
 
-export const EQUIPMENT_TYPE: Partial<
-    Record<
-        EquipmentType | ExtendedEquipmentType,
-        { name: EquipmentType | ExtendedEquipmentType; tagLabel: string } | undefined
-    >
-> = {
-    [EquipmentType.SUBSTATION]: {
-        name: EquipmentType.SUBSTATION,
-        tagLabel: 'equipment_search/substationTag',
-    },
-    [EquipmentType.VOLTAGE_LEVEL]: {
-        name: EquipmentType.VOLTAGE_LEVEL,
-        tagLabel: 'equipment_search/voltageLevelTag',
-    },
-    [EquipmentType.LINE]: {
-        name: EquipmentType.LINE,
-        tagLabel: 'equipment_search/lineTag',
-    },
-    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: {
-        name: EquipmentType.TWO_WINDINGS_TRANSFORMER,
-        tagLabel: 'equipment_search/2wtTag',
-    },
-    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: {
-        name: EquipmentType.THREE_WINDINGS_TRANSFORMER,
-        tagLabel: 'equipment_search/3wtTag',
-    },
-    [EquipmentType.HVDC_LINE]: {
-        name: EquipmentType.HVDC_LINE,
-        tagLabel: 'equipment_search/hvdcLineTag',
-    },
-    [ExtendedEquipmentType.HVDC_LINE_LCC]: {
-        name: ExtendedEquipmentType.HVDC_LINE_LCC,
-        tagLabel: 'equipment_search/hvdcLineLccTag',
-    },
-    [ExtendedEquipmentType.HVDC_LINE_VSC]: {
-        name: ExtendedEquipmentType.HVDC_LINE_VSC,
-        tagLabel: 'equipment_search/hvdcLineVscTag',
-    },
-    [EquipmentType.GENERATOR]: {
-        name: EquipmentType.GENERATOR,
-        tagLabel: 'equipment_search/generatorTag',
-    },
-    [EquipmentType.BATTERY]: {
-        name: EquipmentType.BATTERY,
-        tagLabel: 'equipment_search/batteryTag',
-    },
-    [EquipmentType.LOAD]: {
-        name: EquipmentType.LOAD,
-        tagLabel: 'equipment_search/loadTag',
-    },
-    [EquipmentType.SHUNT_COMPENSATOR]: {
-        name: EquipmentType.SHUNT_COMPENSATOR,
-        tagLabel: 'equipment_search/shuntTag',
-    },
-    [EquipmentType.DANGLING_LINE]: {
-        name: EquipmentType.DANGLING_LINE,
-        tagLabel: 'equipment_search/lineTag',
-    },
-    [EquipmentType.STATIC_VAR_COMPENSATOR]: {
-        name: EquipmentType.STATIC_VAR_COMPENSATOR,
-        tagLabel: 'equipment_search/svcTag',
-    },
-    [EquipmentType.HVDC_CONVERTER_STATION]: {
-        name: EquipmentType.HVDC_CONVERTER_STATION,
-        tagLabel: 'equipment_search/hvdcStationTag',
-    },
-    [EquipmentType.BUSBAR_SECTION]: {
-        name: EquipmentType.BUSBAR_SECTION,
-        tagLabel: 'equipment_search/busbarSectionTag',
-    },
-    [EquipmentType.BUS]: {
-        name: EquipmentType.BUS,
-        tagLabel: 'equipment_search/busTag',
-    },
-    [EquipmentType.SWITCH]: {
-        name: EquipmentType.SWITCH,
-        tagLabel: 'equipment_search/switchTag',
-    },
-    [EquipmentType.VSC_CONVERTER_STATION]: {
-        name: EquipmentType.VSC_CONVERTER_STATION,
-        tagLabel: 'equipment_search/vscConverterStationTag',
-    },
-    [EquipmentType.LCC_CONVERTER_STATION]: {
-        name: EquipmentType.LCC_CONVERTER_STATION,
-        tagLabel: 'equipment_search/lccConverterStationTag',
-    },
-};
-
-export const SEARCH_EQUIPMENTS = {
+export const SEARCH_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     ...BASE_EQUIPMENTS,
     [ExtendedEquipmentType.HVDC_LINE_LCC]: ALL_EQUIPMENTS[ExtendedEquipmentType.HVDC_LINE_LCC],
     [ExtendedEquipmentType.HVDC_LINE_VSC]: ALL_EQUIPMENTS[ExtendedEquipmentType.HVDC_LINE_VSC],

@@ -13,6 +13,8 @@ export * from './directoryItemsInputEn';
 export * from './dndTableEn';
 export * from './elementSearchEn';
 export * from './equipmentSearchEn';
+export * from './equipmentTagEn';
+export * from './equipmentShortEn';
 export * from './equipmentsEn';
 export * from './errorsEn';
 export * from './filterEn';
