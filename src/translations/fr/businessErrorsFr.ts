@@ -25,7 +25,7 @@ export const businessErrorsFr = {
     'study.moveNetworkModificationForbidden': 'Impossible de déplacer cette modification de réseau.',
     'study.badNodeType': 'Mauvais type de noeud.',
     'study.nodeNotBuilt': 'Noeud non réalisé.',
-    'study.nodeNameAlreadyExist': 'Ce nom de nom existe déjà.',
+    'study.nodeNameAlreadyExist': 'Ce nom de noeud existe déjà.',
     'study.timeSeriesBadType': 'Série temporelle de mauvais type.',
     'study.noVoltageInitResultsForNode': "Pas de résultats pour l'initialisation du plan de tension.",
     'study.maxNodeBuildsExceeded': 'Nombre maximal de noeuds réalisés atteint.',
