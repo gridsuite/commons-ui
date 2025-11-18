@@ -11,16 +11,24 @@ export class CustomError extends Error {
 
     businessErrorValues?: Record<string, unknown>;
 
-    constructor(message: string, status: number, businessErrorCode?: string, properties?: Record<string, unknown>) {
+    constructor(
+        message: string,
+        status: number,
+        businessErrorCode?: string,
+        businessErrorValues?: Record<string, unknown>
+    ) {
         super(message);
         this.status = status;
         this.businessErrorCode = businessErrorCode;
-        this.businessErrorValues = properties;
+        this.businessErrorValues = businessErrorValues;
     }
 }
 
 export function formatMessageValues(properties: Record<string, unknown>): Record<string, string> {
     return Object.fromEntries(
-        Object.entries(properties).map(([key, value]) => [key, typeof value === 'object' ? JSON.stringify(value) : ''])
+        Object.entries(properties).map(([key, value]) => [
+            key,
+            typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value),
+        ])
     );
 }

@@ -25,5 +25,5 @@ export const businessErrorsEn = {
     'useradmin.groupAlreadyExists': 'User group already exists.',
     'useradmin.announcementInvalidPeriod': 'The announcement has an invalid time period.',
     'useradmin.announcementOverlap': 'The announcement period overlaps with an existing one.',
-    'filter.filterCycleDetected': 'Filter cycle detected between: {filters}',
+    'filter.filterCycleDetected': 'Filter cycle detected: {filters}',
 };
