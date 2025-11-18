@@ -14,4 +14,5 @@ export * from './constants/notificationsProvider';
 export * from './styles';
 export * from './types';
 export * from './validation-functions';
+export * from './translations';
 export { default as yupConfig } from './yupConfig';
