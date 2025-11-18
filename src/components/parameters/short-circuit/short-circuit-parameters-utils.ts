@@ -7,7 +7,9 @@
 
 import {
     InitialVoltage,
+    PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
@@ -16,6 +18,7 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS } from '../common';
+import { SpecificParametersValues } from '../../../utils';
 
 export const getCommonShortCircuitParametersFormSchema = () => {
     return yup.object().shape({
@@ -31,4 +34,19 @@ export const getCommonShortCircuitParametersFormSchema = () => {
                 .required(),
         }),
     });
+};
+
+export const resetSpecificParameters = (
+    specificDefaultValues: SpecificParametersValues,
+    predefinedParameter: PredefinedParameters
+) => {
+    if (specificDefaultValues[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]) {
+        return {
+            ...specificDefaultValues,
+            // Forced to override specificly this param here because its default value depends of the PredefinedParameters value
+            [SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]:
+                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+        };
+    }
+    return { ...specificDefaultValues };
 };

@@ -62,6 +62,14 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
     const watchNeutralPosition = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`,
     });
+    const watchSpecificParameters = useWatch({
+        name: `${SPECIFIC_PARAMETERS}`,
+    });
+
+    const isThereSpecificParameters = useMemo(
+        () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
+        [watchSpecificParameters]
+    );
 
     const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
         return !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition;
@@ -222,10 +230,14 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                 <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
             </Grid>
             <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
-            <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
-            <Grid container>
-                <GridItem size={12}>{onlyStartedGenerators}</GridItem>
-            </Grid>
+            {isThereSpecificParameters && (
+                <>
+                    <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
+                    <Grid container>
+                        <GridItem size={12}>{onlyStartedGenerators}</GridItem>
+                    </Grid>
+                </>
+            )}
         </Grid>
     );
 }

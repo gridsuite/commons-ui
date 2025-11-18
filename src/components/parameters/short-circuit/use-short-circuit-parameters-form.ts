@@ -16,7 +16,6 @@ import {
     InitialVoltage,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -31,7 +30,7 @@ import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } 
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { COMMON_PARAMETERS, ComputingType, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
-import { getCommonShortCircuitParametersFormSchema } from './short-circuit-parameters-utils';
+import { getCommonShortCircuitParametersFormSchema, resetSpecificParameters } from './short-circuit-parameters-utils';
 import {
     formatSpecificParameters,
     getDefaultSpecificParamsValues,
@@ -75,7 +74,9 @@ export const useShortCircuitParametersForm = ({
     const { snackError } = useSnackMessage();
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
-        return currentProvider && specificParamsDescriptions ? specificParamsDescriptions[currentProvider] : [];
+        return currentProvider && specificParamsDescriptions?.[currentProvider]
+            ? specificParamsDescriptions[currentProvider]
+            : [];
     }, [currentProvider, specificParamsDescriptions]);
 
     const specificParametersDefaultValues = useMemo(() => {
@@ -136,10 +137,7 @@ export const useShortCircuitParametersForm = ({
             setValue(
                 SPECIFIC_PARAMETERS,
                 {
-                    ...specificParametersDefaultValues,
-                    // Forced to override specificly this param here because its default value depends of the PredefinedParameters value
-                    [SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]:
-                        predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                    ...resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
                 },
                 dirty
             );
