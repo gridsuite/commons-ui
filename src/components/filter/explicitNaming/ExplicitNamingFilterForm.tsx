@@ -100,7 +100,7 @@ interface ExplicitNamingFilterFormProps {
 export function ExplicitNamingFilterForm({
     sourceFilterForExplicitNamingConversion,
     language,
-}: ExplicitNamingFilterFormProps) {
+}: Readonly<ExplicitNamingFilterFormProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
