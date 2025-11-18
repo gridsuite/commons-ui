@@ -104,6 +104,7 @@ import {
     treeviewFinderEn,
     treeviewFinderFr,
     useSnackMessage,
+    EquipmentType,
 } from '../../src';
 
 const messages = {
@@ -396,7 +397,7 @@ function AppContent({ language, onLanguageClick }) {
     };
     const displayEquipment = (equipment) => {
         if (equipment != null) {
-            if (equipment.type === EQUIPMENT_TYPE.SUBSTATION.name) {
+            if (equipment.type === EquipmentType.SUBSTATION) {
                 alert(`Equipment ${equipment.label} found !`);
             } else {
                 alert(`Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`);
