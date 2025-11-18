@@ -8,43 +8,35 @@
 import { Box, Typography } from '@mui/material';
 import { BrokenImage } from '@mui/icons-material';
 import { ReactNode, useMemo } from 'react';
-import { mergeSx, type SxStyle, type MuiStyles, type DensityType } from '../../utils/styles';
+import { mergeSx, type SxStyle, type MuiStyles } from '../../utils/styles';
 
-const DENSITY_CONFIG: Record<
-    DensityType,
-    { logo: { width: number; height: number }; text: { fontSize: number; marginLeft: number } }
-> = {
-    default: {
-        logo: { width: 32, height: 32 },
-        text: { fontSize: 25, marginLeft: 8 },
-    },
-    compact: {
-        logo: { width: 25, height: 30 },
-        text: { fontSize: 18, marginLeft: 3 },
-    },
-} as const;
+// Logo size constants
+const LOGO_WIDTH = 32;
+const LOGO_HEIGHT = 32;
+const LOGO_WIDTH_DENSE = 26;
+const LOGO_HEIGHT_DENSE = 26;
 
-const getStyles = (density: DensityType = 'default') => {
-    const config = DENSITY_CONFIG[density];
-
+const getStyles = (dense: boolean = false) => {
     return {
         container: {
             display: 'flex',
             alignItems: 'center',
         },
-        logo: {
+        logo: (_theme) => ({
             flexShrink: 0,
-            width: `${config.logo.width}px`,
-            height: `${config.logo.height}px`,
+            width: dense ? LOGO_WIDTH_DENSE : LOGO_WIDTH,
+            height: dense ? LOGO_HEIGHT_DENSE : LOGO_HEIGHT,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-        },
-        title: {
-            fontSize: `${config.text.fontSize}px`,
-            marginLeft: `${config.text.marginLeft}px`,
+        }),
+        title: (theme) => ({
+            marginLeft: theme.spacing(dense ? 0.5 : 1),
             display: { xs: 'none', lg: 'block' },
-        },
+            ...(dense && {
+                fontSize: 18,
+            }),
+        }),
         clickable: {
             cursor: 'pointer',
         },
@@ -53,11 +45,11 @@ const getStyles = (density: DensityType = 'default') => {
 
 export interface GridLogoProps extends Omit<LogoTextProps, 'style'> {
     appLogo: ReactNode;
-    density?: DensityType;
+    dense?: boolean;
 }
 
-export function LogoText({ appName, appColor, style, onClick, density = 'default' }: Readonly<Partial<LogoTextProps>>) {
-    const styles = useMemo(() => getStyles(density), [density]);
+export function LogoText({ appName, appColor, style, onClick, dense = false }: Readonly<Partial<LogoTextProps>>) {
+    const styles = useMemo(() => getStyles(dense), [dense]);
     return (
         <Typography sx={mergeSx(style, onClick && styles.clickable)} onClick={onClick}>
             <span style={{ fontWeight: 'bold' }}>Grid</span>
@@ -66,18 +58,12 @@ export function LogoText({ appName, appColor, style, onClick, density = 'default
     );
 }
 
-export function GridLogo({
-    appLogo,
-    appName,
-    appColor,
-    onClick,
-    density = 'default',
-}: Readonly<Partial<GridLogoProps>>) {
-    const styles = useMemo(() => getStyles(density), [density]);
+export function GridLogo({ appLogo, appName, appColor, onClick, dense = false }: Readonly<Partial<GridLogoProps>>) {
+    const styles = useMemo(() => getStyles(dense), [dense]);
     return (
         <Box sx={mergeSx(styles.container, onClick && styles.clickable)} onClick={onClick}>
             <Box sx={styles.logo}>{appLogo || <BrokenImage />}</Box>
-            <LogoText appName={appName} appColor={appColor} style={styles.title} density={density} />
+            <LogoText appName={appName} appColor={appColor} style={styles.title} dense={dense} />
         </Box>
     );
 }
@@ -87,5 +73,5 @@ export interface LogoTextProps {
     appColor: string;
     style: SxStyle;
     onClick: () => void;
-    density?: DensityType;
+    dense?: boolean;
 }

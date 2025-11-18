@@ -49,71 +49,43 @@ import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
 import UserInformationDialog from './UserInformationDialog';
 import UserSettingsDialog from './UserSettingsDialog';
 import { type Metadata } from '../../utils/types/metadata';
-import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles, type DensityType } from '../../utils/styles';
+import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles } from '../../utils/styles';
 import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
 import { DevModeBanner } from './DevModeBanner';
 
-const DENSITY_CONFIG: Record<DensityType, { showAppsMenu: boolean; showArrowIcons: boolean }> = {
-    default: {
-        showAppsMenu: true,
-        showArrowIcons: true,
-    },
-    compact: {
-        showAppsMenu: false,
-        showArrowIcons: false,
-    },
-} as const;
-
-const getStyles = (density: DensityType = 'default') => {
-    const isCompact = density === 'compact';
-
-    // Density-based size constants
-    const sizes = {
-        avatar: {
-            size: isCompact ? 36 : 48,
-            button: isCompact ? 40 : 55,
-            padding: isCompact ? 5 : 10,
-        },
-        spacing: {
-            menu: isCompact ? 0.5 : 1,
-        },
-        icon: {
-            arrow: isCompact ? 32 : 40,
-        },
-    };
-
+const getStyles = (dense: boolean = false) => {
     return {
-        toolbar: {
-            ...(isCompact && {
-                minHeight: '48px !important',
-                paddingLeft: '7px !important',
-                paddingRight: '7px !important',
+        toolbar: (theme) => ({
+            ...(dense && {
+                minHeight: `${theme.spacing(6)} !important`,
+                paddingLeft: `${theme.spacing(0.875)} !important`,
+                paddingRight: `${theme.spacing(0.875)} !important`,
             }),
-        },
+        }),
         grow: {
             flexGrow: 1,
             display: 'flex',
             overflow: 'hidden',
         },
-        menuContainer: {
-            marginLeft: sizes.spacing.menu,
-        },
+        menuContainer: (theme) => ({
+            marginLeft: theme.spacing(dense ? 0.5 : 1),
+        }),
         link: {
             textDecoration: 'none',
             color: 'inherit',
         },
         name: (theme) => ({
             backgroundColor: darken(theme.palette.background.paper, 0.1),
-            paddingTop: `${sizes.avatar.padding}px`,
+            paddingTop: theme.spacing(dense ? 0.625 : 1.25),
             borderRadius: '100%',
             fontWeight: '400',
             textTransform: 'uppercase',
-            height: `${sizes.avatar.size}px`,
-            width: `${sizes.avatar.size}px`,
+            height: theme.spacing(dense ? 4.5 : 6),
+            width: theme.spacing(dense ? 4.5 : 6),
         }),
-        arrowIcon: {
-            fontSize: `${sizes.icon.arrow}px`,
-        },
+        arrowIcon: (theme) => ({
+            fontSize: theme.spacing(dense ? 4 : 5),
+        }),
         userMail: {
             fontSize: '14px',
             display: 'block',
@@ -131,12 +103,12 @@ const getStyles = (density: DensityType = 'default') => {
         sizeLabel: {
             fontSize: '16px',
         },
-        showHideMenu: {
-            padding: '0',
+        showHideMenu: (theme) => ({
+            padding: 0,
             borderRadius: '50%',
-            minWidth: `${sizes.avatar.button}px`,
-            minHeight: `${sizes.avatar.button}px`,
-        },
+            minWidth: theme.spacing(dense ? 5 : 6.875),
+            minHeight: theme.spacing(dense ? 5 : 6.875),
+        }),
         toggleButtonGroup: {
             marginLeft: '15px',
             pointerEvents: 'auto',
@@ -212,7 +184,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
         developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
-        density?: DensityType;
+        dense?: boolean;
     };
 
 export function TopBar({
@@ -238,10 +210,9 @@ export function TopBar({
     equipmentLabelling,
     onLanguageClick,
     language,
-    density = 'default',
+    dense = false,
 }: PropsWithChildren<TopBarProps>) {
-    const styles = useMemo(() => getStyles(density), [density]);
-    const densityConfig = useMemo(() => DENSITY_CONFIG[density], [density]);
+    const styles = useMemo(() => getStyles(dense), [dense]);
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
     const {
@@ -319,19 +290,17 @@ export function TopBar({
     };
 
     const logoClickable = useMemo(
-        () => (
-            <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} density={density} />
-        ),
-        [onLogoClick, appLogo, appName, appColor, density]
+        () => <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} dense={dense} />,
+        [onLogoClick, appLogo, appName, appColor, dense]
     );
 
     return (
         <AppBar position="static" color="default">
             {user && developerMode && <DevModeBanner />}
-            <Toolbar sx={styles.toolbar}>
+            <Toolbar variant={dense ? 'dense' : 'regular'} sx={styles.toolbar}>
                 {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
-                {user && densityConfig.showAppsMenu && (
+                {user && !dense && (
                     <Box>
                         <IconButton
                             aria-label="apps"
@@ -401,7 +370,7 @@ export function TopBar({
                             <Box component="span" sx={styles.name}>
                                 {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
                             </Box>
-                            {densityConfig.showArrowIcons &&
+                            {!dense &&
                                 (anchorElSettingsMenu ? (
                                     <ArrowDropUpIcon sx={styles.arrowIcon} />
                                 ) : (
