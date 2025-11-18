@@ -130,7 +130,13 @@ export function ExplicitNamingFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPLICIT_NAMING} />}
+            {isDataReady && (
+                <FilterForm
+                    activeDirectory={activeDirectory}
+                    filterType={FilterType.EXPLICIT_NAMING}
+                    language={language}
+                />
+            )}
         </CustomMuiDialog>
     );
 }

@@ -30,6 +30,7 @@ import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { filterStyles } from '../HeaderFilterForm';
+import { GsLang } from '../../../utils';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -93,9 +94,13 @@ export interface FilterForExplicitConversionProps {
 
 interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
+    language?: GsLang;
 }
 
-export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
+export function ExplicitNamingFilterForm({
+    sourceFilterForExplicitNamingConversion,
+    language,
+}: ExplicitNamingFilterFormProps) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
@@ -257,6 +262,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                         }),
                         fileHeaders: csvFileHeaders,
                         getDataFromCsv: getDataFromCsvFile,
+                        language,
                     }}
                     cssProps={{
                         padding: 1,

@@ -17,6 +17,7 @@ export function FilterForm({
     creation,
     activeDirectory,
     filterType,
+    language,
 }: Readonly<FilterFormProps>) {
     return (
         <>
@@ -30,6 +31,7 @@ export function FilterForm({
             {filterType?.id === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                    language={language}
                 />
             )}
             {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm />}

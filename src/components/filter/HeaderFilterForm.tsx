@@ -7,7 +7,7 @@
 
 import { Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../utils';
+import { ElementType, FieldConstants, GsLang, MAX_CHAR_DESCRIPTION } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
 import yup from '../../utils/yupConfig';
 import type { MuiStyles } from '../../utils/styles';
@@ -31,6 +31,7 @@ export interface FilterFormProps {
         id: UUID;
         equipmentType: string;
     };
+    language?: GsLang;
 }
 
 export const HeaderFilterSchema = {
