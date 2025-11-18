@@ -283,4 +283,7 @@ export const parametersFr = {
     // Other
     resetLoadFlowParametersWarning:
         'Impossible de récupérer les paramètres de calcul de répartition définis dans le profil utilisateur (les valeurs par défaut sont appliquées)',
+    PccMinParametersError: 'Erreur lors de la mise à jour des paramètres de pcc du min',
+    updatePccMinParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres de pcc min',
+    pccMinParamFilter: 'Définition des postes en défaut',
 };
