@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ALL_EQUIPMENTS } from '../types';
+import { ALL_EQUIPMENTS } from './types';
 
 export function getEquipmentTypeShortLabel(equipmentType: string | undefined): string {
     if (!equipmentType) {
