@@ -527,10 +527,3 @@ export function recursiveRemove(query: RuleGroupTypeAny, path: number[]): RuleGr
 
     return remove(query, path);
 }
-
-export function getFilterEquipmentTypeLabel(equipmentType: string | undefined): string {
-    if (!equipmentType) {
-        return '';
-    }
-    return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.label ?? '';
-}

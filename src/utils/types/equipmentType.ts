@@ -293,3 +293,10 @@ export function getEquipmentsInfosForSearchBar(equipmentsInfos: Equipment[], get
               })) ?? []);
     });
 }
+
+export function getEquipmentTypeShortLabel(equipmentType: string | undefined): string {
+    if (!equipmentType) {
+        return '';
+    }
+    return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.shortLabel ?? '';
+}
