@@ -31,6 +31,7 @@ import { getNameElementEditorEmptyFormData } from '../common/name-element-editor
 import { updateParameter } from '../../../services';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -146,11 +147,8 @@ export const useSecurityAnalysisParametersForm = (
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                ).catch((errmsg) => {
-                    snackError({
-                        messageTxt: errmsg,
-                        headerId: 'updateSecurityAnalysisParametersError',
-                    });
+                ).catch((error) => {
+                    snackWithFallback(snackError, error, { headerId: 'updateSecurityAnalysisParametersError' });
                 });
             }
         },

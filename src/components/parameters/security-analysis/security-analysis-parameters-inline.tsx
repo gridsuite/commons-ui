@@ -28,6 +28,7 @@ import { fetchSecurityAnalysisParameters } from '../../../services/security-anal
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
@@ -91,11 +92,7 @@ export function SecurityAnalysisParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
