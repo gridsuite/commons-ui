@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { CustomError } from './types/CustomError';
+import { CustomError, formatMessageValues } from './types/CustomError';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
@@ -25,6 +25,7 @@ export function snackWithFallback(
     if (error instanceof CustomError && error.businessErrorCode) {
         snackError({
             messageId: error.businessErrorCode,
+            messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
             ...headerInputs,
         });
     } else {
