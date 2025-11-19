@@ -19,24 +19,6 @@ export type Metadata = {
     resources?: MetaDataRessources[];
 };
 
-type ThemeColors = Record<string, string>;
-
-type SldAndNadColors = {
-    darkThemeColors: ThemeColors;
-    lightThemeColors: ThemeColors;
-};
-
-export type BaseVoltageConfig = {
-    name: string;
-    vlValue: number;
-    minValue: number;
-    maxValue: number;
-    label: string;
-    mapColor: string;
-    sldAndNadColors: SldAndNadColors;
-    profile: string;
-};
-
 export type StudyMetadata = Metadata & {
     name: 'Study';
     predefinedEquipmentProperties?: {
@@ -48,5 +30,20 @@ export type StudyMetadata = Metadata & {
     defaultCountry?: string;
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
-    baseVoltagesConfig?: BaseVoltageConfig[]; // use to define the voltage ranges and their colors
 };
+
+type ThemeColors = Record<string, string>;
+type SldAndNadColors = {
+    darkThemeColors: ThemeColors;
+    lightThemeColors: ThemeColors;
+};
+
+export type BaseVoltageConfig = {
+    name: string;
+    vlValue: number;
+    minValue: number;
+    maxValue: number;
+    mapColor: string;
+    sldAndNadColors: SldAndNadColors;
+};
+export type BaseVoltagesConfig = BaseVoltageConfig[]; // used to define the voltage ranges and their colors
