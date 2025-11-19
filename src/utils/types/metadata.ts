@@ -39,11 +39,14 @@ type SldAndNadColors = {
 };
 
 export type BaseVoltageConfig = {
+    // used when calling powsybl server
     name: string;
-    vlValue: number;
     minValue: number;
     maxValue: number;
+    profile: string;
+};
+export type BaseVoltage = BaseVoltageConfig & {
+    // used to define the voltage ranges and their colors
     mapColor: string;
     sldAndNadColors: SldAndNadColors;
 };
-export type BaseVoltagesConfig = BaseVoltageConfig[]; // used to define the voltage ranges and their colors
