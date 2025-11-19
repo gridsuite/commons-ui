@@ -7,6 +7,7 @@
 export * from './algos';
 export * from './constants';
 export * from './conversionUtils';
+export * from './error';
 export * from './functions';
 export * from './langs';
 export * from './mapper';
