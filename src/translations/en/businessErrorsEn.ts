@@ -44,4 +44,15 @@ export const businessErrorsEn = {
     'useradmin.groupAlreadyExists': 'User group already exists.',
     'useradmin.announcementInvalidPeriod': 'The announcement has an invalid time period.',
     'useradmin.announcementOverlap': 'The announcement period overlaps with an existing one.',
+    'computation.resultNotFound': 'Error when retrieving results.',
+    'computation.parametersNotFound': 'Error when retrieving parameters.',
+    'computation.invalidSortFormat': 'The sorting format is incorrect.',
+    'computation.invalidExportParams': 'The export settings are incorrect.',
+    'computation.limitReductionConfigError': 'The limit reductions configuration is incorrect.',
+    'computation.runnerError': 'An error occurred during the computation.',
+    'voltageInit.missingFilter': 'The configuration contains one or more filters that have been deleted.',
+    'shortcircuit.busOutOfVoltage': 'Selected bus is out of voltage.',
+    'shortcircuit.missingExtensionData': 'Missing short-circuit extension data.',
+    'shortcircuit.inconsistentVoltageLevels':
+        'Some voltage levels have wrong isc values. Check out the logs to find which ones.',
 };
