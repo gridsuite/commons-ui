@@ -25,6 +25,7 @@ import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function LoadFlowParametersInline({
     studyUuid,
@@ -39,7 +40,7 @@ export function LoadFlowParametersInline({
     setHaveDirtyFields: (isDirty: boolean) => void;
     enableDeveloperMode: boolean;
 }>) {
-    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
+    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
 
     const intl = useIntl();
@@ -90,11 +91,7 @@ export function LoadFlowParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);

@@ -7,6 +7,7 @@
 export * from './algos';
 export * from './constants';
 export * from './conversionUtils';
+export * from './error';
 export * from './functions';
 export * from './langs';
 export * from './mapper';
@@ -15,4 +16,5 @@ export * from './constants/notificationsProvider';
 export * from './styles';
 export * from './types';
 export * from './validation-functions';
+export * from './labelUtils';
 export { default as yupConfig } from './yupConfig';

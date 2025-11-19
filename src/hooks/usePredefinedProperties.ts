@@ -9,6 +9,7 @@ import { equipmentTypesForPredefinedPropertiesMapper } from '../utils/mapper/equ
 import { useSnackMessage } from './useSnackMessage';
 import { PredefinedProperties } from '../utils/types/types';
 import { fetchStudyMetadata } from '../services';
+import { snackWithFallback } from '../utils/error';
 
 const fetchPredefinedProperties = async (equipmentType: string): Promise<PredefinedProperties | undefined> => {
     const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType);
@@ -32,9 +33,7 @@ export const usePredefinedProperties = (type: string | null): [PredefinedPropert
                     }
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message ?? error,
-                    });
+                    snackWithFallback(snackError, error);
                 });
         }
     }, [type, setEquipmentPredefinedProps, snackError]);
