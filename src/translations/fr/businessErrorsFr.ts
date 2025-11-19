@@ -16,7 +16,6 @@ export const businessErrorsFr = {
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded': "Le nombre d'éléments autorisés a été dépassé.",
     'explore.incorrectCaseFile': 'Le fichier réseau fourni est incorrect.',
-    'filter.filterCycleDetected': 'Cycle de filtre détecté.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
     'study.loadflowError': 'Erreur de calcul de répartition.',
@@ -44,4 +43,5 @@ export const businessErrorsFr = {
     'useradmin.groupAlreadyExists': "Le groupe d'utilisateurs existe déjà.",
     'useradmin.announcementInvalidPeriod': "La période de l'annonce est invalide.",
     'useradmin.announcementOverlap': "La période de l'annonce chevauche une autre annonce existante.",
+    'filter.filterCycleDetected': 'Cycle de filtre détecté: {filters}',
 };
