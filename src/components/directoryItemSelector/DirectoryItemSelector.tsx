@@ -20,6 +20,7 @@ import {
     initializeFromLastSelected,
     saveLastSelectedDirectoryFromNode,
 } from './utils';
+import { snackWithFallback } from '../../utils/error';
 
 const styles = {
     icon: (theme) => ({
@@ -249,10 +250,7 @@ export function DirectoryItemSelector({
                 setData(convertRoots(nrs));
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'DirectoryItemSelector',
-                });
+                snackWithFallback(snackError, error, { headerId: 'DirectoryItemSelector' });
             })
             .finally(() => {
                 setIsRootsLoaded(true);

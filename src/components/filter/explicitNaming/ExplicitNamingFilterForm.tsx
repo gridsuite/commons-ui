@@ -30,6 +30,7 @@ import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { filterStyles } from '../HeaderFilterForm';
+import { snackWithFallback } from '../../../utils/error';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -201,10 +202,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 );
             })
             .catch((error: any) =>
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'convertIntoExplicitNamingFilterError',
-                })
+                snackWithFallback(snackError, error, { headerId: 'convertIntoExplicitNamingFilterError' })
             );
     };
 
