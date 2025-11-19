@@ -16,8 +16,8 @@ const NA_VALUE = 'N/A';
 export const useCsvExport = () => {
     const intl = useIntl();
 
-    const getCsvProps = useCallback(
-        (props: CsvDownloadProps) => {
+    const getData = useCallback(
+        (props: CsvDownloadProps): string | undefined | void => {
             const formatNAValue = (value: string): string => {
                 return value === NA_VALUE ? intl.formatMessage({ id: 'export/undefined' }) : value;
             };
@@ -42,7 +42,7 @@ export const useCsvExport = () => {
             };
             const prefix = props.tableNamePrefix ?? '';
 
-            return {
+            return props.getData({
                 suppressQuotes: false,
                 skipPinnedBottom: props.skipPinnedBottom,
                 columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
@@ -52,26 +52,12 @@ export const useCsvExport = () => {
                     params.column.getColDef().headerComponentParams?.displayName ??
                     params.column.getColDef().headerName ??
                     params.column.getColId(),
-                fileName: props.exportDataAsCsv ? prefix.concat(getCSVFilename(props.tableName)) : undefined,
+                fileName: prefix.concat(getCSVFilename(props.tableName)),
                 processCellCallback: processCell,
-            } as CsvExportParams;
+            } as CsvExportParams);
         },
         [intl]
     );
 
-    const downloadCSVData = useCallback(
-        (props: CsvDownloadProps) => {
-            props.exportDataAsCsv?.(getCsvProps(props));
-        },
-        [getCsvProps]
-    );
-
-    const getCSVData = useCallback(
-        (props: CsvDownloadProps): string | undefined => {
-            return props.getDataAsCsv?.(getCsvProps(props));
-        },
-        [getCsvProps]
-    );
-
-    return { downloadCSVData, getCSVData };
+    return { getData };
 };
