@@ -6,7 +6,7 @@
  */
 
 import { getUserToken } from '../redux/commonStore';
-import { CustomError } from './businessErrorCode';
+import { CustomError } from '../utils/types/CustomError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -130,12 +130,4 @@ export const backendFetchFile = (url: string, init: RequestInit, token?: string)
 
 export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
-};
-
-export const catchErrorHandler = (error: unknown, callback: (message: string) => void) => {
-    if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
-        callback(error.message);
-    } else {
-        callback('unknown error');
-    }
 };

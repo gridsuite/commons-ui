@@ -20,8 +20,8 @@ import { saveExpertFilter } from '../utils/filterApi';
 import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
-import { catchErrorHandler, CustomError, formatMessageValues } from '../../../services';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
+import { snackWithFallback } from '../../../utils/error';
 
 const formSchema = yup
     .object()
@@ -76,13 +76,8 @@ export function ExpertFilterEditionDialog({
                     });
                 })
                 .catch((error: unknown) => {
-                    catchErrorHandler(error, (message: string) => {
-                        setDataFetchStatus(FetchStatus.FETCH_ERROR);
-                        snackError({
-                            messageTxt: message,
-                            headerId: 'cannotRetrieveFilter',
-                        });
-                    });
+                    setDataFetchStatus(FetchStatus.FETCH_ERROR);
+                    snackWithFallback(snackError, error, { headerId: 'cannotRetrieveFilter' });
                 });
         }
     }, [id, name, open, reset, snackError, getFilterById, description]);
@@ -99,20 +94,7 @@ export function ExpertFilterEditionDialog({
                 null,
                 onClose,
                 (error: Error) => {
-                    if (error instanceof CustomError && error.businessErrorCode != null) {
-                        snackError({
-                            messageId: error.businessErrorCode,
-                            messageValues: error.businessErrorValues
-                                ? formatMessageValues(error.businessErrorValues)
-                                : undefined,
-                            headerId: 'cannotSaveFilter',
-                        });
-                    } else {
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'cannotSaveFilter',
-                        });
-                    }
+                    snackWithFallback(snackError, error, { headerId: 'cannotSaveFilter' });
                 }
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {

@@ -30,6 +30,7 @@ import {
 import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
+import { snackWithFallback } from '../../../utils/error';
 
 export function ShortCircuitParametersInLine({
     studyUuid,
@@ -89,11 +90,7 @@ export function ShortCircuitParametersInLine({
                         replaceFormValues(parameters);
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);

@@ -13,6 +13,8 @@ export * from './directoryItemsInputFr';
 export * from './dndTableFr';
 export * from './elementSearchFr';
 export * from './equipmentSearchFr';
+export * from './equipmentTagFr';
+export * from './equipmentShortFr';
 export * from './equipmentsFr';
 export * from './errorsFr';
 export * from './filterExpertFr';
