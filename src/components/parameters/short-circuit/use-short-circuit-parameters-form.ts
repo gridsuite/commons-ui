@@ -37,6 +37,7 @@ import {
     getSpecificParametersFormSchema,
     getAllSpecificParametersValues,
 } from '../common/utils';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -221,10 +222,7 @@ export const useShortCircuitParametersForm = ({
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsChangingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
                 });
             }
         },

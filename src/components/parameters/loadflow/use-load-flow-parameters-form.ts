@@ -38,6 +38,7 @@ import {
     getAllSpecificParametersValues,
     setSpecificParameters,
 } from '../common/utils';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
@@ -242,11 +243,8 @@ export const useLoadFlowParametersForm = (
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                ).catch((error_) => {
-                    snackError({
-                        messageTxt: error_,
-                        headerId: 'updateLoadFlowParametersError',
-                    });
+                ).catch((error) => {
+                    snackWithFallback(snackError, error, { headerId: 'updateLoadFlowParametersError' });
                 });
             }
         },

@@ -11,7 +11,7 @@ import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
-import { catchErrorHandler } from '../../../services';
+import { catchErrorHandler } from '../../../utils';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
