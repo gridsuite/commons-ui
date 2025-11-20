@@ -7,7 +7,7 @@
 
 import type { UUID } from 'node:crypto';
 import type { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
-import type { SpecificParametersPerProvider } from '..';
+import type { SpecificParametersPerProvider } from '../types/parameters.type';
 
 export interface LoadFlowParametersInfos {
     uuid?: UUID;
