@@ -14,8 +14,10 @@ import {
     InitialVoltage,
     intlInitialVoltageProfileMode,
     intlPredefinedParametersOptions,
+    onlyStartedGeneratorsOptions,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -28,6 +30,7 @@ import GridItem from '../../grid/grid-item';
 import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
 import type { SxStyle } from '../../../utils/styles';
+import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
@@ -42,23 +45,31 @@ export enum Status {
 export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
-        name: SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
     });
     const watchPredefinedParams = useWatch({
         name: SHORT_CIRCUIT_PREDEFINED_PARAMS,
     });
     const watchLoads = useWatch({
-        name: SHORT_CIRCUIT_WITH_LOADS,
+        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`,
     });
     const watchShuntCompensators = useWatch({
-        name: SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
+        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`,
     });
     const watchVSC = useWatch({
-        name: SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
+        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`,
     });
     const watchNeutralPosition = useWatch({
-        name: SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
+        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`,
     });
+    const watchSpecificParameters = useWatch({
+        name: `${SPECIFIC_PARAMETERS}`,
+    });
+
+    const isThereSpecificParameters = useMemo(
+        () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
+        [watchSpecificParameters]
+    );
 
     const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
         return !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition;
@@ -115,7 +126,7 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                 <FieldLabel label="descWithFeederResult" />
             </Grid>
             <Grid item xs={2}>
-                <SwitchInput name={SHORT_CIRCUIT_WITH_FEEDER_RESULT} />
+                <SwitchInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_FEEDER_RESULT}`} />
             </Grid>
         </Grid>
     );
@@ -130,17 +141,36 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
 
     const initialVoltageProfileModeField = (
         <RadioInput
-            name={SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}
+            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`}
             options={Object.values(initialVoltageProfileMode)}
         />
     );
-    const loads = <CheckboxInput name={SHORT_CIRCUIT_WITH_LOADS} label="shortCircuitLoads" />;
-    const vsc = <CheckboxInput name={SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS} label="shortCircuitHvdc" />;
+    const loads = <CheckboxInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`} label="shortCircuitLoads" />;
+    const vsc = (
+        <CheckboxInput
+            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`}
+            label="shortCircuitHvdc"
+        />
+    );
     const shuntCompensators = (
-        <CheckboxInput name={SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS} label="shortCircuitShuntCompensators" />
+        <CheckboxInput
+            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`}
+            label="shortCircuitShuntCompensators"
+        />
     );
     const neutralPosition = (
-        <CheckboxInput name={SHORT_CIRCUIT_WITH_NEUTRAL_POSITION} label="shortCircuitNeutralPosition" />
+        <CheckboxInput
+            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`}
+            label="shortCircuitNeutralPosition"
+        />
+    );
+
+    // Forced to specificly manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
+    const onlyStartedGenerators = (
+        <RadioInput
+            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
+            options={Object.values(onlyStartedGeneratorsOptions)}
+        />
     );
 
     useEffect(() => {
@@ -166,7 +196,6 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
 
         const isIccMinDefaultConfiguration =
             isIccMinNominalDefaultConfiguration && isIccMinFeaturesDefaultConfiguration;
-
         setStatus(isIccMaxDefaultConfiguration || isIccMinDefaultConfiguration ? Status.SUCCESS : Status.ERROR);
     }, [
         watchInitialVoltageProfileMode,
@@ -201,6 +230,14 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                 <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
             </Grid>
             <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
+            {isThereSpecificParameters && (
+                <>
+                    <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
+                    <Grid container>
+                        <GridItem size={12}>{onlyStartedGenerators}</GridItem>
+                    </Grid>
+                </>
+            )}
         </Grid>
     );
 }

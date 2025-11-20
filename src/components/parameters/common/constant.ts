@@ -25,3 +25,7 @@ export const VoltageAdornment = {
     position: 'end',
     text: KILO_VOLT,
 };
+
+export const VERSION_PARAMETER = 'version';
+export const COMMON_PARAMETERS = 'commonParameters';
+export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
