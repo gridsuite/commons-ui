@@ -145,6 +145,7 @@ export function FilterCreationDialog({
                 activeDirectory={activeDirectory}
                 filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                language={language}
             />
         </CustomMuiDialog>
     );
