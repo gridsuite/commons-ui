@@ -16,6 +16,7 @@ import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
 import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/uiConstants';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface DescriptionModificationDialogProps {
     elementUuid: UUID;
@@ -62,12 +63,7 @@ export function DescriptionModificationDialog({
             updateElement(elementUuid, {
                 [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION]?.trim() ?? '',
             }).catch((error: unknown) => {
-                if (error instanceof Object && 'message' in error && typeof error.message === 'string') {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'descriptionModificationError',
-                    });
-                }
+                snackWithFallback(snackError, error, { headerId: 'descriptionModificationError' });
             });
         },
         [elementUuid, updateElement, snackError]
