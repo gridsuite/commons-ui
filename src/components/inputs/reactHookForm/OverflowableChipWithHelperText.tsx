@@ -19,7 +19,7 @@ export function OverflowableChipWithHelperText({
     return (
         <Box sx={{ display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
             <OverflowableChip {...otherProps} />
-            {helperText && <FormHelperText sx={{ paddingLeft: 1.5, fontSize: 'x-small' }}>{helperText}</FormHelperText>}
+            {helperText && <FormHelperText sx={{ fontSize: 'x-small' }}>{helperText}</FormHelperText>}
         </Box>
     );
 }

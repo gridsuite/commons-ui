@@ -19,7 +19,7 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { type MuiStyles } from '../../../utils/styles';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
-import { ALL_EQUIPMENTS, ArrayAction, ElementAttributes, mergeSx } from '../../../utils';
+import { ArrayAction, ElementAttributes, getEquipmentTypeShortLabel, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
 import { RawReadOnlyInput } from './RawReadOnlyInput';
@@ -220,11 +220,9 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                 getValues(`${name}.${index}.${NAME}`) ??
                                 (item as FieldValues)?.[NAME];
 
-                            const equipmentTypeTagLabel =
-                                (item?.specificMetadata?.equipmentType &&
-                                    ALL_EQUIPMENTS[item.specificMetadata.equipmentType as keyof typeof ALL_EQUIPMENTS]
-                                        ?.shortLabel) ||
-                                '';
+                            const equipmentTypeShortLabel = getEquipmentTypeShortLabel(
+                                item?.specificMetadata?.equipmentType
+                            );
 
                             const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
 
@@ -240,9 +238,9 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                             intl.formatMessage({ id: 'elementNotFound' })
                                         )
                                     }
-                                    {...(equipmentTypeTagLabel && {
+                                    {...(equipmentTypeShortLabel && {
                                         helperText: intl.formatMessage({
-                                            id: equipmentTypeTagLabel,
+                                            id: equipmentTypeShortLabel,
                                         }),
                                     })}
                                     sx={mergeSx(
