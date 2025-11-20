@@ -23,23 +23,22 @@ export const filterStyles = {
     },
 } as const satisfies MuiStyles;
 
-export interface FilterFormProps {
-    creation?: boolean;
-    activeDirectory?: UUID;
-    filterType?: { id: string; label: string };
-    sourceFilterForExplicitNamingConversion?: {
-        id: UUID;
-        equipmentType: string;
-    };
-}
-
 export const HeaderFilterSchema = {
     [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
     [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
     [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
 };
 
-export function HeaderFilterForm({ creation, activeDirectory }: Readonly<FilterFormProps>) {
+export interface HeaderFilterFormProps {
+    creation?: boolean;
+    activeDirectory?: UUID;
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
+}
+
+export function HeaderFilterForm({ creation, activeDirectory }: Readonly<HeaderFilterFormProps>) {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
