@@ -909,6 +909,7 @@ function AppContent({ language, onLanguageClick }) {
                             language={language}
                             user={user}
                             appsAndUrls={apps}
+                            dense
                         >
                             <Crasher />
                             <EquipmentSearchDialog />
