@@ -27,3 +27,5 @@ export * from './notifications';
 export * from './icons';
 export * from './parameters';
 export * from './menus';
+export * from './muiTable';
+export * from './resizablePanels';
