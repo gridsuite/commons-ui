@@ -14,7 +14,8 @@ export const businessErrorsEn = {
     'directory.someElementsAreMissing': 'Some of the requested directory elements are missing.',
     'directory.elementNotFound': 'The requested directory element could not be found.',
     'explore.permissionDenied': 'You are not allowed to perform this action.',
-    'explore.maxElementsExceeded': 'The number of allowed elements has been exceeded.',
+    'explore.maxElementsExceeded':
+        'You have reached your user quota for cases and studies, therefore you cannot import further cases or create further studies for now. Please delete old cases or studies in order to go below the limit of {limit} elements.',
     'explore.incorrectCaseFile': 'The provided case file is incorrect.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
