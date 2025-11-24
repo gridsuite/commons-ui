@@ -43,7 +43,6 @@ export type BaseVoltageConfig = {
     name: string;
     minValue: number;
     maxValue: number;
-    profile: string;
 };
 export type BaseVoltage = BaseVoltageConfig & {
     // used to define the voltage ranges and their colors
