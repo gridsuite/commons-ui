@@ -15,7 +15,7 @@ export type CsvDownloadProps = {
     skipColumnHeaders?: boolean;
     skipPinnedBottom?: boolean;
     language: GsLang;
-    exportDataAsCsv: (params?: CsvExportParams) => void;
+    getData: (params?: CsvExportParams) => string | undefined | void;
 };
 
 export type CsvExportProps = CsvDownloadProps & {
