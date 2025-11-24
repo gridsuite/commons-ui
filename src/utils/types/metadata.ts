@@ -46,6 +46,6 @@ export type BaseVoltageConfig = {
 };
 export type BaseVoltage = BaseVoltageConfig & {
     // used to define the voltage ranges and their colors
-    mapColor: string;
+    networkMapColor: string;
     sldAndNadColors: SldAndNadColors;
 };
