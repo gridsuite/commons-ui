@@ -28,7 +28,8 @@ export const businessErrorsEn = {
     'study.nodeNameAlreadyExist': 'Node name already exists.',
     'study.timeSeriesBadType': 'Bad timeseries type.',
     'study.noVoltageInitResultsForNode': 'No voltage initialization results found.',
-    'study.maxNodeBuildsExceeded': 'Maximum number of built nodes exceeded.',
+    'study.maxNodeBuildsExceeded':
+        'You have reached your user quota for builds per study, therefore you cannot build further nodes within this study. Please unbuild nodes in order to go below the limit of {limit} builds',
     'study.rootNetworkDeleteForbidden': 'Impossible to delete this root network.',
     'study.maximumRootNetworkByStudyReached': 'Maximum number of root network per study exceeded.',
     'study.maximumTagLengthExceeded': 'Tag length exceeded.',
