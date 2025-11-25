@@ -34,3 +34,21 @@ export function validateValueIsANumber(value?: string | number | null | boolean)
     }
     return !Number.isNaN(toNumber(value));
 }
+
+/*
+ * Returns true if value is either undefined, null, empty or only contains whitespaces.
+ * Otherwise, if value is a boolean or a number, returns false.
+ */
+export function isBlankOrEmpty<T>(value: T) {
+    if (value === undefined || value === null) {
+        return true;
+    }
+    if (typeof value === 'string') {
+        return /^\s*$/.test(value);
+    }
+    return false;
+}
+
+export function isNotBlankOrEmpty<T>(value: T): value is NonNullable<T> {
+    return !isBlankOrEmpty(value);
+}

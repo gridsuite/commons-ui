@@ -10,5 +10,6 @@ export * from './hooks';
 export * from './redux';
 export * from './services';
 export * from './utils';
+export * from './types/custom-aggrid-types';
 export * from './translations/en';
 export * from './translations/fr';
