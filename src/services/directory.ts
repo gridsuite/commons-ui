@@ -59,7 +59,13 @@ export function elementAlreadyExists(directoryUuid: UUID, elementName: string, t
     );
 }
 
-export function hasElementPermission(elementUuid: UUID, permission: string) {
+export enum PermissionType {
+    READ = 'READ',
+    WRITE = 'WRITE',
+    MANAGE = 'MANAGE',
+}
+
+export function hasElementPermission(elementUuid: UUID, permission: PermissionType) {
     const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${elementUuid}?permission=${permission}`;
     console.debug(url);
     return backendFetch(url, { method: 'head' })
