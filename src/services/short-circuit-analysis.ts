@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson } from './utils';
+import { backendFetch, backendFetchJson, backendFetchText } from './utils';
 import { ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 
 const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
@@ -40,4 +40,11 @@ export function updateShortCircuitParameters(parameterUuid: UUID, newParams: any
         },
         body: newParams ? JSON.stringify(newParams) : null,
     });
+}
+
+export function fetchShortCircuitProvider(parameterUuid: string): Promise<string> {
+    console.info('get short circuit analysis parameters provider');
+    const url = `${getShortCircuitUrl()}parameters/${encodeURIComponent(parameterUuid)}/provider`;
+    console.debug(url);
+    return backendFetchText(url);
 }

@@ -14,6 +14,7 @@ import { ComputingType, ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
     fetchShortCircuitParameters,
+    fetchShortCircuitProvider,
     getShortCircuitSpecificParametersDescription,
     updateShortCircuitParameters,
 } from '../../../services/short-circuit-analysis';
@@ -36,7 +37,7 @@ export function ShortCircuitParametersEditionDialog({
         ComputingType.SHORT_CIRCUIT,
         OptionalServicesStatus.Up,
         null,
-        null,
+        fetchShortCircuitProvider,
         null,
         null,
         fetchShortCircuitParameters,
