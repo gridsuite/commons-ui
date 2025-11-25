@@ -9,9 +9,8 @@ import { Box, Checkbox, Tooltip } from '@mui/material';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomCellRendererProps } from 'ag-grid-react';
-import { mergeSx, type MuiStyles } from '@gridsuite/commons-ui';
 import { useIntl } from 'react-intl';
-import { isBlankOrEmpty } from '../../utils';
+import { isBlankOrEmpty, mergeSx } from '../../utils';
 
 const styles = {
     tableCell: (theme) => ({
@@ -43,18 +42,18 @@ interface BaseCellRendererProps {
     tooltip?: string;
 }
 
-export const BooleanCellRenderer = (props: any) => {
+export function BooleanCellRenderer(props: any) {
     const isChecked = props.value;
     return (
         <div>
             {props.value !== undefined && (
-                <Checkbox style={{ padding: 0 }} color="default" checked={isChecked} disableRipple={true} />
+                <Checkbox style={{ padding: 0 }} color="default" checked={isChecked} disableRipple />
             )}
         </div>
     );
-};
+}
 
-export const BooleanNullableCellRenderer = (props: any) => {
+export function BooleanNullableCellRenderer(props: any) {
     return (
         <div>
             <Checkbox
@@ -62,11 +61,11 @@ export const BooleanNullableCellRenderer = (props: any) => {
                 color="default"
                 checked={props.value === true}
                 indeterminate={isBlankOrEmpty(props.value)}
-                disableRipple={true}
+                disableRipple
             />
         </div>
     );
-};
+}
 
 const formatNumericCell = (value: number, fractionDigits?: number) => {
     if (value === null || isNaN(value)) {
@@ -77,7 +76,7 @@ const formatNumericCell = (value: number, fractionDigits?: number) => {
 
 const formatCell = (props: any) => {
     let value = props?.valueFormatted || props.value;
-    let tooltipValue = undefined;
+    let tooltipValue;
     // we use valueGetter only if value is not defined
     if (!value && props.colDef.valueGetter) {
         props.colDef.valueGetter(props);
@@ -90,14 +89,14 @@ const formatCell = (props: any) => {
     if (props.colDef.context?.numeric && isNaN(value)) {
         value = null;
     }
-    return { value: value, tooltip: tooltipValue };
+    return { value, tooltip: tooltipValue };
 };
 
 export interface NumericCellRendererProps extends CustomCellRendererProps {
     fractionDigits?: number;
 }
 
-export const NumericCellRenderer = (props: NumericCellRendererProps) => {
+export function NumericCellRenderer(props: NumericCellRendererProps) {
     const numericalValue = typeof props.value === 'number' ? props.value : Number.parseFloat(props.value);
     const cellValue = formatNumericCell(numericalValue, props.fractionDigits);
     return (
@@ -111,29 +110,31 @@ export const NumericCellRenderer = (props: NumericCellRendererProps) => {
             </Tooltip>
         </Box>
     );
-};
+}
 
-const BaseCellRenderer = ({ value, tooltip }: BaseCellRendererProps) => (
-    <Box sx={mergeSx(styles.tableCell)}>
-        <Tooltip disableFocusListener disableTouchListener title={tooltip || value || ''}>
-            <Box sx={styles.overflow}>{value}</Box>
-        </Tooltip>
-    </Box>
-);
+function BaseCellRenderer({ value, tooltip }: BaseCellRendererProps) {
+    return (
+        <Box sx={mergeSx(styles.tableCell)}>
+            <Tooltip disableFocusListener disableTouchListener title={tooltip || value || ''}>
+                <Box sx={styles.overflow}>{value}</Box>
+            </Tooltip>
+        </Box>
+    );
+}
 
-export const ErrorCellRenderer = (props: CustomCellRendererProps) => {
+export function ErrorCellRenderer(props: CustomCellRendererProps) {
     const intl = useIntl();
     const errorMessage = intl.formatMessage({ id: props.value?.error });
     const errorValue = intl.formatMessage({ id: FORMULA_ERROR_KEY });
     return <BaseCellRenderer value={errorValue} tooltip={errorMessage} />;
-};
+}
 
-export const DefaultCellRenderer = (props: CustomCellRendererProps) => {
+export function DefaultCellRenderer(props: CustomCellRendererProps) {
     const cellValue = formatCell(props).value?.toString();
     return <BaseCellRenderer value={cellValue} />;
-};
+}
 
-export const NetworkModificationNameCellRenderer = (props: CustomCellRendererProps) => {
+export function NetworkModificationNameCellRenderer(props: CustomCellRendererProps) {
     return (
         <Box sx={mergeSx(styles.tableCell)}>
             <Tooltip
@@ -152,9 +153,9 @@ export const NetworkModificationNameCellRenderer = (props: CustomCellRendererPro
             </Tooltip>
         </Box>
     );
-};
+}
 
-export const MessageLogCellRenderer = ({
+export function MessageLogCellRenderer({
     param,
     highlightColor,
     currentHighlightColor,
@@ -168,7 +169,7 @@ export const MessageLogCellRenderer = ({
     searchTerm?: string;
     currentResultIndex?: number;
     searchResults?: number[];
-}) => {
+}) {
     const marginLeft = (param.data?.depth ?? 0) * 2; // add indentation based on depth
     const textRef = useRef<HTMLDivElement>(null);
     const [isEllipsisActive, setIsEllipsisActive] = useState(false);
@@ -245,9 +246,9 @@ export const MessageLogCellRenderer = ({
             </Tooltip>
         </Box>
     );
-};
+}
 
-export const ContingencyCellRenderer = ({ value }: { value: { cellValue: ReactNode; tooltipValue: ReactNode } }) => {
+export function ContingencyCellRenderer({ value }: { value: { cellValue: ReactNode; tooltipValue: ReactNode } }) {
     const { cellValue, tooltipValue } = value ?? {};
 
     if (cellValue == null || tooltipValue == null) {
@@ -261,4 +262,4 @@ export const ContingencyCellRenderer = ({ value }: { value: { cellValue: ReactNo
             </Tooltip>
         </Box>
     );
-};
+}
