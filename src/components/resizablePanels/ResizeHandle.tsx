@@ -38,7 +38,7 @@ const getStyles = (
     },
 });
 
-export const ResizeHandle = ({ visible = true, rotated = false, style }: ResizeHandleProps) => {
+export function ResizeHandle({ visible = true, rotated = false, style }: ResizeHandleProps) {
     const theme = useTheme();
     const styles = getStyles(theme, visible, rotated, style);
 
@@ -47,6 +47,6 @@ export const ResizeHandle = ({ visible = true, rotated = false, style }: ResizeH
             <DragIndicatorIcon fontSize="small" style={styles.icon} />
         </PanelResizeHandle>
     );
-};
+}
 
 export default ResizeHandle;

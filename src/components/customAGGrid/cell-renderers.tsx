@@ -42,25 +42,25 @@ interface BaseCellRendererProps {
     tooltip?: string;
 }
 
-export function BooleanCellRenderer(props: any) {
-    const isChecked = props.value;
+export function BooleanCellRenderer({ value }: any) {
+    const isChecked = value;
     return (
         <div>
-            {props.value !== undefined && (
+            {value !== undefined && (
                 <Checkbox style={{ padding: 0 }} color="default" checked={isChecked} disableRipple />
             )}
         </div>
     );
 }
 
-export function BooleanNullableCellRenderer(props: any) {
+export function BooleanNullableCellRenderer({ value }: any) {
     return (
         <div>
             <Checkbox
                 style={{ padding: 0 }}
                 color="default"
-                checked={props.value === true}
-                indeterminate={isBlankOrEmpty(props.value)}
+                checked={value === true}
+                indeterminate={isBlankOrEmpty(value)}
                 disableRipple
             />
         </div>
@@ -68,7 +68,7 @@ export function BooleanNullableCellRenderer(props: any) {
 }
 
 const formatNumericCell = (value: number, fractionDigits?: number) => {
-    if (value === null || isNaN(value)) {
+    if (value === null || Number.isNaN(value)) {
         return { value: null };
     }
     return { value: value.toFixed(fractionDigits ?? 2), tooltip: value?.toString() };
@@ -86,7 +86,7 @@ const formatCell = (props: any) => {
         tooltipValue = value;
         value = parseFloat(value).toFixed(props.colDef.context.fractionDigits);
     }
-    if (props.colDef.context?.numeric && isNaN(value)) {
+    if (props.colDef.context?.numeric && Number.isNaN(value)) {
         value = null;
     }
     return { value, tooltip: tooltipValue };
@@ -96,9 +96,9 @@ export interface NumericCellRendererProps extends CustomCellRendererProps {
     fractionDigits?: number;
 }
 
-export function NumericCellRenderer(props: NumericCellRendererProps) {
-    const numericalValue = typeof props.value === 'number' ? props.value : Number.parseFloat(props.value);
-    const cellValue = formatNumericCell(numericalValue, props.fractionDigits);
+export function NumericCellRenderer({ value, fractionDigits }: NumericCellRendererProps) {
+    const numericalValue = typeof value === 'number' ? value : Number.parseFloat(value);
+    const cellValue = formatNumericCell(numericalValue, fractionDigits);
     return (
         <Box sx={mergeSx(styles.tableCell)}>
             <Tooltip
@@ -122,9 +122,9 @@ function BaseCellRenderer({ value, tooltip }: BaseCellRendererProps) {
     );
 }
 
-export function ErrorCellRenderer(props: CustomCellRendererProps) {
+export function ErrorCellRenderer({ value }: CustomCellRendererProps) {
     const intl = useIntl();
-    const errorMessage = intl.formatMessage({ id: props.value?.error });
+    const errorMessage = intl.formatMessage({ id: value?.error });
     const errorValue = intl.formatMessage({ id: FORMULA_ERROR_KEY });
     return <BaseCellRenderer value={errorValue} tooltip={errorMessage} />;
 }
@@ -134,13 +134,13 @@ export function DefaultCellRenderer(props: CustomCellRendererProps) {
     return <BaseCellRenderer value={cellValue} />;
 }
 
-export function NetworkModificationNameCellRenderer(props: CustomCellRendererProps) {
+export function NetworkModificationNameCellRenderer({ value }: CustomCellRendererProps) {
     return (
         <Box sx={mergeSx(styles.tableCell)}>
             <Tooltip
                 disableFocusListener
                 disableTouchListener
-                title={props.value}
+                title={value}
                 componentsProps={{
                     tooltip: {
                         sx: {
@@ -149,7 +149,7 @@ export function NetworkModificationNameCellRenderer(props: CustomCellRendererPro
                     },
                 }}
             >
-                <Box sx={styles.overflow}>{props.value}</Box>
+                <Box sx={styles.overflow}>{value}</Box>
             </Tooltip>
         </Box>
     );
@@ -206,27 +206,32 @@ export function MessageLogCellRenderer({
 
         const escapedSearchTerm = escapeRegExp(searchTerm);
         const parts = value.split(new RegExp(`(${escapedSearchTerm})`, 'gi'));
+        let count = 0;
         return (
             <span>
-                {parts.map((part: string, index: number) =>
-                    part.toLowerCase() === searchTerm.toLowerCase() ? (
-                        <span
-                            key={`${part}-${index}`}
-                            style={{
-                                backgroundColor:
-                                    searchResults &&
-                                    currentResultIndex !== undefined &&
-                                    searchResults[currentResultIndex] === param.node.rowIndex
-                                        ? currentHighlightColor
-                                        : highlightColor,
-                            }}
-                        >
-                            {part}
-                        </span>
-                    ) : (
-                        part
-                    )
-                )}
+                {parts.map((part: string) => {
+                    count += 1;
+                    const key = `${param.node.rowIndex}-${count}`;
+                    const isMatch = part.toLowerCase() === searchTerm.toLowerCase();
+                    if (isMatch) {
+                        return (
+                            <span
+                                key={key}
+                                style={{
+                                    backgroundColor:
+                                        searchResults &&
+                                        currentResultIndex !== undefined &&
+                                        searchResults[currentResultIndex] === param.node.rowIndex
+                                            ? currentHighlightColor
+                                            : highlightColor,
+                                }}
+                            >
+                                {part}
+                            </span>
+                        );
+                    }
+                    return <span key={key}>{part}</span>;
+                })}
             </span>
         );
     };
