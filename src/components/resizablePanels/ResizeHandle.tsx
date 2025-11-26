@@ -6,7 +6,7 @@
  */
 
 import { PanelResizeHandle } from 'react-resizable-panels';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { DragIndicator } from '@mui/icons-material';
 import { Theme, useTheme } from '@mui/material';
 
 interface ResizeHandleProps {
@@ -44,7 +44,7 @@ export function ResizeHandle({ visible = true, rotated = false, style }: ResizeH
 
     return (
         <PanelResizeHandle style={styles.handle}>
-            <DragIndicatorIcon fontSize="small" style={styles.icon} />
+            <DragIndicator fontSize="small" style={styles.icon} />
         </PanelResizeHandle>
     );
 }
