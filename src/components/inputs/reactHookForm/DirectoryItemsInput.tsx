@@ -33,7 +33,7 @@ const styles = {
         alignContent: 'flex-start',
         alignItems: 'center',
         border: '2px solid lightgray',
-        padding: '10px',
+        padding: '2px 8px',
         borderRadius: '4px',
         overflow: 'hidden',
     },
