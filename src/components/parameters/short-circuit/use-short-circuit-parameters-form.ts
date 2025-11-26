@@ -29,7 +29,7 @@ import { useSnackMessage } from '../../../hooks';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import { COMMON_PARAMETERS, ComputingType, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
+import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import { getCommonShortCircuitParametersFormSchema, resetSpecificParameters } from './short-circuit-parameters-utils';
 import {
     formatSpecificParameters,
@@ -133,9 +133,7 @@ export const useShortCircuitParametersForm = ({
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
             setValue(
                 SPECIFIC_PARAMETERS,
-                {
-                    ...resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
-                },
+                resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
                 dirty
             );
         },
@@ -148,6 +146,7 @@ export const useShortCircuitParametersForm = ({
                 return {} as ShortCircuitParametersInfos;
             }
             return {
+                provider: formData[PROVIDER],
                 predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
@@ -182,7 +181,7 @@ export const useShortCircuitParametersForm = ({
             }
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
             return {
-                ...getNameElementEditorEmptyFormData(name, description),
+                [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
                     ..._params.commonParameters,
@@ -201,7 +200,7 @@ export const useShortCircuitParametersForm = ({
                 },
             };
         },
-        [provider, description, name, specificParametersDescriptionForProvider]
+        [provider, specificParametersDescriptionForProvider]
     );
 
     const onValidationError = useCallback((_errors: FieldErrors) => {}, []);
@@ -236,7 +235,7 @@ export const useShortCircuitParametersForm = ({
             return;
         }
         reset(toShortCircuitFormValues(params));
-        // Now that we have params and specific parameters description we can init
+        // Now that we have params, provider and specific parameters description we can init
         // form Schema and default values. this paramsLoaded State is used to determine
         // if form is correctly initialized and that we are able to render form inputs
         setParamsLoaded(true);
