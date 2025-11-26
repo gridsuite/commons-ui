@@ -25,7 +25,9 @@ const getStyles = (
         display: visible ? 'flex' : 'none',
         alignItems: 'center',
         backgroundColor: theme.palette.background.paper,
-        borderLeft: !rotated ? `1px solid ${theme.palette.divider}` : 'none',
+        borderLeft: rotated ? 'none' : `1px solid ${theme.palette.divider}`,
+        borderRight: rotated ? 'none' : `1px solid ${theme.palette.divider}`,
+        borderBottom: rotated ? `1px solid ${theme.palette.divider}` : 'none',
         borderTop: rotated ? `1px solid ${theme.palette.divider}` : 'none',
         justifyContent: 'center',
         ...(customStyle ? customStyle(theme) : {}),
@@ -38,7 +40,7 @@ const getStyles = (
     },
 });
 
-export function ResizeHandle({ visible = true, rotated = false, style }: ResizeHandleProps) {
+export function ResizeHandle({ visible = true, rotated = false, style }: Readonly<ResizeHandleProps>) {
     const theme = useTheme();
     const styles = getStyles(theme, visible, rotated, style);
 
