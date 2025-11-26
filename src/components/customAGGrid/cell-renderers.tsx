@@ -5,15 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Checkbox, Tooltip } from '@mui/material';
+import { Box, Checkbox, Theme, Tooltip } from '@mui/material';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomCellRendererProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
-import { isBlankOrEmpty, mergeSx } from '../../utils';
+import { isBlankOrEmpty, mergeSx, MuiStyles } from '../../utils';
 
 const styles = {
-    tableCell: (theme) => ({
+    tableCell: (theme: Theme) => ({
         fontSize: 'small',
         cursor: 'inherit',
         display: 'flex',
