@@ -15,7 +15,7 @@ export interface GridSectionProps {
     customStyle?: SxStyle;
 }
 
-export default function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
+export function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
     return (
         <Grid container spacing={2}>
             <Grid item xs={size}>

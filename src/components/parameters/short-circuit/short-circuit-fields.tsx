@@ -25,9 +25,9 @@ import {
 } from './constants';
 import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
-import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
 import type { SxStyle } from '../../../utils/styles';
+import { GridSection } from '../../grid';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
