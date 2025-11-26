@@ -199,12 +199,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     return (
         <>
             <FormControl
-                sx={mergeSx(
-                    styles.formDirectoryElements1,
-                    // @ts-expect-error
-                    error?.message && styles.formDirectoryElementsError
-                )}
-                error={!!error?.message}
+                sx={mergeSx(styles.formDirectoryElements1, error ? styles.formDirectoryElementsError : undefined)}
+                error={!!error}
             >
                 {elements?.length === 0 && label && (
                     <FieldLabel
