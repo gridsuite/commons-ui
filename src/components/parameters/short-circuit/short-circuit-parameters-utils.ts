@@ -40,7 +40,7 @@ export const resetSpecificParameters = (
     specificDefaultValues: SpecificParametersValues,
     predefinedParameter: PredefinedParameters
 ) => {
-    if (specificDefaultValues[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]) {
+    if (Object.hasOwn(specificDefaultValues, SHORT_CIRCUIT_ONLY_STARTED_GENERATORS)) {
         return {
             ...specificDefaultValues,
             // Forced to override specificly this param here because its default value depends of the PredefinedParameters value
