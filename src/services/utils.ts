@@ -70,15 +70,15 @@ const handleError = (response: Response) => {
         let customError: CustomError;
         if (errorJson?.businessErrorCode != null) {
             throw new CustomError(
-                errorJson.message,
+                errorJson.detail,
                 errorJson.status,
                 errorJson.businessErrorCode,
                 errorJson.businessErrorValues
             );
         }
-        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
+        if (errorJson && errorJson.status && errorJson.error && errorJson.detail) {
             customError = new CustomError(
-                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`,
+                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.detail}`,
                 errorJson.status
             );
         } else {
