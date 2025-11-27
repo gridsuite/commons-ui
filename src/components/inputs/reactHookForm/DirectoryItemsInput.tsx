@@ -144,10 +144,11 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
 
     const removeElements = useCallback(
         (index: number) => {
-            const currentValues = getValues(name);
+            const elemToRemove = getValues(name)[index];
             remove(index);
+            const newElems = getValues(name); // must call getValues again to get the newly updated array
             onRowChanged?.(true);
-            onChange?.(currentValues, ArrayAction.REMOVE, currentValues[index]);
+            onChange?.(newElems, ArrayAction.REMOVE, elemToRemove);
         },
         [onRowChanged, remove, getValues, name, onChange]
     );
