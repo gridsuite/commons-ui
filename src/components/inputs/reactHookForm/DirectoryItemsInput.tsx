@@ -22,7 +22,6 @@ import { fetchDirectoryElementPath } from '../../../services';
 import { ArrayAction, ElementAttributes, getEquipmentTypeShortLabel, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
-import { RawReadOnlyInput } from './RawReadOnlyInput';
 
 const styles = {
     formDirectoryElements1: {
@@ -144,10 +143,11 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
 
     const removeElements = useCallback(
         (index: number) => {
-            const currentValues = getValues(name);
+            const elemToRemove = getValues(name)[index];
             remove(index);
+            const newElems = getValues(name); // must call getValues again to get the newly updated array
             onRowChanged?.(true);
-            onChange?.(currentValues, ArrayAction.REMOVE, currentValues[index]);
+            onChange?.(newElems, ArrayAction.REMOVE, elemToRemove);
         },
         [onRowChanged, remove, getValues, name, onChange]
     );
@@ -231,13 +231,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                     key={item.id}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
-                                    label={
-                                        elementName ? (
-                                            <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                                        ) : (
-                                            intl.formatMessage({ id: 'elementNotFound' })
-                                        )
-                                    }
+                                    label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
                                     {...(equipmentTypeShortLabel && {
                                         helperText: intl.formatMessage({
                                             id: equipmentTypeShortLabel,
