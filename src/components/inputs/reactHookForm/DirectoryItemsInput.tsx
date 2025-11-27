@@ -22,7 +22,6 @@ import { fetchDirectoryElementPath } from '../../../services';
 import { ArrayAction, ElementAttributes, getEquipmentTypeShortLabel, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
-import { RawReadOnlyInput } from './RawReadOnlyInput';
 
 const styles = {
     formDirectoryElements1: {
@@ -232,13 +231,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                     key={item.id}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
-                                    label={
-                                        elementName ? (
-                                            <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                                        ) : (
-                                            intl.formatMessage({ id: 'elementNotFound' })
-                                        )
-                                    }
+                                    label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
                                     {...(equipmentTypeShortLabel && {
                                         helperText: intl.formatMessage({
                                             id: equipmentTypeShortLabel,
