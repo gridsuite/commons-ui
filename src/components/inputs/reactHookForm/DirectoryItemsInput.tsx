@@ -230,7 +230,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                     key={item.id}
                                     onDelete={() => removeElements(index)}
                                     onClick={() => handleChipClick(index)}
-                                    label={!elementName ? intl.formatMessage({ id: 'elementNotFound' }) : elementName}
+                                    label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
                                     {...(equipmentTypeShortLabel && {
                                         helperText: intl.formatMessage({
                                             id: equipmentTypeShortLabel,
