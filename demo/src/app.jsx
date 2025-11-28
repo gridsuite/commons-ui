@@ -315,13 +315,6 @@ function PermanentSnackButton() {
     );
 }
 
-const validateUser = () => {
-    // change to false to simulate user unauthorized access
-    return new Promise((resolve) => {
-        window.setTimeout(() => resolve(true), 500);
-    });
-};
-
 function AppContent({ language, onLanguageClick }) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -490,14 +483,14 @@ function AppContent({ language, onLanguageClick }) {
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
-            (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
+            (resolve, _reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
 
     function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
         return new Promise(
-            (resolve, reject) =>
+            (resolve, _reject) =>
                 (aboutTimerCmpnt.current = window.setTimeout(
                     () =>
                         resolve(
