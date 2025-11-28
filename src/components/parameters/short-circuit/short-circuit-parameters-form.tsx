@@ -25,7 +25,7 @@ export function ShortCircuitParametersForm({
     renderActions,
     enableDeveloperMode,
 }: Readonly<ShortCircuitParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoading, resetAll } = shortCircuitMethods;
+    const { formMethods, formSchema, paramsLoaded, resetAll } = shortCircuitMethods;
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
@@ -40,12 +40,12 @@ export function ShortCircuitParametersForm({
                 <Grid item container direction="column">
                     {renderTitleFields?.()}
                 </Grid>
-                {paramsLoading ? (
-                    <LinearProgress />
-                ) : (
+                {paramsLoaded ? (
                     <Grid sx={parametersStyles.scrollableGrid}>
                         <ShortCircuitFields enableDeveloperMode={enableDeveloperMode} resetAll={resetAll} />
                     </Grid>
+                ) : (
+                    <LinearProgress />
                 )}
                 <Grid
                     item
