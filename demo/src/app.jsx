@@ -927,8 +927,8 @@ function AppContent({ language, onLanguageClick }) {
                                         <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 2 && <FlatParametersTab />}
-                                    {tabIndex === 3 && <InputsTab />}
+                                    {tabIndex === 1 && <FlatParametersTab />}
+                                    {tabIndex === 2 && <InputsTab />}
                                 </div>
                             ) : (
                                 <AuthenticationRouter
