@@ -23,7 +23,7 @@ export interface DescriptionModificationDialogProps {
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement: (uuid: UUID, data: Record<string, string>) => Promise<void>;
+    updateElement: (uuid: UUID, data: Record<string, string>) => Promise<Response>;
 }
 
 const schema = yup.object().shape({
