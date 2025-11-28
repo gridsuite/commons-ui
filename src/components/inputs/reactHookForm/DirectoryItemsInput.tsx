@@ -194,7 +194,11 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     return (
         <>
             <FormControl
-                sx={mergeSx(styles.formDirectoryElements, error ? styles.formDirectoryElementsError : undefined, fullHeight && { height: '100%' })}
+                sx={mergeSx(
+                    styles.formDirectoryElements,
+                    error ? styles.formDirectoryElementsError : undefined,
+                    fullHeight ? { height: '100%' } : undefined
+                )}
                 error={!!error}
             >
                 <Tooltip title={intl.formatMessage({ id: titleId })}>
