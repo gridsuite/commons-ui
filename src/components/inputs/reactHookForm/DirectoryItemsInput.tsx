@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FormControl, Grid, IconButton, Tooltip } from '@mui/material';
+import { FormControl, IconButton, Tooltip } from '@mui/material';
 import { Folder as FolderIcon } from '@mui/icons-material';
 import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
@@ -22,31 +22,23 @@ import { fetchDirectoryElementPath } from '../../../services';
 import { ArrayAction, ElementAttributes, getEquipmentTypeShortLabel, mergeSx } from '../../../utils';
 import { NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
-import { RawReadOnlyInput } from './RawReadOnlyInput';
 
 const styles = {
-    formDirectoryElements1: {
+    formDirectoryElements: {
         display: 'flex',
         gap: '8px',
         flexWrap: 'wrap',
         flexDirection: 'row',
+        alignContent: 'flex-start',
+        alignItems: 'center',
         border: '2px solid lightgray',
-        padding: '4px',
+        padding: '2px 8px',
         borderRadius: '4px',
         overflow: 'hidden',
     },
     formDirectoryElementsError: (theme) => ({
         borderColor: theme.palette.error.main,
     }),
-    formDirectoryElements2: {
-        display: 'flex',
-        gap: '8px',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        marginTop: 0,
-        padding: '4px',
-        overflow: 'hidden',
-    },
     addDirectoryElements: {
         marginTop: '-5px',
     },
@@ -67,6 +59,7 @@ export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = Ove
     labelRequiredFromContext?: boolean;
     ChipComponent?: ComponentType<CP>;
     chipProps?: Partial<CP>;
+    fullHeight?: boolean;
 }
 
 export function DirectoryItemsInput<CP extends OverflowableChipProps = OverflowableChipProps>({
@@ -84,6 +77,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     labelRequiredFromContext = true,
     ChipComponent = OverflowableChip,
     chipProps,
+    fullHeight,
 }: Readonly<DirectoryItemsInputProps<CP>>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -144,10 +138,11 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
 
     const removeElements = useCallback(
         (index: number) => {
-            const currentValues = getValues(name);
+            const elemToRemove = getValues(name)[index];
             remove(index);
+            const newElems = getValues(name); // must call getValues again to get the newly updated array
             onRowChanged?.(true);
-            onChange?.(currentValues, ArrayAction.REMOVE, currentValues[index]);
+            onChange?.(newElems, ArrayAction.REMOVE, elemToRemove);
         },
         [onRowChanged, remove, getValues, name, onChange]
     );
@@ -200,90 +195,74 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
         <>
             <FormControl
                 sx={mergeSx(
-                    styles.formDirectoryElements1,
+                    styles.formDirectoryElements,
                     // @ts-expect-error
-                    error?.message && styles.formDirectoryElementsError
+                    error?.message && styles.formDirectoryElementsError,
+                    fullHeight && { height: '100%' }
                 )}
                 error={!!error?.message}
             >
+                <Tooltip title={intl.formatMessage({ id: titleId })}>
+                    <span>
+                        <IconButton
+                            size="small"
+                            disabled={disable}
+                            onClick={() => {
+                                if (shouldReplaceElement) {
+                                    handleChipClick(0);
+                                } else {
+                                    setDirectoryItemSelectorOpen(true);
+                                    if (allowMultiSelect) {
+                                        setMultiSelect(true);
+                                    }
+                                }
+                            }}
+                        >
+                            <FolderIcon />
+                        </IconButton>
+                    </span>
+                </Tooltip>
+                {elements?.map((item, index) => {
+                    const elementName =
+                        watchedElements?.[index]?.[NAME] ??
+                        getValues(`${name}.${index}.${NAME}`) ??
+                        (item as FieldValues)?.[NAME];
+
+                    const equipmentTypeShortLabel = getEquipmentTypeShortLabel(item?.specificMetadata?.equipmentType);
+
+                    const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
+
+                    return (
+                        <ChipComponent
+                            key={item.id}
+                            onDelete={() => removeElements(index)}
+                            onClick={() => handleChipClick(index)}
+                            label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
+                            {...(equipmentTypeShortLabel && {
+                                helperText: intl.formatMessage({
+                                    id: equipmentTypeShortLabel,
+                                }),
+                            })}
+                            sx={mergeSx(
+                                !elementName
+                                    ? (theme) => ({
+                                          backgroundColor: theme.palette.error.light,
+                                          borderColor: theme.palette.error.main,
+                                          color: theme.palette.error.contrastText,
+                                      })
+                                    : undefined,
+                                chipSx
+                            )}
+                            {...(otherChipProps as CP)}
+                        />
+                    );
+                })}
                 {elements?.length === 0 && label && (
                     <FieldLabel
                         label={label}
                         optional={labelRequiredFromContext && !isFieldRequired(name, validationSchema, getValues())}
                     />
                 )}
-                {elements?.length > 0 && (
-                    <FormControl sx={styles.formDirectoryElements2}>
-                        {elements.map((item, index) => {
-                            const elementName =
-                                watchedElements?.[index]?.[NAME] ??
-                                getValues(`${name}.${index}.${NAME}`) ??
-                                (item as FieldValues)?.[NAME];
-
-                            const equipmentTypeShortLabel = getEquipmentTypeShortLabel(
-                                item?.specificMetadata?.equipmentType
-                            );
-
-                            const { sx: chipSx, ...otherChipProps } = chipProps ?? {};
-
-                            return (
-                                <ChipComponent
-                                    key={item.id}
-                                    onDelete={() => removeElements(index)}
-                                    onClick={() => handleChipClick(index)}
-                                    label={
-                                        elementName ? (
-                                            <RawReadOnlyInput name={`${name}.${index}.${NAME}`} />
-                                        ) : (
-                                            intl.formatMessage({ id: 'elementNotFound' })
-                                        )
-                                    }
-                                    {...(equipmentTypeShortLabel && {
-                                        helperText: intl.formatMessage({
-                                            id: equipmentTypeShortLabel,
-                                        }),
-                                    })}
-                                    sx={mergeSx(
-                                        !elementName
-                                            ? (theme) => ({
-                                                  backgroundColor: theme.palette.error.light,
-                                                  borderColor: theme.palette.error.main,
-                                                  color: theme.palette.error.contrastText,
-                                              })
-                                            : undefined,
-                                        chipSx
-                                    )}
-                                    {...(otherChipProps as CP)}
-                                />
-                            );
-                        })}
-                    </FormControl>
-                )}
-                <Grid item xs>
-                    <Grid container direction="row-reverse">
-                        <Tooltip title={intl.formatMessage({ id: titleId })}>
-                            <span>
-                                <IconButton
-                                    sx={styles.addDirectoryElements}
-                                    size="small"
-                                    disabled={disable}
-                                    onClick={() => {
-                                        if (shouldReplaceElement) {
-                                            handleChipClick(0);
-                                        } else {
-                                            setDirectoryItemSelectorOpen(true);
-                                            if (allowMultiSelect) {
-                                                setMultiSelect(true);
-                                            }
-                                        }
-                                    }}
-                                >
-                                    <FolderIcon />
-                                </IconButton>
-                            </span>
-                        </Tooltip>
-                    </Grid>
-                </Grid>
             </FormControl>
             {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}
             <DirectoryItemSelector
