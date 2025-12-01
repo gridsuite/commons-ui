@@ -21,5 +21,5 @@ export const inputsFr = {
     'inputs/boolean': 'Boolean',
     'inputs/checkbox': 'Checkbox',
     'inputs/switch': 'Switch',
-    Optional: 'Optional',
+    'inputs/directory-items': 'Éléments du répertoire',
 };
