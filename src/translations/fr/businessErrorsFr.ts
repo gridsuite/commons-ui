@@ -14,7 +14,7 @@ export const businessErrorsFr = {
     'directory.someElementsAreMissing': 'Certains des éléments demandés sont manquants.',
     'directory.elementNotFound': "L'élément du dossier demandé est introuvable.",
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
-    'explore.maxElementExceededError':
+    'explore.maxElementExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études, vous ne pouvez donc plus importer des situations ou créer des études pour le moment. Merci de supprimer des situations ou études anciennes afin de redescendre sous le seuil de {limit} éléments.",
     'explore.incorrectCaseFile': 'Le fichier réseau fourni est incorrect.',
     'study.notFound': 'Étude non trouvée.',
