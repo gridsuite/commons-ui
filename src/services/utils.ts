@@ -63,31 +63,25 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     return initWithSignal;
 };
 
+export const convertToCustomError = (response: string) => {
+    const errorJson = parseError(response);
+    if (errorJson?.businessErrorCode != null) {
+        return new CustomError(
+            `Server error: ${errorJson.detail}`,
+            errorJson.status,
+            errorJson.businessErrorCode,
+            errorJson.businessErrorValues
+        );
+    }
+    if (errorJson && errorJson.detail) {
+        return new CustomError(`Server error: ${errorJson.detail}`, errorJson.status);
+    }
+    return new CustomError(errorJson);
+};
+
 const handleError = (response: Response) => {
     return response.text().then((text: string) => {
-        const errorName = 'HttpResponseError : ';
-        const errorJson = parseError(text);
-        let customError: CustomError;
-        if (errorJson?.businessErrorCode != null) {
-            throw new CustomError(
-                errorJson.message,
-                errorJson.status,
-                errorJson.businessErrorCode,
-                errorJson.businessErrorValues
-            );
-        }
-        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
-            customError = new CustomError(
-                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`,
-                errorJson.status
-            );
-        } else {
-            customError = new CustomError(
-                `${errorName + response.status} ${response.statusText}, message : ${text}`,
-                response.status
-            );
-        }
-        throw customError;
+        throw convertToCustomError(text);
     });
 };
 
