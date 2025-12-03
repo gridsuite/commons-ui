@@ -65,7 +65,7 @@ function RightResizableBox(props) {
         }
     };
 
-    const onResize = (event, { element, size }) => {
+    const onResize = (event, { size }) => {
         updateResizedTreePercentage(size.width, windowWidth);
     };
 

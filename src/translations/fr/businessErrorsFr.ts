@@ -46,4 +46,15 @@ export const businessErrorsFr = {
     'useradmin.announcementInvalidPeriod': "La période de l'annonce est invalide.",
     'useradmin.announcementOverlap': "La période de l'annonce chevauche une autre annonce existante.",
     'filter.filterCycleDetected': 'Cycle de filtre détecté: {filters}',
+    'computation.resultNotFound': 'Résultats non trouvés.',
+    'computation.parametersNotFound': 'Paramètres non trouvés.',
+    'computation.invalidSortFormat': 'Le format du tri est incorrect.',
+    'computation.invalidExportParams': "Les paramètres d'export sont incorrects.",
+    'computation.limitReductionConfigError': 'La configuration des abattements est incorrect.',
+    'computation.runnerError': "Une erreur est survenue durant l'exécution du calcul.",
+    'voltageInit.missingFilter': 'La configuration contient un ou des filtres qui ont été supprimés.',
+    'shortcircuit.busOutOfVoltage': 'Bus sélectionné en dehors des limites de tension.',
+    'shortcircuit.missingExtensionData': "Données de l'extension court-circuit manquantes.",
+    'shortcircuit.inconsistentVoltageLevels':
+        'Des postes ont des données Icc incohérentes. Vérifiez les logs pour déterminer lesquels.',
 };
