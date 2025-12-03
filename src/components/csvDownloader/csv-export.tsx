@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { JSX, useCallback } from 'react';
 import { CsvExportProps } from './csv-export.type';
 import { useCsvExport } from './use-csv-export';
 import { ExportCsvButton } from './export-csv-button';
@@ -18,29 +18,20 @@ export function CsvExport({
     skipColumnHeaders = false,
     skipPinnedBottom = false,
     language,
-    exportDataAsCsv,
+    getData,
 }: CsvExportProps): JSX.Element {
-    const { downloadCSVData } = useCsvExport();
+    const csvExport = useCsvExport();
     const download = useCallback(() => {
-        downloadCSVData({
+        csvExport.getData({
             columns,
             tableName,
             tableNamePrefix,
             skipColumnHeaders,
             skipPinnedBottom,
             language,
-            exportDataAsCsv,
+            getData,
         });
-    }, [
-        downloadCSVData,
-        columns,
-        tableName,
-        tableNamePrefix,
-        skipColumnHeaders,
-        skipPinnedBottom,
-        language,
-        exportDataAsCsv,
-    ]);
+    }, [columns, csvExport, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, getData]);
 
     return <ExportCsvButton disabled={disabled} onClick={download} />;
 }
