@@ -31,3 +31,21 @@ export type StudyMetadata = Metadata & {
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
 };
+
+type ThemeColors = Record<string, string>;
+type SldAndNadColors = {
+    darkThemeColors: ThemeColors;
+    lightThemeColors: ThemeColors;
+};
+
+export type BaseVoltageConfig = {
+    // used when calling powsybl server
+    name: string;
+    minValue: number;
+    maxValue: number;
+};
+export type BaseVoltage = BaseVoltageConfig & {
+    // used to define the voltage ranges and their colors
+    networkMapColor: string;
+    sldAndNadColors: SldAndNadColors;
+};

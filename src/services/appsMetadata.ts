@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Metadata, StudyMetadata } from '../utils';
+import { BaseVoltage, Metadata, StudyMetadata } from '../utils';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
@@ -39,12 +39,19 @@ export function isStudyMetadata(metadata: Metadata): metadata is StudyMetadata {
 
 export async function fetchStudyMetadata(): Promise<StudyMetadata> {
     console.info(`Fetching study metadata...`);
-    const studyMetadata = (await fetchAppsMetadata()).filter(isStudyMetadata);
+    const studyMetadata = (await fetchAppsMetadata()).find(isStudyMetadata);
     if (!studyMetadata) {
         throw new Error('Study entry could not be found in metadata');
     } else {
-        return studyMetadata[0]; // There should be only one study metadata
+        return studyMetadata; // There should be only one study metadata
     }
+}
+
+export async function fetchBaseVoltages(): Promise<BaseVoltage[]> {
+    console.info(`Fetching apps' base voltages...`);
+    const env = await fetchEnv();
+    const res = await fetch(`${env.appsMetadataServerUrl}/apps-metadata-base-voltages.json`);
+    return res.json();
 }
 
 export async function fetchFavoriteAndDefaultCountries(): Promise<{

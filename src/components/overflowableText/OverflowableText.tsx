@@ -50,7 +50,7 @@ export const OverflowableText = styled(
         sx,
         ...props
     }: OverflowableTextProps) => {
-        const element = useRef<HTMLHeadingElement>();
+        const element = useRef<HTMLHeadingElement>(undefined);
 
         const isMultiLine = useMemo(() => maxLineCount && maxLineCount > 1, [maxLineCount]);
 
