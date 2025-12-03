@@ -171,7 +171,7 @@ function InputsTab() {
                     <Grid item xs={gridSize}>
                         <SwitchInput name={SWITCH_INPUT} label="inputs/switch" />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={gridSize}>
                         <DirectoryItemsInput
                             name={DIRECTORY_ITEMS_INPUT}
                             label="inputs/directory-items"
