@@ -25,6 +25,7 @@ export interface ShortCircuitParametersDto {
 }
 
 export interface ShortCircuitParametersInfos {
+    provider: string;
     predefinedParameters: PredefinedParameters;
     commonParameters: ShortCircuitParametersDto;
     specificParametersPerProvider: SpecificParametersPerProvider;

@@ -29,7 +29,7 @@ import { useSnackMessage } from '../../../hooks';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import { COMMON_PARAMETERS, ComputingType, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
+import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import { getCommonShortCircuitParametersFormSchema, resetSpecificParameters } from './short-circuit-parameters-utils';
 import {
     formatSpecificParameters,
@@ -37,6 +37,7 @@ import {
     getSpecificParametersFormSchema,
     getAllSpecificParametersValues,
 } from '../common/utils';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -46,8 +47,7 @@ export interface UseShortCircuitParametersFormReturn {
     toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => ShortCircuitParametersInfos;
     params: ShortCircuitParametersInfos | null;
-    currentProvider: string | undefined;
-    setCurrentProvider: (provider: string) => void;
+    provider: string | undefined;
     paramsLoaded: boolean;
     onValidationError: (errors: FieldErrors) => void;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -68,16 +68,13 @@ export const useShortCircuitParametersForm = ({
     name,
     description,
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
-    const [, , , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
-    const [currentProvider, setCurrentProvider] = useState('Courcirc');
+    const [, provider, , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
     const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
-        return currentProvider && specificParamsDescriptions?.[currentProvider]
-            ? specificParamsDescriptions[currentProvider]
-            : [];
-    }, [currentProvider, specificParamsDescriptions]);
+        return provider && specificParamsDescriptions?.[provider] ? specificParamsDescriptions[provider] : [];
+    }, [provider, specificParamsDescriptions]);
 
     const specificParametersDefaultValues = useMemo(() => {
         return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
@@ -136,9 +133,7 @@ export const useShortCircuitParametersForm = ({
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
             setValue(
                 SPECIFIC_PARAMETERS,
-                {
-                    ...resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
-                },
+                resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
                 dirty
             );
         },
@@ -147,7 +142,11 @@ export const useShortCircuitParametersForm = ({
 
     const formatNewParams = useCallback(
         (formData: Record<string, any>): ShortCircuitParametersInfos => {
+            if (!provider) {
+                return {} as ShortCircuitParametersInfos;
+            }
             return {
+                provider: formData[PROVIDER],
                 predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
@@ -168,18 +167,21 @@ export const useShortCircuitParametersForm = ({
                             : undefined,
                 },
                 specificParametersPerProvider: {
-                    Courcirc: getAllSpecificParametersValues(formData, specificParametersDefaultValues),
+                    [provider]: getAllSpecificParametersValues(formData, specificParametersDefaultValues),
                 },
             };
         },
-        [params?.cei909VoltageRanges, specificParametersDefaultValues]
+        [params?.cei909VoltageRanges, provider, specificParametersDefaultValues]
     );
 
     const toShortCircuitFormValues = useCallback(
         (_params: ShortCircuitParametersInfos) => {
-            const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[currentProvider];
+            if (!provider) {
+                return {};
+            }
+            const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
             return {
-                ...getNameElementEditorEmptyFormData(name, description),
+                [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
                     ..._params.commonParameters,
@@ -198,7 +200,7 @@ export const useShortCircuitParametersForm = ({
                 },
             };
         },
-        [currentProvider, description, name, specificParametersDescriptionForProvider]
+        [provider, specificParametersDescriptionForProvider]
     );
 
     const onValidationError = useCallback((_errors: FieldErrors) => {}, []);
@@ -221,10 +223,7 @@ export const useShortCircuitParametersForm = ({
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsChangingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
                 });
             }
         },
@@ -232,15 +231,15 @@ export const useShortCircuitParametersForm = ({
     );
 
     useEffect(() => {
-        if (!params || !currentProvider || !specificParamsDescriptions) {
+        if (!params || !provider || !specificParamsDescriptions) {
             return;
         }
         reset(toShortCircuitFormValues(params));
-        // Now that we have params and specific parameters description we can init
+        // Now that we have params, provider and specific parameters description we can init
         // form Schema and default values. this paramsLoaded State is used to determine
         // if form is correctly initialized and that we are able to render form inputs
         setParamsLoaded(true);
-    }, [currentProvider, params, reset, specificParamsDescriptions, toShortCircuitFormValues]);
+    }, [provider, params, reset, specificParamsDescriptions, toShortCircuitFormValues]);
 
     return {
         formMethods,
@@ -249,8 +248,7 @@ export const useShortCircuitParametersForm = ({
         toShortCircuitFormValues,
         formatNewParams,
         params,
-        currentProvider,
-        setCurrentProvider,
+        provider,
         paramsLoaded,
         onValidationError,
         onSaveInline,
