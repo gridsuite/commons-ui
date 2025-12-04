@@ -15,16 +15,23 @@ type EditNoteIconProps = {
 
 export function EditNoteIcon({ empty }: Readonly<EditNoteIconProps>) {
     const theme = useTheme();
+    const size: number = 25;
 
     return empty ? (
         <AddNote
             style={{
-                width: 20,
-                height: 20,
+                width: size,
+                height: size,
                 fill: theme.palette.text.primary,
             }}
         />
     ) : (
-        <StickyNote2 />
+        <StickyNote2
+            style={{
+                width: size,
+                height: size,
+                fill: theme.palette.text.primary,
+            }}
+        />
     );
 }
