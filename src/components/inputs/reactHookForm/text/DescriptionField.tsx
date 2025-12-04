@@ -13,12 +13,19 @@ import { useFormContext } from 'react-hook-form';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 import type { SxStyle } from '../../../../utils/styles';
+import { MAX_CHAR_DESCRIPTION } from '../../../../utils';
 
 export interface DescriptionFieldProps {
     expandingTextSx?: SxStyle;
+    maxCharactersNumber?: number;
+    rows?: number;
 }
 
-export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldProps>) {
+export function DescriptionField({
+    expandingTextSx,
+    maxCharactersNumber = MAX_CHAR_DESCRIPTION,
+    rows = 3,
+}: Readonly<DescriptionFieldProps>) {
     const { setValue, getValues } = useFormContext();
     const description = getValues(FieldConstants.DESCRIPTION);
     const [isDescriptionFieldVisible, setIsDescriptionFieldVisible] = useState(!!description);
@@ -49,9 +56,10 @@ export function DescriptionField({ expandingTextSx }: Readonly<DescriptionFieldP
                     <ExpandingTextField
                         name={FieldConstants.DESCRIPTION}
                         label="descriptionProperty"
-                        minRows={3}
-                        rows={3}
+                        minRows={rows}
+                        rows={rows}
                         sx={expandingTextSx}
+                        maxCharactersNumber={maxCharactersNumber}
                     />
                     <Button
                         sx={{
