@@ -55,4 +55,11 @@ export const businessErrorsFr = {
     'shortcircuit.missingExtensionData': "Données de l'extension court-circuit manquantes.",
     'shortcircuit.inconsistentVoltageLevels':
         'Des postes ont des données Icc incohérentes. Vérifiez les logs pour déterminer lesquels.',
+    'dynamicMapping.mappingNameNotProvided': '',
+    'dynamicSecurityAnalysis.providerNotFound': '',
+    'dynamicSecurityAnalysis.contingenciesNotFound': '',
+    'dynamicSecurityAnalysis.contingencyListEmpty': '',
+    'dynamicSimulation.providerNotFound': '',
+    'dynamicSimulation.mappingNotProvided': '',
+    'dynamicSimulation.mappingNotLastRuleWithEmptyFilterError': '',
 };
