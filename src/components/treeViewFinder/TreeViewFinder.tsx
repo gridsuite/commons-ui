@@ -261,7 +261,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             .filter((node) => node !== null) as TreeViewFinderNodeProps[];
     };
 
-    const handleNodeToggle = (_e: React.SyntheticEvent, itemIds: string[]) => {
+    const handleNodeToggle = (_e: React.SyntheticEvent | null, itemIds: string[]) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
         itemIds.every((itemId) => {
             if (!expanded?.includes(itemId)) {
@@ -322,7 +322,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
-    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[] | null) => {
+    const handleNodeSelect = (_e: React.SyntheticEvent | null, values: string | string[] | null) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
             setSelected(values.filter((itemId) => isSelectable(mapPrintedNodes[itemId])));
