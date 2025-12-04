@@ -7,17 +7,24 @@
 
 import AddNote from '@material-symbols/svg-400/outlined/add_notes.svg?react';
 import { useTheme } from '@mui/material';
+import { StickyNote2 } from '@mui/icons-material';
 
-export function AddNoteIcon() {
+type EditNoteIconProps = {
+    empty?: boolean;
+};
+
+export function EditNoteIcon({ empty }: Readonly<EditNoteIconProps>) {
     const theme = useTheme();
 
-    return (
+    return empty ? (
         <AddNote
             style={{
-                width: 14.4,
-                height: 14.4,
+                width: 20,
+                height: 20,
                 fill: theme.palette.text.primary,
             }}
         />
+    ) : (
+        <StickyNote2 />
     );
 }

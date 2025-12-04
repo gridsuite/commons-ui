@@ -10,4 +10,4 @@ export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
 export { DeviceHubIcon } from './DeviceHubIcon';
 export { TuneIcon } from './TuneIcon';
 export { PhotoLibraryIcon } from './PhotoLibraryIcon';
-export { AddNoteIcon } from './AddNoteIcon';
+export { EditNoteIcon } from './EditNoteIcon';
