@@ -55,4 +55,11 @@ export const businessErrorsEn = {
     'shortcircuit.missingExtensionData': 'Missing short-circuit extension data.',
     'shortcircuit.inconsistentVoltageLevels':
         'Some voltage levels have wrong isc values. Check out the logs to find which ones.',
+    'dynamicMapping.mappingNameNotProvided': '',
+    'dynamicSecurityAnalysis.providerNotFound': '',
+    'dynamicSecurityAnalysis.contingenciesNotFound': '',
+    'dynamicSecurityAnalysis.contingencyListEmpty': '',
+    'dynamicSimulation.providerNotFound': '',
+    'dynamicSimulation.mappingNotProvided': '',
+    'dynamicSimulation.mappingNotLastRuleWithEmptyFilterError': '',
 };
