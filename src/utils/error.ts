@@ -6,6 +6,7 @@
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
 import { CustomError, formatMessageValues } from './types/CustomError';
+import { NetworkTimeoutError } from './types/NetworkTimeoutError';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
@@ -22,6 +23,13 @@ export function snackWithFallback(
     error: unknown,
     headerInputs?: HeaderSnackInputs
 ) {
+    if (error instanceof NetworkTimeoutError) {
+        snackError({
+            messageId: error.message,
+            ...headerInputs,
+        });
+        return;
+    }
     if (error instanceof CustomError && error.businessErrorCode) {
         snackError({
             messageId: error.businessErrorCode,
