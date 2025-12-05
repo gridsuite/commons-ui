@@ -14,7 +14,8 @@ export const businessErrorsFr = {
     'directory.someElementsAreMissing': 'Certains des éléments demandés sont manquants.',
     'directory.elementNotFound': "L'élément du dossier demandé est introuvable.",
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
-    'explore.maxElementsExceeded': "Le nombre d'éléments autorisés a été dépassé.",
+    'explore.maxElementsExceeded':
+        "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
     'explore.incorrectCaseFile': 'Le fichier réseau fourni est incorrect.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
@@ -27,7 +28,8 @@ export const businessErrorsFr = {
     'study.nodeNameAlreadyExist': 'Ce nom de noeud existe déjà.',
     'study.timeSeriesBadType': 'Série temporelle de mauvais type.',
     'study.noVoltageInitResultsForNode': "Pas de résultats pour l'initialisation du plan de tension.",
-    'study.maxNodeBuildsExceeded': 'Nombre maximal de noeuds réalisés atteint.',
+    'study.maxNodeBuildsExceeded':
+        'Vous avez atteint votre quota utilisateur en termes de réalisation de nœud par étude ({limit} réalisations).',
     'study.rootNetworkDeleteForbidden': 'Impossible de supprimer ce réseau racine.',
     'study.maximumRootNetworkByStudyReached': 'Nombre maximal de réseau racine par étude atteint.',
     'study.maximumTagLengthExceeded': "Taille maximale d'étiquette atteinte.",
