@@ -56,4 +56,12 @@ export const businessErrorsEn = {
     'shortcircuit.missingExtensionData': 'Missing short-circuit extension data.',
     'shortcircuit.inconsistentVoltageLevels':
         'Some voltage levels have wrong isc values. Check out the logs to find which ones.',
+    'dynamicMapping.mappingNameNotProvided': 'Mapping name not provided',
+    'dynamicSecurityAnalysis.providerNotFound': 'Dynamic security analysis provider not found.',
+    'dynamicSecurityAnalysis.contingenciesNotFound': 'No contingencies provided.',
+    'dynamicSecurityAnalysis.contingencyListEmpty': 'Contingency list parameter must not be null or empty.',
+    'dynamicSimulation.providerNotFound': 'Dynamic simulation provider not found.',
+    'dynamicSimulation.mappingNotProvided': 'Dynamic simulation mapping not provided.',
+    'dynamicSimulation.mappingNotLastRuleWithEmptyFilterError':
+        'Only last rule can have empty filter: type {equipmentType}, rule index {index}.',
 };

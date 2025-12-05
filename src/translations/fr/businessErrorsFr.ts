@@ -57,4 +57,12 @@ export const businessErrorsFr = {
     'shortcircuit.missingExtensionData': "Données de l'extension court-circuit manquantes.",
     'shortcircuit.inconsistentVoltageLevels':
         'Des postes ont des données Icc incohérentes. Vérifiez les logs pour déterminer lesquels.',
+    'dynamicMapping.mappingNameNotProvided': 'Nom du mapping non fourni',
+    'dynamicSecurityAnalysis.providerNotFound': "Simulateur d'analyse de sécurité dynamique non trouvé.",
+    'dynamicSecurityAnalysis.contingenciesNotFound': 'Aucun aléa fourni.',
+    'dynamicSecurityAnalysis.contingencyListEmpty': "La liste d'aléas fournie ne doit pas être nulle ou vide.",
+    'dynamicSimulation.providerNotFound': 'Simulateur pour la simulation dynamique non trouvé.',
+    'dynamicSimulation.mappingNotProvided': 'Mapping pour la simulation dynamique non fourni.',
+    'dynamicSimulation.mappingNotLastRuleWithEmptyFilterError':
+        'Seule la dernière règle peut avoir un filtre vide : type {equipmentType}, indice de la règle : {index}.',
 };
