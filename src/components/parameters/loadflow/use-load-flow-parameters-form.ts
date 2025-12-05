@@ -7,7 +7,16 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    Dispatch,
+    SetStateAction,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useEffectEvent,
+    useMemo,
+    useState,
+} from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import {
@@ -128,7 +137,7 @@ export const useLoadFlowParametersForm = (
     });
 
     const { watch, reset } = formMethods;
-    const watchProvider = watch('provider');
+    const watchProvider = watch(PROVIDER);
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -251,12 +260,16 @@ export const useLoadFlowParametersForm = (
         [parametersUuid, formatNewParams, snackError]
     );
 
+    const resetForm = useEffectEvent((_params: LoadFlowParametersInfos) => {
+        reset(toLoadFlowFormValues(_params));
+    });
+
     useEffect(() => {
         if (!params) {
             return;
         }
-        reset(toLoadFlowFormValues(params));
-    }, [paramsLoaded, params, reset, specificParamsDescriptions, toLoadFlowFormValues]);
+        resetForm(params);
+    }, [paramsLoaded, params]);
 
     useEffect(() => {
         if (watchProvider && watchProvider !== currentProvider) {
