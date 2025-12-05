@@ -101,6 +101,20 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_SECTION.type:
                 case MODIFICATION_TYPES.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS.type:
                     return modificationMetadata.voltageLevelId;
+                case MODIFICATION_TYPES.VOLTAGE_INIT_MODIFICATION.type:
+                    if (
+                        modificationMetadata.rootNetworkName &&
+                        modificationMetadata.nodeName &&
+                        modificationMetadata.computationDate
+                    ) {
+                        const computedDateFormatted = new Intl.DateTimeFormat(intl.locale, {
+                            dateStyle: 'long',
+                            timeStyle: 'long',
+                            hour12: false,
+                        }).format(new Date(modificationMetadata.computationDate));
+                        return `: ${modificationMetadata.rootNetworkName} / ${modificationMetadata.nodeName} / ${computedDateFormatted}`;
+                    }
+                    return '';
                 default:
                     return modificationMetadata.equipmentId || '';
             }
