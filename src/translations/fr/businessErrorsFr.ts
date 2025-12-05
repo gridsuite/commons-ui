@@ -64,5 +64,5 @@ export const businessErrorsFr = {
     'dynamicSimulation.providerNotFound': 'Simulateur pour la simulation dynamique non trouvé.',
     'dynamicSimulation.mappingNotProvided': 'Mapping pour la simulation dynamique non fourni.',
     'dynamicSimulation.mappingNotLastRuleWithEmptyFilterError':
-        'Seule la dernière règle peut avoir un filtre vide : type {equipmentType}, index de règle {index}.',
+        'Seule la dernière règle peut avoir un filtre vide : type {equipmentType}, indice de la règle : {index}.',
 };
