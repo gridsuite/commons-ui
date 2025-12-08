@@ -11,9 +11,10 @@ import { StickyNote2Outlined } from '@mui/icons-material';
 
 type EditNoteIconProps = {
     empty?: boolean;
+    hidden?: boolean;
 };
 
-export function EditNoteIcon({ empty }: Readonly<EditNoteIconProps>) {
+export function EditNoteIcon({ empty = false, hidden = false }: Readonly<EditNoteIconProps>) {
     const theme = useTheme();
     const size: number = 25;
 
@@ -23,14 +24,16 @@ export function EditNoteIcon({ empty }: Readonly<EditNoteIconProps>) {
                 width: size,
                 height: size,
                 fill: theme.palette.text.primary,
+                visibility: hidden ? 'hidden' : 'visible',
             }}
         />
     ) : (
         <StickyNote2Outlined
-            style={{
+            sx={{
                 width: size,
                 height: size,
                 fill: theme.palette.text.primary,
+                visibility: hidden ? 'hidden' : 'visible',
             }}
         />
     );
