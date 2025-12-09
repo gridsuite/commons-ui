@@ -5,14 +5,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Button, type ButtonProps, useThemeProps } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
+import { Button } from '@design-system-rte/react';
+import { useIntl } from 'react-intl';
 
-export function CancelButton(inProps: Readonly<Omit<ButtonProps, 'children'>>) {
-    const props = useThemeProps({ props: inProps, name: 'CancelButton' });
+interface CancelButtonProps {
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export function CancelButton({ onClick }: Readonly<CancelButtonProps>) {
+    const intl = useIntl();
     return (
-        <Button data-testid="CancelButton" {...props}>
-            <FormattedMessage id="cancel" />
-        </Button>
+        <Button
+            label={intl.formatMessage({ id: 'cancel' })}
+            data-testid="CancelButton"
+            onClick={onClick}
+            variant="text"
+        />
     );
 }

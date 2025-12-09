@@ -5,10 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { Button, Grid as GridDS } from '@design-system-rte/react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yup from '../../../utils/yupConfig';
@@ -19,6 +20,7 @@ import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
 import { useSnackMessage } from '../../../hooks';
 import { DirectoryInitConfig, initializeDirectory } from './utils';
+import GridItem from '../../grid/grid-item';
 
 // Define operation types
 enum OperationType {
@@ -35,6 +37,7 @@ export interface IElementCommonFields {
 interface FormData extends IElementCommonFields {
     [FieldConstants.OPERATION_TYPE]: OperationType;
 }
+
 export interface IElementCreationDialog extends IElementCommonFields {
     [FieldConstants.FOLDER_NAME]: string;
     [FieldConstants.FOLDER_ID]: UUID;
@@ -190,7 +193,10 @@ export function ElementSaveDialog({
 
     // Handle cancellation
     const onCancel = useCallback(() => {
-        reset({ ...emptyFormData, [FieldConstants.OPERATION_TYPE]: initialOperation });
+        reset({
+            ...emptyFormData,
+            [FieldConstants.OPERATION_TYPE]: initialOperation,
+        });
         setExpanded([]);
         onClose();
     }, [onClose, reset, initialOperation]);
@@ -252,7 +258,9 @@ export function ElementSaveDialog({
                 const parentFolderId = parents[parents.length - 1].id;
 
                 setSelectedItem({ id, name, description, parentFolderId, fullPath });
-                setValue(FieldConstants.DESCRIPTION, description ?? '', { shouldDirty: true });
+                setValue(FieldConstants.DESCRIPTION, description ?? '', {
+                    shouldDirty: true,
+                });
                 setValue(FieldConstants.NAME, name, { shouldDirty: true });
             }
             setDirectorySelectorOpen(false);
@@ -291,30 +299,45 @@ export function ElementSaveDialog({
     const renderChooser = () => {
         if (isCreateMode) {
             return (
-                <Grid container item>
+                <Grid container alignItems="center" alignContent="flex-start" spacing={2} pl={2}>
                     <Grid item>
-                        <Button onClick={handleChangeFolder} variant="contained" size="small">
-                            <FormattedMessage id="showSelectDirectoryDialog" />
-                        </Button>
+                        <Button
+                            onClick={handleChangeFolder}
+                            label={intl.formatMessage({
+                                id: 'showSelectDirectoryDialog',
+                            })}
+                            variant="primary"
+                            size="s"
+                        />
                     </Grid>
-                    <Typography m={1} component="span">
-                        <Box fontWeight="fontWeightBold">
-                            {destinationFolder ? destinationFolder.name : <CircularProgress />}
-                        </Box>
-                    </Typography>
+                    <Grid item>
+                        <Typography m={1} component="span">
+                            <Box fontWeight="fontWeightBold">
+                                {destinationFolder ? destinationFolder.name : <CircularProgress />}
+                            </Box>
+                        </Typography>
+                    </Grid>
                 </Grid>
             );
         }
+
         return (
-            <Grid container item>
+            <Grid container alignItems="center" alignContent="flex-start" spacing={2} pl={2}>
                 <Grid item>
-                    <Button onClick={handleChangeFolder} variant="contained" size="small">
-                        <FormattedMessage id="showSelectDirectoryItemDialog" />
-                    </Button>
+                    <Button
+                        onClick={handleChangeFolder}
+                        label={intl.formatMessage({
+                            id: 'showSelectDirectoryItemDialog',
+                        })}
+                        variant="primary"
+                        size="s"
+                    />
                 </Grid>
-                <Typography m={1} component="span">
-                    <Box fontWeight="fontWeightBold">{selectedItem ? selectedItem.fullPath : null}</Box>
-                </Typography>
+                <Grid item>
+                    <Typography m={1} component="span">
+                        <Box fontWeight="fontWeightBold">{selectedItem ? selectedItem.fullPath : null}</Box>
+                    </Typography>
+                </Grid>
             </Grid>
         );
     };
@@ -335,8 +358,14 @@ export function ElementSaveDialog({
                         <RadioInput
                             name={FieldConstants.OPERATION_TYPE}
                             options={[
-                                { id: OperationType.CREATE, label: createLabelId ?? 'createLabelId' },
-                                { id: OperationType.UPDATE, label: updateLabelId ?? 'updateLabelId' },
+                                {
+                                    id: OperationType.CREATE,
+                                    label: createLabelId ?? 'createLabelId',
+                                },
+                                {
+                                    id: OperationType.UPDATE,
+                                    label: updateLabelId ?? 'updateLabelId',
+                                },
                             ]}
                             formProps={{
                                 sx: {
@@ -371,9 +400,7 @@ export function ElementSaveDialog({
                 onlyLeaves={isCreateMode ? false : undefined}
                 multiSelect={false}
                 expanded={isCreateMode ? expanded : []}
-                validationButtonText={intl.formatMessage({
-                    id: 'validate',
-                })}
+                validationButtonText="validate"
                 title={intl.formatMessage({
                     id: isCreateMode ? 'showSelectDirectoryDialog' : selectorTitleId,
                 })}

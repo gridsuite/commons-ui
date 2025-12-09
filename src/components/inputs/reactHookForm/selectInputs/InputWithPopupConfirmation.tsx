@@ -50,7 +50,7 @@ export function InputWithPopupConfirmation({
                 }}
             />
             <PopupConfirmationDialog
-                message={message}
+                descriptionKey={message}
                 openConfirmationPopup={openPopup}
                 setOpenConfirmationPopup={setOpenPopup}
                 handlePopupConfirmation={handlePopupConfirmation}

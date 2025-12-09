@@ -5,14 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { TextInput, TextInputProps } from '../text/TextInput';
 import { isFloatNumber } from './utils';
 import { Input } from '../../../../utils/types/types';
 
-export type FloatInputProps = Omit<
+import { TextInput } from '@design-system-rte/react';
+import { TextInputProps } from '../text';
+import { useIntl } from 'react-intl';
+
+/*export type FloatInputProps = Omit<
     TextInputProps,
     'outputTransform' | 'inputTransform' | 'acceptValue' // already defined in FloatInput
->;
+>;*/
 
 // toLocaleString never uses exponential notation unlike toString.  Avoiding
 // exponential notation makes in place normalizing of numbers after each
@@ -37,7 +40,12 @@ const normalizeFixed = (number: number) => {
     });
 };
 
-export function FloatInput(props: FloatInputProps) {
+interface FloatInputProps {
+    label: string;
+    previousValue: string | number;
+}
+
+export function FloatInput({ label, previousValue }: FloatInputProps) {
     const inputTransform = (value: Input) => {
         if (typeof value === 'number' && !Number.isNaN(value)) {
             // if we have a parsed real number, normalize like we do after each
@@ -67,12 +75,16 @@ export function FloatInput(props: FloatInputProps) {
         return '';
     };
 
-    const outputTransform = (value: string): Input | null => {
+    const outputTransform = (value: string | number): string => {
+        if (typeof value === 'number') {
+            return Number.isNaN(value) ? '' : normalizeFixed(value);
+        }
+
         if (value === '-') {
             return value;
         }
         if (value === '') {
-            return null;
+            return '';
         }
 
         const tmp = value?.replace(',', '.') || '';
@@ -106,15 +118,25 @@ export function FloatInput(props: FloatInputProps) {
         // restrict what the user can type with "acceptValue" but if we
         // have a bug just clear the data instead of sending "NaN"
         const parsed = parseFloat(tmp);
-        return Number.isNaN(parsed) ? null : normalizeFixed(parsed);
+        return Number.isNaN(parsed) ? '' : normalizeFixed(parsed);
     };
+
+    const intl = useIntl();
 
     return (
         <TextInput
-            acceptValue={isFloatNumber}
-            outputTransform={outputTransform}
-            inputTransform={inputTransform}
-            {...props}
+            aria-required
+            assistiveAppearance="description"
+            assistiveTextLabel={outputTransform(previousValue)}
+            id="text-input-default"
+            label={intl.formatMessage({id: label ?? 'unknown'})}
+            labelPosition="top"
+            maxLength={20}
+            width="100%"
+            onRightIconClick={function Xs() {}}
+            showAssistiveIcon
+            showRightIcon
+            value=""
         />
     );
 }

@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Avatar, Box, Button, Container, Link, Typography } from '@mui/material';
+import { Avatar, Box, Container, Link, Typography } from '@mui/material';
 import { LogoutOutlined as LogoutOutlinedIcon } from '@mui/icons-material';
-import { FormattedMessage } from 'react-intl';
+import { Button } from '@design-system-rte/react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
@@ -20,10 +21,6 @@ const styles = {
     avatar: (theme) => ({
         margin: theme.spacing(1),
         backgroundColor: theme.palette.error.main,
-    }),
-    submit: (theme) => ({
-        margin: theme.spacing(3, 0, 2),
-        borderRadius: '30px',
     }),
 } as const satisfies MuiStyles;
 
@@ -46,6 +43,7 @@ function Copyright() {
 }
 
 export function Logout({ onLogoutClick, disabled }: LogoutProps) {
+    const intl = useIntl();
     return (
         <Container component="main" maxWidth="xs">
             <Box sx={styles.paper}>
@@ -56,9 +54,12 @@ export function Logout({ onLogoutClick, disabled }: LogoutProps) {
                     <FormattedMessage id="login/logout" defaultMessage="logout" /> ?
                 </Typography>
 
-                <Button disabled={disabled} fullWidth variant="contained" sx={styles.submit} onClick={onLogoutClick}>
-                    <FormattedMessage id="login/logout" defaultMessage="logout" />
-                </Button>
+                <Button
+                    label={intl.formatMessage({ id: 'login/logout' })}
+                    disabled={disabled}
+                    variant="primary"
+                    onClick={onLogoutClick}
+                />
             </Box>
             <Box mt={2}>
                 <Copyright />

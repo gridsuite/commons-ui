@@ -6,16 +6,15 @@
  */
 
 import { ActionWithRulesProps } from 'react-querybuilder';
-import { IconButton } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 
 import { recursiveRemove } from '../../filter/expert/expertFilterUtils';
+import { IconButton } from '@design-system-rte/react';
 
 const EXPERT_FILTER_QUERY = 'rules';
 
 export function RemoveButton(props: ActionWithRulesProps) {
-    const { path, className, title } = props;
+    const { path } = props;
     const {
         field: { value: query, onChange },
     } = useController({ name: EXPERT_FILTER_QUERY });
@@ -26,9 +25,5 @@ export function RemoveButton(props: ActionWithRulesProps) {
         onChange(recursiveRemove(query, path));
     }
 
-    return (
-        <IconButton size="small" onClick={() => handleDelete()} className={className} title={title}>
-            <DeleteIcon />
-        </IconButton>
-    );
+    return <IconButton name="delete" size="m" onClick={() => handleDelete()} variant="transparent" />;
 }

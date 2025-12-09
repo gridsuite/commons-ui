@@ -5,23 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    Alert,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Grid,
-} from '@mui/material';
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@mui/material';
 import { RECORD_SEP, UNIT_SEP, useCSVReader } from 'react-papaparse';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
 import { useWatch } from 'react-hook-form';
+import { Button } from '@design-system-rte/react';
 import { FieldConstants, GsLang, LANG_FRENCH } from '../../../../../utils';
-import { CancelButton } from '../../utils';
+import { CancelButton, ValidateButton } from '../../utils';
 
 export interface CsvUploaderProps {
     name: string;
@@ -160,12 +152,16 @@ export function CsvUploader({
                 </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleCancelDialog} />
-                    <Button onClick={() => handleReplacePopupConfirmation()} variant="outlined">
-                        <FormattedMessage id="replace" />
-                    </Button>
-                    <Button onClick={() => handleAddPopupConfirmation()} variant="outlined">
-                        <FormattedMessage id="add" />
-                    </Button>
+                    <Button
+                        label={intl.formatMessage({ id: 'replace' })}
+                        onClick={() => handleReplacePopupConfirmation()}
+                        variant="secondary"
+                    />
+                    <Button
+                        label={intl.formatMessage({ id: 'add' })}
+                        onClick={() => handleAddPopupConfirmation()}
+                        variant="secondary"
+                    />
                 </DialogActions>
             </Dialog>
         );
@@ -185,9 +181,7 @@ export function CsvUploader({
                                         filename={fileName}
                                         separator={language === LANG_FRENCH ? ';' : ','}
                                     >
-                                        <Button variant="contained">
-                                            <FormattedMessage id="GenerateCSV" />
-                                        </Button>
+                                        <Button label={intl.formatMessage({ id: 'GenerateCSV' })} variant="primary" />
                                     </CsvDownloader>
                                 </Grid>
                             </Grid>
@@ -230,13 +224,10 @@ export function CsvUploader({
                 </DialogContent>
                 <DialogActions>
                     <CancelButton onClick={handleClose} />
-                    <Button
-                        variant="outlined"
+                    <ValidateButton
                         onClick={() => handleOpenCSVConfirmationDataDialog()}
                         disabled={createError !== ''}
-                    >
-                        <FormattedMessage id="validate" />
-                    </Button>
+                    />
                 </DialogActions>
             </Dialog>
             {renderConfirmationCsvData()}

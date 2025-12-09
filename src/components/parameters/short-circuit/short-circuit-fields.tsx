@@ -215,15 +215,11 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                 <GridItem size={2}>{statusToShow}</GridItem>
             </Grid>
             <GridSection title="ShortCircuitCharacteristics" heading={4} />
-            <Grid container spacing={5}>
-                <Grid item>
-                    <GridItem>{loads}</GridItem>
-                    <GridItem>{shuntCompensators}</GridItem>
-                </Grid>
-                <Grid item xs={8}>
-                    <GridItem>{vsc}</GridItem>
-                    <GridItem>{neutralPosition}</GridItem>
-                </Grid>
+            <Grid container xs={8}>
+                <GridItem>{loads}</GridItem>
+                <GridItem>{vsc}</GridItem>
+                <GridItem>{shuntCompensators}</GridItem>
+                <GridItem>{neutralPosition}</GridItem>
             </Grid>
             <GridSection title="ShortCircuitVoltageProfileMode" heading={4} />
             <Grid container>

@@ -4,13 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
+import { Modal } from '@design-system-rte/react';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
+import { ValidateButton } from '../../inputs';
+import { useIntl } from 'react-intl';
 
 export interface PopupConfirmationDialogProps {
-    message: string;
+    descriptionMessage?: string;
+    descriptionKey?: string;
     validateButtonLabel?: string;
     openConfirmationPopup: boolean;
     setOpenConfirmationPopup: (value: boolean) => void;
@@ -18,24 +19,25 @@ export interface PopupConfirmationDialogProps {
 }
 
 export function PopupConfirmationDialog({
-    message,
+    descriptionMessage,
+    descriptionKey,
     validateButtonLabel,
     openConfirmationPopup,
     setOpenConfirmationPopup,
     handlePopupConfirmation,
-}: PopupConfirmationDialogProps) {
+}: Readonly<PopupConfirmationDialogProps>) {
+    const intl = useIntl();
     return (
-        <Dialog open={openConfirmationPopup} aria-labelledby="dialog-title-change-equipment-type">
-            <DialogTitle id="dialog-title-change-equipment-type">Confirmation</DialogTitle>
-            <DialogContent>
-                <DialogContentText>{message && <FormattedMessage id={message} />}</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <CancelButton onClick={() => setOpenConfirmationPopup(false)} />
-                <Button onClick={handlePopupConfirmation} variant="outlined">
-                    <FormattedMessage id={validateButtonLabel ?? 'validate'} />
-                </Button>
-            </DialogActions>
-        </Dialog>
+        <Modal
+            size="xs"
+            id="dialog-title-change-equipment-type"
+            title="Confirmation"
+            isOpen={openConfirmationPopup}
+            aria-labelledby="dialog-title-change-equipment-type"
+            primaryButton={<ValidateButton label={validateButtonLabel} onClick={handlePopupConfirmation} />}
+            secondaryButton={<CancelButton onClick={() => setOpenConfirmationPopup(false)} />}
+            description={descriptionMessage ?? intl.formatMessage({id: descriptionKey})}
+            onClose={() => setOpenConfirmationPopup(false)}
+        />
     );
 }

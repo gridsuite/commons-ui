@@ -7,15 +7,16 @@
 
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
 import { type ObjectSchema } from 'yup';
-import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 import { GsLang } from '../../../utils';
 import type { MuiStyles } from '../../../utils/styles';
+import { ValidateButton } from '../../inputs';
+import { Modal } from '@design-system-rte/react';
 
 export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogProps & {
     open: boolean;
@@ -148,6 +149,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
         },
         [onValidationError]
     );
+    const intl = useIntl();
 
     return (
         <CustomFormProvider<T>
@@ -156,33 +158,27 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             removeOptional={removeOptional}
             language={language}
         >
-            <Dialog
-                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
-                open={open}
-                onClose={handleClose}
-                fullWidth
-                {...dialogProps}
-            >
-                {isDataFetching && <LinearProgress />}
-                <DialogTitle data-testid="DialogTitle">
-                    <FormattedMessage id={titleId} />
-                </DialogTitle>
-                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
-                    {children}
-                </DialogContent>
-                <DialogActions>
-                    <CancelButton onClick={handleCancel} data-testid="CancelButton" />
-                    <SubmitButton
-                        variant="outlined"
-                        disabled={disabledSave}
+            <Modal
+                id="DialogTitle"
+                data-testid="DialogTitle"
+                title={intl.formatMessage({ id: titleId })}
+                isOpen={open}
+                onClose={onClose}
+                primaryButton={
+                    <ValidateButton
+                        disabled={!formMethods.formState.isDirty || disabledSave}
                         onClick={handleSubmit(handleValidate, handleValidationError)}
-                        data-testid="ValidateButton"
                     />
-                </DialogActions>
-            </Dialog>
+                }
+                secondaryButton={<CancelButton onClick={handleCancel} />}
+                size="l"
+                closeOnOverlayClick={false}
+            >
+                {children}
+            </Modal>
             {confirmationMessageKey && (
                 <PopupConfirmationDialog
-                    message={confirmationMessageKey}
+                    descriptionKey={confirmationMessageKey}
                     openConfirmationPopup={openConfirmationPopup}
                     setOpenConfirmationPopup={setOpenConfirmationPopup}
                     handlePopupConfirmation={handlePopupConfirmation}

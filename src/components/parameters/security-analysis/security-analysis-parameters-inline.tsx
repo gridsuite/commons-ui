@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
@@ -21,7 +21,7 @@ import {
 } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchSecurityAnalysisParameters } from '../../../services/security-analysis';
@@ -43,7 +43,7 @@ export function SecurityAnalysisParametersInline({
 }>) {
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
-    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
+    const [, , , , resetProvider, , , , resetParameters] = parametersBackend;
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
@@ -130,12 +130,10 @@ export function SecurityAnalysisParametersInline({
                                     label="resetProviderValuesToDefault"
                                     callback={handleResetParametersClick}
                                 />
-                                <SubmitButton
+                                <ValidateButton
                                     onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
-                                    variant="outlined"
-                                >
-                                    <FormattedMessage id="validate" />
-                                </SubmitButton>
+                                    disabled={!formState.isDirty}
+                                />
                             </Grid>
                         </Box>
                         {openCreateParameterDialog && (
@@ -167,7 +165,7 @@ export function SecurityAnalysisParametersInline({
                         {/* Reset Confirmation Dialog */}
                         {openResetConfirmation && (
                             <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
+                                descriptionKey="resetParamsConfirmation"
                                 validateButtonLabel="validate"
                                 openConfirmationPopup={openResetConfirmation}
                                 setOpenConfirmationPopup={handleCancelReset}

@@ -130,7 +130,7 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
             </DialogContent>
 
             <DialogActions>
-                <CancelButton color="primary" onClick={onClose} />
+                <CancelButton onClick={onClose} />
             </DialogActions>
         </Dialog>
     );

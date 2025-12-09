@@ -15,7 +15,7 @@ import { UseParametersBackendReturnProps } from '../../../utils/types/parameters
 import { ComputingType } from '../common/computing-type';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { LabelledButton } from '../common/parameters';
 import { ElementType, GsLang, mergeSx } from '../../../utils';
 import { LineSeparator } from '../common';
@@ -129,15 +129,13 @@ export function LoadFlowParametersInline({
                                     label="resetProviderValuesToDefault"
                                     callback={handleResetParametersClick}
                                 />
-                                <SubmitButton
+                                <ValidateButton
                                     onClick={handleSubmit(
                                         loadflowMethods.onSaveInline,
                                         loadflowMethods.onValidationError
                                     )}
-                                    variant="outlined"
-                                >
-                                    <FormattedMessage id="validate" />
-                                </SubmitButton>
+                                    disabled={!formState.isDirty}
+                                />
                             </Grid>
                             {openCreateParameterDialog && (
                                 <CreateParameterDialog
@@ -169,7 +167,7 @@ export function LoadFlowParametersInline({
                             {/* Reset Confirmation Dialog */}
                             {openResetConfirmation && (
                                 <PopupConfirmationDialog
-                                    message="resetParamsConfirmation"
+                                    descriptionKey="resetParamsConfirmation"
                                     validateButtonLabel="validate"
                                     openConfirmationPopup={openResetConfirmation}
                                     setOpenConfirmationPopup={handleCancelReset}

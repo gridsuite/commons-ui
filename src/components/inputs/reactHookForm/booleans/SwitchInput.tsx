@@ -5,15 +5,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Switch, SwitchProps } from '@mui/material';
-import { BooleanInput } from './BooleanInput';
+import { type ChangeEvent, useCallback } from 'react';
+import { Switch } from '@design-system-rte/react';
+import { useController } from 'react-hook-form';
 
 export interface SwitchInputProps {
     name: string;
     label?: string;
-    formProps?: SwitchProps;
 }
 
-export function SwitchInput({ name, label, formProps, ...props }: SwitchInputProps) {
-    return <BooleanInput name={name} label={label} formProps={formProps} Input={Switch} {...props} />;
+export function SwitchInput({ name }: Readonly<SwitchInputProps>) {
+    const {
+        field: { onChange, value },
+    } = useController<Record<string, boolean>>({ name });
+
+    const handleChangeValue = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange(event.target.checked);
+        },
+        [onChange]
+    );
+
+    return (
+        <Switch
+            checked={value}
+            onChange={handleChangeValue}
+        />
+    );
 }

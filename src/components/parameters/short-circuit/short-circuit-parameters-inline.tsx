@@ -7,11 +7,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import { ComputingType, LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
@@ -86,15 +86,13 @@ export function ShortCircuitParametersInLine({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <SubmitButton
+                            <ValidateButton
                                 onClick={handleSubmit(
                                     shortCircuitMethods.onSaveInline,
                                     shortCircuitMethods.onValidationError
                                 )}
-                                variant="outlined"
-                            >
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
+                                disabled={!formState.isDirty}
+                            />
                         </Grid>
                         {openCreateParameterDialog && (
                             <CreateParameterDialog

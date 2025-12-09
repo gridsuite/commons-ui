@@ -7,11 +7,11 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { ElementType } from '../../../utils';
 import { CreateParameterDialog, LabelledButton } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
@@ -115,9 +115,10 @@ export function VoltageInitParametersInLine({
                             />
                             <LabelledButton callback={handleOpenSaveDialog} label="save" />
                             <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                            <SubmitButton onClick={handleSubmit(voltageInitMethods.onSaveInline)} variant="outlined">
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
+                            <ValidateButton
+                                onClick={handleSubmit(voltageInitMethods.onSaveInline)}
+                                disabled={!formState.isDirty}
+                            />
                         </Grid>
                         {openCreateParameterDialog && (
                             <CreateParameterDialog
@@ -149,7 +150,7 @@ export function VoltageInitParametersInLine({
                         {/* Reset Confirmation Dialog */}
                         {openResetConfirmation && (
                             <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
+                                descriptionKey="resetParamsConfirmation"
                                 validateButtonLabel="validate"
                                 openConfirmationPopup={openResetConfirmation}
                                 setOpenConfirmationPopup={handleCancelReset}

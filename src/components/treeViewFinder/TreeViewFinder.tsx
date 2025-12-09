@@ -5,23 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {
-    Button,
-    type ButtonProps,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
+    Grid,
     type ModalProps,
-    styled,
     Typography,
 } from '@mui/material';
-import { TreeItem, SimpleTreeView, SimpleTreeViewClasses } from '@mui/x-tree-view';
+import { SimpleTreeView, SimpleTreeViewClasses, TreeItem } from '@mui/x-tree-view';
 import {
-    Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
@@ -29,38 +21,11 @@ import type { UUID } from 'node:crypto';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { ElementType } from '../../utils';
+import { ValidateButton } from '../inputs';
+import { Icon, Modal } from '@design-system-rte/react';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
-const cssDialogPaper = 'dialogPaper';
-const cssLabelRoot = 'labelRoot';
-const cssLabelText = 'labelText';
-const cssLabelIcon = 'labelIcon';
-const cssIcon = 'icon';
-
-// converted to nested rules
-const defaultStyles = {
-    [cssDialogPaper]: {
-        minWidth: '50%',
-    },
-    [cssLabelRoot]: {
-        display: 'flex',
-        alignContent: 'center',
-        alignItems: 'center',
-    },
-    [cssLabelText]: {
-        fontWeight: 'inherit',
-        flexGrow: 1,
-    },
-    [cssLabelIcon]: {
-        display: 'flex',
-        alignContent: 'center',
-        alignItems: 'center',
-
-        marginRight: '4px',
-    },
-    [cssIcon]: {},
-} as const satisfies MuiStyles;
 
 export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
@@ -106,7 +71,6 @@ export interface TreeViewFinderProps {
     open: ModalProps['open'];
     onClose: (nodes: TreeViewFinderNodeProps[]) => void;
     validationButtonText?: string;
-    cancelButtonProps?: ButtonProps;
     title?: string;
 
     // data management props
@@ -140,14 +104,12 @@ export interface TreeViewFinderProps {
  * @param {String}          [validationButtonText=default text] - Customized Validation Button text (default: Add N Elements)
  * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
  * @param {Boolean}         [multiSelect=false] - Allow/Forbid multiselection on Tree
- * @param {Object}          [cancelButtonProps] - The cancel button props
  * @param {Object}          [selected] - ids of selected items
  * @param {Array}           [expanded] - ids of the expanded items
  */
-function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
+export function TreeViewFinder(props: Readonly<TreeViewFinderProps>) {
     const intl = useIntl();
     const {
-        classes = {},
         title,
         contentText,
         open,
@@ -160,8 +122,6 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         onlyLeaves = true,
         multiSelect = false,
         sortMethod,
-        className,
-        cancelButtonProps,
         selected: selectedProp,
         expanded: expandedProp,
     } = props;
@@ -337,9 +297,9 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     };
 
     /* Render utilities */
-    const getValidationButtonText = () => {
+    const validationLabel = useMemo(() => {
         if (validationButtonText) {
-            return validationButtonText;
+            return { label: validationButtonText };
         }
         let buttonLabelId = '';
         if (Array.isArray(selectedProp)) {
@@ -353,13 +313,13 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 : 'treeview_finder/addElementsValidation';
         }
 
-        return intl.formatMessage(
-            { id: buttonLabelId },
-            {
+        return {
+            label: buttonLabelId,
+            values: {
                 nbElements: selected?.length,
-            }
-        );
-    };
+            },
+        };
+    }, [validationButtonText, selectedProp, selected]);
 
     const getNodeIcon = (node: TreeViewFinderNodeProps) => {
         if (!node) {
@@ -367,20 +327,24 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         }
 
         if (isSelectable(node) && selected?.find((itemId) => itemId === node.id)) {
-            return <CheckIcon className={composeClasses(classes, cssLabelIcon)} />;
+            return <Icon name="check-small"/>;
         }
         if (node.icon) {
-            return <div className={composeClasses(classes, cssLabelIcon)}>{node.icon}</div>;
+            return <div>{node.icon}</div>;
         }
         return null;
     };
 
     const renderTreeItemLabel = (node: TreeViewFinderNodeProps) => {
         return (
-            <div className={composeClasses(classes, cssLabelRoot)}>
-                {getNodeIcon(node)}
-                <Typography className={composeClasses(classes, cssLabelText)}>{node.name}</Typography>
-            </div>
+            <Grid container alignItems="center">
+                <Grid item>
+                    {getNodeIcon(node)}
+                </Grid>
+                <Grid item>
+                    <Typography>{node.name}</Typography>
+                </Grid>
+            </Grid>
         );
     };
 
@@ -407,14 +371,6 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 slots={{
                     expandIcon: CustomExpandIcon,
                     collapseIcon: CustomCollapseIcon,
-                }}
-                slotProps={{
-                    expandIcon: {
-                        className: composeClasses(classes, cssIcon),
-                    },
-                    collapseIcon: {
-                        className: composeClasses(classes, cssIcon),
-                    },
                 }}
                 ref={(element) => {
                     // Add to scroll ref if it's a selected element, or if no selected elements and it's an expanded element
@@ -447,68 +403,43 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     };
 
     return (
-        <Dialog
-            open={open}
-            onClose={(e, r) => {
-                if (r === 'backdropClick') {
-                    return;
-                }
-                if (r === 'escapeKeyDown') {
+        <Modal
+            id="TreeViewFindertitle"
+            title={title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect })}
+            description={contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
+            isOpen={open}
+            onClose={() => onClose([])}
+            primaryButton={<ValidateButton
+                label={validationLabel.label}
+                labelValues={validationLabel.values}
+                onClick={() => {
+                    onClose?.(computeSelectedNodes());
+                    setSelected([]);
+                    setAutoScrollAllowed(true);
+                }}
+                disabled={isValidationDisabled()}
+            />}
+            secondaryButton={<CancelButton
+                onClick={() => {
                     onClose?.([]);
                     setSelected([]);
-                }
-            }}
+                    setAutoScrollAllowed(true);
+                }}
+            />}
             aria-labelledby="TreeViewFindertitle"
-            className={className}
-            classes={{ paper: composeClasses(classes, cssDialogPaper) }}
             data-testid="Dialog"
+            closeOnOverlayClick={false}
         >
-            <DialogTitle id="TreeViewFindertitle" data-testid="DialogTitle">
-                {title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect })}
-            </DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
-                </DialogContentText>
-
-                <SimpleTreeView
-                    expandedItems={expanded}
-                    onExpandedItemsChange={handleNodeToggle}
-                    onSelectedItemsChange={handleNodeSelect}
-                    // Uncontrolled props
-                    {...getTreeViewSelectionProps()}
-                >
-                    {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
-                </SimpleTreeView>
-            </DialogContent>
-            <DialogActions>
-                <CancelButton
-                    style={{ float: 'left', margin: '5px' }}
-                    onClick={() => {
-                        onClose?.([]);
-                        setSelected([]);
-                        setAutoScrollAllowed(true);
-                    }}
-                    {...cancelButtonProps}
-                />
-                <Button
-                    variant="outlined"
-                    style={{ float: 'left', margin: '5px' }}
-                    onClick={() => {
-                        onClose?.(computeSelectedNodes());
-                        setSelected([]);
-                        setAutoScrollAllowed(true);
-                    }}
-                    disabled={isValidationDisabled()}
-                    data-testid="SubmitButton"
-                >
-                    {getValidationButtonText()}
-                </Button>
-            </DialogActions>
-        </Dialog>
+            <SimpleTreeView
+                sx={{ width: '100%' }}
+                expandedItems={expanded}
+                onExpandedItemsChange={handleNodeToggle}
+                onSelectedItemsChange={handleNodeSelect}
+                // Uncontrolled props
+                {...getTreeViewSelectionProps()}
+            >
+                {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
+            </SimpleTreeView>
+        </Modal>
     );
 }
-
-const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
-
-export const TreeViewFinder = styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);

@@ -10,7 +10,7 @@ import { Box, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { LabelledButton } from '../common';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
@@ -71,15 +71,16 @@ export function PccMinParametersInLine({
                     <Box>
                         <Grid container item>
                             <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                            <SubmitButton onClick={handleSubmit(pccMinMethods.onSaveInline)} variant="outlined">
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
+                            <ValidateButton
+                                onClick={handleSubmit(pccMinMethods.onSaveInline)}
+                                disabled={!formState.isDirty}
+                            />
                         </Grid>
 
                         {/* Reset Confirmation Dialog */}
                         {openResetConfirmation && (
                             <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
+                                descriptionKey="resetParamsConfirmation"
                                 validateButtonLabel="validate"
                                 openConfirmationPopup={openResetConfirmation}
                                 setOpenConfirmationPopup={handleCancelReset}

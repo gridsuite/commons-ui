@@ -423,7 +423,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 <TableCell sx={{ textAlign: 'center' }}>
                                     <CheckboxInput
                                         name={`${arrayFormName}[${index}].${SELECTED}`}
-                                        formProps={{ disabled }}
+                                        disabled={disabled}
                                     />
                                 </TableCell>
                                 {columnsDefinition.map((column) => renderTableCell(row.id, index, column))}

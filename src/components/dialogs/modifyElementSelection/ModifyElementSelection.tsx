@@ -6,11 +6,12 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { Box, Grid, Typography } from '@mui/material';
+import { useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { FolderOutlined } from '@mui/icons-material';
+import { Button } from '@design-system-rte/react';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { DirectoryItemSelector } from '../../directoryItemSelector/DirectoryItemSelector';
@@ -90,9 +91,12 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
                         </span>
                     </Box>
                 </Typography>
-                <Button onClick={handleSelectFolder} variant="contained" size="small">
-                    <FormattedMessage id={dialogOpeningButtonLabel} />
-                </Button>
+                <Button
+                    label={intl.formatMessage({ id: dialogOpeningButtonLabel })}
+                    onClick={handleSelectFolder}
+                    variant="primary"
+                    size="s"
+                />
             </Grid>
             <DirectoryItemSelector
                 open={open}

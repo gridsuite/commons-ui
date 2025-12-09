@@ -15,13 +15,13 @@ import {
     ListItem,
     MenuItem,
     Select,
-    Switch,
     TextField,
     TextFieldProps,
     Tooltip,
     Typography,
 } from '@mui/material';
 import { Tune as TuneIcon } from '@mui/icons-material';
+import { Switch } from '@design-system-rte/react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
 import type { MuiStyles } from '../../utils/styles';
@@ -265,7 +265,14 @@ export function FlatParameters({
         // eslint-disable-next-line default-case
         switch (param.type) {
             case 'BOOLEAN':
-                return <Switch checked={!!fieldValue} onChange={(e) => onFieldChange(e.target.checked, param)} />;
+                return (
+                    <Switch
+                        showLabel={false}
+                        showIcon={false}
+                        checked={!!fieldValue}
+                        onChange={(e) => onFieldChange(e.target.checked, param)}
+                    />
+                );
             case 'DOUBLE': {
                 const err =
                     Number.isNaN(fieldValue) ||

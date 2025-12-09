@@ -17,7 +17,7 @@ import {
 } from '../../../utils';
 import { ComputingType, CreateParameterDialog } from '../common';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import {
@@ -135,16 +135,14 @@ export function SensitivityAnalysisParametersInline({
                                 <Button onClick={handleResetClick}>
                                     <FormattedMessage id="resetToDefault" />
                                 </Button>
-                                <SubmitButton
+                                <ValidateButton
                                     onClick={handleSubmit(sensitivityAnalysisMethods.onSaveInline)}
-                                    variant="outlined"
                                     disabled={
+                                        !formState.isDirty ||
                                         sensitivityAnalysisMethods.launchLoader ||
                                         sensitivityAnalysisMethods.isMaxReached
                                     }
-                                >
-                                    <FormattedMessage id="validate" />
-                                </SubmitButton>
+                                />
                             </DialogActions>
                         </Grid>
                         {openCreateParameterDialog && (
@@ -176,7 +174,7 @@ export function SensitivityAnalysisParametersInline({
                         {/* Reset Confirmation Dialog */}
                         {openResetConfirmation && (
                             <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
+                                descriptionKey="resetParamsConfirmation"
                                 validateButtonLabel="validate"
                                 openConfirmationPopup={openResetConfirmation}
                                 setOpenConfirmationPopup={handleCancelReset}

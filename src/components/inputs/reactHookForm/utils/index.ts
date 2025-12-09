@@ -7,7 +7,7 @@
 
 export * from './CancelButton';
 export * from './FieldLabel';
-export * from './SubmitButton';
+export * from './ValidateButton';
 export * from './TextFieldWithAdornment';
 export * from './functions';
 export * from './HelperPreviousValue';

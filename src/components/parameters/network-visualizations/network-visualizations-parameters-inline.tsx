@@ -7,12 +7,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { User } from 'oidc-client';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { ValidateButton } from '../../inputs';
 import { ElementType } from '../../../utils';
 import { LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
@@ -85,9 +85,10 @@ export function NetworkVisualizationParametersInline({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <SubmitButton onClick={handleSubmit(networkVisuMethods.onSaveInline)} variant="outlined">
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
+                            <ValidateButton
+                                onClick={handleSubmit(networkVisuMethods.onSaveInline)}
+                                disabled={!formState.isDirty}
+                            />
                         </Grid>
                         {openCreateParameterDialog && (
                             <CreateParameterDialog

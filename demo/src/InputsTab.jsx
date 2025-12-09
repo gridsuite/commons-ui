@@ -20,10 +20,9 @@ import {
     SelectInput,
     CheckboxInput,
     SwitchInput,
-    SubmitButton,
     ExpandingTextField,
     CustomFormProvider,
-    SelectClearable,
+    SelectClearable, ValidateButton,
 } from '../../src';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
@@ -174,7 +173,7 @@ function InputsTab() {
                         backgroundColor: 'pink',
                     }}
                 >
-                    <SubmitButton onClick={handleSubmit(onSubmit, onError)} />
+                    <ValidateButton onClick={handleSubmit(onSubmit, onError)} />
                 </Box>
             </Box>
         </CustomFormProvider>

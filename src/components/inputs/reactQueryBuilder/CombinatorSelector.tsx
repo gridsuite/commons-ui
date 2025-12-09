@@ -24,7 +24,7 @@ export function CombinatorSelector(props: CombinatorSelectorProps) {
     return (
         <>
             <PopupConfirmationDialog
-                message="changeOperatorMessage"
+                descriptionKey="changeOperatorMessage"
                 validateButtonLabel="button.changeOperator"
                 openConfirmationPopup={openPopup}
                 setOpenConfirmationPopup={setOpenPopup}

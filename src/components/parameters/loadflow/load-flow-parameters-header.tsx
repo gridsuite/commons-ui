@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Box, Grid, Tabs, Tab } from '@mui/material';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TabValues } from './load-flow-parameters-utils';
 import { getTabStyle, parametersStyles } from '../parameters-style';
