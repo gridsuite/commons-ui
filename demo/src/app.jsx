@@ -66,6 +66,7 @@ import {
     equipmentsEn,
     equipmentsFr,
     equipmentStyles,
+    EquipmentType,
     filterEn,
     filterExpertEn,
     filterExpertFr,
@@ -91,6 +92,8 @@ import {
     networkModificationsFr,
     OverflowableChipWithHelperText,
     OverflowableText,
+    parametersEn,
+    parametersFr,
     reportViewerEn,
     reportViewerFr,
     SnackbarProvider,
@@ -104,7 +107,6 @@ import {
     treeviewFinderEn,
     treeviewFinderFr,
     useSnackMessage,
-    EquipmentType,
 } from '../../src';
 
 const messages = {
@@ -127,6 +129,7 @@ const messages = {
         ...commonButtonEn,
         ...networkModificationsEn,
         ...inputsEn,
+        ...parametersEn,
         ...translations.en,
     },
     fr: {
@@ -148,6 +151,7 @@ const messages = {
         ...networkModificationsFr,
         ...multipleSelectionDialogFr,
         ...inputsFr,
+        ...parametersFr,
         ...translations.fr,
     },
 };
