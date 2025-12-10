@@ -14,6 +14,14 @@ export interface VoltageRange {
     voltageRangeCoefficient: number;
 }
 
+export interface PowerElectronicsMaterial {
+    alpha: number;
+    u0: number;
+    usMin: number;
+    usMax: number;
+    type: 'WIND' | 'SOLAR' | 'HVDC';
+}
+
 export interface ShortCircuitParametersDto {
     withFeederResult: boolean;
     withLoads: boolean;

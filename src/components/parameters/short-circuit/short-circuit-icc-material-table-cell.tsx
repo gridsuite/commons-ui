@@ -1,0 +1,54 @@
+/**
+ * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import { TableCell } from '@mui/material';
+import { FloatInput, RawReadOnlyInput, SwitchInput } from '../../inputs';
+import {
+    IccMaterialIColumnsDef,
+    SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
+    SHORT_CIRCUIT_ICC_MATERIAL_TYPE,
+} from './short-circuit-icc-material-table-columns-definition';
+// import { useCallback } from 'react';
+// import { FormattedMessage, useIntl } from 'react-intl';
+
+export function ShortCircuitIccMaterialTableCell({
+    formName,
+    rowIndex,
+    column,
+}: Readonly<{
+    formName: string;
+    rowIndex: number;
+    column: IccMaterialIColumnsDef;
+}>) {
+    // const intl = useIntl();
+    // const getTranslatedType = useCallback(() => {
+    //     switch (`${formName}[${rowIndex}].${column.dataKey}`) {
+    //         case 'HVDC':
+    //             return intl.formatMessage({id:'ShortCircuitHvdcLabel'});
+    //         case 'WIND':
+    //             return intl.formatMessage({id:'ShortCircuitWindLabel'});
+    //         case 'SOLAR':
+    //             return intl.formatMessage({id:'ShortCircuitSolarLabel'});
+    //         default:
+    //             console.error('Unknown type for ICC Material:', `${formName}[${rowIndex}].${column.dataKey}`);
+    //             return `${formName}[${rowIndex}].${column.dataKey}`;
+    //     }
+    // }, []); 
+    return (
+        <TableCell sx={{ fontWeight: 'bold' }}>
+            {column.dataKey === SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE && (
+                <SwitchInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
+            )}
+            {column.dataKey === SHORT_CIRCUIT_ICC_MATERIAL_TYPE && (
+                <RawReadOnlyInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
+            )}
+            {column.dataKey !== SHORT_CIRCUIT_ICC_MATERIAL_TYPE &&
+                column.dataKey !== SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE && (
+                    <FloatInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
+                )}
+        </TableCell>
+    );
+}
