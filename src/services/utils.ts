@@ -7,6 +7,7 @@
 
 import { getUserToken } from '../redux/commonStore';
 import { CustomError } from '../utils/types/CustomError';
+import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -15,14 +16,6 @@ type FetchInitWithTimeout = RequestInit & {
     /** If provided and no signal is set, use this as the timeout override (ms). */
     timeoutMs?: number;
 };
-
-/** Custom error type thrown when AbortSignal.timeout triggers. */
-export class NetworkTimeoutError extends Error {
-    constructor(messageKey: string = 'errors.network.timeout') {
-        super(messageKey);
-        this.name = 'NetworkTimeoutError';
-    }
-}
 
 const parseError = (text: string) => {
     try {
