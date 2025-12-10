@@ -58,7 +58,7 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
 
 export const convertToCustomError = (response: string) => {
     const errorJson = parseError(response);
-    if (errorJson?.businessErrorCode != null) {
+    if (errorJson?.businessErrorCode) {
         return new CustomError(
             `Server error: ${errorJson.detail}`,
             errorJson.status,
@@ -66,7 +66,7 @@ export const convertToCustomError = (response: string) => {
             errorJson.businessErrorValues
         );
     }
-    if (errorJson && errorJson.detail) {
+    if (errorJson?.detail) {
         return new CustomError(`Server error: ${errorJson.detail}`, errorJson.status);
     }
     return new CustomError(errorJson);
