@@ -40,7 +40,6 @@ export function ShortCircuitParametersInLine({
         description: null,
     });
 
-
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
@@ -48,7 +47,6 @@ export function ShortCircuitParametersInLine({
 
     const { formMethods } = shortCircuitMethods;
     const { getValues, formState, handleSubmit, reset } = formMethods;
-
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
