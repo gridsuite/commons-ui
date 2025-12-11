@@ -11,8 +11,6 @@ import {
     SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
     SHORT_CIRCUIT_ICC_MATERIAL_TYPE,
 } from './short-circuit-icc-material-table-columns-definition';
-// import { useCallback } from 'react';
-// import { FormattedMessage, useIntl } from 'react-intl';
 
 export function ShortCircuitIccMaterialTableCell({
     formName,
@@ -23,20 +21,6 @@ export function ShortCircuitIccMaterialTableCell({
     rowIndex: number;
     column: IccMaterialIColumnsDef;
 }>) {
-    // const intl = useIntl();
-    // const getTranslatedType = useCallback(() => {
-    //     switch (`${formName}[${rowIndex}].${column.dataKey}`) {
-    //         case 'HVDC':
-    //             return intl.formatMessage({id:'ShortCircuitHvdcLabel'});
-    //         case 'WIND':
-    //             return intl.formatMessage({id:'ShortCircuitWindLabel'});
-    //         case 'SOLAR':
-    //             return intl.formatMessage({id:'ShortCircuitSolarLabel'});
-    //         default:
-    //             console.error('Unknown type for ICC Material:', `${formName}[${rowIndex}].${column.dataKey}`);
-    //             return `${formName}[${rowIndex}].${column.dataKey}`;
-    //     }
-    // }, []); 
     return (
         <TableCell sx={{ fontWeight: 'bold' }}>
             {column.dataKey === SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE && (

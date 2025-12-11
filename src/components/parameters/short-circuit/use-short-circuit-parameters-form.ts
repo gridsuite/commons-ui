@@ -16,6 +16,7 @@ import {
     InitialVoltage,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -35,14 +36,8 @@ import {
     getCommonShortCircuitParametersFormSchema,
     getDefaultShortCircuitSpecificParamsValues,
     getShortCircuitSpecificParametersValues,
-    getSpecificShortCircuitParameterHelpersFormSchema,
-    resetSpecificParameters,
+    getSpecificShortCircuitParametersFormSchema,
 } from './short-circuit-parameters-utils';
-import {
-    formatSpecificParameters,
-    getDefaultSpecificParamsValues,
-    getSpecificParametersFormSchema,
-} from '../common/utils';
 import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
@@ -84,7 +79,6 @@ export const useShortCircuitParametersForm = ({
 
     const specificParametersDefaultValues = useMemo(() => {
         return {
-            ...getDefaultSpecificParamsValues(specificParametersDescriptionForProvider),
             ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider),
         };
     }, [specificParametersDescriptionForProvider]);
@@ -97,8 +91,7 @@ export const useShortCircuitParametersForm = ({
                     .oneOf(Object.values(PredefinedParameters))
                     .required(),
                 ...getCommonShortCircuitParametersFormSchema().fields,
-                ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
-                ...getSpecificShortCircuitParameterHelpersFormSchema(specificParametersDescriptionForProvider).fields,
+                ...getSpecificShortCircuitParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
     }, [name, specificParametersDescriptionForProvider]);
@@ -141,13 +134,14 @@ export const useShortCircuitParametersForm = ({
                 dirty
             );
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
+
             setValue(
-                SPECIFIC_PARAMETERS,
-                resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
+                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
         },
-        [specificParametersDefaultValues, params?.commonParameters, setValue]
+        [params?.commonParameters, setValue]
     );
 
     const formatNewParams = useCallback(
@@ -190,7 +184,6 @@ export const useShortCircuitParametersForm = ({
                 return {};
             }
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
-            console.log('SBO # toShortCircuitFormValues called with _params', _params);
             const values = {
                 [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
@@ -204,31 +197,24 @@ export const useShortCircuitParametersForm = ({
                     [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !_params.commonParameters.withNeutralPosition,
                 },
                 [SPECIFIC_PARAMETERS]: {
-                    ...formatSpecificParameters(
-                        specificParametersDescriptionForProvider,
-                        specificParamsListForCurrentProvider
-                    ),
                     ...formatShortCircuitSpecificParameters(
                         specificParametersDescriptionForProvider,
                         specificParamsListForCurrentProvider
                     ),
                 },
             };
-            console.log('SBO # toShortCircuitFormValues returning values', values);
             return values;
         },
         [provider, specificParametersDescriptionForProvider]
     );
 
     const onValidationError = useCallback((_errors: FieldErrors) => {
-        console.log('SBO # ShortCircuitParametersForm validation errors:', _errors);
+        console.error('onValidationError: ', _errors);
     }, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
-            console.log('SBO # onSaveInline called with formData', formData);
             const data = formatNewParams(formData);
-            console.log('SBO # onSaveInline called with data', data);
             updateParameters(data);
         },
         [updateParameters, formatNewParams]

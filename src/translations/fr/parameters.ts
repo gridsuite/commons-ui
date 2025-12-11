@@ -125,7 +125,7 @@ export const parametersFr = {
     ShortCircuitVoltageProfileMode: 'Plan de tension initial',
     ShortCircuitStartedGeneratorsMode: 'Démarrage des groupes',
     ShortCircuitPowerElectronicsSection: "Modélisation des équipements raccordés par de l'électronique de puissance",
-    ShortCircuitPowerElectronicsOption: "Prise en compte des caractéristiques d'Icc suivantes",
+    ShortCircuitModelPowerElectronics: "Prise en compte des caractéristiques d'Icc suivantes",
     ShortCircuitIccMaterialActivate: 'Actif',
     ShortCircuitIccMaterialActivateTooltip:
         "Activer la modélisation des équipements raccordés par de l'électronique de puissance",

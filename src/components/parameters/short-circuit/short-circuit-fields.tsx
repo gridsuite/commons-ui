@@ -20,7 +20,7 @@ import {
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_OPTION,
+    SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -184,10 +184,10 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
         />
     );
 
-    const powerElectronicsOption = (
+    const modelPowerElectronics = (
         <CheckboxInput
-            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_OPTION}`}
-            label="ShortCircuitPowerElectronicsOption"
+            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`}
+            label="ShortCircuitModelPowerElectronics"
         />
     );
 
@@ -256,7 +256,7 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                     </Grid>
                     <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
                     <Grid container>
-                        <GridItem size={12}>{powerElectronicsOption}</GridItem>
+                        <GridItem size={12}>{modelPowerElectronics}</GridItem>
                     </Grid>
                     <ShortCircuitIccMaterialTable
                         formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}

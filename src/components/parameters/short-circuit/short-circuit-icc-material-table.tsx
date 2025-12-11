@@ -24,7 +24,6 @@ export function ShortCircuitIccMaterialTable({
     const { fields: rows } = useFieldArray({
         name: formName,
     });
-    console.log('SBO rows', rows);
 
     return (
         <TableContainer

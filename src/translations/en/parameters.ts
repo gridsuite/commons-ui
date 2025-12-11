@@ -121,7 +121,7 @@ export const parametersEn = {
     ShortCircuitVoltageProfileMode: 'Initial voltage profile',
     ShortCircuitStartedGeneratorsMode: 'Generators started',
     ShortCircuitPowerElectronicsSection: 'Modeling of power electronics connected equipment',
-    ShortCircuitPowerElectronicsOption: 'Consider following Icc characteristics',
+    ShortCircuitModelPowerElectronics: 'Consider following Icc characteristics',
     ShortCircuitIccMaterialActivate: 'Activate',
     ShortCircuitIccMaterialActivateTooltip: 'Activate or deactivate this material characteristic',
     ShortCircuitIccMaterialType: 'Type',

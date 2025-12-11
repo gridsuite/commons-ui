@@ -40,8 +40,6 @@ export function ShortCircuitParametersInLine({
         description: null,
     });
 
-    console.log('SBO ShortCircuitParametersInLine render');
-    console.log('SBO shortCircuitMethods formSchema', shortCircuitMethods.formSchema.describe());
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
@@ -51,7 +49,6 @@ export function ShortCircuitParametersInLine({
     const { formMethods } = shortCircuitMethods;
     const { getValues, formState, handleSubmit, reset } = formMethods;
 
-    console.log('SBO formState.defaultValues', formState.defaultValues);
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {

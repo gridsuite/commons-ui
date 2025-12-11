@@ -7,11 +7,8 @@
 
 import {
     InitialVoltage,
-    PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_OPTION,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
@@ -20,9 +17,14 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { SpecificParameterInfos, SpecificParametersValues } from '../../../utils';
+import { ParameterType, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
+
 import type { PowerElectronicsMaterial } from './short-circuit-parameters.type';
-import { getAllSpecificParametersValues } from '../common/utils';
+import {
+    getAllSpecificParametersValues,
+    getDefaultSpecificParamsValues,
+    getSpecificParametersFormSchema,
+} from '../common/utils';
 
 export const getCommonShortCircuitParametersFormSchema = () => {
     return yup.object().shape({
@@ -40,49 +42,57 @@ export const getCommonShortCircuitParametersFormSchema = () => {
     });
 };
 
-export const getSpecificShortCircuitParameterHelpersFormSchema = (
-    specificParameters: SpecificParameterInfos[] | undefined
+export const getSpecificShortCircuitParametersFormSchema = (
+    specificParametersDescriptionForProvider: SpecificParameterInfos[] | undefined
 ) => {
-    if (!specificParameters) {
-        return yup.object().shape({});
-    }
-    if (Object.hasOwn(specificParameters, SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS)) {
-        return yup.object().shape({
-            [SHORT_CIRCUIT_POWER_ELECTRONICS_OPTION]: yup.boolean().required(),
-            [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: yup
-                .array<PowerElectronicsMaterial & { active: boolean }>()
-                .of(
-                    yup.object<PowerElectronicsMaterial & { active: boolean }>().shape({
-                        active: yup.boolean().required(),
-                        alpha: yup.number().required(),
-                        u0: yup.number().required(),
-                        usMin: yup.number().required(),
-                        usMax: yup.number().required(),
-                        type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
-                    })
-                )
-                .required(),
-        });
-    }
-    return yup.object().shape({});
-};
+    const defaultSchema = getSpecificParametersFormSchema(specificParametersDescriptionForProvider);
 
-export const getDefaultShortCircuitSpecificParamsValues = (
-    specificParametersDescriptionForProvider: SpecificParameterInfos[]
-): SpecificParametersValues => {
-    const defaultValues: SpecificParametersValues = {};
-    console.log('SBO # getDefaultShortCircuitSpecificParamsValues', specificParametersDescriptionForProvider);
-    const powerElectronicsMaterialsParam = specificParametersDescriptionForProvider.find(
+    const powerElectronicsMaterialsParam = specificParametersDescriptionForProvider?.find(
         (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
     );
-    if (powerElectronicsMaterialsParam) {
-        console.log(
-            `SBO # getDefaultShortCircuitSpecificParamsValues, specificParametersDescriptionForProvider has ${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS} key`,
-            powerElectronicsMaterialsParam.defaultValue,
-            powerElectronicsMaterialsParam.defaultValue.join('')
-        );
+
+    const powerElectronicsMaterialsSchema = powerElectronicsMaterialsParam
+        ? yup
+              .array<PowerElectronicsMaterial & { active: boolean }>()
+              .of(
+                  yup.object<PowerElectronicsMaterial & { active: boolean }>().shape({
+                      active: yup.boolean().required(),
+                      alpha: yup.number().required(),
+                      u0: yup.number().required(),
+                      usMin: yup.number().required(),
+                      usMax: yup.number().required(),
+                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
+                  })
+              )
+              .required()
+        : undefined;
+
+    // try to extract existing SPECIFIC_PARAMETERS fields from defaultSchema (if present)
+    const existingSpecificSchema = (defaultSchema as any).fields?.[SPECIFIC_PARAMETERS] as
+        | yup.ObjectSchema<any>
+        | undefined;
+    const existingSpecificFields = existingSpecificSchema ? (existingSpecificSchema as any).fields || {} : {};
+
+    const mergedSpecificShape: { [key: string]: yup.AnySchema } = {
+        ...existingSpecificFields,
+        ...(powerElectronicsMaterialsSchema
+            ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: powerElectronicsMaterialsSchema }
+            : {}),
+    };
+
+    const overrideSchema = yup.object().shape({
+        [SPECIFIC_PARAMETERS]: yup.object().shape(mergedSpecificShape),
+    });
+
+    // merge defaultSchema with our override (preserves other keys from defaultSchema)
+    return defaultSchema.concat(overrideSchema);
+};
+
+const parsepowerElectronicsMaterialsParamString = (paramString: string | string[]): PowerElectronicsMaterial[] => {
+    // Attempt to parse the string into an array of PowerElectronicsMaterial objects
+    try {
         // try simple repairs then parse
-        let repaired = powerElectronicsMaterialsParam.defaultValue.join('');
+        let repaired = Array.isArray(paramString) ? paramString.join('') : paramString;
         // ensure ":" between a quoted key and a number (e.g. `"u0" 97.0` -> `"u0": 97.0`)
         repaired = repaired.replace(/"(\w+)"\s+(-?\d+(\.\d+)?)/g, '"$1": $2');
         // ensure ":" between a quoted key and a quoted value (e.g. `"type" "HVDC"` -> `"type": "HVDC"`)
@@ -92,17 +102,33 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         repaired = repaired.replace(/([0-9]+(?:\.\d+)?|"[^"]*")\s+(")/g, '$1, $2');
         // add comma between adjacent objects if missing (`}{` -> `},{`)
         repaired = repaired.replace(/}\s*{/g, '},{');
-        console.log(`SBO # getDefaultShortCircuitSpecificParamsValues, repaired :`, repaired);
 
-        const electronicsMaterialsArray: PowerElectronicsMaterial[] = JSON.parse(repaired);
+        return JSON.parse(repaired);
+    } catch (error) {
+        console.error('Error parsing power electronics materials parameter string:', error);
+        return [];
+    }
+};
 
-        defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_OPTION] = false;
+export const getDefaultShortCircuitSpecificParamsValues = (
+    specificParametersDescriptionForProvider: SpecificParameterInfos[]
+): SpecificParametersValues => {
+    const defaultValues: SpecificParametersValues = getDefaultSpecificParamsValues(
+        specificParametersDescriptionForProvider
+    );
+    const powerElectronicsMaterialsParam = specificParametersDescriptionForProvider.find(
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
+    );
+    if (powerElectronicsMaterialsParam) {
+        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsepowerElectronicsMaterialsParamString(
+            powerElectronicsMaterialsParam.defaultValue
+        );
+
         defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = electronicsMaterialsArray.map((material) => ({
             ...material,
             active: false,
         }));
     }
-    console.log('SBO # getDefaultShortCircuitSpecificParamsValues result defaultValues', defaultValues);
     return defaultValues;
 };
 
@@ -110,29 +136,23 @@ export const getShortCircuitSpecificParametersValues = (
     formData: Record<string, any>,
     _specificParametersValues: SpecificParametersValues
 ): SpecificParametersValues => {
-    console.log('SBO # getShortCircuitSpecificParametersValues, formData:', formData);
-    let results: SpecificParametersValues = {};
+    let results: string = '';
     const powerElectronicsMaterialsParam: (PowerElectronicsMaterial & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
-    console.log(
-        'SBO # getShortCircuitSpecificParametersValues, powerElectronicsMaterialsParam:',
-        powerElectronicsMaterialsParam
-    );
-
     if (powerElectronicsMaterialsParam) {
         // create pretty JSON
         const json = JSON.stringify(
-            powerElectronicsMaterialsParam.filter((sParam) => sParam.active),
+            powerElectronicsMaterialsParam
+                .filter((sParam) => sParam.active) // keep only active ones
+                .map((sParam) => {
+                    const { active, ...rest } = sParam; // remove 'active' property
+                    return rest;
+                }),
             null,
             2
         );
-        console.log('SBO # getShortCircuitSpecificParametersValues, json:', json);
-        // split into small tokens similar to the example (keys, numbers, braces, strings)
-        const tokens = json.match(/"[^"]*"|[0-9]+(?:\.[0-9]+)?|[\[\]\{\},:]/g);
-        // fallback to single-element array if tokenization fails
-        console.log('SBO # getShortCircuitSpecificParametersValues, tokens:', tokens);
 
-        results = tokens?.length ? tokens : [json];
+        results = json;
     }
 
     return {
@@ -148,37 +168,38 @@ export const formatShortCircuitSpecificParameters = (
     if (!specificParamsList) {
         return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider);
     }
-    // console.log(`SBO # formatShortCircuitSpecificParameters called with specificParamsList`, specificParamsList);
-    // const powerElectronicsMaterialsParam = specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
 
-    // if (powerElectronicsMaterialsParam) {
-    //     console.log(
-    //         `SBO # formatShortCircuitSpecificParameters, specificParamsList has ${
-    //             SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
-    //         } key`,
-    //         powerElectronicsMaterialsParam
-    //     );
-    //     return {
-    //         ...specificParamsList,
-    //         [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: [JSON.stringify(powerElectronicsMaterialsParam)],
-    //     };
-    // }
-    console.log(`SBO ### formatShortCircuitSpecificParameters, specificParamsList `, specificParamsList);
-    return specificParamsList;
-};
+    return specificParametersDescriptionForProvider.reduce(
+        (acc: SpecificParametersValues, param: SpecificParameterInfos) => {
+            if (specificParamsList && Object.hasOwn(specificParamsList, param.name)) {
+                // special case
+                // if we have the Power Electronics Materials parameter, we need to set active accordingly
+                if (param.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS) {
+                    const defaultElectronicsMaterialsArray: PowerElectronicsMaterial[] =
+                        getDefaultShortCircuitSpecificParamsValues([param])?.[param.name];
+                    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] =
+                        parsepowerElectronicsMaterialsParamString(specificParamsList[param.name]);
+                    const result: PowerElectronicsMaterial[] = defaultElectronicsMaterialsArray.map((material) => {
+                        const foundInParams = electronicsMaterialsArrayInParams.find((m) => m.type === material.type);
+                        return foundInParams ? { ...foundInParams, active: true } : { ...material, active: false };
+                    });
 
-export const resetSpecificParameters = (
-    specificDefaultValues: SpecificParametersValues,
-    predefinedParameter: PredefinedParameters
-) => {
-    if (Object.hasOwn(specificDefaultValues, SHORT_CIRCUIT_ONLY_STARTED_GENERATORS)) {
-        return {
-            ...specificDefaultValues,
-            // Forced to override specificly this param here because its default value depends of the PredefinedParameters value
-            [SHORT_CIRCUIT_ONLY_STARTED_GENERATORS]:
-                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
-            [SHORT_CIRCUIT_POWER_ELECTRONICS_OPTION]: false,
-        };
-    }
-    return { ...specificDefaultValues };
+                    acc[param.name] = result;
+                } else if (param.type === ParameterType.BOOLEAN) {
+                    acc[param.name] = specificParamsList[param.name] === 'true';
+                } else if (param.type === ParameterType.STRING_LIST) {
+                    acc[param.name] =
+                        specificParamsList[param.name] === ''
+                            ? []
+                            : (specificParamsList[param.name] as string).split(',');
+                } else {
+                    acc[param.name] = specificParamsList[param.name];
+                }
+            } else {
+                acc[param.name] = getDefaultSpecificParamsValues([param])?.[param.name];
+            }
+            return acc;
+        },
+        {}
+    );
 };
