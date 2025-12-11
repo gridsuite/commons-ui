@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export class CustomError extends Error {
-    status: number;
+    status?: number;
 
     businessErrorCode?: string;
 
@@ -13,7 +13,7 @@ export class CustomError extends Error {
 
     constructor(
         message: string,
-        status: number,
+        status?: number,
         businessErrorCode?: string,
         businessErrorValues?: Record<string, unknown>
     ) {
