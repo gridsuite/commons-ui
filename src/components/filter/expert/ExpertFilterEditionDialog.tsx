@@ -127,7 +127,7 @@ export function ExpertFilterEditionDialog({
                     activeDirectory={activeDirectory}
                     filterType={FilterType.EXPERT}
                     enableDeveloperMode={enableDeveloperMode}
-                    isEditing={true}
+                    isEditing
                 />
             )}
         </CustomMuiDialog>

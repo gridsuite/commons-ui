@@ -31,7 +31,7 @@ import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
-import { EquipmentType, GsLang } from '../../../utils';
+import { EquipmentType } from '../../../utils';
 
 yup.setLocale({
     mixed: {

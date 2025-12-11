@@ -133,7 +133,7 @@ export function ExplicitNamingFilterEditionDialog({
                     filterType={FilterType.EXPLICIT_NAMING}
                     language={language}
                     enableDeveloperMode={enableDeveloperMode}
-                    isEditing={true}
+                    isEditing
                 />
             )}
         </CustomMuiDialog>
