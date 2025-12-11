@@ -95,11 +95,15 @@ export interface FilterForExplicitConversionProps {
 interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
     language?: GsLang;
+    enableDeveloperMode: boolean;
+    isEditing: boolean;
 }
 
 export function ExplicitNamingFilterForm({
     sourceFilterForExplicitNamingConversion,
     language,
+    enableDeveloperMode,
+    isEditing,
 }: Readonly<ExplicitNamingFilterFormProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
@@ -217,7 +221,7 @@ export function ExplicitNamingFilterForm({
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={!!sourceFilterForExplicitNamingConversion}
+                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !enableDeveloperMode)}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}

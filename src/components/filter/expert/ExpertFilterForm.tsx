@@ -31,7 +31,7 @@ import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
-import { EquipmentType } from '../../../utils';
+import { EquipmentType, GsLang } from '../../../utils';
 
 yup.setLocale({
     mixed: {
@@ -86,7 +86,12 @@ export function getExpertFilterEmptyFormData() {
     };
 }
 
-export function ExpertFilterForm() {
+interface ExpertFilterFormProps {
+    enableDeveloperMode: boolean;
+    isEditing: boolean;
+}
+
+export function ExpertFilterForm({ enableDeveloperMode, isEditing }: Readonly<ExpertFilterFormProps>) {
     const { getValues, setValue } = useFormContext();
 
     const openConfirmationPopup = useCallback(() => {
@@ -118,6 +123,7 @@ export function ExpertFilterForm() {
             <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
+                    disabled={isEditing && !enableDeveloperMode}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(EXPERT_FILTER_EQUIPMENTS)}
                     label="equipmentType"

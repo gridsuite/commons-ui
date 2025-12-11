@@ -44,6 +44,7 @@ export function ExpertFilterEditionDialog({
     activeDirectory,
     language,
     description,
+    enableDeveloperMode,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -121,7 +122,14 @@ export function ExpertFilterEditionDialog({
             language={language}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} />}
+            {isDataReady && (
+                <FilterForm
+                    activeDirectory={activeDirectory}
+                    filterType={FilterType.EXPERT}
+                    enableDeveloperMode={enableDeveloperMode}
+                    isEditing={true}
+                />
+            )}
         </CustomMuiDialog>
     );
 }

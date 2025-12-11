@@ -48,6 +48,7 @@ export function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     language,
     description,
+    enableDeveloperMode,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -131,6 +132,8 @@ export function ExplicitNamingFilterEditionDialog({
                     activeDirectory={activeDirectory}
                     filterType={FilterType.EXPLICIT_NAMING}
                     language={language}
+                    enableDeveloperMode={enableDeveloperMode}
+                    isEditing={true}
                 />
             )}
         </CustomMuiDialog>

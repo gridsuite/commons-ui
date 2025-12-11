@@ -23,6 +23,8 @@ export interface FilterFormProps {
         equipmentType: string;
     };
     language?: GsLang;
+    enableDeveloperMode: boolean;
+    isEditing: boolean;
 }
 
 export function FilterForm({
@@ -31,6 +33,8 @@ export function FilterForm({
     activeDirectory,
     filterType,
     language,
+    enableDeveloperMode,
+    isEditing,
 }: Readonly<FilterFormProps>) {
     return (
         <>
@@ -41,9 +45,13 @@ export function FilterForm({
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                     language={language}
+                    enableDeveloperMode={enableDeveloperMode}
+                    isEditing={isEditing}
                 />
             )}
-            {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm />}
+            {filterType?.id === FilterType.EXPERT.id && (
+                <ExpertFilterForm enableDeveloperMode={enableDeveloperMode} isEditing={isEditing} />
+            )}
         </>
     );
 }

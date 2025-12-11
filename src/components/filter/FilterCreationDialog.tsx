@@ -58,6 +58,7 @@ export interface FilterCreationDialogProps {
         equipmentType: string;
     };
     filterType: { id: string; label: string };
+    enableDeveloperMode: boolean;
 }
 
 export function FilterCreationDialog({
@@ -67,6 +68,7 @@ export function FilterCreationDialog({
     language,
     sourceFilterForExplicitNamingConversion = undefined,
     filterType,
+    enableDeveloperMode,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
@@ -146,6 +148,8 @@ export function FilterCreationDialog({
                 filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
                 language={language}
+                enableDeveloperMode={enableDeveloperMode}
+                isEditing={false}
             />
         </CustomMuiDialog>
     );
