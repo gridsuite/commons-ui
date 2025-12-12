@@ -7,6 +7,7 @@
 
 import { getUserToken } from '../redux/commonStore';
 import { CustomError } from '../utils/types/CustomError';
+import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -15,14 +16,6 @@ type FetchInitWithTimeout = RequestInit & {
     /** If provided and no signal is set, use this as the timeout override (ms). */
     timeoutMs?: number;
 };
-
-/** Custom error type thrown when AbortSignal.timeout triggers. */
-export class NetworkTimeoutError extends Error {
-    constructor(messageKey: string = 'errors.network.timeout') {
-        super(messageKey);
-        this.name = 'NetworkTimeoutError';
-    }
-}
 
 const parseError = (text: string) => {
     try {
@@ -63,31 +56,25 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     return initWithSignal;
 };
 
+export const convertToCustomError = (response: string) => {
+    const errorJson = parseError(response);
+    if (errorJson?.businessErrorCode) {
+        return new CustomError(
+            `Server error: ${errorJson.detail}`,
+            errorJson.status,
+            errorJson.businessErrorCode,
+            errorJson.businessErrorValues
+        );
+    }
+    if (errorJson?.detail) {
+        return new CustomError(`Server error: ${errorJson.detail}`, errorJson.status);
+    }
+    return new CustomError(errorJson);
+};
+
 const handleError = (response: Response) => {
     return response.text().then((text: string) => {
-        const errorName = 'HttpResponseError : ';
-        const errorJson = parseError(text);
-        let customError: CustomError;
-        if (errorJson?.businessErrorCode != null) {
-            throw new CustomError(
-                errorJson.message,
-                errorJson.status,
-                errorJson.businessErrorCode,
-                errorJson.businessErrorValues
-            );
-        }
-        if (errorJson && errorJson.status && errorJson.error && errorJson.message) {
-            customError = new CustomError(
-                `${errorName + errorJson.status} ${errorJson.error}, message : ${errorJson.message}`,
-                errorJson.status
-            );
-        } else {
-            customError = new CustomError(
-                `${errorName + response.status} ${response.statusText}, message : ${text}`,
-                response.status
-            );
-        }
-        throw customError;
+        throw convertToCustomError(text);
     });
 };
 
