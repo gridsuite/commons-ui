@@ -7,7 +7,7 @@
  */
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
@@ -30,7 +30,8 @@ import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { filterStyles } from '../HeaderFilterForm';
-import { GsLang, snackWithFallback } from '../../../utils';
+import { snackWithFallback } from '../../../utils';
+import { useCustomFormContext } from '../../inputs';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -94,21 +95,17 @@ export interface FilterForExplicitConversionProps {
 
 interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
-    language?: GsLang;
-    enableDeveloperMode: boolean;
     isEditing: boolean;
 }
 
 export function ExplicitNamingFilterForm({
     sourceFilterForExplicitNamingConversion,
-    language,
-    enableDeveloperMode,
     isEditing,
 }: Readonly<ExplicitNamingFilterFormProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const { getValues, setValue } = useFormContext();
+    const { getValues, setValue, enableDeveloperMode, language } = useCustomFormContext();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,

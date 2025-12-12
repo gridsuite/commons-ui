@@ -9,7 +9,7 @@ import { useCallback, useMemo } from 'react';
 import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import './stylesExpertFilter.css';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import * as yup from 'yup';
 import { v4 as uuid4 } from 'uuid';
 import { Box } from '@mui/material';
@@ -32,6 +32,7 @@ import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../utils';
+import { useCustomFormContext } from '../../inputs';
 
 yup.setLocale({
     mixed: {
@@ -87,13 +88,11 @@ export function getExpertFilterEmptyFormData() {
 }
 
 interface ExpertFilterFormProps {
-    enableDeveloperMode: boolean;
     isEditing: boolean;
 }
 
-export function ExpertFilterForm({ enableDeveloperMode, isEditing }: Readonly<ExpertFilterFormProps>) {
-    const { getValues, setValue } = useFormContext();
-
+export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>) {
+    const { getValues, setValue, enableDeveloperMode } = useCustomFormContext();
     const openConfirmationPopup = useCallback(() => {
         return (
             formatQuery(getValues(EXPERT_FILTER_QUERY), 'json_without_ids') !==

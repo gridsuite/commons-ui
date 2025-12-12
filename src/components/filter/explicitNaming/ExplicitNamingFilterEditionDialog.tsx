@@ -125,16 +125,11 @@ export function ExplicitNamingFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            enableDeveloperMode={enableDeveloperMode}
             unscrollableFullHeight
         >
             {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    filterType={FilterType.EXPLICIT_NAMING}
-                    language={language}
-                    enableDeveloperMode={enableDeveloperMode}
-                    isEditing
-                />
+                <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPLICIT_NAMING} isEditing />
             )}
         </CustomMuiDialog>
     );

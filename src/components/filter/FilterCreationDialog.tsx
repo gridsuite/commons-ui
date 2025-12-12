@@ -140,6 +140,7 @@ export function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            enableDeveloperMode={enableDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm
@@ -147,8 +148,6 @@ export function FilterCreationDialog({
                 activeDirectory={activeDirectory}
                 filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                language={language}
-                enableDeveloperMode={enableDeveloperMode}
                 isEditing={false}
             />
         </CustomMuiDialog>

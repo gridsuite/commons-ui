@@ -120,16 +120,10 @@ export function ExpertFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            enableDeveloperMode={enableDeveloperMode}
             unscrollableFullHeight
         >
-            {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    filterType={FilterType.EXPERT}
-                    enableDeveloperMode={enableDeveloperMode}
-                    isEditing
-                />
-            )}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} isEditing />}
         </CustomMuiDialog>
     );
 }
