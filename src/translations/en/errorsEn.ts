@@ -7,4 +7,5 @@
 
 export const errorsEn = {
     'errors.network.timeout': 'The request timed out. Please try again.',
+    'errors.technicalError': 'Server error: {message}\n (server: {serverName}, timestamp: {timestamp}, trace ID: {traceId})',
 };

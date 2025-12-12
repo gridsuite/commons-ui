@@ -6,7 +6,7 @@
  */
 
 import { getUserToken } from '../redux/commonStore';
-import { CustomError } from '../utils/types/CustomError';
+import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
@@ -56,20 +56,20 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     return initWithSignal;
 };
 
-export const convertToCustomError = (response: string) => {
-    const errorJson = parseError(response);
-    if (errorJson?.businessErrorCode) {
-        return new CustomError(
-            `Server error: ${errorJson.detail}`,
+export const convertToCustomError = (textError: string) => {
+    const errorJson = parseError(textError);
+    if (errorJson?.server && errorJson?.timestamp && errorJson?.traceId && errorJson?.detail) {
+        return new ProblemDetailError(
+            errorJson.detail,
+            errorJson.server,
+            new Date(errorJson.timestamp),
+            errorJson.traceId,
             errorJson.status,
             errorJson.businessErrorCode,
             errorJson.businessErrorValues
         );
     }
-    if (errorJson?.detail) {
-        return new CustomError(`Server error: ${errorJson.detail}`, errorJson.status);
-    }
-    return new CustomError(errorJson);
+    return new Error(textError);
 };
 
 const handleError = (response: Response) => {
