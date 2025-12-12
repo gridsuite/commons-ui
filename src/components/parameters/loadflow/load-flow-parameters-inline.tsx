@@ -32,16 +32,16 @@ export function LoadFlowParametersInline({
     language,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     language: GsLang;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
-    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, null, null, null);
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);

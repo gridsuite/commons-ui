@@ -26,12 +26,12 @@ export function ShortCircuitParametersInLine({
     studyUuid,
     setHaveDirtyFields,
     parametersBackend,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SHORT_CIRCUIT>;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     const shortCircuitMethods = useShortCircuitParametersForm({
         parametersBackend,
@@ -76,7 +76,7 @@ export function ShortCircuitParametersInLine({
     return (
         <ShortCircuitParametersForm
             shortCircuitMethods={shortCircuitMethods}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
                     <Box>
