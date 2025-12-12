@@ -8,8 +8,7 @@
 import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import type { UUID } from 'node:crypto';
-import { MODIFICATION_TYPES } from '../utils/types/modificationType';
-import { EquipmentType } from '../utils/types/equipmentType';
+import { MODIFICATION_TYPES, EquipmentType } from '../utils';
 
 export interface NetworkModificationMetadata {
     uuid: UUID;
@@ -17,6 +16,7 @@ export interface NetworkModificationMetadata {
     date: Date;
     stashed: boolean;
     activated: boolean;
+    description: string;
     messageType: string;
     messageValues: string;
 }
