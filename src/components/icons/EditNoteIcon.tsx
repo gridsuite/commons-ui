@@ -8,6 +8,7 @@
 import AddNote from '@material-symbols/svg-400/outlined/add_notes.svg?react';
 import { useTheme } from '@mui/material';
 import { StickyNote2Outlined } from '@mui/icons-material';
+import { CSSProperties } from 'react';
 
 type EditNoteIconProps = {
     empty?: boolean;
@@ -16,25 +17,13 @@ type EditNoteIconProps = {
 
 export function EditNoteIcon({ empty = false, hidden = false }: Readonly<EditNoteIconProps>) {
     const theme = useTheme();
-    const size: number = 25;
+    const size = 25;
 
-    return empty ? (
-        <AddNote
-            style={{
-                width: size,
-                height: size,
-                fill: theme.palette.text.primary,
-                visibility: hidden ? 'hidden' : 'visible',
-            }}
-        />
-    ) : (
-        <StickyNote2Outlined
-            sx={{
-                width: size,
-                height: size,
-                fill: theme.palette.text.primary,
-                visibility: hidden ? 'hidden' : 'visible',
-            }}
-        />
-    );
+    const style: CSSProperties = {
+        width: size,
+        height: size,
+        fill: theme.palette.text.primary,
+        visibility: hidden ? 'hidden' : 'visible',
+    };
+    return empty ? <AddNote style={style} /> : <StickyNote2Outlined sx={style} />;
 }
