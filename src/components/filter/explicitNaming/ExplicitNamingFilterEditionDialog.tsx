@@ -48,7 +48,7 @@ export function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     language,
     description,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -125,7 +125,7 @@ export function ExplicitNamingFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             {isDataReady && (

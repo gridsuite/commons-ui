@@ -105,7 +105,7 @@ export function ExplicitNamingFilterForm({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const { getValues, setValue, enableDeveloperMode, language } = useCustomFormContext();
+    const { getValues, setValue, isDeveloperMode, language } = useCustomFormContext();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
@@ -218,7 +218,7 @@ export function ExplicitNamingFilterForm({
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !enableDeveloperMode)}
+                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}

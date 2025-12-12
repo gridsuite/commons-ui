@@ -140,7 +140,7 @@ export function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={enableDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm

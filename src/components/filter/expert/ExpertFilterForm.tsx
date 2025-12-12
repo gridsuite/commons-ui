@@ -92,7 +92,7 @@ interface ExpertFilterFormProps {
 }
 
 export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>) {
-    const { getValues, setValue, enableDeveloperMode } = useCustomFormContext();
+    const { getValues, setValue, isDeveloperMode } = useCustomFormContext();
     const openConfirmationPopup = useCallback(() => {
         return (
             formatQuery(getValues(EXPERT_FILTER_QUERY), 'json_without_ids') !==
@@ -122,7 +122,7 @@ export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>)
             <Box sx={unscrollableDialogStyles.unscrollableHeader}>
                 <InputWithPopupConfirmation
                     Input={SelectInput}
-                    disabled={isEditing && !enableDeveloperMode}
+                    disabled={isEditing && !isDeveloperMode}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(EXPERT_FILTER_EQUIPMENTS)}
                     label="equipmentType"

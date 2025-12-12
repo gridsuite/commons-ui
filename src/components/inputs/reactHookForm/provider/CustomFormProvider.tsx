@@ -18,7 +18,7 @@ type CustomFormContextProps<TFieldValues extends FieldValues = FieldValues> = {
     language?: GsLang;
     isNodeBuilt?: boolean;
     isUpdate?: boolean;
-    enableDeveloperMode?: boolean;
+    isDeveloperMode?: boolean;
 };
 
 export type MergedFormContextProps<TFieldValues extends FieldValues = FieldValues> = UseFormReturn<TFieldValues> &
@@ -31,7 +31,7 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     language: getSystemLanguage(),
     isNodeBuilt: false,
     isUpdate: false,
-    enableDeveloperMode: false,
+    isDeveloperMode: false,
 });
 
 export function CustomFormProvider<TFieldValues extends FieldValues = FieldValues>(
@@ -44,7 +44,7 @@ export function CustomFormProvider<TFieldValues extends FieldValues = FieldValue
         language,
         isNodeBuilt,
         isUpdate,
-        enableDeveloperMode,
+        isDeveloperMode,
         children,
         ...formMethods
     } = props as PropsWithChildren<MergedFormContextProps<FieldValues>>;
@@ -53,8 +53,8 @@ export function CustomFormProvider<TFieldValues extends FieldValues = FieldValue
         <FormProvider {...formMethods}>
             <CustomFormContext.Provider
                 value={useMemo(
-                    () => ({ validationSchema, removeOptional, language, isNodeBuilt, isUpdate, enableDeveloperMode }),
-                    [validationSchema, removeOptional, language, isNodeBuilt, isUpdate, enableDeveloperMode]
+                    () => ({ validationSchema, removeOptional, language, isNodeBuilt, isUpdate, enableDeveloperMode: isDeveloperMode }),
+                    [validationSchema, removeOptional, language, isNodeBuilt, isUpdate, isDeveloperMode]
                 )}
             >
                 {children}
