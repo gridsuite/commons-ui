@@ -53,7 +53,14 @@ export function CustomFormProvider<TFieldValues extends FieldValues = FieldValue
         <FormProvider {...formMethods}>
             <CustomFormContext.Provider
                 value={useMemo(
-                    () => ({ validationSchema, removeOptional, language, isNodeBuilt, isUpdate, enableDeveloperMode: isDeveloperMode }),
+                    () => ({
+                        validationSchema,
+                        removeOptional,
+                        language,
+                        isNodeBuilt,
+                        isUpdate,
+                        isDeveloperMode,
+                    }),
                     [validationSchema, removeOptional, language, isNodeBuilt, isUpdate, isDeveloperMode]
                 )}
             >

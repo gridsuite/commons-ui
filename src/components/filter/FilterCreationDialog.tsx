@@ -58,7 +58,7 @@ export interface FilterCreationDialogProps {
         equipmentType: string;
     };
     filterType: { id: string; label: string };
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }
 
 export function FilterCreationDialog({
@@ -68,7 +68,7 @@ export function FilterCreationDialog({
     language,
     sourceFilterForExplicitNamingConversion = undefined,
     filterType,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
@@ -140,7 +140,7 @@ export function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
-            isDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm
