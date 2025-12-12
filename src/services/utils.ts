@@ -59,10 +59,16 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
 export const convertToCustomError = (textError: string) => {
     const errorJson = parseError(textError);
     if (errorJson?.server && errorJson?.timestamp && errorJson?.traceId && errorJson?.detail) {
+        let date: Date = new Date(); // Fallback to current timestamp
+        try {
+            date = new Date(errorJson.timestamp);
+        } catch {
+            // Ignore
+        }
         return new ProblemDetailError(
             errorJson.detail,
             errorJson.server,
-            new Date(errorJson.timestamp),
+            date,
             errorJson.traceId,
             errorJson.status,
             errorJson.businessErrorCode,
