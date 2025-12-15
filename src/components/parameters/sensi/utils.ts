@@ -409,4 +409,5 @@ export interface UseSensitivityAnalysisParametersReturn {
     onFormChanged: (formChanged: boolean) => void;
     emptyFormData: Record<string, unknown>;
     factorsCount: FactorsCount;
+    resetFactorsCount: () => void;
 }

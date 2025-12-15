@@ -18,7 +18,7 @@ interface TableRowComponentProps {
     index: number;
     handleDeleteButton: (index: number) => void;
     disableDelete: boolean;
-    fetchCount: (a: string, b: number, c: string) => void;
+    handleRowChanged: (a: string, b: number, c: string) => void;
 }
 
 export function TableRowComponent({

@@ -167,20 +167,22 @@ export const useSensitivityAnalysisParametersForm = ({
             [PARAMETER_SENSI_PST]: filterEntries(formValues[PARAMETER_SENSI_PST]),
             [PARAMETER_SENSI_NODES]: filterEntries(formValues[PARAMETER_SENSI_NODES]),
         };
-
-        const hasAnyEntries = [
-            PARAMETER_SENSI_INJECTIONS_SET,
-            PARAMETER_SENSI_INJECTION,
-            PARAMETER_SENSI_HVDC,
-            PARAMETER_SENSI_PST,
-            PARAMETER_SENSI_NODES
-        ].some(param => filteredFormValues[param].length > 0);
-
-        if (!hasAnyEntries) {
-            setFactorsCount({ resultCount: 0, variableCount: 0 });
-            return;
-        }
-
+        //TODO: test without
+        // const entriesParams = [
+        //     PARAMETER_SENSI_INJECTIONS_SET,
+        //     PARAMETER_SENSI_INJECTION,
+        //     PARAMETER_SENSI_HVDC,
+        //     PARAMETER_SENSI_PST,
+        //     PARAMETER_SENSI_NODES,
+        // ] as const;
+        //
+        // const hasAnyEntries = entriesParams.some((param) => filteredFormValues[param].length > 0);
+        //
+        // if (!hasAnyEntries) {
+        //     setFactorsCount({ resultCount: 0, variableCount: 0 });
+        //     return;
+        // }
+        //
         setLaunchLoader(true);
         getSensitivityAnalysisFactorsCount(
             studyUuid,
@@ -210,6 +212,11 @@ export const useSensitivityAnalysisParametersForm = ({
     const onFormChanged = useCallback(() => {
         getFactorsCount();
     }, [getFactorsCount]);
+
+    const resetFactorsCount = useCallback(() => {
+        setLaunchLoader(false);
+        setFactorsCount({ resultCount: 0, variableCount: 0 });
+    }, []);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
         (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
@@ -438,5 +445,6 @@ export const useSensitivityAnalysisParametersForm = ({
         onFormChanged,
         emptyFormData,
         factorsCount,
+        resetFactorsCount
     };
 };

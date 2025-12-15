@@ -95,7 +95,7 @@ export function SensitivityAnalysisParametersInline({
     const clear = useCallback(() => {
         reset(sensitivityAnalysisMethods.emptyFormData);
         resetSensitivityAnalysisParameters();
-        sensitivityAnalysisMethods.setAnalysisComputeComplexity(0);
+        sensitivityAnalysisMethods.resetFactorsCount();
         setOpenResetConfirmation(false);
     }, [reset, sensitivityAnalysisMethods, resetSensitivityAnalysisParameters]);
 
