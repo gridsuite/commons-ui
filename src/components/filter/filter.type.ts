@@ -45,6 +45,7 @@ export interface FilterEditionProps {
     activeDirectory?: UUID;
     language?: GsLang;
     description?: string;
+    isDeveloperMode: boolean;
 }
 
 export interface NewFilterType {

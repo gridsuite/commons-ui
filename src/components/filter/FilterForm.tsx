@@ -12,7 +12,6 @@ import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterF
 import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { unscrollableDialogStyles } from '../dialogs';
-import { GsLang } from '../../utils';
 
 export interface FilterFormProps {
     creation?: boolean;
@@ -22,7 +21,7 @@ export interface FilterFormProps {
         id: UUID;
         equipmentType: string;
     };
-    language?: GsLang;
+    isEditing: boolean;
 }
 
 export function FilterForm({
@@ -30,7 +29,7 @@ export function FilterForm({
     creation,
     activeDirectory,
     filterType,
-    language,
+    isEditing,
 }: Readonly<FilterFormProps>) {
     return (
         <>
@@ -40,10 +39,10 @@ export function FilterForm({
             {filterType?.id === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                    language={language}
+                    isEditing={isEditing}
                 />
             )}
-            {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm />}
+            {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm isEditing={isEditing} />}
         </>
     );
 }
