@@ -1,8 +1,8 @@
-import {useMemo} from "react";
-import type {MuiStyles} from "../../../utils";
-import {Box, CircularProgress} from "@mui/material";
-import {FormattedMessage} from "react-intl";
+import { useMemo } from 'react';
+import { Box, CircularProgress } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import type { MuiStyles } from '../../../utils';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -36,12 +36,7 @@ const renderLoadingState = () => {
     );
 };
 
-export const useFactorCountDisplay = (
-    count: number,
-    maxCount: number,
-    messageId: string,
-    launchLoader: boolean
-) => {
+export const useFactorCountDisplay = (count: number, maxCount: number, messageId: string, launchLoader: boolean) => {
     return useMemo(() => {
         const renderCountDisplay = () => {
             const isOverLimit = count > maxCount;
@@ -54,7 +49,7 @@ export const useFactorCountDisplay = (
                         <FormattedMessage
                             id={messageId}
                             values={{
-                                count: "999999",
+                                count: '999999',
                                 suffix: '+',
                             }}
                         />
@@ -70,32 +65,26 @@ export const useFactorCountDisplay = (
                             id={messageId}
                             values={{
                                 count: count.toString(),
-                                suffix: ''
+                                suffix: '',
                             }}
                         />
                     </Box>
-            );
+                );
             }
 
             if (count === 0) {
                 return (
                     <Box sx={styles.textInitial}>
-                    <FormattedMessage
-                        id={messageId}
-                values={{ count: count.toString(), suffix: '' }}
-                />
-                </Box>
-            );
+                        <FormattedMessage id={messageId} values={{ count: count.toString(), suffix: '' }} />
+                    </Box>
+                );
             }
 
             return (
                 <Box sx={styles.textInfo}>
-                <FormattedMessage
-                    id={messageId}
-            values={{ count: count.toString(), suffix: '' }}
-            />
-            </Box>
-        );
+                    <FormattedMessage id={messageId} values={{ count: count.toString(), suffix: '' }} />
+                </Box>
+            );
         };
 
         return launchLoader ? renderLoadingState() : renderCountDisplay();

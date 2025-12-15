@@ -5,6 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UseFormReturn } from 'react-hook-form';
+import { ObjectSchema } from 'yup';
 import yup from '../../../utils/yupConfig';
 import {
     ACTIVATED,
@@ -13,7 +15,8 @@ import {
     CONTAINER_NAME,
     CONTINGENCIES,
     DISTRIBUTION_TYPE,
-    EQUIPMENTS_IN_VOLTAGE_REGULATION, FactorsCount,
+    EQUIPMENTS_IN_VOLTAGE_REGULATION,
+    FactorsCount,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
     HVDC_LINES,
@@ -28,13 +31,11 @@ import {
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
-import {DistributionType, SensitivityAnalysisParametersInfos, SensitivityType} from '../../../utils';
-import {PROVIDER} from '../common';
-import {getNameElementEditorSchema} from '../common/name-element-editor';
-import {NAME} from '../../inputs';
-import {ID} from '../../../utils/constants/filterConstant';
-import {UseFormReturn} from "react-hook-form";
-import {ObjectSchema} from "yup";
+import { DistributionType, SensitivityAnalysisParametersInfos, SensitivityType } from '../../../utils';
+import { PROVIDER } from '../common';
+import { getNameElementEditorSchema } from '../common/name-element-editor';
+import { NAME } from '../../inputs';
+import { ID } from '../../../utils/constants/filterConstant';
 
 const getMonitoredBranchesSchema = () => {
     return {

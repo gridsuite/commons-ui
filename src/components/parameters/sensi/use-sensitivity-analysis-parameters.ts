@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import type {UUID} from 'node:crypto';
-import {ComputingType, PROVIDER} from '../common';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { UUID } from 'node:crypto';
+import { ComputingType, PROVIDER } from '../common';
 import {
     ElementType,
     FieldConstants,
@@ -32,11 +32,14 @@ import {
     CONTAINER_NAME,
     CONTINGENCIES,
     DISTRIBUTION_TYPE,
-    EQUIPMENTS_IN_VOLTAGE_REGULATION, FactorsCount,
+    EQUIPMENTS_IN_VOLTAGE_REGULATION,
+    FactorsCount,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
     HVDC_LINES,
-    INJECTIONS, MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT,
+    INJECTIONS,
+    MAX_RESULTS_COUNT,
+    MAX_VARIABLES_COUNT,
     MONITORED_BRANCHES,
     PARAMETER_SENSI_HVDC,
     PARAMETER_SENSI_INJECTION,
@@ -51,10 +54,10 @@ import {
     getSensitivityAnalysisFactorsCount,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import {updateParameter} from '../../../services';
-import {useSnackMessage} from '../../../hooks';
-import {getNameElementEditorEmptyFormData} from '../common/name-element-editor';
-import {snackWithFallback} from '../../../utils/error';
+import { updateParameter } from '../../../services';
+import { useSnackMessage } from '../../../hooks';
+import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
+import { snackWithFallback } from '../../../utils/error';
 
 type UseSensitivityAnalysisParametersFormProps =
     | {
@@ -152,10 +155,15 @@ export const useSensitivityAnalysisParametersForm = ({
             if (!entries) return [];
             return entries
                 .filter((entry) => entry[ACTIVATED])
-                .filter((entry) => entry[MONITORED_BRANCHES]?.length > 0 || entry[SUPERVISED_VOLTAGE_LEVELS]?.length > 0)
+                .filter(
+                    (entry) => entry[MONITORED_BRANCHES]?.length > 0 || entry[SUPERVISED_VOLTAGE_LEVELS]?.length > 0
+                )
                 .filter(
                     (entry) =>
-                        entry[INJECTIONS]?.length > 0 || entry[PSTS]?.length > 0 || entry[HVDC_LINES]?.length > 0 || entry[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0
+                        entry[INJECTIONS]?.length > 0 ||
+                        entry[PSTS]?.length > 0 ||
+                        entry[HVDC_LINES]?.length > 0 ||
+                        entry[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0
                 );
         };
 
@@ -167,7 +175,7 @@ export const useSensitivityAnalysisParametersForm = ({
             [PARAMETER_SENSI_PST]: filterEntries(formValues[PARAMETER_SENSI_PST]),
             [PARAMETER_SENSI_NODES]: filterEntries(formValues[PARAMETER_SENSI_NODES]),
         };
-        //TODO: test without
+        // TODO: test without
         // const entriesParams = [
         //     PARAMETER_SENSI_INJECTIONS_SET,
         //     PARAMETER_SENSI_INJECTION,
@@ -195,7 +203,9 @@ export const useSensitivityAnalysisParametersForm = ({
                     const parsed = JSON.parse(value);
                     setFactorsCount({
                         resultCount: !Number.isNaN(Number(parsed.resultCount)) ? parseInt(parsed.resultCount, 10) : 0,
-                        variableCount: !Number.isNaN(Number(parsed.variableCount)) ? parseInt(parsed.variableCount, 10) : 0,
+                        variableCount: !Number.isNaN(Number(parsed.variableCount))
+                            ? parseInt(parsed.variableCount, 10)
+                            : 0,
                     });
                     const timeoutId = setTimeout(() => {
                         setLaunchLoader(false);
@@ -220,7 +230,6 @@ export const useSensitivityAnalysisParametersForm = ({
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
         (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
-
             return {
                 [PROVIDER]: parameters[PROVIDER],
                 [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: parameters.flowFlowSensitivityValueThreshold,
@@ -410,12 +419,7 @@ export const useSensitivityAnalysisParametersForm = ({
                 getFactorsCount();
             }
         }
-    }, [
-        fromSensitivityAnalysisParamsDataToFormValues,
-        sensitivityAnalysisParams,
-        isSubmitAction,
-        reset,
-    ]);
+    }, [fromSensitivityAnalysisParamsDataToFormValues, sensitivityAnalysisParams, isSubmitAction, reset]);
     useEffect(() => {
         if (params) {
             reset(fromSensitivityAnalysisParamsDataToFormValues(params));
@@ -445,6 +449,6 @@ export const useSensitivityAnalysisParametersForm = ({
         onFormChanged,
         emptyFormData,
         factorsCount,
-        resetFactorsCount
+        resetFactorsCount,
     };
 };

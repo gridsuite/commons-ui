@@ -24,8 +24,8 @@ import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
 import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
 import type { MuiStyles } from '../../../utils/styles';
-import {useFactorCountDisplay} from "./use-factor-count-display";
-import {FactorsCount, MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT} from "./constants";
+import { useFactorCountDisplay } from './use-factor-count-display';
+import { FactorsCount, MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -128,7 +128,6 @@ function SensitivityParametersSelector({
         [intl]
     );
 
-
     useEffect(() => {
         if (!enableDeveloperMode) {
             setTabValue(SensiTabValues.SensitivityBranches);
@@ -138,14 +137,14 @@ function SensitivityParametersSelector({
     const resultsCountDisplay = useFactorCountDisplay(
         factorsCount.resultCount,
         MAX_RESULTS_COUNT,
-        "sensitivityAnalysis.simulatedResults",
+        'sensitivityAnalysis.simulatedResults',
         launchLoader
     );
 
     const variablesCountDisplay = useFactorCountDisplay(
         factorsCount.variableCount,
         MAX_VARIABLES_COUNT,
-        "sensitivityAnalysis.simulatedVariables",
+        'sensitivityAnalysis.simulatedVariables',
         launchLoader
     );
 
@@ -174,7 +173,7 @@ function SensitivityParametersSelector({
                             <FormattedMessage
                                 id="sensitivityAnalysis.maximumFactorsCount"
                                 values={{
-                                    maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString()
+                                    maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString(),
                                 }}
                             />
                         </Box>
@@ -184,7 +183,7 @@ function SensitivityParametersSelector({
                             <FormattedMessage
                                 id="sensitivityAnalysis.maximumFactorsCount"
                                 values={{
-                                    maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString()
+                                    maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString(),
                                 }}
                             />
                         </Box>
