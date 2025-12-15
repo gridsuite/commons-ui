@@ -32,7 +32,7 @@ export function LoadFlowParametersEditionDialog({
     activeDirectory,
     user,
     language = LANG_ENGLISH,
-    enableDeveloperMode = false,
+    isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
         user,
@@ -49,7 +49,7 @@ export function LoadFlowParametersEditionDialog({
         getLoadFlowDefaultLimitReductions
     );
 
-    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, id, name, description);
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 
     const {
         formState: { errors, dirtyFields },

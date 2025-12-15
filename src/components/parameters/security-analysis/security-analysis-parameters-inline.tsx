@@ -34,12 +34,12 @@ export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
@@ -107,7 +107,7 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
                     <>

@@ -71,7 +71,7 @@ export interface UseLoadFlowParametersFormReturn {
 
 export const useLoadFlowParametersForm = (
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>,
-    enableDeveloperMode: boolean,
+    isDeveloperMode: boolean,
     parametersUuid: UUID | null,
     name: string | null,
     description: string | null
@@ -210,12 +210,12 @@ export const useLoadFlowParametersForm = (
     // TODO: remove this when DynaFlow will be available not only in developer mode
     const formattedProviders = useMemo(() => {
         return Object.entries(providers)
-            .filter(([key]) => !key.includes('DynaFlow') || enableDeveloperMode)
+            .filter(([key]) => !key.includes('DynaFlow') || isDeveloperMode)
             .map(([key, value]) => ({
                 id: key,
                 label: value,
             }));
-    }, [providers, enableDeveloperMode]);
+    }, [providers, isDeveloperMode]);
 
     const onValidationError = useCallback(
         (errors: FieldErrors) => {
