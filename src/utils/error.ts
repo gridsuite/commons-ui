@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { CustomError, formatMessageValues } from './types/CustomError';
+import { ProblemDetailError, formatMessageValues } from './types/ProblemDetailError';
 import { NetworkTimeoutError } from './types/NetworkTimeoutError';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
@@ -30,12 +30,25 @@ export function snackWithFallback(
         });
         return;
     }
-    if (error instanceof CustomError && error.businessErrorCode) {
-        snackError({
-            messageId: error.businessErrorCode,
-            messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
-            ...headerInputs,
-        });
+    if (error instanceof ProblemDetailError) {
+        if (error.businessErrorCode) {
+            snackError({
+                messageId: error.businessErrorCode,
+                messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
+                ...headerInputs,
+            });
+        } else {
+            snackError({
+                messageId: 'errors.technicalError',
+                messageValues: {
+                    message: error.message,
+                    serverName: error.serverName,
+                    timestamp: error.timestamp.toLocaleString(), // It would require refactoring to adapt with GS language so we keep it like that for now
+                    traceId: error.traceId,
+                },
+                ...headerInputs,
+            });
+        }
     } else {
         catchErrorHandler(error, (message) => {
             snackError({

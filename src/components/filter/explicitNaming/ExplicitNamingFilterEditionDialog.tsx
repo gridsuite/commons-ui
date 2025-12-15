@@ -48,6 +48,7 @@ export function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     language,
     description,
+    isDeveloperMode,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -124,14 +125,11 @@ export function ExplicitNamingFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             {isDataReady && (
-                <FilterForm
-                    activeDirectory={activeDirectory}
-                    filterType={FilterType.EXPLICIT_NAMING}
-                    language={language}
-                />
+                <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPLICIT_NAMING} isEditing />
             )}
         </CustomMuiDialog>
     );
