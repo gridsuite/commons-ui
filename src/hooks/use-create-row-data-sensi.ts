@@ -8,14 +8,13 @@
 import { useFieldArray } from 'react-hook-form';
 import { useMemo } from 'react';
 import type { ISensiParameters } from '../components/parameters/sensi/columns-definitions';
-import { COUNT } from '../components/parameters/sensi/constants';
 
 export function useCreateRowDataSensi(sensiParam: ISensiParameters) {
     const useFieldArrayOutput = useFieldArray({
         name: sensiParam.name || '',
     });
     const newRowData = useMemo(() => {
-        const rowData: { [key: string]: any } = { [COUNT]: 0 };
+        const rowData: { [key: string]: any } = { };
         sensiParam.columnsDef.forEach((column) => {
             rowData[column.dataKey] = column.initialValue;
         });

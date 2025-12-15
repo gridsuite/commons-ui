@@ -76,7 +76,6 @@ export function SensitivityAnalysisParametersInline({
                         reset(sensitivityAnalysisMethods.fromSensitivityAnalysisParamsDataToFormValues(parameters), {
                             keepDefaultValues: true,
                         });
-                        sensitivityAnalysisMethods.initRowsCount();
                     })
                     .catch((error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
@@ -140,7 +139,8 @@ export function SensitivityAnalysisParametersInline({
                                     variant="outlined"
                                     disabled={
                                         sensitivityAnalysisMethods.launchLoader ||
-                                        sensitivityAnalysisMethods.isMaxReached
+                                        sensitivityAnalysisMethods.isMaxResultsReached ||
+                                        sensitivityAnalysisMethods.isMaxVariablesReached
                                     }
                                 >
                                     <FormattedMessage id="validate" />

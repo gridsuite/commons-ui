@@ -222,10 +222,11 @@ export const parametersEn = {
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
     PSTS: 'PSTs',
     Active: 'Active',
-    'sensitivityAnalysis.simulatedComputations':
-        '{count, plural, =0 {0 computation} =1 {1 computation} other {# computations}}',
-    'sensitivityAnalysis.moreThanOneMillionComputations': '999 999+ computations',
-    'sensitivityAnalysis.maximumSimulatedComputations': '500 000 max',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, plural, =0 {0 result} =1 {1 result} other {#{suffix} results}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Calculation in progress...',
 

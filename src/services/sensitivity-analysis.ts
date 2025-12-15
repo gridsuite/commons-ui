@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText } from './utils';
 import { safeEncodeURIComponent } from './security-analysis';
-import { SensitivityAnalysisFactorsCountParameters, SensitivityAnalysisParametersInfos } from '../utils';
+import { SensitivityAnalysisParametersInfos } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 
 const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
@@ -70,24 +70,17 @@ export function getSensitivityAnalysisFactorsCount(
     studyUuid: UUID | null,
     currentNodeUuid: UUID,
     currentRootNetworkUuid: UUID,
-    isInjectionsSet: boolean,
-    newParams: SensitivityAnalysisFactorsCountParameters
+    newParams: SensitivityAnalysisParametersInfos
 ) {
     console.info('get sensitivity analysis parameters computing count');
-    const urlSearchParams = new URLSearchParams();
-    const jsoned = JSON.stringify(isInjectionsSet);
-    urlSearchParams.append('isInjectionsSet', jsoned);
-    Object.keys(newParams)
-        // @ts-ignore
-        .filter((key) => newParams[key])
-        // @ts-ignore
-        .forEach((key) => urlSearchParams.append(`ids[${key}]`, newParams[key]));
-
-    const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid)}
-      /sensitivity-analysis/factors-count?${urlSearchParams}`;
+    const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid)}/sensitivity-analysis/factor-count`;
     console.debug(url);
     return backendFetch(url, {
-        method: 'GET',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newParams),
     });
 }
 

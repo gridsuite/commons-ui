@@ -27,7 +27,7 @@ export function TableRowComponent({
     index,
     handleDeleteButton,
     disableDelete = false,
-    fetchCount,
+    handleRowChanged,
 }: Readonly<TableRowComponentProps>) {
     const [isHover, setIsHover] = useState(false);
     const intl = useIntl();
@@ -36,16 +36,14 @@ export function TableRowComponent({
         return setIsHover(enter);
     }
 
-    const handleRowChanged = (isChanged: boolean, source: string) => {
-        if (isChanged) {
-            fetchCount(arrayFormName, index, source);
-        }
+    const handleCellChanged = (source: string) => {
+        handleRowChanged(arrayFormName, index, source);
     };
 
     return (
         <TableRow onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
             {columnsDefinition.map((column: IColumnsDef) =>
-                EditableTableCell(arrayFormName, index, column, handleRowChanged)
+                EditableTableCell(arrayFormName, index, column, handleCellChanged)
             )}
             {!disableDelete && (
                 <TableCell sx={{ width: '5rem', textAlign: 'center' }}>

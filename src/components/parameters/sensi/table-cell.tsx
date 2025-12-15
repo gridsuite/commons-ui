@@ -12,13 +12,13 @@ function EditableTableCell(
     arrayFormName: string,
     rowIndex: number,
     column: any,
-    onRowChanged: (a: boolean, source: string) => void
+    onRowChanged: (source: string) => void
 ) {
     const handleDirectoryItemsChange = () => {
-        onRowChanged(true, 'directory');
+        onRowChanged('directory');
     };
     const handleSwitchInputChange = () => {
-        onRowChanged(true, 'switch');
+        onRowChanged('switch');
     };
     return (
         <TableCell

@@ -21,7 +21,8 @@ import { useIntl } from 'react-intl';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
-import { ACTIVATED, COUNT, HVDC_LINES, INJECTIONS, MONITORED_BRANCHES, PSTS } from './constants';
+import { ACTIVATED,
+    EQUIPMENTS_IN_VOLTAGE_REGULATION, HVDC_LINES, INJECTIONS, MONITORED_BRANCHES, PSTS, SUPERVISED_VOLTAGE_LEVELS} from './constants';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
 
 interface SensitivityTableProps {
@@ -33,7 +34,6 @@ interface SensitivityTableProps {
     disableAdd?: boolean;
     disableDelete?: boolean;
     onFormChanged: (a: boolean) => void;
-    onChangeParams: (a: Record<string, any>, b: string, c: number) => void;
 }
 
 export function SensitivityTable({
@@ -45,7 +45,6 @@ export function SensitivityTable({
     disableAdd,
     disableDelete = false,
     onFormChanged,
-    onChangeParams,
 }: Readonly<SensitivityTableProps>) {
     const intl = useIntl();
     const { getValues } = useFormContext();
@@ -58,44 +57,27 @@ export function SensitivityTable({
         append(createRows(1));
     }, [append, createRows, currentRows.length]);
 
-    const fetchCount = useCallback(
+    const handleRowChanged = useCallback(
         (providedArrayFormName: string, index: number, source: string) => {
             const row = getValues(providedArrayFormName)[index];
-            const isActivated = row[ACTIVATED];
-            const hasMonitoredBranches = row[MONITORED_BRANCHES]?.length > 0;
-            const hasInjections = row[INJECTIONS]?.length > 0 || row[HVDC_LINES]?.length > 0 || row[PSTS]?.length > 0;
-            if (source === 'switch' && hasMonitoredBranches && hasInjections) {
-                if (isActivated) {
-                    onChangeParams(row, providedArrayFormName, index);
-                } else {
-                    onFormChanged(true);
-                }
-            }
-            if (source === 'directory' && isActivated) {
-                if (hasMonitoredBranches && hasInjections) {
-                    onChangeParams(row, providedArrayFormName, index);
-                } else if ((!hasMonitoredBranches || !hasInjections) && row.count === 0) {
-                    onFormChanged(false);
-                } else if (!hasMonitoredBranches || !hasInjections) {
-                    onFormChanged(true);
-                }
+            const hasMonitoredEquipments = row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
+            const hasVariables = row[INJECTIONS]?.length > 0 || row[HVDC_LINES]?.length > 0 || row[PSTS]?.length > 0 || row[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0;
+
+            if (hasMonitoredEquipments && hasVariables && (source === 'switch' || row[ACTIVATED])) {
+                onFormChanged(true);
             }
         },
-        [onChangeParams, onFormChanged, getValues]
+        [onFormChanged, getValues]
     );
 
     const handleDeleteButton = useCallback(
         (index: number) => {
             const currentRowsValues = getValues(arrayFormName);
-            let isFormChanged = false;
             if (index >= 0 && index < currentRowsValues.length) {
-                if (currentRowsValues[index][COUNT] && currentRowsValues[index][ACTIVATED]) {
-                    isFormChanged = true;
-                }
                 remove(index);
-            }
-            if (isFormChanged) {
-                onFormChanged(true);
+                if (currentRowsValues[index][ACTIVATED]) {
+                    onFormChanged(true);
+                }
             }
         },
         [arrayFormName, getValues, onFormChanged, remove]
@@ -140,7 +122,7 @@ export function SensitivityTable({
                             index={index}
                             handleDeleteButton={handleDeleteButton}
                             disableDelete={disableDelete}
-                            fetchCount={fetchCount}
+                            handleRowChanged={handleRowChanged}
                         />
                     ))}
                 </TableBody>
