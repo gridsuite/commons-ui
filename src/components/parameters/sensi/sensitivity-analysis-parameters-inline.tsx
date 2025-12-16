@@ -76,6 +76,7 @@ export function SensitivityAnalysisParametersInline({
                         reset(sensitivityAnalysisMethods.fromSensitivityAnalysisParamsDataToFormValues(parameters), {
                             keepDefaultValues: true,
                         });
+                        sensitivityAnalysisMethods.onFormChanged(true)
                     })
                     .catch((error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
