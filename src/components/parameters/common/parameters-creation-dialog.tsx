@@ -35,6 +35,9 @@ export function CreateParameterDialog<T extends FieldValues>({
 
     const saveParameters = useCallback(
         (element: IElementCreationDialog) => {
+            console.log('??????????1 ', parameterFormatter);
+            console.log('??????????2 ', parameterValues());
+            console.log('??????????3 ', parameterFormatter(parameterValues()));
             createParameter(
                 parameterFormatter(parameterValues()),
                 element.name,
