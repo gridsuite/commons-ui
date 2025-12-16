@@ -62,7 +62,7 @@ interface SensitivityParametersSelectorProps {
     onChangeParams: (a: any, b: any, c: number) => void; // fixing any on "b" here is not trivial, will need to fix SensitivityTable which is used in another unrelated component
     launchLoader: boolean;
     analysisComputeComplexity: number;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
     isStudyLinked: boolean;
 }
 
@@ -76,7 +76,7 @@ function SensitivityParametersSelector({
     onChangeParams,
     launchLoader,
     analysisComputeComplexity,
-    enableDeveloperMode,
+    isDeveloperMode,
     isStudyLinked,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
@@ -100,7 +100,7 @@ function SensitivityParametersSelector({
                 { label: 'SensiPST' },
             ],
         },
-        ...((enableDeveloperMode && [{ label: 'SensitivityNodes' }]) || []),
+        ...((isDeveloperMode && [{ label: 'SensitivityNodes' }]) || []),
     ];
 
     const [rowDataInjectionsSet, useFieldArrayOutputInjectionsSet] = useCreateRowDataSensi(
@@ -138,10 +138,10 @@ function SensitivityParametersSelector({
     };
 
     useEffect(() => {
-        if (!enableDeveloperMode) {
+        if (!isDeveloperMode) {
             setTabValue(SensiTabValues.SensitivityBranches);
         }
-    }, [enableDeveloperMode]);
+    }, [isDeveloperMode]);
 
     const ComputingEvent = useMemo(() => {
         const renderComputingEvent = () => {
