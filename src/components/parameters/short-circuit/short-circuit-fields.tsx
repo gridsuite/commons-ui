@@ -70,14 +70,22 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
         [watchSpecificParameters]
     );
+    // Courcirc specific parameters
+    const watchOnlyStartedGenerators = useWatch({
+        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+    });
 
     const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
-        return !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition;
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition]);
+        return (
+            !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition && watchOnlyStartedGenerators
+        );
+    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
 
     const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
-        return !watchLoads && !watchShuntCompensators && watchVSC && !watchNeutralPosition;
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition]);
+        return (
+            !watchLoads && !watchShuntCompensators && watchVSC && !watchNeutralPosition && !watchOnlyStartedGenerators
+        );
+    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
 
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
@@ -170,6 +178,13 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         <RadioInput
             name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
             options={Object.values(onlyStartedGeneratorsOptions)}
+            formProps={{
+                onChange: (_event, value) => {
+                    setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`, value === 'true', {
+                        shouldDirty: true,
+                    });
+                },
+            }}
         />
     );
 
