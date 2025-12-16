@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useMemo } from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, SxProps, Theme } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import type { MuiStyles } from '../../../utils';
@@ -42,12 +42,7 @@ const renderLoadingState = () => {
     );
 };
 
-export const useFactorCountDisplay = (
-    count: number,
-    maxCount: number,
-    messageId: string,
-    launchLoader: boolean
-) => {
+export const useFactorCountDisplay = (count: number, maxCount: number, messageId: string, launchLoader: boolean) => {
     return useMemo(() => {
         if (launchLoader) return renderLoadingState();
 
@@ -57,10 +52,15 @@ export const useFactorCountDisplay = (
 
         const isAlert = isOverMillion || isOverLimit;
 
-        const sx = isAlert ? styles.textAlert : isZero ? styles.textInitial : styles.textInfo;
+        let sx: SxProps<Theme> = styles.textInfo;
+        if (isAlert) {
+            sx = styles.textAlert;
+        } else if (isZero) {
+            sx = styles.textInitial;
+        }
 
-        const displayCount = isOverMillion ? "999999" : String(count);
-        const suffix = isOverMillion ? "+" : "";
+        const displayCount = isOverMillion ? '999999' : count.toString();
+        const suffix = isOverMillion ? '+' : '';
 
         return (
             <Box sx={sx}>
