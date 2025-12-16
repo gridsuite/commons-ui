@@ -42,57 +42,31 @@ const renderLoadingState = () => {
     );
 };
 
-export const useFactorCountDisplay = (count: number, maxCount: number, messageId: string, launchLoader: boolean) => {
+export const useFactorCountDisplay = (
+    count: number,
+    maxCount: number,
+    messageId: string,
+    launchLoader: boolean
+) => {
     return useMemo(() => {
-        const renderCountDisplay = () => {
-            const isOverLimit = count > maxCount;
-            const isOverMillion = count > 999999;
+        if (launchLoader) return renderLoadingState();
 
-            if (isOverMillion) {
-                return (
-                    <Box sx={styles.textAlert}>
-                        <ErrorOutlineIcon sx={styles.errorOutlineIcon} />
-                        <FormattedMessage
-                            id={messageId}
-                            values={{
-                                count: '999999',
-                                suffix: '+',
-                            }}
-                        />
-                    </Box>
-                );
-            }
+        const isOverMillion = count > 999_999;
+        const isOverLimit = count > maxCount;
+        const isZero = count === 0;
 
-            if (isOverLimit) {
-                return (
-                    <Box sx={styles.textAlert}>
-                        <ErrorOutlineIcon sx={styles.errorOutlineIcon} />
-                        <FormattedMessage
-                            id={messageId}
-                            values={{
-                                count: count.toString(),
-                                suffix: '',
-                            }}
-                        />
-                    </Box>
-                );
-            }
+        const isAlert = isOverMillion || isOverLimit;
 
-            if (count === 0) {
-                return (
-                    <Box sx={styles.textInitial}>
-                        <FormattedMessage id={messageId} values={{ count: count.toString(), suffix: '' }} />
-                    </Box>
-                );
-            }
+        const sx = isAlert ? styles.textAlert : isZero ? styles.textInitial : styles.textInfo;
 
-            return (
-                <Box sx={styles.textInfo}>
-                    <FormattedMessage id={messageId} values={{ count: count.toString(), suffix: '' }} />
-                </Box>
-            );
-        };
+        const displayCount = isOverMillion ? "999999" : String(count);
+        const suffix = isOverMillion ? "+" : "";
 
-        return launchLoader ? renderLoadingState() : renderCountDisplay();
+        return (
+            <Box sx={sx}>
+                {isAlert && <ErrorOutlineIcon sx={styles.errorOutlineIcon} />}
+                <FormattedMessage id={messageId} values={{ count: displayCount, suffix }} />
+            </Box>
+        );
     }, [count, maxCount, messageId, launchLoader]);
 };
