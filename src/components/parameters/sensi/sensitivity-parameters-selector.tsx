@@ -218,7 +218,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjectionsSet}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
@@ -229,7 +228,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjections}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
@@ -240,7 +238,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataHvdc}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
@@ -251,7 +248,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataPst}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                         </>
@@ -264,7 +260,6 @@ function SensitivityParametersSelector({
                             createRows={rowDataNodes}
                             tableHeight={367}
                             onFormChanged={onFormChanged}
-                            onChangeParams={onChangeParams}
                         />
                     )}
                 </TabPanel>
