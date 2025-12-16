@@ -58,6 +58,7 @@ export interface FilterCreationDialogProps {
         equipmentType: string;
     };
     filterType: { id: string; label: string };
+    isDeveloperMode: boolean;
 }
 
 export function FilterCreationDialog({
@@ -67,6 +68,7 @@ export function FilterCreationDialog({
     language,
     sourceFilterForExplicitNamingConversion = undefined,
     filterType,
+    isDeveloperMode,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
@@ -138,6 +140,7 @@ export function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm
@@ -145,7 +148,7 @@ export function FilterCreationDialog({
                 activeDirectory={activeDirectory}
                 filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                language={language}
+                isEditing={false}
             />
         </CustomMuiDialog>
     );

@@ -7,13 +7,13 @@
 import { ReactNode } from 'react';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
-import { UseSensitivityAnalysisParametersReturn } from './utils';
 
 const styles = {
     form: {
@@ -47,12 +47,12 @@ export function SensitivityAnalysisParametersForm({
     sensitivityAnalysisMethods,
     renderTitleFields,
     renderActions,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     return (
         <CustomFormProvider
@@ -103,9 +103,10 @@ export function SensitivityAnalysisParametersForm({
                                 </Grid>
                                 <SensitivityParametersSelector
                                     onFormChanged={sensitivityAnalysisMethods.onFormChanged}
+                                    onChangeParams={sensitivityAnalysisMethods.onChangeParams}
                                     launchLoader={sensitivityAnalysisMethods.launchLoader}
                                     factorsCount={sensitivityAnalysisMethods.factorsCount}
-                                    enableDeveloperMode={enableDeveloperMode}
+                                    enableDeveloperMode={isDeveloperMode}
                                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
                                 />
                             </Grid>

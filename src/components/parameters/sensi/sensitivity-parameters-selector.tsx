@@ -63,7 +63,7 @@ interface SensitivityParametersSelectorProps {
     onFormChanged: (hasFormChanged: boolean) => void;
     launchLoader: boolean;
     factorsCount: FactorsCount;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
     isStudyLinked: boolean;
 }
 
@@ -76,7 +76,7 @@ function SensitivityParametersSelector({
     onFormChanged,
     launchLoader,
     factorsCount,
-    enableDeveloperMode,
+    isDeveloperMode,
     isStudyLinked,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
@@ -100,7 +100,7 @@ function SensitivityParametersSelector({
                 { label: 'SensiPST' },
             ],
         },
-        ...((enableDeveloperMode && [{ label: 'SensitivityNodes' }]) || []),
+        ...((isDeveloperMode && [{ label: 'SensitivityNodes' }]) || []),
     ];
 
     const [rowDataInjectionsSet, useFieldArrayOutputInjectionsSet] = useCreateRowDataSensi(
@@ -129,10 +129,10 @@ function SensitivityParametersSelector({
     );
 
     useEffect(() => {
-        if (!enableDeveloperMode) {
+        if (!isDeveloperMode) {
             setTabValue(SensiTabValues.SensitivityBranches);
         }
-    }, [enableDeveloperMode]);
+    }, [isDeveloperMode]);
 
     const resultsCountDisplay = useFactorCountDisplay(
         factorsCount.resultCount,
@@ -218,6 +218,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjectionsSet}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
@@ -228,6 +229,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjections}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
@@ -238,6 +240,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataHvdc}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
@@ -248,6 +251,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataPst}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                         </>
@@ -260,6 +264,7 @@ function SensitivityParametersSelector({
                             createRows={rowDataNodes}
                             tableHeight={367}
                             onFormChanged={onFormChanged}
+                            onChangeParams={onChangeParams}
                         />
                     )}
                 </TabPanel>

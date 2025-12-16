@@ -44,12 +44,12 @@ export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
     renderTitleFields,
     renderActions,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     return (
         <CustomFormProvider
@@ -108,7 +108,7 @@ export function SecurityAnalysisParametersForm({
                                         <SecurityAnalysisParametersSelector
                                             params={securityAnalysisMethods.params}
                                             currentProvider={securityAnalysisMethods.currentProvider?.trim()}
-                                            enableDeveloperMode={enableDeveloperMode}
+                                            isDeveloperMode={isDeveloperMode}
                                             defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                                         />
                                     </Grid>
