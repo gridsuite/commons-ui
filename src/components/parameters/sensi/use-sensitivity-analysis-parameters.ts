@@ -59,6 +59,27 @@ import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
 
+export interface UseSensitivityAnalysisParametersReturn {
+    formMethods: UseFormReturn<any>;
+    formSchema: ObjectSchema<any>;
+    formattedProviders: { id: string; label: string }[];
+    fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfos) => any;
+    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos;
+    params: SensitivityAnalysisParametersInfos | null;
+    paramsLoaded: boolean;
+    isStudyLinked: boolean;
+    onSaveInline: (formData: Record<string, any>) => void;
+    onSaveDialog: (formData: Record<string, any>) => void;
+    isMaxReached: boolean;
+    launchLoader: boolean;
+    initRowsCount: () => void;
+    onFormChanged: (formChanged: boolean) => void;
+    onChangeParams: (row: any, arrayFormName: SubTabsValues, index: number) => void;
+    emptyFormData: Record<string, unknown>;
+    analysisComputeComplexity: number;
+    setAnalysisComputeComplexity: Dispatch<SetStateAction<number>>;
+}
+
 type UseSensitivityAnalysisParametersFormProps =
     | {
           name: string;

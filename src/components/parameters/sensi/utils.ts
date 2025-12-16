@@ -393,22 +393,3 @@ export type SensitivityAnalysisParametersFormSchema = yup.InferType<typeof formS
 export const getFormSchema = (name: string | null) => {
     return formSchema.concat(getNameElementEditorSchema(name));
 };
-export interface UseSensitivityAnalysisParametersReturn {
-    formMethods: UseFormReturn<any>;
-    formSchema: ObjectSchema<any>;
-    formattedProviders: { id: string; label: string }[];
-    fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfos) => any;
-    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos;
-    params: SensitivityAnalysisParametersInfos | null;
-    paramsLoaded: boolean;
-    isStudyLinked: boolean;
-    onSaveInline: (formData: Record<string, any>) => void;
-    onSaveDialog: (formData: Record<string, any>) => void;
-    isMaxResultsReached: boolean;
-    isMaxVariablesReached: boolean;
-    launchLoader: boolean;
-    onFormChanged: (formChanged: boolean) => void;
-    emptyFormData: Record<string, unknown>;
-    factorsCount: FactorsCount;
-    resetFactorsCount: () => void;
-}
