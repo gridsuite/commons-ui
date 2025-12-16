@@ -73,7 +73,7 @@ export interface UseSensitivityAnalysisParametersReturn {
     isMaxResultsReached: boolean;
     isMaxVariablesReached: boolean;
     launchLoader: boolean;
-    onFormChanged: (formChanged: boolean) => void;
+    onFormChanged: () => void;
     emptyFormData: Record<string, unknown>;
     factorsCount: FactorsCount;
     resetFactorsCount: () => void;
@@ -439,7 +439,7 @@ export const useSensitivityAnalysisParametersForm = ({
         if (sensitivityAnalysisParams) {
             reset(fromSensitivityAnalysisParamsDataToFormValues(sensitivityAnalysisParams));
             if (!isSubmitAction) {
-                getFactorsCount();
+                onFormChanged();
             }
         }
     }, [

@@ -59,7 +59,7 @@ const styles = {
 } as const satisfies MuiStyles;
 
 interface SensitivityParametersSelectorProps {
-    onFormChanged: (hasFormChanged: boolean) => void;
+    onFormChanged: () => void;
     launchLoader: boolean;
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
