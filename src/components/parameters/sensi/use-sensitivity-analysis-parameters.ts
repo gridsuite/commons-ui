@@ -167,30 +167,33 @@ export const useSensitivityAnalysisParametersForm = ({
                 );
         };
 
+        const filteredInjectionsSet = filterEntries(formValues[PARAMETER_SENSI_INJECTIONS_SET]);
+        const filteredInjection = filterEntries(formValues[PARAMETER_SENSI_INJECTION]);
+        const filteredHvdc = filterEntries(formValues[PARAMETER_SENSI_HVDC]);
+        const filteredPst = filterEntries(formValues[PARAMETER_SENSI_PST]);
+        const filteredNodes = filterEntries(formValues[PARAMETER_SENSI_NODES]);
+
+        const hasAnyEntries =
+            filteredInjectionsSet.length > 0 ||
+            filteredInjection.length > 0 ||
+            filteredHvdc.length > 0 ||
+            filteredPst.length > 0 ||
+            filteredNodes.length > 0;
+
+        if (!hasAnyEntries) {
+            resetFactorsCount();
+            return;
+        }
+
         const filteredFormValues = {
             ...formValues,
-            [PARAMETER_SENSI_INJECTIONS_SET]: filterEntries(formValues[PARAMETER_SENSI_INJECTIONS_SET]),
-            [PARAMETER_SENSI_INJECTION]: filterEntries(formValues[PARAMETER_SENSI_INJECTION]),
-            [PARAMETER_SENSI_HVDC]: filterEntries(formValues[PARAMETER_SENSI_HVDC]),
-            [PARAMETER_SENSI_PST]: filterEntries(formValues[PARAMETER_SENSI_PST]),
-            [PARAMETER_SENSI_NODES]: filterEntries(formValues[PARAMETER_SENSI_NODES]),
+            [PARAMETER_SENSI_INJECTIONS_SET]: filteredInjectionsSet,
+            [PARAMETER_SENSI_INJECTION]: filteredInjection,
+            [PARAMETER_SENSI_HVDC]: filteredHvdc,
+            [PARAMETER_SENSI_PST]: filteredPst,
+            [PARAMETER_SENSI_NODES]: filteredNodes,
         };
-        // TODO: test without
-        // const entriesParams = [
-        //     PARAMETER_SENSI_INJECTIONS_SET,
-        //     PARAMETER_SENSI_INJECTION,
-        //     PARAMETER_SENSI_HVDC,
-        //     PARAMETER_SENSI_PST,
-        //     PARAMETER_SENSI_NODES,
-        // ] as const;
-        //
-        // const hasAnyEntries = entriesParams.some((param) => filteredFormValues[param].length > 0);
-        //
-        // if (!hasAnyEntries) {
-        //     setFactorsCount({ resultCount: 0, variableCount: 0 });
-        //     return;
-        // }
-        //
+
         setLaunchLoader(true);
         getSensitivityAnalysisFactorsCount(
             studyUuid,
