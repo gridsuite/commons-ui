@@ -447,7 +447,7 @@ export const useSensitivityAnalysisParametersForm = ({
         sensitivityAnalysisParams,
         isSubmitAction,
         reset,
-        getFactorsCount,
+        onFormChanged,
     ]);
     useEffect(() => {
         if (params) {
