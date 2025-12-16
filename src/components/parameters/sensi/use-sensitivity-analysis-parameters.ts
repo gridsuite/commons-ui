@@ -4,8 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { ComputingType, PROVIDER } from '../common';
@@ -23,7 +24,6 @@ import {
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
     SensitivityAnalysisParametersFormSchema,
-    UseSensitivityAnalysisParametersReturn,
 } from './utils';
 import {
     ACTIVATED,
@@ -70,14 +70,13 @@ export interface UseSensitivityAnalysisParametersReturn {
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
-    isMaxReached: boolean;
+    isMaxResultsReached: boolean;
+    isMaxVariablesReached: boolean;
     launchLoader: boolean;
-    initRowsCount: () => void;
     onFormChanged: (formChanged: boolean) => void;
-    onChangeParams: (row: any, arrayFormName: SubTabsValues, index: number) => void;
     emptyFormData: Record<string, unknown>;
-    analysisComputeComplexity: number;
-    setAnalysisComputeComplexity: Dispatch<SetStateAction<number>>;
+    factorsCount: FactorsCount;
+    resetFactorsCount: () => void;
 }
 
 type UseSensitivityAnalysisParametersFormProps =
@@ -144,7 +143,7 @@ export const useSensitivityAnalysisParametersForm = ({
         resolver: yupResolver(formSchema),
     });
 
-    const { reset, getValues, setValue } = formMethods;
+    const { reset, getValues } = formMethods;
 
     const formattedProviders = Object.keys(providers).map((key) => ({
         id: key,
@@ -163,6 +162,11 @@ export const useSensitivityAnalysisParametersForm = ({
             ...getSensiPstformatNewParams(newParams as SensitivityAnalysisParametersFormSchema),
             ...getSensiNodesformatNewParams(newParams as SensitivityAnalysisParametersFormSchema),
         };
+    }, []);
+
+    const resetFactorsCount = useCallback(() => {
+        setLaunchLoader(false);
+        setFactorsCount({ resultCount: 0, variableCount: 0 });
     }, []);
 
     const getFactorsCount = useCallback(() => {
@@ -241,16 +245,11 @@ export const useSensitivityAnalysisParametersForm = ({
                 setLaunchLoader(false);
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
             });
-    }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid]);
+    }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid, getValues, resetFactorsCount]);
 
     const onFormChanged = useCallback(() => {
         getFactorsCount();
     }, [getFactorsCount]);
-
-    const resetFactorsCount = useCallback(() => {
-        setLaunchLoader(false);
-        setFactorsCount({ resultCount: 0, variableCount: 0 });
-    }, []);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
         (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
@@ -443,7 +442,13 @@ export const useSensitivityAnalysisParametersForm = ({
                 getFactorsCount();
             }
         }
-    }, [fromSensitivityAnalysisParamsDataToFormValues, sensitivityAnalysisParams, isSubmitAction, reset]);
+    }, [
+        fromSensitivityAnalysisParamsDataToFormValues,
+        sensitivityAnalysisParams,
+        isSubmitAction,
+        reset,
+        getFactorsCount,
+    ]);
     useEffect(() => {
         if (params) {
             reset(fromSensitivityAnalysisParamsDataToFormValues(params));

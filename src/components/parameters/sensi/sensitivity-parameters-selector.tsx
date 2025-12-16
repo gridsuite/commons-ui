@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
-import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
 import * as sensiParam from './columns-definitions';
 import {
     IColumnsDef,

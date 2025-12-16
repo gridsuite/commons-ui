@@ -7,13 +7,13 @@
 import { ReactNode } from 'react';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
-import {UseSensitivityAnalysisParametersReturn} from "./use-sensitivity-analysis-parameters";
 
 const styles = {
     form: {

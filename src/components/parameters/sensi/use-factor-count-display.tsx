@@ -88,5 +88,5 @@ export const useFactorCountDisplay = (count: number, maxCount: number, messageId
         };
 
         return launchLoader ? renderLoadingState() : renderCountDisplay();
-    }, [count, maxCount, messageId, launchLoader, renderLoadingState]);
+    }, [count, maxCount, messageId, launchLoader]);
 };
