@@ -40,7 +40,7 @@ interface SensitivityTableProps {
     createRows: (a: number) => void;
     disableAdd?: boolean;
     disableDelete?: boolean;
-    onFormChanged: (a: boolean) => void;
+    onFormChanged: () => void;
 }
 
 export function SensitivityTable({
@@ -76,7 +76,7 @@ export function SensitivityTable({
                 row[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0;
 
             if (hasMonitoredEquipments && hasVariables && (source === 'switch' || row[ACTIVATED])) {
-                onFormChanged(true);
+                onFormChanged();
             }
         },
         [onFormChanged, getValues]
@@ -88,7 +88,7 @@ export function SensitivityTable({
             if (index >= 0 && index < currentRowsValues.length) {
                 remove(index);
                 if (currentRowsValues[index][ACTIVATED]) {
-                    onFormChanged(true);
+                    onFormChanged();
                 }
             }
         },
