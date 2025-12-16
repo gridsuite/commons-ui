@@ -39,7 +39,7 @@ import { COLUMNS_DEFINITIONS_ICC_MATERIALS } from './short-circuit-icc-material-
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }
 
 export enum Status {
@@ -53,7 +53,7 @@ const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
     tooltip: <FormattedMessage id={col.tooltip as string} />,
 }));
 
-export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
+export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
@@ -93,12 +93,12 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
         const options = intlPredefinedParametersOptions();
-        if (!enableDeveloperMode) {
+        if (!isDeveloperMode) {
             return options.filter((opt) => opt.id !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP);
         }
 
         return options;
-    }, [enableDeveloperMode]);
+    }, [isDeveloperMode]);
 
     const initialVoltageProfileMode = useMemo(() => {
         return intlInitialVoltageProfileMode();
@@ -118,9 +118,9 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
 
     const { setValue } = useFormContext();
 
-    // Adjust default predefined parameter depending on enableDeveloperMode
+    // Adjust default predefined parameter depending on isDeveloperMode
     useEffect(() => {
-        if (!enableDeveloperMode) {
+        if (!isDeveloperMode) {
             if (watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP) {
                 setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP, {
                     shouldDirty: false,
@@ -128,7 +128,7 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                 });
             }
         }
-    }, [enableDeveloperMode, watchPredefinedParams, setValue]);
+    }, [isDeveloperMode, watchPredefinedParams, setValue]);
 
     // fields definition
     const feederResult = (

@@ -33,6 +33,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     language?: GsLang;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
+    isDeveloperMode?: boolean;
 };
 
 const styles = {
@@ -92,6 +93,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     onCancel,
     children,
     language,
+    isDeveloperMode,
     confirmationMessageKey,
     unscrollableFullHeight = false,
     ...dialogProps
@@ -155,6 +157,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             validationSchema={formSchema}
             removeOptional={removeOptional}
             language={language}
+            isDeveloperMode={isDeveloperMode}
         >
             <Dialog
                 sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}

@@ -28,8 +28,8 @@ export function ShortCircuitParametersEditionDialog({
     activeDirectory,
     user,
     language,
-    enableDeveloperMode,
-}: Readonly<ParametersEditionDialogProps & { enableDeveloperMode: boolean }>) {
+    isDeveloperMode,
+}: Readonly<ParametersEditionDialogProps & { isDeveloperMode: boolean }>) {
     const parametersBackend = useParametersBackend(
         user,
         id,
@@ -71,7 +71,7 @@ export function ShortCircuitParametersEditionDialog({
         >
             <ShortCircuitParametersForm
                 shortCircuitMethods={shortCircuitMethods}
-                enableDeveloperMode={enableDeveloperMode}
+                isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm
