@@ -88,22 +88,10 @@ export const getSpecificShortCircuitParametersFormSchema = (
     return defaultSchema.concat(overrideSchema);
 };
 
-const parsepowerElectronicsMaterialsParamString = (paramString: string | string[]): PowerElectronicsMaterial[] => {
+const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerElectronicsMaterial[] => {
     // Attempt to parse the string into an array of PowerElectronicsMaterial objects
     try {
-        // try simple repairs then parse
-        let repaired = Array.isArray(paramString) ? paramString.join('') : paramString;
-        // ensure ":" between a quoted key and a number (e.g. `"u0" 97.0` -> `"u0": 97.0`)
-        repaired = repaired.replace(/"(\w+)"\s+(-?\d+(\.\d+)?)/g, '"$1": $2');
-        // ensure ":" between a quoted key and a quoted value (e.g. `"type" "HVDC"` -> `"type": "HVDC"`)
-        repaired = repaired.replace(/"(\w+)"\s+"([A-Za-z0-9_\- ]+)"/g, '"$1": "$2"');
-        // add comma between key/value pairs inside an object if missing
-        // e.g. `"alpha": 0.9 "u0": 97.0` -> `"alpha": 0.9, "u0": 97.0`
-        repaired = repaired.replace(/([0-9]+(?:\.\d+)?|"[^"]*")\s+(")/g, '$1, $2');
-        // add comma between adjacent objects if missing (`}{` -> `},{`)
-        repaired = repaired.replace(/}\s*{/g, '},{');
-
-        return JSON.parse(repaired);
+        return JSON.parse(paramString);
     } catch (error) {
         console.error('Error parsing power electronics materials parameter string:', error);
         return [];
@@ -147,9 +135,7 @@ export const getShortCircuitSpecificParametersValues = (
                 .map((sParam) => {
                     const { active, ...rest } = sParam; // remove 'active' property
                     return rest;
-                }),
-            null,
-            2
+                })
         );
 
         results = json;
