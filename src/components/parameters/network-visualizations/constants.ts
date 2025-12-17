@@ -4,14 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    MAP_BASEMAP_CARTO,
-    MAP_BASEMAP_CARTO_NOLABEL,
-    MAP_BASEMAP_ETALAB,
-    MAP_BASEMAP_MAPBOX,
-    NadPositionsGenerationMode,
-    SubstationLayout,
-} from './network-visualizations.types';
+import { NadPositionsGenerationMode, SubstationLayout } from './network-visualizations.types';
 
 // Defined in powsybl/network-viewer, duplicated here
 export enum LineFlowMode {
@@ -58,25 +51,6 @@ export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {
         id: LineFlowMode.FEEDERS,
         label: 'Feeders',
-    },
-];
-
-export const INTL_MAP_BASE_MAP_OPTIONS = [
-    {
-        id: MAP_BASEMAP_MAPBOX,
-        label: 'Mapbox',
-    },
-    {
-        id: MAP_BASEMAP_CARTO,
-        label: 'Carto',
-    },
-    {
-        id: MAP_BASEMAP_CARTO_NOLABEL,
-        label: 'CartoNoLabel',
-    },
-    {
-        id: MAP_BASEMAP_ETALAB,
-        label: 'Etalab',
     },
 ];
 

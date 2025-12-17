@@ -6,26 +6,48 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useEffect, useState } from 'react';
 import {
     INTL_LINE_FLOW_MODE_OPTIONS,
-    INTL_MAP_BASE_MAP_OPTIONS,
     LINE_FLOW_MODE,
+    LineFlowMode,
     MAP_BASE_MAP,
     MAP_MANUAL_REFRESH,
-    PARAM_LINE_FULL_PATH,
-    PARAM_MAP_BASEMAP,
     NetworkVisualizationTabValues as TabValues,
-    PARAM_LINE_PARALLEL_PATH,
     PARAM_LINE_FLOW_MODE,
+    PARAM_LINE_FULL_PATH,
+    PARAM_LINE_PARALLEL_PATH,
+    PARAM_MAP_BASEMAP,
     PARAM_MAP_MANUAL_REFRESH,
-    LineFlowMode,
 } from './constants';
 import { LineSeparator } from '../common';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput, SwitchInput } from '../../inputs';
+import { fetchStudyMetadata } from '../../../services';
+import { snackWithFallback } from '../../../utils';
+import { useSnackMessage } from '../../../hooks';
+
+const fetchMapBaseOption = async (): Promise<{ id: string; label: string }[] | undefined> => {
+    const studyMetadata = await fetchStudyMetadata();
+    return studyMetadata.baseMapOptions;
+};
 
 export function MapParameters() {
     // fields definition
+    const [baseMapOptions, setBaseMapOptions] = useState<{ id: string; label: string }[]>([]);
+    const { snackError } = useSnackMessage();
+    useEffect(() => {
+        fetchMapBaseOption()
+            .then((p) => {
+                if (p !== undefined) {
+                    setBaseMapOptions(p);
+                }
+            })
+            .catch((error) => {
+                snackWithFallback(snackError, error);
+            });
+    }, [setBaseMapOptions, snackError]);
+
     const lineSwitch = (name: string, label: string) => (
         <>
             <Grid item xs={8} sx={parametersStyles.parameterName}>
@@ -63,7 +85,7 @@ export function MapParameters() {
                     fullWidth
                     name={`${TabValues.MAP}.${PARAM_MAP_BASEMAP}`}
                     size="small"
-                    options={Object.values(INTL_MAP_BASE_MAP_OPTIONS)?.map((option) => option)}
+                    options={Object.values(baseMapOptions)?.map((option) => option)}
                 />
             </Grid>
         </>
