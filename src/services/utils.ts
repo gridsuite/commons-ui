@@ -8,6 +8,7 @@
 import { getUserToken } from '../redux/commonStore';
 import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
+import { CustomError } from '../utils/types/CustomError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -75,7 +76,12 @@ export const convertToCustomError = (textError: string) => {
             errorJson.businessErrorValues
         );
     }
-    return new Error(textError);
+    return new CustomError(
+        errorJson.detail,
+        errorJson.status,
+        errorJson.businessErrorCode,
+        errorJson.businessErrorValues
+    );
 };
 
 const handleError = (response: Response) => {
