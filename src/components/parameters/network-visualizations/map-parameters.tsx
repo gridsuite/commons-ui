@@ -6,6 +6,7 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useEffect, useState } from 'react';
 import {
     INTL_LINE_FLOW_MODE_OPTIONS,
     LINE_FLOW_MODE,
@@ -23,6 +24,8 @@ import { LineSeparator } from '../common';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput, SwitchInput } from '../../inputs';
 import { fetchStudyMetadata } from '../../../services';
+import { snackWithFallback } from '../../../utils';
+import { useSnackMessage } from '../../../hooks';
 
 const fetchMapBaseOption = async (): Promise<{ id: string; label: string }[] | undefined> => {
     const studyMetadata = await fetchStudyMetadata();
@@ -31,6 +34,20 @@ const fetchMapBaseOption = async (): Promise<{ id: string; label: string }[] | u
 
 export function MapParameters() {
     // fields definition
+    const [baseMapOptions, setBaseMapOptions] = useState<{ id: string; label: string }[]>([]);
+    const { snackError } = useSnackMessage();
+    useEffect(() => {
+        fetchMapBaseOption()
+            .then((p) => {
+                if (p !== undefined) {
+                    setBaseMapOptions(p);
+                }
+            })
+            .catch((error) => {
+                snackWithFallback(snackError, error);
+            });
+    }, [setBaseMapOptions, snackError]);
+
     const lineSwitch = (name: string, label: string) => (
         <>
             <Grid item xs={8} sx={parametersStyles.parameterName}>
@@ -68,7 +85,7 @@ export function MapParameters() {
                     fullWidth
                     name={`${TabValues.MAP}.${PARAM_MAP_BASEMAP}`}
                     size="small"
-                    options={Object.values(fetchMapBaseOption())?.map((option) => option)}
+                    options={Object.values(baseMapOptions)?.map((option) => option)}
                 />
             </Grid>
         </>
