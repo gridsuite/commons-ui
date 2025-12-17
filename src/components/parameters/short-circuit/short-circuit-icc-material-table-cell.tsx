@@ -16,10 +16,12 @@ export function ShortCircuitIccMaterialTableCell({
     formName,
     rowIndex,
     column,
+    inputsDisabled,
 }: Readonly<{
     formName: string;
     rowIndex: number;
     column: IccMaterialIColumnsDef;
+    inputsDisabled?: boolean;
 }>) {
     return (
         <TableCell sx={{ fontWeight: 'bold' }}>
@@ -31,7 +33,7 @@ export function ShortCircuitIccMaterialTableCell({
             )}
             {column.dataKey !== SHORT_CIRCUIT_ICC_MATERIAL_TYPE &&
                 column.dataKey !== SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE && (
-                    <FloatInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
+                    <FloatInput disabled={inputsDisabled} name={`${formName}[${rowIndex}].${column.dataKey}`} />
                 )}
         </TableCell>
     );

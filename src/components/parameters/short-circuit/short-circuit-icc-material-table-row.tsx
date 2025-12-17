@@ -5,7 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { TableRow } from '@mui/material';
-import { IccMaterialIColumnsDef } from './short-circuit-icc-material-table-columns-definition';
+import { useWatch } from 'react-hook-form';
+import {
+    IccMaterialIColumnsDef,
+    SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
+} from './short-circuit-icc-material-table-columns-definition';
 import { ShortCircuitIccMaterialTableCell } from './short-circuit-icc-material-table-cell';
 
 interface ShortCircuitIccMaterialTableRowProps {
@@ -19,6 +23,10 @@ export function ShortCircuitIccMaterialTableRow({
     columnsDefinition,
     index,
 }: Readonly<ShortCircuitIccMaterialTableRowProps>) {
+    const watchRowActive = useWatch({
+        name: `${formName}[${index}].${SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE}`,
+    });
+
     return (
         <TableRow>
             {columnsDefinition.map((column: IccMaterialIColumnsDef) => (
@@ -27,6 +35,7 @@ export function ShortCircuitIccMaterialTableRow({
                     formName={formName}
                     rowIndex={index}
                     column={column}
+                    inputsDisabled={!watchRowActive}
                 />
             ))}
         </TableRow>
