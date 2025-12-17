@@ -147,6 +147,18 @@ export const getShortCircuitSpecificParametersValues = (
     };
 };
 
+const formatElectronicsMaterialsParamString = (
+    defaultValues: PowerElectronicsMaterial[],
+    specificParamValue: string
+) => {
+    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] =
+        parsepowerElectronicsMaterialsParamString(specificParamValue);
+    return defaultValues.map((material) => {
+        const foundInParams = electronicsMaterialsArrayInParams.find((m) => m.type === material.type);
+        return foundInParams ? { ...foundInParams, active: true } : { ...material, active: false };
+    });
+};
+
 export const formatShortCircuitSpecificParameters = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
     specificParamsList: SpecificParametersValues
@@ -161,16 +173,10 @@ export const formatShortCircuitSpecificParameters = (
                 // special case
                 // if we have the Power Electronics Materials parameter, we need to set active accordingly
                 if (param.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS) {
-                    const defaultElectronicsMaterialsArray: PowerElectronicsMaterial[] =
-                        getDefaultShortCircuitSpecificParamsValues([param])?.[param.name];
-                    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] =
-                        parsepowerElectronicsMaterialsParamString(specificParamsList[param.name]);
-                    const result: PowerElectronicsMaterial[] = defaultElectronicsMaterialsArray.map((material) => {
-                        const foundInParams = electronicsMaterialsArrayInParams.find((m) => m.type === material.type);
-                        return foundInParams ? { ...foundInParams, active: true } : { ...material, active: false };
-                    });
-
-                    acc[param.name] = result;
+                    acc[param.name] = formatElectronicsMaterialsParamString(
+                        getDefaultShortCircuitSpecificParamsValues([param])?.[param.name],
+                        specificParamsList[param.name]
+                    );
                 } else if (param.type === ParameterType.BOOLEAN) {
                     acc[param.name] = specificParamsList[param.name] === 'true';
                 } else if (param.type === ParameterType.STRING_LIST) {
