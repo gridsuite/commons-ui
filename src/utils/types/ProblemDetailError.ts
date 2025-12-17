@@ -28,4 +28,3 @@ export class ProblemDetailError extends CustomError {
         this.traceId = traceId;
     }
 }
-
