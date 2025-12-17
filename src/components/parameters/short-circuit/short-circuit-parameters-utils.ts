@@ -21,6 +21,7 @@ import { ParameterType, type SpecificParameterInfos, type SpecificParametersValu
 
 import type { PowerElectronicsMaterial } from './short-circuit-parameters.type';
 import {
+    formatSpecificParameters,
     getAllSpecificParametersValues,
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
@@ -163,31 +164,24 @@ export const formatShortCircuitSpecificParameters = (
         return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider);
     }
 
-    return specificParametersDescriptionForProvider.reduce(
-        (acc: SpecificParametersValues, param: SpecificParameterInfos) => {
-            if (specificParamsList && Object.hasOwn(specificParamsList, param.name)) {
-                // special case
-                // if we have the Power Electronics Materials parameter, we need to set active accordingly
-                if (param.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS) {
-                    acc[param.name] = formatElectronicsMaterialsParamString(
-                        getDefaultShortCircuitSpecificParamsValues([param])?.[param.name],
-                        specificParamsList[param.name]
-                    );
-                } else if (param.type === ParameterType.BOOLEAN) {
-                    acc[param.name] = specificParamsList[param.name] === 'true';
-                } else if (param.type === ParameterType.STRING_LIST) {
-                    acc[param.name] =
-                        specificParamsList[param.name] === ''
-                            ? []
-                            : (specificParamsList[param.name] as string).split(',');
-                } else {
-                    acc[param.name] = specificParamsList[param.name];
-                }
-            } else {
-                acc[param.name] = getDefaultSpecificParamsValues([param])?.[param.name];
-            }
-            return acc;
-        },
-        {}
+    // reuse generic formatter for specific params
+    const formatted = formatSpecificParameters(specificParametersDescriptionForProvider, specificParamsList);
+
+    // handle special power-electronics-materials case by overriding the generic result
+    const powerParam = specificParametersDescriptionForProvider.find(
+        (p) => p.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
     );
+    if (powerParam) {
+        if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS)) {
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = formatElectronicsMaterialsParamString(
+                getDefaultShortCircuitSpecificParamsValues([powerParam])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS],
+                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] as string
+            );
+        } else {
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = getDefaultSpecificParamsValues([powerParam])?.[
+                SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
+            ];
+        }
+    }
+    return formatted;
 };
