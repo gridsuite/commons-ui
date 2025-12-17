@@ -16,6 +16,7 @@ import {
     InitialVoltage,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -30,13 +31,13 @@ import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } 
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
-import { getCommonShortCircuitParametersFormSchema, resetSpecificParameters } from './short-circuit-parameters-utils';
 import {
-    formatSpecificParameters,
-    getDefaultSpecificParamsValues,
-    getSpecificParametersFormSchema,
-    getAllSpecificParametersValues,
-} from '../common/utils';
+    formatShortCircuitSpecificParameters,
+    getCommonShortCircuitParametersFormSchema,
+    getDefaultShortCircuitSpecificParamsValues,
+    getShortCircuitSpecificParametersValues,
+    getSpecificShortCircuitParametersFormSchema,
+} from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
@@ -77,7 +78,9 @@ export const useShortCircuitParametersForm = ({
     }, [provider, specificParamsDescriptions]);
 
     const specificParametersDefaultValues = useMemo(() => {
-        return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
+        return {
+            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider),
+        };
     }, [specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
@@ -88,7 +91,7 @@ export const useShortCircuitParametersForm = ({
                     .oneOf(Object.values(PredefinedParameters))
                     .required(),
                 ...getCommonShortCircuitParametersFormSchema().fields,
-                ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
+                ...getSpecificShortCircuitParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
     }, [name, specificParametersDescriptionForProvider]);
@@ -131,13 +134,14 @@ export const useShortCircuitParametersForm = ({
                 dirty
             );
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
+
             setValue(
-                SPECIFIC_PARAMETERS,
-                resetSpecificParameters(specificParametersDefaultValues, predefinedParameter),
+                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
         },
-        [specificParametersDefaultValues, params?.commonParameters, setValue]
+        [params?.commonParameters, setValue]
     );
 
     const formatNewParams = useCallback(
@@ -167,7 +171,7 @@ export const useShortCircuitParametersForm = ({
                             : undefined,
                 },
                 specificParametersPerProvider: {
-                    [provider]: getAllSpecificParametersValues(formData, specificParametersDefaultValues),
+                    [provider]: getShortCircuitSpecificParametersValues(formData, specificParametersDefaultValues),
                 },
             };
         },
@@ -176,11 +180,11 @@ export const useShortCircuitParametersForm = ({
 
     const toShortCircuitFormValues = useCallback(
         (_params: ShortCircuitParametersInfos) => {
-            if (!provider) {
+            if (!provider || !_params) {
                 return {};
             }
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
-            return {
+            const values = {
                 [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
@@ -193,17 +197,20 @@ export const useShortCircuitParametersForm = ({
                     [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !_params.commonParameters.withNeutralPosition,
                 },
                 [SPECIFIC_PARAMETERS]: {
-                    ...formatSpecificParameters(
+                    ...formatShortCircuitSpecificParameters(
                         specificParametersDescriptionForProvider,
                         specificParamsListForCurrentProvider
                     ),
                 },
             };
+            return values;
         },
         [provider, specificParametersDescriptionForProvider]
     );
 
-    const onValidationError = useCallback((_errors: FieldErrors) => {}, []);
+    const onValidationError = useCallback((_errors: FieldErrors) => {
+        console.error('onValidationError: ', _errors);
+    }, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
