@@ -17,7 +17,7 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { ParameterType, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
+import { type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
 
 import type { PowerElectronicsMaterial } from './short-circuit-parameters.type';
 import {
