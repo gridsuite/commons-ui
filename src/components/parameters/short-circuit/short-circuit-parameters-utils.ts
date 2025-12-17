@@ -124,27 +124,23 @@ export const getShortCircuitSpecificParametersValues = (
     formData: Record<string, any>,
     _specificParametersValues: SpecificParametersValues
 ): SpecificParametersValues => {
-    let results: string = '';
     const powerElectronicsMaterialsParam: (PowerElectronicsMaterial & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
     if (powerElectronicsMaterialsParam) {
         // create pretty JSON
-        const json = JSON.stringify(
-            powerElectronicsMaterialsParam
-                .filter((sParam) => sParam.active) // keep only active ones
-                .map((sParam) => {
-                    const { active, ...rest } = sParam; // remove 'active' property
-                    return rest;
-                })
-        );
-
-        results = json;
+        return {
+            ...getAllSpecificParametersValues(formData, _specificParametersValues),
+            [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: JSON.stringify(
+                powerElectronicsMaterialsParam
+                    .filter((sParam) => sParam.active) // keep only active ones
+                    .map((sParam) => {
+                        const { active, ...rest } = sParam; // remove 'active' property
+                        return rest;
+                    })
+            ),
+        };
     }
-
-    return {
-        ...getAllSpecificParametersValues(formData, _specificParametersValues),
-        [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: results,
-    };
+    return getAllSpecificParametersValues(formData, _specificParametersValues);
 };
 
 const formatElectronicsMaterialsParamString = (
