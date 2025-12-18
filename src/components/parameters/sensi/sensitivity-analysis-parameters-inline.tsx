@@ -139,7 +139,7 @@ export function SensitivityAnalysisParametersInline({
                                     onClick={handleSubmit(sensitivityAnalysisMethods.onSaveInline)}
                                     variant="outlined"
                                     disabled={
-                                        sensitivityAnalysisMethods.launchLoader ||
+                                        sensitivityAnalysisMethods.isLoading ||
                                         sensitivityAnalysisMethods.isMaxResultsReached ||
                                         sensitivityAnalysisMethods.isMaxVariablesReached
                                     }

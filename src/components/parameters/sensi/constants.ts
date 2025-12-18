@@ -30,8 +30,4 @@ export const CONTAINER_NAME = 'containerName';
 
 export const MAX_RESULTS_COUNT = 500000;
 export const MAX_VARIABLES_COUNT = 5000;
-
-export interface FactorsCount {
-    resultCount: number;
-    variableCount: number;
-}
+export const DEFAULT_FACTOR_COUNT = { resultCount: 0, variableCount: 0 };

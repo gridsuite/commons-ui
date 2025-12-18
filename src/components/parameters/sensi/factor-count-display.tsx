@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useMemo } from 'react';
 import { Box, CircularProgress, SxProps, Theme } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
@@ -42,31 +41,38 @@ const renderLoadingState = () => {
     );
 };
 
-export const useFactorCountDisplay = (count: number, maxCount: number, messageId: string, launchLoader: boolean) => {
-    return useMemo(() => {
-        if (launchLoader) return renderLoadingState();
+interface FactorCountDisplayProps {
+    count: number;
+    maxCount: number;
+    messageId: string;
+    isLoading: boolean;
+}
 
-        const isOverMillion = count > 999_999;
-        const isOverLimit = count > maxCount;
-        const isZero = count === 0;
+export function FactorCountDisplay(props: FactorCountDisplayProps) {
+    const { count, maxCount, messageId, isLoading } = props;
 
-        const isAlert = isOverMillion || isOverLimit;
+    if (isLoading) return renderLoadingState();
 
-        let sx: SxProps<Theme> = styles.textInfo;
-        if (isAlert) {
-            sx = styles.textAlert;
-        } else if (isZero) {
-            sx = styles.textInitial;
-        }
+    const isOverMillion = count > 999_999;
+    const isOverLimit = count > maxCount;
+    const isZero = count === 0;
 
-        const displayCount = isOverMillion ? '999999' : count.toString();
-        const suffix = isOverMillion ? '+' : '';
+    const isAlert = isOverMillion || isOverLimit;
 
-        return (
-            <Box sx={sx}>
-                {isAlert && <ErrorOutlineIcon sx={styles.errorOutlineIcon} />}
-                <FormattedMessage id={messageId} values={{ count: displayCount, suffix }} />
-            </Box>
-        );
-    }, [count, maxCount, messageId, launchLoader]);
-};
+    let sx: SxProps<Theme> = styles.textInfo;
+    if (isAlert) {
+        sx = styles.textAlert;
+    } else if (isZero) {
+        sx = styles.textInitial;
+    }
+
+    const displayCount = isOverMillion ? '999999' : count.toString();
+    const suffix = isOverMillion ? '+' : '';
+
+    return (
+        <Box sx={sx}>
+            {isAlert && <ErrorOutlineIcon sx={styles.errorOutlineIcon} />}
+            <FormattedMessage id={messageId} values={{ count: displayCount, suffix }} />
+        </Box>
+    );
+}

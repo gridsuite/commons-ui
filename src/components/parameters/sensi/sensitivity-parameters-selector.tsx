@@ -23,8 +23,9 @@ import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
 import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
 import type { MuiStyles } from '../../../utils/styles';
-import { useFactorCountDisplay } from './use-factor-count-display';
-import { FactorsCount, MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
+import { FactorCountDisplay } from './factor-count-display';
+import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
+import { FactorsCount } from '../../../utils';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -60,7 +61,7 @@ const styles = {
 
 interface SensitivityParametersSelectorProps {
     onFormChanged: () => void;
-    launchLoader: boolean;
+    isLoading: boolean;
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
@@ -73,7 +74,7 @@ interface TabInfo {
 
 function SensitivityParametersSelector({
     onFormChanged,
-    launchLoader,
+    isLoading,
     factorsCount,
     isDeveloperMode,
     isStudyLinked,
@@ -133,20 +134,6 @@ function SensitivityParametersSelector({
         }
     }, [isDeveloperMode]);
 
-    const resultsCountDisplay = useFactorCountDisplay(
-        factorsCount.resultCount,
-        MAX_RESULTS_COUNT,
-        'sensitivityAnalysis.simulatedResults',
-        launchLoader
-    );
-
-    const variablesCountDisplay = useFactorCountDisplay(
-        factorsCount.variableCount,
-        MAX_VARIABLES_COUNT,
-        'sensitivityAnalysis.simulatedVariables',
-        launchLoader
-    );
-
     return (
         <Grid sx={{ width: '100%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
@@ -167,7 +154,12 @@ function SensitivityParametersSelector({
                 {isStudyLinked && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            {variablesCountDisplay}
+                            <FactorCountDisplay
+                                count={factorsCount.variableCount}
+                                maxCount={MAX_VARIABLES_COUNT}
+                                messageId="sensitivityAnalysis.simulatedVariables"
+                                isLoading={isLoading}
+                            />
                             <FormattedMessage id="sensitivityAnalysis.separator" />
                             <FormattedMessage
                                 id="sensitivityAnalysis.maximumFactorsCount"
@@ -177,7 +169,12 @@ function SensitivityParametersSelector({
                             />
                         </Box>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            {resultsCountDisplay}
+                            <FactorCountDisplay
+                                count={factorsCount.resultCount}
+                                maxCount={MAX_RESULTS_COUNT}
+                                messageId="sensitivityAnalysis.simulatedResults"
+                                isLoading={isLoading}
+                            />
                             <FormattedMessage id="sensitivityAnalysis.separator" />
                             <FormattedMessage
                                 id="sensitivityAnalysis.maximumFactorsCount"

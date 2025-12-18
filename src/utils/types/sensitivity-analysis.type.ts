@@ -80,6 +80,11 @@ export type SensitivityAnalysisFactorsCountParameters = {
     psts?: string[];
 };
 
+export interface FactorsCount {
+    resultCount: number;
+    variableCount: number;
+}
+
 // result types
 export type SelectorFilterOptions = {
     tabSelection: string;

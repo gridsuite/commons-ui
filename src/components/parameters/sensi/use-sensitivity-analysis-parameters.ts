@@ -12,6 +12,7 @@ import type { UUID } from 'node:crypto';
 import { ComputingType, PROVIDER } from '../common';
 import {
     ElementType,
+    FactorsCount,
     FieldConstants,
     SensitivityAnalysisParametersInfos,
     UseParametersBackendReturnProps,
@@ -31,9 +32,9 @@ import {
     CONTAINER_ID,
     CONTAINER_NAME,
     CONTINGENCIES,
+    DEFAULT_FACTOR_COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
-    FactorsCount,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
     HVDC_LINES,
@@ -72,7 +73,7 @@ export interface UseSensitivityAnalysisParametersReturn {
     onSaveDialog: (formData: Record<string, any>) => void;
     isMaxResultsReached: boolean;
     isMaxVariablesReached: boolean;
-    launchLoader: boolean;
+    isLoading: boolean;
     onFormChanged: () => void;
     emptyFormData: Record<string, unknown>;
     factorsCount: FactorsCount;
@@ -111,8 +112,8 @@ export const useSensitivityAnalysisParametersForm = ({
     const [providers, , , , , params, , updateParameters] = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
     const { snackError } = useSnackMessage();
-    const [factorsCount, setFactorsCount] = useState<FactorsCount>({ resultCount: 0, variableCount: 0 });
-    const [launchLoader, setLaunchLoader] = useState(false);
+    const [factorsCount, setFactorsCount] = useState<FactorsCount>(DEFAULT_FACTOR_COUNT);
+    const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
     const emptyFormData = useMemo(() => {
@@ -165,11 +166,11 @@ export const useSensitivityAnalysisParametersForm = ({
     }, []);
 
     const resetFactorsCount = useCallback(() => {
-        setLaunchLoader(false);
-        setFactorsCount({ resultCount: 0, variableCount: 0 });
+        setIsLoading(false);
+        setFactorsCount(DEFAULT_FACTOR_COUNT);
     }, []);
 
-    const getFactorsCount = useCallback(() => {
+    const updateFactorCount = useCallback(() => {
         if (!currentNodeUuid || !currentRootNetworkUuid) {
             return;
         }
@@ -219,7 +220,7 @@ export const useSensitivityAnalysisParametersForm = ({
             [PARAMETER_SENSI_NODES]: filteredNodes,
         };
 
-        setLaunchLoader(true);
+        setIsLoading(true);
         getSensitivityAnalysisFactorsCount(
             studyUuid,
             currentNodeUuid,
@@ -236,20 +237,20 @@ export const useSensitivityAnalysisParametersForm = ({
                             : 0,
                     });
                     const timeoutId = setTimeout(() => {
-                        setLaunchLoader(false);
+                        setIsLoading(false);
                     }, 500);
                     return () => clearTimeout(timeoutId);
                 });
             })
             .catch((error) => {
-                setLaunchLoader(false);
+                setIsLoading(false);
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
             });
     }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid, getValues, resetFactorsCount]);
 
     const onFormChanged = useCallback(() => {
-        getFactorsCount();
-    }, [getFactorsCount]);
+        updateFactorCount();
+    }, [updateFactorCount]);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
         (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
@@ -474,7 +475,7 @@ export const useSensitivityAnalysisParametersForm = ({
         onSaveDialog,
         isMaxResultsReached,
         isMaxVariablesReached,
-        launchLoader,
+        isLoading,
         onFormChanged,
         emptyFormData,
         factorsCount,
