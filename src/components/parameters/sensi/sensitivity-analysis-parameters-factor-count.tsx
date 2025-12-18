@@ -41,14 +41,14 @@ const renderLoadingState = () => {
     );
 };
 
-interface FactorCountDisplayProps {
+interface SensitivityAnalysisParametersFactorCountProps {
     count: number;
     maxCount: number;
     messageId: string;
     isLoading: boolean;
 }
 
-export function FactorCountDisplay(props: FactorCountDisplayProps) {
+export function SensitivityAnalysisParametersFactorCount(props: SensitivityAnalysisParametersFactorCountProps) {
     const { count, maxCount, messageId, isLoading } = props;
 
     if (isLoading) return renderLoadingState();

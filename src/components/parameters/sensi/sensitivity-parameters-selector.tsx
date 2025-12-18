@@ -23,7 +23,7 @@ import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
 import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
 import type { MuiStyles } from '../../../utils/styles';
-import { FactorCountDisplay } from './factor-count-display';
+import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
 
@@ -154,7 +154,7 @@ function SensitivityParametersSelector({
                 {isStudyLinked && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <FactorCountDisplay
+                            <SensitivityAnalysisParametersFactorCount
                                 count={factorsCount.variableCount}
                                 maxCount={MAX_VARIABLES_COUNT}
                                 messageId="sensitivityAnalysis.simulatedVariables"
@@ -169,7 +169,7 @@ function SensitivityParametersSelector({
                             />
                         </Box>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <FactorCountDisplay
+                            <SensitivityAnalysisParametersFactorCount
                                 count={factorsCount.resultCount}
                                 maxCount={MAX_RESULTS_COUNT}
                                 messageId="sensitivityAnalysis.simulatedResults"
