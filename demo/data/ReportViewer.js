@@ -87,7 +87,7 @@ const LOGS_JSON = {
                                 {
                                     reportKey: 'networkBalance',
                                     defaultMessage:
-                                        'Network CC${numNetworkCc} SC${numNetworkSc} balance: active generation=${activeGeneration} MW, active load=${activeLoad} MW, reactive generation=${reactiveGeneration} MVar, reactive load=${reactiveLoad} MVar',
+                                        'Network CC${numNetworkCc} SC${numNetworkSc} balance: active generation=${activeGeneration} MW, active load=${activeLoad} MW, reactive generation=${reactiveGeneration} Mvar, reactive load=${reactiveLoad} Mvar',
                                     values: {
                                         reactiveLoad: {
                                             value: 18.0,
