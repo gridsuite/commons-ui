@@ -381,10 +381,7 @@ export const hasVariables = (row: any): boolean => {
 };
 
 export const hasMonitoredEquipments = (row: any): boolean => {
-    return (
-        row[MONITORED_BRANCHES]?.length > 0 ||
-        row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0
-    );
+    return row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
 };
 
 export const formSchema = yup

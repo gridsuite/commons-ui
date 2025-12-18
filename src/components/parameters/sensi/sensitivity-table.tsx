@@ -21,11 +21,9 @@ import { useIntl } from 'react-intl';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
-import {
-    ACTIVATED,
-} from './constants';
+import { ACTIVATED } from './constants';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
-import { hasMonitoredEquipments, hasVariables } from "./utils";
+import { hasMonitoredEquipments, hasVariables } from './utils';
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -70,12 +68,11 @@ export function SensitivityTable({
             const isValid = hasMonitored && hasVars;
             const wasValid = hasMonitoredEquipments(currentRow) && hasVariables(currentRow);
 
-
             if ((wasValid && (hasMonitored || hasVars)) || (isValid && (source === 'switch' || row[ACTIVATED]))) {
                 onFormChanged();
             }
         },
-        [onFormChanged, getValues]
+        [onFormChanged, getValues, currentRows]
     );
 
     const handleDeleteButton = useCallback(
