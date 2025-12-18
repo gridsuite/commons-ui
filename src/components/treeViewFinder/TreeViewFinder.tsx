@@ -19,7 +19,7 @@ import {
     styled,
     Typography,
 } from '@mui/material';
-import { TreeItem, SimpleTreeView, SimpleTreeViewClasses } from '@mui/x-tree-view';
+import { SimpleTreeView, SimpleTreeViewClasses, TreeItem } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
@@ -28,7 +28,8 @@ import {
 import type { UUID } from 'node:crypto';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
-import { ElementType } from '../../utils';
+import { ElementAttributes, ElementType } from '../../utils';
+import { doesNodeHasChildren } from './TreeViewUtils';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -394,7 +395,8 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         }
         let childrenNodes = null;
         const showExpandIcon = showChevron(node);
-        if (Array.isArray(node.children) && node.children.length > 0) {
+        if (doesNodeHasChildren(node as unknown as ElementAttributes)) {
+            // @ts-ignore checked above
             childrenNodes = node.children.toSorted(sortMethod).map(renderTree);
         } else if (showExpandIcon) {
             childrenNodes = [<span key="placeholder" style={{ display: 'none' }} />]; // simulate placeholder so expand icon is shown
