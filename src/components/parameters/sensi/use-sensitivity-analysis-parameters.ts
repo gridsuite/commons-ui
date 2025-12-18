@@ -227,20 +227,12 @@ export const useSensitivityAnalysisParametersForm = ({
             currentRootNetworkUuid,
             formatNewParams(filteredFormValues)
         )
-            .then((response) => {
-                response.text().then((value: string) => {
-                    const parsed = JSON.parse(value);
-                    setFactorsCount({
-                        resultCount: !Number.isNaN(Number(parsed.resultCount)) ? parseInt(parsed.resultCount, 10) : 0,
-                        variableCount: !Number.isNaN(Number(parsed.variableCount))
-                            ? parseInt(parsed.variableCount, 10)
-                            : 0,
-                    });
-                    const timeoutId = setTimeout(() => {
-                        setIsLoading(false);
-                    }, 500);
-                    return () => clearTimeout(timeoutId);
-                });
+            .then((factorsCountResponse) => {
+                setFactorsCount(factorsCountResponse);
+                const timeoutId = setTimeout(() => {
+                    setIsLoading(false);
+                }, 500);
+                return () => clearTimeout(timeoutId);
             })
             .catch((error) => {
                 setIsLoading(false);

@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText } from './utils';
 import { safeEncodeURIComponent } from './security-analysis';
-import { SensitivityAnalysisParametersInfos } from '../utils';
+import { FactorsCount, SensitivityAnalysisParametersInfos } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 
 const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
@@ -71,11 +71,11 @@ export function getSensitivityAnalysisFactorsCount(
     currentNodeUuid: UUID,
     currentRootNetworkUuid: UUID,
     newParams: SensitivityAnalysisParametersInfos
-) {
+): Promise<FactorsCount> {
     console.info('get sensitivity analysis parameters computing count');
     const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid)}/sensitivity-analysis/factor-count`;
     console.debug(url);
-    return backendFetch(url, {
+    return backendFetchJson(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
