@@ -5,8 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { ProblemDetailError, formatMessageValues } from './types/ProblemDetailError';
+import { ProblemDetailError } from './types/ProblemDetailError';
 import { NetworkTimeoutError } from './types/NetworkTimeoutError';
+
+import { formatMessageValues } from './types';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
