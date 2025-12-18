@@ -72,14 +72,6 @@ export interface SensitivityAnalysisParametersInfos {
     sensitivityNodes?: SensitivityNodes[];
 }
 
-export type SensitivityAnalysisFactorsCountParameters = {
-    injections?: string[];
-    monitoredBranches?: string[];
-    contingencies?: string[];
-    hvdcs?: string[];
-    psts?: string[];
-};
-
 export interface FactorsCount {
     resultCount: number;
     variableCount: number;

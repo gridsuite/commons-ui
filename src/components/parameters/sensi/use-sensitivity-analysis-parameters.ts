@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -24,6 +24,8 @@ import {
     getSensiInjectionsSetformatNewParams,
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
+    hasMonitoredEquipments,
+    hasVariables,
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
@@ -177,21 +179,8 @@ export const useSensitivityAnalysisParametersForm = ({
 
         const formValues = getValues();
 
-        const filterEntries = (entries: any[] | undefined) => {
-            if (!entries) return [];
-            return entries
-                .filter((entry) => entry[ACTIVATED])
-                .filter(
-                    (entry) => entry[MONITORED_BRANCHES]?.length > 0 || entry[SUPERVISED_VOLTAGE_LEVELS]?.length > 0
-                )
-                .filter(
-                    (entry) =>
-                        entry[INJECTIONS]?.length > 0 ||
-                        entry[PSTS]?.length > 0 ||
-                        entry[HVDC_LINES]?.length > 0 ||
-                        entry[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0
-                );
-        };
+        const filterEntries = (entries?: FieldValues[]) =>
+            (entries ?? []).filter((entry) => entry[ACTIVATED] && hasMonitoredEquipments(entry) && hasVariables(entry));
 
         const filteredInjectionsSet = filterEntries(formValues[PARAMETER_SENSI_INJECTIONS_SET]);
         const filteredInjection = filterEntries(formValues[PARAMETER_SENSI_INJECTION]);
