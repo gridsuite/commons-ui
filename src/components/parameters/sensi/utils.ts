@@ -371,6 +371,22 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
     };
 };
 
+export const hasVariables = (row: any): boolean => {
+    return (
+        row[INJECTIONS]?.length > 0 ||
+        row[HVDC_LINES]?.length > 0 ||
+        row[PSTS]?.length > 0 ||
+        row[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0
+    );
+};
+
+export const hasMonitoredEquipments = (row: any): boolean => {
+    return (
+        row[MONITORED_BRANCHES]?.length > 0 ||
+        row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0
+    );
+};
+
 export const formSchema = yup
     .object()
     .shape({

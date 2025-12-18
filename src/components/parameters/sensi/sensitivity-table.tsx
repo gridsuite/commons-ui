@@ -23,14 +23,9 @@ import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
 import {
     ACTIVATED,
-    EQUIPMENTS_IN_VOLTAGE_REGULATION,
-    HVDC_LINES,
-    INJECTIONS,
-    MONITORED_BRANCHES,
-    PSTS,
-    SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
+import { hasMonitoredEquipments, hasVariables } from "./utils";
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -66,16 +61,17 @@ export function SensitivityTable({
 
     const handleRowChanged = useCallback(
         (providedArrayFormName: string, index: number, source: string) => {
+            const currentRow = currentRows[index];
             const row = getValues(providedArrayFormName)[index];
-            const hasMonitoredEquipments =
-                row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
-            const hasVariables =
-                row[INJECTIONS]?.length > 0 ||
-                row[HVDC_LINES]?.length > 0 ||
-                row[PSTS]?.length > 0 ||
-                row[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0;
 
-            if (hasMonitoredEquipments && hasVariables && (source === 'switch' || row[ACTIVATED])) {
+            const hasMonitored = hasMonitoredEquipments(row);
+            const hasVars = hasVariables(row);
+
+            const isValid = hasMonitored && hasVars;
+            const wasValid = hasMonitoredEquipments(currentRow) && hasVariables(currentRow);
+
+
+            if ((wasValid && (hasMonitored || hasVars)) || (isValid && (source === 'switch' || row[ACTIVATED]))) {
                 onFormChanged();
             }
         },
