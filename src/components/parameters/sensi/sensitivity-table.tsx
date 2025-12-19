@@ -16,14 +16,14 @@ import {
     IconButton,
 } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
-import { useCallback } from 'react';
+import { useCallback, useState} from 'react';
 import { useIntl } from 'react-intl';
-import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import {FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
 import { ACTIVATED } from './constants';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
-import { hasMonitoredEquipments, hasVariables } from './utils';
+import {filterRows} from './utils';
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -49,6 +49,7 @@ export function SensitivityTable({
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;
+    const [ completeRowCount, setCompleteRowCount ] = useState(0);
 
     const handleAddRowsButton = useCallback(() => {
         if (currentRows.length >= MAX_ROWS_NUMBER) {
@@ -57,22 +58,18 @@ export function SensitivityTable({
         append(createRows(1));
     }, [append, createRows, currentRows.length]);
 
-    const handleRowChanged = useCallback(
-        (providedArrayFormName: string, index: number, source: string) => {
-            const currentRow = currentRows[index];
-            const row = getValues(providedArrayFormName)[index];
+    const handleRowChanged = useCallback(() => {
+            const rows = getValues(arrayFormName);
+            const newCount = filterRows(rows).length;
 
-            const hasMonitored = hasMonitoredEquipments(row);
-            const hasVars = hasVariables(row);
-
-            const isValid = hasMonitored && hasVars;
-            const wasValid = hasMonitoredEquipments(currentRow) && hasVariables(currentRow);
-
-            if ((wasValid && (hasMonitored || hasVars)) || (isValid && (source === 'switch' || row[ACTIVATED]))) {
-                onFormChanged();
-            }
-        },
-        [onFormChanged, getValues, currentRows]
+            setCompleteRowCount((prevCount) => {
+                if (prevCount !== newCount) {
+                    onFormChanged();
+                }
+                return newCount;
+            });
+            },
+        [onFormChanged, getValues]
     );
 
     const handleDeleteButton = useCallback(

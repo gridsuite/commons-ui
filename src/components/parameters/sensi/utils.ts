@@ -33,6 +33,7 @@ import { PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
+import {FieldValues} from "react-hook-form";
 
 const getMonitoredBranchesSchema = () => {
     return {
@@ -371,7 +372,7 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
     };
 };
 
-export const hasVariables = (row: any): boolean => {
+const hasVariables = (row: any): boolean => {
     return (
         row[INJECTIONS]?.length > 0 ||
         row[HVDC_LINES]?.length > 0 ||
@@ -380,9 +381,13 @@ export const hasVariables = (row: any): boolean => {
     );
 };
 
-export const hasMonitoredEquipments = (row: any): boolean => {
+const hasMonitoredEquipments = (row: any): boolean => {
     return row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
 };
+
+export const filterRows = (entries?: FieldValues[]) =>
+    (entries ?? []).filter((entry) => entry[ACTIVATED] && hasMonitoredEquipments(entry) && hasVariables(entry));
+
 
 export const formSchema = yup
     .object()

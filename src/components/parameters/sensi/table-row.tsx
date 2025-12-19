@@ -18,7 +18,7 @@ interface TableRowComponentProps {
     index: number;
     handleDeleteButton: (index: number) => void;
     disableDelete: boolean;
-    handleRowChanged: (a: string, b: number, c: string) => void;
+    handleRowChanged: () => void;
 }
 
 export function TableRowComponent({
@@ -36,14 +36,10 @@ export function TableRowComponent({
         return setIsHover(enter);
     }
 
-    const handleCellChanged = (source: string) => {
-        handleRowChanged(arrayFormName, index, source);
-    };
-
     return (
         <TableRow onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
             {columnsDefinition.map((column: IColumnsDef) =>
-                EditableTableCell(arrayFormName, index, column, handleCellChanged)
+                EditableTableCell(arrayFormName, index, column, handleRowChanged)
             )}
             {!disableDelete && (
                 <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
