@@ -269,15 +269,19 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                     <Grid container>
                         <GridItem size={12}>{onlyStartedGenerators}</GridItem>
                     </Grid>
-                    <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
-                    <Grid container>
-                        <GridItem size={12}>{modelPowerElectronics}</GridItem>
-                    </Grid>
-                    <ShortCircuitIccMaterialTable
-                        formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                        tableHeight={300}
-                        columnsDefinition={columnsDef}
-                    />
+                    {isDeveloperMode && (
+                        <>
+                            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
+                            <Grid container>
+                                <GridItem size={12}>{modelPowerElectronics}</GridItem>
+                            </Grid>
+                            <ShortCircuitIccMaterialTable
+                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
+                                tableHeight={300}
+                                columnsDefinition={columnsDef}
+                            />
+                        </>
+                    )}
                 </>
             )}
         </Grid>
