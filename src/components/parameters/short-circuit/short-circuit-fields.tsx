@@ -100,13 +100,8 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
 
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
-        const options = intlPredefinedParametersOptions();
-        if (!isDeveloperMode) {
-            return options.filter((opt) => opt.id !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP);
-        }
-
-        return options;
-    }, [isDeveloperMode]);
+        return intlPredefinedParametersOptions();
+    }, []);
 
     const initialVoltageProfileMode = useMemo(() => {
         return intlInitialVoltageProfileMode();
@@ -125,18 +120,6 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
     };
 
     const { setValue } = useFormContext();
-
-    // Adjust default predefined parameter depending on isDeveloperMode
-    useEffect(() => {
-        if (!isDeveloperMode) {
-            if (watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP) {
-                setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP, {
-                    shouldDirty: false,
-                    shouldValidate: true,
-                });
-            }
-        }
-    }, [isDeveloperMode, watchPredefinedParams, setValue]);
 
     // fields definition
     const feederResult = (
