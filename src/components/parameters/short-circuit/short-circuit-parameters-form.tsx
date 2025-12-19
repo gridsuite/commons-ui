@@ -16,12 +16,14 @@ interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
+    isDeveloperMode: boolean;
 }
 
 export function ShortCircuitParametersForm({
     shortCircuitMethods,
     renderTitleFields,
     renderActions,
+    isDeveloperMode,
 }: Readonly<ShortCircuitParametersFormProps>) {
     const { formMethods, formSchema, paramsLoaded, resetAll } = shortCircuitMethods;
 
@@ -40,7 +42,7 @@ export function ShortCircuitParametersForm({
                 </Grid>
                 {paramsLoaded ? (
                     <Grid sx={parametersStyles.scrollableGrid}>
-                        <ShortCircuitFields resetAll={resetAll} />
+                        <ShortCircuitFields isDeveloperMode={isDeveloperMode} resetAll={resetAll} />
                     </Grid>
                 ) : (
                     <LinearProgress />
