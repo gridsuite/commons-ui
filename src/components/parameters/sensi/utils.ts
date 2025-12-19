@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import {
     ACTIVATED,
@@ -33,7 +34,6 @@ import { PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
-import {FieldValues} from "react-hook-form";
 
 const getMonitoredBranchesSchema = () => {
     return {
@@ -387,7 +387,6 @@ const hasMonitoredEquipments = (row: any): boolean => {
 
 export const filterRows = (entries?: FieldValues[]) =>
     (entries ?? []).filter((entry) => entry[ACTIVATED] && hasMonitoredEquipments(entry) && hasVariables(entry));
-
 
 export const formSchema = yup
     .object()

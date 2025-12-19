@@ -16,14 +16,14 @@ import {
     IconButton,
 } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
-import { useCallback, useState} from 'react';
+import { useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
-import {FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
 import { ACTIVATED } from './constants';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
-import {filterRows} from './utils';
+import { filterRows } from './utils';
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -49,7 +49,7 @@ export function SensitivityTable({
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;
-    const [ completeRowCount, setCompleteRowCount ] = useState(0);
+    const filteredRowCountRef = useRef(0);
 
     const handleAddRowsButton = useCallback(() => {
         if (currentRows.length >= MAX_ROWS_NUMBER) {
@@ -59,18 +59,14 @@ export function SensitivityTable({
     }, [append, createRows, currentRows.length]);
 
     const handleRowChanged = useCallback(() => {
-            const rows = getValues(arrayFormName);
-            const newCount = filterRows(rows).length;
+        const rows = getValues(arrayFormName);
+        const newCount = filterRows(rows).length;
 
-            setCompleteRowCount((prevCount) => {
-                if (prevCount !== newCount) {
-                    onFormChanged();
-                }
-                return newCount;
-            });
-            },
-        [onFormChanged, getValues]
-    );
+        if (filteredRowCountRef.current !== newCount) {
+            filteredRowCountRef.current = newCount;
+            onFormChanged();
+        }
+    }, [arrayFormName, onFormChanged, getValues]);
 
     const handleDeleteButton = useCallback(
         (index: number) => {

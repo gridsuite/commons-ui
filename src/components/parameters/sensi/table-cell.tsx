@@ -8,12 +8,7 @@
 import { TableCell } from '@mui/material';
 import { DirectoryItemsInput, FloatInput, MuiSelectInput, SwitchInput, TextInput } from '../../inputs';
 
-function EditableTableCell(
-    arrayFormName: string,
-    rowIndex: number,
-    column: any,
-    onRowChanged: () => void
-) {
+function EditableTableCell(arrayFormName: string, rowIndex: number, column: any, onRowChanged: () => void) {
     return (
         <TableCell
             key={column.dataKey}
