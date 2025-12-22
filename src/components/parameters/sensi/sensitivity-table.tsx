@@ -22,7 +22,7 @@ import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
-import { hasMonitoredEquipments, hasVariables, isActivated, isValidRow } from './utils';
+import { hasMonitoredEquipments, hasVariables, isActivatedSensiParameterRow, isValidSensiParameterRow } from './utils';
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -60,7 +60,10 @@ export function SensitivityTable({
         (providedArrayFormName: string, index: number, source: string) => {
             const row = getValues(providedArrayFormName)[index];
             if (source === 'directory') {
-                if (isValidRow(row) || (isActivated(row) && (!hasMonitoredEquipments(row) || !hasVariables(row)))) {
+                if (
+                    isValidSensiParameterRow(row) ||
+                    (isActivatedSensiParameterRow(row) && (!hasMonitoredEquipments(row) || !hasVariables(row)))
+                ) {
                     onFormChanged();
                 }
             }
@@ -77,7 +80,7 @@ export function SensitivityTable({
             const currentRowsValues = getValues(arrayFormName);
             if (index >= 0 && index < currentRowsValues.length) {
                 remove(index);
-                if (isValidRow(currentRowsValues[index])) {
+                if (isValidSensiParameterRow(currentRowsValues[index])) {
                     onFormChanged();
                 }
             }

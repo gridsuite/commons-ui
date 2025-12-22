@@ -385,15 +385,16 @@ export const hasMonitoredEquipments = (row: any): boolean => {
     return row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
 };
 
-export const isActivated = (entry: FieldValues) => {
+export const isActivatedSensiParameterRow = (entry: FieldValues) => {
     return entry[ACTIVATED];
 };
 
-export const isValidRow = (entry: FieldValues) => {
-    return isActivated(entry) && hasMonitoredEquipments(entry) && hasVariables(entry);
+export const isValidSensiParameterRow = (entry: FieldValues) => {
+    return isActivatedSensiParameterRow(entry) && hasMonitoredEquipments(entry) && hasVariables(entry);
 };
 
-export const filterRows = (entries?: FieldValues[]) => (entries ?? []).filter((entry) => isValidRow(entry));
+export const filterSensiParameterRows = (entries?: FieldValues[]) =>
+    (entries ?? []).filter((entry) => isValidSensiParameterRow(entry));
 
 export const formSchema = yup
     .object()

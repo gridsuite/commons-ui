@@ -24,7 +24,7 @@ import {
     getSensiInjectionsSetformatNewParams,
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
-    filterRows,
+    filterSensiParameterRows,
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
@@ -178,11 +178,11 @@ export const useSensitivityAnalysisParametersForm = ({
 
         const formValues = getValues();
 
-        const filteredInjectionsSet = filterRows(formValues[PARAMETER_SENSI_INJECTIONS_SET]);
-        const filteredInjection = filterRows(formValues[PARAMETER_SENSI_INJECTION]);
-        const filteredHvdc = filterRows(formValues[PARAMETER_SENSI_HVDC]);
-        const filteredPst = filterRows(formValues[PARAMETER_SENSI_PST]);
-        const filteredNodes = filterRows(formValues[PARAMETER_SENSI_NODES]);
+        const filteredInjectionsSet = filterSensiParameterRows(formValues[PARAMETER_SENSI_INJECTIONS_SET]);
+        const filteredInjection = filterSensiParameterRows(formValues[PARAMETER_SENSI_INJECTION]);
+        const filteredHvdc = filterSensiParameterRows(formValues[PARAMETER_SENSI_HVDC]);
+        const filteredPst = filterSensiParameterRows(formValues[PARAMETER_SENSI_PST]);
+        const filteredNodes = filterSensiParameterRows(formValues[PARAMETER_SENSI_NODES]);
 
         const hasAnyEntries =
             filteredInjectionsSet.length > 0 ||
