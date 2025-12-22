@@ -7,6 +7,7 @@
 
 import { Box, FormHelperText } from '@mui/material';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
+import { mergeSx } from '../../../utils';
 
 export interface OverflowableChipWithHelperTextProps extends OverflowableChipProps {
     helperText?: string;
@@ -14,12 +15,21 @@ export interface OverflowableChipWithHelperTextProps extends OverflowableChipPro
 
 export function OverflowableChipWithHelperText({
     helperText,
+    boxSx,
     ...otherProps
 }: Readonly<OverflowableChipWithHelperTextProps>) {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'left', flexDirection: 'column' }}>
-            <OverflowableChip {...otherProps} />
-            {helperText && <FormHelperText sx={{ fontSize: 'x-small' }}>{helperText}</FormHelperText>}
+        <Box
+            display="flex"
+            alignItems="left"
+            flexDirection="column"
+            sx={mergeSx({ cursor: 'default' }, boxSx)}
+            onClick={(e) => e.stopPropagation()}
+        >
+            <OverflowableChip boxSx={{ paddingBottom: '2px' }} {...otherProps} />
+            {helperText && (
+                <FormHelperText sx={{ fontSize: 'x-small', margin: 0, marginLeft: 2 }}>{helperText}</FormHelperText>
+            )}
         </Box>
     );
 }

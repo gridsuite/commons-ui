@@ -10,6 +10,7 @@ import { Grid } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { FormattedMessage } from 'react-intl';
 import {
     InitialVoltage,
     intlInitialVoltageProfileMode,
@@ -18,6 +19,8 @@ import {
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
+    SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -31,10 +34,12 @@ import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
+import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
+import { COLUMNS_DEFINITIONS_ICC_MATERIALS } from './short-circuit-icc-material-table-columns-definition';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }
 
 export enum Status {
@@ -42,7 +47,13 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
+const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
+    ...col,
+    label: <FormattedMessage id={col.label as string} />,
+    tooltip: <FormattedMessage id={col.tooltip as string} />,
+}));
+
+export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
@@ -70,24 +81,27 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
         () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
         [watchSpecificParameters]
     );
+    // Courcirc specific parameters
+    const watchOnlyStartedGenerators = useWatch({
+        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+    });
 
     const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
-        return !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition;
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition]);
+        return (
+            !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition && watchOnlyStartedGenerators
+        );
+    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
 
     const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
-        return !watchLoads && !watchShuntCompensators && watchVSC && !watchNeutralPosition;
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition]);
+        return (
+            !watchLoads && !watchShuntCompensators && watchVSC && !watchNeutralPosition && !watchOnlyStartedGenerators
+        );
+    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
 
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
-        const options = intlPredefinedParametersOptions();
-        if (!enableDeveloperMode) {
-            return options.filter((opt) => opt.id !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP);
-        }
-
-        return options;
-    }, [enableDeveloperMode]);
+        return intlPredefinedParametersOptions();
+    }, []);
 
     const initialVoltageProfileMode = useMemo(() => {
         return intlInitialVoltageProfileMode();
@@ -106,18 +120,6 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
     };
 
     const { setValue } = useFormContext();
-
-    // Adjust default predefined parameter depending on enableDeveloperMode
-    useEffect(() => {
-        if (!enableDeveloperMode) {
-            if (watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP) {
-                setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP, {
-                    shouldDirty: false,
-                    shouldValidate: true,
-                });
-            }
-        }
-    }, [enableDeveloperMode, watchPredefinedParams, setValue]);
 
     // fields definition
     const feederResult = (
@@ -170,6 +172,20 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
         <RadioInput
             name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
             options={Object.values(onlyStartedGeneratorsOptions)}
+            formProps={{
+                onChange: (_event, value) => {
+                    setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`, value === 'true', {
+                        shouldDirty: true,
+                    });
+                },
+            }}
+        />
+    );
+
+    const modelPowerElectronics = (
+        <CheckboxInput
+            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`}
+            label="ShortCircuitModelPowerElectronics"
         />
     );
 
@@ -236,6 +252,19 @@ export function ShortCircuitFields({ resetAll, enableDeveloperMode = true }: Rea
                     <Grid container>
                         <GridItem size={12}>{onlyStartedGenerators}</GridItem>
                     </Grid>
+                    {isDeveloperMode && (
+                        <>
+                            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
+                            <Grid container>
+                                <GridItem size={12}>{modelPowerElectronics}</GridItem>
+                            </Grid>
+                            <ShortCircuitIccMaterialTable
+                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
+                                tableHeight={300}
+                                columnsDefinition={columnsDef}
+                            />
+                        </>
+                    )}
                 </>
             )}
         </Grid>

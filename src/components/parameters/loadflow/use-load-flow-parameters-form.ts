@@ -7,7 +7,16 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    Dispatch,
+    SetStateAction,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useEffectEvent,
+    useMemo,
+    useState,
+} from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import {
@@ -62,7 +71,7 @@ export interface UseLoadFlowParametersFormReturn {
 
 export const useLoadFlowParametersForm = (
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>,
-    enableDeveloperMode: boolean,
+    isDeveloperMode: boolean,
     parametersUuid: UUID | null,
     name: string | null,
     description: string | null
@@ -128,7 +137,7 @@ export const useLoadFlowParametersForm = (
     });
 
     const { watch, reset } = formMethods;
-    const watchProvider = watch('provider');
+    const watchProvider = watch(PROVIDER);
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -201,12 +210,12 @@ export const useLoadFlowParametersForm = (
     // TODO: remove this when DynaFlow will be available not only in developer mode
     const formattedProviders = useMemo(() => {
         return Object.entries(providers)
-            .filter(([key]) => !key.includes('DynaFlow') || enableDeveloperMode)
+            .filter(([key]) => !key.includes('DynaFlow') || isDeveloperMode)
             .map(([key, value]) => ({
                 id: key,
                 label: value,
             }));
-    }, [providers, enableDeveloperMode]);
+    }, [providers, isDeveloperMode]);
 
     const onValidationError = useCallback(
         (errors: FieldErrors) => {
@@ -251,12 +260,16 @@ export const useLoadFlowParametersForm = (
         [parametersUuid, formatNewParams, snackError]
     );
 
+    const resetForm = useEffectEvent((_params: LoadFlowParametersInfos) => {
+        reset(toLoadFlowFormValues(_params));
+    });
+
     useEffect(() => {
         if (!params) {
             return;
         }
-        reset(toLoadFlowFormValues(params));
-    }, [paramsLoaded, params, reset, specificParamsDescriptions, toLoadFlowFormValues]);
+        resetForm(params);
+    }, [paramsLoaded, params]);
 
     useEffect(() => {
         if (watchProvider && watchProvider !== currentProvider) {

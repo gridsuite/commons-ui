@@ -5,7 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { CustomError, formatMessageValues } from './types/CustomError';
+import { ProblemDetailError } from './types/ProblemDetailError';
+import { NetworkTimeoutError } from './types/NetworkTimeoutError';
+
+import { formatMessageValues } from './types';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
@@ -22,12 +25,32 @@ export function snackWithFallback(
     error: unknown,
     headerInputs?: HeaderSnackInputs
 ) {
-    if (error instanceof CustomError && error.businessErrorCode) {
+    if (error instanceof NetworkTimeoutError) {
         snackError({
-            messageId: error.businessErrorCode,
-            messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
+            messageId: error.message,
             ...headerInputs,
         });
+        return;
+    }
+    if (error instanceof ProblemDetailError) {
+        if (error.businessErrorCode) {
+            snackError({
+                messageId: error.businessErrorCode,
+                messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
+                ...headerInputs,
+            });
+        } else {
+            snackError({
+                messageId: 'errors.technicalError',
+                messageValues: {
+                    message: error.message,
+                    serverName: error.serverName,
+                    timestamp: error.timestamp.toLocaleString(), // It would require refactoring to adapt with GS language so we keep it like that for now
+                    traceId: error.traceId,
+                },
+                ...headerInputs,
+            });
+        }
     } else {
         catchErrorHandler(error, (message) => {
             snackError({

@@ -29,7 +29,7 @@ export function SecurityAnalysisParametersDialog({
     activeDirectory,
     language,
     user,
-    enableDeveloperMode = false,
+    isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
         user,
@@ -71,7 +71,7 @@ export function SecurityAnalysisParametersDialog({
         >
             <SecurityAnalysisParametersForm
                 securityAnalysisMethods={securityAnalysisMethods}
-                enableDeveloperMode={enableDeveloperMode}
+                isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm

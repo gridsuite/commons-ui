@@ -5,8 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const errorsEn = {
-    'errors.network.timeout': 'The request timed out. Please try again.',
-    'errors.technicalError':
-        'Server error: {message}\n (server: {serverName}, timestamp: {timestamp}, trace ID: {traceId})',
-};
+/** Custom error type thrown when AbortSignal.timeout triggers. */
+export class NetworkTimeoutError extends Error {
+    constructor(messageKey: string = 'errors.network.timeout') {
+        super(messageKey);
+        this.name = 'NetworkTimeoutError';
+    }
+}

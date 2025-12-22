@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 export class CustomError extends Error {
     status: number;
 
@@ -23,7 +24,6 @@ export class CustomError extends Error {
         this.businessErrorValues = businessErrorValues;
     }
 }
-
 export function formatMessageValues(properties: Record<string, unknown>): Record<string, string> {
     return Object.fromEntries(
         Object.entries(properties).map(([key, value]) => [

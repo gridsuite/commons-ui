@@ -26,7 +26,13 @@ export function SelectInput(props: SelectInputProps) {
             return null;
         }
         if (typeof value === 'string') {
-            return options.find((option) => typeof option !== 'string' && option?.id === value) || null;
+            return (
+                options.find(
+                    (option) =>
+                        (typeof option !== 'string' && option?.id === value) ||
+                        (typeof option === 'string' && option === value)
+                ) || null
+            );
         }
         return options.find((option) => typeof option !== 'string' && option?.id === value.id) || null;
     };

@@ -24,6 +24,8 @@ import {
     ExpandingTextField,
     CustomFormProvider,
     SelectClearable,
+    DirectoryItemsInput,
+    ElementType,
 } from '../../src';
 
 const AUTOCOMPLETE_INPUT = 'autocomplete';
@@ -36,6 +38,7 @@ const INTEGER_INPUT = 'integer';
 const FLOAT_INPUT = 'float';
 const CHECKBOX_INPUT = 'checkbox';
 const SWITCH_INPUT = 'switch';
+const DIRECTORY_ITEMS_INPUT = 'directoryItems';
 
 const emptyFormData = {
     [AUTOCOMPLETE_INPUT]: null,
@@ -48,6 +51,7 @@ const emptyFormData = {
     [FLOAT_INPUT]: null,
     [CHECKBOX_INPUT]: false, // or null, but should then be nullable in schema
     [SWITCH_INPUT]: false, // or null, but should then be nullable in schema
+    [DIRECTORY_ITEMS_INPUT]: [],
 };
 
 const formSchema = yup.object().shape({
@@ -61,6 +65,7 @@ const formSchema = yup.object().shape({
     [FLOAT_INPUT]: yup.number().nullable(),
     [CHECKBOX_INPUT]: yup.boolean(),
     [SWITCH_INPUT]: yup.boolean(),
+    [DIRECTORY_ITEMS_INPUT]: yup.array().of(yup.object()).default([]),
 });
 
 const options = [
@@ -165,6 +170,17 @@ function InputsTab() {
                     </Grid>
                     <Grid item xs={gridSize}>
                         <SwitchInput name={SWITCH_INPUT} label="inputs/switch" />
+                    </Grid>
+                    <Grid item xs={gridSize}>
+                        <DirectoryItemsInput
+                            name={DIRECTORY_ITEMS_INPUT}
+                            label="inputs/directory-items"
+                            titleId="inputs/directory-items"
+                            elementType={ElementType.FILTER}
+                            allowMultiSelect
+                            hideErrorMessage
+                            disable
+                        />
                     </Grid>
                 </Grid>
                 <Box
