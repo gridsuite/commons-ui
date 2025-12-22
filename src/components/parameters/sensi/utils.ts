@@ -372,7 +372,7 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
     };
 };
 
-const hasVariables = (row: any): boolean => {
+export const hasVariables = (row: any): boolean => {
     return (
         row[INJECTIONS]?.length > 0 ||
         row[HVDC_LINES]?.length > 0 ||
@@ -381,12 +381,19 @@ const hasVariables = (row: any): boolean => {
     );
 };
 
-const hasMonitoredEquipments = (row: any): boolean => {
+export const hasMonitoredEquipments = (row: any): boolean => {
     return row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
 };
 
-export const filterRows = (entries?: FieldValues[]) =>
-    (entries ?? []).filter((entry) => entry[ACTIVATED] && hasMonitoredEquipments(entry) && hasVariables(entry));
+export const isActivated = (entry: FieldValues) => {
+    return entry[ACTIVATED];
+};
+
+export const isValidRow = (entry: FieldValues) => {
+    return isActivated(entry) && hasMonitoredEquipments(entry) && hasVariables(entry);
+};
+
+export const filterRows = (entries?: FieldValues[]) => (entries ?? []).filter((entry) => isValidRow(entry));
 
 export const formSchema = yup
     .object()

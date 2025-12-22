@@ -16,14 +16,13 @@ import {
     IconButton,
 } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
-import { ACTIVATED } from './constants';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
-import { filterRows } from './utils';
+import { hasMonitoredEquipments, hasVariables, isActivated, isValidRow } from './utils';
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -49,7 +48,6 @@ export function SensitivityTable({
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;
-    const filteredRowCountRef = useRef(0);
 
     const handleAddRowsButton = useCallback(() => {
         if (currentRows.length >= MAX_ROWS_NUMBER) {
@@ -58,22 +56,28 @@ export function SensitivityTable({
         append(createRows(1));
     }, [append, createRows, currentRows.length]);
 
-    const handleRowChanged = useCallback(() => {
-        const rows = getValues(arrayFormName);
-        const newCount = filterRows(rows).length;
+    const handleRowChanged = useCallback(
+        (providedArrayFormName: string, index: number, source: string) => {
+            const row = getValues(providedArrayFormName)[index];
+            if (source === 'directory') {
+                if (isValidRow(row) || (isActivated(row) && (!hasMonitoredEquipments(row) || !hasVariables(row)))) {
+                    onFormChanged();
+                }
+            }
 
-        if (filteredRowCountRef.current !== newCount) {
-            filteredRowCountRef.current = newCount;
-            onFormChanged();
-        }
-    }, [arrayFormName, onFormChanged, getValues]);
+            if (source === 'switch' && hasMonitoredEquipments(row) && hasVariables(row)) {
+                onFormChanged();
+            }
+        },
+        [onFormChanged, getValues]
+    );
 
     const handleDeleteButton = useCallback(
         (index: number) => {
             const currentRowsValues = getValues(arrayFormName);
             if (index >= 0 && index < currentRowsValues.length) {
                 remove(index);
-                if (currentRowsValues[index][ACTIVATED]) {
+                if (isValidRow(currentRowsValues[index])) {
                     onFormChanged();
                 }
             }
