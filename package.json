@@ -7,8 +7,8 @@
     "license": "MPL-2.0",
     "repository": "git://github.com/gridsuite/commons-ui.git",
     "engines": {
-        "node": ">=22",
-        "npm": "^10.9.2"
+        "node": ">=24",
+        "npm": "^11.6.2"
     },
     "type": "module",
     "exports": "./dist/index.js",
