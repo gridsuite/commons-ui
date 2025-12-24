@@ -5,19 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import PhotoLibrary from '@material-symbols/svg-400/outlined/photo_library-fill.svg?react';
-import { useTheme } from '@mui/material';
+import { PhotoLibrary } from '@mui/icons-material';
 
 export function PhotoLibraryIcon() {
-    const theme = useTheme();
-
-    return (
-        <PhotoLibrary
-            style={{
-                width: 14.4,
-                height: 14.4,
-                fill: theme.palette.text.primary,
-            }}
-        />
-    );
+    return <PhotoLibrary sx={{ width: 14.4, height: 14.4 }} />;
 }

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Tune from '@material-symbols/svg-400/outlined/tune.svg?react';
+import { Tune } from '@mui/icons-material';
 import { useTheme } from '@mui/material';
 
 type TuneIconProps = {
@@ -19,13 +19,5 @@ export function TuneIcon({ disabled = false, size = 14.4, color }: TuneIconProps
 
     const fillColor = color ?? (disabled ? theme.palette.action.disabled : theme.palette.text.primary);
 
-    return (
-        <Tune
-            style={{
-                width: size,
-                height: size,
-                fill: fillColor,
-            }}
-        />
-    );
+    return <Tune sx={{ width: size, height: size, color: fillColor }} />;
 }
