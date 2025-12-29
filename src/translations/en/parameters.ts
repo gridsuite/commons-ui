@@ -175,7 +175,7 @@ export const parametersEn = {
     ShuntCompensatorActivationThreshold: 'Alert threshold on shunt compensator activation',
     ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero: 'The threshold must be greater or equal to 0',
     ShuntCompensatorActivationThresholdDescription:
-        'Threshold (in MVar) above which the difference between discretized and optimal value for shunt compensator activation is considered significant (and will thus be recorded in the functional logs)',
+        'Threshold (in Mvar) above which the difference between discretized and optimal value for shunt compensator activation is considered significant (and will thus be recorded in the functional logs)',
     VoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
     AdjustExistingLimits: 'Adjust existing limits',
     AdjustExistingLimitsInfo:
