@@ -18,7 +18,7 @@ interface TableRowComponentProps {
     index: number;
     handleDeleteButton: (index: number) => void;
     disableDelete: boolean;
-    handleRowChanged: (a: string, b: number, c: string) => void;
+    handleRowChanged: (a: number) => void;
 }
 
 export function TableRowComponent({
@@ -36,8 +36,8 @@ export function TableRowComponent({
         return setIsHover(enter);
     }
 
-    const handleCellChanged = (source: string) => {
-        handleRowChanged(arrayFormName, index, source);
+    const handleCellChanged = () => {
+        handleRowChanged(index);
     };
 
     return (
