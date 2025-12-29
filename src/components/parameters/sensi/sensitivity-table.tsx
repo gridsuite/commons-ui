@@ -64,10 +64,9 @@ export function SensitivityTable({
                 const newStates = [...prev];
                 newStates[index] = isValidNow;
 
-                const becameValid = !wasValidBefore && isValidNow;
                 const becameInvalid = wasValidBefore && !isValidNow;
 
-                if (becameValid || becameInvalid || isValidNow) {
+                if (becameInvalid || isValidNow) {
                     onFormChanged();
                 }
 
