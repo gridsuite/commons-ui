@@ -17,15 +17,18 @@ import {
     fromStudyPccMinParamsDataToFormValues,
 } from './pcc-min-form-utils';
 import { useSnackMessage } from '../../../hooks';
-import { NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../inputs';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { getPccMinStudyParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
+import { updateParameter } from '../../../services';
+import { ElementType, snackWithFallback } from '../../../utils';
 
 export interface UsePccMinParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     paramsLoading: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
+    onSaveDialog: (formData: Record<string, any>) => void;
 }
 
 type UsePccMinParametersFormProps = {
@@ -78,6 +81,22 @@ export const UsePccMinParametersForm = ({
         [snackError, studyUuid]
     );
 
+    const onSaveDialog = useCallback(
+        (formData: Record<string, any>) => {
+            if (parametersUuid) {
+                updateParameter(
+                    parametersUuid,
+                    fromPccMinParametersFormToParamValues(formData),
+                    formData[NAME],
+                    ElementType.PCC_MIN_PARAMETERS,
+                    formData[DESCRIPTION] ?? ''
+                ).catch((error) => {
+                    snackWithFallback(snackError, error, { headerId: 'updatePccMinParametersError' });
+                });
+            }
+        },
+        [parametersUuid, snackError]
+    );
     // GridExplore init case
     useEffect(() => {
         if (parametersUuid) {
@@ -113,5 +132,6 @@ export const UsePccMinParametersForm = ({
         formSchema,
         paramsLoading,
         onSaveInline,
+        onSaveDialog,
     };
 };
