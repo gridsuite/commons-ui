@@ -15,6 +15,7 @@ import type {
 } from '../../components/parameters/common/limitreductions/columns-definitions';
 import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
+import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',
@@ -36,7 +37,9 @@ export type SpecificParameterInfos = {
     label?: string;
 };
 
-export type SpecificParametersInfos = Record<string, SpecificParameterInfos>;
+export type SpecificParametersDescription = Record<string, SpecificParameterInfos[]>;
+export type SpecificParametersValues = Record<string, any>;
+export type SpecificParametersPerProvider = Record<string, SpecificParametersValues>;
 
 export type ParametersInfos<T extends ComputingType> = T extends ComputingType.SENSITIVITY_ANALYSIS
     ? SensitivityAnalysisParametersInfos
@@ -48,7 +51,9 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
           ? DynamicSimulationParametersFetchReturn
           : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
             ? DynamicSecurityAnalysisParametersFetchReturn
-            : Record<string, any>;
+            : T extends ComputingType.SHORT_CIRCUIT
+              ? ShortCircuitParametersInfos
+              : Record<string, any>;
 
 export type UseParametersBackendReturnProps<T extends ComputingType> = [
     Record<string, string>,
@@ -60,6 +65,6 @@ export type UseParametersBackendReturnProps<T extends ComputingType> = [
     (studyUuid: UUID) => void,
     (newParams: ParametersInfos<T>) => void,
     () => Promise<void> | undefined,
-    Record<string, any> | null,
+    SpecificParametersDescription | null,
     ILimitReductionsByVoltageLevel[],
 ];

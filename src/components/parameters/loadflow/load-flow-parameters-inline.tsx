@@ -25,22 +25,23 @@ import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function LoadFlowParametersInline({
     studyUuid,
     language,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     language: GsLang;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
-    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
-    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
+    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, null, null, null);
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
@@ -90,11 +91,7 @@ export function LoadFlowParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);

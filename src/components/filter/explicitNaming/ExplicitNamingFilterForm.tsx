@@ -7,7 +7,7 @@
  */
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
@@ -30,6 +30,8 @@ import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { filterStyles } from '../HeaderFilterForm';
+import { snackWithFallback } from '../../../utils';
+import { useCustomFormContext } from '../../inputs';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -93,13 +95,17 @@ export interface FilterForExplicitConversionProps {
 
 interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
+    isEditing: boolean;
 }
 
-export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
+export function ExplicitNamingFilterForm({
+    sourceFilterForExplicitNamingConversion,
+    isEditing,
+}: Readonly<ExplicitNamingFilterFormProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const { getValues, setValue } = useFormContext();
+    const { getValues, setValue, isDeveloperMode, language } = useCustomFormContext();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
@@ -201,10 +207,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 );
             })
             .catch((error: any) =>
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'convertIntoExplicitNamingFilterError',
-                })
+                snackWithFallback(snackError, error, { headerId: 'convertIntoExplicitNamingFilterError' })
             );
     };
 
@@ -215,7 +218,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={!!sourceFilterForExplicitNamingConversion}
+                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
@@ -257,6 +260,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                         }),
                         fileHeaders: csvFileHeaders,
                         getDataFromCsv: getDataFromCsvFile,
+                        language,
                     }}
                     cssProps={{
                         padding: 1,

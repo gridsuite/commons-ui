@@ -8,11 +8,6 @@
 export const PARAM_LIMIT_REDUCTION = 'limitReduction';
 export const PARAM_PROVIDER_OPENLOADFLOW = 'OpenLoadFlow';
 
-export const COMMON_PARAMETERS = 'commonParameters';
-export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
-
-export const VERSION_PARAMETER = 'version';
-
 // BasicLoadFlowParameters
 export const PHASE_SHIFTER_REGULATION_ON = 'phaseShifterRegulationOn';
 export const DC = 'dc';

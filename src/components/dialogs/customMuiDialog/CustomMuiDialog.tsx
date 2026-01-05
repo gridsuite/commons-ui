@@ -8,7 +8,7 @@
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, Grid, LinearProgress } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
 import { type ObjectSchema } from 'yup';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
@@ -33,6 +33,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     language?: GsLang;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
+    isDeveloperMode?: boolean;
 };
 
 const styles = {
@@ -92,6 +93,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     onCancel,
     children,
     language,
+    isDeveloperMode,
     confirmationMessageKey,
     unscrollableFullHeight = false,
     ...dialogProps
@@ -155,6 +157,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             validationSchema={formSchema}
             removeOptional={removeOptional}
             language={language}
+            isDeveloperMode={isDeveloperMode}
         >
             <Dialog
                 sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
@@ -165,9 +168,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
-                    <Grid item xs={11}>
-                        <FormattedMessage id={titleId} />
-                    </Grid>
+                    <FormattedMessage id={titleId} />
                 </DialogTitle>
                 <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}

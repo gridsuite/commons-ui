@@ -21,6 +21,7 @@ import { NetworkVisualizationParametersForm } from './network-visualizations-for
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
 import { getNetworkVisualizationsParameters } from '../../../services';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
+import { snackWithFallback } from '../../../utils/error';
 
 export function NetworkVisualizationParametersInline({
     studyUuid,
@@ -59,11 +60,7 @@ export function NetworkVisualizationParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);

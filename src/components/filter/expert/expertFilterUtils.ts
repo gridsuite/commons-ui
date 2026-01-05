@@ -32,7 +32,6 @@ import {
 import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
 import { convertInputValue, convertOutputValue, isBlankOrEmpty } from '../../../utils/conversionUtils';
 import { FieldType } from '../../../utils/types/fieldType';
-import { ALL_EQUIPMENTS } from '../../../utils';
 
 interface TreeNode {
     [key: string]: any;
@@ -526,11 +525,4 @@ export function recursiveRemove(query: RuleGroupTypeAny, path: number[]): RuleGr
     // Otherwise, we can safely remove it
 
     return remove(query, path);
-}
-
-export function getFilterEquipmentTypeLabel(equipmentType: string | undefined): string {
-    if (!equipmentType) {
-        return '';
-    }
-    return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.label ?? '';
 }

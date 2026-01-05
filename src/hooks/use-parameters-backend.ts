@@ -16,9 +16,10 @@ import { ComputingType, formatComputingTypeLabel } from '../components/parameter
 import type { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
 import type {
     ParametersInfos,
-    SpecificParametersInfos,
+    SpecificParametersDescription,
     UseParametersBackendReturnProps,
 } from '../utils/types/parameters.type';
+import { snackWithFallback } from '../utils/error';
 
 const INITIAL_PROVIDERS = {};
 
@@ -33,13 +34,13 @@ export const useParametersBackend = <T extends ComputingType>(
     studyUuid: UUID | null,
     type: T,
     optionalServiceStatus: OptionalServicesStatus | undefined,
-    backendFetchProviders: () => Promise<string[]>,
+    backendFetchProviders: (() => Promise<string[]>) | null,
     backendFetchProvider: ((studyUuid: UUID) => Promise<string>) | null,
-    backendFetchDefaultProvider: () => Promise<string>,
+    backendFetchDefaultProvider: (() => Promise<string>) | null,
     backendUpdateProvider: ((studyUuid: UUID, newProvider: string) => Promise<any>) | null,
     backendFetchParameters: (studyUuid: UUID) => Promise<ParametersInfos<T>>,
     backendUpdateParameters?: (studyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>,
-    backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersInfos>,
+    backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>,
     backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>
 ): UseParametersBackendReturnProps<T> => {
     const { snackError, snackWarning } = useSnackMessage();
@@ -50,7 +51,9 @@ export const useParametersBackend = <T extends ComputingType>(
     providerRef.current = provider;
 
     const [params, setParams] = useState<ParametersInfos<T> | null>(null);
-    const [specificParamsDescription, setSpecificParamsDescription] = useState<Record<string, any> | null>(null);
+    const [specificParamsDescription, setSpecificParamsDescription] = useState<SpecificParametersDescription | null>(
+        null
+    );
     const [defaultLimitReductions, setDefaultLimitReductions] = useState<ILimitReductionsByVoltageLevel[]>([]);
 
     const optionalServiceStatusRef = useRef(optionalServiceStatus);
@@ -74,8 +77,7 @@ export const useParametersBackend = <T extends ComputingType>(
             setProvider(newProvider); // local state
             backendUpdateProvider?.(studyUuid, newProvider).catch((error) => {
                 setProvider(oldProvider);
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `update${formatComputingTypeLabel(type)}ProviderError`,
                 });
             });
@@ -85,7 +87,7 @@ export const useParametersBackend = <T extends ComputingType>(
 
     // PROVIDER RESET
     const resetProvider = useCallback(() => {
-        backendFetchDefaultProvider()
+        backendFetchDefaultProvider?.()
             .then((defaultProvider) => {
                 const providerNames = Object.keys(providersRef.current);
                 if (providerNames.length > 0) {
@@ -96,8 +98,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 }
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `fetchDefault${formatComputingTypeLabel(type)}ProviderError`,
                 });
             });
@@ -105,7 +106,7 @@ export const useParametersBackend = <T extends ComputingType>(
 
     // PROVIDER SYNC
     const fetchAvailableProviders = useCallback(() => {
-        return backendFetchProviders()
+        return backendFetchProviders?.()
             .then((providers) => {
                 // we can consider the provider gotten from back will be also used as
                 // a key for translation
@@ -118,8 +119,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 providersRef.current = providersObj;
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `fetch${formatComputingTypeLabel(type)}ProvidersError`,
                 });
             });
@@ -137,8 +137,7 @@ export const useParametersBackend = <T extends ComputingType>(
                     }
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
+                    snackWithFallback(snackError, error, {
                         headerId: `fetch${formatComputingTypeLabel(type)}ProviderError`,
                     });
                 });
@@ -151,7 +150,7 @@ export const useParametersBackend = <T extends ComputingType>(
     // other dependencies don't change this much
     useEffect(() => {
         if (user !== null && studyUuid && optionalServiceStatus === OptionalServicesStatus.Up) {
-            fetchAvailableProviders().then(() => fetchProvider(studyUuid));
+            fetchAvailableProviders()?.then(() => fetchProvider(studyUuid));
         }
     }, [fetchAvailableProviders, fetchProvider, optionalServiceStatus, studyUuid, user]);
 
@@ -162,8 +161,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 setSpecificParamsDescription(specificParams);
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `fetch${formatComputingTypeLabel(type)}SpecificParametersError`,
                 });
             });
@@ -184,10 +182,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 setDefaultLimitReductions(defaultLimits);
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'fetchDefaultLimitReductionsError',
-                });
+                snackWithFallback(snackError, error, { headerId: 'fetchDefaultLimitReductionsError' });
             });
     }, [backendFetchDefaultLimitReductions, snackError]);
 
@@ -209,8 +204,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 } else {
                     setProvider(undefined);
                 }
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `update${formatComputingTypeLabel(type)}ParametersError`,
                 });
             });
@@ -255,8 +249,7 @@ export const useParametersBackend = <T extends ComputingType>(
                 // because a reset call with a button don't need an intermediate render like for forms
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
+                snackWithFallback(snackError, error, {
                     headerId: `update${formatComputingTypeLabel(type)}ParametersError`,
                 });
             });
@@ -273,8 +266,7 @@ export const useParametersBackend = <T extends ComputingType>(
                     }
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
+                    snackWithFallback(snackError, error, {
                         headerId: `fetch${formatComputingTypeLabel(type)}ParametersError`,
                     });
                 });

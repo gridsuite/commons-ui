@@ -66,6 +66,7 @@ import {
     equipmentsEn,
     equipmentsFr,
     equipmentStyles,
+    EquipmentType,
     filterEn,
     filterExpertEn,
     filterExpertFr,
@@ -91,6 +92,8 @@ import {
     networkModificationsFr,
     OverflowableChipWithHelperText,
     OverflowableText,
+    parametersEn,
+    parametersFr,
     reportViewerEn,
     reportViewerFr,
     SnackbarProvider,
@@ -104,7 +107,6 @@ import {
     treeviewFinderEn,
     treeviewFinderFr,
     useSnackMessage,
-    EquipmentType,
 } from '../../src';
 
 const messages = {
@@ -127,6 +129,7 @@ const messages = {
         ...commonButtonEn,
         ...networkModificationsEn,
         ...inputsEn,
+        ...parametersEn,
         ...translations.en,
     },
     fr: {
@@ -148,6 +151,7 @@ const messages = {
         ...networkModificationsFr,
         ...multipleSelectionDialogFr,
         ...inputsFr,
+        ...parametersFr,
         ...translations.fr,
     },
 };
@@ -314,13 +318,6 @@ function PermanentSnackButton() {
         </>
     );
 }
-
-const validateUser = () => {
-    // change to false to simulate user unauthorized access
-    return new Promise((resolve) => {
-        window.setTimeout(() => resolve(true), 500);
-    });
-};
 
 function AppContent({ language, onLanguageClick }) {
     const navigate = useNavigate();
@@ -490,14 +487,14 @@ function AppContent({ language, onLanguageClick }) {
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
-            (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
+            (resolve, _reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
 
     function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
         return new Promise(
-            (resolve, reject) =>
+            (resolve, _reject) =>
                 (aboutTimerCmpnt.current = window.setTimeout(
                     () =>
                         resolve(
@@ -909,6 +906,7 @@ function AppContent({ language, onLanguageClick }) {
                             language={language}
                             user={user}
                             appsAndUrls={apps}
+                            dense
                         >
                             <Crasher />
                             <EquipmentSearchDialog />
@@ -933,8 +931,8 @@ function AppContent({ language, onLanguageClick }) {
                                         <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 2 && <FlatParametersTab />}
-                                    {tabIndex === 3 && <InputsTab />}
+                                    {tabIndex === 1 && <FlatParametersTab />}
+                                    {tabIndex === 2 && <InputsTab />}
                                 </div>
                             ) : (
                                 <AuthenticationRouter

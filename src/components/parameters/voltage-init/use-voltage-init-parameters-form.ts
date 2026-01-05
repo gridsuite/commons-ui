@@ -46,6 +46,7 @@ import {
 } from './voltage-init-form-utils';
 import { SELECTED } from '../../dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -216,10 +217,7 @@ export const useVoltageInitParametersForm = ({
             if (studyUuid) {
                 updateVoltageInitParameters(studyUuid, fromVoltageInitParametersFormToParamValues(formData)).catch(
                     (error) => {
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'updateVoltageInitParametersError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
                     }
                 );
             }
@@ -237,10 +235,7 @@ export const useVoltageInitParametersForm = ({
                     ElementType.VOLTAGE_INIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error: Error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updateVoltageInitParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
                 });
             }
         },
@@ -258,10 +253,7 @@ export const useVoltageInitParametersForm = ({
                     reset(fromVoltageInitParamsDataToFormValues(params));
                 })
                 .catch((error: Error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsRetrievingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                 })
                 .finally(() => {
                     clearTimeout(timer);

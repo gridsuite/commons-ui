@@ -12,42 +12,32 @@ import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../inputs';
-import { ElementType } from '../../../utils';
-import { LabelledButton } from '../common';
+import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
+import { ComputingType, LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import {
-    InitialVoltage,
-    SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_PREDEFINED_PARAMS,
-    SHORT_CIRCUIT_WITH_FEEDER_RESULT,
-    SHORT_CIRCUIT_WITH_LOADS,
-    SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
-    SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
-    SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
-} from './constants';
 import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
+import { snackWithFallback } from '../../../utils/error';
 
 export function ShortCircuitParametersInLine({
     studyUuid,
     setHaveDirtyFields,
-    shortCircuitParameters,
-    enableDeveloperMode,
+    parametersBackend,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    shortCircuitParameters: ShortCircuitParametersInfos | null;
-    enableDeveloperMode: boolean;
+    parametersBackend: UseParametersBackendReturnProps<ComputingType.SHORT_CIRCUIT>;
+    isDeveloperMode: boolean;
 }>) {
     const shortCircuitMethods = useShortCircuitParametersForm({
+        parametersBackend,
         parametersUuid: null,
         name: null,
         description: null,
-        studyUuid,
-        studyShortCircuitParameters: shortCircuitParameters,
     });
 
     const intl = useIntl();
@@ -55,28 +45,8 @@ export function ShortCircuitParametersInLine({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const { getCurrentValues, formMethods } = shortCircuitMethods;
-    const { setValue, formState, handleSubmit } = formMethods;
-
-    const replaceFormValues = useCallback(
-        (param: ShortCircuitParametersInfos) => {
-            const dirty = { shouldDirty: true };
-            setValue(SHORT_CIRCUIT_WITH_FEEDER_RESULT, param.parameters.withFeederResult, dirty);
-            setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, param.predefinedParameters, dirty);
-            setValue(SHORT_CIRCUIT_WITH_LOADS, param.parameters.withLoads, dirty);
-            setValue(SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS, param.parameters.withVSCConverterStations, dirty);
-            setValue(SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS, param.parameters.withShuntCompensators, dirty);
-            setValue(SHORT_CIRCUIT_WITH_NEUTRAL_POSITION, !param.parameters.withNeutralPosition, dirty);
-            setValue(
-                SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-                param.parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
-                    ? InitialVoltage.CEI909
-                    : param.parameters.initialVoltageProfileMode,
-                dirty
-            );
-        },
-        [setValue]
-    );
+    const { formMethods } = shortCircuitMethods;
+    const { getValues, formState, handleSubmit, reset } = formMethods;
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
@@ -86,19 +56,17 @@ export function ShortCircuitParametersInLine({
                 fetchShortCircuitParameters(paramUuid)
                     .then((parameters: ShortCircuitParametersInfos) => {
                         // Replace form data with fetched data
-                        replaceFormValues(parameters);
+                        reset(shortCircuitMethods.toShortCircuitFormValues(parameters), {
+                            keepDefaultValues: true,
+                        });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
         },
-        [snackError, replaceFormValues]
+        [snackError, shortCircuitMethods, reset]
     );
 
     useEffect(() => {
@@ -108,7 +76,7 @@ export function ShortCircuitParametersInLine({
     return (
         <ShortCircuitParametersForm
             shortCircuitMethods={shortCircuitMethods}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
                     <Box>
@@ -118,7 +86,13 @@ export function ShortCircuitParametersInLine({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <SubmitButton onClick={handleSubmit(shortCircuitMethods.onSaveInline)} variant="outlined">
+                            <SubmitButton
+                                onClick={handleSubmit(
+                                    shortCircuitMethods.onSaveInline,
+                                    shortCircuitMethods.onValidationError
+                                )}
+                                variant="outlined"
+                            >
                                 <FormattedMessage id="validate" />
                             </SubmitButton>
                         </Grid>
@@ -127,7 +101,7 @@ export function ShortCircuitParametersInLine({
                                 studyUuid={studyUuid}
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => getCurrentValues()}
+                                parameterValues={() => shortCircuitMethods.formatNewParams(getValues())}
                                 parameterFormatter={(newParams) => newParams}
                                 parameterType={ElementType.SHORT_CIRCUIT_PARAMETERS}
                             />

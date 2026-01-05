@@ -4,11 +4,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { SpecificParametersPerProvider } from '../../../utils';
 import { InitialVoltage, PredefinedParameters } from './constants';
 
 export interface VoltageRange {
     minimumNominalVoltage: number;
     maximumNominalVoltage: number;
+    voltage: number;
+    voltageRangeCoefficient: number;
+}
+
+export interface PowerElectronicsMaterial {
+    alpha: number;
+    u0: number;
+    usMin: number;
+    usMax: number;
+    type: 'WIND' | 'SOLAR' | 'HVDC';
 }
 
 export interface ShortCircuitParametersDto {
@@ -22,26 +33,9 @@ export interface ShortCircuitParametersDto {
 }
 
 export interface ShortCircuitParametersInfos {
-    parameters: ShortCircuitParametersDto;
+    provider: string;
     predefinedParameters: PredefinedParameters;
-    cei909VoltageRanges?: any;
-}
-
-interface VoltageRanges {
-    maximumNominalVoltage: number;
-    minimumNominalVoltage: number;
-    voltage: number;
-    voltageRangeCoefficient: number;
-}
-export interface ShortCircuitParameters {
-    predefinedParameters: NonNullable<PredefinedParameters | undefined>;
-    parameters: {
-        withFeederResult: boolean;
-        withLoads: boolean;
-        withVSCConverterStations: boolean;
-        withShuntCompensators: boolean;
-        withNeutralPosition: boolean;
-        initialVoltageProfileMode: NonNullable<InitialVoltage | undefined>;
-        voltageRanges?: VoltageRanges;
-    };
+    commonParameters: ShortCircuitParametersDto;
+    specificParametersPerProvider: SpecificParametersPerProvider;
+    cei909VoltageRanges?: VoltageRange[];
 }

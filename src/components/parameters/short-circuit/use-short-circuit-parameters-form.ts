@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
@@ -16,280 +16,250 @@ import {
     InitialVoltage,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
+    SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
-import { invalidateStudyShortCircuitStatus, setStudyShortCircuitParameters, updateParameter } from '../../../services';
+import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType } from '../../../utils';
+import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
+import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import {
-    ShortCircuitParameters,
-    ShortCircuitParametersDto,
-    ShortCircuitParametersInfos,
-} from './short-circuit-parameters.type';
-import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
+    formatShortCircuitSpecificParameters,
+    getCommonShortCircuitParametersFormSchema,
+    getDefaultShortCircuitSpecificParamsValues,
+    getShortCircuitSpecificParametersValues,
+    getSpecificShortCircuitParametersFormSchema,
+} from './short-circuit-parameters-utils';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
-    paramsLoading: boolean;
+    resetAll: (predefinedParameter: PredefinedParameters) => void;
+    specificParametersDescriptionForProvider: SpecificParameterInfos[];
+    toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
+    formatNewParams: (formData: Record<string, any>) => ShortCircuitParametersInfos;
+    params: ShortCircuitParametersInfos | null;
+    provider: string | undefined;
+    paramsLoaded: boolean;
+    onValidationError: (errors: FieldErrors) => void;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
-    resetAll: (predefinedParameter: PredefinedParameters) => void;
-    getCurrentValues: () => FieldValues;
 }
 
 // GridExplore versus GridStudy exclusive input params
-type UseShortCircuitParametersFormProps =
-    | {
-          parametersUuid: UUID;
-          name: string;
-          description: string | null;
-          studyUuid: null;
-          studyShortCircuitParameters: null;
-      }
-    | {
-          parametersUuid: null;
-          name: null;
-          description: null;
-          studyUuid: UUID | null;
-          studyShortCircuitParameters: ShortCircuitParametersInfos | null;
-      };
+type UseShortCircuitParametersFormProps = {
+    parametersBackend: UseParametersBackendReturnProps<ComputingType.SHORT_CIRCUIT>;
+    parametersUuid: UUID | null;
+    name: string | null;
+    description: string | null;
+};
 
 export const useShortCircuitParametersForm = ({
+    parametersBackend,
     parametersUuid,
     name,
     description,
-    studyUuid,
-    studyShortCircuitParameters,
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
+    const [, provider, , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
+    const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
-    const [paramsLoading, setParamsLoading] = useState<boolean>(false);
-    const [shortCircuitParameters, setShortCircuitParameters] = useState<ShortCircuitParametersInfos>();
+
+    const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
+        return provider && specificParamsDescriptions?.[provider] ? specificParamsDescriptions[provider] : [];
+    }, [provider, specificParamsDescriptions]);
+
+    const specificParametersDefaultValues = useMemo(() => {
+        return {
+            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider),
+        };
+    }, [specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
         return yup
-            .object()
-            .shape({
-                [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: yup.boolean().required(),
+            .object({
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: yup
                     .mixed<PredefinedParameters>()
                     .oneOf(Object.values(PredefinedParameters))
                     .required(),
-                [SHORT_CIRCUIT_WITH_LOADS]: yup.boolean().required(),
-                [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: yup.boolean().required(),
-                [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: yup.boolean().required(),
-                [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: yup.boolean().required(),
-                [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: yup
-                    .mixed<InitialVoltage>()
-                    .oneOf(Object.values(InitialVoltage))
-                    .required(),
+                ...getCommonShortCircuitParametersFormSchema().fields,
+                ...getSpecificShortCircuitParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
-            .required()
             .concat(getNameElementEditorSchema(name));
-    }, [name]);
-
-    const emptyFormData = useMemo(() => {
-        return {
-            ...getNameElementEditorEmptyFormData(name, description),
-            [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
-            [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PredefinedParameters.ICC_MAX_WITH_CEI909,
-            [SHORT_CIRCUIT_WITH_LOADS]: false,
-            [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: false,
-            [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
-            [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
-            [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: InitialVoltage.CEI909 as
-                | InitialVoltage.NOMINAL
-                | InitialVoltage.CEI909
-                | undefined,
-        };
-    }, [name, description]);
+    }, [name, specificParametersDescriptionForProvider]);
 
     const formMethods = useForm({
-        defaultValues: emptyFormData,
+        defaultValues: {
+            ...getNameElementEditorEmptyFormData(name, description),
+            [SHORT_CIRCUIT_PREDEFINED_PARAMS]: PredefinedParameters.ICC_MAX_WITH_CEI909,
+            [COMMON_PARAMETERS]: {
+                ...params?.commonParameters,
+            },
+            [SPECIFIC_PARAMETERS]: {
+                ...specificParametersDefaultValues,
+            },
+        },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
     });
 
-    const { getValues, reset, setValue } = formMethods;
+    const { reset, setValue } = formMethods;
 
     // when ever the predefined parameter is manually changed, we need to reset all parameters
     const resetAll = useCallback(
         (predefinedParameter: PredefinedParameters) => {
             const dirty = { shouldDirty: true };
-            setValue(SHORT_CIRCUIT_WITH_FEEDER_RESULT, false, dirty);
-            setValue(SHORT_CIRCUIT_WITH_LOADS, false, dirty);
             setValue(
-                SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
-                predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                COMMON_PARAMETERS,
+                {
+                    ...params?.commonParameters, // for VERSION_PARAMETER and other non managed params
+                    [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
+                    [SHORT_CIRCUIT_WITH_LOADS]: false,
+                    [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]:
+                        predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                    [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
+                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
+                    [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
+                        predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
+                            ? InitialVoltage.CEI909
+                            : InitialVoltage.NOMINAL,
+                },
                 dirty
             );
-            setValue(SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS, false, dirty);
-            setValue(SHORT_CIRCUIT_WITH_NEUTRAL_POSITION, false, dirty);
-            const initialVoltageProfileMode =
-                predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
-                    ? InitialVoltage.CEI909
-                    : InitialVoltage.NOMINAL;
-
-            setValue(SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE, initialVoltageProfileMode, dirty);
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
+
+            setValue(
+                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                dirty
+            );
         },
-        [setValue]
+        [params?.commonParameters, setValue]
     );
 
-    const prepareDataToSend = (
-        shortCircuitParams: ShortCircuitParametersInfos,
-        newParameters: FieldValues
-    ): ShortCircuitParameters => {
-        const oldParameters = { ...shortCircuitParams.parameters };
-        const {
-            predefinedParameters: omit,
-            [NAME]: omit2,
-            [DESCRIPTION]: omit3,
-            ...newParametersWithoutPredefinedParameters
-        } = newParameters;
-        let parameters = {
-            ...oldParameters,
-            ...newParametersWithoutPredefinedParameters,
-            // we need to add voltageRanges to the parameters only when initialVoltageProfileMode is equals to CEI909
-            voltageRanges: undefined,
-            withNeutralPosition: !newParameters.withNeutralPosition,
-        };
-        if (newParameters.initialVoltageProfileMode === InitialVoltage.CEI909) {
-            parameters = {
-                ...parameters,
-                voltageRanges: shortCircuitParams.cei909VoltageRanges,
-                initialVoltageProfileMode: InitialVoltage.CONFIGURED,
+    const formatNewParams = useCallback(
+        (formData: Record<string, any>): ShortCircuitParametersInfos => {
+            if (!provider) {
+                return {} as ShortCircuitParametersInfos;
+            }
+            return {
+                provider: formData[PROVIDER],
+                predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],
+                commonParameters: {
+                    [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
+                    ...formData[COMMON_PARAMETERS],
+                    // this should be inverted for API compatibility
+                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]:
+                        !formData[COMMON_PARAMETERS][SHORT_CIRCUIT_WITH_NEUTRAL_POSITION],
+                    [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
+                        formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] ===
+                        InitialVoltage.CEI909
+                            ? InitialVoltage.CONFIGURED
+                            : formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE],
+                    // we need to add voltageRanges to the parameters only when initialVoltageProfileMode is equals to CEI909
+                    [SHORT_CIRCUIT_VOLTAGE_RANGES]:
+                        formData[COMMON_PARAMETERS][SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE] ===
+                        InitialVoltage.CEI909
+                            ? params?.cei909VoltageRanges
+                            : undefined,
+                },
+                specificParametersPerProvider: {
+                    [provider]: getShortCircuitSpecificParametersValues(formData, specificParametersDefaultValues),
+                },
             };
-        }
-        return {
-            predefinedParameters: newParameters.predefinedParameters,
-            parameters,
-        };
-    };
+        },
+        [params?.cei909VoltageRanges, provider, specificParametersDefaultValues]
+    );
 
-    const getCurrentValues = useCallback(() => {
-        if (shortCircuitParameters) {
-            const currentValues = getValues();
-            return { ...prepareDataToSend(shortCircuitParameters, currentValues) };
-        }
-        return {};
-    }, [shortCircuitParameters, getValues]);
+    const toShortCircuitFormValues = useCallback(
+        (_params: ShortCircuitParametersInfos) => {
+            if (!provider || !_params) {
+                return {};
+            }
+            const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
+            const values = {
+                [PROVIDER]: _params.provider,
+                [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
+                [COMMON_PARAMETERS]: {
+                    ..._params.commonParameters,
+                    [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
+                        _params.commonParameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
+                            ? InitialVoltage.CEI909
+                            : _params.commonParameters.initialVoltageProfileMode,
+                    // invert back the value for the form
+                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !_params.commonParameters.withNeutralPosition,
+                },
+                [SPECIFIC_PARAMETERS]: {
+                    ...formatShortCircuitSpecificParameters(
+                        specificParametersDescriptionForProvider,
+                        specificParamsListForCurrentProvider
+                    ),
+                },
+            };
+            return values;
+        },
+        [provider, specificParametersDescriptionForProvider]
+    );
 
-    const formatShortCircuitParameters = (
-        parameters: ShortCircuitParametersDto,
-        predefinedParameters: PredefinedParameters
-    ): Object => {
-        return {
-            [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: parameters.withFeederResult,
-            [SHORT_CIRCUIT_PREDEFINED_PARAMS]: predefinedParameters,
-            [SHORT_CIRCUIT_WITH_LOADS]: parameters.withLoads,
-            [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: parameters.withVSCConverterStations,
-            [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: parameters.withShuntCompensators,
-            [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !parameters.withNeutralPosition,
-            [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                parameters.initialVoltageProfileMode === InitialVoltage.CONFIGURED
-                    ? InitialVoltage.CEI909
-                    : parameters.initialVoltageProfileMode,
-        };
-    };
+    const onValidationError = useCallback((_errors: FieldErrors) => {
+        console.error('onValidationError: ', _errors);
+    }, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
-            if (studyUuid && shortCircuitParameters) {
-                const oldParams = shortCircuitParameters;
-                setStudyShortCircuitParameters(studyUuid, {
-                    ...prepareDataToSend(shortCircuitParameters, formData),
-                })
-                    .then(() => {
-                        invalidateStudyShortCircuitStatus(studyUuid).catch((error) => {
-                            snackError({
-                                messageTxt: error.message,
-                                headerId: 'invalidateShortCircuitStatusError',
-                            });
-                        });
-                    })
-                    .catch((error) => {
-                        setShortCircuitParameters(oldParams);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsChangingError',
-                        });
-                    });
-            }
+            const data = formatNewParams(formData);
+            updateParameters(data);
         },
-        [shortCircuitParameters, setShortCircuitParameters, snackError, studyUuid]
+        [updateParameters, formatNewParams]
     );
 
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
-            if (parametersUuid && shortCircuitParameters) {
+            if (parametersUuid) {
                 updateParameter(
                     parametersUuid,
-                    prepareDataToSend(shortCircuitParameters, formData),
+                    formatNewParams(formData),
                     formData[NAME],
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsChangingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
                 });
             }
         },
-        [parametersUuid, shortCircuitParameters, snackError]
+        [formatNewParams, parametersUuid, snackError]
     );
 
-    // GridExplore init case
     useEffect(() => {
-        if (parametersUuid) {
-            const timer = setTimeout(() => {
-                setParamsLoading(true);
-            }, 700);
-            fetchShortCircuitParameters(parametersUuid)
-                .then((params) => {
-                    setShortCircuitParameters(params);
-                })
-                .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsRetrievingError',
-                    });
-                })
-                .finally(() => {
-                    clearTimeout(timer);
-                    setParamsLoading(false);
-                });
+        if (!params || !provider || !specificParamsDescriptions) {
+            return;
         }
-    }, [parametersUuid, snackError]);
-
-    // GridStudy init/update case
-    useEffect(() => {
-        if (studyShortCircuitParameters) {
-            setShortCircuitParameters(studyShortCircuitParameters);
-        }
-    }, [studyShortCircuitParameters]);
-
-    // common form reset
-    useEffect(() => {
-        if (shortCircuitParameters) {
-            const { parameters, predefinedParameters } = shortCircuitParameters;
-            reset(formatShortCircuitParameters(parameters, predefinedParameters));
-        }
-    }, [reset, shortCircuitParameters]);
+        reset(toShortCircuitFormValues(params));
+        // Now that we have params, provider and specific parameters description we can init
+        // form Schema and default values. this paramsLoaded State is used to determine
+        // if form is correctly initialized and that we are able to render form inputs
+        setParamsLoaded(true);
+    }, [provider, params, reset, specificParamsDescriptions, toShortCircuitFormValues]);
 
     return {
         formMethods,
         formSchema,
-        paramsLoading,
+        specificParametersDescriptionForProvider,
+        toShortCircuitFormValues,
+        formatNewParams,
+        params,
+        provider,
+        paramsLoaded,
+        onValidationError,
         onSaveInline,
         onSaveDialog,
         resetAll,
-        getCurrentValues,
     };
 };

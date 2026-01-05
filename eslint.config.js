@@ -167,7 +167,6 @@ const projectConfig = [
             'no-shadow': 'off',
             'no-unused-expressions': ['error', { allowShortCircuit: true }],
             'prefer-arrow-callback': 'off',
-            'no-unused-vars': ['off', { argsIgnorePattern: '^_' }],
             '@typescript-eslint/no-unnecessary-type-assertion': 'off',
             'prefer-object-has-own': 'off',
         },

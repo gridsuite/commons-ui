@@ -25,7 +25,7 @@ import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { GsLang } from '../../utils';
-import { CustomError } from '../../services';
+import { snackWithFallback } from '../../utils/error';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -58,6 +58,7 @@ export interface FilterCreationDialogProps {
         equipmentType: string;
     };
     filterType: { id: string; label: string };
+    isDeveloperMode: boolean;
 }
 
 export function FilterCreationDialog({
@@ -67,6 +68,7 @@ export function FilterCreationDialog({
     language,
     sourceFilterForExplicitNamingConversion = undefined,
     filterType,
+    isDeveloperMode,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
 
@@ -95,9 +97,7 @@ export function FilterCreationDialog({
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
                     (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
+                        snackWithFallback(snackError, error);
                     },
                     onClose,
                     activeDirectory
@@ -113,15 +113,7 @@ export function FilterCreationDialog({
                     activeDirectory,
                     onClose,
                     (error: Error) => {
-                        if (error instanceof CustomError && error.businessErrorCode != null) {
-                            snackError({
-                                messageId: error.businessErrorCode,
-                            });
-                        } else {
-                            snackError({
-                                messageTxt: error.message,
-                            });
-                        }
+                        snackWithFallback(snackError, error);
                     }
                 );
             }
@@ -148,6 +140,7 @@ export function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm
@@ -155,6 +148,7 @@ export function FilterCreationDialog({
                 activeDirectory={activeDirectory}
                 filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                isEditing={false}
             />
         </CustomMuiDialog>
     );

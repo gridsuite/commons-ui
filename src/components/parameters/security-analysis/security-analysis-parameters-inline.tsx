@@ -28,17 +28,18 @@ import { fetchSecurityAnalysisParameters } from '../../../services/security-anal
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
@@ -91,11 +92,7 @@ export function SecurityAnalysisParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
@@ -110,7 +107,7 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
                     <>

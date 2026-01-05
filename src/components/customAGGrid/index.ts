@@ -8,3 +8,4 @@
 export * from './customAggrid.style';
 export * from './customAggrid';
 export * from './separatorCellRenderer';
+export * from './cell-renderers';
