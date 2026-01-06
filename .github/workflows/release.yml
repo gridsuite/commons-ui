@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   run-release:
-    uses: powsybl/github-ci/.github/workflows/release-frontend-lib-generic.yml@XXXX
+    uses: powsybl/github-ci/.github/workflows/release-frontend-lib-generic.yml@40c6a51182e5c7920991362f27f297be87af111c
     with:
       versionType: ${{ github.event.inputs.versionType }}
       githubappId: ${{ vars.GRIDSUITE_ACTIONS_APPID }}
