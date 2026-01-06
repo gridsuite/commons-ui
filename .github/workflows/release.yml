@@ -11,24 +11,20 @@ on:
           - major
           - minor
           - patch
-      nodeAuthToken:
-        description: NPM automation access token
-        required: true
-        type: string
 
 permissions:
   contents: write
   # permission for npm error Provenance generation in GitHub Actions requires "write" access to the "id-token" permission
   # permission must be reset here otherwise we get the following error:
   # > The workflow is not valid. Error calling workflow. The workflow is requesting # 'id-token: write', but is only allowed 'id-token: none'.
+  # Also needed to use npmjs "Trusted Publishers"
   id-token: write
 
 jobs:
   run-release:
-    uses: powsybl/github-ci/.github/workflows/release-frontend-lib-generic.yml@dadee23ad90cf718ec874cb3f9d0a2de65ba283f
+    uses: powsybl/github-ci/.github/workflows/release-frontend-lib-trusted-generic.yml@b0f6bbfe2ebaf08ac8f5e4f1220e13cb05c24de2
     with:
       versionType: ${{ github.event.inputs.versionType }}
-      nodeAuthToken: ${{ github.event.inputs.nodeAuthToken }}
       githubappId: ${{ vars.GRIDSUITE_ACTIONS_APPID }}
     secrets:
       VERSIONBUMP_GHAPP_PRIVATE_KEY: ${{ secrets.VERSIONBUMP_GHAPP_PRIVATE_KEY }}
