@@ -5,19 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import DeviceHub from '@material-symbols/svg-400/outlined/device_hub.svg?react';
-import { useTheme } from '@mui/material';
+import { DeviceHub } from '@mui/icons-material';
+import { SxProps, Theme } from '@mui/material';
 
 interface DeviceHubProps {
-    style?: React.CSSProperties;
+    sx?: SxProps<Theme>;
 }
-export function DeviceHubIcon({ style }: DeviceHubProps) {
-    const theme = useTheme();
 
-    const defaultStyle: React.CSSProperties = {
-        width: 15,
-        height: 15,
-        fill: theme.palette.text.primary,
-    };
-    return <DeviceHub style={{ ...defaultStyle, ...style }} />;
+export function DeviceHubIcon({ sx }: DeviceHubProps) {
+    return <DeviceHub sx={{ width: 15, height: 15, ...sx }} />;
 }
