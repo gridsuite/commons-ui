@@ -43,7 +43,7 @@ export function SecurityAnalysisParametersInline({
 }>) {
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
-    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
+    const [, , , , , , , , resetParameters, , ,] = parametersBackend;
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
@@ -55,9 +55,8 @@ export function SecurityAnalysisParametersInline({
 
     const executeResetAction = useCallback(() => {
         resetParameters();
-        resetProvider();
         setOpenResetConfirmation(false);
-    }, [resetParameters, resetProvider]);
+    }, [resetParameters]);
 
     const handleResetAllClick = useCallback(() => {
         setOpenResetConfirmation(true);
