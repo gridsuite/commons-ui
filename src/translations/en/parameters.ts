@@ -175,7 +175,7 @@ export const parametersEn = {
     ShuntCompensatorActivationThreshold: 'Alert threshold on shunt compensator activation',
     ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero: 'The threshold must be greater or equal to 0',
     ShuntCompensatorActivationThresholdDescription:
-        'Threshold (in MVar) above which the difference between discretized and optimal value for shunt compensator activation is considered significant (and will thus be recorded in the functional logs)',
+        'Threshold (in Mvar) above which the difference between discretized and optimal value for shunt compensator activation is considered significant (and will thus be recorded in the functional logs)',
     VoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
     AdjustExistingLimits: 'Adjust existing limits',
     AdjustExistingLimitsInfo:
@@ -239,10 +239,10 @@ export const parametersEn = {
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
     PSTS: 'PSTs',
     Active: 'Active',
-    'sensitivityAnalysis.simulatedComputations':
-        '{count, plural, =0 {0 computation} =1 {1 computation} other {# computations}}',
-    'sensitivityAnalysis.moreThanOneMillionComputations': '999 999+ computations',
-    'sensitivityAnalysis.maximumSimulatedComputations': '500 000 max',
+    'sensitivityAnalysis.simulatedResults': '{count, plural, =0 {0 result} =1 {1 result} other {#{suffix} results}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Calculation in progress...',
 

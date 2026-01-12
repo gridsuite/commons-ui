@@ -181,7 +181,7 @@ export const parametersFr = {
     ShuntCompensatorActivationThreshold: "Seuil d'alerte sur l'enclenchement des MCS",
     ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
     ShuntCompensatorActivationThresholdDescription:
-        "Seuil (en MVar) au-dessus duquel on considère qu'il y a un écart significatif (et donc tracé dans les logs fonctionnels) entre valeur arrondie et valeur théorique pour l'enclenchement d'un MCS",
+        "Seuil (en Mvar) au-dessus duquel on considère qu'il y a un écart significatif (et donc tracé dans les logs fonctionnels) entre valeur arrondie et valeur théorique pour l'enclenchement d'un MCS",
     VoltageInitParametersError: "Erreur lors de la mise à jour des paramètres d'initialisation du plan de tension",
     voltageInitCancelError: "L'initialisation du plan de tension n'a pas pu être annulée",
     AdjustExistingLimits: 'Modifier les limites existantes',
@@ -246,9 +246,11 @@ export const parametersFr = {
     EquipmentsInVoltageRegulation: 'Ouvrages en réglage tension',
     PSTS: 'TDs',
     Active: 'Actif',
-    'sensitivityAnalysis.simulatedComputations': '{count, plural, =0 {0 calcul} =1 {1 calcul} other {# calculs}}',
-    'sensitivityAnalysis.moreThanOneMillionComputations': '999 999+ calculs',
-    'sensitivityAnalysis.maximumSimulatedComputations': '500 000 max',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, plural, =0 {0 résultat} =1 {1 résultat} other {#{suffix} résultats}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Evaluation en cours...',
 

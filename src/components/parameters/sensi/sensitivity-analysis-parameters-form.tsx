@@ -103,9 +103,8 @@ export function SensitivityAnalysisParametersForm({
                                 </Grid>
                                 <SensitivityParametersSelector
                                     onFormChanged={sensitivityAnalysisMethods.onFormChanged}
-                                    onChangeParams={sensitivityAnalysisMethods.onChangeParams}
-                                    launchLoader={sensitivityAnalysisMethods.launchLoader}
-                                    analysisComputeComplexity={sensitivityAnalysisMethods.analysisComputeComplexity}
+                                    isLoading={sensitivityAnalysisMethods.isLoading}
+                                    factorsCount={sensitivityAnalysisMethods.factorsCount}
                                     isDeveloperMode={isDeveloperMode}
                                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
                                 />
