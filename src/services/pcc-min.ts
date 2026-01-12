@@ -24,7 +24,7 @@ export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParamet
     return backendFetchJson(getPccMintParams);
 }
 
-export function fetchPccMinParameters(parameterUuid: string) {
+export function fetchPccMinParameters(parameterUuid: UUID): Promise<PccMinParameters> {
     console.info('fetch pcc min parameters');
     const url = `${getPccMinUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
     console.debug(url);

@@ -19,9 +19,10 @@ import {
 import { useSnackMessage } from '../../../hooks';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
-import { getPccMinStudyParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
+import { fetchPccMinParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { updateParameter } from '../../../services';
 import { ElementType, snackWithFallback } from '../../../utils';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 
 export interface UsePccMinParametersFormReturn {
     formMethods: UseFormReturn;
@@ -31,15 +32,25 @@ export interface UsePccMinParametersFormReturn {
     onSaveDialog: (formData: Record<string, any>) => void;
 }
 
-type UsePccMinParametersFormProps = {
-    parametersUuid: UUID | null;
-    name: string | null;
-    description: string | null;
-    studyUuid: UUID | null;
-    parameters: PccMinParameters | null;
-};
+type UsePccMinParametersFormProps =
+    | {
+          parametersUuid: UUID;
+          name: string;
+          description: string | null;
+          studyUuid: null;
+          parameters: null;
+      }
+    | {
+          parametersUuid: null;
+          name: null;
+          description: null;
+          studyUuid: UUID | null;
+          parameters: PccMinParameters | null;
+      };
 
 export const UsePccMinParametersForm = ({
+    name,
+    description,
     parametersUuid,
     studyUuid,
     parameters,
@@ -48,18 +59,22 @@ export const UsePccMinParametersForm = ({
     const { snackError } = useSnackMessage();
 
     const formSchema = useMemo(() => {
-        return yup.object({
-            [FILTERS]: yup.array().of(
-                yup.object().shape({
-                    [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
-                })
-            ),
-        });
-    }, []);
+        return yup
+            .object({
+                [FILTERS]: yup.array().of(
+                    yup.object().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+                ),
+            })
+            .concat(getNameElementEditorSchema(name));
+    }, [name]);
 
     const formMethods = useForm({
         defaultValues: {
+            ...getNameElementEditorEmptyFormData(name, description),
+
             [FILTERS]: [],
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
@@ -103,9 +118,12 @@ export const UsePccMinParametersForm = ({
             const timer = setTimeout(() => {
                 setParamsLoading(true);
             }, 700);
-            getPccMinStudyParameters(parametersUuid)
+            fetchPccMinParameters(parametersUuid)
                 .then((params) => {
-                    reset(fromPccMinParamsDataToFormValues(params));
+                    reset({
+                        ...getNameElementEditorEmptyFormData(name, description),
+                        ...fromPccMinParamsDataToFormValues(params),
+                    });
                 })
                 .catch((error: Error) => {
                     snackError({
@@ -118,7 +136,7 @@ export const UsePccMinParametersForm = ({
                     setParamsLoading(false);
                 });
         }
-    }, [parametersUuid, reset, snackError]);
+    }, [description, name, parametersUuid, reset, snackError]);
 
     // GridStudy init case
     useEffect(() => {
