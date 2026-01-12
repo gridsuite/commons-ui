@@ -97,12 +97,12 @@ export function PccMinParametersInLine({
                 return (
                     <Box>
                         <Grid container item>
-                            <LabelledButton callback={handleResetClick} label="resetToDefault" />
                             <LabelledButton
                                 callback={() => setOpenSelectParameterDialog(true)}
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
+                            <LabelledButton callback={handleResetClick} label="resetToDefault" />
 
                             <SubmitButton onClick={handleSubmit(pccMinMethods.onSaveInline)} variant="outlined">
                                 <FormattedMessage id="validate" />
