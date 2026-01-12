@@ -21,6 +21,7 @@ import { fetchShortCircuitParameters } from '../../../services/short-circuit-ana
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 import { snackWithFallback } from '../../../utils/error';
+import { PopupConfirmationDialog } from '../../dialogs';
 
 export function ShortCircuitParametersInLine({
     studyUuid,
@@ -43,6 +44,9 @@ export function ShortCircuitParametersInLine({
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
+    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
+    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
 
     const { formMethods } = shortCircuitMethods;
@@ -69,6 +73,32 @@ export function ShortCircuitParametersInLine({
         [snackError, shortCircuitMethods, reset]
     );
 
+    const executeResetAction = useCallback(() => {
+        if (pendingResetAction === 'all') {
+            resetParameters();
+            resetProvider();
+        } else if (pendingResetAction === 'parameters') {
+            resetParameters();
+        }
+        setOpenResetConfirmation(false);
+        setPendingResetAction(null);
+    }, [pendingResetAction, resetParameters, resetProvider]);
+
+    const handleResetAllClick = useCallback(() => {
+        setPendingResetAction('all');
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleResetParametersClick = useCallback(() => {
+        setPendingResetAction('parameters');
+        setOpenResetConfirmation(true);
+    }, []);
+
+    const handleCancelReset = useCallback(() => {
+        setOpenResetConfirmation(false);
+        setPendingResetAction(null);
+    }, []);
+
     useEffect(() => {
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
     }, [formState, setHaveDirtyFields]);
@@ -86,6 +116,11 @@ export function ShortCircuitParametersInLine({
                                 label="settings.button.chooseSettings"
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
+                            <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
+                            <LabelledButton
+                                label="resetProviderValuesToDefault"
+                                callback={handleResetParametersClick}
+                            />
                             <SubmitButton
                                 onClick={handleSubmit(
                                     shortCircuitMethods.onSaveInline,
@@ -118,6 +153,16 @@ export function ShortCircuitParametersInLine({
                                 validationButtonText={intl.formatMessage({
                                     id: 'validate',
                                 })}
+                            />
+                        )}
+                        {/* Reset Confirmation Dialog */}
+                        {openResetConfirmation && (
+                            <PopupConfirmationDialog
+                                message="resetParamsConfirmation"
+                                validateButtonLabel="validate"
+                                openConfirmationPopup={openResetConfirmation}
+                                setOpenConfirmationPopup={handleCancelReset}
+                                handlePopupConfirmation={executeResetAction}
                             />
                         )}
                     </Box>
