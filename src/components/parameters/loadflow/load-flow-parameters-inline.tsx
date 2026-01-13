@@ -47,33 +47,20 @@ export function LoadFlowParametersInline({
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-            resetProvider();
-        } else if (pendingResetAction === 'parameters') {
-            resetParameters();
-        }
+        resetParameters();
+        resetProvider();
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [resetParameters, resetProvider]);
 
     const handleResetAllClick = useCallback(() => {
-        setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
     const handleCancelReset = useCallback(() => {
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
     }, []);
 
     const { reset, getValues, formState, handleSubmit } = loadflowMethods.formMethods;
@@ -125,10 +112,6 @@ export function LoadFlowParametersInline({
                                 />
                                 <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
                                 <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                                <LabelledButton
-                                    label="resetProviderValuesToDefault"
-                                    callback={handleResetParametersClick}
-                                />
                                 <SubmitButton
                                     onClick={handleSubmit(
                                         loadflowMethods.onSaveInline,
