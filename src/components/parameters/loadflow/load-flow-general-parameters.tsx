@@ -9,7 +9,7 @@ import { memo } from 'react';
 import LoadFlowParameterField from './load-flow-parameter-field';
 import {
     BALANCE_TYPE,
-    CONNECTED_COMPONENT_MODE,
+    CONNECTED_MODE,
     COUNTRIES_TO_BALANCE,
     DC,
     DC_POWER_FACTOR,
@@ -57,7 +57,7 @@ const basicParams: SpecificParameterInfos[] = [
         label: 'descLfCountriesToBalance',
     },
     {
-        name: CONNECTED_COMPONENT_MODE,
+        name: CONNECTED_MODE,
         type: ParameterType.STRING,
         label: 'descLfConnectedComponentMode',
         possibleValues: [

@@ -13,7 +13,7 @@ export const PHASE_SHIFTER_REGULATION_ON = 'phaseShifterRegulationOn';
 export const DC = 'dc';
 export const BALANCE_TYPE = 'balanceType';
 export const COUNTRIES_TO_BALANCE = 'countriesToBalance';
-export const CONNECTED_COMPONENT_MODE = 'componentMode';
+export const CONNECTED_MODE = 'componentMode';
 export const HVDC_AC_EMULATION = 'hvdcAcEmulation';
 
 // AdvancedLoadFlowParameters
