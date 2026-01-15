@@ -66,4 +66,12 @@ export const businessErrorsEn = {
         'Only last rule can have empty filter: type {equipmentType}, rule index {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
+    'singleLineDiagram.equipmentNotFound': 'Voltage level or substation {id} not found',
+    'singleLineDiagram.maxVoltageLevelDisplayed':
+        'You need to reduce the number of voltage levels to be displayed in the network area diagram (current {nbVoltageLevels}, maximum {maxVoltageLevels})',
+    'singleLineDiagram.invalidConfigRequest': "Given sld display mode '{sldDisplayMode}' doesn't exist",
+    'singleLineDiagram.invalidEquipment':
+        "Given equipment '{id}' of type '{equipmentType}' is not a substation or voltage level id in given network",
+    'singleLineDiagram.invalidSubstationLayout': "Mode d'affichage de site '{substationLayout}' invalide",
+    'singleLineDiagram.noVoltageLevelIdProvided': 'Aucun poste trouvé',
 };
