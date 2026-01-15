@@ -72,6 +72,6 @@ export const businessErrorsEn = {
     'diagram.invalidConfigRequest': "Given sld display mode '{sldDisplayMode}' doesn't exist",
     'diagram.invalidEquipment':
         "Given equipment '{id}' of type '{equipmentType}' is not a substation or voltage level id in given network",
-    'diagram.invalidSubstationLayout': "Mode d'affichage de site '{substationLayout}' invalide",
-    'diagram.noVoltageLevelIdProvided': 'Aucun poste trouvé',
+    'diagram.invalidSubstationLayout': "Substation layout '{substationLayout}' incorrect",
+    'diagram.noVoltageLevelIdProvided': 'No voltage level was found',
 };
