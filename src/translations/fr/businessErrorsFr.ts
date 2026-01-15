@@ -67,13 +67,13 @@ export const businessErrorsFr = {
         'Seule la dernière règle peut avoir un filtre vide : type {equipmentType}, indice de la règle : {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
-    'singleLineDiagram.equipmentNotFound': 'Voltage level or substation {id} not found',
-    'singleLineDiagram.maxVoltageLevelDisplayed':
+    'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
+    'diagram.maxVoltageLevelDisplayed':
         "Vous devez réduire le nombre de postes à afficher dans l'image nodale de zone (nombre actuel {nbVoltageLevels}, nombre maximum {maxVoltageLevels})",
-    'singleLineDiagram.invalidConfigRequest':
+    'diagram.invalidConfigRequest':
         "Le mode d'affichage de schéma unifilaire '{sldDisplayMode}' n'existe pas",
-    'singleLineDiagram.invalidEquipment':
+    'diagram.invalidEquipment':
         "L'équipement '{id}' de type '{equipmentType}' n'est pas un site ou poste dans le réseau courant",
-    'singleLineDiagram.invalidSubstationLayout': "Substation layout '{substationLayout}' incorrect",
-    'singleLineDiagram.noVoltageLevelIdProvided': 'No voltage level was found',
+    'diagram.invalidSubstationLayout': "Substation layout '{substationLayout}' incorrect",
+    'diagram.noVoltageLevelIdProvided': 'No voltage level was found',
 };
