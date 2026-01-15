@@ -8,6 +8,7 @@
 import { getUserToken } from '../redux/commonStore';
 import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
+import { CustomError } from '../utils/types/CustomError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -58,7 +59,7 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
 
 export const convertToCustomError = (textError: string) => {
     const errorJson = parseError(textError);
-    if (errorJson?.server && errorJson?.timestamp && errorJson?.traceId && errorJson?.detail) {
+    if (errorJson?.status && errorJson?.server && errorJson?.timestamp && errorJson?.traceId && errorJson?.detail) {
         let date: Date = new Date(); // Fallback to current timestamp
         try {
             date = new Date(errorJson.timestamp);
@@ -66,16 +67,16 @@ export const convertToCustomError = (textError: string) => {
             // Ignore
         }
         return new ProblemDetailError(
+            errorJson.status,
             errorJson.detail,
             errorJson.server,
             date,
             errorJson.traceId,
-            errorJson.status,
             errorJson.businessErrorCode,
             errorJson.businessErrorValues
         );
     }
-    return new Error(textError);
+    return new CustomError(errorJson.status, textError);
 };
 
 const handleError = (response: Response) => {
