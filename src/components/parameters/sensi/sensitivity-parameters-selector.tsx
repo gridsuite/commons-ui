@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
-import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
 import * as sensiParam from './columns-definitions';
 import {
     IColumnsDef,
@@ -24,6 +23,9 @@ import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
 import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
 import type { MuiStyles } from '../../../utils/styles';
+import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
+import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
+import { FactorsCount } from '../../../utils';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -58,10 +60,9 @@ const styles = {
 } as const satisfies MuiStyles;
 
 interface SensitivityParametersSelectorProps {
-    onFormChanged: (hasFormChanged: boolean) => void;
-    onChangeParams: (a: any, b: any, c: number) => void; // fixing any on "b" here is not trivial, will need to fix SensitivityTable which is used in another unrelated component
-    launchLoader: boolean;
-    analysisComputeComplexity: number;
+    onFormChanged: () => void;
+    isLoading: boolean;
+    factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
 }
@@ -73,9 +74,8 @@ interface TabInfo {
 
 function SensitivityParametersSelector({
     onFormChanged,
-    onChangeParams,
-    launchLoader,
-    analysisComputeComplexity,
+    isLoading,
+    factorsCount,
     isDeveloperMode,
     isStudyLinked,
 }: Readonly<SensitivityParametersSelectorProps>) {
@@ -128,87 +128,64 @@ function SensitivityParametersSelector({
         [intl]
     );
 
-    const renderComputingEventLoading = () => {
-        return (
-            <Box sx={styles.textInfo}>
-                <CircularProgress size="1em" sx={styles.circularProgress} />
-                <FormattedMessage id="loadingComputing" />
-            </Box>
-        );
-    };
-
     useEffect(() => {
         if (!isDeveloperMode) {
             setTabValue(SensiTabValues.SensitivityBranches);
         }
     }, [isDeveloperMode]);
 
-    const ComputingEvent = useMemo(() => {
-        const renderComputingEvent = () => {
-            if (analysisComputeComplexity < 999999 && analysisComputeComplexity > 500000) {
-                return (
-                    <Box sx={styles.textAlert}>
-                        <ErrorOutlineIcon sx={styles.errorOutlineIcon} />
-                        <FormattedMessage
-                            id="sensitivityAnalysis.simulatedComputations"
-                            values={{
-                                count: analysisComputeComplexity.toString(),
-                            }}
-                        />
-                    </Box>
-                );
-            }
-            if (analysisComputeComplexity > 999999) {
-                return (
-                    <Box sx={styles.textAlert}>
-                        <ErrorOutlineIcon sx={styles.errorOutlineIcon} />
-                        <FormattedMessage id="sensitivityAnalysis.moreThanOneMillionComputations" />
-                    </Box>
-                );
-            }
-            if (analysisComputeComplexity === 0) {
-                return (
-                    <Box sx={styles.textInitial}>
-                        <FormattedMessage
-                            id="sensitivityAnalysis.simulatedComputations"
-                            values={{
-                                count: analysisComputeComplexity.toString(),
-                            }}
-                        />
-                    </Box>
-                );
-            }
-            return (
-                <Box sx={styles.textInfo}>
-                    <FormattedMessage
-                        id="sensitivityAnalysis.simulatedComputations"
-                        values={{
-                            count: analysisComputeComplexity.toString(),
-                        }}
-                    />
-                </Box>
-            );
-        };
-
-        return launchLoader ? renderComputingEventLoading() : renderComputingEvent();
-    }, [analysisComputeComplexity, launchLoader]);
-
     return (
         <Grid sx={{ width: '100%' }}>
-            <Tabs value={tabValue} onChange={handleTabChange}>
-                {tabInfo.map((tab, index) => (
-                    <Tab
-                        key={tab.label}
-                        label={<FormattedMessage id={tab.label} />}
-                        value={index}
-                        sx={{
-                            fontSize: 17,
-                            fontWeight: 'bold',
-                            textTransform: 'capitalize',
-                        }}
-                    />
-                ))}
-            </Tabs>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <Tabs value={tabValue} onChange={handleTabChange}>
+                    {tabInfo.map((tab, index) => (
+                        <Tab
+                            key={tab.label}
+                            label={<FormattedMessage id={tab.label} />}
+                            value={index}
+                            sx={{
+                                fontSize: 17,
+                                fontWeight: 'bold',
+                                textTransform: 'capitalize',
+                            }}
+                        />
+                    ))}
+                </Tabs>
+                {isStudyLinked && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
+                            <SensitivityAnalysisParametersFactorCount
+                                count={factorsCount.variableCount}
+                                maxCount={MAX_VARIABLES_COUNT}
+                                messageId="sensitivityAnalysis.simulatedVariables"
+                                isLoading={isLoading}
+                            />
+                            <FormattedMessage id="sensitivityAnalysis.separator" />
+                            <FormattedMessage
+                                id="sensitivityAnalysis.maximumFactorsCount"
+                                values={{
+                                    maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString(),
+                                }}
+                            />
+                        </Box>
+                        <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
+                            <SensitivityAnalysisParametersFactorCount
+                                count={factorsCount.resultCount}
+                                maxCount={MAX_RESULTS_COUNT}
+                                messageId="sensitivityAnalysis.simulatedResults"
+                                isLoading={isLoading}
+                            />
+                            <FormattedMessage id="sensitivityAnalysis.separator" />
+                            <FormattedMessage
+                                id="sensitivityAnalysis.maximumFactorsCount"
+                                values={{
+                                    maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString(),
+                                }}
+                            />
+                        </Box>
+                    </Box>
+                )}
+            </Box>
             {tabInfo.map((tab, index) => (
                 <TabPanel key={tab.label} value={tabValue} index={index} sx={{ paddingTop: 1 }}>
                     {tabValue === SensiTabValues.SensitivityBranches && tab.subTabs && (
@@ -226,13 +203,6 @@ function SensitivityParametersSelector({
                                     />
                                 ))}
                             </Tabs>
-                            {isStudyLinked && (
-                                <Box sx={styles.boxContent}>
-                                    {ComputingEvent}
-                                    <FormattedMessage id="sensitivityAnalysis.separator" />
-                                    <FormattedMessage id="sensitivityAnalysis.maximumSimulatedComputations" />
-                                </Box>
-                            )}
 
                             <TabPanel index={SensiBranchesTabValues.SensiInjectionsSet} value={subTabValue}>
                                 <SensitivityTable
@@ -244,7 +214,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjectionsSet}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
@@ -255,7 +224,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjections}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
@@ -266,7 +234,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataHvdc}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
@@ -277,7 +244,6 @@ function SensitivityParametersSelector({
                                     createRows={rowDataPst}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
-                                    onChangeParams={onChangeParams}
                                 />
                             </TabPanel>
                         </>
@@ -290,7 +256,6 @@ function SensitivityParametersSelector({
                             createRows={rowDataNodes}
                             tableHeight={367}
                             onFormChanged={onFormChanged}
-                            onChangeParams={onChangeParams}
                         />
                     )}
                 </TabPanel>

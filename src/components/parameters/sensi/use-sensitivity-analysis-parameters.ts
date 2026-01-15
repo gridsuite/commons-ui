@@ -5,26 +5,26 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useForm, UseFormReturn } from 'react-hook-form';
-import { ObjectSchema } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { type ObjectSchema } from 'yup';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { ComputingType, PROVIDER } from '../common';
 import {
     ElementType,
+    FactorsCount,
     FieldConstants,
     SensitivityAnalysisParametersInfos,
     UseParametersBackendReturnProps,
 } from '../../../utils';
 import {
     getFormSchema,
-    getGenericRowNewParams,
     getSensiHvdcformatNewParams,
     getSensiInjectionsformatNewParams,
     getSensiInjectionsSetformatNewParams,
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
-    IRowNewParams,
+    filterSensiParameterRows,
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
@@ -33,13 +33,15 @@ import {
     CONTAINER_ID,
     CONTAINER_NAME,
     CONTINGENCIES,
-    COUNT,
+    DEFAULT_FACTOR_COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
     HVDC_LINES,
     INJECTIONS,
+    MAX_RESULTS_COUNT,
+    MAX_VARIABLES_COUNT,
     MONITORED_BRANCHES,
     PARAMETER_SENSI_HVDC,
     PARAMETER_SENSI_INJECTION,
@@ -47,7 +49,6 @@ import {
     PARAMETER_SENSI_NODES,
     PARAMETER_SENSI_PST,
     PSTS,
-    SENSI_INJECTIONS_SET,
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
@@ -60,8 +61,6 @@ import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
 
-type SubTabsValues = 'sensitivityInjectionsSet' | 'sensitivityInjection' | 'sensitivityHVDC' | 'sensitivityPST';
-
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
     formSchema: ObjectSchema<any>;
@@ -73,17 +72,14 @@ export interface UseSensitivityAnalysisParametersReturn {
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
-    isMaxReached: boolean;
-    launchLoader: boolean;
-    initRowsCount: () => void;
-    onFormChanged: (formChanged: boolean) => void;
-    onChangeParams: (row: any, arrayFormName: SubTabsValues, index: number) => void;
+    isMaxResultsReached: boolean;
+    isMaxVariablesReached: boolean;
+    isLoading: boolean;
+    onFormChanged: () => void;
     emptyFormData: Record<string, unknown>;
-    analysisComputeComplexity: number;
-    setAnalysisComputeComplexity: Dispatch<SetStateAction<number>>;
+    factorsCount: FactorsCount;
+    resetFactorsCount: () => void;
 }
-
-const numberMax = 500000;
 
 type UseSensitivityAnalysisParametersFormProps =
     | {
@@ -117,8 +113,8 @@ export const useSensitivityAnalysisParametersForm = ({
     const [providers, , , , , params, , updateParameters] = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
     const { snackError } = useSnackMessage();
-    const [analysisComputeComplexity, setAnalysisComputeComplexity] = useState(0);
-    const [launchLoader, setLaunchLoader] = useState(false);
+    const [factorsCount, setFactorsCount] = useState<FactorsCount>(DEFAULT_FACTOR_COUNT);
+    const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
     const emptyFormData = useMemo(() => {
@@ -149,7 +145,7 @@ export const useSensitivityAnalysisParametersForm = ({
         resolver: yupResolver(formSchema),
     });
 
-    const { reset, getValues, setValue } = formMethods;
+    const { reset, getValues } = formMethods;
 
     const formattedProviders = Object.keys(providers).map((key) => ({
         id: key,
@@ -170,89 +166,72 @@ export const useSensitivityAnalysisParametersForm = ({
         };
     }, []);
 
-    const formatFilteredParams = useCallback((row: IRowNewParams) => {
-        return getGenericRowNewParams(row);
+    const resetFactorsCount = useCallback(() => {
+        setIsLoading(false);
+        setFactorsCount(DEFAULT_FACTOR_COUNT);
     }, []);
 
-    const getResultCount = useCallback(() => {
-        const values = getValues();
-        let totalResultCount = 0;
-        const tabsToCheck: SubTabsValues[] = [
-            'sensitivityInjectionsSet',
-            'sensitivityInjection',
-            'sensitivityHVDC',
-            'sensitivityPST',
-        ];
-        tabsToCheck.forEach((tab) => {
-            const tabToCheck = values[tab] as any[];
-            // TODO: not easy to fix any here since values[SubTabsValues] have each time different type which causes problems with "filter"
-            // "none of those signatures are compatible with each other
-            if (tabToCheck) {
-                const count = tabToCheck
-                    .filter((entry) => entry[ACTIVATED])
-                    .filter((entry) => entry[MONITORED_BRANCHES].length > 0)
-                    .filter(
-                        (entry) =>
-                            entry[INJECTIONS]?.length > 0 || entry[PSTS]?.length > 0 || entry[HVDC_LINES]?.length > 0
-                    )
-                    .map((entry) => entry[COUNT])
-                    .reduce((a, b) => a + b, 0);
+    const updateFactorCount = useCallback(() => {
+        if (!currentNodeUuid || !currentRootNetworkUuid) {
+            return;
+        }
 
-                totalResultCount += count;
-            }
-        });
-        setAnalysisComputeComplexity(totalResultCount);
-        const timeoutId = setTimeout(() => {
-            setLaunchLoader(false);
-        }, 500);
-        return () => clearTimeout(timeoutId);
-    }, [getValues]);
+        const formValues = getValues();
 
-    const onFormChanged = useCallback(
-        (formChanged: boolean) => {
-            if (formChanged) {
-                setLaunchLoader(true);
-                getResultCount();
-            }
-        },
-        [getResultCount]
-    );
+        const filteredInjectionsSet = filterSensiParameterRows(formValues[PARAMETER_SENSI_INJECTIONS_SET]);
+        const filteredInjection = filterSensiParameterRows(formValues[PARAMETER_SENSI_INJECTION]);
+        const filteredHvdc = filterSensiParameterRows(formValues[PARAMETER_SENSI_HVDC]);
+        const filteredPst = filterSensiParameterRows(formValues[PARAMETER_SENSI_PST]);
+        const filteredNodes = filterSensiParameterRows(formValues[PARAMETER_SENSI_NODES]);
 
-    const onChangeParams = useCallback(
-        (row: any, arrayFormName: SubTabsValues, index: number) => {
-            // TODO: not easy to fix any here since values[SubTabsValues] have each time different type which causes problems with "filter"
-            // "none of those signatures are compatible with each other
-            if (!currentNodeUuid || !currentRootNetworkUuid) {
-                return;
-            }
-            setLaunchLoader(true);
-            getSensitivityAnalysisFactorsCount(
-                studyUuid,
-                currentNodeUuid,
-                currentRootNetworkUuid,
-                arrayFormName === SENSI_INJECTIONS_SET,
-                formatFilteredParams(row)
-            )
-                .then((response) => {
-                    response.text().then((value: string) => {
-                        setValue(
-                            `${arrayFormName}.${index}.${COUNT}`,
-                            !Number.isNaN(Number(value)) ? parseInt(value, 10) : 0
-                        );
-                        getResultCount();
-                    });
-                })
-                .catch((error) => {
-                    setLaunchLoader(false);
-                    snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
-                });
-        },
-        [snackError, studyUuid, currentRootNetworkUuid, formatFilteredParams, setValue, getResultCount, currentNodeUuid]
-    );
+        const hasAnyEntries =
+            filteredInjectionsSet.length > 0 ||
+            filteredInjection.length > 0 ||
+            filteredHvdc.length > 0 ||
+            filteredPst.length > 0 ||
+            filteredNodes.length > 0;
+
+        if (!hasAnyEntries) {
+            resetFactorsCount();
+            return;
+        }
+
+        const filteredFormValues = {
+            ...formValues,
+            [PARAMETER_SENSI_INJECTIONS_SET]: filteredInjectionsSet,
+            [PARAMETER_SENSI_INJECTION]: filteredInjection,
+            [PARAMETER_SENSI_HVDC]: filteredHvdc,
+            [PARAMETER_SENSI_PST]: filteredPst,
+            [PARAMETER_SENSI_NODES]: filteredNodes,
+        };
+
+        setIsLoading(true);
+        getSensitivityAnalysisFactorsCount(
+            studyUuid,
+            currentNodeUuid,
+            currentRootNetworkUuid,
+            formatNewParams(filteredFormValues)
+        )
+            .then((factorsCountResponse) => {
+                setFactorsCount(factorsCountResponse);
+                const timeoutId = setTimeout(() => {
+                    setIsLoading(false);
+                }, 500);
+                return () => clearTimeout(timeoutId);
+            })
+            .catch((error) => {
+                setIsLoading(false);
+                snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+            });
+    }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid, getValues, resetFactorsCount]);
+
+    const onFormChanged = useCallback(() => {
+        updateFactorCount();
+    }, [updateFactorCount]);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
         (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
-            const values = {
+            return {
                 [PROVIDER]: parameters[PROVIDER],
                 [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: parameters.flowFlowSensitivityValueThreshold,
                 [ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD]: parameters.angleFlowSensitivityValueThreshold,
@@ -283,7 +262,6 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
-                            [COUNT]: 0,
                         };
                     }) ?? [],
 
@@ -312,7 +290,6 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjections[ACTIVATED] ?? false,
-                            [COUNT]: 0,
                         };
                     }) ?? [],
                 [PARAMETER_SENSI_HVDC]:
@@ -341,7 +318,6 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
-                            [COUNT]: 0,
                         };
                     }) ?? [],
                 [PARAMETER_SENSI_PST]:
@@ -370,7 +346,6 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
-                            [COUNT]: 0,
                         };
                     }) ?? [],
                 [PARAMETER_SENSI_NODES]:
@@ -398,45 +373,12 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
-                            [COUNT]: 0,
                         };
                     }) ?? [],
             };
-            return values;
         },
         []
     );
-
-    const initRowsCount = useCallback(() => {
-        const handleEntries = (entries: any[] | undefined, parameter: SubTabsValues) => {
-            // TODO: not easy to fix any here since values[SubTabsValues] have each time different type which causes problems with "filter"
-            // "none of those signatures are compatible with each other
-            if (!entries) {
-                return;
-            }
-
-            const entriesWithIndices = entries.map((entry, index) => ({
-                entry,
-                index,
-            }));
-            const filteredInitEntries = entries.filter(
-                (entry) =>
-                    entry[ACTIVATED] &&
-                    entry[MONITORED_BRANCHES].length > 0 &&
-                    (entry[INJECTIONS]?.length > 0 || entry[PSTS]?.length > 0 || entry[HVDC_LINES]?.length > 0)
-            );
-            filteredInitEntries.forEach((entry) => {
-                const originalIndex = entriesWithIndices.findIndex((obj) => obj.entry === entry);
-                onChangeParams(entry, parameter, originalIndex);
-            });
-        };
-
-        const values = getValues();
-        handleEntries(values[PARAMETER_SENSI_INJECTIONS_SET], PARAMETER_SENSI_INJECTIONS_SET);
-        handleEntries(values[PARAMETER_SENSI_INJECTION], PARAMETER_SENSI_INJECTION);
-        handleEntries(values[PARAMETER_SENSI_HVDC], PARAMETER_SENSI_HVDC);
-        handleEntries(values[PARAMETER_SENSI_PST], PARAMETER_SENSI_PST);
-    }, [onChangeParams, getValues]);
 
     const onSaveInline = useCallback(
         (newParams: Record<string, any>) => {
@@ -446,13 +388,12 @@ export const useSensitivityAnalysisParametersForm = ({
                     const formattedParams = formatNewParams(newParams);
                     setSensitivityAnalysisParams(formattedParams);
                     updateParameters(formattedParams);
-                    initRowsCount();
                 })
                 .catch((error) => {
                     snackWithFallback(snackError, error, { headerId: 'updateSensitivityAnalysisParametersError' });
                 });
         },
-        [setSensitivityAnalysisParams, snackError, studyUuid, formatNewParams, initRowsCount, updateParameters]
+        [setSensitivityAnalysisParams, snackError, studyUuid, formatNewParams, updateParameters]
     );
 
     const onSaveDialog = useCallback(
@@ -476,15 +417,15 @@ export const useSensitivityAnalysisParametersForm = ({
         if (sensitivityAnalysisParams) {
             reset(fromSensitivityAnalysisParamsDataToFormValues(sensitivityAnalysisParams));
             if (!isSubmitAction) {
-                initRowsCount();
+                onFormChanged();
             }
         }
     }, [
         fromSensitivityAnalysisParamsDataToFormValues,
         sensitivityAnalysisParams,
-        initRowsCount,
         isSubmitAction,
         reset,
+        onFormChanged,
     ]);
     useEffect(() => {
         if (params) {
@@ -492,7 +433,9 @@ export const useSensitivityAnalysisParametersForm = ({
         }
     }, [params, reset, fromSensitivityAnalysisParamsDataToFormValues]);
 
-    const isMaxReached = useMemo(() => analysisComputeComplexity > numberMax, [analysisComputeComplexity]);
+    const isMaxResultsReached = useMemo(() => factorsCount.resultCount > MAX_RESULTS_COUNT, [factorsCount]);
+
+    const isMaxVariablesReached = useMemo(() => factorsCount.variableCount > MAX_VARIABLES_COUNT, [factorsCount]);
 
     const paramsLoaded = useMemo(() => !!params, [params]);
 
@@ -507,13 +450,12 @@ export const useSensitivityAnalysisParametersForm = ({
         isStudyLinked,
         onSaveInline,
         onSaveDialog,
-        isMaxReached,
-        launchLoader,
-        initRowsCount,
+        isMaxResultsReached,
+        isMaxVariablesReached,
+        isLoading,
         onFormChanged,
-        onChangeParams,
         emptyFormData,
-        analysisComputeComplexity,
-        setAnalysisComputeComplexity,
+        factorsCount,
+        resetFactorsCount,
     };
 };

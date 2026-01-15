@@ -15,7 +15,6 @@ export const parametersEn = {
     descLfPreviousValues: 'Previous values',
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
-    resetProviderValuesToDefault: 'Reset provider default values',
     resetParamsConfirmation: 'Do you really want to reset these parameters ?',
     showAdvancedParameters: 'Advanced settings',
     showSpecificParameters: 'Specific settings',
@@ -239,10 +238,10 @@ export const parametersEn = {
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
     PSTS: 'PSTs',
     Active: 'Active',
-    'sensitivityAnalysis.simulatedComputations':
-        '{count, plural, =0 {0 computation} =1 {1 computation} other {# computations}}',
-    'sensitivityAnalysis.moreThanOneMillionComputations': '999 999+ computations',
-    'sensitivityAnalysis.maximumSimulatedComputations': '500 000 max',
+    'sensitivityAnalysis.simulatedResults': '{count, plural, =0 {0 result} =1 {1 result} other {#{suffix} results}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Calculation in progress...',
 
@@ -277,6 +276,7 @@ export const parametersEn = {
     // Other
     resetLoadFlowParametersWarning:
         'Impossible to retrieve the load flow parameters defined in the user profile (default values are used)',
+    // pccMin
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',

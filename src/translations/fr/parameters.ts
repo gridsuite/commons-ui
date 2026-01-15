@@ -16,7 +16,6 @@ export const parametersFr = {
     descLfPreviousValues: 'Précédentes',
     descLfDcValues: 'DC',
     resetToDefault: 'Tout réinitialiser ',
-    resetProviderValuesToDefault: 'Réinitialiser les paramètres du simulateur',
     resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
     showAdvancedParameters: 'Paramètres avancés',
     showSpecificParameters: 'Paramètres spécifiques',
@@ -246,9 +245,11 @@ export const parametersFr = {
     EquipmentsInVoltageRegulation: 'Ouvrages en réglage tension',
     PSTS: 'TDs',
     Active: 'Actif',
-    'sensitivityAnalysis.simulatedComputations': '{count, plural, =0 {0 calcul} =1 {1 calcul} other {# calculs}}',
-    'sensitivityAnalysis.moreThanOneMillionComputations': '999 999+ calculs',
-    'sensitivityAnalysis.maximumSimulatedComputations': '500 000 max',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, plural, =0 {0 résultat} =1 {1 résultat} other {#{suffix} résultats}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Evaluation en cours...',
 
