@@ -70,8 +70,7 @@ export const businessErrorsFr = {
     'diagram.equipmentNotFound': "Poste ou site '{id}' non trouvé",
     'diagram.maxVoltageLevelDisplayed':
         "Vous devez réduire le nombre de postes à afficher dans l'image nodale de zone (nombre actuel {nbVoltageLevels}, nombre maximum {maxVoltageLevels})",
-    'diagram.invalidConfigRequest':
-        "Le mode d'affichage de schéma unifilaire '{sldDisplayMode}' n'existe pas",
+    'diagram.invalidConfigRequest': "Le mode d'affichage de schéma unifilaire '{sldDisplayMode}' n'existe pas",
     'diagram.invalidEquipment':
         "L'équipement '{id}' de type '{equipmentType}' n'est pas un site ou poste dans le réseau courant",
     'diagram.invalidSubstationLayout': "Mode d'affichage de site '{substationLayout}' invalide",
