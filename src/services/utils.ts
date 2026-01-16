@@ -8,6 +8,7 @@
 import { getUserToken } from '../redux/commonStore';
 import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
+import { CustomError } from '../utils/types/CustomError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -74,32 +75,49 @@ const isProblemDetail = (error: unknown): error is ProblemDetailDto => {
     );
 };
 
-export const handleError = (error: unknown) => {
+export const handleNotOkResponse = async (response: Response): Promise<never> => {
+    let bodyText: string;
+
+    try {
+        bodyText = await response.text();
+    } catch {
+        throw new CustomError(response.status, 'Unable to read response body');
+    }
+
+    let body: unknown;
+    try {
+        body = JSON.parse(bodyText);
+    } catch {
+        throw new CustomError(response.status, bodyText);
+    }
+
+    if (isProblemDetail(body)) {
+        const date = new Date(body.timestamp);
+        throw new ProblemDetailError(
+            body.status,
+            body.detail,
+            body.server,
+            Number.isNaN(date.getTime()) ? new Date() : date, // Fallback to current timestamp
+            body.traceId,
+            body.businessErrorCode,
+            body.businessErrorValues
+        );
+    }
+
+    throw new CustomError(response.status, bodyText);
+};
+
+const handleTimeoutError = (error: unknown) => {
     if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError')) {
         throw new NetworkTimeoutError();
-    }
-    if (isProblemDetail(error)) {
-        let date: Date = new Date(); // Fallback to current timestamp
-        try {
-            date = new Date(error.timestamp);
-        } catch {
-            // Ignore
-        }
-        throw new ProblemDetailError(
-            error.status,
-            error.detail,
-            error.server,
-            date,
-            error.traceId,
-            error.businessErrorCode,
-            error.businessErrorValues
-        );
     }
     throw error;
 };
 
 const safeFetch = (url: string, initCopy: RequestInit) => {
-    return fetch(url, initCopy).catch(handleError);
+    return fetch(url, initCopy)
+        .then((response) => (response.ok ? response : handleNotOkResponse(response)))
+        .catch(handleTimeoutError);
 };
 
 export const backendFetch = (url: string, init?: FetchInitWithTimeout, token?: string) => {
