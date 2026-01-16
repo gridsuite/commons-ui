@@ -52,7 +52,7 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
 type ProblemDetailDto = {
     status: number;
     server: string;
-    timestamp: number;
+    timestamp: string;
     traceId: string;
     detail: string;
     businessErrorCode?: string;
@@ -80,24 +80,32 @@ export const handleNotOkResponse = async (response: Response): Promise<never> =>
 
     try {
         bodyText = await response.text();
-    } catch {
-        throw new CustomError(response.status, 'Unable to read response body');
+    } catch (error) {
+        throw new CustomError(response.status, 'Error in error: unable to read response body', {
+            cause: error,
+        });
+    }
+
+    const contentType = response.headers.get('content-type') ?? '';
+    if (!contentType.includes('application/json')) {
+        throw new CustomError(response.status, bodyText);
     }
 
     let body: unknown;
     try {
         body = JSON.parse(bodyText);
-    } catch {
-        throw new CustomError(response.status, bodyText);
+    } catch (error) {
+        throw new CustomError(response.status, `Error in error: unable to parse json response from text\n${bodyText}`, {
+            cause: error,
+        });
     }
 
     if (isProblemDetail(body)) {
-        const date = new Date(body.timestamp);
         throw new ProblemDetailError(
             body.status,
             body.detail,
             body.server,
-            Number.isNaN(date.getTime()) ? new Date() : date, // Fallback to current timestamp
+            body.timestamp,
             body.traceId,
             body.businessErrorCode,
             body.businessErrorValues

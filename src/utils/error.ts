@@ -43,7 +43,7 @@ export function snackWithFallback(
                 messageValues: {
                     message: error.message,
                     serverName: error.serverName,
-                    timestamp: error.timestamp.toLocaleString(), // It would require refactoring to adapt with GS language so we keep it like that for now
+                    timestamp: error.timestamp,
                     traceId: error.traceId,
                 },
                 ...headerInputs,

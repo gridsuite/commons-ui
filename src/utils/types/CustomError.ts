@@ -8,8 +8,8 @@
 export class CustomError extends Error {
     status: number;
 
-    constructor(status: number, message: string) {
-        super(message);
+    constructor(status: number, message: string, options?: ErrorOptions) {
+        super(message, options);
         this.status = status;
     }
 }

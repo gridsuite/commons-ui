@@ -9,7 +9,7 @@ import { CustomError } from './CustomError';
 export class ProblemDetailError extends CustomError {
     serverName: string;
 
-    timestamp: Date;
+    timestamp: string;
 
     traceId: string;
 
@@ -21,7 +21,7 @@ export class ProblemDetailError extends CustomError {
         status: number,
         message: string,
         serverName: string,
-        timestamp: Date,
+        timestamp: string,
         traceId: string,
         businessErrorCode?: string,
         businessErrorValues?: Record<string, unknown>
