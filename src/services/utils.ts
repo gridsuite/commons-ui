@@ -8,7 +8,6 @@
 import { getUserToken } from '../redux/commonStore';
 import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
-import { CustomError } from '../utils/types/CustomError';
 
 const DEFAULT_TIMEOUT_MS = 50_000;
 
@@ -16,14 +15,6 @@ const DEFAULT_TIMEOUT_MS = 50_000;
 type FetchInitWithTimeout = RequestInit & {
     /** If provided and no signal is set, use this as the timeout override (ms). */
     timeoutMs?: number;
-};
-
-const parseError = (text: string) => {
-    try {
-        return JSON.parse(text);
-    } catch {
-        return null;
-    }
 };
 
 /**
@@ -57,45 +48,58 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     return initWithSignal;
 };
 
-export const convertToCustomError = (textError: string) => {
-    const errorJson = parseError(textError);
-    if (errorJson?.status && errorJson?.server && errorJson?.timestamp && errorJson?.traceId && errorJson?.detail) {
+type ProblemDetailDto = {
+    status: number;
+    server: string;
+    timestamp: number;
+    traceId: string;
+    detail: string;
+    businessErrorCode?: string;
+    businessErrorValues?: Record<string, unknown>;
+};
+
+const isProblemDetail = (error: unknown): error is ProblemDetailDto => {
+    if (typeof error !== 'object' || error === null) {
+        return false;
+    }
+
+    const e = error as Record<string, unknown>;
+
+    return (
+        typeof e.status === 'number' &&
+        typeof e.server === 'string' &&
+        typeof e.timestamp === 'string' &&
+        typeof e.traceId === 'string' &&
+        typeof e.detail === 'string'
+    );
+};
+
+export const handleError = (error: unknown) => {
+    if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError')) {
+        throw new NetworkTimeoutError();
+    }
+    if (isProblemDetail(error)) {
         let date: Date = new Date(); // Fallback to current timestamp
         try {
-            date = new Date(errorJson.timestamp);
+            date = new Date(error.timestamp);
         } catch {
             // Ignore
         }
-        return new ProblemDetailError(
-            errorJson.status,
-            errorJson.detail,
-            errorJson.server,
+        throw new ProblemDetailError(
+            error.status,
+            error.detail,
+            error.server,
             date,
-            errorJson.traceId,
-            errorJson.businessErrorCode,
-            errorJson.businessErrorValues
+            error.traceId,
+            error.businessErrorCode,
+            error.businessErrorValues
         );
-    }
-    return new CustomError(errorJson.status, textError);
-};
-
-const handleError = (response: Response) => {
-    return response.text().then((text: string) => {
-        throw convertToCustomError(text);
-    });
-};
-
-const handleTimeoutError = (error: unknown) => {
-    if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError')) {
-        throw new NetworkTimeoutError();
     }
     throw error;
 };
 
 const safeFetch = (url: string, initCopy: RequestInit) => {
-    return fetch(url, initCopy)
-        .then((response) => (response.ok ? response : handleError(response)))
-        .catch(handleTimeoutError);
+    return fetch(url, initCopy).catch(handleError);
 };
 
 export const backendFetch = (url: string, init?: FetchInitWithTimeout, token?: string) => {

@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { CustomError } from './CustomError';
+export class ProblemDetailError extends Error {
+    status: number;
 
-export class ProblemDetailError extends CustomError {
     serverName: string;
 
     timestamp: Date;
@@ -27,7 +27,8 @@ export class ProblemDetailError extends CustomError {
         businessErrorCode?: string,
         businessErrorValues?: Record<string, unknown>
     ) {
-        super(status, message);
+        super(message);
+        this.status = status;
         this.serverName = serverName;
         this.timestamp = timestamp;
         this.traceId = traceId;
