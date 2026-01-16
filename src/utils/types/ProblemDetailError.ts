@@ -9,22 +9,37 @@ import { CustomError } from './CustomError';
 export class ProblemDetailError extends CustomError {
     serverName: string;
 
-    timestamp: Date;
+    timestamp: string;
 
     traceId: string;
 
+    businessErrorCode?: string;
+
+    businessErrorValues?: Record<string, unknown>;
+
     constructor(
+        status: number,
         message: string,
         serverName: string,
-        timestamp: Date,
+        timestamp: string,
         traceId: string,
-        status: number,
         businessErrorCode?: string,
         businessErrorValues?: Record<string, unknown>
     ) {
-        super(message, status, businessErrorCode, businessErrorValues);
+        super(status, message);
         this.serverName = serverName;
         this.timestamp = timestamp;
         this.traceId = traceId;
+        this.businessErrorCode = businessErrorCode;
+        this.businessErrorValues = businessErrorValues;
     }
+}
+
+export function formatMessageValues(properties: Record<string, unknown>): Record<string, string> {
+    return Object.fromEntries(
+        Object.entries(properties).map(([key, value]) => [
+            key,
+            typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value),
+        ])
+    );
 }
