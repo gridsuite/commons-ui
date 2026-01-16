@@ -17,6 +17,17 @@ export function keyGenerator() {
     };
 }
 
+/**
+ * returns true if the two arrays contain exactly the same strings, regardless of the order
+ */
+export function arraysContainIdenticalStrings(array1: string[] | undefined, array2: string[] | undefined): boolean {
+    return (
+        array1 !== undefined &&
+        array2 !== undefined &&
+        JSON.stringify([...array1].sort()) === JSON.stringify([...array2].sort())
+    );
+}
+
 export const areArrayElementsUnique = (array: unknown[]) => {
     const uniqueValues = [...new Set(array)];
     return uniqueValues.length === array.length;
