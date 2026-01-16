@@ -15,7 +15,6 @@ export const parametersEn = {
     descLfPreviousValues: 'Previous values',
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
-    resetProviderValuesToDefault: 'Reset provider default values',
     resetParamsConfirmation: 'Do you really want to reset these parameters ?',
     showAdvancedParameters: 'Advanced settings',
     showSpecificParameters: 'Specific settings',
@@ -277,6 +276,7 @@ export const parametersEn = {
     // Other
     resetLoadFlowParametersWarning:
         'Impossible to retrieve the load flow parameters defined in the user profile (default values are used)',
+    // pccMin
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
