@@ -6,7 +6,7 @@
  */
 
 import LeftPanelOpen from '@material-symbols/svg-400/outlined/left_panel_open.svg?react';
-import { SvgIcon, SvgIconProps } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 
 export function LeftPanelOpenIcon(props: SvgIconProps) {
     return <SvgIcon component={LeftPanelOpen} inheritViewBox {...props} />;
