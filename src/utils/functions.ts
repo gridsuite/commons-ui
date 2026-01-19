@@ -24,7 +24,8 @@ export function arraysContainIdenticalStrings(array1: string[] | undefined, arra
     return (
         array1 !== undefined &&
         array2 !== undefined &&
-        JSON.stringify([...array1].sort()) === JSON.stringify([...array2].sort())
+        JSON.stringify([...array1].sort((a, b) => a.localeCompare(b))) ===
+            JSON.stringify([...array2].sort((a, b) => a.localeCompare(b)))
     );
 }
 
