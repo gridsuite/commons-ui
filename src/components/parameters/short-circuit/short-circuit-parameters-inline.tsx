@@ -44,7 +44,7 @@ export function ShortCircuitParametersInLine({
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
-    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
+    const [, , , , , , , , resetParameters, ,] = parametersBackend;
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
     const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
@@ -76,21 +76,15 @@ export function ShortCircuitParametersInLine({
     const executeResetAction = useCallback(() => {
         if (pendingResetAction === 'all') {
             resetParameters();
-            resetProvider();
         } else if (pendingResetAction === 'parameters') {
             resetParameters();
         }
         setOpenResetConfirmation(false);
         setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [pendingResetAction, resetParameters]);
 
     const handleResetAllClick = useCallback(() => {
         setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
@@ -117,10 +111,6 @@ export function ShortCircuitParametersInLine({
                             />
                             <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
                             <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                            <LabelledButton
-                                label="resetProviderValuesToDefault"
-                                callback={handleResetParametersClick}
-                            />
                             <SubmitButton
                                 onClick={handleSubmit(
                                     shortCircuitMethods.onSaveInline,
