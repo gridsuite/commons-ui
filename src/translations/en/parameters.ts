@@ -276,6 +276,7 @@ export const parametersEn = {
     // Other
     resetLoadFlowParametersWarning:
         'Impossible to retrieve the load flow parameters defined in the user profile (default values are used)',
+    // pccMin
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
