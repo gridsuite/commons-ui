@@ -74,9 +74,7 @@ export function ShortCircuitParametersInLine({
     );
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-        } else if (pendingResetAction === 'parameters') {
+        if (pendingResetAction === 'all' || pendingResetAction === 'parameters') {
             resetParameters();
         }
         setOpenResetConfirmation(false);
