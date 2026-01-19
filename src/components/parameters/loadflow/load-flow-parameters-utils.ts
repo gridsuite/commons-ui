@@ -15,7 +15,7 @@ import {
 } from '../common';
 import {
     BALANCE_TYPE,
-    CONNECTED_COMPONENT_MODE,
+    CONNECTED_MODE,
     COUNTRIES_TO_BALANCE,
     DC,
     DC_POWER_FACTOR,
@@ -47,7 +47,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
         [DC]: yup.boolean().required(),
         [BALANCE_TYPE]: yup.string().required(),
         [COUNTRIES_TO_BALANCE]: yup.array().of(yup.string()).required(),
-        [CONNECTED_COMPONENT_MODE]: yup.string().required(),
+        [CONNECTED_MODE]: yup.string().required(),
         [HVDC_AC_EMULATION]: yup.boolean().required(),
     });
 };
