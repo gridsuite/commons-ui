@@ -74,5 +74,6 @@ export const businessErrorsFr = {
     'diagram.invalidEquipment':
         "L'équipement '{id}' de type '{equipmentType}' n'est pas un site ou poste dans le réseau courant",
     'diagram.invalidSubstationLayout': "Mode d'affichage de site '{substationLayout}' invalide",
+    'diagram.invalidCsv': 'Le CSV fourni est invalide',
     'diagram.noVoltageLevelIdProvided': "Aucun poste n'a été fourni en entrée de la génération de NAD",
 };

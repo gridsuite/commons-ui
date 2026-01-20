@@ -73,5 +73,6 @@ export const businessErrorsEn = {
     'diagram.invalidEquipment':
         "Given equipment '{id}' of type '{equipmentType}' is not a substation or voltage level id in given network",
     'diagram.invalidSubstationLayout': "Substation layout '{substationLayout}' incorrect",
+    'diagram.invalidCsv': 'Provided CSV is invalid',
     'diagram.noVoltageLevelIdProvided': 'No voltage level was provided to the NAD generation input',
 };
