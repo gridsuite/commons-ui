@@ -6,18 +6,8 @@
  */
 
 import PhotoLibrary from '@material-symbols/svg-400/outlined/photo_library-fill.svg?react';
-import { useTheme } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 
-export function PhotoLibraryIcon() {
-    const theme = useTheme();
-
-    return (
-        <PhotoLibrary
-            style={{
-                width: 14.4,
-                height: 14.4,
-                fill: theme.palette.text.primary,
-            }}
-        />
-    );
+export function PhotoLibraryIcon(props: SvgIconProps) {
+    return <SvgIcon component={PhotoLibrary} inheritViewBox {...props} />;
 }

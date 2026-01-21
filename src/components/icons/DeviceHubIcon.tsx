@@ -6,18 +6,8 @@
  */
 
 import DeviceHub from '@material-symbols/svg-400/outlined/device_hub.svg?react';
-import { useTheme } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 
-interface DeviceHubProps {
-    style?: React.CSSProperties;
-}
-export function DeviceHubIcon({ style }: DeviceHubProps) {
-    const theme = useTheme();
-
-    const defaultStyle: React.CSSProperties = {
-        width: 15,
-        height: 15,
-        fill: theme.palette.text.primary,
-    };
-    return <DeviceHub style={{ ...defaultStyle, ...style }} />;
+export function DeviceHubIcon(props: SvgIconProps) {
+    return <SvgIcon component={DeviceHub} inheritViewBox {...props} />;
 }

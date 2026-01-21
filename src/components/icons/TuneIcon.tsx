@@ -6,18 +6,8 @@
  */
 
 import Tune from '@material-symbols/svg-400/outlined/tune.svg?react';
-import { useTheme } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 
-export function TuneIcon() {
-    const theme = useTheme();
-
-    return (
-        <Tune
-            style={{
-                width: 14.4,
-                height: 14.4,
-                fill: theme.palette.text.primary,
-            }}
-        />
-    );
+export function TuneIcon(props: SvgIconProps) {
+    return <SvgIcon component={Tune} inheritViewBox {...props} />;
 }
