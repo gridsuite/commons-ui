@@ -87,7 +87,7 @@ export const handleNotOkResponse = async (response: Response): Promise<never> =>
     }
 
     const contentType = response.headers.get('content-type') ?? '';
-    if (!contentType.includes('/json') && !contentType.includes('+json')) {
+    if (!contentType.includes('application/json') && !contentType.includes('application/problem+json')) {
         throw new CustomError(response.status, bodyText);
     }
 
