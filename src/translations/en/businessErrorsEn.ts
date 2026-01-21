@@ -75,4 +75,5 @@ export const businessErrorsEn = {
     'diagram.invalidSubstationLayout': "Substation layout '{substationLayout}' incorrect",
     'diagram.invalidCsv': 'Provided CSV is invalid',
     'diagram.noVoltageLevelIdProvided': 'No voltage level was provided to the NAD generation input',
+    'diagram.noConfiguredPosition': 'No configured position has been found',
 };

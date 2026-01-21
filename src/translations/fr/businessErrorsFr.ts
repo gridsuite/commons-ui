@@ -76,4 +76,5 @@ export const businessErrorsFr = {
     'diagram.invalidSubstationLayout': "Mode d'affichage de site '{substationLayout}' invalide",
     'diagram.invalidCsv': 'Le CSV fourni est invalide',
     'diagram.noVoltageLevelIdProvided': "Aucun poste n'a été fourni en entrée de la génération de NAD",
+    'diagram.noConfiguredPosition': "Aucune position configurée n'a été trouvée",
 };
