@@ -6,33 +6,43 @@
  */
 
 import { Box } from '@mui/material';
-import { FilterFormProps, HeaderFilterForm } from './HeaderFilterForm';
+import { UUID } from 'node:crypto';
+import { HeaderFilterForm } from './HeaderFilterForm';
 import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
 import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
 import { unscrollableDialogStyles } from '../dialogs';
+
+export interface FilterFormProps {
+    creation?: boolean;
+    activeDirectory?: UUID;
+    filterType?: { id: string; label: string };
+    sourceFilterForExplicitNamingConversion?: {
+        id: UUID;
+        equipmentType: string;
+    };
+    isEditing: boolean;
+}
 
 export function FilterForm({
     sourceFilterForExplicitNamingConversion,
     creation,
     activeDirectory,
     filterType,
+    isEditing,
 }: Readonly<FilterFormProps>) {
     return (
         <>
             <Box sx={unscrollableDialogStyles.unscrollableHeader}>
-                <HeaderFilterForm
-                    creation={creation}
-                    activeDirectory={activeDirectory}
-                    sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
-                />
+                <HeaderFilterForm creation={creation} activeDirectory={activeDirectory} />
             </Box>
             {filterType?.id === FilterType.EXPLICIT_NAMING.id && (
                 <ExplicitNamingFilterForm
                     sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                    isEditing={isEditing}
                 />
             )}
-            {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm />}
+            {filterType?.id === FilterType.EXPERT.id && <ExpertFilterForm isEditing={isEditing} />}
         </>
     );
 }

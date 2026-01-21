@@ -8,7 +8,7 @@
 import { useCallback, useMemo } from 'react';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
@@ -25,6 +25,7 @@ import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { GsLang } from '../../utils';
+import { snackWithFallback } from '../../utils/error';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -34,17 +35,18 @@ const emptyFormData = {
     ...getExpertFilterEmptyFormData(),
 };
 
-// we use both schemas then we can change the type of filter without losing the filled form fields
-const formSchema = yup
-    .object()
-    .shape({
-        [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-        [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-        ...explicitNamingFilterSchema,
-        ...expertFilterSchema,
-    })
-    .required();
+// the schema depends of the type of the filter
+const formSchemaByFilterType = (filterType: { id: string }) =>
+    yup
+        .object()
+        .shape({
+            [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
+            [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+            [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+            ...(filterType?.id === FilterType.EXPLICIT_NAMING.id ? explicitNamingFilterSchema : {}),
+            ...(filterType?.id === FilterType.EXPERT.id ? expertFilterSchema : {}),
+        })
+        .required();
 
 export interface FilterCreationDialogProps {
     open: boolean;
@@ -56,6 +58,7 @@ export interface FilterCreationDialogProps {
         equipmentType: string;
     };
     filterType: { id: string; label: string };
+    isDeveloperMode: boolean;
 }
 
 export function FilterCreationDialog({
@@ -65,8 +68,11 @@ export function FilterCreationDialog({
     language,
     sourceFilterForExplicitNamingConversion = undefined,
     filterType,
+    isDeveloperMode,
 }: FilterCreationDialogProps) {
     const { snackError } = useSnackMessage();
+
+    const formSchema = useMemo(() => formSchemaByFilterType(filterType), [filterType]);
 
     const formMethods = useForm({
         defaultValues: emptyFormData,
@@ -91,9 +97,7 @@ export function FilterCreationDialog({
                     filterForm[FieldConstants.DESCRIPTION],
                     null,
                     (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
+                        snackWithFallback(snackError, error);
                     },
                     onClose,
                     activeDirectory
@@ -109,9 +113,7 @@ export function FilterCreationDialog({
                     activeDirectory,
                     onClose,
                     (error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                        });
+                        snackWithFallback(snackError, error);
                     }
                 );
             }
@@ -138,6 +140,7 @@ export function FilterCreationDialog({
             removeOptional
             disabledSave={!!nameError || !!isValidating}
             language={language}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm
@@ -145,6 +148,7 @@ export function FilterCreationDialog({
                 activeDirectory={activeDirectory}
                 filterType={filterType}
                 sourceFilterForExplicitNamingConversion={sourceFilterForExplicitNamingConversion}
+                isEditing={false}
             />
         </CustomMuiDialog>
     );

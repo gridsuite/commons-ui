@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import type { SxProps, Theme } from '@mui/material';
+import type { MuiStyles } from '../../utils/styles';
 
 export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
@@ -42,4 +42,4 @@ export const styles = {
             border: 'none !important',
         },
     }),
-} as const satisfies Record<string, SxProps<Theme>>;
+} as const satisfies MuiStyles;

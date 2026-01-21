@@ -8,13 +8,14 @@
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, Grid, LinearProgress } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
 import { type ObjectSchema } from 'yup';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 import { GsLang } from '../../../utils';
+import type { MuiStyles } from '../../../utils/styles';
 
 export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogProps & {
     open: boolean;
@@ -32,6 +33,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     language?: GsLang;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
+    isDeveloperMode?: boolean;
 };
 
 const styles = {
@@ -42,7 +44,7 @@ const styles = {
             margin: 'auto',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 /**
  * all those styles are made to work with each other in order to control the scroll behavior:
@@ -75,7 +77,7 @@ export const unscrollableDialogStyles = {
         overflowY: 'auto',
         padding: 1,
     },
-};
+} as const satisfies MuiStyles;
 
 export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,
@@ -91,6 +93,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     onCancel,
     children,
     language,
+    isDeveloperMode,
     confirmationMessageKey,
     unscrollableFullHeight = false,
     ...dialogProps
@@ -154,6 +157,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             validationSchema={formSchema}
             removeOptional={removeOptional}
             language={language}
+            isDeveloperMode={isDeveloperMode}
         >
             <Dialog
                 sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
@@ -164,9 +168,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
-                    <Grid item xs={11}>
-                        <FormattedMessage id={titleId} />
-                    </Grid>
+                    <FormattedMessage id={titleId} />
                 </DialogTitle>
                 <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}

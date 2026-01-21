@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import clsx from 'clsx';
-import { SxProps, Theme } from '@mui/material';
 import { OverflowableText } from '../../overflowableText';
-import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
-import { mergeSx } from '../../../utils/styles';
+import { EquipmentInfos, EquipmentType } from '../../../utils/types/equipmentType';
+import { mergeSx, type SxStyle } from '../../../utils/styles';
 
 export interface TagRendererProps {
     element: EquipmentInfos;
@@ -17,13 +16,13 @@ export interface TagRendererProps {
         equipmentVlTag?: string;
     };
     styles?: {
-        equipmentTag?: SxProps<Theme>;
-        equipmentVlTag?: SxProps<Theme>;
+        equipmentTag?: SxStyle;
+        equipmentVlTag?: SxStyle;
     };
 }
 
 export function TagRenderer({ element, ...props }: TagRendererProps) {
-    if (element.type !== EQUIPMENT_TYPE.SUBSTATION?.name && element.type !== EQUIPMENT_TYPE.VOLTAGE_LEVEL?.name) {
+    if (element.type !== EquipmentType.SUBSTATION && element.type !== EquipmentType.VOLTAGE_LEVEL) {
         return (
             <OverflowableText
                 text={element.voltageLevelLabel}

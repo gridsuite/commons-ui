@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert, Grid, Theme } from '@mui/material';
+import { Alert, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { RadioInput } from '../../inputs';
 import {
@@ -18,20 +18,21 @@ import {
 } from './constants';
 import { ParameterLineDirectoryItemsInput } from '../common';
 import { ElementType, EquipmentType } from '../../../utils';
+import type { MuiStyles } from '../../../utils/styles';
 
 const equipmentsSelectionStyles = {
-    alert: (theme: Theme) => ({
+    alert: (theme) => ({
         display: 'flex',
         alignItems: 'center',
         marginBottom: theme.spacing(2),
     }),
-    choice: (theme: Theme) => ({
+    choice: (theme) => ({
         marginTop: theme.spacing(4),
     }),
     choiceContainer: {
         paddingLeft: 1,
     },
-};
+} as const satisfies MuiStyles;
 
 const initialEquipmentsSelectionType = {
     ALL_EXCEPT: {

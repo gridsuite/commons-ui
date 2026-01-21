@@ -1,16 +1,17 @@
 /**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * Copyright (c) 2024-2025, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
@@ -19,7 +20,7 @@ import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
-import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
+import { DISTRIBUTION_KEY } from '../constants/FilterConstants';
 import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
@@ -29,6 +30,8 @@ import { EquipmentType } from '../../../utils/types/equipmentType';
 import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { filterStyles } from '../HeaderFilterForm';
+import { snackWithFallback } from '../../../utils';
+import { useCustomFormContext } from '../../inputs';
 
 function isGeneratorOrLoad(equipmentType: string): boolean {
     return equipmentType === Generator.type || equipmentType === Load.type;
@@ -45,23 +48,19 @@ export const explicitNamingFilterSchema = {
         )
         // we remove empty lines
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
-        .when([FieldConstants.FILTER_TYPE], {
-            is: FilterType.EXPLICIT_NAMING.id,
-            then: (schema) =>
-                schema.min(1, 'emptyFilterError').when([FieldConstants.EQUIPMENT_TYPE], {
-                    is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
-                    then: (innerSchema) =>
-                        innerSchema
-                            .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
-                                return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
-                            })
-                            .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
-                                return !(
-                                    array!.some((row) => row[DISTRIBUTION_KEY]) &&
-                                    array!.some((row) => !row[DISTRIBUTION_KEY])
-                                );
-                            }),
-                }),
+        .min(1, 'emptyFilterError')
+        .when([FieldConstants.EQUIPMENT_TYPE], {
+            is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
+            then: (innerSchema) =>
+                innerSchema
+                    .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
+                        return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
+                    })
+                    .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
+                        return !(
+                            array!.some((row) => row[DISTRIBUTION_KEY]) && array!.some((row) => !row[DISTRIBUTION_KEY])
+                        );
+                    }),
         }),
 };
 
@@ -96,13 +95,17 @@ export interface FilterForExplicitConversionProps {
 
 interface ExplicitNamingFilterFormProps {
     sourceFilterForExplicitNamingConversion?: FilterForExplicitConversionProps;
+    isEditing: boolean;
 }
 
-export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversion }: ExplicitNamingFilterFormProps) {
+export function ExplicitNamingFilterForm({
+    sourceFilterForExplicitNamingConversion,
+    isEditing,
+}: Readonly<ExplicitNamingFilterFormProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const { getValues, setValue } = useFormContext();
+    const { getValues, setValue, isDeveloperMode, language } = useCustomFormContext();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
@@ -204,10 +207,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                 );
             })
             .catch((error: any) =>
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'convertIntoExplicitNamingFilterError',
-                })
+                snackWithFallback(snackError, error, { headerId: 'convertIntoExplicitNamingFilterError' })
             );
     };
 
@@ -218,7 +218,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                     Input={SelectInput}
                     name={FieldConstants.EQUIPMENT_TYPE}
                     options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={!!sourceFilterForExplicitNamingConversion}
+                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     resetOnConfirmation={handleResetOnConfirmation}
@@ -260,6 +260,7 @@ export function ExplicitNamingFilterForm({ sourceFilterForExplicitNamingConversi
                         }),
                         fileHeaders: csvFileHeaders,
                         getDataFromCsv: getDataFromCsvFile,
+                        language,
                     }}
                     cssProps={{
                         padding: 1,

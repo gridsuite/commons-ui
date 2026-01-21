@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
@@ -14,8 +14,8 @@ import type {
     ISAParameters,
 } from '../../components/parameters/common/limitreductions/columns-definitions';
 import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
-import { NonEvacuatedEnergyParametersInfos } from './non-evacuated-energy.type';
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
+import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',
@@ -37,20 +37,22 @@ export type SpecificParameterInfos = {
     label?: string;
 };
 
-export type SpecificParametersInfos = Record<string, SpecificParameterInfos>;
+export type SpecificParametersDescription = Record<string, SpecificParameterInfos[]>;
+export type SpecificParametersValues = Record<string, any>;
+export type SpecificParametersPerProvider = Record<string, SpecificParametersValues>;
 
 export type ParametersInfos<T extends ComputingType> = T extends ComputingType.SENSITIVITY_ANALYSIS
     ? SensitivityAnalysisParametersInfos
     : T extends ComputingType.SECURITY_ANALYSIS
       ? ISAParameters
-      : T extends ComputingType.NON_EVACUATED_ENERGY_ANALYSIS
-        ? NonEvacuatedEnergyParametersInfos
-        : T extends ComputingType.LOAD_FLOW
-          ? LoadFlowParametersInfos
-          : T extends ComputingType.DYNAMIC_SIMULATION
-            ? DynamicSimulationParametersFetchReturn
-            : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
-              ? DynamicSecurityAnalysisParametersFetchReturn
+      : T extends ComputingType.LOAD_FLOW
+        ? LoadFlowParametersInfos
+        : T extends ComputingType.DYNAMIC_SIMULATION
+          ? DynamicSimulationParametersFetchReturn
+          : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
+            ? DynamicSecurityAnalysisParametersFetchReturn
+            : T extends ComputingType.SHORT_CIRCUIT
+              ? ShortCircuitParametersInfos
               : Record<string, any>;
 
 export type UseParametersBackendReturnProps<T extends ComputingType> = [
@@ -63,6 +65,6 @@ export type UseParametersBackendReturnProps<T extends ComputingType> = [
     (studyUuid: UUID) => void,
     (newParams: ParametersInfos<T>) => void,
     () => Promise<void> | undefined,
-    Record<string, any> | null,
+    SpecificParametersDescription | null,
     ILimitReductionsByVoltageLevel[],
 ];

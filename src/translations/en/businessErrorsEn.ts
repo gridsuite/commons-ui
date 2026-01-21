@@ -1,0 +1,69 @@
+/**
+ * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+export const businessErrorsEn = {
+    'directory.permissionDenied': 'You are not allowed to perform this action.',
+    'directory.elementNameBlank': 'Element name must not be blank.',
+    'directory.notDirectory': 'The selected element is not a directory.',
+    'directory.elementNameConflict': 'An element with the same name already exists in the directory.',
+    'directory.moveInDescendantNotAllowed': 'Cannot move an element inside one of its descendants.',
+    'directory.someElementsAreMissing': 'Some of the requested directory elements are missing.',
+    'directory.elementNotFound': 'The requested directory element could not be found.',
+    'explore.permissionDenied': 'You are not allowed to perform this action.',
+    'explore.maxElementsExceeded':
+        'You have reached your user quota for cases and studies ({limit} cases and studies).',
+    'explore.incorrectCaseFile': 'The provided case file is incorrect.',
+    'study.notFound': 'Study was not found.',
+    'study.computationRunning': 'The operation cannot be performed because a computation is running.',
+    'study.loadflowError': 'Loadflow error.',
+    'study.notAllowed': 'Operation not allowed.',
+    'study.cantDeleteRootNode': 'A root node cannot be deleted.',
+    'study.moveNetworkModificationForbidden': 'Impossible to move this network modification.',
+    'study.badNodeType': 'Bad node type.',
+    'study.nodeNotBuilt': 'Node not built.',
+    'study.nodeNameAlreadyExist': 'Node name already exists.',
+    'study.timeSeriesBadType': 'Bad timeseries type.',
+    'study.noVoltageInitResultsForNode': 'No voltage initialization results found.',
+    'study.maxNodeBuildsExceeded': 'You have reached your user quota for builds per study ({limit} builds)',
+    'study.rootNetworkDeleteForbidden': 'Impossible to delete this root network.',
+    'study.maximumRootNetworkByStudyReached': 'Maximum number of root network per study exceeded.',
+    'study.maximumTagLengthExceeded': 'Tag length exceeded.',
+    'study.networkExportFailed': 'Failed to export network.',
+    'study.tooManyNadConfigs': 'Maximum number of NAD configuration exceeded.',
+    'study.tooManyMapCards': 'Maximum number of cards exceeded.',
+    'useradmin.permissionDenied': "You don't have permission to perform this action.",
+    'useradmin.userNotFound': 'User not found.',
+    'useradmin.userAlreadyExists': 'User already exists.',
+    'useradmin.profileNotFound': 'User profile not found.',
+    'useradmin.profileAlreadyExists': 'User profile already exists.',
+    'useradmin.groupNotFound': "User's group not found.",
+    'useradmin.groupAlreadyExists': 'User group already exists.',
+    'useradmin.announcementInvalidPeriod': 'The announcement has an invalid time period.',
+    'useradmin.announcementOverlap': 'The announcement period overlaps with an existing one.',
+    'filter.filterCycleDetected': 'Filter cycle detected: {filters}',
+    'computation.resultNotFound': 'Results not found.',
+    'computation.parametersNotFound': 'Parameters not found.',
+    'computation.invalidSortFormat': 'The sorting format is incorrect.',
+    'computation.invalidExportParams': 'The export settings are incorrect.',
+    'computation.limitReductionConfigError': 'The limit reductions configuration is incorrect.',
+    'computation.runnerError': 'An error occurred during the computation.',
+    'voltageInit.missingFilter': 'The configuration contains one or more filters that have been deleted.',
+    'shortcircuit.busOutOfVoltage': 'Selected bus is out of voltage.',
+    'shortcircuit.missingExtensionData': 'Missing short-circuit extension data.',
+    'shortcircuit.inconsistentVoltageLevels':
+        'Some voltage levels have wrong isc values. Check out the logs to find which ones.',
+    'dynamicMapping.mappingNameNotProvided': 'Mapping name not provided',
+    'dynamicSecurityAnalysis.providerNotFound': 'Dynamic security analysis provider not found.',
+    'dynamicSecurityAnalysis.contingenciesNotFound': 'No contingencies provided.',
+    'dynamicSecurityAnalysis.contingencyListEmpty': 'Contingency list parameter must not be null or empty.',
+    'dynamicSimulation.providerNotFound': 'Dynamic simulation provider not found.',
+    'dynamicSimulation.mappingNotProvided': 'Dynamic simulation mapping not provided.',
+    'dynamicSimulation.mappingNotLastRuleWithEmptyFilterError':
+        'Only last rule can have empty filter: type {equipmentType}, rule index {index}.',
+    'sensitivityAnalysis.tooManyFactors':
+        'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
+};

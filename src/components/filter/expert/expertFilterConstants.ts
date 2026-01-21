@@ -18,6 +18,7 @@ import {
     OHM,
     SIEMENS,
 } from '../../../utils/constants/unitsConstants';
+import { ALL_EQUIPMENTS, EquipmentType } from '../../../utils';
 
 export enum RULES {
     EMPTY_RULE = 'emptyRule',
@@ -28,55 +29,19 @@ export enum RULES {
 
 export const EXPERT_FILTER_QUERY = 'rules';
 
-export const EXPERT_FILTER_EQUIPMENTS = {
-    SUBSTATION: {
-        id: 'SUBSTATION',
-        label: 'Substations',
-    },
-    VOLTAGE_LEVEL: {
-        id: 'VOLTAGE_LEVEL',
-        label: 'VoltageLevels',
-    },
-    LINE: {
-        id: 'LINE',
-        label: 'Lines',
-    },
-    TWO_WINDINGS_TRANSFORMER: {
-        id: 'TWO_WINDINGS_TRANSFORMER',
-        label: 'TwoWindingsTransformers',
-    },
-    THREE_WINDINGS_TRANSFORMER: {
-        id: 'THREE_WINDINGS_TRANSFORMER',
-        label: 'ThreeWindingsTransformers',
-    },
-    GENERATOR: {
-        id: 'GENERATOR',
-        label: 'Generators',
-    },
-    BATTERY: {
-        id: 'BATTERY',
-        label: 'Batteries',
-    },
-    LOAD: {
-        id: 'LOAD',
-        label: 'Loads',
-    },
-    SHUNT_COMPENSATOR: {
-        id: 'SHUNT_COMPENSATOR',
-        label: 'ShuntCompensators',
-    },
-    STATIC_VAR_COMPENSATOR: {
-        id: 'STATIC_VAR_COMPENSATOR',
-        label: 'StaticVarCompensators',
-    },
-    HVDC_LINE: {
-        id: 'HVDC_LINE',
-        label: 'Hvdc',
-    },
-    DANGLING_LINE: {
-        id: 'DANGLING_LINE',
-        label: 'DanglingLines',
-    },
+export const EXPERT_FILTER_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
+    [EquipmentType.SUBSTATION]: ALL_EQUIPMENTS[EquipmentType.SUBSTATION],
+    [EquipmentType.VOLTAGE_LEVEL]: ALL_EQUIPMENTS[EquipmentType.VOLTAGE_LEVEL],
+    [EquipmentType.LINE]: ALL_EQUIPMENTS[EquipmentType.LINE],
+    [EquipmentType.TWO_WINDINGS_TRANSFORMER]: ALL_EQUIPMENTS[EquipmentType.TWO_WINDINGS_TRANSFORMER],
+    [EquipmentType.THREE_WINDINGS_TRANSFORMER]: ALL_EQUIPMENTS[EquipmentType.THREE_WINDINGS_TRANSFORMER],
+    [EquipmentType.GENERATOR]: ALL_EQUIPMENTS[EquipmentType.GENERATOR],
+    [EquipmentType.BATTERY]: ALL_EQUIPMENTS[EquipmentType.BATTERY],
+    [EquipmentType.LOAD]: ALL_EQUIPMENTS[EquipmentType.LOAD],
+    [EquipmentType.SHUNT_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.SHUNT_COMPENSATOR],
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.STATIC_VAR_COMPENSATOR],
+    [EquipmentType.HVDC_LINE]: ALL_EQUIPMENTS[EquipmentType.HVDC_LINE],
+    [EquipmentType.DANGLING_LINE]: ALL_EQUIPMENTS[EquipmentType.DANGLING_LINE],
 };
 
 export const ENERGY_SOURCE_OPTIONS = [

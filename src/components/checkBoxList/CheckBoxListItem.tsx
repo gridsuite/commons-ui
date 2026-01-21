@@ -10,6 +10,7 @@ import { ListItem, ListItemButton } from '@mui/material';
 import { CheckBoxListItemProps } from './checkBoxList.type';
 import { CheckBoxListItemContent } from './CheckBoxListItemContent';
 import { mergeSx } from '../../utils';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     checkboxListItem: {
@@ -27,7 +28,7 @@ const styles = {
             paddingRight: '0px',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 export function CheckBoxListItem<T>({
     item,

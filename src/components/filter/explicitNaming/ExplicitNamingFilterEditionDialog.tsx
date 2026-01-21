@@ -23,6 +23,7 @@ import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConst
 import { FilterEditionProps } from '../filter.type';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
+import { snackWithFallback } from '../../../utils/error';
 
 const formSchema = yup
     .object()
@@ -47,6 +48,7 @@ export function ExplicitNamingFilterEditionDialog({
     activeDirectory,
     language,
     description,
+    isDeveloperMode,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -82,10 +84,7 @@ export function ExplicitNamingFilterEditionDialog({
                 })
                 .catch((error) => {
                     setDataFetchStatus(FetchStatus.FETCH_ERROR);
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'cannotRetrieveFilter',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'cannotRetrieveFilter' });
                 });
         }
     }, [id, name, open, reset, snackError, getFilterById, description]);
@@ -100,9 +99,7 @@ export function ExplicitNamingFilterEditionDialog({
                 filterForm[FieldConstants.DESCRIPTION] ?? '',
                 id,
                 (error) => {
-                    snackError({
-                        messageTxt: error.message,
-                    });
+                    snackWithFallback(snackError, error);
                 },
                 onClose
             );
@@ -128,9 +125,12 @@ export function ExplicitNamingFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPLICIT_NAMING} />}
+            {isDataReady && (
+                <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPLICIT_NAMING} isEditing />
+            )}
         </CustomMuiDialog>
     );
 }

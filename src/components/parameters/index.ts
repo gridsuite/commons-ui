@@ -10,5 +10,6 @@ export * from './network-visualizations';
 export * from './loadflow';
 export * from './short-circuit';
 export * from './voltage-init';
+export * from './pcc-min';
 export * from './security-analysis';
 export * from './sensi';

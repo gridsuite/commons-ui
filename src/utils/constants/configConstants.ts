@@ -7,7 +7,7 @@
 
 export const PARAM_THEME = 'theme';
 export const PARAM_LANGUAGE = 'language';
-export const PARAM_DEVELOPER_MODE = 'enableDeveloperMode';
+export const PARAM_DEVELOPER_MODE = 'isDeveloperMode';
 export const LAST_SELECTED_DIRECTORY = 'lastSelectedDirectory';
 
 export const COMMON_CONFIG_PARAMS_NAMES = new Set([

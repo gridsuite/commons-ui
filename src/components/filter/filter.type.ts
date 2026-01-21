@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { FieldConstants, GsLang } from '../../utils';
 import { RuleGroupTypeExport } from './expert/expertFilter.type';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
@@ -45,6 +45,7 @@ export interface FilterEditionProps {
     activeDirectory?: UUID;
     language?: GsLang;
     description?: string;
+    isDeveloperMode: boolean;
 }
 
 export interface NewFilterType {

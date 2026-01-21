@@ -8,13 +8,16 @@
 
 import { createContext } from 'react';
 
-export type ListenerEventWS = {
+export type ListenerEventBase = {
     id: string;
+    callback: (...args: any[]) => void;
+};
+
+export type ListenerEventWS = ListenerEventBase & {
     callback: (event: MessageEvent) => void;
 };
 
-export type ListenerOnReopen = {
-    id: string;
+export type ListenerOnReopen = ListenerEventBase & {
     callback: () => void;
 };
 

@@ -5,18 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
-import {
-    ShortCircuitParameters,
-    ShortCircuitParametersInfos,
-} from '../components/parameters/short-circuit/short-circuit-parameters.type';
+import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
-// eslint-disable-next-line import/prefer-default-export
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
     return backendFetchJson(
@@ -54,25 +50,6 @@ export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParam
 export function getStudyShortCircuitParameters(studyUuid: UUID): Promise<ShortCircuitParametersInfos> {
     console.info('get study short-circuit parameters');
     return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit-analysis/parameters`);
-}
-
-export function setStudyShortCircuitParameters(studyUuid: UUID, newParams: ShortCircuitParameters) {
-    console.info('set study short-circuit parameters', newParams);
-    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit-analysis/parameters`, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: newParams ? JSON.stringify(newParams) : null,
-    });
-}
-
-export function invalidateStudyShortCircuitStatus(studyUuid: UUID) {
-    console.info('invalidate study short circuit status');
-    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit/invalidate-status`, {
-        method: 'PUT',
-    });
 }
 
 export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: VoltageInitStudyParameters) {

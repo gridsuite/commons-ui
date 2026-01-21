@@ -9,15 +9,13 @@ import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
-    FILTERS,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
-    ID,
     LOW_VOLTAGE_LIMIT,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
@@ -47,6 +45,8 @@ import {
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
 import { SELECTED } from '../../dnd-table';
+import { FILTERS, ID } from '../../../utils/constants/filterConstant';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -217,10 +217,7 @@ export const useVoltageInitParametersForm = ({
             if (studyUuid) {
                 updateVoltageInitParameters(studyUuid, fromVoltageInitParametersFormToParamValues(formData)).catch(
                     (error) => {
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'updateVoltageInitParametersError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
                     }
                 );
             }
@@ -238,10 +235,7 @@ export const useVoltageInitParametersForm = ({
                     ElementType.VOLTAGE_INIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error: Error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updateVoltageInitParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
                 });
             }
         },
@@ -259,10 +253,7 @@ export const useVoltageInitParametersForm = ({
                     reset(fromVoltageInitParamsDataToFormValues(params));
                 })
                 .catch((error: Error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsRetrievingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                 })
                 .finally(() => {
                     clearTimeout(timer);

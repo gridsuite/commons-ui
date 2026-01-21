@@ -7,18 +7,18 @@
 import {
     Article as ArticleIcon,
     Calculate as CalculateIcon,
+    Hub as HubIcon,
     NoteAlt as NoteAltIcon,
     OfflineBolt as OfflineBoltIcon,
     Photo as PhotoIcon,
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
     TableView as TableViewIcon,
-    Hub as HubIcon,
 } from '@mui/icons-material';
-import { SxProps, Theme } from '@mui/material';
 import { ElementType } from '../types/elementType';
+import type { SxStyle } from '../styles';
 
-export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
+export function getFileIcon(type: ElementType, style: SxStyle) {
     switch (type) {
         case ElementType.STUDY:
             return <PhotoLibraryIcon sx={style} />;
@@ -36,6 +36,7 @@ export function getFileIcon(type: ElementType, style: SxProps<Theme>) {
         case ElementType.SENSITIVITY_PARAMETERS:
         case ElementType.SHORT_CIRCUIT_PARAMETERS:
         case ElementType.NETWORK_VISUALIZATIONS_PARAMETERS:
+        case ElementType.PCC_MIN_PARAMETERS:
             return <SettingsIcon sx={style} />;
         case ElementType.SPREADSHEET_CONFIG:
             return <CalculateIcon sx={style} />;

@@ -6,11 +6,9 @@
  */
 // @author Quentin CAPY
 import { useCallback, useEffect, useRef } from 'react';
-import { ListenerEventWS, ListenerOnReopen } from '../contexts/NotificationsContext';
+import { ListenerEventBase } from '../contexts/NotificationsContext';
 
-export const useListenerManager = <TListener extends ListenerEventWS | ListenerOnReopen, TMessage extends MessageEvent>(
-    urls: Record<string, string | undefined>
-) => {
+export const useListenerManager = <TListener extends ListenerEventBase>(urls: Record<string, string | undefined>) => {
     const urlsListenersRef = useRef<Record<string, TListener[]>>({});
 
     useEffect(() => {
@@ -40,6 +38,7 @@ export const useListenerManager = <TListener extends ListenerEventWS | ListenerO
         }
         urlsListenersRef.current = urlsListeners;
     }, []);
+
     const removeListenerEvent = useCallback((urlKey: string, id: string) => {
         const listeners = urlsListenersRef.current?.[urlKey];
         if (listeners) {
@@ -50,15 +49,17 @@ export const useListenerManager = <TListener extends ListenerEventWS | ListenerO
             };
         }
     }, []);
+
     const broadcast = useCallback(
-        (urlKey: string) => (event: TMessage) => {
-            const listeners = urlsListenersRef.current?.[urlKey];
-            if (listeners) {
-                listeners.forEach(({ callback }) => {
-                    callback(event);
-                });
-            }
-        },
+        (urlKey: string) =>
+            (...args: Parameters<TListener['callback']>) => {
+                const listeners = urlsListenersRef.current?.[urlKey];
+                if (listeners) {
+                    listeners.forEach(({ callback }) => {
+                        callback(...args);
+                    });
+                }
+            },
         []
     );
 

@@ -20,8 +20,8 @@ import { saveExpertFilter } from '../utils/filterApi';
 import { expertFilterSchema } from './ExpertFilterForm';
 import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
-import { catchErrorHandler } from '../../../services';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
+import { snackWithFallback } from '../../../utils/error';
 
 const formSchema = yup
     .object()
@@ -44,6 +44,7 @@ export function ExpertFilterEditionDialog({
     activeDirectory,
     language,
     description,
+    isDeveloperMode,
 }: Readonly<FilterEditionProps>) {
     const { snackError } = useSnackMessage();
     const [dataFetchStatus, setDataFetchStatus] = useState(FetchStatus.IDLE);
@@ -76,13 +77,8 @@ export function ExpertFilterEditionDialog({
                     });
                 })
                 .catch((error: unknown) => {
-                    catchErrorHandler(error, (message: string) => {
-                        setDataFetchStatus(FetchStatus.FETCH_ERROR);
-                        snackError({
-                            messageTxt: message,
-                            headerId: 'cannotRetrieveFilter',
-                        });
-                    });
+                    setDataFetchStatus(FetchStatus.FETCH_ERROR);
+                    snackWithFallback(snackError, error, { headerId: 'cannotRetrieveFilter' });
                 });
         }
     }, [id, name, open, reset, snackError, getFilterById, description]);
@@ -99,10 +95,7 @@ export function ExpertFilterEditionDialog({
                 null,
                 onClose,
                 (error: Error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'cannotSaveFilter',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'cannotSaveFilter' });
                 }
             );
             if (itemSelectionForCopy.sourceItemUuid === id) {
@@ -127,9 +120,10 @@ export function ExpertFilterEditionDialog({
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             language={language}
+            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
-            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} />}
+            {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} isEditing />}
         </CustomMuiDialog>
     );
 }

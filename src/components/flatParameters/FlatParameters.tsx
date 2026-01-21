@@ -18,20 +18,20 @@ import {
     Switch,
     TextField,
     TextFieldProps,
-    Theme,
     Tooltip,
     Typography,
 } from '@mui/material';
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     paramList: {
         width: '100%',
         margin: 0,
     },
-    paramListItem: (theme: Theme) => ({
+    paramListItem: (theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         gap: theme.spacing(2),
@@ -43,7 +43,7 @@ const styles = {
         minWidth: '30%',
         overflowWrap: 'anywhere',
     },
-};
+} as const satisfies MuiStyles;
 
 const FloatRE = /^-?\d*[.,]?\d*([eE]-?\d*)?$/;
 const IntegerRE = /^-?\d*$/;

@@ -23,7 +23,6 @@ import {
     Paper,
     Popper,
     styled,
-    type Theme,
     ToggleButton,
     ToggleButtonGroup,
     Toolbar,
@@ -50,70 +49,81 @@ import { useStateBoolean } from '../../hooks/customStates/useStateBoolean';
 import UserInformationDialog from './UserInformationDialog';
 import UserSettingsDialog from './UserSettingsDialog';
 import { type Metadata } from '../../utils/types/metadata';
-import { DARK_THEME, type GsTheme, LIGHT_THEME } from '../../utils/styles';
+import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles } from '../../utils/styles';
 import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
 import { DevModeBanner } from './DevModeBanner';
 
-const styles = {
-    grow: {
-        flexGrow: 1,
-        display: 'flex',
-        overflow: 'hidden',
-    },
-    menuContainer: {
-        marginLeft: 1,
-    },
-    link: {
-        textDecoration: 'none',
-        color: 'inherit',
-    },
-    name: (theme: Theme) => ({
-        backgroundColor: darken(theme.palette.background.paper, 0.1),
-        paddingTop: '10px',
-        borderRadius: '100%',
-        fontWeight: '400',
-        textTransform: 'uppercase',
-        height: '48px',
-        width: '48px',
-    }),
-    arrowIcon: {
-        fontSize: '40px',
-    },
-    userMail: {
-        fontSize: '14px',
-        display: 'block',
-    },
-    borderBottom: {
-        borderBottom: '1px solid #ccc',
-    },
-    borderTop: {
-        borderTop: '1px solid #ccc',
-    },
-    settingsMenu: {
-        maxWidth: '385px',
-        zIndex: 60,
-    },
-    sizeLabel: {
-        fontSize: '16px',
-    },
-    showHideMenu: {
-        padding: '0',
-        borderRadius: '25px',
-    },
-    toggleButtonGroup: {
-        marginLeft: '15px',
-        pointerEvents: 'auto',
-    },
-    toggleButton: {
-        height: '30px',
-        width: '48px',
-        padding: '7px',
-        textTransform: 'capitalize',
-    },
-    languageToggleButton: {
-        height: '30px',
-        width: '48px',
-    },
+const getStyles = (dense: boolean = false) => {
+    return {
+        toolbar: (theme) => ({
+            ...(dense && {
+                minHeight: `${theme.spacing(6)} !important`,
+                paddingLeft: `${theme.spacing(0.875)} !important`,
+                paddingRight: `${theme.spacing(0.875)} !important`,
+            }),
+        }),
+        grow: {
+            flexGrow: 1,
+            display: 'flex',
+            overflow: 'hidden',
+        },
+        menuContainer: (theme) => ({
+            marginLeft: theme.spacing(dense ? 0.5 : 1),
+        }),
+        link: {
+            textDecoration: 'none',
+            color: 'inherit',
+        },
+        name: (theme) => ({
+            backgroundColor: darken(theme.palette.background.paper, 0.1),
+            paddingTop: theme.spacing(dense ? 0.625 : 1.25),
+            borderRadius: '100%',
+            fontWeight: '400',
+            textTransform: 'uppercase',
+            height: theme.spacing(dense ? 4.5 : 6),
+            width: theme.spacing(dense ? 4.5 : 6),
+        }),
+        arrowIcon: (theme) => ({
+            fontSize: theme.spacing(dense ? 4 : 5),
+        }),
+        userMail: {
+            fontSize: '14px',
+            display: 'block',
+        },
+        borderBottom: {
+            borderBottom: '1px solid #ccc',
+        },
+        borderTop: {
+            borderTop: '1px solid #ccc',
+        },
+        settingsMenu: {
+            maxWidth: '385px',
+            zIndex: 60,
+        },
+        sizeLabel: {
+            fontSize: '16px',
+        },
+        showHideMenu: (theme) => ({
+            padding: 0,
+            borderRadius: '50%',
+            minWidth: theme.spacing(dense ? 5 : 6.875),
+            minHeight: theme.spacing(dense ? 5 : 6.875),
+        }),
+        toggleButtonGroup: {
+            marginLeft: '15px',
+            pointerEvents: 'auto',
+        },
+        toggleButton: {
+            height: '30px',
+            width: '48px',
+            padding: '7px',
+            textTransform: 'capitalize',
+        },
+        languageToggleButton: {
+            height: '30px',
+            width: '48px',
+        },
+    } as const satisfies MuiStyles;
 };
 
 const StyledMenu = styled((props: MenuProps) => (
@@ -174,6 +184,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
         language: GsLang;
         developerMode?: boolean;
         onDeveloperModeClick?: (value: boolean) => void;
+        dense?: boolean;
     };
 
 export function TopBar({
@@ -199,7 +210,9 @@ export function TopBar({
     equipmentLabelling,
     onLanguageClick,
     language,
+    dense = false,
 }: PropsWithChildren<TopBarProps>) {
+    const styles = useMemo(() => getStyles(dense), [dense]);
     const [anchorElSettingsMenu, setAnchorElSettingsMenu] = useState<Element | null>(null);
     const [anchorElAppsMenu, setAnchorElAppsMenu] = useState<Element | null>(null);
     const {
@@ -277,17 +290,17 @@ export function TopBar({
     };
 
     const logoClickable = useMemo(
-        () => <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} />,
-        [onLogoClick, appLogo, appName, appColor]
+        () => <GridLogo onClick={onLogoClick} appLogo={appLogo} appName={appName} appColor={appColor} dense={dense} />,
+        [onLogoClick, appLogo, appName, appColor, dense]
     );
 
     return (
         <AppBar position="static" color="default">
             {user && developerMode && <DevModeBanner />}
-            <Toolbar>
+            <Toolbar variant={dense ? 'dense' : 'regular'} sx={styles.toolbar}>
                 {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
-                {user && (
+                {user && !dense && (
                     <Box>
                         <IconButton
                             aria-label="apps"
@@ -357,11 +370,12 @@ export function TopBar({
                             <Box component="span" sx={styles.name}>
                                 {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
                             </Box>
-                            {anchorElSettingsMenu ? (
-                                <ArrowDropUpIcon sx={styles.arrowIcon} />
-                            ) : (
-                                <ArrowDropDownIcon sx={styles.arrowIcon} />
-                            )}
+                            {!dense &&
+                                (anchorElSettingsMenu ? (
+                                    <ArrowDropUpIcon sx={styles.arrowIcon} />
+                                ) : (
+                                    <ArrowDropDownIcon sx={styles.arrowIcon} />
+                                ))}
                         </Button>
 
                         {/* Settings menu */}

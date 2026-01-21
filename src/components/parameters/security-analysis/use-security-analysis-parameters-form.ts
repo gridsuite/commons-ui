@@ -7,7 +7,7 @@
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {
@@ -30,6 +30,8 @@ import {
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
 import { DESCRIPTION, NAME } from '../../inputs';
+import { useSnackMessage } from '../../../hooks';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -54,6 +56,7 @@ export const useSecurityAnalysisParametersForm = (
 ): UseSecurityAnalysisParametersFormReturn => {
     const [providers, provider, , , , params, , updateParameters, , , defaultLimitReductions] = parametersBackend;
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
+    const { snackError } = useSnackMessage();
 
     // TODO: remove this when DynaFlow is supported
     // DynaFlow is not supported at the moment for security analysis
@@ -144,10 +147,12 @@ export const useSecurityAnalysisParametersForm = (
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                );
+                ).catch((error) => {
+                    snackWithFallback(snackError, error, { headerId: 'updateSecurityAnalysisParametersError' });
+                });
             }
         },
-        [parametersUuid, formatNewParams]
+        [parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {

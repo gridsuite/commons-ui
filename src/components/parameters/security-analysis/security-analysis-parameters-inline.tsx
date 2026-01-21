@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
@@ -28,17 +28,18 @@ import { fetchSecurityAnalysisParameters } from '../../../services/security-anal
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
@@ -47,36 +48,23 @@ export function SecurityAnalysisParametersInline({
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
 
     const { snackError } = useSnackMessage();
 
     const { handleSubmit, formState, reset, getValues } = securityAnalysisMethods.formMethods;
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-            resetProvider();
-        } else if (pendingResetAction === 'parameters') {
-            resetParameters();
-        }
+        resetParameters();
+        resetProvider();
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [resetParameters, resetProvider]);
 
     const handleResetAllClick = useCallback(() => {
-        setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
     const handleCancelReset = useCallback(() => {
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
     }, []);
 
     const handleLoadParameter = useCallback(
@@ -91,11 +79,7 @@ export function SecurityAnalysisParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
@@ -110,7 +94,7 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
                     <>
@@ -129,10 +113,6 @@ export function SecurityAnalysisParametersInline({
                                 />
                                 <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
                                 <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                                <LabelledButton
-                                    label="resetProviderValuesToDefault"
-                                    callback={handleResetParametersClick}
-                                />
                                 <SubmitButton
                                     onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
                                     variant="outlined"

@@ -9,13 +9,14 @@ export enum ComputingType {
     LOAD_FLOW = 'LOAD_FLOW',
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
     SENSITIVITY_ANALYSIS = 'SENSITIVITY_ANALYSIS',
-    NON_EVACUATED_ENERGY_ANALYSIS = 'NON_EVACUATED_ENERGY_ANALYSIS',
     SHORT_CIRCUIT = 'SHORT_CIRCUIT',
     SHORT_CIRCUIT_ONE_BUS = 'SHORT_CIRCUIT_ONE_BUS',
     DYNAMIC_SIMULATION = 'DYNAMIC_SIMULATION',
     DYNAMIC_SECURITY_ANALYSIS = 'DYNAMIC_SECURITY_ANALYSIS',
+    DYNAMIC_MARGIN_CALCULATION = 'DYNAMIC_MARGIN_CALCULATION',
     VOLTAGE_INITIALIZATION = 'VOLTAGE_INITIALIZATION',
     STATE_ESTIMATION = 'STATE_ESTIMATION',
+    PCC_MIN = 'PCC_MIN',
 }
 
 export const isValidComputingType = (value: string | undefined): boolean => {
@@ -30,18 +31,22 @@ export const formatComputingTypeLabel = (type: ComputingType): string | undefine
             return 'SecurityAnalysis';
         case ComputingType.SENSITIVITY_ANALYSIS:
             return 'SensitivityAnalysis';
-        case ComputingType.NON_EVACUATED_ENERGY_ANALYSIS:
-            return 'NonEvacuatedEnergy';
         case ComputingType.SHORT_CIRCUIT:
             return 'ShortCircuit';
+        case ComputingType.SHORT_CIRCUIT_ONE_BUS:
+            return 'OneBusShortCircuitAnalysis';
         case ComputingType.VOLTAGE_INITIALIZATION:
             return 'VoltageInit';
         case ComputingType.DYNAMIC_SIMULATION:
             return 'DynamicSimulation';
         case ComputingType.DYNAMIC_SECURITY_ANALYSIS:
             return 'DynamicSecurityAnalysis';
+        case ComputingType.DYNAMIC_MARGIN_CALCULATION:
+            return 'DynamicMarginCalculation';
         case ComputingType.STATE_ESTIMATION:
             return 'StateEstimation';
+        case ComputingType.PCC_MIN:
+            return 'PccMin';
         default:
             console.warn(`Unrecognized computing type while formatting its label : ${type}`);
             return undefined;

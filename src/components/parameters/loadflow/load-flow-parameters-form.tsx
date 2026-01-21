@@ -5,13 +5,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Theme } from '@mui/material';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
 import { CustomFormProvider } from '../../inputs';
-import { GsLang } from '../../../utils';
+import type { GsLang } from '../../../utils/langs';
+import type { MuiStyles } from '../../../utils/styles';
 
 interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
@@ -36,7 +37,7 @@ const styles = {
     actions: {
         flexGrow: 0,
     },
-    content: (theme: Theme) => ({
+    content: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
@@ -44,7 +45,7 @@ const styles = {
         paddingBottom: theme.spacing(1),
         flexGrow: 1,
     }),
-};
+} as const satisfies MuiStyles;
 
 export function LoadFlowParametersForm({
     loadflowMethods,
@@ -59,7 +60,7 @@ export function LoadFlowParametersForm({
         handleTabChange,
         tabIndexesWithError,
         formattedProviders,
-        specificParameters,
+        specificParametersDescriptionForProvider,
         params,
         currentProvider,
         defaultLimitReductions,
@@ -82,7 +83,7 @@ export function LoadFlowParametersForm({
                             <LoadFlowParametersContent
                                 selectedTab={selectedTab}
                                 currentProvider={currentProvider ?? ''}
-                                specificParameters={specificParameters}
+                                specificParameters={specificParametersDescriptionForProvider}
                                 params={params}
                                 defaultLimitReductions={defaultLimitReductions}
                             />

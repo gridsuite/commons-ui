@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
-import { catchErrorHandler } from '../../../services';
+import { catchErrorHandler } from '../../../utils';
 
 export const saveExplicitNamingFilter = (
     tableValues: any[],
@@ -106,9 +106,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                if (error instanceof Error) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     } else {
         saveFilter(
@@ -126,9 +130,13 @@ export const saveExpertFilter = (
                 onClose();
             })
             .catch((error: unknown) => {
-                catchErrorHandler(error, (message: string) => {
-                    onError(new Error(message));
-                });
+                if (error instanceof Error) {
+                    onError(error);
+                } else {
+                    catchErrorHandler(error, (message: string) => {
+                        onError(new Error(message));
+                    });
+                }
             });
     }
 };

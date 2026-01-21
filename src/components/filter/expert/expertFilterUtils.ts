@@ -18,7 +18,7 @@ import {
 } from 'react-querybuilder';
 import { IntlShape } from 'react-intl';
 import { validate as uuidValidate } from 'uuid';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import {
     CombinatorType,
     CompositeField,
@@ -298,7 +298,9 @@ export function importExpertRules(query: RuleGroupTypeExport): RuleGroupType {
             }
             return rule.values.sort();
         }
-        convertInputValue(rule.field, parseFloat(rule.value as string));
+        if (rule.dataType === DataType.NUMBER) {
+            return convertInputValue(rule.field, rule.value);
+        }
         return rule.value;
     }
 

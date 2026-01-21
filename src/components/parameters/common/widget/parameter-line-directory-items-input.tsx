@@ -16,6 +16,7 @@ type DirectoryItemsInputLineProps = {
     equipmentTypes?: string[];
     elementType: string;
     hideErrorMessage: boolean;
+    allowMultiSelect?: boolean;
 };
 
 export function ParameterLineDirectoryItemsInput({
@@ -24,6 +25,7 @@ export function ParameterLineDirectoryItemsInput({
     equipmentTypes,
     elementType,
     hideErrorMessage,
+    allowMultiSelect = true,
 }: Readonly<DirectoryItemsInputLineProps>) {
     return (
         <Grid item container spacing={1} paddingTop={1} paddingBottom={1}>
@@ -39,6 +41,7 @@ export function ParameterLineDirectoryItemsInput({
                     hideErrorMessage={hideErrorMessage}
                     label={undefined}
                     itemFilter={undefined}
+                    allowMultiSelect={allowMultiSelect}
                 />
             </Grid>
         </Grid>

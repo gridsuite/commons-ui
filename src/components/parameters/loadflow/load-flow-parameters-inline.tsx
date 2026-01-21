@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { parametersStyles } from '../parameters-style';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
@@ -25,54 +25,42 @@ import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function LoadFlowParametersInline({
     studyUuid,
     language,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     language: GsLang;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
-    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
-    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
+    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, null, null, null);
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-            resetProvider();
-        } else if (pendingResetAction === 'parameters') {
-            resetParameters();
-        }
+        resetParameters();
+        resetProvider();
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [resetParameters, resetProvider]);
 
     const handleResetAllClick = useCallback(() => {
-        setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
     const handleCancelReset = useCallback(() => {
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
     }, []);
 
     const { reset, getValues, formState, handleSubmit } = loadflowMethods.formMethods;
@@ -90,11 +78,7 @@ export function LoadFlowParametersInline({
                         });
                     })
                     .catch((error) => {
-                        console.error(error);
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
@@ -128,10 +112,6 @@ export function LoadFlowParametersInline({
                                 />
                                 <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
                                 <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                                <LabelledButton
-                                    label="resetProviderValuesToDefault"
-                                    callback={handleResetParametersClick}
-                                />
                                 <SubmitButton
                                     onClick={handleSubmit(
                                         loadflowMethods.onSaveInline,

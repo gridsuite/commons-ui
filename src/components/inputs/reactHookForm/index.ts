@@ -5,6 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+export * from './OverflowableChip';
+export * from './OverflowableChipWithHelperText';
 export * from './chip-items-input';
 export * from './DirectoryItemsInput';
 export * from './RawReadOnlyInput';

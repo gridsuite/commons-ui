@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MutableRefObject, useCallback } from 'react';
-import { BaseVariant, OptionsObject, closeSnackbar as closeSnackbarFromNotistack, useSnackbar } from 'notistack';
+import { RefObject, useCallback } from 'react';
+import { BaseVariant, closeSnackbar as closeSnackbarFromNotistack, OptionsObject, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
 import { useIntlRef } from './useIntlRef';
 
-interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
+export interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
     messageValues?: Record<string, string>;
@@ -23,6 +23,7 @@ export interface UseSnackMessageReturn {
     snackError: (snackInputs: SnackInputs) => void;
     snackWarning: (snackInputs: SnackInputs) => void;
     snackInfo: (snackInputs: SnackInputs) => void;
+    snackSuccess: (snackInputs: SnackInputs) => void;
     closeSnackbar: typeof closeSnackbarFromNotistack;
 }
 
@@ -33,7 +34,7 @@ function checkInputs(txt?: string, id?: string, values?: SnackInputs['messageVal
 }
 
 function checkAndTranslateIfNecessary(
-    intlRef: MutableRefObject<IntlShape>,
+    intlRef: RefObject<IntlShape>,
     txt?: string,
     id?: string,
     values?: SnackInputs['messageValues']
@@ -52,7 +53,7 @@ function checkAndTranslateIfNecessary(
     );
 }
 
-function makeMessage(intlRef: MutableRefObject<IntlShape>, snackInputs: SnackInputs): string | null {
+function makeMessage(intlRef: RefObject<IntlShape>, snackInputs: SnackInputs): string | null {
     const message = checkAndTranslateIfNecessary(
         intlRef,
         snackInputs.messageTxt,
@@ -123,5 +124,7 @@ export function useSnackMessage(): UseSnackMessageReturn {
     /* see snackError */
     const snackInfo = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'info'), [enqueue]);
 
-    return { snackError, snackInfo, snackWarning, closeSnackbar };
+    const snackSuccess = useCallback((snackInputs: SnackInputs) => enqueue(snackInputs, 'success'), [enqueue]);
+
+    return { snackError, snackInfo, snackWarning, snackSuccess, closeSnackbar };
 }

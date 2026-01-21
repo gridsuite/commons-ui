@@ -4,11 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { UUID } from 'crypto';
+import { FilterIdentifier, FILTERS } from '../../../utils/constants/filterConstant';
 import {
-    FILTER_ID,
-    FILTER_NAME,
-    FILTERS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
@@ -28,11 +25,6 @@ export enum EquipmentsSelectionType {
     ALL_EXCEPT = 'ALL_EXCEPT',
     NONE_EXCEPT = 'NONE_EXCEPT',
 }
-
-type FilterIdentifier = {
-    [FILTER_ID]: UUID;
-    [FILTER_NAME]: string;
-};
 
 type VoltageLimitParam = {
     [FILTERS]: FilterIdentifier[];

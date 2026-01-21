@@ -8,11 +8,11 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
-import { Box, SxProps, Theme } from '@mui/material';
-import { EQUIPMENT_TYPE, EquipmentInfos } from '../../../utils/types/equipmentType';
+import { Box } from '@mui/material';
+import { ALL_EQUIPMENTS, EquipmentInfos } from '../../../utils/types/equipmentType';
 import { TagRenderer } from '../tagRenderer/TagRenderer';
 import { OverflowableText } from '../../overflowableText';
-import { mergeSx } from '../../../utils/styles';
+import { mergeSx, type SxStyle } from '../../../utils/styles';
 
 export interface EquipmentItemProps {
     inputValue: string;
@@ -27,11 +27,11 @@ export interface EquipmentItemProps {
         equipmentVlTag?: string;
     };
     styles?: {
-        result?: SxProps<Theme>;
-        equipmentOption?: SxProps<Theme>;
-        equipmentTag?: SxProps<Theme>;
-        equipmentTypeTag?: SxProps<Theme>;
-        equipmentVlTag?: SxProps<Theme>;
+        result?: SxStyle;
+        equipmentOption?: SxStyle;
+        equipmentTag?: SxStyle;
+        equipmentTypeTag?: SxStyle;
+        equipmentVlTag?: SxStyle;
     };
 }
 
@@ -57,7 +57,7 @@ export function EquipmentItem({
                         className={clsx(props.classes?.equipmentTag, props.classes?.equipmentTypeTag)}
                         sx={mergeSx(props.styles?.equipmentTag, props.styles?.equipmentTypeTag)}
                     >
-                        <FormattedMessage id={EQUIPMENT_TYPE[element.type]?.tagLabel} />
+                        <FormattedMessage id={ALL_EQUIPMENTS[element.type]?.tagLabel} />
                     </Box>
                 )}
                 <OverflowableText

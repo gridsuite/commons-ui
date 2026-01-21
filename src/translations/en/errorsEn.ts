@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Tune from '@material-symbols/svg-400/outlined/tune.svg?react';
-import { SvgIcon, type SvgIconProps } from '@mui/material';
-
-export function TuneIcon(props: SvgIconProps) {
-    return <SvgIcon component={Tune} inheritViewBox {...props} />;
-}
+export const errorsEn = {
+    'errors.network.timeout': 'The request timed out. Please try again.',
+    'errors.technicalError':
+        'Server error: {message}\n (server: {serverName}, timestamp: {timestamp}, trace ID: {traceId})',
+};

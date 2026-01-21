@@ -25,9 +25,28 @@ export type StudyMetadata = Metadata & {
         [networkElementType: string]: PredefinedProperties;
     };
     defaultParametersValues?: {
-        enableDeveloperMode?: boolean;
+        isDeveloperMode?: boolean;
     };
     defaultCountry?: string;
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
+    baseMapOptions?: { id: string; label: string }[];
+};
+
+type ThemeColors = Record<string, string>;
+type SldAndNadColors = {
+    darkThemeColors: ThemeColors;
+    lightThemeColors: ThemeColors;
+};
+
+export type BaseVoltageConfig = {
+    // used when calling powsybl server
+    name: string;
+    minValue: number;
+    maxValue: number;
+};
+export type BaseVoltage = BaseVoltageConfig & {
+    // used to define the voltage ranges and their colors
+    networkMapColor: string;
+    sldAndNadColors: SldAndNadColors;
 };

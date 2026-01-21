@@ -6,11 +6,11 @@
  */
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Grid, LinearProgress, Theme } from '@mui/material';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
-import { mergeSx } from '../../../utils';
+import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 
@@ -30,7 +30,7 @@ const styles = {
     actions: {
         flexGrow: 0,
     },
-    content: (theme: Theme) => ({
+    content: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
@@ -38,25 +38,25 @@ const styles = {
         paddingBottom: theme.spacing(1),
         flexGrow: 1,
     }),
-};
+} as const satisfies MuiStyles;
 
 export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
     renderTitleFields,
     renderActions,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     return (
         <CustomFormProvider
             validationSchema={securityAnalysisMethods.formSchema}
             {...securityAnalysisMethods.formMethods}
         >
-            <Grid item sx={{ height: '100%' }} xl={9} lg={11} md={12}>
+            <Grid item sx={{ height: '100%' }}>
                 <Box
                     sx={{
                         height: '100%',
@@ -108,7 +108,7 @@ export function SecurityAnalysisParametersForm({
                                         <SecurityAnalysisParametersSelector
                                             params={securityAnalysisMethods.params}
                                             currentProvider={securityAnalysisMethods.currentProvider?.trim()}
-                                            enableDeveloperMode={enableDeveloperMode}
+                                            isDeveloperMode={isDeveloperMode}
                                             defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                                         />
                                     </Grid>

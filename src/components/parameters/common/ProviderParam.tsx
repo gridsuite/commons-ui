@@ -10,6 +10,7 @@ import { LineSeparator } from './line-separator';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
 import { PROVIDER } from './constant';
+import type { MuiStyles } from '../../../utils/styles';
 
 export interface ProviderParamProps {
     options: { id: string; label: string }[];
@@ -20,7 +21,7 @@ const styles = {
         height: 'fit-content',
         justifyContent: 'space-between',
     },
-};
+} as const satisfies MuiStyles;
 
 export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
     return (

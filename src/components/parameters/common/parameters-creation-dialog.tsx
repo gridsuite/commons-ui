@@ -6,12 +6,13 @@
  */
 
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { useCallback } from 'react';
 import { useSnackMessage } from '../../../hooks';
 import { ElementSaveDialog, IElementCreationDialog, IElementUpdateDialog } from '../../dialogs';
 import { createParameter, updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
+import { snackWithFallback } from '../../../utils/error';
 
 interface CreateParameterProps<T extends FieldValues> {
     studyUuid: UUID | null;
@@ -50,11 +51,7 @@ export function CreateParameterDialog<T extends FieldValues>({
                     });
                 })
                 .catch((error) => {
-                    console.error(error);
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'paramsCreatingError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'paramsCreatingError' });
                 });
         },
         [parameterFormatter, parameterType, parameterValues, snackError, snackInfo]
@@ -71,10 +68,8 @@ export function CreateParameterDialog<T extends FieldValues>({
                 });
             })
             .catch((error) => {
-                console.error(error);
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'paramsUpdatingError',
+                snackWithFallback(snackError, error, {
+                    headerId: 'paramsUpdateError',
                     headerValues: {
                         item: elementFullPath,
                     },

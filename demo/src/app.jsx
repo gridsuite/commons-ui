@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-/* eslint-disable func-names, no-nested-ternary, no-return-assign, @typescript-eslint/no-unused-vars, no-promise-executor-return, @typescript-eslint/no-unused-expressions, no-alert, no-undef, @typescript-eslint/no-shadow, react/jsx-no-bind, react/prop-types, import/no-extraneous-dependencies */
+/* eslint-disable func-names, no-nested-ternary, no-return-assign, no-promise-executor-return, no-alert, no-undef, react/jsx-no-bind, react/prop-types */
 
 import {
     Box,
@@ -32,7 +32,7 @@ import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router'
 import { IntlProvider, useIntl } from 'react-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import translations from './demo_intl';
-import PowsyblLogo from '../images/powsybl_logo.svg?react'; // eslint-disable-line import/no-unresolved
+import PowsyblLogo from '../images/powsybl_logo.svg?react';
 import AppPackage from '../../package.json';
 import TreeViewFinderConfig from './TreeViewFinderConfig';
 import {
@@ -47,62 +47,66 @@ import InputsTab from './InputsTab';
 import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 import {
-    MultipleSelectionDialog,
-    OverflowableText,
-    SnackbarProvider,
-    TopBar,
-    TreeViewFinder,
-    CardErrorBoundary,
-    EquipmentItem,
     AuthenticationRouter,
-    reportViewerEn,
-    loginEn,
-    topBarEn,
-    tableEn,
-    treeviewFinderEn,
-    elementSearchEn,
-    equipmentSearchEn,
-    filterEn,
-    filterExpertEn,
-    descriptionEn,
-    equipmentsEn,
-    csvEn,
+    CardErrorBoundary,
     cardErrorBoundaryEn,
-    flatParametersEn,
-    multipleSelectionDialogEn,
-    inputsEn,
-    inputsFr,
-    multipleSelectionDialogFr,
-    flatParametersFr,
     cardErrorBoundaryFr,
-    filterExpertFr,
-    csvFr,
-    equipmentsFr,
-    descriptionFr,
-    filterFr,
-    equipmentSearchFr,
-    elementSearchFr,
-    treeviewFinderFr,
-    tableFr,
-    topBarFr,
-    loginFr,
-    reportViewerFr,
-    LIGHT_THEME,
-    LANG_ENGLISH,
-    LANG_SYSTEM,
-    LANG_FRENCH,
-    ElementType,
-    getFileIcon,
-    initializeAuthenticationDev,
-    toNestedGlobalSelectors,
-    generateTreeViewFinderClass,
-    useSnackMessage,
     commonButtonEn,
     commonButtonFr,
+    csvEn,
+    csvFr,
+    descriptionEn,
+    descriptionFr,
+    elementSearchEn,
+    elementSearchFr,
+    ElementType,
+    EquipmentItem,
+    equipmentSearchEn,
+    equipmentSearchFr,
+    equipmentsEn,
+    equipmentsFr,
+    equipmentStyles,
+    EquipmentType,
+    filterEn,
+    filterExpertEn,
+    filterExpertFr,
+    filterFr,
+    flatParametersEn,
+    flatParametersFr,
+    generateTreeViewFinderClass,
+    getFileIcon,
+    initializeAuthenticationDev,
+    inputsEn,
+    inputsFr,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    LANG_SYSTEM,
+    LIGHT_THEME,
+    loginEn,
+    loginFr,
+    logout,
+    MultipleSelectionDialog,
+    multipleSelectionDialogEn,
+    multipleSelectionDialogFr,
     networkModificationsEn,
     networkModificationsFr,
-    logout,
-    equipmentStyles,
+    OverflowableChipWithHelperText,
+    OverflowableText,
+    parametersEn,
+    parametersFr,
+    reportViewerEn,
+    reportViewerFr,
+    SnackbarProvider,
+    tableEn,
+    tableFr,
+    toNestedGlobalSelectors,
+    TopBar,
+    topBarEn,
+    topBarFr,
+    TreeViewFinder,
+    treeviewFinderEn,
+    treeviewFinderFr,
+    useSnackMessage,
     LeftPanelOpenIcon,
 } from '../../src';
 
@@ -126,6 +130,7 @@ const messages = {
         ...commonButtonEn,
         ...networkModificationsEn,
         ...inputsEn,
+        ...parametersEn,
         ...translations.en,
     },
     fr: {
@@ -147,6 +152,7 @@ const messages = {
         ...networkModificationsFr,
         ...multipleSelectionDialogFr,
         ...inputsFr,
+        ...parametersFr,
         ...translations.fr,
     },
 };
@@ -198,7 +204,6 @@ const CustomTreeViewFinder = styled(TreeViewFinder)(TreeViewFinderCustomStylesEm
 function Crasher() {
     const [crash, setCrash] = useState(false);
     if (crash) {
-        // eslint-disable-next-line no-undef
         window.foonotexists.bar();
     }
     return <Button onClick={() => setCrash(true)}>CRASH ME</Button>;
@@ -261,6 +266,25 @@ function SnackInfoButton() {
     );
 }
 
+function SnackSuccessButton() {
+    const { snackSuccess } = useSnackMessage();
+    return (
+        <Button
+            variant="contained"
+            color="success"
+            style={style.button}
+            onClick={() => {
+                snackSuccess({
+                    messageTxt: 'Snack success message',
+                    headerTxt: 'Header',
+                });
+            }}
+        >
+            success snack hook
+        </Button>
+    );
+}
+
 function PermanentSnackButton() {
     const { snackInfo, closeSnackbar } = useSnackMessage();
     const [snackKey, setSnackKey] = useState(undefined);
@@ -295,14 +319,6 @@ function PermanentSnackButton() {
         </>
     );
 }
-
-const validateUser = () => {
-    // change to false to simulate user unauthorized access
-    return new Promise((resolve) => {
-        // eslint-disable-next-line no-undef
-        window.setTimeout(() => resolve(true), 500);
-    });
-};
 
 function AppContent({ language, onLanguageClick }) {
     const navigate = useNavigate();
@@ -379,9 +395,11 @@ function AppContent({ language, onLanguageClick }) {
     };
     const displayEquipment = (equipment) => {
         if (equipment != null) {
-            equipment.type === EQUIPMENT_TYPE.SUBSTATION.name
-                ? alert(`Equipment ${equipment.label} found !`)
-                : alert(`Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`);
+            if (equipment.type === EquipmentType.SUBSTATION) {
+                alert(`Equipment ${equipment.label} found !`);
+            } else {
+                alert(`Equipment ${equipment.label} (${equipment.voltageLevelLabel}) found !`);
+            }
         }
     };
     const [searchTermDisableReason] = useState('search disabled');
@@ -470,14 +488,14 @@ function AppContent({ language, onLanguageClick }) {
     function simulateGetGlobalVersion() {
         console.log('getGlobalVersion() called');
         return new Promise(
-            (resolve, reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
+            (resolve, _reject) => (aboutTimerVersion.current = window.setTimeout(() => resolve('1.0.0-demo'), 1250))
         );
     }
 
     function simulateGetAdditionalComponents() {
         console.log('getAdditionalComponents() called');
         return new Promise(
-            (resolve, reject) =>
+            (resolve, _reject) =>
                 (aboutTimerCmpnt.current = window.setTimeout(
                     () =>
                         resolve(
@@ -620,6 +638,7 @@ function AppContent({ language, onLanguageClick }) {
             <SnackErrorButton />
             <SnackWarningButton />
             <SnackInfoButton />
+            <SnackSuccessButton />
 
             <Button
                 variant="contained"
@@ -814,6 +833,10 @@ function AppContent({ language, onLanguageClick }) {
                         border: '1px solid black',
                     }}
                 />
+                <OverflowableChipWithHelperText
+                    label="Chip with helper text which is very very long and will be truncated"
+                    helperText="HELPER TEXT"
+                />
             </div>
             <Box mt={2} width={500}>
                 <InlineSearch />
@@ -885,6 +908,7 @@ function AppContent({ language, onLanguageClick }) {
                             language={language}
                             user={user}
                             appsAndUrls={apps}
+                            dense
                         >
                             <Crasher />
                             <EquipmentSearchDialog />
@@ -909,8 +933,8 @@ function AppContent({ language, onLanguageClick }) {
                                         <Tab label="inputs" />
                                     </Tabs>
                                     {tabIndex === 0 && defaultTab}
-                                    {tabIndex === 2 && <FlatParametersTab />}
-                                    {tabIndex === 3 && <InputsTab />}
+                                    {tabIndex === 1 && <FlatParametersTab />}
+                                    {tabIndex === 2 && <InputsTab />}
                                 </div>
                             ) : (
                                 <AuthenticationRouter

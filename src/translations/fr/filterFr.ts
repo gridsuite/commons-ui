@@ -57,4 +57,5 @@ export const filterFr = {
     nameAlreadyUsed: 'Ce nom est déjà utilisé',
     nameValidityCheckErrorMsg: 'Erreur lors de la vérification de la validité du nom',
     cantSubmitWhileValidating: "Impossible de soumettre le formulaire durant la validation d'un champ",
+    elementNotFound: 'Élément inexistant',
 };

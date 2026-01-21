@@ -9,7 +9,7 @@ import { useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
@@ -34,6 +34,7 @@ import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseNetworkVisualizationParametersFormReturn {
     formMethods: UseFormReturn;
@@ -129,10 +130,7 @@ export const useNetworkVisualizationParametersForm = ({
         (formData: Record<string, any>) => {
             if (studyUuid) {
                 setStudyNetworkVisualizationParameters(studyUuid, formData).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updateNetworkVisualizationsParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'updateNetworkVisualizationsParametersError' });
                 });
             }
         },
@@ -149,10 +147,7 @@ export const useNetworkVisualizationParametersForm = ({
                     ElementType.NETWORK_VISUALIZATIONS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
                 ).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updateNetworkVisualizationsParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'updateNetworkVisualizationsParametersError' });
                 });
             }
         },
@@ -170,10 +165,7 @@ export const useNetworkVisualizationParametersForm = ({
                     reset(params);
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'getNetworkVisualizationsParametersError',
-                    });
+                    snackWithFallback(snackError, error, { headerId: 'getNetworkVisualizationsParametersError' });
                 })
                 .finally(() => {
                     clearTimeout(timer);

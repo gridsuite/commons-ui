@@ -6,15 +6,16 @@
  */
 
 import { ColDef, CsvExportParams } from 'ag-grid-community';
-import { GsLang } from '../../utils';
+import { GsLangUser } from '../../utils';
 
 export type CsvDownloadProps = {
     columns: ColDef[];
     tableName: string;
     tableNamePrefix?: string;
     skipColumnHeaders?: boolean;
-    language: GsLang;
-    exportDataAsCsv: (params?: CsvExportParams) => void;
+    skipPinnedBottom?: boolean;
+    language: GsLangUser;
+    getData: (params?: CsvExportParams) => string | undefined | void;
 };
 
 export type CsvExportProps = CsvDownloadProps & {

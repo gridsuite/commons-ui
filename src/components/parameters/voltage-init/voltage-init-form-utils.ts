@@ -5,14 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { EquipmentsSelectionType, VoltageInitParameters, VoltageInitStudyParameters } from './voltage-init.type';
 import {
-    FILTERS,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
-    ID,
     LOW_VOLTAGE_LIMIT,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
@@ -29,12 +27,11 @@ import {
     DEFAULT_UPDATE_BUS_VOLTAGE,
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,
     DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
-    FILTER_ID,
-    FILTER_NAME,
     PRIORITY,
 } from './constants';
 import { NAME } from '../../inputs';
 import { SELECTED } from '../../dnd-table';
+import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 
 export const fromVoltageInitParametersFormToParamValues = (
     newParams: Record<string, any>

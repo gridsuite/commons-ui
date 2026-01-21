@@ -7,42 +7,47 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Dispatch, SetStateAction, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+    Dispatch,
+    SetStateAction,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useEffectEvent,
+    useMemo,
+    useState,
+} from 'react';
 import { ObjectSchema } from 'yup';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
-    getDefaultSpecificParamsValues,
-    getSpecificLoadFlowParametersFormSchema,
     mapLimitReductions,
     setLimitReductions,
-    setSpecificParameters,
     TabValues,
 } from './load-flow-parameters-utils';
-import { LoadFlowParametersInfos, SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
-import {
-    ParameterType,
-    SpecificParameterInfos,
-    UseParametersBackendReturnProps,
-} from '../../../utils/types/parameters.type';
-import { ComputingType, PROVIDER } from '../common';
+import { LoadFlowParametersInfos } from './load-flow-parameters-type';
+import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import {
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
     LIMIT_REDUCTIONS_FORM,
 } from '../common/limitreductions/columns-definitions';
-import {
-    COMMON_PARAMETERS,
-    PARAM_LIMIT_REDUCTION,
-    PARAM_PROVIDER_OPENLOADFLOW,
-    SPECIFIC_PARAMETERS,
-} from './constants';
+import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import yup from '../../../utils/yupConfig';
 import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
-import { ElementType } from '../../../utils';
+import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { useSnackMessage } from '../../../hooks';
+import {
+    formatSpecificParameters,
+    getDefaultSpecificParamsValues,
+    getSpecificParametersFormSchema,
+    getAllSpecificParametersValues,
+    setSpecificParameters,
+} from '../common/utils';
+import { snackWithFallback } from '../../../utils/error';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
@@ -51,7 +56,7 @@ export interface UseLoadFlowParametersFormReturn {
     handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     tabIndexesWithError: TabValues[];
     formattedProviders: { id: string; label: string }[];
-    specificParameters: SpecificParameterInfos[];
+    specificParametersDescriptionForProvider: SpecificParameterInfos[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
     toLoadFlowFormValues: (_params: LoadFlowParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => LoadFlowParametersInfos;
@@ -66,7 +71,7 @@ export interface UseLoadFlowParametersFormReturn {
 
 export const useLoadFlowParametersForm = (
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>,
-    enableDeveloperMode: boolean,
+    isDeveloperMode: boolean,
     parametersUuid: UUID | null,
     name: string | null,
     description: string | null
@@ -87,28 +92,21 @@ export const useLoadFlowParametersForm = (
 
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
+    const [limitReductionNumber, setLimitReductionNumber] = useState(0);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
+    const { snackError } = useSnackMessage();
 
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
         setSelectedTab(newValue);
     }, []);
 
-    const specificParametersValues = useMemo(() => {
-        const specificParams = currentProvider ? specificParamsDescriptions?.[currentProvider] : undefined;
-        return getDefaultSpecificParamsValues(specificParams);
+    const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
+        return currentProvider && specificParamsDescriptions ? specificParamsDescriptions[currentProvider] : [];
     }, [currentProvider, specificParamsDescriptions]);
 
-    const specificParameters = useMemo<SpecificParameterInfos[]>(() => {
-        const specificParams = currentProvider ? specificParamsDescriptions?.[currentProvider] : undefined;
-        return specificParams?.map((param: SpecificParameterInfos) => ({
-            name: param.name,
-            type: param.type,
-            label: param.label,
-            description: param.description,
-            possibleValues: param.possibleValues,
-            defaultValue: param.defaultValue,
-        }));
-    }, [currentProvider, specificParamsDescriptions]);
+    const specificParametersDefaultValues = useMemo(() => {
+        return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
+    }, [specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
         return yup
@@ -116,13 +114,11 @@ export const useLoadFlowParametersForm = (
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,
-                ...getLimitReductionsFormSchema(
-                    params?.limitReductions ? params.limitReductions[0]?.temporaryLimitReductions.length : 0
-                ).fields,
-                ...getSpecificLoadFlowParametersFormSchema(specificParameters).fields,
+                ...getLimitReductionsFormSchema(limitReductionNumber).fields,
+                ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
-    }, [name, params?.limitReductions, specificParameters]);
+    }, [name, limitReductionNumber, specificParametersDescriptionForProvider]);
 
     const formMethods = useForm({
         defaultValues: {
@@ -133,7 +129,7 @@ export const useLoadFlowParametersForm = (
                 ...params?.commonParameters,
             },
             [SPECIFIC_PARAMETERS]: {
-                ...specificParametersValues,
+                ...specificParametersDefaultValues,
             },
             [LIMIT_REDUCTIONS_FORM]: [],
         },
@@ -141,7 +137,7 @@ export const useLoadFlowParametersForm = (
     });
 
     const { watch, reset } = formMethods;
-    const watchProvider = watch('provider');
+    const watchProvider = watch(PROVIDER);
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -163,63 +159,33 @@ export const useLoadFlowParametersForm = (
         [defaultLimitReductions, params?.limitReductions, watchProvider]
     );
 
-    const getSpecificParametersPerProvider = (
-        formData: Record<string, any>,
-        _specificParametersValues: SpecificParametersPerProvider
-    ) => {
-        return Object.keys(formData[SPECIFIC_PARAMETERS]).reduce(
-            (acc: Record<string, any>, key: string) => {
-                if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
-                    acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
-                }
-                return acc;
-            },
-            {} as Record<string, any>
-        );
-    };
-
     const formatNewParams = useCallback(
         (formData: Record<string, any>): LoadFlowParametersInfos => {
             return {
                 provider: formData[PROVIDER],
                 limitReduction: formData[PARAM_LIMIT_REDUCTION],
                 commonParameters: {
+                    [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
                 },
-                specificParametersPerProvider: {
-                    [formData.provider]: getSpecificParametersPerProvider(formData, specificParametersValues),
-                },
+                specificParametersPerProvider: specificParametersDefaultValues
+                    ? {
+                          [formData.provider]: getAllSpecificParametersValues(
+                              formData,
+                              specificParametersDefaultValues
+                          ),
+                      }
+                    : {},
+
                 limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
             };
         },
-        [specificParametersValues, toLimitReductions]
+        [specificParametersDefaultValues, toLimitReductions]
     );
 
     const toLoadFlowFormValues = useCallback(
         (_params: LoadFlowParametersInfos) => {
-            const specificParams = _params.provider ? specificParamsDescriptions?.[_params.provider] : undefined;
-            const specificParamsPerProvider = _params.specificParametersPerProvider[_params.provider];
-
-            const formatted = specificParams?.reduce((acc: Record<string, unknown>, param: SpecificParameterInfos) => {
-                if (
-                    specificParamsPerProvider &&
-                    Object.prototype.hasOwnProperty.call(specificParamsPerProvider, param.name)
-                ) {
-                    if (param.type === ParameterType.BOOLEAN) {
-                        acc[param.name] = specificParamsPerProvider[param.name] === 'true';
-                    } else if (param.type === ParameterType.STRING_LIST) {
-                        acc[param.name] =
-                            specificParamsPerProvider[param.name] !== ''
-                                ? specificParamsPerProvider[param.name].split(',')
-                                : [];
-                    } else {
-                        acc[param.name] = specificParamsPerProvider[param.name];
-                    }
-                } else {
-                    acc[param.name] = getDefaultSpecificParamsValues([param])[param.name];
-                }
-                return acc;
-            }, {});
+            const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[_params.provider];
 
             return {
                 [PROVIDER]: _params.provider,
@@ -228,12 +194,15 @@ export const useLoadFlowParametersForm = (
                     ..._params.commonParameters,
                 },
                 [SPECIFIC_PARAMETERS]: {
-                    ...formatted,
+                    ...formatSpecificParameters(
+                        specificParametersDescriptionForProvider,
+                        specificParamsListForCurrentProvider
+                    ),
                 },
                 ...toFormValuesLimitReductions(_params.limitReductions),
             };
         },
-        [specificParamsDescriptions]
+        [specificParametersDescriptionForProvider]
     );
 
     const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
@@ -241,12 +210,12 @@ export const useLoadFlowParametersForm = (
     // TODO: remove this when DynaFlow will be available not only in developer mode
     const formattedProviders = useMemo(() => {
         return Object.entries(providers)
-            .filter(([key]) => !key.includes('DynaFlow') || enableDeveloperMode)
+            .filter(([key]) => !key.includes('DynaFlow') || isDeveloperMode)
             .map(([key, value]) => ({
                 id: key,
                 label: value,
             }));
-    }, [providers, enableDeveloperMode]);
+    }, [providers, isDeveloperMode]);
 
     const onValidationError = useCallback(
         (errors: FieldErrors) => {
@@ -283,26 +252,53 @@ export const useLoadFlowParametersForm = (
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
-                );
+                ).catch((error) => {
+                    snackWithFallback(snackError, error, { headerId: 'updateLoadFlowParametersError' });
+                });
             }
         },
-        [parametersUuid, formatNewParams]
+        [parametersUuid, formatNewParams, snackError]
     );
+
+    const resetForm = useEffectEvent((_params: LoadFlowParametersInfos) => {
+        reset(toLoadFlowFormValues(_params));
+    });
 
     useEffect(() => {
         if (!params) {
             return;
         }
-        reset(toLoadFlowFormValues(params));
-    }, [paramsLoaded, params, reset, specificParamsDescriptions, toLoadFlowFormValues]);
+        resetForm(params);
+    }, [paramsLoaded, params]);
 
     useEffect(() => {
-        if (watchProvider !== currentProvider) {
+        if (watchProvider && watchProvider !== currentProvider) {
             setCurrentProvider(watchProvider);
             setSpecificParameters(watchProvider, specificParamsDescriptions, formMethods);
             setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
+
+            // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
+            // (formSchema has a dep on limitReductionNumber)
+            if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
+                if (currentProvider) {
+                    // providerX -> OLF: use default value
+                    setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+                } else {
+                    // nothing -> OLF: use editing params value
+                    setLimitReductionNumber(params?.limitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+                }
+            } else {
+                setLimitReductionNumber(0);
+            }
         }
-    }, [currentProvider, defaultLimitReductions, formMethods, specificParamsDescriptions, watchProvider]);
+    }, [
+        currentProvider,
+        defaultLimitReductions,
+        formMethods,
+        params?.limitReductions,
+        specificParamsDescriptions,
+        watchProvider,
+    ]);
 
     return {
         formMethods,
@@ -311,7 +307,7 @@ export const useLoadFlowParametersForm = (
         handleTabChange,
         tabIndexesWithError,
         formattedProviders,
-        specificParameters,
+        specificParametersDescriptionForProvider,
         defaultLimitReductions,
         toLoadFlowFormValues,
         formatNewParams,

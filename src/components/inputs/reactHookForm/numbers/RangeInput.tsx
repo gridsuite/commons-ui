@@ -8,19 +8,20 @@ import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
 import { type ObjectSchema } from 'yup';
-import { FormControl, Grid, InputLabel, type Theme } from '@mui/material';
+import { FormControl, Grid, InputLabel } from '@mui/material';
 import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import type { MuiStyles } from '../../../../utils/styles';
 
 const style = {
-    inputLegend: (theme: Theme) => ({
+    inputLegend: (theme) => ({
         backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))',
         backgroundColor: theme.palette.background.paper,
         padding: '0 8px 0 8px',
     }),
-};
+} as const satisfies MuiStyles;
 
 export const RangeType = {
     EQUALITY: { id: 'EQUALITY', label: 'equality' },

@@ -4,14 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { equipmentTypesForPredefinedPropertiesMapper } from '../utils/mapper/equipmentTypesForPredefinedPropertiesMapper';
 import { useSnackMessage } from './useSnackMessage';
 import { PredefinedProperties } from '../utils/types/types';
 import { fetchStudyMetadata } from '../services';
-import { EquipmentType } from '../utils';
+import { snackWithFallback } from '../utils/error';
 
-const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<PredefinedProperties | undefined> => {
+const fetchPredefinedProperties = async (equipmentType: string): Promise<PredefinedProperties | undefined> => {
     const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType);
     if (networkEquipmentType === undefined) {
         return Promise.resolve(undefined);
@@ -20,10 +20,7 @@ const fetchPredefinedProperties = async (equipmentType: EquipmentType): Promise<
     return studyMetadata.predefinedEquipmentProperties?.[networkEquipmentType];
 };
 
-export const usePredefinedProperties = (
-    initialType: EquipmentType | null
-): [PredefinedProperties, Dispatch<SetStateAction<EquipmentType | null>>] => {
-    const [type, setType] = useState<EquipmentType | null>(initialType);
+export const usePredefinedProperties = (type: string | null): [PredefinedProperties] => {
     const [equipmentPredefinedProps, setEquipmentPredefinedProps] = useState<PredefinedProperties>({});
     const { snackError } = useSnackMessage();
 
@@ -36,12 +33,10 @@ export const usePredefinedProperties = (
                     }
                 })
                 .catch((error) => {
-                    snackError({
-                        messageTxt: error.message ?? error,
-                    });
+                    snackWithFallback(snackError, error);
                 });
         }
     }, [type, setEquipmentPredefinedProps, snackError]);
 
-    return [equipmentPredefinedProps, setType];
+    return [equipmentPredefinedProps];
 };

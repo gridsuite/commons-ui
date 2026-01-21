@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../inputs';
@@ -25,6 +25,7 @@ import {
 } from './voltage-init-form-utils';
 import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
 import { PopupConfirmationDialog } from '../../dialogs';
+import { snackWithFallback } from '../../../utils/error';
 
 export function VoltageInitParametersInLine({
     studyUuid,
@@ -63,10 +64,7 @@ export function VoltageInitParametersInLine({
                         });
                     })
                     .catch((error: Error) => {
-                        snackError({
-                            messageTxt: error.message,
-                            headerId: 'paramsRetrievingError',
-                        });
+                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
             setOpenSelectParameterDialog(false);
@@ -79,10 +77,7 @@ export function VoltageInitParametersInLine({
             applyModifications: DEFAULT_GENERAL_APPLY_MODIFICATIONS,
             computationParameters: null, // null means Reset
         }).catch((error) => {
-            snackError({
-                messageTxt: error.message,
-                headerId: 'updateVoltageInitParametersError',
-            });
+            snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
         });
         setOpenResetConfirmation(false);
     }, [studyUuid, snackError]);

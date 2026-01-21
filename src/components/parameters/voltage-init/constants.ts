@@ -19,10 +19,8 @@ export const DEFAULT_REACTIVE_SLACKS_THRESHOLD = 500;
 export const DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD = 0;
 export const REACTIVE_SLACKS_THRESHOLD = 'reactiveSlacksThreshold';
 export const SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD = 'shuntCompensatorActivationThreshold';
-export const ID = 'id';
 export const PRIORITY = 'priority';
-export const FILTER_ID = 'filterId';
-export const FILTER_NAME = 'filterName';
+
 export const SELECTION_TYPE = 'selectionType';
 export const UPDATE_BUS_VOLTAGE = 'updateBusVoltage';
 export const VOLTAGE_LIMITS_MODIFICATION = 'voltageLimitsModification';
@@ -38,4 +36,3 @@ export const RATIO_TAP_CHANGER_TARGET_V = 'ratioTapChangerTargetV';
 export const LEG_SIDE = 'legSide';
 export const HIGH_VOLTAGE_LIMIT = 'highVoltageLimit';
 export const LOW_VOLTAGE_LIMIT = 'lowVoltageLimit';
-export const FILTERS = 'filters';

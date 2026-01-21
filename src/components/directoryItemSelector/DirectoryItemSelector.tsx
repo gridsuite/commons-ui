@@ -6,14 +6,18 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { SxProps, Theme } from '@mui/material';
-import { UUID } from 'crypto';
-import { getFileIcon } from '../../utils/mapper/getFileIcon';
-import { ElementType } from '../../utils/types/elementType';
-import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
-import { useSnackMessage } from '../../hooks/useSnackMessage';
+import type { UUID } from 'node:crypto';
+import type { MuiStyles } from '../../utils';
+import {
+    getFileIcon,
+    ElementType,
+    arraysContainIdenticalStrings,
+    ElementAttributes,
+    snackWithFallback,
+} from '../../utils';
+import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder';
+import { useSnackMessage } from '../../hooks';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
-import { ElementAttributes } from '../../utils';
 import {
     fetchChildrenForExpandedNodes,
     getExpansionPathsForSelected,
@@ -22,12 +26,12 @@ import {
 } from './utils';
 
 const styles = {
-    icon: (theme: Theme) => ({
+    icon: (theme) => ({
         marginRight: theme.spacing(1),
         width: '18px',
         height: '18px',
     }),
-};
+} as const satisfies MuiStyles;
 
 // TODO: check avec Kevin / Sylvain
 type ElementAttributesBase = {
@@ -183,6 +187,7 @@ export function DirectoryItemSelector({
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
+    const [lastFetchedEquipmentTypes, setLastFetchedEquipmentTypes] = useState<string[]>();
     const [rootDirectories, setRootDirectories] = useState<ElementAttributes[]>([]);
     const [isRootsLoaded, setIsRootsLoaded] = useState(false);
     const [autoExpandedNodes, setAutoExpandedNodes] = useState<UUID[]>([]);
@@ -203,7 +208,7 @@ export function DirectoryItemSelector({
                 type: e.type,
                 description: e.description,
                 specificMetadata: e.specificMetadata,
-                icon: getFileIcon(e.type, styles.icon as SxProps),
+                icon: getFileIcon(e.type, styles.icon),
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
                 childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
             };
@@ -217,7 +222,7 @@ export function DirectoryItemSelector({
                     id: e.elementUuid,
                     name: e.elementName,
                     description: e.description,
-                    icon: getFileIcon(e.type, styles.icon as SxProps),
+                    icon: getFileIcon(e.type, styles.icon),
                     children:
                         e.type === ElementType.DIRECTORY
                             ? convertChildren(nodeMap.current[e.elementUuid].children)
@@ -249,10 +254,7 @@ export function DirectoryItemSelector({
                 setData(convertRoots(nrs));
             })
             .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'DirectoryItemSelector',
-                });
+                snackWithFallback(snackError, error, { headerId: 'DirectoryItemSelector' });
             })
             .finally(() => {
                 setIsRootsLoaded(true);
@@ -299,15 +301,22 @@ export function DirectoryItemSelector({
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
-    // Helper function to fetch children for a node if not already loaded
+    // Helper function to fetch children for a node if it is not already loaded, or if a refresh is needed
     const fetchNodeChildrenIfNeeded = useCallback(
         async (nodeId: UUID): Promise<void> => {
             const node = nodeMap.current[nodeId];
-            if (node && (!node.children || node.children.length === 0) && node.type === ElementType.DIRECTORY) {
+            if (
+                node &&
+                (!node.children ||
+                    node.children.length === 0 ||
+                    !arraysContainIdenticalStrings(equipmentTypes, lastFetchedEquipmentTypes)) &&
+                node.type === ElementType.DIRECTORY
+            ) {
+                setLastFetchedEquipmentTypes(equipmentTypes);
                 await fetchDirectoryChildren(nodeId);
             }
         },
-        [fetchDirectoryChildren]
+        [equipmentTypes, lastFetchedEquipmentTypes, setLastFetchedEquipmentTypes, fetchDirectoryChildren]
     );
 
     // Handle expansion from selected items

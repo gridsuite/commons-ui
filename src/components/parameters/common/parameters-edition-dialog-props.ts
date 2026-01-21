@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 import { User } from 'oidc-client';
 import { GsLang } from '../../../utils';
 
@@ -19,5 +19,5 @@ export interface ParametersEditionDialogProps {
     activeDirectory: UUID;
     language?: GsLang;
     user: User | null;
-    enableDeveloperMode?: boolean;
+    isDeveloperMode?: boolean;
 }

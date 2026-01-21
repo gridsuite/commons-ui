@@ -19,16 +19,17 @@ import {
     styled,
     Typography,
 } from '@mui/material';
-import { TreeItem, SimpleTreeView, SimpleTreeViewClasses } from '@mui/x-tree-view';
+import { SimpleTreeView, SimpleTreeViewClasses, TreeItem } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
-import { UUID } from 'crypto';
-import { makeComposeClasses, toNestedGlobalSelectors } from '../../utils/styles';
+import type { UUID } from 'node:crypto';
+import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../utils/styles';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
-import { ElementType } from '../../utils';
+import { ElementAttributes, ElementType } from '../../utils';
+import { doesNodeHasChildren } from './TreeViewUtils';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -60,7 +61,7 @@ const defaultStyles = {
         marginRight: '4px',
     },
     [cssIcon]: {},
-};
+} as const satisfies MuiStyles;
 
 export const generateTreeViewFinderClass = (className: string) => `GsiTreeViewFinder-${className}`;
 const composeClasses = makeComposeClasses(generateTreeViewFinderClass);
@@ -82,6 +83,9 @@ export interface TreeViewFinderNodeProps {
     childrenCount?: number;
     children?: TreeViewFinderNodeProps[];
     parents?: TreeViewFinderNodeProps[];
+    specificMetadata?: {
+        equipmentType: string;
+    };
 }
 
 interface TreeViewFinderNodeMapProps {
@@ -258,7 +262,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             .filter((node) => node !== null) as TreeViewFinderNodeProps[];
     };
 
-    const handleNodeToggle = (_e: React.SyntheticEvent, itemIds: string[]) => {
+    const handleNodeToggle = (_e: React.SyntheticEvent | null, itemIds: string[]) => {
         // onTreeBrowse proc only on last node clicked and only when expanded
         itemIds.every((itemId) => {
             if (!expanded?.includes(itemId)) {
@@ -319,7 +323,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     }, [expanded, selectedProp, expandedProp, data, autoScrollAllowed]);
 
     /* User Interaction management */
-    const handleNodeSelect = (_e: React.SyntheticEvent, values: string | string[] | null) => {
+    const handleNodeSelect = (_e: React.SyntheticEvent | null, values: string | string[] | null) => {
         // Default management
         if (multiSelect && Array.isArray(values)) {
             setSelected(values.filter((itemId) => isSelectable(mapPrintedNodes[itemId])));
@@ -391,7 +395,8 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         }
         let childrenNodes = null;
         const showExpandIcon = showChevron(node);
-        if (Array.isArray(node.children) && node.children.length > 0) {
+        if (doesNodeHasChildren(node as unknown as ElementAttributes)) {
+            // @ts-ignore checked above
             childrenNodes = node.children.toSorted(sortMethod).map(renderTree);
         } else if (showExpandIcon) {
             childrenNodes = [<span key="placeholder" style={{ display: 'none' }} />]; // simulate placeholder so expand icon is shown

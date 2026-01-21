@@ -6,20 +6,11 @@
  */
 import { type ChangeEvent, type SyntheticEvent, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import {
-    Alert,
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Switch,
-    type Theme,
-} from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Switch } from '@mui/material';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
-    parameterName: (theme: Theme) => ({
+    parameterName: (theme) => ({
         fontWeight: 'bold',
         marginTop: theme.spacing(1),
         flexGrow: 1,
@@ -27,7 +18,7 @@ const styles = {
     parameterLine: {
         display: 'flex',
     },
-};
+} as const satisfies MuiStyles;
 
 interface UserSettingsDialogProps {
     openDialog: boolean;

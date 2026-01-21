@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
+import type { UUID } from 'node:crypto';
 
 export enum DistributionType {
     PROPORTIONAL = 'PROPORTIONAL',
@@ -72,13 +72,10 @@ export interface SensitivityAnalysisParametersInfos {
     sensitivityNodes?: SensitivityNodes[];
 }
 
-export type SensitivityAnalysisFactorsCountParameters = {
-    injections?: string[];
-    monitoredBranches?: string[];
-    contingencies?: string[];
-    hvdcs?: string[];
-    psts?: string[];
-};
+export interface FactorsCount {
+    resultCount: number;
+    variableCount: number;
+}
 
 // result types
 export type SelectorFilterOptions = {

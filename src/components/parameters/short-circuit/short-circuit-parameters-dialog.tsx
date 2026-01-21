@@ -10,7 +10,13 @@ import { ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
-import { ParametersEditionDialogProps } from '../common';
+import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
+import {
+    fetchShortCircuitParameters,
+    getShortCircuitSpecificParametersDescription,
+    updateShortCircuitParameters,
+} from '../../../services/short-circuit-analysis';
 
 export function ShortCircuitParametersEditionDialog({
     id,
@@ -20,14 +26,29 @@ export function ShortCircuitParametersEditionDialog({
     name,
     description,
     activeDirectory,
+    user,
     language,
-}: Readonly<ParametersEditionDialogProps>) {
+    isDeveloperMode,
+}: Readonly<ParametersEditionDialogProps & { isDeveloperMode: boolean }>) {
+    const parametersBackend = useParametersBackend(
+        user,
+        id,
+        ComputingType.SHORT_CIRCUIT,
+        OptionalServicesStatus.Up,
+        null,
+        null,
+        null,
+        null,
+        fetchShortCircuitParameters,
+        updateShortCircuitParameters,
+        getShortCircuitSpecificParametersDescription
+    );
+
     const shortCircuitMethods = useShortCircuitParametersForm({
+        parametersBackend,
         parametersUuid: id,
         name,
         description,
-        studyUuid: null,
-        studyShortCircuitParameters: null,
     });
 
     const {
@@ -40,6 +61,7 @@ export function ShortCircuitParametersEditionDialog({
             open={open}
             onClose={onClose}
             onSave={shortCircuitMethods.onSaveDialog}
+            onValidationError={shortCircuitMethods.onValidationError}
             formSchema={shortCircuitMethods.formSchema}
             formMethods={shortCircuitMethods.formMethods}
             titleId={titleId}
@@ -49,6 +71,7 @@ export function ShortCircuitParametersEditionDialog({
         >
             <ShortCircuitParametersForm
                 shortCircuitMethods={shortCircuitMethods}
+                isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm

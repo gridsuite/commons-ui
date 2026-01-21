@@ -8,18 +8,7 @@
 import { TableCell } from '@mui/material';
 import { DirectoryItemsInput, FloatInput, MuiSelectInput, SwitchInput, TextInput } from '../../inputs';
 
-function EditableTableCell(
-    arrayFormName: string,
-    rowIndex: number,
-    column: any,
-    onRowChanged: (a: boolean, source: string) => void
-) {
-    const handleDirectoryItemsChange = () => {
-        onRowChanged(true, 'directory');
-    };
-    const handleSwitchInputChange = () => {
-        onRowChanged(true, 'switch');
-    };
+function EditableTableCell(arrayFormName: string, rowIndex: number, column: any, onRowChanged: () => void) {
     return (
         <TableCell
             key={column.dataKey}
@@ -36,7 +25,7 @@ function EditableTableCell(
                     hideErrorMessage
                     label={undefined}
                     itemFilter={undefined}
-                    onRowChanged={handleDirectoryItemsChange}
+                    onRowChanged={onRowChanged}
                 />
             )}
             {column.menuItems && (
@@ -48,7 +37,7 @@ function EditableTableCell(
                 />
             )}
             {column.checkboxItems && (
-                <span onChange={handleSwitchInputChange}>
+                <span onChange={onRowChanged}>
                     <SwitchInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} />
                 </span>
             )}

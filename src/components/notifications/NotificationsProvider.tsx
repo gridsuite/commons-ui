@@ -24,12 +24,12 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         broadcast: broadcastMessage,
         addListener: addListenerMessage,
         removeListener: removeListenerMessage,
-    } = useListenerManager<ListenerEventWS, MessageEvent>(urls);
+    } = useListenerManager<ListenerEventWS>(urls);
     const {
         broadcast: broadcastOnReopen,
         addListener: addListenerOnReopen,
         removeListener: removeListenerOnReopen,
-    } = useListenerManager<ListenerOnReopen, never>(urls);
+    } = useListenerManager<ListenerOnReopen>(urls);
 
     useEffect(() => {
         const connections = Object.entries(urls)
@@ -51,7 +51,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
 
                 rws.onopen = () => {
                     console.info(`${urlKey} Notification Websocket connected`);
-                    broadcastOnReopen(urlKey);
+                    broadcastOnReopen(urlKey)();
                 };
                 return rws;
             });

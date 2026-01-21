@@ -15,7 +15,7 @@ import {
     Whatshot as WhatshotIcon,
 } from '@mui/icons-material';
 
-// eslint-disable-next-line import/no-mutable-exports
+// eslint-disable-next-line import-x/no-mutable-exports
 let PokemonTree = [
     {
         id: 'D1',
@@ -117,7 +117,7 @@ let PokemonTree = [
     },
 ];
 
-// eslint-disable-next-line import/no-mutable-exports
+// eslint-disable-next-line import-x/no-mutable-exports
 let PokemonList = [
     {
         id: '1',

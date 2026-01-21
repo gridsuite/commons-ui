@@ -4,10 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { ElementAttributes } from '../../utils';
 
-import DeviceHub from '@material-symbols/svg-400/outlined/device_hub.svg?react';
-import { SvgIcon, type SvgIconProps } from '@mui/material';
-
-export function DeviceHubIcon(props: SvgIconProps) {
-    return <SvgIcon component={DeviceHub} inheritViewBox {...props} />;
+export function doesNodeHasChildren(node: ElementAttributes) {
+    return Array.isArray(node.children) && node.children.length > 0;
 }

@@ -10,6 +10,7 @@ import { ListItem, ListItemButton } from '@mui/material';
 import { DraggableCheckBoxListItemProps } from './checkBoxList.type';
 import { DraggableCheckBoxListItemContent } from './DraggableCheckBoxListItemContent';
 import { mergeSx } from '../../utils';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     checkboxListItem: {
@@ -28,7 +29,7 @@ const styles = {
             paddingRight: '0px',
         },
     },
-};
+} as const satisfies MuiStyles;
 
 export function DraggableCheckBoxListItem<T>({
     item,

@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Tab, Tabs, Theme } from '@mui/material';
+import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
@@ -16,9 +16,10 @@ import { VoltageInitTabValues as TabValues } from './constants';
 import { GeneralParameters } from './general-parameters';
 import { EquipmentSelectionParameters } from './equipment-selection-parameters';
 import { VoltageLimitsParameters } from './voltage-limits-parameters';
+import type { MuiStyles } from '../../../utils/styles';
 
 export const styles = {
-    gridWithActions: (theme: Theme) => ({
+    gridWithActions: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
@@ -27,7 +28,7 @@ export const styles = {
         flexGrow: 1,
         maxHeight: '85%',
     }),
-    gridWithoutActions: (theme: Theme) => ({
+    gridWithoutActions: (theme) => ({
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
@@ -36,7 +37,7 @@ export const styles = {
         flexGrow: 1,
         maxHeight: '100%',
     }),
-};
+} as const satisfies MuiStyles;
 
 interface VoltageInitParametersFormProps {
     voltageInitMethods: UseVoltageInitParametersFormReturn;

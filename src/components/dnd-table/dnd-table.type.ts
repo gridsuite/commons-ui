@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactNode } from 'react';
+import { JSX, ReactNode } from 'react';
 import { ElementType, EquipmentType } from '../../utils';
 
 export const SELECTED = 'selected';
