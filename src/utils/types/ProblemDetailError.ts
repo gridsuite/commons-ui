@@ -4,34 +4,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { CustomError } from './CustomError';
 
-export class ProblemDetailError extends Error {
+export class ProblemDetailError extends CustomError {
     serverName: string;
 
-    timestamp: Date;
+    timestamp: string;
 
     traceId: string;
-
-    status?: number;
 
     businessErrorCode?: string;
 
     businessErrorValues?: Record<string, unknown>;
 
     constructor(
+        status: number,
         message: string,
         serverName: string,
-        timestamp: Date,
+        timestamp: string,
         traceId: string,
-        status?: number,
         businessErrorCode?: string,
         businessErrorValues?: Record<string, unknown>
     ) {
-        super(message);
+        super(status, message);
         this.serverName = serverName;
         this.timestamp = timestamp;
         this.traceId = traceId;
-        this.status = status;
         this.businessErrorCode = businessErrorCode;
         this.businessErrorValues = businessErrorValues;
     }
