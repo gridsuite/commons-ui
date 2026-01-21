@@ -6,24 +6,13 @@
  */
 
 import AddNote from '@material-symbols/svg-400/outlined/add_notes.svg?react';
-import { useTheme } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 import { StickyNote2Outlined } from '@mui/icons-material';
-import { CSSProperties } from 'react';
 
-type EditNoteIconProps = {
+type EditNoteIconProps = SvgIconProps & {
     empty?: boolean;
-    hidden?: boolean;
 };
 
-export function EditNoteIcon({ empty = false, hidden = false }: Readonly<EditNoteIconProps>) {
-    const theme = useTheme();
-    const size = 25;
-
-    const style: CSSProperties = {
-        width: size,
-        height: size,
-        fill: theme.palette.text.primary,
-        visibility: hidden ? 'hidden' : 'visible',
-    };
-    return empty ? <AddNote style={style} /> : <StickyNote2Outlined sx={style} />;
+export function EditNoteIcon({ empty = false, ...props }: Readonly<EditNoteIconProps>) {
+    return empty ? <SvgIcon component={AddNote} inheritViewBox {...props} /> : <StickyNote2Outlined {...props} />;
 }
