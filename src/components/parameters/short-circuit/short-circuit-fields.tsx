@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
@@ -18,7 +18,6 @@ import {
     onlyStartedGeneratorsOptions,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
@@ -27,6 +26,8 @@ import {
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
 } from './constants';
 import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
@@ -35,7 +36,8 @@ import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } fr
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
-import { COLUMNS_DEFINITIONS_ICC_MATERIALS } from './short-circuit-icc-material-table-columns-definition';
+import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
+import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
@@ -47,7 +49,13 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
+const iccMaterialsColumnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
+    ...col,
+    label: <FormattedMessage id={col.label as string} />,
+    tooltip: <FormattedMessage id={col.tooltip as string} />,
+}));
+
+const iccClustersColumnsDef = COLUMNS_DEFINITIONS_ICC_CLUSTERS.map((col) => ({
     ...col,
     label: <FormattedMessage id={col.label as string} />,
     tooltip: <FormattedMessage id={col.tooltip as string} />,
@@ -82,21 +90,41 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         [watchSpecificParameters]
     );
     // Courcirc specific parameters
-    const watchOnlyStartedGenerators = useWatch({
-        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+    const watchOnlyStartedGeneratorsInCalculationCluster = useWatch({
+        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
     });
 
     const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
         return (
-            !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition && watchOnlyStartedGenerators
+            !watchLoads &&
+            !watchShuntCompensators &&
+            !watchVSC &&
+            !watchNeutralPosition &&
+            watchOnlyStartedGeneratorsInCalculationCluster
         );
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
+    }, [
+        watchLoads,
+        watchShuntCompensators,
+        watchVSC,
+        watchNeutralPosition,
+        watchOnlyStartedGeneratorsInCalculationCluster,
+    ]);
 
     const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
         return (
-            !watchLoads && !watchShuntCompensators && watchVSC && !watchNeutralPosition && !watchOnlyStartedGenerators
+            !watchLoads &&
+            !watchShuntCompensators &&
+            watchVSC &&
+            !watchNeutralPosition &&
+            !watchOnlyStartedGeneratorsInCalculationCluster
         );
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
+    }, [
+        watchLoads,
+        watchShuntCompensators,
+        watchVSC,
+        watchNeutralPosition,
+        watchOnlyStartedGeneratorsInCalculationCluster,
+    ]);
 
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
@@ -167,16 +195,20 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         />
     );
 
-    // Forced to specificly manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
-    const onlyStartedGenerators = (
+    // Forced to specificly manage this onlyStartedGeneratorsInCalculationCluster parameter because it's a boolean type, but we want to use a radio button here.
+    const onlyStartedGeneratorsInCalculationCluster = (
         <RadioInput
-            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
+            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`}
             options={Object.values(onlyStartedGeneratorsOptions)}
             formProps={{
                 onChange: (_event, value) => {
-                    setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`, value === 'true', {
-                        shouldDirty: true,
-                    });
+                    setValue(
+                        `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
+                        value === 'true',
+                        {
+                            shouldDirty: true,
+                        }
+                    );
                 },
             }}
         />
@@ -220,6 +252,14 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         isIccMinFeaturesDefaultConfiguration,
     ]);
 
+    const createRows = useCallback(() => {
+        const rowData: { [key: string]: any } = {};
+        iccClustersColumnsDef.forEach((column) => {
+            rowData[column.dataKey] = column.initialValue;
+        });
+        return rowData;
+    }, []);
+
     return (
         <Grid container spacing={2} paddingLeft={2}>
             <Grid container paddingTop={2} xl={6}>
@@ -250,7 +290,7 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                 <>
                     <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
                     <Grid container>
-                        <GridItem size={12}>{onlyStartedGenerators}</GridItem>
+                        <GridItem size={12}>{onlyStartedGeneratorsInCalculationCluster}</GridItem>
                     </Grid>
                     {isDeveloperMode && (
                         <>
@@ -261,7 +301,13 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                             <ShortCircuitIccMaterialTable
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
                                 tableHeight={300}
-                                columnsDefinition={columnsDef}
+                                columnsDefinition={iccMaterialsColumnsDef}
+                            />
+                            <ShortCircuitIccClusterTable
+                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
+                                tableHeight={300}
+                                columnsDefinition={iccClustersColumnsDef}
+                                createRows={createRows}
                             />
                         </>
                     )}

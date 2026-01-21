@@ -10,7 +10,7 @@ import {
     IccMaterialIColumnsDef,
     SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
     SHORT_CIRCUIT_ICC_MATERIAL_TYPE,
-} from './short-circuit-icc-material-table-columns-definition';
+} from './columns-definition';
 
 export function ShortCircuitIccMaterialTableCell({
     formName,

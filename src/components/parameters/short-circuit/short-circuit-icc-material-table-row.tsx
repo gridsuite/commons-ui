@@ -9,7 +9,7 @@ import { useWatch } from 'react-hook-form';
 import {
     IccMaterialIColumnsDef,
     SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
-} from './short-circuit-icc-material-table-columns-definition';
+} from './columns-definition';
 import { ShortCircuitIccMaterialTableCell } from './short-circuit-icc-material-table-cell';
 
 interface ShortCircuitIccMaterialTableRowProps {
