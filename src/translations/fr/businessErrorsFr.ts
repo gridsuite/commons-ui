@@ -15,7 +15,7 @@ export const businessErrorsFr = {
     'directory.elementNotFound': "L'élément du dossier demandé est introuvable.",
     'directory.parentPermissionDenied': "Vous n'avez pas les droits d'accès suffisant sur le dossier parent",
     'directory.childPermissionDenied':
-        "Il y a au moins un sous-dossier pour lequel vous n'avez pas les droits d'accès suffisant",
+        "Le dossier contient au moins un sous-dossier pour lequel vous n'avez pas les droits d'accès suffisant",
     'directory.targetPermissionDenied': "Vous n'avez pas les droits d'accès suffisant sur le dossier cible",
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
