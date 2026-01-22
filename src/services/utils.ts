@@ -75,6 +75,29 @@ const isProblemDetail = (error: unknown): error is ProblemDetailDto => {
     );
 };
 
+export const parseError = (errorTxt: string) => {
+    let error: unknown;
+    try {
+        error = JSON.parse(errorTxt);
+    } catch {
+        return new Error(errorTxt);
+    }
+
+    if (isProblemDetail(error)) {
+        return new ProblemDetailError(
+            error.status,
+            error.detail,
+            error.server,
+            error.timestamp,
+            error.traceId,
+            error.businessErrorCode,
+            error.businessErrorValues
+        );
+    }
+
+    return new Error(errorTxt);
+};
+
 export const handleNotOkResponse = async (response: Response): Promise<never> => {
     let bodyText: string;
 
@@ -87,7 +110,7 @@ export const handleNotOkResponse = async (response: Response): Promise<never> =>
     }
 
     const contentType = response.headers.get('content-type') ?? '';
-    if (!contentType.includes('/json') && !contentType.includes('+json')) {
+    if (!contentType.includes('application/json') && !contentType.includes('application/problem+json')) {
         throw new CustomError(response.status, bodyText);
     }
 
