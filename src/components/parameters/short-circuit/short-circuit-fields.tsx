@@ -18,7 +18,7 @@ import {
     onlyStartedGeneratorsOptions,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
@@ -82,21 +82,41 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         [watchSpecificParameters]
     );
     // Courcirc specific parameters
-    const watchOnlyStartedGenerators = useWatch({
-        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+    const watchOnlyStartedGeneratorsInCalculationCluster = useWatch({
+        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
     });
 
     const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
         return (
-            !watchLoads && !watchShuntCompensators && !watchVSC && !watchNeutralPosition && watchOnlyStartedGenerators
+            !watchLoads &&
+            !watchShuntCompensators &&
+            !watchVSC &&
+            !watchNeutralPosition &&
+            watchOnlyStartedGeneratorsInCalculationCluster
         );
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
+    }, [
+        watchLoads,
+        watchShuntCompensators,
+        watchVSC,
+        watchNeutralPosition,
+        watchOnlyStartedGeneratorsInCalculationCluster,
+    ]);
 
     const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
         return (
-            !watchLoads && !watchShuntCompensators && watchVSC && !watchNeutralPosition && !watchOnlyStartedGenerators
+            !watchLoads &&
+            !watchShuntCompensators &&
+            watchVSC &&
+            !watchNeutralPosition &&
+            !watchOnlyStartedGeneratorsInCalculationCluster
         );
-    }, [watchLoads, watchShuntCompensators, watchVSC, watchNeutralPosition, watchOnlyStartedGenerators]);
+    }, [
+        watchLoads,
+        watchShuntCompensators,
+        watchVSC,
+        watchNeutralPosition,
+        watchOnlyStartedGeneratorsInCalculationCluster,
+    ]);
 
     // the translation of values
     const predefinedParamsOptions = useMemo(() => {
@@ -167,16 +187,20 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         />
     );
 
-    // Forced to specificly manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
-    const onlyStartedGenerators = (
+    // Forced to specificly manage this onlyStartedGeneratorsInCalculationCluster parameter because it's a boolean type, but we want to use a radio button here.
+    const onlyStartedGeneratorsInCalculationCluster = (
         <RadioInput
-            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`}
+            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`}
             options={Object.values(onlyStartedGeneratorsOptions)}
             formProps={{
                 onChange: (_event, value) => {
-                    setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`, value === 'true', {
-                        shouldDirty: true,
-                    });
+                    setValue(
+                        `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
+                        value === 'true',
+                        {
+                            shouldDirty: true,
+                        }
+                    );
                 },
             }}
         />
@@ -250,7 +274,7 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                 <>
                     <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
                     <Grid container>
-                        <GridItem size={12}>{onlyStartedGenerators}</GridItem>
+                        <GridItem size={12}>{onlyStartedGeneratorsInCalculationCluster}</GridItem>
                     </Grid>
                     {isDeveloperMode && (
                         <>
