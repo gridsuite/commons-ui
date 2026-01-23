@@ -107,6 +107,8 @@ import {
     treeviewFinderEn,
     treeviewFinderFr,
     useSnackMessage,
+    LeftPanelOpenIcon,
+    EditNoteIcon,
 } from '../../src';
 
 const messages = {
@@ -630,6 +632,9 @@ function AppContent({ language, onLanguageClick }) {
             <hr />
             <hr />
             {testIcons()}
+            <LeftPanelOpenIcon fontSize="large" color="secondary" />
+            <EditNoteIcon fontSize="large" />
+            <EditNoteIcon fontSize="large" empty />
             <hr />
 
             <PermanentSnackButton />
