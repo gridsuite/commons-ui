@@ -21,11 +21,17 @@ import {
     creationPropertiesSchema,
     getPropertiesFromModification,
     ModificationDialog,
+    NetworkModificationDialogProps,
     Property,
     toModificationProperties,
 } from '../../common';
 import { sanitizeString } from '../../../dialogs';
-import { createSubstation, fetchDefaultCountry, StudyContext } from '../../../../services';
+import {
+    createSubstation,
+    createSubstationInNode,
+    fetchDefaultCountry,
+    SubstationCreationDto,
+} from '../../../../services';
 import { SubstationInfos } from '../substation-dialog.type';
 
 const formSchema = yup
@@ -54,12 +60,8 @@ interface SubstationCreationEditData {
     properties?: Property[] | null;
 }
 
-interface SubstationCreationDialogProps {
+interface SubstationCreationDialogProps extends NetworkModificationDialogProps {
     editData?: SubstationCreationEditData;
-    isUpdate: boolean;
-    studyContext?: StudyContext;
-    onClose?: () => void;
-    editDataFetchStatus?: string;
 }
 
 /**
@@ -75,6 +77,7 @@ export function SubstationCreationDialog({
     isUpdate,
     studyContext,
     onClose,
+    onValidated,
     editDataFetchStatus,
     ...dialogProps
 }: Readonly<SubstationCreationDialogProps>) {
@@ -132,23 +135,27 @@ export function SubstationCreationDialog({
 
     const onSubmit = useCallback(
         (substation: SubstationCreationFormData) => {
+            const dto: SubstationCreationDto = {
+                substationId: substation[FieldConstants.EQUIPMENT_ID],
+                substationName: sanitizeString(substation[FieldConstants.EQUIPMENT_NAME]),
+                country: substation[FieldConstants.COUNTRY] ?? null,
+                isUpdate: !!editData,
+                modificationUuid: editData ? editData.uuid : undefined,
+                properties: toModificationProperties(substation),
+            };
+            let promise: Promise<string>;
             if (studyContext) {
-                // create inside the study
-                createSubstation({
+                promise = createSubstationInNode({
                     studyId: studyContext.studyId,
                     nodeId: studyContext.nodeId,
-                    substationId: substation[FieldConstants.EQUIPMENT_ID],
-                    substationName: sanitizeString(substation[FieldConstants.EQUIPMENT_NAME]),
-                    country: substation[FieldConstants.COUNTRY] ?? null,
-                    isUpdate: !!editData,
-                    modificationUuid: editData ? editData.uuid : undefined,
-                    properties: toModificationProperties(substation),
-                }).catch((error: Error) => {
-                    snackWithFallback(snackError, error, { headerId: 'SubstationCreationError' });
+                    ...dto,
                 });
             } else {
-                // TODO DBR create directly in modification-server
+                promise = createSubstation(dto);
             }
+            promise.catch((error: Error) => {
+                snackWithFallback(snackError, error, { headerId: 'SubstationCreationError' });
+            });
         },
         [editData, snackError, studyContext]
     );
@@ -168,10 +175,11 @@ export function SubstationCreationDialog({
                 onClear={clear}
                 onSave={onSubmit}
                 onClose={onClose}
+                onValidated={onValidated}
                 maxWidth="md"
                 titleId="CreateSubstation"
                 searchCopy={studyContext ? searchCopy : undefined}
-                open={true}
+                open
                 isDataFetching={false}
                 {...dialogProps}
             >

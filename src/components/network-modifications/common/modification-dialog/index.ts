@@ -5,4 +5,5 @@
  */
 
 export * from './modification-dialog-content';
-export * from './modificationDialog';
+export * from './modification-dialog';
+export * from './modification-dialog-types';

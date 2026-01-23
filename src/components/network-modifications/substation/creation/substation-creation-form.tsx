@@ -24,8 +24,6 @@ export function SubstationCreationForm() {
         <CountrySelectionInput name={FieldConstants.COUNTRY} label="Country" formProps={filledTextField} size="small" />
     );
 
-    //             <PropertiesForm networkElementType="substation" />
-
     return (
         <>
             <Grid container spacing={2}>
@@ -33,6 +31,7 @@ export function SubstationCreationForm() {
                 <GridItem size={4}>{substationNameField}</GridItem>
                 <GridItem size={4}>{substationCountryField}</GridItem>
             </Grid>
+            <PropertiesForm networkElementType="substation" />
         </>
     );
 }

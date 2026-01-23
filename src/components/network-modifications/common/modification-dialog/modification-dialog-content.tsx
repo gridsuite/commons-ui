@@ -5,13 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Dialog, DialogTitle, DialogContent, DialogActions, LinearProgress, DialogProps } from '@mui/material';
+import { Grid, Dialog, DialogTitle, DialogContent, DialogActions, LinearProgress } from '@mui/material';
 import FindInPageIcon from '@mui/icons-material/FindInPage';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CancelButton } from '../../../inputs';
-import { useButtonWithTooltip, UseFormSearchCopy } from '../../../../hooks';
+import { useButtonWithTooltip } from '../../../../hooks';
+import { ModificationDialogContentProps } from './modification-dialog-types';
 
 /**
  * Common parts for the Modification Dialog
@@ -24,16 +25,6 @@ import { useButtonWithTooltip, UseFormSearchCopy } from '../../../../hooks';
  * @param {CallbackEvent} closeAndClear callback when the dialog needs to be closed and cleared
  * @param {Array} dialogProps props that are forwarded to the MUI Dialog component
  */
-
-export type ModificationDialogContentProps = Omit<DialogProps, 'onClose' | 'aria-labelledby'> & {
-    closeAndClear: () => void;
-    isDataFetching?: boolean;
-    titleId: string;
-    onOpenCatalogDialog?: () => void;
-    searchCopy?: UseFormSearchCopy;
-    submitButton: ReactNode;
-    subtitle?: ReactNode;
-};
 
 export function ModificationDialogContent({
     closeAndClear,

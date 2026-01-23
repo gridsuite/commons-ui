@@ -6,12 +6,13 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
-import { EquipmentType, ExtendedEquipmentType, ModificationType } from '../utils';
+import { EquipmentType, ExtendedEquipmentType } from '../utils';
 import { SubstationCreationInfo } from './network-modification-types';
+import { createSubstationPromise } from './network-modification';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
@@ -116,39 +117,6 @@ export function fetchNetworkElementInfos(
     return backendFetchJson(fetchElementsUrl);
 }
 
-export function createSubstation({
-    studyId,
-    nodeId,
-    substationId,
-    substationName,
-    country,
-    isUpdate = false,
-    modificationUuid,
-    properties,
-}: SubstationCreationInfo) {
-    let url = getNetworkModificationUrl(studyId, nodeId);
-
-    const body = JSON.stringify({
-        type: ModificationType.SUBSTATION_CREATION,
-        equipmentId: substationId,
-        equipmentName: substationName,
-        country: country === '' ? null : country,
-        properties,
-    });
-
-    if (modificationUuid) {
-        url += `/${encodeURIComponent(modificationUuid)}`;
-        console.info('Updating substation creation', { url, body });
-    } else {
-        console.info('Creating substation creation', { url, body });
-    }
-
-    return backendFetchText(url, {
-        method: isUpdate ? 'PUT' : 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body,
-    });
+export function createSubstationInNode(info: SubstationCreationInfo) {
+    return createSubstationPromise(info, getNetworkModificationUrl(info.studyId, info.nodeId));
 }

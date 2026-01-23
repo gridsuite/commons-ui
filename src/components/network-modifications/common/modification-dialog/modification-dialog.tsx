@@ -7,8 +7,9 @@
 
 import { useCallback } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
-import { ModificationDialogContent, ModificationDialogContentProps } from './modification-dialog-content';
+import { ModificationDialogContent } from './modification-dialog-content';
 import { SubmitButton } from '../../../inputs';
+import { ModificationDialogProps } from './modification-dialog-types';
 
 /**
  * Generic Modification Dialog which manage basic common behaviors with react
@@ -20,18 +21,6 @@ import { SubmitButton } from '../../../inputs';
  * @param {CallbackEvent} onValidationError callback when validation failed
  * @param {Array} dialogProps props that are forwarded to the MUI Dialog component
  */
-
-export type ModificationDialogProps<TFieldValues extends FieldValues> = Omit<
-    ModificationDialogContentProps,
-    'closeAndClear' | 'submitButton'
-> & {
-    disabledSave?: boolean;
-    onClear: () => void;
-    onClose?: () => void;
-    onSave: (modificationData: TFieldValues) => void;
-    onValidated?: () => void;
-    onValidationError?: (errors: FieldErrors<TFieldValues>) => void;
-};
 
 export function ModificationDialog<TFieldValues extends FieldValues>({
     disabledSave = false,

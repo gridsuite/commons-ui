@@ -13,7 +13,7 @@ export interface StudyContext {
     rootNetworkId?: UUID;
 }
 
-export interface SubstationCreationInfo extends StudyContext {
+export interface SubstationCreationDto {
     substationId: string;
     substationName: string | null;
     country: string | null;
@@ -21,3 +21,5 @@ export interface SubstationCreationInfo extends StudyContext {
     modificationUuid?: UUID;
     properties: Property[] | null;
 }
+
+export interface SubstationCreationInfo extends StudyContext, SubstationCreationDto {}
