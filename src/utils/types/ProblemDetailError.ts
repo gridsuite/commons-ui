@@ -6,25 +6,43 @@
  */
 import { CustomError } from './CustomError';
 
+function formatMessageValues(properties: Record<string, unknown> | undefined): Record<string, string> | undefined {
+    if (properties === undefined) {
+        return undefined;
+    }
+    return Object.fromEntries(
+        Object.entries(properties).map(([key, value]) => [
+            key,
+            typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value),
+        ])
+    );
+}
+
 export class ProblemDetailError extends CustomError {
     serverName: string;
 
-    timestamp: Date;
+    timestamp: string;
 
     traceId: string;
 
+    businessErrorCode?: string;
+
+    businessErrorValues?: Record<string, string>;
+
     constructor(
+        status: number,
         message: string,
         serverName: string,
-        timestamp: Date,
+        timestamp: string,
         traceId: string,
-        status: number,
         businessErrorCode?: string,
         businessErrorValues?: Record<string, unknown>
     ) {
-        super(message, status, businessErrorCode, businessErrorValues);
+        super(status, message);
         this.serverName = serverName;
         this.timestamp = timestamp;
         this.traceId = traceId;
+        this.businessErrorCode = businessErrorCode;
+        this.businessErrorValues = formatMessageValues(businessErrorValues);
     }
 }
