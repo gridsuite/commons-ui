@@ -16,7 +16,7 @@ import {
     InitialVoltage,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -136,7 +136,7 @@ export const useShortCircuitParametersForm = ({
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
 
             setValue(
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
+                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
                 predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
