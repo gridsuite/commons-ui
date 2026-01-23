@@ -15,8 +15,9 @@ import {
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     UPDATE_BUS_VOLTAGE,
 } from './constants';
-import { LineSeparator, ParameterFloat, ParameterSwitch, ReactivePowerAdornment } from '../common';
+import { LineSeparator, ParameterFloat, ParameterSwitch } from '../common';
 import { parametersStyles } from '../parameters-style';
+import { ReactivePowerAdornment } from '../../dialogs';
 
 export interface GeneralParametersProps {
     withApplyModifications: boolean;

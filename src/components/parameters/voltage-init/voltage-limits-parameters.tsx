@@ -17,9 +17,9 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { VoltageAdornment } from '../common';
 import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
 import { FILTERS } from '../../../utils/constants/filterConstant';
+import { VoltageAdornment } from '../../dialogs';
 
 export function VoltageLimitsParameters() {
     const intl = useIntl();

@@ -75,7 +75,6 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
-// TODO move into powsybl-network-viewer
 export enum HvdcType {
     LCC = 'LCC',
     VSC = 'VSC',
@@ -293,3 +292,13 @@ export function getEquipmentsInfosForSearchBar(equipmentsInfos: Equipment[], get
               })) ?? []);
     });
 }
+
+type EquipmentInfosTypesStruct<T extends string = string> = { type: T };
+export const EquipmentInfosTypes: Record<string, EquipmentInfosTypesStruct> = {
+    LIST: { type: 'LIST' },
+    MAP: { type: 'MAP' },
+    FORM: { type: 'FORM' },
+    TAB: { type: 'TAB' },
+    TOOLTIP: { type: 'TOOLTIP' },
+    OPERATING_STATUS: { type: 'OPERATING_STATUS' },
+};

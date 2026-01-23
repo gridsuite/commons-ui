@@ -14,7 +14,7 @@ import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale'
 import { useIntl } from 'react-intl';
 import { Box, type BoxProps, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
-import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
+import { agGridStyles, CUSTOM_AGGRID_THEME } from './customAggrid.style';
 import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
 
 export type AgGridLocale = Partial<Record<keyof typeof AG_GRID_LOCALE_EN, string>>; // using EN for keyof because it's the only who has more keys, so more complete
@@ -60,7 +60,7 @@ export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
         return (
             <Box
                 component="div"
-                sx={mergeSx(styles.grid, sx)}
+                sx={mergeSx(agGridStyles.grid, sx)}
                 className={`${theme.aggrid.theme} ${CUSTOM_AGGRID_THEME}`}
             >
                 <AgGridReact

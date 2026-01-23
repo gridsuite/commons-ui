@@ -151,3 +151,7 @@ export const backendFetchFile = (url: string, init: RequestInit, token?: string)
 export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };
+
+export function safeEncodeURIComponent(value: string | null | undefined): string {
+    return value != null ? encodeURIComponent(value) : '';
+}

@@ -8,7 +8,7 @@ import type { MuiStyles } from '../../utils/styles';
 
 export const CUSTOM_AGGRID_THEME = 'custom-aggrid-theme';
 
-export const styles = {
+export const agGridStyles = {
     grid: (theme) => ({
         width: 'auto',
         height: '100%',
