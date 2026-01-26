@@ -31,11 +31,13 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
     });
 
     const predefinedNames = useMemo(() => {
-        return Object.keys(predefinedProperties ?? {}).sort();
+        const keys = Object.keys(predefinedProperties ?? {});
+        return keys.sort((a, b) => a.localeCompare(b));
     }, [predefinedProperties]);
 
     const predefinedValues = useMemo(() => {
-        return predefinedProperties?.[watchPropertyName]?.sort() ?? [];
+        const values = predefinedProperties?.[watchPropertyName] ?? [];
+        return values.sort((a, b) => a.localeCompare(b));
     }, [watchPropertyName, predefinedProperties]);
 
     const nameField = (
