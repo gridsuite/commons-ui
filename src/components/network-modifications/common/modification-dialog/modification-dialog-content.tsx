@@ -6,8 +6,7 @@
  */
 
 import { Grid, Dialog, DialogTitle, DialogContent, DialogActions, LinearProgress } from '@mui/material';
-import FindInPageIcon from '@mui/icons-material/FindInPage';
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import { AutoStoriesOutlined as AutoStoriesOutlinedIcon, FindInPage as FindInPageIcon } from '@mui/icons-material';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CancelButton } from '../../../inputs';

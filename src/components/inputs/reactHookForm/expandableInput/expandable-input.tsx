@@ -7,7 +7,7 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { Button, Grid } from '@mui/material';
-import AddIcon from '@mui/icons-material/ControlPoint';
+import { ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { DeletableRow } from './deletable-row';
 import { ErrorInput, MidFormError } from '../errorManagement';
