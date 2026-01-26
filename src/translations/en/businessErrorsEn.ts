@@ -13,6 +13,10 @@ export const businessErrorsEn = {
     'directory.moveInDescendantNotAllowed': 'Cannot move an element inside one of its descendants.',
     'directory.someElementsAreMissing': 'Some of the requested directory elements are missing.',
     'directory.elementNotFound': 'The requested directory element could not be found.',
+    'directory.parentPermissionDenied': "You don't have sufficient rights on parent folder",
+    'directory.childPermissionDenied':
+        'The folder contains at least one subfolder for which you do not have sufficient rights',
+    'directory.targetPermissionDenied': "You don't have sufficient rights on target folder",
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
@@ -35,6 +39,7 @@ export const businessErrorsEn = {
     'study.networkExportFailed': 'Failed to export network.',
     'study.tooManyNadConfigs': 'Maximum number of NAD configuration exceeded.',
     'study.tooManyMapCards': 'Maximum number of cards exceeded.',
+    'study.elementAlreadyExists': 'An element with the same name already exists',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',
