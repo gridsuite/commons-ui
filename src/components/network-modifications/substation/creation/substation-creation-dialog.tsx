@@ -11,7 +11,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'node:crypto';
 import { SubstationCreationForm } from './substation-creation-form';
 import { useFormSearchCopy, useOpenShortWaitFetching, useSnackMessage } from '../../../../hooks';
-import { DeepNullable, EquipmentType, FetchStatus, FieldConstants, FORM_LOADING_DELAY, snackWithFallback } from '../../../../utils';
+import {
+    DeepNullable,
+    EquipmentType,
+    FetchStatus,
+    FieldConstants,
+    FORM_LOADING_DELAY,
+    snackWithFallback,
+} from '../../../../utils';
 import { CustomFormProvider } from '../../../inputs';
 import yup from '../../../../utils/yupConfig';
 import {
@@ -161,10 +168,10 @@ export function SubstationCreationDialog({
     );
 
     const open = useOpenShortWaitFetching({
-         isDataFetched:
-             !isUpdate || editDataFetchStatus === FetchStatus.SUCCEED || editDataFetchStatus === FetchStatus.FAILED,
-         delay: FORM_LOADING_DELAY,
-     });
+        isDataFetched:
+            !isUpdate || editDataFetchStatus === FetchStatus.SUCCEED || editDataFetchStatus === FetchStatus.FAILED,
+        delay: FORM_LOADING_DELAY,
+    });
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>

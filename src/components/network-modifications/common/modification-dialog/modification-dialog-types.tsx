@@ -8,8 +8,8 @@
 import { ReactNode } from 'react';
 import { DialogProps } from '@mui/material';
 import { UUID } from 'node:crypto';
-import { UseFormSearchCopy } from '../../../../hooks';
 import { FieldErrors, FieldValues } from 'react-hook-form';
+import { UseFormSearchCopy } from '../../../../hooks';
 import { StudyContext } from '../../../../services';
 
 export type ModificationDialogContentProps = Omit<DialogProps, 'onClose' | 'aria-labelledby'> & {

@@ -14,7 +14,7 @@ export * from './useDebounce';
 export * from './useIntlRef';
 export * from './use-form-search-copy';
 export * from './useLocalizedCountries';
-export * from './useLocalizedCountries';
+export * from './usePredefinedProperties';
 export * from './use-open-short-wait-fetching';
 export * from './usePrevious';
 export * from './use-simple-text-value';
