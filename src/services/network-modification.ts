@@ -23,7 +23,7 @@ export function fetchNetworkModification(modificationUuid: UUID) {
 }
 
 export function createSubstationPromise(
-    { substationId, substationName, country, isUpdate, modificationUuid, properties }: SubstationCreationDto,
+    { substationId, substationName, country, properties, isUpdate, modificationUuid }: SubstationCreationDto,
     baseUrl: string
 ) {
     const body = JSON.stringify({

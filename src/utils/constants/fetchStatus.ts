@@ -7,7 +7,7 @@
 
 export const FetchStatus = {
     IDLE: 'IDLE',
-    FETCHING: 'FETCHING',
-    FETCH_SUCCESS: 'FETCH_SUCCESS',
-    FETCH_ERROR: 'FETCH_ERROR',
+    RUNNING: 'RUNNING',
+    SUCCEED: 'SUCCEED',
+    FAILED: 'FAILED',
 };

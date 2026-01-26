@@ -10,10 +10,8 @@ import { useCallback, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'node:crypto';
 import { SubstationCreationForm } from './substation-creation-form';
-// import { useOpenShortWaitFetching } from 'components/dialogs/commons/handle-modification-form';
-// import { FetchStatus } from '../../../../../services/utils';
-import { useFormSearchCopy, useSnackMessage } from '../../../../hooks';
-import { DeepNullable, EquipmentType, FieldConstants, snackWithFallback } from '../../../../utils';
+import { useFormSearchCopy, useOpenShortWaitFetching, useSnackMessage } from '../../../../hooks';
+import { DeepNullable, EquipmentType, FetchStatus, FieldConstants, FORM_LOADING_DELAY, snackWithFallback } from '../../../../utils';
 import { CustomFormProvider } from '../../../inputs';
 import yup from '../../../../utils/yupConfig';
 import {
@@ -69,6 +67,8 @@ interface SubstationCreationDialogProps extends NetworkModificationDialogProps {
  * @param editData the data to edit
  * @param isUpdate check if edition form
  * @param studyContext the current tree node context in case of using the modification in a study
+ * @param onClose callback when we close the dialog
+ * @param onValidated callback when we validate the dialog
  * @param editDataFetchStatus indicates the status of fetching EditData
  * @param dialogProps props that are forwarded to the generic ModificationDialog component
  */
@@ -160,13 +160,11 @@ export function SubstationCreationDialog({
         [editData, snackError, studyContext]
     );
 
-    // const open = useOpenShortWaitFetching({
-    //     isDataFetched:
-    //         !isUpdate || editDataFetchStatus === FetchStatus.SUCCEED || editDataFetchStatus === FetchStatus.FAILED,
-    //     delay: FORM_LOADING_DELAY,
-    // });
-    // isDataFetching={isUpdate && editDataFetchStatus === FetchStatus.RUNNING}
-    // open={true}
+    const open = useOpenShortWaitFetching({
+         isDataFetched:
+             !isUpdate || editDataFetchStatus === FetchStatus.SUCCEED || editDataFetchStatus === FetchStatus.FAILED,
+         delay: FORM_LOADING_DELAY,
+     });
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
@@ -179,8 +177,8 @@ export function SubstationCreationDialog({
                 maxWidth="md"
                 titleId="CreateSubstation"
                 searchCopy={studyContext ? searchCopy : undefined}
-                open
-                isDataFetching={false}
+                open={open}
+                isDataFetching={isUpdate && editDataFetchStatus === FetchStatus.RUNNING}
                 {...dialogProps}
             >
                 <SubstationCreationForm />
