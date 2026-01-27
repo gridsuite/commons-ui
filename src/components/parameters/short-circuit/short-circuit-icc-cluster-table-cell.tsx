@@ -40,10 +40,11 @@ export function ShortCircuitIccClusterTableCell({
                                 />
             )}
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_TYPE && (
-                <SelectInput name={`${formName}[${rowIndex}].${column.dataKey}`} label="inputs/select" options={['WIND', 'SOLAR', 'HVDC']}/>
+                <SelectInput name={`${formName}[${rowIndex}].${column.dataKey}`} label={`${formName}[${rowIndex}].${column.titleId}`} options={['WIND', 'SOLAR', 'HVDC']}/>
             )}
             {column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE &&
-                column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_FILTERS && (
+                column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_FILTERS &&
+                column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_TYPE && (
                     <FloatInput disabled={inputsDisabled} name={`${formName}[${rowIndex}].${column.dataKey}`} />
                 )}
         </TableCell>

@@ -131,6 +131,8 @@ export const parametersFr = {
     ShortCircuitIccClusterActivateTooltip: "Activer la modélisation des clusters d'électronique de puissance",
     ShortCircuitIccClusterFilters: 'Filtres',
     ShortCircuitIccClusterFiltersTooltip: 'Filtres de sélection des clusters',
+    ShortCircuitIccClusterTypeTooltip: "Sélectionner les types d'équipements à inclure dans ce cluster",
+    ShortCircuitIccClusterTypeListsSelection: 'Sélection du type de cluster',
     ShortCircuitIccMaterialType: 'Matériel',
     ShortCircuitIccMaterialTypeTooltip: "Type d'équipement raccordé par de l'électronique de puissance",
     ShortCircuitIccAlpha: 'Alpha',

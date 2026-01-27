@@ -126,6 +126,8 @@ export const parametersEn = {
     ShortCircuitIccClusterActivateTooltip: 'Activate or deactivate this cluster characteristic',
     ShortCircuitIccClusterFilters: 'Filters',
     ShortCircuitIccClusterFiltersTooltip: 'Select the filters to be included in this cluster',
+    ShortCircuitIccClusterTypeTooltip: 'Select the types of equipment to be included in this cluster',
+    ShortCircuitIccClusterTypeListsSelection: 'Type lists selection',
     ShortCircuitIccMaterialType: 'Material',
     ShortCircuitIccMaterialTypeTooltip: 'Type of power electronics equipment',
     ShortCircuitIccAlpha: 'Alpha',

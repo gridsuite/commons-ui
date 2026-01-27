@@ -136,7 +136,7 @@ const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerEl
     }
 };
 
-const parsepowerElectronicsClustersParamString = (paramString: string): PowerElectronicsCluster[] => {
+const parsepowerElectronicsClustersParamString = (paramString: string): (PowerElectronicsCluster & { active: boolean })[] => {
     // Attempt to parse the string into an array of PowerElectronicsCluster objects
     try {
         return JSON.parse(paramString);
@@ -170,9 +170,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
     );
     if (powerElectronicsClustersParam) {
         defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = []; // there is no default params for clusters for now
-        console.log('SBO : getDefaultShortCircuitSpecificParamsValues SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS set');
     }
-    console.log('SBO : getDefaultShortCircuitSpecificParamsValues', defaultValues);
     return defaultValues;
 };
 
@@ -197,17 +195,15 @@ export const getShortCircuitSpecificParametersValues = (
                     })
             ),
             [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: JSON.stringify(
-                powerElectronicsClustersParam
-                    .filter((sParam) => sParam.active) // keep only active ones
-                    .map((sParam) => {
-                        const { active, filters, ...rest } = sParam; // remove 'active' property
-                        const lightFilters = // keep only id and name in filters for backend
-                            filters?.map((filter) => ({
-                                filterId: filter[ID],
-                                filterName: filter.name,
-                            })) ?? [];
-                        return { ...rest, filters: lightFilters };
-                    })
+                powerElectronicsClustersParam.map((sParam) => {
+                    const { filters, ...rest } = sParam;
+                    const lightFilters = // keep only id and name in filters for backend
+                        filters?.map((filter) => ({
+                            filterId: filter[ID],
+                            filterName: filter.name,
+                        })) ?? [];
+                    return { ...rest, filters: lightFilters };
+                })
             ),
         };
     }
@@ -227,7 +223,7 @@ const formatElectronicsMaterialsParamString = (
 };
 
 const formatElectronicsClustersParamString = (defaultValues: PowerElectronicsCluster[], specificParamValue: string) => {
-    const electronicsClustersArrayInParams: PowerElectronicsCluster[] =
+    const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
         parsepowerElectronicsClustersParamString(specificParamValue);
     return electronicsClustersArrayInParams.map((cluster) => {
         const { filters, ...rest } = cluster;
@@ -237,7 +233,6 @@ const formatElectronicsClustersParamString = (defaultValues: PowerElectronicsClu
                 [ID]: filter.filterId,
                 [NAME]: filter.filterName, // TODO from back to front -> {id: uuid, name: string}
             })),
-            active: true,
         };
     });
 };
