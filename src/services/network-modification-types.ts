@@ -7,10 +7,15 @@
 import type { UUID } from 'node:crypto';
 import { Property } from '../components/network-modifications/common/properties/property-types';
 
-export interface StudyContext {
+export interface NetworkModificationData {
+    uuid: UUID;
+    type: string;
+    [key: string]: any;
+}
+
+export interface StudyNodeInfo {
     studyId: UUID;
     nodeId: UUID;
-    rootNetworkId?: UUID;
 }
 
 export interface SubstationCreationDto {
@@ -22,4 +27,4 @@ export interface SubstationCreationDto {
     properties: Property[] | null;
 }
 
-export interface SubstationCreationInfo extends StudyContext, SubstationCreationDto {}
+export interface SubstationCreationInfo extends StudyNodeInfo, SubstationCreationDto {}

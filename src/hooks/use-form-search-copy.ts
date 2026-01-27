@@ -8,9 +8,16 @@
 import { useIntl } from 'react-intl';
 import { useCallback, useState } from 'react';
 import { UUID } from 'node:crypto';
-import { EquipmentInfos, EquipmentInfosTypes, EquipmentType, ExtendedEquipmentType, snackWithFallback } from '../utils';
+import {
+    EquipmentInfos,
+    EquipmentInfosTypes,
+    EquipmentType,
+    ExtendedEquipmentType,
+    snackWithFallback,
+    StudyContext,
+} from '../utils';
 import { useSnackMessage } from './useSnackMessage';
-import { fetchNetworkElementInfos, StudyContext } from '../services';
+import { fetchNetworkElementInfos } from '../services';
 
 // TODO fetchNetworkElementInfos has no type
 type FetchResponse = Awaited<ReturnType<typeof fetchNetworkElementInfos>>;

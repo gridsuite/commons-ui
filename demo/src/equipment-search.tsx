@@ -47,7 +47,7 @@ const searchEquipmentPromise = () => {
     });
 };
 
-export function EquipmentSearchDialog() {
+export function EquipmentSearchDemoDialog() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const { elementsFound, isLoading, searchTerm, updateSearchTerm } = useElementSearch({
@@ -93,4 +93,4 @@ export function EquipmentSearchDialog() {
     );
 }
 
-export default EquipmentSearchDialog;
+export default EquipmentSearchDemoDialog;

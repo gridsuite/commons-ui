@@ -24,6 +24,7 @@ import yup from '../../../../utils/yupConfig';
 import {
     copyEquipmentPropertiesForCreation,
     creationPropertiesSchema,
+    EquipmentSearchDialog,
     getPropertiesFromModification,
     ModificationDialog,
     NetworkModificationDialogProps,
@@ -109,7 +110,7 @@ export function SubstationCreationDialog({
         );
     };
 
-    const searchCopy = useFormSearchCopy(fromSearchCopyToFormValues, EquipmentType.SUBSTATION);
+    const searchCopy = useFormSearchCopy(fromSearchCopyToFormValues, EquipmentType.SUBSTATION, studyContext);
 
     useEffect(() => {
         if (editData) {
@@ -189,6 +190,18 @@ export function SubstationCreationDialog({
                 {...dialogProps}
             >
                 <SubstationCreationForm />
+                {studyContext && (
+                    <EquipmentSearchDialog
+                        open={searchCopy.isDialogSearchOpen}
+                        onClose={searchCopy.handleCloseSearchDialog}
+                        equipmentType={EquipmentType.SUBSTATION}
+                        onSelectionChange={searchCopy.handleSelectionChange}
+                        studyUuid={studyContext.studyId}
+                        currentNodeUuid={studyContext.nodeId}
+                        currentRootNetworkUuid={studyContext.rootNetworkId}
+                        useName={studyContext.useNameParam}
+                    />
+                )}
             </ModificationDialog>
         </CustomFormProvider>
     );

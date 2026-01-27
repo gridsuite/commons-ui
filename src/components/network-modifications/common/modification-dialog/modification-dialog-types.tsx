@@ -10,7 +10,7 @@ import { DialogProps } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseFormSearchCopy } from '../../../../hooks';
-import { StudyContext } from '../../../../services';
+import { StudyContext } from '../../../../utils';
 
 export type ModificationDialogContentProps = Omit<DialogProps, 'onClose' | 'aria-labelledby'> & {
     closeAndClear: () => void;

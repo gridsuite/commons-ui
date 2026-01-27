@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ALL_EQUIPMENTS } from './types';
+import { ALL_EQUIPMENTS, Identifiable } from './types';
 
 export function getEquipmentTypeShortLabel(equipmentType: string | undefined): string {
     if (!equipmentType) {
@@ -19,4 +19,21 @@ export function getEquipmentTypeTagLabel(equipmentType: string | undefined): str
         return '';
     }
     return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.tagLabel ?? '';
+}
+
+export function getIdentifiableNameOrId(useName: boolean, infos?: Identifiable | null): string {
+    if (infos) {
+        const name = infos.name;
+        return useName && name != null && name.trim() !== '' ? name : infos?.id;
+    }
+    return '';
+}
+
+export type namingConventionValues = 'name' | 'id';
+
+export function getUseNameKey(useName: boolean): namingConventionValues {
+    if (useName) {
+        return 'name';
+    }
+    return 'id';
 }

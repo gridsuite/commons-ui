@@ -6,3 +6,5 @@
 
 export * from './modification-dialog';
 export * from './properties';
+export * from './equipment-search-dialog';
+export * from './modificationsUtils';
