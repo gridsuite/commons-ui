@@ -10,7 +10,7 @@ import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils'
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
-import { EquipmentType, ExtendedEquipmentType, namingConventionValues } from '../utils';
+import { EquipmentType, ExtendedEquipmentType, NamingConventionValues } from '../utils';
 import { SubstationCreationInfo } from './network-modification-types';
 import { createSubstationPromise } from './network-modification';
 
@@ -122,12 +122,12 @@ export function searchEquipmentsInfos(
     nodeUuid: UUID,
     currentRootNetworkUuid: UUID,
     searchTerm: string,
-    getUseNameParameterKey: () => namingConventionValues,
+    getUseNameParameterKey: () => NamingConventionValues,
     inUpstreamBuiltParentNode?: boolean,
     equipmentType?: EquipmentType | ExtendedEquipmentType
 ) {
     console.info("Fetching equipments infos matching with '%s' term ... ", searchTerm);
-    let urlSearchParams = new URLSearchParams();
+    const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userInput', searchTerm);
     urlSearchParams.append('fieldSelector', getUseNameParameterKey());
     if (inUpstreamBuiltParentNode !== undefined) {
@@ -137,9 +137,7 @@ export function searchEquipmentsInfos(
         urlSearchParams.append('equipmentType', equipmentType);
     }
     return backendFetchJson(
-        getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, currentRootNetworkUuid) +
-            '/search?' +
-            urlSearchParams.toString()
+        `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, currentRootNetworkUuid)}/search?${urlSearchParams.toString()}`
     );
 }
 

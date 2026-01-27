@@ -7,7 +7,7 @@
 import { NetworkModificationData } from '../../../services';
 
 export const removeNullFields = (data: NetworkModificationData) => {
-    let dataTemp = data;
+    const dataTemp = data;
     if (dataTemp) {
         Object.keys(dataTemp).forEach((key) => {
             if (dataTemp[key] && dataTemp[key] !== null && typeof dataTemp[key] === 'object') {

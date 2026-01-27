@@ -23,15 +23,15 @@ export function getEquipmentTypeTagLabel(equipmentType: string | undefined): str
 
 export function getIdentifiableNameOrId(useName: boolean, infos?: Identifiable | null): string {
     if (infos) {
-        const name = infos.name;
-        return useName && name != null && name.trim() !== '' ? name : infos?.id;
+        const { name, id } = infos;
+        return useName && name != null && name.trim() !== '' ? name : id;
     }
     return '';
 }
 
-export type namingConventionValues = 'name' | 'id';
+export type NamingConventionValues = 'name' | 'id';
 
-export function getUseNameKey(useName: boolean): namingConventionValues {
+export function getUseNameKey(useName: boolean): NamingConventionValues {
     if (useName) {
         return 'name';
     }

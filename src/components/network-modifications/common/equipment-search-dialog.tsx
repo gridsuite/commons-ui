@@ -47,11 +47,11 @@ export function EquipmentSearchDialog({
 }: Readonly<EquipmentSearchDialogProps>) {
     const intl = useIntl();
     const { searchTerm, updateSearchTerm, equipmentsFound, isLoading } = useSearchMatchingEquipments({
-        studyUuid: studyUuid,
+        studyUuid,
         nodeUuid: currentNodeUuid,
-        currentRootNetworkUuid: currentRootNetworkUuid,
+        currentRootNetworkUuid,
         inUpstreamBuiltParentNode: true,
-        equipmentType: equipmentType,
+        equipmentType,
         useName,
     });
 
@@ -72,7 +72,7 @@ export function EquipmentSearchDialog({
             isOptionEqualToValue={(equipment1, equipment2) => equipment1.id === equipment2.id}
             renderInput={(displayedValue, params) => (
                 <TextField
-                    autoFocus={true}
+                    autoFocus
                     {...params}
                     label={intl.formatMessage({
                         id: 'element_search/label',

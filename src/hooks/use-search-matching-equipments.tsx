@@ -11,7 +11,9 @@ import {
     Equipment,
     EquipmentType,
     ExtendedEquipmentType,
-    getEquipmentsInfosForSearchBar, getIdentifiableNameOrId, getUseNameKey,
+    getEquipmentsInfosForSearchBar,
+    getIdentifiableNameOrId,
+    getUseNameKey,
     Identifiable,
 } from '../utils';
 import { useElementSearch } from '../components';
