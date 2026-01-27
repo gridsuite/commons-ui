@@ -16,8 +16,8 @@ import {
     getUseNameKey,
     Identifiable,
 } from '../utils';
-import { useElementSearch } from '../components';
 import { searchEquipmentsInfos } from '../services';
+import { useElementSearch } from './useElementSearch';
 
 interface UseSearchMatchingEquipmentsProps {
     studyUuid: UUID;

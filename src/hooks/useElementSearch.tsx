@@ -6,9 +6,9 @@
  */
 
 import { useCallback, useRef, useState } from 'react';
-import { useDebounce } from '../../../hooks/useDebounce';
-import { useSnackMessage } from '../../../hooks/useSnackMessage';
-import { snackWithFallback } from '../../../utils/error';
+import { useDebounce } from './useDebounce';
+import { useSnackMessage } from './useSnackMessage';
+import { snackWithFallback } from '../utils/error';
 
 const SEARCH_FETCH_TIMEOUT_MILLIS = 1000;
 

@@ -15,7 +15,7 @@ import {
     equipmentStyles,
     EquipmentType,
     useElementSearch,
-} from '../../src/index';
+} from '../../src';
 
 interface AnyElementInterface {
     id: string;
@@ -92,5 +92,3 @@ export function EquipmentSearchDemoDialog() {
         </>
     );
 }
-
-export default EquipmentSearchDemoDialog;
