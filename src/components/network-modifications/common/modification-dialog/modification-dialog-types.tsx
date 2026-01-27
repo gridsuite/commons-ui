@@ -10,7 +10,7 @@ import { DialogProps } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseFormSearchCopy } from '../../../../hooks';
-import { StudyContext } from '../../../../utils';
+import { GsLang, StudyContext } from '../../../../utils';
 
 export type ModificationDialogContentProps = Omit<DialogProps, 'onClose' | 'aria-labelledby'> & {
     closeAndClear: () => void;
@@ -40,6 +40,7 @@ export type NetworkModificationDialogProps = {
     editDataFetchStatus?: string;
     onValidated?: () => void;
     onClose?: () => void;
+    language: GsLang;
 };
 
 export type EquipmentModificationDialogProps = NetworkModificationDialogProps & {

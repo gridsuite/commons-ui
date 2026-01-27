@@ -78,6 +78,7 @@ interface SubstationCreationDialogProps extends NetworkModificationDialogProps {
  * @param onClose callback when we close the dialog
  * @param onValidated callback when we validate the dialog
  * @param editDataFetchStatus indicates the status of fetching EditData
+ * @param language app language to ensure translations
  * @param dialogProps props that are forwarded to the generic ModificationDialog component
  */
 export function SubstationCreationDialog({
@@ -87,6 +88,7 @@ export function SubstationCreationDialog({
     onClose,
     onValidated,
     editDataFetchStatus,
+    language,
     ...dialogProps
 }: Readonly<SubstationCreationDialogProps>) {
     const { snackError } = useSnackMessage();
@@ -175,7 +177,7 @@ export function SubstationCreationDialog({
     });
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+        <CustomFormProvider validationSchema={formSchema} {...formMethods} language={language}>
             <ModificationDialog
                 fullWidth
                 onClear={clear}
