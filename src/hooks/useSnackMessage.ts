@@ -8,15 +8,19 @@
 import { RefObject, useCallback } from 'react';
 import { BaseVariant, closeSnackbar as closeSnackbarFromNotistack, OptionsObject, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
+import type { FormatXMLElementFn, PrimitiveType } from 'intl-messageformat';
 import { useIntlRef } from './useIntlRef';
+
+// extracted from intl .d.ts but the type is not explicitely defined and exported
+type FormatValues = Record<string, PrimitiveType | FormatXMLElementFn<string, string>>;
 
 export interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
-    messageValues?: Record<string, string>;
+    messageValues?: FormatValues;
     headerTxt?: string;
     headerId?: string;
-    headerValues?: Record<string, string>;
+    headerValues?: FormatValues;
 }
 
 export interface UseSnackMessageReturn {
