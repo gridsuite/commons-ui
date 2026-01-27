@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const FetchStatus = {
-    IDLE: 'IDLE',
-    RUNNING: 'RUNNING',
-    SUCCEED: 'SUCCEED',
-    FAILED: 'FAILED',
-};
+export enum FetchStatus {
+    SUCCEED = 'SUCCEED',
+    FAILED = 'FAILED',
+    IDLE = 'IDLE',
+    RUNNING = 'RUNNING',
+}
