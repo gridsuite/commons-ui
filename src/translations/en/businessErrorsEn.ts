@@ -39,7 +39,7 @@ export const businessErrorsEn = {
     'study.networkExportFailed': 'Failed to export network.',
     'study.tooManyNadConfigs': 'Maximum number of NAD configuration exceeded.',
     'study.tooManyMapCards': 'Maximum number of cards exceeded.',
-    'study.elementAlreadyExists': 'An element with the same name {fileName} already exists',
+    'study.elementAlreadyExists': 'An element with the name {fileName} already exists',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',
