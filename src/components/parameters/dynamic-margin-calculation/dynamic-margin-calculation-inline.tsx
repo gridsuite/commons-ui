@@ -32,13 +32,11 @@ type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.DYNAMIC_MARGIN_CALCULATION>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    isDeveloperMode: boolean;
 };
 export function DynamicMarginCalculationInline({
     studyUuid,
     parametersBackend,
     setHaveDirtyFields,
-    isDeveloperMode,
 }: Readonly<DynamicMarginCalculationInlineProps>) {
     const [providers, , , , , params, , updateParams, resetParams, ,] = parametersBackend;
     const dynamicMarginCalculationMethods = useDynamicMarginCalculationParametersForm({
