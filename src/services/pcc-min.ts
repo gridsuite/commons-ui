@@ -41,6 +41,6 @@ export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMin
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newParams),
+        body: newParams == null ? null : JSON.stringify(newParams),
     });
 }

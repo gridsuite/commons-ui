@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { ProblemDetailError, formatMessageValues } from './types/ProblemDetailError';
-import { NetworkTimeoutError } from './types/NetworkTimeoutError';
+import { NetworkTimeoutError, ProblemDetailError } from './types';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
@@ -34,7 +33,7 @@ export function snackWithFallback(
         if (error.businessErrorCode) {
             snackError({
                 messageId: error.businessErrorCode,
-                messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
+                messageValues: error.businessErrorValues,
                 ...headerInputs,
             });
         } else {
