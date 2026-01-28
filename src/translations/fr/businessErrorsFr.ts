@@ -40,7 +40,7 @@ export const businessErrorsFr = {
     'study.networkExportFailed': "Échec de l'export de réseau.",
     'study.tooManyNadConfigs': "Nombre maximal de configurations d'image nodale de zone atteint.",
     'study.tooManyMapCards': 'Nombre maximal de carte atteint.',
-    'study.elementAlreadyExists': 'Un élément avec le même nom {fileName} est déjà présent',
+    'study.elementAlreadyExists': 'Un élément avec le nom {fileName} est déjà présent',
     'useradmin.permissionDenied': "Vous n'avez pas la permission d'effectuer cette action.",
     'useradmin.userNotFound': 'Utilisateur introuvable.',
     'useradmin.userAlreadyExists': "L'utilisateur existe déjà.",
