@@ -68,7 +68,7 @@ export enum PermissionType {
 export function hasElementPermission(elementUuid: UUID, permission: PermissionType) {
     const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${elementUuid}?permission=${permission}`;
     console.debug(url);
-    return backendFetch(url, { method: 'head' })
+    return backendFetch(url, { method: 'get' })
         .then((response) => response.status === 200)
         .catch(() => {
             console.info(`${permission} permission denied for element or directory ${elementUuid}`);
