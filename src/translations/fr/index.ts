@@ -33,3 +33,4 @@ export * from './external/importParamsFr';
 export * from './componentsFr';
 export * from './parameters';
 export * from './use-unique-name-validation-fr';
+export * from './use-csv-picker-fr';
