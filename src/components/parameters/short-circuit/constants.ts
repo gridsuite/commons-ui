@@ -29,6 +29,9 @@ export const SHORT_CIRCUIT_VOLTAGE_RANGES = 'voltageRanges';
 
 // specific parameters
 export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER = 'onlyStartedGeneratorsInCalculationCluster';
+export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER =
+    'onlyStartedGeneratorsOutsideCalculationCluster';
+export const SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS = 'inCalculationClusterFilters';
 export const SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS = 'modelPowerElectronics';
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS = 'powerElectronicsMaterials';
 
@@ -70,3 +73,8 @@ export const onlyStartedGeneratorsOptions = {
         label: 'ShortCircuitStartedLabel',
     },
 };
+
+export enum ShortCircuitTabValues {
+    'General' = 0,
+    'StudyArea' = 1,
+}

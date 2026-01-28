@@ -11,8 +11,10 @@ import { FieldLabel } from './reactHookForm/utils/FieldLabel';
 
 type SelectOption = { id: string; label?: string };
 
-export interface SelectClearableProps
-    extends Omit<AutocompleteProps<SelectOption, false, false, false>, 'value' | 'onChange' | 'renderInput'> {
+export interface SelectClearableProps extends Omit<
+    AutocompleteProps<SelectOption, false, false, false>,
+    'value' | 'onChange' | 'renderInput'
+> {
     value: string | null;
     onChange: (value: string | null) => void;
     label?: string;
