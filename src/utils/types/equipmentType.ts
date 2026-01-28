@@ -302,3 +302,6 @@ export const EquipmentInfosTypes: Record<string, EquipmentInfosTypesStruct> = {
     TOOLTIP: { type: 'TOOLTIP' },
     OPERATING_STATUS: { type: 'OPERATING_STATUS' },
 };
+export type EquipmentInfosTypes = EquipmentInfosTypesStruct<
+    'LIST' | 'MAP' | 'FORM' | 'TAB' | 'TOOLTIP' | 'OPERATING_STATUS'
+>;
