@@ -34,4 +34,18 @@ export const areArrayElementsUnique = (array: unknown[]) => {
     return uniqueValues.length === array.length;
 };
 
+/**
+ * returns true if element is null or undefined
+ * for string values return true if element is an empty string
+ * for number values return true if element is NaN
+ */
+export function isEmpty(value: any): boolean {
+    return (
+        value === undefined ||
+        value === null ||
+        (typeof value === 'string' && value.trim() === '') ||
+        (typeof value === 'number' && Number.isNaN(value))
+    );
+}
+
 export const isObjectEmpty = (object: object) => object && Object.keys(object).length === 0;
