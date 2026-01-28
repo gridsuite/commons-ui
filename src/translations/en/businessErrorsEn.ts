@@ -71,7 +71,7 @@ export const businessErrorsEn = {
         'Only last rule can have empty filter: type {equipmentType}, rule index {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
-        'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
     'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
     'diagram.maxVoltageLevelDisplayed':
         'You need to reduce the number of voltage levels to be displayed in the network area diagram (current {nbVoltageLevels}, maximum {maxVoltageLevels})',
