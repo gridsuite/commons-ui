@@ -305,4 +305,21 @@ export const parametersFr = {
     PccMinParametersError: 'Erreur lors de la mise à jour des paramètres de pcc du min',
     updatePccMinParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres de pcc min',
     pccMinParamFilter: 'Définition des postes en défaut',
+    // DynamicMarginCalculation
+    DynamicMarginCalculationParametersError: 'Erreur lors de la mise à jour des paramètres du calcul du marge',
+    updateDynamicMarginCalculationParametersError:
+        'Une erreur est survenue lors de la mise a jour des paramètres du calcul du marge',
+    DynamicMarginCalculationStartTime: 'Temps de début',
+    DynamicMarginCalculationStopTime: "Temps d'arrêt",
+    DynamicMarginCalculationMarginCalculationStartTime: 'Temps de début de du calcul de marge',
+    DynamicMarginCalculationLoadIncreaseStartTime: "Temps de début de l'augmentation de charge",
+    DynamicMarginCalculationLoadIncreaseStopTime: "Temps d'arrêt de l'augmentation de charge",
+    DynamicMarginCalculationCalculationType: 'Type de calcul',
+    DynamicMarginCalculationAccuracy: 'Précision',
+    DynamicMarginCalculationLoadModelsRule: 'Règle des modèles de charge',
+    DynamicMarginCalculationLoadsVariations: 'Variations de charge',
+    DynamicMarginCalculationCalculationTypeGlobalMargin: 'Margin global',
+    DynamicMarginCalculationCalculationTypeLocalMargin: 'Margin local',
+    DynamicMarginCalculationLoadModelsRuleAllLoads: 'Tous les charges',
+    DynamicMarginCalculationLoadModelsRuleTargetedLoads: 'Charges ciblées',
 };

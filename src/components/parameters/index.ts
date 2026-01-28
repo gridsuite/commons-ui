@@ -13,3 +13,4 @@ export * from './voltage-init';
 export * from './pcc-min';
 export * from './security-analysis';
 export * from './sensi';
+export * from './dynamic-margin-calculation';
