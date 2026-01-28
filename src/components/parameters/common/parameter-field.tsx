@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tooltip, Chip, Typography } from '@mui/material';
+import { Chip, Grid, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../parameters-style';
 import { ParameterType } from '../../../utils/types/parameters.type';
@@ -19,9 +19,9 @@ import {
     SwitchInput,
     TextInput,
 } from '../../inputs';
-import { LineSeparator } from '../common';
+import { LineSeparator } from './index';
 
-interface LoadFlowParameterFieldProps {
+interface ParameterFieldProps {
     id: string;
     name: string;
     type: string;
@@ -30,14 +30,7 @@ interface LoadFlowParameterFieldProps {
     possibleValues?: { id: string; label: string }[] | string[];
 }
 
-function LoadFlowParameterField({
-    id,
-    name,
-    type,
-    label,
-    description,
-    possibleValues,
-}: Readonly<LoadFlowParameterFieldProps>) {
+function ParameterField({ id, name, type, label, description, possibleValues }: Readonly<ParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:
@@ -94,4 +87,4 @@ function LoadFlowParameterField({
     );
 }
 
-export default LoadFlowParameterField;
+export default ParameterField;
