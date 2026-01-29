@@ -32,6 +32,7 @@ import {
 import { FIELDS_OPTIONS, OPERATOR_OPTIONS, RULES } from './expertFilterConstants';
 import { convertInputValue, convertOutputValue, isBlankOrEmpty } from '../../../utils/conversionUtils';
 import { FieldType } from '../../../utils/types/fieldType';
+import { isEmpty } from '../../../utils';
 
 interface TreeNode {
     [key: string]: any;
@@ -404,7 +405,7 @@ export const queryValidator: QueryValidator = (query) => {
                 reasons: undefined,
             };
         } else if (rule.id && rule.operator === OPERATOR_OPTIONS.BETWEEN.name) {
-            if (!rule.value?.[0] || !rule.value?.[1]) {
+            if (isEmpty(rule.value?.[0]) || isEmpty(rule.value?.[1])) {
                 result[rule.id] = {
                     valid: false,
                     reasons: [RULES.EMPTY_RULE],
