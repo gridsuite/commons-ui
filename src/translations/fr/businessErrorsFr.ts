@@ -13,10 +13,10 @@ export const businessErrorsFr = {
     'directory.moveInDescendantNotAllowed': 'Impossible de déplacer un élément dans l’un de ses descendants.',
     'directory.someElementsAreMissing': 'Certains des éléments demandés sont manquants.',
     'directory.elementNotFound': "L'élément du dossier demandé est introuvable.",
-    'directory.parentPermissionDenied': "Vous n'avez pas les droits d'accès suffisant sur le dossier parent",
+    'directory.parentPermissionDenied': "Vous n'avez pas les droits d'accès suffisants sur le dossier parent",
     'directory.childPermissionDenied':
-        "Le dossier contient au moins un sous-dossier pour lequel vous n'avez pas les droits d'accès suffisant",
-    'directory.targetPermissionDenied': "Vous n'avez pas les droits d'accès suffisant sur le dossier cible",
+        "Le dossier contient au moins un sous-dossier pour lequel vous n'avez pas les droits d'accès s",
+    'directory.targetPermissionDenied': "Vous n'avez pas les droits d'accès suffisants sur le dossier cible",
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
@@ -40,7 +40,7 @@ export const businessErrorsFr = {
     'study.networkExportFailed': "Échec de l'export de réseau.",
     'study.tooManyNadConfigs': "Nombre maximal de configurations d'image nodale de zone atteint.",
     'study.tooManyMapCards': 'Nombre maximal de carte atteint.',
-    'study.elementAlreadyExists': 'Un élément avec le même nom est déjà présent',
+    'study.elementAlreadyExists': 'Un élément avec le nom {fileName} est déjà présent',
     'useradmin.permissionDenied': "Vous n'avez pas la permission d'effectuer cette action.",
     'useradmin.userNotFound': 'Utilisateur introuvable.',
     'useradmin.userAlreadyExists': "L'utilisateur existe déjà.",
