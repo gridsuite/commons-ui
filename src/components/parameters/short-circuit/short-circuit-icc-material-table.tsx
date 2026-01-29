@@ -7,7 +7,7 @@
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
-import { IccMaterialIColumnsDef } from './short-circuit-icc-material-table-columns-definition';
+import { IccMaterialIColumnsDef } from './columns-definition';
 import { ShortCircuitIccMaterialTableRow } from './short-circuit-icc-material-table-row';
 
 interface ShortCircuitIccMaterialTableProps {
