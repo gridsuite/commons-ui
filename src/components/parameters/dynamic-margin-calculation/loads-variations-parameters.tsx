@@ -92,6 +92,6 @@ const params: SpecificParameterInfos[] = [
 export default function LoadsVariationsParameters({ path }: { path: string }) {
     return params.map((param: SpecificParameterInfos) => {
         const { name, type, ...otherParams } = param;
-        return <ParameterField id={param.name} name={`${path}.${param.name}`} type={param.type} {...otherParams} />;
+        return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
     });
 }

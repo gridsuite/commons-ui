@@ -309,6 +309,8 @@ export const parametersFr = {
     DynamicMarginCalculationParametersError: 'Erreur lors de la mise à jour des paramètres du calcul du marge',
     updateDynamicMarginCalculationParametersError:
         'Une erreur est survenue lors de la mise a jour des paramètres du calcul du marge',
+    DynamicMarginCalculationTimeDelayTab: 'Temporisation',
+    DynamicMarginCalculationLoadsVariationsTab: 'Variations de charge',
     DynamicMarginCalculationStartTime: 'Temps de début',
     DynamicMarginCalculationStopTime: "Temps d'arrêt",
     DynamicMarginCalculationMarginCalculationStartTime: 'Temps de début de du calcul de marge',

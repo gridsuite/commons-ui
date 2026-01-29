@@ -53,12 +53,12 @@ export function DynamicMarginCalculationForm({
                                 aria-label="parameters"
                             >
                                 <Tab
-                                    label={<FormattedMessage id="DynamicMarginCalculationTimeDelay" />}
+                                    label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
                                     value={TabValues.TAB_TIME_DELAY}
                                     sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
                                 />
                                 <Tab
-                                    label={<FormattedMessage id="DynamicMarginCalculationLoadsVariations" />}
+                                    label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
                                     value={TabValues.TAB_LOADS_VARIATIONS}
                                     sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
                                 />

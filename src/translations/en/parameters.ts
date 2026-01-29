@@ -285,6 +285,8 @@ export const parametersEn = {
         'An error occurred while updating the dynamic margin calculation parameters',
     updateDynamicMarginCalculationParametersError:
         'An error occurred while updating the dynamic margin calculation parameters',
+    DynamicMarginCalculationTimeDelayTab: 'Time delay',
+    DynamicMarginCalculationLoadsVariationsTab: 'Load variations',
     DynamicMarginCalculationStartTime: 'Start time',
     DynamicMarginCalculationStopTime: 'Stop time',
     DynamicMarginCalculationMarginCalculationStartTime: 'Margin calculation start time',
