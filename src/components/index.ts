@@ -29,3 +29,4 @@ export * from './parameters';
 export * from './menus';
 export * from './muiTable';
 export * from './resizablePanels';
+export * from './iconAndTextButton';
