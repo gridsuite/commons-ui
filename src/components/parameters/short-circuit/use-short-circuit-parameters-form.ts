@@ -120,7 +120,6 @@ export const useShortCircuitParametersForm = ({
                 COMMON_PARAMETERS,
                 {
                     ...params?.commonParameters, // for VERSION_PARAMETER and other non managed params
-                    [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
                     [SHORT_CIRCUIT_WITH_LOADS]: false,
                     [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]:
                         predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
