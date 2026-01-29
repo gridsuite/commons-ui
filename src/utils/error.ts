@@ -17,43 +17,57 @@ export function catchErrorHandler(error: unknown, callback: (message: string) =>
     }
 }
 
+export function extractSnackInputs(
+    error: unknown,
+    headerInputs?: HeaderSnackInputs,
+    errorMessageIdFallback?: string
+): SnackInputs {
+    if (error instanceof NetworkTimeoutError) {
+        return {
+            messageId: error.message,
+            ...headerInputs,
+        };
+    }
+    if (error instanceof ProblemDetailError) {
+        if (error.businessErrorCode) {
+            return {
+                messageId: error.businessErrorCode,
+                messageValues: error.businessErrorValues,
+                ...headerInputs,
+            };
+        }
+        return {
+            messageId: 'errors.technicalError',
+            messageValues: {
+                message: error.message,
+                serverName: error.serverName,
+                timestamp: error.timestamp,
+                traceId: error.traceId,
+            },
+            ...headerInputs,
+        };
+    }
+    if (errorMessageIdFallback) {
+        return {
+            messageId: errorMessageIdFallback,
+            ...headerInputs,
+        };
+    }
+
+    let snackInputs: SnackInputs = {};
+    catchErrorHandler(error, (message) => {
+        snackInputs = {
+            messageTxt: message,
+            ...headerInputs,
+        };
+    });
+    return snackInputs;
+}
+
 export function snackWithFallback(
     snackError: UseSnackMessageReturn['snackError'],
     error: unknown,
     headerInputs?: HeaderSnackInputs
 ) {
-    if (error instanceof NetworkTimeoutError) {
-        snackError({
-            messageId: error.message,
-            ...headerInputs,
-        });
-        return;
-    }
-    if (error instanceof ProblemDetailError) {
-        if (error.businessErrorCode) {
-            snackError({
-                messageId: error.businessErrorCode,
-                messageValues: error.businessErrorValues,
-                ...headerInputs,
-            });
-        } else {
-            snackError({
-                messageId: 'errors.technicalError',
-                messageValues: {
-                    message: error.message,
-                    serverName: error.serverName,
-                    timestamp: error.timestamp,
-                    traceId: error.traceId,
-                },
-                ...headerInputs,
-            });
-        }
-    } else {
-        catchErrorHandler(error, (message) => {
-            snackError({
-                messageTxt: message,
-                ...headerInputs,
-            });
-        });
-    }
+    snackError(extractSnackInputs(error, headerInputs));
 }
