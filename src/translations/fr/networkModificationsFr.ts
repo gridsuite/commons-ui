@@ -92,4 +92,5 @@ export const networkModificationsFr = {
     CopyFromExisting: 'Copier depuis un ouvrage existant',
     EquipmentCopied: "Données copiées depuis l'ouvrage {equipmentId}",
     EquipmentCopyFailed: "Erreur lors de la copie de l'ouvrage",
+    TapPositionValueError: 'Le nombre de prises ne doit pas dépasser la valeur {value}'
 };

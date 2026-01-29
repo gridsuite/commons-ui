@@ -88,4 +88,5 @@ export const networkModificationsEn = {
     CopyFromExisting: 'Copy from existing equipment',
     EquipmentCopied: 'Data successfully copied from equipment {equipmentId}',
     EquipmentCopyFailed: 'Equipment copy failed',
+    TapPositionValueError: 'The number of taps must not exceed the value {value}',
 };

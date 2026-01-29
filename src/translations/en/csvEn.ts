@@ -14,4 +14,5 @@ export const csvEn = {
     GenerateCSV: 'Generate CSV template',
     UploadCSV: 'Upload CSV',
     uploadMessage: ' No file selected',
+    InvalidRuleHeader: 'The file has an invalid header, please refer yourself to the template',
 };
