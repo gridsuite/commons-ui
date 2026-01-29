@@ -16,11 +16,10 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
-interface AutocompleteWithFavoritesProps<Value>
-    extends Omit<
-        AutocompleteProps<Value, boolean, false, boolean>,
-        'multiple' | 'renderInput' | 'renderGroup' | 'groupBy'
-    > {
+interface AutocompleteWithFavoritesProps<Value> extends Omit<
+    AutocompleteProps<Value, boolean, false, boolean>,
+    'multiple' | 'renderInput' | 'renderGroup' | 'groupBy'
+> {
     favorites: Value[];
     valid: boolean;
 }

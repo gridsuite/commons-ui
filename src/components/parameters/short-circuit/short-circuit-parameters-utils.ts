@@ -5,8 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'node:crypto';
 import {
     InitialVoltage,
+    SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -17,7 +19,7 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
+import { EquipmentType, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
 
 import type { PowerElectronicsMaterial } from './short-circuit-parameters.type';
 import {
@@ -26,6 +28,30 @@ import {
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
 } from '../common/utils';
+
+export enum ShortCircuitParametersTabValues {
+    GENERAL = 'General',
+    STUDY_AREA = 'StudyArea',
+}
+
+export enum ShortCircuitParametersFieldConstants {
+    SUB_EQUIPMENT_TYPES_BY_FILTER = 'subEquipmentTypesByFilter',
+    FILTER_ID = 'filterId',
+    SUB_EQUIPMENT_TYPES = 'subEquipmentTypes',
+}
+
+export interface FilterSubEquipments {
+    [ShortCircuitParametersFieldConstants.FILTER_ID]: string;
+    [ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES]: string[];
+}
+
+export interface FilterElement {
+    id: UUID;
+    name: string;
+    specificMetadata: {
+        equipmentType: string;
+    };
+}
 
 export const getCommonShortCircuitParametersFormSchema = () => {
     return yup.object().shape({
@@ -79,6 +105,17 @@ export const getSpecificShortCircuitParametersFormSchema = (
         ...(powerElectronicsMaterialsSchema
             ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: powerElectronicsMaterialsSchema }
             : {}),
+        ...{
+            [SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS]: yup.array().of(
+                yup.object().shape({
+                    [ShortCircuitParametersFieldConstants.FILTER_ID]: yup.string().required(),
+                    [ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES]: yup
+                        .array()
+                        .required()
+                        .of(yup.string().required()),
+                })
+            ),
+        },
     };
 
     const overrideSchema = yup.object().shape({
@@ -185,3 +222,10 @@ export const formatShortCircuitSpecificParameters = (
     }
     return formatted;
 };
+
+export function isSubstationOrVoltageLevelFilter(filter: FilterElement) {
+    return (
+        filter.specificMetadata.equipmentType === EquipmentType.SUBSTATION ||
+        filter.specificMetadata.equipmentType === EquipmentType.VOLTAGE_LEVEL
+    );
+}

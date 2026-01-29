@@ -9,11 +9,10 @@ import { useIntl } from 'react-intl';
 import { AutocompleteInput, AutocompleteInputProps } from '../autocompleteInputs';
 import { Option } from '../../../../utils';
 
-export interface SelectInputProps
-    extends Omit<
-        AutocompleteInputProps,
-        'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
-    > {
+export interface SelectInputProps extends Omit<
+    AutocompleteInputProps,
+    'outputTransform' | 'inputTransform' | 'readOnly' | 'getOptionLabel' // already defined in SelectInput
+> {
     options: Option[];
     onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
 }
