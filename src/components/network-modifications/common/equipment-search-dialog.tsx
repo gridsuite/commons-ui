@@ -6,11 +6,10 @@
  */
 
 import { useIntl } from 'react-intl';
-import type { UUID } from 'node:crypto';
 import { TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { ElementSearchDialog, EquipmentItem } from '../../elementSearch';
-import { EquipmentInfos, equipmentStyles, EquipmentType, ExtendedEquipmentType } from '../../../utils';
+import { EquipmentInfos, equipmentStyles, EquipmentType, ExtendedEquipmentType, StudyContext } from '../../../utils';
 import { useSearchMatchingEquipments } from '../../../hooks';
 
 interface EquipmentSearchDialogProps {
@@ -18,10 +17,7 @@ interface EquipmentSearchDialogProps {
     onClose: () => void;
     onSelectionChange: (equipment: EquipmentInfos) => void;
     equipmentType: EquipmentType | ExtendedEquipmentType;
-    studyUuid: UUID;
-    currentNodeUuid: UUID;
-    currentRootNetworkUuid: UUID;
-    useName: boolean;
+    studyContext: StudyContext;
 }
 
 /**
@@ -30,29 +26,20 @@ interface EquipmentSearchDialogProps {
  * @param {Function} onClose: callback to call when closing the dialog
  * @param {Function} onSelectionChange: callback when the selection changes
  * @param {String} equipmentType: the type of equipment we want to search
- * @param {String} studyUuid: the current study
- * @param {String} currentNodeUuid: the node selected
- * @param {String} currentRootNetworkUuid: the root network UUID
- * @param {Boolean} useName: equipment naming (name vs id)
+ * @param studyContext the current tree node context (study case)
  */
 export function EquipmentSearchDialog({
     open,
     onClose,
     onSelectionChange,
     equipmentType,
-    studyUuid,
-    currentNodeUuid,
-    currentRootNetworkUuid,
-    useName,
+    studyContext,
 }: Readonly<EquipmentSearchDialogProps>) {
     const intl = useIntl();
     const { searchTerm, updateSearchTerm, equipmentsFound, isLoading } = useSearchMatchingEquipments({
-        studyUuid,
-        nodeUuid: currentNodeUuid,
-        currentRootNetworkUuid,
         inUpstreamBuiltParentNode: true,
         equipmentType,
-        useName,
+        studyContext,
     });
 
     return (

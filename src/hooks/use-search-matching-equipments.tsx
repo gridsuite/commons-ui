@@ -6,7 +6,6 @@
  */
 
 import { useCallback, useEffect, useMemo } from 'react';
-import type { UUID } from 'node:crypto';
 import {
     Equipment,
     EquipmentType,
@@ -15,45 +14,43 @@ import {
     getIdentifiableNameOrId,
     getUseNameKey,
     Identifiable,
+    StudyContext,
 } from '../utils';
 import { searchEquipmentsInfos } from '../services';
 import { useElementSearch } from './useElementSearch';
 
 interface UseSearchMatchingEquipmentsProps {
-    studyUuid: UUID;
-    nodeUuid: UUID;
-    currentRootNetworkUuid: UUID;
-    useName: boolean;
     inUpstreamBuiltParentNode?: boolean;
     equipmentType?: EquipmentType | ExtendedEquipmentType;
+    studyContext: StudyContext;
 }
 
 export const useSearchMatchingEquipments = (props: UseSearchMatchingEquipmentsProps) => {
-    const { studyUuid, nodeUuid, currentRootNetworkUuid, inUpstreamBuiltParentNode, equipmentType, useName } = props;
+    const { studyContext, inUpstreamBuiltParentNode, equipmentType } = props;
 
     const getNameOrId = useCallback(
         (infos?: Identifiable | null) => {
-            return getIdentifiableNameOrId(useName, infos);
+            return getIdentifiableNameOrId(studyContext.useNameParam, infos);
         },
-        [useName]
+        [studyContext.useNameParam]
     );
 
     const getUseNameParameterKey = useCallback(() => {
-        return getUseNameKey(useName);
-    }, [useName]);
+        return getUseNameKey(studyContext.useNameParam);
+    }, [studyContext.useNameParam]);
 
     const fetchElements: (newSearchTerm: string) => Promise<Equipment[]> = useCallback(
         (newSearchTerm) =>
             searchEquipmentsInfos(
-                studyUuid,
-                nodeUuid,
-                currentRootNetworkUuid,
+                studyContext.studyId,
+                studyContext.nodeId,
+                studyContext.rootNetworkId,
                 newSearchTerm,
                 getUseNameParameterKey,
                 inUpstreamBuiltParentNode,
                 equipmentType
             ),
-        [equipmentType, getUseNameParameterKey, inUpstreamBuiltParentNode, nodeUuid, studyUuid, currentRootNetworkUuid]
+        [equipmentType, getUseNameParameterKey, inUpstreamBuiltParentNode, studyContext]
     );
 
     const { elementsFound, isLoading, searchTerm, updateSearchTerm } = useElementSearch({

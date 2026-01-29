@@ -198,10 +198,7 @@ export function SubstationCreationDialog({
                         onClose={searchCopy.handleCloseSearchDialog}
                         equipmentType={EquipmentType.SUBSTATION}
                         onSelectionChange={searchCopy.handleSelectionChange}
-                        studyUuid={studyContext.studyId}
-                        currentNodeUuid={studyContext.nodeId}
-                        currentRootNetworkUuid={studyContext.rootNetworkId}
-                        useName={studyContext.useNameParam}
+                        studyContext={studyContext}
                     />
                 )}
             </ModificationDialog>
