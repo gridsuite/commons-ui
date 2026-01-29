@@ -19,7 +19,6 @@ import {
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
-    SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
@@ -120,7 +119,6 @@ export const useShortCircuitParametersForm = ({
                 COMMON_PARAMETERS,
                 {
                     ...params?.commonParameters, // for VERSION_PARAMETER and other non managed params
-                    [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
                     [SHORT_CIRCUIT_WITH_LOADS]: false,
                     [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]:
                         predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
