@@ -5,24 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import yup from '../../../utils/yupConfig';
-import {
-    ACCURACY,
-    CALCULATION_TYPE,
-    LOAD_INCREASE_START_TIME,
-    LOAD_INCREASE_STOP_TIME,
-    LOAD_MODELS_RULE,
-    LOADS_VARIATIONS,
-    MARGIN_CALCULATION_START_TIME,
-} from './constants';
+import { ACCURACY, CALCULATION_TYPE, LOAD_MODELS_RULE, LOADS_VARIATIONS } from './constants';
 import { ID, ParameterType, SpecificParameterInfos } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../inputs';
 import { CalculationType, LoadModelsRule } from '../../../services';
 
 export const formSchema = yup.object().shape({
-    [MARGIN_CALCULATION_START_TIME]: yup.number().required(),
-    [LOAD_INCREASE_START_TIME]: yup.number().required(),
-    [LOAD_INCREASE_STOP_TIME]: yup.number().required(),
     [CALCULATION_TYPE]: yup.string().required(),
     [ACCURACY]: yup.number().required(),
     [LOAD_MODELS_RULE]: yup.string().required(),
@@ -38,9 +27,6 @@ export const formSchema = yup.object().shape({
 });
 
 export const emptyFormData = {
-    [MARGIN_CALCULATION_START_TIME]: 0,
-    [LOAD_INCREASE_START_TIME]: 0,
-    [LOAD_INCREASE_STOP_TIME]: 0,
     [CALCULATION_TYPE]: '',
     [ACCURACY]: 0,
     [LOAD_MODELS_RULE]: '',
@@ -48,21 +34,6 @@ export const emptyFormData = {
 };
 
 const params: SpecificParameterInfos[] = [
-    {
-        name: MARGIN_CALCULATION_START_TIME,
-        type: ParameterType.DOUBLE,
-        label: 'DynamicMarginCalculationMarginCalculationStartTime',
-    },
-    {
-        name: LOAD_INCREASE_START_TIME,
-        type: ParameterType.DOUBLE,
-        label: 'DynamicMarginCalculationLoadIncreaseStartTime',
-    },
-    {
-        name: LOAD_INCREASE_STOP_TIME,
-        type: ParameterType.DOUBLE,
-        label: 'DynamicMarginCalculationLoadIncreaseStopTime',
-    },
     {
         name: CALCULATION_TYPE,
         type: ParameterType.STRING,

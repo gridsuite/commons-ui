@@ -6,18 +6,30 @@
  */
 
 import yup from '../../../utils/yupConfig';
-import { START_TIME, STOP_TIME } from './constants';
+import {
+    LOAD_INCREASE_START_TIME,
+    LOAD_INCREASE_STOP_TIME,
+    MARGIN_CALCULATION_START_TIME,
+    START_TIME,
+    STOP_TIME,
+} from './constants';
 import { ParameterType, SpecificParameterInfos } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 
 export const formSchema = yup.object().shape({
     [START_TIME]: yup.number().required(),
     [STOP_TIME]: yup.number().required(),
+    [MARGIN_CALCULATION_START_TIME]: yup.number().required(),
+    [LOAD_INCREASE_START_TIME]: yup.number().required(),
+    [LOAD_INCREASE_STOP_TIME]: yup.number().required(),
 });
 
 export const emptyFormData = {
     [START_TIME]: 0,
     [STOP_TIME]: 0,
+    [MARGIN_CALCULATION_START_TIME]: 0,
+    [LOAD_INCREASE_START_TIME]: 0,
+    [LOAD_INCREASE_STOP_TIME]: 0,
 };
 
 const params: SpecificParameterInfos[] = [
@@ -30,6 +42,21 @@ const params: SpecificParameterInfos[] = [
         name: STOP_TIME,
         type: ParameterType.DOUBLE,
         label: 'DynamicMarginCalculationStopTime',
+    },
+    {
+        name: MARGIN_CALCULATION_START_TIME,
+        type: ParameterType.DOUBLE,
+        label: 'DynamicMarginCalculationMarginCalculationStartTime',
+    },
+    {
+        name: LOAD_INCREASE_START_TIME,
+        type: ParameterType.DOUBLE,
+        label: 'DynamicMarginCalculationLoadIncreaseStartTime',
+    },
+    {
+        name: LOAD_INCREASE_STOP_TIME,
+        type: ParameterType.DOUBLE,
+        label: 'DynamicMarginCalculationLoadIncreaseStopTime',
     },
 ];
 
