@@ -10,4 +10,5 @@ export const commonButtonEn = {
     validate: 'Validate',
     'button.changeType': 'Change',
     'button.changeOperator': 'Change',
+    'button.restore': 'Restore',
 };

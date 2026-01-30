@@ -6,17 +6,39 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson } from './utils';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
+import { EquipmentType, ExtendedEquipmentType, NamingConventionValues } from '../utils';
+import { SubstationCreationInfo } from './network-modification-types';
+import { createSubstationPromise } from './network-modification';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
+
+const getStudyUrl = (studyUuid: UUID | null) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+
+const getStudyUrlWithNodeUuid = (studyUuid: UUID | null | undefined, nodeUuid: UUID | undefined) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
+
+const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
+    studyUuid: string | null | undefined,
+    nodeUuid: string | undefined,
+    rootNetworkUuid: string | undefined | null
+) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+        rootNetworkUuid
+    )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
+
+function getNetworkModificationUrl(studyUuid: UUID | null | undefined, nodeUuid: UUID | undefined) {
+    return `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications`;
+}
 
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
     return backendFetchJson(
-        `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/filters/${filterUuid}/elements`,
+        `${getStudyUrl(studyUuid)}/filters/${filterUuid}/elements`,
         {
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
@@ -32,12 +54,12 @@ export function getAvailableComponentLibraries(): Promise<string[]> {
 
 export function getStudyNetworkVisualizationsParameters(studyUuid: UUID): Promise<NetworkVisualizationParameters> {
     console.info('get study network visualization parameters');
-    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/network-visualizations/parameters`);
+    return backendFetchJson(`${getStudyUrl(studyUuid)}/network-visualizations/parameters`);
 }
 
 export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParams: Record<string, any>) {
     console.info('set study network visualization parameters');
-    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/network-visualizations/parameters`, {
+    return backendFetch(`${getStudyUrl(studyUuid)}/network-visualizations/parameters`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -49,12 +71,12 @@ export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParam
 
 export function getStudyShortCircuitParameters(studyUuid: UUID): Promise<ShortCircuitParametersInfos> {
     console.info('get study short-circuit parameters');
-    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit-analysis/parameters`);
+    return backendFetchJson(`${getStudyUrl(studyUuid)}/short-circuit-analysis/parameters`);
 }
 
 export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: VoltageInitStudyParameters) {
     console.info('set study voltage init parameters');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/voltage-init/parameters`;
+    const url = `${getStudyUrl(studyUuid)}/voltage-init/parameters`;
     console.debug(url);
     return backendFetch(url, {
         method: 'POST',
@@ -64,4 +86,61 @@ export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: V
         },
         body: JSON.stringify(newParams),
     });
+}
+
+export function fetchNetworkElementInfos(
+    studyUuid: UUID | undefined | null,
+    currentNodeUuid: UUID | undefined,
+    currentRootNetworkUuid: UUID | undefined | null,
+    elementType: EquipmentType | ExtendedEquipmentType,
+    infoType: string,
+    elementId: UUID,
+    inUpstreamBuiltParentNode: boolean
+) {
+    console.info(
+        `Fetching specific network element '${elementId}' of type '${elementType}' of study '${studyUuid}' on root network '${currentRootNetworkUuid}' and node '${currentNodeUuid}' ...`
+    );
+    const urlSearchParams = new URLSearchParams();
+    if (inUpstreamBuiltParentNode !== undefined) {
+        urlSearchParams.append('inUpstreamBuiltParentNode', String(inUpstreamBuiltParentNode));
+    }
+    urlSearchParams.append('elementType', elementType);
+    urlSearchParams.append('infoType', infoType);
+
+    const fetchElementsUrl = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(
+        studyUuid,
+        currentNodeUuid,
+        currentRootNetworkUuid
+    )}/network/elements/${encodeURIComponent(elementId)}?${urlSearchParams.toString()}`;
+    console.debug(fetchElementsUrl);
+
+    return backendFetchJson(fetchElementsUrl);
+}
+
+export function searchEquipmentsInfos(
+    studyUuid: UUID,
+    nodeUuid: UUID,
+    currentRootNetworkUuid: UUID,
+    searchTerm: string,
+    getUseNameParameterKey: () => NamingConventionValues,
+    inUpstreamBuiltParentNode?: boolean,
+    equipmentType?: EquipmentType | ExtendedEquipmentType
+) {
+    console.info("Fetching equipments infos matching with '%s' term ... ", searchTerm);
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('userInput', searchTerm);
+    urlSearchParams.append('fieldSelector', getUseNameParameterKey());
+    if (inUpstreamBuiltParentNode !== undefined) {
+        urlSearchParams.append('inUpstreamBuiltParentNode', inUpstreamBuiltParentNode.toString());
+    }
+    if (equipmentType !== undefined) {
+        urlSearchParams.append('equipmentType', equipmentType);
+    }
+    return backendFetchJson(
+        `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, currentRootNetworkUuid)}/search?${urlSearchParams.toString()}`
+    );
+}
+
+export function createSubstationInNode(info: SubstationCreationInfo) {
+    return createSubstationPromise(info, getNetworkModificationUrl(info.studyId, info.nodeId));
 }

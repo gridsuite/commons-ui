@@ -65,10 +65,10 @@ export function ExpertFilterEditionDialog({
     // Fetch the filter data from back-end if necessary and fill the form with it
     useEffect(() => {
         if (id && open) {
-            setDataFetchStatus(FetchStatus.FETCHING);
+            setDataFetchStatus(FetchStatus.RUNNING);
             getFilterById(id)
                 .then((response) => {
-                    setDataFetchStatus(FetchStatus.FETCH_SUCCESS);
+                    setDataFetchStatus(FetchStatus.SUCCEED);
                     reset({
                         [FieldConstants.NAME]: name,
                         [FieldConstants.DESCRIPTION]: description,
@@ -77,7 +77,7 @@ export function ExpertFilterEditionDialog({
                     });
                 })
                 .catch((error: unknown) => {
-                    setDataFetchStatus(FetchStatus.FETCH_ERROR);
+                    setDataFetchStatus(FetchStatus.FAILED);
                     snackWithFallback(snackError, error, { headerId: 'cannotRetrieveFilter' });
                 });
         }
@@ -106,7 +106,7 @@ export function ExpertFilterEditionDialog({
         [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
     );
 
-    const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
+    const isDataReady = dataFetchStatus === FetchStatus.SUCCEED;
 
     return (
         <CustomMuiDialog
@@ -118,7 +118,7 @@ export function ExpertFilterEditionDialog({
             titleId={titleId}
             removeOptional
             disabledSave={!!nameError || !!isValidating}
-            isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
+            isDataFetching={dataFetchStatus === FetchStatus.RUNNING}
             language={language}
             isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight

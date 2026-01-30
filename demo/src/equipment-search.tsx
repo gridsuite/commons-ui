@@ -15,7 +15,7 @@ import {
     equipmentStyles,
     EquipmentType,
     useElementSearch,
-} from '../../src/index';
+} from '../../src';
 
 interface AnyElementInterface {
     id: string;
@@ -47,7 +47,7 @@ const searchEquipmentPromise = () => {
     });
 };
 
-export function EquipmentSearchDialog() {
+export function EquipmentSearchDemoDialog() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const { elementsFound, isLoading, searchTerm, updateSearchTerm } = useElementSearch({
@@ -92,5 +92,3 @@ export function EquipmentSearchDialog() {
         </>
     );
 }
-
-export default EquipmentSearchDialog;
