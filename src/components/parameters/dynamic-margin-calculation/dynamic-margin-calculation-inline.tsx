@@ -109,6 +109,12 @@ export function DynamicMarginCalculationInline({
                             paddingLeft: 0,
                         })}
                     >
+                        <LabelledButton
+                            disabled
+                            callback={() => setOpenSelectParameterDialog(true)}
+                            label="settings.button.chooseSettings"
+                        />
+                        <LabelledButton disabled callback={() => setOpenCreateParameterDialog(true)} label="save" />
                         <LabelledButton callback={handleResetClick} label="resetToDefault" />
                         <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onError)}>
                             <FormattedMessage id="validate" />
