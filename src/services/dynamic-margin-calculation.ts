@@ -10,8 +10,7 @@ import {
     DynamicMarginCalculationParametersInfos,
 } from './dynamic-margin-calculation.type';
 import { fetchContingencyAndFiltersLists } from './directory';
-import { backendFetch, backendFetchJson, backendFetchText } from './utils';
-import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { backendFetch, backendFetchJson } from './utils';
 
 const PREFIX_DYNAMIC_MARGIN_CALCULATION_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-margin-calculation`;
 
@@ -24,13 +23,6 @@ export function fetchDynamicMarginCalculationProviders() {
     const url = `${getDynamicMarginCalculationUrl()}providers`;
     console.debug(url);
     return backendFetchJson(url);
-}
-
-export function fetchDefaultDynamicMarginCalculationProvider() {
-    console.info('Fetching default dynamic margin calculation provider');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/dynamic-margin-calculation-default-provider`;
-    console.debug(url);
-    return backendFetchText(url);
 }
 
 export function enrichLoadFilterNames(
