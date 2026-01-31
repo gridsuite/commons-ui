@@ -4,26 +4,45 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import yup from '../../../utils/yupConfig';
-import { ACCURACY, CALCULATION_TYPE, LOAD_MODELS_RULE, LOADS_VARIATIONS } from './constants';
-import { ID, ParameterType, SpecificParameterInfos } from '../../../utils';
+import {
+    ACCURACY,
+    ACTIVE,
+    CALCULATION_TYPE,
+    LOAD_FILTERS,
+    LOAD_MODELS_RULE,
+    LOADS_VARIATIONS,
+    VARIATION,
+} from './constants';
+import { ElementType, EquipmentType, ID, ParameterType, SpecificParameterInfos } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../inputs';
 import { CalculationType, LoadModelsRule } from '../../../services';
+import ParameterDndTableField from '../common/parameter-dnd-table-field';
+import { DndColumn, DndColumnType } from '../../dnd-table';
 
 export const formSchema = yup.object().shape({
     [CALCULATION_TYPE]: yup.string().required(),
     [ACCURACY]: yup.number().required(),
     [LOAD_MODELS_RULE]: yup.string().required(),
-    [LOADS_VARIATIONS]: yup
-        .array()
-        .of(
-            yup.object().shape({
-                [ID]: yup.string().required(),
-                [NAME]: yup.string().required(),
-            })
-        )
-        .required(),
+    [LOADS_VARIATIONS]: yup.array().of(
+        yup.object().shape({
+            [ID]: yup.string().nullable(), // not shown in form, used to identify a row
+            [LOAD_FILTERS]: yup
+                .array()
+                .of(
+                    yup.object().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+                )
+                .min(1),
+            [VARIATION]: yup.number().min(0).required(),
+            [ACTIVE]: yup.boolean().nullable().notRequired(),
+        })
+    ),
 });
 
 export const emptyFormData = {
@@ -57,12 +76,58 @@ const params: SpecificParameterInfos[] = [
             { id: LoadModelsRule.TARGETED_LOADS, label: 'DynamicMarginCalculationLoadModelsRuleTargetedLoads' },
         ],
     },
-    // TAB_LOADS_VARIATIONS is not yet displayed
+    // LOADS_VARIATIONS displayed in a separated component, i.e., ParameterDndTableField
+];
+
+const loadsVariationsColumnsDefinition: DndColumn[] = [
+    {
+        label: 'DynamicMarginCalculationLoadsFilter',
+        dataKey: LOAD_FILTERS,
+        initialValue: [],
+        editable: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [EquipmentType.LOAD],
+        elementType: ElementType.FILTER,
+        titleId: 'FiltersListsSelection',
+    },
+    {
+        label: 'DynamicMarginCalculationLoadsVariation',
+        dataKey: VARIATION,
+        editable: true,
+        type: DndColumnType.NUMERIC,
+        textAlign: 'right',
+    },
+    {
+        label: 'DynamicMarginCalculationLoadsActive',
+        initialValue: true,
+        dataKey: ACTIVE,
+        editable: true,
+        width: 100,
+        type: DndColumnType.SWITCH,
+    },
 ];
 
 export default function LoadsVariationsParameters({ path }: { path: string }) {
-    return params.map((param: SpecificParameterInfos) => {
-        const { name, type, ...otherParams } = param;
-        return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
-    });
+    const inlt = useIntl();
+    const translatedColumnsDefinition = useMemo(() => {
+        return loadsVariationsColumnsDefinition.map((colDef) => ({
+            ...colDef,
+            label: inlt.formatMessage({ id: colDef.label }),
+        }));
+    }, [inlt]);
+    return (
+        <>
+            {params.map((param: SpecificParameterInfos) => {
+                const { name, type, ...otherParams } = param;
+                return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
+            })}
+            <ParameterDndTableField
+                name={`${path}.${LOADS_VARIATIONS}`}
+                label="DynamicMarginCalculationLoadsVariations"
+                tooltipProps={{ title: 'DynamicMarginCalculationLoadsVariations' }}
+                columnsDefinition={translatedColumnsDefinition}
+                tableHeight={270}
+            />
+        </>
+    );
 }

@@ -21,10 +21,11 @@ export type LoadsVariationInfos = {
     id?: UUID; // persisted id of the info to be modified
     loadFilterUuids?: UUID[];
     variation: number;
+    active: boolean;
 };
 
 export type LoadsVariationFetchReturn = Exclude<LoadsVariationInfos, 'loadFilterUuids'> & {
-    loadFiltersInfos?: { id: UUID; name: string }[];
+    loadFilters?: { id: UUID; name: string }[];
 };
 
 export type DynamicMarginCalculationParametersInfos = {

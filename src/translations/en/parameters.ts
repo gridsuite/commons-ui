@@ -300,4 +300,7 @@ export const parametersEn = {
     DynamicMarginCalculationCalculationTypeLocalMargin: 'Local margin',
     DynamicMarginCalculationLoadModelsRuleAllLoads: 'All loads',
     DynamicMarginCalculationLoadModelsRuleTargetedLoads: 'Targeted loads',
+    DynamicMarginCalculationLoadsFilter: 'Loads filter',
+    DynamicMarginCalculationLoadsVariation: 'Load variation',
+    DynamicMarginCalculationLoadsActive: 'Active',
 };

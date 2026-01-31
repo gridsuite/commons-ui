@@ -16,3 +16,6 @@ export const CALCULATION_TYPE = 'calculationType';
 export const ACCURACY = 'accuracy';
 export const LOAD_MODELS_RULE = 'loadModelsRule';
 export const LOADS_VARIATIONS = 'loadsVariations';
+export const LOAD_FILTERS = 'loadFilters';
+export const VARIATION = 'variation';
+export const ACTIVE = 'active';

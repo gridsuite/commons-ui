@@ -52,11 +52,11 @@ export const toFormValues = (_params: DynamicMarginCalculationParametersFetchRet
     [TabValues.TAB_TIME_DELAY]: {
         [START_TIME]: _params.startTime,
         [STOP_TIME]: _params.stopTime,
-    },
-    [TabValues.TAB_LOADS_VARIATIONS]: {
         [MARGIN_CALCULATION_START_TIME]: _params.marginCalculationStartTime,
         [LOAD_INCREASE_START_TIME]: _params.loadIncreaseStartTime,
         [LOAD_INCREASE_STOP_TIME]: _params.loadIncreaseStopTime,
+    },
+    [TabValues.TAB_LOADS_VARIATIONS]: {
         [CALCULATION_TYPE]: _params.calculationType,
         [ACCURACY]: _params.accuracy,
         [LOAD_MODELS_RULE]: _params.loadModelsRule,
@@ -68,12 +68,13 @@ export const toParamsInfos = (_formData: Record<string, any>): DynamicMarginCalc
     provider: _formData[PROVIDER],
     startTime: _formData[TabValues.TAB_TIME_DELAY][START_TIME],
     stopTime: _formData[TabValues.TAB_TIME_DELAY][STOP_TIME],
-    marginCalculationStartTime: _formData[TabValues.TAB_LOADS_VARIATIONS][MARGIN_CALCULATION_START_TIME],
-    loadIncreaseStartTime: _formData[TabValues.TAB_LOADS_VARIATIONS][LOAD_INCREASE_START_TIME],
-    loadIncreaseStopTime: _formData[TabValues.TAB_LOADS_VARIATIONS][LOAD_INCREASE_STOP_TIME],
+    marginCalculationStartTime: _formData[TabValues.TAB_TIME_DELAY][MARGIN_CALCULATION_START_TIME],
+    loadIncreaseStartTime: _formData[TabValues.TAB_TIME_DELAY][LOAD_INCREASE_START_TIME],
+    loadIncreaseStopTime: _formData[TabValues.TAB_TIME_DELAY][LOAD_INCREASE_STOP_TIME],
     calculationType: _formData[TabValues.TAB_LOADS_VARIATIONS][CALCULATION_TYPE],
     accuracy: _formData[TabValues.TAB_LOADS_VARIATIONS][ACCURACY],
     loadModelsRule: _formData[TabValues.TAB_LOADS_VARIATIONS][LOAD_MODELS_RULE],
+    loadsVariationsInfos: _formData[TabValues.TAB_LOADS_VARIATIONS][LOADS_VARIATIONS],
 });
 
 export type UseTabsReturn<TTabValue extends string> = {

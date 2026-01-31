@@ -40,18 +40,18 @@ export function enrichLoadFilterNames(
     if (parameters?.loadsVariations) {
         const loadsVariations = parameters?.loadsVariations;
         const allLoadFilterUuids = loadsVariations.flatMap((loadVariation) => loadVariation.loadFilterUuids ?? []);
-        return fetchContingencyAndFiltersLists(allLoadFilterUuids).then((loadFilterInfos) => {
+        return fetchContingencyAndFiltersLists(allLoadFilterUuids).then((loadFilter) => {
             // eslint-disable-next-line no-param-reassign
             delete parameters.loadsVariations;
             const loadFilterInfosMap = Object.fromEntries(
-                loadFilterInfos.map((info) => [info.elementUuid, info.elementName])
+                loadFilter.map((info) => [info.elementUuid, info.elementName])
             );
             return {
                 ...parameters,
                 loadsVariationsInfos: loadsVariations?.map((infos) => {
                     const newLoadVariationInfos = {
                         ...infos,
-                        loadFiltersInfos: infos.loadFilterUuids?.map((loadFilterUuid) => ({
+                        loadFilters: infos.loadFilterUuids?.map((loadFilterUuid) => ({
                             id: loadFilterUuid,
                             name: loadFilterInfosMap[loadFilterUuid],
                         })),
@@ -92,9 +92,9 @@ export function cleanLoadFilterNames(
                   loadsVariations: newParams?.loadsVariationsInfos?.map((infos) => {
                       const newLoadsVariationInfos = {
                           ...infos,
-                          loadFilterUuids: infos.loadFiltersInfos?.map((loadFilterInfos) => loadFilterInfos.id),
+                          loadFilterUuids: infos.loadFilters?.map((loadFilterInfos) => loadFilterInfos.id),
                       };
-                      delete newLoadsVariationInfos.loadFiltersInfos;
+                      delete newLoadsVariationInfos.loadFilters;
                       return newLoadsVariationInfos;
                   }),
               }

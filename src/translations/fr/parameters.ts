@@ -324,4 +324,7 @@ export const parametersFr = {
     DynamicMarginCalculationCalculationTypeLocalMargin: 'Margin local',
     DynamicMarginCalculationLoadModelsRuleAllLoads: 'Tous les charges',
     DynamicMarginCalculationLoadModelsRuleTargetedLoads: 'Charges ciblées',
+    DynamicMarginCalculationLoadsFilter: 'Regroupement de charges',
+    DynamicMarginCalculationLoadsVariation: 'Variation de charge',
+    DynamicMarginCalculationLoadsActive: 'Actif',
 };
