@@ -36,46 +36,45 @@ export function DynamicMarginCalculationForm({
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             {renderTitleFields?.()}
             {paramsLoaded ? (
-                <Grid sx={{ height: '100%' }}>
-                    <ProviderParam options={formattedProviders} />
+                <Grid container sx={{ height: '100%' }} direction="column">
+                    <Grid container>
+                        <ProviderParam options={formattedProviders} />
+                    </Grid>
+                    <Grid>
+                        <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                            <Tab
+                                label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
+                                value={TabValues.TAB_TIME_DELAY}
+                                sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
+                            />
+                            <Tab
+                                label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
+                                value={TabValues.TAB_LOADS_VARIATIONS}
+                                sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
+                            />
+                        </Tabs>
+                    </Grid>
                     <Grid
+                        container
+                        xs
                         key="dmcParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
-                            height: '100%',
                             paddingTop: 0,
+                            width: '100%',
                         })}
                     >
-                        <Grid item width="100%">
-                            <Tabs
-                                value={selectedTab}
-                                variant="scrollable"
-                                onChange={onTabChange}
-                                aria-label="parameters"
-                            >
-                                <Tab
-                                    label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
-                                    value={TabValues.TAB_TIME_DELAY}
-                                    sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
-                                    value={TabValues.TAB_LOADS_VARIATIONS}
-                                    sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
-                                />
-                            </Tabs>
-                            <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
-                                <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
-                            </TabPanel>
-                            <TabPanel value={selectedTab} index={TabValues.TAB_LOADS_VARIATIONS}>
-                                <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
-                            </TabPanel>
-                        </Grid>
+                        <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
+                            <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
+                        </TabPanel>
+                        <TabPanel value={selectedTab} index={TabValues.TAB_LOADS_VARIATIONS}>
+                            <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
+                        </TabPanel>
                     </Grid>
+                    {renderActions?.()}
                 </Grid>
             ) : (
                 <LinearProgress />
             )}
-            {renderActions?.()}
         </CustomFormProvider>
     );
 }

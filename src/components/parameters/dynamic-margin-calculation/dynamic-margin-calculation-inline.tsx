@@ -102,16 +102,18 @@ export function DynamicMarginCalculationInline({
     const renderActions = () => {
         return (
             <>
-                <Grid
-                    container
-                    sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
-                        paddingTop: 4,
-                    })}
-                >
-                    <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                    <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onError)}>
-                        <FormattedMessage id="validate" />
-                    </SubmitButton>
+                <Grid container item>
+                    <Grid
+                        sx={mergeSx(parametersStyles.controlParametersItem, {
+                            paddingBottom: 2,
+                            paddingLeft: 0,
+                        })}
+                    >
+                        <LabelledButton callback={handleResetClick} label="resetToDefault" />
+                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onError)}>
+                            <FormattedMessage id="validate" />
+                        </SubmitButton>
+                    </Grid>
                 </Grid>
                 {openCreateParameterDialog && (
                     <CreateParameterDialog

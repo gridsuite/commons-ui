@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Grid } from '@mui/material';
 import yup from '../../../utils/yupConfig';
 import {
     LOAD_INCREASE_START_TIME,
@@ -61,8 +62,12 @@ const params: SpecificParameterInfos[] = [
 ];
 
 export default function TimeDelayParameters({ path }: { path: string }) {
-    return params.map((param: SpecificParameterInfos) => {
-        const { name, type, ...otherParams } = param;
-        return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
-    });
+    return (
+        <Grid container>
+            {params.map((param: SpecificParameterInfos) => {
+                const { name, type, ...otherParams } = param;
+                return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
+            })}
+        </Grid>
+    );
 }

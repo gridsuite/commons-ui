@@ -6,6 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { Grid } from '@mui/material';
 import yup from '../../../utils/yupConfig';
 import {
     ACCURACY,
@@ -116,7 +117,7 @@ export default function LoadsVariationsParameters({ path }: { path: string }) {
         }));
     }, [inlt]);
     return (
-        <>
+        <Grid container>
             {params.map((param: SpecificParameterInfos) => {
                 const { name, type, ...otherParams } = param;
                 return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
@@ -128,6 +129,6 @@ export default function LoadsVariationsParameters({ path }: { path: string }) {
                 columnsDefinition={translatedColumnsDefinition}
                 tableHeight={270}
             />
-        </>
+        </Grid>
     );
 }
