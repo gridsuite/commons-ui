@@ -17,33 +17,25 @@ export enum LoadModelsRule {
     TARGETED_LOADS = 'TARGETED_LOADS',
 }
 
+export type IdNameInfos = { id: UUID; name?: string };
+
 export type LoadsVariationInfos = {
     id?: UUID; // persisted id of the info to be modified
-    loadFilterUuids?: UUID[];
+    loadFilters?: IdNameInfos[];
     variation: number;
     active: boolean;
 };
 
-export type LoadsVariationFetchReturn = Exclude<LoadsVariationInfos, 'loadFilterUuids'> & {
-    loadFilters?: { id: UUID; name: string }[];
-};
-
 export type DynamicMarginCalculationParametersInfos = {
-    provider?: string;
-    startTime?: number;
-    stopTime?: number;
-    marginCalculationStartTime?: number;
-    loadIncreaseStartTime?: number;
-    loadIncreaseStopTime?: number;
-    calculationType?: CalculationType;
-    accuracy?: number; // integer
-    loadModelsRule?: LoadModelsRule;
+    id?: UUID;
+    provider: string;
+    startTime: number;
+    stopTime: number;
+    marginCalculationStartTime: number;
+    loadIncreaseStartTime: number;
+    loadIncreaseStopTime: number;
+    calculationType: CalculationType;
+    accuracy: number; // integer
+    loadModelsRule: LoadModelsRule;
     loadsVariations?: LoadsVariationInfos[];
-};
-
-export type DynamicMarginCalculationParametersFetchReturn = Exclude<
-    DynamicMarginCalculationParametersInfos,
-    'loadsVariations'
-> & {
-    loadsVariationsInfos?: LoadsVariationFetchReturn[];
 };

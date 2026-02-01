@@ -17,10 +17,17 @@ import {
     LOADS_VARIATIONS,
     VARIATION,
 } from './constants';
-import { ElementType, EquipmentType, ID, ParameterType, SpecificParameterInfos } from '../../../utils';
+import {
+    CalculationType,
+    ElementType,
+    EquipmentType,
+    ID,
+    LoadModelsRule,
+    ParameterType,
+    SpecificParameterInfos,
+} from '../../../utils';
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../inputs';
-import { CalculationType, LoadModelsRule } from '../../../services';
 import ParameterDndTableField from '../common/parameter-dnd-table-field';
 import { DndColumn, DndColumnType } from '../../dnd-table';
 
@@ -36,7 +43,7 @@ export const formSchema = yup.object().shape({
                 .of(
                     yup.object().shape({
                         [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
+                        [NAME]: yup.string().nullable().notRequired(),
                     })
                 )
                 .min(1),
@@ -108,7 +115,7 @@ const loadsVariationsColumnsDefinition: DndColumn[] = [
     },
 ];
 
-export default function LoadsVariationsParameters({ path }: { path: string }) {
+export default function LoadsVariationsParameters({ path }: Readonly<{ path: string }>) {
     const inlt = useIntl();
     const translatedColumnsDefinition = useMemo(() => {
         return loadsVariationsColumnsDefinition.map((colDef) => ({

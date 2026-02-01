@@ -9,6 +9,7 @@ import type { UUID } from 'node:crypto';
 import { Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
+import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
 import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
@@ -68,7 +69,7 @@ export function DynamicMarginCalculationInline({
     }, [resetParams]);
 
     const onSubmit = useCallback(
-        (formData: Record<string, any>) => {
+        (formData: FieldValues) => {
             // update params after convert form representation to dto representation
             updateParams(toParamsInfos(formData));
         },

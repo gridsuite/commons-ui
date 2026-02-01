@@ -10,24 +10,6 @@ import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils
 import { ElementAttributes } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
-const PREFIX_DIRECTORY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/directory`;
-
-export function fetchContingencyAndFiltersLists(listIds: UUID[]): Promise<ElementAttributes[]> {
-    console.info('Fetching contingency and filters lists');
-
-    // Add params to Url
-    const idsParams = getRequestParamFromList(
-        'ids',
-        listIds.filter((id) => id) // filter falsy elements
-    );
-    const urlSearchParams = new URLSearchParams(idsParams);
-
-    urlSearchParams.append('strictMode', 'false');
-
-    const url = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/elements?${urlSearchParams}`;
-    console.debug(url);
-    return backendFetchJson(url);
-}
 
 export function fetchRootFolders(types: string[]): Promise<ElementAttributes[]> {
     console.info('Fetching Root Directories');

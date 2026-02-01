@@ -5,11 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import {
-    DynamicMarginCalculationParametersFetchReturn,
-    DynamicMarginCalculationParametersInfos,
-} from './dynamic-margin-calculation.type';
-import { fetchContingencyAndFiltersLists } from './directory';
+import { DynamicMarginCalculationParametersInfos } from '../utils/types/dynamic-margin-calculation.type';
 import { backendFetch, backendFetchJson } from './utils';
 
 const PREFIX_DYNAMIC_MARGIN_CALCULATION_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-margin-calculation`;
@@ -25,90 +21,28 @@ export function fetchDynamicMarginCalculationProviders() {
     return backendFetchJson(url);
 }
 
-export function enrichLoadFilterNames(
-    parameters: DynamicMarginCalculationParametersInfos
-): Promise<DynamicMarginCalculationParametersFetchReturn> {
-    // enrich LoadsVariationInfos by LoadsVariationFetchReturn with id and name infos
-    if (parameters?.loadsVariations) {
-        const loadsVariations = parameters?.loadsVariations;
-        const allLoadFilterUuids = loadsVariations.flatMap((loadVariation) => loadVariation.loadFilterUuids ?? []);
-        return fetchContingencyAndFiltersLists(allLoadFilterUuids).then((loadFilter) => {
-            // eslint-disable-next-line no-param-reassign
-            delete parameters.loadsVariations;
-            const loadFilterInfosMap = Object.fromEntries(
-                loadFilter.map((info) => [info.elementUuid, info.elementName])
-            );
-            return {
-                ...parameters,
-                loadsVariationsInfos: loadsVariations?.map((infos) => {
-                    const newLoadVariationInfos = {
-                        ...infos,
-                        loadFilters: infos.loadFilterUuids?.map((loadFilterUuid) => ({
-                            id: loadFilterUuid,
-                            name: loadFilterInfosMap[loadFilterUuid],
-                        })),
-                    };
-                    delete newLoadVariationInfos.loadFilterUuids;
-                    return newLoadVariationInfos;
-                }),
-            };
-        });
-    }
-
-    // eslint-disable-next-line no-param-reassign
-    delete parameters.loadsVariations;
-    return Promise.resolve({
-        ...parameters,
-        loadsVariationsInfos: [],
-    });
-}
-
 export function fetchDynamicMarginCalculationParameters(
     parameterUuid: UUID
-): Promise<DynamicMarginCalculationParametersFetchReturn> {
+): Promise<DynamicMarginCalculationParametersInfos> {
     console.info(`Fetching dynamic margin calculation parameters having uuid '${parameterUuid}' ...`);
     const url = `${getDynamicMarginCalculationUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
     console.debug(url);
-    const parametersPromise: Promise<DynamicMarginCalculationParametersInfos> = backendFetchJson(url);
-    return parametersPromise.then(enrichLoadFilterNames);
-}
-
-export function cleanLoadFilterNames(
-    newParams: DynamicMarginCalculationParametersFetchReturn
-): DynamicMarginCalculationParametersInfos {
-    // send to back raw LoadsVariations instead of LoadsVariationsInfos
-    const newParameters =
-        newParams != null
-            ? {
-                  ...newParams,
-                  loadsVariations: newParams?.loadsVariationsInfos?.map((infos) => {
-                      const newLoadsVariationInfos = {
-                          ...infos,
-                          loadFilterUuids: infos.loadFilters?.map((loadFilterInfos) => loadFilterInfos.id),
-                      };
-                      delete newLoadsVariationInfos.loadFilters;
-                      return newLoadsVariationInfos;
-                  }),
-              }
-            : newParams;
-    delete newParameters?.loadsVariationsInfos;
-    return newParameters;
+    return backendFetchJson(url);
 }
 
 export function updateDynamicMarginCalculationParameters(
     parameterUuid: UUID,
-    newParams: DynamicMarginCalculationParametersFetchReturn
+    newParams: DynamicMarginCalculationParametersInfos
 ): Promise<Response> {
     console.info(`Setting dynamic margin calculation parameters having uuid '${parameterUuid}' ...`);
     const url = `${getDynamicMarginCalculationUrl()}parameters/${parameterUuid}`;
     console.debug(url);
-    const newParameters = cleanLoadFilterNames(newParams);
     return backendFetch(url, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newParameters),
+        body: JSON.stringify(newParams),
     });
 }

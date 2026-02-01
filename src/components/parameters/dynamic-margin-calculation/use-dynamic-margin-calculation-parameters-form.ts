@@ -5,21 +5,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
-import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yup from '../../../utils/yupConfig';
-import {
-    DynamicMarginCalculationParametersFetchReturn,
-    DynamicMarginCalculationParametersInfos,
-} from '../../../services/dynamic-margin-calculation.type';
+import { DynamicMarginCalculationParametersInfos } from '../../../utils/types/dynamic-margin-calculation.type';
 import { emptyFormData as timeDelayEmptyFormData, formSchema as timeDelayFormSchema } from './time-delay-parameters';
 import {
     emptyFormData as loadsVariationsEmptyFormData,
     formSchema as loadsVariationsFormSchema,
 } from './loads-variations-parameters';
-import { isObjectEmpty } from '../../../utils';
+import { ID, isObjectEmpty } from '../../../utils';
 import { PROVIDER } from '../common';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import {
@@ -47,7 +44,8 @@ const emptyFormData = {
     [TabValues.TAB_LOADS_VARIATIONS]: loadsVariationsEmptyFormData,
 };
 
-export const toFormValues = (_params: DynamicMarginCalculationParametersFetchReturn): Record<string, any> => ({
+export const toFormValues = (_params: DynamicMarginCalculationParametersInfos): FieldValues => ({
+    [ID]: _params.id, // not shown in form
     [PROVIDER]: _params.provider,
     [TabValues.TAB_TIME_DELAY]: {
         [START_TIME]: _params.startTime,
@@ -60,11 +58,12 @@ export const toFormValues = (_params: DynamicMarginCalculationParametersFetchRet
         [CALCULATION_TYPE]: _params.calculationType,
         [ACCURACY]: _params.accuracy,
         [LOAD_MODELS_RULE]: _params.loadModelsRule,
-        [LOADS_VARIATIONS]: _params.loadsVariationsInfos,
+        [LOADS_VARIATIONS]: _params.loadsVariations,
     },
 });
 
-export const toParamsInfos = (_formData: Record<string, any>): DynamicMarginCalculationParametersFetchReturn => ({
+export const toParamsInfos = (_formData: FieldValues): DynamicMarginCalculationParametersInfos => ({
+    id: _formData[ID],
     provider: _formData[PROVIDER],
     startTime: _formData[TabValues.TAB_TIME_DELAY][START_TIME],
     stopTime: _formData[TabValues.TAB_TIME_DELAY][STOP_TIME],
@@ -74,7 +73,7 @@ export const toParamsInfos = (_formData: Record<string, any>): DynamicMarginCalc
     calculationType: _formData[TabValues.TAB_LOADS_VARIATIONS][CALCULATION_TYPE],
     accuracy: _formData[TabValues.TAB_LOADS_VARIATIONS][ACCURACY],
     loadModelsRule: _formData[TabValues.TAB_LOADS_VARIATIONS][LOAD_MODELS_RULE],
-    loadsVariationsInfos: _formData[TabValues.TAB_LOADS_VARIATIONS][LOADS_VARIATIONS],
+    loadsVariations: _formData[TabValues.TAB_LOADS_VARIATIONS][LOADS_VARIATIONS],
 });
 
 export type UseTabsReturn<TTabValue extends string> = {
@@ -143,7 +142,7 @@ export type UseComputationParametersFormReturn<TTabValue extends string> = UseTa
 export type UseDynamicMarginCalculationParametersFormReturn = UseComputationParametersFormReturn<TabValues> & {};
 export type UseParametersFormProps = {
     providers: Record<string, string>;
-    params: Record<string, any> | null;
+    params: DynamicMarginCalculationParametersInfos | null;
     // default values fields managed in grid-explore via directory server
     name: string | null;
     description: string | null;
@@ -185,15 +184,12 @@ export function useDynamicMarginCalculationParametersForm({
 
     const { reset } = returnFormMethods;
 
-    const resetForm = useEffectEvent((_params: DynamicMarginCalculationParametersInfos) => {
-        reset(toFormValues(_params));
-    });
-
     useEffect(() => {
         if (params) {
-            resetForm(params);
+            console.log('xxx Resetting form with params:', params);
+            reset(toFormValues(params));
         }
-    }, [params, paramsLoaded]);
+    }, [params, paramsLoaded, reset]);
 
     /* tab-related handling */
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
