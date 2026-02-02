@@ -40,6 +40,16 @@ const equipmentTypes: string[] = [
     EquipmentType.DANGLING_LINE,
 ];
 
+const styles = {
+    h4: {
+        marginBottom: 1,
+    },
+    h5: {
+        marginBottom: 1,
+        marginTop: 1,
+    },
+};
+
 export interface ShortCircuitSpecificFieldsProps {
     isDeveloperMode: boolean;
 }
@@ -157,12 +167,12 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
                             fullHeight
                         />
                     </Grid>
-                    <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
-                    <GridSection title="ShortCircuitInCluster" heading={5} />
+                    <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} customStyle={styles.h4} />
+                    <GridSection title="ShortCircuitInCluster" heading={5} customStyle={styles.h5} />
                     <Grid container>
                         <GridItem size={12}>{inClusterOnlyStartedGenerators}</GridItem>
                     </Grid>
-                    <GridSection title="ShortCircuitOutCluster" heading={5} />
+                    <GridSection title="ShortCircuitOutCluster" heading={5} customStyle={styles.h5} />
                     <Grid container>
                         <GridItem size={12}>{outClusterOnlyStartedGenerators}</GridItem>
                     </Grid>
