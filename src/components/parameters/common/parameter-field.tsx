@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Chip, Grid, Tooltip, Typography } from '@mui/material';
+import { Chip, Grid, SxProps, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../parameters-style';
 import { ParameterType } from '../../../utils/types/parameters.type';
@@ -28,14 +28,15 @@ interface ParameterFieldProps {
     label?: string;
     description?: string;
     possibleValues?: { id: string; label: string }[] | string[];
+    sx?: SxProps;
 }
 
-function ParameterField({ id, name, type, label, description, possibleValues }: Readonly<ParameterFieldProps>) {
+function ParameterField({ id, name, type, label, description, possibleValues, sx }: Readonly<ParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:
                 return possibleValues ? (
-                    <MuiSelectInput name={`${id}.${name}`} options={possibleValues} size="small" />
+                    <MuiSelectInput name={`${id}.${name}`} options={possibleValues} size="small" sx={sx} />
                 ) : (
                     <TextInput name={`${id}.${name}`} />
                 );

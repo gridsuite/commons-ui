@@ -6,7 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid } from '@mui/material';
+import { Grid, SxProps } from '@mui/material';
 import yup from '../../../utils/yupConfig';
 import {
     ACCURACY,
@@ -60,7 +60,7 @@ export const emptyFormData = {
     [LOADS_VARIATIONS]: [],
 };
 
-const params: SpecificParameterInfos[] = [
+const params: (SpecificParameterInfos & { sx?: SxProps })[] = [
     {
         name: CALCULATION_TYPE,
         type: ParameterType.STRING,
@@ -69,6 +69,7 @@ const params: SpecificParameterInfos[] = [
             { id: CalculationType.GLOBAL_MARGIN, label: 'DynamicMarginCalculationCalculationTypeGlobalMargin' },
             { id: CalculationType.LOCAL_MARGIN, label: 'DynamicMarginCalculationCalculationTypeLocalMargin' },
         ],
+        sx: { width: '100%' },
     },
     {
         name: ACCURACY,
@@ -83,6 +84,7 @@ const params: SpecificParameterInfos[] = [
             { id: LoadModelsRule.ALL_LOADS, label: 'DynamicMarginCalculationLoadModelsRuleAllLoads' },
             { id: LoadModelsRule.TARGETED_LOADS, label: 'DynamicMarginCalculationLoadModelsRuleTargetedLoads' },
         ],
+        sx: { width: '100%' },
     },
     // LOADS_VARIATIONS displayed in a separated component, i.e., ParameterDndTableField
 ];

@@ -139,7 +139,7 @@ export type UseComputationParametersFormReturn<TTabValue extends string> = UseTa
     formattedProviders: { id: string; label: string }[];
 };
 
-export type UseDynamicMarginCalculationParametersFormReturn = UseComputationParametersFormReturn<TabValues> & {};
+export type UseDynamicMarginCalculationParametersFormReturn = UseComputationParametersFormReturn<TabValues>;
 export type UseParametersFormProps = {
     providers: Record<string, string>;
     params: DynamicMarginCalculationParametersInfos | null;
