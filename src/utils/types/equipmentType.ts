@@ -293,15 +293,12 @@ export function getEquipmentsInfosForSearchBar(equipmentsInfos: Equipment[], get
     });
 }
 
-type EquipmentInfosTypesStruct<T extends string = string> = { type: T };
-export const EquipmentInfosTypes: Record<string, EquipmentInfosTypesStruct> = {
-    LIST: { type: 'LIST' },
-    MAP: { type: 'MAP' },
-    FORM: { type: 'FORM' },
-    TAB: { type: 'TAB' },
-    TOOLTIP: { type: 'TOOLTIP' },
-    OPERATING_STATUS: { type: 'OPERATING_STATUS' },
-};
-export type EquipmentInfosTypes = EquipmentInfosTypesStruct<
-    'LIST' | 'MAP' | 'FORM' | 'TAB' | 'TOOLTIP' | 'OPERATING_STATUS'
->;
+// cf ElementInfos.InfoType from map-server
+export enum EquipmentInfosTypes {
+    LIST = 'LIST',
+    MAP = 'MAP',
+    FORM = 'FORM',
+    TAB = 'TAB',
+    TOOLTIP = 'TOOLTIP',
+    OPERATING_STATUS = 'OPERATING_STATUS',
+}

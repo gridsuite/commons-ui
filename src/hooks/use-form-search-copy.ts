@@ -56,7 +56,7 @@ export function useFormSearchCopy(
                 studyContext.nodeId,
                 studyContext.rootNetworkId,
                 elementType,
-                EquipmentInfosTypes.FORM.type,
+                EquipmentInfosTypes.FORM,
                 element.id as UUID,
                 true
             )
