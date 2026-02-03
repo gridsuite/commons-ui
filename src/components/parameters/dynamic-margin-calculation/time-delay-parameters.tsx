@@ -66,7 +66,9 @@ export default function TimeDelayParameters({ path }: Readonly<{ path: string }>
         <Grid container>
             {params.map((param: SpecificParameterInfos) => {
                 const { name, type, ...otherParams } = param;
-                return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
+                return (
+                    <ParameterField key={param.name} id={path} name={param.name} type={param.type} {...otherParams} />
+                );
             })}
         </Grid>
     );

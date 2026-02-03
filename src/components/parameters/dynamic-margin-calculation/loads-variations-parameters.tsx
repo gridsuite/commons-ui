@@ -129,7 +129,9 @@ export default function LoadsVariationsParameters({ path }: Readonly<{ path: str
         <Grid container>
             {params.map((param: SpecificParameterInfos) => {
                 const { name, type, ...otherParams } = param;
-                return <ParameterField id={path} name={param.name} type={param.type} {...otherParams} />;
+                return (
+                    <ParameterField key={param.name} id={path} name={param.name} type={param.type} {...otherParams} />
+                );
             })}
             <ParameterDndTableField
                 name={`${path}.${LOADS_VARIATIONS}`}

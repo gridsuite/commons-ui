@@ -42,7 +42,7 @@ export function DndTableBottomRightButtons({
     const currentRows: ({ selected: boolean } & Record<string, any>)[] = useWatch({
         name: arrayFormName,
     });
-    console.log('xxx current rows', { currentRows });
+
     const noRowsSelected = currentRows ? !currentRows.some((row) => row[SELECTED]) : true;
     const firstRowSelected = noRowsSelected ? undefined : currentRows[0]?.[SELECTED];
     const lastRowSelected = noRowsSelected ? undefined : currentRows[currentRows.length - 1]?.[SELECTED];
