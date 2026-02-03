@@ -92,7 +92,8 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
             !watchShuntCompensators &&
             !watchVSC &&
             !watchNeutralPosition &&
-            watchOnlyStartedGeneratorsInCalculationCluster
+            // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMinFeaturesDefaultConfiguration as true
+            (watchOnlyStartedGeneratorsInCalculationCluster ?? true)
         );
     }, [
         watchLoads,
@@ -108,7 +109,8 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
             !watchShuntCompensators &&
             watchVSC &&
             !watchNeutralPosition &&
-            !watchOnlyStartedGeneratorsInCalculationCluster
+            // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMaxFeaturesDefaultConfiguration as true
+            !(watchOnlyStartedGeneratorsInCalculationCluster ?? false)
         );
     }, [
         watchLoads,
