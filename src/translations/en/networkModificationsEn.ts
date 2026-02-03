@@ -76,6 +76,7 @@ export const networkModificationsEn = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': 'Creating a busbar in voltage level {computedLabel}',
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Adding busbar section to voltage level {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
+    ModificationReadError: 'An error occurred while fetching the modification',
     CreateSubstation: 'Create substation',
     SubstationCreationError: 'Error while creating substation',
     AdditionalInformation: 'Additional information',
