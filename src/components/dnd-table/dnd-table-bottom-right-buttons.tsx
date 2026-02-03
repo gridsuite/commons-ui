@@ -44,8 +44,8 @@ export function DndTableBottomRightButtons({
     });
     console.log('xxx current rows', { currentRows });
     const noRowsSelected = currentRows ? !currentRows.some((row) => row[SELECTED]) : true;
-    const firstRowSelected = currentRows?.[0]?.[SELECTED];
-    const lastRowSelected = currentRows?.[currentRows.length - 1]?.[SELECTED];
+    const firstRowSelected = noRowsSelected ? undefined : currentRows[0]?.[SELECTED];
+    const lastRowSelected = noRowsSelected ? undefined : currentRows[currentRows.length - 1]?.[SELECTED];
 
     return (
         <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end' }}>
