@@ -35,14 +35,7 @@ export enum ShortCircuitParametersTabValues {
 }
 
 export enum ShortCircuitParametersFieldConstants {
-    SUB_EQUIPMENT_TYPES_BY_FILTER = 'subEquipmentTypesByFilter',
-    FILTER_ID = 'filterId',
-    SUB_EQUIPMENT_TYPES = 'subEquipmentTypes',
-}
-
-export interface FilterSubEquipments {
-    [ShortCircuitParametersFieldConstants.FILTER_ID]: string;
-    [ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES]: string[];
+    FILTER_ID = 'id',
 }
 
 export interface FilterElement {
@@ -109,10 +102,6 @@ export const getSpecificShortCircuitParametersFormSchema = (
             [SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS]: yup.array().of(
                 yup.object().shape({
                     [ShortCircuitParametersFieldConstants.FILTER_ID]: yup.string().required(),
-                    [ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES]: yup
-                        .array()
-                        .required()
-                        .of(yup.string().required()),
                 })
             ),
         },
@@ -155,6 +144,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
             active: false,
         }));
     }
+    defaultValues[SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS] = [];
     return defaultValues;
 };
 
@@ -222,10 +212,3 @@ export const formatShortCircuitSpecificParameters = (
     }
     return formatted;
 };
-
-export function isSubstationOrVoltageLevelFilter(filter: FilterElement) {
-    return (
-        filter.specificMetadata.equipmentType === EquipmentType.SUBSTATION ||
-        filter.specificMetadata.equipmentType === EquipmentType.VOLTAGE_LEVEL
-    );
-}

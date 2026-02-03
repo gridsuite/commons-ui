@@ -18,27 +18,9 @@ import {
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
 } from './constants';
-import {
-    FilterElement,
-    FilterSubEquipments,
-    isSubstationOrVoltageLevelFilter,
-    ShortCircuitParametersFieldConstants,
-} from './short-circuit-parameters-utils';
+import { FilterElement } from './short-circuit-parameters-utils';
 
-const equipmentTypes: string[] = [
-    EquipmentType.SUBSTATION,
-    EquipmentType.VOLTAGE_LEVEL,
-    EquipmentType.LINE,
-    EquipmentType.TWO_WINDINGS_TRANSFORMER,
-    EquipmentType.THREE_WINDINGS_TRANSFORMER,
-    EquipmentType.GENERATOR,
-    EquipmentType.BATTERY,
-    EquipmentType.LOAD,
-    EquipmentType.SHUNT_COMPENSATOR,
-    EquipmentType.STATIC_VAR_COMPENSATOR,
-    EquipmentType.HVDC_LINE,
-    EquipmentType.DANGLING_LINE,
-];
+const equipmentTypes: string[] = [EquipmentType.VOLTAGE_LEVEL];
 
 const styles = {
     h4: {
@@ -116,39 +98,6 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
         [watchSpecificParameters]
     );
 
-    const handleFilterOnChange = useCallback(
-        (_currentFilters: any, action?: ArrayAction, filter?: FilterElement) => {
-            if (!action || !filter) {
-                console.error('Action or filter is missing in handleFilterOnChange');
-                return;
-            }
-            if (isSubstationOrVoltageLevelFilter(filter)) {
-                const currentSubEquipmentsByFilters = getValues(
-                    ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES_BY_FILTER
-                );
-                if (action === ArrayAction.ADD) {
-                    const newFilterSubEquipments = {
-                        [ShortCircuitParametersFieldConstants.FILTER_ID]: filter.id,
-                        [ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES]: [],
-                    };
-                    setValue(ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES_BY_FILTER, [
-                        ...currentSubEquipmentsByFilters,
-                        newFilterSubEquipments,
-                    ]);
-                } else if (action === ArrayAction.REMOVE) {
-                    setValue(
-                        ShortCircuitParametersFieldConstants.SUB_EQUIPMENT_TYPES_BY_FILTER,
-                        currentSubEquipmentsByFilters.filter(
-                            (value: FilterSubEquipments) =>
-                                value[ShortCircuitParametersFieldConstants.FILTER_ID] !== filter.id
-                        )
-                    );
-                }
-            }
-        },
-        [setValue, getValues]
-    );
-
     return (
         <>
             {isThereSpecificParameters && (
@@ -163,7 +112,6 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
                             equipmentTypes={equipmentTypes}
                             ChipComponent={OverflowableChipWithHelperText}
                             chipProps={{ variant: 'outlined' }}
-                            onChange={handleFilterOnChange}
                             fullHeight
                         />
                     </Grid>
