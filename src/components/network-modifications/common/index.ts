@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './modification-dialog';
+export * from './modificationDialog';
 export * from './properties';
-export * from './equipment-search-dialog';
+export * from './EquipmentSearchDialog';
 export * from './modificationsUtils';

@@ -11,7 +11,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { CancelButton } from '../../../inputs';
 import { useButtonWithTooltip } from '../../../../hooks';
-import { ModificationDialogContentProps } from './modification-dialog-types';
+import { ModificationDialogContentProps } from './modificationDialog.type';
 
 /**
  * Common parts for the Modification Dialog

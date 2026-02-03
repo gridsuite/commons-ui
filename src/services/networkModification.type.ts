@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { Property } from '../components/network-modifications/common/properties/property-types';
+import { Property } from '../components/network-modifications/common/properties/properties.type';
 
 export interface NetworkModificationData {
     uuid: UUID;

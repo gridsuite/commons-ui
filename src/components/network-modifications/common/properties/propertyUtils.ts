@@ -7,7 +7,7 @@
 import { FieldConstants, isBlankOrEmpty, PredefinedProperties } from '../../../../utils';
 import yup from '../../../../utils/yupConfig';
 import { fetchStudyMetadata } from '../../../../services';
-import { Properties, Property } from './property-types';
+import { Properties, Property } from './properties.type';
 
 export type EquipmentWithProperties = {
     properties?: Record<string, string>;

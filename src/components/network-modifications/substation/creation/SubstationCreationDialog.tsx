@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UUID } from 'node:crypto';
-import { SubstationCreationForm } from './substation-creation-form';
+import { SubstationCreationForm } from './SubstationCreationForm';
 import { useFormSearchCopy, useOpenShortWaitFetching, useSnackMessage } from '../../../../hooks';
 import {
     DeepNullable,
@@ -38,7 +38,7 @@ import {
     fetchDefaultCountry,
     SubstationCreationDto,
 } from '../../../../services';
-import { SubstationInfos } from '../substation-dialog.type';
+import { SubstationInfos } from '../substationDialog.type';
 
 const formSchema = yup
     .object()

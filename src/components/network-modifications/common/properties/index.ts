@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './properties-form';
-export * from './property-form';
-export * from './property-types';
-export * from './property-utils';
+export * from './PropertiesForm';
+export * from './PropertyForm';
+export * from './properties.type';
+export * from './propertyUtils';

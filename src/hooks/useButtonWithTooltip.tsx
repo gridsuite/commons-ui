@@ -8,7 +8,7 @@
 import React, { ReactNode, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Tooltip, IconButton } from '@mui/material';
-import { dialogStyles } from '../components/dialogs/dialog-utils';
+import { dialogStyles } from '../components/dialogs/dialogUtils';
 import { TOOLTIP_DELAY } from '../utils';
 
 interface UseButtonWithTooltipProps {

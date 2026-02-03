@@ -9,7 +9,7 @@ import { useFieldArray } from 'react-hook-form';
 import { Button, Grid } from '@mui/material';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import { DeletableRow } from './deletable-row';
+import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
 import { mergeSx } from '../../../../utils';
 import { dialogStyles } from '../../../dialogs';

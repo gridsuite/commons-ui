@@ -7,9 +7,9 @@
 
 import { useCallback } from 'react';
 import { FieldErrors, FieldValues, useFormContext } from 'react-hook-form';
-import { ModificationDialogContent } from './modification-dialog-content';
+import { ModificationDialogContent } from './ModificationDialogContent';
 import { SubmitButton } from '../../../inputs';
-import { ModificationDialogProps } from './modification-dialog-types';
+import { ModificationDialogProps } from './modificationDialog.type';
 
 /**
  * Generic Modification Dialog which manage basic common behaviors with react

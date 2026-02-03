@@ -7,7 +7,7 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchText } from './utils';
-import { SubstationCreationDto } from './network-modification-types';
+import { SubstationCreationDto } from './networkModification.type';
 import { ModificationType } from '../utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;

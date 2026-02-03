@@ -8,10 +8,10 @@
 import { Grid } from '@mui/material';
 import GridItem from '../../../grid/grid-item';
 import { TextInput } from '../../../inputs';
-import { CountrySelectionInput } from '../../../inputs/reactHookForm/country-selection-input';
+import { CountrySelectionInput } from '../../../inputs/reactHookForm/CountrySelectionInput';
 import { FieldConstants } from '../../../../utils';
 import { filledTextField } from '../../../dialogs';
-import { PropertiesForm } from '../../common/properties/properties-form';
+import { PropertiesForm } from '../../common/properties/PropertiesForm';
 
 export function SubstationCreationForm() {
     const substationIdField = <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={filledTextField} />;

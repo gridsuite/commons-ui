@@ -4,5 +4,5 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export * from './substation-creation-dialog';
-export * from './substation-creation-form';
+export * from './SubstationCreationDialog';
+export * from './SubstationCreationForm';

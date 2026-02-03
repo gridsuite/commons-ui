@@ -6,4 +6,4 @@
  */
 
 export * from './creation';
-export * from './substation-dialog.type';
+export * from './substationDialog.type';

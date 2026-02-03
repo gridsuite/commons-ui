@@ -11,8 +11,8 @@ import { NetworkVisualizationParameters } from '../components/parameters/network
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
 import { EquipmentType, ExtendedEquipmentType, NamingConventionValues } from '../utils';
-import { SubstationCreationInfo } from './network-modification-types';
-import { createSubstationPromise } from './network-modification';
+import { SubstationCreationInfo } from './networkModification.type';
+import { createSubstationPromise } from './networkModification';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 

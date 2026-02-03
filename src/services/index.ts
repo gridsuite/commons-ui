@@ -17,5 +17,5 @@ export * from './userAdmin';
 export * from './utils';
 export * from './voltage-init';
 export * from './short-circuit-analysis';
-export * from './network-modification';
-export * from './network-modification-types';
+export * from './networkModification';
+export * from './networkModification.type';
