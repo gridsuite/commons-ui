@@ -24,7 +24,6 @@ export function snackWithFallback(
     headerInputs?: HeaderSnackInputs
 ) {
     if (error instanceof NetworkTimeoutError) {
-        console.log('snackWithFallback : instanceof NetworkTimeoutError : ');
         snackError({
             messageId: error.message,
             ...headerInputs,
