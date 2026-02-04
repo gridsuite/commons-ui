@@ -7,7 +7,12 @@
  */
 import { TableCell } from '@mui/material';
 import { DirectoryItemsInput, FloatInput, SelectInput, SwitchInput } from '../../inputs';
-import { IccClusterIColumnsDef, SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE, SHORT_CIRCUIT_ICC_CLUSTER_FILTERS, SHORT_CIRCUIT_ICC_CLUSTER_TYPE } from './columns-definition';
+import {
+    IccClusterIColumnsDef,
+    SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE,
+    SHORT_CIRCUIT_ICC_CLUSTER_FILTERS,
+    SHORT_CIRCUIT_ICC_CLUSTER_TYPE,
+} from './columns-definition';
 
 export function ShortCircuitIccClusterTableCell({
     formName,
@@ -26,21 +31,23 @@ export function ShortCircuitIccClusterTableCell({
                 <SwitchInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
             )}
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_FILTERS && (
-                // <RawReadOnlyInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
                 <DirectoryItemsInput
-                                    name={`${formName}[${rowIndex}].${column.dataKey}`}
-                                    equipmentTypes={column.equipmentTypes}
-                                    elementType={column.elementType ?? ''}
-                                    titleId={column.titleId}
-                                    hideErrorMessage
-                                    label={undefined}
-                                    itemFilter={undefined}
-                                    disable={inputsDisabled}
-                                    // onRowChanged={handleDirectoryItemsChange}
-                                />
+                    name={`${formName}[${rowIndex}].${column.dataKey}`}
+                    equipmentTypes={column.equipmentTypes}
+                    elementType={column.elementType ?? ''}
+                    titleId={column.titleId}
+                    hideErrorMessage
+                    label={undefined}
+                    itemFilter={undefined}
+                    disable={inputsDisabled}
+                />
             )}
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_TYPE && (
-                <SelectInput name={`${formName}[${rowIndex}].${column.dataKey}`} label={`${formName}[${rowIndex}].${column.titleId}`} options={['WIND', 'SOLAR', 'HVDC']}/>
+                <SelectInput
+                    name={`${formName}[${rowIndex}].${column.dataKey}`}
+                    label={`${formName}[${rowIndex}].${column.titleId}`}
+                    options={['WIND', 'SOLAR', 'HVDC']}
+                />
             )}
             {column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE &&
                 column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_FILTERS &&

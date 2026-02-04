@@ -6,10 +6,7 @@
  */
 import { TableRow } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import {
-    IccMaterialIColumnsDef,
-    SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
-} from './columns-definition';
+import { IccMaterialIColumnsDef, SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE } from './columns-definition';
 import { ShortCircuitIccMaterialTableCell } from './short-circuit-icc-material-table-cell';
 
 interface ShortCircuitIccMaterialTableRowProps {
