@@ -113,7 +113,7 @@ export function VoltageLimitsParameters() {
                         adornment: VoltageAdornment,
                         textAlign: 'right',
                     },
-                ] satisfies (DndColumn & { initialValue: unknown[] | null })[]
+                ] satisfies DndColumn[]
             ).map((column) => ({
                 ...column,
                 label: intl

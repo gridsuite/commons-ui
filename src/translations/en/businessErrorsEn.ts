@@ -72,4 +72,6 @@ export const businessErrorsEn = {
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'dynamicMarginCalculation.providerNotFound': 'Dynamic margin calculation provider not found.',
+    'dynamicMarginCalculation.loadFilterNotFound': 'Some load filters do not exist: {filterUuids}',
 };
