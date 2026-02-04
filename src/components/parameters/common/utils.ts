@@ -13,6 +13,7 @@ import {
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constant';
 import yup from '../../../utils/yupConfig';
+import { SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS } from '../short-circuit';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
     const shape: { [key: string]: yup.AnySchema } = {};
@@ -97,7 +98,11 @@ export const getAllSpecificParametersValues = (
 ): SpecificParametersValues => {
     return Object.keys(formData[SPECIFIC_PARAMETERS]).reduce((acc: SpecificParametersValues, key: string) => {
         if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
-            acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
+            if (key == SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS) {
+                acc[key] = formData[SPECIFIC_PARAMETERS][key];
+            } else {
+                acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
+            }
         }
         return acc;
     }, {});

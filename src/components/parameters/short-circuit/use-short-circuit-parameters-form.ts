@@ -7,7 +7,7 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
@@ -15,6 +15,7 @@ import { DESCRIPTION, NAME } from '../../inputs';
 import {
     InitialVoltage,
     PredefinedParameters,
+    SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
@@ -37,12 +38,16 @@ import {
     getDefaultShortCircuitSpecificParamsValues,
     getShortCircuitSpecificParametersValues,
     getSpecificShortCircuitParametersFormSchema,
+    ShortCircuitParametersTabValues,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
+    selectedTab: ShortCircuitParametersTabValues;
+    handleTabChange: (event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => void;
+    tabIndexesWithError: ShortCircuitParametersTabValues[];
     resetAll: (predefinedParameter: PredefinedParameters) => void;
     specificParametersDescriptionForProvider: SpecificParameterInfos[];
     toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
@@ -70,8 +75,16 @@ export const useShortCircuitParametersForm = ({
     description,
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
     const [, provider, , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
+    const [selectedTab, setSelectedTab] = useState<ShortCircuitParametersTabValues>(
+        ShortCircuitParametersTabValues.GENERAL
+    );
+    const [tabIndexesWithError] = useState<ShortCircuitParametersTabValues[]>([]);
     const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
+
+    const handleTabChange = useCallback((event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => {
+        setSelectedTab(newValue);
+    }, []);
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
         return provider && specificParamsDescriptions?.[provider] ? specificParamsDescriptions[provider] : [];
@@ -140,6 +153,7 @@ export const useShortCircuitParametersForm = ({
                 predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
+            setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS}`, []);
         },
         [params?.commonParameters, setValue]
     );
@@ -251,6 +265,9 @@ export const useShortCircuitParametersForm = ({
     return {
         formMethods,
         formSchema,
+        selectedTab,
+        handleTabChange,
+        tabIndexesWithError,
         specificParametersDescriptionForProvider,
         toShortCircuitFormValues,
         formatNewParams,
