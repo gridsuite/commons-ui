@@ -7,7 +7,7 @@
 
 import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useCallback } from 'react';
 import { IccClusterIColumnsDef } from './columns-definition';
@@ -26,7 +26,6 @@ export function ShortCircuitIccClusterTable({
     tableHeight,
     createRows,
 }: Readonly<ShortCircuitIccClusterTableProps>) {
-    const { getValues } = useFormContext();
     const {
         fields: rows,
         append,
@@ -41,19 +40,9 @@ export function ShortCircuitIccClusterTable({
 
     const handleDeleteButton = useCallback(
         (index: number) => {
-            const currentRowsValues = getValues(formName);
-            // let isFormChanged = false;
-            // if (index >= 0 && index < currentRowsValues.length) {
-            //     if (currentRowsValues[index][COUNT] && currentRowsValues[index][ACTIVATED]) {
-            //         isFormChanged = true;
-            //     }
             remove(index);
-            // }
-            // if (isFormChanged) {
-            //     onFormChanged(true);
-            // }
         },
-        [formName, getValues, remove]
+        [remove]
     );
 
     return (

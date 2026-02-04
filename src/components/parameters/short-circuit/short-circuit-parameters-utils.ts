@@ -136,7 +136,9 @@ const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerEl
     }
 };
 
-const parsepowerElectronicsClustersParamString = (paramString: string): (PowerElectronicsCluster & { active: boolean })[] => {
+const parsepowerElectronicsClustersParamString = (
+    paramString: string
+): (PowerElectronicsCluster & { active: boolean })[] => {
     // Attempt to parse the string into an array of PowerElectronicsCluster objects
     try {
         return JSON.parse(paramString);
@@ -231,7 +233,7 @@ const formatElectronicsClustersParamString = (defaultValues: PowerElectronicsClu
             ...rest,
             filters: filters.map((filter) => ({
                 [ID]: filter.filterId,
-                [NAME]: filter.filterName, // TODO from back to front -> {id: uuid, name: string}
+                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
             })),
         };
     });
