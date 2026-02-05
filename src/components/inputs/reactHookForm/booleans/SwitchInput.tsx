@@ -8,12 +8,11 @@
 import { Switch, SwitchProps } from '@mui/material';
 import { BooleanInput } from './BooleanInput';
 
-export interface SwitchInputProps {
+export interface SwitchInputProps extends SwitchProps {
     name: string;
     label?: string;
-    formProps?: SwitchProps;
 }
 
-export function SwitchInput({ name, label, formProps, ...props }: SwitchInputProps) {
-    return <BooleanInput name={name} label={label} formProps={formProps} Input={Switch} {...props} />;
+export function SwitchInput({ name, label, ...props }: SwitchInputProps) {
+    return <BooleanInput name={name} label={label} Input={Switch} {...props} />;
 }
