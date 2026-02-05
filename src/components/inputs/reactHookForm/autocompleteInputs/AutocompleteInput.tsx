@@ -12,12 +12,11 @@ import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousVa
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
-export interface AutocompleteInputProps
-    extends Omit<
-        AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
-        // we already defined them in our custom Autocomplete
-        'value' | 'onChange' | 'renderInput'
-    > {
+export interface AutocompleteInputProps extends Omit<
+    AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
+    // we already defined them in our custom Autocomplete
+    'value' | 'onChange' | 'renderInput'
+> {
     name: string;
     options: Option[];
     label?: string;
@@ -85,7 +84,7 @@ export function AutocompleteInput({
 
     return (
         <Autocomplete
-            value={selectedValues}
+            value={selectedValues ?? null} // Ensure null instead of undefined otherwise it switches to uncontrolled mode
             onChange={(_, data) => handleChange(data as Option)}
             {...(allowNewValue && {
                 freeSolo: true,

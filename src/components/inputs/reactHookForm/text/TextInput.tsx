@@ -99,7 +99,7 @@ export function TextInput({
             fullWidth
             id={id ?? label}
             label={fieldLabel}
-            value={transformedValue}
+            value={transformedValue ?? ''}
             onChange={handleValueChanged}
             disabled={disabled}
             InputProps={{
