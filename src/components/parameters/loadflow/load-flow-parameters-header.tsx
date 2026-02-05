@@ -40,7 +40,12 @@ function LoadFlowParametersHeader({
                     <FormattedMessage id="Provider" />
                 </Grid>
                 <Grid item xs="auto" sx={parametersStyles.controlItem}>
-                    <MuiSelectInput name={PROVIDER} size="small" options={Object.values(formattedProviders)} />
+                    <MuiSelectInput
+                        data-testid="LfProvider"
+                        name={PROVIDER}
+                        size="small"
+                        options={Object.values(formattedProviders)}
+                    />
                 </Grid>
                 <LineSeparator />
                 <Grid item sx={{ width: '100%' }}>
@@ -49,11 +54,13 @@ function LoadFlowParametersHeader({
                             label={<FormattedMessage id={TabValues.GENERAL} />}
                             value={TabValues.GENERAL}
                             sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
+                            data-testid="LfGeneralTab"
                         />
                         <Tab
                             label={<FormattedMessage id={TabValues.LIMIT_REDUCTIONS} />}
                             value={TabValues.LIMIT_REDUCTIONS}
                             sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS)}
+                            data-testid="LfLimitReductionsTab"
                         />
                     </Tabs>
                 </Grid>
