@@ -14,5 +14,4 @@ export const csvFr = {
     GenerateCSV: 'Générer le modèle CSV',
     UploadCSV: 'Télécharger le CSV',
     uploadMessage: ' Aucun fichier sélectionné',
-    InvalidRuleHeader: "Le fichier n'a pas le bon en-tête, veuillez vous référer au modèle",
 };

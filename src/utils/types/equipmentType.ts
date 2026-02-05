@@ -75,6 +75,7 @@ export enum EquipmentType {
     BREAKER = 'BREAKER',
 }
 
+// TODO move into powsybl-network-viewer
 export enum HvdcType {
     LCC = 'LCC',
     VSC = 'VSC',
@@ -291,14 +292,4 @@ export function getEquipmentsInfosForSearchBar(equipmentsInfos: Equipment[], get
                   voltageLevelId: vli.id,
               })) ?? []);
     });
-}
-
-// cf ElementInfos.InfoType from map-server
-export enum EquipmentInfosTypes {
-    LIST = 'LIST',
-    MAP = 'MAP',
-    FORM = 'FORM',
-    TAB = 'TAB',
-    TOOLTIP = 'TOOLTIP',
-    OPERATING_STATUS = 'OPERATING_STATUS',
 }

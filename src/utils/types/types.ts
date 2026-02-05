@@ -77,10 +77,3 @@ export enum ArrayAction {
     ADD = 'ADD',
     REMOVE = 'REMOVE',
 }
-
-export interface StudyContext {
-    studyId: UUID;
-    nodeId: UUID;
-    rootNetworkId: UUID;
-    useNameParam: boolean;
-}

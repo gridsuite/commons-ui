@@ -7,4 +7,5 @@
 export * from './elementItem';
 export * from './elementSearchDialog';
 export * from './elementSearchInput';
+export * from './hooks';
 export * from './tagRenderer';

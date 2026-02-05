@@ -8,7 +8,7 @@
 import { useMemo } from 'react';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { FieldLabel, genHelperError, HelperPreviousValue, identity, isFieldRequired } from '../utils';
+import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
