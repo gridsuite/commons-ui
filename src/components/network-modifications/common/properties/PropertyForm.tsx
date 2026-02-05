@@ -10,7 +10,7 @@ import { useWatch } from 'react-hook-form';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
 import GridItem from '../../../grid/grid-item';
 import { AutocompleteInput, TextInput } from '../../../inputs';
-import { italicFontTextField } from '../../../dialogs';
+import { italicFontTextField } from '../form.utils';
 
 type PropertyFormProps = {
     name: string;

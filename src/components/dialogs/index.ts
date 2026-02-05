@@ -9,4 +9,3 @@ export * from './descriptionModificationDialog';
 export * from './elementSaveDialog';
 export * from './modifyElementSelection';
 export * from './popupConfirmationDialog';
-export * from './dialogUtils';

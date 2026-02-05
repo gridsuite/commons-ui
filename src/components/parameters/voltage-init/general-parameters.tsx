@@ -17,7 +17,7 @@ import {
 } from './constants';
 import { LineSeparator, ParameterFloat, ParameterSwitch } from '../common';
 import { parametersStyles } from '../parameters-style';
-import { ReactivePowerAdornment } from '../../dialogs';
+import { ReactivePowerAdornment } from '../../../utils/constants/adornements';
 
 export interface GeneralParametersProps {
     withApplyModifications: boolean;

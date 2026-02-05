@@ -37,3 +37,15 @@ export const removeNullFields = <T extends Record<string, any>>(data: T): T => {
 
     return result as T;
 };
+
+export function parseIntData(val: string | number, defaultValue: string | number) {
+    const intValue = Number.parseInt(String(val), 10);
+    return Number.isNaN(intValue) ? defaultValue : intValue;
+}
+
+export function sanitizeString(val: string | null | undefined): string | null {
+    const trimmedValue = val?.trim();
+    return trimmedValue === undefined || trimmedValue === '' ? null : trimmedValue;
+}
+
+export const getIdOrSelf = (e: any) => e?.id ?? e;
