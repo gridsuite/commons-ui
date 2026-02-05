@@ -11,8 +11,18 @@ import { ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
-import { mergeSx } from '../../../../utils';
-import { dialogStyles } from '../../../dialogs';
+import { mergeSx, type MuiStyles } from '../../../../utils';
+
+const styles = {
+    button: (theme) => ({
+        justifyContent: 'flex-start',
+        fontSize: 'small',
+        marginTop: theme.spacing(1),
+    }),
+    paddingButton: (theme) => ({
+        paddingLeft: theme.spacing(2),
+    }),
+} as const satisfies MuiStyles;
 
 export interface ExpandableInputProps {
     name: string;
@@ -80,7 +90,7 @@ export function ExpandableInput({
                 <Button
                     disabled={disabled}
                     fullWidth
-                    sx={mergeSx(dialogStyles.button, dialogStyles.paddingButton)}
+                    sx={mergeSx(styles.button, styles.paddingButton)}
                     startIcon={<AddIcon />}
                     onClick={() => append(initialValue)}
                 >

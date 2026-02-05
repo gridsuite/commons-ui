@@ -10,7 +10,7 @@ import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils'
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
-import { EquipmentType, ExtendedEquipmentType, NamingConventionValues } from '../utils';
+import { EquipmentType, ExtendedEquipmentType } from '../utils';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 

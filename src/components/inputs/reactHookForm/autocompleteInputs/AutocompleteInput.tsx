@@ -8,15 +8,16 @@
 import { useMemo } from 'react';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
+import { FieldLabel, genHelperError, HelperPreviousValue, identity, isFieldRequired } from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
-export interface AutocompleteInputProps extends Omit<
-    AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
-    // we already defined them in our custom Autocomplete
-    'value' | 'onChange' | 'renderInput'
-> {
+export interface AutocompleteInputProps
+    extends Omit<
+        AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
+        // we already defined them in our custom Autocomplete
+        'value' | 'onChange' | 'renderInput'
+    > {
     name: string;
     options: Option[];
     label?: string;

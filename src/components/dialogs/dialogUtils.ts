@@ -15,58 +15,10 @@ import {
     MEGA_VOLT_AMPERE,
     MEGA_WATT,
     MICRO_SIEMENS,
-    type MuiStyles,
     OHM,
     PERCENTAGE,
     SIEMENS,
 } from '../../utils';
-
-export const dialogStyles = {
-    helperText: {
-        margin: 0,
-        marginTop: '4px',
-    },
-    tooltip: {
-        fontSize: 18,
-        maxWidth: 'none',
-    },
-    button: (theme) => ({
-        justifyContent: 'flex-start',
-        fontSize: 'small',
-        marginTop: theme.spacing(1),
-    }),
-    paddingButton: (theme) => ({
-        paddingLeft: theme.spacing(2),
-    }),
-    formDirectoryElements1: {
-        display: 'flex',
-        gap: '8px',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        border: '2px solid lightgray',
-        padding: '4px',
-        borderRadius: '4px',
-        overflow: 'hidden',
-    },
-    formDirectoryElementsError: (theme) => ({
-        borderColor: theme.palette.error.main,
-    }),
-    formDirectoryElements2: {
-        display: 'flex',
-        gap: '8px',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        marginTop: 0,
-        padding: '4px',
-        overflow: 'hidden',
-    },
-    labelDirectoryElements: {
-        marginTop: '-10px',
-    },
-    addDirectoryElements: {
-        marginTop: '-5px',
-    },
-} as const satisfies MuiStyles;
 
 export const MicroSusceptanceAdornment = {
     position: 'end',
