@@ -193,23 +193,16 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         );
     };
 
-    const computeMapPrintedNodes = useCallback(
-        (nodes: TreeViewFinderNodeProps[] | undefined, parentPath: TreeViewFinderNodeProps[] = []) => {
-            const newMapPrintedNodes: TreeViewFinderNodeMapProps = {};
-            nodes?.forEach((node) => {
-                const nodeWithParents = { ...node, parents: parentPath };
-                newMapPrintedNodes[node.id] = nodeWithParents;
-                if (!isLeaf(node)) {
-                    Object.assign(
-                        newMapPrintedNodes,
-                        computeMapPrintedNodes(node.children, [...parentPath, nodeWithParents])
-                    );
-                }
-            });
-            return newMapPrintedNodes;
-        },
-        []
-    );
+    const computeMapPrintedNodes = useCallback((nodes: TreeViewFinderNodeProps[] | undefined) => {
+        const newMapPrintedNodes: TreeViewFinderNodeMapProps = {};
+        nodes?.forEach((node) => {
+            newMapPrintedNodes[node.id] = node;
+            if (!isLeaf(node)) {
+                Object.assign(newMapPrintedNodes, computeMapPrintedNodes(node.children));
+            }
+        });
+        return newMapPrintedNodes;
+    }, []);
 
     const findParents = (
         itemId: string,
@@ -408,16 +401,9 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         } else if (showExpandIcon) {
             childrenNodes = [<span key="placeholder" style={{ display: 'none' }} />]; // simulate placeholder so expand icon is shown
         }
-        const nodeWithParents = mapPrintedNodes[node.id] || node;
-        const parentPath =
-            nodeWithParents.parents && nodeWithParents.parents.length > 0
-                ? `${nodeWithParents.parents.map((p) => p.name).join('.')}.`
-                : '';
-        const testId = `TreeItem-${parentPath}${node.name}`;
         return (
             <TreeItem
                 key={node.id}
-                data-testid={testId}
                 itemId={node.id}
                 label={renderTreeItemLabel(node)}
                 slots={{
