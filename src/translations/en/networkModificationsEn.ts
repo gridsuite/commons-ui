@@ -90,4 +90,5 @@ export const networkModificationsEn = {
     EquipmentCopied: 'Data successfully copied from equipment {equipmentId}',
     EquipmentCopyFailed: 'Equipment copy failed',
     TapPositionValueError: 'The number of taps must not exceed the value {value}',
+    DuplicatedPropsError: 'Duplicated properties: each property must be unique',
 };

@@ -7,8 +7,6 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchText } from './utils';
-import { SubstationCreationDto } from './networkModification.type';
-import { ModificationType } from '../utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
 
@@ -22,34 +20,17 @@ export function fetchNetworkModification(modificationUuid: UUID) {
     return backendFetch(modificationFetchUrl);
 }
 
-export function createSubstationPromise(
-    { substationId, substationName, country, properties, isUpdate, modificationUuid }: SubstationCreationDto,
-    baseUrl: string
-) {
-    const body = JSON.stringify({
-        type: ModificationType.SUBSTATION_CREATION,
-        equipmentId: substationId,
-        equipmentName: substationName,
-        country: country === '' ? null : country,
-        properties,
-    });
-    let url = baseUrl;
-    if (modificationUuid) {
-        url += `/${encodeURIComponent(modificationUuid)}`;
-        console.info('Updating substation creation', { url, body });
-    } else {
-        console.info('Creating substation creation', { url, body });
-    }
+export function updateModification({ modificationUuid, body }: { modificationUuid: UUID; body: string }) {
+    const url = `${getUrl()}/${encodeURIComponent(modificationUuid)}`;
+
+    console.info('Updating modification', { url, body });
+
     return backendFetchText(url, {
-        method: isUpdate ? 'PUT' : 'POST',
+        method: 'PUT',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
         body,
     });
-}
-
-export function createSubstation(dto: SubstationCreationDto) {
-    return createSubstationPromise(dto, getUrl());
 }

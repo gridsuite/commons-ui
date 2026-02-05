@@ -16,3 +16,24 @@ export function notUndefined<T>(value: T | undefined): value is T {
 export function notNull<T>(value: T | null): value is T {
     return value !== null;
 }
+
+export const removeNullFields = <T extends Record<string, any>>(data: T): T => {
+    const result = Object.entries(data).reduce<Record<string, any>>((acc, [key, value]) => {
+        if (value === null) {
+            return acc;
+        }
+
+        if (typeof value === 'object' && !Array.isArray(value)) {
+            const cleaned = removeNullFields(value);
+            if (Object.keys(cleaned).length > 0) {
+                acc[key] = cleaned;
+            }
+            return acc;
+        }
+
+        acc[key] = value;
+        return acc;
+    }, {});
+
+    return result as T;
+};

@@ -7,7 +7,7 @@
 import { FieldConstants, isBlankOrEmpty, PredefinedProperties } from '../../../../utils';
 import yup from '../../../../utils/yupConfig';
 import { fetchStudyMetadata } from '../../../../services';
-import { Properties, Property } from './properties.type';
+import { FilledProperty, Properties, Property } from './properties.type';
 
 export type EquipmentWithProperties = {
     properties?: Record<string, string>;
@@ -35,6 +35,22 @@ export const createPropertyModification = (name: string, value: string | null): 
 
 export const initializedProperty = (): Property => {
     return createPropertyModification('', null);
+};
+
+export const getFilledPropertiesFromModification = (properties: Property[] | undefined | null): FilledProperty[] => {
+    return (
+        properties
+            ?.filter((p) => p[FieldConstants.VALUE] != null)
+            .map((p) => {
+                return {
+                    [FieldConstants.NAME]: p[FieldConstants.NAME],
+                    [FieldConstants.VALUE]: p[FieldConstants.VALUE] as string,
+                    [FieldConstants.PREVIOUS_VALUE]: p[FieldConstants.PREVIOUS_VALUE],
+                    [FieldConstants.ADDED]: p[FieldConstants.ADDED],
+                    [FieldConstants.DELETION_MARK]: p[FieldConstants.DELETION_MARK],
+                };
+            }) ?? []
+    );
 };
 
 export const getPropertiesFromModification = (properties: Property[] | undefined | null): Properties => {

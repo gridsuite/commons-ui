@@ -6,6 +6,10 @@
  */
 import { FieldConstants } from '../../../../utils';
 
+export type FilledProperty = Omit<Property, FieldConstants.VALUE> & {
+    [FieldConstants.VALUE]: string;
+};
+
 export type Property = {
     [FieldConstants.NAME]: string;
     [FieldConstants.VALUE]?: string | null;

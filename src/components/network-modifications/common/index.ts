@@ -8,4 +8,3 @@
 export * from './modificationDialog';
 export * from './properties';
 export * from './EquipmentSearchDialog';
-export * from './modificationsUtils';

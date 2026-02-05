@@ -11,16 +11,11 @@ import { NetworkVisualizationParameters } from '../components/parameters/network
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
 import { EquipmentType, ExtendedEquipmentType, NamingConventionValues } from '../utils';
-import { SubstationCreationInfo } from './networkModification.type';
-import { createSubstationPromise } from './networkModification';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
 const getStudyUrl = (studyUuid: UUID | null) =>
     `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
-
-const getStudyUrlWithNodeUuid = (studyUuid: UUID | null | undefined, nodeUuid: UUID | undefined) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
     studyUuid: string | null | undefined,
@@ -30,10 +25,6 @@ const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
     `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
         rootNetworkUuid
     )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
-
-function getNetworkModificationUrl(studyUuid: UUID | null | undefined, nodeUuid: UUID | undefined) {
-    return `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications`;
-}
 
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
@@ -139,8 +130,4 @@ export function searchEquipmentsInfos(
     return backendFetchJson(
         `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, currentRootNetworkUuid)}/search?${urlSearchParams.toString()}`
     );
-}
-
-export function createSubstationInNode(info: SubstationCreationInfo) {
-    return createSubstationPromise(info, getNetworkModificationUrl(info.studyId, info.nodeId));
 }
