@@ -41,7 +41,7 @@ export function ShortCircuitIccClusterTableRow({
                     inputsDisabled={!watchRowActive}
                 />
             ))}
-            <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
+            <TableCell align="center">
                 {isHover && (
                     <Tooltip title={<FormattedMessage id="DeleteRows" />}>
                         <IconButton onClick={() => onDeleteButton(index)}>

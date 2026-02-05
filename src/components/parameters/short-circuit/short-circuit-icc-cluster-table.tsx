@@ -67,7 +67,7 @@ export function ShortCircuitIccClusterTable({
                                 </TableCell>
                             </Tooltip>
                         ))}
-                        <TableCell>
+                        <TableCell align="center">
                             <Tooltip title={<FormattedMessage id="AddRows" />}>
                                 <span>
                                     <IconButton disabled={false} onClick={handleAddRowsButton}>

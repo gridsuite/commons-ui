@@ -25,7 +25,7 @@ export function ShortCircuitIccClusterTableCell({
     inputsDisabled?: boolean;
 }>) {
     return (
-        <TableCell sx={{ fontWeight: 'bold' }}>
+        <TableCell align="center" sx={{ fontWeight: 'bold' }}>
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE && (
                 <SwitchInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
             )}
@@ -43,8 +43,9 @@ export function ShortCircuitIccClusterTableCell({
             )}
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_TYPE && (
                 <SelectInput
+                    size="small"
                     name={`${formName}[${rowIndex}].${column.dataKey}`}
-                    label={`${formName}[${rowIndex}].${column.titleId}`}
+                    label={column.titleId}
                     options={['WIND', 'SOLAR', 'HVDC']}
                 />
             )}

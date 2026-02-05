@@ -37,9 +37,9 @@ export interface IccClusterIColumnsDef extends IccCommonIColumnsDef {
 
 export const COLUMNS_DEFINITIONS_ICC_MATERIALS: IccMaterialIColumnsDef[] = [
     {
-        label: 'ShortCircuitIccActivate',
+        label: 'ShortCircuitIccActive',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
-        tooltip: 'ShortCircuitIccMaterialActivateTooltip',
+        tooltip: 'ShortCircuitIccMaterialActiveTooltip',
     },
     {
         label: 'ShortCircuitIccMaterialType',
@@ -70,9 +70,9 @@ export const COLUMNS_DEFINITIONS_ICC_MATERIALS: IccMaterialIColumnsDef[] = [
 
 export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
     {
-        label: 'ShortCircuitIccActivate',
+        label: 'ShortCircuitIccActive',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE,
-        tooltip: 'ShortCircuitIccClusterActivateTooltip',
+        tooltip: 'ShortCircuitIccClusterActiveTooltip',
         initialValue: false,
     },
     {

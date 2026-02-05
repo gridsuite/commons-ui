@@ -24,7 +24,7 @@ export function ShortCircuitIccMaterialTableCell({
     inputsDisabled?: boolean;
 }>) {
     return (
-        <TableCell sx={{ fontWeight: 'bold' }}>
+        <TableCell align="center" sx={{ fontWeight: 'bold' }}>
             {column.dataKey === SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE && (
                 <SwitchInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
             )}
