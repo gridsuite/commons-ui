@@ -300,12 +300,10 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                             </Grid>
                             <ShortCircuitIccMaterialTable
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                                tableHeight={300}
                                 columnsDefinition={iccMaterialsColumnsDef}
                             />
                             <ShortCircuitIccClusterTable
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
-                                tableHeight={300}
                                 columnsDefinition={iccClustersColumnsDef}
                                 createRows={createRows}
                             />

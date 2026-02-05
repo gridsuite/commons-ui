@@ -44,8 +44,8 @@ export function ShortCircuitIccClusterTableRow({
             <TableCell align="center">
                 {isHover && (
                     <Tooltip title={<FormattedMessage id="DeleteRows" />}>
-                        <IconButton onClick={() => onDeleteButton(index)}>
-                            <DeleteIcon />
+                        <IconButton size="small" onClick={() => onDeleteButton(index)}>
+                            <DeleteIcon fontSize="small" />
                         </IconButton>
                     </Tooltip>
                 )}

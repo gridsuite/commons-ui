@@ -5,48 +5,50 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Tooltip } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
 import { IccMaterialIColumnsDef } from './columns-definition';
 import { ShortCircuitIccMaterialTableRow } from './short-circuit-icc-material-table-row';
 
 interface ShortCircuitIccMaterialTableProps {
     columnsDefinition: IccMaterialIColumnsDef[];
-    tableHeight: number;
     formName: string;
 }
+
+const styles = {
+    tableContainer: (theme: Theme) => ({
+        width: '100%',
+        border: 'solid 0px rgba(0,0,0,0.1)',
+        marginBottom: theme.spacing(4),
+    }),
+    table: {
+        minWidth: '80em',
+        tableLayout: 'fixed',
+    },
+};
 
 export function ShortCircuitIccMaterialTable({
     formName,
     columnsDefinition,
-    tableHeight,
 }: Readonly<ShortCircuitIccMaterialTableProps>) {
     const { fields: rows } = useFieldArray({
         name: formName,
     });
 
     return (
-        <TableContainer
-            sx={{
-                height: tableHeight,
-                width: 'inherit',
-                border: 'solid 0px rgba(0,0,0,0.1)',
-            }}
-        >
-            <Table stickyHeader size="small" sx={{ tableLayout: 'fixed' }}>
+        <TableContainer sx={styles.tableContainer}>
+            <Table stickyHeader size="small" sx={styles.table}>
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
                             <Tooltip key={column.dataKey} title={column.tooltip}>
-                                <TableCell
-                                    sx={{
-                                        textAlign: 'center',
-                                    }}
-                                >
+                                <TableCell align="center" sx={{ width: column.width }}>
                                     {column.label}
                                 </TableCell>
                             </Tooltip>
                         ))}
+                        <TableCell align="center" sx={{ visibility: 'hidden', width: '5%' }} />
+                        {/* empty cell for alignment with delete button column in cluster table */}
                     </TableRow>
                 </TableHead>
                 <TableBody>

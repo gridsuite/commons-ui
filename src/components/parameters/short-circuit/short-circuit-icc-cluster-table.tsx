@@ -5,7 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import {
+    IconButton,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Theme,
+    Tooltip,
+} from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -15,15 +25,25 @@ import { ShortCircuitIccClusterTableRow } from './short-circuit-icc-cluster-tabl
 
 interface ShortCircuitIccClusterTableProps {
     columnsDefinition: IccClusterIColumnsDef[];
-    tableHeight: number;
     formName: string;
     createRows: () => unknown;
 }
 
+const styles = {
+    tableContainer: (theme: Theme) => ({
+        width: '100%',
+        border: 'solid 0px rgba(0,0,0,0.1)',
+        marginBottom: theme.spacing(4),
+    }),
+    table: {
+        minWidth: '80em',
+        tableLayout: 'fixed',
+    },
+};
+
 export function ShortCircuitIccClusterTable({
     formName,
     columnsDefinition,
-    tableHeight,
     createRows,
 }: Readonly<ShortCircuitIccClusterTableProps>) {
     const {
@@ -46,32 +66,22 @@ export function ShortCircuitIccClusterTable({
     );
 
     return (
-        <TableContainer
-            sx={{
-                height: tableHeight,
-                width: 'inherit',
-                border: 'solid 0px rgba(0,0,0,0.1)',
-            }}
-        >
-            <Table stickyHeader size="small" sx={{ tableLayout: 'fixed' }}>
+        <TableContainer sx={styles.tableContainer}>
+            <Table stickyHeader size="small" sx={styles.table}>
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
                             <Tooltip key={column.dataKey} title={column.tooltip}>
-                                <TableCell
-                                    sx={{
-                                        textAlign: 'center',
-                                    }}
-                                >
+                                <TableCell align="center" sx={{ width: column.width }}>
                                     {column.label}
                                 </TableCell>
                             </Tooltip>
                         ))}
-                        <TableCell align="center">
+                        <TableCell align="center" sx={{ width: '5%' }}>
                             <Tooltip title={<FormattedMessage id="AddRows" />}>
                                 <span>
-                                    <IconButton disabled={false} onClick={handleAddRowsButton}>
-                                        <AddCircleIcon />
+                                    <IconButton size="small" disabled={false} onClick={handleAddRowsButton}>
+                                        <AddCircleIcon fontSize="small" />
                                     </IconButton>
                                 </span>
                             </Tooltip>

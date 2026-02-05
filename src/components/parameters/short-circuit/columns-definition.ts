@@ -25,6 +25,7 @@ export interface IccCommonIColumnsDef {
     label: React.ReactNode;
     dataKey: string;
     tooltip: React.ReactNode;
+    width?: string;
 }
 
 export interface IccMaterialIColumnsDef extends IccCommonIColumnsDef {}
@@ -40,6 +41,7 @@ export const COLUMNS_DEFINITIONS_ICC_MATERIALS: IccMaterialIColumnsDef[] = [
         label: 'ShortCircuitIccActive',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
         tooltip: 'ShortCircuitIccMaterialActiveTooltip',
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccMaterialType',
@@ -50,21 +52,25 @@ export const COLUMNS_DEFINITIONS_ICC_MATERIALS: IccMaterialIColumnsDef[] = [
         label: 'ShortCircuitIccAlpha',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_ALPHA,
         tooltip: 'ShortCircuitIccAlphaTooltip',
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccUsmin',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_USMIN,
         tooltip: 'ShortCircuitIccUsminTooltip',
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccUsmax',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_USMAX,
         tooltip: 'ShortCircuitIccUsmaxTooltip',
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccU0',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_U0,
         tooltip: 'ShortCircuitIccU0Tooltip',
+        width: '8%',
     },
 ];
 
@@ -74,6 +80,7 @@ export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE,
         tooltip: 'ShortCircuitIccClusterActiveTooltip',
         initialValue: false,
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccClusterFilters',
@@ -90,29 +97,34 @@ export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
         tooltip: 'ShortCircuitIccClusterTypeTooltip',
         titleId: 'ShortCircuitIccClusterTypeListsSelection',
         initialValue: [],
+        width: '15%',
     },
     {
         label: 'ShortCircuitIccAlpha',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_ALPHA,
         tooltip: 'ShortCircuitIccAlphaTooltip',
         initialValue: 1,
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccUsmin',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_USMIN,
         tooltip: 'ShortCircuitIccUsminTooltip',
         initialValue: 0,
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccUsmax',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_USMAX,
         tooltip: 'ShortCircuitIccUsmaxTooltip',
         initialValue: 100,
+        width: '8%',
     },
     {
         label: 'ShortCircuitIccU0',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_U0,
         tooltip: 'ShortCircuitIccU0Tooltip',
         initialValue: 100,
+        width: '8%',
     },
 ];

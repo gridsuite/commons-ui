@@ -27,7 +27,7 @@ export function ShortCircuitIccClusterTableCell({
     return (
         <TableCell align="center" sx={{ fontWeight: 'bold' }}>
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE && (
-                <SwitchInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
+                <SwitchInput size="small" name={`${formName}[${rowIndex}].${column.dataKey}`} />
             )}
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_FILTERS && (
                 <DirectoryItemsInput
