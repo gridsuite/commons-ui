@@ -6,5 +6,3 @@
  */
 
 export const MAX_CHAR_DESCRIPTION = 500;
-export const TOOLTIP_DELAY = 1000;
-export const FORM_LOADING_DELAY = 200;

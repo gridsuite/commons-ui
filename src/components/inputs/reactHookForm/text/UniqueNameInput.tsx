@@ -13,7 +13,7 @@ import { useController } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import type { ElementType } from '../../../../utils';
 import type { SxStyle } from '../../../../utils/styles';
-import { useUniqueNameValidation } from '../../../../hooks/useUniqueNameValidation';
+import { useUniqueNameValidation } from '../../../../hooks/use-unique-name-validation';
 
 export interface UniqueNameInputProps {
     name: string;

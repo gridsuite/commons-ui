@@ -44,7 +44,7 @@ import {
 import searchEquipments from '../data/EquipmentSearchBar';
 import FlatParametersTab from './FlatParametersTab';
 import InputsTab from './InputsTab';
-import { EquipmentSearchDemoDialog } from './equipment-search';
+import { EquipmentSearchDialog } from './equipment-search';
 import { InlineSearch } from './inline-search';
 import {
     AuthenticationRouter,
@@ -914,7 +914,7 @@ function AppContent({ language, onLanguageClick }) {
                             dense
                         >
                             <Crasher />
-                            <EquipmentSearchDemoDialog />
+                            <EquipmentSearchDialog />
                             <div
                                 style={{
                                     paddingLeft: 10,

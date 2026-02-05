@@ -107,27 +107,3 @@ export function fetchNetworkElementInfos(
 
     return backendFetchJson(fetchElementsUrl);
 }
-
-export function searchEquipmentsInfos(
-    studyUuid: UUID,
-    nodeUuid: UUID,
-    currentRootNetworkUuid: UUID,
-    searchTerm: string,
-    getUseNameParameterKey: () => NamingConventionValues,
-    inUpstreamBuiltParentNode?: boolean,
-    equipmentType?: EquipmentType | ExtendedEquipmentType
-) {
-    console.info("Fetching equipments infos matching with '%s' term ... ", searchTerm);
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('userInput', searchTerm);
-    urlSearchParams.append('fieldSelector', getUseNameParameterKey());
-    if (inUpstreamBuiltParentNode !== undefined) {
-        urlSearchParams.append('inUpstreamBuiltParentNode', inUpstreamBuiltParentNode.toString());
-    }
-    if (equipmentType !== undefined) {
-        urlSearchParams.append('equipmentType', equipmentType);
-    }
-    return backendFetchJson(
-        `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, currentRootNetworkUuid)}/search?${urlSearchParams.toString()}`
-    );
-}

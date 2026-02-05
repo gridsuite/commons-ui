@@ -21,7 +21,7 @@ import {
 } from './columns-definitions';
 import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
-import { useCreateRowDataSensi } from '../../../hooks/useCreateRowDataSensi';
+import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
 import type { MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
