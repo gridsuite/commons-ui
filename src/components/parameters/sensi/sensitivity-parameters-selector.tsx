@@ -26,6 +26,7 @@ import type { MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
+import { isValidSensiParameterRow } from './utils';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -214,6 +215,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjectionsSet}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
@@ -224,6 +226,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjections}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
@@ -234,6 +237,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataHvdc}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
@@ -244,6 +248,7 @@ function SensitivityParametersSelector({
                                     createRows={rowDataPst}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                         </>
@@ -256,6 +261,7 @@ function SensitivityParametersSelector({
                             createRows={rowDataNodes}
                             tableHeight={367}
                             onFormChanged={onFormChanged}
+                            isValidParameterRow={isValidSensiParameterRow}
                         />
                     )}
                 </TabPanel>

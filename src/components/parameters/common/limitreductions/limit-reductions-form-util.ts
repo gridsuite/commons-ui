@@ -5,6 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import {
+    CONTINGENCY_LISTS,
+    IContingencyList,
     ILimitReductionsByVoltageLevel,
     ISAParameters,
     IST_FORM,
@@ -21,6 +23,9 @@ import {
     PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
 } from '../constant';
+import { ACTIVATED, CONTINGENCIES } from '../../sensi/constants';
+import { ID } from '../../../../utils';
+import { NAME } from '../../../inputs';
 
 const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
     limits.reduce((acc: Record<string, number>, limit, index) => {
@@ -39,8 +44,25 @@ export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLev
               })),
           };
 
+export const toFormValuesContingencyLists = (contingencyLists: IContingencyList[]) => {
+    return {
+        [CONTINGENCY_LISTS]: contingencyLists?.map((contingencyList) => {
+            return {
+                [CONTINGENCIES]: [
+                    {
+                        [ID]: contingencyList[ID],
+                        [NAME]: contingencyList[NAME],
+                    },
+                ],
+                [ACTIVATED]: contingencyList[ACTIVATED],
+            };
+        }),
+    };
+};
+
 export const toFormValueSaParameters = (params: ISAParameters) => ({
     [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
+    ...toFormValuesContingencyLists(params?.contingencyLists),
     ...toFormValuesLimitReductions(params?.limitReductions),
     // SA specific form values
     [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] * 100,

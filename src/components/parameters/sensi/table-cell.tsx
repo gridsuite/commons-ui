@@ -26,6 +26,7 @@ function EditableTableCell(arrayFormName: string, rowIndex: number, column: any,
                     label={undefined}
                     itemFilter={undefined}
                     onRowChanged={onRowChanged}
+                    allowMultiSelect={column.allowMultiDirectoryItemsSelect}
                 />
             )}
             {column.menuItems && (

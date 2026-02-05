@@ -115,6 +115,9 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
         name,
     });
 
+    console.log('ERROR: ', error);
+    console.log('NAME: ', name);
+
     const addElements = useCallback(
         (values: TreeViewFinderNodeProps[] | undefined) => {
             if (!values) {

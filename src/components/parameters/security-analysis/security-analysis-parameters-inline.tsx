@@ -33,11 +33,13 @@ import { snackWithFallback } from '../../../utils/error';
 export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
+    fetchContingencyCount,
     setHaveDirtyFields,
     isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
+    fetchContingencyCount: (contingencyListNames: string[] | null) => Promise<number>;
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {
@@ -94,6 +96,7 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
+            fetchContingencyCount={fetchContingencyCount}
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (

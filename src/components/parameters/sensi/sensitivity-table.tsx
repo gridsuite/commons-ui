@@ -22,7 +22,6 @@ import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-for
 import { TableRowComponent } from './table-row';
 import { IColumnsDef } from './columns-definitions';
 import { MAX_ROWS_NUMBER } from '../../dnd-table';
-import { isValidSensiParameterRow } from './utils';
 
 interface SensitivityTableProps {
     arrayFormName: string;
@@ -33,6 +32,7 @@ interface SensitivityTableProps {
     disableAdd?: boolean;
     disableDelete?: boolean;
     onFormChanged: () => void;
+    isValidParameterRow: (fieldValue: FieldValues) => any;
 }
 
 export function SensitivityTable({
@@ -44,12 +44,13 @@ export function SensitivityTable({
     disableAdd,
     disableDelete = false,
     onFormChanged,
+    isValidParameterRow,
 }: Readonly<SensitivityTableProps>) {
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;
     const validRowCountRef = useRef<number>(
-        (getValues(arrayFormName) || []).filter((row: FieldValues) => isValidSensiParameterRow(row)).length
+        (getValues(arrayFormName) || []).filter((row: FieldValues) => isValidParameterRow(row)).length
     );
 
     const handleRowChanged = useCallback(
@@ -57,18 +58,16 @@ export function SensitivityTable({
             const currentRowValues = getValues(arrayFormName);
             const row = currentRowValues[index];
 
-            const currentValidRowCount = currentRowValues.filter((r: FieldValues) =>
-                isValidSensiParameterRow(r)
-            ).length;
+            const currentValidRowCount = currentRowValues.filter((r: FieldValues) => isValidParameterRow(r)).length;
 
             const previousValidRowCount = validRowCountRef.current;
             validRowCountRef.current = currentValidRowCount;
 
-            if (currentValidRowCount !== previousValidRowCount || isValidSensiParameterRow(row)) {
+            if (currentValidRowCount !== previousValidRowCount || isValidParameterRow(row)) {
                 onFormChanged();
             }
         },
-        [getValues, arrayFormName, onFormChanged]
+        [getValues, arrayFormName, isValidParameterRow, onFormChanged]
     );
 
     const handleAddRowsButton = useCallback(() => {
@@ -82,7 +81,7 @@ export function SensitivityTable({
         (index: number) => {
             const currentRowsValues = getValues(arrayFormName);
             if (index >= 0 && index < currentRowsValues.length) {
-                const wasValid = isValidSensiParameterRow(currentRowsValues[index]);
+                const wasValid = isValidParameterRow(currentRowsValues[index]);
                 remove(index);
                 if (wasValid) {
                     validRowCountRef.current -= 1;
@@ -90,7 +89,7 @@ export function SensitivityTable({
                 }
             }
         },
-        [arrayFormName, getValues, onFormChanged, remove]
+        [arrayFormName, getValues, isValidParameterRow, onFormChanged, remove]
     );
 
     return (

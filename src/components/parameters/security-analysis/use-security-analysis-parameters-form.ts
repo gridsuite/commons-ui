@@ -4,15 +4,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
+import { ElementType, ID, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
+    CONTINGENCY_LISTS,
+    CONTINGENCY_LISTS_FORM,
     getSAParametersFromSchema,
+    IContingencyList,
     ILimitReductionsByVoltageLevel,
     ISAParameters,
     IST_FORM,
@@ -32,6 +35,7 @@ import { updateParameter } from '../../../services';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
+import { ACTIVATED, CONTINGENCIES } from '../sensi/constants';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -47,6 +51,10 @@ export interface UseSecurityAnalysisParametersFormReturn {
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
 }
+
+export const isValidSAParameterRow = (row: FieldValues) => {
+    return row[CONTINGENCIES]?.length > 0;
+};
 
 export const useSecurityAnalysisParametersForm = (
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>,
@@ -79,6 +87,7 @@ export const useSecurityAnalysisParametersForm = (
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
             [PARAM_SA_PROVIDER]: provider,
+            [CONTINGENCY_LISTS_FORM]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
             [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,
             [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
@@ -91,6 +100,16 @@ export const useSecurityAnalysisParametersForm = (
 
     const { reset, watch } = formMethods;
     const watchProvider = watch('provider');
+
+    const toContingencyLists = useCallback((formContingencyLists: Record<string, any>[]): IContingencyList[] => {
+        return formContingencyLists
+            ?.filter((contingencyList) => isValidSAParameterRow(contingencyList)) // ne pas permettre la validation du form, comme ça on n'a pas à filtrer ici
+            .map((contingencyList) => ({
+                [ID]: contingencyList[CONTINGENCIES][0][ID],
+                [NAME]: contingencyList[CONTINGENCIES][0][NAME],
+                [ACTIVATED]: contingencyList[ACTIVATED],
+            }));
+    }, []);
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -125,10 +144,11 @@ export const useSecurityAnalysisParametersForm = (
                 [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]:
                     formData[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
                 [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+                [CONTINGENCY_LISTS]: toContingencyLists(formData[CONTINGENCY_LISTS]),
                 limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
             };
         },
-        [toLimitReductions]
+        [toContingencyLists, toLimitReductions]
     );
 
     const onSaveInline = useCallback(
