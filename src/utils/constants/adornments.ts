@@ -57,7 +57,7 @@ export const KilometerAdornment = {
     text: KILO_METER,
 };
 
-export const PercentageAdornement = {
+export const PercentageAdornment = {
     position: 'end',
     text: PERCENTAGE,
 };

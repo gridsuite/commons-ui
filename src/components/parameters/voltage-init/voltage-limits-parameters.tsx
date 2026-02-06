@@ -19,7 +19,7 @@ import {
 import { ElementType, EquipmentType } from '../../../utils';
 import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
 import { FILTERS } from '../../../utils/constants/filterConstant';
-import { VoltageAdornment } from '../../../utils/constants/adornements';
+import { VoltageAdornment } from '../../../utils/constants/adornments';
 
 export function VoltageLimitsParameters() {
     const intl = useIntl();
