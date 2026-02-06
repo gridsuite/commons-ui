@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchText } from './utils';
+import { backendFetch, backendFetchText, safeEncodeURIComponent } from './utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
 
@@ -15,13 +15,13 @@ function getUrl() {
 }
 
 export function fetchNetworkModification(modificationUuid: UUID) {
-    const modificationFetchUrl = `${getUrl()}/${modificationUuid}`;
+    const modificationFetchUrl = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
     return backendFetch(modificationFetchUrl);
 }
 
 export function updateModification({ modificationUuid, body }: { modificationUuid: UUID; body: string }) {
-    const url = `${getUrl()}/${encodeURIComponent(modificationUuid)}`;
+    const url = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
 
     console.info('Updating modification', { url, body });
 

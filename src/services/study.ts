@@ -78,32 +78,3 @@ export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: V
         body: JSON.stringify(newParams),
     });
 }
-
-export function fetchNetworkElementInfos(
-    studyUuid: UUID | undefined | null,
-    currentNodeUuid: UUID | undefined,
-    currentRootNetworkUuid: UUID | undefined | null,
-    elementType: EquipmentType | ExtendedEquipmentType,
-    infoType: string,
-    elementId: UUID,
-    inUpstreamBuiltParentNode: boolean
-) {
-    console.info(
-        `Fetching specific network element '${elementId}' of type '${elementType}' of study '${studyUuid}' on root network '${currentRootNetworkUuid}' and node '${currentNodeUuid}' ...`
-    );
-    const urlSearchParams = new URLSearchParams();
-    if (inUpstreamBuiltParentNode !== undefined) {
-        urlSearchParams.append('inUpstreamBuiltParentNode', String(inUpstreamBuiltParentNode));
-    }
-    urlSearchParams.append('elementType', elementType);
-    urlSearchParams.append('infoType', infoType);
-
-    const fetchElementsUrl = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(
-        studyUuid,
-        currentNodeUuid,
-        currentRootNetworkUuid
-    )}/network/elements/${encodeURIComponent(elementId)}?${urlSearchParams.toString()}`;
-    console.debug(fetchElementsUrl);
-
-    return backendFetchJson(fetchElementsUrl);
-}

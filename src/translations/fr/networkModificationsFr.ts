@@ -89,10 +89,5 @@ export const networkModificationsFr = {
     PropertyValue: 'Valeur de la propriété',
     Name: 'Nom',
     Country: 'Pays',
-    CatalogButtonTooltip: 'Ouvrir le catalogue',
-    CopyFromExisting: 'Copier depuis un ouvrage existant',
-    EquipmentCopied: "Données copiées depuis l'ouvrage {equipmentId}",
-    EquipmentCopyFailed: "Erreur lors de la copie de l'ouvrage",
-    TapPositionValueError: 'Le nombre de prises ne doit pas dépasser la valeur {value}',
     DuplicatedPropsError: 'Propriétés dupliquées : chaque propriété doit être unique',
 };

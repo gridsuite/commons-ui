@@ -85,10 +85,5 @@ export const networkModificationsEn = {
     PropertyValue: 'Property value',
     Name: 'Name',
     Country: 'Country',
-    CatalogButtonTooltip: 'Open catalog',
-    CopyFromExisting: 'Copy from existing equipment',
-    EquipmentCopied: 'Data successfully copied from equipment {equipmentId}',
-    EquipmentCopyFailed: 'Equipment copy failed',
-    TapPositionValueError: 'The number of taps must not exceed the value {value}',
     DuplicatedPropsError: 'Duplicated properties: each property must be unique',
 };
