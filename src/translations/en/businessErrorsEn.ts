@@ -72,4 +72,14 @@ export const businessErrorsEn = {
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
+    'diagram.maxVoltageLevelDisplayed':
+        'You need to reduce the number of voltage levels to be displayed in the network area diagram (current {nbVoltageLevels}, maximum {maxVoltageLevels})',
+    'diagram.invalidConfigRequest': "Given sld display mode '{sldDisplayMode}' doesn't exist",
+    'diagram.invalidEquipment':
+        "Given equipment '{id}' of type '{equipmentType}' is not a substation or voltage level id in given network",
+    'diagram.invalidSubstationLayout': "Substation layout '{substationLayout}' incorrect",
+    'diagram.invalidCsv': 'Provided CSV is invalid',
+    'diagram.noVoltageLevelIdProvided': 'No voltage level was provided to the NAD generation input',
+    'diagram.noConfiguredPosition': 'No configured position has been found',
 };
