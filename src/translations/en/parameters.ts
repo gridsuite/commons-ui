@@ -207,6 +207,7 @@ export const parametersEn = {
     flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
 
     ContingencyListsSelection: 'Contingency lists selection',
+    contingencyLists: 'Contingency lists',
     Execute: 'Execute',
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',

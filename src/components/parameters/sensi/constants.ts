@@ -7,6 +7,7 @@
 
 export const ACTIVATED = 'activated';
 export const CONTINGENCIES = 'contingencies';
+export const CONTINGENCY_LISTS = 'contingencyLists';
 export const EQUIPMENTS_IN_VOLTAGE_REGULATION = 'equipmentsInVoltageRegulation';
 export const SUPERVISED_VOLTAGE_LEVELS = 'monitoredVoltageLevels';
 export const MONITORED_BRANCHES = 'monitoredBranches';

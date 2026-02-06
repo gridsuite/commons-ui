@@ -23,6 +23,8 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
+import { CONTINGENCY_LISTS } from '../common';
+import { DESCRIPTION } from '../../inputs';
 
 export const MONITORED_BRANCHES_EQUIPMENT_TYPES = [EquipmentType.LINE, EquipmentType.TWO_WINDINGS_TRANSFORMER];
 export const INJECTION_DISTRIBUTION_TYPES = [
@@ -295,6 +297,33 @@ export const COLUMNS_DEFINITIONS_NODES = [
     },
 ];
 
+export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
+    {
+        label: 'Contingencies',
+        dataKey: CONTINGENCIES,
+        initialValue: [],
+        editable: true,
+        directoryItems: true,
+        elementType: ElementType.CONTINGENCY_LIST,
+        titleId: 'ContingencyListsSelection',
+    },
+    {
+        label: 'Description',
+        dataKey: DESCRIPTION,
+        initialValue: '',
+        editable: true,
+        textItems: true,
+    },
+    {
+        label: 'Active',
+        dataKey: ACTIVATED,
+        initialValue: true,
+        checkboxItems: true,
+        editable: true,
+        width: '4rem',
+    },
+];
+
 export const SensiInjectionsSet: ISensiParameters = {
     columnsDef: COLUMNS_DEFINITIONS_INJECTIONS_SET,
     name: PARAMETER_SENSI_INJECTIONS_SET,
@@ -318,6 +347,11 @@ export const SensiPsts: ISensiParameters = {
 export const SensiNodes: ISensiParameters = {
     columnsDef: COLUMNS_DEFINITIONS_NODES,
     name: PARAMETER_SENSI_NODES,
+};
+
+export const SAContingencyLists: ISensiParameters = {
+    columnsDef: COLUMNS_DEFINITIONS_CONTINGENCY_LISTS,
+    name: CONTINGENCY_LISTS,
 };
 
 export enum SensiTabValues {
