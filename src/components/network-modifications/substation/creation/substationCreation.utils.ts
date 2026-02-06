@@ -16,20 +16,20 @@ import { SubstationCreationDto } from './substationCreation.types';
 export const substationCreationFormToDto = (substationForm: SubstationCreationFormData): SubstationCreationDto => {
     return {
         type: 'SUBSTATION_CREATION',
-        equipmentId: substationForm[FieldConstants.EQUIPMENT_ID],
-        equipmentName: sanitizeString(substationForm[FieldConstants.EQUIPMENT_NAME]),
-        country: substationForm[FieldConstants.COUNTRY] ?? null,
+        equipmentId: substationForm.equipmentID,
+        equipmentName: sanitizeString(substationForm.equipmentName),
+        country: substationForm.country ?? null,
         properties: toModificationProperties(substationForm),
-    } satisfies SubstationCreationDto;
+    };
 };
 
 export const substationCreationDtoToForm = (substationDto: SubstationCreationDto): SubstationCreationFormData => {
     return {
-        [FieldConstants.EQUIPMENT_ID]: substationDto.equipmentId,
-        [FieldConstants.EQUIPMENT_NAME]: substationDto.equipmentName ?? '',
-        [FieldConstants.COUNTRY]: substationDto.country,
-        [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(substationDto.properties),
-    } satisfies SubstationCreationFormData;
+        equipmentID: substationDto.equipmentId,
+        equipmentName: substationDto.equipmentName ?? '',
+        country: substationDto.country,
+        AdditionalProperties: getFilledPropertiesFromModification(substationDto.properties),
+    };
 };
 
 export const substationCreationFormSchema = yup
@@ -44,8 +44,8 @@ export const substationCreationFormSchema = yup
 export type SubstationCreationFormData = yup.InferType<typeof substationCreationFormSchema>;
 
 export const substationCreationEmptyFormData: SubstationCreationFormData = {
-    [FieldConstants.EQUIPMENT_ID]: '',
-    [FieldConstants.EQUIPMENT_NAME]: '',
-    [FieldConstants.COUNTRY]: null,
-    [FieldConstants.ADDITIONAL_PROPERTIES]: [],
+    equipmentID: '',
+    equipmentName: '',
+    country: null,
+    AdditionalProperties: [],
 };
