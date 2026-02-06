@@ -47,6 +47,7 @@ export function ShortCircuitIccClusterTableCell({
                     name={`${formName}[${rowIndex}].${column.dataKey}`}
                     label={column.titleId}
                     options={['WIND', 'SOLAR', 'HVDC']}
+                    disabled={inputsDisabled}
                 />
             )}
             {column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE &&
