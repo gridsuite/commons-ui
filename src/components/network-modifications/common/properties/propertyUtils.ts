@@ -37,19 +37,21 @@ export const initializedProperty = (): Property => {
     return createPropertyModification('', null);
 };
 
+const isFilledProperty = (property: Property): property is FilledProperty => {
+    return property.value != null;
+};
+
 export const getFilledPropertiesFromModification = (properties: Property[] | undefined | null): FilledProperty[] => {
     return (
-        properties
-            ?.filter((p) => p[FieldConstants.VALUE] != null)
-            .map((p) => {
-                return {
-                    [FieldConstants.NAME]: p[FieldConstants.NAME],
-                    [FieldConstants.VALUE]: p[FieldConstants.VALUE] as string,
-                    [FieldConstants.PREVIOUS_VALUE]: p[FieldConstants.PREVIOUS_VALUE],
-                    [FieldConstants.ADDED]: p[FieldConstants.ADDED],
-                    [FieldConstants.DELETION_MARK]: p[FieldConstants.DELETION_MARK],
-                };
-            }) ?? []
+        properties?.filter(isFilledProperty).map((p) => {
+            return {
+                [FieldConstants.NAME]: p[FieldConstants.NAME],
+                [FieldConstants.VALUE]: p[FieldConstants.VALUE],
+                [FieldConstants.PREVIOUS_VALUE]: p[FieldConstants.PREVIOUS_VALUE],
+                [FieldConstants.ADDED]: p[FieldConstants.ADDED],
+                [FieldConstants.DELETION_MARK]: p[FieldConstants.DELETION_MARK],
+            };
+        }) ?? []
     );
 };
 

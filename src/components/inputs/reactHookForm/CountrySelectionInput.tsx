@@ -11,7 +11,7 @@ import { useCustomFormContext } from './provider';
 
 interface CountrySelectionInputProps extends Omit<AutocompleteInputProps, 'options' | 'getOptionLabel'> {}
 
-export function CountrySelectionInput(props: CountrySelectionInputProps) {
+export function CountrySelectionInput(props: Readonly<CountrySelectionInputProps>) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language!);
 
