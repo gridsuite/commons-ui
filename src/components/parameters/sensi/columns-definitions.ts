@@ -64,7 +64,6 @@ export interface IColumnsDef {
     initialValue: boolean | string | string[] | number;
     editable?: boolean;
     directoryItems?: boolean;
-    allowMultiDirectoryItemsSelect?: boolean;
     menuItems?: boolean;
     equipmentTypes?: any[];
     elementType?: string;
@@ -305,15 +304,15 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
         initialValue: [],
         editable: true,
         directoryItems: true,
-        allowMultiDirectoryItemsSelect: false,
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
     },
     {
         label: 'Description',
         dataKey: DESCRIPTION,
-        initialValue: [],
+        initialValue: '',
         editable: true,
+        textItems: true,
     },
     {
         label: 'Active',

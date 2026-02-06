@@ -99,16 +99,17 @@ export const useSecurityAnalysisParametersForm = (
     });
 
     const { reset, watch } = formMethods;
-    const watchProvider = watch('provider');
+    const watchProvider = watch(PARAM_SA_PROVIDER);
 
     const toContingencyLists = useCallback((formContingencyLists: Record<string, any>[]): IContingencyList[] => {
-        return formContingencyLists
-            ?.filter((contingencyList) => isValidSAParameterRow(contingencyList)) // ne pas permettre la validation du form, comme ça on n'a pas à filtrer ici
-            .map((contingencyList) => ({
-                [ID]: contingencyList[CONTINGENCIES][0][ID],
-                [NAME]: contingencyList[CONTINGENCIES][0][NAME],
-                [ACTIVATED]: contingencyList[ACTIVATED],
-            }));
+        return formContingencyLists.map((contingencyList) => ({
+            [CONTINGENCIES]: contingencyList[CONTINGENCIES]?.map((contingency: Record<string, string>) => ({
+                [ID]: contingency[ID],
+                [NAME]: contingency[NAME],
+            })),
+            [DESCRIPTION]: contingencyList[DESCRIPTION],
+            [ACTIVATED]: contingencyList[ACTIVATED],
+        }));
     }, []);
 
     const toLimitReductions = useCallback(

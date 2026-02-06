@@ -12,16 +12,10 @@ import { useWatch } from 'react-hook-form';
 import { IColumnsDef, SensitivityTable } from '../sensi';
 import { useCreateRowDataSensi } from '../../../hooks';
 import * as sensiParam from '../sensi/columns-definitions';
-import { CONTINGENCY_LISTS, ISAParameters } from '../common';
+import { CONTINGENCY_LISTS, IContingencyList, ISAParameters } from '../common';
 import { ACTIVATED, CONTINGENCIES } from '../sensi/constants';
 import { ID } from '../../../utils';
 import { isValidSAParameterRow } from './use-security-analysis-parameters-form';
-
-type ContingencyListsForm = {
-    contingencies: Record<string, string>[];
-    description: Record<string, string>;
-    activated: boolean;
-};
 
 export function SecurityAnalysisFields({
     fetchContingencyCount,
@@ -32,7 +26,7 @@ export function SecurityAnalysisFields({
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<number | null>(0);
     const [rowData, useFieldArrayOutput] = useCreateRowDataSensi(sensiParam.SAContingencyLists);
-    const contingencyLists: ContingencyListsForm[] = useWatch({ name: CONTINGENCY_LISTS });
+    const contingencyLists: IContingencyList[] = useWatch({ name: CONTINGENCY_LISTS });
 
     const getColumnsDefinition = useCallback(
         (saColumns: IColumnsDef[]) => {
@@ -55,8 +49,8 @@ export function SecurityAnalysisFields({
 
         fetchContingencyCount(
             contingencyLists
-                .filter((list) => list[ACTIVATED] && list[CONTINGENCIES].length > 0)
-                .map((list) => list[CONTINGENCIES][0][ID])
+                .filter((list) => list[ACTIVATED])
+                .flatMap((list) => list[CONTINGENCIES]?.map((contingency) => contingency[ID]))
         ).then((contingencyCount) => {
             setSimulatedContingencyCount(contingencyCount);
         });

@@ -19,7 +19,7 @@ import {
 import { getNameElementEditorSchema } from '../name-element-editor';
 import { ACTIVATED, CONTINGENCIES } from '../../sensi/constants';
 import { ID } from '../../../../utils';
-import { NAME } from '../../../inputs';
+import { DESCRIPTION, NAME } from '../../../inputs';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
 export const CONTINGENCY_LISTS = 'contingencyLists';
@@ -51,10 +51,14 @@ export interface ILimitReductionsByVoltageLevel {
     permanentLimitReduction: number;
     temporaryLimitReductions: ITemporaryLimitReduction[];
 }
+export interface IContingencies {
+    [ID]: string;
+    [NAME]: string;
+}
 export interface IContingencyList {
-    id: string;
-    name: string;
-    activated: boolean;
+    [CONTINGENCIES]: IContingencies[];
+    [DESCRIPTION]: string;
+    [ACTIVATED]: boolean;
 }
 export interface ISAParameters {
     // pourquoi c'est là ça ? mettre dans un fichier security-analysis.type.ts
@@ -150,6 +154,7 @@ export const getSAParametersFromSchema = (name: string | null, limitReductions?:
                         )
                         .required()
                         .min(1, 'FieldIsRequired'),
+                    [DESCRIPTION]: yup.string().required(),
                     [ACTIVATED]: yup.boolean().required(),
                 })
             ),
