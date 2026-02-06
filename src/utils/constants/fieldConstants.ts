@@ -6,6 +6,8 @@
  */
 
 export enum FieldConstants {
+    ADDED = 'added',
+    ADDITIONAL_PROPERTIES = 'AdditionalProperties',
     AG_GRID_ROW_UUID = 'agGridRowUuid',
     API_CALL = 'apiCall',
     CASE_FILE = 'caseFile',
@@ -17,11 +19,14 @@ export enum FieldConstants {
     COUNTRIES_1 = 'countries1',
     COUNTRIES_2 = 'countries2',
     COUNTRIES = 'countries',
+    COUNTRY = 'country',
     CURRENT_PARAMETERS = 'currentParameters',
+    DELETION_MARK = 'deletionMark',
     DESCRIPTION = 'description',
     DIRECTORY = 'directory',
     ENERGY_SOURCE = 'energySource',
     EQUIPMENT_ID = 'equipmentID',
+    EQUIPMENT_NAME = 'equipmentName',
     EQUIPMENT_IDS = 'equipmentIDs',
     EQUIPMENT_TABLE = 'equipmentTable',
     EQUIPMENT_TYPE = 'equipmentType',
@@ -38,12 +43,14 @@ export enum FieldConstants {
     NOMINAL_VOLTAGE = 'nominalVoltage',
     OPERATION_TYPE = 'type',
     TYPE = 'type',
+    PREVIOUS_VALUE = 'previousValue',
     PROPERTY_NAME = 'propertyName',
     PROPERTY_OPERATOR = 'propertyOperator',
     PROPERTY = 'PROPERTY',
     PROPERTY_VALUES = 'propertyValues',
     SCRIPT = 'script',
     STUDY_NAME = 'studyName',
+    VALUE = 'value',
     VALUE_1 = 'value1',
     VALUE_2 = 'value2',
 }

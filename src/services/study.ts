@@ -6,17 +6,20 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson } from './utils';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
+const getStudyUrl = (studyUuid: UUID | null) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
     return backendFetchJson(
-        `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/filters/${filterUuid}/elements`,
+        `${getStudyUrl(studyUuid)}/filters/${filterUuid}/elements`,
         {
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
@@ -32,12 +35,12 @@ export function getAvailableComponentLibraries(): Promise<string[]> {
 
 export function getStudyNetworkVisualizationsParameters(studyUuid: UUID): Promise<NetworkVisualizationParameters> {
     console.info('get study network visualization parameters');
-    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/network-visualizations/parameters`);
+    return backendFetchJson(`${getStudyUrl(studyUuid)}/network-visualizations/parameters`);
 }
 
 export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParams: Record<string, any>) {
     console.info('set study network visualization parameters');
-    return backendFetch(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/network-visualizations/parameters`, {
+    return backendFetch(`${getStudyUrl(studyUuid)}/network-visualizations/parameters`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -49,12 +52,12 @@ export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParam
 
 export function getStudyShortCircuitParameters(studyUuid: UUID): Promise<ShortCircuitParametersInfos> {
     console.info('get study short-circuit parameters');
-    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/short-circuit-analysis/parameters`);
+    return backendFetchJson(`${getStudyUrl(studyUuid)}/short-circuit-analysis/parameters`);
 }
 
 export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: VoltageInitStudyParameters) {
     console.info('set study voltage init parameters');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/studies/${studyUuid}/voltage-init/parameters`;
+    const url = `${getStudyUrl(studyUuid)}/voltage-init/parameters`;
     console.debug(url);
     return backendFetch(url, {
         method: 'POST',
