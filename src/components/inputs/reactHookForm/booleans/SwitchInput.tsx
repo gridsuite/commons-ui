@@ -13,6 +13,6 @@ export interface SwitchInputProps extends SwitchProps {
     label?: string;
 }
 
-export function SwitchInput({ name, label, ...props }: SwitchInputProps) {
+export function SwitchInput({ name, label, ...props }: Readonly<SwitchInputProps>) {
     return <BooleanInput name={name} label={label} Input={Switch} {...props} />;
 }
