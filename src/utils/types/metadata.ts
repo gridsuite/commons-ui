@@ -33,6 +33,11 @@ export type StudyMetadata = Metadata & {
     baseMapOptions?: { id: string; label: string }[];
 };
 
+export type ExploreMetadata = Metadata & {
+    name: 'Explore';
+    maxFileSizeInMb?: number;
+};
+
 type ThemeColors = Record<string, string>;
 type SldAndNadColors = {
     darkThemeColors: ThemeColors;
