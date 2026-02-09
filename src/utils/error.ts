@@ -4,9 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { IntlShape } from 'react-intl';
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { NetworkTimeoutError, ProblemDetailError } from './types';
+import { ErrorMessageDescriptor, NetworkTimeoutError, ProblemDetailError } from './types';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
@@ -18,37 +17,44 @@ export function catchErrorHandler(error: unknown, callback: (message: string) =>
     }
 }
 
+export function extractErrorMessageDescriptor(error: unknown, errorMessageIdFallback: string): ErrorMessageDescriptor {
+    if (error instanceof NetworkTimeoutError) {
+        return { descriptor: { id: error.message } };
+    }
+
+    if (error instanceof ProblemDetailError) {
+        if (error.businessErrorCode) {
+            return {
+                descriptor: { id: error.businessErrorCode },
+                values: error.businessErrorValues,
+            };
+        }
+        return {
+            descriptor: { id: 'errors.technicalError' },
+            values: {
+                message: error.message,
+                serverName: error.serverName,
+                timestamp: error.timestamp,
+                traceId: error.traceId,
+            },
+        };
+    }
+
+    return { descriptor: { id: errorMessageIdFallback } };
+}
+
 export function snackWithFallback(
     snackError: UseSnackMessageReturn['snackError'],
     error: unknown,
     headerInputs?: HeaderSnackInputs
 ) {
-    if (error instanceof NetworkTimeoutError) {
+    if (error instanceof NetworkTimeoutError || error instanceof ProblemDetailError) {
+        const { descriptor, values } = extractErrorMessageDescriptor(error, '');
         snackError({
-            messageId: error.message,
+            messageId: descriptor.id,
+            messageValues: values,
             ...headerInputs,
         });
-        return;
-    }
-    if (error instanceof ProblemDetailError) {
-        if (error.businessErrorCode) {
-            snackError({
-                messageId: error.businessErrorCode,
-                messageValues: error.businessErrorValues,
-                ...headerInputs,
-            });
-        } else {
-            snackError({
-                messageId: 'errors.technicalError',
-                messageValues: {
-                    message: error.message,
-                    serverName: error.serverName,
-                    timestamp: error.timestamp,
-                    traceId: error.traceId,
-                },
-                ...headerInputs,
-            });
-        }
     } else {
         catchErrorHandler(error, (message) => {
             snackError({
@@ -57,34 +63,4 @@ export function snackWithFallback(
             });
         });
     }
-}
-
-export function extractErrorMessage(error: unknown, errorMessageIdFallback: string, intl: IntlShape): string {
-    if (error instanceof NetworkTimeoutError) {
-        return intl.formatMessage({ id: error.message });
-    }
-    if (error instanceof ProblemDetailError) {
-        if (error.businessErrorCode) {
-            return intl.formatMessage(
-                {
-                    id: error.businessErrorCode,
-                },
-                error.businessErrorValues
-            );
-        }
-        return intl.formatMessage(
-            {
-                id: 'errors.technicalError',
-            },
-            {
-                message: error.message,
-                serverName: error.serverName,
-                timestamp: error.timestamp,
-                traceId: error.traceId,
-            }
-        );
-    }
-    return intl.formatMessage({
-        id: errorMessageIdFallback,
-    });
 }
