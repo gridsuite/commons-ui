@@ -5,15 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useIntl } from 'react-intl';
 import { AutocompleteInput, AutocompleteInputProps } from './autocompleteInputs';
 import { useLocalizedCountries } from '../../../hooks';
-import { useCustomFormContext } from './provider';
+import { GsLang } from '../../../utils';
 
 interface CountrySelectionInputProps extends Omit<AutocompleteInputProps, 'options' | 'getOptionLabel'> {}
 
 export function CountrySelectionInput(props: Readonly<CountrySelectionInputProps>) {
-    const { language } = useCustomFormContext();
-    const { translate, countryCodes } = useLocalizedCountries(language!);
+    const { locale } = useIntl();
+    const { translate, countryCodes } = useLocalizedCountries(locale as GsLang);
 
     return (
         <AutocompleteInput
