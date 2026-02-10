@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
