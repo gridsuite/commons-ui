@@ -126,7 +126,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
     return defaultSchema.concat(overrideSchema);
 };
 
-const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerElectronicsMaterial[] => {
+const parsePowerElectronicsMaterialsParamString = (paramString: string): PowerElectronicsMaterial[] => {
     // Attempt to parse the string into an array of PowerElectronicsMaterial objects
     try {
         return JSON.parse(paramString);
@@ -136,7 +136,7 @@ const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerEl
     }
 };
 
-const parsepowerElectronicsClustersParamString = (
+const parsePowerElectronicsClustersParamString = (
     paramString: string
 ): (PowerElectronicsCluster & { active: boolean })[] => {
     // Attempt to parse the string into an array of PowerElectronicsCluster objects
@@ -158,7 +158,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
     );
     if (powerElectronicsMaterialsParam) {
-        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsepowerElectronicsMaterialsParamString(
+        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsePowerElectronicsMaterialsParamString(
             powerElectronicsMaterialsParam.defaultValue
         );
 
@@ -217,7 +217,7 @@ const formatElectronicsMaterialsParamString = (
     specificParamValue: string
 ) => {
     const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] =
-        parsepowerElectronicsMaterialsParamString(specificParamValue);
+        parsePowerElectronicsMaterialsParamString(specificParamValue);
     return defaultValues.map((material) => {
         const foundInParams = electronicsMaterialsArrayInParams.find((m) => m.type === material.type);
         return foundInParams ? { ...foundInParams, active: true } : { ...material, active: false };
@@ -226,7 +226,7 @@ const formatElectronicsMaterialsParamString = (
 
 const formatElectronicsClustersParamString = (defaultValues: PowerElectronicsCluster[], specificParamValue: string) => {
     const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
-        parsepowerElectronicsClustersParamString(specificParamValue);
+        parsePowerElectronicsClustersParamString(specificParamValue);
     return electronicsClustersArrayInParams.map((cluster) => {
         const { filters, ...rest } = cluster;
         return {

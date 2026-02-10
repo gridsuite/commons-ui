@@ -61,6 +61,14 @@ const iccClustersColumnsDef = COLUMNS_DEFINITIONS_ICC_CLUSTERS.map((col) => ({
     tooltip: <FormattedMessage id={col.tooltip as string} />,
 }));
 
+function createRows() {
+    const rowData: { [key: string]: any } = {};
+    iccClustersColumnsDef.forEach((column) => {
+        rowData[column.dataKey] = column.initialValue;
+    });
+    return rowData;
+}
+
 export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
@@ -253,14 +261,6 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         isIccMaxFeaturesDefaultConfiguration,
         isIccMinFeaturesDefaultConfiguration,
     ]);
-
-    const createRows = useCallback(() => {
-        const rowData: { [key: string]: any } = {};
-        iccClustersColumnsDef.forEach((column) => {
-            rowData[column.dataKey] = column.initialValue;
-        });
-        return rowData;
-    }, []);
 
     return (
         <Grid container spacing={2} paddingLeft={2}>
