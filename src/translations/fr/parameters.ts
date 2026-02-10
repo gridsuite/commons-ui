@@ -128,14 +128,18 @@ export const parametersFr = {
     ShortCircuitIccActive: 'Actif',
     ShortCircuitIccMaterialActiveTooltip:
         "Activer la modélisation des équipements raccordés par de l'électronique de puissance",
+    ShortCircuitIccMaterialType: 'Matériel',
+    ShortCircuitIccMaterialTypeTooltip: "Type d'équipement raccordé par de l'électronique de puissance",
+    ShortCircuitPowerElectronicsMaterialsParamParsingError:
+        "Une erreur est survenue lors de l'analyse des paramètres des matériaux d'électronique de puissance",
     ShortCircuitIccClusterActiveTooltip: "Activer la modélisation des clusters d'électronique de puissance",
     ShortCircuitIccClusterFilters: 'Filtres',
     ShortCircuitIccClusterFiltersTooltip: 'Filtres de sélection des clusters',
     ShortCircuitIccClusterType: 'Type de cluster',
     ShortCircuitIccClusterTypeTooltip: "Sélectionner les types d'équipements à inclure dans ce cluster",
     ShortCircuitIccClusterTypeListsSelection: 'Type',
-    ShortCircuitIccMaterialType: 'Matériel',
-    ShortCircuitIccMaterialTypeTooltip: "Type d'équipement raccordé par de l'électronique de puissance",
+    ShortCircuitPowerElectronicsClustersParamParsingError:
+        "Une erreur est survenue lors de l'analyse des paramètres des clusters d'électronique de puissance",
     ShortCircuitIccAlpha: 'Alpha',
     ShortCircuitIccAlphaTooltip: 'Coefficient de pente de la caractéristique Icc',
     ShortCircuitIccUsmin: 'Usmin (%)',
