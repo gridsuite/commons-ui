@@ -23,7 +23,7 @@ export function fetchNetworkModification(modificationUuid: UUID) {
 export function updateModification({ modificationUuid, body }: { modificationUuid: UUID; body: string }) {
     const url = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
 
-    console.info('Updating modification', { url, body });
+    console.info('Updating modification', { url });
 
     return backendFetchText(url, {
         method: 'PUT',
