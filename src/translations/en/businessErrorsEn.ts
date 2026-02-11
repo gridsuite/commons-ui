@@ -20,7 +20,7 @@ export const businessErrorsEn = {
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
-    'explore.incorrectCaseFile': 'The provided case file is incorrect.',
+    'explore.incorrectCaseFile': 'Invalid imported file name or format.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
     'study.loadflowError': 'Loadflow error.',
