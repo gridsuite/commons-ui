@@ -12,7 +12,7 @@ import { IContingencies, IContingencyList } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
     {
-        label: 'Contingencies',
+        label: 'ContingencyLists',
         dataKey: CONTINGENCIES,
         initialValue: [],
         editable: true,

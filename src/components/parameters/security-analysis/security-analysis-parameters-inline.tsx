@@ -34,7 +34,7 @@ export function SecurityAnalysisParametersInline({
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
-    fetchContingencyCount: (contingencyListNames: string[] | null) => Promise<number>;
+    fetchContingencyCount: (contingencyListIds: UUID[] | null) => Promise<number>;
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {

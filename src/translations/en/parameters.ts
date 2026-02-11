@@ -233,7 +233,7 @@ export const parametersEn = {
     SensitivityType: 'Sensitivity type',
     DeltaMW: '\u0394 MW',
     DeltaA: '\u0394 A',
-    ContingencyLists: 'Contingencies',
+    ContingencyLists: 'Contingencies lists',
     Injections: 'Injections',
     MonitoredVoltageLevels: 'Supervised voltage levels',
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',

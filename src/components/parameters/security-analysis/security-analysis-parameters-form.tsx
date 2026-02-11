@@ -7,6 +7,7 @@
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Grid, LinearProgress } from '@mui/material';
+import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
@@ -50,7 +51,7 @@ export function SecurityAnalysisParametersForm({
     isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
-    fetchContingencyCount?: (contingencyListNames: string[] | null) => Promise<number>;
+    fetchContingencyCount?: (contingencyListIds: UUID[] | null) => Promise<number>;
     showContingencyCount: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
