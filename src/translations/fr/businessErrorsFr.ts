@@ -73,14 +73,13 @@ export const businessErrorsFr = {
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
-    'diagram.equipmentNotFound': "Poste ou site '{id}' non trouvé",
+    'diagram.invalidEquipmentType':
+        "L'équipement {id} de type {equipmentType} n'est pas un site ou poste dans le réseau courant",
+    'diagram.invalidSubstationLayout': "Le mode d'affichage de site {substationLayout} n'existe pas",
+    'diagram.invalidDisplayMode': "Le mode d'affichage de schéma unifilaire {sldDisplayMode} n'existe pas",
     'diagram.maxVoltageLevelDisplayed':
         "Vous devez réduire le nombre de postes à afficher dans l'image nodale de zone (nombre actuel {nbVoltageLevels}, nombre maximum {maxVoltageLevels})",
-    'diagram.invalidConfigRequest': "Le mode d'affichage de schéma unifilaire '{sldDisplayMode}' n'existe pas",
-    'diagram.invalidEquipment':
-        "L'équipement '{id}' de type '{equipmentType}' n'est pas un site ou poste dans le réseau courant",
-    'diagram.invalidSubstationLayout': "Mode d'affichage de site '{substationLayout}' invalide",
-    'diagram.invalidCsv': 'Le CSV fourni est invalide',
-    'diagram.noVoltageLevelIdProvided': "Aucun poste n'a été fourni en entrée de la génération de NAD",
-    'diagram.noConfiguredPosition': "Aucune position configurée n'a été trouvée",
+    'diagram.equipmentNotFound': 'Poste ou site {id} non trouvé',
+    'diagram.noConfiguredPosition': 'Aucune position configurée trouvée',
+    'diagram.noVoltageLevelFound': 'Aucun poste trouvé pour cette image nodale de zone',
 };
