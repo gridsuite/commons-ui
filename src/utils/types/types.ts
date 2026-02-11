@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
+import { IntlShape } from 'react-intl';
 import { ElementType } from './elementType';
 
 export type Input = string | number;
@@ -77,3 +78,11 @@ export enum ArrayAction {
     ADD = 'ADD',
     REMOVE = 'REMOVE',
 }
+
+// extracted from intl .d.ts but the type is not explicitely defined and exported
+export type FormatValues = Parameters<IntlShape['formatMessage']>[1];
+
+export type ErrorMessageDescriptor = {
+    descriptor: Parameters<IntlShape['formatMessage']>[0];
+    values?: FormatValues;
+};
