@@ -13,7 +13,7 @@ import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
-import { SecurityAnalysisFields } from './security-analysis-fields';
+import { ContingencyListTable } from '../common/contingency-list-table/contingency-list-table';
 
 const styles = {
     form: {
@@ -44,12 +44,14 @@ const styles = {
 export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
     fetchContingencyCount,
+    showContingencyCount,
     renderTitleFields,
     renderActions,
     isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
-    fetchContingencyCount: (contingencyListNames: string[] | null) => Promise<number>;
+    fetchContingencyCount?: (contingencyListNames: string[] | null) => Promise<number>;
+    showContingencyCount: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
@@ -110,8 +112,8 @@ export function SecurityAnalysisParametersForm({
                                         })}
                                     >
                                         <Grid xl={6}>
-                                            <SecurityAnalysisFields
-                                                params={securityAnalysisMethods.params}
+                                            <ContingencyListTable
+                                                showContingencyCount={showContingencyCount}
                                                 fetchContingencyCount={fetchContingencyCount}
                                             />
                                         </Grid>

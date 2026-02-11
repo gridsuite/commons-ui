@@ -12,12 +12,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, ID, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
+    CONTINGENCIES,
     CONTINGENCY_LISTS,
-    CONTINGENCY_LISTS_FORM,
-    getSAParametersFromSchema,
-    IContingencyList,
     ILimitReductionsByVoltageLevel,
-    ISAParameters,
     IST_FORM,
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
@@ -35,7 +32,10 @@ import { updateParameter } from '../../../services';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { ACTIVATED, CONTINGENCIES } from '../sensi/constants';
+import { ISAParameters } from './type';
+import { getSAParametersFromSchema } from './columns-definitions';
+import { IContingencyList } from '../common/contingency-list-table';
+import { ACTIVATED } from '../common/parameter-table';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -87,7 +87,7 @@ export const useSecurityAnalysisParametersForm = (
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
             [PARAM_SA_PROVIDER]: provider,
-            [CONTINGENCY_LISTS_FORM]: [],
+            [CONTINGENCY_LISTS]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
             [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,
             [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,

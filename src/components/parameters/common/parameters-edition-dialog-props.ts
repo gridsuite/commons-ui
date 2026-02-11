@@ -19,6 +19,5 @@ export interface ParametersEditionDialogProps {
     activeDirectory: UUID;
     language?: GsLang;
     user: User | null;
-    fetchContingencyCount: (contingencyListNames: string[] | null) => Promise<number>;
     isDeveloperMode?: boolean;
 }

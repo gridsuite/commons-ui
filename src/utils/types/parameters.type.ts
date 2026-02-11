@@ -9,13 +9,11 @@ import type { UUID } from 'node:crypto';
 import { ComputingType } from '../../components/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
-import type {
-    ILimitReductionsByVoltageLevel,
-    ISAParameters,
-} from '../../components/parameters/common/limitreductions/columns-definitions';
+import type { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
 import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
+import { ISAParameters } from '../../components/parameters/security-analysis/type';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',

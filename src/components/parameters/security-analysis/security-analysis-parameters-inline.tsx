@@ -14,7 +14,6 @@ import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../
 import {
     ComputingType,
     CreateParameterDialog,
-    ISAParameters,
     LabelledButton,
     LineSeparator,
     toFormValueSaParameters,
@@ -29,6 +28,7 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
+import { ISAParameters } from './type';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
@@ -97,6 +97,7 @@ export function SecurityAnalysisParametersInline({
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
             fetchContingencyCount={fetchContingencyCount}
+            showContingencyCount
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (

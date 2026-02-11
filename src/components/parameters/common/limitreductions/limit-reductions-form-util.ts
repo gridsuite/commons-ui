@@ -5,11 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import {
-    CONTINGENCY_LISTS,
-    IContingencies,
-    IContingencyList,
     ILimitReductionsByVoltageLevel,
-    ISAParameters,
     IST_FORM,
     ITemporaryLimitReduction,
     LIMIT_DURATION_FORM,
@@ -23,10 +19,14 @@ import {
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+    CONTINGENCY_LISTS,
+    CONTINGENCIES,
 } from '../constant';
-import { ACTIVATED, CONTINGENCIES } from '../../sensi/constants';
 import { ID } from '../../../../utils';
 import { DESCRIPTION, NAME } from '../../../inputs';
+import { IContingencies, IContingencyList } from '../contingency-list-table';
+import { ACTIVATED } from '../parameter-table';
+import { ISAParameters } from '../../security-analysis/type';
 
 const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
     limits.reduce((acc: Record<string, number>, limit, index) => {

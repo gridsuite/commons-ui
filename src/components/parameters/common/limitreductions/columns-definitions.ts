@@ -6,24 +6,9 @@
  */
 
 import { NumberSchema } from 'yup';
-import type { UUID } from 'node:crypto';
 import yup from '../../../../utils/yupConfig';
-import {
-    PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_PROVIDER,
-} from '../constant';
-import { getNameElementEditorSchema } from '../name-element-editor';
-import { ACTIVATED, CONTINGENCIES } from '../../sensi/constants';
-import { ID } from '../../../../utils';
-import { DESCRIPTION, NAME } from '../../../inputs';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
-export const CONTINGENCY_LISTS = 'contingencyLists';
-export const CONTINGENCY_LISTS_FORM = 'contingencyListsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
 export const IST_FORM = 'istForm';
 export const LIMIT_DURATION_FORM = 'limitReductionForm';
@@ -50,27 +35,6 @@ export interface ILimitReductionsByVoltageLevel {
     voltageLevel: IVoltageLevel;
     permanentLimitReduction: number;
     temporaryLimitReductions: ITemporaryLimitReduction[];
-}
-export interface IContingencies {
-    [ID]: string;
-    [NAME]: string;
-}
-export interface IContingencyList {
-    [CONTINGENCIES]: IContingencies[];
-    [DESCRIPTION]: string;
-    [ACTIVATED]: boolean;
-}
-export interface ISAParameters {
-    // pourquoi c'est là ça ? mettre dans un fichier security-analysis.type.ts
-    uuid?: UUID;
-    [PARAM_SA_PROVIDER]: string;
-    [CONTINGENCY_LISTS]: IContingencyList[];
-    limitReductions: ILimitReductionsByVoltageLevel[];
-    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: number;
-    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
-    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
-    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
-    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
 }
 
 export enum TabValues {
@@ -132,66 +96,4 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
             ),
         })
         .required();
-};
-
-export const getSAParametersFromSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
-    const providerSchema = yup.object().shape({
-        [PARAM_SA_PROVIDER]: yup.string().required(),
-    });
-
-    const contingencyListsSchema = yup
-        .object()
-        .shape({
-            [CONTINGENCY_LISTS_FORM]: yup.array().of(
-                yup.object().shape({
-                    [CONTINGENCIES]: yup
-                        .array()
-                        .of(
-                            yup.object().shape({
-                                [ID]: yup.string().required(),
-                                [NAME]: yup.string().required(),
-                            })
-                        )
-                        .required()
-                        .min(1, 'FieldIsRequired'),
-                    [DESCRIPTION]: yup.string().required(),
-                    [ACTIVATED]: yup.boolean().required(),
-                })
-            ),
-        })
-        .required();
-
-    const limitReductionsSchema = getLimitReductionsFormSchema(
-        limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
-    );
-
-    const thresholdsSchema = yup.object().shape({
-        [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: yup
-            .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
-            .required(),
-        [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
-            .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
-            .required(),
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
-        [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
-            .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
-            .required(),
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
-    });
-
-    return yup
-        .object()
-        .shape({
-            ...providerSchema.fields,
-            ...contingencyListsSchema.fields,
-            ...limitReductionsSchema.fields,
-            ...thresholdsSchema.fields,
-        })
-        .concat(getNameElementEditorSchema(name));
 };

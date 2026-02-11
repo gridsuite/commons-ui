@@ -54,3 +54,6 @@ export enum FieldConstants {
     VALUE_1 = 'value1',
     VALUE_2 = 'value2',
 }
+// utiliser ici pour les constantes du tableau ?
+// id, name, description
+// manque : contingencies, contingencyLists, activated

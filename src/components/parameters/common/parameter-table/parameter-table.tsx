@@ -20,10 +20,10 @@ import { useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
-import { IColumnsDef } from './columns-definitions';
-import { MAX_ROWS_NUMBER } from '../../dnd-table';
+import { MAX_ROWS_NUMBER } from './constants';
+import { IColumnsDef } from './type';
 
-interface SensitivityTableProps {
+interface ParameterTableProps {
     arrayFormName: string;
     useFieldArrayOutput: UseFieldArrayReturn;
     columnsDefinition: IColumnsDef[];
@@ -35,7 +35,7 @@ interface SensitivityTableProps {
     isValidParameterRow: (fieldValue: FieldValues) => any;
 }
 
-export function SensitivityTable({
+export function ParameterTable({
     arrayFormName,
     useFieldArrayOutput,
     columnsDefinition,
@@ -45,7 +45,7 @@ export function SensitivityTable({
     disableDelete = false,
     onFormChanged,
     isValidParameterRow,
-}: Readonly<SensitivityTableProps>) {
+}: Readonly<ParameterTableProps>) {
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;

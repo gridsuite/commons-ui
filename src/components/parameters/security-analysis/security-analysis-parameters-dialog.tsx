@@ -29,7 +29,6 @@ export function SecurityAnalysisParametersDialog({
     activeDirectory,
     language,
     user,
-    fetchContingencyCount,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
@@ -72,7 +71,7 @@ export function SecurityAnalysisParametersDialog({
         >
             <SecurityAnalysisParametersForm
                 securityAnalysisMethods={securityAnalysisMethods}
-                fetchContingencyCount={fetchContingencyCount}
+                showContingencyCount={false}
                 isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (
