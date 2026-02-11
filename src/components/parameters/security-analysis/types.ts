@@ -14,8 +14,8 @@ import {
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
-} from '../common/constant';
-import { IContingencyList } from '../common/contingency-list-table/type';
+} from '../common/constants';
+import { IContingencyList } from '../common/contingency-table/types';
 import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
 
 export interface ISAParameters {

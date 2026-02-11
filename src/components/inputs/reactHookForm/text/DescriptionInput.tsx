@@ -82,7 +82,9 @@ export function DescriptionInput({ name }: Readonly<DescriptionInputProps>) {
             )}
             <Box
                 sx={{
-                    display: 'inline-flex',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     verticalAlign: 'middle',
                     cursor: undefined,
                 }}

@@ -13,7 +13,7 @@ import type { ILimitReductionsByVoltageLevel } from '../../components/parameters
 import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
-import { ISAParameters } from '../../components/parameters/security-analysis/type';
+import { ISAParameters } from '../../components/parameters/security-analysis/types';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',

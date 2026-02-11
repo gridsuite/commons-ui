@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import EditableTableCell from './table-cell';
-import { IColumnsDef } from './type';
+import { IColumnsDef } from './types';
 
 interface TableRowComponentProps {
     arrayFormName: string;

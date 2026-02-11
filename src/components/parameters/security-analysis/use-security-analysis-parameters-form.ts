@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ElementType, ID, UseParametersBackendReturnProps } from '../../../utils';
+import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
     CONTINGENCIES,
@@ -24,18 +24,16 @@ import {
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
-    toFormValueSaParameters,
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
-import { DESCRIPTION, NAME } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { ISAParameters } from './type';
-import { getSAParametersFromSchema } from './columns-definitions';
-import { IContingencyList } from '../common/contingency-list-table';
-import { ACTIVATED } from '../common/parameter-table';
+import { ISAParameters } from './types';
+import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
+import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
+import { IContingencyList } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -51,10 +49,6 @@ export interface UseSecurityAnalysisParametersFormReturn {
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
 }
-
-export const isValidSAParameterRow = (row: FieldValues) => {
-    return row[CONTINGENCIES]?.length > 0;
-};
 
 export const useSecurityAnalysisParametersForm = (
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>,
@@ -80,7 +74,7 @@ export const useSecurityAnalysisParametersForm = (
     const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
 
     const formSchema = useMemo(() => {
-        return getSAParametersFromSchema(name, params?.limitReductions);
+        return getSAParametersFormSchema(name, params?.limitReductions);
     }, [name, params?.limitReductions]);
 
     const formMethods = useForm({

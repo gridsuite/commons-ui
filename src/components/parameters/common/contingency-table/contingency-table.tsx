@@ -4,19 +4,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { Alert, Box } from '@mui/material';
+import { Alert, Stack } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useWatch } from 'react-hook-form';
+import { FieldValues, useWatch } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useCreateRowData } from '../../../../hooks';
-import { isValidSAParameterRow } from '../../security-analysis/use-security-analysis-parameters-form';
-import { ACTIVATED, IColumnsDef, ID, ParameterTable } from '../parameter-table';
-import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS, IContingencyList, ParamContingencyLists } from './index';
-import { CONTINGENCY_LISTS, CONTINGENCIES } from '../constant';
+import { IColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
+import { CONTINGENCY_LISTS, CONTINGENCIES } from '../constants';
+import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS, ParamContingencyLists } from './columns-definitions';
+import { IContingencyList } from './types';
 
-export function ContingencyListTable({
+export function ContingencyTable({
     showContingencyCount = false,
     fetchContingencyCount,
 }: Readonly<{
@@ -29,9 +28,9 @@ export function ContingencyListTable({
     const contingencyLists: IContingencyList[] = useWatch({ name: CONTINGENCY_LISTS });
 
     const getColumnsDefinition = useCallback(
-        (saColumns: IColumnsDef[]) => {
-            if (saColumns) {
-                return saColumns.map((column) => ({
+        (columns: IColumnsDef[]) => {
+            if (columns) {
+                return columns.map((column) => ({
                     ...column,
                     label: intl.formatMessage({ id: column.label }),
                 }));
@@ -62,31 +61,27 @@ export function ContingencyListTable({
         }
     }, [contingencyLists, fetchContingencyCount, showContingencyCount]);
 
-    function getSimulatedContingencyCountLabel() {
-        return simulatedContingencyCount ?? '...';
-    }
-
     return (
-        <Box>
+        <Stack spacing={0} sx={{ width: '100%' }}>
             <ParameterTable
-                arrayFormName="contingencyLists" // constant
+                arrayFormName={CONTINGENCY_LISTS} // constant
                 useFieldArrayOutput={useFieldArrayOutput}
                 columnsDefinition={getColumnsDefinition(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS)}
-                tableHeight={250}
+                tableHeight={270}
                 createRows={rowData}
                 onFormChanged={() => {}}
-                isValidParameterRow={isValidSAParameterRow}
+                isValidParameterRow={(row: FieldValues) => row[CONTINGENCIES]?.length > 0}
             />
             {showContingencyCount && (
                 <Alert variant="standard" severity="info">
                     <FormattedMessage
                         id="xContingenciesWillBeSimulated"
                         values={{
-                            x: getSimulatedContingencyCountLabel(),
+                            x: simulatedContingencyCount ?? '...',
                         }}
                     />
                 </Alert>
             )}
-        </Box>
+        </Stack>
     );
 }

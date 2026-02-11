@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ACTIVATED, IColumnsDef, ID, IParameters, NAME } from '../parameter-table';
+import { IParameters, IColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
 import { ElementType } from '../../../../utils';
-import { CONTINGENCIES, CONTINGENCY_LISTS } from '../constant';
+import { CONTINGENCIES, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { DESCRIPTION } from '../../../inputs';
+import { IContingencies, IContingencyList } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
     {
@@ -21,11 +21,12 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
         titleId: 'ContingencyListsSelection',
     },
     {
-        label: 'Description',
+        label: 'description',
         dataKey: DESCRIPTION,
         initialValue: '',
         editable: true,
         descriptionItems: true,
+        width: '8rem',
     },
     {
         label: 'Active',
@@ -42,7 +43,7 @@ export const ParamContingencyLists: IParameters = {
     name: CONTINGENCY_LISTS,
 };
 
-export const getContingencyListsSchemaForm = () => {
+export const getContingencyListsFormSchema = () => {
     return yup
         .object()
         .shape({
@@ -64,4 +65,17 @@ export const getContingencyListsSchemaForm = () => {
             ),
         })
         .required();
+};
+
+export const toFormValuesContingencyLists = (contingencyLists: IContingencyList[]) => {
+    return {
+        [CONTINGENCY_LISTS]: contingencyLists?.map((contingencyList: IContingencyList) => ({
+            [CONTINGENCIES]: contingencyList[CONTINGENCIES]?.map((contingency: IContingencies) => ({
+                [NAME]: contingency[NAME],
+                [ID]: contingency[ID],
+            })),
+            [DESCRIPTION]: contingencyList[DESCRIPTION],
+            [ACTIVATED]: contingencyList[ACTIVATED],
+        })),
+    };
 };

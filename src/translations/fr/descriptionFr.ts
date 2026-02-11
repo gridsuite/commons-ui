@@ -7,7 +7,6 @@
 
 export const descriptionFr = {
     description: 'Description',
-    Description: 'Description',
     descriptionProperty: 'Description',
     descriptionModificationError: 'Erreur lors de la modification de la description',
     descriptionLimitError: 'La description dépasse la limite de caractères',

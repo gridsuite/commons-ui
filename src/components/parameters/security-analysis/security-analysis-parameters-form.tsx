@@ -13,7 +13,7 @@ import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
-import { ContingencyListTable } from '../common/contingency-list-table/contingency-list-table';
+import { ContingencyTable } from '../common/contingency-table';
 
 const styles = {
     form: {
@@ -111,8 +111,8 @@ export function SecurityAnalysisParametersForm({
                                             maxHeight: '100%',
                                         })}
                                     >
-                                        <Grid xl={6}>
-                                            <ContingencyListTable
+                                        <Grid>
+                                            <ContingencyTable
                                                 showContingencyCount={showContingencyCount}
                                                 fetchContingencyCount={fetchContingencyCount}
                                             />

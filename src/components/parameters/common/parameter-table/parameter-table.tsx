@@ -21,7 +21,7 @@ import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { MAX_ROWS_NUMBER } from './constants';
-import { IColumnsDef } from './type';
+import { IColumnsDef } from './types';
 
 interface ParameterTableProps {
     arrayFormName: string;

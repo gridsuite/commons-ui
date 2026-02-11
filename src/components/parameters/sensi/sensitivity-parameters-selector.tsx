@@ -18,7 +18,6 @@ import {
     SensiPsts,
     SensiTabValues,
 } from './columns-definitions';
-import { ParameterTable } from '../common/parameter-table/parameter-table';
 import { TabPanel } from '../common';
 import { useCreateRowData } from '../../../hooks/use-create-row-data';
 import type { MuiStyles } from '../../../utils/styles';
@@ -26,7 +25,7 @@ import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
-import { IColumnsDef } from '../common/parameter-table';
+import { IColumnsDef, ParameterTable } from '../common/parameter-table';
 
 const styles = {
     circularProgress: (theme) => ({

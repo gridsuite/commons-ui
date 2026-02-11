@@ -11,13 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import {
-    ComputingType,
-    CreateParameterDialog,
-    LabelledButton,
-    LineSeparator,
-    toFormValueSaParameters,
-} from '../common';
+import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { SubmitButton } from '../../inputs';
@@ -28,7 +22,8 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
-import { ISAParameters } from './type';
+import { ISAParameters } from './types';
+import { toFormValueSaParameters } from './columns-definitions';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,

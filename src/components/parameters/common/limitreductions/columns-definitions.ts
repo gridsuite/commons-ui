@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import { NumberSchema } from 'yup';
 import yup from '../../../../utils/yupConfig';
 
@@ -97,3 +96,20 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
         })
         .required();
 };
+
+const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
+    limits.reduce((acc: Record<string, number>, limit, index) => {
+        acc[LIMIT_DURATION_FORM + index] = limit.reduction;
+        return acc;
+    }, {});
+
+export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) =>
+    !limits
+        ? {}
+        : {
+              [LIMIT_REDUCTIONS_FORM]: limits.map((vlLimits) => ({
+                  [VOLTAGE_LEVELS_FORM]: `${vlLimits.voltageLevel.nominalV} kV`,
+                  [IST_FORM]: vlLimits.permanentLimitReduction,
+                  ...toFormValuesFromTemporaryLimits(vlLimits.temporaryLimitReductions),
+              })),
+          };

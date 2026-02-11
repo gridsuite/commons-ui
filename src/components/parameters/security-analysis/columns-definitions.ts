@@ -5,25 +5,28 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import {
-    getLimitReductionsFormSchema,
-    ILimitReductionsByVoltageLevel,
+    CONTINGENCY_LISTS,
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
+    ILimitReductionsByVoltageLevel,
+    getLimitReductionsFormSchema,
+    toFormValuesLimitReductions,
 } from '../common';
 import yup from '../../../utils/yupConfig';
-import { getContingencyListsSchemaForm } from '../common/contingency-list-table/columns-definitions';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
+import { ISAParameters } from './types';
+import { getContingencyListsFormSchema, toFormValuesContingencyLists } from '../common/contingency-table';
 
-export const getSAParametersFromSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
+export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
         [PARAM_SA_PROVIDER]: yup.string().required(),
     });
 
-    const contingencyListsSchema = getContingencyListsSchemaForm();
+    const contingencyListsSchema = getContingencyListsFormSchema();
 
     const limitReductionsSchema = getLimitReductionsFormSchema(
         limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
@@ -59,3 +62,15 @@ export const getSAParametersFromSchema = (name: string | null, limitReductions?:
         })
         .concat(getNameElementEditorSchema(name));
 };
+
+export const toFormValueSaParameters = (params: ISAParameters) => ({
+    [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
+    ...toFormValuesContingencyLists(params?.[CONTINGENCY_LISTS]),
+    ...toFormValuesLimitReductions(params?.limitReductions),
+    // SA specific form values
+    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] * 100,
+    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
+    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
+    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
+    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+});

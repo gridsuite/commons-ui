@@ -7,7 +7,7 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { useMemo } from 'react';
-import { IParameters } from '../components/parameters/common/parameter-table/type';
+import { IParameters } from '../components/parameters/common/parameter-table/types';
 
 export function useCreateRowData(params: IParameters) {
     const useFieldArrayOutput = useFieldArray({
