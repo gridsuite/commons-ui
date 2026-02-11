@@ -7,7 +7,7 @@
 
 export const businessErrorsEn = {
     'case.noAvailableImporter': 'No available importer found for this file',
-    'case.illegalFileName': 'File name is incorrect.',
+    'case.illegalFileName': 'The file name is not accepted.',
     'directory.permissionDenied': 'You are not allowed to perform this action.',
     'directory.elementNameBlank': 'Element name must not be blank.',
     'directory.notDirectory': 'The selected element is not a directory.',

@@ -7,7 +7,7 @@
 
 export const businessErrorsFr = {
     'case.noAvailableImporter': "Aucun importateur n'a été trouvé pour ce fichier.",
-    'case.illegalFileName': 'Le nom de fichier est incorrect.',
+    'case.illegalFileName': "Le nom de fichier n'est pas accepté.",
     'directory.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'directory.elementNameBlank': "Le nom de l'élément ne peut pas être vide.",
     'directory.notDirectory': "L'élément sélectionné n'est pas un dossier.",
