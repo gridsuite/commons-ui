@@ -73,7 +73,7 @@ export const businessErrorsEn = {
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
     'diagram.invalidEquipmentType':
-        "The equipment {id} of type {equipmentType} is not a substation or voltage level in given network",
+        'The equipment {id} of type {equipmentType} is not a substation or voltage level in given network',
     'diagram.invalidSubstationLayout': "Given substation layout {substationLayout} doesn't exist",
     'diagram.invalidDisplayMode': "Given sld display mode {sldDisplayMode} doesn't exist",
     'diagram.maxVoltageLevelDisplayed':
