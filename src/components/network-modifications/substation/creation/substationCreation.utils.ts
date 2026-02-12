@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { InferType, object, string } from 'yup';
 import {
     creationPropertiesSchema,
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import yup from '../../../../utils/yupConfig';
 import { FieldConstants, sanitizeString } from '../../../../utils';
 import { SubstationCreationDto } from './substationCreation.types';
 
@@ -32,16 +32,16 @@ export const substationCreationDtoToForm = (substationDto: SubstationCreationDto
     };
 };
 
-export const substationCreationFormSchema = yup
-    .object()
+export const substationCreationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: yup.string().required(),
-        [FieldConstants.EQUIPMENT_NAME]: yup.string().nullable(),
-        [FieldConstants.COUNTRY]: yup.string().nullable(),
+        [FieldConstants.EQUIPMENT_ID]: string().required('YupRequired'),
+        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+        [FieldConstants.COUNTRY]: string().nullable(),
     })
-    .concat(creationPropertiesSchema);
+    .concat(creationPropertiesSchema)
+    .required('YupRequired');
 
-export type SubstationCreationFormData = yup.InferType<typeof substationCreationFormSchema>;
+export type SubstationCreationFormData = InferType<typeof substationCreationFormSchema>;
 
 export const substationCreationEmptyFormData: SubstationCreationFormData = {
     equipmentID: '',

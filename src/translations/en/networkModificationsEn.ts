@@ -86,4 +86,5 @@ export const networkModificationsEn = {
     Name: 'Name',
     Country: 'Country',
     DuplicatedPropsError: 'Duplicated properties: each property must be unique',
+    YupRequired: 'This field is required',
 };

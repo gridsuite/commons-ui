@@ -90,4 +90,5 @@ export const networkModificationsFr = {
     Name: 'Nom',
     Country: 'Pays',
     DuplicatedPropsError: 'Propriétés dupliquées : chaque propriété doit être unique',
+    YupRequired: 'Ce champ doit être renseigné',
 };

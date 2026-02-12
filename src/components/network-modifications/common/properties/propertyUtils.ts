@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { array, boolean, object, string } from 'yup';
 import { FieldConstants, isBlankOrEmpty, PredefinedProperties } from '../../../../utils';
-import yup from '../../../../utils/yupConfig';
 import { fetchStudyMetadata } from '../../../../services';
 import { FilledProperty, Properties, Property } from './properties.type';
 
@@ -163,37 +163,34 @@ const checkUniquePropertyNames = (
     return validValues.length === new Set(validValues.map((v) => v.name)).size;
 };
 
-export const creationPropertiesSchema = yup.object({
-    [FieldConstants.ADDITIONAL_PROPERTIES]: yup
-        .array()
+export const creationPropertiesSchema = object({
+    [FieldConstants.ADDITIONAL_PROPERTIES]: array()
         .of(
-            yup.object().shape({
-                [FieldConstants.NAME]: yup.string().required(),
-                [FieldConstants.VALUE]: yup.string().required(),
-                [FieldConstants.PREVIOUS_VALUE]: yup.string().nullable(),
-                [FieldConstants.DELETION_MARK]: yup.boolean().required(),
-                [FieldConstants.ADDED]: yup.boolean().required(),
+            object().shape({
+                [FieldConstants.NAME]: string().required('YupRequired'),
+                [FieldConstants.VALUE]: string().required('YupRequired'),
+                [FieldConstants.PREVIOUS_VALUE]: string().nullable(),
+                [FieldConstants.DELETION_MARK]: boolean().required('YupRequired'),
+                [FieldConstants.ADDED]: boolean().required('YupRequired'),
             })
         )
         .test('checkUniqueProperties', 'DuplicatedPropsError', (values) => checkUniquePropertyNames(values)),
 });
 
-export const modificationPropertiesSchema = yup.object({
-    [FieldConstants.ADDITIONAL_PROPERTIES]: yup
-        .array()
+export const modificationPropertiesSchema = object({
+    [FieldConstants.ADDITIONAL_PROPERTIES]: array()
         .of(
-            yup.object().shape({
-                [FieldConstants.NAME]: yup.string().required(),
-                [FieldConstants.VALUE]: yup
-                    .string()
+            object().shape({
+                [FieldConstants.NAME]: string().required('YupRequired'),
+                [FieldConstants.VALUE]: string()
                     .nullable()
                     .when([FieldConstants.ADDED], {
                         is: (added: boolean) => added,
-                        then: (schema) => schema.required(),
+                        then: (schema) => schema.required('YupRequired'),
                     }),
-                [FieldConstants.PREVIOUS_VALUE]: yup.string().nullable(),
-                [FieldConstants.DELETION_MARK]: yup.boolean().required(),
-                [FieldConstants.ADDED]: yup.boolean().required(),
+                [FieldConstants.PREVIOUS_VALUE]: string().nullable(),
+                [FieldConstants.DELETION_MARK]: boolean().required('YupRequired'),
+                [FieldConstants.ADDED]: boolean().required('YupRequired'),
             })
         )
         .test('checkUniqueProperties', 'DuplicatedPropsError', (values) => checkUniquePropertyNames(values)),
