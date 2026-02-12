@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED } from '../../utils';
 
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
@@ -89,6 +90,6 @@ export const networkModificationsFr = {
     PropertyValue: 'Valeur de la propriété',
     Name: 'Nom',
     Country: 'Pays',
-    DuplicatedPropsError: 'Propriétés dupliquées : chaque propriété doit être unique',
-    YupRequired: 'Ce champ doit être renseigné',
+    [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
+    [YUP_REQUIRED]: 'Ce champ doit être renseigné',
 };

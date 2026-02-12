@@ -5,7 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { array, boolean, object, string } from 'yup';
-import { FieldConstants, isBlankOrEmpty, PredefinedProperties } from '../../../../utils';
+import {
+    DUPLICATED_PROPS_ERROR,
+    FieldConstants,
+    isBlankOrEmpty,
+    PredefinedProperties,
+    YUP_REQUIRED,
+} from '../../../../utils';
 import { fetchStudyMetadata } from '../../../../services';
 import { FilledProperty, Properties, Property } from './properties.type';
 
@@ -167,33 +173,33 @@ export const creationPropertiesSchema = object({
     [FieldConstants.ADDITIONAL_PROPERTIES]: array()
         .of(
             object().shape({
-                [FieldConstants.NAME]: string().required('YupRequired'),
-                [FieldConstants.VALUE]: string().required('YupRequired'),
+                [FieldConstants.NAME]: string().required(YUP_REQUIRED),
+                [FieldConstants.VALUE]: string().required(YUP_REQUIRED),
                 [FieldConstants.PREVIOUS_VALUE]: string().nullable(),
-                [FieldConstants.DELETION_MARK]: boolean().required('YupRequired'),
-                [FieldConstants.ADDED]: boolean().required('YupRequired'),
+                [FieldConstants.DELETION_MARK]: boolean().required(YUP_REQUIRED),
+                [FieldConstants.ADDED]: boolean().required(YUP_REQUIRED),
             })
         )
-        .test('checkUniqueProperties', 'DuplicatedPropsError', (values) => checkUniquePropertyNames(values)),
+        .test('checkUniqueProperties', DUPLICATED_PROPS_ERROR, (values) => checkUniquePropertyNames(values)),
 });
 
 export const modificationPropertiesSchema = object({
     [FieldConstants.ADDITIONAL_PROPERTIES]: array()
         .of(
             object().shape({
-                [FieldConstants.NAME]: string().required('YupRequired'),
+                [FieldConstants.NAME]: string().required(YUP_REQUIRED),
                 [FieldConstants.VALUE]: string()
                     .nullable()
                     .when([FieldConstants.ADDED], {
                         is: (added: boolean) => added,
-                        then: (schema) => schema.required('YupRequired'),
+                        then: (schema) => schema.required(YUP_REQUIRED),
                     }),
                 [FieldConstants.PREVIOUS_VALUE]: string().nullable(),
-                [FieldConstants.DELETION_MARK]: boolean().required('YupRequired'),
-                [FieldConstants.ADDED]: boolean().required('YupRequired'),
+                [FieldConstants.DELETION_MARK]: boolean().required(YUP_REQUIRED),
+                [FieldConstants.ADDED]: boolean().required(YUP_REQUIRED),
             })
         )
-        .test('checkUniqueProperties', 'DuplicatedPropsError', (values) => checkUniquePropertyNames(values)),
+        .test('checkUniqueProperties', DUPLICATED_PROPS_ERROR, (values) => checkUniquePropertyNames(values)),
 });
 
 export const getPropertyValue = (properties: Record<string, string> | undefined, keyName: string): string | undefined =>
