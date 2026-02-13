@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import { LineSeparator } from './line-separator';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
-import { PROVIDER } from './constant';
+import { PROVIDER } from './constants';
 import type { MuiStyles } from '../../../utils/styles';
 
 export interface ProviderParamProps {

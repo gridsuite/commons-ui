@@ -12,9 +12,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
-    getSAParametersFromSchema,
+    CONTINGENCIES,
+    CONTINGENCY_LISTS,
     ILimitReductionsByVoltageLevel,
-    ISAParameters,
     IST_FORM,
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
@@ -24,14 +24,16 @@ import {
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
-    toFormValueSaParameters,
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
-import { DESCRIPTION, NAME } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
+import { ISAParameters } from './types';
+import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
+import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
+import { IContingencyList } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -72,13 +74,14 @@ export const useSecurityAnalysisParametersForm = (
     const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
 
     const formSchema = useMemo(() => {
-        return getSAParametersFromSchema(name, params?.limitReductions);
+        return getSAParametersFormSchema(name, params?.limitReductions);
     }, [name, params?.limitReductions]);
 
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
             [PARAM_SA_PROVIDER]: provider,
+            [CONTINGENCY_LISTS]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
             [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,
             [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
@@ -90,7 +93,18 @@ export const useSecurityAnalysisParametersForm = (
     });
 
     const { reset, watch } = formMethods;
-    const watchProvider = watch('provider');
+    const watchProvider = watch(PARAM_SA_PROVIDER);
+
+    const toContingencyLists = useCallback((formContingencyLists: Record<string, any>[]): IContingencyList[] => {
+        return formContingencyLists.map((contingencyList) => ({
+            [CONTINGENCIES]: contingencyList[CONTINGENCIES]?.map((contingency: Record<string, string>) => ({
+                [ID]: contingency[ID],
+                [NAME]: contingency[NAME],
+            })),
+            [DESCRIPTION]: contingencyList[DESCRIPTION],
+            [ACTIVATED]: contingencyList[ACTIVATED],
+        }));
+    }, []);
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -125,10 +139,11 @@ export const useSecurityAnalysisParametersForm = (
                 [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]:
                     formData[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
                 [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+                [CONTINGENCY_LISTS]: toContingencyLists(formData[CONTINGENCY_LISTS]),
                 limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
             };
         },
-        [toLimitReductions]
+        [toContingencyLists, toLimitReductions]
     );
 
     const onSaveInline = useCallback(

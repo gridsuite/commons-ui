@@ -71,6 +71,7 @@ export function SecurityAnalysisParametersDialog({
         >
             <SecurityAnalysisParametersForm
                 securityAnalysisMethods={securityAnalysisMethods}
+                showContingencyCount={false}
                 isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (

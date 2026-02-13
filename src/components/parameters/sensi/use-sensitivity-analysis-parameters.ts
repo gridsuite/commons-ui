@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import { ComputingType, PROVIDER } from '../common';
+import { ComputingType, CONTINGENCIES, PROVIDER } from '../common';
 import {
     ElementType,
     FactorsCount,
@@ -28,11 +28,9 @@ import {
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
-    ACTIVATED,
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     CONTAINER_ID,
     CONTAINER_NAME,
-    CONTINGENCIES,
     DEFAULT_FACTOR_COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
@@ -60,6 +58,7 @@ import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
+import { ACTIVATED } from '../common/parameter-table';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;

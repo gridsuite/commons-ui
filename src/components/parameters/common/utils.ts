@@ -11,7 +11,7 @@ import {
     SpecificParametersDescription,
     SpecificParametersValues,
 } from '../../../utils';
-import { SPECIFIC_PARAMETERS } from './constant';
+import { SPECIFIC_PARAMETERS } from './constants';
 import yup from '../../../utils/yupConfig';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {

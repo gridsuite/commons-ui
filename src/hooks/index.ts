@@ -17,4 +17,4 @@ export * from './useSnackMessage';
 export * from './useFormatLabelWithUnit';
 export * from './useSelectAppearance';
 export * from './use-parameters-backend';
-export * from './use-create-row-data-sensi';
+export * from './use-create-row-data';

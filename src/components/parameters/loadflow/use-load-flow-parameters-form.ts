@@ -26,7 +26,14 @@ import {
     TabValues,
 } from './load-flow-parameters-utils';
 import { LoadFlowParametersInfos } from './load-flow-parameters-type';
-import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
+import {
+    COMMON_PARAMETERS,
+    ComputingType,
+    PROVIDER,
+    SPECIFIC_PARAMETERS,
+    toFormValuesLimitReductions,
+    VERSION_PARAMETER,
+} from '../common';
 import {
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
@@ -34,7 +41,6 @@ import {
 } from '../common/limitreductions/columns-definitions';
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import yup from '../../../utils/yupConfig';
-import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';

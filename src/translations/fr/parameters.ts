@@ -214,6 +214,7 @@ export const parametersFr = {
     flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
 
     ContingencyListsSelection: "Sélection des listes d'aléas",
+    contingencyLists: "Listes d'aléas",
     Execute: 'Exécuter',
     AddContingencyList: 'Ajouter',
     DeleteContingencyList: 'Supprimer',
@@ -239,7 +240,7 @@ export const parametersFr = {
     SensitivityType: 'Type de sensibilité',
     DeltaMW: '\u0394 MW',
     DeltaA: '\u0394 A',
-    ContingencyLists: 'Aléas',
+    ContingencyLists: "Listes d'aléas",
     Injections: 'Injections',
     MonitoredVoltageLevels: 'Postes surveillés',
     EquipmentsInVoltageRegulation: 'Ouvrages en réglage tension',
