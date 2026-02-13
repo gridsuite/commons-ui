@@ -11,3 +11,4 @@ export * from './uiConstants';
 export * from './unitsConstants';
 export * from './configConstants';
 export * from './filterConstant';
+export * from './translationKeys';
