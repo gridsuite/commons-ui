@@ -27,6 +27,7 @@ import {
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
 } from './constants';
 import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
@@ -35,7 +36,8 @@ import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } fr
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
-import { COLUMNS_DEFINITIONS_ICC_MATERIALS } from './short-circuit-icc-material-table-columns-definition';
+import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
+import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
@@ -47,11 +49,25 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
+const iccMaterialsColumnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
     ...col,
     label: <FormattedMessage id={col.label as string} />,
     tooltip: <FormattedMessage id={col.tooltip as string} />,
 }));
+
+const iccClustersColumnsDef = COLUMNS_DEFINITIONS_ICC_CLUSTERS.map((col) => ({
+    ...col,
+    label: <FormattedMessage id={col.label as string} />,
+    tooltip: <FormattedMessage id={col.tooltip as string} />,
+}));
+
+function createRows() {
+    const rowData: { [key: string]: any } = {};
+    iccClustersColumnsDef.forEach((column) => {
+        rowData[column.dataKey] = column.initialValue;
+    });
+    return rowData;
+}
 
 export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
@@ -286,8 +302,12 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                             </Grid>
                             <ShortCircuitIccMaterialTable
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                                tableHeight={300}
-                                columnsDefinition={columnsDef}
+                                columnsDefinition={iccMaterialsColumnsDef}
+                            />
+                            <ShortCircuitIccClusterTable
+                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
+                                columnsDefinition={iccClustersColumnsDef}
+                                createRows={createRows}
                             />
                         </>
                     )}

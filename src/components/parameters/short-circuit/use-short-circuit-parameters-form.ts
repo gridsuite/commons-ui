@@ -78,9 +78,9 @@ export const useShortCircuitParametersForm = ({
 
     const specificParametersDefaultValues = useMemo(() => {
         return {
-            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider),
+            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider, snackError),
         };
-    }, [specificParametersDescriptionForProvider]);
+    }, [snackError, specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
         return yup
@@ -205,13 +205,14 @@ export const useShortCircuitParametersForm = ({
                 [SPECIFIC_PARAMETERS]: {
                     ...formatShortCircuitSpecificParameters(
                         specificParametersDescriptionForProvider,
-                        specificParamsListForCurrentProvider
+                        specificParamsListForCurrentProvider,
+                        snackError
                     ),
                 },
             };
             return values;
         },
-        [provider, specificParametersDescriptionForProvider]
+        [provider, snackError, specificParametersDescriptionForProvider]
     );
 
     const onValidationError = useCallback((_errors: FieldErrors) => {

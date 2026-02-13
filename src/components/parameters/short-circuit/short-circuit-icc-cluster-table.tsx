@@ -5,14 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Tooltip } from '@mui/material';
+import {
+    IconButton,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Theme,
+    Tooltip,
+} from '@mui/material';
+import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useFieldArray } from 'react-hook-form';
-import { IccMaterialIColumnsDef } from './columns-definition';
-import { ShortCircuitIccMaterialTableRow } from './short-circuit-icc-material-table-row';
+import { FormattedMessage } from 'react-intl';
+import { useCallback } from 'react';
+import { IccClusterIColumnsDef } from './columns-definition';
+import { ShortCircuitIccClusterTableRow } from './short-circuit-icc-cluster-table-row';
 
-interface ShortCircuitIccMaterialTableProps {
-    columnsDefinition: IccMaterialIColumnsDef[];
+interface ShortCircuitIccClusterTableProps {
+    columnsDefinition: IccClusterIColumnsDef[];
     formName: string;
+    createRows: () => unknown;
 }
 
 const styles = {
@@ -27,13 +41,29 @@ const styles = {
     },
 };
 
-export function ShortCircuitIccMaterialTable({
+export function ShortCircuitIccClusterTable({
     formName,
     columnsDefinition,
-}: Readonly<ShortCircuitIccMaterialTableProps>) {
-    const { fields: rows } = useFieldArray({
+    createRows,
+}: Readonly<ShortCircuitIccClusterTableProps>) {
+    const {
+        fields: rows,
+        append,
+        remove,
+    } = useFieldArray({
         name: formName,
     });
+
+    const handleAddRowsButton = useCallback(() => {
+        append(createRows());
+    }, [append, createRows]);
+
+    const handleDeleteButton = useCallback(
+        (index: number) => {
+            remove(index);
+        },
+        [remove]
+    );
 
     return (
         <TableContainer sx={styles.tableContainer}>
@@ -47,17 +77,25 @@ export function ShortCircuitIccMaterialTable({
                                 </TableCell>
                             </Tooltip>
                         ))}
-                        <TableCell align="center" sx={{ visibility: 'hidden', width: '5%' }} />
-                        {/* empty cell for alignment with delete button column in cluster table */}
+                        <TableCell align="center" sx={{ width: '5%' }}>
+                            <Tooltip title={<FormattedMessage id="AddRows" />}>
+                                <span>
+                                    <IconButton size="small" disabled={false} onClick={handleAddRowsButton}>
+                                        <AddCircleIcon fontSize="small" />
+                                    </IconButton>
+                                </span>
+                            </Tooltip>
+                        </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map((row, index) => (
-                        <ShortCircuitIccMaterialTableRow
+                        <ShortCircuitIccClusterTableRow
                             key={`${row.id}`}
                             columnsDefinition={columnsDefinition}
                             index={index}
                             formName={formName}
+                            onDeleteButton={handleDeleteButton}
                         />
                     ))}
                 </TableBody>
