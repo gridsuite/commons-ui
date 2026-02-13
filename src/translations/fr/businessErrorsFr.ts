@@ -6,6 +6,8 @@
  */
 
 export const businessErrorsFr = {
+    'case.noAvailableImporter': "Aucun importateur n'a été trouvé pour ce fichier.",
+    'case.illegalFileName': "Le nom de fichier n'est pas accepté.",
     'directory.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'directory.elementNameBlank': "Le nom de l'élément ne peut pas être vide.",
     'directory.notDirectory': "L'élément sélectionné n'est pas un dossier.",
@@ -20,7 +22,6 @@ export const businessErrorsFr = {
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
-    'explore.incorrectCaseFile': 'Format ou nom du fichier importé invalide.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
     'study.loadflowError': 'Erreur de calcul de répartition.',

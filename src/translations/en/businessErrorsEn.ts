@@ -6,6 +6,8 @@
  */
 
 export const businessErrorsEn = {
+    'case.noAvailableImporter': 'No available importer found for this file',
+    'case.illegalFileName': 'The file name is not accepted.',
     'directory.permissionDenied': 'You are not allowed to perform this action.',
     'directory.elementNameBlank': 'Element name must not be blank.',
     'directory.notDirectory': 'The selected element is not a directory.',
@@ -20,7 +22,6 @@ export const businessErrorsEn = {
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
-    'explore.incorrectCaseFile': 'Invalid imported file name or format.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
     'study.loadflowError': 'Loadflow error.',
