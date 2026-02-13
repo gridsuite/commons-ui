@@ -123,12 +123,14 @@ export function TextInput({
                     handleClearValue,
                 })}
             helperText={
-                <HelperPreviousValue
-                    previousValue={previousValue}
-                    isNodeBuilt={isNodeBuilt}
-                    disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
-                    adornmentText={adornment?.text}
-                />
+                previousValue && (
+                    <HelperPreviousValue
+                        previousValue={previousValue}
+                        isNodeBuilt={isNodeBuilt}
+                        disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                        adornmentText={adornment?.text}
+                    />
+                )
             }
             {...genHelperError(error?.message)}
             {...formProps}
