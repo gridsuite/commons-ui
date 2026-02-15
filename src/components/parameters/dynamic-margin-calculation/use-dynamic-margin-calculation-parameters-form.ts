@@ -147,14 +147,13 @@ export type UseParametersFormProps = {
     name: string | null;
     description: string | null;
 };
-export type UseDynamicMarginCalculationParametersFormProps = UseParametersFormProps;
 
 export function useDynamicMarginCalculationParametersForm({
     providers,
     params,
     name: initialName,
     description: initialDescription,
-}: Readonly<UseDynamicMarginCalculationParametersFormProps>): UseDynamicMarginCalculationParametersFormReturn {
+}: Readonly<UseParametersFormProps>): UseDynamicMarginCalculationParametersFormReturn {
     const paramsLoaded = useMemo(() => !!params, [params]);
 
     const formattedProviders = useMemo(
@@ -167,12 +166,12 @@ export function useDynamicMarginCalculationParametersForm({
     );
 
     const returnFormSchema = useMemo(() => {
-        return initialName !== null ? formSchema.concat(getNameElementEditorSchema(initialName)) : formSchema;
+        return initialName === null ? formSchema : formSchema.concat(getNameElementEditorSchema(initialName));
     }, [initialName]);
 
     const newEmptyFormData: any = useMemo(() => {
         return {
-            ...(initialName !== null ? getNameElementEditorEmptyFormData(initialName, initialDescription) : {}),
+            ...(initialName === null ? {} : getNameElementEditorEmptyFormData(initialName, initialDescription)),
             ...emptyFormData,
         };
     }, [initialName, initialDescription]);
