@@ -109,15 +109,25 @@ export function LoadFlowParametersInline({
                                 <LabelledButton
                                     callback={() => setOpenSelectParameterDialog(true)}
                                     label="settings.button.chooseSettings"
+                                    data-testid="LfChooseParametersButton"
                                 />
-                                <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
+                                <LabelledButton
+                                    callback={() => setOpenCreateParameterDialog(true)}
+                                    label="save"
+                                    data-testid="LfSaveButton"
+                                />
+                                <LabelledButton
+                                    callback={handleResetAllClick}
+                                    label="resetToDefault"
+                                    data-testid="LfResetToDefaultButton"
+                                />
                                 <SubmitButton
                                     onClick={handleSubmit(
                                         loadflowMethods.onSaveInline,
                                         loadflowMethods.onValidationError
                                     )}
                                     variant="outlined"
+                                    data-testid="LfValidateButton"
                                 >
                                     <FormattedMessage id="validate" />
                                 </SubmitButton>

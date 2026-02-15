@@ -13,10 +13,3 @@ export function getEquipmentTypeShortLabel(equipmentType: string | undefined): s
     }
     return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.shortLabel ?? '';
 }
-
-export function getEquipmentTypeTagLabel(equipmentType: string | undefined): string {
-    if (!equipmentType) {
-        return '';
-    }
-    return ALL_EQUIPMENTS[equipmentType as keyof typeof ALL_EQUIPMENTS]?.tagLabel ?? '';
-}
