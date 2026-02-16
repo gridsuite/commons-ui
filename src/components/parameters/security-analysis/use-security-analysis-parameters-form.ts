@@ -12,8 +12,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
-    CONTINGENCIES,
     CONTINGENCY_LISTS,
+    CONTINGENCY_LISTS_INFOS,
     ILimitReductionsByVoltageLevel,
     IST_FORM,
     LIMIT_DURATION_FORM,
@@ -33,7 +33,7 @@ import { snackWithFallback } from '../../../utils/error';
 import { ISAParameters } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
-import { IContingencyList } from '../common/contingency-table/types';
+import { IContingencyListsInfos } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -81,7 +81,7 @@ export const useSecurityAnalysisParametersForm = (
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
             [PARAM_SA_PROVIDER]: provider,
-            [CONTINGENCY_LISTS]: [],
+            [CONTINGENCY_LISTS_INFOS]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
             [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,
             [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
@@ -95,16 +95,19 @@ export const useSecurityAnalysisParametersForm = (
     const { reset, watch } = formMethods;
     const watchProvider = watch(PARAM_SA_PROVIDER);
 
-    const toContingencyLists = useCallback((formContingencyLists: Record<string, any>[]): IContingencyList[] => {
-        return formContingencyLists.map((contingencyList) => ({
-            [CONTINGENCIES]: contingencyList[CONTINGENCIES]?.map((contingency: Record<string, string>) => ({
-                [ID]: contingency[ID],
-                [NAME]: contingency[NAME],
-            })),
-            [DESCRIPTION]: contingencyList[DESCRIPTION],
-            [ACTIVATED]: contingencyList[ACTIVATED],
-        }));
-    }, []);
+    const toContingencyListsInfos = useCallback(
+        (formContingencyListsInfos: Record<string, any>[]): IContingencyListsInfos[] => {
+            return formContingencyListsInfos.map((contingencyListsInfos) => ({
+                [CONTINGENCY_LISTS]: contingencyListsInfos[CONTINGENCY_LISTS]?.map((c: Record<string, string>) => ({
+                    [ID]: c[ID],
+                    [NAME]: c[NAME],
+                })),
+                [DESCRIPTION]: contingencyListsInfos[DESCRIPTION],
+                [ACTIVATED]: contingencyListsInfos[ACTIVATED],
+            }));
+        },
+        []
+    );
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -139,11 +142,11 @@ export const useSecurityAnalysisParametersForm = (
                 [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]:
                     formData[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
                 [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
-                [CONTINGENCY_LISTS]: toContingencyLists(formData[CONTINGENCY_LISTS]),
+                [CONTINGENCY_LISTS_INFOS]: toContingencyListsInfos(formData[CONTINGENCY_LISTS_INFOS]),
                 limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
             };
         },
-        [toContingencyLists, toLimitReductions]
+        [toContingencyListsInfos, toLimitReductions]
     );
 
     const onSaveInline = useCallback(

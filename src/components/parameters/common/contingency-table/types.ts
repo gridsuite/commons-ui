@@ -6,14 +6,14 @@
  */
 import { UUID } from 'node:crypto';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table/constants';
-import { CONTINGENCIES } from '../constants';
+import { CONTINGENCY_LISTS } from '../constants';
 
-export interface IContingencies {
+export interface IContingencyList {
     [ID]: UUID;
     [NAME]: string;
 }
-export interface IContingencyList {
-    [CONTINGENCIES]: IContingencies[];
+export interface IContingencyListsInfos {
+    [CONTINGENCY_LISTS]: IContingencyList[];
     [DESCRIPTION]: string;
     [ACTIVATED]: boolean;
 }

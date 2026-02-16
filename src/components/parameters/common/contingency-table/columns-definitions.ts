@@ -6,14 +6,14 @@
  */
 import { IParameters, IColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
 import { ElementType } from '../../../../utils';
-import { CONTINGENCIES, CONTINGENCY_LISTS } from '../constants';
+import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { IContingencies, IContingencyList } from './types';
+import { IContingencyList, IContingencyListsInfos } from './types';
 
-export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: IColumnsDef[] = [
     {
         label: 'ContingencyLists',
-        dataKey: CONTINGENCIES,
+        dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
         directoryItems: true,
@@ -39,17 +39,17 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS: IColumnsDef[] = [
 ];
 
 export const ParamContingencyLists: IParameters = {
-    columnsDef: COLUMNS_DEFINITIONS_CONTINGENCY_LISTS,
-    name: CONTINGENCY_LISTS,
+    columnsDef: COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS,
+    name: CONTINGENCY_LISTS_INFOS,
 };
 
-export const getContingencyListsFormSchema = () => {
+export const getContingencyListsInfosFormSchema = () => {
     return yup
         .object()
         .shape({
-            [CONTINGENCY_LISTS]: yup.array().of(
+            [CONTINGENCY_LISTS_INFOS]: yup.array().of(
                 yup.object().shape({
-                    [CONTINGENCIES]: yup
+                    [CONTINGENCY_LISTS]: yup
                         .array()
                         .of(
                             yup.object().shape({
@@ -67,15 +67,15 @@ export const getContingencyListsFormSchema = () => {
         .required();
 };
 
-export const toFormValuesContingencyLists = (contingencyLists: IContingencyList[]) => {
+export const toFormValuesContingencyListsInfos = (contingencyListsInfos: IContingencyListsInfos[]) => {
     return {
-        [CONTINGENCY_LISTS]: contingencyLists?.map((contingencyList: IContingencyList) => ({
-            [CONTINGENCIES]: contingencyList[CONTINGENCIES]?.map((contingency: IContingencies) => ({
-                [NAME]: contingency[NAME],
-                [ID]: contingency[ID],
+        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: IContingencyListsInfos) => ({
+            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IContingencyList) => ({
+                [NAME]: c[NAME],
+                [ID]: c[ID],
             })),
-            [DESCRIPTION]: contingencyList[DESCRIPTION],
-            [ACTIVATED]: contingencyList[ACTIVATED],
+            [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
+            [ACTIVATED]: contingencyListInfos[ACTIVATED],
         })),
     };
 };

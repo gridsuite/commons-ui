@@ -19,5 +19,6 @@ export const VERSION_PARAMETER = 'version';
 export const COMMON_PARAMETERS = 'commonParameters';
 export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
 
-export const CONTINGENCIES = 'contingencies';
+export const CONTINGENCY_LISTS_INFOS = 'contingencyListsInfos';
 export const CONTINGENCY_LISTS = 'contingencyLists';
+export const CONTINGENCIES = 'contingencies';

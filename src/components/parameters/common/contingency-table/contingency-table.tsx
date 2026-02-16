@@ -11,9 +11,9 @@ import { FieldValues, useWatch } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useCreateRowData } from '../../../../hooks';
 import { IColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
-import { CONTINGENCY_LISTS, CONTINGENCIES } from '../constants';
-import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS, ParamContingencyLists } from './columns-definitions';
-import { IContingencyList } from './types';
+import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
+import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, ParamContingencyLists } from './columns-definitions';
+import { IContingencyListsInfos } from './types';
 
 export function ContingencyTable({
     showContingencyCount = false,
@@ -25,7 +25,7 @@ export function ContingencyTable({
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<number | null>(0);
     const [rowData, useFieldArrayOutput] = useCreateRowData(ParamContingencyLists);
-    const contingencyLists: IContingencyList[] = useWatch({ name: CONTINGENCY_LISTS });
+    const contingencyListsInfos: IContingencyListsInfos[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
 
     const getColumnsDefinition = useCallback(
         (columns: IColumnsDef[]) => {
@@ -40,17 +40,19 @@ export function ContingencyTable({
         [intl]
     );
 
+    console.log('contingencies: ', contingencyListsInfos);
+
     useEffect(() => {
         if (showContingencyCount) {
-            if (!contingencyLists || contingencyLists.length === 0) {
+            if (!contingencyListsInfos || contingencyListsInfos.length === 0) {
                 setSimulatedContingencyCount(null);
                 return;
             }
 
             fetchContingencyCount?.(
-                contingencyLists
-                    .filter((list) => list[ACTIVATED])
-                    .flatMap((list) => list[CONTINGENCIES]?.map((contingency) => contingency[ID]))
+                contingencyListsInfos
+                    .filter((lists) => lists[ACTIVATED])
+                    .flatMap((lists) => lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[ID]))
             )
                 .then((contingencyCount) => {
                     setSimulatedContingencyCount(contingencyCount);
@@ -59,18 +61,18 @@ export function ContingencyTable({
                     setSimulatedContingencyCount(null);
                 });
         }
-    }, [contingencyLists, fetchContingencyCount, showContingencyCount]);
+    }, [contingencyListsInfos, fetchContingencyCount, showContingencyCount]);
 
     return (
         <Stack spacing={0} sx={{ width: '100%' }}>
             <ParameterTable
-                arrayFormName={CONTINGENCY_LISTS} // constant
+                arrayFormName={CONTINGENCY_LISTS_INFOS}
                 useFieldArrayOutput={useFieldArrayOutput}
-                columnsDefinition={getColumnsDefinition(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS)}
+                columnsDefinition={getColumnsDefinition(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS)}
                 tableHeight={270}
                 createRows={rowData}
                 onFormChanged={() => {}}
-                isValidParameterRow={(row: FieldValues) => row[CONTINGENCIES]?.length > 0}
+                isValidParameterRow={(row: FieldValues) => row[CONTINGENCY_LISTS]?.length > 0}
             />
             {showContingencyCount && (
                 <Alert variant="standard" severity="info">

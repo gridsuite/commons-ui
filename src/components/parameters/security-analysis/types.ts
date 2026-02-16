@@ -7,7 +7,7 @@
 
 import type { UUID } from 'node:crypto';
 import {
-    CONTINGENCY_LISTS,
+    CONTINGENCY_LISTS_INFOS,
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
@@ -15,13 +15,13 @@ import {
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
 } from '../common/constants';
-import { IContingencyList } from '../common/contingency-table/types';
+import { IContingencyListsInfos } from '../common/contingency-table/types';
 import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
 
 export interface ISAParameters {
     uuid?: UUID;
     [PARAM_SA_PROVIDER]: string;
-    [CONTINGENCY_LISTS]: IContingencyList[];
+    [CONTINGENCY_LISTS_INFOS]: IContingencyListsInfos[];
     limitReductions: ILimitReductionsByVoltageLevel[];
     [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: number;
     [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
