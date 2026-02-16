@@ -17,26 +17,21 @@ export function notNull<T>(value: T | null): value is T {
     return value !== null;
 }
 
-export const removeNullFields = <T extends Record<string, any>>(data: T): T => {
-    const result = Object.entries(data).reduce<Record<string, any>>((acc, [key, value]) => {
-        if (value === null) {
-            return acc;
-        }
-
-        if (typeof value === 'object' && !Array.isArray(value)) {
-            const cleaned = removeNullFields(value);
-            if (Object.keys(cleaned).length > 0) {
-                acc[key] = cleaned;
+export function removeNullFields<T extends Record<string, any>>(data: T): T {
+    const dataTemp = data as Record<string, any>;
+    if (dataTemp) {
+        Object.keys(dataTemp).forEach((key) => {
+            if (dataTemp[key] && dataTemp[key] !== null && typeof dataTemp[key] === 'object') {
+                dataTemp[key] = removeNullFields(dataTemp[key]);
             }
-            return acc;
-        }
 
-        acc[key] = value;
-        return acc;
-    }, {});
-
-    return result as T;
-};
+            if (dataTemp[key] === null) {
+                delete dataTemp[key];
+            }
+        });
+    }
+    return dataTemp as T;
+}
 
 export function parseIntData(val: string | number, defaultValue: string | number) {
     const intValue = Number.parseInt(String(val), 10);
