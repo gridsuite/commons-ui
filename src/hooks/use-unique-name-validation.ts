@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { ElementType, FieldConstants } from '../utils';
@@ -51,6 +51,7 @@ export function useUniqueNameValidation({
     const directory = selectedDirectory || activeDirectory;
 
     // This is a trick to share the custom validation state among the form : while this error is present, we can't validate the form
+    const previousDirectoryRef = useRef<string | undefined>(directory);
     const isValidating = errors.root?.isValidating;
 
     const handleCheckName = useCallback(
@@ -90,6 +91,24 @@ export function useUniqueNameValidation({
     // We have to use an useEffect because the name can change from outside of this component (when we upload a case file for instance)
     useEffect(() => {
         const trimmedValue = value.trim();
+
+        // when directory changes
+        if (previousDirectoryRef.current !== directory) {
+            previousDirectoryRef.current = directory;
+
+            if (directory && trimmedValue) {
+                clearErrors(name);
+
+                setError('root.isValidating', {
+                    type: 'validate',
+                    message: 'use-unique-name-validation/cantSubmitWhileValidating',
+                });
+
+                debouncedHandleCheckName(trimmedValue);
+            }
+
+            return;
+        }
 
         if (selectedDirectory) {
             debouncedHandleCheckName(trimmedValue);
