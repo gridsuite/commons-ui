@@ -73,6 +73,15 @@ export const businessErrorsEn = {
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'diagram.invalidEquipmentType':
+        'The equipment {id} of type {equipmentType} is not a substation or voltage level in given network',
+    'diagram.invalidSubstationLayout': "Given substation layout {substationLayout} doesn't exist",
+    'diagram.invalidDisplayMode': "Given sld display mode {sldDisplayMode} doesn't exist",
+    'diagram.maxVoltageLevelDisplayed':
+        'You need to reduce the number of voltage levels to be displayed in the network area diagram (current {nbVoltageLevels}, maximum {maxVoltageLevels})',
+    'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
+    'diagram.noConfiguredPosition': 'No configured position found',
+    'diagram.noVoltageLevelFound': 'No voltage level found for this network area diagram',
     'dynamicMarginCalculation.providerNotFound': 'Dynamic margin calculation provider not found.',
     'dynamicMarginCalculation.loadFilterNotFound': 'Some load filters do not exist: {filterUuids}',
 };
