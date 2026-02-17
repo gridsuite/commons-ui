@@ -25,7 +25,7 @@ import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
-import { IColumnsDef, ParameterTable } from '../common/parameter-table';
+import { ColumnsDef, ParameterTable } from '../common/parameter-table';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -114,7 +114,7 @@ function SensitivityParametersSelector({
     const [rowDataNodes, useFieldArrayOutputNodes] = useCreateRowData(sensiParam.SensiNodes);
 
     const getColumnsDefinition = useCallback(
-        (sensiColumns: IColumnsDef[]) => {
+        (sensiColumns: ColumnsDef[]) => {
             if (sensiColumns) {
                 return sensiColumns.map((column) => ({
                     ...column,

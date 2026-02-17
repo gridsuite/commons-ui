@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export interface IParameters {
-    columnsDef: IColumnsDef[];
+export interface Parameters {
+    columnsDef: ColumnsDef[];
     name: string;
 }
 
-export interface IColumnsDef {
+export interface ColumnsDef {
     label: string;
     dataKey: string;
     initialValue: boolean | string | string[] | number | null;

@@ -10,10 +10,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldValues, useWatch } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useCreateRowData } from '../../../../hooks';
-import { IColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
+import { ColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, ParamContingencyLists } from './columns-definitions';
-import { IContingencyListsInfos } from './types';
+import { ContingencyListsInfos } from './types';
 
 export function ContingencyTable({
     showContingencyCount = false,
@@ -25,10 +25,10 @@ export function ContingencyTable({
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<number | null>(0);
     const [rowData, useFieldArrayOutput] = useCreateRowData(ParamContingencyLists);
-    const contingencyListsInfos: IContingencyListsInfos[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
+    const contingencyListsInfos: ContingencyListsInfos[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
 
     const getColumnsDefinition = useCallback(
-        (columns: IColumnsDef[]) => {
+        (columns: ColumnsDef[]) => {
             if (columns) {
                 return columns.map((column) => ({
                     ...column,
@@ -39,8 +39,6 @@ export function ContingencyTable({
         },
         [intl]
     );
-
-    console.log('contingencies: ', contingencyListsInfos);
 
     useEffect(() => {
         if (showContingencyCount) {

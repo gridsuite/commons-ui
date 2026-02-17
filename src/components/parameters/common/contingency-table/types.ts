@@ -8,12 +8,12 @@ import { UUID } from 'node:crypto';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table/constants';
 import { CONTINGENCY_LISTS } from '../constants';
 
-export interface IContingencyList {
+export interface IdName {
     [ID]: UUID;
     [NAME]: string;
 }
-export interface IContingencyListsInfos {
-    [CONTINGENCY_LISTS]: IContingencyList[];
+export interface ContingencyListsInfos {
+    [CONTINGENCY_LISTS]: IdName[];
     [DESCRIPTION]: string;
     [ACTIVATED]: boolean;
 }

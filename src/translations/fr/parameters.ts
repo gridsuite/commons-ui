@@ -219,7 +219,7 @@ export const parametersFr = {
     AddContingencyList: 'Ajouter',
     DeleteContingencyList: 'Supprimer',
     getContingencyListError: "Impossible de récupérer les listes d'aléas",
-    xContingenciesWillBeSimulated: '{x} aléas seront simulés',
+    xContingenciesWillBeSimulated: '{x} défauts à simuler',
 
     resultsThreshold: 'Seuil minimal de sensibilité',
     SensitivityBranches: 'Quadripôles',

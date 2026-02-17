@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { IParameters, IColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
+import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
 import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { IContingencyList, IContingencyListsInfos } from './types';
+import { IdName, ContingencyListsInfos } from './types';
 
-export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: IColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [
     {
         label: 'ContingencyLists',
         dataKey: CONTINGENCY_LISTS,
@@ -38,7 +38,7 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: IColumnsDef[] = [
     },
 ];
 
-export const ParamContingencyLists: IParameters = {
+export const ParamContingencyLists: Parameters = {
     columnsDef: COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS,
     name: CONTINGENCY_LISTS_INFOS,
 };
@@ -67,10 +67,10 @@ export const getContingencyListsInfosFormSchema = () => {
         .required();
 };
 
-export const toFormValuesContingencyListsInfos = (contingencyListsInfos: IContingencyListsInfos[]) => {
+export const toFormValuesContingencyListsInfos = (contingencyListsInfos: ContingencyListsInfos[]) => {
     return {
-        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: IContingencyListsInfos) => ({
-            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IContingencyList) => ({
+        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: ContingencyListsInfos) => ({
+            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IdName) => ({
                 [NAME]: c[NAME],
                 [ID]: c[ID],
             })),

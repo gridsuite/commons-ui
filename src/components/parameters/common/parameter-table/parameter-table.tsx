@@ -21,12 +21,12 @@ import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
 import { MAX_ROWS_NUMBER } from './constants';
-import { IColumnsDef } from './types';
+import { ColumnsDef } from './types';
 
 interface ParameterTableProps {
     arrayFormName: string;
     useFieldArrayOutput: UseFieldArrayReturn;
-    columnsDefinition: IColumnsDef[];
+    columnsDefinition: ColumnsDef[];
     tableHeight: number;
     createRows: (a: number) => void;
     disableAdd?: boolean;
@@ -102,7 +102,7 @@ export function ParameterTable({
             <Table stickyHeader size="small" sx={{ tableLayout: 'fixed' }}>
                 <TableHead>
                     <TableRow>
-                        {columnsDefinition.map((column: IColumnsDef) => (
+                        {columnsDefinition.map((column: ColumnsDef) => (
                             <TableCell key={column.dataKey} sx={{ width: column.width, textAlign: 'center' }}>
                                 <Box>{column.label}</Box>
                             </TableCell>

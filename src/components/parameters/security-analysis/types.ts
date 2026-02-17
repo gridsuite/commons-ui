@@ -15,13 +15,13 @@ import {
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
 } from '../common/constants';
-import { IContingencyListsInfos } from '../common/contingency-table/types';
+import { ContingencyListsInfos } from '../common/contingency-table/types';
 import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
 
-export interface ISAParameters {
+export interface SAParameters {
     uuid?: UUID;
     [PARAM_SA_PROVIDER]: string;
-    [CONTINGENCY_LISTS_INFOS]: IContingencyListsInfos[];
+    [CONTINGENCY_LISTS_INFOS]: ContingencyListsInfos[];
     limitReductions: ILimitReductionsByVoltageLevel[];
     [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: number;
     [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;

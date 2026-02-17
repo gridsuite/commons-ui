@@ -13,7 +13,7 @@ import { Grid, Tab, Tabs } from '@mui/material';
 import { ILimitReductionsByVoltageLevel, LimitReductionsTableForm, TAB_INFO, TabPanel, TabValues } from '../common';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
-import { ISAParameters } from './types';
+import { SAParameters } from './types';
 
 export function SecurityAnalysisParametersSelector({
     params,
@@ -21,7 +21,7 @@ export function SecurityAnalysisParametersSelector({
     isDeveloperMode,
     defaultLimitReductions,
 }: Readonly<{
-    params: ISAParameters | null;
+    params: SAParameters | null;
     currentProvider?: string;
     isDeveloperMode: boolean;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];

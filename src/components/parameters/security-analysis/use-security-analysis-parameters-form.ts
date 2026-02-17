@@ -30,19 +30,19 @@ import { getNameElementEditorEmptyFormData } from '../common/name-element-editor
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { ISAParameters } from './types';
+import { SAParameters } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
-import { IContingencyListsInfos } from '../common/contingency-table/types';
+import { ContingencyListsInfos } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     formattedProviders: { id: string; label: string }[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
-    toFormValueSaParameters: (_params: ISAParameters) => any;
-    formatNewParams: (formData: Record<string, any>) => ISAParameters;
-    params: ISAParameters | null;
+    toFormValueSaParameters: (_params: SAParameters) => any;
+    formatNewParams: (formData: Record<string, any>) => SAParameters;
+    params: SAParameters | null;
     currentProvider: string | undefined;
     setCurrentProvider: Dispatch<SetStateAction<string | undefined>>;
     paramsLoaded: boolean;
@@ -96,7 +96,7 @@ export const useSecurityAnalysisParametersForm = (
     const watchProvider = watch(PARAM_SA_PROVIDER);
 
     const toContingencyListsInfos = useCallback(
-        (formContingencyListsInfos: Record<string, any>[]): IContingencyListsInfos[] => {
+        (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfos[] => {
             return formContingencyListsInfos.map((contingencyListsInfos) => ({
                 [CONTINGENCY_LISTS]: contingencyListsInfos[CONTINGENCY_LISTS]?.map((c: Record<string, string>) => ({
                     [ID]: c[ID],

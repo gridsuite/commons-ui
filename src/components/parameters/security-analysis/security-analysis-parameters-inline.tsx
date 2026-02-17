@@ -22,7 +22,7 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
-import { ISAParameters } from './types';
+import { SAParameters } from './types';
 import { toFormValueSaParameters } from './columns-definitions';
 
 export function SecurityAnalysisParametersInline({
@@ -69,7 +69,7 @@ export function SecurityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSecurityAnalysisParameters(newParams[0].id)
-                    .then((parameters: ISAParameters) => {
+                    .then((parameters: SAParameters) => {
                         console.info(`loading the following security analysis parameters :  ${parameters.uuid}`);
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,

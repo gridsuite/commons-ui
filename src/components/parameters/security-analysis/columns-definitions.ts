@@ -18,7 +18,7 @@ import {
 } from '../common';
 import yup from '../../../utils/yupConfig';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
-import { ISAParameters } from './types';
+import { SAParameters } from './types';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
@@ -63,7 +63,7 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
         .concat(getNameElementEditorSchema(name));
 };
 
-export const toFormValueSaParameters = (params: ISAParameters) => ({
+export const toFormValueSaParameters = (params: SAParameters) => ({
     [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
     ...toFormValuesContingencyListsInfos(params?.[CONTINGENCY_LISTS_INFOS]),
     ...toFormValuesLimitReductions(params?.limitReductions),

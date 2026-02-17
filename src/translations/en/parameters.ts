@@ -212,7 +212,7 @@ export const parametersEn = {
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',
     getContingencyListError: "Can't fetch contingencies lists",
-    xContingenciesWillBeSimulated: '{x} contingencies will be simulated',
+    xContingenciesWillBeSimulated: '{x} contingencies to be simulated',
 
     resultsThreshold: 'Minimum sensitivity threshold',
     SensitivityBranches: 'Branches',
