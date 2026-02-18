@@ -10,14 +10,19 @@ import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportPara
 import { useIntl } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
 import { LANG_FRENCH } from '../../utils';
+import { fetchStudyMetadata } from '../../services';
 
 const NA_VALUE = 'N/A';
+
+export const fetchCsvSeparator = async (): Promise<string | undefined> => {
+    return fetchStudyMetadata().then((metadata) => metadata.copyCsvSeparator);
+};
 
 export const useCsvExport = () => {
     const intl = useIntl();
 
     const getData = useCallback(
-        (props: CsvDownloadProps): string | undefined | void => {
+        async (props: CsvDownloadProps): Promise<string | undefined | void> => {
             const formatNAValue = (value: string): string => {
                 return value === NA_VALUE ? intl.formatMessage({ id: 'export/undefined' }) : value;
             };
@@ -40,12 +45,20 @@ export const useCsvExport = () => {
                     .replace(/[\\/:"*?<>|\s]/g, '-') // Removes the filesystem sensible characters
                     .substring(0, 27); // Best practice: limits the filename size to 31 characters (27+'.csv')
             };
-            const prefix = props.tableNamePrefix ?? '';
 
+            const prefix = props.tableNamePrefix ?? '';
+            let columnSeparatorValue = props.language === LANG_FRENCH ? ';' : ',';
+
+            if (props.isCopyCsv) {
+                const separator = await fetchCsvSeparator();
+                if (separator !== undefined) {
+                    columnSeparatorValue = separator;
+                }
+            }
             return props.getData({
                 suppressQuotes: false,
                 skipPinnedBottom: props.skipPinnedBottom,
-                columnSeparator: props.language === LANG_FRENCH ? ';' : ',',
+                columnSeparator: columnSeparatorValue,
                 columnKeys: props.columns.map((col) => col.colId).filter(hasColId),
                 skipColumnHeaders: props.skipColumnHeaders,
                 processHeaderCallback: (params: ProcessHeaderForExportParams) =>
