@@ -26,7 +26,7 @@ export function ShortCircuitIccMaterialTableCell({
     return (
         <TableCell align="center" sx={{ fontWeight: 'bold' }}>
             {column.dataKey === SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE && (
-                <SwitchInput size="small" name={`${formName}[${rowIndex}].${column.dataKey}`} />
+                <SwitchInput formProps={{ size: 'small' }} name={`${formName}[${rowIndex}].${column.dataKey}`} />
             )}
             {column.dataKey === SHORT_CIRCUIT_ICC_MATERIAL_TYPE && (
                 <RawReadOnlyInput name={`${formName}[${rowIndex}].${column.dataKey}`} />
