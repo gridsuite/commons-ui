@@ -1,6 +1,6 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.165.1",
+    "version": "0.165.2",
     "description": "common react components for gridsuite applications",
     "author": "gridsuite team",
     "homepage": "https://github.com/gridsuite",
