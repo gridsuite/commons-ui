@@ -7,19 +7,19 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { useMemo } from 'react';
-import type { ISensiParameters } from '../components/parameters/sensi/columns-definitions';
+import { Parameters } from '../components/parameters/common/parameter-table/types';
 
-export function useCreateRowDataSensi(sensiParam: ISensiParameters) {
+export function useCreateRowData(params: Parameters) {
     const useFieldArrayOutput = useFieldArray({
-        name: sensiParam.name || '',
+        name: params.name || '',
     });
     const newRowData = useMemo(() => {
         const rowData: { [key: string]: any } = {};
-        sensiParam.columnsDef.forEach((column) => {
+        params.columnsDef.forEach((column) => {
             rowData[column.dataKey] = column.initialValue;
         });
         return rowData;
-    }, [sensiParam.columnsDef]);
+    }, [params.columnsDef]);
 
     const createNewRowData = () => [newRowData];
 

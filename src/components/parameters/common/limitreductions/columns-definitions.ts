@@ -4,19 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import { NumberSchema } from 'yup';
-import type { UUID } from 'node:crypto';
 import yup from '../../../../utils/yupConfig';
-import {
-    PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_PROVIDER,
-} from '../constant';
-import { getNameElementEditorSchema } from '../name-element-editor';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
@@ -45,17 +34,6 @@ export interface ILimitReductionsByVoltageLevel {
     voltageLevel: IVoltageLevel;
     permanentLimitReduction: number;
     temporaryLimitReductions: ITemporaryLimitReduction[];
-}
-
-export interface ISAParameters {
-    uuid?: UUID;
-    [PARAM_SA_PROVIDER]: string;
-    limitReductions: ILimitReductionsByVoltageLevel[];
-    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: number;
-    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
-    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
-    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
-    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
 }
 
 export enum TabValues {
@@ -119,41 +97,19 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
         .required();
 };
 
-export const getSAParametersFromSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
-    const providerSchema = yup.object().shape({
-        [PARAM_SA_PROVIDER]: yup.string().required(),
-    });
+const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
+    limits.reduce((acc: Record<string, number>, limit, index) => {
+        acc[LIMIT_DURATION_FORM + index] = limit.reduction;
+        return acc;
+    }, {});
 
-    const limitReductionsSchema = getLimitReductionsFormSchema(
-        limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
-    );
-
-    const thresholdsSchema = yup.object().shape({
-        [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: yup
-            .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
-            .required(),
-        [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
-            .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
-            .required(),
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
-        [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
-            .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
-            .required(),
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
-    });
-
-    return yup
-        .object()
-        .shape({
-            ...providerSchema.fields,
-            ...limitReductionsSchema.fields,
-            ...thresholdsSchema.fields,
-        })
-        .concat(getNameElementEditorSchema(name));
-};
+export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) =>
+    !limits
+        ? {}
+        : {
+              [LIMIT_REDUCTIONS_FORM]: limits.map((vlLimits) => ({
+                  [VOLTAGE_LEVELS_FORM]: `${vlLimits.voltageLevel.nominalV} kV`,
+                  [IST_FORM]: vlLimits.permanentLimitReduction,
+                  ...toFormValuesFromTemporaryLimits(vlLimits.temporaryLimitReductions),
+              })),
+          };
