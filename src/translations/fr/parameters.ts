@@ -214,11 +214,12 @@ export const parametersFr = {
     flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
 
     ContingencyListsSelection: "Sélection des listes d'aléas",
+    contingencyLists: "Listes d'aléas",
     Execute: 'Exécuter',
     AddContingencyList: 'Ajouter',
     DeleteContingencyList: 'Supprimer',
     getContingencyListError: "Impossible de récupérer les listes d'aléas",
-    xContingenciesWillBeSimulated: '{x} aléas seront simulés',
+    xContingenciesWillBeSimulated: '{x} défauts à simuler',
 
     resultsThreshold: 'Seuil minimal de sensibilité',
     SensitivityBranches: 'Quadripôles',
@@ -239,7 +240,7 @@ export const parametersFr = {
     SensitivityType: 'Type de sensibilité',
     DeltaMW: '\u0394 MW',
     DeltaA: '\u0394 A',
-    ContingencyLists: 'Aléas',
+    ContingencyLists: "Listes d'aléas",
     Injections: 'Injections',
     MonitoredVoltageLevels: 'Postes surveillés',
     EquipmentsInVoltageRegulation: 'Ouvrages en réglage tension',

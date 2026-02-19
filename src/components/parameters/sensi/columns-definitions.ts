@@ -6,8 +6,6 @@
  */
 
 import {
-    ACTIVATED,
-    CONTINGENCIES,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
     HVDC_LINES,
@@ -23,6 +21,8 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
+import { CONTINGENCIES } from '../common';
+import { ACTIVATED, ColumnsDef, Parameters } from '../common/parameter-table';
 
 export const MONITORED_BRANCHES_EQUIPMENT_TYPES = [EquipmentType.LINE, EquipmentType.TWO_WINDINGS_TRANSFORMER];
 export const INJECTION_DISTRIBUTION_TYPES = [
@@ -51,28 +51,7 @@ export const EQUIPMENTS_IN_VOLTAGE_REGULATION_TYPES = [
 ];
 export const HVDC_EQUIPMENT_TYPES = [EquipmentType.HVDC_LINE];
 
-export interface ISensiParameters {
-    columnsDef: IColumnsDef[];
-    name: string;
-}
-
-export interface IColumnsDef {
-    label: string;
-    dataKey: string;
-    initialValue: boolean | string | string[] | number;
-    editable?: boolean;
-    directoryItems?: boolean;
-    menuItems?: boolean;
-    equipmentTypes?: any[];
-    elementType?: string;
-    titleId?: string;
-    checkboxItems?: boolean;
-    floatItems?: boolean;
-    textItems?: boolean;
-    width?: string;
-}
-
-export const COLUMNS_DEFINITIONS_INJECTIONS_SET: IColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
     {
         label: 'SupervisedBranches',
         dataKey: MONITORED_BRANCHES,
@@ -295,27 +274,27 @@ export const COLUMNS_DEFINITIONS_NODES = [
     },
 ];
 
-export const SensiInjectionsSet: ISensiParameters = {
+export const SensiInjectionsSet: Parameters = {
     columnsDef: COLUMNS_DEFINITIONS_INJECTIONS_SET,
     name: PARAMETER_SENSI_INJECTIONS_SET,
 };
 
-export const SensiInjection: ISensiParameters = {
+export const SensiInjection: Parameters = {
     columnsDef: COLUMNS_DEFINITIONS_INJECTIONS,
     name: PARAMETER_SENSI_INJECTION,
 };
 
-export const SensiHvdcs: ISensiParameters = {
+export const SensiHvdcs: Parameters = {
     columnsDef: COLUMNS_DEFINITIONS_HVDCS,
     name: PARAMETER_SENSI_HVDC,
 };
 
-export const SensiPsts: ISensiParameters = {
+export const SensiPsts: Parameters = {
     columnsDef: COLUMNS_DEFINITIONS_PSTS,
     name: PARAMETER_SENSI_PST,
 };
 
-export const SensiNodes: ISensiParameters = {
+export const SensiNodes: Parameters = {
     columnsDef: COLUMNS_DEFINITIONS_NODES,
     name: PARAMETER_SENSI_NODES,
 };

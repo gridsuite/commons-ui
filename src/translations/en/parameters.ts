@@ -207,11 +207,12 @@ export const parametersEn = {
     flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
 
     ContingencyListsSelection: 'Contingency lists selection',
+    contingencyLists: 'Contingency lists',
     Execute: 'Execute',
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',
     getContingencyListError: "Can't fetch contingencies lists",
-    xContingenciesWillBeSimulated: '{x} contingencies will be simulated',
+    xContingenciesWillBeSimulated: '{x} contingencies to be simulated',
 
     resultsThreshold: 'Minimum sensitivity threshold',
     SensitivityBranches: 'Branches',
@@ -232,7 +233,7 @@ export const parametersEn = {
     SensitivityType: 'Sensitivity type',
     DeltaMW: '\u0394 MW',
     DeltaA: '\u0394 A',
-    ContingencyLists: 'Contingencies',
+    ContingencyLists: 'Contingencies lists',
     Injections: 'Injections',
     MonitoredVoltageLevels: 'Supervised voltage levels',
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
