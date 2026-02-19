@@ -18,3 +18,4 @@ export * from './utils';
 export * from './voltage-init';
 export * from './short-circuit-analysis';
 export * from './networkModification';
+export * from './dynamic-margin-calculation';
