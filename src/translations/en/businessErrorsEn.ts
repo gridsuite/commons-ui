@@ -84,4 +84,6 @@ export const businessErrorsEn = {
     'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
     'diagram.noConfiguredPosition': 'No configured position found',
     'diagram.noVoltageLevelFound': 'No voltage level found for this network area diagram',
+    'dynamicMarginCalculation.providerNotFound': 'Dynamic margin calculation provider not found.',
+    'dynamicMarginCalculation.loadFilterNotFound': 'Some load filters do not exist: {filterUuids}',
 };
