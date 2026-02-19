@@ -8,11 +8,9 @@
 import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import {
-    ACTIVATED,
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     CONTAINER_ID,
     CONTAINER_NAME,
-    CONTINGENCIES,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
@@ -30,10 +28,11 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { DistributionType, SensitivityType } from '../../../utils';
-import { PROVIDER } from '../common';
+import { CONTINGENCIES, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
+import { ACTIVATED } from '../common/parameter-table';
 
 const getMonitoredBranchesSchema = () => {
     return {

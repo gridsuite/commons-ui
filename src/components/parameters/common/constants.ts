@@ -18,3 +18,7 @@ export const PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD = 'highVoltageAbsoluteThre
 export const VERSION_PARAMETER = 'version';
 export const COMMON_PARAMETERS = 'commonParameters';
 export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
+
+export const CONTINGENCY_LISTS_INFOS = 'contingencyListsInfos';
+export const CONTINGENCY_LISTS = 'contingencyLists';
+export const CONTINGENCIES = 'contingencies';

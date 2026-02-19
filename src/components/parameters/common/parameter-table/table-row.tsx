@@ -10,11 +10,11 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import EditableTableCell from './table-cell';
-import { IColumnsDef } from './columns-definitions';
+import { ColumnsDef } from './types';
 
 interface TableRowComponentProps {
     arrayFormName: string;
-    columnsDefinition: IColumnsDef[];
+    columnsDefinition: ColumnsDef[];
     index: number;
     handleDeleteButton: (index: number) => void;
     disableDelete: boolean;
@@ -42,7 +42,7 @@ export function TableRowComponent({
 
     return (
         <TableRow onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
-            {columnsDefinition.map((column: IColumnsDef) =>
+            {columnsDefinition.map((column: ColumnsDef) =>
                 EditableTableCell(arrayFormName, index, column, handleCellChanged)
             )}
             {!disableDelete && (

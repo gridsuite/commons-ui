@@ -11,14 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import {
-    ComputingType,
-    CreateParameterDialog,
-    ISAParameters,
-    LabelledButton,
-    LineSeparator,
-    toFormValueSaParameters,
-} from '../common';
+import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { SubmitButton } from '../../inputs';
@@ -29,15 +22,19 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
+import { SAParameters } from './types';
+import { toFormValueSaParameters } from './columns-definitions';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
+    fetchContingencyCount,
     setHaveDirtyFields,
     isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
+    fetchContingencyCount: (contingencyListIds: UUID[] | null) => Promise<number>;
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {
@@ -72,7 +69,7 @@ export function SecurityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSecurityAnalysisParameters(newParams[0].id)
-                    .then((parameters: ISAParameters) => {
+                    .then((parameters: SAParameters) => {
                         console.info(`loading the following security analysis parameters :  ${parameters.uuid}`);
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,
@@ -94,6 +91,8 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
+            fetchContingencyCount={fetchContingencyCount}
+            showContingencyCount
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
