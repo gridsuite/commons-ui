@@ -74,7 +74,8 @@ export const businessErrorsFr = {
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
-    'pccMin.voltageLevelsLimitExceeded': 'Nombre de postes {voltageLevelSize} excède la limite {voltageLevelsLimit}',
+    'pccMin.voltageLevelsLimitExceeded':
+        'Le résultat de l’évaluation du filtre donne {voltageLevelSize} postes, ce qui dépasse la limite de {voltageLevelsLimit}.',
     'diagram.invalidEquipmentType':
         "L'équipement {id} de type {equipmentType} n'est pas un site ou poste dans le réseau courant",
     'diagram.invalidSubstationLayout': "Le mode d'affichage de site {substationLayout} n'existe pas",
