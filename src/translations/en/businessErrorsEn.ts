@@ -6,6 +6,8 @@
  */
 
 export const businessErrorsEn = {
+    'case.noAvailableImporter': 'No available importer found for this file',
+    'case.illegalFileName': 'The file name is not accepted.',
     'directory.permissionDenied': 'You are not allowed to perform this action.',
     'directory.elementNameBlank': 'Element name must not be blank.',
     'directory.notDirectory': 'The selected element is not a directory.',
@@ -20,7 +22,6 @@ export const businessErrorsEn = {
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
-    'explore.incorrectCaseFile': 'Invalid imported file name or format.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
     'study.loadflowError': 'Loadflow error.',
@@ -72,4 +73,15 @@ export const businessErrorsEn = {
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'pccMin.voltageLevelsLimitExceeded':
+        'The result of filter evaluation gives {voltageLevelSize} voltage levels, which exceeds the limit {voltageLevelsLimit}.',
+    'diagram.invalidEquipmentType':
+        'The equipment {id} of type {equipmentType} is not a substation or voltage level in given network',
+    'diagram.invalidSubstationLayout': "Given substation layout {substationLayout} doesn't exist",
+    'diagram.invalidDisplayMode': "Given sld display mode {sldDisplayMode} doesn't exist",
+    'diagram.maxVoltageLevelDisplayed':
+        'You need to reduce the number of voltage levels to be displayed in the network area diagram (current {nbVoltageLevels}, maximum {maxVoltageLevels})',
+    'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
+    'diagram.noConfiguredPosition': 'No configured position found',
+    'diagram.noVoltageLevelFound': 'No voltage level found for this network area diagram',
 };

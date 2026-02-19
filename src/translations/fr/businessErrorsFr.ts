@@ -6,6 +6,8 @@
  */
 
 export const businessErrorsFr = {
+    'case.noAvailableImporter': "Aucun importateur n'a été trouvé pour ce fichier.",
+    'case.illegalFileName': "Le nom de fichier n'est pas accepté.",
     'directory.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'directory.elementNameBlank': "Le nom de l'élément ne peut pas être vide.",
     'directory.notDirectory': "L'élément sélectionné n'est pas un dossier.",
@@ -20,7 +22,6 @@ export const businessErrorsFr = {
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
-    'explore.incorrectCaseFile': 'Format ou nom du fichier importé invalide.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
     'study.loadflowError': 'Erreur de calcul de répartition.',
@@ -73,4 +74,15 @@ export const businessErrorsFr = {
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
+    'pccMin.voltageLevelsLimitExceeded':
+        'Le résultat de l’évaluation du filtre donne {voltageLevelSize} postes, ce qui dépasse la limite de {voltageLevelsLimit}.',
+    'diagram.invalidEquipmentType':
+        "L'équipement {id} de type {equipmentType} n'est pas un site ou poste dans le réseau courant",
+    'diagram.invalidSubstationLayout': "Le mode d'affichage de site {substationLayout} n'existe pas",
+    'diagram.invalidDisplayMode': "Le mode d'affichage de schéma unifilaire {sldDisplayMode} n'existe pas",
+    'diagram.maxVoltageLevelDisplayed':
+        "Vous devez réduire le nombre de postes à afficher dans l'image nodale de zone (nombre actuel {nbVoltageLevels}, nombre maximum {maxVoltageLevels})",
+    'diagram.equipmentNotFound': 'Poste ou site {id} non trouvé',
+    'diagram.noConfiguredPosition': 'Aucune position configurée trouvée',
+    'diagram.noVoltageLevelFound': 'Aucun poste trouvé pour cette image nodale de zone',
 };
