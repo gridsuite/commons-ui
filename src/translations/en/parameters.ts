@@ -131,7 +131,7 @@ export const parametersEn = {
     ShortCircuitIccClusterFilters: 'Filters',
     ShortCircuitIccClusterFiltersTooltip: 'Select the filters to be included in this cluster',
     ShortCircuitIccClusterType: 'Cluster type',
-    ShortCircuitIccClusterTypeTooltip: 'Select the types of equipment to be included in this cluster',
+    ShortCircuitIccClusterTypeTooltip: 'Select type of production in this cluster',
     ShortCircuitIccClusterTypeListsSelection: 'Type',
     ShortCircuitPowerElectronicsClustersParamParsingError:
         'An error occurred while parsing the power electronics clusters parameters',
