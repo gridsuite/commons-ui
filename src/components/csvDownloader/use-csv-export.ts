@@ -48,14 +48,14 @@ export const useCsvExport = () => {
 
             const prefix = props.tableNamePrefix ?? '';
             const defaultSeparator = props.language === LANG_FRENCH ? ';' : ',';
-            const columnSeparator = props.isCopyCsv
+            const columnSeparatorValue = props.isCopyCsv
                 ? ((await fetchCsvSeparator()) ?? defaultSeparator)
                 : defaultSeparator;
 
             return props.getData({
                 suppressQuotes: false,
                 skipPinnedBottom: props.skipPinnedBottom,
-                columnSeparator: columnSeparator,
+                columnSeparator: columnSeparatorValue,
                 columnKeys: props.columns.map((col) => col.colId).filter(hasColId),
                 skipColumnHeaders: props.skipColumnHeaders,
                 processHeaderCallback: (params: ProcessHeaderForExportParams) =>
