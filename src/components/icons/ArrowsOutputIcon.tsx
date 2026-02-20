@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SvgIcon, SvgIconProps } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 import ArrowsOutput from '@material-symbols/svg-400/outlined/arrows_output.svg?react';
 
 export function ArrowsOutputIcon(props: SvgIconProps) {

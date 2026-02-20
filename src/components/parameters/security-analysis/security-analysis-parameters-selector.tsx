@@ -10,26 +10,20 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { FormattedMessage } from 'react-intl';
 
 import { Grid, Tab, Tabs } from '@mui/material';
-import {
-    ILimitReductionsByVoltageLevel,
-    ISAParameters,
-    LimitReductionsTableForm,
-    TAB_INFO,
-    TabPanel,
-    TabValues,
-} from '../common';
+import { ILimitReductionsByVoltageLevel, LimitReductionsTableForm, TAB_INFO, TabPanel, TabValues } from '../common';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
+import { SAParameters } from './types';
 
 export function SecurityAnalysisParametersSelector({
     params,
     currentProvider,
-    enableDeveloperMode,
+    isDeveloperMode,
     defaultLimitReductions,
 }: Readonly<{
-    params: ISAParameters | null;
+    params: SAParameters | null;
     currentProvider?: string;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
 }>) {
     const [tabSelected, setTabSelected] = useState(TabValues.General);
@@ -50,7 +44,7 @@ export function SecurityAnalysisParametersSelector({
     return (
         <Grid sx={{ width: '100%' }}>
             <Tabs value={tabValue} onChange={handleTabChange}>
-                {TAB_INFO.filter((t) => enableDeveloperMode || !t.developerModeOnly).map(
+                {TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly).map(
                     (tab, index) =>
                         (tab.label !== TabValues[TabValues.LimitReductions] ||
                             (currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions)) && (
@@ -67,7 +61,7 @@ export function SecurityAnalysisParametersSelector({
                 )}
             </Tabs>
 
-            {TAB_INFO.filter((t) => enableDeveloperMode || !t.developerModeOnly).map((tab, index) => (
+            {TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly).map((tab, index) => (
                 <TabPanel key={tab.label} value={tabValue} index={index}>
                     {tabValue === TabValues.General && <ViolationsHidingParameters />}
                     {tabValue === TabValues.LimitReductions &&

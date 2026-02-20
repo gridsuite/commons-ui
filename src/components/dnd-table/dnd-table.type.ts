@@ -17,6 +17,7 @@ export enum DndColumnType {
     AUTOCOMPLETE = 'AUTOCOMPLETE',
     CHIP_ITEMS = 'CHIP_ITEMS',
     DIRECTORY_ITEMS = 'DIRECTORY_ITEMS',
+    SWITCH = 'SWITCH',
     CUSTOM = 'CUSTOM',
 }
 
@@ -28,6 +29,7 @@ export interface ColumnBase {
     extra?: JSX.Element;
     editable?: boolean;
     type: DndColumnType;
+    initialValue?: any; // should conform to the type field
 }
 
 export interface ColumnText extends ColumnBase {
@@ -58,6 +60,10 @@ export interface ColumnChipsItem extends ColumnBase {
     type: DndColumnType.CHIP_ITEMS;
 }
 
+export interface ColumnSwitchItem extends ColumnBase {
+    type: DndColumnType.SWITCH;
+}
+
 export interface ColumnCustom extends ColumnBase {
     type: DndColumnType.CUSTOM;
     component: (rowIndex: number) => ReactNode;
@@ -69,4 +75,5 @@ export type DndColumn =
     | ColumnText
     | ColumnDirectoryItem
     | ColumnChipsItem
+    | ColumnSwitchItem
     | ColumnCustom;

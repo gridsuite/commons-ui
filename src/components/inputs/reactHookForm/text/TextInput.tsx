@@ -39,6 +39,7 @@ export interface TextInputProps {
     >;
     disabledTooltip?: boolean;
     disabled?: boolean;
+    dataTestId?: string;
 }
 
 export function TextInput({
@@ -57,6 +58,7 @@ export function TextInput({
     formProps,
     disabledTooltip, // In case we don't want to show tooltip on the value and warning/info icons
     disabled,
+    dataTestId,
 }: TextInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
     const {
@@ -94,12 +96,13 @@ export function TextInput({
 
     return (
         <Field
+            data-testid={dataTestId}
             key={id ?? label}
             size="small"
             fullWidth
             id={id ?? label}
             label={fieldLabel}
-            value={transformedValue}
+            value={transformedValue ?? ''}
             onChange={handleValueChanged}
             disabled={disabled}
             InputProps={{

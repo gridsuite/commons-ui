@@ -6,11 +6,10 @@
  */
 
 import { memo } from 'react';
-import LoadFlowParameterField from './load-flow-parameter-field';
+import ParameterField from '../common/parameter-field';
 import {
     BALANCE_TYPE,
-    COMMON_PARAMETERS,
-    CONNECTED_COMPONENT_MODE,
+    CONNECTED_MODE,
     COUNTRIES_TO_BALANCE,
     DC,
     DC_POWER_FACTOR,
@@ -20,7 +19,6 @@ import {
     PHASE_SHIFTER_REGULATION_ON,
     READ_SLACK_BUS,
     SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON,
-    SPECIFIC_PARAMETERS,
     TWT_SPLIT_SHUNT_ADMITTANCE,
     USE_REACTIVE_LIMITS,
     VOLTAGE_INIT_MODE,
@@ -29,6 +27,7 @@ import {
 import { useLoadFlowContext } from './use-load-flow-context';
 import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { ParameterGroup } from '../common/widget';
+import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
 
 const basicParams: SpecificParameterInfos[] = [
     {
@@ -58,16 +57,16 @@ const basicParams: SpecificParameterInfos[] = [
         label: 'descLfCountriesToBalance',
     },
     {
-        name: CONNECTED_COMPONENT_MODE,
+        name: CONNECTED_MODE,
         type: ParameterType.STRING,
         label: 'descLfConnectedComponentMode',
         possibleValues: [
             {
-                id: 'MAIN',
+                id: 'MAIN_CONNECTED',
                 label: 'descLfConnectedComponentModeMain',
             },
             {
-                id: 'ALL',
+                id: 'ALL_CONNECTED',
                 label: 'descLfConnectedComponentModeAll',
             },
         ],
@@ -152,7 +151,7 @@ function LoadFlowGeneralParameters({ provider, specificParams }: Readonly<LoadFl
     return (
         <>
             {basicParams.map((item) => (
-                <LoadFlowParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />
+                <ParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />
             ))}
             <ParameterGroup
                 label="showAdvancedParameters"
@@ -160,9 +159,7 @@ function LoadFlowGeneralParameters({ provider, specificParams }: Readonly<LoadFl
                 onClick={setShowAdvancedLfParams}
             >
                 {showAdvancedLfParams &&
-                    advancedParams.map((item) => (
-                        <LoadFlowParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />
-                    ))}
+                    advancedParams.map((item) => <ParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />)}
             </ParameterGroup>
             <ParameterGroup
                 label="showSpecificParameters"
@@ -173,7 +170,7 @@ function LoadFlowGeneralParameters({ provider, specificParams }: Readonly<LoadFl
             >
                 {showSpecificLfParams &&
                     specificParams?.map((item) => (
-                        <LoadFlowParameterField id={SPECIFIC_PARAMETERS} {...item} key={item.name} />
+                        <ParameterField id={SPECIFIC_PARAMETERS} {...item} key={item.name} />
                     ))}
             </ParameterGroup>
         </>

@@ -36,7 +36,7 @@ interface SensitivityAnalysisParametersProps {
     currentRootNetworkUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }
 
 export function SensitivityAnalysisParametersInline({
@@ -45,7 +45,7 @@ export function SensitivityAnalysisParametersInline({
     currentRootNetworkUuid,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
@@ -76,7 +76,7 @@ export function SensitivityAnalysisParametersInline({
                         reset(sensitivityAnalysisMethods.fromSensitivityAnalysisParamsDataToFormValues(parameters), {
                             keepDefaultValues: true,
                         });
-                        sensitivityAnalysisMethods.initRowsCount();
+                        sensitivityAnalysisMethods.onFormChanged();
                     })
                     .catch((error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
@@ -96,7 +96,7 @@ export function SensitivityAnalysisParametersInline({
     const clear = useCallback(() => {
         reset(sensitivityAnalysisMethods.emptyFormData);
         resetSensitivityAnalysisParameters();
-        sensitivityAnalysisMethods.setAnalysisComputeComplexity(0);
+        sensitivityAnalysisMethods.resetFactorsCount();
         setOpenResetConfirmation(false);
     }, [reset, sensitivityAnalysisMethods, resetSensitivityAnalysisParameters]);
 
@@ -115,7 +115,7 @@ export function SensitivityAnalysisParametersInline({
     return (
         <SensitivityAnalysisParametersForm
             sensitivityAnalysisMethods={sensitivityAnalysisMethods}
-            enableDeveloperMode={enableDeveloperMode}
+            isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
                     <>
@@ -139,8 +139,9 @@ export function SensitivityAnalysisParametersInline({
                                     onClick={handleSubmit(sensitivityAnalysisMethods.onSaveInline)}
                                     variant="outlined"
                                     disabled={
-                                        sensitivityAnalysisMethods.launchLoader ||
-                                        sensitivityAnalysisMethods.isMaxReached
+                                        sensitivityAnalysisMethods.isLoading ||
+                                        sensitivityAnalysisMethods.isMaxResultsReached ||
+                                        sensitivityAnalysisMethods.isMaxVariablesReached
                                     }
                                 >
                                     <FormattedMessage id="validate" />

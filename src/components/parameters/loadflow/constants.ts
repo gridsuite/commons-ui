@@ -8,17 +8,12 @@
 export const PARAM_LIMIT_REDUCTION = 'limitReduction';
 export const PARAM_PROVIDER_OPENLOADFLOW = 'OpenLoadFlow';
 
-export const COMMON_PARAMETERS = 'commonParameters';
-export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
-
-export const VERSION_PARAMETER = 'version';
-
 // BasicLoadFlowParameters
 export const PHASE_SHIFTER_REGULATION_ON = 'phaseShifterRegulationOn';
 export const DC = 'dc';
 export const BALANCE_TYPE = 'balanceType';
 export const COUNTRIES_TO_BALANCE = 'countriesToBalance';
-export const CONNECTED_COMPONENT_MODE = 'connectedComponentMode';
+export const CONNECTED_MODE = 'componentMode';
 export const HVDC_AC_EMULATION = 'hvdcAcEmulation';
 
 // AdvancedLoadFlowParameters

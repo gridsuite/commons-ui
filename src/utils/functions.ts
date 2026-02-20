@@ -17,9 +17,35 @@ export function keyGenerator() {
     };
 }
 
+/**
+ * returns true if the two arrays contain exactly the same strings, regardless of the order
+ */
+export function arraysContainIdenticalStrings(array1: string[] | undefined, array2: string[] | undefined): boolean {
+    return (
+        array1 !== undefined &&
+        array2 !== undefined &&
+        JSON.stringify([...array1].sort((a, b) => a.localeCompare(b))) ===
+            JSON.stringify([...array2].sort((a, b) => a.localeCompare(b)))
+    );
+}
+
 export const areArrayElementsUnique = (array: unknown[]) => {
     const uniqueValues = [...new Set(array)];
     return uniqueValues.length === array.length;
 };
+
+/**
+ * returns true if element is null or undefined
+ * for string values return true if element is an empty string
+ * for number values return true if element is NaN
+ */
+export function isEmpty(value: any): boolean {
+    return (
+        value === undefined ||
+        value === null ||
+        (typeof value === 'string' && value.trim() === '') ||
+        (typeof value === 'number' && Number.isNaN(value))
+    );
+}
 
 export const isObjectEmpty = (object: object) => object && Object.keys(object).length === 0;

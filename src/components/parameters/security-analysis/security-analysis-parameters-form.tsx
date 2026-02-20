@@ -7,12 +7,14 @@
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Grid, LinearProgress } from '@mui/material';
+import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
+import { ContingencyTable } from '../common/contingency-table';
 
 const styles = {
     form: {
@@ -42,21 +44,25 @@ const styles = {
 
 export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
+    fetchContingencyCount,
+    showContingencyCount,
     renderTitleFields,
     renderActions,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
+    fetchContingencyCount?: (contingencyListIds: UUID[] | null) => Promise<number>;
+    showContingencyCount: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     return (
         <CustomFormProvider
             validationSchema={securityAnalysisMethods.formSchema}
             {...securityAnalysisMethods.formMethods}
         >
-            <Grid item sx={{ height: '100%' }} xl={9} lg={11} md={12}>
+            <Grid item sx={{ height: '100%' }}>
                 <Box
                     sx={{
                         height: '100%',
@@ -101,14 +107,24 @@ export function SecurityAnalysisParametersForm({
                                 >
                                     <Grid
                                         container
+                                        key="securityAnalysisParameters"
                                         sx={mergeSx(parametersStyles.scrollableGrid, {
                                             maxHeight: '100%',
                                         })}
                                     >
+                                        <Grid>
+                                            <ContingencyTable
+                                                showContingencyCount={showContingencyCount}
+                                                fetchContingencyCount={fetchContingencyCount}
+                                            />
+                                        </Grid>
+                                        <Grid container paddingTop={4} paddingBottom={2}>
+                                            <LineSeparator />
+                                        </Grid>
                                         <SecurityAnalysisParametersSelector
                                             params={securityAnalysisMethods.params}
                                             currentProvider={securityAnalysisMethods.currentProvider?.trim()}
-                                            enableDeveloperMode={enableDeveloperMode}
+                                            isDeveloperMode={isDeveloperMode}
                                             defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                                         />
                                     </Grid>

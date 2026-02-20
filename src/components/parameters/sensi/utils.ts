@@ -5,14 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import {
-    ACTIVATED,
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     CONTAINER_ID,
     CONTAINER_NAME,
-    CONTINGENCIES,
-    COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
@@ -30,10 +28,11 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { DistributionType, SensitivityType } from '../../../utils';
-import { PROVIDER } from '../common';
+import { CONTINGENCIES, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
+import { ACTIVATED } from '../common/parameter-table';
 
 const getMonitoredBranchesSchema = () => {
     return {
@@ -74,7 +73,6 @@ const getContingenciesSchema = () => {
             })
         ),
         [ACTIVATED]: yup.boolean().required(),
-        [COUNT]: yup.number().nullable(),
     };
 };
 
@@ -372,6 +370,30 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
         }),
     };
 };
+
+export const hasVariables = (row: any): boolean => {
+    return (
+        row[INJECTIONS]?.length > 0 ||
+        row[HVDC_LINES]?.length > 0 ||
+        row[PSTS]?.length > 0 ||
+        row[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.length > 0
+    );
+};
+
+export const hasMonitoredEquipments = (row: any): boolean => {
+    return row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
+};
+
+export const isActivatedSensiParameterRow = (entry: FieldValues) => {
+    return entry[ACTIVATED];
+};
+
+export const isValidSensiParameterRow = (entry: FieldValues) => {
+    return isActivatedSensiParameterRow(entry) && hasMonitoredEquipments(entry) && hasVariables(entry);
+};
+
+export const filterSensiParameterRows = (entries?: FieldValues[]) =>
+    (entries ?? []).filter((entry) => isValidSensiParameterRow(entry));
 
 export const formSchema = yup
     .object()

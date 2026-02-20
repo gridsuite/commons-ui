@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { KILO_VOLT, MEGA_VAR } from '../../../utils/constants/unitsConstants';
-
 export const PROVIDER = 'provider';
 export const VOLTAGE_LEVEL = 'voltageLevel';
 
@@ -17,11 +15,10 @@ export const PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD = 'lowVoltageAbsoluteThresh
 export const PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD = 'highVoltageProportionalThreshold';
 export const PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD = 'highVoltageAbsoluteThreshold';
 
-export const ReactivePowerAdornment = {
-    position: 'end',
-    text: MEGA_VAR,
-};
-export const VoltageAdornment = {
-    position: 'end',
-    text: KILO_VOLT,
-};
+export const VERSION_PARAMETER = 'version';
+export const COMMON_PARAMETERS = 'commonParameters';
+export const SPECIFIC_PARAMETERS = 'specificParametersPerProvider';
+
+export const CONTINGENCY_LISTS_INFOS = 'contingencyListsInfos';
+export const CONTINGENCY_LISTS = 'contingencyLists';
+export const CONTINGENCIES = 'contingencies';

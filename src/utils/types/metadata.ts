@@ -25,11 +25,18 @@ export type StudyMetadata = Metadata & {
         [networkElementType: string]: PredefinedProperties;
     };
     defaultParametersValues?: {
-        enableDeveloperMode?: boolean;
+        isDeveloperMode?: boolean;
     };
     defaultCountry?: string;
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
+    baseMapOptions?: { id: string; label: string }[];
+    copyCsvSeparator?: string;
+};
+
+export type ExploreMetadata = Metadata & {
+    name: 'Explore';
+    maxFileSizeInMb?: number;
 };
 
 type ThemeColors = Record<string, string>;

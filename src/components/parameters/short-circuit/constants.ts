@@ -17,6 +17,7 @@ export enum PredefinedParameters {
     ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP = 'ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP',
 }
 
+// common parameters
 export const SHORT_CIRCUIT_WITH_FEEDER_RESULT = 'withFeederResult';
 export const SHORT_CIRCUIT_PREDEFINED_PARAMS = 'predefinedParameters';
 export const SHORT_CIRCUIT_WITH_LOADS = 'withLoads';
@@ -24,6 +25,14 @@ export const SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS = 'withVSCConverterStatio
 export const SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS = 'withShuntCompensators';
 export const SHORT_CIRCUIT_WITH_NEUTRAL_POSITION = 'withNeutralPosition';
 export const SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE = 'initialVoltageProfileMode';
+export const SHORT_CIRCUIT_VOLTAGE_RANGES = 'voltageRanges';
+
+// specific parameters
+export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER = 'onlyStartedGeneratorsInCalculationCluster';
+export const SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS = 'modelPowerElectronics';
+export const SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS = 'powerElectronicsMaterials';
+export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER = 'powerElectronicsCluster'; // TODO REMOVE WHEN fixed in powsybl
+export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
 
 export const intlPredefinedParametersOptions = () => [
     {
@@ -51,4 +60,15 @@ export const intlInitialVoltageProfileMode = () => {
             label: 'cei909InitialVoltageProfileMode',
         },
     };
+};
+
+export const onlyStartedGeneratorsOptions = {
+    ALL: {
+        id: 'false',
+        label: 'ShortCircuitAllLabel',
+    },
+    STARTED: {
+        id: 'true',
+        label: 'ShortCircuitStartedLabel',
+    },
 };

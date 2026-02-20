@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { ElementType, FieldConstants } from '../utils';
@@ -50,6 +50,8 @@ export function useUniqueNameValidation({
     const defaultFieldValue = defaultValues?.[name];
     const directory = selectedDirectory || activeDirectory;
 
+    const previousDirectoryRef = useRef<string | undefined>(directory);
+
     // This is a trick to share the custom validation state among the form : while this error is present, we can't validate the form
     const isValidating = errors.root?.isValidating;
 
@@ -91,6 +93,25 @@ export function useUniqueNameValidation({
     useEffect(() => {
         const trimmedValue = value.trim();
 
+        const triggerNameValidation = () => {
+            clearErrors(name);
+            setError('root.isValidating', {
+                type: 'validate',
+                message: 'use-unique-name-validation/cantSubmitWhileValidating',
+            });
+            debouncedHandleCheckName(trimmedValue);
+        };
+        // when directory changes
+        if (previousDirectoryRef.current !== directory) {
+            previousDirectoryRef.current = directory;
+
+            if (directory && trimmedValue) {
+                triggerNameValidation();
+            }
+
+            return;
+        }
+
         if (selectedDirectory) {
             debouncedHandleCheckName(trimmedValue);
         }
@@ -110,12 +131,7 @@ export function useUniqueNameValidation({
         }
 
         if (trimmedValue) {
-            clearErrors(name);
-            setError('root.isValidating', {
-                type: 'validate',
-                message: 'use-unique-name-validation/cantSubmitWhileValidating',
-            });
-            debouncedHandleCheckName(trimmedValue);
+            triggerNameValidation();
         } else {
             clearErrors('root.isValidating');
             setError(name, {

@@ -7,4 +7,6 @@
 
 export const errorsFr = {
     'errors.network.timeout': 'La requête a expiré. Veuillez réessayer.',
+    'errors.technicalError':
+        'Erreur serveur: {message}\n (serveur: {serverName}, horodatage: {timestamp}, trace ID: {traceId})',
 };

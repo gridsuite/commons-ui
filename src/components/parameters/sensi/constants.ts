@@ -5,8 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const ACTIVATED = 'activated';
-export const CONTINGENCIES = 'contingencies';
 export const EQUIPMENTS_IN_VOLTAGE_REGULATION = 'equipmentsInVoltageRegulation';
 export const SUPERVISED_VOLTAGE_LEVELS = 'monitoredVoltageLevels';
 export const MONITORED_BRANCHES = 'monitoredBranches';
@@ -27,4 +25,7 @@ export const PARAMETER_SENSI_PST = 'sensitivityPST';
 export const PARAMETER_SENSI_NODES = 'sensitivityNodes';
 export const CONTAINER_ID = 'containerId';
 export const CONTAINER_NAME = 'containerName';
-export const COUNT = 'count';
+
+export const MAX_RESULTS_COUNT = 500000;
+export const MAX_VARIABLES_COUNT = 5000;
+export const DEFAULT_FACTOR_COUNT = { resultCount: 0, variableCount: 0 };

@@ -16,16 +16,16 @@ interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }
 
 export function ShortCircuitParametersForm({
     shortCircuitMethods,
     renderTitleFields,
     renderActions,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<ShortCircuitParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoading, resetAll } = shortCircuitMethods;
+    const { formMethods, formSchema, paramsLoaded, resetAll } = shortCircuitMethods;
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
@@ -40,12 +40,12 @@ export function ShortCircuitParametersForm({
                 <Grid item container direction="column">
                     {renderTitleFields?.()}
                 </Grid>
-                {paramsLoading ? (
-                    <LinearProgress />
-                ) : (
+                {paramsLoaded ? (
                     <Grid sx={parametersStyles.scrollableGrid}>
-                        <ShortCircuitFields enableDeveloperMode={enableDeveloperMode} resetAll={resetAll} />
+                        <ShortCircuitFields isDeveloperMode={isDeveloperMode} resetAll={resetAll} />
                     </Grid>
+                ) : (
+                    <LinearProgress />
                 )}
                 <Grid
                     item

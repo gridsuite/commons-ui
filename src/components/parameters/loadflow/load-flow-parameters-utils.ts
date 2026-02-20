@@ -6,11 +6,17 @@
  */
 
 import { UseFormReturn } from 'react-hook-form';
-import { ILimitReductionsByVoltageLevel, IST_FORM, LIMIT_DURATION_FORM, LIMIT_REDUCTIONS_FORM } from '../common';
+import {
+    COMMON_PARAMETERS,
+    ILimitReductionsByVoltageLevel,
+    IST_FORM,
+    LIMIT_DURATION_FORM,
+    LIMIT_REDUCTIONS_FORM,
+    toFormValuesLimitReductions,
+} from '../common';
 import {
     BALANCE_TYPE,
-    COMMON_PARAMETERS,
-    CONNECTED_COMPONENT_MODE,
+    CONNECTED_MODE,
     COUNTRIES_TO_BALANCE,
     DC,
     DC_POWER_FACTOR,
@@ -23,16 +29,12 @@ import {
     PHASE_SHIFTER_REGULATION_ON,
     READ_SLACK_BUS,
     SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON,
-    SPECIFIC_PARAMETERS,
     TWT_SPLIT_SHUNT_ADMITTANCE,
     USE_REACTIVE_LIMITS,
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
 import yup from '../../../utils/yupConfig';
-import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
-import { SpecificParametersPerProvider } from '../../../utils/types/loadflow.type';
 
 export enum TabValues {
     GENERAL = 'General',
@@ -45,7 +47,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
         [DC]: yup.boolean().required(),
         [BALANCE_TYPE]: yup.string().required(),
         [COUNTRIES_TO_BALANCE]: yup.array().of(yup.string()).required(),
-        [CONNECTED_COMPONENT_MODE]: yup.string().required(),
+        [CONNECTED_MODE]: yup.string().required(),
         [HVDC_AC_EMULATION]: yup.boolean().required(),
     });
 };
@@ -75,64 +77,6 @@ export const getCommonLoadFlowParametersFormSchema = () => {
             ...getAdvancedLoadFlowParametersFormSchema().fields,
         }),
     });
-};
-
-export const getSpecificLoadFlowParametersFormSchema = (specificParameters: SpecificParameterInfos[]) => {
-    const shape: { [key: string]: yup.AnySchema } = {};
-
-    specificParameters?.forEach((param: SpecificParameterInfos) => {
-        switch (param.type) {
-            case ParameterType.STRING:
-                shape[param.name] = yup.string().required();
-                break;
-            case ParameterType.DOUBLE:
-                shape[param.name] = yup.number().required();
-                break;
-            case ParameterType.INTEGER:
-                shape[param.name] = yup.number().required();
-                break;
-            case ParameterType.BOOLEAN:
-                shape[param.name] = yup.boolean().required();
-                break;
-            case ParameterType.STRING_LIST:
-                shape[param.name] = yup.array().of(yup.string()).required();
-                break;
-            default:
-                shape[param.name] = yup.mixed().required();
-        }
-    });
-
-    return yup.object().shape({
-        [SPECIFIC_PARAMETERS]: yup.object().shape(shape),
-    });
-};
-
-export const getDefaultSpecificParamsValues = (
-    specificParams: SpecificParameterInfos[]
-): SpecificParametersPerProvider => {
-    return specificParams?.reduce((acc: Record<string, any>, param: SpecificParameterInfos) => {
-        if (param.type === ParameterType.STRING_LIST && param.defaultValue === null) {
-            acc[param.name] = [];
-        } else if (
-            (param.type === ParameterType.DOUBLE || param.type === ParameterType.INTEGER) &&
-            Number.isNaN(Number(param.defaultValue))
-        ) {
-            acc[param.name] = 0;
-        } else {
-            acc[param.name] = param.defaultValue;
-        }
-        return acc;
-    }, {});
-};
-
-export const setSpecificParameters = (
-    provider: string,
-    specificParamsDescriptions: Record<string, SpecificParameterInfos[]> | null,
-    formMethods: UseFormReturn
-) => {
-    const specificParams = provider ? (specificParamsDescriptions?.[provider] ?? []) : [];
-    const specificParamsValues = getDefaultSpecificParamsValues(specificParams);
-    formMethods.setValue(SPECIFIC_PARAMETERS, specificParamsValues);
 };
 
 export const setLimitReductions = (

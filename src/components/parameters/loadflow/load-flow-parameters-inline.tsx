@@ -32,48 +32,35 @@ export function LoadFlowParametersInline({
     language,
     parametersBackend,
     setHaveDirtyFields,
-    enableDeveloperMode,
+    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     language: GsLang;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.LOAD_FLOW>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    enableDeveloperMode: boolean;
+    isDeveloperMode: boolean;
 }>) {
     const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
-    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, enableDeveloperMode, null, null, null);
+    const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, null, null, null);
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-            resetProvider();
-        } else if (pendingResetAction === 'parameters') {
-            resetParameters();
-        }
+        resetParameters();
+        resetProvider();
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [resetParameters, resetProvider]);
 
     const handleResetAllClick = useCallback(() => {
-        setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
     const handleCancelReset = useCallback(() => {
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
     }, []);
 
     const { reset, getValues, formState, handleSubmit } = loadflowMethods.formMethods;
@@ -122,12 +109,17 @@ export function LoadFlowParametersInline({
                                 <LabelledButton
                                     callback={() => setOpenSelectParameterDialog(true)}
                                     label="settings.button.chooseSettings"
+                                    data-testid="LfChooseParametersButton"
                                 />
-                                <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
                                 <LabelledButton
-                                    label="resetProviderValuesToDefault"
-                                    callback={handleResetParametersClick}
+                                    callback={() => setOpenCreateParameterDialog(true)}
+                                    label="save"
+                                    data-testid="LfSaveButton"
+                                />
+                                <LabelledButton
+                                    callback={handleResetAllClick}
+                                    label="resetToDefault"
+                                    data-testid="LfResetToDefaultButton"
                                 />
                                 <SubmitButton
                                     onClick={handleSubmit(
@@ -135,6 +127,7 @@ export function LoadFlowParametersInline({
                                         loadflowMethods.onValidationError
                                     )}
                                     variant="outlined"
+                                    data-testid="LfValidateButton"
                                 >
                                     <FormattedMessage id="validate" />
                                 </SubmitButton>

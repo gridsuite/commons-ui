@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED } from '../../utils';
 
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
@@ -80,4 +81,15 @@ export const networkModificationsFr = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': "Ajout d'un jeu de barre dans le poste {computedLabel}",
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Ajout de section / tronçon dans le poste {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Déplacements de départs dans le poste {computedLabel}',
+    ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
+    CreateSubstation: 'Créer un site',
+    SubstationCreationError: "Erreur lors de la création d'un site'",
+    AdditionalInformation: 'Informations complémentaires',
+    AddProperty: 'Ajouter une propriété',
+    PropertyName: 'Nom de la propriété',
+    PropertyValue: 'Valeur de la propriété',
+    Name: 'Nom',
+    Country: 'Pays',
+    [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
+    [YUP_REQUIRED]: 'Ce champ doit être renseigné',
 };

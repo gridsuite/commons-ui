@@ -5,27 +5,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.ds
  */
 
-import { Box, Chip, type ChipProps } from '@mui/material';
+import { Box, BoxProps, Chip, type ChipProps } from '@mui/material';
 import { OverflowableText } from '../../overflowableText';
 
-export interface OverflowableChipProps extends ChipProps {}
+export interface OverflowableChipProps extends ChipProps {
+    boxSx?: BoxProps['sx'];
+}
 
-export function OverflowableChip({ label, ...otherProps }: Readonly<OverflowableChipProps>) {
+export function OverflowableChip({ label, boxSx, ...otherProps }: Readonly<OverflowableChipProps>) {
     return (
-        <Chip
-            size="small"
-            label={
-                <Box sx={{ display: 'flex' }}>
-                    <OverflowableText
-                        text={label}
-                        sx={{
-                            maxWidth: '20ch',
-                            mx: 'auto',
-                        }}
-                    />
-                </Box>
-            }
-            {...otherProps}
-        />
+        <Box padding="3px" sx={{ cursor: 'default', ...boxSx }} onClick={(e) => e.stopPropagation()}>
+            <Chip
+                size="small"
+                label={
+                    <Box sx={{ display: 'flex' }}>
+                        <OverflowableText
+                            text={label}
+                            sx={{
+                                maxWidth: '20ch',
+                                marginX: 'auto',
+                            }}
+                        />
+                    </Box>
+                }
+                {...otherProps}
+            />
+        </Box>
     );
 }

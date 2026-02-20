@@ -86,7 +86,15 @@ export const OverflowableText = styled(
         const tooltipStyleProps = {
             ...(tooltipStyle && { classes: { tooltip: tooltipStyle } }),
             ...(finalTooltipSx && {
-                slotProps: { tooltip: { sx: finalTooltipSx } },
+                slotProps: {
+                    tooltip: {
+                        onClick: (e: React.MouseEvent) => e.stopPropagation(),
+                        sx: finalTooltipSx,
+                    },
+                    popper: {
+                        onClick: (e: React.MouseEvent) => e.stopPropagation(),
+                    },
+                },
             }),
         };
 

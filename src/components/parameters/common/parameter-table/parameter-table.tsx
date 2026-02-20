@@ -16,27 +16,26 @@ import {
     IconButton,
 } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
-import { UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { TableRowComponent } from './table-row';
-import { IColumnsDef } from './columns-definitions';
-import { ACTIVATED, COUNT, HVDC_LINES, INJECTIONS, MONITORED_BRANCHES, PSTS } from './constants';
-import { MAX_ROWS_NUMBER } from '../../dnd-table';
+import { MAX_ROWS_NUMBER } from './constants';
+import { ColumnsDef } from './types';
 
-interface SensitivityTableProps {
+interface ParameterTableProps {
     arrayFormName: string;
     useFieldArrayOutput: UseFieldArrayReturn;
-    columnsDefinition: IColumnsDef[];
+    columnsDefinition: ColumnsDef[];
     tableHeight: number;
     createRows: (a: number) => void;
     disableAdd?: boolean;
     disableDelete?: boolean;
-    onFormChanged: (a: boolean) => void;
-    onChangeParams: (a: Record<string, any>, b: string, c: number) => void;
+    onFormChanged: () => void;
+    isValidParameterRow: (fieldValue: FieldValues) => any;
 }
 
-export function SensitivityTable({
+export function ParameterTable({
     arrayFormName,
     useFieldArrayOutput,
     columnsDefinition,
@@ -45,11 +44,31 @@ export function SensitivityTable({
     disableAdd,
     disableDelete = false,
     onFormChanged,
-    onChangeParams,
-}: Readonly<SensitivityTableProps>) {
+    isValidParameterRow,
+}: Readonly<ParameterTableProps>) {
     const intl = useIntl();
     const { getValues } = useFormContext();
     const { fields: currentRows, append, remove } = useFieldArrayOutput;
+    const validRowCountRef = useRef<number>(
+        (getValues(arrayFormName) || []).filter((row: FieldValues) => isValidParameterRow(row)).length
+    );
+
+    const handleRowChanged = useCallback(
+        (index: number) => {
+            const currentRowValues = getValues(arrayFormName);
+            const row = currentRowValues[index];
+
+            const currentValidRowCount = currentRowValues.filter((r: FieldValues) => isValidParameterRow(r)).length;
+
+            const previousValidRowCount = validRowCountRef.current;
+            validRowCountRef.current = currentValidRowCount;
+
+            if (currentValidRowCount !== previousValidRowCount || isValidParameterRow(row)) {
+                onFormChanged();
+            }
+        },
+        [getValues, arrayFormName, isValidParameterRow, onFormChanged]
+    );
 
     const handleAddRowsButton = useCallback(() => {
         if (currentRows.length >= MAX_ROWS_NUMBER) {
@@ -58,47 +77,19 @@ export function SensitivityTable({
         append(createRows(1));
     }, [append, createRows, currentRows.length]);
 
-    const fetchCount = useCallback(
-        (providedArrayFormName: string, index: number, source: string) => {
-            const row = getValues(providedArrayFormName)[index];
-            const isActivated = row[ACTIVATED];
-            const hasMonitoredBranches = row[MONITORED_BRANCHES]?.length > 0;
-            const hasInjections = row[INJECTIONS]?.length > 0 || row[HVDC_LINES]?.length > 0 || row[PSTS]?.length > 0;
-            if (source === 'switch' && hasMonitoredBranches && hasInjections) {
-                if (isActivated) {
-                    onChangeParams(row, providedArrayFormName, index);
-                } else {
-                    onFormChanged(true);
-                }
-            }
-            if (source === 'directory' && isActivated) {
-                if (hasMonitoredBranches && hasInjections) {
-                    onChangeParams(row, providedArrayFormName, index);
-                } else if ((!hasMonitoredBranches || !hasInjections) && row.count === 0) {
-                    onFormChanged(false);
-                } else if (!hasMonitoredBranches || !hasInjections) {
-                    onFormChanged(true);
-                }
-            }
-        },
-        [onChangeParams, onFormChanged, getValues]
-    );
-
     const handleDeleteButton = useCallback(
         (index: number) => {
             const currentRowsValues = getValues(arrayFormName);
-            let isFormChanged = false;
             if (index >= 0 && index < currentRowsValues.length) {
-                if (currentRowsValues[index][COUNT] && currentRowsValues[index][ACTIVATED]) {
-                    isFormChanged = true;
-                }
+                const wasValid = isValidParameterRow(currentRowsValues[index]);
                 remove(index);
-            }
-            if (isFormChanged) {
-                onFormChanged(true);
+                if (wasValid) {
+                    validRowCountRef.current -= 1;
+                    onFormChanged();
+                }
             }
         },
-        [arrayFormName, getValues, onFormChanged, remove]
+        [arrayFormName, getValues, isValidParameterRow, onFormChanged, remove]
     );
 
     return (
@@ -111,7 +102,7 @@ export function SensitivityTable({
             <Table stickyHeader size="small" sx={{ tableLayout: 'fixed' }}>
                 <TableHead>
                     <TableRow>
-                        {columnsDefinition.map((column: IColumnsDef) => (
+                        {columnsDefinition.map((column: ColumnsDef) => (
                             <TableCell key={column.dataKey} sx={{ width: column.width, textAlign: 'center' }}>
                                 <Box>{column.label}</Box>
                             </TableCell>
@@ -140,7 +131,7 @@ export function SensitivityTable({
                             index={index}
                             handleDeleteButton={handleDeleteButton}
                             disableDelete={disableDelete}
-                            fetchCount={fetchCount}
+                            handleRowChanged={handleRowChanged}
                         />
                     ))}
                 </TableBody>

@@ -234,6 +234,7 @@ export function CsvUploader({
                         variant="outlined"
                         onClick={() => handleOpenCSVConfirmationDataDialog()}
                         disabled={createError !== ''}
+                        data-testid="ValidateButton"
                     >
                         <FormattedMessage id="validate" />
                     </Button>

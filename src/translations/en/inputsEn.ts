@@ -21,5 +21,5 @@ export const inputsEn = {
     'inputs/boolean': 'Boolean',
     'inputs/checkbox': 'Checkbox',
     'inputs/switch': 'Switch',
-    Optional: 'Optional',
+    'inputs/directory-items': 'Directory items',
 };

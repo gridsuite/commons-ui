@@ -14,6 +14,7 @@ import {
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
     TableView as TableViewIcon,
+    Dashboard as DashboardIcon,
 } from '@mui/icons-material';
 import { ElementType } from '../types/elementType';
 import type { SxStyle } from '../styles';
@@ -36,6 +37,7 @@ export function getFileIcon(type: ElementType, style: SxStyle) {
         case ElementType.SENSITIVITY_PARAMETERS:
         case ElementType.SHORT_CIRCUIT_PARAMETERS:
         case ElementType.NETWORK_VISUALIZATIONS_PARAMETERS:
+        case ElementType.PCC_MIN_PARAMETERS:
             return <SettingsIcon sx={style} />;
         case ElementType.SPREADSHEET_CONFIG:
             return <CalculateIcon sx={style} />;
@@ -43,6 +45,8 @@ export function getFileIcon(type: ElementType, style: SxStyle) {
             return <TableViewIcon sx={style} />;
         case ElementType.DIAGRAM_CONFIG:
             return <HubIcon sx={style} />;
+        case ElementType.WORKSPACE:
+            return <DashboardIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return undefined;
