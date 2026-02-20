@@ -36,6 +36,7 @@ interface SensitivityAnalysisParametersProps {
     currentRootNetworkUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
+    isNodeBuilt: boolean | undefined;
     isDeveloperMode: boolean;
 }
 
@@ -45,11 +46,12 @@ export function SensitivityAnalysisParametersInline({
     currentRootNetworkUuid,
     parametersBackend,
     setHaveDirtyFields,
+    isNodeBuilt,
     isDeveloperMode,
 }: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
-
+    console.info(`isNodeBuilt : ${isNodeBuilt}`);
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
         studyUuid,
         currentNodeUuid,

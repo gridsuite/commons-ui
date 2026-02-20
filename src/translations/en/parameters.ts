@@ -243,6 +243,7 @@ export const parametersEn = {
         '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
+    'sensitivityAnalysis.nodeNotBuilt': 'Unbuilt current node : no computation number forecast',
     loadingComputing: 'Calculation in progress...',
 
     AddRows: 'Add',

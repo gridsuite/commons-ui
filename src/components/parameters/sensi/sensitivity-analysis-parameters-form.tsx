@@ -48,11 +48,13 @@ export function SensitivityAnalysisParametersForm({
     renderTitleFields,
     renderActions,
     isDeveloperMode,
+    isNodeBuilt,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
+    isNodeBuilt: boolean | undefined;
 }>) {
     return (
         <CustomFormProvider
@@ -107,6 +109,7 @@ export function SensitivityAnalysisParametersForm({
                                     factorsCount={sensitivityAnalysisMethods.factorsCount}
                                     isDeveloperMode={isDeveloperMode}
                                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
+                                    isNodeBuilt={isNodeBuilt}
                                 />
                             </Grid>
                         </Box>

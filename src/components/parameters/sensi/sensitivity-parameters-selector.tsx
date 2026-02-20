@@ -26,6 +26,7 @@ import type { MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
+import { useCustomFormContext } from '../../inputs';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -65,6 +66,7 @@ interface SensitivityParametersSelectorProps {
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
+    isNodeBuilt: boolean | undefined;
 }
 
 interface TabInfo {
@@ -78,6 +80,7 @@ function SensitivityParametersSelector({
     factorsCount,
     isDeveloperMode,
     isStudyLinked,
+    isNodeBuilt,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
 
@@ -154,12 +157,16 @@ function SensitivityParametersSelector({
                 {isStudyLinked && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <SensitivityAnalysisParametersFactorCount
-                                count={factorsCount.variableCount}
-                                maxCount={MAX_VARIABLES_COUNT}
-                                messageId="sensitivityAnalysis.simulatedVariables"
-                                isLoading={isLoading}
-                            />
+                            {isNodeBuilt ? (
+                                <SensitivityAnalysisParametersFactorCount
+                                    count={factorsCount.variableCount}
+                                    maxCount={MAX_VARIABLES_COUNT}
+                                    messageId="sensitivityAnalysis.simulatedVariables"
+                                    isLoading={isLoading}
+                                />
+                            ) : (
+                                <FormattedMessage id="sensitivityAnalysis.nodeNotBuilt" />
+                            )}
                             <FormattedMessage id="sensitivityAnalysis.separator" />
                             <FormattedMessage
                                 id="sensitivityAnalysis.maximumFactorsCount"
