@@ -47,18 +47,15 @@ export const useCsvExport = () => {
             };
 
             const prefix = props.tableNamePrefix ?? '';
-            let columnSeparatorValue = props.language === LANG_FRENCH ? ';' : ',';
+            const defaultSeparator = props.language === LANG_FRENCH ? ';' : ',';
+            const columnSeparator = props.isCopyCsv
+                ? ((await fetchCsvSeparator()) ?? defaultSeparator)
+                : defaultSeparator;
 
-            if (props.isCopyCsv) {
-                const separator = await fetchCsvSeparator();
-                if (separator !== undefined) {
-                    columnSeparatorValue = separator;
-                }
-            }
             return props.getData({
                 suppressQuotes: false,
                 skipPinnedBottom: props.skipPinnedBottom,
-                columnSeparator: columnSeparatorValue,
+                columnSeparator: columnSeparator,
                 columnKeys: props.columns.map((col) => col.colId).filter(hasColId),
                 skipColumnHeaders: props.skipColumnHeaders,
                 processHeaderCallback: (params: ProcessHeaderForExportParams) =>
