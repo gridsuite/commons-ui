@@ -14,6 +14,7 @@ import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.typ
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
 import { SAParameters } from '../../components/parameters/security-analysis/types';
+import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',
@@ -49,9 +50,11 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
           ? DynamicSimulationParametersFetchReturn
           : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
             ? DynamicSecurityAnalysisParametersFetchReturn
-            : T extends ComputingType.SHORT_CIRCUIT
-              ? ShortCircuitParametersInfos
-              : Record<string, any>;
+            : T extends ComputingType.DYNAMIC_MARGIN_CALCULATION
+              ? DynamicMarginCalculationParametersInfos
+              : T extends ComputingType.SHORT_CIRCUIT
+                ? ShortCircuitParametersInfos
+                : Record<string, any>;
 
 export type UseParametersBackendReturnProps<T extends ComputingType> = [
     Record<string, string>,

@@ -34,6 +34,7 @@ import {
     ErrorInput,
     FieldErrorAlert,
     RawReadOnlyInput,
+    SwitchInput,
     TableNumericalInput,
     TableTextInput,
 } from '../inputs';
@@ -168,12 +169,15 @@ function EditableTableCell({
             {column.type === DndColumnType.CHIP_ITEMS && (
                 <ChipItemsInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} hideErrorMessage />
             )}
+            {column.type === DndColumnType.SWITCH && (
+                <SwitchInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} />
+            )}
             {column.type === DndColumnType.CUSTOM && column.component(rowIndex)}
         </TableCell>
     );
 }
 
-interface DndTableProps {
+export interface DndTableProps {
     arrayFormName: string;
     useFieldArrayOutput: UseFieldArrayReturn;
     columnsDefinition: DndColumn[];

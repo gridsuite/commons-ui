@@ -281,4 +281,27 @@ export const parametersEn = {
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
+    // DynamicMarginCalculation
+    DynamicMarginCalculationParametersError:
+        'An error occurred while updating the dynamic margin calculation parameters',
+    updateDynamicMarginCalculationParametersError:
+        'An error occurred while updating the dynamic margin calculation parameters',
+    DynamicMarginCalculationTimeDelayTab: 'Time delay',
+    DynamicMarginCalculationLoadsVariationsTab: 'Load variations',
+    DynamicMarginCalculationStartTime: 'Start time',
+    DynamicMarginCalculationStopTime: 'Stop time',
+    DynamicMarginCalculationMarginCalculationStartTime: 'Margin calculation start time',
+    DynamicMarginCalculationLoadIncreaseStartTime: 'Load increase start time',
+    DynamicMarginCalculationLoadIncreaseStopTime: 'Load increase stop time',
+    DynamicMarginCalculationCalculationType: 'Calculation type',
+    DynamicMarginCalculationAccuracy: 'Accuracy',
+    DynamicMarginCalculationLoadModelsRule: 'Load models rule',
+    DynamicMarginCalculationLoadsVariations: 'Load variations',
+    DynamicMarginCalculationCalculationTypeGlobalMargin: 'Global margin',
+    DynamicMarginCalculationCalculationTypeLocalMargin: 'Local margin',
+    DynamicMarginCalculationLoadModelsRuleAllLoads: 'All loads',
+    DynamicMarginCalculationLoadModelsRuleTargetedLoads: 'Targeted loads',
+    DynamicMarginCalculationLoadsFilter: 'Loads filter',
+    DynamicMarginCalculationLoadsVariation: 'Load variation',
+    DynamicMarginCalculationLoadsActive: 'Active',
 };

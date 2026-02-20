@@ -85,4 +85,6 @@ export const businessErrorsFr = {
     'diagram.equipmentNotFound': 'Poste ou site {id} non trouvé',
     'diagram.noConfiguredPosition': 'Aucune position configurée trouvée',
     'diagram.noVoltageLevelFound': 'Aucun poste trouvé pour cette image nodale de zone',
+    'dynamicMarginCalculation.providerNotFound': 'Simulateur du calcul de marge dynamique non trouvé.',
+    'dynamicMarginCalculation.loadFilterNotFound': "Certains filtres de consommations n'existent pas : {filterUuids}",
 };

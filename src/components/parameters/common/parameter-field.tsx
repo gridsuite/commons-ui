@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tooltip, Chip, Typography } from '@mui/material';
+import { Chip, Grid, SxProps, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../parameters-style';
 import { ParameterType } from '../../../utils/types/parameters.type';
@@ -21,23 +21,17 @@ import {
 } from '../../inputs';
 import { LineSeparator } from '../common';
 
-interface LoadFlowParameterFieldProps {
+interface ParameterFieldProps {
     id: string;
     name: string;
     type: string;
     label?: string;
     description?: string;
     possibleValues?: { id: string; label: string }[] | string[];
+    sx?: SxProps;
 }
 
-function LoadFlowParameterField({
-    id,
-    name,
-    type,
-    label,
-    description,
-    possibleValues,
-}: Readonly<LoadFlowParameterFieldProps>) {
+function ParameterField({ id, name, type, label, description, possibleValues, sx }: Readonly<ParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:
@@ -47,6 +41,7 @@ function LoadFlowParameterField({
                         options={possibleValues}
                         size="small"
                         data-testid={`${id}.${name}`}
+                        sx={sx}
                     />
                 ) : (
                     <TextInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />
@@ -106,4 +101,4 @@ function LoadFlowParameterField({
     );
 }
 
-export default LoadFlowParameterField;
+export default ParameterField;
