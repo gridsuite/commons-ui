@@ -6,12 +6,8 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, backendFetchText } from './utils';
+import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
-
-export function safeEncodeURIComponent(value: string | null | undefined): string {
-    return value != null ? encodeURIComponent(value) : '';
-}
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
 

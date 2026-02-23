@@ -1,13 +1,12 @@
 import { Grid } from '@mui/material';
 
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
 import { SPECIFIC_PARAMETERS } from '../common';
 import { CheckboxInput, DirectoryItemsInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
-import { COLUMNS_DEFINITIONS_ICC_MATERIALS } from './short-circuit-icc-material-table-columns-definition';
-import { ArrayAction, ElementType, EquipmentType } from '../../../utils';
+import { ElementType, EquipmentType } from '../../../utils';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
@@ -16,9 +15,11 @@ import {
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
 } from './constants';
-import { FilterElement } from './short-circuit-parameters-utils';
+import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
+import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
 
 const equipmentTypes: string[] = [EquipmentType.VOLTAGE_LEVEL];
 
@@ -41,6 +42,20 @@ const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
     label: <FormattedMessage id={col.label as string} />,
     tooltip: <FormattedMessage id={col.tooltip as string} />,
 }));
+
+const iccClustersColumnsDef = COLUMNS_DEFINITIONS_ICC_CLUSTERS.map((col) => ({
+    ...col,
+    label: <FormattedMessage id={col.label as string} />,
+    tooltip: <FormattedMessage id={col.tooltip as string} />,
+}));
+
+function createRows() {
+    const rowData: { [key: string]: any } = {};
+    iccClustersColumnsDef.forEach((column) => {
+        rowData[column.dataKey] = column.initialValue;
+    });
+    return rowData;
+}
 
 export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<ShortCircuitSpecificFieldsProps>) {
     const { setValue, getValues } = useFormContext();
@@ -134,6 +149,11 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
                                 tableHeight={300}
                                 columnsDefinition={columnsDef}
+                            />
+                            <ShortCircuitIccClusterTable
+                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
+                                columnsDefinition={iccClustersColumnsDef}
+                                createRows={createRows}
                             />
                         </>
                     )}

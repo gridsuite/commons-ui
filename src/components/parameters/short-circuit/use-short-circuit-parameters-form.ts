@@ -7,7 +7,7 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
@@ -20,7 +20,6 @@ import {
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
-    SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
@@ -92,9 +91,9 @@ export const useShortCircuitParametersForm = ({
 
     const specificParametersDefaultValues = useMemo(() => {
         return {
-            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider),
+            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider, snackError),
         };
-    }, [specificParametersDescriptionForProvider]);
+    }, [snackError, specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
         return yup
@@ -125,37 +124,44 @@ export const useShortCircuitParametersForm = ({
 
     const { reset, setValue } = formMethods;
 
-    // when ever the predefined parameter is manually changed, we need to reset all parameters
+    // when ever the predefined parameter is manually changed, we need to reset all dependent parameters
     const resetAll = useCallback(
         (predefinedParameter: PredefinedParameters) => {
             const dirty = { shouldDirty: true };
+
+            // SHORT_CIRCUIT_WITH_FEEDER_RESULT isn't reset by predefined parameters change
+            setValue(`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`, false, dirty);
             setValue(
-                COMMON_PARAMETERS,
-                {
-                    ...params?.commonParameters, // for VERSION_PARAMETER and other non managed params
-                    [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
-                    [SHORT_CIRCUIT_WITH_LOADS]: false,
-                    [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]:
-                        predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
-                    [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
-                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
-                    [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                        predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
-                            ? InitialVoltage.CEI909
-                            : InitialVoltage.NOMINAL,
-                },
+                `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`,
+                predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
+            setValue(`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`, false, dirty);
+            setValue(`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`, false, dirty);
+            setValue(
+                `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
+                predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
+                    ? InitialVoltage.CEI909
+                    : InitialVoltage.NOMINAL,
+                dirty
+            );
+
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
 
-            setValue(
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
-                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
-                dirty
+            // reset only if present in specific parameters description for provider
+            const onlyStartedGeneratorsInCalculationCluster = specificParametersDescriptionForProvider?.find(
+                (specificParam) => specificParam.name === SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER
             );
+            if (onlyStartedGeneratorsInCalculationCluster) {
+                setValue(
+                    `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
+                    predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                    dirty
+                );
+            }
             setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS}`, []);
         },
-        [params?.commonParameters, setValue]
+        [setValue, specificParametersDescriptionForProvider]
     );
 
     const formatNewParams = useCallback(
@@ -198,7 +204,7 @@ export const useShortCircuitParametersForm = ({
                 return {};
             }
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
-            const values = {
+            return {
                 [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
@@ -213,13 +219,13 @@ export const useShortCircuitParametersForm = ({
                 [SPECIFIC_PARAMETERS]: {
                     ...formatShortCircuitSpecificParameters(
                         specificParametersDescriptionForProvider,
-                        specificParamsListForCurrentProvider
+                        specificParamsListForCurrentProvider,
+                        snackError
                     ),
                 },
             };
-            return values;
         },
-        [provider, specificParametersDescriptionForProvider]
+        [provider, snackError, specificParametersDescriptionForProvider]
     );
 
     const onValidationError = useCallback((_errors: FieldErrors) => {

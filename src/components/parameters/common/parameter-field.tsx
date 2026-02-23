@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tooltip, Chip, Typography } from '@mui/material';
+import { Chip, Grid, SxProps, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../parameters-style';
 import { ParameterType } from '../../../utils/types/parameters.type';
@@ -21,40 +21,41 @@ import {
 } from '../../inputs';
 import { LineSeparator } from '../common';
 
-interface LoadFlowParameterFieldProps {
+interface ParameterFieldProps {
     id: string;
     name: string;
     type: string;
     label?: string;
     description?: string;
     possibleValues?: { id: string; label: string }[] | string[];
+    sx?: SxProps;
 }
 
-function LoadFlowParameterField({
-    id,
-    name,
-    type,
-    label,
-    description,
-    possibleValues,
-}: Readonly<LoadFlowParameterFieldProps>) {
+function ParameterField({ id, name, type, label, description, possibleValues, sx }: Readonly<ParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:
                 return possibleValues ? (
-                    <MuiSelectInput name={`${id}.${name}`} options={possibleValues} size="small" />
+                    <MuiSelectInput
+                        name={`${id}.${name}`}
+                        options={possibleValues}
+                        size="small"
+                        data-testid={`${id}.${name}`}
+                        sx={sx}
+                    />
                 ) : (
-                    <TextInput name={`${id}.${name}`} />
+                    <TextInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />
                 );
             case ParameterType.BOOLEAN:
-                return <SwitchInput name={`${id}.${name}`} />;
+                return <SwitchInput name={`${id}.${name}`} data-testid={`${id}.${name}`} />;
             case ParameterType.COUNTRIES:
-                return <CountriesInput name={`${id}.${name}`} label="descLfCountries" />;
+                return <CountriesInput name={`${id}.${name}`} label="descLfCountries" dataTestId={`${id}.${name}`} />;
             case ParameterType.DOUBLE:
-                return <FloatInput name={`${id}.${name}`} />;
+                return <FloatInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />;
             case ParameterType.STRING_LIST:
                 return possibleValues ? (
                     <AutocompleteInput
+                        data-testid={`${id}.${name}`}
                         name={`${id}.${name}`}
                         label={label}
                         options={possibleValues}
@@ -63,15 +64,21 @@ function LoadFlowParameterField({
                         size="small"
                         renderTags={(val: any[], getTagsProps: any) =>
                             val.map((code: string, index: number) => (
-                                <Chip key={code} size="small" label={code} {...getTagsProps({ index })} />
+                                <Chip
+                                    data-testid={`${id}.${name}.${code}`}
+                                    key={code}
+                                    size="small"
+                                    label={code}
+                                    {...getTagsProps({ index })}
+                                />
                             ))
                         }
                     />
                 ) : (
-                    <MultipleAutocompleteInput name={`${id}.${name}`} size="small" />
+                    <MultipleAutocompleteInput name={`${id}.${name}`} size="small" data-testid={`${id}.${name}`} />
                 );
             case ParameterType.INTEGER:
-                return <IntegerInput name={`${id}.${name}`} />;
+                return <IntegerInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />;
             default:
                 return null;
         }
@@ -94,4 +101,4 @@ function LoadFlowParameterField({
     );
 }
 
-export default LoadFlowParameterField;
+export default ParameterField;

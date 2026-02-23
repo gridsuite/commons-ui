@@ -84,7 +84,7 @@ export function AutocompleteInput({
 
     return (
         <Autocomplete
-            value={selectedValues}
+            value={selectedValues ?? null} // Ensure null instead of undefined otherwise it switches to uncontrolled mode
             onChange={(_, data) => handleChange(data as Option)}
             {...(allowNewValue && {
                 freeSolo: true,

@@ -11,7 +11,7 @@ import {
     SpecificParametersDescription,
     SpecificParametersValues,
 } from '../../../utils';
-import { SPECIFIC_PARAMETERS } from './constant';
+import { SPECIFIC_PARAMETERS } from './constants';
 import yup from '../../../utils/yupConfig';
 import { SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS } from '../short-circuit';
 

@@ -10,6 +10,8 @@ import {
     InitialVoltage,
     SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -19,15 +21,22 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { EquipmentType, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
+import { ID, snackWithFallback, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
 
-import type { PowerElectronicsMaterial } from './short-circuit-parameters.type';
+import {
+    FilterPOJO,
+    FormPowerElectronicsCluster,
+    type PowerElectronicsCluster,
+    type PowerElectronicsMaterial,
+} from './short-circuit-parameters.type';
 import {
     formatSpecificParameters,
     getAllSpecificParametersValues,
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
 } from '../common/utils';
+import { NAME } from '../../inputs';
+import { SnackInputs } from '../../../hooks';
 
 export enum ShortCircuitParametersTabValues {
     GENERAL = 'General',
@@ -87,6 +96,32 @@ export const getSpecificShortCircuitParametersFormSchema = (
               .required()
         : undefined;
 
+    const powerElectronicsClustersParam = specificParametersDescriptionForProvider?.find(
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER
+    );
+
+    const powerElectronicsClustersSchema = powerElectronicsClustersParam
+        ? yup
+              .array<FormPowerElectronicsCluster & { active: boolean }>()
+              .of(
+                  yup.object<FormPowerElectronicsCluster & { active: boolean }>().shape({
+                      active: yup.boolean().required(),
+                      alpha: yup.number().required(),
+                      u0: yup.number().required(),
+                      usMin: yup.number().required(),
+                      usMax: yup.number().required(),
+                      filters: yup.array().of(
+                          yup.object<FilterPOJO>().shape({
+                              [ID]: yup.string().required(),
+                              [NAME]: yup.string().required(),
+                          })
+                      ),
+                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
+                  })
+              )
+              .required()
+        : undefined;
+
     // try to extract existing SPECIFIC_PARAMETERS fields from defaultSchema (if present)
     const existingSpecificSchema = (defaultSchema as any).fields?.[SPECIFIC_PARAMETERS] as
         | yup.ObjectSchema<any>
@@ -97,6 +132,9 @@ export const getSpecificShortCircuitParametersFormSchema = (
         ...existingSpecificFields,
         ...(powerElectronicsMaterialsSchema
             ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: powerElectronicsMaterialsSchema }
+            : {}),
+        ...(powerElectronicsClustersSchema
+            ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: powerElectronicsClustersSchema }
             : {}),
         ...{
             [SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS]: yup.array().of(
@@ -115,18 +153,36 @@ export const getSpecificShortCircuitParametersFormSchema = (
     return defaultSchema.concat(overrideSchema);
 };
 
-const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerElectronicsMaterial[] => {
+const parsePowerElectronicsMaterialsParamString = (
+    paramString: string,
+    snackError: (message: SnackInputs) => void
+): PowerElectronicsMaterial[] => {
     // Attempt to parse the string into an array of PowerElectronicsMaterial objects
     try {
         return JSON.parse(paramString);
     } catch (error) {
         console.error('Error parsing power electronics materials parameter string:', error);
+        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsMaterialsParamParsingError' });
+        return [];
+    }
+};
+
+const parsePowerElectronicsClustersParamString = (
+    paramString: string,
+    snackError: (message: SnackInputs) => void
+): (PowerElectronicsCluster & { active: boolean })[] => {
+    // Attempt to parse the string into an array of PowerElectronicsCluster objects
+    try {
+        return JSON.parse(paramString);
+    } catch (error) {
+        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsClustersParamParsingError' });
         return [];
     }
 };
 
 export const getDefaultShortCircuitSpecificParamsValues = (
-    specificParametersDescriptionForProvider: SpecificParameterInfos[]
+    specificParametersDescriptionForProvider: SpecificParameterInfos[],
+    snackError: (message: SnackInputs) => void
 ): SpecificParametersValues => {
     const defaultValues: SpecificParametersValues = getDefaultSpecificParamsValues(
         specificParametersDescriptionForProvider
@@ -135,8 +191,9 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
     );
     if (powerElectronicsMaterialsParam) {
-        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsepowerElectronicsMaterialsParamString(
-            powerElectronicsMaterialsParam.defaultValue
+        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsePowerElectronicsMaterialsParamString(
+            powerElectronicsMaterialsParam.defaultValue,
+            snackError
         );
 
         defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = electronicsMaterialsArray.map((material) => ({
@@ -145,6 +202,12 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         }));
     }
     defaultValues[SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS] = [];
+    const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER
+    );
+    if (powerElectronicsClustersParam) {
+        defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = []; // there is no default params for clusters for now
+    }
     return defaultValues;
 };
 
@@ -154,7 +217,9 @@ export const getShortCircuitSpecificParametersValues = (
 ): SpecificParametersValues => {
     const powerElectronicsMaterialsParam: (PowerElectronicsMaterial & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
-    if (powerElectronicsMaterialsParam) {
+    const powerElectronicsClustersParam: (FormPowerElectronicsCluster & { active: boolean })[] =
+        formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
+    if (powerElectronicsMaterialsParam && powerElectronicsClustersParam) {
         // create pretty JSON
         return {
             ...getAllSpecificParametersValues(formData, _specificParametersValues),
@@ -166,6 +231,17 @@ export const getShortCircuitSpecificParametersValues = (
                         return rest;
                     })
             ),
+            [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: JSON.stringify(
+                powerElectronicsClustersParam.map((sParam) => {
+                    const { filters, ...rest } = sParam;
+                    const lightFilters = // keep only id and name in filters for backend
+                        filters?.map((filter) => ({
+                            filterId: filter[ID],
+                            filterName: filter.name,
+                        })) ?? [];
+                    return { ...rest, filters: lightFilters };
+                })
+            ),
         };
     }
     return getAllSpecificParametersValues(formData, _specificParametersValues);
@@ -173,22 +249,45 @@ export const getShortCircuitSpecificParametersValues = (
 
 const formatElectronicsMaterialsParamString = (
     defaultValues: PowerElectronicsMaterial[],
-    specificParamValue: string
+    specificParamValue: string,
+    snackError: (message: SnackInputs) => void
 ) => {
-    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] =
-        parsepowerElectronicsMaterialsParamString(specificParamValue);
+    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] = parsePowerElectronicsMaterialsParamString(
+        specificParamValue,
+        snackError
+    );
     return defaultValues.map((material) => {
         const foundInParams = electronicsMaterialsArrayInParams.find((m) => m.type === material.type);
         return foundInParams ? { ...foundInParams, active: true } : { ...material, active: false };
     });
 };
 
+const formatElectronicsClustersParamString = (
+    defaultValues: PowerElectronicsCluster[],
+    specificParamValue: string,
+    snackError: (message: SnackInputs) => void
+) => {
+    const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
+        parsePowerElectronicsClustersParamString(specificParamValue, snackError);
+    return electronicsClustersArrayInParams.map((cluster) => {
+        const { filters, ...rest } = cluster;
+        return {
+            ...rest,
+            filters: filters.map((filter) => ({
+                [ID]: filter.filterId,
+                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+            })),
+        };
+    });
+};
+
 export const formatShortCircuitSpecificParameters = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
-    specificParamsList: SpecificParametersValues
+    specificParamsList: SpecificParametersValues,
+    snackError: (message: SnackInputs) => void
 ): SpecificParametersValues => {
     if (!specificParamsList) {
-        return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider);
+        return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider, snackError);
     }
 
     // reuse generic formatter for specific params
@@ -201,13 +300,36 @@ export const formatShortCircuitSpecificParameters = (
     if (powerParam) {
         if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS)) {
             formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = formatElectronicsMaterialsParamString(
-                getDefaultShortCircuitSpecificParamsValues([powerParam])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS],
-                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] as string
+                getDefaultShortCircuitSpecificParamsValues([powerParam], snackError)?.[
+                    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
+                ],
+                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] as string,
+                snackError
             );
         } else {
             formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = getDefaultSpecificParamsValues([powerParam])?.[
                 SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
             ];
+        }
+    }
+
+    // handle special power-electronics-clusters case by overriding the generic result
+    const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
+        (p) => p.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER
+    );
+    if (powerElectronicsClustersParam) {
+        if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = formatElectronicsClustersParamString(
+                getDefaultShortCircuitSpecificParamsValues([powerElectronicsClustersParam], snackError)?.[
+                    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
+                ],
+                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] as string,
+                snackError
+            );
+        } else {
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = getDefaultSpecificParamsValues([
+                powerElectronicsClustersParam,
+            ])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
         }
     }
     return formatted;

@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
+import { MessageDescriptor, PrimitiveType } from 'react-intl';
 import { ElementType } from './elementType';
 
 export type Input = string | number;
@@ -77,3 +78,10 @@ export enum ArrayAction {
     ADD = 'ADD',
     REMOVE = 'REMOVE',
 }
+
+export type FormatValues = Record<string, PrimitiveType>;
+
+export type ErrorMessageDescriptor = {
+    descriptor: MessageDescriptor;
+    values?: FormatValues;
+};
