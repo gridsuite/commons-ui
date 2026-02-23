@@ -80,6 +80,8 @@ export const networkModificationsEn = {
     ModificationReadError: 'An error occurred while fetching the modification',
     CreateSubstation: 'Create substation',
     SubstationCreationError: 'Error while creating substation',
+    ModifySubstation: 'Modify substation',
+    SubstationModificationError: 'Error while modifying substation',
     AdditionalInformation: 'Additional information',
     AddProperty: 'Add property',
     PropertyName: 'Property name',
