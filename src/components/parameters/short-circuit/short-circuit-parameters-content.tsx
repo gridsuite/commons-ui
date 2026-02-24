@@ -12,7 +12,8 @@ import { TabPanel } from '../common/parameters';
 import type { MuiStyles } from '../../../utils/styles';
 import { PredefinedParameters } from './constants';
 import { ShortCircuitFields } from './short-circuit-fields';
-import { ShortCircuitSpecificFields } from './short-circuit-specific-fields';
+import { ShortCircuitStudyArea } from './short-circuit-study-area';
+import { ShortCircuitPowerElectronics } from './short-circuit-power-electronics';
 
 type ShortCircuitParametersContentProps = {
     isDeveloperMode: boolean;
@@ -48,7 +49,10 @@ function ShortCircuitParametersContent({
                         <ShortCircuitFields resetAll={resetAll} isDeveloperMode={isDeveloperMode} />
                     </TabPanel>
                     <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.STUDY_AREA}>
-                        <ShortCircuitSpecificFields isDeveloperMode={isDeveloperMode} />
+                        <ShortCircuitStudyArea />
+                    </TabPanel>
+                    <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.POWER_ELECTRONICS}>
+                        <ShortCircuitPowerElectronics isDeveloperMode={isDeveloperMode} />
                     </TabPanel>
                 </Grid>
             </Grid>

@@ -59,6 +59,14 @@ export function ShortCircuitParametersForm({
                                     value={ShortCircuitParametersTabValues.STUDY_AREA}
                                     sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.STUDY_AREA)}
                                 />
+                                <Tab
+                                    label={<FormattedMessage id={ShortCircuitParametersTabValues.POWER_ELECTRONICS} />}
+                                    value={ShortCircuitParametersTabValues.POWER_ELECTRONICS}
+                                    sx={getTabStyle(
+                                        tabIndexesWithError,
+                                        ShortCircuitParametersTabValues.POWER_ELECTRONICS
+                                    )}
+                                />
                             </Tabs>
                         </Grid>
                         <Grid sx={parametersStyles.scrollableGrid}>

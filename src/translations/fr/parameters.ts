@@ -58,6 +58,7 @@ export const parametersFr = {
     General: 'Général',
     LimitReductions: 'Abattements',
     StudyArea: "Zone d'étude",
+    PowerElectronics: 'Electronique de puissance',
     IST: 'IST',
     LimitVoltageInterval: 'Entre IT{lowBound} et IT{highBound}',
     LimitVoltageAfterIST: 'Entre IST et IT{highBound}',

@@ -15,7 +15,7 @@ import { DESCRIPTION, NAME } from '../../inputs';
 import {
     InitialVoltage,
     PredefinedParameters,
-    SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS,
+    NODE_CLUSTER,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
@@ -159,7 +159,7 @@ export const useShortCircuitParametersForm = ({
                     dirty
                 );
             }
-            setValue(`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS}`, []);
+            setValue(`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`, []);
         },
         [setValue, specificParametersDescriptionForProvider]
     );
@@ -169,6 +169,7 @@ export const useShortCircuitParametersForm = ({
             if (!provider) {
                 return {} as ShortCircuitParametersInfos;
             }
+            console.log('formatNewParams: ', formData);
             return {
                 provider: formData[PROVIDER],
                 predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],

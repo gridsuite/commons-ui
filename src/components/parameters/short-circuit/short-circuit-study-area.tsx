@@ -1,25 +1,24 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 import { Grid } from '@mui/material';
 
 import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
-import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
 import { SPECIFIC_PARAMETERS } from '../common';
-import { CheckboxInput, DirectoryItemsInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
+import { DirectoryItemsInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
 import { ElementType, EquipmentType } from '../../../utils';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
     onlyStartedGeneratorsOptions,
-    SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS,
-    SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
+    NODE_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
 } from './constants';
-import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
-import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
 
 const equipmentTypes: string[] = [EquipmentType.VOLTAGE_LEVEL];
 
@@ -33,32 +32,8 @@ const styles = {
     },
 };
 
-export interface ShortCircuitSpecificFieldsProps {
-    isDeveloperMode: boolean;
-}
-
-const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
-    ...col,
-    label: <FormattedMessage id={col.label as string} />,
-    tooltip: <FormattedMessage id={col.tooltip as string} />,
-}));
-
-const iccClustersColumnsDef = COLUMNS_DEFINITIONS_ICC_CLUSTERS.map((col) => ({
-    ...col,
-    label: <FormattedMessage id={col.label as string} />,
-    tooltip: <FormattedMessage id={col.tooltip as string} />,
-}));
-
-function createRows() {
-    const rowData: { [key: string]: any } = {};
-    iccClustersColumnsDef.forEach((column) => {
-        rowData[column.dataKey] = column.initialValue;
-    });
-    return rowData;
-}
-
-export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<ShortCircuitSpecificFieldsProps>) {
-    const { setValue, getValues } = useFormContext();
+export function ShortCircuitStudyArea() {
+    const { setValue } = useFormContext();
 
     // Forced to specificly manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
     const inClusterOnlyStartedGenerators = (
@@ -97,13 +72,6 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
         />
     );
 
-    const modelPowerElectronics = (
-        <CheckboxInput
-            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`}
-            label="ShortCircuitModelPowerElectronics"
-        />
-    );
-
     const watchSpecificParameters = useWatch({
         name: `${SPECIFIC_PARAMETERS}`,
     });
@@ -122,7 +90,7 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
                         <DirectoryItemsInput
                             titleId="FiltersListsSelection"
                             label="Filters"
-                            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_IN_CALCULATION_CLUSTER_FILTERS}`}
+                            name={`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`}
                             elementType={ElementType.FILTER}
                             equipmentTypes={equipmentTypes}
                             ChipComponent={OverflowableChipWithHelperText}
@@ -139,24 +107,6 @@ export function ShortCircuitSpecificFields({ isDeveloperMode = true }: Readonly<
                     <Grid container>
                         <GridItem size={12}>{outClusterOnlyStartedGenerators}</GridItem>
                     </Grid>
-                    {isDeveloperMode && (
-                        <>
-                            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
-                            <Grid container>
-                                <GridItem size={12}>{modelPowerElectronics}</GridItem>
-                            </Grid>
-                            <ShortCircuitIccMaterialTable
-                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                                tableHeight={300}
-                                columnsDefinition={columnsDef}
-                            />
-                            <ShortCircuitIccClusterTable
-                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
-                                columnsDefinition={iccClustersColumnsDef}
-                                createRows={createRows}
-                            />
-                        </>
-                    )}
                 </>
             )}
         </>
