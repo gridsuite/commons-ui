@@ -6,7 +6,7 @@
  */
 import yup from '../../../../utils/yupConfig';
 import {
-    getFilledPropertiesFromModification,
+    getPropertiesFromModification,
     modificationPropertiesSchema,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
@@ -25,19 +25,19 @@ export const substationModificationFormSchema = yup
 export type SubstationModificationFormData = yup.InferType<typeof substationModificationFormSchema>;
 
 export const substationModificationEmptyFormData: SubstationModificationFormData = {
-    [FieldConstants.EQUIPMENT_ID]: '',
-    [FieldConstants.EQUIPMENT_NAME]: '',
-    [FieldConstants.COUNTRY]: null,
-    [FieldConstants.ADDITIONAL_PROPERTIES]: [],
+    equipmentID: '',
+    equipmentName: '',
+    country: null,
+    AdditionalProperties: [],
 };
 
 export const substationModificationFormToDto = (
     formData: SubstationModificationFormData
 ): SubstationModificationDto => ({
     type: ModificationType.SUBSTATION_MODIFICATION,
-    equipmentId: formData[FieldConstants.EQUIPMENT_ID],
-    equipmentName: toModificationOperation(sanitizeString(formData[FieldConstants.EQUIPMENT_NAME])),
-    country: toModificationOperation(formData[FieldConstants.COUNTRY] ?? null),
+    equipmentId: formData.equipmentID,
+    equipmentName: toModificationOperation(sanitizeString(formData.equipmentName)),
+    country: toModificationOperation(formData.country ?? null),
     properties: toModificationProperties(formData),
 });
 
@@ -48,6 +48,6 @@ export const substationModificationDtoToForm = (
         equipmentID: substationDto.equipmentId,
         equipmentName: substationDto.equipmentName?.value ?? '',
         country: substationDto.country?.value ?? null,
-        AdditionalProperties: getFilledPropertiesFromModification(substationDto.properties),
+        ...getPropertiesFromModification(substationDto?.properties),
     };
 };
