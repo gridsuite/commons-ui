@@ -326,8 +326,7 @@ export function ElementSaveDialog({
             titleId={titleId}
             onSave={onSubmit}
             disabledSave={disableSave}
-            formSchema={schema}
-            formMethods={formMethods}
+            formContext={{ ...formMethods, validationSchema: schema }}
         >
             <Grid container spacing={2} marginTop="auto" direction="column">
                 {!createOnlyMode && (
