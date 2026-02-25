@@ -41,15 +41,18 @@ export function CountriesInput({ name, label, dataTestId }: Readonly<CountryInpu
             fullWidth
             multiple
             renderTags={(val: any[], getTagsProps: any) =>
-                val.map((code: string, index: number) => (
-                    <Chip
-                        data-testid={`${dataTestId}.${code}`}
-                        key={code}
-                        size="small"
-                        label={translate(code)}
-                        {...getTagsProps({ index })}
-                    />
-                ))
+                val.map((code: string, index: number) => {
+                    const { key, ...tagProps } = getTagsProps({ index });
+                    return (
+                        <Chip
+                            key={key ?? code}
+                            data-testid={`${dataTestId}.${code}`}
+                            size="small"
+                            label={translate(code)}
+                            {...tagProps}
+                        />
+                    );
+                })
             }
         />
     );

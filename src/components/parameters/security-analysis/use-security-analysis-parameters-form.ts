@@ -56,7 +56,7 @@ export const useSecurityAnalysisParametersForm = (
     name: string | null,
     description: string | null
 ): UseSecurityAnalysisParametersFormReturn => {
-    const [providers, provider, , , , params, , updateParameters, , , defaultLimitReductions] = parametersBackend;
+    const { providers, params, updateParameters, defaultLimitReductions } = parametersBackend;
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const { snackError } = useSnackMessage();
 
@@ -80,7 +80,7 @@ export const useSecurityAnalysisParametersForm = (
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
-            [PARAM_SA_PROVIDER]: provider,
+            [PARAM_SA_PROVIDER]: params?.provider,
             [CONTINGENCY_LISTS_INFOS]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
             [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,

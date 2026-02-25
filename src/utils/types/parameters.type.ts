@@ -56,16 +56,20 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
                 ? ShortCircuitParametersInfos
                 : Record<string, any>;
 
-export type UseParametersBackendReturnProps<T extends ComputingType> = [
-    Record<string, string>,
-    string | undefined,
-    (studyUuid: UUID) => void,
-    (newProvider: string) => void,
-    () => void,
-    ParametersInfos<T> | null,
-    (studyUuid: UUID) => void,
-    (newParams: ParametersInfos<T>) => void,
-    () => Promise<void> | undefined,
-    SpecificParametersDescription | null,
-    ILimitReductionsByVoltageLevel[],
-];
+export type BackendFunctions<T extends ComputingType> = {
+    backendFetchProviders?: (() => Promise<string[]>) | null;
+    backendFetchParameters: (studyUuid: UUID) => Promise<ParametersInfos<T>>;
+    backendUpdateParameters?: (studyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>;
+    backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>;
+    backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>;
+};
+
+export type UseParametersBackendReturnProps<T extends ComputingType> = {
+    providers: Record<string, string>;
+    params: ParametersInfos<T> | null;
+    fetchParameters: (studyUuid: UUID) => void;
+    updateParameters: (newParams: ParametersInfos<T>) => void;
+    resetParameters: () => Promise<void> | undefined;
+    specificParamsDescription: SpecificParametersDescription | null;
+    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+};

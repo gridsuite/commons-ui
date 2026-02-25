@@ -9,7 +9,6 @@ import { CustomMuiDialog } from '../../dialogs';
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,
-    getDefaultLoadFlowProvider,
     getLoadFlowDefaultLimitReductions,
     getLoadFlowProviders,
     getLoadFlowSpecificParametersDescription,
@@ -34,20 +33,13 @@ export function LoadFlowParametersEditionDialog({
     language = LANG_ENGLISH,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
-    const parametersBackend = useParametersBackend(
-        user,
-        id,
-        ComputingType.LOAD_FLOW,
-        OptionalServicesStatus.Up,
-        getLoadFlowProviders,
-        null,
-        getDefaultLoadFlowProvider,
-        null,
-        fetchLoadFlowParameters,
-        setLoadFlowParameters,
-        getLoadFlowSpecificParametersDescription,
-        getLoadFlowDefaultLimitReductions
-    );
+    const parametersBackend = useParametersBackend(user, id, ComputingType.LOAD_FLOW, OptionalServicesStatus.Up, {
+        backendFetchProviders: getLoadFlowProviders,
+        backendFetchParameters: fetchLoadFlowParameters,
+        backendUpdateParameters: setLoadFlowParameters,
+        backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
+        backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
+    });
 
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 

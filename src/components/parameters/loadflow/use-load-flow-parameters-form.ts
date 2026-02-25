@@ -82,19 +82,8 @@ export const useLoadFlowParametersForm = (
     name: string | null,
     description: string | null
 ): UseLoadFlowParametersFormReturn => {
-    const [
-        providers,
-        provider,
-        ,
-        ,
-        ,
-        params,
-        ,
-        updateParameters,
-        ,
-        specificParamsDescriptions,
-        defaultLimitReductions,
-    ] = parametersBackend;
+    const { providers, params, updateParameters, specificParamsDescription, defaultLimitReductions } =
+        parametersBackend;
 
     const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
@@ -107,8 +96,8 @@ export const useLoadFlowParametersForm = (
     }, []);
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
-        return currentProvider && specificParamsDescriptions ? specificParamsDescriptions[currentProvider] : [];
-    }, [currentProvider, specificParamsDescriptions]);
+        return currentProvider && specificParamsDescription ? specificParamsDescription[currentProvider] : [];
+    }, [currentProvider, specificParamsDescription]);
 
     const specificParametersDefaultValues = useMemo(() => {
         return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
@@ -129,7 +118,7 @@ export const useLoadFlowParametersForm = (
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
-            [PROVIDER]: provider,
+            [PROVIDER]: params?.provider,
             [PARAM_LIMIT_REDUCTION]: null,
             [COMMON_PARAMETERS]: {
                 ...params?.commonParameters,
@@ -280,7 +269,7 @@ export const useLoadFlowParametersForm = (
     useEffect(() => {
         if (watchProvider && watchProvider !== currentProvider) {
             setCurrentProvider(watchProvider);
-            setSpecificParameters(watchProvider, specificParamsDescriptions, formMethods);
+            setSpecificParameters(watchProvider, specificParamsDescription, formMethods);
             setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
 
             // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
@@ -302,7 +291,7 @@ export const useLoadFlowParametersForm = (
         defaultLimitReductions,
         formMethods,
         params?.limitReductions,
-        specificParamsDescriptions,
+        specificParamsDescription,
         watchProvider,
     ]);
 
