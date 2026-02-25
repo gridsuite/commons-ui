@@ -33,10 +33,10 @@ const styles = {
     tableContainer: (theme: Theme) => ({
         width: '100%',
         border: 'solid 0px rgba(0,0,0,0.1)',
-        marginBottom: theme.spacing(4),
+        marginBottom: theme.spacing(2),
     }),
     table: {
-        minWidth: '80em',
+        minWidth: '65em',
         tableLayout: 'fixed',
     },
 };
