@@ -148,8 +148,6 @@ export const parametersFr = {
     ShortCircuitIccUsmaxTooltip: 'Tension maximale pour le calcul de Icc',
     ShortCircuitIccU0: 'U0 (%)',
     ShortCircuitIccU0Tooltip: 'Tension de référence pour le calcul de Icc',
-    ShortCircuitGeneratorLabel: 'Groupe',
-    ShortCircuitHvdcLabel: 'HVDC',
     ShortCircuitStartedLabel: 'Démarrés',
     ShortCircuitAllLabel: 'Tous',
     shortCircuitLoads: 'Charges',

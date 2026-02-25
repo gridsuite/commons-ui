@@ -143,8 +143,6 @@ export const parametersEn = {
     ShortCircuitIccUsmaxTooltip: 'Maximum voltage for the Icc calculation',
     ShortCircuitIccU0: 'U0 (%)',
     ShortCircuitIccU0Tooltip: 'Voltage level at which the Icc is nominal',
-    ShortCircuitGeneratorLabel: 'Generator',
-    ShortCircuitHvdcLabel: 'HVDC',
     ShortCircuitStartedLabel: 'Started',
     ShortCircuitAllLabel: 'All',
     shortCircuitLoads: 'Loads',
