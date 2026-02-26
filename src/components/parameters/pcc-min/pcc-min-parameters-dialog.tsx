@@ -40,11 +40,13 @@ export function PccMinParametersEditionDialog({
             open={open}
             onClose={onClose}
             onSave={pccMinMethods.onSaveDialog}
-            formSchema={pccMinMethods.formSchema}
-            formMethods={pccMinMethods.formMethods}
+            formContext={{
+                ...pccMinMethods.formMethods,
+                validationSchema: pccMinMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
             PaperProps={{
                 sx: {

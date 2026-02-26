@@ -60,11 +60,13 @@ export function SensitivityAnalysisParametersDialog({
             open={open}
             onClose={onClose}
             onSave={sensitivityAnalysisMethods.onSaveDialog}
-            formSchema={sensitivityAnalysisMethods.formSchema}
-            formMethods={sensitivityAnalysisMethods.formMethods}
+            formContext={{
+                ...sensitivityAnalysisMethods.formMethods,
+                validationSchema: sensitivityAnalysisMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
         >
             <SensitivityAnalysisParametersForm

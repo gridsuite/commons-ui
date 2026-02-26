@@ -54,11 +54,13 @@ export function ShortCircuitParametersEditionDialog({
             onClose={onClose}
             onSave={shortCircuitMethods.onSaveDialog}
             onValidationError={shortCircuitMethods.onValidationError}
-            formSchema={shortCircuitMethods.formSchema}
-            formMethods={shortCircuitMethods.formMethods}
+            formContext={{
+                ...shortCircuitMethods.formMethods,
+                validationSchema: shortCircuitMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
         >
             <ShortCircuitParametersForm
