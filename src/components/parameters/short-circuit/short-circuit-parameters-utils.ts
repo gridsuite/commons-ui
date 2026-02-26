@@ -8,7 +8,6 @@
 import {
     InitialVoltage,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
@@ -78,7 +77,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
         : undefined;
 
     const powerElectronicsClustersParam = specificParametersDescriptionForProvider?.find(
-        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
     );
 
     const powerElectronicsClustersSchema = powerElectronicsClustersParam
@@ -97,7 +96,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
                               [NAME]: yup.string().required(),
                           })
                       ),
-                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
+                      type: yup.string().oneOf(['GENERATOR', 'HVDC']).required(),
                   })
               )
               .required()
@@ -176,7 +175,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         }));
     }
     const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
-        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
     );
     if (powerElectronicsClustersParam) {
         defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = []; // there is no default params for clusters for now
@@ -288,7 +287,7 @@ export const formatShortCircuitSpecificParameters = (
 
     // handle special power-electronics-clusters case by overriding the generic result
     const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
-        (p) => p.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER
+        (p) => p.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
     );
     if (powerElectronicsClustersParam) {
         if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {

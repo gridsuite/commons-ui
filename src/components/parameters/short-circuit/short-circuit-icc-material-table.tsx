@@ -20,9 +20,10 @@ const styles = {
         width: '100%',
         border: 'solid 0px rgba(0,0,0,0.1)',
         marginBottom: theme.spacing(4),
+        marginTop: theme.spacing(4),
     }),
     table: {
-        minWidth: '80em',
+        minWidth: '65em',
         tableLayout: 'fixed',
     },
 };
