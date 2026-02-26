@@ -20,7 +20,7 @@ export interface PowerElectronicsMaterial {
     u0: number;
     usMin: number;
     usMax: number;
-    type: 'WIND' | 'SOLAR' | 'HVDC';
+    type: 'GENERATOR' | 'HVDC';
 }
 
 export type FilterPOJO = {
