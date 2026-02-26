@@ -62,11 +62,13 @@ export function LoadFlowParametersEditionDialog({
             onClose={onClose}
             onSave={loadflowMethods.onSaveDialog}
             onValidationError={loadflowMethods.onValidationError}
-            formSchema={loadflowMethods.formSchema}
-            formMethods={loadflowMethods.formMethods}
+            formContext={{
+                ...loadflowMethods.formMethods,
+                validationSchema: loadflowMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
         >
             <LoadFlowProvider>

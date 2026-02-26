@@ -1,0 +1,60 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import { TableCell } from '@mui/material';
+import { DirectoryItemsInput, FloatInput, SelectInput, SwitchInput } from '../../inputs';
+import {
+    IccClusterIColumnsDef,
+    SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE,
+    SHORT_CIRCUIT_ICC_CLUSTER_FILTERS,
+    SHORT_CIRCUIT_ICC_CLUSTER_TYPE,
+} from './columns-definition';
+
+export function ShortCircuitIccClusterTableCell({
+    formName,
+    rowIndex,
+    column,
+    inputsDisabled,
+}: Readonly<{
+    formName: string;
+    rowIndex: number;
+    column: IccClusterIColumnsDef;
+    inputsDisabled?: boolean;
+}>) {
+    return (
+        <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+            {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE && (
+                <SwitchInput formProps={{ size: 'small' }} name={`${formName}[${rowIndex}].${column.dataKey}`} />
+            )}
+            {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_FILTERS && (
+                <DirectoryItemsInput
+                    name={`${formName}[${rowIndex}].${column.dataKey}`}
+                    equipmentTypes={column.equipmentTypes}
+                    elementType={column.elementType ?? ''}
+                    titleId={column.titleId}
+                    hideErrorMessage
+                    label={undefined}
+                    itemFilter={undefined}
+                    disable={inputsDisabled}
+                />
+            )}
+            {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_TYPE && (
+                <SelectInput
+                    size="small"
+                    name={`${formName}[${rowIndex}].${column.dataKey}`}
+                    label={column.titleId}
+                    options={['GENERATOR', 'HVDC']}
+                    disabled={inputsDisabled}
+                />
+            )}
+            {column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE &&
+                column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_FILTERS &&
+                column.dataKey !== SHORT_CIRCUIT_ICC_CLUSTER_TYPE && (
+                    <FloatInput disabled={inputsDisabled} name={`${formName}[${rowIndex}].${column.dataKey}`} />
+                )}
+        </TableCell>
+    );
+}

@@ -31,6 +31,7 @@ export const SHORT_CIRCUIT_VOLTAGE_RANGES = 'voltageRanges';
 export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER = 'onlyStartedGeneratorsInCalculationCluster';
 export const SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS = 'modelPowerElectronics';
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS = 'powerElectronicsMaterials';
+export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
 
 export const intlPredefinedParametersOptions = () => [
     {

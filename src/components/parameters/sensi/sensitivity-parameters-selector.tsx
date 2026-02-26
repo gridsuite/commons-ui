@@ -10,7 +10,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import * as sensiParam from './columns-definitions';
 import {
-    IColumnsDef,
     SensiBranchesTabValues,
     SensiHvdcs,
     SensiInjection,
@@ -19,14 +18,14 @@ import {
     SensiPsts,
     SensiTabValues,
 } from './columns-definitions';
-import { SensitivityTable } from './sensitivity-table';
 import { TabPanel } from '../common';
-import { useCreateRowDataSensi } from '../../../hooks/use-create-row-data-sensi';
+import { useCreateRowData } from '../../../hooks/use-create-row-data';
 import type { MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
-import { useCustomFormContext } from '../../inputs';
+import { isValidSensiParameterRow } from './utils';
+import { ColumnsDef, ParameterTable } from '../common/parameter-table';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -106,20 +105,18 @@ function SensitivityParametersSelector({
         ...((isDeveloperMode && [{ label: 'SensitivityNodes' }]) || []),
     ];
 
-    const [rowDataInjectionsSet, useFieldArrayOutputInjectionsSet] = useCreateRowDataSensi(
-        sensiParam.SensiInjectionsSet
-    );
+    const [rowDataInjectionsSet, useFieldArrayOutputInjectionsSet] = useCreateRowData(sensiParam.SensiInjectionsSet);
 
-    const [rowDataInjections, useFieldArrayOutputInjections] = useCreateRowDataSensi(sensiParam.SensiInjection);
+    const [rowDataInjections, useFieldArrayOutputInjections] = useCreateRowData(sensiParam.SensiInjection);
 
-    const [rowDataHvdc, useFieldArrayOutputHvdc] = useCreateRowDataSensi(sensiParam.SensiHvdcs);
+    const [rowDataHvdc, useFieldArrayOutputHvdc] = useCreateRowData(sensiParam.SensiHvdcs);
 
-    const [rowDataPst, useFieldArrayOutputPst] = useCreateRowDataSensi(sensiParam.SensiPsts);
+    const [rowDataPst, useFieldArrayOutputPst] = useCreateRowData(sensiParam.SensiPsts);
 
-    const [rowDataNodes, useFieldArrayOutputNodes] = useCreateRowDataSensi(sensiParam.SensiNodes);
+    const [rowDataNodes, useFieldArrayOutputNodes] = useCreateRowData(sensiParam.SensiNodes);
 
     const getColumnsDefinition = useCallback(
-        (sensiColumns: IColumnsDef[]) => {
+        (sensiColumns: ColumnsDef[]) => {
             if (sensiColumns) {
                 return sensiColumns.map((column) => ({
                     ...column,
@@ -212,7 +209,7 @@ function SensitivityParametersSelector({
                             </Tabs>
 
                             <TabPanel index={SensiBranchesTabValues.SensiInjectionsSet} value={subTabValue}>
-                                <SensitivityTable
+                                <ParameterTable
                                     arrayFormName={`${SensiInjectionsSet.name}`}
                                     columnsDefinition={getColumnsDefinition(
                                         sensiParam.COLUMNS_DEFINITIONS_INJECTIONS_SET
@@ -221,48 +218,53 @@ function SensitivityParametersSelector({
                                     createRows={rowDataInjectionsSet}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
-                                <SensitivityTable
+                                <ParameterTable
                                     arrayFormName={`${SensiInjection.name}`}
                                     columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_INJECTIONS)}
                                     useFieldArrayOutput={useFieldArrayOutputInjections}
                                     createRows={rowDataInjections}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
-                                <SensitivityTable
+                                <ParameterTable
                                     arrayFormName={`${SensiHvdcs.name}`}
                                     columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_HVDCS)}
                                     useFieldArrayOutput={useFieldArrayOutputHvdc}
                                     createRows={rowDataHvdc}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
-                                <SensitivityTable
+                                <ParameterTable
                                     arrayFormName={`${SensiPsts.name}`}
                                     columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_PSTS)}
                                     useFieldArrayOutput={useFieldArrayOutputPst}
                                     createRows={rowDataPst}
                                     tableHeight={300}
                                     onFormChanged={onFormChanged}
+                                    isValidParameterRow={isValidSensiParameterRow}
                                 />
                             </TabPanel>
                         </>
                     )}
                     {tabValue === SensiTabValues.SensitivityNodes && (
-                        <SensitivityTable
+                        <ParameterTable
                             arrayFormName={`${SensiNodes.name}`}
                             columnsDefinition={getColumnsDefinition(sensiParam.COLUMNS_DEFINITIONS_NODES)}
                             useFieldArrayOutput={useFieldArrayOutputNodes}
                             createRows={rowDataNodes}
                             tableHeight={367}
                             onFormChanged={onFormChanged}
+                            isValidParameterRow={isValidSensiParameterRow}
                         />
                     )}
                 </TabPanel>

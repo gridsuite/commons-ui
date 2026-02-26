@@ -8,4 +8,3 @@
 export * from './sensitivity-analysis-parameters-inline';
 export * from './sensitivity-analysis-parameters-dialog';
 export * from './columns-definitions';
-export * from './sensitivity-table';

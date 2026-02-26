@@ -41,11 +41,13 @@ export function NetworkVisualizationsParametersEditionDialog({
             open={open}
             onClose={onClose}
             onSave={networkVisuMethods.onSaveDialog}
-            formSchema={networkVisuMethods.formSchema}
-            formMethods={networkVisuMethods.formMethods}
+            formContext={{
+                ...networkVisuMethods.formMethods,
+                validationSchema: networkVisuMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
             PaperProps={{
                 sx: {

@@ -74,6 +74,8 @@ export const businessErrorsFr = {
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
+    'pccMin.voltageLevelsLimitExceeded':
+        'Le résultat de l’évaluation du filtre donne {voltageLevelSize} postes, ce qui dépasse la limite de {voltageLevelsLimit}.',
     'diagram.invalidEquipmentType':
         "L'équipement {id} de type {equipmentType} n'est pas un site ou poste dans le réseau courant",
     'diagram.invalidSubstationLayout': "Le mode d'affichage de site {substationLayout} n'existe pas",
@@ -83,4 +85,6 @@ export const businessErrorsFr = {
     'diagram.equipmentNotFound': 'Poste ou site {id} non trouvé',
     'diagram.noConfiguredPosition': 'Aucune position configurée trouvée',
     'diagram.noVoltageLevelFound': 'Aucun poste trouvé pour cette image nodale de zone',
+    'dynamicMarginCalculation.providerNotFound': 'Simulateur du calcul de marge dynamique non trouvé.',
+    'dynamicMarginCalculation.loadFilterNotFound': "Certains filtres de consommations n'existent pas : {filterUuids}",
 };

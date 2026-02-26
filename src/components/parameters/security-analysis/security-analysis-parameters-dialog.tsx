@@ -57,11 +57,13 @@ export function SecurityAnalysisParametersDialog({
             open={open}
             onClose={onClose}
             onSave={securityAnalysisMethods.onSaveDialog}
-            formSchema={securityAnalysisMethods.formSchema}
-            formMethods={securityAnalysisMethods.formMethods}
+            formContext={{
+                ...securityAnalysisMethods.formMethods,
+                validationSchema: securityAnalysisMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
             PaperProps={{
                 sx: {
@@ -71,6 +73,7 @@ export function SecurityAnalysisParametersDialog({
         >
             <SecurityAnalysisParametersForm
                 securityAnalysisMethods={securityAnalysisMethods}
+                showContingencyCount={false}
                 isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (

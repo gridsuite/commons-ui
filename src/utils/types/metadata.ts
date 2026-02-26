@@ -31,6 +31,8 @@ export type StudyMetadata = Metadata & {
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
     baseMapOptions?: { id: string; label: string }[];
+    copyCsvSeparator?: string;
+    temporaryLimitsNamesForCatalog?: string[];
 };
 
 export type ExploreMetadata = Metadata & {
