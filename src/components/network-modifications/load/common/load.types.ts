@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'node:crypto';
 import { MeasurementInfo } from '../../common/measurements/measurement.type';
 import { ConnectablePositionFormInfos } from '../../common';
-import { UUID } from 'node:crypto';
 
 export interface LoadFormInfos {
     id: string;

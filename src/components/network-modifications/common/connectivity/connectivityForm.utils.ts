@@ -26,7 +26,10 @@ const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
             }),
         })
         .test('YupRequired', 'YupRequired', (value, context) => {
-            const isEmpty = value?.[FieldConstants.ID] === null || value?.[FieldConstants.ID] === undefined || value?.[FieldConstants.ID] === '';
+            const isEmpty =
+                value?.[FieldConstants.ID] === null ||
+                value?.[FieldConstants.ID] === undefined ||
+                value?.[FieldConstants.ID] === '';
             const isEmptyRelatedField =
                 context.parent?.[relatedFieldName] === null ||
                 context.parent?.[relatedFieldName]?.[FieldConstants.ID] === '' ||
@@ -48,7 +51,10 @@ export const getConnectivityPropertiesValidationSchema = (isEquipmentModificatio
     };
 };
 
-export const getCon1andCon2WithPositionValidationSchema = (isEquipmentModification = false, id = FieldConstants.CONNECTIVITY) => ({
+export const getCon1andCon2WithPositionValidationSchema = (
+    isEquipmentModification = false,
+    id = FieldConstants.CONNECTIVITY
+) => ({
     [id]: object().shape({
         ...getConnectivityWithPositionValidationSchema(isEquipmentModification, FieldConstants.CONNECTIVITY_1),
         ...getConnectivityWithPositionValidationSchema(isEquipmentModification, FieldConstants.CONNECTIVITY_2),
@@ -69,7 +75,10 @@ export const getConnectivityWithPositionSchema = (isEquipmentModification = fals
         ...getConnectivityPropertiesValidationSchema(isEquipmentModification),
     });
 
-export const getConnectivityWithPositionValidationSchema = (isEquipmentModification = false, id = FieldConstants.CONNECTIVITY) => ({
+export const getConnectivityWithPositionValidationSchema = (
+    isEquipmentModification = false,
+    id = FieldConstants.CONNECTIVITY
+) => ({
     [id]: getConnectivityWithPositionSchema(isEquipmentModification),
 });
 
@@ -87,14 +96,20 @@ export const getConnectivityPropertiesEmptyFormData = (isEquipmentModification =
     };
 };
 
-export const getCont1Cont2WithPositionEmptyFormData = (isEquipmentModification = false, id = FieldConstants.CONNECTIVITY) => ({
+export const getCont1Cont2WithPositionEmptyFormData = (
+    isEquipmentModification = false,
+    id = FieldConstants.CONNECTIVITY
+) => ({
     [id]: {
         ...getConnectivityWithPositionEmptyFormData(isEquipmentModification, FieldConstants.CONNECTIVITY_1),
         ...getConnectivityWithPositionEmptyFormData(isEquipmentModification, FieldConstants.CONNECTIVITY_2),
     },
 });
 
-export const getConnectivityWithPositionEmptyFormData = (isEquipmentModification = false, id = FieldConstants.CONNECTIVITY) => ({
+export const getConnectivityWithPositionEmptyFormData = (
+    isEquipmentModification = false,
+    id = FieldConstants.CONNECTIVITY
+) => ({
     [id]: {
         ...getConnectivityPropertiesEmptyFormData(isEquipmentModification),
         [FieldConstants.CONNECTION_DIRECTION]: null,

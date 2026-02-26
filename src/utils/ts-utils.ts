@@ -50,9 +50,8 @@ export const getIdOrSelf = (e: any) => e?.id ?? e;
 export const areIdsEqual = (val1: Option, val2: Option) => {
     if (typeof val1 !== 'string' && typeof val2 !== 'string') {
         return val1.id === val2.id;
-    } else {
-        return val1 === val2;
     }
+    return val1 === val2;
 };
 
 export const getObjectId = (object: string | { id: string }) => {

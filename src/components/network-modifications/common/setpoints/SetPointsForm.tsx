@@ -19,7 +19,7 @@ export function SetPointsForm({ previousValues, isModification = false }: Readon
     const activePowerSetPointField = (
         <FloatInput
             name={FieldConstants.ACTIVE_POWER_SET_POINT}
-            label={'ActivePowerText'}
+            label="ActivePowerText"
             adornment={ActivePowerAdornment}
             previousValue={previousValues?.activePower ?? undefined}
             clearable={isModification}
@@ -29,7 +29,7 @@ export function SetPointsForm({ previousValues, isModification = false }: Readon
     const reactivePowerSetPointField = (
         <FloatInput
             name={FieldConstants.REACTIVE_POWER_SET_POINT}
-            label={'ReactivePowerText'}
+            label="ReactivePowerText"
             adornment={ReactivePowerAdornment}
             previousValue={previousValues?.reactivePower ?? undefined}
             clearable={isModification}

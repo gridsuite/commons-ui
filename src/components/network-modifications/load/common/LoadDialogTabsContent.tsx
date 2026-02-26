@@ -6,10 +6,10 @@
  */
 
 import { Box } from '@mui/material';
-import { LoadDialogTab } from './load.utils';
-import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
 import React from 'react';
 import type { UUID } from 'node:crypto';
+import { LoadDialogTab } from './load.utils';
+import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
 import { LoadFormInfos, PositionDiagramPaneType } from './load.types';
 import GridSection from '../../../grid/grid-section';
 import { Identifiable } from '../../../../utils';
@@ -41,7 +41,7 @@ const LoadDialogTabsContent: React.FC<LoadDialogTabsContentProps> = ({
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB} p={1}>
                 <ConnectivityForm
                     voltageLevelOptions={voltageLevelOptions}
-                    withPosition={true}
+                    withPosition
                     studyUuid={studyUuid}
                     nodeUuid={nodeUuid}
                     rootNetworkUuid={rootNetworkUuid}
@@ -63,7 +63,7 @@ const LoadDialogTabsContent: React.FC<LoadDialogTabsContentProps> = ({
                     }}
                     isModification={isModification}
                 />
-                <PropertiesForm networkElementType={'load'} isModification={isModification} />
+                <PropertiesForm networkElementType="load" isModification={isModification} />
             </Box>
             {isModification && (
                 <Box hidden={tabIndex !== LoadDialogTab.STATE_ESTIMATION_TAB} p={1} sx={{ marginTop: -4 }}>

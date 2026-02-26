@@ -6,8 +6,8 @@
  */
 
 import { Grid } from '@mui/material';
-import { ConnectivityForm } from './ConnectivityForm';
 import type { UUID } from 'node:crypto';
+import { ConnectivityForm } from './ConnectivityForm';
 import GridSection from '../../../grid/grid-section';
 import GridItem from '../../../grid/grid-item';
 import { FieldConstants, Identifiable } from '../../../../utils';
@@ -39,7 +39,7 @@ export function BranchConnectivityForm({
             nodeUuid={nodeUuid}
             rootNetworkUuid={rootNetworkUuid}
             voltageLevelOptions={voltageLevelOptions}
-            withPosition={true}
+            withPosition
             isEquipmentModification={isModification}
             previousValues={{
                 connectablePosition: previousValues?.connectablePosition1,
@@ -57,7 +57,7 @@ export function BranchConnectivityForm({
             nodeUuid={nodeUuid}
             rootNetworkUuid={rootNetworkUuid}
             voltageLevelOptions={voltageLevelOptions}
-            withPosition={true}
+            withPosition
             isEquipmentModification={isModification}
             previousValues={{
                 connectablePosition: previousValues?.connectablePosition2,

@@ -12,8 +12,8 @@ import Grid from '@mui/material/Grid';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
 import type { UUID } from 'node:crypto';
+import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
 import { ConnectablePositionFormInfos } from './connectivity.type';
 import {
     areIdsEqual,
@@ -179,7 +179,7 @@ export function ConnectivityForm({
             label={voltageLevelSelectLabel}
             options={vlOptions}
             getOptionLabel={getObjectId}
-            size={'small'}
+            size="small"
         />
     );
 
@@ -195,11 +195,11 @@ export function ConnectivityForm({
     const getTooltipMessageId = useMemo(() => {
         if (!isNodeBuilt) {
             return 'NodeNotBuildPositionMessage';
-        } else if (watchVoltageLevelId) {
-            return 'DisplayTakenPositions';
-        } else {
-            return 'NoVoltageLevelPositionMessage';
         }
+        if (watchVoltageLevelId) {
+            return 'DisplayTakenPositions';
+        }
+        return 'NoVoltageLevelPositionMessage';
     }, [watchVoltageLevelId]);
 
     const connectedField = isEquipmentModification ? (
@@ -216,8 +216,8 @@ export function ConnectivityForm({
         <AutocompleteInput
             allowNewValue
             forcePopupIcon
-            //hack to work with freesolo autocomplete
-            //setting null programatically when freesolo is enable wont empty the field
+            // hack to work with freesolo autocomplete
+            // setting null programatically when freesolo is enable wont empty the field
             name={`${id}.${FieldConstants.BUS_OR_BUSBAR_SECTION}`}
             label="BusBarBus"
             options={busOrBusbarSectionOptions}
@@ -232,7 +232,7 @@ export function ConnectivityForm({
                 }
                 return value;
             }}
-            size={'small'}
+            size="small"
         />
     );
 
@@ -263,7 +263,7 @@ export function ConnectivityForm({
                 undefined
             }
             fullWidth
-            size={'small'}
+            size="small"
         />
     );
 
@@ -284,7 +284,7 @@ export function ConnectivityForm({
                     ? (previousValues?.connectablePosition?.connectionPosition ?? undefined)
                     : undefined
             }
-            clearable={true}
+            clearable
         />
     );
 

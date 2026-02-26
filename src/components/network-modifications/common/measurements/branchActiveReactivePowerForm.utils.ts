@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { object } from 'yup';
 import {
     getPowerWithValidityEditData,
     getPowerWithValidityEmptyFormData,
     getPowerWithValidityValidationSchema,
 } from './powerWithValidity.utils';
-import { object } from 'yup';
 import { FieldConstants } from '../../../../utils';
 
 export function getBranchActiveReactivePowerEmptyFormDataProperties() {

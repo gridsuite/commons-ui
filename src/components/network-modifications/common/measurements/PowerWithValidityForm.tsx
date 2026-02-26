@@ -38,7 +38,7 @@ export const PowerWithValidityForm: FunctionComponent<MeasurementProps> = ({ id,
             label={field === FieldType.ACTIVE_POWER ? 'ActivePowerText' : 'ReactivePowerText'}
             adornment={field === FieldType.ACTIVE_POWER ? ActivePowerAdornment : ReactivePowerAdornment}
             previousValue={convertInputValue(field, measurement?.value)}
-            clearable={true}
+            clearable
         />
     );
 

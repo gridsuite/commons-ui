@@ -38,7 +38,7 @@ const LoadDialogHeader: React.FC<LoadDialogHeaderProps> = ({
         <TextField
             size="small"
             fullWidth
-            label={'ID'}
+            label="ID"
             value={equipmentId}
             InputProps={{
                 readOnly: true,
@@ -47,13 +47,13 @@ const LoadDialogHeader: React.FC<LoadDialogHeaderProps> = ({
             {...filledTextField}
         />
     ) : (
-        <TextInput name={FieldConstants.EQUIPMENT_ID} label={'ID'} formProps={{ autoFocus: true, ...filledTextField }} />
+        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
     );
 
     const loadNameField = (
         <TextInput
             name={FieldConstants.EQUIPMENT_NAME}
-            label={'Name'}
+            label="Name"
             formProps={filledTextField}
             previousValue={loadToModify?.name}
             clearable
@@ -66,7 +66,7 @@ const LoadDialogHeader: React.FC<LoadDialogHeaderProps> = ({
             label="Type"
             options={Object.values(LOAD_TYPES)}
             fullWidth
-            size={'small'}
+            size="small"
             formProps={filledTextField}
             previousValue={
                 loadToModify?.type && loadToModify.type !== 'UNDEFINED'

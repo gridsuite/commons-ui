@@ -24,7 +24,7 @@ interface CheckboxNullableInputProps {
     style?: { color: string };
 }
 
-const CheckboxNullableInput = ({
+function CheckboxNullableInput({
     name,
     label,
     id,
@@ -33,7 +33,7 @@ const CheckboxNullableInput = ({
     nullDisabled,
     onChange,
     style,
-}: Readonly<CheckboxNullableInputProps>) => {
+}: Readonly<CheckboxNullableInputProps>) {
     const {
         field: { onChange: rhfOnChange, value },
     } = useController({ name });
@@ -91,6 +91,6 @@ const CheckboxNullableInput = ({
             )}
         </FormControl>
     );
-};
+}
 
 export default CheckboxNullableInput;

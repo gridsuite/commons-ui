@@ -92,12 +92,12 @@ export function fetchBusesOrBusbarSectionsForVoltageLevel(
     urlSearchParams.append('inUpstreamBuiltParentNode', 'true');
 
     const fetchBusbarSectionsUrl =
-        getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid) +
-        '/network/voltage-levels/' +
-        encodeURIComponent(voltageLevelId) +
-        '/buses-or-busbar-sections' +
-        '?' +
-        urlSearchParams.toString();
+        `${getStudyUrlWithNodeUuidAndRootNetworkUuid(
+            studyUuid,
+            currentNodeUuid,
+            currentRootNetworkUuid
+        )}/network/voltage-levels/${encodeURIComponent(voltageLevelId)}/buses-or-busbar-sections` +
+        `?${urlSearchParams.toString()}`;
 
     console.debug(fetchBusbarSectionsUrl);
     return backendFetchJson(fetchBusbarSectionsUrl);
