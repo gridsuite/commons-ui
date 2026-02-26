@@ -1,3 +1,5 @@
+import { Option } from './types';
+
 /**
  * Copyright (c) 2024, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -44,3 +46,15 @@ export function sanitizeString(val: string | null | undefined): string | null {
 }
 
 export const getIdOrSelf = (e: any) => e?.id ?? e;
+
+export const areIdsEqual = (val1: Option, val2: Option) => {
+    if (typeof val1 !== 'string' && typeof val2 !== 'string') {
+        return val1.id === val2.id;
+    } else {
+        return val1 === val2;
+    }
+};
+
+export const getObjectId = (object: string | { id: string }) => {
+    return typeof object === 'string' ? object : (object?.id ?? null);
+};

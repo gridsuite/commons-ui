@@ -1,0 +1,59 @@
+/**
+ * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import Grid from '@mui/material/Grid';
+import { FunctionComponent, useMemo } from 'react';
+import { useIntl } from 'react-intl';
+import { MeasurementProps } from './measurement.type';
+import GridItem from '../../../grid/grid-item';
+import CheckboxNullableInput from '../../../inputs/reactHookForm/CheckboxNullableInput';
+import { FloatInput } from '../../../inputs';
+import {
+    ActivePowerAdornment,
+    convertInputValue,
+    FieldConstants,
+    FieldType,
+    ReactivePowerAdornment,
+} from '../../../../utils';
+
+export const PowerWithValidityForm: FunctionComponent<MeasurementProps> = ({ id, field, measurement }) => {
+    const intl = useIntl();
+
+    const previousValidityField = useMemo(() => {
+        if (measurement?.validity == null) {
+            return '';
+        }
+        return measurement.validity
+            ? intl.formatMessage({ id: 'ValidMeasurement' })
+            : intl.formatMessage({ id: 'InvalidMeasurement' });
+    }, [intl, measurement?.validity]);
+
+    const valueField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.VALUE}`}
+            label={field === FieldType.ACTIVE_POWER ? 'ActivePowerText' : 'ReactivePowerText'}
+            adornment={field === FieldType.ACTIVE_POWER ? ActivePowerAdornment : ReactivePowerAdornment}
+            previousValue={convertInputValue(field, measurement?.value)}
+            clearable={true}
+        />
+    );
+
+    const validityField = (
+        <CheckboxNullableInput
+            name={`${id}.${FieldConstants.VALIDITY}`}
+            label="ValidMeasurement"
+            previousValue={previousValidityField}
+        />
+    );
+
+    return (
+        <Grid container spacing={2}>
+            <GridItem size={6}>{valueField}</GridItem>
+            <GridItem size={6}>{validityField}</GridItem>
+        </Grid>
+    );
+};

@@ -10,11 +10,21 @@ import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils'
 import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
+import { Identifiable } from '../utils';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
 const getStudyUrl = (studyUuid: UUID | null) =>
     `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+
+export const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
+    studyUuid: string | null | undefined,
+    nodeUuid: string | null | undefined,
+    rootNetworkUuid: string | undefined | null
+) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+        rootNetworkUuid
+    )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
@@ -67,4 +77,28 @@ export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: V
         },
         body: JSON.stringify(newParams),
     });
+}
+
+export function fetchBusesOrBusbarSectionsForVoltageLevel(
+    studyUuid: UUID,
+    currentNodeUuid: UUID,
+    currentRootNetworkUuid: UUID,
+    voltageLevelId: string
+): Promise<Identifiable[]> {
+    console.info(
+        `Fetching buses or busbar sections of study '${studyUuid}' on root network '${currentRootNetworkUuid}' and node '${currentNodeUuid}' + ' for voltage level '${voltageLevelId}'...`
+    );
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('inUpstreamBuiltParentNode', 'true');
+
+    const fetchBusbarSectionsUrl =
+        getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid) +
+        '/network/voltage-levels/' +
+        encodeURIComponent(voltageLevelId) +
+        '/buses-or-busbar-sections' +
+        '?' +
+        urlSearchParams.toString();
+
+    console.debug(fetchBusbarSectionsUrl);
+    return backendFetchJson(fetchBusbarSectionsUrl);
 }
