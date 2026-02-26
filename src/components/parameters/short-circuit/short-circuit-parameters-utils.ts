@@ -70,7 +70,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
                       u0: yup.number().required(),
                       usMin: yup.number().required(),
                       usMax: yup.number().required(),
-                      type: yup.string().oneOf(['GENERATOR', 'HVDC']).required(),
+                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
                   })
               )
               .required()
