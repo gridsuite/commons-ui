@@ -28,3 +28,4 @@ jobs:
       githubappId: ${{ vars.GRIDSUITE_ACTIONS_APPID }}
     secrets:
       VERSIONBUMP_GHAPP_PRIVATE_KEY: ${{ secrets.VERSIONBUMP_GHAPP_PRIVATE_KEY }}
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
