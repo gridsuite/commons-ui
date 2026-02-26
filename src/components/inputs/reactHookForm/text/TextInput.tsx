@@ -110,7 +110,7 @@ export function TextInput({
                     <InputAdornment position="end">
                         {clearable && transformedValue !== undefined && transformedValue !== '' && (
                             <IconButton onClick={handleClearValue} size="small">
-                                <ClearIcon />
+                                <ClearIcon fontSize="small" />
                             </IconButton>
                         )}
                         {customAdornment && { ...customAdornment }}
