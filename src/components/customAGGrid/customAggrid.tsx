@@ -10,12 +10,38 @@ import { AgGridReact, type AgGridReactProps } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import type { ColumnResizedEvent } from 'ag-grid-community';
+import { themeQuartz, iconSetMaterial } from 'ag-grid-community';
 import { AG_GRID_LOCALE_EN, AG_GRID_LOCALE_FR } from '@ag-grid-community/locale';
 import { useIntl } from 'react-intl';
 import { Box, type BoxProps, useTheme } from '@mui/material';
 import { mergeSx } from '../../utils/styles';
 import { CUSTOM_AGGRID_THEME, styles } from './customAggrid.style';
 import { type GsLangUser, LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
+
+// Custom AG Grid theme based on Quartz
+const customAgGridTheme = themeQuartz.withPart(iconSetMaterial).withParams({
+    accentColor: '#087AD1',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#D7E2E6',
+    borderRadius: 2,
+    browserColorScheme: 'light',
+    cellHorizontalPaddingScale: 0.5,
+    chromeBackgroundColor: { ref: 'backgroundColor' },
+    columnBorder: false,
+    fontFamily: { googleFont: 'Roboto' },
+    fontSize: 13,
+    foregroundColor: '#555B62',
+    headerBackgroundColor: '#FFFFFF',
+    headerFontSize: 13,
+    headerFontWeight: 400,
+    headerTextColor: '#84868B',
+    rowBorder: true,
+    rowVerticalPaddingScale: 0.8,
+    sidePanelBorder: false,
+    spacing: 6,
+    wrapperBorder: false,
+    wrapperBorderRadius: 2,
+});
 
 export type AgGridLocale = Partial<Record<keyof typeof AG_GRID_LOCALE_EN, string>>; // using EN for keyof because it's the only who has more keys, so more complete
 export type AgGridLocales = Record<GsLangUser, AgGridLocale>;
@@ -68,7 +94,7 @@ export const CustomAGGrid = forwardRef<AgGridReact, CustomAGGridProps>(
                     localeText={useAgGridLocale(overrideLocales)}
                     onColumnResized={onColumnResized}
                     enableCellTextSelection
-                    theme="legacy"
+                    theme={customAgGridTheme}
                     {...agGridReactProps}
                 />
             </Box>
