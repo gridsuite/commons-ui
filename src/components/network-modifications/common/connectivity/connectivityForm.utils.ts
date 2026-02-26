@@ -51,16 +51,6 @@ export const getConnectivityPropertiesValidationSchema = (isEquipmentModificatio
     };
 };
 
-export const getCon1andCon2WithPositionValidationSchema = (
-    isEquipmentModification = false,
-    id = FieldConstants.CONNECTIVITY
-) => ({
-    [id]: object().shape({
-        ...getConnectivityWithPositionValidationSchema(isEquipmentModification, FieldConstants.CONNECTIVITY_1),
-        ...getConnectivityWithPositionValidationSchema(isEquipmentModification, FieldConstants.CONNECTIVITY_2),
-    }),
-});
-
 export const getConnectivityWithPositionSchema = (isEquipmentModification = false) =>
     object().shape({
         [FieldConstants.CONNECTION_DIRECTION]: string().nullable(),
@@ -82,6 +72,16 @@ export const getConnectivityWithPositionValidationSchema = (
     [id]: getConnectivityWithPositionSchema(isEquipmentModification),
 });
 
+export const getCon1andCon2WithPositionValidationSchema = (
+    isEquipmentModification = false,
+    id = FieldConstants.CONNECTIVITY
+) => ({
+    [id]: object().shape({
+        ...getConnectivityWithPositionValidationSchema(isEquipmentModification, FieldConstants.CONNECTIVITY_1),
+        ...getConnectivityWithPositionValidationSchema(isEquipmentModification, FieldConstants.CONNECTIVITY_2),
+    }),
+});
+
 export const getConnectivityWithoutPositionValidationSchema = (id = FieldConstants.CONNECTIVITY) => {
     return {
         [id]: object().shape(getConnectivityPropertiesValidationSchema()),
@@ -96,16 +96,6 @@ export const getConnectivityPropertiesEmptyFormData = (isEquipmentModification =
     };
 };
 
-export const getCont1Cont2WithPositionEmptyFormData = (
-    isEquipmentModification = false,
-    id = FieldConstants.CONNECTIVITY
-) => ({
-    [id]: {
-        ...getConnectivityWithPositionEmptyFormData(isEquipmentModification, FieldConstants.CONNECTIVITY_1),
-        ...getConnectivityWithPositionEmptyFormData(isEquipmentModification, FieldConstants.CONNECTIVITY_2),
-    },
-});
-
 export const getConnectivityWithPositionEmptyFormData = (
     isEquipmentModification = false,
     id = FieldConstants.CONNECTIVITY
@@ -115,6 +105,16 @@ export const getConnectivityWithPositionEmptyFormData = (
         [FieldConstants.CONNECTION_DIRECTION]: null,
         [FieldConstants.CONNECTION_NAME]: '',
         [FieldConstants.CONNECTION_POSITION]: null,
+    },
+});
+
+export const getCont1Cont2WithPositionEmptyFormData = (
+    isEquipmentModification = false,
+    id = FieldConstants.CONNECTIVITY
+) => ({
+    [id]: {
+        ...getConnectivityWithPositionEmptyFormData(isEquipmentModification, FieldConstants.CONNECTIVITY_1),
+        ...getConnectivityWithPositionEmptyFormData(isEquipmentModification, FieldConstants.CONNECTIVITY_2),
     },
 });
 

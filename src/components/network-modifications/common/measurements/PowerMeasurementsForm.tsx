@@ -6,7 +6,6 @@
  */
 
 import { Grid } from '@mui/material';
-import { FunctionComponent } from 'react';
 import { PowerWithValidityForm } from './PowerWithValidityForm';
 import { MeasurementInfo } from './measurement.type';
 import GridItem from '../../../grid/grid-item';
@@ -18,23 +17,23 @@ interface PowerMeasurementsFormProps {
     reactivePowerMeasurement?: MeasurementInfo;
 }
 
-export const PowerMeasurementsForm: FunctionComponent<PowerMeasurementsFormProps> = ({
+export function PowerMeasurementsForm({
     side,
     activePowerMeasurement,
     reactivePowerMeasurement,
-}) => {
-    const getActiveMeasurementType = (side: number | null | undefined) => {
-        if (!side) {
+}: Readonly<PowerMeasurementsFormProps>) {
+    const getActiveMeasurementType = (whichSide: number | null | undefined) => {
+        if (!whichSide) {
             return FieldConstants.MEASUREMENT_P;
         }
-        return side === 1 ? FieldConstants.MEASUREMENT_P1 : FieldConstants.MEASUREMENT_P2;
+        return whichSide === 1 ? FieldConstants.MEASUREMENT_P1 : FieldConstants.MEASUREMENT_P2;
     };
 
-    const getReactiveMeasurementType = (side: number | null | undefined) => {
-        if (!side) {
+    const getReactiveMeasurementType = (whichSide: number | null | undefined) => {
+        if (!whichSide) {
             return FieldConstants.MEASUREMENT_Q;
         }
-        return side === 1 ? FieldConstants.MEASUREMENT_Q1 : FieldConstants.MEASUREMENT_Q2;
+        return whichSide === 1 ? FieldConstants.MEASUREMENT_Q1 : FieldConstants.MEASUREMENT_Q2;
     };
 
     const activePowerId = `${FieldConstants.STATE_ESTIMATION}.${getActiveMeasurementType(side)}`;
@@ -58,4 +57,4 @@ export const PowerMeasurementsForm: FunctionComponent<PowerMeasurementsFormProps
             </GridItem>
         </Grid>
     );
-};
+}

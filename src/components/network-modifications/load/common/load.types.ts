@@ -7,7 +7,7 @@
 
 import { UUID } from 'node:crypto';
 import { MeasurementInfo } from '../../common/measurements/measurement.type';
-import { ConnectablePositionFormInfos } from '../../common';
+import { ConnectablePositionFormInfos } from '../../common/connectivity/connectivity.type';
 
 export interface LoadFormInfos {
     id: string;

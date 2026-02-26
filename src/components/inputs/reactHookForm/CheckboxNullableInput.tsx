@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import FormControl from '@mui/material/FormControl';
-import { Checkbox, CheckboxProps, FormControlLabel } from '@mui/material';
+import { Checkbox, CheckboxProps, FormControl, FormControlLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { useCallback } from 'react';
@@ -24,7 +23,7 @@ interface CheckboxNullableInputProps {
     style?: { color: string };
 }
 
-function CheckboxNullableInput({
+export function CheckboxNullableInput({
     name,
     label,
     id,
@@ -92,5 +91,3 @@ function CheckboxNullableInput({
         </FormControl>
     );
 }
-
-export default CheckboxNullableInput;

@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import Grid from '@mui/material/Grid';
-import { FunctionComponent, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { Grid } from '@mui/material';
 import { MeasurementProps } from './measurement.type';
 import GridItem from '../../../grid/grid-item';
-import CheckboxNullableInput from '../../../inputs/reactHookForm/CheckboxNullableInput';
+import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
 import { FloatInput } from '../../../inputs';
 import {
     ActivePowerAdornment,
@@ -20,7 +20,7 @@ import {
     ReactivePowerAdornment,
 } from '../../../../utils';
 
-export const PowerWithValidityForm: FunctionComponent<MeasurementProps> = ({ id, field, measurement }) => {
+export function PowerWithValidityForm({ id, field, measurement }: Readonly<MeasurementProps>) {
     const intl = useIntl();
 
     const previousValidityField = useMemo(() => {
@@ -56,4 +56,4 @@ export const PowerWithValidityForm: FunctionComponent<MeasurementProps> = ({ id,
             <GridItem size={6}>{validityField}</GridItem>
         </Grid>
     );
-};
+}

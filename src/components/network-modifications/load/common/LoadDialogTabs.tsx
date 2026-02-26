@@ -18,12 +18,12 @@ interface LoadDialogTabsProps {
     isModification?: boolean;
 }
 
-const LoadDialogTabs: React.FC<LoadDialogTabsProps> = ({
+export function LoadDialogTabs({
     tabIndex,
     tabIndexesWithError,
     setTabIndex,
     isModification = false,
-}) => {
+}: Readonly<LoadDialogTabsProps>) {
     return (
         <Grid container>
             <Tabs
@@ -52,6 +52,4 @@ const LoadDialogTabs: React.FC<LoadDialogTabsProps> = ({
             </Tabs>
         </Grid>
     );
-};
-
-export default LoadDialogTabs;
+}

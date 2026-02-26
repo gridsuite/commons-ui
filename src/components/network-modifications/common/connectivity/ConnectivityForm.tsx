@@ -7,8 +7,7 @@
 
 import ExploreOffOutlinedIcon from '@mui/icons-material/ExploreOffOutlined';
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
-import { GridDirection, IconButton, Tooltip } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import { Grid, GridDirection, IconButton, Tooltip } from '@mui/material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -32,8 +31,8 @@ import {
     TextInput,
     useCustomFormContext,
 } from '../../../inputs';
-import CheckboxNullableInput from '../../../inputs/reactHookForm/CheckboxNullableInput';
-import { PositionDiagramPaneType } from '../../load/common';
+import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
+import { PositionDiagramPaneType } from '../../load/common/load.types';
 import { fetchBusesOrBusbarSectionsForVoltageLevel } from '../../../../services';
 
 /**
@@ -200,7 +199,7 @@ export function ConnectivityForm({
             return 'DisplayTakenPositions';
         }
         return 'NoVoltageLevelPositionMessage';
-    }, [watchVoltageLevelId]);
+    }, [isNodeBuilt, watchVoltageLevelId]);
 
     const connectedField = isEquipmentModification ? (
         <CheckboxNullableInput

@@ -8,7 +8,7 @@
 import React from 'react';
 import { Box, Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
-import LoadDialogTabs from './LoadDialogTabs';
+import { LoadDialogTabs } from './LoadDialogTabs';
 import { LoadFormInfos } from './load.types';
 import { filledTextField } from '../../common';
 import { SelectInput, TextInput } from '../../../inputs';
@@ -24,14 +24,14 @@ interface LoadDialogHeaderProps {
     isModification?: boolean;
 }
 
-const LoadDialogHeader: React.FC<LoadDialogHeaderProps> = ({
+export function LoadDialogHeader({
     loadToModify,
     tabIndexesWithError,
     tabIndex,
     setTabIndex,
     equipmentId,
     isModification = false,
-}) => {
+}: Readonly<LoadDialogHeaderProps>) {
     const intl = useIntl();
 
     const loadIdField = isModification ? (
@@ -99,6 +99,4 @@ const LoadDialogHeader: React.FC<LoadDialogHeaderProps> = ({
             />
         </Box>
     );
-};
-
-export default LoadDialogHeader;
+}

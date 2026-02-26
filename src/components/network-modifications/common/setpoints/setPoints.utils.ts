@@ -13,27 +13,6 @@ export const getSetPointsEmptyFormData = (_isEquipmentModification = false) => (
     [FieldConstants.REACTIVE_POWER_SET_POINT]: null,
 });
 
-export const getSetPointsSchema = (isEquipmentModification = false) => ({
-    ...getActivePowerSetPointSchema(isEquipmentModification),
-    ...getReactivePowerSetPointSchema(isEquipmentModification),
-});
-
-export const getReactivePowerSetPointSchema = (isEquipmentModification = false) => ({
-    [FieldConstants.REACTIVE_POWER_SET_POINT]: number()
-        .nullable()
-        .when([FieldConstants.VOLTAGE_REGULATION], {
-            is: (value: string) => !isEquipmentModification && !value,
-            then: (schema) => schema.required(),
-        }),
-});
-
-const testValueWithinPowerIntervalOrEqualToZero = (value: number, context: TestContext) => {
-    if (value === 0) {
-        return true;
-    }
-    return testValueWithinPowerInterval(value, context);
-};
-
 export const testValueWithinPowerInterval = (value: number | null, context: TestContext) => {
     const minActivePower = context.parent[FieldConstants.MINIMUM_ACTIVE_POWER];
     const maxActivePower = context.parent[FieldConstants.MAXIMUM_ACTIVE_POWER];
@@ -44,6 +23,13 @@ export const testValueWithinPowerInterval = (value: number | null, context: Test
         return false;
     }
     return value >= minActivePower && value <= maxActivePower;
+};
+
+const testValueWithinPowerIntervalOrEqualToZero = (value: number, context: TestContext) => {
+    if (value === 0) {
+        return true;
+    }
+    return testValueWithinPowerInterval(value, context);
 };
 
 export const getActivePowerSetPointSchema = (isEquipmentModification = false) => ({
@@ -67,4 +53,18 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
                     );
             },
         }),
+});
+
+export const getReactivePowerSetPointSchema = (isEquipmentModification = false) => ({
+    [FieldConstants.REACTIVE_POWER_SET_POINT]: number()
+        .nullable()
+        .when([FieldConstants.VOLTAGE_REGULATION], {
+            is: (value: string) => !isEquipmentModification && !value,
+            then: (schema) => schema.required(),
+        }),
+});
+
+export const getSetPointsSchema = (isEquipmentModification = false) => ({
+    ...getActivePowerSetPointSchema(isEquipmentModification),
+    ...getReactivePowerSetPointSchema(isEquipmentModification),
 });

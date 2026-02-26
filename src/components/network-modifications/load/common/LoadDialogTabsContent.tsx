@@ -26,7 +26,7 @@ interface LoadDialogTabsContentProps {
     PositionDiagramPane?: PositionDiagramPaneType;
 }
 
-const LoadDialogTabsContent: React.FC<LoadDialogTabsContentProps> = ({
+export function LoadDialogTabsContent({
     studyUuid,
     nodeUuid,
     rootNetworkUuid,
@@ -35,7 +35,7 @@ const LoadDialogTabsContent: React.FC<LoadDialogTabsContentProps> = ({
     voltageLevelOptions,
     isModification = false,
     PositionDiagramPane,
-}) => {
+}: Readonly<LoadDialogTabsContentProps>) {
     return (
         <>
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB} p={1}>
@@ -76,6 +76,4 @@ const LoadDialogTabsContent: React.FC<LoadDialogTabsContentProps> = ({
             )}
         </>
     );
-};
-
-export default LoadDialogTabsContent;
+}

@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent } from 'react';
 import { BranchActiveReactivePowerMeasurementsFormProps } from './measurement.type';
 import { PowerMeasurementsForm } from './PowerMeasurementsForm';
 import GridSection from '../../../grid/grid-section';
@@ -18,9 +17,9 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-const BranchActiveReactivePowerMeasurementsForm: FunctionComponent<BranchActiveReactivePowerMeasurementsFormProps> = ({
+export function BranchActiveReactivePowerMeasurementsForm({
     equipmentToModify,
-}) => {
+}: Readonly<BranchActiveReactivePowerMeasurementsFormProps>) {
     return (
         <>
             <GridSection title="MeasurementsSection" customStyle={styles.h3} />
@@ -38,6 +37,4 @@ const BranchActiveReactivePowerMeasurementsForm: FunctionComponent<BranchActiveR
             />
         </>
     );
-};
-
-export default BranchActiveReactivePowerMeasurementsForm;
+}
