@@ -57,6 +57,8 @@ export const parametersFr = {
 
     General: 'Général',
     LimitReductions: 'Abattements',
+    StudyArea: "Zone d'étude",
+    PowerElectronics: 'Electronique de puissance',
     IST: 'IST',
     LimitVoltageInterval: 'Entre IT{lowBound} et IT{highBound}',
     LimitVoltageAfterIST: 'Entre IST et IT{highBound}',
@@ -123,6 +125,9 @@ export const parametersFr = {
     ShortCircuitCharacteristics: 'Caractéristiques prises en compte',
     ShortCircuitVoltageProfileMode: 'Plan de tension initial',
     ShortCircuitStartedGeneratorsMode: 'Démarrage des groupes',
+    ShortCircuitInClusterFilter: 'Regroupements de la zone intérieure',
+    ShortCircuitInCluster: 'Zone intérieure',
+    ShortCircuitOutCluster: 'Zone extérieure',
     ShortCircuitPowerElectronicsSection: "Modélisation des équipements raccordés par de l'électronique de puissance",
     ShortCircuitModelPowerElectronics: "Prise en compte des caractéristiques d'Icc suivantes",
     ShortCircuitIccActive: 'Actif',

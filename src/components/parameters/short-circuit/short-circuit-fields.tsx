@@ -9,25 +9,20 @@ import { useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { FormattedMessage } from 'react-intl';
+import { useWatch } from 'react-hook-form';
 import {
     InitialVoltage,
     intlInitialVoltageProfileMode,
     intlPredefinedParametersOptions,
-    onlyStartedGeneratorsOptions,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
-    SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
 } from './constants';
 import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
@@ -35,9 +30,6 @@ import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
-import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
-import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
 
 export interface ShortCircuitFieldsProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
@@ -49,27 +41,7 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-const iccMaterialsColumnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
-    ...col,
-    label: <FormattedMessage id={col.label as string} />,
-    tooltip: <FormattedMessage id={col.tooltip as string} />,
-}));
-
-const iccClustersColumnsDef = COLUMNS_DEFINITIONS_ICC_CLUSTERS.map((col) => ({
-    ...col,
-    label: <FormattedMessage id={col.label as string} />,
-    tooltip: <FormattedMessage id={col.tooltip as string} />,
-}));
-
-function createRows() {
-    const rowData: { [key: string]: any } = {};
-    iccClustersColumnsDef.forEach((column) => {
-        rowData[column.dataKey] = column.initialValue;
-    });
-    return rowData;
-}
-
-export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonly<ShortCircuitFieldsProps>) {
+export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
@@ -89,14 +61,7 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
     const watchNeutralPosition = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`,
     });
-    const watchSpecificParameters = useWatch({
-        name: `${SPECIFIC_PARAMETERS}`,
-    });
 
-    const isThereSpecificParameters = useMemo(
-        () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
-        [watchSpecificParameters]
-    );
     // Courcirc specific parameters
     const watchOnlyStartedGeneratorsInCalculationCluster = useWatch({
         name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
@@ -157,8 +122,6 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
         resetAll(newPredefinedParameters);
     };
 
-    const { setValue } = useFormContext();
-
     // fields definition
     const feederResult = (
         <Grid container alignItems="center" spacing={2} direction="row">
@@ -203,36 +166,6 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
             name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`}
             label="shortCircuitNeutralPosition"
         />
-    );
-
-    // Forced to specificly manage this onlyStartedGeneratorsInCalculationCluster parameter because it's a boolean type, but we want to use a radio button here.
-    const onlyStartedGeneratorsInCalculationCluster = (
-        <RadioInput
-            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`}
-            options={Object.values(onlyStartedGeneratorsOptions)}
-            formProps={{
-                onChange: (_event, value) => {
-                    setValue(
-                        `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
-                        value === 'true',
-                        {
-                            shouldDirty: true,
-                        }
-                    );
-                },
-            }}
-        />
-    );
-
-    const modelPowerElectronics = (
-        <Grid container alignItems="center" spacing={2} direction="row">
-            <Grid item xs={10}>
-                <FieldLabel label="ShortCircuitModelPowerElectronics" />
-            </Grid>
-            <Grid item xs={2}>
-                <SwitchInput name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`} />
-            </Grid>
-        </Grid>
     );
 
     useEffect(() => {
@@ -292,31 +225,6 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                 <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
             </Grid>
             <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
-            {isThereSpecificParameters && (
-                <>
-                    <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} />
-                    <Grid container>
-                        <GridItem size={12}>{onlyStartedGeneratorsInCalculationCluster}</GridItem>
-                    </Grid>
-                    {isDeveloperMode && (
-                        <>
-                            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
-                            <Grid container xl={6}>
-                                <GridItem size={10}>{modelPowerElectronics}</GridItem>
-                            </Grid>
-                            <ShortCircuitIccMaterialTable
-                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                                columnsDefinition={iccMaterialsColumnsDef}
-                            />
-                            <ShortCircuitIccClusterTable
-                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
-                                columnsDefinition={iccClustersColumnsDef}
-                                createRows={createRows}
-                            />
-                        </>
-                    )}
-                </>
-            )}
         </Grid>
     );
 }

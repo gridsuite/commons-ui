@@ -5,8 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'node:crypto';
 import {
     InitialVoltage,
+    NODE_CLUSTER,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
@@ -28,12 +30,17 @@ import {
 } from './short-circuit-parameters.type';
 import {
     formatSpecificParameters,
-    getAllSpecificParametersValues,
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
 } from '../common/utils';
 import { NAME } from '../../inputs';
 import { SnackInputs } from '../../../hooks';
+
+export enum ShortCircuitParametersTabValues {
+    GENERAL = 'General',
+    STUDY_AREA = 'StudyArea',
+    POWER_ELECTRONICS = 'PowerElectronics',
+}
 
 export const getCommonShortCircuitParametersFormSchema = () => {
     return yup.object().shape({
@@ -116,6 +123,14 @@ export const getSpecificShortCircuitParametersFormSchema = (
         ...(powerElectronicsClustersSchema
             ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: powerElectronicsClustersSchema }
             : {}),
+        ...{
+            [NODE_CLUSTER]: yup.array().of(
+                    yup.object<FilterPOJO>().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+            ),
+        },
     };
 
     const overrideSchema = yup.object().shape({
@@ -174,6 +189,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
             active: false,
         }));
     }
+    defaultValues[NODE_CLUSTER] = [];
     const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
         (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
     );
@@ -191,32 +207,41 @@ export const getShortCircuitSpecificParametersValues = (
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
     const powerElectronicsClustersParam: (FormPowerElectronicsCluster & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
+    const nodeCluster: FilterPOJO[] = formData[SPECIFIC_PARAMETERS][NODE_CLUSTER];
+    let finalSpecificParameters: Record<string, any> = formData[SPECIFIC_PARAMETERS];
     if (powerElectronicsMaterialsParam && powerElectronicsClustersParam) {
         // create pretty JSON
-        return {
-            ...getAllSpecificParametersValues(formData, _specificParametersValues),
-            [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: JSON.stringify(
-                powerElectronicsMaterialsParam
-                    .filter((sParam) => sParam.active) // keep only active ones
-                    .map((sParam) => {
-                        const { active, ...rest } = sParam; // remove 'active' property
-                        return rest;
-                    })
-            ),
-            [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: JSON.stringify(
-                powerElectronicsClustersParam.map((sParam) => {
-                    const { filters, ...rest } = sParam;
-                    const lightFilters = // keep only id and name in filters for backend
-                        filters?.map((filter) => ({
-                            filterId: filter[ID],
-                            filterName: filter.name,
-                        })) ?? [];
-                    return { ...rest, filters: lightFilters };
+        finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = JSON.stringify(
+            powerElectronicsMaterialsParam
+                .filter((sParam) => sParam.active) // keep only active ones
+                .map((sParam) => {
+                    const { active, ...rest } = sParam; // remove 'active' property
+                    return rest;
                 })
-            ),
-        };
+        );
+        finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = JSON.stringify(
+            powerElectronicsClustersParam.map((sParam) => {
+                const { filters, ...rest } = sParam;
+                const lightFilters = // keep only id and name in filters for backend
+                    filters?.map((filter) => ({
+                        filterId: filter[ID],
+                        filterName: filter.name,
+                    })) ?? [];
+                return { ...rest, filters: lightFilters };
+            })
+        );
     }
-    return getAllSpecificParametersValues(formData, _specificParametersValues);
+    if (nodeCluster) {
+        const lightFilters = nodeCluster.map((filter) => {
+            return {
+                filterId: filter[ID],
+                filterName: filter.name
+            }
+        });
+        finalSpecificParameters[NODE_CLUSTER] = JSON.stringify(lightFilters);
+    }
+    console.log('finalSpecificParameters', finalSpecificParameters);
+    return finalSpecificParameters;
 };
 
 const formatElectronicsMaterialsParamString = (
@@ -303,6 +328,19 @@ export const formatShortCircuitSpecificParameters = (
                 powerElectronicsClustersParam,
             ])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
         }
+    }
+    if (Object.hasOwn(specificParamsList, NODE_CLUSTER)) {
+        const filters = JSON.parse(specificParamsList[
+            NODE_CLUSTER
+            ]);
+        formatted[NODE_CLUSTER] = filters.map(
+            (filter: { filterId: any; filterName: any }) => ({
+                [ID]: filter.filterId,
+                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+            })
+        );
+    } else {
+        formatted[NODE_CLUSTER] = [];
     }
     return formatted;
 };

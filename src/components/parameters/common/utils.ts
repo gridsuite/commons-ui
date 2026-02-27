@@ -97,7 +97,7 @@ export const getAllSpecificParametersValues = (
 ): SpecificParametersValues => {
     return Object.keys(formData[SPECIFIC_PARAMETERS]).reduce((acc: SpecificParametersValues, key: string) => {
         if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
-            acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
+            acc[key] = formData[SPECIFIC_PARAMETERS][key];
         }
         return acc;
     }, {});

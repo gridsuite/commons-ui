@@ -7,7 +7,7 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
@@ -15,6 +15,7 @@ import { DESCRIPTION, NAME } from '../../inputs';
 import {
     InitialVoltage,
     PredefinedParameters,
+    NODE_CLUSTER,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
@@ -36,12 +37,16 @@ import {
     getDefaultShortCircuitSpecificParamsValues,
     getShortCircuitSpecificParametersValues,
     getSpecificShortCircuitParametersFormSchema,
+    ShortCircuitParametersTabValues,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
+    selectedTab: ShortCircuitParametersTabValues;
+    handleTabChange: (event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => void;
+    tabIndexesWithError: ShortCircuitParametersTabValues[];
     resetAll: (predefinedParameter: PredefinedParameters) => void;
     specificParametersDescriptionForProvider: SpecificParameterInfos[];
     toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
@@ -69,8 +74,16 @@ export const useShortCircuitParametersForm = ({
     description,
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
     const [, provider, , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
+    const [selectedTab, setSelectedTab] = useState<ShortCircuitParametersTabValues>(
+        ShortCircuitParametersTabValues.GENERAL
+    );
+    const [tabIndexesWithError] = useState<ShortCircuitParametersTabValues[]>([]);
     const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
+
+    const handleTabChange = useCallback((event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => {
+        setSelectedTab(newValue);
+    }, []);
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
         return provider && specificParamsDescriptions?.[provider] ? specificParamsDescriptions[provider] : [];
@@ -146,6 +159,7 @@ export const useShortCircuitParametersForm = ({
                     dirty
                 );
             }
+            setValue(`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`, []);
         },
         [setValue, specificParametersDescriptionForProvider]
     );
@@ -155,6 +169,7 @@ export const useShortCircuitParametersForm = ({
             if (!provider) {
                 return {} as ShortCircuitParametersInfos;
             }
+            console.log('formatNewParams: ', formData);
             return {
                 provider: formData[PROVIDER],
                 predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],
@@ -190,7 +205,7 @@ export const useShortCircuitParametersForm = ({
                 return {};
             }
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
-            const values = {
+            return {
                 [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
@@ -210,7 +225,6 @@ export const useShortCircuitParametersForm = ({
                     ),
                 },
             };
-            return values;
         },
         [provider, snackError, specificParametersDescriptionForProvider]
     );
@@ -258,6 +272,9 @@ export const useShortCircuitParametersForm = ({
     return {
         formMethods,
         formSchema,
+        selectedTab,
+        handleTabChange,
+        tabIndexesWithError,
         specificParametersDescriptionForProvider,
         toShortCircuitFormValues,
         formatNewParams,

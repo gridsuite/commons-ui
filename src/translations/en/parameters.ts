@@ -55,6 +55,8 @@ export const parametersEn = {
 
     General: 'General',
     LimitReductions: 'Limit reductions',
+    StudyArea: 'Study area',
+    PowerElectronics: 'Power electronics',
     IST: 'PATL',
     LimitVoltageInterval: 'Between TATL{lowBound} and TATL{highBound}',
     LimitVoltageAfterIST: 'Between PATL and TATL{highBound}',
@@ -119,6 +121,9 @@ export const parametersEn = {
     ShortCircuitCharacteristics: 'Features considered',
     ShortCircuitVoltageProfileMode: 'Initial voltage profile',
     ShortCircuitStartedGeneratorsMode: 'Generators started',
+    ShortCircuitInClusterFilter: 'In cluster filters',
+    ShortCircuitInCluster: 'In cluster',
+    ShortCircuitOutCluster: 'Out cluster',
     ShortCircuitPowerElectronicsSection: 'Modeling of power electronics connected equipment',
     ShortCircuitModelPowerElectronics: 'Consider following Icc characteristics',
     ShortCircuitIccActive: 'Activate',
