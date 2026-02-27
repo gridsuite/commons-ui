@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Chip } from '@mui/material';
 import * as sensiParam from './columns-definitions';
 import {
     SensiBranchesTabValues,
@@ -20,12 +20,14 @@ import {
 } from './columns-definitions';
 import { TabPanel } from '../common';
 import { useCreateRowData } from '../../../hooks/use-create-row-data';
-import type { MuiStyles } from '../../../utils/styles';
+import { mergeSx, MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { ColumnsDef, ParameterTable } from '../common/parameter-table';
+import BuildStatusChip from '../../node/build-status-chip';
+import { BUILD_STATUS } from '../../node/constant';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -57,6 +59,12 @@ const styles = {
         flexGrow: '1',
         whiteSpace: 'pre-wrap',
     },
+    chipFloating: (theme) => ({
+        position: 'absolute',
+        top: theme.spacing(-4),
+        left: theme.spacing(1),
+        zIndex: 2,
+    }),
 } as const satisfies MuiStyles;
 
 interface SensitivityParametersSelectorProps {
@@ -65,7 +73,7 @@ interface SensitivityParametersSelectorProps {
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
-    isNodeBuilt: boolean | undefined;
+    globalBuildStatus: BUILD_STATUS | undefined;
 }
 
 interface TabInfo {
@@ -79,7 +87,7 @@ function SensitivityParametersSelector({
     factorsCount,
     isDeveloperMode,
     isStudyLinked,
-    isNodeBuilt,
+    globalBuildStatus,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
 
@@ -151,19 +159,16 @@ function SensitivityParametersSelector({
                         />
                     ))}
                 </Tabs>
+                <BuildStatusChip buildStatus={globalBuildStatus} />
                 {isStudyLinked && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            {isNodeBuilt ? (
-                                <SensitivityAnalysisParametersFactorCount
-                                    count={factorsCount.variableCount}
-                                    maxCount={MAX_VARIABLES_COUNT}
-                                    messageId="sensitivityAnalysis.simulatedVariables"
-                                    isLoading={isLoading}
-                                />
-                            ) : (
-                                <FormattedMessage id="sensitivityAnalysis.nodeNotBuilt" />
-                            )}
+                            <SensitivityAnalysisParametersFactorCount
+                                count={factorsCount.variableCount}
+                                maxCount={MAX_VARIABLES_COUNT}
+                                messageId="sensitivityAnalysis.simulatedVariables"
+                                isLoading={isLoading}
+                            />
                             <FormattedMessage id="sensitivityAnalysis.separator" />
                             <FormattedMessage
                                 id="sensitivityAnalysis.maximumFactorsCount"

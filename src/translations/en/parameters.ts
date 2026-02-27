@@ -251,7 +251,6 @@ export const parametersEn = {
         '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
-    'sensitivityAnalysis.nodeNotBuilt': 'Unbuilt current node : no computation number forecast',
     loadingComputing: 'Calculation in progress...',
 
     AddRows: 'Add',
@@ -312,4 +311,9 @@ export const parametersEn = {
     DynamicMarginCalculationLoadsFilter: 'Loads filter',
     DynamicMarginCalculationLoadsVariation: 'Load variation',
     DynamicMarginCalculationLoadsActive: 'Active',
+    BUILT: 'Built',
+    BUILT_WITH_WARNING: 'Warnings',
+    BUILT_WITH_ERROR: 'Errors',
+    NOT_BUILT: 'Not built',
+    BUILDING: 'Building',
 };

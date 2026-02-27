@@ -14,6 +14,7 @@ import { LineSeparator, PROVIDER } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
+import { BUILD_STATUS } from '../../node/constant';
 
 const styles = {
     form: {
@@ -48,13 +49,13 @@ export function SensitivityAnalysisParametersForm({
     renderTitleFields,
     renderActions,
     isDeveloperMode,
-    isNodeBuilt,
+    globalBuildStatus,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
-    isNodeBuilt: boolean | undefined;
+    globalBuildStatus: BUILD_STATUS | undefined;
 }>) {
     return (
         <CustomFormProvider
@@ -109,7 +110,7 @@ export function SensitivityAnalysisParametersForm({
                                     factorsCount={sensitivityAnalysisMethods.factorsCount}
                                     isDeveloperMode={isDeveloperMode}
                                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
-                                    isNodeBuilt={isNodeBuilt}
+                                    globalBuildStatus={globalBuildStatus}
                                 />
                             </Grid>
                         </Box>

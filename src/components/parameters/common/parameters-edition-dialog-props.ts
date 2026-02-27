@@ -8,6 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { User } from 'oidc-client';
 import { GsLang } from '../../../utils';
+import { BUILD_STATUS } from '../../node/constant';
 
 export interface ParametersEditionDialogProps {
     id: UUID;
@@ -19,6 +20,6 @@ export interface ParametersEditionDialogProps {
     activeDirectory: UUID;
     language?: GsLang;
     user: User | null;
-    isNodeBuilt: boolean | undefined;
+    globalBuildStatus: BUILD_STATUS | undefined;
     isDeveloperMode?: boolean;
 }

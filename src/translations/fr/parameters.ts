@@ -335,4 +335,9 @@ export const parametersFr = {
     DynamicMarginCalculationLoadsFilter: 'Regroupement de charges',
     DynamicMarginCalculationLoadsVariation: 'Variation de charge',
     DynamicMarginCalculationLoadsActive: 'Actif',
+    BUILT: 'Réalisé',
+    BUILT_WITH_WARNING: 'Alertes',
+    BUILT_WITH_ERROR: 'Erreurs',
+    NOT_BUILT: 'Non réalisé',
+    BUILDING: 'En cours de réalisation',
 };

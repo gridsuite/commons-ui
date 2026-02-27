@@ -29,6 +29,7 @@ import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
+import { BUILD_STATUS } from '../../node/constant';
 
 interface SensitivityAnalysisParametersProps {
     studyUuid: UUID | null;
@@ -36,7 +37,7 @@ interface SensitivityAnalysisParametersProps {
     currentRootNetworkUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    isNodeBuilt: boolean | undefined;
+    globalBuildStatus: BUILD_STATUS | undefined;
     isDeveloperMode: boolean;
 }
 
@@ -46,12 +47,12 @@ export function SensitivityAnalysisParametersInline({
     currentRootNetworkUuid,
     parametersBackend,
     setHaveDirtyFields,
-    isNodeBuilt,
+    globalBuildStatus,
     isDeveloperMode,
 }: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
-    console.info(`isNodeBuilt : ${isNodeBuilt}`);
+    console.info(`globalBuildStatus : ${globalBuildStatus}`);
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
         studyUuid,
         currentNodeUuid,
@@ -118,6 +119,7 @@ export function SensitivityAnalysisParametersInline({
         <SensitivityAnalysisParametersForm
             sensitivityAnalysisMethods={sensitivityAnalysisMethods}
             isDeveloperMode={isDeveloperMode}
+            globalBuildStatus={globalBuildStatus}
             renderActions={() => {
                 return (
                     <>
