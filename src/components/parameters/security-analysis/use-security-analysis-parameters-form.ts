@@ -97,6 +97,9 @@ export const useSecurityAnalysisParametersForm = (
 
     const toContingencyListsInfos = useCallback(
         (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfos[] => {
+            if (!formContingencyListsInfos) {
+                return [];
+            }
             return formContingencyListsInfos.map((contingencyListsInfos) => ({
                 [CONTINGENCY_LISTS]: contingencyListsInfos[CONTINGENCY_LISTS]?.map((c: Record<string, string>) => ({
                     [ID]: c[ID],
