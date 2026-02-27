@@ -28,6 +28,7 @@ export function SensitivityAnalysisParametersDialog({
     activeDirectory,
     language,
     user,
+    globalBuildStatus,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
@@ -74,6 +75,7 @@ export function SensitivityAnalysisParametersDialog({
             <SensitivityAnalysisParametersForm
                 sensitivityAnalysisMethods={sensitivityAnalysisMethods}
                 isDeveloperMode={isDeveloperMode}
+                globalBuildStatus={globalBuildStatus}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm

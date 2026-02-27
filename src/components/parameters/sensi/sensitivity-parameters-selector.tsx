@@ -20,12 +20,13 @@ import {
 } from './columns-definitions';
 import { TabPanel } from '../common';
 import { useCreateRowData } from '../../../hooks/use-create-row-data';
-import type { MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
-import { FactorsCount } from '../../../utils';
+import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { ColumnsDef, ParameterTable } from '../common/parameter-table';
+import BuildStatusChip from '../../node/build-status-chip';
+import { BuildStatus } from '../../node/constant';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -57,6 +58,12 @@ const styles = {
         flexGrow: '1',
         whiteSpace: 'pre-wrap',
     },
+    chipFloating: (theme) => ({
+        position: 'absolute',
+        top: theme.spacing(-4),
+        left: theme.spacing(1),
+        zIndex: 2,
+    }),
 } as const satisfies MuiStyles;
 
 interface SensitivityParametersSelectorProps {
@@ -65,6 +72,7 @@ interface SensitivityParametersSelectorProps {
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
+    globalBuildStatus: BuildStatus | undefined;
 }
 
 interface TabInfo {
@@ -78,6 +86,7 @@ function SensitivityParametersSelector({
     factorsCount,
     isDeveloperMode,
     isStudyLinked,
+    globalBuildStatus,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
 
@@ -149,6 +158,7 @@ function SensitivityParametersSelector({
                         />
                     ))}
                 </Tabs>
+                <BuildStatusChip buildStatus={globalBuildStatus} />
                 {isStudyLinked && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
