@@ -109,7 +109,7 @@ export const useSensitivityAnalysisParametersForm = ({
     name,
     description,
 }: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
-    const [providers, , , , , params, , updateParameters] = parametersBackend;
+    const { providers, params, updateParameters } = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
     const { snackError } = useSnackMessage();
     const [factorsCount, setFactorsCount] = useState<FactorsCount>(DEFAULT_FACTOR_COUNT);

@@ -7,16 +7,7 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-    Dispatch,
-    SetStateAction,
-    SyntheticEvent,
-    useCallback,
-    useEffect,
-    useEffectEvent,
-    useMemo,
-    useState,
-} from 'react';
+import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import {
@@ -67,8 +58,7 @@ export interface UseLoadFlowParametersFormReturn {
     toLoadFlowFormValues: (_params: LoadFlowParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => LoadFlowParametersInfos;
     params: LoadFlowParametersInfos | null;
-    currentProvider: string | undefined;
-    setCurrentProvider: Dispatch<SetStateAction<string | undefined>>;
+    watchProvider: string | undefined;
     paramsLoaded: boolean;
     onValidationError: (errors: FieldErrors) => void;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -82,33 +72,23 @@ export const useLoadFlowParametersForm = (
     name: string | null,
     description: string | null
 ): UseLoadFlowParametersFormReturn => {
-    const [
-        providers,
-        provider,
-        ,
-        ,
-        ,
-        params,
-        ,
-        updateParameters,
-        ,
-        specificParamsDescriptions,
-        defaultLimitReductions,
-    ] = parametersBackend;
+    const { providers, params, updateParameters, specificParamsDescription, defaultLimitReductions } =
+        parametersBackend;
 
-    const [currentProvider, setCurrentProvider] = useState(params?.provider);
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [limitReductionNumber, setLimitReductionNumber] = useState(0);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
+    const [specificParametersDescriptionForProvider, setSpecificParametersDescriptionForProvider] = useState<
+        SpecificParameterInfos[]
+    >(() => {
+        return params?.provider && specificParamsDescription ? specificParamsDescription[params.provider] : [];
+    });
     const { snackError } = useSnackMessage();
+    const previousWatchProviderRef = useRef<string | undefined>(undefined);
 
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
         setSelectedTab(newValue);
     }, []);
-
-    const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
-        return currentProvider && specificParamsDescriptions ? specificParamsDescriptions[currentProvider] : [];
-    }, [currentProvider, specificParamsDescriptions]);
 
     const specificParametersDefaultValues = useMemo(() => {
         return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
@@ -129,7 +109,7 @@ export const useLoadFlowParametersForm = (
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
-            [PROVIDER]: provider,
+            [PROVIDER]: params?.provider,
             [PARAM_LIMIT_REDUCTION]: null,
             [COMMON_PARAMETERS]: {
                 ...params?.commonParameters,
@@ -144,6 +124,15 @@ export const useLoadFlowParametersForm = (
 
     const { watch, reset } = formMethods;
     const watchProvider = watch(PROVIDER);
+
+    useEffect(() => {
+        const provider = watchProvider ?? params?.provider;
+        if (!provider || !specificParamsDescription) {
+            setSpecificParametersDescriptionForProvider([]);
+            return;
+        }
+        setSpecificParametersDescriptionForProvider(specificParamsDescription[provider] ?? []);
+    }, [watchProvider, params?.provider, specificParamsDescription]);
 
     const toLimitReductions = useCallback(
         (formLimits: Record<string, any>[]) => {
@@ -192,6 +181,7 @@ export const useLoadFlowParametersForm = (
     const toLoadFlowFormValues = useCallback(
         (_params: LoadFlowParametersInfos) => {
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[_params.provider];
+            const specificParametersForLoadedProvider = specificParamsDescription?.[_params.provider] ?? [];
 
             return {
                 [PROVIDER]: _params.provider,
@@ -201,17 +191,17 @@ export const useLoadFlowParametersForm = (
                 },
                 [SPECIFIC_PARAMETERS]: {
                     ...formatSpecificParameters(
-                        specificParametersDescriptionForProvider,
+                        specificParametersForLoadedProvider,
                         specificParamsListForCurrentProvider
                     ),
                 },
                 ...toFormValuesLimitReductions(_params.limitReductions),
             };
         },
-        [specificParametersDescriptionForProvider]
+        [specificParamsDescription]
     );
 
-    const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
+    const paramsLoaded = useMemo(() => !!params && !!watchProvider, [watchProvider, params]);
 
     // TODO: remove this when DynaFlow will be available not only in developer mode
     const formattedProviders = useMemo(() => {
@@ -278,33 +268,29 @@ export const useLoadFlowParametersForm = (
     }, [paramsLoaded, params]);
 
     useEffect(() => {
-        if (watchProvider && watchProvider !== currentProvider) {
-            setCurrentProvider(watchProvider);
-            setSpecificParameters(watchProvider, specificParamsDescriptions, formMethods);
-            setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
-
-            // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
-            // (formSchema has a dep on limitReductionNumber)
-            if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
-                if (currentProvider) {
-                    // providerX -> OLF: use default value
-                    setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
-                } else {
-                    // nothing -> OLF: use editing params value
-                    setLimitReductionNumber(params?.limitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
-                }
-            } else {
-                setLimitReductionNumber(0);
-            }
+        if (!watchProvider || watchProvider === previousWatchProviderRef.current) {
+            return;
         }
-    }, [
-        currentProvider,
-        defaultLimitReductions,
-        formMethods,
-        params?.limitReductions,
-        specificParamsDescriptions,
-        watchProvider,
-    ]);
+
+        setSpecificParameters(watchProvider, specificParamsDescription, formMethods);
+        setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
+
+        // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
+        // (formSchema has a dep on limitReductionNumber)
+        if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
+            if (previousWatchProviderRef.current) {
+                // providerX -> OLF: use default value
+                setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+            } else {
+                // nothing -> OLF: use editing params value
+                setLimitReductionNumber(params?.limitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+            }
+        } else {
+            setLimitReductionNumber(0);
+        }
+
+        previousWatchProviderRef.current = watchProvider;
+    }, [defaultLimitReductions, formMethods, params?.limitReductions, specificParamsDescription, watchProvider]);
 
     return {
         formMethods,
@@ -318,8 +304,7 @@ export const useLoadFlowParametersForm = (
         toLoadFlowFormValues,
         formatNewParams,
         params,
-        currentProvider,
-        setCurrentProvider,
+        watchProvider,
         paramsLoaded,
         onValidationError,
         onSaveInline,

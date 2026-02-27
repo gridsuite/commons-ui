@@ -62,7 +62,7 @@ export function LoadFlowParametersForm({
         formattedProviders,
         specificParametersDescriptionForProvider,
         params,
-        currentProvider,
+        watchProvider,
         defaultLimitReductions,
         paramsLoaded,
     } = loadflowMethods;
@@ -82,7 +82,7 @@ export function LoadFlowParametersForm({
                         <Grid container sx={styles.content}>
                             <LoadFlowParametersContent
                                 selectedTab={selectedTab}
-                                currentProvider={currentProvider ?? ''}
+                                currentProvider={watchProvider ?? ''}
                                 specificParameters={specificParametersDescriptionForProvider}
                                 params={params}
                                 defaultLimitReductions={defaultLimitReductions}
