@@ -14,7 +14,7 @@ import { LineSeparator, PROVIDER } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
-import { BUILD_STATUS } from '../../node/constant';
+import { BuildStatus } from '../../node/constant';
 
 const styles = {
     form: {
@@ -55,7 +55,7 @@ export function SensitivityAnalysisParametersForm({
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
-    globalBuildStatus: BUILD_STATUS | undefined;
+    globalBuildStatus: BuildStatus | undefined;
 }>) {
     return (
         <CustomFormProvider

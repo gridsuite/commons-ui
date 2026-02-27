@@ -9,9 +9,9 @@ import React, { ReactElement } from 'react';
 import { Chip } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { mergeSx, SxStyle } from '../../utils';
-import { BUILD_STATUS } from './constant';
+import { BuildStatus } from './constant';
 
-function getBuildStatusSx(buildStatus: BUILD_STATUS | undefined): SxStyle {
+function getBuildStatusSx(buildStatus: BuildStatus | undefined): SxStyle {
     return (theme) => {
         // @ts-ignore
         const bs = theme.node.buildStatus;
@@ -19,13 +19,13 @@ function getBuildStatusSx(buildStatus: BUILD_STATUS | undefined): SxStyle {
         let bg: string;
 
         switch (buildStatus) {
-            case BUILD_STATUS.BUILT:
+            case BuildStatus.BUILT:
                 bg = bs.success;
                 break;
-            case BUILD_STATUS.BUILT_WITH_WARNING:
+            case BuildStatus.BUILT_WITH_WARNING:
                 bg = bs.warning;
                 break;
-            case BUILD_STATUS.BUILT_WITH_ERROR:
+            case BuildStatus.BUILT_WITH_ERROR:
                 bg = bs.error;
                 break;
             default:
@@ -55,13 +55,13 @@ const baseStyle: SxStyle = (theme) =>
     }) as const;
 
 type BuildStatusChipProps = {
-    buildStatus?: BUILD_STATUS;
+    buildStatus?: BuildStatus;
     sx?: SxStyle;
     icon?: ReactElement;
     onClick?: (e: React.MouseEvent) => void;
 };
 
-const BuildStatusChip = ({ buildStatus = BUILD_STATUS.NOT_BUILT, sx, icon, onClick }: BuildStatusChipProps) => {
+const BuildStatusChip = ({ buildStatus = BuildStatus.NOT_BUILT, sx, icon, onClick }: BuildStatusChipProps) => {
     const intl = useIntl();
 
     const label = intl.formatMessage({ id: buildStatus });

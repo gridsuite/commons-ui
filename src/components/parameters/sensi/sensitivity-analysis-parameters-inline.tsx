@@ -29,7 +29,7 @@ import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
-import { BUILD_STATUS } from '../../node/constant';
+import { BuildStatus } from '../../node/constant';
 
 interface SensitivityAnalysisParametersProps {
     studyUuid: UUID | null;
@@ -37,7 +37,7 @@ interface SensitivityAnalysisParametersProps {
     currentRootNetworkUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    globalBuildStatus: BUILD_STATUS | undefined;
+    globalBuildStatus: BuildStatus | undefined;
     isDeveloperMode: boolean;
 }
 
