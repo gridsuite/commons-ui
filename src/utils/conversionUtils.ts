@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { AttributeModification, OperationType } from './types';
 import { FieldType } from './types/fieldType';
 
 export const GRIDSUITE_DEFAULT_PRECISION: number = 13;
@@ -83,4 +84,12 @@ export function convertOutputValue(field: FieldType, value: any) {
         return value.map((a: number) => kiloUnitToUnit(a));
     }
     return value;
+}
+
+export function toModificationOperation<T>(
+    value: T
+): AttributeModification<Exclude<Exclude<T, null>, undefined>> | null {
+    return value === 0 || value === false || value
+        ? { value: value as Exclude<Exclude<T, null>, undefined>, op: OperationType.SET }
+        : null;
 }
