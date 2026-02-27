@@ -58,8 +58,8 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
 
 export type BackendFunctions<T extends ComputingType> = {
     backendFetchProviders?: (() => Promise<string[]>) | null;
-    backendFetchParameters: (studyUuid: UUID) => Promise<ParametersInfos<T>>;
-    backendUpdateParameters?: (studyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>;
+    backendFetchParameters: (paramsUuidOrStudyUuid: UUID) => Promise<ParametersInfos<T>>;
+    backendUpdateParameters?: (paramsUuidOrStudyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>;
     backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>;
     backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>;
 };
@@ -67,9 +67,9 @@ export type BackendFunctions<T extends ComputingType> = {
 export type UseParametersBackendReturnProps<T extends ComputingType> = {
     providers: Record<string, string>;
     params: ParametersInfos<T> | null;
-    fetchParameters: (studyUuid: UUID) => void;
+    fetchParameters: (paramsUuidOrStudyUuid: UUID) => void;
     updateParameters: (newParams: ParametersInfos<T>) => void;
-    resetParameters: () => Promise<void> | undefined;
+    resetParameters: () => void;
     specificParamsDescription: SpecificParametersDescription | null;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
 };

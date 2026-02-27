@@ -47,7 +47,6 @@ export interface UseShortCircuitParametersFormReturn {
     toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => ShortCircuitParametersInfos;
     params: ShortCircuitParametersInfos | null;
-    provider: string | undefined;
     paramsLoaded: boolean;
     onValidationError: (errors: FieldErrors) => void;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -263,7 +262,6 @@ export const useShortCircuitParametersForm = ({
         toShortCircuitFormValues,
         formatNewParams,
         params,
-        provider,
         paramsLoaded,
         onValidationError,
         onSaveInline,

@@ -70,7 +70,6 @@ export function LoadFlowParametersInline({
                 setOpenSelectParameterDialog(false);
                 fetchLoadFlowParameters(newParams[0].id)
                     .then((parameters) => {
-                        loadflowMethods.setCurrentProvider(parameters.provider);
                         console.info(`loading the following loadflow parameters : ${parameters.uuid}`);
                         reset(loadflowMethods.toLoadFlowFormValues(parameters), {
                             keepDefaultValues: true,

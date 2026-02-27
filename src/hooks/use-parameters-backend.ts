@@ -142,9 +142,9 @@ export const useParametersBackend = <T extends ComputingType>(
     // PARAMETERS RESET
     const resetParameters = useCallback(() => {
         if (!studyUuid || !backendUpdateParameters) {
-            return Promise.reject(new Error('Missing studyUuid or backendUpdateParameters'));
+            return;
         }
-        return backendUpdateParameters(studyUuid, null)
+        backendUpdateParameters(studyUuid, null)
             .then((response) => {
                 if (response.status === 204) {
                     snackWarning({

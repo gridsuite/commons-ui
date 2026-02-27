@@ -6,7 +6,7 @@
  */
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
@@ -43,8 +43,7 @@ export interface UseSecurityAnalysisParametersFormReturn {
     toFormValueSaParameters: (_params: SAParameters) => any;
     formatNewParams: (formData: Record<string, any>) => SAParameters;
     params: SAParameters | null;
-    currentProvider: string | undefined;
-    setCurrentProvider: Dispatch<SetStateAction<string | undefined>>;
+    watchProvider: string | undefined;
     paramsLoaded: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
@@ -57,7 +56,7 @@ export const useSecurityAnalysisParametersForm = (
     description: string | null
 ): UseSecurityAnalysisParametersFormReturn => {
     const { providers, params, updateParameters, defaultLimitReductions } = parametersBackend;
-    const [currentProvider, setCurrentProvider] = useState(params?.provider);
+    const previousWatchProviderRef = useRef<string | undefined>(undefined);
     const { snackError } = useSnackMessage();
 
     // TODO: remove this when DynaFlow is supported
@@ -70,8 +69,6 @@ export const useSecurityAnalysisParametersForm = (
                 label: value,
             }));
     }, [providers]);
-
-    const paramsLoaded = useMemo(() => !!params && !!currentProvider, [currentProvider, params]);
 
     const formSchema = useMemo(() => {
         return getSAParametersFormSchema(name, params?.limitReductions);
@@ -93,7 +90,9 @@ export const useSecurityAnalysisParametersForm = (
     });
 
     const { reset, watch } = formMethods;
-    const watchProvider = watch(PARAM_SA_PROVIDER);
+    const watchProvider = watch(PARAM_SA_PROVIDER) as string | undefined;
+
+    const paramsLoaded = useMemo(() => !!params && !!watchProvider, [watchProvider, params]);
 
     const toContingencyListsInfos = useCallback(
         (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfos[] => {
@@ -174,9 +173,8 @@ export const useSecurityAnalysisParametersForm = (
     );
 
     useEffect(() => {
-        if (watchProvider !== currentProvider) {
-            setCurrentProvider(watchProvider as string);
-            if (watchProvider !== undefined && currentProvider !== undefined) {
+        if (watchProvider !== undefined && watchProvider !== previousWatchProviderRef.current) {
+            if (previousWatchProviderRef.current !== undefined) {
                 if (params !== null) {
                     params.limitReductions = defaultLimitReductions;
                 }
@@ -185,8 +183,9 @@ export const useSecurityAnalysisParametersForm = (
                     toFormValuesLimitReductions(defaultLimitReductions)[LIMIT_REDUCTIONS_FORM]
                 );
             }
+            previousWatchProviderRef.current = watchProvider;
         }
-    }, [watchProvider, currentProvider, formMethods, setCurrentProvider, defaultLimitReductions, params]);
+    }, [watchProvider, formMethods, defaultLimitReductions, params]);
 
     useEffect(() => {
         if (!params) {
@@ -203,8 +202,7 @@ export const useSecurityAnalysisParametersForm = (
         toFormValueSaParameters,
         formatNewParams,
         params,
-        currentProvider,
-        setCurrentProvider,
+        watchProvider,
         paramsLoaded,
         onSaveInline,
         onSaveDialog,
