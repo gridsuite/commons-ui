@@ -43,8 +43,8 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
         (position: 'start' | 'end') => {
             return (
                 <InputAdornment position={position}>
-                    <IconButton onClick={handleClearValue}>
-                        <ClearIcon />
+                    <IconButton onClick={handleClearValue} size="small">
+                        <ClearIcon fontSize="small" />
                     </IconButton>
                 </InputAdornment>
             );
