@@ -61,14 +61,19 @@ export const getFilledPropertiesFromModification = (properties: Property[] | und
     );
 };
 
-export const getPropertiesFromModification = (properties: Property[] | undefined | null): Properties => {
+export const getPropertiesFromModification = (
+    properties: Property[] | undefined | null,
+    includePreviousValue = true
+): Properties => {
     return {
         [FieldConstants.ADDITIONAL_PROPERTIES]: properties
             ? properties.map((p) => {
                   return {
                       [FieldConstants.NAME]: p[FieldConstants.NAME],
                       [FieldConstants.VALUE]: p[FieldConstants.VALUE],
-                      [FieldConstants.PREVIOUS_VALUE]: p[FieldConstants.PREVIOUS_VALUE],
+                      [FieldConstants.PREVIOUS_VALUE]: includePreviousValue
+                          ? p[FieldConstants.PREVIOUS_VALUE]
+                          : undefined,
                       [FieldConstants.ADDED]: p[FieldConstants.ADDED],
                       [FieldConstants.DELETION_MARK]: p[FieldConstants.DELETION_MARK],
                   };

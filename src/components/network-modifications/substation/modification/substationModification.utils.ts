@@ -42,12 +42,13 @@ export const substationModificationFormToDto = (
 });
 
 export const substationModificationDtoToForm = (
-    substationDto: SubstationModificationDto
+    substationDto: SubstationModificationDto,
+    includePreviousValues = true
 ): SubstationModificationFormData => {
     return {
         equipmentID: substationDto.equipmentId,
         equipmentName: substationDto.equipmentName?.value ?? '',
         country: substationDto.country?.value ?? null,
-        ...getPropertiesFromModification(substationDto?.properties),
+        ...getPropertiesFromModification(substationDto?.properties, includePreviousValues),
     };
 };
