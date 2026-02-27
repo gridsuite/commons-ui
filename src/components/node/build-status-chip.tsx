@@ -61,9 +61,8 @@ type BuildStatusChipProps = {
     onClick?: (e: React.MouseEvent) => void;
 };
 
-const BuildStatusChip = ({ buildStatus = BuildStatus.NOT_BUILT, sx, icon, onClick }: BuildStatusChipProps) => {
+function BuildStatusChip({ buildStatus = BuildStatus.NOT_BUILT, sx, icon, onClick }: Readonly<BuildStatusChipProps>) {
     const intl = useIntl();
-
     const label = intl.formatMessage({ id: buildStatus });
 
     return (
@@ -75,6 +74,6 @@ const BuildStatusChip = ({ buildStatus = BuildStatus.NOT_BUILT, sx, icon, onClic
             sx={mergeSx(getBuildStatusSx(buildStatus), sx, baseStyle)}
         />
     );
-};
+}
 
 export default BuildStatusChip;
