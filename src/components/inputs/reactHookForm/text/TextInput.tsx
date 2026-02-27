@@ -109,8 +109,8 @@ export function TextInput({
                 endAdornment: (
                     <InputAdornment position="end">
                         {clearable && transformedValue !== undefined && transformedValue !== '' && (
-                            <IconButton onClick={handleClearValue}>
-                                <ClearIcon />
+                            <IconButton onClick={handleClearValue} size="small">
+                                <ClearIcon fontSize="small" />
                             </IconButton>
                         )}
                         {customAdornment && { ...customAdornment }}

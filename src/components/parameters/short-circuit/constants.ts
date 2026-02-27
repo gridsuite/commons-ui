@@ -34,7 +34,6 @@ export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER =
 export const NODE_CLUSTER = 'nodeCluster';
 export const SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS = 'modelPowerElectronics';
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS = 'powerElectronicsMaterials';
-export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTER = 'powerElectronicsCluster'; // TODO REMOVE WHEN fixed in powsybl
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
 
 export const intlPredefinedParametersOptions = () => [
