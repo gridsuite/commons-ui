@@ -5,5 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './creation';
-export * from './modification';
+export * from './SubstationModificationForm';
+export * from './substationModification.types';
+export * from './substationModification.utils';
