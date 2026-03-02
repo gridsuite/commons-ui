@@ -79,7 +79,6 @@ export function ShortCircuitPowerElectronics({ isDeveloperMode = true }: Readonl
                             </Grid>
                             <ShortCircuitIccMaterialTable
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                                tableHeight={300}
                                 columnsDefinition={columnsDef}
                             />
                             <ShortCircuitIccClusterTable
