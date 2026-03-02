@@ -20,3 +20,4 @@ export * from './dynamic-simulation.type';
 export * from './loadflow.type';
 export * from './sensitivity-analysis.type';
 export * from './dynamic-margin-calculation.type';
+export * from './network-modification-types';
