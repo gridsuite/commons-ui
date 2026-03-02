@@ -13,10 +13,11 @@ import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
 export interface AutocompleteInputProps
-    extends Omit<AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
-    // we already defined them in our custom Autocomplete
-    'value' | 'onChange' | 'renderInput'
-> {
+    extends Omit<
+        AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
+        // we already defined them in our custom Autocomplete
+        'value' | 'onChange' | 'renderInput'
+    > {
     name: string;
     options: Option[];
     label?: string;
