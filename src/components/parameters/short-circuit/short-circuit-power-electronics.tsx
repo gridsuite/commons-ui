@@ -11,7 +11,7 @@ import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
 import { SPECIFIC_PARAMETERS } from '../common';
-import { CheckboxInput, FieldLabel, SwitchInput } from '../../inputs';
+import { FieldLabel, SwitchInput } from '../../inputs';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {

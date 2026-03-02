@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'node:crypto';
 import {
     InitialVoltage,
     NODE_CLUSTER,
@@ -125,10 +124,10 @@ export const getSpecificShortCircuitParametersFormSchema = (
             : {}),
         ...{
             [NODE_CLUSTER]: yup.array().of(
-                    yup.object<FilterPOJO>().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
-                    })
+                yup.object<FilterPOJO>().shape({
+                    [ID]: yup.string().required(),
+                    [NAME]: yup.string().required(),
+                })
             ),
         },
     };
@@ -235,8 +234,8 @@ export const getShortCircuitSpecificParametersValues = (
         const lightFilters = nodeCluster.map((filter) => {
             return {
                 filterId: filter[ID],
-                filterName: filter.name
-            }
+                filterName: filter.name,
+            };
         });
         finalSpecificParameters[NODE_CLUSTER] = JSON.stringify(lightFilters);
     }
@@ -330,15 +329,11 @@ export const formatShortCircuitSpecificParameters = (
         }
     }
     if (Object.hasOwn(specificParamsList, NODE_CLUSTER)) {
-        const filters = JSON.parse(specificParamsList[
-            NODE_CLUSTER
-            ]);
-        formatted[NODE_CLUSTER] = filters.map(
-            (filter: { filterId: any; filterName: any }) => ({
-                [ID]: filter.filterId,
-                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
-            })
-        );
+        const filters = JSON.parse(specificParamsList[NODE_CLUSTER]);
+        formatted[NODE_CLUSTER] = filters.map((filter: { filterId: any; filterName: any }) => ({
+            [ID]: filter.filterId,
+            [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+        }));
     } else {
         formatted[NODE_CLUSTER] = [];
     }

@@ -74,8 +74,3 @@ export const onlyStartedGeneratorsOptions = {
         label: 'ShortCircuitStartedLabel',
     },
 };
-
-export enum ShortCircuitTabValues {
-    'General' = 0,
-    'StudyArea' = 1,
-}
