@@ -208,7 +208,7 @@ export const getShortCircuitSpecificParametersValues = (
     const powerElectronicsClustersParam: (FormPowerElectronicsCluster & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
     const nodeCluster: FilterPOJO[] = formData[SPECIFIC_PARAMETERS][NODE_CLUSTER];
-    let finalSpecificParameters: Record<string, any> = formData[SPECIFIC_PARAMETERS];
+    const finalSpecificParameters: Record<string, any> = formData[SPECIFIC_PARAMETERS];
     if (powerElectronicsMaterialsParam && powerElectronicsClustersParam) {
         // create pretty JSON
         finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = JSON.stringify(
