@@ -15,6 +15,7 @@ import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 import { ContingencyTable } from '../common/contingency-table';
+import { ContingencyCount } from '../common/contingency-table/types';
 
 const styles = {
     form: {
@@ -44,15 +45,17 @@ const styles = {
 
 export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
-    fetchContingencyCount,
     showContingencyCount,
+    fetchContingencyCount,
+    isBuiltCurrentNode,
     renderTitleFields,
     renderActions,
     isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
-    fetchContingencyCount?: (contingencyListIds: UUID[] | null) => Promise<number>;
     showContingencyCount: boolean;
+    fetchContingencyCount?: (contingencyListIds: UUID[] | null) => Promise<ContingencyCount>;
+    isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
@@ -116,6 +119,7 @@ export function SecurityAnalysisParametersForm({
                                             <ContingencyTable
                                                 showContingencyCount={showContingencyCount}
                                                 fetchContingencyCount={fetchContingencyCount}
+                                                isBuiltCurrentNode={isBuiltCurrentNode}
                                             />
                                         </Grid>
                                         <Grid container paddingTop={4} paddingBottom={2}>

@@ -24,17 +24,20 @@ import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
 import { SAParameters } from './types';
 import { toFormValueSaParameters } from './columns-definitions';
+import { ContingencyCount } from '../common/contingency-table/types';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
     fetchContingencyCount,
+    isBuiltCurrentNode,
     setHaveDirtyFields,
     isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
-    fetchContingencyCount: (contingencyListIds: UUID[] | null) => Promise<number>;
+    fetchContingencyCount: (contingencyListIds: UUID[] | null) => Promise<ContingencyCount>;
+    isBuiltCurrentNode: boolean;
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {
@@ -91,8 +94,9 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
-            fetchContingencyCount={fetchContingencyCount}
             showContingencyCount
+            fetchContingencyCount={fetchContingencyCount}
+            isBuiltCurrentNode={isBuiltCurrentNode}
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (

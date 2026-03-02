@@ -13,17 +13,19 @@ import { useCreateRowData } from '../../../../hooks';
 import { ColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, ParamContingencyLists } from './columns-definitions';
-import { ContingencyListsInfos } from './types';
+import { ContingencyCount, ContingencyListsInfos } from './types';
 
 export function ContingencyTable({
     showContingencyCount = false,
     fetchContingencyCount,
+    isBuiltCurrentNode,
 }: Readonly<{
     showContingencyCount: boolean;
-    fetchContingencyCount?: (contingencyLists: UUID[] | null) => Promise<number>;
+    fetchContingencyCount?: (contingencyLists: UUID[] | null) => Promise<ContingencyCount>;
+    isBuiltCurrentNode?: boolean; // necessary if we want to show the contingency count
 }>) {
     const intl = useIntl();
-    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<number | null>(0);
+    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
     const [rowData, useFieldArrayOutput] = useCreateRowData(ParamContingencyLists);
     const contingencyListsInfos: ContingencyListsInfos[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
 
@@ -61,6 +63,30 @@ export function ContingencyTable({
         }
     }, [contingencyListsInfos, fetchContingencyCount, showContingencyCount]);
 
+    const nodeNotBuiltAlert = (
+        <Alert variant="standard" severity="warning" sx={{ color: 'text.primary' }}>
+            <FormattedMessage id="contingenciesCountImpossibleOnUnbuiltNode" />
+        </Alert>
+    );
+
+    const noContingencyAlert = (
+        <Alert variant="standard" severity="error" sx={{ color: 'text.primary' }}>
+            <FormattedMessage id="noContingency" />
+        </Alert>
+    );
+
+    const contingencyCountAlert = (
+        <Alert variant="standard" icon={false} severity="info" sx={{ color: 'text.primary' }}>
+            <FormattedMessage
+                id="xContingenciesWillBeSimulatedAndYNotFound"
+                values={{
+                    x: simulatedContingencyCount?.contingencies ?? '...',
+                    y: simulatedContingencyCount?.notFoundElements ?? 0,
+                }}
+            />
+        </Alert>
+    );
+
     return (
         <Stack spacing={0} sx={{ width: '100%' }}>
             <ParameterTable
@@ -72,16 +98,13 @@ export function ContingencyTable({
                 onFormChanged={() => {}}
                 isValidParameterRow={(row: FieldValues) => row[CONTINGENCY_LISTS]?.length > 0}
             />
-            {showContingencyCount && (
-                <Alert variant="standard" severity="info">
-                    <FormattedMessage
-                        id="xContingenciesWillBeSimulated"
-                        values={{
-                            x: simulatedContingencyCount ?? '...',
-                        }}
-                    />
-                </Alert>
-            )}
+            {!showContingencyCount
+                ? null
+                : !isBuiltCurrentNode
+                  ? nodeNotBuiltAlert
+                  : simulatedContingencyCount?.contingencies === 0 && simulatedContingencyCount.notFoundElements === 0
+                    ? noContingencyAlert
+                    : contingencyCountAlert}
         </Stack>
     );
 }
