@@ -6,6 +6,19 @@
  */
 import { Property } from '../../common';
 
+export interface CouplingDevice {
+    busBarSectionId1: string | null;
+    busBarSectionId2: string | null;
+}
+
+export interface SwitchKindFormData {
+    switchKind: string;
+}
+
+export interface CreateSwitchesFormData {
+    switchKinds: SwitchKindFormData[];
+}
+
 export type VoltageLevelCreationDto = {
     type: string;
     equipmentId: string;
@@ -16,5 +29,10 @@ export type VoltageLevelCreationDto = {
     highVoltageLimit: number | null;
     ipMin: number | null;
     ipMax: number | null;
+    busbarCount: number;
+    sectionCount: number;
+    switchKinds: string[];
+    couplingDevices: CouplingDevice[];
+    topologyKind: string | null;
     properties: Property[] | null;
 };
