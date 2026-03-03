@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams, createFilterOptions } from '@mui/material';
-import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
+import { HTMLAttributes, ReactNode, useCallback, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 
 export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
