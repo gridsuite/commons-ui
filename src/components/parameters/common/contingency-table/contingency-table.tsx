@@ -63,29 +63,33 @@ export function ContingencyTable({
         }
     }, [contingencyListsInfos, fetchContingencyCount, showContingencyCount]);
 
-    const nodeNotBuiltAlert = (
-        <Alert variant="standard" severity="warning" sx={{ color: 'text.primary' }}>
-            <FormattedMessage id="contingenciesCountImpossibleOnUnbuiltNode" />
-        </Alert>
-    );
-
-    const noContingencyAlert = (
-        <Alert variant="standard" severity="error" sx={{ color: 'text.primary' }}>
-            <FormattedMessage id="noContingency" />
-        </Alert>
-    );
-
-    const contingencyCountAlert = (
-        <Alert variant="standard" icon={false} severity="info" sx={{ color: 'text.primary' }}>
-            <FormattedMessage
-                id="xContingenciesWillBeSimulatedAndYNotFound"
-                values={{
-                    x: simulatedContingencyCount?.contingencies ?? '...',
-                    y: simulatedContingencyCount?.notFoundElements ?? 0,
-                }}
-            />
-        </Alert>
-    );
+    const renderContingencyCount = () => {
+        if (!isBuiltCurrentNode) {
+            return (
+                <Alert variant="standard" severity="warning" sx={{ color: 'text.primary' }}>
+                    <FormattedMessage id="contingenciesCountImpossibleOnUnbuiltNode" />
+                </Alert>
+            );
+        }
+        if (simulatedContingencyCount?.contingencies === 0 && simulatedContingencyCount.notFoundElements === 0) {
+            return (
+                <Alert variant="standard" severity="error" sx={{ color: 'text.primary' }}>
+                    <FormattedMessage id="noContingency" />
+                </Alert>
+            );
+        }
+        return (
+            <Alert variant="standard" icon={false} severity="info" sx={{ color: 'text.primary' }}>
+                <FormattedMessage
+                    id="xContingenciesWillBeSimulatedAndYNotFound"
+                    values={{
+                        x: simulatedContingencyCount?.contingencies ?? '...',
+                        y: simulatedContingencyCount?.notFoundElements ?? '...',
+                    }}
+                />
+            </Alert>
+        );
+    };
 
     return (
         <Stack spacing={0} sx={{ width: '100%' }}>
@@ -98,13 +102,7 @@ export function ContingencyTable({
                 onFormChanged={() => {}}
                 isValidParameterRow={(row: FieldValues) => row[CONTINGENCY_LISTS]?.length > 0}
             />
-            {!showContingencyCount
-                ? null
-                : !isBuiltCurrentNode
-                  ? nodeNotBuiltAlert
-                  : simulatedContingencyCount?.contingencies === 0 && simulatedContingencyCount.notFoundElements === 0
-                    ? noContingencyAlert
-                    : contingencyCountAlert}
+            {showContingencyCount && renderContingencyCount()}
         </Stack>
     );
 }
