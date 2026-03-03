@@ -4,16 +4,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { array, number, object, ref, string } from 'yup';
+import { array, boolean, number, object, ref, string } from 'yup';
 import {
     creationPropertiesSchema,
+    emptyProperties,
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import { FieldConstants, sanitizeString, YUP_REQUIRED } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
-import { FilledProperty } from '../../common';
+import { Properties, Property } from '../../common';
+import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
 import { CouplingDevice, SwitchKindFormData, VoltageLevelCreationDto } from './voltageLevelCreation.types';
 import { Option } from '../../../../utils/types/types';
 
@@ -53,10 +55,60 @@ export const getCreateSwitchesEmptyFormData = (sectionCount: number, id = FieldC
 
 export const voltageLevelCreationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string()
+            .required(YUP_REQUIRED)
+            .when([FieldConstants.ADD_SUBSTATION_CREATION], {
+                is: (addSubstationCreation: boolean) => !addSubstationCreation,
+                then: (schema) =>
+                    schema.notOneOf(
+                        [ref(FieldConstants.SUBSTATION_ID), null],
+                        'CreateSubstationInVoltageLevelIdenticalId'
+                    ),
+            })
+            .when([FieldConstants.ADD_SUBSTATION_CREATION], {
+                is: (addSubstationCreation: boolean) => addSubstationCreation,
+                then: (schema) =>
+                    schema.notOneOf(
+                        [ref(FieldConstants.SUBSTATION_CREATION_ID), null],
+                        'CreateSubstationInVoltageLevelIdenticalId'
+                    ),
+            }),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-        [FieldConstants.SUBSTATION_ID]: string().nullable().required(YUP_REQUIRED),
-        [FieldConstants.NOMINAL_V]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(YUP_REQUIRED),
+        [FieldConstants.ADD_SUBSTATION_CREATION]: boolean().required(),
+        [FieldConstants.SUBSTATION_ID]: string()
+            .nullable()
+            .when([FieldConstants.ADD_SUBSTATION_CREATION], {
+                is: (addSubstationCreation: boolean) => !addSubstationCreation,
+                then: (schema) =>
+                    schema
+                        .required()
+                        .notOneOf(
+                            [ref(FieldConstants.EQUIPMENT_ID), null],
+                            'CreateSubstationInVoltageLevelIdenticalId'
+                        ),
+            }),
+        [FieldConstants.SUBSTATION_CREATION_ID]: string()
+            .nullable()
+            .when([FieldConstants.ADD_SUBSTATION_CREATION], {
+                is: (addSubstationCreation: boolean) => addSubstationCreation,
+                then: (schema) =>
+                    schema
+                        .required()
+                        .notOneOf(
+                            [ref(FieldConstants.EQUIPMENT_ID), null],
+                            'CreateSubstationInVoltageLevelIdenticalId'
+                        ),
+            }),
+        [FieldConstants.SUBSTATION_NAME]: string().nullable(),
+        [FieldConstants.COUNTRY]: string().nullable(),
+        [FieldConstants.SUBSTATION_CREATION]: creationPropertiesSchema,
+        [FieldConstants.HIDE_NOMINAL_VOLTAGE]: boolean().required(),
+        [FieldConstants.NOMINAL_V]: number()
+            .nullable()
+            .when([FieldConstants.HIDE_NOMINAL_VOLTAGE], {
+                is: (hideNominalVoltage: boolean) => !hideNominalVoltage,
+                then: (schema) => schema.min(0, 'mustBeGreaterOrEqualToZero').required(),
+            }),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
             .nullable()
             .min(0, 'mustBeGreaterOrEqualToZero')
@@ -71,16 +123,21 @@ export const voltageLevelCreationFormSchema = object()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
             .when([FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT], {
                 is: (lowShortCircuitCurrentLimit: number | null) => lowShortCircuitCurrentLimit != null,
-                then: (schema) => schema.required(YUP_REQUIRED),
+                then: (schema) => schema.required(),
             }),
+        [FieldConstants.HIDE_BUS_BAR_SECTION]: boolean().required(),
         [FieldConstants.BUS_BAR_COUNT]: number()
             .nullable()
-            .min(1, 'BusBarCountMustBeGreaterThanOrEqualToOne')
-            .required(YUP_REQUIRED),
+            .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
+                is: (hideBusBarSection: boolean) => !hideBusBarSection,
+                then: (schema) => schema.min(1, 'BusBarCountMustBeGreaterThanOrEqualToOne').required(),
+            }),
         [FieldConstants.SECTION_COUNT]: number()
             .nullable()
-            .min(1, 'SectionCountMustBeGreaterThanOrEqualToOne')
-            .required(YUP_REQUIRED),
+            .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
+                is: (hideBusBarSection: boolean) => !hideBusBarSection,
+                then: (schema) => schema.min(1, 'SectionCountMustBeGreaterThanOrEqualToOne').required(),
+            }),
         [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: string()
             .nullable()
             .when([FieldConstants.SECTION_COUNT], {
@@ -108,30 +165,44 @@ export const voltageLevelCreationFormSchema = object()
 export interface VoltageLevelCreationFormData {
     [FieldConstants.EQUIPMENT_ID]: string;
     [FieldConstants.EQUIPMENT_NAME]: string | null;
+    [FieldConstants.ADD_SUBSTATION_CREATION]: boolean;
     [FieldConstants.SUBSTATION_ID]: string | null;
+    [FieldConstants.SUBSTATION_CREATION_ID]: string | null;
+    [FieldConstants.SUBSTATION_NAME]: string | null;
+    [FieldConstants.COUNTRY]: string | null;
+    [FieldConstants.SUBSTATION_CREATION]: Properties;
+    [FieldConstants.HIDE_NOMINAL_VOLTAGE]: boolean;
     [FieldConstants.NOMINAL_V]: number | null;
     [FieldConstants.LOW_VOLTAGE_LIMIT]: number | null;
     [FieldConstants.HIGH_VOLTAGE_LIMIT]: number | null;
     [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number | null;
     [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number | null;
+    [FieldConstants.HIDE_BUS_BAR_SECTION]: boolean;
     [FieldConstants.BUS_BAR_COUNT]: number;
     [FieldConstants.SECTION_COUNT]: number;
     [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: string;
     [FieldConstants.SWITCH_KINDS]: SwitchKindFormData[];
     [FieldConstants.TOPOLOGY_KIND]: string | null;
     [FieldConstants.COUPLING_OMNIBUS]: CouplingDevice[];
-    [FieldConstants.ADDITIONAL_PROPERTIES]?: FilledProperty[];
+    [FieldConstants.ADDITIONAL_PROPERTIES]?: Property[];
 }
 
 export const voltageLevelCreationEmptyFormData: VoltageLevelCreationFormData = {
     [FieldConstants.EQUIPMENT_ID]: '',
     [FieldConstants.EQUIPMENT_NAME]: '',
+    [FieldConstants.ADD_SUBSTATION_CREATION]: false,
     [FieldConstants.SUBSTATION_ID]: null,
+    [FieldConstants.SUBSTATION_CREATION_ID]: null,
+    [FieldConstants.SUBSTATION_NAME]: null,
+    [FieldConstants.COUNTRY]: null,
+    [FieldConstants.SUBSTATION_CREATION]: emptyProperties,
+    [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
     [FieldConstants.NOMINAL_V]: null,
     [FieldConstants.LOW_VOLTAGE_LIMIT]: null,
     [FieldConstants.HIGH_VOLTAGE_LIMIT]: null,
     [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: null,
     [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: null,
+    [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
     [FieldConstants.BUS_BAR_COUNT]: 1,
     [FieldConstants.SECTION_COUNT]: 1,
     [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: '',
@@ -144,11 +215,22 @@ export const voltageLevelCreationEmptyFormData: VoltageLevelCreationFormData = {
 export const voltageLevelCreationFormToDto = (
     voltageLevelForm: VoltageLevelCreationFormData
 ): VoltageLevelCreationDto => {
+    const substationCreation = voltageLevelForm[FieldConstants.ADD_SUBSTATION_CREATION]
+        ? {
+              type: MODIFICATION_TYPES.SUBSTATION_CREATION.type,
+              equipmentId: voltageLevelForm[FieldConstants.SUBSTATION_CREATION_ID],
+              equipmentName: voltageLevelForm[FieldConstants.SUBSTATION_NAME],
+              country: voltageLevelForm[FieldConstants.COUNTRY],
+              properties: toModificationProperties(voltageLevelForm[FieldConstants.SUBSTATION_CREATION]),
+          }
+        : null;
+
     return {
-        type: 'VOLTAGE_LEVEL_CREATION',
+        type: MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION.type,
         equipmentId: voltageLevelForm[FieldConstants.EQUIPMENT_ID],
         equipmentName: sanitizeString(voltageLevelForm[FieldConstants.EQUIPMENT_NAME]),
-        substationId: voltageLevelForm[FieldConstants.SUBSTATION_ID] ?? null,
+        substationId: substationCreation ? null : (voltageLevelForm[FieldConstants.SUBSTATION_ID] ?? null),
+        substationCreation,
         nominalV: voltageLevelForm[FieldConstants.NOMINAL_V] ?? null,
         lowVoltageLimit: voltageLevelForm[FieldConstants.LOW_VOLTAGE_LIMIT] ?? null,
         highVoltageLimit: voltageLevelForm[FieldConstants.HIGH_VOLTAGE_LIMIT] ?? null,
@@ -172,10 +254,29 @@ export const voltageLevelCreationFormToDto = (
 export const voltageLevelCreationDtoToForm = (
     voltageLevelDto: VoltageLevelCreationDto
 ): VoltageLevelCreationFormData => {
+    const isSubstationCreation = voltageLevelDto.substationCreation?.equipmentId != null;
+    const substationProperties = isSubstationCreation
+        ? {
+              [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(
+                  voltageLevelDto.substationCreation?.properties
+              ),
+          }
+        : emptyProperties;
+
     return {
         [FieldConstants.EQUIPMENT_ID]: voltageLevelDto.equipmentId,
         [FieldConstants.EQUIPMENT_NAME]: voltageLevelDto.equipmentName ?? '',
-        [FieldConstants.SUBSTATION_ID]: voltageLevelDto.substationId,
+        [FieldConstants.ADD_SUBSTATION_CREATION]: isSubstationCreation,
+        [FieldConstants.SUBSTATION_ID]: isSubstationCreation ? null : voltageLevelDto.substationId,
+        [FieldConstants.SUBSTATION_CREATION_ID]: isSubstationCreation
+            ? voltageLevelDto.substationCreation!.equipmentId
+            : null,
+        [FieldConstants.SUBSTATION_NAME]: isSubstationCreation
+            ? voltageLevelDto.substationCreation!.equipmentName
+            : null,
+        [FieldConstants.COUNTRY]: isSubstationCreation ? voltageLevelDto.substationCreation!.country : null,
+        [FieldConstants.SUBSTATION_CREATION]: substationProperties,
+        [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
         [FieldConstants.NOMINAL_V]: voltageLevelDto.nominalV,
         [FieldConstants.LOW_VOLTAGE_LIMIT]: voltageLevelDto.lowVoltageLimit,
         [FieldConstants.HIGH_VOLTAGE_LIMIT]: voltageLevelDto.highVoltageLimit,
@@ -187,6 +288,7 @@ export const voltageLevelCreationDtoToForm = (
             FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
             voltageLevelDto.ipMax
         ),
+        [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
         [FieldConstants.BUS_BAR_COUNT]: voltageLevelDto.busbarCount ?? 1,
         [FieldConstants.SECTION_COUNT]: voltageLevelDto.sectionCount ?? 1,
         [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: voltageLevelDto.switchKinds?.join(' / ') ?? '',

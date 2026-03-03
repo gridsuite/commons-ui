@@ -19,11 +19,20 @@ export interface CreateSwitchesFormData {
     switchKinds: SwitchKindFormData[];
 }
 
+export type AttachedSubstationCreationDto = {
+    type: string;
+    equipmentId: string | null;
+    equipmentName: string | null;
+    country: string | null;
+    properties: Property[] | null;
+};
+
 export type VoltageLevelCreationDto = {
     type: string;
     equipmentId: string;
     equipmentName: string | null;
     substationId: string | null;
+    substationCreation: AttachedSubstationCreationDto | null;
     nominalV: number | null;
     lowVoltageLimit: number | null;
     highVoltageLimit: number | null;

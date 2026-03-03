@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactNode } from 'react';
+import { useCallback } from 'react';
 import { Box, Grid } from '@mui/material';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import GridItem from '../../../grid/grid-item';
 import GridSection from '../../../grid/grid-section';
 import { TextInput } from '../../../inputs';
@@ -19,26 +19,33 @@ import { PropertiesForm } from '../../common/properties/PropertiesForm';
 import { filledTextField } from '../../common';
 import { SwitchesBetweenSections } from './switches-between-sections';
 import { CouplingOmnibusForm } from './coupling-omnibus';
+import { SubstationCreationSection } from './SubstationCreationSection';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
     substationFieldAdditionalProps?: Record<string, unknown>;
-    customSubstationSection?: ReactNode;
-    hideNominalVoltage?: boolean;
-    hideBusBarSection?: boolean;
 }
 
 export function VoltageLevelCreationForm({
     substationOptions,
     substationFieldAdditionalProps,
-    customSubstationSection,
-    hideNominalVoltage = false,
-    hideBusBarSection = false,
 }: VoltageLevelCreationFormProps = {}) {
+    const { setValue } = useFormContext();
+    const watchAddSubstationCreation = useWatch({ name: FieldConstants.ADD_SUBSTATION_CREATION });
+    const watchHideNominalVoltage = useWatch({ name: FieldConstants.HIDE_NOMINAL_VOLTAGE });
+    const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
     const watchBusBarCount = useWatch({ name: FieldConstants.BUS_BAR_COUNT });
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
 
     const displayOmnibus = watchBusBarCount > 1 || watchSectionCount > 1;
+    const showDeleteSubstationButton = !(watchHideNominalVoltage && watchHideBusBarSection);
+
+    const handleDeleteSubstationCreation = useCallback(() => {
+        setValue(FieldConstants.ADD_SUBSTATION_CREATION, false);
+        setValue(FieldConstants.SUBSTATION_CREATION_ID, null);
+        setValue(FieldConstants.SUBSTATION_NAME, null);
+        setValue(FieldConstants.COUNTRY, null);
+    }, [setValue]);
 
     const substationField = substationOptions ? (
         <AutocompleteInput
@@ -67,7 +74,12 @@ export function VoltageLevelCreationForm({
                 </GridItem>
             </Grid>
 
-            {customSubstationSection ?? (
+            {watchAddSubstationCreation ? (
+                <SubstationCreationSection
+                    showDeleteButton={showDeleteSubstationButton}
+                    onDelete={handleDeleteSubstationCreation}
+                />
+            ) : (
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         {substationField}
@@ -77,7 +89,7 @@ export function VoltageLevelCreationForm({
 
             <GridSection title="VoltageText" />
             <Grid container spacing={2}>
-                {!hideNominalVoltage && (
+                {!watchHideNominalVoltage && (
                     <GridItem size={4}>
                         <FloatInput
                             name={FieldConstants.NOMINAL_V}
@@ -121,7 +133,7 @@ export function VoltageLevelCreationForm({
                 <Box sx={{ width: '100%' }} />
             </Grid>
 
-            {!hideBusBarSection && (
+            {!watchHideBusBarSection && (
                 <>
                     <GridSection title="BusBarSections" />
                     <Grid container spacing={2}>
