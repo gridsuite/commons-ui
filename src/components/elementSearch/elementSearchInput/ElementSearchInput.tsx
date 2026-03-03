@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams, createFilterOptions } from '@mui/material';
-import { HTMLAttributes, ReactNode, useMemo } from 'react';
+import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useIntl } from 'react-intl';
 
 export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
@@ -74,6 +74,26 @@ export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>
         return searchTerm ?? '';
     }, [searchTerm, searchTermDisabled, searchTermDisableReason, intl]);
 
+    const listBoxRef = useRef<HTMLUListElement>(null);
+    const handleHighlightChange = useCallback(() => {
+        const listbox = listBoxRef.current;
+        if (!listbox) return;
+        const focusedItem = listbox.querySelector<HTMLElement>('.Mui-focused');
+        if (!focusedItem) return;
+
+        const listboxRect = listbox.getBoundingClientRect();
+        const itemRect = focusedItem.getBoundingClientRect();
+
+        const itemTop = itemRect.top - listboxRect.top + listbox.scrollTop;
+        const itemBottom = itemTop + focusedItem.clientHeight;
+        const listboxBottom = listbox.scrollTop + listbox.clientHeight;
+
+        if (itemTop < listbox.scrollTop) {
+            listbox.scrollTop = itemTop;
+        } else if (itemBottom > listboxBottom) {
+            listbox.scrollTop = itemBottom - listbox.clientHeight;
+        }
+    }, []);
     return (
         <Autocomplete
             sx={sx}
@@ -129,6 +149,11 @@ export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>
             disabled={searchTermDisabled}
             PaperComponent={PaperComponent}
             filterOptions={filterOptions}
+            onHighlightChange={handleHighlightChange}
+            ListboxProps={{
+                ref: listBoxRef,
+                sx: { maxHeight: 300, overflowY: 'auto' },
+            }}
         />
     );
 }
