@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import GridItem from '../../../grid/grid-item';
@@ -20,6 +20,7 @@ import { filledTextField } from '../../common';
 import { SwitchesBetweenSections } from './switches-between-sections';
 import { CouplingOmnibusForm } from './coupling-omnibus';
 import { SubstationCreationSection } from './SubstationCreationSection';
+import { fetchDefaultCountry } from '../../../../services/appsMetadata';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
@@ -30,7 +31,7 @@ export function VoltageLevelCreationForm({
     substationOptions,
     substationFieldAdditionalProps,
 }: VoltageLevelCreationFormProps = {}) {
-    const { setValue } = useFormContext();
+    const { setValue, getValues } = useFormContext();
     const watchAddSubstationCreation = useWatch({ name: FieldConstants.ADD_SUBSTATION_CREATION });
     const watchHideNominalVoltage = useWatch({ name: FieldConstants.HIDE_NOMINAL_VOLTAGE });
     const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
@@ -39,6 +40,16 @@ export function VoltageLevelCreationForm({
 
     const displayOmnibus = watchBusBarCount > 1 || watchSectionCount > 1;
     const showDeleteSubstationButton = !(watchHideNominalVoltage && watchHideBusBarSection);
+
+    useEffect(() => {
+        if (watchAddSubstationCreation && !getValues(FieldConstants.COUNTRY)) {
+            fetchDefaultCountry().then((country) => {
+                if (country) {
+                    setValue(FieldConstants.COUNTRY, country);
+                }
+            });
+        }
+    }, [setValue, getValues, watchAddSubstationCreation]);
 
     const handleDeleteSubstationCreation = useCallback(() => {
         setValue(FieldConstants.ADD_SUBSTATION_CREATION, false);

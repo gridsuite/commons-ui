@@ -4,14 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { array, boolean, number, object, ref, string } from 'yup';
+import yup from '../../../../utils/yupConfig';
 import {
     creationPropertiesSchema,
     emptyProperties,
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import { FieldConstants, sanitizeString, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants, sanitizeString } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { Properties, Property } from '../../common';
@@ -39,11 +39,12 @@ export const buildNewBusbarSections = (equipmentId: string, sectionCount: number
 
 export const getCreateSwitchesValidationSchema = (id = FieldConstants.SWITCH_KINDS) => {
     return {
-        [id]: array()
+        [id]: yup
+            .array()
             .nullable()
             .of(
-                object().shape({
-                    [FieldConstants.SWITCH_KIND]: string().nullable().required(),
+                yup.object().shape({
+                    [FieldConstants.SWITCH_KIND]: yup.string().nullable().required(),
                 })
             ),
     };
@@ -53,15 +54,17 @@ export const getCreateSwitchesEmptyFormData = (sectionCount: number, id = FieldC
     [id]: new Array(sectionCount - 1).fill({ [FieldConstants.SWITCH_KIND]: '' }),
 });
 
-export const voltageLevelCreationFormSchema = object()
+export const voltageLevelCreationFormSchema = yup
+    .object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string()
-            .required(YUP_REQUIRED)
+        [FieldConstants.EQUIPMENT_ID]: yup
+            .string()
+            .required()
             .when([FieldConstants.ADD_SUBSTATION_CREATION], {
                 is: (addSubstationCreation: boolean) => !addSubstationCreation,
                 then: (schema) =>
                     schema.notOneOf(
-                        [ref(FieldConstants.SUBSTATION_ID), null],
+                        [yup.ref(FieldConstants.SUBSTATION_ID), null],
                         'CreateSubstationInVoltageLevelIdenticalId'
                     ),
             })
@@ -69,13 +72,14 @@ export const voltageLevelCreationFormSchema = object()
                 is: (addSubstationCreation: boolean) => addSubstationCreation,
                 then: (schema) =>
                     schema.notOneOf(
-                        [ref(FieldConstants.SUBSTATION_CREATION_ID), null],
+                        [yup.ref(FieldConstants.SUBSTATION_CREATION_ID), null],
                         'CreateSubstationInVoltageLevelIdenticalId'
                     ),
             }),
-        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-        [FieldConstants.ADD_SUBSTATION_CREATION]: boolean().required(),
-        [FieldConstants.SUBSTATION_ID]: string()
+        [FieldConstants.EQUIPMENT_NAME]: yup.string().nullable(),
+        [FieldConstants.ADD_SUBSTATION_CREATION]: yup.boolean().required(),
+        [FieldConstants.SUBSTATION_ID]: yup
+            .string()
             .nullable()
             .when([FieldConstants.ADD_SUBSTATION_CREATION], {
                 is: (addSubstationCreation: boolean) => !addSubstationCreation,
@@ -83,11 +87,12 @@ export const voltageLevelCreationFormSchema = object()
                     schema
                         .required()
                         .notOneOf(
-                            [ref(FieldConstants.EQUIPMENT_ID), null],
+                            [yup.ref(FieldConstants.EQUIPMENT_ID), null],
                             'CreateSubstationInVoltageLevelIdenticalId'
                         ),
             }),
-        [FieldConstants.SUBSTATION_CREATION_ID]: string()
+        [FieldConstants.SUBSTATION_CREATION_ID]: yup
+            .string()
             .nullable()
             .when([FieldConstants.ADD_SUBSTATION_CREATION], {
                 is: (addSubstationCreation: boolean) => addSubstationCreation,
@@ -95,68 +100,79 @@ export const voltageLevelCreationFormSchema = object()
                     schema
                         .required()
                         .notOneOf(
-                            [ref(FieldConstants.EQUIPMENT_ID), null],
+                            [yup.ref(FieldConstants.EQUIPMENT_ID), null],
                             'CreateSubstationInVoltageLevelIdenticalId'
                         ),
             }),
-        [FieldConstants.SUBSTATION_NAME]: string().nullable(),
-        [FieldConstants.COUNTRY]: string().nullable(),
+        [FieldConstants.SUBSTATION_NAME]: yup.string().nullable(),
+        [FieldConstants.COUNTRY]: yup.string().nullable(),
         [FieldConstants.SUBSTATION_CREATION]: creationPropertiesSchema,
-        [FieldConstants.HIDE_NOMINAL_VOLTAGE]: boolean().required(),
-        [FieldConstants.NOMINAL_V]: number()
+        [FieldConstants.HIDE_NOMINAL_VOLTAGE]: yup.boolean().required(),
+        [FieldConstants.NOMINAL_V]: yup
+            .number()
             .nullable()
             .when([FieldConstants.HIDE_NOMINAL_VOLTAGE], {
                 is: (hideNominalVoltage: boolean) => !hideNominalVoltage,
                 then: (schema) => schema.min(0, 'mustBeGreaterOrEqualToZero').required(),
             }),
-        [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
+        [FieldConstants.LOW_VOLTAGE_LIMIT]: yup
+            .number()
             .nullable()
             .min(0, 'mustBeGreaterOrEqualToZero')
-            .max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
-        [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
+            .max(yup.ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: yup.number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: yup
+            .number()
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
-            .max(ref(FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT), 'ShortCircuitCurrentLimitMinMaxError'),
-        [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
+            .max(yup.ref(FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT), 'ShortCircuitCurrentLimitMinMaxError'),
+        [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: yup
+            .number()
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
             .when([FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT], {
                 is: (lowShortCircuitCurrentLimit: number | null) => lowShortCircuitCurrentLimit != null,
                 then: (schema) => schema.required(),
             }),
-        [FieldConstants.HIDE_BUS_BAR_SECTION]: boolean().required(),
-        [FieldConstants.BUS_BAR_COUNT]: number()
+        [FieldConstants.HIDE_BUS_BAR_SECTION]: yup.boolean().required(),
+        [FieldConstants.BUS_BAR_COUNT]: yup
+            .number()
             .nullable()
             .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
                 is: (hideBusBarSection: boolean) => !hideBusBarSection,
                 then: (schema) => schema.min(1, 'BusBarCountMustBeGreaterThanOrEqualToOne').required(),
             }),
-        [FieldConstants.SECTION_COUNT]: number()
+        [FieldConstants.SECTION_COUNT]: yup
+            .number()
             .nullable()
             .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
                 is: (hideBusBarSection: boolean) => !hideBusBarSection,
                 then: (schema) => schema.min(1, 'SectionCountMustBeGreaterThanOrEqualToOne').required(),
             }),
-        [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: string()
+        [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: yup
+            .string()
             .nullable()
             .when([FieldConstants.SECTION_COUNT], {
                 is: (sectionCount: number) => sectionCount > 1,
                 then: (schema) => schema.required(),
             }),
-        [FieldConstants.SWITCH_KINDS]: array().of(
-            object().shape({
-                [FieldConstants.SWITCH_KIND]: string().required(),
+        [FieldConstants.SWITCH_KINDS]: yup.array().of(
+            yup.object().shape({
+                [FieldConstants.SWITCH_KIND]: yup.string().required(),
             })
         ),
-        [FieldConstants.TOPOLOGY_KIND]: string().nullable(),
-        [FieldConstants.COUPLING_OMNIBUS]: array().of(
-            object().shape({
-                [FieldConstants.BUS_BAR_SECTION_ID1]: string().nullable().required(),
-                [FieldConstants.BUS_BAR_SECTION_ID2]: string()
+        [FieldConstants.TOPOLOGY_KIND]: yup.string().nullable(),
+        [FieldConstants.COUPLING_OMNIBUS]: yup.array().of(
+            yup.object().shape({
+                [FieldConstants.BUS_BAR_SECTION_ID1]: yup.string().nullable().required(),
+                [FieldConstants.BUS_BAR_SECTION_ID2]: yup
+                    .string()
                     .nullable()
                     .required()
-                    .notOneOf([ref(FieldConstants.BUS_BAR_SECTION_ID1), null], 'CreateCouplingDeviceIdenticalBusBar'),
+                    .notOneOf(
+                        [yup.ref(FieldConstants.BUS_BAR_SECTION_ID1), null],
+                        'CreateCouplingDeviceIdenticalBusBar'
+                    ),
             })
         ),
     })
