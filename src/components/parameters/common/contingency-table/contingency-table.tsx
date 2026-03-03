@@ -67,7 +67,7 @@ export function ContingencyTable({
         if (!isBuiltCurrentNode) {
             return (
                 <Alert variant="standard" severity="warning" sx={{ color: 'text.primary' }}>
-                    <FormattedMessage id="contingenciesCountImpossibleOnUnbuiltNode" />
+                    <FormattedMessage id="contingencyCountImpossibleOnUnbuiltNode" />
                 </Alert>
             );
         }
