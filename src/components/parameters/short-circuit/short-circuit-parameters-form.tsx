@@ -35,8 +35,7 @@ export function ShortCircuitParametersForm({
     renderActions,
     isDeveloperMode,
 }: Readonly<ShortCircuitParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoaded } =
-        shortCircuitMethods;
+    const { formMethods, formSchema, paramsLoaded } = shortCircuitMethods;
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
             <Box sx={styles.shortCircuitParameters}>

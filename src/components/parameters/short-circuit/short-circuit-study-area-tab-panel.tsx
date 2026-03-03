@@ -5,17 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid } from '@mui/material';
-
-import { useMemo } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { SPECIFIC_PARAMETERS } from '../common';
 import { DirectoryItemsInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
 import { ElementType, EquipmentType } from '../../../utils';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
-    onlyStartedGeneratorsOptions,
     NODE_CLUSTER,
+    onlyStartedGeneratorsOptions,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
 } from './constants';

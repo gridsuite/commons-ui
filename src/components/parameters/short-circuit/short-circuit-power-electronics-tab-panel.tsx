@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid } from '@mui/material';
-
-import { useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
 import { SPECIFIC_PARAMETERS } from '../common';

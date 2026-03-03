@@ -342,9 +342,7 @@ export const formatShortCircuitSpecificParameters = (
             ])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
         }
     }
-    const nodeClusterParam = specificParametersDescriptionForProvider.find(
-        (p) => p.name === NODE_CLUSTER
-    );
+    const nodeClusterParam = specificParametersDescriptionForProvider.find((p) => p.name === NODE_CLUSTER);
     if (nodeClusterParam) {
         if (Object.hasOwn(specificParamsList, NODE_CLUSTER)) {
             const filters = JSON.parse(specificParamsList[NODE_CLUSTER]);
@@ -353,9 +351,7 @@ export const formatShortCircuitSpecificParameters = (
                 [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
             }));
         } else {
-            formatted[NODE_CLUSTER] = getDefaultSpecificParamsValues([nodeClusterParam])?.[
-                NODE_CLUSTER
-            ];
+            formatted[NODE_CLUSTER] = getDefaultSpecificParamsValues([nodeClusterParam])?.[NODE_CLUSTER];
         }
     }
     return formatted;
