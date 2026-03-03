@@ -5,15 +5,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Box, Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { CustomFormProvider } from '../../inputs';
-import { getTabStyle, parametersStyles } from '../parameters-style';
+import { parametersStyles } from '../parameters-style';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import { MuiStyles } from '../../../utils';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
-import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
 
 const styles = {
     shortCircuitParameters: {
@@ -37,7 +35,7 @@ export function ShortCircuitParametersForm({
     renderActions,
     isDeveloperMode,
 }: Readonly<ShortCircuitParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoaded, resetAll, selectedTab, handleTabChange, tabIndexesWithError } =
+    const { formMethods, formSchema, paramsLoaded } =
         shortCircuitMethods;
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
@@ -47,33 +45,10 @@ export function ShortCircuitParametersForm({
                 </Grid>
                 {paramsLoaded ? (
                     <>
-                        <Grid item sx={{ width: '100%' }}>
-                            <Tabs value={selectedTab} onChange={handleTabChange}>
-                                <Tab
-                                    label={<FormattedMessage id={ShortCircuitParametersTabValues.GENERAL} />}
-                                    value={ShortCircuitParametersTabValues.GENERAL}
-                                    sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.GENERAL)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id={ShortCircuitParametersTabValues.STUDY_AREA} />}
-                                    value={ShortCircuitParametersTabValues.STUDY_AREA}
-                                    sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.STUDY_AREA)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id={ShortCircuitParametersTabValues.POWER_ELECTRONICS} />}
-                                    value={ShortCircuitParametersTabValues.POWER_ELECTRONICS}
-                                    sx={getTabStyle(
-                                        tabIndexesWithError,
-                                        ShortCircuitParametersTabValues.POWER_ELECTRONICS
-                                    )}
-                                />
-                            </Tabs>
-                        </Grid>
                         <Grid sx={parametersStyles.scrollableGrid}>
                             <ShortCircuitParametersContent
                                 isDeveloperMode={isDeveloperMode}
-                                resetAll={resetAll}
-                                selectedTab={selectedTab}
+                                shortCircuitMethods={shortCircuitMethods}
                             />
                         </Grid>
                     </>

@@ -23,14 +23,15 @@ import {
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
-    SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
+    SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS, SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS, SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
 } from './constants';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
+import { COMMON_PARAMETERS, ComputingType, LIMIT_REDUCTIONS_FORM, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import {
     formatShortCircuitSpecificParameters,
     getCommonShortCircuitParametersFormSchema,
@@ -40,6 +41,7 @@ import {
     ShortCircuitParametersTabValues,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
+import { TabValues } from '../loadflow/load-flow-parameters-utils';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -77,7 +79,7 @@ export const useShortCircuitParametersForm = ({
     const [selectedTab, setSelectedTab] = useState<ShortCircuitParametersTabValues>(
         ShortCircuitParametersTabValues.GENERAL
     );
-    const [tabIndexesWithError] = useState<ShortCircuitParametersTabValues[]>([]);
+    const [tabIndexesWithError, setTabIndexesWithError] = useState<ShortCircuitParametersTabValues[]>([]);
     const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
 
@@ -159,7 +161,12 @@ export const useShortCircuitParametersForm = ({
                     dirty
                 );
             }
-            setValue(`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`, []);
+            const nodeCluster = specificParametersDescriptionForProvider?.find(
+                (specificParam) => specificParam.name === NODE_CLUSTER
+            );
+            if (nodeCluster) {
+                setValue(`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`, []);
+            }
         },
         [setValue, specificParametersDescriptionForProvider]
     );
@@ -169,7 +176,6 @@ export const useShortCircuitParametersForm = ({
             if (!provider) {
                 return {} as ShortCircuitParametersInfos;
             }
-            console.log('formatNewParams: ', formData);
             return {
                 provider: formData[PROVIDER],
                 predefinedParameters: formData[SHORT_CIRCUIT_PREDEFINED_PARAMS],
@@ -229,9 +235,26 @@ export const useShortCircuitParametersForm = ({
         [provider, snackError, specificParametersDescriptionForProvider]
     );
 
-    const onValidationError = useCallback((_errors: FieldErrors) => {
-        console.error('onValidationError: ', _errors);
-    }, []);
+    const onValidationError = useCallback(
+        (_errors: FieldErrors) => {
+            console.error('onValidationError: ', _errors);
+            const tabsInError = [];
+            if ((_errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] || _errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]) &&
+                ShortCircuitParametersTabValues.POWER_ELECTRONICS !== selectedTab) {
+                tabsInError.push(ShortCircuitParametersTabValues.POWER_ELECTRONICS);
+            }
+            if (
+                (_errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER] ||
+                    _errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER] ||
+                _errors?.[NODE_CLUSTER]) &&
+                ShortCircuitParametersTabValues.STUDY_AREA !== selectedTab
+            ) {
+                tabsInError.push(ShortCircuitParametersTabValues.STUDY_AREA);
+            }
+            setTabIndexesWithError(tabsInError);
+        },
+        [selectedTab]
+    );
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {

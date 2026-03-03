@@ -4,21 +4,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { Box, Grid } from '@mui/material';
+import { useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import { getTabStyle, parametersStyles } from '../parameters-style';
 import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
-import { parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
 import type { MuiStyles } from '../../../utils/styles';
-import { PredefinedParameters } from './constants';
-import { ShortCircuitFields } from './short-circuit-fields';
-import { ShortCircuitStudyArea } from './short-circuit-study-area';
-import { ShortCircuitPowerElectronics } from './short-circuit-power-electronics';
+import { ShortCircuitGeneralTabPanel } from './short-circuit-general-tab-panel';
+import { ShortCircuitStudyAreaTabPanel } from './short-circuit-study-area-tab-panel';
+import { ShortCircuitPowerElectronicsTabPanel } from './short-circuit-power-electronics-tab-panel';
+import { SPECIFIC_PARAMETERS } from '../common';
+import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 
 type ShortCircuitParametersContentProps = {
+    shortCircuitMethods: UseShortCircuitParametersFormReturn;
     isDeveloperMode: boolean;
-    resetAll: (predefinedParams: PredefinedParameters) => void;
-    selectedTab: ShortCircuitParametersTabValues;
 };
 
 const styles = {
@@ -37,26 +39,67 @@ const styles = {
 } as const satisfies MuiStyles;
 
 function ShortCircuitParametersContent({
+     shortCircuitMethods,
     isDeveloperMode,
-    resetAll,
-    selectedTab,
 }: Readonly<ShortCircuitParametersContentProps>) {
+
+    const { resetAll, selectedTab, handleTabChange, tabIndexesWithError } =
+        shortCircuitMethods;
+
+    const watchSpecificParameters = useWatch({
+        name: `${SPECIFIC_PARAMETERS}`,
+    });
+
+    const isThereSpecificParameters = useMemo(
+        () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
+        [watchSpecificParameters]
+    );
+
     return (
-        <Box sx={styles.wrapper}>
-            <Grid container sx={styles.container}>
-                <Grid item sx={styles.maxWidth}>
-                    <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.GENERAL}>
-                        <ShortCircuitFields resetAll={resetAll} isDeveloperMode={isDeveloperMode} />
-                    </TabPanel>
-                    <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.STUDY_AREA}>
-                        <ShortCircuitStudyArea />
-                    </TabPanel>
-                    <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.POWER_ELECTRONICS}>
-                        <ShortCircuitPowerElectronics isDeveloperMode={isDeveloperMode} />
-                    </TabPanel>
-                </Grid>
+        <>
+            <Grid item sx={{ width: '100%' }}>
+                <Tabs value={selectedTab} onChange={handleTabChange}>
+                    <Tab
+                        label={<FormattedMessage id={ShortCircuitParametersTabValues.GENERAL} />}
+                        value={ShortCircuitParametersTabValues.GENERAL}
+                        sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.GENERAL)}
+                    />
+                    {isThereSpecificParameters && isDeveloperMode && (
+                        <Tab
+                            label={<FormattedMessage id={ShortCircuitParametersTabValues.STUDY_AREA} />}
+                            value={ShortCircuitParametersTabValues.STUDY_AREA}
+                            sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.STUDY_AREA)}
+                        />
+                    )}
+                    {isThereSpecificParameters && isDeveloperMode && (
+                        <Tab
+                            label={<FormattedMessage id={ShortCircuitParametersTabValues.POWER_ELECTRONICS} />}
+                            value={ShortCircuitParametersTabValues.POWER_ELECTRONICS}
+                            sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.POWER_ELECTRONICS)}
+                        />
+                    )}
+                </Tabs>
             </Grid>
-        </Box>
+            <Box sx={styles.wrapper}>
+                <Grid container sx={styles.container}>
+                    <Grid item sx={styles.maxWidth}>
+                        <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.GENERAL}>
+                            <ShortCircuitGeneralTabPanel resetAll={resetAll} isDeveloperMode={isDeveloperMode} />
+                        </TabPanel>
+                        {isThereSpecificParameters && isDeveloperMode && (
+                            <>
+                                <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.STUDY_AREA}>
+                                    <ShortCircuitStudyAreaTabPanel />
+                                </TabPanel>
+                                <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.POWER_ELECTRONICS}>
+                                    <ShortCircuitPowerElectronicsTabPanel />
+                                </TabPanel>
+                            </>
+                        )}
+                    </Grid>
+                </Grid>
+            </Box>
+        </>
     );
 }
 

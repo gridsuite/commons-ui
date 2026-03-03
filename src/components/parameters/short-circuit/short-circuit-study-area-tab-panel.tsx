@@ -32,10 +32,10 @@ const styles = {
     },
 };
 
-export function ShortCircuitStudyArea() {
+export function ShortCircuitStudyAreaTabPanel() {
     const { setValue } = useFormContext();
 
-    // Forced to specificly manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
+    // Forced to specifically manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
     const inClusterOnlyStartedGenerators = (
         <RadioInput
             name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`}
@@ -72,43 +72,30 @@ export function ShortCircuitStudyArea() {
         />
     );
 
-    const watchSpecificParameters = useWatch({
-        name: `${SPECIFIC_PARAMETERS}`,
-    });
-
-    const isThereSpecificParameters = useMemo(
-        () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
-        [watchSpecificParameters]
-    );
-
     return (
         <>
-            {isThereSpecificParameters && (
-                <>
-                    <GridSection title="ShortCircuitInClusterFilter" heading={4} />
-                    <Grid item xs>
-                        <DirectoryItemsInput
-                            titleId="FiltersListsSelection"
-                            label="Filters"
-                            name={`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`}
-                            elementType={ElementType.FILTER}
-                            equipmentTypes={equipmentTypes}
-                            ChipComponent={OverflowableChipWithHelperText}
-                            chipProps={{ variant: 'outlined' }}
-                            fullHeight
-                        />
-                    </Grid>
-                    <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} customStyle={styles.h4} />
-                    <GridSection title="ShortCircuitInCluster" heading={5} customStyle={styles.h5} />
-                    <Grid container>
-                        <GridItem size={12}>{inClusterOnlyStartedGenerators}</GridItem>
-                    </Grid>
-                    <GridSection title="ShortCircuitOutCluster" heading={5} customStyle={styles.h5} />
-                    <Grid container>
-                        <GridItem size={12}>{outClusterOnlyStartedGenerators}</GridItem>
-                    </Grid>
-                </>
-            )}
+            <GridSection title="ShortCircuitInClusterFilter" heading={4} />
+            <Grid item xs>
+                <DirectoryItemsInput
+                    titleId="FiltersListsSelection"
+                    label="Filters"
+                    name={`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`}
+                    elementType={ElementType.FILTER}
+                    equipmentTypes={equipmentTypes}
+                    ChipComponent={OverflowableChipWithHelperText}
+                    chipProps={{ variant: 'outlined' }}
+                    fullHeight
+                />
+            </Grid>
+            <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} customStyle={styles.h4} />
+            <GridSection title="ShortCircuitInCluster" heading={5} customStyle={styles.h5} />
+            <Grid container>
+                <GridItem size={12}>{inClusterOnlyStartedGenerators}</GridItem>
+            </Grid>
+            <GridSection title="ShortCircuitOutCluster" heading={5} customStyle={styles.h5} />
+            <Grid container>
+                <GridItem size={12}>{outClusterOnlyStartedGenerators}</GridItem>
+            </Grid>
         </>
     );
 }

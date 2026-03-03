@@ -22,11 +22,7 @@ import {
 import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
 import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
 
-export interface ShortCircuitPowerElectronicsProps {
-    isDeveloperMode: boolean;
-}
-
-const columnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
+const iccMaterialsColumnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
     ...col,
     label: <FormattedMessage id={col.label as string} />,
     tooltip: <FormattedMessage id={col.tooltip as string} />,
@@ -46,7 +42,7 @@ function createRows() {
     return rowData;
 }
 
-export function ShortCircuitPowerElectronics({ isDeveloperMode = true }: Readonly<ShortCircuitPowerElectronicsProps>) {
+export function ShortCircuitPowerElectronicsTabPanel() {
     const modelPowerElectronics = (
         <Grid container alignItems="center" spacing={2} direction="row">
             <Grid item xs={10}>
@@ -58,38 +54,21 @@ export function ShortCircuitPowerElectronics({ isDeveloperMode = true }: Readonl
         </Grid>
     );
 
-    const watchSpecificParameters = useWatch({
-        name: `${SPECIFIC_PARAMETERS}`,
-    });
-
-    const isThereSpecificParameters = useMemo(
-        () => Object.keys(watchSpecificParameters).length > 0 && watchSpecificParameters.constructor === Object,
-        [watchSpecificParameters]
-    );
-
     return (
         <>
-            {isThereSpecificParameters && (
-                <>
-                    {isDeveloperMode && (
-                        <>
-                            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
-                            <Grid container xl={6}>
-                                <GridItem size={10}>{modelPowerElectronics}</GridItem>
-                            </Grid>
-                            <ShortCircuitIccMaterialTable
-                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                                columnsDefinition={columnsDef}
-                            />
-                            <ShortCircuitIccClusterTable
-                                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
-                                columnsDefinition={iccClustersColumnsDef}
-                                createRows={createRows}
-                            />
-                        </>
-                    )}
-                </>
-            )}
+            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
+            <Grid container xl={6}>
+                <GridItem size={10}>{modelPowerElectronics}</GridItem>
+            </Grid>
+            <ShortCircuitIccMaterialTable
+                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
+                columnsDefinition={iccMaterialsColumnsDef}
+            />
+            <ShortCircuitIccClusterTable
+                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
+                columnsDefinition={iccClustersColumnsDef}
+                createRows={createRows}
+            />
         </>
     );
 }

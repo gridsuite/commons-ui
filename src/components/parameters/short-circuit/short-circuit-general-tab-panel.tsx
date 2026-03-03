@@ -41,7 +41,7 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-export function ShortCircuitFields({ resetAll }: Readonly<ShortCircuitFieldsProps>) {
+export function ShortCircuitGeneralTabPanel({ resetAll }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
