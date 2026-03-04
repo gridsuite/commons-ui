@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
@@ -37,27 +37,6 @@ export function getSecurityAnalysisDefaultLimitReductions() {
     const url = `${getSecurityAnalysisUrl()}parameters/default-limit-reductions`;
     console.debug(url);
     return backendFetchJson(url);
-}
-
-export function updateSecurityAnalysisProvider(studyUuid: UUID, newProvider: string) {
-    console.info('update security analysis provider');
-    const url = `${getStudyUrl(studyUuid)}/security-analysis/provider`;
-    console.debug(url);
-    return backendFetch(url, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: newProvider,
-    });
-}
-
-export function fetchDefaultSecurityAnalysisProvider() {
-    console.info('fetch default security analysis provider');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/security-analysis-default-provider`;
-    console.debug(url);
-    return backendFetchText(url);
 }
 
 export function getSecurityAnalysisParameters(studyUuid: UUID) {

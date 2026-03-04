@@ -123,7 +123,7 @@ export function SecurityAnalysisParametersForm({
                                         </Grid>
                                         <SecurityAnalysisParametersSelector
                                             params={securityAnalysisMethods.params}
-                                            currentProvider={securityAnalysisMethods.currentProvider?.trim()}
+                                            currentProvider={securityAnalysisMethods.watchProvider?.trim()}
                                             isDeveloperMode={isDeveloperMode}
                                             defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                                         />
