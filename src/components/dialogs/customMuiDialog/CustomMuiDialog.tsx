@@ -6,35 +6,28 @@
  */
 
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
-import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, FieldValues, SubmitHandler } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, Grid, LinearProgress } from '@mui/material';
-import { type ObjectSchema } from 'yup';
+import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
-import { CustomFormProvider } from '../../inputs/reactHookForm/provider/CustomFormProvider';
+import { CustomFormProvider, MergedFormContextProps } from '../../inputs/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
-import { GsLang } from '../../../utils';
 import type { MuiStyles } from '../../../utils/styles';
 
 export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogProps & {
     open: boolean;
-    formSchema: ObjectSchema<T>;
-    formMethods: UseFormReturn<T>;
+    formContext: MergedFormContextProps<T>;
     onClose: (event?: MouseEvent) => void;
     onSave: SubmitHandler<T>;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
-    subtitle?: ReactNode;
     disabledSave?: boolean;
-    removeOptional?: boolean;
     onCancel?: () => void;
     children: ReactNode;
     isDataFetching?: boolean;
-    language?: GsLang;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
-    isDeveloperMode?: boolean;
 };
 
 const styles = {
@@ -82,27 +75,21 @@ export const unscrollableDialogStyles = {
 
 export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     open,
-    formSchema,
-    formMethods,
+    formContext,
     onClose,
     onSave,
     isDataFetching = false,
     onValidationError,
     titleId,
-    subtitle,
     disabledSave,
-    removeOptional = false,
     onCancel,
     children,
-    language,
-    isDeveloperMode,
     confirmationMessageKey,
     unscrollableFullHeight = false,
     ...dialogProps
 }: Readonly<CustomMuiDialogProps<T>>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
     const [validatedData, setValidatedData] = useState<T>();
-    const { handleSubmit } = formMethods;
 
     const handleCancel = useCallback(
         (event: MouseEvent) => {
@@ -154,13 +141,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     );
 
     return (
-        <CustomFormProvider<T>
-            {...formMethods}
-            validationSchema={formSchema}
-            removeOptional={removeOptional}
-            language={language}
-            isDeveloperMode={isDeveloperMode}
-        >
+        <CustomFormProvider<T> {...formContext}>
             <Dialog
                 sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
                 open={open}
@@ -170,18 +151,8 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
-                    <Grid container spacing={2} justifyContent="space-between">
-                        <Grid item xs={6}>
-                            <FormattedMessage id={titleId} />
-                        </Grid>
-                        {subtitle && (
-                            <Grid item xs={12}>
-                                {subtitle}
-                            </Grid>
-                        )}
-                    </Grid>
+                    <FormattedMessage id={titleId} />
                 </DialogTitle>
-
                 <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}
                 </DialogContent>
@@ -190,7 +161,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
                     <SubmitButton
                         variant="outlined"
                         disabled={disabledSave}
-                        onClick={handleSubmit(handleValidate, handleValidationError)}
+                        onClick={formContext?.handleSubmit(handleValidate, handleValidationError)}
                         data-testid="ValidateButton"
                     />
                 </DialogActions>

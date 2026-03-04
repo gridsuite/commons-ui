@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { FactorsCount, SensitivityAnalysisParametersInfos } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 
@@ -81,13 +81,6 @@ export function getSensitivityAnalysisFactorsCount(
         },
         body: JSON.stringify(newParams),
     });
-}
-
-export function fetchDefaultSensitivityAnalysisProvider() {
-    console.info('fetch default sensitivity analysis provider');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/sensitivity-analysis-default-provider`;
-    console.debug(url);
-    return backendFetchText(url);
 }
 
 export function updateSensitivityAnalysisParameters(parameterUuid: UUID, newParams: any) {

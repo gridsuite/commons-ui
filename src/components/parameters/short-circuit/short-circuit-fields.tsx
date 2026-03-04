@@ -225,10 +225,14 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
     );
 
     const modelPowerElectronics = (
-        <CheckboxInput
-            name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`}
-            label="ShortCircuitModelPowerElectronics"
-        />
+        <Grid container alignItems="center" spacing={2} direction="row">
+            <Grid item xs={10}>
+                <FieldLabel label="ShortCircuitModelPowerElectronics" />
+            </Grid>
+            <Grid item xs={2}>
+                <SwitchInput name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`} />
+            </Grid>
+        </Grid>
     );
 
     useEffect(() => {
@@ -297,8 +301,8 @@ export function ShortCircuitFields({ resetAll, isDeveloperMode = true }: Readonl
                     {isDeveloperMode && (
                         <>
                             <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
-                            <Grid container>
-                                <GridItem size={12}>{modelPowerElectronics}</GridItem>
+                            <Grid container xl={6}>
+                                <GridItem size={10}>{modelPowerElectronics}</GridItem>
                             </Grid>
                             <ShortCircuitIccMaterialTable
                                 formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}

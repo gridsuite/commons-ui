@@ -113,14 +113,16 @@ export function ExpertFilterEditionDialog({
             open={open}
             onClose={onClose}
             onSave={onSubmit}
-            formSchema={formSchema}
-            formMethods={formMethods}
+            formContext={{
+                ...formMethods,
+                validationSchema: formSchema,
+                removeOptional: true,
+                language,
+                isDeveloperMode,
+            }}
             titleId={titleId}
-            removeOptional
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
-            language={language}
-            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} isEditing />}

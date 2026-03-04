@@ -134,13 +134,15 @@ export function FilterCreationDialog({
             open={open}
             onClose={onClose}
             onSave={onSubmit}
-            formSchema={formSchema}
-            formMethods={formMethods}
+            formContext={{
+                ...formMethods,
+                validationSchema: formSchema,
+                removeOptional: true,
+                language,
+                isDeveloperMode,
+            }}
             titleId={titleId}
-            removeOptional
             disabledSave={!!nameError || !!isValidating}
-            language={language}
-            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             <FilterForm

@@ -143,9 +143,6 @@ export const parametersEn = {
     ShortCircuitIccUsmaxTooltip: 'Maximum voltage for the Icc calculation',
     ShortCircuitIccU0: 'U0 (%)',
     ShortCircuitIccU0Tooltip: 'Voltage level at which the Icc is nominal',
-    ShortCircuitWindLabel: 'Wind',
-    ShortCircuitSolarLabel: 'Solar',
-    ShortCircuitHvdcLabel: 'HVDC',
     ShortCircuitStartedLabel: 'Started',
     ShortCircuitAllLabel: 'All',
     shortCircuitLoads: 'Loads',
@@ -267,22 +264,14 @@ export const parametersEn = {
     fetchLoadFlowProvidersError: 'An error occurred while fetching the load flow providers',
     fetchLoadFlowSpecificParametersError: 'An error occured when fetching the load flow specific parameters',
     updateLoadFlowParametersError: 'An error occurred while updating the load flow parameters',
-    updateLoadFlowProviderError: 'An error occurred while updating the load flow provider',
     // SecurityAnalysis
-    fetchDefaultSecurityAnalysisProviderError: 'An error occured when fetching default security analysis provider',
     fetchSecurityAnalysisParametersError: 'An error occured when fetching the security analysis parameters',
-    fetchSecurityAnalysisProviderError: 'An error occured when fetching security analysis provider',
     fetchSecurityAnalysisProvidersError: 'An error occured when fetching security analysis provider list',
     updateSecurityAnalysisParametersError: 'An error occurred while updating the security analysis parameters',
-    updateSecurityAnalysisProviderError: 'An error occured when updating security analysis provider',
     // SensitivityAnalysis
-    fetchDefaultSensitivityAnalysisProviderError:
-        'An error occured when fetching default sensitivity analysis provider',
     fetchSensitivityAnalysisParametersError: 'An error occured when fetching the sensitivity analysis parameters',
-    fetchSensitivityAnalysisProviderError: 'An error occured when fetching sensitivity analysis provider',
     fetchSensitivityAnalysisProvidersError: 'An error occured when fetching sensitivity analysis provider list',
     updateSensitivityAnalysisParametersError: 'An error occurred while updating the sensitivity analysis parameters',
-    updateSensitivityAnalysisProviderError: 'An error occured when updating sensitivity analysis provider',
     getSensitivityAnalysisFactorsCountError: 'An error occured while estimating sensitivity analysis computations',
     // Other
     resetLoadFlowParametersWarning:

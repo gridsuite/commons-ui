@@ -38,12 +38,6 @@ export interface IccClusterIColumnsDef extends IccCommonIColumnsDef {
 
 export const COLUMNS_DEFINITIONS_ICC_MATERIALS: IccMaterialIColumnsDef[] = [
     {
-        label: 'ShortCircuitIccActive',
-        dataKey: SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
-        tooltip: 'ShortCircuitIccMaterialActiveTooltip',
-        width: '8%',
-    },
-    {
         label: 'ShortCircuitIccMaterialType',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_TYPE,
         tooltip: 'ShortCircuitIccMaterialTypeTooltip',
@@ -52,36 +46,35 @@ export const COLUMNS_DEFINITIONS_ICC_MATERIALS: IccMaterialIColumnsDef[] = [
         label: 'ShortCircuitIccAlpha',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_ALPHA,
         tooltip: 'ShortCircuitIccAlphaTooltip',
-        width: '8%',
+        width: '10%',
     },
     {
         label: 'ShortCircuitIccUsmin',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_USMIN,
         tooltip: 'ShortCircuitIccUsminTooltip',
-        width: '8%',
+        width: '10%',
     },
     {
         label: 'ShortCircuitIccUsmax',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_USMAX,
         tooltip: 'ShortCircuitIccUsmaxTooltip',
-        width: '8%',
+        width: '10%',
     },
     {
         label: 'ShortCircuitIccU0',
         dataKey: SHORT_CIRCUIT_ICC_MATERIAL_U0,
         tooltip: 'ShortCircuitIccU0Tooltip',
-        width: '8%',
+        width: '10%',
+    },
+    {
+        label: 'ShortCircuitIccActive',
+        dataKey: SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,
+        tooltip: 'ShortCircuitIccMaterialActiveTooltip',
+        width: '10%',
     },
 ];
 
 export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
-    {
-        label: 'ShortCircuitIccActive',
-        dataKey: SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE,
-        tooltip: 'ShortCircuitIccClusterActiveTooltip',
-        initialValue: false,
-        width: '8%',
-    },
     {
         label: 'ShortCircuitIccClusterFilters',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_FILTERS,
@@ -97,34 +90,41 @@ export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
         tooltip: 'ShortCircuitIccClusterTypeTooltip',
         titleId: 'ShortCircuitIccClusterTypeListsSelection',
         initialValue: [],
-        width: '15%',
+        width: '20%',
     },
     {
         label: 'ShortCircuitIccAlpha',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_ALPHA,
         tooltip: 'ShortCircuitIccAlphaTooltip',
         initialValue: 1,
-        width: '8%',
+        width: '10%',
     },
     {
         label: 'ShortCircuitIccUsmin',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_USMIN,
         tooltip: 'ShortCircuitIccUsminTooltip',
         initialValue: 0,
-        width: '8%',
+        width: '10%',
     },
     {
         label: 'ShortCircuitIccUsmax',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_USMAX,
         tooltip: 'ShortCircuitIccUsmaxTooltip',
         initialValue: 100,
-        width: '8%',
+        width: '10%',
     },
     {
         label: 'ShortCircuitIccU0',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_U0,
         tooltip: 'ShortCircuitIccU0Tooltip',
         initialValue: 100,
-        width: '8%',
+        width: '10%',
+    },
+    {
+        label: 'ShortCircuitIccActive',
+        dataKey: SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE,
+        tooltip: 'ShortCircuitIccClusterActiveTooltip',
+        initialValue: false,
+        width: '10%',
     },
 ];

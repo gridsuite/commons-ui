@@ -40,11 +40,13 @@ export function VoltageInitParametersEditionDialog({
             open={open}
             onClose={onClose}
             onSave={voltageInitMethods.onSaveDialog}
-            formSchema={voltageInitMethods.formSchema}
-            formMethods={voltageInitMethods.formMethods}
             titleId={titleId}
-            removeOptional
-            language={language}
+            formContext={{
+                ...voltageInitMethods.formMethods,
+                validationSchema: voltageInitMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             disabledSave={disableSave}
             PaperProps={{
                 sx: {

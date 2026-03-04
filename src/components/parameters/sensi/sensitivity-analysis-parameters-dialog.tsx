@@ -7,7 +7,6 @@
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
-    fetchDefaultSensitivityAnalysisProvider,
     fetchSensitivityAnalysisParameters,
     fetchSensitivityAnalysisProviders,
     updateSensitivityAnalysisParameters,
@@ -35,12 +34,11 @@ export function SensitivityAnalysisParametersDialog({
         id,
         ComputingType.SENSITIVITY_ANALYSIS,
         OptionalServicesStatus.Up,
-        fetchSensitivityAnalysisProviders,
-        null,
-        fetchDefaultSensitivityAnalysisProvider,
-        null,
-        fetchSensitivityAnalysisParameters,
-        updateSensitivityAnalysisParameters
+        {
+            backendFetchProviders: fetchSensitivityAnalysisProviders,
+            backendFetchParameters: fetchSensitivityAnalysisParameters,
+            backendUpdateParameters: updateSensitivityAnalysisParameters,
+        }
     );
 
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
@@ -62,11 +60,13 @@ export function SensitivityAnalysisParametersDialog({
             open={open}
             onClose={onClose}
             onSave={sensitivityAnalysisMethods.onSaveDialog}
-            formSchema={sensitivityAnalysisMethods.formSchema}
-            formMethods={sensitivityAnalysisMethods.formMethods}
+            formContext={{
+                ...sensitivityAnalysisMethods.formMethods,
+                validationSchema: sensitivityAnalysisMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
         >
             <SensitivityAnalysisParametersForm

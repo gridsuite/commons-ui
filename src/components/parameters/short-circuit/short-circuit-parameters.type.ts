@@ -28,18 +28,17 @@ export type FilterPOJO = {
     name: string;
 };
 
-export interface FormPowerElectronicsCluster {
+interface BasePowerElectronicsCluster {
     alpha: number;
     u0: number;
     usMin: number;
     usMax: number;
+    type: 'GENERATOR' | 'HVDC';
+}
+export interface FormPowerElectronicsCluster extends BasePowerElectronicsCluster {
     filters: FilterPOJO[];
 }
-export interface PowerElectronicsCluster {
-    alpha: number;
-    u0: number;
-    usMin: number;
-    usMax: number;
+export interface PowerElectronicsCluster extends BasePowerElectronicsCluster {
     filters: FilterIdentifier[];
 }
 

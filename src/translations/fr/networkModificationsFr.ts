@@ -84,6 +84,8 @@ export const networkModificationsFr = {
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
     CreateSubstation: 'Créer un site',
     SubstationCreationError: "Erreur lors de la création d'un site'",
+    ModifySubstation: 'Modifier un site',
+    SubstationModificationError: "Erreur lors de la modification d'un site",
     AdditionalInformation: 'Informations complémentaires',
     AddProperty: 'Ajouter une propriété',
     PropertyName: 'Nom de la propriété',

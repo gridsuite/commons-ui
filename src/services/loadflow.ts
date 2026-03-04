@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, backendFetchText } from './utils';
+import { backendFetch, backendFetchJson } from './utils';
 
 const PREFIX_LOADFLOW_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/loadflow`;
 export const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
@@ -33,13 +33,6 @@ export function getLoadFlowDefaultLimitReductions() {
     const getLoadFlowDefaultLimitReductionsUrl = `${getLoadFlowUrl()}parameters/default-limit-reductions`;
     console.debug(getLoadFlowDefaultLimitReductionsUrl);
     return backendFetchJson(getLoadFlowDefaultLimitReductionsUrl);
-}
-
-export function getDefaultLoadFlowProvider() {
-    console.info('get default load flow provier');
-    const getDefaultLoadFlowProviderUrl = `${PREFIX_STUDY_QUERIES}/v1/loadflow-default-provider`;
-    console.debug(getDefaultLoadFlowProviderUrl);
-    return backendFetchText(getDefaultLoadFlowProviderUrl);
 }
 
 export function fetchLoadFlowParameters(parameterUuid: string) {

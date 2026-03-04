@@ -76,10 +76,8 @@ export function DescriptionModificationDialog({
             open={open}
             onClose={onCancel}
             onSave={onSubmit}
-            formSchema={schema}
-            formMethods={methods}
+            formContext={{ ...methods, validationSchema: schema, removeOptional: true }}
             titleId="description"
-            removeOptional
         >
             <Box paddingTop={1}>
                 <ExpandingTextField

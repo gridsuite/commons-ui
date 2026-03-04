@@ -8,7 +8,6 @@ import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import {
-    fetchDefaultSecurityAnalysisProvider,
     fetchSecurityAnalysisParameters,
     fetchSecurityAnalysisProviders,
     getSecurityAnalysisDefaultLimitReductions,
@@ -36,14 +35,12 @@ export function SecurityAnalysisParametersDialog({
         id,
         ComputingType.SECURITY_ANALYSIS,
         OptionalServicesStatus.Up,
-        fetchSecurityAnalysisProviders,
-        null,
-        fetchDefaultSecurityAnalysisProvider,
-        null,
-        fetchSecurityAnalysisParameters,
-        updateSecurityAnalysisParameters,
-        undefined,
-        getSecurityAnalysisDefaultLimitReductions
+        {
+            backendFetchProviders: fetchSecurityAnalysisProviders,
+            backendFetchParameters: fetchSecurityAnalysisParameters,
+            backendUpdateParameters: updateSecurityAnalysisParameters,
+            backendFetchDefaultLimitReductions: getSecurityAnalysisDefaultLimitReductions,
+        }
     );
 
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, id, name, description);
@@ -57,11 +54,13 @@ export function SecurityAnalysisParametersDialog({
             open={open}
             onClose={onClose}
             onSave={securityAnalysisMethods.onSaveDialog}
-            formSchema={securityAnalysisMethods.formSchema}
-            formMethods={securityAnalysisMethods.formMethods}
+            formContext={{
+                ...securityAnalysisMethods.formMethods,
+                validationSchema: securityAnalysisMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
             PaperProps={{
                 sx: {
