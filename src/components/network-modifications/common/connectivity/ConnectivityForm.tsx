@@ -11,7 +11,6 @@ import { Grid, GridDirection, IconButton, Tooltip } from '@mui/material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import type { UUID } from 'node:crypto';
 import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
 import { ConnectablePositionFormInfos } from './connectivity.type';
 import {
@@ -33,7 +32,6 @@ import {
 } from '../../../inputs';
 import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
 import { PositionDiagramPaneType } from '../../load/common/load.types';
-import { fetchBusesOrBusbarSectionsForVoltageLevel } from '../../../../services';
 
 /**
  * Hook to handle a 'connectivity value' (voltage level, bus or bus bar section)
@@ -108,7 +106,10 @@ export function ConnectivityForm({
     );
 
     useEffect(() => {
-        if (watchVoltageLevelId && fetchBusesOrBusbarSections) {
+        if (!fetchBusesOrBusbarSections) {
+            return;
+        }
+        if (watchVoltageLevelId) {
             const existingVoltageLevelOption = voltageLevelOptions.find((option) => option.id === watchVoltageLevelId);
             if (existingVoltageLevelOption) {
                 fetchBusesOrBusbarSections(watchVoltageLevelId).then((busesOrbusbarSections) => {
@@ -127,7 +128,7 @@ export function ConnectivityForm({
         } else {
             setBusOrBusbarSectionOptions([]);
         }
-    }, [watchVoltageLevelId, voltageLevelOptions, id]);
+    }, [id, fetchBusesOrBusbarSections, voltageLevelOptions, watchVoltageLevelId]);
 
     useEffect(() => {
         if (newBusOrBusbarSectionOptions?.length > 0) {

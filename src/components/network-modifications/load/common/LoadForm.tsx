@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import Grid from '@mui/material/Grid';
+import { Grid } from '@mui/material';
 import { useFormState } from 'react-hook-form';
 import { LoadDialogTabsContent, LoadDialogTabsContentProps } from './LoadDialogTabsContent';
 import { LoadDialogHeader, LoadDialogHeaderProps } from './LoadDialogHeader';
@@ -24,7 +24,7 @@ export function LoadForm({
     isModification,
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
-    PositionDiagramPane
+    PositionDiagramPane,
 }: Readonly<LoadFormProps>) {
     const [tabIndexesWithError, setTabIndexesWithError] = useState<number[]>([]);
     const [tabIndex, setTabIndex] = useState<number>(LoadDialogTab.CONNECTIVITY_TAB);
@@ -32,7 +32,7 @@ export function LoadForm({
     const { errors } = useFormState();
 
     useEffect(() => {
-        let tabsInError: number[] = [];
+        const tabsInError: number[] = [];
         if (errors?.[FieldConstants.CONNECTIVITY] !== undefined) {
             tabsInError.push(LoadDialogTab.CONNECTIVITY_TAB);
         }

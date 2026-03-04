@@ -6,7 +6,6 @@
  */
 
 import { Grid } from '@mui/material';
-import type { UUID } from 'node:crypto';
 import { ConnectivityForm } from './ConnectivityForm';
 import GridSection from '../../../grid/grid-section';
 import GridItem from '../../../grid/grid-item';
@@ -21,7 +20,7 @@ interface BranchConnectivityFormProps {
 
 export function BranchConnectivityForm({
     voltageLevelOptions,
-                                           fetchBusesOrBusbarSections,
+    fetchBusesOrBusbarSections,
     isModification = false,
     previousValues,
 }: Readonly<BranchConnectivityFormProps>) {

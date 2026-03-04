@@ -78,27 +78,3 @@ export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: V
         body: JSON.stringify(newParams),
     });
 }
-
-export function fetchBusesOrBusbarSectionsForVoltageLevel(
-    studyUuid: UUID,
-    currentNodeUuid: UUID,
-    currentRootNetworkUuid: UUID,
-    voltageLevelId: string
-): Promise<Identifiable[]> {
-    console.info(
-        `Fetching buses or busbar sections of study '${studyUuid}' on root network '${currentRootNetworkUuid}' and node '${currentNodeUuid}' + ' for voltage level '${voltageLevelId}'...`
-    );
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('inUpstreamBuiltParentNode', 'true');
-
-    const fetchBusbarSectionsUrl =
-        `${getStudyUrlWithNodeUuidAndRootNetworkUuid(
-            studyUuid,
-            currentNodeUuid,
-            currentRootNetworkUuid
-        )}/network/voltage-levels/${encodeURIComponent(voltageLevelId)}/buses-or-busbar-sections` +
-        `?${urlSearchParams.toString()}`;
-
-    console.debug(fetchBusbarSectionsUrl);
-    return backendFetchJson(fetchBusbarSectionsUrl);
-}
