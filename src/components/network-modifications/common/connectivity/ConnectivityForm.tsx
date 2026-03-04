@@ -44,9 +44,6 @@ import { fetchBusesOrBusbarSectionsForVoltageLevel } from '../../../../services'
  * @param withPosition
  * @param voltageLevelOptions list of network voltage levels
  * @param newBusOrBusbarSectionOptions list of bus or bus bar sections for the newly created voltage level
- * @param studyUuid the study we are currently working on
- * @param nodeUuid the currently selected tree node
- * @param rootNetworkUuid The root network uuid we are currently working on
  * @param onVoltageLevelChangeCallback callback to be called when the voltage level changes
  * @param isEquipmentModification connectivity form is used in a modification form or not
  * @param previousValues previous values of connectivity form's fields
@@ -62,9 +59,6 @@ interface ConnectivityFormProps {
     withPosition: boolean;
     voltageLevelOptions?: Identifiable[];
     newBusOrBusbarSectionOptions?: Option[];
-    studyUuid?: UUID;
-    nodeUuid?: UUID;
-    rootNetworkUuid?: UUID;
     onVoltageLevelChangeCallback?: () => void;
     isEquipmentModification?: boolean;
     previousValues?: {
@@ -74,6 +68,7 @@ interface ConnectivityFormProps {
         terminalConnected?: boolean | null;
     };
     PositionDiagramPane?: PositionDiagramPaneType;
+    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
 }
 
 export function ConnectivityForm({
@@ -84,13 +79,11 @@ export function ConnectivityForm({
     withPosition = false,
     voltageLevelOptions = [],
     newBusOrBusbarSectionOptions = [],
-    studyUuid,
-    nodeUuid,
-    rootNetworkUuid,
     onVoltageLevelChangeCallback = undefined,
     isEquipmentModification = false,
     previousValues,
     PositionDiagramPane,
+    fetchBusesOrBusbarSections,
 }: Readonly<ConnectivityFormProps>) {
     const [busOrBusbarSectionOptions, setBusOrBusbarSectionOptions] = useState<Option[]>([]);
 
@@ -115,15 +108,10 @@ export function ConnectivityForm({
     );
 
     useEffect(() => {
-        if (watchVoltageLevelId && studyUuid && nodeUuid && rootNetworkUuid) {
+        if (watchVoltageLevelId && fetchBusesOrBusbarSections) {
             const existingVoltageLevelOption = voltageLevelOptions.find((option) => option.id === watchVoltageLevelId);
             if (existingVoltageLevelOption) {
-                fetchBusesOrBusbarSectionsForVoltageLevel(
-                    studyUuid,
-                    nodeUuid,
-                    rootNetworkUuid,
-                    watchVoltageLevelId
-                ).then((busesOrbusbarSections) => {
+                fetchBusesOrBusbarSections(watchVoltageLevelId).then((busesOrbusbarSections) => {
                     lastFetchedBusesVlIds.current = watchVoltageLevelId;
                     setBusOrBusbarSectionOptions(
                         busesOrbusbarSections?.map((busesOrbusbarSection) => ({
@@ -139,7 +127,7 @@ export function ConnectivityForm({
         } else {
             setBusOrBusbarSectionOptions([]);
         }
-    }, [watchVoltageLevelId, studyUuid, nodeUuid, rootNetworkUuid, voltageLevelOptions, id]);
+    }, [watchVoltageLevelId, voltageLevelOptions, id]);
 
     useEffect(() => {
         if (newBusOrBusbarSectionOptions?.length > 0) {
@@ -346,14 +334,11 @@ export function ConnectivityForm({
                     </>
                 )}
             </Grid>
-            {PositionDiagramPane && studyUuid && nodeUuid && rootNetworkUuid && (
+            {PositionDiagramPane && (
                 <PositionDiagramPane
                     open={isDiagramPaneOpen}
                     onClose={handleCloseDiagramPane}
                     voltageLevelId={watchVoltageLevelId}
-                    studyUuid={studyUuid}
-                    currentNodeUuid={nodeUuid}
-                    currentRootNetworkUuid={rootNetworkUuid}
                 />
             )}
         </>

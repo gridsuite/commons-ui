@@ -10,3 +10,4 @@ export * from './load.utils';
 export * from './LoadDialogTabs';
 export * from './LoadDialogTabsContent';
 export * from './LoadDialogHeader';
+export * from './LoadForm';

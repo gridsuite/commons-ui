@@ -28,7 +28,4 @@ export type PositionDiagramPaneType = React.ComponentType<{
     open: boolean;
     onClose: () => void;
     voltageLevelId: string;
-    currentNodeUuid: UUID;
-    currentRootNetworkUuid: UUID;
-    studyUuid: UUID;
 }>;

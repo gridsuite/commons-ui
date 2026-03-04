@@ -7,7 +7,6 @@
 
 import { Box } from '@mui/material';
 import React from 'react';
-import type { UUID } from 'node:crypto';
 import { LoadDialogTab } from './load.utils';
 import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
 import { LoadFormInfos, PositionDiagramPaneType } from './load.types';
@@ -16,25 +15,21 @@ import { Identifiable } from '../../../../utils';
 import { ConnectivityForm, PropertiesForm, SetPointsForm } from '../../common';
 
 export interface LoadDialogTabsContentProps {
-    studyUuid?: UUID;
-    nodeUuid?: UUID;
-    rootNetworkUuid?: UUID;
     loadToModify?: LoadFormInfos | null;
+    isModification?: boolean;
     tabIndex: number;
     voltageLevelOptions?: Identifiable[];
-    isModification?: boolean;
     PositionDiagramPane?: PositionDiagramPaneType;
+    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
 }
 
 export function LoadDialogTabsContent({
-    studyUuid,
-    nodeUuid,
-    rootNetworkUuid,
     loadToModify,
+    isModification = false,
     tabIndex,
     voltageLevelOptions = [],
-    isModification = false,
     PositionDiagramPane,
+    fetchBusesOrBusbarSections,
 }: Readonly<LoadDialogTabsContentProps>) {
     return (
         <>
@@ -42,9 +37,6 @@ export function LoadDialogTabsContent({
                 <ConnectivityForm
                     voltageLevelOptions={voltageLevelOptions}
                     withPosition
-                    studyUuid={studyUuid}
-                    nodeUuid={nodeUuid}
-                    rootNetworkUuid={rootNetworkUuid}
                     isEquipmentModification={isModification}
                     previousValues={{
                         connectablePosition: loadToModify?.connectablePosition,
@@ -53,6 +45,7 @@ export function LoadDialogTabsContent({
                         terminalConnected: loadToModify?.terminalConnected,
                     }}
                     PositionDiagramPane={PositionDiagramPane}
+                    fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                 />
             </Box>
             <Box hidden={tabIndex !== LoadDialogTab.CHARACTERISTICS_TAB} p={1} sx={{ marginTop: -4 }}>

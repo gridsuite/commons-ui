@@ -13,19 +13,15 @@ import GridItem from '../../../grid/grid-item';
 import { FieldConstants, Identifiable } from '../../../../utils';
 
 interface BranchConnectivityFormProps {
-    studyUuid: UUID;
-    nodeUuid: UUID;
-    rootNetworkUuid: UUID;
     voltageLevelOptions?: Identifiable[];
+    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
     isModification?: boolean;
     previousValues?: any;
 }
 
 export function BranchConnectivityForm({
-    studyUuid,
-    nodeUuid,
-    rootNetworkUuid,
     voltageLevelOptions,
+                                           fetchBusesOrBusbarSections,
     isModification = false,
     previousValues,
 }: Readonly<BranchConnectivityFormProps>) {
@@ -35,9 +31,6 @@ export function BranchConnectivityForm({
     const connectivity1Field = (
         <ConnectivityForm
             id={id1}
-            studyUuid={studyUuid}
-            nodeUuid={nodeUuid}
-            rootNetworkUuid={rootNetworkUuid}
             voltageLevelOptions={voltageLevelOptions}
             withPosition
             isEquipmentModification={isModification}
@@ -47,15 +40,13 @@ export function BranchConnectivityForm({
                 busOrBusbarSectionId: previousValues?.busOrBusbarSectionId1,
                 terminalConnected: previousValues?.terminal1Connected,
             }}
+            fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
         />
     );
 
     const connectivity2Field = (
         <ConnectivityForm
             id={id2}
-            studyUuid={studyUuid}
-            nodeUuid={nodeUuid}
-            rootNetworkUuid={rootNetworkUuid}
             voltageLevelOptions={voltageLevelOptions}
             withPosition
             isEquipmentModification={isModification}
@@ -65,6 +56,7 @@ export function BranchConnectivityForm({
                 busOrBusbarSectionId: previousValues?.busOrBusbarSectionId2,
                 terminalConnected: previousValues?.terminal2Connected,
             }}
+            fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
         />
     );
 

@@ -8,27 +8,20 @@
 import React from 'react';
 import { Box, Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { LoadDialogTabs } from './LoadDialogTabs';
 import { LoadFormInfos } from './load.types';
 import { filledTextField } from '../../common';
 import { SelectInput, TextInput } from '../../../inputs';
 import GridItem from '../../../grid/grid-item';
 import { FieldConstants, getLoadTypeLabel, LOAD_TYPES } from '../../../../utils';
 
-interface LoadDialogHeaderProps {
+export interface LoadDialogHeaderProps {
     loadToModify?: LoadFormInfos | null;
-    tabIndexesWithError: number[];
-    tabIndex: number;
-    setTabIndex: (index: number) => void;
     equipmentId?: string | null;
     isModification?: boolean;
 }
 
 export function LoadDialogHeader({
     loadToModify,
-    tabIndexesWithError,
-    tabIndex,
-    setTabIndex,
     equipmentId,
     isModification = false,
 }: Readonly<LoadDialogHeaderProps>) {
@@ -91,12 +84,6 @@ export function LoadDialogHeader({
                 <GridItem size={4}>{loadNameField}</GridItem>
                 <GridItem size={4}>{loadTypeField}</GridItem>
             </Grid>
-            <LoadDialogTabs
-                tabIndex={tabIndex}
-                tabIndexesWithError={tabIndexesWithError}
-                setTabIndex={setTabIndex}
-                isModification={isModification}
-            />
         </Box>
     );
 }
