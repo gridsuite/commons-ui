@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Card, CardContent } from '@mui/material';
 import * as sensiParam from './columns-definitions';
 import {
     SensiBranchesTabValues,
@@ -58,12 +58,6 @@ const styles = {
         flexGrow: '1',
         whiteSpace: 'pre-wrap',
     },
-    chipFloating: (theme) => ({
-        position: 'absolute',
-        top: theme.spacing(-4),
-        left: theme.spacing(1),
-        zIndex: 2,
-    }),
 } as const satisfies MuiStyles;
 
 interface SensitivityParametersSelectorProps {
@@ -158,41 +152,45 @@ function SensitivityParametersSelector({
                         />
                     ))}
                 </Tabs>
-                <BuildStatusChip buildStatus={globalBuildStatus} />
-                {isStudyLinked && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <SensitivityAnalysisParametersFactorCount
-                                count={factorsCount.variableCount}
-                                maxCount={MAX_VARIABLES_COUNT}
-                                messageId="sensitivityAnalysis.simulatedVariables"
-                                isLoading={isLoading}
-                            />
-                            <FormattedMessage id="sensitivityAnalysis.separator" />
-                            <FormattedMessage
-                                id="sensitivityAnalysis.maximumFactorsCount"
-                                values={{
-                                    maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString(),
-                                }}
-                            />
-                        </Box>
-                        <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <SensitivityAnalysisParametersFactorCount
-                                count={factorsCount.resultCount}
-                                maxCount={MAX_RESULTS_COUNT}
-                                messageId="sensitivityAnalysis.simulatedResults"
-                                isLoading={isLoading}
-                            />
-                            <FormattedMessage id="sensitivityAnalysis.separator" />
-                            <FormattedMessage
-                                id="sensitivityAnalysis.maximumFactorsCount"
-                                values={{
-                                    maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString(),
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                )}
+                <Card>
+                    <CardContent>
+                        {isStudyLinked && (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                <BuildStatusChip buildStatus={globalBuildStatus} />
+                                <Box sx={{ ...styles.boxContent }}>
+                                    <SensitivityAnalysisParametersFactorCount
+                                        count={factorsCount.variableCount}
+                                        maxCount={MAX_VARIABLES_COUNT}
+                                        messageId="sensitivityAnalysis.simulatedVariables"
+                                        isLoading={isLoading}
+                                    />
+                                    <FormattedMessage id="sensitivityAnalysis.separator" />
+                                    <FormattedMessage
+                                        id="sensitivityAnalysis.maximumFactorsCount"
+                                        values={{
+                                            maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString(),
+                                        }}
+                                    />
+                                </Box>
+                                <Box sx={{ ...styles.boxContent }}>
+                                    <SensitivityAnalysisParametersFactorCount
+                                        count={factorsCount.resultCount}
+                                        maxCount={MAX_RESULTS_COUNT}
+                                        messageId="sensitivityAnalysis.simulatedResults"
+                                        isLoading={isLoading}
+                                    />
+                                    <FormattedMessage id="sensitivityAnalysis.separator" />
+                                    <FormattedMessage
+                                        id="sensitivityAnalysis.maximumFactorsCount"
+                                        values={{
+                                            maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString(),
+                                        }}
+                                    />
+                                </Box>
+                            </Box>
+                        )}
+                    </CardContent>
+                </Card>
             </Box>
             {tabInfo.map((tab, index) => (
                 <TabPanel key={tab.label} value={tabValue} index={index} sx={{ paddingTop: 1 }}>
