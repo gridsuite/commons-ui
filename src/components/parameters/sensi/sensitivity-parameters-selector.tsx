@@ -57,6 +57,7 @@ const styles = {
         flex: 'auto',
         flexGrow: '1',
         whiteSpace: 'pre-wrap',
+        paddingTop: 1,
     },
 } as const satisfies MuiStyles;
 
@@ -156,7 +157,10 @@ function SensitivityParametersSelector({
                     <CardContent>
                         {isStudyLinked && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                <BuildStatusChip buildStatus={globalBuildStatus} />
+                                <Box sx={{ ...styles.boxContent }}>
+                                    <BuildStatusChip buildStatus={globalBuildStatus} />
+                                </Box>
+
                                 <Box sx={{ ...styles.boxContent }}>
                                     <SensitivityAnalysisParametersFactorCount
                                         count={factorsCount.variableCount}
