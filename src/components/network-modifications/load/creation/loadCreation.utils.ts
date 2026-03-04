@@ -6,6 +6,7 @@
  */
 
 import { InferType, number, object, string } from 'yup';
+import { FieldErrors } from 'react-hook-form';
 import {
     DeepNullable,
     FieldConstants,
@@ -24,7 +25,6 @@ import {
 } from '../../common';
 import { LoadCreationDto } from './loadCreation.types';
 import { LoadDialogTab } from '../common';
-import { FieldErrors } from 'react-hook-form';
 
 export const loadCreationFormSchema = object()
     .shape({
@@ -88,7 +88,7 @@ export const loadCreationFormToDto = (loadForm: LoadCreationFormData): LoadCreat
 };
 
 export const loadCreationTabsInError = (errors: FieldErrors) => {
-    let tabsInError: number[] = [];
+    const tabsInError: number[] = [];
     if (
         errors?.[FieldConstants.ACTIVE_POWER_SET_POINT] !== undefined ||
         errors?.[FieldConstants.REACTIVE_POWER_SET_POINT] !== undefined ||

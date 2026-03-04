@@ -6,7 +6,7 @@
  */
 
 import { Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { UUID } from 'node:crypto';
 import { LoadDialogTab } from './load.utils';
 import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
@@ -14,8 +14,6 @@ import { LoadFormInfos, PositionDiagramPaneType } from './load.types';
 import GridSection from '../../../grid/grid-section';
 import { Identifiable } from '../../../../utils';
 import { ConnectivityForm, PropertiesForm, SetPointsForm } from '../../common';
-import { FieldErrors, FieldValues, InternalFieldName, useForm, useFormContext, useFormState } from 'react-hook-form';
-import { fetchNetworkModification } from '../../../../services';
 
 export interface LoadDialogTabsContentProps {
     studyUuid?: UUID;
@@ -38,13 +36,12 @@ export function LoadDialogTabsContent({
     isModification = false,
     PositionDiagramPane,
 }: Readonly<LoadDialogTabsContentProps>) {
-
     return (
         <>
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB} p={1}>
                 <ConnectivityForm
                     voltageLevelOptions={voltageLevelOptions}
-                    withPosition={true}
+                    withPosition
                     studyUuid={studyUuid}
                     nodeUuid={nodeUuid}
                     rootNetworkUuid={rootNetworkUuid}

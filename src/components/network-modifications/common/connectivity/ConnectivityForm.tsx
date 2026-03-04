@@ -34,7 +34,6 @@ import {
 import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
 import { PositionDiagramPaneType } from '../../load/common/load.types';
 import { fetchBusesOrBusbarSectionsForVoltageLevel } from '../../../../services';
-import { LoadDialogTab } from '../../load';
 
 /**
  * Hook to handle a 'connectivity value' (voltage level, bus or bus bar section)

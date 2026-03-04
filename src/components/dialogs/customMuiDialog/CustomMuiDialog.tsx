@@ -170,7 +170,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
-                    <Grid container spacing={2} justifyContent={'space-between'}>
+                    <Grid container spacing={2} justifyContent="space-between">
                         <Grid item xs={6}>
                             <FormattedMessage id={titleId} />
                         </Grid>
