@@ -34,6 +34,7 @@ import {
 import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
 import { PositionDiagramPaneType } from '../../load/common/load.types';
 import { fetchBusesOrBusbarSectionsForVoltageLevel } from '../../../../services';
+import { LoadDialogTab } from '../../load';
 
 /**
  * Hook to handle a 'connectivity value' (voltage level, bus or bus bar section)
@@ -62,9 +63,9 @@ interface ConnectivityFormProps {
     withPosition: boolean;
     voltageLevelOptions?: Identifiable[];
     newBusOrBusbarSectionOptions?: Option[];
-    studyUuid: UUID;
-    nodeUuid: UUID;
-    rootNetworkUuid: UUID;
+    studyUuid?: UUID;
+    nodeUuid?: UUID;
+    rootNetworkUuid?: UUID;
     onVoltageLevelChangeCallback?: () => void;
     isEquipmentModification?: boolean;
     previousValues?: {
@@ -78,7 +79,7 @@ interface ConnectivityFormProps {
 
 export function ConnectivityForm({
     id = FieldConstants.CONNECTIVITY,
-    voltageLevelSelectLabel = 'FieldConstants.VOLTAGE_LEVEL',
+    voltageLevelSelectLabel = 'VOLTAGE_LEVEL',
     direction = 'row',
     withDirectionsInfos = true,
     withPosition = false,
@@ -115,7 +116,7 @@ export function ConnectivityForm({
     );
 
     useEffect(() => {
-        if (watchVoltageLevelId) {
+        if (watchVoltageLevelId && studyUuid && nodeUuid && rootNetworkUuid) {
             const existingVoltageLevelOption = voltageLevelOptions.find((option) => option.id === watchVoltageLevelId);
             if (existingVoltageLevelOption) {
                 fetchBusesOrBusbarSectionsForVoltageLevel(
@@ -289,6 +290,7 @@ export function ConnectivityForm({
 
     const newPositionIconField = (
         <IconButton
+            hidd
             {...(isNodeBuilt && watchVoltageLevelId && { onClick: handleClickOpenDiagramPane })}
             disableRipple={!isNodeBuilt || !watchVoltageLevelId}
             edge="start"
@@ -335,15 +337,17 @@ export function ConnectivityForm({
                                 <Grid xs={conditionalSize - 1} item sx={{ align: 'start' }}>
                                     {newConnectionPositionField}
                                 </Grid>
-                                <Grid xs={1} item sx={{ align: 'start' }}>
-                                    {newPositionIconField}
-                                </Grid>
+                                {PositionDiagramPane && (
+                                    <Grid xs={1} item sx={{ align: 'start' }}>
+                                        {newPositionIconField}
+                                    </Grid>
+                                )}
                             </>
                         )}
                     </>
                 )}
             </Grid>
-            {PositionDiagramPane && (
+            {PositionDiagramPane && studyUuid && nodeUuid && rootNetworkUuid && (
                 <PositionDiagramPane
                     open={isDiagramPaneOpen}
                     onClose={handleCloseDiagramPane}

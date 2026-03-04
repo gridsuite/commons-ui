@@ -8,7 +8,7 @@
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, Grid, LinearProgress } from '@mui/material';
 import { type ObjectSchema } from 'yup';
 import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
@@ -25,6 +25,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     onSave: SubmitHandler<T>;
     onValidationError?: (errors: FieldErrors) => void;
     titleId: string;
+    subtitle?: ReactNode;
     disabledSave?: boolean;
     removeOptional?: boolean;
     onCancel?: () => void;
@@ -88,6 +89,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     isDataFetching = false,
     onValidationError,
     titleId,
+    subtitle,
     disabledSave,
     removeOptional = false,
     onCancel,
@@ -168,8 +170,18 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             >
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
-                    <FormattedMessage id={titleId} />
+                    <Grid container spacing={2} justifyContent={'space-between'}>
+                        <Grid item xs={6}>
+                            <FormattedMessage id={titleId} />
+                        </Grid>
+                        {subtitle && (
+                            <Grid item xs={12}>
+                                {subtitle}
+                            </Grid>
+                        )}
+                    </Grid>
                 </DialogTitle>
+
                 <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}
                 </DialogContent>

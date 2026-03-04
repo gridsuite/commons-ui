@@ -63,7 +63,7 @@ export function LoadDialogHeader({
     const loadTypeField = (
         <SelectInput
             name={FieldConstants.LOAD_TYPE}
-            label="Type"
+            label="loadType"
             options={Object.values(LOAD_TYPES)}
             fullWidth
             size="small"

@@ -96,16 +96,18 @@ export const getConnectivityPropertiesEmptyFormData = (isEquipmentModification =
     };
 };
 
+export const getConnectivityWithPositionEmptyFormDataProps = (isEquipmentModification = false) => ({
+    ...getConnectivityPropertiesEmptyFormData(isEquipmentModification),
+    [FieldConstants.CONNECTION_DIRECTION]: null,
+    [FieldConstants.CONNECTION_NAME]: '',
+    [FieldConstants.CONNECTION_POSITION]: null,
+});
+
 export const getConnectivityWithPositionEmptyFormData = (
     isEquipmentModification = false,
     id = FieldConstants.CONNECTIVITY
 ) => ({
-    [id]: {
-        ...getConnectivityPropertiesEmptyFormData(isEquipmentModification),
-        [FieldConstants.CONNECTION_DIRECTION]: null,
-        [FieldConstants.CONNECTION_NAME]: '',
-        [FieldConstants.CONNECTION_POSITION]: null,
-    },
+    [id]: getConnectivityWithPositionEmptyFormDataProps(isEquipmentModification),
 });
 
 export const getCont1Cont2WithPositionEmptyFormData = (
@@ -178,6 +180,35 @@ export const getConnectivityData = (
     };
 };
 
+export const getConnectivityFormDataProps = ({
+    voltageLevelId,
+    busbarSectionId,
+    connectionDirection,
+    connectionName,
+    connectionPosition,
+    terminalConnected,
+    isEquipmentModification = false,
+}: {
+    voltageLevelId?: string | null;
+    busbarSectionId?: string | null;
+    connectionDirection?: string | null;
+    connectionName?: string | null;
+    connectionPosition?: number | null;
+    terminalConnected?: boolean | null;
+    isEquipmentModification?: boolean;
+}) => {
+    return {
+        ...getConnectivityPropertiesData({
+            voltageLevelId,
+            busbarSectionId,
+        }),
+        [FieldConstants.CONNECTION_DIRECTION]: connectionDirection ?? null,
+        [FieldConstants.CONNECTION_NAME]: connectionName ?? '',
+        [FieldConstants.CONNECTION_POSITION]: connectionPosition ?? null,
+        [FieldConstants.CONNECTED]: terminalConnected ?? (isEquipmentModification ? null : true),
+    };
+};
+
 export const getConnectivityFormData = (
     {
         voltageLevelId,
@@ -199,16 +230,15 @@ export const getConnectivityFormData = (
     id = FieldConstants.CONNECTIVITY
 ) => {
     return {
-        [id]: {
-            ...getConnectivityPropertiesData({
-                voltageLevelId,
-                busbarSectionId,
-            }),
-            [FieldConstants.CONNECTION_DIRECTION]: connectionDirection ?? null,
-            [FieldConstants.CONNECTION_NAME]: connectionName ?? '',
-            [FieldConstants.CONNECTION_POSITION]: connectionPosition ?? null,
-            [FieldConstants.CONNECTED]: terminalConnected ?? (isEquipmentModification ? null : true),
-        },
+        [id]: getConnectivityFormDataProps({
+            voltageLevelId,
+            busbarSectionId,
+            connectionDirection,
+            connectionName,
+            connectionPosition,
+            terminalConnected,
+            isEquipmentModification,
+        }),
     };
 };
 

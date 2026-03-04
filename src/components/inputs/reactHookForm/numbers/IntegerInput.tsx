@@ -12,7 +12,7 @@ export function IntegerInput(props: TextInputProps) {
         if (value === '-') {
             return value;
         }
-        return value === null || (typeof value === 'number' && Number.isNaN(value)) ? '' : value.toString();
+        return value == null || (typeof value === 'number' && Number.isNaN(value)) ? '' : value.toString();
     };
 
     const outputTransform = (value: string) => {
