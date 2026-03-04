@@ -9,20 +9,20 @@ import { Grid } from '@mui/material';
 import { ConnectivityForm } from './ConnectivityForm';
 import GridSection from '../../../grid/grid-section';
 import GridItem from '../../../grid/grid-item';
-import { FieldConstants, Identifiable } from '../../../../utils';
+import { FieldConstants } from '../../../../utils';
+import { ConnectivityNetworkProps } from './connectivity.type';
 
-interface BranchConnectivityFormProps {
-    voltageLevelOptions?: Identifiable[];
-    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
+interface BranchConnectivityFormProps extends ConnectivityNetworkProps {
     isModification?: boolean;
     previousValues?: any;
 }
 
 export function BranchConnectivityForm({
-    voltageLevelOptions,
-    fetchBusesOrBusbarSections,
     isModification = false,
     previousValues,
+    voltageLevelOptions = [],
+    PositionDiagramPane,
+    fetchBusesOrBusbarSections,
 }: Readonly<BranchConnectivityFormProps>) {
     const id1 = `${FieldConstants.CONNECTIVITY}.${FieldConstants.CONNECTIVITY_1}`;
     const id2 = `${FieldConstants.CONNECTIVITY}.${FieldConstants.CONNECTIVITY_2}`;
@@ -30,7 +30,6 @@ export function BranchConnectivityForm({
     const connectivity1Field = (
         <ConnectivityForm
             id={id1}
-            voltageLevelOptions={voltageLevelOptions}
             withPosition
             isEquipmentModification={isModification}
             previousValues={{
@@ -39,14 +38,15 @@ export function BranchConnectivityForm({
                 busOrBusbarSectionId: previousValues?.busOrBusbarSectionId1,
                 terminalConnected: previousValues?.terminal1Connected,
             }}
+            voltageLevelOptions={voltageLevelOptions}
             fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+            PositionDiagramPane={PositionDiagramPane}
         />
     );
 
     const connectivity2Field = (
         <ConnectivityForm
             id={id2}
-            voltageLevelOptions={voltageLevelOptions}
             withPosition
             isEquipmentModification={isModification}
             previousValues={{
@@ -55,7 +55,9 @@ export function BranchConnectivityForm({
                 busOrBusbarSectionId: previousValues?.busOrBusbarSectionId2,
                 terminalConnected: previousValues?.terminal2Connected,
             }}
+            voltageLevelOptions={voltageLevelOptions}
             fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+            PositionDiagramPane={PositionDiagramPane}
         />
     );
 

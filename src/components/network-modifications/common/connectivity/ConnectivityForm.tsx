@@ -12,14 +12,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
-import { ConnectablePositionFormInfos } from './connectivity.type';
+import { ConnectablePositionFormInfos, ConnectivityNetworkProps } from './connectivity.type';
 import {
     areIdsEqual,
     CONNECTION_DIRECTIONS,
     FieldConstants,
     getConnectionDirectionLabel,
     getObjectId,
-    Identifiable,
     Option,
 } from '../../../../utils';
 import {
@@ -31,7 +30,6 @@ import {
     useCustomFormContext,
 } from '../../../inputs';
 import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
-import { PositionDiagramPaneType } from '../../load/common/load.types';
 
 /**
  * Hook to handle a 'connectivity value' (voltage level, bus or bus bar section)
@@ -40,22 +38,22 @@ import { PositionDiagramPaneType } from '../../load/common/load.types';
  * @param direction direction of placement. Either 'row' or 'column', 'row' by default.
  * @param withDirectionsInfos
  * @param withPosition
- * @param voltageLevelOptions list of network voltage levels
  * @param newBusOrBusbarSectionOptions list of bus or bus bar sections for the newly created voltage level
  * @param onVoltageLevelChangeCallback callback to be called when the voltage level changes
  * @param isEquipmentModification connectivity form is used in a modification form or not
  * @param previousValues previous values of connectivity form's fields
+ * @param voltageLevelOptions list of network voltage levels
  * @param PositionDiagramPane a component type to display current taken positions in the voltage level
+ * @param fetchBusesOrBusbarSections a promise to retrieve bus bars for a given voltage level
  * @returns JSX.Element
  */
 
-interface ConnectivityFormProps {
+interface ConnectivityFormProps extends ConnectivityNetworkProps {
     id?: string;
     voltageLevelSelectLabel?: string;
     direction?: GridDirection;
     withDirectionsInfos?: boolean;
     withPosition: boolean;
-    voltageLevelOptions?: Identifiable[];
     newBusOrBusbarSectionOptions?: Option[];
     onVoltageLevelChangeCallback?: () => void;
     isEquipmentModification?: boolean;
@@ -65,8 +63,6 @@ interface ConnectivityFormProps {
         busOrBusbarSectionId?: string;
         terminalConnected?: boolean | null;
     };
-    PositionDiagramPane?: PositionDiagramPaneType;
-    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
 }
 
 export function ConnectivityForm({
@@ -75,11 +71,11 @@ export function ConnectivityForm({
     direction = 'row',
     withDirectionsInfos = true,
     withPosition = false,
-    voltageLevelOptions = [],
     newBusOrBusbarSectionOptions = [],
     onVoltageLevelChangeCallback = undefined,
     isEquipmentModification = false,
     previousValues,
+    voltageLevelOptions = [],
     PositionDiagramPane,
     fetchBusesOrBusbarSections,
 }: Readonly<ConnectivityFormProps>) {
@@ -278,7 +274,6 @@ export function ConnectivityForm({
 
     const newPositionIconField = (
         <IconButton
-            hidd
             {...(isNodeBuilt && watchVoltageLevelId && { onClick: handleClickOpenDiagramPane })}
             disableRipple={!isNodeBuilt || !watchVoltageLevelId}
             edge="start"

@@ -71,9 +71,9 @@ export function LoadForm({
             <Grid item>
                 <LoadDialogTabsContent
                     tabIndex={tabIndex}
-                    voltageLevelOptions={voltageLevelOptions}
                     loadToModify={loadToModify}
                     isModification={isModification}
+                    voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     PositionDiagramPane={PositionDiagramPane}
                 />

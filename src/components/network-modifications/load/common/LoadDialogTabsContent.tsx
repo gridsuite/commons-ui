@@ -9,18 +9,14 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { LoadDialogTab } from './load.utils';
 import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
-import { LoadFormInfos, PositionDiagramPaneType } from './load.types';
+import { LoadFormInfos } from './load.types';
 import GridSection from '../../../grid/grid-section';
-import { Identifiable } from '../../../../utils';
-import { ConnectivityForm, PropertiesForm, SetPointsForm } from '../../common';
+import { ConnectivityForm, ConnectivityNetworkProps, PropertiesForm, SetPointsForm } from '../../common';
 
-export interface LoadDialogTabsContentProps {
+export interface LoadDialogTabsContentProps extends ConnectivityNetworkProps {
     loadToModify?: LoadFormInfos | null;
     isModification?: boolean;
     tabIndex: number;
-    voltageLevelOptions?: Identifiable[];
-    PositionDiagramPane?: PositionDiagramPaneType;
-    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
 }
 
 export function LoadDialogTabsContent({
@@ -35,7 +31,6 @@ export function LoadDialogTabsContent({
         <>
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB} p={1}>
                 <ConnectivityForm
-                    voltageLevelOptions={voltageLevelOptions}
                     withPosition
                     isEquipmentModification={isModification}
                     previousValues={{
@@ -44,6 +39,7 @@ export function LoadDialogTabsContent({
                         busOrBusbarSectionId: loadToModify?.busOrBusbarSectionId,
                         terminalConnected: loadToModify?.terminalConnected,
                     }}
+                    voltageLevelOptions={voltageLevelOptions}
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                 />
