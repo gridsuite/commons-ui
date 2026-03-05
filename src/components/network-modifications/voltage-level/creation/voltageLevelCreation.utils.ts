@@ -247,10 +247,7 @@ export const voltageLevelCreationFormToDto = (
     };
 };
 
-const isCreationDto = (data: VoltageLevelFormInfos | VoltageLevelCreationDto): data is VoltageLevelCreationDto =>
-    'equipmentId' in data;
-
-const creationDtoToForm = (dto: VoltageLevelCreationDto) => {
+export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto) => {
     const isSubstationCreation = dto.substationCreation?.equipmentId != null;
     const substationProperties = isSubstationCreation
         ? {
@@ -298,7 +295,7 @@ const creationDtoToForm = (dto: VoltageLevelCreationDto) => {
     };
 };
 
-const formInfosToForm = (formInfos: VoltageLevelFormInfos) => ({
+export const voltageLevelInfosToForm = (formInfos: VoltageLevelFormInfos) => ({
     [FieldConstants.EQUIPMENT_ID]: formInfos.id,
     [FieldConstants.EQUIPMENT_NAME]: formInfos.name ?? '',
     [FieldConstants.ADD_SUBSTATION_CREATION]: false,
@@ -331,10 +328,3 @@ const formInfosToForm = (formInfos: VoltageLevelFormInfos) => ({
     [FieldConstants.COUPLING_OMNIBUS]: [],
     ...copyEquipmentPropertiesForCreation({ properties: formInfos.properties ?? undefined }),
 });
-
-export const voltageLevelCreationDtoToForm = (data: VoltageLevelFormInfos | VoltageLevelCreationDto) => {
-    if (isCreationDto(data)) {
-        return creationDtoToForm(data);
-    }
-    return formInfosToForm(data);
-};
