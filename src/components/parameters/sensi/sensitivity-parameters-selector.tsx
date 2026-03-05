@@ -52,8 +52,8 @@ const styles = {
     }),
     boxContent: {
         display: 'flex',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
+        alignItems: 'end',
+        justifyContent: 'right',
         gap: 0.5,
         flex: 'auto',
         flexGrow: '1',
