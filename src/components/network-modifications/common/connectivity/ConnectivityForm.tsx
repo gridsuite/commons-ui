@@ -176,16 +176,6 @@ export function ConnectivityForm({
             : intl.formatMessage({ id: 'disconnected' });
     }, [intl, previousValues, isEquipmentModification]);
 
-    const getTooltipMessageId = useMemo(() => {
-        if (!isNodeBuilt) {
-            return 'NodeNotBuildPositionMessage';
-        }
-        if (watchVoltageLevelId) {
-            return 'DisplayTakenPositions';
-        }
-        return 'NoVoltageLevelPositionMessage';
-    }, [isNodeBuilt, watchVoltageLevelId]);
-
     const connectedField = isEquipmentModification ? (
         <CheckboxNullableInput
             name={`${id}.${FieldConstants.CONNECTED}`}
@@ -272,18 +262,33 @@ export function ConnectivityForm({
         />
     );
 
+    const voltageLevelForPositionIcon = useMemo(
+        () => watchVoltageLevelId ?? (isEquipmentModification ? previousValues?.voltageLevelId : undefined),
+        [watchVoltageLevelId, isEquipmentModification, previousValues?.voltageLevelId]
+    );
+
+    const getPositionIconTooltipMessageId = useMemo(() => {
+        if (!isNodeBuilt) {
+            return 'NodeNotBuildPositionMessage';
+        }
+        if (voltageLevelForPositionIcon) {
+            return 'DisplayTakenPositions';
+        }
+        return 'NoVoltageLevelPositionMessage';
+    }, [isNodeBuilt, voltageLevelForPositionIcon]);
+
     const newPositionIconField = (
         <IconButton
-            {...(isNodeBuilt && watchVoltageLevelId && { onClick: handleClickOpenDiagramPane })}
-            disableRipple={!isNodeBuilt || !watchVoltageLevelId}
+            {...(isNodeBuilt && voltageLevelForPositionIcon && { onClick: handleClickOpenDiagramPane })}
+            disableRipple={!isNodeBuilt || !voltageLevelForPositionIcon}
             edge="start"
         >
             <Tooltip
                 title={intl.formatMessage({
-                    id: getTooltipMessageId,
+                    id: getPositionIconTooltipMessageId,
                 })}
             >
-                {isNodeBuilt && watchVoltageLevelId ? (
+                {isNodeBuilt && voltageLevelForPositionIcon ? (
                     <ExploreOutlinedIcon color="action" />
                 ) : (
                     <ExploreOffOutlinedIcon color="action" />
@@ -334,7 +339,7 @@ export function ConnectivityForm({
                 <PositionDiagramPane
                     open={isDiagramPaneOpen}
                     onClose={handleCloseDiagramPane}
-                    voltageLevelId={watchVoltageLevelId}
+                    voltageLevelId={voltageLevelForPositionIcon}
                 />
             )}
         </>
