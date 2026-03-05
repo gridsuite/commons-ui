@@ -62,6 +62,7 @@ export function ShortCircuitParametersEditionDialog({
             }}
             titleId={titleId}
             disabledSave={disableSave}
+            maxWidth="lg"
         >
             <ShortCircuitParametersForm
                 shortCircuitMethods={shortCircuitMethods}
