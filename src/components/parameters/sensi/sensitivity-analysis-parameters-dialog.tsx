@@ -7,7 +7,6 @@
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
-    fetchDefaultSensitivityAnalysisProvider,
     fetchSensitivityAnalysisParameters,
     fetchSensitivityAnalysisProviders,
     updateSensitivityAnalysisParameters,
@@ -35,12 +34,11 @@ export function SensitivityAnalysisParametersDialog({
         id,
         ComputingType.SENSITIVITY_ANALYSIS,
         OptionalServicesStatus.Up,
-        fetchSensitivityAnalysisProviders,
-        null,
-        fetchDefaultSensitivityAnalysisProvider,
-        null,
-        fetchSensitivityAnalysisParameters,
-        updateSensitivityAnalysisParameters
+        {
+            backendFetchProviders: fetchSensitivityAnalysisProviders,
+            backendFetchParameters: fetchSensitivityAnalysisParameters,
+            backendUpdateParameters: updateSensitivityAnalysisParameters,
+        }
     );
 
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({

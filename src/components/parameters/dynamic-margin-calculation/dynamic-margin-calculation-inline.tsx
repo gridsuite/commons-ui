@@ -39,7 +39,7 @@ export function DynamicMarginCalculationInline({
     parametersBackend,
     setHaveDirtyFields,
 }: Readonly<DynamicMarginCalculationInlineProps>) {
-    const [providers, , , , , params, , updateParams, resetParams, ,] = parametersBackend;
+    const { providers, params, updateParameters, resetParameters } = parametersBackend;
     const dynamicMarginCalculationMethods = useDynamicMarginCalculationParametersForm({
         providers,
         params,
@@ -64,16 +64,16 @@ export function DynamicMarginCalculationInline({
     }, []);
 
     const handleReset = useCallback(() => {
-        resetParams();
+        resetParameters();
         setOpenResetConfirmation(false);
-    }, [resetParams]);
+    }, [resetParameters]);
 
     const onSubmit = useCallback(
         (formData: FieldValues) => {
             // update params after convert form representation to dto representation
-            updateParams(toParamsInfos(formData));
+            updateParameters(toParamsInfos(formData));
         },
-        [updateParams]
+        [updateParameters]
     );
 
     const handleLoadParameter = useCallback(
