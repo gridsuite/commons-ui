@@ -52,11 +52,11 @@ const styles = {
     }),
     boxContent: {
         display: 'flex',
-        alignItems: 'end',
-        justifyContent: 'right',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        gap: 0.5,
         flex: 'auto',
         flexGrow: '1',
-        whiteSpace: 'pre-wrap',
         paddingTop: 1,
     },
 } as const satisfies MuiStyles;
@@ -156,7 +156,7 @@ function SensitivityParametersSelector({
                 <Card>
                     <CardContent>
                         {isStudyLinked && (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                 <Box sx={{ ...styles.boxContent }}>
                                     <BuildStatusChip buildStatus={globalBuildStatus} />
                                 </Box>
