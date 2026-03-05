@@ -220,7 +220,7 @@ export const parametersEn = {
     DeleteContingencyList: 'Delete',
     getContingencyListError: "Can't fetch contingencies lists",
     xContingenciesWillBeSimulatedAndYNotFound:
-        '{x, plural, =0 {0 contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated {y, plural, =0 {} other {and {y} not found}}',
+        '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated {y, plural, =0 {} other {and {y} not found}}',
     contingencyCountImpossibleOnUnbuiltNode: "Can't estimate contingencies on an unbuilt node",
     noContingency: 'No contingency',
 
