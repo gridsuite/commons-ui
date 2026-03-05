@@ -40,7 +40,7 @@ export function LoadFlowParametersInline({
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {
-    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
+    const { resetParameters } = parametersBackend;
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, null, null, null);
 
     const intl = useIntl();
@@ -51,9 +51,8 @@ export function LoadFlowParametersInline({
 
     const executeResetAction = useCallback(() => {
         resetParameters();
-        resetProvider();
         setOpenResetConfirmation(false);
-    }, [resetParameters, resetProvider]);
+    }, [resetParameters]);
 
     const handleResetAllClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -71,7 +70,6 @@ export function LoadFlowParametersInline({
                 setOpenSelectParameterDialog(false);
                 fetchLoadFlowParameters(newParams[0].id)
                     .then((parameters) => {
-                        loadflowMethods.setCurrentProvider(parameters.provider);
                         console.info(`loading the following loadflow parameters : ${parameters.uuid}`);
                         reset(loadflowMethods.toLoadFlowFormValues(parameters), {
                             keepDefaultValues: true,
