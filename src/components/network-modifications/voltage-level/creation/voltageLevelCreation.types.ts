@@ -7,12 +7,12 @@
 import { Property } from '../../common';
 
 export interface CouplingDevice {
-    busBarSectionId1: string | null;
-    busBarSectionId2: string | null;
+    busbarSectionId1: string;
+    busbarSectionId2: string;
 }
 
 export interface SwitchKindFormData {
-    switchKind: string;
+    switchKind: SwitchKind;
 }
 
 export interface CreateSwitchesFormData {
@@ -27,6 +27,12 @@ export type AttachedSubstationCreationDto = {
     properties: Property[] | null;
 };
 
+export enum SwitchKind {
+    BREAKER = 'BREAKER',
+    DISCONNECTOR = 'DISCONNECTOR',
+    LOAD_BREAK_SWITCH = 'LOAD_BREAK_SWITCH',
+}
+
 export type VoltageLevelCreationDto = {
     type: string;
     equipmentId: string;
@@ -40,8 +46,7 @@ export type VoltageLevelCreationDto = {
     ipMax: number | null;
     busbarCount: number;
     sectionCount: number;
-    switchKinds: string[];
+    switchKinds: SwitchKind[];
     couplingDevices: CouplingDevice[];
-    topologyKind: string | null;
     properties: Property[] | null;
 };

@@ -13,7 +13,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { TextInput } from '../../../../inputs';
 import GridItem from '../../../../grid/grid-item';
 import { FieldConstants } from '../../../../../utils';
-import { CreateSwitchesFormData, SwitchKindFormData } from '../voltageLevelCreation.types';
+import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../voltageLevelCreation.types';
 import { CreateSwitchesDialog } from './CreateSwitchesDialog';
 
 export function SwitchesBetweenSections() {
@@ -69,7 +69,7 @@ export function SwitchesBetweenSections() {
             sectionCountRef.current !== watchSectionCount &&
             switchesBetweenSectionsRef.current === watchSwitchesBetweenSections
         ) {
-            const initialKindDisconnector: SwitchKindFormData = { switchKind: 'DISCONNECTOR' };
+            const initialKindDisconnector: SwitchKindFormData = { switchKind: SwitchKind.DISCONNECTOR };
             let list = [];
             if (watchSectionCount >= 1) {
                 list = new Array(watchSectionCount - 1).fill(initialKindDisconnector);

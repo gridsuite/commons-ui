@@ -14,14 +14,13 @@ import {
 import { FieldConstants, sanitizeString } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
-import { Properties, Property } from '../../common';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
-import { CouplingDevice, SwitchKindFormData, VoltageLevelCreationDto } from './voltageLevelCreation.types';
+import { SwitchKind, VoltageLevelCreationDto } from './voltageLevelCreation.types';
 import { Option } from '../../../../utils/types/types';
 
 export const SWITCH_TYPE = {
-    BREAKER: { id: 'BREAKER', label: 'Breaker' },
-    DISCONNECTOR: { id: 'DISCONNECTOR', label: 'Disconnector' },
+    BREAKER: { id: SwitchKind.BREAKER, label: 'Breaker' },
+    DISCONNECTOR: { id: SwitchKind.DISCONNECTOR, label: 'Disconnector' },
 } as const;
 
 export const buildNewBusbarSections = (equipmentId: string, sectionCount: number, busbarCount: number): Option[] => {
@@ -178,32 +177,9 @@ export const voltageLevelCreationFormSchema = yup
     })
     .concat(creationPropertiesSchema);
 
-export interface VoltageLevelCreationFormData {
-    [FieldConstants.EQUIPMENT_ID]: string;
-    [FieldConstants.EQUIPMENT_NAME]: string | null;
-    [FieldConstants.ADD_SUBSTATION_CREATION]: boolean;
-    [FieldConstants.SUBSTATION_ID]: string | null;
-    [FieldConstants.SUBSTATION_CREATION_ID]: string | null;
-    [FieldConstants.SUBSTATION_NAME]: string | null;
-    [FieldConstants.COUNTRY]: string | null;
-    [FieldConstants.SUBSTATION_CREATION]: Properties;
-    [FieldConstants.HIDE_NOMINAL_VOLTAGE]: boolean;
-    [FieldConstants.NOMINAL_V]: number | null;
-    [FieldConstants.LOW_VOLTAGE_LIMIT]: number | null;
-    [FieldConstants.HIGH_VOLTAGE_LIMIT]: number | null;
-    [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number | null;
-    [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number | null;
-    [FieldConstants.HIDE_BUS_BAR_SECTION]: boolean;
-    [FieldConstants.BUS_BAR_COUNT]: number;
-    [FieldConstants.SECTION_COUNT]: number;
-    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: string;
-    [FieldConstants.SWITCH_KINDS]: SwitchKindFormData[];
-    [FieldConstants.TOPOLOGY_KIND]: string | null;
-    [FieldConstants.COUPLING_OMNIBUS]: CouplingDevice[];
-    [FieldConstants.ADDITIONAL_PROPERTIES]?: Property[];
-}
+export type VoltageLevelCreationFormData = yup.InferType<typeof voltageLevelCreationFormSchema>;
 
-export const voltageLevelCreationEmptyFormData: VoltageLevelCreationFormData = {
+export const voltageLevelCreationEmptyFormData = {
     [FieldConstants.EQUIPMENT_ID]: '',
     [FieldConstants.EQUIPMENT_NAME]: '',
     [FieldConstants.ADD_SUBSTATION_CREATION]: false,
@@ -223,10 +199,9 @@ export const voltageLevelCreationEmptyFormData: VoltageLevelCreationFormData = {
     [FieldConstants.SECTION_COUNT]: 1,
     [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: '',
     [FieldConstants.SWITCH_KINDS]: [],
-    [FieldConstants.TOPOLOGY_KIND]: null,
     [FieldConstants.COUPLING_OMNIBUS]: [],
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
-};
+} as VoltageLevelCreationFormData;
 
 export const voltageLevelCreationFormToDto = (
     voltageLevelForm: VoltageLevelCreationFormData
@@ -234,9 +209,9 @@ export const voltageLevelCreationFormToDto = (
     const substationCreation = voltageLevelForm[FieldConstants.ADD_SUBSTATION_CREATION]
         ? {
               type: MODIFICATION_TYPES.SUBSTATION_CREATION.type,
-              equipmentId: voltageLevelForm[FieldConstants.SUBSTATION_CREATION_ID],
-              equipmentName: voltageLevelForm[FieldConstants.SUBSTATION_NAME],
-              country: voltageLevelForm[FieldConstants.COUNTRY],
+              equipmentId: voltageLevelForm[FieldConstants.SUBSTATION_CREATION_ID] ?? null,
+              equipmentName: voltageLevelForm[FieldConstants.SUBSTATION_NAME] ?? null,
+              country: voltageLevelForm[FieldConstants.COUNTRY] ?? null,
               properties: toModificationProperties(voltageLevelForm[FieldConstants.SUBSTATION_CREATION]),
           }
         : null;
@@ -244,7 +219,7 @@ export const voltageLevelCreationFormToDto = (
     return {
         type: MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION.type,
         equipmentId: voltageLevelForm[FieldConstants.EQUIPMENT_ID],
-        equipmentName: sanitizeString(voltageLevelForm[FieldConstants.EQUIPMENT_NAME]),
+        equipmentName: sanitizeString(voltageLevelForm[FieldConstants.EQUIPMENT_NAME]) ?? null,
         substationId: substationCreation ? null : (voltageLevelForm[FieldConstants.SUBSTATION_ID] ?? null),
         substationCreation,
         nominalV: voltageLevelForm[FieldConstants.NOMINAL_V] ?? null,
@@ -258,18 +233,20 @@ export const voltageLevelCreationFormToDto = (
             FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
             voltageLevelForm[FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]
         ),
-        busbarCount: voltageLevelForm[FieldConstants.BUS_BAR_COUNT],
-        sectionCount: voltageLevelForm[FieldConstants.SECTION_COUNT],
-        switchKinds: voltageLevelForm[FieldConstants.SWITCH_KINDS].map((e) => e.switchKind),
-        couplingDevices: voltageLevelForm[FieldConstants.COUPLING_OMNIBUS],
-        topologyKind: voltageLevelForm[FieldConstants.TOPOLOGY_KIND] ?? null,
+        busbarCount: voltageLevelForm[FieldConstants.BUS_BAR_COUNT] ?? 1,
+        sectionCount: voltageLevelForm[FieldConstants.SECTION_COUNT] ?? 1,
+        switchKinds: (voltageLevelForm[FieldConstants.SWITCH_KINDS] ?? []).map(
+            (e) => e[FieldConstants.SWITCH_KIND] as SwitchKind
+        ),
+        couplingDevices: (voltageLevelForm[FieldConstants.COUPLING_OMNIBUS] ?? []).map((device) => ({
+            busbarSectionId1: device[FieldConstants.BUS_BAR_SECTION_ID1] ?? '',
+            busbarSectionId2: device[FieldConstants.BUS_BAR_SECTION_ID2] ?? '',
+        })),
         properties: toModificationProperties(voltageLevelForm),
     };
 };
 
-export const voltageLevelCreationDtoToForm = (
-    voltageLevelDto: VoltageLevelCreationDto
-): VoltageLevelCreationFormData => {
+export const voltageLevelCreationDtoToForm = (voltageLevelDto: VoltageLevelCreationDto) => {
     const isSubstationCreation = voltageLevelDto.substationCreation?.equipmentId != null;
     const substationProperties = isSubstationCreation
         ? {
@@ -293,6 +270,7 @@ export const voltageLevelCreationDtoToForm = (
         [FieldConstants.COUNTRY]: isSubstationCreation ? voltageLevelDto.substationCreation!.country : null,
         [FieldConstants.SUBSTATION_CREATION]: substationProperties,
         [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
+        [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
         [FieldConstants.NOMINAL_V]: voltageLevelDto.nominalV,
         [FieldConstants.LOW_VOLTAGE_LIMIT]: voltageLevelDto.lowVoltageLimit,
         [FieldConstants.HIGH_VOLTAGE_LIMIT]: voltageLevelDto.highVoltageLimit,
@@ -304,16 +282,18 @@ export const voltageLevelCreationDtoToForm = (
             FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
             voltageLevelDto.ipMax
         ),
-        [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
         [FieldConstants.BUS_BAR_COUNT]: voltageLevelDto.busbarCount ?? 1,
         [FieldConstants.SECTION_COUNT]: voltageLevelDto.sectionCount ?? 1,
         [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: voltageLevelDto.switchKinds?.join(' / ') ?? '',
         [FieldConstants.SWITCH_KINDS]:
             voltageLevelDto.switchKinds?.map((switchKind) => ({
-                switchKind,
+                [FieldConstants.SWITCH_KIND]: switchKind,
             })) ?? [],
-        [FieldConstants.TOPOLOGY_KIND]: voltageLevelDto.topologyKind ?? null,
-        [FieldConstants.COUPLING_OMNIBUS]: voltageLevelDto.couplingDevices ?? [],
+        [FieldConstants.COUPLING_OMNIBUS]:
+            voltageLevelDto.couplingDevices?.map((device) => ({
+                [FieldConstants.BUS_BAR_SECTION_ID1]: device.busbarSectionId1,
+                [FieldConstants.BUS_BAR_SECTION_ID2]: device.busbarSectionId2,
+            })) ?? [],
         [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(voltageLevelDto.properties),
     };
 };
