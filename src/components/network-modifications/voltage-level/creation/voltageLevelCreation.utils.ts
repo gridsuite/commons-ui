@@ -6,6 +6,7 @@
  */
 import yup from '../../../../utils/yupConfig';
 import {
+    copyEquipmentPropertiesForCreation,
     creationPropertiesSchema,
     emptyProperties,
     getFilledPropertiesFromModification,
@@ -15,7 +16,7 @@ import { FieldConstants, sanitizeString } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
-import { SwitchKind, VoltageLevelCreationDto } from './voltageLevelCreation.types';
+import { SwitchKind, VoltageLevelCreationDto, VoltageLevelFormInfos } from './voltageLevelCreation.types';
 import { Option } from '../../../../utils/types/types';
 
 export const SWITCH_TYPE = {
@@ -246,54 +247,94 @@ export const voltageLevelCreationFormToDto = (
     };
 };
 
-export const voltageLevelCreationDtoToForm = (voltageLevelDto: VoltageLevelCreationDto) => {
-    const isSubstationCreation = voltageLevelDto.substationCreation?.equipmentId != null;
+const isCreationDto = (data: VoltageLevelFormInfos | VoltageLevelCreationDto): data is VoltageLevelCreationDto =>
+    'equipmentId' in data;
+
+const creationDtoToForm = (dto: VoltageLevelCreationDto) => {
+    const isSubstationCreation = dto.substationCreation?.equipmentId != null;
     const substationProperties = isSubstationCreation
         ? {
               [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(
-                  voltageLevelDto.substationCreation?.properties
+                  dto.substationCreation?.properties
               ),
           }
         : emptyProperties;
 
     return {
-        [FieldConstants.EQUIPMENT_ID]: voltageLevelDto.equipmentId,
-        [FieldConstants.EQUIPMENT_NAME]: voltageLevelDto.equipmentName ?? '',
+        [FieldConstants.EQUIPMENT_ID]: dto.equipmentId,
+        [FieldConstants.EQUIPMENT_NAME]: dto.equipmentName ?? '',
         [FieldConstants.ADD_SUBSTATION_CREATION]: isSubstationCreation,
-        [FieldConstants.SUBSTATION_ID]: isSubstationCreation ? null : voltageLevelDto.substationId,
-        [FieldConstants.SUBSTATION_CREATION_ID]: isSubstationCreation
-            ? voltageLevelDto.substationCreation!.equipmentId
-            : null,
-        [FieldConstants.SUBSTATION_NAME]: isSubstationCreation
-            ? voltageLevelDto.substationCreation!.equipmentName
-            : null,
-        [FieldConstants.COUNTRY]: isSubstationCreation ? voltageLevelDto.substationCreation!.country : null,
+        [FieldConstants.SUBSTATION_ID]: isSubstationCreation ? null : dto.substationId,
+        [FieldConstants.SUBSTATION_CREATION_ID]: isSubstationCreation ? dto.substationCreation!.equipmentId : null,
+        [FieldConstants.SUBSTATION_NAME]: isSubstationCreation ? dto.substationCreation!.equipmentName : null,
+        [FieldConstants.COUNTRY]: isSubstationCreation ? dto.substationCreation!.country : null,
         [FieldConstants.SUBSTATION_CREATION]: substationProperties,
         [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
         [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
-        [FieldConstants.NOMINAL_V]: voltageLevelDto.nominalV,
-        [FieldConstants.LOW_VOLTAGE_LIMIT]: voltageLevelDto.lowVoltageLimit,
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: voltageLevelDto.highVoltageLimit,
+        [FieldConstants.NOMINAL_V]: dto.nominalV,
+        [FieldConstants.LOW_VOLTAGE_LIMIT]: dto.lowVoltageLimit,
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: dto.highVoltageLimit,
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: convertInputValue(
             FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
-            voltageLevelDto.ipMin
+            dto.ipMin
         ),
         [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: convertInputValue(
             FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
-            voltageLevelDto.ipMax
+            dto.ipMax
         ),
-        [FieldConstants.BUS_BAR_COUNT]: voltageLevelDto.busbarCount ?? 1,
-        [FieldConstants.SECTION_COUNT]: voltageLevelDto.sectionCount ?? 1,
-        [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: voltageLevelDto.switchKinds?.join(' / ') ?? '',
+        [FieldConstants.BUS_BAR_COUNT]: dto.busbarCount ?? 1,
+        [FieldConstants.SECTION_COUNT]: dto.sectionCount ?? 1,
+        [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: dto.switchKinds?.join(' / ') ?? '',
         [FieldConstants.SWITCH_KINDS]:
-            voltageLevelDto.switchKinds?.map((switchKind) => ({
+            dto.switchKinds?.map((switchKind) => ({
                 [FieldConstants.SWITCH_KIND]: switchKind,
             })) ?? [],
         [FieldConstants.COUPLING_OMNIBUS]:
-            voltageLevelDto.couplingDevices?.map((device) => ({
+            dto.couplingDevices?.map((device) => ({
                 [FieldConstants.BUS_BAR_SECTION_ID1]: device.busbarSectionId1,
                 [FieldConstants.BUS_BAR_SECTION_ID2]: device.busbarSectionId2,
             })) ?? [],
-        [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(voltageLevelDto.properties),
+        [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(dto.properties),
     };
+};
+
+const formInfosToForm = (formInfos: VoltageLevelFormInfos) => ({
+    [FieldConstants.EQUIPMENT_ID]: formInfos.id,
+    [FieldConstants.EQUIPMENT_NAME]: formInfos.name ?? '',
+    [FieldConstants.ADD_SUBSTATION_CREATION]: false,
+    [FieldConstants.SUBSTATION_ID]: formInfos.substationId,
+    [FieldConstants.SUBSTATION_CREATION_ID]: null,
+    [FieldConstants.SUBSTATION_NAME]: null,
+    [FieldConstants.COUNTRY]: null,
+    [FieldConstants.SUBSTATION_CREATION]: emptyProperties,
+    [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
+    [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
+    [FieldConstants.TOPOLOGY_KIND]: formInfos.topologyKind ?? null,
+    [FieldConstants.NOMINAL_V]: formInfos.nominalV,
+    [FieldConstants.LOW_VOLTAGE_LIMIT]: formInfos.lowVoltageLimit,
+    [FieldConstants.HIGH_VOLTAGE_LIMIT]: formInfos.highVoltageLimit,
+    [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: convertInputValue(
+        FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
+        formInfos.identifiableShortCircuit?.ipMin ?? null
+    ),
+    [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: convertInputValue(
+        FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
+        formInfos.identifiableShortCircuit?.ipMax ?? null
+    ),
+    [FieldConstants.BUS_BAR_COUNT]: formInfos.busbarCount ?? 1,
+    [FieldConstants.SECTION_COUNT]: formInfos.sectionCount ?? 1,
+    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: formInfos.switchKinds?.join(' / ') ?? '',
+    [FieldConstants.SWITCH_KINDS]:
+        formInfos.switchKinds?.map((switchKind) => ({
+            [FieldConstants.SWITCH_KIND]: switchKind,
+        })) ?? [],
+    [FieldConstants.COUPLING_OMNIBUS]: [],
+    ...copyEquipmentPropertiesForCreation({ properties: formInfos.properties ?? undefined }),
+});
+
+export const voltageLevelCreationDtoToForm = (data: VoltageLevelFormInfos | VoltageLevelCreationDto) => {
+    if (isCreationDto(data)) {
+        return creationDtoToForm(data);
+    }
+    return formInfosToForm(data);
 };

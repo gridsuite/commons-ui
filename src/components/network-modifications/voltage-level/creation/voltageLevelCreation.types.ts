@@ -50,3 +50,24 @@ export type VoltageLevelCreationDto = {
     couplingDevices: CouplingDevice[];
     properties: Property[] | null;
 };
+
+export interface IdentifiableShortCircuitInfos {
+    ipMin: number | null;
+    ipMax: number | null;
+}
+
+export interface VoltageLevelFormInfos {
+    id: string;
+    name: string | null;
+    topologyKind: string | null;
+    substationId: string | null;
+    nominalV: number;
+    lowVoltageLimit: number | null;
+    highVoltageLimit: number | null;
+    busbarCount: number | null;
+    sectionCount: number | null;
+    switchKinds: SwitchKind[] | null;
+    isSymmetrical: boolean | null;
+    identifiableShortCircuit: IdentifiableShortCircuitInfos | null;
+    properties: Record<string, string> | null;
+}
