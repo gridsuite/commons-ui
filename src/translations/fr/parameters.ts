@@ -340,4 +340,6 @@ export const parametersFr = {
     BUILT_WITH_ERROR: 'Erreurs',
     NOT_BUILT: 'Non réalisé',
     BUILDING: 'En cours de réalisation',
+    NODE_BUILT: 'Nœud réalisé',
+    NODE_NOT_BUILT: 'Nœud non réalisé',
 };

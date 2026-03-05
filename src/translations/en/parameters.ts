@@ -316,4 +316,6 @@ export const parametersEn = {
     BUILT_WITH_ERROR: 'Errors',
     NOT_BUILT: 'Not built',
     BUILDING: 'Building',
+    NODE_BUILT: 'Node built',
+    NODE_NOT_BUILT: 'Node not built',
 };

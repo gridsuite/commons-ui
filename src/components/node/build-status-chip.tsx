@@ -59,11 +59,26 @@ type BuildStatusChipProps = {
     sx?: SxStyle;
     icon?: ReactElement;
     onClick?: (e: React.MouseEvent) => void;
+    overrideLabel?: boolean;
 };
 
-function BuildStatusChip({ buildStatus = BuildStatus.NOT_BUILT, sx, icon, onClick }: Readonly<BuildStatusChipProps>) {
+function BuildStatusChip({
+    buildStatus = BuildStatus.NOT_BUILT,
+    sx,
+    icon,
+    onClick,
+    overrideLabel = false,
+}: Readonly<BuildStatusChipProps>) {
     const intl = useIntl();
-    const label = intl.formatMessage({ id: buildStatus });
+    let labelId = buildStatus?.toString();
+    if (overrideLabel) {
+        if (labelId === BuildStatus.BUILT) {
+            labelId = 'NODE_BUILT';
+        } else if (labelId === BuildStatus.NOT_BUILT) {
+            labelId = 'NODE_NOT_BUILT';
+        }
+    }
+    const label = intl.formatMessage({ id: labelId });
 
     return (
         <Chip

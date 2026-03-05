@@ -158,7 +158,7 @@ function SensitivityParametersSelector({
                         {isStudyLinked && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                 <Box sx={{ ...styles.boxContent }}>
-                                    <BuildStatusChip buildStatus={globalBuildStatus} />
+                                    <BuildStatusChip buildStatus={globalBuildStatus} overrideLabel />
                                 </Box>
 
                                 <Box sx={{ ...styles.boxContent }}>
