@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { forwardRef } from 'react';
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TabPanelProps } from '@mui/lab';
@@ -42,7 +43,8 @@ function createRows() {
     return rowData;
 }
 
-export function ShortCircuitPowerElectronicsTabPanel({ ...tabPanelProps }: Readonly<TabPanelProps>) {
+export const ShortCircuitPowerElectronicsTabPanel= forwardRef<HTMLSpanElement, Readonly<TabPanelProps>>(
+    ({ ...othersTabPanelProps }, ref) => {
     const modelPowerElectronics = (
         <Grid container alignItems="center" spacing={2} direction="row">
             <Grid item xs={10}>
@@ -55,7 +57,7 @@ export function ShortCircuitPowerElectronicsTabPanel({ ...tabPanelProps }: Reado
     );
 
     return (
-        <TabPanel value={tabPanelProps.value} index={ShortCircuitParametersTabValues.POWER_ELECTRONICS}>
+        <TabPanel index={ShortCircuitParametersTabValues.POWER_ELECTRONICS} ref={ref} {...othersTabPanelProps}>
             <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
             <Grid container xl={6}>
                 <GridItem size={10}>{modelPowerElectronics}</GridItem>
@@ -71,4 +73,4 @@ export function ShortCircuitPowerElectronicsTabPanel({ ...tabPanelProps }: Reado
             />
         </TabPanel>
     );
-}
+});
