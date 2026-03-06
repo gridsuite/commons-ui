@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { IntlShape } from 'react-intl';
 import yup from '../../../../utils/yupConfig';
 import {
     copyEquipmentPropertiesForCreation,
@@ -295,7 +296,10 @@ export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto) => {
     };
 };
 
-export const voltageLevelInfosToForm = (formInfos: VoltageLevelFormInfos) => ({
+const translateSwitchKinds = (switchKinds: SwitchKind[] | null, intl?: IntlShape): string =>
+    switchKinds?.map((kind) => (intl ? intl.formatMessage({ id: kind }) : kind)).join(' / ') ?? '';
+
+export const voltageLevelInfosToForm = (formInfos: VoltageLevelFormInfos, intl?: IntlShape) => ({
     [FieldConstants.EQUIPMENT_ID]: formInfos.id,
     [FieldConstants.EQUIPMENT_NAME]: formInfos.name ?? '',
     [FieldConstants.ADD_SUBSTATION_CREATION]: false,
@@ -320,7 +324,7 @@ export const voltageLevelInfosToForm = (formInfos: VoltageLevelFormInfos) => ({
     ),
     [FieldConstants.BUS_BAR_COUNT]: formInfos.busbarCount ?? 1,
     [FieldConstants.SECTION_COUNT]: formInfos.sectionCount ?? 1,
-    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: formInfos.switchKinds?.join(' / ') ?? '',
+    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: translateSwitchKinds(formInfos.switchKinds, intl),
     [FieldConstants.SWITCH_KINDS]:
         formInfos.switchKinds?.map((switchKind) => ({
             [FieldConstants.SWITCH_KIND]: switchKind,
