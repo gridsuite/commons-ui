@@ -25,11 +25,13 @@ import { fetchDefaultCountry } from '../../../../services/appsMetadata';
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
     substationFieldAdditionalProps?: Record<string, unknown>;
+    showDeleteSubstationButton?: boolean;
 }
 
 export function VoltageLevelCreationForm({
     substationOptions,
     substationFieldAdditionalProps,
+    showDeleteSubstationButton = true,
 }: VoltageLevelCreationFormProps = {}) {
     const { setValue, getValues } = useFormContext();
     const watchAddSubstationCreation = useWatch({ name: FieldConstants.ADD_SUBSTATION_CREATION });
@@ -39,7 +41,6 @@ export function VoltageLevelCreationForm({
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
 
     const displayOmnibus = watchBusBarCount > 1 || watchSectionCount > 1;
-    const showDeleteSubstationButton = !(watchHideNominalVoltage && watchHideBusBarSection);
 
     useEffect(() => {
         if (watchAddSubstationCreation && !getValues(FieldConstants.COUNTRY)) {
