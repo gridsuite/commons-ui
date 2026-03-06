@@ -4,19 +4,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid, Box } from '@mui/material';
+import { TabPanelProps } from '@mui/lab';
 import { useFormContext } from 'react-hook-form';
-import { SPECIFIC_PARAMETERS } from '../common';
-import { DirectoryItemsInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
+import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
+import { DirectoryItemsInput, FieldLabel, FloatInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
 import { ElementType, EquipmentType } from '../../../utils';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
-    NODE_CLUSTER,
+    NODE_CLUSTER_FILTER_IDS,
     onlyStartedGeneratorsOptions,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
+    STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD,
+    STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD,
 } from './constants';
+import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
 
 const equipmentTypes: string[] = [EquipmentType.VOLTAGE_LEVEL];
 
@@ -30,8 +34,14 @@ const styles = {
     },
 };
 
-export function ShortCircuitStudyAreaTabPanel() {
+export function ShortCircuitStudyAreaTabPanel({ ...tabPanelProps }: Readonly<TabPanelProps>) {
     const { setValue } = useFormContext();
+    const startedGeneratorsInCalculationClusterThreshold = (
+        <FloatInput
+            name={`${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD}`}
+            label="startedGeneratorsInCalculationClusterThreshold"
+        />
+    );
 
     // Forced to specifically manage this onlyStartedGenerators parameter because it's a boolean type, but we want to use a radio button here.
     const inClusterOnlyStartedGenerators = (
@@ -49,6 +59,13 @@ export function ShortCircuitStudyAreaTabPanel() {
                     );
                 },
             }}
+        />
+    );
+
+    const startedGeneratorsOutsideCalculationClusterThreshold = (
+        <FloatInput
+            name={`${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD}`}
+            label="startedGeneratorsOutsideCalculationClusterThreshold"
         />
     );
 
@@ -71,13 +88,13 @@ export function ShortCircuitStudyAreaTabPanel() {
     );
 
     return (
-        <>
+        <TabPanel value={tabPanelProps.value} index={ShortCircuitParametersTabValues.STUDY_AREA}>
             <GridSection title="ShortCircuitInClusterFilter" heading={4} />
-            <Grid item xs>
+            <Grid item xs sx={{ paddingBottom: 4 }}>
                 <DirectoryItemsInput
                     titleId="FiltersListsSelection"
                     label="Filters"
-                    name={`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`}
+                    name={`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER_FILTER_IDS}`}
                     elementType={ElementType.FILTER}
                     equipmentTypes={equipmentTypes}
                     ChipComponent={OverflowableChipWithHelperText}
@@ -86,14 +103,20 @@ export function ShortCircuitStudyAreaTabPanel() {
                 />
             </Grid>
             <GridSection title="ShortCircuitStartedGeneratorsMode" heading={4} customStyle={styles.h4} />
-            <GridSection title="ShortCircuitInCluster" heading={5} customStyle={styles.h5} />
-            <Grid container>
-                <GridItem size={12}>{inClusterOnlyStartedGenerators}</GridItem>
-            </Grid>
-            <GridSection title="ShortCircuitOutCluster" heading={5} customStyle={styles.h5} />
-            <Grid container>
-                <GridItem size={12}>{outClusterOnlyStartedGenerators}</GridItem>
-            </Grid>
-        </>
+            <Box sx={{ paddingTop: 2, display: 'flex', alignItems: 'center' }}>
+                <GridItem size={2}>
+                    <FieldLabel label="ShortCircuitInCluster" />
+                </GridItem>
+                <GridItem size={3}>{inClusterOnlyStartedGenerators}</GridItem>
+                <GridItem size={3}>{startedGeneratorsInCalculationClusterThreshold}</GridItem>
+            </Box>
+            <Box sx={{ paddingTop: 2, display: 'flex', alignItems: 'center' }}>
+                <GridItem size={2}>
+                    <FieldLabel label="ShortCircuitOutCluster" />
+                </GridItem>
+                <GridItem size={3}>{outClusterOnlyStartedGenerators}</GridItem>
+                <GridItem size={3}>{startedGeneratorsOutsideCalculationClusterThreshold}</GridItem>
+            </Box>
+        </TabPanel>
     );
 }

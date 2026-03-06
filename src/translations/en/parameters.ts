@@ -124,6 +124,8 @@ export const parametersEn = {
     ShortCircuitInClusterFilter: 'In cluster filters',
     ShortCircuitInCluster: 'In cluster',
     ShortCircuitOutCluster: 'Out cluster',
+    startedGeneratorsInCalculationClusterThreshold: 'Threshold',
+    startedGeneratorsOutsideCalculationClusterThreshold: 'Threshold',
     ShortCircuitPowerElectronicsSection: 'Modeling of power electronics connected equipment',
     ShortCircuitModelPowerElectronics: 'Consider following Icc characteristics',
     ShortCircuitIccActive: 'Activate',

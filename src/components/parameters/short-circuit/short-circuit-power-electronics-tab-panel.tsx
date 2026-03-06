@@ -6,18 +6,21 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { TabPanelProps } from '@mui/lab';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
-import { SPECIFIC_PARAMETERS } from '../common';
+import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
 import { FieldLabel, SwitchInput } from '../../inputs';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
+    PredefinedParameters,
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
 } from './constants';
 import { ShortCircuitIccClusterTable } from './short-circuit-icc-cluster-table';
 import { COLUMNS_DEFINITIONS_ICC_CLUSTERS, COLUMNS_DEFINITIONS_ICC_MATERIALS } from './columns-definition';
+import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
 
 const iccMaterialsColumnsDef = COLUMNS_DEFINITIONS_ICC_MATERIALS.map((col) => ({
     ...col,
@@ -39,7 +42,7 @@ function createRows() {
     return rowData;
 }
 
-export function ShortCircuitPowerElectronicsTabPanel() {
+export function ShortCircuitPowerElectronicsTabPanel({ ...tabPanelProps }: Readonly<TabPanelProps>) {
     const modelPowerElectronics = (
         <Grid container alignItems="center" spacing={2} direction="row">
             <Grid item xs={10}>
@@ -52,7 +55,7 @@ export function ShortCircuitPowerElectronicsTabPanel() {
     );
 
     return (
-        <>
+        <TabPanel value={tabPanelProps.value} index={ShortCircuitParametersTabValues.POWER_ELECTRONICS}>
             <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
             <Grid container xl={6}>
                 <GridItem size={10}>{modelPowerElectronics}</GridItem>
@@ -66,6 +69,6 @@ export function ShortCircuitPowerElectronicsTabPanel() {
                 columnsDefinition={iccClustersColumnsDef}
                 createRows={createRows}
             />
-        </>
+        </TabPanel>
     );
 }

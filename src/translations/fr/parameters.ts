@@ -128,6 +128,8 @@ export const parametersFr = {
     ShortCircuitInClusterFilter: 'Regroupements de la zone intérieure',
     ShortCircuitInCluster: 'Zone intérieure',
     ShortCircuitOutCluster: 'Zone extérieure',
+    startedGeneratorsInCalculationClusterThreshold: 'Seuil',
+    startedGeneratorsOutsideCalculationClusterThreshold: 'Seuil',
     ShortCircuitPowerElectronicsSection: "Modélisation des équipements raccordés par de l'électronique de puissance",
     ShortCircuitModelPowerElectronics: "Prise en compte des caractéristiques d'Icc suivantes",
     ShortCircuitIccActive: 'Actif',

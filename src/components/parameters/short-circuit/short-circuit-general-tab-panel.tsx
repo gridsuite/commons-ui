@@ -7,6 +7,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
+import { TabPanelProps } from '@mui/lab';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
@@ -29,11 +30,11 @@ import GridItem from '../../grid/grid-item';
 import GridSection from '../../grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
 import type { SxStyle } from '../../../utils/styles';
-import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
+import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS, TabPanel } from '../common';
+import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
 
-export interface ShortCircuitFieldsProps {
+export interface ShortCircuitFieldsProps extends TabPanelProps {
     resetAll: (predefinedParams: PredefinedParameters) => void;
-    isDeveloperMode: boolean;
 }
 
 export enum Status {
@@ -41,7 +42,7 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-export function ShortCircuitGeneralTabPanel({ resetAll }: Readonly<ShortCircuitFieldsProps>) {
+export function ShortCircuitGeneralTabPanel({ resetAll, ...tabPanelProps }: Readonly<ShortCircuitFieldsProps>) {
     const [status, setStatus] = useState(Status.SUCCESS);
     const watchInitialVoltageProfileMode = useWatch({
         name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
@@ -118,7 +119,6 @@ export function ShortCircuitGeneralTabPanel({ resetAll }: Readonly<ShortCircuitF
 
     const onPredefinedParametersManualChange = (event: any) => {
         const newPredefinedParameters = event.target.value;
-        console.debug('onPredefinedParametersManualChange new:', newPredefinedParameters);
         resetAll(newPredefinedParameters);
     };
 
@@ -200,31 +200,33 @@ export function ShortCircuitGeneralTabPanel({ resetAll }: Readonly<ShortCircuitF
     ]);
 
     return (
-        <Grid container spacing={2} paddingLeft={2}>
-            <Grid container paddingTop={2} xl={6}>
-                <GridItem size={10}>{feederResult}</GridItem>
-            </Grid>
-            <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
-            <Grid xl={6} container spacing={1} alignItems="center">
-                <GridItem size={9}>{predefinedParameters}</GridItem>
-                <GridItem size={2}>{statusToShow}</GridItem>
-            </Grid>
-            <GridSection title="ShortCircuitCharacteristics" heading={4} />
-            <Grid container spacing={5}>
-                <Grid item>
-                    <GridItem>{loads}</GridItem>
-                    <GridItem>{shuntCompensators}</GridItem>
+        <TabPanel value={tabPanelProps.value} index={ShortCircuitParametersTabValues.GENERAL}>
+            <Grid container spacing={2} paddingLeft={2}>
+                <Grid container paddingTop={2} xl={6}>
+                    <GridItem size={10}>{feederResult}</GridItem>
                 </Grid>
-                <Grid item xs={8}>
-                    <GridItem>{vsc}</GridItem>
-                    <GridItem>{neutralPosition}</GridItem>
+                <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
+                <Grid xl={6} container spacing={1} alignItems="center">
+                    <GridItem size={9}>{predefinedParameters}</GridItem>
+                    <GridItem size={2}>{statusToShow}</GridItem>
                 </Grid>
+                <GridSection title="ShortCircuitCharacteristics" heading={4} />
+                <Grid container spacing={5}>
+                    <Grid item>
+                        <GridItem>{loads}</GridItem>
+                        <GridItem>{shuntCompensators}</GridItem>
+                    </Grid>
+                    <Grid item xs={8}>
+                        <GridItem>{vsc}</GridItem>
+                        <GridItem>{neutralPosition}</GridItem>
+                    </Grid>
+                </Grid>
+                <GridSection title="ShortCircuitVoltageProfileMode" heading={4} />
+                <Grid container>
+                    <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
+                </Grid>
+                <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
             </Grid>
-            <GridSection title="ShortCircuitVoltageProfileMode" heading={4} />
-            <Grid container>
-                <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
-            </Grid>
-            <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
-        </Grid>
+        </TabPanel>
     );
 }

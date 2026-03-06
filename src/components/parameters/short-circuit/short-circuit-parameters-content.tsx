@@ -10,7 +10,6 @@ import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
-import { TabPanel } from '../common/parameters';
 import type { MuiStyles } from '../../../utils/styles';
 import { ShortCircuitGeneralTabPanel } from './short-circuit-general-tab-panel';
 import { ShortCircuitStudyAreaTabPanel } from './short-circuit-study-area-tab-panel';
@@ -81,17 +80,11 @@ function ShortCircuitParametersContent({
             <Box sx={styles.wrapper}>
                 <Grid container sx={styles.container}>
                     <Grid item sx={styles.maxWidth}>
-                        <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.GENERAL}>
-                            <ShortCircuitGeneralTabPanel resetAll={resetAll} isDeveloperMode={isDeveloperMode} />
-                        </TabPanel>
+                        <ShortCircuitGeneralTabPanel resetAll={resetAll} value={selectedTab} />
                         {isThereSpecificParameters && isDeveloperMode && (
                             <>
-                                <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.STUDY_AREA}>
-                                    <ShortCircuitStudyAreaTabPanel />
-                                </TabPanel>
-                                <TabPanel value={selectedTab} index={ShortCircuitParametersTabValues.POWER_ELECTRONICS}>
-                                    <ShortCircuitPowerElectronicsTabPanel />
-                                </TabPanel>
+                                <ShortCircuitStudyAreaTabPanel value={selectedTab} />
+                                <ShortCircuitPowerElectronicsTabPanel value={selectedTab} />
                             </>
                         )}
                     </Grid>

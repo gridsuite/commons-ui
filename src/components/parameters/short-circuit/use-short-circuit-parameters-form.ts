@@ -14,7 +14,7 @@ import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
     InitialVoltage,
-    NODE_CLUSTER,
+    NODE_CLUSTER_FILTER_IDS,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
@@ -162,12 +162,6 @@ export const useShortCircuitParametersForm = ({
                     dirty
                 );
             }
-            const nodeCluster = specificParametersDescriptionForProvider?.find(
-                (specificParam) => specificParam.name === NODE_CLUSTER
-            );
-            if (nodeCluster) {
-                setValue(`${SPECIFIC_PARAMETERS}.${NODE_CLUSTER}`, []);
-            }
         },
         [setValue, specificParametersDescriptionForProvider]
     );
@@ -250,7 +244,7 @@ export const useShortCircuitParametersForm = ({
             if (
                 (_errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER] ||
                     _errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER] ||
-                    _errors?.[NODE_CLUSTER]) &&
+                    _errors?.[NODE_CLUSTER_FILTER_IDS]) &&
                 ShortCircuitParametersTabValues.STUDY_AREA !== selectedTab
             ) {
                 tabsInError.push(ShortCircuitParametersTabValues.STUDY_AREA);

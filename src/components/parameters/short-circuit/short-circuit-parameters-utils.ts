@@ -8,6 +8,7 @@
 import {
     InitialVoltage,
     NODE_CLUSTER,
+    NODE_CLUSTER_FILTER_IDS,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
@@ -136,7 +137,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
         ...(powerElectronicsClustersSchema
             ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: powerElectronicsClustersSchema }
             : {}),
-        ...(nodeClusterSchema ? { [NODE_CLUSTER]: nodeClusterSchema } : {}),
+        ...(nodeClusterSchema ? { [NODE_CLUSTER_FILTER_IDS]: nodeClusterSchema } : {}),
     };
 
     const overrideSchema = yup.object().shape({
@@ -199,7 +200,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         (specificParam) => specificParam.name === NODE_CLUSTER
     );
     if (nodeClusterParam) {
-        defaultValues[NODE_CLUSTER] = nodeClusterParam.defaultValue;
+        defaultValues[NODE_CLUSTER_FILTER_IDS] = nodeClusterParam.defaultValue;
     }
     const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
         (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
@@ -218,7 +219,7 @@ export const getShortCircuitSpecificParametersValues = (
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
     const powerElectronicsClustersParam: (FormPowerElectronicsCluster & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
-    const nodeCluster: FilterPOJO[] = formData[SPECIFIC_PARAMETERS][NODE_CLUSTER];
+    const nodeClusterFilterIds: FilterPOJO[] = formData[SPECIFIC_PARAMETERS][NODE_CLUSTER_FILTER_IDS];
     const finalSpecificParameters: Record<string, any> = getAllSpecificParametersValues(
         formData,
         _specificParametersValues
@@ -245,14 +246,14 @@ export const getShortCircuitSpecificParametersValues = (
             })
         );
     }
-    if (nodeCluster) {
-        const lightFilters = nodeCluster.map((filter) => {
+    if (nodeClusterFilterIds) {
+        const lightFilters = nodeClusterFilterIds.map((filter) => {
             return {
                 filterId: filter[ID],
                 filterName: filter.name,
             };
         });
-        finalSpecificParameters[NODE_CLUSTER] = JSON.stringify(lightFilters);
+        finalSpecificParameters[NODE_CLUSTER_FILTER_IDS] = JSON.stringify(lightFilters);
     }
     return finalSpecificParameters;
 };
@@ -344,14 +345,14 @@ export const formatShortCircuitSpecificParameters = (
     }
     const nodeClusterParam = specificParametersDescriptionForProvider.find((p) => p.name === NODE_CLUSTER);
     if (nodeClusterParam) {
-        if (Object.hasOwn(specificParamsList, NODE_CLUSTER)) {
-            const filters = JSON.parse(specificParamsList[NODE_CLUSTER]);
-            formatted[NODE_CLUSTER] = filters.map((filter: { filterId: any; filterName: any }) => ({
+        if (Object.hasOwn(specificParamsList, NODE_CLUSTER_FILTER_IDS)) {
+            const filters = JSON.parse(specificParamsList[NODE_CLUSTER_FILTER_IDS]);
+            formatted[NODE_CLUSTER_FILTER_IDS] = filters.map((filter: { filterId: any; filterName: any }) => ({
                 [ID]: filter.filterId,
                 [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
             }));
         } else {
-            formatted[NODE_CLUSTER] = getDefaultSpecificParamsValues([nodeClusterParam])?.[NODE_CLUSTER];
+            formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[NODE_CLUSTER_FILTER_IDS];
         }
     }
     return formatted;
