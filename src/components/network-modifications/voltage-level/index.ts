@@ -5,8 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './form.utils';
-export * from './properties';
-export * from './measurements';
-export * from './setpoints';
-export * from './connectivity';
+export * from './voltage-level.type';
