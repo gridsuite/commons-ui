@@ -17,13 +17,15 @@ import {
     YUP_REQUIRED,
 } from '../../../../utils';
 import {
-    creationPropertiesSchema,
     getConnectivityFormDataProps,
     getConnectivityWithPositionEmptyFormDataProps,
     getConnectivityWithPositionSchema,
+} from '../../common/connectivity/';
+import {
+    creationPropertiesSchema,
     getFilledPropertiesFromModification,
     toModificationProperties,
-} from '../../common';
+} from '../../common/properties/';
 import { LoadCreationDto } from './loadCreation.types';
 import { LoadDialogTab } from '../common';
 

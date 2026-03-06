@@ -8,11 +8,11 @@
 import React from 'react';
 import { Box, Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { LoadFormInfos } from './load.types';
 import { filledTextField } from '../../common';
 import { SelectInput, TextInput } from '../../../inputs';
 import GridItem from '../../../grid/grid-item';
 import { FieldConstants, getLoadTypeLabel, LOAD_TYPES } from '../../../../utils';
+import { LoadFormInfos } from './load.types';
 
 export interface LoadDialogHeaderProps {
     loadToModify?: LoadFormInfos | null;
