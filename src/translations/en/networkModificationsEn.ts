@@ -107,4 +107,9 @@ export const networkModificationsEn = {
     DisplayTakenPositions: 'Display taken positions',
     NodeNotBuildPositionMessage: 'Build the node to display taken positions',
     NoVoltageLevelPositionMessage: 'Select a voltage level to display taken positions',
+    ModifyLoad: 'Modify load',
+    StateEstimationTab: 'State estimation',
+    MeasurementsSection: 'Measurements',
+    ValidMeasurement: 'Valid',
+    InvalidMeasurement: 'Invalid',
 };

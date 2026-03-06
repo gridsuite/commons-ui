@@ -14,13 +14,12 @@ import { LoadDialogTab } from './load.utils';
 import { FieldConstants } from '../../../../utils';
 import { LoadDialogTabs } from './LoadDialogTabs';
 
-export interface LoadFormProps
+interface LoadFormProps
     extends LoadDialogHeaderProps,
         Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {}
 
 export function LoadForm({
     loadToModify,
-    equipmentId,
     isModification,
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
@@ -56,7 +55,6 @@ export function LoadForm({
             <Grid item>
                 <LoadDialogHeader
                     loadToModify={loadToModify}
-                    equipmentId={equipmentId}
                     isModification={isModification}
                 />
             </Grid>
