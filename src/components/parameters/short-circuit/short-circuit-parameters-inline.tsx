@@ -44,7 +44,7 @@ export function ShortCircuitParametersInLine({
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
-    const [, , , , , , , , resetParameters, ,] = parametersBackend;
+    const { resetParameters } = parametersBackend;
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
     const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
