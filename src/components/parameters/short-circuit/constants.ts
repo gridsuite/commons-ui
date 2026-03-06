@@ -29,9 +29,17 @@ export const SHORT_CIRCUIT_VOLTAGE_RANGES = 'voltageRanges';
 
 // specific parameters
 export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER = 'onlyStartedGeneratorsInCalculationCluster';
+export const SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER =
+    'onlyStartedGeneratorsOutsideCalculationCluster';
+export const NODE_CLUSTER = 'nodeCluster';
+export const NODE_CLUSTER_FILTER_IDS = 'nodeClusterFilterIds';
 export const SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS = 'modelPowerElectronics';
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS = 'powerElectronicsMaterials';
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
+export const STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD = 'startedGeneratorsInCalculationClusterThreshold';
+
+export const STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD =
+    'startedGeneratorsOutsideCalculationClusterThreshold';
 
 export const intlPredefinedParametersOptions = () => [
     {
