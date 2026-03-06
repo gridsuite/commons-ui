@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { forwardRef } from 'react';
-import { Grid, Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { useFormContext } from 'react-hook-form';
 import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
 import { DirectoryItemsInput, FieldLabel, FloatInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
-import { ElementType, EquipmentType } from '../../../utils';
+import { ActivePowerAdornment, ElementType, EquipmentType } from '../../../utils';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
@@ -42,6 +42,7 @@ export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonl
             <FloatInput
                 name={`${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD}`}
                 label="startedGeneratorsInCalculationClusterThreshold"
+                adornment={ActivePowerAdornment}
             />
         );
 
@@ -68,6 +69,7 @@ export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonl
             <FloatInput
                 name={`${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD}`}
                 label="startedGeneratorsOutsideCalculationClusterThreshold"
+                adornment={ActivePowerAdornment}
             />
         );
 
@@ -110,14 +112,14 @@ export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonl
                         <FieldLabel label="ShortCircuitInCluster" />
                     </GridItem>
                     <GridItem size={3}>{inClusterOnlyStartedGenerators}</GridItem>
-                    <GridItem size={3}>{startedGeneratorsInCalculationClusterThreshold}</GridItem>
+                    <GridItem size={2}>{startedGeneratorsInCalculationClusterThreshold}</GridItem>
                 </Box>
                 <Box sx={{ paddingTop: 2, display: 'flex', alignItems: 'center' }}>
                     <GridItem size={2}>
                         <FieldLabel label="ShortCircuitOutCluster" />
                     </GridItem>
                     <GridItem size={3}>{outClusterOnlyStartedGenerators}</GridItem>
-                    <GridItem size={3}>{startedGeneratorsOutsideCalculationClusterThreshold}</GridItem>
+                    <GridItem size={2}>{startedGeneratorsOutsideCalculationClusterThreshold}</GridItem>
                 </Box>
             </TabPanel>
         );
