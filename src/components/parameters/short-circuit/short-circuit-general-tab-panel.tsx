@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { green, red } from '@mui/material/colors';
@@ -42,191 +42,195 @@ export enum Status {
     ERROR = 'ERROR',
 }
 
-export function ShortCircuitGeneralTabPanel({ resetAll, ...tabPanelProps }: Readonly<ShortCircuitFieldsProps>) {
-    const [status, setStatus] = useState(Status.SUCCESS);
-    const watchInitialVoltageProfileMode = useWatch({
-        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
-    });
-    const watchPredefinedParams = useWatch({
-        name: SHORT_CIRCUIT_PREDEFINED_PARAMS,
-    });
-    const watchLoads = useWatch({
-        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`,
-    });
-    const watchShuntCompensators = useWatch({
-        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`,
-    });
-    const watchVSC = useWatch({
-        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`,
-    });
-    const watchNeutralPosition = useWatch({
-        name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`,
-    });
+export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<ShortCircuitFieldsProps>>(
+    ({ resetAll, ...othersTabPanelProps }, ref) => {
+        const [status, setStatus] = useState(Status.SUCCESS);
+        const watchInitialVoltageProfileMode = useWatch({
+            name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
+        });
+        const watchPredefinedParams = useWatch({
+            name: SHORT_CIRCUIT_PREDEFINED_PARAMS,
+        });
+        const watchLoads = useWatch({
+            name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`,
+        });
+        const watchShuntCompensators = useWatch({
+            name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`,
+        });
+        const watchVSC = useWatch({
+            name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`,
+        });
+        const watchNeutralPosition = useWatch({
+            name: `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`,
+        });
 
-    // Courcirc specific parameters
-    const watchOnlyStartedGeneratorsInCalculationCluster = useWatch({
-        name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
-    });
+        // Courcirc specific parameters
+        const watchOnlyStartedGeneratorsInCalculationCluster = useWatch({
+            name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
+        });
 
-    const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
-        return (
-            !watchLoads &&
-            !watchShuntCompensators &&
-            !watchVSC &&
-            !watchNeutralPosition &&
-            // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMinFeaturesDefaultConfiguration as true
-            (watchOnlyStartedGeneratorsInCalculationCluster ?? true)
+        const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
+            return (
+                !watchLoads &&
+                !watchShuntCompensators &&
+                !watchVSC &&
+                !watchNeutralPosition &&
+                // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMinFeaturesDefaultConfiguration as true
+                (watchOnlyStartedGeneratorsInCalculationCluster ?? true)
+            );
+        }, [
+            watchLoads,
+            watchShuntCompensators,
+            watchVSC,
+            watchNeutralPosition,
+            watchOnlyStartedGeneratorsInCalculationCluster,
+        ]);
+
+        const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
+            return (
+                !watchLoads &&
+                !watchShuntCompensators &&
+                watchVSC &&
+                !watchNeutralPosition &&
+                // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMaxFeaturesDefaultConfiguration as true
+                !(watchOnlyStartedGeneratorsInCalculationCluster ?? false)
+            );
+        }, [
+            watchLoads,
+            watchShuntCompensators,
+            watchVSC,
+            watchNeutralPosition,
+            watchOnlyStartedGeneratorsInCalculationCluster,
+        ]);
+
+        // the translation of values
+        const predefinedParamsOptions = useMemo(() => {
+            return intlPredefinedParametersOptions();
+        }, []);
+
+        const initialVoltageProfileMode = useMemo(() => {
+            return intlInitialVoltageProfileMode();
+        }, []);
+
+        const statusColor = useMemo(
+            () => ({ color: status === Status.SUCCESS ? green[500] : red[500] }) as const satisfies SxStyle,
+            [status]
         );
-    }, [
-        watchLoads,
-        watchShuntCompensators,
-        watchVSC,
-        watchNeutralPosition,
-        watchOnlyStartedGeneratorsInCalculationCluster,
-    ]);
+        const statusToShow = <Lens fontSize="medium" sx={statusColor} />;
 
-    const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
-        return (
-            !watchLoads &&
-            !watchShuntCompensators &&
-            watchVSC &&
-            !watchNeutralPosition &&
-            // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMaxFeaturesDefaultConfiguration as true
-            !(watchOnlyStartedGeneratorsInCalculationCluster ?? false)
+        const onPredefinedParametersManualChange = (event: any) => {
+            const newPredefinedParameters = event.target.value;
+            resetAll(newPredefinedParameters);
+        };
+
+        // fields definition
+        const feederResult = (
+            <Grid container alignItems="center" spacing={2} direction="row">
+                <Grid item xs={10}>
+                    <FieldLabel label="descWithFeederResult" />
+                </Grid>
+                <Grid item xs={2}>
+                    <SwitchInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_FEEDER_RESULT}`} />
+                </Grid>
+            </Grid>
         );
-    }, [
-        watchLoads,
-        watchShuntCompensators,
-        watchVSC,
-        watchNeutralPosition,
-        watchOnlyStartedGeneratorsInCalculationCluster,
-    ]);
+        const predefinedParameters = (
+            <MuiSelectInput
+                name={SHORT_CIRCUIT_PREDEFINED_PARAMS}
+                options={predefinedParamsOptions}
+                onChange={onPredefinedParametersManualChange}
+                fullWidth
+            />
+        );
 
-    // the translation of values
-    const predefinedParamsOptions = useMemo(() => {
-        return intlPredefinedParametersOptions();
-    }, []);
+        const initialVoltageProfileModeField = (
+            <RadioInput
+                name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`}
+                options={Object.values(initialVoltageProfileMode)}
+            />
+        );
+        const loads = (
+            <CheckboxInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`} label="shortCircuitLoads" />
+        );
+        const vsc = (
+            <CheckboxInput
+                name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`}
+                label="shortCircuitHvdc"
+            />
+        );
+        const shuntCompensators = (
+            <CheckboxInput
+                name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`}
+                label="shortCircuitShuntCompensators"
+            />
+        );
+        const neutralPosition = (
+            <CheckboxInput
+                name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`}
+                label="shortCircuitNeutralPosition"
+            />
+        );
 
-    const initialVoltageProfileMode = useMemo(() => {
-        return intlInitialVoltageProfileMode();
-    }, []);
+        useEffect(() => {
+            // To show the right status, we need to check the predefinedParams and initial voltage profile mode values.
+            // Show success only if ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP is associated with NOMINAL, or ICC_MAX_WITH_CEI909 with CEI909, or ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP with NOMINAL
+            const isIccMaxWithNominalVoltageMap =
+                watchPredefinedParams === PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP;
 
-    const statusColor = useMemo(
-        () => ({ color: status === Status.SUCCESS ? green[500] : red[500] }) as const satisfies SxStyle,
-        [status]
-    );
-    const statusToShow = <Lens fontSize="medium" sx={statusColor} />;
+            const isIccMinWithNominal = watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP;
 
-    const onPredefinedParametersManualChange = (event: any) => {
-        const newPredefinedParameters = event.target.value;
-        resetAll(newPredefinedParameters);
-    };
+            const isInitialVoltageNominal = watchInitialVoltageProfileMode === InitialVoltage.NOMINAL;
 
-    // fields definition
-    const feederResult = (
-        <Grid container alignItems="center" spacing={2} direction="row">
-            <Grid item xs={10}>
-                <FieldLabel label="descWithFeederResult" />
-            </Grid>
-            <Grid item xs={2}>
-                <SwitchInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_FEEDER_RESULT}`} />
-            </Grid>
-        </Grid>
-    );
-    const predefinedParameters = (
-        <MuiSelectInput
-            name={SHORT_CIRCUIT_PREDEFINED_PARAMS}
-            options={predefinedParamsOptions}
-            onChange={onPredefinedParametersManualChange}
-            fullWidth
-        />
-    );
+            const isIccMaxNominalDefaultConfiguration = isIccMaxWithNominalVoltageMap && isInitialVoltageNominal;
+            const isIccMinNominalDefaultConfiguration = isIccMinWithNominal && isInitialVoltageNominal;
 
-    const initialVoltageProfileModeField = (
-        <RadioInput
-            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`}
-            options={Object.values(initialVoltageProfileMode)}
-        />
-    );
-    const loads = <CheckboxInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`} label="shortCircuitLoads" />;
-    const vsc = (
-        <CheckboxInput
-            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`}
-            label="shortCircuitHvdc"
-        />
-    );
-    const shuntCompensators = (
-        <CheckboxInput
-            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`}
-            label="shortCircuitShuntCompensators"
-        />
-    );
-    const neutralPosition = (
-        <CheckboxInput
-            name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`}
-            label="shortCircuitNeutralPosition"
-        />
-    );
+            const isCEI909DefaultConfiguration =
+                watchPredefinedParams === PredefinedParameters.ICC_MAX_WITH_CEI909 &&
+                watchInitialVoltageProfileMode === InitialVoltage.CEI909;
 
-    useEffect(() => {
-        // To show the right status, we need to check the predefinedParams and initial voltage profile mode values.
-        // Show success only if ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP is associated with NOMINAL, or ICC_MAX_WITH_CEI909 with CEI909, or ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP with NOMINAL
-        const isIccMaxWithNominalVoltageMap =
-            watchPredefinedParams === PredefinedParameters.ICC_MAX_WITH_NOMINAL_VOLTAGE_MAP;
+            const isIccMaxDefaultConfiguration =
+                (isIccMaxNominalDefaultConfiguration || isCEI909DefaultConfiguration) &&
+                isIccMaxFeaturesDefaultConfiguration;
 
-        const isIccMinWithNominal = watchPredefinedParams === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP;
+            const isIccMinDefaultConfiguration =
+                isIccMinNominalDefaultConfiguration && isIccMinFeaturesDefaultConfiguration;
+            setStatus(isIccMaxDefaultConfiguration || isIccMinDefaultConfiguration ? Status.SUCCESS : Status.ERROR);
+        }, [
+            watchInitialVoltageProfileMode,
+            watchPredefinedParams,
+            isIccMaxFeaturesDefaultConfiguration,
+            isIccMinFeaturesDefaultConfiguration,
+        ]);
 
-        const isInitialVoltageNominal = watchInitialVoltageProfileMode === InitialVoltage.NOMINAL;
-
-        const isIccMaxNominalDefaultConfiguration = isIccMaxWithNominalVoltageMap && isInitialVoltageNominal;
-        const isIccMinNominalDefaultConfiguration = isIccMinWithNominal && isInitialVoltageNominal;
-
-        const isCEI909DefaultConfiguration =
-            watchPredefinedParams === PredefinedParameters.ICC_MAX_WITH_CEI909 &&
-            watchInitialVoltageProfileMode === InitialVoltage.CEI909;
-
-        const isIccMaxDefaultConfiguration =
-            (isIccMaxNominalDefaultConfiguration || isCEI909DefaultConfiguration) &&
-            isIccMaxFeaturesDefaultConfiguration;
-
-        const isIccMinDefaultConfiguration =
-            isIccMinNominalDefaultConfiguration && isIccMinFeaturesDefaultConfiguration;
-        setStatus(isIccMaxDefaultConfiguration || isIccMinDefaultConfiguration ? Status.SUCCESS : Status.ERROR);
-    }, [
-        watchInitialVoltageProfileMode,
-        watchPredefinedParams,
-        isIccMaxFeaturesDefaultConfiguration,
-        isIccMinFeaturesDefaultConfiguration,
-    ]);
-
-    return (
-        <TabPanel value={tabPanelProps.value} index={ShortCircuitParametersTabValues.GENERAL}>
-            <Grid container spacing={2} paddingLeft={2}>
-                <Grid container paddingTop={2} xl={6}>
-                    <GridItem size={10}>{feederResult}</GridItem>
-                </Grid>
-                <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
-                <Grid xl={6} container spacing={1} alignItems="center">
-                    <GridItem size={9}>{predefinedParameters}</GridItem>
-                    <GridItem size={2}>{statusToShow}</GridItem>
-                </Grid>
-                <GridSection title="ShortCircuitCharacteristics" heading={4} />
-                <Grid container spacing={5}>
-                    <Grid item>
-                        <GridItem>{loads}</GridItem>
-                        <GridItem>{shuntCompensators}</GridItem>
+        return (
+            <TabPanel index={ShortCircuitParametersTabValues.GENERAL} ref={ref} {...othersTabPanelProps}>
+                <Grid container spacing={2} paddingLeft={2}>
+                    <Grid container paddingTop={2} xl={6}>
+                        <GridItem size={10}>{feederResult}</GridItem>
                     </Grid>
-                    <Grid item xs={8}>
-                        <GridItem>{vsc}</GridItem>
-                        <GridItem>{neutralPosition}</GridItem>
+                    <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
+                    <Grid xl={6} container spacing={1} alignItems="center">
+                        <GridItem size={9}>{predefinedParameters}</GridItem>
+                        <GridItem size={2}>{statusToShow}</GridItem>
                     </Grid>
+                    <GridSection title="ShortCircuitCharacteristics" heading={4} />
+                    <Grid container spacing={5}>
+                        <Grid item>
+                            <GridItem>{loads}</GridItem>
+                            <GridItem>{shuntCompensators}</GridItem>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <GridItem>{vsc}</GridItem>
+                            <GridItem>{neutralPosition}</GridItem>
+                        </Grid>
+                    </Grid>
+                    <GridSection title="ShortCircuitVoltageProfileMode" heading={4} />
+                    <Grid container>
+                        <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
+                    </Grid>
+                    <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
                 </Grid>
-                <GridSection title="ShortCircuitVoltageProfileMode" heading={4} />
-                <Grid container>
-                    <GridItem size={12}>{initialVoltageProfileModeField}</GridItem>
-                </Grid>
-                <VoltageTable voltageProfileMode={watchInitialVoltageProfileMode} />
-            </Grid>
-        </TabPanel>
-    );
-}
+            </TabPanel>
+        );
+    }
+);
