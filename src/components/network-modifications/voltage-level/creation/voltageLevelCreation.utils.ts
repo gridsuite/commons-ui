@@ -10,7 +10,7 @@ import {
     copyEquipmentPropertiesForCreation,
     creationPropertiesSchema,
     emptyProperties,
-    getFilledPropertiesFromModification,
+    getPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import { FieldConstants, sanitizeString } from '../../../../utils';
@@ -248,13 +248,14 @@ export const voltageLevelCreationFormToDto = (
     };
 };
 
-export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto) => {
+const translateSwitchKinds = (switchKinds: SwitchKind[] | null, intl?: IntlShape): string =>
+    switchKinds?.map((kind) => (intl ? intl.formatMessage({ id: kind }) : kind)).join(' / ') ?? '';
+
+export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto, intl?: IntlShape) => {
     const isSubstationCreation = dto.substationCreation?.equipmentId != null;
     const substationProperties = isSubstationCreation
         ? {
-              [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(
-                  dto.substationCreation?.properties
-              ),
+              [FieldConstants.ADDITIONAL_PROPERTIES]: dto.substationCreation?.properties ?? [],
           }
         : emptyProperties;
 
@@ -282,7 +283,7 @@ export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto) => {
         ),
         [FieldConstants.BUS_BAR_COUNT]: dto.busbarCount ?? 1,
         [FieldConstants.SECTION_COUNT]: dto.sectionCount ?? 1,
-        [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: dto.switchKinds?.join(' / ') ?? '',
+        [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: translateSwitchKinds(dto.switchKinds, intl),
         [FieldConstants.SWITCH_KINDS]:
             dto.switchKinds?.map((switchKind) => ({
                 [FieldConstants.SWITCH_KIND]: switchKind,
@@ -292,12 +293,9 @@ export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto) => {
                 [FieldConstants.BUS_BAR_SECTION_ID1]: device.busbarSectionId1,
                 [FieldConstants.BUS_BAR_SECTION_ID2]: device.busbarSectionId2,
             })) ?? [],
-        [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(dto.properties),
+        ...getPropertiesFromModification(dto.properties),
     };
 };
-
-const translateSwitchKinds = (switchKinds: SwitchKind[] | null, intl?: IntlShape): string =>
-    switchKinds?.map((kind) => (intl ? intl.formatMessage({ id: kind }) : kind)).join(' / ') ?? '';
 
 export const voltageLevelInfosToForm = (formInfos: VoltageLevelFormInfos, intl?: IntlShape) => ({
     [FieldConstants.EQUIPMENT_ID]: formInfos.id,
