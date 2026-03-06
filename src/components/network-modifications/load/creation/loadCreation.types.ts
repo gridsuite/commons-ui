@@ -10,7 +10,7 @@ import { Property } from '../../common';
 
 export interface LoadCreationDto {
     uuid?: UUID;
-    type?: string;
+    type: string;
     equipmentId: string;
     equipmentName: string | null;
     loadType: string;
