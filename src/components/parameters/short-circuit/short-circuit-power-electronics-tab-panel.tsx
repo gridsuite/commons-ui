@@ -14,7 +14,6 @@ import { FieldLabel, SwitchInput } from '../../inputs';
 import GridSection from '../../grid/grid-section';
 import GridItem from '../../grid/grid-item';
 import {
-    PredefinedParameters,
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
