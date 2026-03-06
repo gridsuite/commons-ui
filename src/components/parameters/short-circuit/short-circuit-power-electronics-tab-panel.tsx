@@ -43,34 +43,35 @@ function createRows() {
     return rowData;
 }
 
-export const ShortCircuitPowerElectronicsTabPanel= forwardRef<HTMLSpanElement, Readonly<TabPanelProps>>(
+export const ShortCircuitPowerElectronicsTabPanel = forwardRef<HTMLSpanElement, Readonly<TabPanelProps>>(
     ({ ...othersTabPanelProps }, ref) => {
-    const modelPowerElectronics = (
-        <Grid container alignItems="center" spacing={2} direction="row">
-            <Grid item xs={10}>
-                <FieldLabel label="ShortCircuitModelPowerElectronics" />
+        const modelPowerElectronics = (
+            <Grid container alignItems="center" spacing={2} direction="row">
+                <Grid item xs={10}>
+                    <FieldLabel label="ShortCircuitModelPowerElectronics" />
+                </Grid>
+                <Grid item xs={2}>
+                    <SwitchInput name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`} />
+                </Grid>
             </Grid>
-            <Grid item xs={2}>
-                <SwitchInput name={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`} />
-            </Grid>
-        </Grid>
-    );
+        );
 
-    return (
-        <TabPanel index={ShortCircuitParametersTabValues.POWER_ELECTRONICS} ref={ref} {...othersTabPanelProps}>
-            <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
-            <Grid container xl={6}>
-                <GridItem size={10}>{modelPowerElectronics}</GridItem>
-            </Grid>
-            <ShortCircuitIccMaterialTable
-                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
-                columnsDefinition={iccMaterialsColumnsDef}
-            />
-            <ShortCircuitIccClusterTable
-                formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
-                columnsDefinition={iccClustersColumnsDef}
-                createRows={createRows}
-            />
-        </TabPanel>
-    );
-});
+        return (
+            <TabPanel index={ShortCircuitParametersTabValues.POWER_ELECTRONICS} ref={ref} {...othersTabPanelProps}>
+                <GridSection title="ShortCircuitPowerElectronicsSection" heading={4} />
+                <Grid container xl={6}>
+                    <GridItem size={10}>{modelPowerElectronics}</GridItem>
+                </Grid>
+                <ShortCircuitIccMaterialTable
+                    formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`}
+                    columnsDefinition={iccMaterialsColumnsDef}
+                />
+                <ShortCircuitIccClusterTable
+                    formName={`${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`}
+                    columnsDefinition={iccClustersColumnsDef}
+                    createRows={createRows}
+                />
+            </TabPanel>
+        );
+    }
+);

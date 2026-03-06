@@ -352,7 +352,9 @@ export const formatShortCircuitSpecificParameters = (
                 [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
             }));
         } else {
-            formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[NODE_CLUSTER_FILTER_IDS];
+            formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[
+                NODE_CLUSTER_FILTER_IDS
+            ];
         }
     }
     return formatted;
