@@ -38,7 +38,8 @@ export const SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS = 'powerElectronicsMateri
 export const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
 export const STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD = 'startedGeneratorsInCalculationClusterThreshold';
 
-export const STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD = 'startedGeneratorsOutsideCalculationClusterThreshold';
+export const STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD =
+    'startedGeneratorsOutsideCalculationClusterThreshold';
 
 export const intlPredefinedParametersOptions = () => [
     {
