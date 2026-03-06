@@ -251,7 +251,11 @@ export const voltageLevelCreationFormToDto = (
 const translateSwitchKinds = (switchKinds: SwitchKind[] | null, intl?: IntlShape): string =>
     switchKinds?.map((kind) => (intl ? intl.formatMessage({ id: kind }) : kind)).join(' / ') ?? '';
 
-export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto, intl?: IntlShape) => {
+export const voltageLevelCreationDtoToForm = (
+    dto: VoltageLevelCreationDto,
+    intl?: IntlShape,
+    includePreviousValue: boolean = true
+) => {
     const isSubstationCreation = dto.substationCreation?.equipmentId != null;
     const substationProperties = isSubstationCreation
         ? {
@@ -293,7 +297,7 @@ export const voltageLevelCreationDtoToForm = (dto: VoltageLevelCreationDto, intl
                 [FieldConstants.BUS_BAR_SECTION_ID1]: device.busbarSectionId1,
                 [FieldConstants.BUS_BAR_SECTION_ID2]: device.busbarSectionId2,
             })) ?? [],
-        ...getPropertiesFromModification(dto.properties),
+        ...getPropertiesFromModification(dto.properties, includePreviousValue),
     };
 };
 
