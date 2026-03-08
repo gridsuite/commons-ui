@@ -57,6 +57,8 @@ export const parametersFr = {
 
     General: 'Général',
     LimitReductions: 'Abattements',
+    StudyArea: "Zone d'étude",
+    PowerElectronics: 'Electronique de puissance',
     IST: 'IST',
     LimitVoltageInterval: 'Entre IT{lowBound} et IT{highBound}',
     LimitVoltageAfterIST: 'Entre IST et IT{highBound}',
@@ -123,6 +125,11 @@ export const parametersFr = {
     ShortCircuitCharacteristics: 'Caractéristiques prises en compte',
     ShortCircuitVoltageProfileMode: 'Plan de tension initial',
     ShortCircuitStartedGeneratorsMode: 'Démarrage des groupes',
+    ShortCircuitInClusterFilter: 'Regroupements de la zone intérieure',
+    ShortCircuitInCluster: 'Zone intérieure',
+    ShortCircuitOutCluster: 'Zone extérieure',
+    startedGeneratorsInCalculationClusterThreshold: 'Seuil',
+    startedGeneratorsOutsideCalculationClusterThreshold: 'Seuil',
     ShortCircuitPowerElectronicsSection: "Modélisation des équipements raccordés par de l'électronique de puissance",
     ShortCircuitModelPowerElectronics: "Prise en compte des caractéristiques d'Icc suivantes",
     ShortCircuitIccActive: 'Actif',
@@ -226,7 +233,10 @@ export const parametersFr = {
     AddContingencyList: 'Ajouter',
     DeleteContingencyList: 'Supprimer',
     getContingencyListError: "Impossible de récupérer les listes d'aléas",
-    xContingenciesWillBeSimulated: '{x} défauts à simuler',
+    xContingenciesWillBeSimulatedAndYNotFound:
+        '{x, plural, =0 {aucun défaut} =1 {1 défaut} other {{x} défauts}} à simuler {y, plural, =0 {} =1 {et 1 non trouvé} other {et {y} non trouvés}}',
+    contingencyCountImpossibleOnUnbuiltNode: "Impossible d'estimer le nombre d'aléas sur un noeud non réalisé",
+    noContingency: 'Aucun défaut',
 
     resultsThreshold: 'Seuil minimal de sensibilité',
     SensitivityBranches: 'Quadripôles',

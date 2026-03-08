@@ -17,3 +17,8 @@ export interface ContingencyListsInfos {
     [DESCRIPTION]: string;
     [ACTIVATED]: boolean;
 }
+
+export interface ContingencyCount {
+    contingencies: number;
+    notFoundElements: number;
+}
