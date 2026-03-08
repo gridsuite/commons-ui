@@ -79,7 +79,7 @@ export function VoltageLevelCreationForm({
         <>
             <Grid container spacing={2}>
                 <GridItem>
-                    <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={filledTextField} />
+                    <TextInput name="equipmentId" label="ID" formProps={filledTextField} />
                 </GridItem>
                 <GridItem>
                     <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
