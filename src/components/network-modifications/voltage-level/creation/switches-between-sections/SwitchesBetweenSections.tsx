@@ -9,7 +9,7 @@ import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { IconButton } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { TextInput } from '../../../../inputs';
 import GridItem from '../../../../grid/grid-item';
 import { FieldConstants } from '../../../../../utils';
