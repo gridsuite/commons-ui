@@ -113,7 +113,7 @@ export function TextInput({
                                 <ClearIcon fontSize="small" />
                             </IconButton>
                         )}
-                        {customAdornment && { ...customAdornment }}
+                        {customAdornment}
                     </InputAdornment>
                 ),
             }}
