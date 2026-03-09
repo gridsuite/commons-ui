@@ -153,9 +153,9 @@ function SensitivityParametersSelector({
                         />
                     ))}
                 </Tabs>
-                <Card>
-                    <CardContent>
-                        {isStudyLinked && (
+                {isStudyLinked && (
+                    <Card>
+                        <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                 <Box sx={{ ...styles.boxContent }}>
                                     <BuildStatusChip buildStatus={globalBuildStatus} overrideLabel />
@@ -192,9 +192,9 @@ function SensitivityParametersSelector({
                                     />
                                 </Box>
                             </Box>
-                        )}
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                )}
             </Box>
             {tabInfo.map((tab, index) => (
                 <TabPanel key={tab.label} value={tabValue} index={index} sx={{ paddingTop: 1 }}>
