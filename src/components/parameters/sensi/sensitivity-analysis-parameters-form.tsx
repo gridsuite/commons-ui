@@ -55,7 +55,7 @@ export function SensitivityAnalysisParametersForm({
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
-    globalBuildStatus: BuildStatus | undefined;
+    globalBuildStatus?: BuildStatus;
 }>) {
     return (
         <CustomFormProvider

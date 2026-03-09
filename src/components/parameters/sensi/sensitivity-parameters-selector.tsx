@@ -67,7 +67,7 @@ interface SensitivityParametersSelectorProps {
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
-    globalBuildStatus: BuildStatus | undefined;
+    globalBuildStatus?: BuildStatus;
 }
 
 interface TabInfo {
