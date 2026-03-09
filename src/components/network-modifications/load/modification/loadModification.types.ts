@@ -7,10 +7,8 @@
 
 import { Property } from '../../common';
 import { AttributeModification, ModificationType } from '../../../../utils';
-import { UUID } from 'node:crypto';
 
 export interface LoadModificationDto {
-    uuid?: UUID;
     type: ModificationType;
     equipmentId: string;
     equipmentName: AttributeModification<string> | null;
