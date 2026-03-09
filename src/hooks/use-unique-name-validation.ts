@@ -84,7 +84,18 @@ export function useUniqueNameValidation({
                 trigger('root.isValidating');
             }
         },
-        [currentName, directory, elementType, name, setError, clearErrors, trigger, elementExists]
+        [
+            currentName,
+            directory,
+            elementExists,
+            activeDirectory,
+            selectedDirectory,
+            elementType,
+            setError,
+            name,
+            clearErrors,
+            trigger,
+        ]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
