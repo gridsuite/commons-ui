@@ -55,6 +55,8 @@ export const parametersEn = {
 
     General: 'General',
     LimitReductions: 'Limit reductions',
+    StudyArea: 'Study area',
+    PowerElectronics: 'Power electronics',
     IST: 'PATL',
     LimitVoltageInterval: 'Between TATL{lowBound} and TATL{highBound}',
     LimitVoltageAfterIST: 'Between PATL and TATL{highBound}',
@@ -119,6 +121,11 @@ export const parametersEn = {
     ShortCircuitCharacteristics: 'Features considered',
     ShortCircuitVoltageProfileMode: 'Initial voltage profile',
     ShortCircuitStartedGeneratorsMode: 'Generators started',
+    ShortCircuitInClusterFilter: 'In cluster filters',
+    ShortCircuitInCluster: 'In cluster',
+    ShortCircuitOutCluster: 'Out cluster',
+    startedGeneratorsInCalculationClusterThreshold: 'Threshold',
+    startedGeneratorsOutsideCalculationClusterThreshold: 'Threshold',
     ShortCircuitPowerElectronicsSection: 'Modeling of power electronics connected equipment',
     ShortCircuitModelPowerElectronics: 'Consider following Icc characteristics',
     ShortCircuitIccActive: 'Activate',
@@ -219,7 +226,10 @@ export const parametersEn = {
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',
     getContingencyListError: "Can't fetch contingencies lists",
-    xContingenciesWillBeSimulated: '{x} contingencies to be simulated',
+    xContingenciesWillBeSimulatedAndYNotFound:
+        '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated {y, plural, =0 {} other {and {y} not found}}',
+    contingencyCountImpossibleOnUnbuiltNode: "Can't estimate contingencies on an unbuilt node",
+    noContingency: 'No contingency',
 
     resultsThreshold: 'Minimum sensitivity threshold',
     SensitivityBranches: 'Branches',
