@@ -6,3 +6,4 @@
  */
 export * from './contingency-table';
 export * from './columns-definitions';
+export * from './types';
