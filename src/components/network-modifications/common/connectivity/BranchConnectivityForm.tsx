@@ -6,11 +6,11 @@
  */
 
 import { Grid } from '@mui/material';
-import { ConnectivityForm } from './ConnectivityForm';
 import GridSection from '../../../grid/grid-section';
 import GridItem from '../../../grid/grid-item';
 import { FieldConstants } from '../../../../utils';
 import { ConnectivityNetworkProps } from './connectivity.type';
+import { ConnectivityForm } from './ConnectivityForm';
 
 interface BranchConnectivityFormProps extends ConnectivityNetworkProps {
     isModification?: boolean;

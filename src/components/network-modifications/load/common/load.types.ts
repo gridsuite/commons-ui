@@ -22,9 +22,3 @@ export interface LoadFormInfos {
     measurementQ: MeasurementInfo | undefined;
     properties: Record<string, string> | undefined;
 }
-
-export type PositionDiagramPaneType = React.ComponentType<{
-    open: boolean;
-    onClose: () => void;
-    voltageLevelId: string;
-}>;

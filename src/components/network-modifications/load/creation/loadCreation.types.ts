@@ -5,12 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'node:crypto';
 import { Property } from '../../common';
 
 export interface LoadCreationDto {
-    uuid?: UUID;
-    type?: string;
+    type: string;
     equipmentId: string;
     equipmentName: string | null;
     loadType: string;

@@ -11,7 +11,10 @@ import { LoadDialogTab } from './load.utils';
 import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
 import { LoadFormInfos } from './load.types';
 import GridSection from '../../../grid/grid-section';
-import { ConnectivityForm, ConnectivityNetworkProps, PropertiesForm, SetPointsForm } from '../../common';
+import { ConnectivityForm } from '../../common/connectivity/ConnectivityForm';
+import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
+import { PropertiesForm } from '../../common/properties/PropertiesForm';
+import { SetPointsForm } from '../../common/setpoints/SetPointsForm';
 
 export interface LoadDialogTabsContentProps extends ConnectivityNetworkProps {
     loadToModify?: LoadFormInfos | null;

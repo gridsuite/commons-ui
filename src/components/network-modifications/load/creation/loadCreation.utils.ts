@@ -12,17 +12,20 @@ import {
     FieldConstants,
     ModificationType,
     sanitizeString,
+    UNDEFINED_CONNECTION_DIRECTION,
     UNDEFINED_LOAD_TYPE,
     YUP_REQUIRED,
 } from '../../../../utils';
 import {
-    creationPropertiesSchema,
     getConnectivityFormDataProps,
     getConnectivityWithPositionEmptyFormDataProps,
     getConnectivityWithPositionSchema,
+} from '../../common/connectivity/';
+import {
+    creationPropertiesSchema,
     getFilledPropertiesFromModification,
     toModificationProperties,
-} from '../../common';
+} from '../../common/properties/';
 import { LoadCreationDto } from './loadCreation.types';
 import { LoadDialogTab } from '../common';
 
@@ -77,13 +80,13 @@ export const loadCreationFormToDto = (loadForm: LoadCreationFormData): LoadCreat
         loadType: loadForm.loadType ?? UNDEFINED_LOAD_TYPE,
         p0: loadForm.activePowerSetpoint,
         q0: loadForm.reactivePowerSetpoint,
-        properties: toModificationProperties(loadForm),
         voltageLevelId: loadForm.connectivity.voltageLevel?.id ?? '',
         busOrBusbarSectionId: loadForm.connectivity.busOrBusbarSection?.id ?? '',
-        connectionDirection: loadForm.connectivity.connectionDirection ?? null,
-        connectionName: loadForm.connectivity.connectionName,
+        connectionDirection: loadForm.connectivity.connectionDirection ?? UNDEFINED_CONNECTION_DIRECTION,
+        connectionName: sanitizeString(loadForm.connectivity.connectionName),
         connectionPosition: loadForm.connectivity.connectionPosition,
         terminalConnected: loadForm.connectivity.terminalConnected,
+        properties: toModificationProperties(loadForm),
     };
 };
 
