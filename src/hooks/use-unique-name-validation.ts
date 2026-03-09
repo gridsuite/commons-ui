@@ -58,7 +58,7 @@ export function useUniqueNameValidation({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue !== currentName && directory) {
-                elementExists(directory, nameValue, elementType)
+                elementExists(activeDirectory ?? selectedDirectory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {
