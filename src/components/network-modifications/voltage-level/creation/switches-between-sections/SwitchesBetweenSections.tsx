@@ -9,14 +9,14 @@ import { IconButton } from '@mui/material';
 import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { FieldConstants } from '../../../../../utils';
 import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../voltageLevelCreation.types';
 import GridItem from '../../../../grid/grid-item';
 import { TextInput } from '../../../../inputs';
 import { CreateSwitchesDialog } from './creation';
 
-export function SwitchesBetweenSections() {
+export function SwitchesBetweenSections(): ReactElement | null {
     const { getValues, setValue } = useFormContext();
     const [openCreateSwitchesDialog, setOpenCreateSwitchesDialog] = useState(false);
 
@@ -65,6 +65,7 @@ export function SwitchesBetweenSections() {
     const switchesBetweenSectionsRef = useRef<string>(watchSwitchesBetweenSections);
 
     useEffect(() => {
+        // If the user changes the section count, we reset the switches between sections
         if (
             sectionCountRef.current !== watchSectionCount &&
             switchesBetweenSectionsRef.current === watchSwitchesBetweenSections

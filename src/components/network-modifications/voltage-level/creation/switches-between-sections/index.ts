@@ -6,4 +6,4 @@
  */
 
 export * from './creation';
-export { SwitchesBetweenSections } from './SwitchesBetweenSections';
+export * from './SwitchesBetweenSections';

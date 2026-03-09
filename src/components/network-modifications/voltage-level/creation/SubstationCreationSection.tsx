@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid, IconButton, Tooltip } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { TextInput } from '../../../inputs';
 import { CountrySelectionInput } from '../../../inputs/reactHookForm/CountrySelectionInput';

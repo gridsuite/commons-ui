@@ -20,7 +20,7 @@ export function CouplingOmnibusForm() {
         [FieldConstants.BUS_BAR_SECTION_ID2]: null,
     };
 
-    const watchVoltageLevelID = useWatch({ name: FieldConstants.EQUIPMENT_ID });
+    const watchVoltageLevelID = useWatch({ name: 'equipmentId' });
     const watchBusBarCount = useWatch({ name: FieldConstants.BUS_BAR_COUNT });
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
 
