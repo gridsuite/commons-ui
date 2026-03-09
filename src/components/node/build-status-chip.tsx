@@ -60,7 +60,7 @@ type BuildStatusChipProps = {
     overrideLabel?: boolean;
 };
 
-function BuildStatusChip({
+export function BuildStatusChip({
     buildStatus = BuildStatus.NOT_BUILT,
     sx,
     icon,
