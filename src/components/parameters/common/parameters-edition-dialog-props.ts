@@ -20,6 +20,6 @@ export interface ParametersEditionDialogProps {
     activeDirectory: UUID;
     language?: GsLang;
     user: User | null;
-    globalBuildStatus: BuildStatus | undefined;
+    globalBuildStatus?: BuildStatus;
     isDeveloperMode?: boolean;
 }

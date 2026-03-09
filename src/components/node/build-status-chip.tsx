@@ -11,7 +11,7 @@ import { useIntl } from 'react-intl';
 import { mergeSx, SxStyle } from '../../utils';
 import { BuildStatus } from './constant';
 
-function getBuildStatusSx(buildStatus: BuildStatus | undefined): SxStyle {
+function getBuildStatusSx(buildStatus?: BuildStatus): SxStyle {
     return (theme) => {
         // @ts-ignore
         const bs = theme.node.buildStatus;
@@ -33,12 +33,10 @@ function getBuildStatusSx(buildStatus: BuildStatus | undefined): SxStyle {
                 break;
         }
 
-        // only set explicit contrast color when it's the "notBuilt" background
-        const shouldSetContrast = bg === bs.notBuilt;
-
         return {
             background: bg,
-            ...(shouldSetContrast ? { color: theme.palette.getContrastText(bg) } : {}),
+            // only set explicit contrast color when it's the "notBuilt" background
+            ...(bg === bs.notBuilt ? { color: theme.palette.getContrastText(bg) } : {}),
             '&:hover': {
                 backgroundColor: bg,
             },
