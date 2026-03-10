@@ -20,7 +20,11 @@ interface ShuntCompensatorSelectionFormProps {
     mcsRows: Record<'id', string>[];
 }
 
-function ShuntCompensatorSelectionForm({ title, arrayFormName, mcsRows }: Readonly<ShuntCompensatorSelectionFormProps>) {
+function ShuntCompensatorSelectionForm({
+    title,
+    arrayFormName,
+    mcsRows,
+}: Readonly<ShuntCompensatorSelectionFormProps>) {
     return (
         <Grid item container spacing={1} direction="column">
             <Grid item>
