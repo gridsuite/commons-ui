@@ -8,9 +8,8 @@ import { InferType, mixed, object, string } from 'yup';
 import { UUID } from 'node:crypto';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 import { getHvdcLccDeletionSchema } from './hvdcLccDeletion';
-import { DeepNullable, FieldConstants, YUP_REQUIRED } from '../../../utils';
+import { DeepNullable, FieldConstants, ModificationType, YUP_REQUIRED } from '../../../utils';
 import { EquipmentDeletionDto } from './equipmentDeletion.types';
-import { ModificationType } from '../../../../dist/utils/types/modificationType';
 
 export const equipmentDeletionFormSchema = object()
     .shape({

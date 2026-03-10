@@ -8,13 +8,13 @@
 import { useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { snackWithFallback, useSnackMessage } from '@gridsuite/commons-ui';
 import {
     EquipmentDeletionDto,
     HvdcLccDeletionInfos,
     LccShuntCompensatorConnectionInfos,
 } from '../equipmentDeletion.types';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, snackWithFallback } from '../../../../utils';
+import { useSnackMessage } from '../../../../hooks';
 
 export interface UseHvdcLccDeletionProps {
     fetchHvdcWithShuntCompensatorsPromise?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
