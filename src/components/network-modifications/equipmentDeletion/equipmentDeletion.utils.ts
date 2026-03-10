@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { InferType, mixed, object, string } from 'yup';
-import { EquipmentType } from "../../../utils/types/equipmentType";
-import { getHvdcLccDeletionSchema } from "./hvdcLccDeletion";
+import { UUID } from 'node:crypto';
+import { EquipmentType } from '../../../utils/types/equipmentType';
+import { getHvdcLccDeletionSchema } from './hvdcLccDeletion';
 import { DeepNullable, FieldConstants, YUP_REQUIRED } from '../../../utils';
 import { EquipmentDeletionDto } from './equipmentDeletion.types';
-import { ModificationType } from "../../../../dist/utils/types/modificationType";
-import { UUID } from 'node:crypto';
+import { ModificationType } from '../../../../dist/utils/types/modificationType';
 
 export const equipmentDeletionFormSchema = object()
     .shape({
@@ -43,8 +43,8 @@ export const equipmentDeletionFormToDto = (form: EquipmentDeletionFormData): Equ
 export const newEquipmentDeletionDto = (equipmentType: EquipmentType, equipmentId: UUID): EquipmentDeletionDto => {
     return {
         type: ModificationType.EQUIPMENT_DELETION,
-        equipmentId: equipmentId,
-        equipmentType: equipmentType,
+        equipmentId,
+        equipmentType,
         equipmentInfos: undefined,
     };
 };

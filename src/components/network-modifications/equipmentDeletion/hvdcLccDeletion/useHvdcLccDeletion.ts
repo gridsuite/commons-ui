@@ -7,13 +7,13 @@
 
 import { useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { UUID } from 'node:crypto';
 import { snackWithFallback, useSnackMessage } from '@gridsuite/commons-ui';
 import {
     EquipmentDeletionDto,
     HvdcLccDeletionInfos,
     LccShuntCompensatorConnectionInfos,
 } from '../equipmentDeletion.types';
-import { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../../utils';
 
 export interface UseHvdcLccDeletionProps {
@@ -38,10 +38,12 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLc
             ) {
                 if (!dynamicList?.length && !editList?.length) {
                     return [];
-                } else if (!dynamicList?.length) {
+                }
+                if (!dynamicList?.length) {
                     // TODO: we should refactor modification-server to store only selected MCS
                     return editList.filter((item) => item.connectedToHvdc);
-                } else if (!editList?.length) {
+                }
+                if (!editList?.length) {
                     return dynamicList;
                 }
                 // dynamicList and editList are not empty : let's merge them
@@ -50,7 +52,7 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLc
                 });
                 // now overwrite dynamic values with edited modification values
                 const dynamicIds = new Set(dynamicList.map((obj) => obj.id));
-                for (let editObj of editList.values()) {
+                editList.forEach((editObj) => {
                     if (dynamicIds.has(editObj.id)) {
                         const mergedObj = mergedList.find((obj) => obj.id === editObj.id);
                         if (mergedObj) {
@@ -60,7 +62,7 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLc
                         // if a selected edit data does not exist at this time, we add/display it anyway
                         mergedList.push(editObj);
                     }
-                }
+                });
                 return mergedList;
             }
 
@@ -98,7 +100,7 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLc
                 updateMcsLists({} as HvdcLccDeletionInfos, editData);
             }
         },
-        [setValue, updateMcsLists, snackError]
+        [fetchHvdcWithShuntCompensatorsPromise, setValue, snackError, updateMcsLists]
     );
 
     return { specificUpdate };

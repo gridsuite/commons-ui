@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { EquipmentType, getIdOrValue, Option } from '../utils';
 
-export default function useGetLabelEquipmentTypes() {
+export function useGetLabelEquipmentTypes() {
     const intl = useIntl();
     return useMemo(
         () => (equipmentType: Option) =>

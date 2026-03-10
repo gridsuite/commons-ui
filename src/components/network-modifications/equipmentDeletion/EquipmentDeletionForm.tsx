@@ -22,9 +22,9 @@ import {
 import { filledTextField } from '../common';
 import { AutocompleteInput } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
-import HvdcLccDeletionSpecificForm from './hvdcLccDeletion/HvdcLccDeletionSpecificForm';
+import { HvdcLccDeletionSpecificForm } from './hvdcLccDeletion/HvdcLccDeletionSpecificForm';
 import GridItem from '../../grid/grid-item';
-import useGetLabelEquipmentTypes from '../../../hooks/useGetLabelEquipmentTypes';
+import { useGetLabelEquipmentTypes } from '../../../hooks/useGetLabelEquipmentTypes';
 
 export interface EquipmentDeletionFormProps {
     editData?: EquipmentDeletionDto;
@@ -76,14 +76,14 @@ export function EquipmentDeletionForm({
 
     useEffect(() => {
         setEquipmentsOptions([]);
+        let ignore = false;
+
         if (watchType && fetchEquipmentIdsPromise) {
             if (watchType !== currentTypeRef.current) {
                 currentTypeRef.current = watchType;
             }
-            let ignore = false;
             fetchEquipmentIdsPromise(watchType)
                 .then((equipmentIds) => {
-                    // check race condition here
                     if (!ignore) {
                         setEquipmentsOptions(
                             equipmentIds.toSorted((equipment1, equipment2) => equipment1.localeCompare(equipment2))
@@ -93,11 +93,12 @@ export function EquipmentDeletionForm({
                 .catch((error: unknown) => {
                     snackWithFallback(snackError, error, { headerId: 'equipmentsLoadingError' });
                 });
-            return () => {
-                ignore = true;
-            };
         }
-    }, [watchType, snackError]);
+
+        return () => {
+            ignore = true;
+        };
+    }, [fetchEquipmentIdsPromise, snackError, watchType]);
 
     useEffect(() => {
         if (!fetchHvdcWithShuntCompensatorsPromise) {
@@ -121,7 +122,14 @@ export function EquipmentDeletionForm({
         } else {
             setValue(FieldConstants.DELETION_SPECIFIC_DATA, null);
         }
-    }, [watchEquipmentId, snackError, setValue, hvdcLccSpecificUpdate, editData]);
+    }, [
+        editData,
+        fetchHvdcWithShuntCompensatorsPromise,
+        hvdcLccSpecificUpdate,
+        setValue,
+        snackError,
+        watchEquipmentId,
+    ]);
 
     const handleChange = useCallback(() => {
         setValue(FieldConstants.EQUIPMENT_ID, null);
@@ -135,7 +143,7 @@ export function EquipmentDeletionForm({
             options={typesOptions}
             onChangeCallback={handleChange}
             getOptionLabel={getOptionLabel}
-            size={'small'}
+            size="small"
             inputTransform={(value) => typesOptions.find((option) => option === value) || value}
             formProps={filledTextField}
         />
@@ -150,11 +158,11 @@ export function EquipmentDeletionForm({
             label="ID"
             options={equipmentsOptions}
             getOptionLabel={getObjectId}
-            //hack to work with freesolo autocomplete
-            //setting null programmatically when freesolo is enable won't empty the field
+            // hack to work with freesolo autocomplete
+            // setting null programmatically when freesolo is enable won't empty the field
             inputTransform={(value) => value ?? ''}
             outputTransform={(value: any) => (value === '' ? null : getObjectId(value))}
-            size={'small'}
+            size="small"
             formProps={filledTextField}
         />
     );
