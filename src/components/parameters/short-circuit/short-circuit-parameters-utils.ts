@@ -200,6 +200,7 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         (specificParam) => specificParam.name === NODE_CLUSTER
     );
     if (nodeClusterParam) {
+        // there is no default params for clusters for now
         defaultValues[NODE_CLUSTER_FILTER_IDS] = [];
     }
     const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
