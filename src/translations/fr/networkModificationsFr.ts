@@ -94,4 +94,6 @@ export const networkModificationsFr = {
     Country: 'Pays',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
     [YUP_REQUIRED]: 'Ce champ doit être renseigné',
+    DeleteEquipment: 'Supprimer un ouvrage',
+    UnableToDeleteEquipment: "Impossible de supprimer l'ouvrage",
 };

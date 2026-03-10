@@ -90,4 +90,6 @@ export const networkModificationsEn = {
     Country: 'Country',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
     [YUP_REQUIRED]: 'This field is required',
+    DeleteEquipment: 'Delete equipment',
+    UnableToDeleteEquipment: 'Unable to delete the equipment',
 };
