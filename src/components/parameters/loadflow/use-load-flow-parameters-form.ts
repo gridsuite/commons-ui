@@ -265,15 +265,18 @@ export const useLoadFlowParametersForm = (
             return;
         }
         resetForm(params);
-    }, [paramsLoaded, params]);
+    }, [paramsLoaded, params, specificParamsDescription]);
 
     useEffect(() => {
         if (!watchProvider || watchProvider === previousWatchProviderRef.current) {
             return;
         }
 
-        setSpecificParameters(watchProvider, specificParamsDescription, formMethods);
-        setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
+        // Only apply defaults on user-driven provider switch (not on initial load from resetForm)
+        if (previousWatchProviderRef.current) {
+            setSpecificParameters(watchProvider, specificParamsDescription, formMethods);
+            setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
+        }
 
         // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
         // (formSchema has a dep on limitReductionNumber)
