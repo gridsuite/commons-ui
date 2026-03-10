@@ -33,7 +33,7 @@ export function ParameterFloat({
                 <FormattedMessage id={label} />
             </Grid>
             <Grid item xs={inputSize}>
-                <FloatInput name={name} adornment={adornment} />
+                <FloatInput name={name} adornment={adornment} dataTestId="ParametersFloatInput" />
             </Grid>
         </Grid>
     );
