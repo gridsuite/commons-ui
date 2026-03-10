@@ -25,8 +25,7 @@ import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
 import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { ColumnsDef, ParameterTable } from '../common/parameter-table';
-import BuildStatusChip from '../../node/build-status-chip';
-import { BuildStatus } from '../../node/constant';
+import { BuildStatus, BuildStatusChip } from '../../node';
 
 const styles = {
     circularProgress: (theme) => ({
