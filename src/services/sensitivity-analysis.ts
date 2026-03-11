@@ -70,7 +70,7 @@ export function getSensitivityAnalysisFactorsCount(
     currentNodeUuid: UUID,
     currentRootNetworkUuid: UUID,
     newParams: SensitivityAnalysisParametersInfos,
-    abortController: AbortController
+    abortSignal: AbortSignal
 ): Promise<FactorsCount> {
     console.info('get sensitivity analysis parameters computing count');
     const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid)}/sensitivity-analysis/factor-count`;
@@ -81,7 +81,7 @@ export function getSensitivityAnalysisFactorsCount(
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(newParams),
-        signal: abortController.signal,
+        signal: abortSignal,
     });
 }
 

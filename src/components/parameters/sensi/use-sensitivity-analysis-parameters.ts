@@ -15,17 +15,17 @@ import {
     FactorsCount,
     FieldConstants,
     SensitivityAnalysisParametersInfos,
-    UseParametersBackendReturnProps,
     snackWithFallback,
+    UseParametersBackendReturnProps,
 } from '../../../utils';
 import {
+    filterSensiParameterRows,
     getFormSchema,
     getSensiHvdcformatNewParams,
     getSensiInjectionsformatNewParams,
     getSensiInjectionsSetformatNewParams,
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
-    filterSensiParameterRows,
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
@@ -55,7 +55,7 @@ import {
     getSensitivityAnalysisFactorsCount,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { updateParameter } from '../../../services';
+import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { ACTIVATED } from '../common/parameter-table';
@@ -216,6 +216,8 @@ export const useSensitivityAnalysisParametersForm = ({
 
         if (canFetch) {
             controller = new AbortController();
+            // build a signal which allows us to cancel the fetch by calling controller.abort() or the timeout fires
+            const abortSignal = AbortSignal.any([controller.signal, AbortSignal.timeout(DEFAULT_TIMEOUT_MS)]);
             setIsLoading(true);
 
             getSensitivityAnalysisFactorsCount(
@@ -223,7 +225,7 @@ export const useSensitivityAnalysisParametersForm = ({
                 currentNodeUuid,
                 currentRootNetworkUuid,
                 factorCountParams,
-                controller
+                abortSignal
             )
                 .then((factorsCountResponse) => {
                     setFactorsCount(factorsCountResponse);
@@ -233,8 +235,7 @@ export const useSensitivityAnalysisParametersForm = ({
                     return () => clearTimeout(timeoutId);
                 })
                 .catch((error) => {
-                    if (error.name === 'AbortError' || error.name === 'NetworkTimeoutError') {
-                        setIsLoading(false);
+                    if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
                         return;
                     }
                     setIsLoading(false);
@@ -242,7 +243,7 @@ export const useSensitivityAnalysisParametersForm = ({
                 });
         }
         return () => {
-            controller?.abort();
+            controller?.abort(new Error(IGNORE_SIGNAL));
         };
     }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams]);
 
