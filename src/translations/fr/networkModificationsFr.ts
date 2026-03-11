@@ -111,4 +111,9 @@ export const networkModificationsFr = {
     DisplayTakenPositions: 'Afficher les positions prises',
     NodeNotBuildPositionMessage: 'Veuillez réaliser le nœud pour afficher les positions prises',
     NoVoltageLevelPositionMessage: 'Veuillez choisir un poste pour afficher les positions prises',
+    ModifyLoad: 'Modifier une consommation',
+    StateEstimationTab: "Estimation d'état",
+    MeasurementsSection: 'Télémesures',
+    ValidMeasurement: 'Valide',
+    InvalidMeasurement: 'Invalide',
 };
