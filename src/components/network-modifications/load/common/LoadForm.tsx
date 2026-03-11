@@ -53,10 +53,7 @@ export function LoadForm({
     return (
         <Grid container direction="column" spacing={2}>
             <Grid item>
-                <LoadDialogHeader
-                    loadToModify={loadToModify}
-                    isModification={isModification}
-                />
+                <LoadDialogHeader loadToModify={loadToModify} isModification={isModification} />
             </Grid>
             <Grid item>
                 <LoadDialogTabs
