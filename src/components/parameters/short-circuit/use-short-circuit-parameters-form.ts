@@ -162,6 +162,17 @@ export const useShortCircuitParametersForm = ({
                     dirty
                 );
             }
+            const onlyStartedGeneratorsOutsideCalculationCluster = specificParametersDescriptionForProvider?.find(
+                (specificParam) =>
+                    specificParam.name === SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER
+            );
+            if (onlyStartedGeneratorsOutsideCalculationCluster) {
+                setValue(
+                    `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER}`,
+                    true, // for all predefined parameters
+                    dirty
+                );
+            }
         },
         [setValue, specificParametersDescriptionForProvider]
     );
