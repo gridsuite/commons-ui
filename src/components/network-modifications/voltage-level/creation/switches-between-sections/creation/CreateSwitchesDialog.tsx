@@ -15,7 +15,7 @@ import { CreateSwitchesFormData, SwitchKindFormData } from '../../voltageLevelCr
 import { FieldConstants } from '../../../../../../utils';
 import { CancelButton, CustomFormProvider } from '../../../../../inputs';
 import CreateSwitchesForm from './CreateSwitchesForm';
-import CreateSwitchesDialogSubmitButton from './CreateSwitchesDialogSubmitButton';
+import { CreateSwitchesDialogSubmitButton } from './CreateSwitchesDialogSubmitButton';
 
 const formSchema = yup.object().shape({
     ...getCreateSwitchesValidationSchema(),

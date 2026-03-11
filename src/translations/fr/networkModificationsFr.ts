@@ -118,6 +118,7 @@ export const networkModificationsFr = {
     Breaker: 'Disjoncteur',
     BREAKER: 'Disjoncteur',
     DISCONNECTOR: 'Sectionneur',
+    Disconnector: 'Sectionneur',
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Un nombre de barres doit être supérieur ou égal à 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Un nombre de sections doit être supérieur ou égal à 1',
     mustBeGreaterOrEqualToZero: 'Cette valeur doit être supérieure ou égale à 0',

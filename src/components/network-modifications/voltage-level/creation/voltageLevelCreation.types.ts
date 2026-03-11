@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Property } from '../../common';
+import { SubstationCreationDto } from '../../substation';
 
 export interface CouplingDevice {
     busbarSectionId1: string;
@@ -19,14 +20,6 @@ export interface CreateSwitchesFormData {
     switchKinds: SwitchKindFormData[];
 }
 
-export type AttachedSubstationCreationDto = {
-    type: string;
-    equipmentId: string | null;
-    equipmentName: string | null;
-    country: string | null;
-    properties: Property[] | null;
-};
-
 export enum SwitchKind {
     BREAKER = 'BREAKER',
     DISCONNECTOR = 'DISCONNECTOR',
@@ -38,7 +31,7 @@ export type VoltageLevelCreationDto = {
     equipmentId: string;
     equipmentName: string | null;
     substationId: string | null;
-    substationCreation: AttachedSubstationCreationDto | null;
+    substationCreation: SubstationCreationDto | null;
     nominalV: number | null;
     lowVoltageLimit: number | null;
     highVoltageLimit: number | null;
@@ -50,24 +43,3 @@ export type VoltageLevelCreationDto = {
     couplingDevices: CouplingDevice[];
     properties: Property[] | null;
 };
-
-export interface IdentifiableShortCircuitInfos {
-    ipMin: number | null;
-    ipMax: number | null;
-}
-
-export interface VoltageLevelFormInfos {
-    id: string;
-    name: string | null;
-    topologyKind: string | null;
-    substationId: string | null;
-    nominalV: number;
-    lowVoltageLimit: number | null;
-    highVoltageLimit: number | null;
-    busbarCount: number | null;
-    sectionCount: number | null;
-    switchKinds: SwitchKind[] | null;
-    isSymmetrical: boolean | null;
-    identifiableShortCircuit: IdentifiableShortCircuitInfos | null;
-    properties: Record<string, string> | null;
-}

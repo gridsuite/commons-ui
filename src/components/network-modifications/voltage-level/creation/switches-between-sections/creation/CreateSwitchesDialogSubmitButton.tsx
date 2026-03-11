@@ -14,7 +14,7 @@ interface CreateSwitchesDialogSubmitButtonProps {
     handleSave: (data: CreateSwitchesFormData) => void | Promise<void>;
 }
 
-function CreateSwitchesDialogSubmitButton({ handleSave }: Readonly<CreateSwitchesDialogSubmitButtonProps>) {
+export function CreateSwitchesDialogSubmitButton({ handleSave }: Readonly<CreateSwitchesDialogSubmitButtonProps>) {
     const { handleSubmit } = useFormContext();
 
     return (
@@ -23,5 +23,3 @@ function CreateSwitchesDialogSubmitButton({ handleSave }: Readonly<CreateSwitche
         </Button>
     );
 }
-
-export default CreateSwitchesDialogSubmitButton;

@@ -7,7 +7,6 @@
 import { IntlShape } from 'react-intl';
 import yup from '../../../../utils/yupConfig';
 import {
-    copyEquipmentPropertiesForCreation,
     creationPropertiesSchema,
     emptyProperties,
     getPropertiesFromModification,
@@ -17,8 +16,9 @@ import { FieldConstants, sanitizeString } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
-import { SwitchKind, VoltageLevelCreationDto, VoltageLevelFormInfos } from './voltageLevelCreation.types';
+import { SwitchKind, VoltageLevelCreationDto } from './voltageLevelCreation.types';
 import { Option } from '../../../../utils/types/types';
+import { substationCreationEmptyFormData } from '../../substation';
 
 export const SWITCH_TYPE = {
     BREAKER: { id: 'BREAKER', label: 'Breaker' },
@@ -58,7 +58,7 @@ export const getCreateSwitchesEmptyFormData = (sectionCount: number, id = FieldC
 export const voltageLevelCreationFormSchema = yup
     .object()
     .shape({
-        equipmentId: yup
+        [FieldConstants.EQUIPMENT_ID]: yup
             .string()
             .required()
             .when([FieldConstants.ADD_SUBSTATION_CREATION], {
@@ -87,7 +87,10 @@ export const voltageLevelCreationFormSchema = yup
                 then: (schema) =>
                     schema
                         .required()
-                        .notOneOf([yup.ref('equipmentId'), null], 'CreateSubstationInVoltageLevelIdenticalId'),
+                        .notOneOf(
+                            [yup.ref(FieldConstants.EQUIPMENT_ID), null],
+                            'CreateSubstationInVoltageLevelIdenticalId'
+                        ),
             }),
         [FieldConstants.SUBSTATION_CREATION_ID]: yup
             .string()
@@ -97,7 +100,10 @@ export const voltageLevelCreationFormSchema = yup
                 then: (schema) =>
                     schema
                         .required()
-                        .notOneOf([yup.ref('equipmentId'), null], 'CreateSubstationInVoltageLevelIdenticalId'),
+                        .notOneOf(
+                            [yup.ref(FieldConstants.EQUIPMENT_ID), null],
+                            'CreateSubstationInVoltageLevelIdenticalId'
+                        ),
             }),
         [FieldConstants.SUBSTATION_NAME]: yup.string().nullable(),
         [FieldConstants.COUNTRY]: yup.string().nullable(),
@@ -176,14 +182,14 @@ export const voltageLevelCreationFormSchema = yup
 export type VoltageLevelCreationFormData = yup.InferType<typeof voltageLevelCreationFormSchema>;
 
 export const voltageLevelCreationEmptyFormData = {
-    equipmentId: '',
+    [FieldConstants.EQUIPMENT_ID]: '',
     [FieldConstants.EQUIPMENT_NAME]: '',
     [FieldConstants.ADD_SUBSTATION_CREATION]: false,
     [FieldConstants.SUBSTATION_ID]: null,
     [FieldConstants.SUBSTATION_CREATION_ID]: null,
     [FieldConstants.SUBSTATION_NAME]: null,
     [FieldConstants.COUNTRY]: null,
-    [FieldConstants.SUBSTATION_CREATION]: emptyProperties,
+    [FieldConstants.SUBSTATION_CREATION]: substationCreationEmptyFormData,
     [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
     [FieldConstants.NOMINAL_V]: null,
     [FieldConstants.LOW_VOLTAGE_LIMIT]: null,
@@ -197,7 +203,7 @@ export const voltageLevelCreationEmptyFormData = {
     [FieldConstants.SWITCH_KINDS]: [],
     [FieldConstants.COUPLING_OMNIBUS]: [],
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
-} as VoltageLevelCreationFormData;
+} satisfies VoltageLevelCreationFormData;
 
 export const voltageLevelCreationFormToDto = (
     voltageLevelForm: VoltageLevelCreationFormData
@@ -205,7 +211,7 @@ export const voltageLevelCreationFormToDto = (
     const substationCreation = voltageLevelForm[FieldConstants.ADD_SUBSTATION_CREATION]
         ? {
               type: MODIFICATION_TYPES.SUBSTATION_CREATION.type,
-              equipmentId: voltageLevelForm[FieldConstants.SUBSTATION_CREATION_ID] ?? null,
+              equipmentId: voltageLevelForm[FieldConstants.SUBSTATION_CREATION_ID] ?? '',
               equipmentName: voltageLevelForm[FieldConstants.SUBSTATION_NAME] ?? null,
               country: voltageLevelForm[FieldConstants.COUNTRY] ?? null,
               properties: toModificationProperties(voltageLevelForm[FieldConstants.SUBSTATION_CREATION]),
@@ -214,7 +220,7 @@ export const voltageLevelCreationFormToDto = (
 
     return {
         type: MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION.type,
-        equipmentId: voltageLevelForm.equipmentId,
+        equipmentId: voltageLevelForm[FieldConstants.EQUIPMENT_ID],
         equipmentName: sanitizeString(voltageLevelForm[FieldConstants.EQUIPMENT_NAME]),
         substationId: substationCreation ? null : (voltageLevelForm[FieldConstants.SUBSTATION_ID] ?? null),
         substationCreation,
@@ -242,7 +248,7 @@ export const voltageLevelCreationFormToDto = (
     };
 };
 
-const translateSwitchKinds = (switchKinds: SwitchKind[] | null, intl?: IntlShape): string =>
+export const translateSwitchKinds = (switchKinds: SwitchKind[] | null, intl?: IntlShape): string =>
     switchKinds?.map((kind) => (intl ? intl.formatMessage({ id: kind }) : kind)).join(' / ') ?? '';
 
 export const voltageLevelCreationDtoToForm = (
@@ -256,7 +262,7 @@ export const voltageLevelCreationDtoToForm = (
         : emptyProperties;
 
     return {
-        equipmentId: voltageLevelDto.equipmentId,
+        [FieldConstants.EQUIPMENT_ID]: voltageLevelDto.equipmentId,
         [FieldConstants.EQUIPMENT_NAME]: voltageLevelDto.equipmentName ?? '',
         [FieldConstants.SUBSTATION_ID]: isSubstationCreation ? null : voltageLevelDto.substationId,
         [FieldConstants.NOMINAL_V]: voltageLevelDto.nominalV,
@@ -292,37 +298,3 @@ export const voltageLevelCreationDtoToForm = (
         ...getPropertiesFromModification(voltageLevelDto.properties, includePreviousValue),
     };
 };
-
-export const voltageLevelInfosToForm = (formInfos: VoltageLevelFormInfos, intl?: IntlShape) => ({
-    equipmentId: formInfos?.id,
-    [FieldConstants.EQUIPMENT_NAME]: formInfos?.name ?? '',
-    [FieldConstants.TOPOLOGY_KIND]: formInfos?.topologyKind ?? null,
-    [FieldConstants.SUBSTATION_ID]: formInfos?.substationId ?? null,
-    [FieldConstants.NOMINAL_V]: formInfos?.nominalV,
-    [FieldConstants.LOW_VOLTAGE_LIMIT]: formInfos?.lowVoltageLimit,
-    [FieldConstants.HIGH_VOLTAGE_LIMIT]: formInfos?.highVoltageLimit,
-    [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: convertInputValue(
-        FieldType.LOW_SHORT_CIRCUIT_CURRENT_LIMIT,
-        formInfos?.identifiableShortCircuit?.ipMin ?? null
-    ),
-    [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: convertInputValue(
-        FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT,
-        formInfos?.identifiableShortCircuit?.ipMax ?? null
-    ),
-    [FieldConstants.BUS_BAR_COUNT]: formInfos?.busbarCount ?? 1,
-    [FieldConstants.SECTION_COUNT]: formInfos?.sectionCount ?? 1,
-    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: translateSwitchKinds(formInfos?.switchKinds, intl),
-    [FieldConstants.COUPLING_OMNIBUS]: [],
-    [FieldConstants.SWITCH_KINDS]:
-        formInfos.switchKinds?.map((switchKind) => ({
-            [FieldConstants.SWITCH_KIND]: switchKind,
-        })) ?? [],
-    [FieldConstants.ADD_SUBSTATION_CREATION]: false,
-    [FieldConstants.SUBSTATION_CREATION_ID]: null,
-    [FieldConstants.SUBSTATION_NAME]: null,
-    [FieldConstants.COUNTRY]: null,
-    [FieldConstants.SUBSTATION_CREATION]: emptyProperties,
-    [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
-    [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
-    ...copyEquipmentPropertiesForCreation({ properties: formInfos.properties ?? undefined }),
-});

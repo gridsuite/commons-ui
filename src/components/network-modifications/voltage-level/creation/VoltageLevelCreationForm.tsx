@@ -16,7 +16,6 @@ import { FloatInput } from '../../../inputs/reactHookForm/numbers/FloatInput';
 import { IntegerInput } from '../../../inputs/reactHookForm/numbers/IntegerInput';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';
-import { filledTextField } from '../../common';
 import { SwitchesBetweenSections } from './switches-between-sections';
 import { CouplingOmnibusForm } from './coupling-omnibus';
 import { SubstationCreationSection } from './SubstationCreationSection';
@@ -43,6 +42,7 @@ export function VoltageLevelCreationForm({
     const displayOmnibus = watchBusBarCount > 1 || watchSectionCount > 1;
 
     useEffect(() => {
+        // in new substation mode, set the default country
         if (watchAddSubstationCreation && !getValues(FieldConstants.COUNTRY)) {
             fetchDefaultCountry().then((country) => {
                 if (country) {
@@ -54,6 +54,7 @@ export function VoltageLevelCreationForm({
 
     const handleDeleteSubstationCreation = useCallback(() => {
         setValue(FieldConstants.ADD_SUBSTATION_CREATION, false);
+        // clear the fields of the new substation
         setValue(FieldConstants.SUBSTATION_CREATION_ID, null);
         setValue(FieldConstants.SUBSTATION_NAME, null);
         setValue(FieldConstants.COUNTRY, null);
@@ -67,22 +68,26 @@ export function VoltageLevelCreationForm({
             label="SUBSTATION"
             options={substationOptions}
             size="small"
-            formProps={filledTextField}
+            formProps={{ margin: 'normal' }}
             allowNewValue
             {...substationFieldAdditionalProps}
         />
     ) : (
-        <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" formProps={filledTextField} />
+        <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" formProps={{ margin: 'normal' }} />
     );
 
     return (
         <>
             <Grid container spacing={2}>
                 <GridItem>
-                    <TextInput name="equipmentId" label="ID" formProps={filledTextField} />
+                    <TextInput
+                        name={FieldConstants.EQUIPMENT_ID}
+                        label="ID"
+                        formProps={{ autoFocus: true, margin: 'normal' }}
+                    />
                 </GridItem>
                 <GridItem>
-                    <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
+                    <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ margin: 'normal' }} />
                 </GridItem>
             </Grid>
 

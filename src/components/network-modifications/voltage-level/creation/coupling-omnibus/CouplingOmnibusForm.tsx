@@ -20,7 +20,7 @@ export function CouplingOmnibusForm() {
         [FieldConstants.BUS_BAR_SECTION_ID2]: null,
     };
 
-    const watchVoltageLevelID = useWatch({ name: 'equipmentId' });
+    const watchVoltageLevelID = useWatch({ name: FieldConstants.EQUIPMENT_ID });
     const watchBusBarCount = useWatch({ name: FieldConstants.BUS_BAR_COUNT });
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
 
@@ -34,6 +34,7 @@ export function CouplingOmnibusForm() {
     }, [watchVoltageLevelID, watchBusBarCount, watchSectionCount]);
 
     useEffect(() => {
+        // the cleanup function is triggered every time sectionOptions changes and when unmounting
         return () => setValue(FieldConstants.COUPLING_OMNIBUS, []);
     }, [sectionOptions, setValue]);
 

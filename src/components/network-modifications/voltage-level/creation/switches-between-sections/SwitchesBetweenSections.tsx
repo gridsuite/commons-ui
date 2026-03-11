@@ -16,7 +16,7 @@ import GridItem from '../../../../grid/grid-item';
 import { TextInput } from '../../../../inputs';
 import { CreateSwitchesDialog } from './creation';
 
-export function SwitchesBetweenSections(): ReactElement | null {
+export function SwitchesBetweenSections() {
     const { getValues, setValue } = useFormContext();
     const [openCreateSwitchesDialog, setOpenCreateSwitchesDialog] = useState(false);
 

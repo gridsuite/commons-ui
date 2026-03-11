@@ -114,6 +114,7 @@ export const networkModificationsEn = {
     Breaker: 'Breaker',
     BREAKER: 'Breaker',
     DISCONNECTOR: 'Disconnector',
+    Disconnector: 'Disconnector',
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Number of busbars must be greater than or equal to 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Number of sections must be greater than or equal to 1',
     mustBeGreaterOrEqualToZero: 'Must be greater than or equal to 0',

@@ -17,9 +17,11 @@ interface CouplingOmnibusCreationProps {
     sectionOptions: Option[];
 }
 
+// TODO should use "name" props instead of `${COUPLING_OMNIBUS}.(...)`
 export function CouplingOmnibusCreation({ index, sectionOptions }: Readonly<CouplingOmnibusCreationProps>) {
     const { getValues, trigger, subscribe } = useFormContext();
 
+    // Watch BUS_BAR_SECTION_ID1 changed
     useEffect(() => {
         const unsubscribe = subscribe({
             name: [`${FieldConstants.COUPLING_OMNIBUS}.${index}.${FieldConstants.BUS_BAR_SECTION_ID1}`],
