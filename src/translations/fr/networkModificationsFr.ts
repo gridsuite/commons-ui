@@ -96,4 +96,7 @@ export const networkModificationsFr = {
     [YUP_REQUIRED]: 'Ce champ doit être renseigné',
     DeleteEquipment: 'Supprimer un ouvrage',
     UnableToDeleteEquipment: "Impossible de supprimer l'ouvrage",
+    LCCConverterStationShuntCompensators: 'Moyens de compensation liés à la LCC',
+    Side1: 'Côté 1',
+    Side2: 'Côté 2',
 };
