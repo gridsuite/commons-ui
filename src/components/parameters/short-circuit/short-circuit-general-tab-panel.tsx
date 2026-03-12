@@ -18,6 +18,7 @@ import {
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -68,6 +69,9 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
         const watchOnlyStartedGeneratorsInCalculationCluster = useWatch({
             name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
         });
+        const watchOnlyStartedGeneratorsOutsideCalculationCluster = useWatch({
+            name: `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER}`,
+        });
 
         const isIccMinFeaturesDefaultConfiguration = useMemo(() => {
             return (
@@ -76,7 +80,9 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
                 !watchVSC &&
                 !watchNeutralPosition &&
                 // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMinFeaturesDefaultConfiguration as true
-                (watchOnlyStartedGeneratorsInCalculationCluster ?? true)
+                (watchOnlyStartedGeneratorsInCalculationCluster ?? true) &&
+                // if watchOnlyStartedGeneratorsOutsideCalculationCluster is undefined, we consider IccMinFeaturesDefaultConfiguration as true
+                (watchOnlyStartedGeneratorsOutsideCalculationCluster ?? true)
             );
         }, [
             watchLoads,
@@ -84,6 +90,7 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
             watchVSC,
             watchNeutralPosition,
             watchOnlyStartedGeneratorsInCalculationCluster,
+            watchOnlyStartedGeneratorsOutsideCalculationCluster,
         ]);
 
         const isIccMaxFeaturesDefaultConfiguration = useMemo(() => {
@@ -93,7 +100,9 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
                 watchVSC &&
                 !watchNeutralPosition &&
                 // if watchOnlyStartedGeneratorsInCalculationCluster is undefined, we consider IccMaxFeaturesDefaultConfiguration as true
-                !(watchOnlyStartedGeneratorsInCalculationCluster ?? false)
+                !(watchOnlyStartedGeneratorsInCalculationCluster ?? false) &&
+                // if watchOnlyStartedGeneratorsOutsideCalculationCluster is undefined, we consider IccMaxFeaturesDefaultConfiguration as true
+                (watchOnlyStartedGeneratorsOutsideCalculationCluster ?? true)
             );
         }, [
             watchLoads,
@@ -101,6 +110,7 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
             watchVSC,
             watchNeutralPosition,
             watchOnlyStartedGeneratorsInCalculationCluster,
+            watchOnlyStartedGeneratorsOutsideCalculationCluster,
         ]);
 
         // the translation of values
