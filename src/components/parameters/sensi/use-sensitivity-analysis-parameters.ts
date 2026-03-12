@@ -210,40 +210,44 @@ export const useSensitivityAnalysisParametersForm = ({
     }, [currentNodeUuid, currentRootNetworkUuid, formatNewParams, getValues, resetFactorsCount]);
 
     useEffect(() => {
-        let controller: AbortController | null = null;
-
-        const canFetch = factorCountParams !== null && currentNodeUuid && currentRootNetworkUuid;
-
-        if (canFetch) {
-            controller = new AbortController();
-            // build a signal which allows us to cancel the fetch by calling controller.abort() or the timeout fires
-            const abortSignal = AbortSignal.any([controller.signal, AbortSignal.timeout(DEFAULT_TIMEOUT_MS)]);
-            setIsLoading(true);
-
-            getSensitivityAnalysisFactorsCount(
-                studyUuid,
-                currentNodeUuid,
-                currentRootNetworkUuid,
-                factorCountParams,
-                abortSignal
-            )
-                .then((factorsCountResponse) => {
-                    setFactorsCount(factorsCountResponse);
-                    const timeoutId = setTimeout(() => {
-                        setIsLoading(false);
-                    }, 500);
-                    return () => clearTimeout(timeoutId);
-                })
-                .catch((error) => {
-                    if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
-                        return;
-                    }
-                    setIsLoading(false);
-                    snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
-                });
+        if (!factorCountParams || !currentNodeUuid || !currentRootNetworkUuid) {
+            return () => {
+                // do nothing
+            };
         }
+
+        // timeout to avoid a 'flash' of the loading state when backend responds instantly
+        let loadingTimeoutId: ReturnType<typeof setTimeout>;
+
+        const controller = new AbortController();
+        // build a signal which allows us to cancel the fetch by calling controller.abort() or the timeout fires
+        const abortSignal = AbortSignal.any([controller.signal, AbortSignal.timeout(DEFAULT_TIMEOUT_MS)]);
+        setIsLoading(true);
+
+        getSensitivityAnalysisFactorsCount(
+            studyUuid,
+            currentNodeUuid,
+            currentRootNetworkUuid,
+            factorCountParams,
+            abortSignal
+        )
+            .then((factorsCountResponse) => {
+                setFactorsCount(factorsCountResponse);
+                loadingTimeoutId = setTimeout(() => {
+                    setIsLoading(false);
+                }, 500);
+            })
+            .catch((error) => {
+                if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
+                    return;
+                }
+                setIsLoading(false);
+                snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+            });
+
         return () => {
             controller?.abort(new Error(IGNORE_SIGNAL));
+            clearTimeout(loadingTimeoutId);
         };
     }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams]);
 
