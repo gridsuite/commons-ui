@@ -81,6 +81,33 @@ export enum HvdcType {
     VSC = 'VSC',
 }
 
+// Relevant LoadType Powsybl enum values
+export const LOAD_TYPES = [
+    { id: 'AUXILIARY', label: 'Auxiliary' },
+    { id: 'FICTITIOUS', label: 'Fictitious' },
+];
+// and the undefined/default one (not displayed)
+export const UNDEFINED_LOAD_TYPE = 'UNDEFINED';
+
+export function getLoadTypeLabel(loadTypeId: string) {
+    return LOAD_TYPES.find(({ id }) => id === loadTypeId)?.label;
+}
+
+export const UNDEFINED_CONNECTION_DIRECTION = 'UNDEFINED';
+// Relevant ConnectablePosition.Direction Powsybl enum values
+export const CONNECTION_DIRECTIONS = [
+    { id: 'TOP', label: 'Top' },
+    { id: 'BOTTOM', label: 'Bottom' },
+    { id: UNDEFINED_CONNECTION_DIRECTION, label: 'Undefined' },
+] as const;
+
+export function getConnectionDirectionLabel(connectionDirectionId: string | null | undefined) {
+    if (connectionDirectionId === UNDEFINED_CONNECTION_DIRECTION) {
+        return 'Undefined';
+    }
+    return CONNECTION_DIRECTIONS.find(({ id }) => id === connectionDirectionId)?.label;
+}
+
 export enum ExtendedEquipmentType {
     HVDC_LINE_LCC = 'HVDC_LINE_LCC',
     HVDC_LINE_VSC = 'HVDC_LINE_VSC',

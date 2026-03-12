@@ -7,3 +7,5 @@
 
 export * from './common';
 export * from './substation';
+export * from './voltage-level';
+export * from './load';
