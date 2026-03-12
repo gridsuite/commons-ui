@@ -105,14 +105,14 @@ export function EquipmentDeletionForm({
 
     useEffect(() => {
         if (!fetchHvdcWithShuntCompensatorsPromise && isDirty && dirtyFields[FieldConstants.EQUIPMENT_ID]) {
-            // without a study network, we clean the MCS lists as soon as the equipmentId is manually change (or the type that reset the Id)
+            // without a study network, we clean the MCS lists when the equipmentId is manually change (or reset after equipment type manual change)
             setValue(FieldConstants.DELETION_SPECIFIC_DATA, null);
         }
-    }, [fetchHvdcWithShuntCompensatorsPromise, isDirty, dirtyFields[FieldConstants.EQUIPMENT_ID], setValue]);
+    }, [fetchHvdcWithShuntCompensatorsPromise, isDirty, dirtyFields, setValue]);
 
     useEffect(() => {
         if (!fetchHvdcWithShuntCompensatorsPromise) {
-            // // without a study network, we can not merge editData with dynamic data
+            // without a study network, we can not merge editData with dynamic data
             return;
         }
         if (editData?.equipmentId) {
