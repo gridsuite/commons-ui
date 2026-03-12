@@ -53,7 +53,10 @@ export function EquipmentDeletionForm({
         name: FieldConstants.DELETION_SPECIFIC_DATA,
     });
     const { specificUpdate: hvdcLccSpecificUpdate } = useHvdcLccDeletion({ fetchHvdcWithShuntCompensatorsPromise });
-    const { setValue } = useFormContext();
+    const {
+        setValue,
+        formState: { isDirty, dirtyFields },
+    } = useFormContext();
 
     const getOptionLabel = useGetLabelEquipmentTypes();
 
@@ -101,8 +104,15 @@ export function EquipmentDeletionForm({
     }, [fetchEquipmentIdsPromise, snackError, watchType]);
 
     useEffect(() => {
+        if (!fetchHvdcWithShuntCompensatorsPromise && isDirty && dirtyFields[FieldConstants.EQUIPMENT_ID]) {
+            // without a study network, we clean the MCS lists as soon as the equipmentId is manually change (or the type that reset the Id)
+            setValue(FieldConstants.DELETION_SPECIFIC_DATA, null);
+        }
+    }, [fetchHvdcWithShuntCompensatorsPromise, isDirty, dirtyFields[FieldConstants.EQUIPMENT_ID], setValue]);
+
+    useEffect(() => {
         if (!fetchHvdcWithShuntCompensatorsPromise) {
-            // not possible to merge editData with dynamic data
+            // // without a study network, we can not merge editData with dynamic data
             return;
         }
         if (editData?.equipmentId) {
@@ -132,7 +142,7 @@ export function EquipmentDeletionForm({
         watchEquipmentId,
     ]);
 
-    const handleChange = useCallback(() => {
+    const handleTypeChange = useCallback(() => {
         setValue(FieldConstants.EQUIPMENT_ID, null);
     }, [setValue]);
 
@@ -142,7 +152,7 @@ export function EquipmentDeletionForm({
             name={FieldConstants.TYPE}
             label="Type"
             options={typesOptions}
-            onChangeCallback={handleChange}
+            onChangeCallback={handleTypeChange}
             getOptionLabel={getOptionLabel}
             size="small"
             inputTransform={(value) => typesOptions.find((option) => option === value) || value}
