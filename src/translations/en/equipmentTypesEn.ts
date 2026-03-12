@@ -6,6 +6,7 @@
  */
 
 export const equipmentTypesEn = {
+    Type: 'Type',
     SUBSTATION: 'Substation',
     VOLTAGE_LEVEL: 'Voltage Level',
     BUS: 'Bus',
