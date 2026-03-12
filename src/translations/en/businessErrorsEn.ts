@@ -62,6 +62,7 @@ export const businessErrorsEn = {
     'shortcircuit.missingExtensionData': 'Missing short-circuit extension data.',
     'shortcircuit.inconsistentVoltageLevels':
         'Some voltage levels have wrong isc values. Check out the logs to find which ones.',
+    'shortcircuit.busOutOfNodeCluster': 'Selected bus is out of node cluster',
     'securityAnalysis.contingencyListConfigEmpty': 'The configuration does not contain any contingency.',
     'dynamicMapping.mappingNameNotProvided': 'Mapping name not provided',
     'dynamicSecurityAnalysis.providerNotFound': 'Dynamic security analysis provider not found.',
