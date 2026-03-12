@@ -102,6 +102,7 @@ export function EquipmentDeletionForm({
 
     useEffect(() => {
         if (!fetchHvdcWithShuntCompensatorsPromise) {
+            // not possible to merge editData with dynamic data
             return;
         }
         if (editData?.equipmentId) {

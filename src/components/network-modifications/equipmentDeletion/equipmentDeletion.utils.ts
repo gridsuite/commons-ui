@@ -52,6 +52,6 @@ export const equipmentDeletionDtoToForm = (dto: EquipmentDeletionDto): Equipment
     return {
         equipmentID: dto.equipmentId,
         type: dto.equipmentType,
-        equipmentInfos: null,
+        equipmentInfos: dto.equipmentInfos,
     };
 };
