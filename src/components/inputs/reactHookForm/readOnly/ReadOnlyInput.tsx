@@ -7,7 +7,7 @@
 
 import { useController } from 'react-hook-form';
 import { TextField } from '@mui/material';
-import { genHelperError } from '@gridsuite/commons-ui';
+import { genHelperError } from '../utils';
 
 interface ReadOnlyInputProps {
     name: string;

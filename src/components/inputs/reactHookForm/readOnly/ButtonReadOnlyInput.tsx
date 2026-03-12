@@ -7,8 +7,8 @@
 
 import { useController } from 'react-hook-form';
 import { InputAdornment, TextField, useTheme } from '@mui/material';
-import { genHelperError } from '@gridsuite/commons-ui';
 import { PropsWithChildren } from 'react';
+import { genHelperError } from '../utils';
 
 interface ButtonReadOnlyInputProps extends PropsWithChildren {
     name: string;
