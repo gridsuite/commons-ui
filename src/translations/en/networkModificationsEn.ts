@@ -90,4 +90,9 @@ export const networkModificationsEn = {
     Country: 'Country',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
     [YUP_REQUIRED]: 'This field is required',
+    DeleteEquipment: 'Delete equipment',
+    UnableToDeleteEquipment: 'Unable to delete the equipment',
+    LCCConverterStationShuntCompensators: 'Shunt compensators related to the LCC',
+    Side1: 'Side 1',
+    Side2: 'Side 2',
 };

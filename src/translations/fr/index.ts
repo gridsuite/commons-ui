@@ -16,6 +16,7 @@ export * from './equipmentSearchFr';
 export * from './equipmentTagFr';
 export * from './equipmentShortFr';
 export * from './equipmentsFr';
+export * from './equipmentTypesFr';
 export * from './errorsFr';
 export * from './filterExpertFr';
 export * from './filterFr';
