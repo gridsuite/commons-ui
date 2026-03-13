@@ -79,6 +79,7 @@ export const networkModificationsEn = {
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
     ModificationReadError: 'An error occurred while fetching the modification',
     CreateSubstation: 'Create substation',
+    DeleteEquipmentByFilter: 'Delete equipment by filter',
     SubstationCreationError: 'Error while creating substation',
     ModifySubstation: 'Modify substation',
     SubstationModificationError: 'Error while modifying substation',
