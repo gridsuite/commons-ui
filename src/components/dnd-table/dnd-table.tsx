@@ -129,6 +129,7 @@ function EditableTableCell({
                 <TableNumericalInput
                     {...props}
                     name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
+                    data-testid={`DndNumericalInput-${rowIndex}`}
                     previousValue={previousValue}
                     valueModified={valueModified}
                     adornment={column?.adornment}
@@ -142,6 +143,7 @@ function EditableTableCell({
                 <TableTextInput
                     {...props}
                     name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
+                    data-testid={`DndTextInput-${rowIndex}`}
                     showErrorMsg={column.showErrorMsg}
                 />
             )}
@@ -150,6 +152,7 @@ function EditableTableCell({
                     forcePopupIcon
                     freeSolo
                     name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
+                    data-testid={`DndAutocompleteInput-${rowIndex}`}
                     options={column.options}
                     inputTransform={(value) => value ?? ''}
                     outputTransform={(value) => value}
@@ -159,6 +162,7 @@ function EditableTableCell({
             {column.type === DndColumnType.DIRECTORY_ITEMS && (
                 <DirectoryItemsInput
                     name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
+                    data-testid={`DndDirectoryInput-${rowIndex}`}
                     equipmentTypes={column.equipmentTypes}
                     elementType={column.elementType}
                     titleId={column.titleId}
@@ -167,10 +171,17 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && (
-                <ChipItemsInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} hideErrorMessage />
+                <ChipItemsInput
+                    name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
+                    data-testid={`DndChipInput-${rowIndex}`}
+                    hideErrorMessage
+                />
             )}
             {column.type === DndColumnType.SWITCH && (
-                <SwitchInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} />
+                <SwitchInput
+                    name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
+                    data-testid={`DndSwitchInput-${rowIndex}`}
+                />
             )}
             {column.type === DndColumnType.CUSTOM && column.component(rowIndex)}
         </TableCell>
