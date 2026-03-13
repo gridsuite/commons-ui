@@ -36,9 +36,7 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-function ShortCircuitParametersContent({
-    shortCircuitMethods,
-}: Readonly<ShortCircuitParametersContentProps>) {
+function ShortCircuitParametersContent({ shortCircuitMethods }: Readonly<ShortCircuitParametersContentProps>) {
     const { resetAll, selectedTab, handleTabChange, tabIndexesWithError } = shortCircuitMethods;
 
     const watchSpecificParameters = useWatch({

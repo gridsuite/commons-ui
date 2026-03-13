@@ -42,9 +42,7 @@ export function ShortCircuitParametersForm({
                 </Grid>
                 {paramsLoaded ? (
                     <Grid sx={parametersStyles.scrollableGrid}>
-                        <ShortCircuitParametersContent
-                            shortCircuitMethods={shortCircuitMethods}
-                        />
+                        <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
                     </Grid>
                 ) : (
                     <LinearProgress />
