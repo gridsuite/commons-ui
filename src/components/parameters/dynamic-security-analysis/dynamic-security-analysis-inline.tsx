@@ -7,7 +7,7 @@
 
 import type { UUID } from 'node:crypto';
 import { Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
@@ -42,8 +42,6 @@ export function DynamicSecurityAnalysisInline({
         name: null,
         description: null,
     });
-    const intl = useIntl();
-
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 

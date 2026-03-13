@@ -6,9 +6,7 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetchJson, getRequestParamFromList } from './utils';
-import {
-    ElementAttributes,
-} from '../utils';
+import { ElementAttributes } from '../utils';
 
 const PREFIX_DYNAMIC_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-security-analysis`;
 const PREFIX_DIRECTORY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/directory`;
