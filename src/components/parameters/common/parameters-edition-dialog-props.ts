@@ -19,5 +19,4 @@ export interface ParametersEditionDialogProps {
     activeDirectory: UUID;
     language?: GsLang;
     user: User | null;
-    isDeveloperMode?: boolean;
 }
