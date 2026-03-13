@@ -31,7 +31,7 @@ export function SubstationAutocompleteAddButton({ children, ...rest }: Readonly<
                 <LineSeparator />
                 <IconButton
                     color="primary"
-                    sx={{ justifyContent: 'flex-start', fontSize: 'medium', marginLeft: '2%', width: '100%' }}
+                    sx={{ justifyContent: 'flex-start', fontSize: 'medium', width: '100%' }}
                     onMouseDown={handleCreateSubstation}
                 >
                     {`${intl.formatMessage({ id: 'CreateSubstation' })} : ${getValues(FieldConstants.SUBSTATION_ID)}`}

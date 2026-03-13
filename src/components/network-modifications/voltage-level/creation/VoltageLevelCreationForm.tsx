@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import GridItem from '../../../grid/grid-item';
@@ -20,17 +20,16 @@ import { SwitchesBetweenSections } from './switches-between-sections';
 import { CouplingOmnibusForm } from './coupling-omnibus';
 import { SubstationCreationSection } from './substation-creation/SubstationCreationSection';
 import { fetchDefaultCountry } from '../../../../services/appsMetadata';
-import { SubstationCreationMode } from './voltageLevelCreation.types';
 import { SubstationAutocompleteAddButton } from './substation-creation/SubstationAutocompleteAddButton';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
-    substationCreationMode?: SubstationCreationMode;
+    showDeleteSubstationButton?: boolean;
 }
 
 export function VoltageLevelCreationForm({
     substationOptions,
-    substationCreationMode = SubstationCreationMode.CAN_CREATE_SUBSTATION,
+    showDeleteSubstationButton = true,
 }: VoltageLevelCreationFormProps = {}) {
     const { setValue, getValues } = useFormContext();
     const watchAddSubstationCreation = useWatch({ name: FieldConstants.ADD_SUBSTATION_CREATION });
@@ -60,22 +59,6 @@ export function VoltageLevelCreationForm({
         setValue(FieldConstants.COUNTRY, null);
     }, [setValue]);
 
-    const showCreationForm =
-        substationCreationMode === SubstationCreationMode.MUST_CREATE_SUBSTATION ||
-        (substationCreationMode === SubstationCreationMode.CAN_CREATE_SUBSTATION && watchAddSubstationCreation);
-
-    const showDeleteButton = substationCreationMode === SubstationCreationMode.CAN_CREATE_SUBSTATION;
-
-    const substationFieldAdditionalProps = useMemo(() => {
-        if (substationCreationMode === SubstationCreationMode.CAN_CREATE_SUBSTATION) {
-            return {
-                PaperComponent: SubstationAutocompleteAddButton,
-                noOptionsText: '',
-            };
-        }
-        return {};
-    }, [substationCreationMode]);
-
     const substationField = substationOptions ? (
         <AutocompleteInput
             openOnFocus
@@ -86,7 +69,8 @@ export function VoltageLevelCreationForm({
             size="small"
             formProps={{ margin: 'normal' }}
             allowNewValue
-            {...substationFieldAdditionalProps}
+            PaperComponent={SubstationAutocompleteAddButton}
+            noOptionsText=""
         />
     ) : (
         <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" formProps={{ margin: 'normal' }} />
@@ -107,9 +91,9 @@ export function VoltageLevelCreationForm({
                 </GridItem>
             </Grid>
 
-            {showCreationForm ? (
+            {watchAddSubstationCreation ? (
                 <SubstationCreationSection
-                    showDeleteButton={showDeleteButton}
+                    showDeleteButton={showDeleteSubstationButton}
                     onDelete={handleDeleteSubstationCreation}
                 />
             ) : (

@@ -26,15 +26,6 @@ export enum SwitchKind {
     LOAD_BREAK_SWITCH = 'LOAD_BREAK_SWITCH',
 }
 
-export enum SubstationCreationMode {
-    /** Always show the substation creation form, no delete button (e.g. attachment point modification) */
-    MUST_CREATE_SUBSTATION = 'MUST_CREATE_SUBSTATION',
-    /** Autocomplete with a "Create substation" action; creation form includes a delete button */
-    CAN_CREATE_SUBSTATION = 'CAN_CREATE_SUBSTATION',
-    /** Plain autocomplete only, no option to create a new substation */
-    CANNOT_CREATE_SUBSTATION = 'CANNOT_CREATE_SUBSTATION',
-}
-
 export type VoltageLevelCreationDto = {
     type: string;
     equipmentId: string;
