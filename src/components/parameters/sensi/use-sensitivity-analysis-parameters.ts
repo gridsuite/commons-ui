@@ -16,6 +16,7 @@ import {
     FieldConstants,
     SensitivityAnalysisParametersInfos,
     UseParametersBackendReturnProps,
+    snackWithFallback,
 } from '../../../utils';
 import {
     getFormSchema,
@@ -57,7 +58,6 @@ import {
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
-import { snackWithFallback } from '../../../utils/error';
 import { ACTIVATED } from '../common/parameter-table';
 
 export interface UseSensitivityAnalysisParametersReturn {
@@ -116,6 +116,8 @@ export const useSensitivityAnalysisParametersForm = ({
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
+    const [factorCountParams, setFactorCountParams] = useState<SensitivityAnalysisParametersInfos | null>(null);
+
     const emptyFormData = useMemo(() => {
         return {
             ...getNameElementEditorEmptyFormData(name, description),
@@ -168,6 +170,7 @@ export const useSensitivityAnalysisParametersForm = ({
     const resetFactorsCount = useCallback(() => {
         setIsLoading(false);
         setFactorsCount(DEFAULT_FACTOR_COUNT);
+        setFactorCountParams(null);
     }, []);
 
     const updateFactorCount = useCallback(() => {
@@ -203,26 +206,45 @@ export const useSensitivityAnalysisParametersForm = ({
             [PARAMETER_SENSI_PST]: filteredPst,
             [PARAMETER_SENSI_NODES]: filteredNodes,
         };
+        setFactorCountParams(formatNewParams(filteredFormValues));
+    }, [currentNodeUuid, currentRootNetworkUuid, formatNewParams, getValues, resetFactorsCount]);
 
-        setIsLoading(true);
-        getSensitivityAnalysisFactorsCount(
-            studyUuid,
-            currentNodeUuid,
-            currentRootNetworkUuid,
-            formatNewParams(filteredFormValues)
-        )
-            .then((factorsCountResponse) => {
-                setFactorsCount(factorsCountResponse);
-                const timeoutId = setTimeout(() => {
+    useEffect(() => {
+        let controller: AbortController | null = null;
+
+        const canFetch = factorCountParams !== null && currentNodeUuid && currentRootNetworkUuid;
+
+        if (canFetch) {
+            controller = new AbortController();
+            setIsLoading(true);
+
+            getSensitivityAnalysisFactorsCount(
+                studyUuid,
+                currentNodeUuid,
+                currentRootNetworkUuid,
+                factorCountParams,
+                controller
+            )
+                .then((factorsCountResponse) => {
+                    setFactorsCount(factorsCountResponse);
+                    const timeoutId = setTimeout(() => {
+                        setIsLoading(false);
+                    }, 500);
+                    return () => clearTimeout(timeoutId);
+                })
+                .catch((error) => {
+                    if (error.name === 'AbortError' || error.name === 'NetworkTimeoutError') {
+                        setIsLoading(false);
+                        return;
+                    }
                     setIsLoading(false);
-                }, 500);
-                return () => clearTimeout(timeoutId);
-            })
-            .catch((error) => {
-                setIsLoading(false);
-                snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
-            });
-    }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid, getValues, resetFactorsCount]);
+                    snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+                });
+        }
+        return () => {
+            controller?.abort();
+        };
+    }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams]);
 
     const onFormChanged = useCallback(() => {
         updateFactorCount();
