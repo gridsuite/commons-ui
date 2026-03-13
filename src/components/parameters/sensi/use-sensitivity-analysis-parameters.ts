@@ -211,9 +211,8 @@ export const useSensitivityAnalysisParametersForm = ({
 
     useEffect(() => {
         if (!factorCountParams || !currentNodeUuid || !currentRootNetworkUuid) {
-            return () => {
-                // do nothing
-            };
+            // return a no-op cleanup function to ignore eslint consistent-return
+            return () => {};
         }
 
         // timeout to avoid a 'flash' of the loading state when backend responds instantly
