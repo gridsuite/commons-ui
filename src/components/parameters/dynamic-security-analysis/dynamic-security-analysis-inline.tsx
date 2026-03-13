@@ -12,9 +12,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
+import { ElementType, mergeSx } from '../../../utils';
 import {
-    toFormValues,
     toParamsInfos,
     useDynamicSecurityAnalysisParametersForm,
 } from './use-dynamic-security-analysis-parameters-form';
@@ -23,10 +22,6 @@ import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
 import { PopupConfirmationDialog } from '../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
 import { parametersStyles } from '../parameters-style';
 import { CreateParameterDialog } from '../common';
-import { DirectoryItemSelector } from '../../directoryItemSelector';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { useSnackMessage } from '../../../hooks';
-import { fetchDynamicSecurityAnalysisParameters } from '../../../services/dynamic-security-analysis';
 import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
 
 type DynamicSecurityAnalysisInlineProps = {
@@ -48,14 +43,12 @@ export function DynamicSecurityAnalysisInline({
         description: null,
     });
     const intl = useIntl();
-    const { snackError } = useSnackMessage();
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     const { formMethods, onError } = dynamicSecurityAnalysisMethods;
-    const { reset, handleSubmit, getValues, formState } = formMethods;
+    const { handleSubmit, getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -75,26 +68,6 @@ export function DynamicSecurityAnalysisInline({
             updateParameters(toParamsInfos(formData));
         },
         [updateParameters]
-    );
-
-    const handleLoadParameter = useCallback(
-        (newParams: TreeViewFinderNodeProps[]) => {
-            if (newParams?.length) {
-                setOpenSelectParameterDialog(false);
-                const parametersUuid = newParams[0].id;
-                fetchDynamicSecurityAnalysisParameters(parametersUuid)
-                    .then((_params) => {
-                        reset(toFormValues(_params), {
-                            keepDefaultValues: true,
-                        });
-                    })
-                    .catch((error: Error) => {
-                        snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
-                    });
-            }
-            setOpenSelectParameterDialog(false);
-        },
-        [reset, snackError]
     );
 
     useEffect(() => {
@@ -125,21 +98,6 @@ export function DynamicSecurityAnalysisInline({
                         parameterValues={getValues}
                         parameterFormatter={toParamsInfos}
                         parameterType={ElementType.DYNAMIC_SECURITY_ANALYSIS_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameter}
-                        types={[ElementType.DYNAMIC_SECURITY_ANALYSIS_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        onlyLeaves
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
                     />
                 )}
                 {/* Reset Confirmation Dialog */}
