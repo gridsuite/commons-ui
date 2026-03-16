@@ -29,8 +29,6 @@ import {
 } from './utils';
 import {
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
-    CONTAINER_ID,
-    CONTAINER_NAME,
     DEFAULT_FACTOR_COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
@@ -58,7 +56,7 @@ import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
-import { ACTIVATED } from '../common/parameter-table';
+import { ACTIVATED, CONTAINER_ID, CONTAINER_NAME } from '../common/parameter-table';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
