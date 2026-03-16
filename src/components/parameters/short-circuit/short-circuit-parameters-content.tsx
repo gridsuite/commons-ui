@@ -19,7 +19,6 @@ import { UseShortCircuitParametersFormReturn } from './use-short-circuit-paramet
 
 type ShortCircuitParametersContentProps = {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
-    isDeveloperMode: boolean;
 };
 
 const styles = {
@@ -37,10 +36,7 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-function ShortCircuitParametersContent({
-    shortCircuitMethods,
-    isDeveloperMode,
-}: Readonly<ShortCircuitParametersContentProps>) {
+function ShortCircuitParametersContent({ shortCircuitMethods }: Readonly<ShortCircuitParametersContentProps>) {
     const { resetAll, selectedTab, handleTabChange, tabIndexesWithError } = shortCircuitMethods;
 
     const watchSpecificParameters = useWatch({
@@ -61,14 +57,14 @@ function ShortCircuitParametersContent({
                         value={ShortCircuitParametersTabValues.GENERAL}
                         sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.GENERAL)}
                     />
-                    {isThereSpecificParameters && isDeveloperMode && (
+                    {isThereSpecificParameters && (
                         <Tab
                             label={<FormattedMessage id={ShortCircuitParametersTabValues.STUDY_AREA} />}
                             value={ShortCircuitParametersTabValues.STUDY_AREA}
                             sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.STUDY_AREA)}
                         />
                     )}
-                    {isThereSpecificParameters && isDeveloperMode && (
+                    {isThereSpecificParameters && (
                         <Tab
                             label={<FormattedMessage id={ShortCircuitParametersTabValues.POWER_ELECTRONICS} />}
                             value={ShortCircuitParametersTabValues.POWER_ELECTRONICS}
@@ -81,7 +77,7 @@ function ShortCircuitParametersContent({
                 <Grid container sx={styles.container}>
                     <Grid item sx={styles.maxWidth}>
                         <ShortCircuitGeneralTabPanel resetAll={resetAll} value={selectedTab} />
-                        {isThereSpecificParameters && isDeveloperMode && (
+                        {isThereSpecificParameters && (
                             <>
                                 <ShortCircuitStudyAreaTabPanel value={selectedTab} />
                                 <ShortCircuitPowerElectronicsTabPanel value={selectedTab} />
