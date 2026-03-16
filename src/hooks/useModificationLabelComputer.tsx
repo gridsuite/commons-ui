@@ -115,6 +115,9 @@ export const useModificationLabelComputer = () => {
                         return `: ${modificationMetadata.rootNetworkName} / ${modificationMetadata.nodeName} / ${computedDateFormatted}`;
                     }
                     return '';
+                case MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type:
+                    return modificationMetadata.name;
+                    break;
                 default:
                     return modificationMetadata.equipmentId || '';
             }
