@@ -117,7 +117,6 @@ export const useModificationLabelComputer = () => {
                     return '';
                 case MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type:
                     return modificationMetadata.name;
-                    break;
                 default:
                     return modificationMetadata.equipmentId || '';
             }
