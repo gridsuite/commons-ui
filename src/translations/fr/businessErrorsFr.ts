@@ -63,6 +63,7 @@ export const businessErrorsFr = {
     'shortcircuit.missingExtensionData': "Données de l'extension court-circuit manquantes.",
     'shortcircuit.inconsistentVoltageLevels':
         'Des postes ont des données Icc incohérentes. Vérifiez les logs pour déterminer lesquels.',
+    'shortcircuit.busOutOfNodeCluster': 'Le nœud électrique sélectionné est en dehors de la zone intérieure',
     'securityAnalysis.contingencyListConfigEmpty': 'La configuration ne contient aucun aléas.',
     'dynamicMapping.mappingNameNotProvided': 'Nom du mapping non fourni',
     'dynamicSecurityAnalysis.providerNotFound': "Simulateur d'analyse de sécurité dynamique non trouvé.",
