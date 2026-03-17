@@ -4,17 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FieldConstants } from '../../../../../../utils';
-import yup from '../../../../../../utils/yupConfig';
+import { array, object, string } from 'yup';
+import { FieldConstants, YUP_REQUIRED } from '../../../../../../utils';
 
 export const getSwitchTypeSchema = () =>
-    yup.object().shape({
-        [FieldConstants.SWITCH_KIND]: yup.string().nullable().required(),
+    object().shape({
+        [FieldConstants.SWITCH_KIND]: string().nullable().required(YUP_REQUIRED),
     });
 
 export const getCreateSwitchesValidationSchema = (id = FieldConstants.SWITCH_KINDS) => {
     return {
-        [id]: yup.array().nullable().of(getSwitchTypeSchema()),
+        [id]: array().nullable().of(getSwitchTypeSchema()),
     };
 };
 
