@@ -157,10 +157,7 @@ export const voltageLevelCreationFormSchema = object()
                 [FieldConstants.BUS_BAR_SECTION_ID2]: string()
                     .nullable()
                     .required(YUP_REQUIRED)
-                    .notOneOf(
-                        [ref(FieldConstants.BUS_BAR_SECTION_ID1), null],
-                        'CreateCouplingDeviceIdenticalBusBar'
-                    ),
+                    .notOneOf([ref(FieldConstants.BUS_BAR_SECTION_ID1), null], 'CreateCouplingDeviceIdenticalBusBar'),
             })
         ),
     })

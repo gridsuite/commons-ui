@@ -31,14 +31,13 @@ export function fetchBusBarSectionsForNewCoupler(
     urlSearchParams.append('voltageLevelId', voltageLevelId);
     urlSearchParams.append('busBarCount', String(busBarCount));
     urlSearchParams.append('sectionCount', String(sectionCount));
-    for (const kind of switchKindList) {
+    switchKindList.forEach((kind) => {
         urlSearchParams.append('switchKindList', kind);
-    }
+    });
 
     const url =
         `${PREFIX_NETWORK_MODIFICATION_QUERIES}/v1/network-modifications/busbar-sections-for-new-coupler` +
-        '?' +
-        urlSearchParams.toString();
+        `?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
 }
