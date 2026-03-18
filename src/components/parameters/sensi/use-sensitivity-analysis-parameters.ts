@@ -15,16 +15,17 @@ import {
     FactorsCount,
     FieldConstants,
     SensitivityAnalysisParametersInfos,
+    snackWithFallback,
     UseParametersBackendReturnProps,
 } from '../../../utils';
 import {
+    filterSensiParameterRows,
     getFormSchema,
     getSensiHvdcformatNewParams,
     getSensiInjectionsformatNewParams,
     getSensiInjectionsSetformatNewParams,
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
-    filterSensiParameterRows,
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
@@ -54,10 +55,9 @@ import {
     getSensitivityAnalysisFactorsCount,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { updateParameter } from '../../../services';
+import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
-import { snackWithFallback } from '../../../utils/error';
 import { ACTIVATED } from '../common/parameter-table';
 
 export interface UseSensitivityAnalysisParametersReturn {
@@ -116,6 +116,8 @@ export const useSensitivityAnalysisParametersForm = ({
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
+    const [factorCountParams, setFactorCountParams] = useState<SensitivityAnalysisParametersInfos | null>(null);
+
     const emptyFormData = useMemo(() => {
         return {
             ...getNameElementEditorEmptyFormData(name, description),
@@ -168,6 +170,7 @@ export const useSensitivityAnalysisParametersForm = ({
     const resetFactorsCount = useCallback(() => {
         setIsLoading(false);
         setFactorsCount(DEFAULT_FACTOR_COUNT);
+        setFactorCountParams(null);
     }, []);
 
     const updateFactorCount = useCallback(() => {
@@ -203,26 +206,49 @@ export const useSensitivityAnalysisParametersForm = ({
             [PARAMETER_SENSI_PST]: filteredPst,
             [PARAMETER_SENSI_NODES]: filteredNodes,
         };
+        setFactorCountParams(formatNewParams(filteredFormValues));
+    }, [currentNodeUuid, currentRootNetworkUuid, formatNewParams, getValues, resetFactorsCount]);
 
+    useEffect(() => {
+        if (!factorCountParams || !currentNodeUuid || !currentRootNetworkUuid) {
+            // return a no-op cleanup function to ignore eslint consistent-return
+            return () => {};
+        }
+
+        // timeout to avoid a 'flash' of the loading state when backend responds instantly
+        let loadingTimeoutId: ReturnType<typeof setTimeout>;
+
+        const controller = new AbortController();
+        // build a signal which allows us to cancel the fetch by calling controller.abort() or the timeout fires
+        const abortSignal = AbortSignal.any([controller.signal, AbortSignal.timeout(DEFAULT_TIMEOUT_MS)]);
         setIsLoading(true);
+
         getSensitivityAnalysisFactorsCount(
             studyUuid,
             currentNodeUuid,
             currentRootNetworkUuid,
-            formatNewParams(filteredFormValues)
+            factorCountParams,
+            abortSignal
         )
             .then((factorsCountResponse) => {
                 setFactorsCount(factorsCountResponse);
-                const timeoutId = setTimeout(() => {
+                loadingTimeoutId = setTimeout(() => {
                     setIsLoading(false);
                 }, 500);
-                return () => clearTimeout(timeoutId);
             })
             .catch((error) => {
+                if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
+                    return;
+                }
                 setIsLoading(false);
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
             });
-    }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid, getValues, resetFactorsCount]);
+
+        return () => {
+            controller?.abort(new Error(IGNORE_SIGNAL));
+            clearTimeout(loadingTimeoutId);
+        };
+    }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams]);
 
     const onFormChanged = useCallback(() => {
         updateFactorCount();
