@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchText, safeEncodeURIComponent } from './utils';
+import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
 
@@ -18,6 +18,28 @@ export function fetchNetworkModification(modificationUuid: UUID) {
     const modificationFetchUrl = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
     return backendFetch(modificationFetchUrl);
+}
+
+export function fetchBusBarSectionsForNewCoupler(
+    voltageLevelId: string,
+    busBarCount: number,
+    sectionCount: number,
+    switchKindList: string[]
+): Promise<string[]> {
+    console.info('Fetching bus bar sections ids for voltage level : ', voltageLevelId);
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('voltageLevelId', voltageLevelId);
+    urlSearchParams.append('busBarCount', String(busBarCount));
+    urlSearchParams.append('sectionCount', String(sectionCount));
+    switchKindList.forEach((kind) => {
+        urlSearchParams.append('switchKindList', kind);
+    });
+
+    const url =
+        `${PREFIX_NETWORK_MODIFICATION_QUERIES}/v1/network-modifications/busbar-sections-for-new-coupler` +
+        `?${urlSearchParams.toString()}`;
+    console.debug(url);
+    return backendFetchJson(url);
 }
 
 export function updateModification({ modificationUuid, body }: { modificationUuid: UUID; body: string }) {

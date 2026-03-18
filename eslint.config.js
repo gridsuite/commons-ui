@@ -148,6 +148,11 @@ const projectConfig = [
                             message:
                                 'Deep imports from MUI libraries are forbidden. Import only from the library root.',
                         },
+                        {
+                            group: ['@mui/icons-material/*'],
+                            message:
+                                "Deep imports from MUI icons are forbidden. Use `import { IconName } from '@mui/icons-material'` instead.",
+                        },
                     ],
                 },
             ],
