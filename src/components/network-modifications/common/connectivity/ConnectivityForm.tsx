@@ -5,9 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import ExploreOffOutlinedIcon from '@mui/icons-material/ExploreOffOutlined';
-import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import { Grid, GridDirection, IconButton, Tooltip } from '@mui/material';
+import {
+    ExploreOffOutlined as ExploreOffOutlinedIcon,
+    ExploreOutlined as ExploreOutlinedIcon,
+} from '@mui/icons-material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';

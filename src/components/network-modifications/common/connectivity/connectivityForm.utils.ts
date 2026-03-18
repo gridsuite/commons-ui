@@ -6,7 +6,7 @@
  */
 
 import { bool, number, object, string } from 'yup';
-import { VoltageLevelFormInfos } from '../../voltage-level';
+import { VoltageLevelFormInfos } from '../../voltage-level/voltage-level.type';
 import { FieldConstants } from '../../../../utils';
 
 const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
