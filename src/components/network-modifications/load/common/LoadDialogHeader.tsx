@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
 import { Box, Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { filledTextField } from '../../common';

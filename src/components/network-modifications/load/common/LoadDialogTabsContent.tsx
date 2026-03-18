@@ -6,7 +6,6 @@
  */
 
 import { Box } from '@mui/material';
-import React from 'react';
 import { LoadDialogTab } from './load.utils';
 import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
 import { LoadFormInfos } from './load.types';
