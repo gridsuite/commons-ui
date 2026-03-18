@@ -260,13 +260,7 @@ export const useLoadFlowParametersForm = (
         reset(toLoadFlowFormValues(_params));
     });
 
-    useEffect(() => {
-        if (!params) {
-            return;
-        }
-        resetForm(params);
-    }, [paramsLoaded, params, specificParamsDescription]);
-
+    // Reset only when we switch provider from UI
     useEffect(() => {
         if (!watchProvider || watchProvider === previousWatchProviderRef.current) {
             return;
@@ -294,6 +288,14 @@ export const useLoadFlowParametersForm = (
 
         previousWatchProviderRef.current = watchProvider;
     }, [defaultLimitReductions, formMethods, params?.limitReductions, specificParamsDescription, watchProvider]);
+
+    useEffect(() => {
+        if (!params) {
+            return;
+        }
+        resetForm(params);
+        previousWatchProviderRef.current = params.provider; // Do no reset values when switch provider from a callBack
+    }, [paramsLoaded, params, specificParamsDescription]);
 
     return {
         formMethods,
