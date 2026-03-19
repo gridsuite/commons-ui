@@ -7,26 +7,22 @@
 import { UUID } from 'node:crypto';
 import { EquipmentType, ModificationType } from '../../../utils';
 
-export interface LccShuntCompensatorConnectionInfos {
+export interface LccShuntCompensatorConnectionDto {
     id: string;
     connectedToHvdc: boolean;
 }
 
-export interface EquipmentDeletionSpecificInfos {
+// cf HvdcLccDeletionInfos from modification-server
+export interface LccDeletionDto {
     specificType: string;
     // below is specific to HVDC-LCC deletion (then specificType = HVDC_LINE_LCC_DELETION_SPECIFIC_TYPE)
-    mcsOnSide1: LccShuntCompensatorConnectionInfos[];
-    mcsOnSide2: LccShuntCompensatorConnectionInfos[];
-}
-
-// Maps HvdcLccDeletionInfos from modification-server
-export interface HvdcLccDeletionInfos extends EquipmentDeletionSpecificInfos {
-    id?: UUID;
+    mcsOnSide1: LccShuntCompensatorConnectionDto[];
+    mcsOnSide2: LccShuntCompensatorConnectionDto[];
 }
 
 export type EquipmentDeletionDto = {
     type: ModificationType;
     equipmentId: UUID;
     equipmentType: EquipmentType;
-    equipmentInfos?: EquipmentDeletionSpecificInfos;
+    equipmentInfos?: LccDeletionDto;
 };

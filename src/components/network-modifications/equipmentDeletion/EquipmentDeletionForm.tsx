@@ -9,7 +9,7 @@ import { Grid } from '@mui/material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
-import { EquipmentDeletionDto, HvdcLccDeletionInfos } from './equipmentDeletion.types';
+import { EquipmentDeletionDto, LccDeletionDto } from './equipmentDeletion.types';
 import useHvdcLccDeletion from './hvdcLccDeletion/useHvdcLccDeletion';
 import {
     areIdsEqual,
@@ -29,7 +29,7 @@ import { useGetLabelEquipmentTypes } from '../../../hooks/useGetLabelEquipmentTy
 export interface EquipmentDeletionFormProps {
     editData?: EquipmentDeletionDto;
     fetchEquipmentIds?: (eqptType: EquipmentType) => Promise<string[]>;
-    fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
+    fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<LccDeletionDto>;
 }
 
 const NULL_UUID: UUID = '00000000-0000-0000-0000-000000000000';

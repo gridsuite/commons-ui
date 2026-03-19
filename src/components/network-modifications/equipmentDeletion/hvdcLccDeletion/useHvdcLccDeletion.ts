@@ -8,16 +8,12 @@
 import { useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import {
-    EquipmentDeletionDto,
-    HvdcLccDeletionInfos,
-    LccShuntCompensatorConnectionInfos,
-} from '../equipmentDeletion.types';
+import { EquipmentDeletionDto, LccDeletionDto, LccShuntCompensatorConnectionDto } from '../equipmentDeletion.types';
 import { FieldConstants, snackWithFallback } from '../../../../utils';
 import { useSnackMessage } from '../../../../hooks';
 
 export interface UseHvdcLccDeletionProps {
-    fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
+    fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<LccDeletionDto>;
 }
 
 const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeletionProps) => {
@@ -31,10 +27,10 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeleti
     const { snackError } = useSnackMessage();
 
     const updateMcsLists = useCallback(
-        (hvdcLineData: HvdcLccDeletionInfos, editData?: EquipmentDeletionDto) => {
+        (hvdcLineData: LccDeletionDto, editData?: EquipmentDeletionDto) => {
             function mergeMcsLists(
-                dynamicList: LccShuntCompensatorConnectionInfos[],
-                editList: LccShuntCompensatorConnectionInfos[]
+                dynamicList: LccShuntCompensatorConnectionDto[],
+                editList: LccShuntCompensatorConnectionDto[]
             ) {
                 if (!dynamicList?.length && !editList?.length) {
                     return [];
@@ -47,7 +43,7 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeleti
                     return dynamicList;
                 }
                 // dynamicList and editList are not empty : let's merge them
-                const mergedList: LccShuntCompensatorConnectionInfos[] = dynamicList.map((obj) => {
+                const mergedList: LccShuntCompensatorConnectionDto[] = dynamicList.map((obj) => {
                     return { ...obj, connectedToHvdc: false };
                 });
                 // now overwrite dynamic values with edited modification values
@@ -97,7 +93,7 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeleti
                         snackWithFallback(snackError, error, { headerId: 'FetchHvdcLineWithShuntCompensatorsError' });
                     });
             } else {
-                updateMcsLists({} as HvdcLccDeletionInfos, editData);
+                updateMcsLists({} as LccDeletionDto, editData);
             }
         },
         [fetchHvdcWithShuntCompensators, setValue, snackError, updateMcsLists]
