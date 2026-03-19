@@ -8,7 +8,7 @@
 import { array, boolean, object, string } from 'yup';
 import { FieldConstants, YUP_REQUIRED } from '../../../../utils';
 
-const getMscConnectionsSchema = () =>
+const getMcsConnectionsSchema = () =>
     array()
         .of(
             object().shape({
@@ -22,8 +22,8 @@ export const getHvdcLccDeletionSchema = () =>
     object()
         .shape({
             [FieldConstants.DELETION_SPECIFIC_TYPE]: string().required(YUP_REQUIRED),
-            [FieldConstants.SHUNT_COMPENSATOR_SIDE_1]: getMscConnectionsSchema(),
-            [FieldConstants.SHUNT_COMPENSATOR_SIDE_2]: getMscConnectionsSchema(),
+            [FieldConstants.SHUNT_COMPENSATOR_SIDE_1]: getMcsConnectionsSchema(),
+            [FieldConstants.SHUNT_COMPENSATOR_SIDE_2]: getMcsConnectionsSchema(),
         })
         .optional()
         .nullable();
