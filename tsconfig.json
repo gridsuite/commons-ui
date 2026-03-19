@@ -4,18 +4,25 @@
     // https://www.npmjs.com/package/@tsconfig/vite-react
     // https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
     "compilerOptions": {
-        "module": "esnext",
-        "moduleResolution": "bundler",
+        /* Language and Environment */
         "target": "es6",
         "lib": ["dom", "dom.iterable", "esnext"],
+        "jsx": "react-jsx",
+
+        /* Modules and Resolution */
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+
+        /* Type Checking */
         "strict": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx"
+
+        /* Output */
+        "noEmit": true
     },
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "include": [
