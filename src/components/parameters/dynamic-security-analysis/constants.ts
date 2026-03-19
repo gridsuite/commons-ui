@@ -5,6 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './common';
-export * from './substation';
-export * from './voltage-level';
+// tab CONTINGENCY
+export const CONTINGENCIES_START_TIME = 'contingenciesStartTime';
+export const CONTINGENCIES_LIST_INFOS = 'contingencyListInfos';
+
+// tab SCENARIO
+export const SCENARIO_DURATION = 'scenarioDuration';
