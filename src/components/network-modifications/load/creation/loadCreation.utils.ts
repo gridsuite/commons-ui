@@ -6,7 +6,6 @@
  */
 
 import { InferType, number, object, string } from 'yup';
-import { FieldErrors } from 'react-hook-form';
 import {
     DeepNullable,
     FieldConstants,
@@ -27,7 +26,6 @@ import {
     toModificationProperties,
 } from '../../common/properties/';
 import { LoadCreationDto } from './loadCreation.types';
-import { LoadDialogTab } from '../common';
 
 export const loadCreationFormSchema = object()
     .shape({
@@ -88,19 +86,4 @@ export const loadCreationFormToDto = (loadForm: LoadCreationFormData): LoadCreat
         terminalConnected: loadForm.connectivity.terminalConnected,
         properties: toModificationProperties(loadForm),
     };
-};
-
-export const loadCreationTabsInError = (errors: FieldErrors) => {
-    const tabsInError: number[] = [];
-    if (
-        errors?.[FieldConstants.ACTIVE_POWER_SET_POINT] !== undefined ||
-        errors?.[FieldConstants.REACTIVE_POWER_SET_POINT] !== undefined ||
-        errors?.[FieldConstants.ADDITIONAL_PROPERTIES] !== undefined
-    ) {
-        tabsInError.push(LoadDialogTab.CHARACTERISTICS_TAB);
-    }
-    if (errors?.[FieldConstants.CONNECTIVITY] !== undefined) {
-        tabsInError.push(LoadDialogTab.CONNECTIVITY_TAB);
-    }
-    return tabsInError;
 };
