@@ -10,7 +10,8 @@ import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
 import { CustomError } from '../utils/types/CustomError';
 
-const DEFAULT_TIMEOUT_MS = 50_000;
+export const DEFAULT_TIMEOUT_MS = 50_000;
+export const IGNORE_SIGNAL = 'IGNORE_SIGNAL';
 
 /** Optional convenience: allow per-call timeout override without crafting a signal manually. */
 type FetchInitWithTimeout = RequestInit & {
