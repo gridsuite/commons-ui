@@ -10,12 +10,12 @@ import {
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import { FieldConstants, sanitizeString, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants, ModificationType, sanitizeString, YUP_REQUIRED } from '../../../../utils';
 import { SubstationCreationDto } from './substationCreation.types';
 
 export const substationCreationFormToDto = (substationForm: SubstationCreationFormData): SubstationCreationDto => {
     return {
-        type: 'SUBSTATION_CREATION',
+        type: ModificationType.SUBSTATION_CREATION,
         equipmentId: substationForm.equipmentID,
         equipmentName: sanitizeString(substationForm.equipmentName),
         country: substationForm.country ?? null,
