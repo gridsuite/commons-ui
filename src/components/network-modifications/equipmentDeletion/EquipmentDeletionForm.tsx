@@ -28,16 +28,16 @@ import { useGetLabelEquipmentTypes } from '../../../hooks/useGetLabelEquipmentTy
 
 export interface EquipmentDeletionFormProps {
     editData?: EquipmentDeletionDto;
-    fetchEquipmentIdsPromise?: (eqptType: EquipmentType) => Promise<string[]>;
-    fetchHvdcWithShuntCompensatorsPromise?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
+    fetchEquipmentIds?: (eqptType: EquipmentType) => Promise<string[]>;
+    fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
 }
 
 const NULL_UUID: UUID = '00000000-0000-0000-0000-000000000000';
 
 export function EquipmentDeletionForm({
     editData,
-    fetchEquipmentIdsPromise,
-    fetchHvdcWithShuntCompensatorsPromise,
+    fetchEquipmentIds,
+    fetchHvdcWithShuntCompensators,
 }: Readonly<EquipmentDeletionFormProps>) {
     const { snackError } = useSnackMessage();
     const editedIdRef = useRef<UUID | null>(null);
@@ -52,7 +52,7 @@ export function EquipmentDeletionForm({
     const watchSpecificData = useWatch({
         name: FieldConstants.DELETION_SPECIFIC_DATA,
     });
-    const { specificUpdate: hvdcLccSpecificUpdate } = useHvdcLccDeletion({ fetchHvdcWithShuntCompensatorsPromise });
+    const { specificUpdate: hvdcLccSpecificUpdate } = useHvdcLccDeletion({ fetchHvdcWithShuntCompensators });
     const {
         setValue,
         formState: { isDirty, dirtyFields },
@@ -81,11 +81,11 @@ export function EquipmentDeletionForm({
         setEquipmentsOptions([]);
         let ignore = false;
 
-        if (watchType && fetchEquipmentIdsPromise) {
+        if (watchType && fetchEquipmentIds) {
             if (watchType !== currentTypeRef.current) {
                 currentTypeRef.current = watchType;
             }
-            fetchEquipmentIdsPromise(watchType)
+            fetchEquipmentIds(watchType)
                 .then((equipmentIds) => {
                     if (!ignore) {
                         setEquipmentsOptions(
@@ -101,17 +101,17 @@ export function EquipmentDeletionForm({
         return () => {
             ignore = true;
         };
-    }, [fetchEquipmentIdsPromise, snackError, watchType]);
+    }, [fetchEquipmentIds, snackError, watchType]);
 
     useEffect(() => {
-        if (!fetchHvdcWithShuntCompensatorsPromise && isDirty && dirtyFields[FieldConstants.EQUIPMENT_ID]) {
+        if (!fetchHvdcWithShuntCompensators && isDirty && dirtyFields[FieldConstants.EQUIPMENT_ID]) {
             // without a study network, we clean the MCS lists when the equipmentId is manually change (or reset after equipment type manual change)
             setValue(FieldConstants.DELETION_SPECIFIC_DATA, null);
         }
-    }, [fetchHvdcWithShuntCompensatorsPromise, isDirty, dirtyFields, setValue]);
+    }, [fetchHvdcWithShuntCompensators, isDirty, dirtyFields, setValue]);
 
     useEffect(() => {
-        if (!fetchHvdcWithShuntCompensatorsPromise) {
+        if (!fetchHvdcWithShuntCompensators) {
             // without a study network, we can not merge editData with dynamic data
             return;
         }
@@ -133,14 +133,7 @@ export function EquipmentDeletionForm({
         } else {
             setValue(FieldConstants.DELETION_SPECIFIC_DATA, null);
         }
-    }, [
-        editData,
-        fetchHvdcWithShuntCompensatorsPromise,
-        hvdcLccSpecificUpdate,
-        setValue,
-        snackError,
-        watchEquipmentId,
-    ]);
+    }, [editData, fetchHvdcWithShuntCompensators, hvdcLccSpecificUpdate, setValue, snackError, watchEquipmentId]);
 
     const handleTypeChange = useCallback(() => {
         setValue(FieldConstants.EQUIPMENT_ID, null);

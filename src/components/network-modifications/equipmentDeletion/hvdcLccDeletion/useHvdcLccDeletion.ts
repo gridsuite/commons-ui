@@ -17,10 +17,10 @@ import { FieldConstants, snackWithFallback } from '../../../../utils';
 import { useSnackMessage } from '../../../../hooks';
 
 export interface UseHvdcLccDeletionProps {
-    fetchHvdcWithShuntCompensatorsPromise?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
+    fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<HvdcLccDeletionInfos>;
 }
 
-const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLccDeletionProps) => {
+const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeletionProps) => {
     const { replace: replaceMcsList1 } = useFieldArray({
         name: `${FieldConstants.DELETION_SPECIFIC_DATA}.${FieldConstants.SHUNT_COMPENSATOR_SIDE_1}`,
     });
@@ -87,8 +87,8 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLc
 
     const specificUpdate = useCallback(
         (equipmentId: UUID, editData?: EquipmentDeletionDto) => {
-            if (fetchHvdcWithShuntCompensatorsPromise) {
-                fetchHvdcWithShuntCompensatorsPromise(equipmentId)
+            if (fetchHvdcWithShuntCompensators) {
+                fetchHvdcWithShuntCompensators(equipmentId)
                     .then((hvdcLineData) => {
                         updateMcsLists(hvdcLineData, editData);
                     })
@@ -100,7 +100,7 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensatorsPromise }: UseHvdcLc
                 updateMcsLists({} as HvdcLccDeletionInfos, editData);
             }
         },
-        [fetchHvdcWithShuntCompensatorsPromise, setValue, snackError, updateMcsLists]
+        [fetchHvdcWithShuntCompensators, setValue, snackError, updateMcsLists]
     );
 
     return { specificUpdate };
