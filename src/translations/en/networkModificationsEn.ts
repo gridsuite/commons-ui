@@ -29,6 +29,7 @@ export const networkModificationsEn = {
     'network_modifications.GENERATOR_MODIFICATION': 'Modifying generator {computedLabel}',
     'network_modifications.LINE_CREATION': 'Creating line {computedLabel}',
     'network_modifications.LINE_MODIFICATION': 'Modifying line {computedLabel}',
+    'network_modifications.COMPOSITE_MODIFICATION': '{computedLabel}',
     'network_modifications.TWO_WINDINGS_TRANSFORMER_CREATION': 'Creating 2 windings transformer {computedLabel}',
     'network_modifications.TWO_WINDINGS_TRANSFORMER_MODIFICATION': 'Modifying 2 windings transformer {computedLabel}',
     'network_modifications.OPERATING_STATUS_MODIFICATION':
