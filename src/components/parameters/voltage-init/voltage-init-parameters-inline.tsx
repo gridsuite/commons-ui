@@ -112,10 +112,23 @@ export function VoltageInitParametersInLine({
                             <LabelledButton
                                 callback={() => setOpenSelectParameterDialog(true)}
                                 label="settings.button.chooseSettings"
+                                data-testid="ChooseSettingsVoltageInit"
                             />
-                            <LabelledButton callback={handleOpenSaveDialog} label="save" />
-                            <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                            <SubmitButton onClick={handleSubmit(voltageInitMethods.onSaveInline)} variant="outlined">
+                            <LabelledButton
+                                callback={handleOpenSaveDialog}
+                                label="save"
+                                data-testid="SaveSettingsVoltageInit"
+                            />
+                            <LabelledButton
+                                callback={handleResetClick}
+                                label="resetToDefault"
+                                data-testid="ResetSettingsVoltageInit"
+                            />
+                            <SubmitButton
+                                onClick={handleSubmit(voltageInitMethods.onSaveInline)}
+                                variant="outlined"
+                                data-testid="SubmitSettingsVoltageInit"
+                            >
                                 <FormattedMessage id="validate" />
                             </SubmitButton>
                         </Grid>
