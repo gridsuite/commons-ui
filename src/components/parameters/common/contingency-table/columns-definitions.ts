@@ -4,7 +4,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
+import {
+    Parameters,
+    ColumnsDef,
+    ID,
+    NAME,
+    DESCRIPTION,
+    ACTIVATED,
+    CONTAINER_NAME,
+    CONTAINER_ID,
+} from '../parameter-table';
 import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
@@ -71,8 +80,8 @@ export const toFormValuesContingencyListsInfos = (contingencyListsInfos: Conting
     return {
         [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: ContingencyListsInfos) => ({
             [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IdName) => ({
-                [NAME]: c[NAME],
-                [ID]: c[ID],
+                [CONTAINER_NAME]: c[NAME],
+                [CONTAINER_ID]: c[ID],
             })),
             [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
             [ACTIVATED]: contingencyListInfos[ACTIVATED],

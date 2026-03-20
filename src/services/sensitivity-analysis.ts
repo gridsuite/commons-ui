@@ -9,7 +9,7 @@ import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils'
 import { FactorsCount, SensitivityAnalysisParametersInfos } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 
-const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
+const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/study/v1/sensitivity-analysis/parameters`;
 const PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis`;
 export const getStudyUrl = (studyUuid: UUID | null) =>
     `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
