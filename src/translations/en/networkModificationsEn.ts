@@ -90,6 +90,8 @@ export const networkModificationsEn = {
     Country: 'Country',
     CreateVoltageLevel: 'Create voltage level',
     VoltageLevelCreationError: 'Error while creating voltage level',
+    ModifyVoltageLevel: 'Modify a voltage level',
+    VoltageLevelModificationError: 'Error while modifying a voltage level',
     SUBSTATION: 'Substation',
     VoltageText: 'Voltage',
     NominalVoltage: 'Nominal voltage',
