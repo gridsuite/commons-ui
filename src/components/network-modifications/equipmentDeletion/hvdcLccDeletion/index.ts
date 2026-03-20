@@ -6,5 +6,6 @@
  */
 
 export * from './hvdcLccDeletion.utils';
+export * from './ShuntCompensatorSelectionForm';
 export * from './useHvdcLccDeletion';
 export * from './HvdcLccDeletionSpecificForm';
