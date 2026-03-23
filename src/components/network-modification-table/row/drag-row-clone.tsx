@@ -7,13 +7,13 @@
 
 import { Box } from '@mui/material';
 import { flexRender, Row } from '@tanstack/react-table';
-import { createCellStyle, styles } from '../styles';
+import { createCellStyle, networkTableStyles } from '../network-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
 import { NetworkModificationMetadata } from '../../../hooks';
 
 function DragCloneRow({ row }: { row: Row<NetworkModificationMetadata> }) {
     return (
-        <Box sx={styles.dragRowClone}>
+        <Box sx={networkTableStyles.dragRowClone}>
             {row
                 .getVisibleCells()
                 .filter((cell) =>

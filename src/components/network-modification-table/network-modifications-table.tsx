@@ -11,12 +11,12 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 import { DragDropContext, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { UUID } from 'node:crypto';
-import { NetworkModificationEditorNameHeaderProps } from './renderers/network-modification-node-editor-name-header';
-import { createHeaderCellStyle, MODIFICATION_ROW_HEIGHT, styles } from './styles';
+import { NetworkModificationEditorNameHeaderProps } from './renderers';
 import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
 import ModificationRow from './row/modification-row';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { NetworkModificationMetadata } from '../../hooks';
+import { createHeaderCellStyle, MODIFICATION_ROW_HEIGHT, networkTableStyles } from './network-table-styles';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -104,14 +104,14 @@ export function NetworkModificationsTable({
 
     return (
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={onRowDragStart} onDragUpdate={handleDragUpdate}>
-            <Box sx={styles.tableWrapper}>
+            <Box sx={networkTableStyles.tableWrapper}>
                 <Droppable droppableId="modifications-table" mode="virtual" renderClone={renderClone}>
                     {(provided: DroppableProvided) => (
-                        <Box ref={containerRef} sx={styles.container}>
-                            <Table sx={styles.table}>
-                                <TableHead sx={styles.thead}>
+                        <Box ref={containerRef} sx={networkTableStyles.container}>
+                            <Table sx={networkTableStyles.table}>
+                                <TableHead sx={networkTableStyles.thead}>
                                     {table.getHeaderGroups().map((headerGroup) => (
-                                        <TableRow key={headerGroup.id} sx={styles.tableRow}>
+                                        <TableRow key={headerGroup.id} sx={networkTableStyles.tableRow}>
                                             {headerGroup.headers.map((header) => (
                                                 <TableCell
                                                     key={header.id}
@@ -132,7 +132,7 @@ export function NetworkModificationsTable({
                                 <TableBody
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    sx={{ ...styles.tableBody, height: `${virtualizer.getTotalSize()}px` }}
+                                    sx={{ ...networkTableStyles.tableBody, height: `${virtualizer.getTotalSize()}px` }}
                                 >
                                     {virtualItems.map((virtualRow) => {
                                         const row = rows[virtualRow.index];

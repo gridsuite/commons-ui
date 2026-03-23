@@ -5,15 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { SetStateAction } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
 import {
-    NetworkModificationEditorNameHeader,
     NetworkModificationEditorNameHeaderProps,
-} from './renderers/network-modification-node-editor-name-header';
-import NameCell from './renderers/name-cell';
-import { styles } from './styles';
-import { NetworkModificationMetadata } from '../../hooks';
+} from './renderers';
 
 export const BASE_MODIFICATION_TABLE_COLUMNS = {
     DRAG_HANDLE: {
@@ -43,24 +37,3 @@ export const AUTO_EXTENSIBLE_COLUMNS = Object.values(BASE_MODIFICATION_TABLE_COL
     .map((column) => column.id);
 
 export type NameHeaderProps = Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'>;
-
-// TODO : ceci devrait probablement être à la fois dans gridexplore et gridstudy avec uniquement les constantses en commun
-// à séparer à la fin
-export const createBaseColumns = (
-    isRowDragDisabled: boolean,
-    modificationsCount: number,
-    nameHeaderProps: NameHeaderProps,
-    setModifications: React.Dispatch<SetStateAction<NetworkModificationMetadata[]>>
-): ColumnDef<NetworkModificationMetadata>[] => [
-    {
-        id: BASE_MODIFICATION_TABLE_COLUMNS.NAME.id,
-        header: () => (
-            <NetworkModificationEditorNameHeader modificationCount={modificationsCount} {...nameHeaderProps} />
-        ),
-        cell: ({ row }) => <NameCell row={row} />,
-        meta: {
-            cellStyle: styles.columnCell.modificationName,
-        },
-        minSize: 160,
-    },
-];

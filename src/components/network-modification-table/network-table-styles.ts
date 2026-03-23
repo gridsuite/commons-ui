@@ -21,7 +21,7 @@ export const MODIFICATION_ROW_HEIGHT = 41;
 
 // Static styles
 
-export const styles = {
+export const networkTableStyles = {
     tableWrapper: (theme) => ({
         display: 'flex',
         flexDirection: 'column',

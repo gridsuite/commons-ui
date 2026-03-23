@@ -9,7 +9,7 @@ import { JSX, RefObject, useCallback } from 'react';
 import { Row } from '@tanstack/react-table';
 import { DraggableProvided, DraggableRubric, DraggableStateSnapshot, DragUpdate, DropResult } from '@hello-pangea/dnd';
 import DragCloneRow from './row/drag-row-clone';
-import { DROP_INDICATOR_BOTTOM, DROP_INDICATOR_TOP } from './styles';
+import { DROP_INDICATOR_BOTTOM, DROP_INDICATOR_TOP } from './network-table-styles';
 import { NetworkModificationMetadata } from '../../hooks';
 
 interface UseModificationsDragAndDropParams {

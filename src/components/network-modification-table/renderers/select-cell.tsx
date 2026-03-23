@@ -8,7 +8,7 @@
 import React, { FunctionComponent, useCallback } from 'react';
 import { Checkbox } from '@mui/material';
 import { Row, Table } from '@tanstack/react-table';
-import { styles } from '../styles';
+import { networkTableStyles } from '../network-table-styles';
 import { NetworkModificationMetadata } from '../../../hooks';
 
 interface SelectCellRendererProps {
@@ -72,7 +72,7 @@ const SelectCell: FunctionComponent<SelectCellRendererProps> = ({ row, table }) 
             checked={row.getIsSelected()}
             disabled={!row.getCanSelect()}
             onClick={handleChange}
-            sx={styles.selectCheckBox}
+            sx={networkTableStyles.selectCheckBox}
         />
     );
 };

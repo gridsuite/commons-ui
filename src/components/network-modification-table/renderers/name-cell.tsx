@@ -9,11 +9,11 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, Tooltip } from '@mui/material';
-import { createModificationNameCellStyle, styles } from '../styles';
+import { createModificationNameCellStyle, networkTableStyles } from '../network-table-styles';
 import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
 import { mergeSx } from '../../../utils';
 
-const NameCell: FunctionComponent<{ row: Row<NetworkModificationMetadata> }> = ({ row }) => {
+export const NameCell: FunctionComponent<{ row: Row<NetworkModificationMetadata> }> = ({ row }) => {
     const intl = useIntl();
     const { computeLabel } = useModificationLabelComputer();
 
@@ -30,9 +30,9 @@ const NameCell: FunctionComponent<{ row: Row<NetworkModificationMetadata> }> = (
     const label = useMemo(() => getModificationLabel(row.original), [getModificationLabel, row.original]);
 
     return (
-        <Box sx={mergeSx(styles.tableCell, createModificationNameCellStyle(row.original.activated))}>
+        <Box sx={mergeSx(networkTableStyles.tableCell, createModificationNameCellStyle(row.original.activated))}>
             <Tooltip disableFocusListener disableTouchListener title={label}>
-                <Box sx={styles.modificationLabel}>{label}</Box>
+                <Box sx={networkTableStyles.modificationLabel}>{label}</Box>
             </Tooltip>
         </Box>
     );

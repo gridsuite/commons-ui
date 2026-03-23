@@ -8,7 +8,7 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FunctionComponent } from 'react';
-import { styles } from '../styles';
+import { networkTableStyles } from '../network-table-styles';
 
 export interface NetworkModificationEditorNameHeaderProps {
     modificationCount?: number;
@@ -31,9 +31,9 @@ export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModif
 
     if (isImpactedByNotification() && notificationMessageId) {
         return (
-            <Box sx={styles.modificationNameHeader}>
-                <Box sx={styles.icon}>
-                    <CircularProgress size="1em" sx={styles.modificationCircularProgress} />
+            <Box sx={networkTableStyles.modificationNameHeader}>
+                <Box sx={networkTableStyles.icon}>
+                    <CircularProgress size="1em" sx={networkTableStyles.modificationCircularProgress} />
                 </Box>
                 <Typography noWrap>
                     <FormattedMessage id={notificationMessageId} />
@@ -44,9 +44,9 @@ export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModif
 
     if (isFetchingModifications) {
         return (
-            <Box sx={styles.modificationNameHeader}>
-                <Box sx={styles.icon}>
-                    <CircularProgress size="1em" sx={styles.modificationCircularProgress} />
+            <Box sx={networkTableStyles.modificationNameHeader}>
+                <Box sx={networkTableStyles.icon}>
+                    <CircularProgress size="1em" sx={networkTableStyles.modificationCircularProgress} />
                 </Box>
                 <Typography noWrap>
                     <FormattedMessage id="network_modifications.modifications" />
@@ -56,10 +56,10 @@ export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModif
     }
 
     return (
-        <Box sx={styles.modificationNameHeader}>
+        <Box sx={networkTableStyles.modificationNameHeader}>
             {pendingState && (
-                <Box sx={styles.icon}>
-                    <CircularProgress size="1em" sx={styles.modificationCircularProgress} />
+                <Box sx={networkTableStyles.icon}>
+                    <CircularProgress size="1em" sx={networkTableStyles.modificationCircularProgress} />
                 </Box>
             )}
             <Typography noWrap>

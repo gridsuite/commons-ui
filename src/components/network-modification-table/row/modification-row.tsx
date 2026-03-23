@@ -10,9 +10,10 @@ import { flexRender, Row } from '@tanstack/react-table';
 import { TableCell, TableRow } from '@mui/material';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { createCellStyle, createRowSx, styles } from '../styles';
+import { createCellStyle, createRowSx, networkTableStyles } from '../network-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
 import { NetworkModificationMetadata } from '../../../hooks';
+import { mergeSx } from '../../../utils';
 
 interface ModificationRowProps {
     virtualRow: VirtualItem;
@@ -44,7 +45,7 @@ const ModificationRow = memo<ModificationRowProps>(
                             ref={provided.innerRef}
                             {...draggablePropsWithoutStyle}
                             data-row-id={row.original.uuid}
-                            sx={mergeSx(styles.tableRow, createRowSx(isHighlighted, snapshot.isDragging, virtualRow))}
+                            sx={mergeSx(networkTableStyles.tableRow, createRowSx(isHighlighted, snapshot.isDragging, virtualRow))}
                         >
                             {row.getVisibleCells().map((cell) => (
                                 <TableCell
