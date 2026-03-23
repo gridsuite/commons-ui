@@ -23,6 +23,7 @@ export interface VoltageLevelModificationFormProps {
 
 export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<VoltageLevelModificationFormProps>) {
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
+    const watchHideSubstationField = useWatch({ name: FieldConstants.HIDE_SUBSTATION_FIELD });
 
     const voltageLevelIdField = (
         <TextField
@@ -121,7 +122,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
             <Grid container spacing={2}>
                 <GridItem size={4}>{voltageLevelIdField}</GridItem>
                 <GridItem size={4}>{voltageLevelNameField}</GridItem>
-                <GridItem size={4}>{substationField}</GridItem>
+                {!watchHideSubstationField && <GridItem size={4}>{substationField}</GridItem>}
             </Grid>
             <GridSection title="VoltageText" />
             <Grid container spacing={2}>

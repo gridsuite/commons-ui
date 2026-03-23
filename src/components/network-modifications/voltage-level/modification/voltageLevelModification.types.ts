@@ -35,7 +35,6 @@ export interface VoltageLevelModificationDto {
     uuid?: UUID;
     equipmentId: string;
     equipmentName?: AttributeModification<string> | null;
-    substationId?: AttributeModification<string> | null;
     nominalV?: AttributeModification<number> | null;
     lowVoltageLimit?: AttributeModification<number> | null;
     highVoltageLimit?: AttributeModification<number> | null;

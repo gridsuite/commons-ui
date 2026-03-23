@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType, number, object, ref, string } from 'yup';
+import { boolean, InferType, number, object, ref, string } from 'yup';
 import {
     getPropertiesFromModification,
     modificationPropertiesSchema,
@@ -26,6 +26,7 @@ export const voltageLevelModificationFormSchema = object()
     .shape({
         [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+        [FieldConstants.HIDE_SUBSTATION_FIELD]: boolean().required(YUP_REQUIRED),
         [FieldConstants.SUBSTATION_ID]: string().nullable(),
         [FieldConstants.NOMINAL_V]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
@@ -59,7 +60,7 @@ export type VoltageLevelModificationFormData = InferType<typeof voltageLevelModi
 export const voltageLevelModificationEmptyFormData: VoltageLevelModificationFormData = {
     equipmentID: '',
     equipmentName: '',
-    substationId: null,
+    hideSubstationField: false,
     nominalV: null,
     lowVoltageLimit: null,
     highVoltageLimit: null,
@@ -74,7 +75,6 @@ export const voltageLevelModificationFormToDto = (
     type: ModificationType.VOLTAGE_LEVEL_MODIFICATION,
     equipmentId: formData.equipmentID,
     equipmentName: toModificationOperation(sanitizeString(formData.equipmentName)),
-    substationId: toModificationOperation(formData.substationId ?? null),
     nominalV: toModificationOperation(formData.nominalV ?? null),
     lowVoltageLimit: toModificationOperation(formData.lowVoltageLimit ?? null),
     highVoltageLimit: toModificationOperation(formData.highVoltageLimit ?? null),
@@ -93,7 +93,7 @@ export const voltageLevelModificationDtoToForm = (
 ): VoltageLevelModificationFormData => ({
     equipmentID: voltageLevelDto.equipmentId,
     equipmentName: voltageLevelDto.equipmentName?.value ?? '',
-    substationId: voltageLevelDto.substationId?.value ?? null,
+    hideSubstationField: false,
     nominalV: voltageLevelDto.nominalV?.value ?? null,
     lowVoltageLimit: voltageLevelDto.lowVoltageLimit?.value ?? null,
     highVoltageLimit: voltageLevelDto.highVoltageLimit?.value ?? null,
