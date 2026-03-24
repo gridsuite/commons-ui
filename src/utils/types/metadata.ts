@@ -17,7 +17,7 @@ export type Metadata = {
     hiddenInAppsMenu: boolean;
     hiddenUserInformation: boolean;
     resources?: MetaDataRessources[];
-    useEquipmentIdAsContingencyNameForPolygonCreation?: boolean;
+    useBusbarIdAsContingencyNameForPolygonCreation?: boolean;
 };
 
 export type StudyMetadata = Metadata & {
