@@ -124,11 +124,6 @@ export const useLoadFlowParametersForm = (
 
     const { watch, reset } = formMethods;
     const watchProvider = watch(PROVIDER);
-    const watchValues = watch();
-
-    useEffect(() => {
-        console.debug('LoadFlowParametersForm values:', watchValues);
-    }, [watchValues]);
 
     useEffect(() => {
         const provider = watchProvider ?? params?.provider;
