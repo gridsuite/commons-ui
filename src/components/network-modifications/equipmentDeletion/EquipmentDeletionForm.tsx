@@ -41,7 +41,7 @@ export function EquipmentDeletionForm({
 }: Readonly<EquipmentDeletionFormProps>) {
     const { snackError } = useSnackMessage();
     const editedIdRef = useRef<UUID | null>(null);
-    const currentTypeRef = useRef<EquipmentType>(null);
+    const currentTypeRef = useRef<EquipmentType | null>(null);
 
     const watchType = useWatch({
         name: FieldConstants.TYPE,
@@ -81,10 +81,11 @@ export function EquipmentDeletionForm({
         setEquipmentsOptions([]);
         let ignore = false;
 
+        if (watchType !== currentTypeRef.current) {
+            currentTypeRef.current = watchType;
+        }
+
         if (watchType && fetchEquipmentIds) {
-            if (watchType !== currentTypeRef.current) {
-                currentTypeRef.current = watchType;
-            }
             fetchEquipmentIds(watchType)
                 .then((equipmentIds) => {
                     if (!ignore) {

@@ -22,22 +22,23 @@ export function ShuntCompensatorSelectionForm({
     mcsRows,
 }: Readonly<ShuntCompensatorSelectionFormProps>) {
     return (
-        <Grid item container spacing={1} direction="column">
+        <Grid container spacing={1} direction="column">
             <Grid item>
                 <h4>
                     <FormattedMessage id={title} />
                 </h4>
             </Grid>
             {mcsRows.map((field, index) => (
-                <Grid container spacing={1} alignItems="center" key={field.id}>
-                    <Grid item xs={1} alignItems="start">
-                        <CheckboxInput
-                            key={`${field.id}SEL`}
-                            name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}
-                        />
-                    </Grid>
-                    <Grid item xs={11} alignItems="start">
-                        <ReadOnlyInput key={`${field.id}ID`} name={`${arrayFormName}[${index}].${FieldConstants.ID}`} />
+                <Grid item key={field.id}>
+                    <Grid container spacing={1} alignItems="center">
+                        <Grid item xs={1}>
+                            <CheckboxInput
+                                name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}
+                            />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <ReadOnlyInput name={`${arrayFormName}[${index}].${FieldConstants.ID}`} />
+                        </Grid>
                     </Grid>
                 </Grid>
             ))}
