@@ -60,7 +60,7 @@ export type VoltageLevelModificationFormData = InferType<typeof voltageLevelModi
 export const voltageLevelModificationEmptyFormData: VoltageLevelModificationFormData = {
     equipmentID: '',
     equipmentName: '',
-    hideSubstationField: false,
+    hideSubstationField: true,
     nominalV: null,
     lowVoltageLimit: null,
     highVoltageLimit: null,
@@ -93,7 +93,7 @@ export const voltageLevelModificationDtoToForm = (
 ): VoltageLevelModificationFormData => ({
     equipmentID: voltageLevelDto.equipmentId,
     equipmentName: voltageLevelDto.equipmentName?.value ?? '',
-    hideSubstationField: false,
+    hideSubstationField: true,
     nominalV: voltageLevelDto.nominalV?.value ?? null,
     lowVoltageLimit: voltageLevelDto.lowVoltageLimit?.value ?? null,
     highVoltageLimit: voltageLevelDto.highVoltageLimit?.value ?? null,
