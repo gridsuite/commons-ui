@@ -37,5 +37,3 @@ export const NameCell: FunctionComponent<{ row: Row<NetworkModificationMetadata>
         </Box>
     );
 };
-
-export default NameCell;

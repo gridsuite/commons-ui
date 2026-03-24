@@ -13,10 +13,10 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { UUID } from 'node:crypto';
 import { NetworkModificationEditorNameHeaderProps } from './renderers';
 import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
-import ModificationRow from './row/modification-row';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { NetworkModificationMetadata } from '../../hooks';
 import { createHeaderCellStyle, MODIFICATION_ROW_HEIGHT, networkTableStyles } from './network-table-styles';
+import { ModificationRow } from './row';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];

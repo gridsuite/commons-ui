@@ -23,7 +23,7 @@ interface ModificationRowProps {
     highlightedModificationUuid: string | null;
 }
 
-const ModificationRow = memo<ModificationRowProps>(
+export const ModificationRow = memo<ModificationRowProps>(
     ({ virtualRow, row, handleCellClick, isRowDragDisabled, highlightedModificationUuid }) => {
         const isHighlighted = row.original.uuid === highlightedModificationUuid;
 
@@ -66,5 +66,3 @@ const ModificationRow = memo<ModificationRowProps>(
         );
     }
 );
-
-export default ModificationRow;

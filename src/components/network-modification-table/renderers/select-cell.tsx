@@ -16,7 +16,7 @@ interface SelectCellRendererProps {
     table: Table<NetworkModificationMetadata>;
 }
 
-const SelectCell: FunctionComponent<SelectCellRendererProps> = ({ row, table }) => {
+export const SelectCell: FunctionComponent<SelectCellRendererProps> = ({ row, table }) => {
     const meta: any = table.options.meta;
 
     const handleChange = useCallback(
@@ -76,5 +76,3 @@ const SelectCell: FunctionComponent<SelectCellRendererProps> = ({ row, table }) 
         />
     );
 };
-
-export default SelectCell;

@@ -9,6 +9,16 @@ import {
     NetworkModificationEditorNameHeaderProps,
 } from './renderers';
 
+const CHIP_PADDING_PX = 24;
+const CHAR_WIDTH_PX = 8;
+const COLUMN_PADDING_PX = 12;
+const MIN_COLUMN_SIZE = 40;
+
+export const computeTagMinSize = (tag: string): number => {
+    const chipContentWidth = tag.length * CHAR_WIDTH_PX + CHIP_PADDING_PX;
+    return Math.max(chipContentWidth + COLUMN_PADDING_PX, MIN_COLUMN_SIZE);
+};
+
 export const BASE_MODIFICATION_TABLE_COLUMNS = {
     DRAG_HANDLE: {
         id: 'dragHandle',

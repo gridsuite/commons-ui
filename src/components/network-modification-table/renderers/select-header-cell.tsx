@@ -14,7 +14,7 @@ interface SelectHeaderCellProps {
     table: Table<NetworkModificationMetadata>;
 }
 
-const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ table }) => {
+export const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ table }) => {
     const handleClick = useCallback(() => {
         const meta: any = table.options.meta;
         if (meta) {
@@ -36,5 +36,3 @@ const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ table }) =
         />
     );
 };
-
-export default SelectHeaderCell;

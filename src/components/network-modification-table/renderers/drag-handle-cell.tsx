@@ -6,16 +6,20 @@
  */
 
 import { Box } from '@mui/material';
-import { FunctionComponent } from 'react';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { networkTableStyles } from '../network-table-styles';
 
-const DragHandleCell: FunctionComponent<{ isRowDragDisabled: boolean }> = ({ isRowDragDisabled }) => {
+interface DragHandleCellProps {
+    isRowDragDisabled: boolean;
+}
+
+export const DragHandleCell = ({
+       isRowDragDisabled,
+    }:Readonly<DragHandleCellProps>) => {
     return (
+        isRowDragDisabled ? undefined:
         <Box sx={networkTableStyles.dragHandle}>
-            {!isRowDragDisabled && <DragIndicatorIcon fontSize="small" sx={networkTableStyles.dragIndicatorIcon} />}
+            <DragIndicatorIcon fontSize="small" sx={networkTableStyles.dragIndicatorIcon} />
         </Box>
     );
 };
-
-export default DragHandleCell;
