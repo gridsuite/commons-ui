@@ -88,9 +88,7 @@ export function EquipmentDeletionForm({
             fetchEquipmentIds(watchType)
                 .then((equipmentIds) => {
                     if (!ignore) {
-                        setEquipmentsOptions(
-                            equipmentIds.toSorted((equipment1, equipment2) => equipment1.localeCompare(equipment2))
-                        );
+                        setEquipmentsOptions(equipmentIds.sort());
                     }
                 })
                 .catch((error: unknown) => {

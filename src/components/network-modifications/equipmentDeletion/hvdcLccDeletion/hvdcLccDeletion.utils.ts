@@ -12,7 +12,7 @@ const getMcsConnectionsSchema = () =>
     array()
         .of(
             object().shape({
-                [FieldConstants.ID]: string().required(),
+                [FieldConstants.ID]: string().required(YUP_REQUIRED),
                 [FieldConstants.SHUNT_COMPENSATOR_SELECTED]: boolean().required(YUP_REQUIRED),
             })
         )
