@@ -31,7 +31,7 @@ import {
     LIMIT_REDUCTIONS_FORM,
 } from '../common/limitreductions/columns-definitions';
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';

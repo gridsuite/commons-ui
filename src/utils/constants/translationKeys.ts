@@ -5,5 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const YUP_REQUIRED = 'YupRequired';
 export const DUPLICATED_PROPS_ERROR = 'DuplicatedPropsError';

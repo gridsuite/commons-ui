@@ -34,18 +34,6 @@ import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../utils';
 import { useCustomFormContext } from '../../inputs';
 
-yup.setLocale({
-    mixed: {
-        required: 'YupRequired',
-        notType: ({ type }) => {
-            if (type === 'number') {
-                return 'YupNotTypeNumber';
-            }
-            return 'YupNotTypeDefault';
-        },
-    },
-});
-
 function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)
         .map((equipments) => equipments.id)

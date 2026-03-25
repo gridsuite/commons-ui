@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED } from '../../utils';
+import { DUPLICATED_PROPS_ERROR } from '../../utils';
 
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
@@ -128,7 +128,7 @@ export const networkModificationsFr = {
     ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero: "Une limite d'ICC doit être supérieure ou égale à 0",
     ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
-    [YUP_REQUIRED]: 'Ce champ doit être renseigné',
+    YupRequired: 'Ce champ doit être renseigné',
     CreateLoad: 'Créer une consommation',
     loadType: 'Type',
     ConnectivityTab: 'Connectivité',

@@ -18,7 +18,7 @@ import {
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
 import { ID, snackWithFallback, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
 
