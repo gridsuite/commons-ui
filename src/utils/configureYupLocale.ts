@@ -6,6 +6,7 @@
  */
 
 import { setLocale } from 'yup';
+import { YUP_REQUIRED } from './constants';
 
 let configured = false;
 
@@ -16,7 +17,7 @@ export function configureYupLocale(): void {
 
     setLocale({
         mixed: {
-            required: 'YupRequired',
+            required: YUP_REQUIRED,
             notType: ({ type }) => {
                 if (type === 'number') {
                     return 'YupNotTypeNumber';
