@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import * as yup from 'yup';
+import { array, boolean, number, object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Box, Grid } from '@mui/material';
@@ -54,18 +54,18 @@ const emptyFormData = {
     [DIRECTORY_ITEMS_INPUT]: [],
 };
 
-const formSchema = yup.object().shape({
-    [AUTOCOMPLETE_INPUT]: yup.string().nullable(),
-    [TEXT_INPUT]: yup.string(),
-    [DESCRIPTION_INPUT]: yup.string(),
-    [SLIDER_INPUT]: yup.number().nullable(),
-    [SELECT_INPUT]: yup.string().nullable(),
-    [RADIO_INPUT]: yup.string().nullable(),
-    [INTEGER_INPUT]: yup.number().nullable(),
-    [FLOAT_INPUT]: yup.number().nullable(),
-    [CHECKBOX_INPUT]: yup.boolean(),
-    [SWITCH_INPUT]: yup.boolean(),
-    [DIRECTORY_ITEMS_INPUT]: yup.array().of(yup.object()).default([]),
+const formSchema = object().shape({
+    [AUTOCOMPLETE_INPUT]: string().nullable(),
+    [TEXT_INPUT]: string(),
+    [DESCRIPTION_INPUT]: string(),
+    [SLIDER_INPUT]: number().nullable(),
+    [SELECT_INPUT]: string().nullable(),
+    [RADIO_INPUT]: string().nullable(),
+    [INTEGER_INPUT]: number().nullable(),
+    [FLOAT_INPUT]: number().nullable(),
+    [CHECKBOX_INPUT]: boolean(),
+    [SWITCH_INPUT]: boolean(),
+    [DIRECTORY_ITEMS_INPUT]: array().of(object()).default([]),
 });
 
 const options = [

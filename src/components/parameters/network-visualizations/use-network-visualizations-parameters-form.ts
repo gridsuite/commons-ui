@@ -5,12 +5,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm, type UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
+import { type SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { boolean, object, string, type ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
-import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
     PARAM_CENTER_LABEL,
@@ -79,26 +78,24 @@ export const useNetworkVisualizationParametersForm = ({
     }, []);
 
     const formSchema = useMemo(() => {
-        return yup
-            .object({
-                [TabValues.MAP]: yup.object().shape({
-                    [PARAM_LINE_FULL_PATH]: yup.boolean(),
-                    [PARAM_LINE_PARALLEL_PATH]: yup.boolean(),
-                    [PARAM_LINE_FLOW_MODE]: yup.string(),
-                    [PARAM_MAP_MANUAL_REFRESH]: yup.boolean(),
-                    [PARAM_MAP_BASEMAP]: yup.string(),
-                }),
-                [TabValues.SINGLE_LINE_DIAGRAM]: yup.object().shape({
-                    [PARAM_DIAGONAL_LABEL]: yup.boolean(),
-                    [PARAM_CENTER_LABEL]: yup.boolean(),
-                    [PARAM_SUBSTATION_LAYOUT]: yup.string(),
-                    [PARAM_COMPONENT_LIBRARY]: yup.string(),
-                }),
-                [TabValues.NETWORK_AREA_DIAGRAM]: yup.object().shape({
-                    [PARAM_NAD_POSITIONS_GENERATION_MODE]: yup.string(),
-                }),
-            })
-            .concat(getNameElementEditorSchema(name));
+        return object({
+            [TabValues.MAP]: object().shape({
+                [PARAM_LINE_FULL_PATH]: boolean(),
+                [PARAM_LINE_PARALLEL_PATH]: boolean(),
+                [PARAM_LINE_FLOW_MODE]: string(),
+                [PARAM_MAP_MANUAL_REFRESH]: boolean(),
+                [PARAM_MAP_BASEMAP]: string(),
+            }),
+            [TabValues.SINGLE_LINE_DIAGRAM]: object().shape({
+                [PARAM_DIAGONAL_LABEL]: boolean(),
+                [PARAM_CENTER_LABEL]: boolean(),
+                [PARAM_SUBSTATION_LAYOUT]: string(),
+                [PARAM_COMPONENT_LIBRARY]: string(),
+            }),
+            [TabValues.NETWORK_AREA_DIAGRAM]: object().shape({
+                [PARAM_NAD_POSITIONS_GENERATION_MODE]: string(),
+            }),
+        }).concat(getNameElementEditorSchema(name));
     }, [name]);
 
     const formMethods = useForm({
@@ -121,7 +118,7 @@ export const useNetworkVisualizationParametersForm = ({
                 [PARAM_NAD_POSITIONS_GENERATION_MODE]: '',
             },
         },
-        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
+        resolver: yupResolver(formSchema as unknown as ObjectSchema<any>),
     });
 
     const { reset } = formMethods;

@@ -6,7 +6,7 @@
  */
 
 import { Grid } from '@mui/material';
-import * as yup from 'yup';
+import { number, object } from 'yup';
 import {
     LOAD_INCREASE_START_TIME,
     LOAD_INCREASE_STOP_TIME,
@@ -17,12 +17,12 @@ import {
 import { ParameterType, SpecificParameterInfos } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 
-export const formSchema = yup.object().shape({
-    [START_TIME]: yup.number().required(),
-    [STOP_TIME]: yup.number().required(),
-    [MARGIN_CALCULATION_START_TIME]: yup.number().required(),
-    [LOAD_INCREASE_START_TIME]: yup.number().required(),
-    [LOAD_INCREASE_STOP_TIME]: yup.number().required(),
+export const formSchema = object().shape({
+    [START_TIME]: number().required(),
+    [STOP_TIME]: number().required(),
+    [MARGIN_CALCULATION_START_TIME]: number().required(),
+    [LOAD_INCREASE_START_TIME]: number().required(),
+    [LOAD_INCREASE_STOP_TIME]: number().required(),
 });
 
 export const emptyFormData = {

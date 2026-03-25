@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import * as yup from 'yup';
-import { REAL_PERCENTAGE } from '../../../../utils';
+import { array, number, object, string, type NumberSchema } from 'yup';
+import { REAL_PERCENTAGE } from '../../../../utils/constants/translationKeys';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
@@ -70,10 +70,9 @@ export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: LimitReductionIColumnsDef[] =
  Instead of creating a schema for each limit duration individually,
  we can use yup.array() to define an array of limit durations directly. */
 const getLimitDurationsFormSchema = (nbLimits: number) => {
-    const limitDurationsFormSchema: Record<string, yup.NumberSchema> = {};
+    const limitDurationsFormSchema: Record<string, NumberSchema> = {};
     for (let i = 0; i < nbLimits; i++) {
-        limitDurationsFormSchema[LIMIT_DURATION_FORM + i] = yup
-            .number()
+        limitDurationsFormSchema[LIMIT_DURATION_FORM + i] = number()
             .min(0, REAL_PERCENTAGE)
             .max(1, REAL_PERCENTAGE)
             .nullable()
@@ -83,13 +82,12 @@ const getLimitDurationsFormSchema = (nbLimits: number) => {
 };
 
 export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
-    return yup
-        .object()
+    return object()
         .shape({
-            [LIMIT_REDUCTIONS_FORM]: yup.array().of(
-                yup.object().shape({
-                    [VOLTAGE_LEVELS_FORM]: yup.string(),
-                    [IST_FORM]: yup.number().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE).nullable().required(),
+            [LIMIT_REDUCTIONS_FORM]: array().of(
+                object().shape({
+                    [VOLTAGE_LEVELS_FORM]: string(),
+                    [IST_FORM]: number().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE).nullable().required(),
                     ...getLimitDurationsFormSchema(nbTemporaryLimits),
                 })
             ),

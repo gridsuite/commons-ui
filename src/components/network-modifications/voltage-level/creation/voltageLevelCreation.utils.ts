@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { IntlShape } from 'react-intl';
-import { array, boolean, InferType, number, object, ref, string } from 'yup';
+import type { IntlShape } from 'react-intl';
+import { array, boolean, number, object, ref, string, type InferType } from 'yup';
 import {
     creationPropertiesSchema,
     emptyProperties,
@@ -16,8 +16,8 @@ import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, sanitizeString } from
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
-import { SwitchKind, VoltageLevelCreationDto } from './voltageLevelCreation.types';
-import { Option } from '../../../../utils/types/types';
+import { SwitchKind, type VoltageLevelCreationDto } from './voltageLevelCreation.types';
+import type { Option } from '../../../../utils/types/types';
 import { substationCreationEmptyFormData } from '../../substation';
 
 export const SWITCH_TYPE = {

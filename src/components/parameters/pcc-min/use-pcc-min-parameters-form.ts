@@ -5,12 +5,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm, type UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
+import { array, object, string, type ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
-import * as yup from 'yup';
 import {
     fromPccMinParametersFormToParamValues,
     fromPccMinParamsDataToFormValues,
@@ -59,16 +58,14 @@ export const UsePccMinParametersForm = ({
     const { snackError } = useSnackMessage();
 
     const formSchema = useMemo(() => {
-        return yup
-            .object({
-                [FILTERS]: yup.array().of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
-                    })
-                ),
-            })
-            .concat(getNameElementEditorSchema(name));
+        return object({
+            [FILTERS]: array().of(
+                object().shape({
+                    [ID]: string().required(),
+                    [NAME]: string().required(),
+                })
+            ),
+        }).concat(getNameElementEditorSchema(name));
     }, [name]);
 
     const formMethods = useForm({
@@ -77,7 +74,7 @@ export const UsePccMinParametersForm = ({
 
             [FILTERS]: [],
         },
-        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
+        resolver: yupResolver(formSchema as unknown as ObjectSchema<any>),
     });
 
     const { reset } = formMethods;

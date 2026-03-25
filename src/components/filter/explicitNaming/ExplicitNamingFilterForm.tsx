@@ -12,8 +12,8 @@ import { Box } from '@mui/material';
 import { ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
+import { array, number, object, string } from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import * as yup from 'yup';
 import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { Generator, Load } from '../../../utils/types/equipmentTypes';
@@ -38,12 +38,11 @@ function isGeneratorOrLoad(equipmentType: string): boolean {
 }
 
 export const explicitNamingFilterSchema = {
-    [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
-        .array()
+    [FILTER_EQUIPMENTS_ATTRIBUTES]: array()
         .of(
-            yup.object().shape({
-                [FieldConstants.EQUIPMENT_ID]: yup.string().nullable(),
-                [DISTRIBUTION_KEY]: yup.number().nullable(),
+            object().shape({
+                [FieldConstants.EQUIPMENT_ID]: string().nullable(),
+                [DISTRIBUTION_KEY]: number().nullable(),
             })
         )
         // we remove empty lines
@@ -53,12 +52,12 @@ export const explicitNamingFilterSchema = {
             is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
             then: (innerSchema) =>
                 innerSchema
-                    .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
-                        return !array!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
+                    .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (rows) => {
+                        return !rows!.some((row) => !row[FieldConstants.EQUIPMENT_ID]);
                     })
-                    .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (array) => {
+                    .test('ifOneKeyThenKeyEverywhere', 'missingDistributionKeyError', (rows) => {
                         return !(
-                            array!.some((row) => row[DISTRIBUTION_KEY]) && array!.some((row) => !row[DISTRIBUTION_KEY])
+                            rows!.some((row) => row[DISTRIBUTION_KEY]) && rows!.some((row) => !row[DISTRIBUTION_KEY])
                         );
                     }),
         }),

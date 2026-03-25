@@ -9,10 +9,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { object, string, type InferType } from 'yup';
+import type { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
@@ -95,16 +95,15 @@ export type ElementSaveDialogProps = {
           }
     );
 
-const schema = yup
-    .object()
+const schema = object()
     .shape({
-        [FieldConstants.NAME]: yup.string().trim().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
-        [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
+        [FieldConstants.NAME]: string().trim().required(),
+        [FieldConstants.DESCRIPTION]: string().optional().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
+        [FieldConstants.OPERATION_TYPE]: string().oneOf(Object.values(OperationType)).required(),
     })
     .required();
 
-type SchemaType = yup.InferType<typeof schema>;
+type SchemaType = InferType<typeof schema>;
 
 const emptyFormData: FormData = {
     [FieldConstants.NAME]: '',

@@ -4,14 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { InferType, object, string } from 'yup';
+import { object, string, type InferType } from 'yup';
 import {
     creationPropertiesSchema,
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import { FieldConstants, ModificationType, sanitizeString } from '../../../../utils';
-import { SubstationCreationDto } from './substationCreation.types';
+import type { SubstationCreationDto } from './substationCreation.types';
 
 export const substationCreationFormToDto = (substationForm: SubstationCreationFormData): SubstationCreationDto => {
     return {

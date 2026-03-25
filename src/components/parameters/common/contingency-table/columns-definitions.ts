@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import * as yup from 'yup';
+import { array, boolean, object, string } from 'yup';
 import { ACTIVATED, ColumnsDef, DESCRIPTION, ID, NAME, Parameters } from '../parameter-table';
 import { ElementType, YUP_REQUIRED } from '../../../../utils';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
@@ -44,23 +44,21 @@ export const ParamContingencyLists: Parameters = {
 };
 
 export const getContingencyListsInfosFormSchema = () => {
-    return yup
-        .object()
+    return object()
         .shape({
-            [CONTINGENCY_LISTS_INFOS]: yup.array().of(
-                yup.object().shape({
-                    [CONTINGENCY_LISTS]: yup
-                        .array()
+            [CONTINGENCY_LISTS_INFOS]: array().of(
+                object().shape({
+                    [CONTINGENCY_LISTS]: array()
                         .of(
-                            yup.object().shape({
-                                [ID]: yup.string().required(),
-                                [NAME]: yup.string().required(),
+                            object().shape({
+                                [ID]: string().required(),
+                                [NAME]: string().required(),
                             })
                         )
                         .required()
                         .min(1, YUP_REQUIRED),
-                    [DESCRIPTION]: yup.string(),
-                    [ACTIVATED]: yup.boolean().required(),
+                    [DESCRIPTION]: string(),
+                    [ACTIVATED]: boolean().required(),
                 })
             ),
         })
