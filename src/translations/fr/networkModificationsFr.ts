@@ -153,4 +153,9 @@ export const networkModificationsFr = {
     MeasurementsSection: 'Télémesures',
     ValidMeasurement: 'Valide',
     InvalidMeasurement: 'Invalide',
+    DeleteEquipment: 'Supprimer un ouvrage',
+    UnableToDeleteEquipment: "Impossible de supprimer l'ouvrage",
+    LCCConverterStationShuntCompensators: 'Moyens de compensation liés à la LCC',
+    Side1: 'Côté 1',
+    Side2: 'Côté 2',
 };

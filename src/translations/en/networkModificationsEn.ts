@@ -150,4 +150,9 @@ export const networkModificationsEn = {
     MeasurementsSection: 'Measurements',
     ValidMeasurement: 'Valid',
     InvalidMeasurement: 'Invalid',
+    DeleteEquipment: 'Delete equipment',
+    UnableToDeleteEquipment: 'Unable to delete the equipment',
+    LCCConverterStationShuntCompensators: 'Shunt compensators related to the LCC',
+    Side1: 'Side 1',
+    Side2: 'Side 2',
 };
