@@ -12,7 +12,7 @@ import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema } from './ExplicitNamingFilterForm';

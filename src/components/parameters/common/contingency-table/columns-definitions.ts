@@ -7,7 +7,7 @@
 import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
 import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
-import yup from '../../../../utils/yupConfig';
+import * as yup from 'yup';
 import { IdName, ContingencyListsInfos } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [

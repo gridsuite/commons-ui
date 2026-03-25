@@ -17,7 +17,7 @@ import {
     getExplicitNamingFilterEmptyFormData,
 } from './explicitNaming/ExplicitNamingFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
-import yup from '../../utils/yupConfig';
+import * as yup from 'yup';
 import { FilterForm } from './FilterForm';
 import { expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';

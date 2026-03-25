@@ -34,7 +34,7 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 
 export enum TabValues {
     GENERAL = 'General',

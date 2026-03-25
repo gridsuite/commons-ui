@@ -15,7 +15,7 @@ import {
     SpecificParametersValues,
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
     const shape: { [key: string]: yup.AnySchema } = {};

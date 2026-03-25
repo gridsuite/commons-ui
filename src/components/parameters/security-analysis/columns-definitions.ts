@@ -16,7 +16,7 @@ import {
     getLimitReductionsFormSchema,
     toFormValuesLimitReductions,
 } from '../common';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { SAParameters } from './types';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';

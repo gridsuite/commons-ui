@@ -8,7 +8,7 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import {
     DynamicSecurityAnalysisParametersFetchReturn,
     DynamicSecurityAnalysisParametersInfos,

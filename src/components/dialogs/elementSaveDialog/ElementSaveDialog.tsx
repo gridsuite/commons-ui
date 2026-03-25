@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';

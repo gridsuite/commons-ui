@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 import { type ObjectSchema } from 'yup';
 import { FormControl, Grid, InputLabel } from '@mui/material';
 import { FloatInput } from './FloatInput';
-import yup from '../../../../utils/yupConfig';
+import * as yup from 'yup';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import type { MuiStyles } from '../../../../utils/styles';
