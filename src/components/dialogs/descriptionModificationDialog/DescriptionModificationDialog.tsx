@@ -6,16 +6,17 @@
  */
 
 import { useCallback } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
-import yup from '../../../utils/yupConfig';
+import { object, string, type InferType } from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
 import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/uiConstants';
 import { snackWithFallback } from '../../../utils/error';
+import { DESCRIPTION_LIMIT_ERROR } from '../../../utils';
 
 export interface DescriptionModificationDialogProps {
     description: string;
@@ -25,10 +26,10 @@ export interface DescriptionModificationDialogProps {
     updateForm?: (data: Record<string, string>) => void;
 }
 
-const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+const schema = object().shape({
+    [FieldConstants.DESCRIPTION]: string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
 });
-type SchemaType = yup.InferType<typeof schema>;
+type SchemaType = InferType<typeof schema>;
 
 export function DescriptionModificationDialog({
     description,

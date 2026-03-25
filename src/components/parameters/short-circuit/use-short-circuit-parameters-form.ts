@@ -8,9 +8,8 @@
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
-import yup from '../../../utils/yupConfig';
+import { mixed, object, type ObjectSchema } from 'yup';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
     InitialVoltage,
@@ -99,16 +98,13 @@ export const useShortCircuitParametersForm = ({
     }, [snackError, specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
-        return yup
-            .object({
-                [SHORT_CIRCUIT_PREDEFINED_PARAMS]: yup
-                    .mixed<PredefinedParameters>()
-                    .oneOf(Object.values(PredefinedParameters))
-                    .required(),
-                ...getCommonShortCircuitParametersFormSchema().fields,
-                ...getSpecificShortCircuitParametersFormSchema(specificParametersDescriptionForProvider).fields,
-            })
-            .concat(getNameElementEditorSchema(name));
+        return object({
+            [SHORT_CIRCUIT_PREDEFINED_PARAMS]: mixed<PredefinedParameters>()
+                .oneOf(Object.values(PredefinedParameters))
+                .required(),
+            ...getCommonShortCircuitParametersFormSchema().fields,
+            ...getSpecificShortCircuitParametersFormSchema(specificParametersDescriptionForProvider).fields,
+        }).concat(getNameElementEditorSchema(name));
     }, [name, specificParametersDescriptionForProvider]);
 
     const formMethods = useForm({
@@ -122,7 +118,7 @@ export const useShortCircuitParametersForm = ({
                 ...specificParametersDefaultValues,
             },
         },
-        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
+        resolver: yupResolver(formSchema as unknown as ObjectSchema<any>),
     });
 
     const { reset, setValue } = formMethods;

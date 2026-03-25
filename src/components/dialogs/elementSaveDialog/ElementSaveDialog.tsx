@@ -8,15 +8,21 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yup from '../../../utils/yupConfig';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { object, string, type InferType } from 'yup';
+import type { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
-import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
+import {
+    DESCRIPTION_LIMIT_ERROR,
+    ElementAttributes,
+    ElementType,
+    FieldConstants,
+    MAX_CHAR_DESCRIPTION,
+} from '../../../utils';
 import { useSnackMessage } from '../../../hooks';
 import { DirectoryInitConfig, initializeDirectory } from './utils';
 
@@ -89,16 +95,15 @@ export type ElementSaveDialogProps = {
           }
     );
 
-const schema = yup
-    .object()
+const schema = object()
     .shape({
-        [FieldConstants.NAME]: yup.string().trim().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
-        [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
+        [FieldConstants.NAME]: string().trim().required(),
+        [FieldConstants.DESCRIPTION]: string().optional().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
+        [FieldConstants.OPERATION_TYPE]: string().oneOf(Object.values(OperationType)).required(),
     })
     .required();
 
-type SchemaType = yup.InferType<typeof schema>;
+type SchemaType = InferType<typeof schema>;
 
 const emptyFormData: FormData = {
     [FieldConstants.NAME]: '',

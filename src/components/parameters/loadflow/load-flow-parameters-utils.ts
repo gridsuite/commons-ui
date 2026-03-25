@@ -6,6 +6,7 @@
  */
 
 import { UseFormReturn } from 'react-hook-form';
+import { array, boolean, number, object, string } from 'yup';
 import {
     COMMON_PARAMETERS,
     ILimitReductionsByVoltageLevel,
@@ -34,7 +35,6 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import yup from '../../../utils/yupConfig';
 
 export enum TabValues {
     GENERAL = 'General',
@@ -42,28 +42,27 @@ export enum TabValues {
 }
 
 export const getBasicLoadFlowParametersFormSchema = () => {
-    return yup.object().shape({
-        [PHASE_SHIFTER_REGULATION_ON]: yup.boolean().required(),
-        [DC]: yup.boolean().required(),
-        [BALANCE_TYPE]: yup.string().required(),
-        [COUNTRIES_TO_BALANCE]: yup.array().of(yup.string()).required(),
-        [CONNECTED_MODE]: yup.string().required(),
-        [HVDC_AC_EMULATION]: yup.boolean().required(),
+    return object().shape({
+        [PHASE_SHIFTER_REGULATION_ON]: boolean().required(),
+        [DC]: boolean().required(),
+        [BALANCE_TYPE]: string().required(),
+        [COUNTRIES_TO_BALANCE]: array().of(string()).required(),
+        [CONNECTED_MODE]: string().required(),
+        [HVDC_AC_EMULATION]: boolean().required(),
     });
 };
 
 export const getAdvancedLoadFlowParametersFormSchema = () => {
-    return yup.object().shape({
-        [VOLTAGE_INIT_MODE]: yup.string().required(),
-        [USE_REACTIVE_LIMITS]: yup.boolean().required(),
-        [TWT_SPLIT_SHUNT_ADMITTANCE]: yup.boolean().required(),
-        [READ_SLACK_BUS]: yup.boolean().required(),
-        [WRITE_SLACK_BUS]: yup.boolean().required(),
-        [DISTRIBUTED_SLACK]: yup.boolean().required(),
-        [SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON]: yup.boolean().required(),
-        [DC_USE_TRANSFORMER_RATIO]: yup.boolean().required(),
-        [DC_POWER_FACTOR]: yup
-            .number()
+    return object().shape({
+        [VOLTAGE_INIT_MODE]: string().required(),
+        [USE_REACTIVE_LIMITS]: boolean().required(),
+        [TWT_SPLIT_SHUNT_ADMITTANCE]: boolean().required(),
+        [READ_SLACK_BUS]: boolean().required(),
+        [WRITE_SLACK_BUS]: boolean().required(),
+        [DISTRIBUTED_SLACK]: boolean().required(),
+        [SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON]: boolean().required(),
+        [DC_USE_TRANSFORMER_RATIO]: boolean().required(),
+        [DC_POWER_FACTOR]: number()
             .required()
             .positive('dcPowerFactorGreaterThan0')
             .max(1, 'dcPowerFactorLessOrEqualThan1'),
@@ -71,8 +70,8 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
 };
 
 export const getCommonLoadFlowParametersFormSchema = () => {
-    return yup.object().shape({
-        [COMMON_PARAMETERS]: yup.object().shape({
+    return object().shape({
+        [COMMON_PARAMETERS]: object().shape({
             ...getBasicLoadFlowParametersFormSchema().fields,
             ...getAdvancedLoadFlowParametersFormSchema().fields,
         }),

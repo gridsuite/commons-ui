@@ -7,7 +7,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Grid, SxProps } from '@mui/material';
-import yup from '../../../utils/yupConfig';
+import { array, boolean, number, object, string } from 'yup';
 import {
     ACCURACY,
     ACTIVE,
@@ -31,24 +31,23 @@ import { NAME } from '../../inputs';
 import ParameterDndTableField from '../common/parameter-dnd-table-field';
 import { DndColumn, DndColumnType } from '../../dnd-table';
 
-export const formSchema = yup.object().shape({
-    [CALCULATION_TYPE]: yup.string().required(),
-    [ACCURACY]: yup.number().required(),
-    [LOAD_MODELS_RULE]: yup.string().required(),
-    [LOADS_VARIATIONS]: yup.array().of(
-        yup.object().shape({
-            [ID]: yup.string().nullable(), // not shown in form, used to identify a row
-            [LOAD_FILTERS]: yup
-                .array()
+export const formSchema = object().shape({
+    [CALCULATION_TYPE]: string().required(),
+    [ACCURACY]: number().required(),
+    [LOAD_MODELS_RULE]: string().required(),
+    [LOADS_VARIATIONS]: array().of(
+        object().shape({
+            [ID]: string().nullable(), // not shown in form, used to identify a row
+            [LOAD_FILTERS]: array()
                 .of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().nullable().notRequired(),
+                    object().shape({
+                        [ID]: string().required(),
+                        [NAME]: string().nullable().notRequired(),
                     })
                 )
                 .min(1),
-            [VARIATION]: yup.number().min(0).required(),
-            [ACTIVE]: yup.boolean().nullable().notRequired(),
+            [VARIATION]: number().min(0).required(),
+            [ACTIVE]: boolean().nullable().notRequired(),
         })
     ),
 });

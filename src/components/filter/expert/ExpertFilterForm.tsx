@@ -10,7 +10,7 @@ import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import './stylesExpertFilter.css';
 import { useWatch } from 'react-hook-form';
-import * as yup from 'yup';
+import { object } from 'yup';
 import { v4 as uuid4 } from 'uuid';
 import { Box } from '@mui/material';
 import { testQuery } from './expertFilterUtils';
@@ -34,18 +34,6 @@ import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../utils';
 import { useCustomFormContext } from '../../inputs';
 
-yup.setLocale({
-    mixed: {
-        required: 'YupRequired',
-        notType: ({ type }) => {
-            if (type === 'number') {
-                return 'YupNotTypeNumber';
-            }
-            return 'YupNotTypeDefault';
-        },
-    },
-});
-
 function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)
         .map((equipments) => equipments.id)
@@ -53,8 +41,7 @@ function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
 }
 
 export const expertFilterSchema = {
-    [EXPERT_FILTER_QUERY]: yup
-        .object()
+    [EXPERT_FILTER_QUERY]: object()
         .test(RULES.EMPTY_GROUP, RULES.EMPTY_GROUP, (query: any) => {
             return testQuery(RULES.EMPTY_GROUP, query as RuleGroupTypeAny);
         })

@@ -4,9 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ObjectSchema } from 'yup';
-import { SyntheticEvent, useCallback, useState } from 'react';
-import { FieldErrors, UseFormReturn } from 'react-hook-form';
+import { array, boolean, mixed, number, object, string, type AnySchema, type ObjectSchema } from 'yup';
+import { type SyntheticEvent, useCallback, useState } from 'react';
+import type { FieldErrors, UseFormReturn } from 'react-hook-form';
 import {
     isObjectEmpty,
     ParameterType,
@@ -15,35 +15,34 @@ import {
     SpecificParametersValues,
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
-import yup from '../../../utils/yupConfig';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
-    const shape: { [key: string]: yup.AnySchema } = {};
+    const shape: { [key: string]: AnySchema } = {};
 
     specificParameters?.forEach((param: SpecificParameterInfos) => {
         switch (param.type) {
             case ParameterType.STRING:
-                shape[param.name] = yup.string().required();
+                shape[param.name] = string().required();
                 break;
             case ParameterType.DOUBLE:
-                shape[param.name] = yup.number().required();
+                shape[param.name] = number().required();
                 break;
             case ParameterType.INTEGER:
-                shape[param.name] = yup.number().required();
+                shape[param.name] = number().required();
                 break;
             case ParameterType.BOOLEAN:
-                shape[param.name] = yup.boolean().required();
+                shape[param.name] = boolean().required();
                 break;
             case ParameterType.STRING_LIST:
-                shape[param.name] = yup.array().of(yup.string()).required();
+                shape[param.name] = array().of(string()).required();
                 break;
             default:
-                shape[param.name] = yup.mixed().required();
+                shape[param.name] = mixed().required();
         }
     });
 
-    return yup.object().shape({
-        [SPECIFIC_PARAMETERS]: yup.object().shape(shape),
+    return object().shape({
+        [SPECIFIC_PARAMETERS]: object().shape(shape),
     });
 };
 

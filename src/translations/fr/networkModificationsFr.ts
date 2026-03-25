@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED } from '../../utils';
+import { DUPLICATED_PROPS_ERROR } from '../../utils';
 
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
@@ -123,14 +123,12 @@ export const networkModificationsFr = {
     Disconnector: 'Sectionneur',
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Un nombre de barres doit être supérieur ou égal à 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Un nombre de sections doit être supérieur ou égal à 1',
-    mustBeGreaterOrEqualToZero: 'Cette valeur doit être supérieure ou égale à 0',
     CreateCouplingDeviceIdenticalBusBar: 'Les SJB / Nœuds 1 et 2 doivent être différents',
     CreateSubstationInVoltageLevelIdenticalId: "L'ID du poste doit être différent de celui du site",
     voltageLevelNominalVoltageMaxValueError: 'La limite de tension basse doit être inférieure à celle de tension haute',
     ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero: "Une limite d'ICC doit être supérieure ou égale à 0",
     ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
-    [YUP_REQUIRED]: 'Ce champ doit être renseigné',
     CreateLoad: 'Créer une consommation',
     loadType: 'Type',
     ConnectivityTab: 'Connectivité',

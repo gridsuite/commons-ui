@@ -8,11 +8,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { type SubmitHandler, useForm, type UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
+import { object, type InferType } from 'yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { saveExplicitNamingFilter } from '../utils/filterApi';
 import { explicitNamingFilterSchema } from './ExplicitNamingFilterForm';
@@ -25,15 +25,14 @@ import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { snackWithFallback } from '../../../utils/error';
 
-const formSchema = yup
-    .object()
+const formSchema = object()
     .shape({
         ...HeaderFilterSchema,
         ...explicitNamingFilterSchema,
     })
     .required();
 
-type FormSchemaType = yup.InferType<typeof formSchema>;
+type FormSchemaType = InferType<typeof formSchema>;
 
 export function ExplicitNamingFilterEditionDialog({
     id,

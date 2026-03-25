@@ -9,6 +9,5 @@ export const descriptionEn = {
     description: 'Description',
     descriptionProperty: 'Description',
     descriptionModificationError: 'An error occurred while editing the description',
-    descriptionLimitError: 'Description exceeds character limit',
     AddDescription: 'Add a description',
 };

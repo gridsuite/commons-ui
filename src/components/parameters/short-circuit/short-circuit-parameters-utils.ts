@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { array, boolean, mixed, number, object, string, type AnySchema, type ObjectSchema } from 'yup';
 import {
     InitialVoltage,
     NODE_CLUSTER,
@@ -18,7 +19,6 @@ import {
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
-import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
 import { ID, snackWithFallback, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
 
@@ -44,15 +44,14 @@ export enum ShortCircuitParametersTabValues {
 }
 
 export const getCommonShortCircuitParametersFormSchema = () => {
-    return yup.object().shape({
-        [COMMON_PARAMETERS]: yup.object().shape({
-            [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: yup.boolean().required(),
-            [SHORT_CIRCUIT_WITH_LOADS]: yup.boolean().required(),
-            [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: yup.boolean().required(),
-            [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: yup.boolean().required(),
-            [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: yup.boolean().required(),
-            [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: yup
-                .mixed<InitialVoltage>()
+    return object().shape({
+        [COMMON_PARAMETERS]: object().shape({
+            [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: boolean().required(),
+            [SHORT_CIRCUIT_WITH_LOADS]: boolean().required(),
+            [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]: boolean().required(),
+            [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: boolean().required(),
+            [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: boolean().required(),
+            [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]: mixed<InitialVoltage>()
                 .oneOf(Object.values(InitialVoltage))
                 .required(),
         }),
@@ -69,16 +68,15 @@ export const getSpecificShortCircuitParametersFormSchema = (
     );
 
     const powerElectronicsMaterialsSchema = powerElectronicsMaterialsParam
-        ? yup
-              .array<PowerElectronicsMaterial & { active: boolean }>()
+        ? array<PowerElectronicsMaterial & { active: boolean }>()
               .of(
-                  yup.object<PowerElectronicsMaterial & { active: boolean }>().shape({
-                      active: yup.boolean().required(),
-                      alpha: yup.number().required(),
-                      u0: yup.number().required(),
-                      usMin: yup.number().required(),
-                      usMax: yup.number().required(),
-                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
+                  object<PowerElectronicsMaterial & { active: boolean }>().shape({
+                      active: boolean().required(),
+                      alpha: number().required(),
+                      u0: number().required(),
+                      usMin: number().required(),
+                      usMax: number().required(),
+                      type: string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
                   })
               )
               .required()
@@ -89,10 +87,10 @@ export const getSpecificShortCircuitParametersFormSchema = (
     );
 
     const nodeClusterSchema = nodeClusterParam
-        ? yup.array().of(
-              yup.object<FilterPOJO>().shape({
-                  [ID]: yup.string().required(),
-                  [NAME]: yup.string().required(),
+        ? array().of(
+              object<FilterPOJO>().shape({
+                  [ID]: string().required(),
+                  [NAME]: string().required(),
               })
           )
         : undefined;
@@ -102,22 +100,21 @@ export const getSpecificShortCircuitParametersFormSchema = (
     );
 
     const powerElectronicsClustersSchema = powerElectronicsClustersParam
-        ? yup
-              .array<FormPowerElectronicsCluster & { active: boolean }>()
+        ? array<FormPowerElectronicsCluster & { active: boolean }>()
               .of(
-                  yup.object<FormPowerElectronicsCluster & { active: boolean }>().shape({
-                      active: yup.boolean().required(),
-                      alpha: yup.number().required(),
-                      u0: yup.number().required(),
-                      usMin: yup.number().required(),
-                      usMax: yup.number().required(),
-                      filters: yup.array().of(
-                          yup.object<FilterPOJO>().shape({
-                              [ID]: yup.string().required(),
-                              [NAME]: yup.string().required(),
+                  object<FormPowerElectronicsCluster & { active: boolean }>().shape({
+                      active: boolean().required(),
+                      alpha: number().required(),
+                      u0: number().required(),
+                      usMin: number().required(),
+                      usMax: number().required(),
+                      filters: array().of(
+                          object<FilterPOJO>().shape({
+                              [ID]: string().required(),
+                              [NAME]: string().required(),
                           })
                       ),
-                      type: yup.string().oneOf(['GENERATOR', 'HVDC']).required(),
+                      type: string().oneOf(['GENERATOR', 'HVDC']).required(),
                   })
               )
               .required()
@@ -125,11 +122,11 @@ export const getSpecificShortCircuitParametersFormSchema = (
 
     // try to extract existing SPECIFIC_PARAMETERS fields from defaultSchema (if present)
     const existingSpecificSchema = (defaultSchema as any).fields?.[SPECIFIC_PARAMETERS] as
-        | yup.ObjectSchema<any>
+        | ObjectSchema<any>
         | undefined;
     const existingSpecificFields = existingSpecificSchema ? (existingSpecificSchema as any).fields || {} : {};
 
-    const mergedSpecificShape: { [key: string]: yup.AnySchema } = {
+    const mergedSpecificShape: { [key: string]: AnySchema } = {
         ...existingSpecificFields,
         ...(powerElectronicsMaterialsSchema
             ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: powerElectronicsMaterialsSchema }
@@ -140,8 +137,8 @@ export const getSpecificShortCircuitParametersFormSchema = (
         ...(nodeClusterSchema ? { [NODE_CLUSTER_FILTER_IDS]: nodeClusterSchema } : {}),
     };
 
-    const overrideSchema = yup.object().shape({
-        [SPECIFIC_PARAMETERS]: yup.object().shape(mergedSpecificShape),
+    const overrideSchema = object().shape({
+        [SPECIFIC_PARAMETERS]: object().shape(mergedSpecificShape),
     });
 
     // merge defaultSchema with our override (preserves other keys from defaultSchema)

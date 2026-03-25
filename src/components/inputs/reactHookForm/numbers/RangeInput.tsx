@@ -7,10 +7,9 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import { type ObjectSchema } from 'yup';
+import { number, object, string, type ObjectSchema } from 'yup';
 import { FormControl, Grid, InputLabel } from '@mui/material';
 import { FloatInput } from './FloatInput';
-import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import type { MuiStyles } from '../../../../utils/styles';
@@ -45,15 +44,15 @@ export const DEFAULT_RANGE_VALUE: RangeInputData = {
 };
 
 export function getRangeInputSchema<TName extends string>(name: TName) {
-    const result = yup.object().shape(
+    const result = object().shape(
         {
-            [FieldConstants.OPERATION_TYPE]: yup.string(),
-            [FieldConstants.VALUE_1]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
+            [FieldConstants.OPERATION_TYPE]: string(),
+            [FieldConstants.VALUE_1]: number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_2], {
                 is: (operationType: string, value2: unknown) => operationType === RangeType.RANGE.id && value2 !== null,
                 then: (schema) => schema.required(),
                 otherwise: (schema) => schema.nullable(),
             }),
-            [FieldConstants.VALUE_2]: yup.number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
+            [FieldConstants.VALUE_2]: number().when([FieldConstants.OPERATION_TYPE, FieldConstants.VALUE_1], {
                 is: (operationType: string, value1: unknown) => operationType === RangeType.RANGE.id && value1 !== null,
                 then: (schema) => schema.required(),
                 otherwise: (schema) => schema.nullable(),

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType, number, object, string } from 'yup';
+import { number, object, string, type InferType } from 'yup';
 import {
     DeepNullable,
     FieldConstants,
@@ -13,7 +13,6 @@ import {
     sanitizeString,
     UNDEFINED_CONNECTION_DIRECTION,
     UNDEFINED_LOAD_TYPE,
-    YUP_REQUIRED,
 } from '../../../../utils';
 import {
     getConnectivityFormDataProps,
@@ -25,19 +24,19 @@ import {
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/';
-import { LoadCreationDto } from './loadCreation.types';
+import type { LoadCreationDto } from './loadCreation.types';
 
 export const loadCreationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.LOAD_TYPE]: string().nullable(),
-        [FieldConstants.ACTIVE_POWER_SET_POINT]: number().nullable().required(YUP_REQUIRED),
-        [FieldConstants.REACTIVE_POWER_SET_POINT]: number().nullable().required(YUP_REQUIRED),
+        [FieldConstants.ACTIVE_POWER_SET_POINT]: number().nullable().required(),
+        [FieldConstants.REACTIVE_POWER_SET_POINT]: number().nullable().required(),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
     })
     .concat(creationPropertiesSchema)
-    .required(YUP_REQUIRED);
+    .required();
 
 export type LoadCreationFormData = InferType<typeof loadCreationFormSchema>;
 

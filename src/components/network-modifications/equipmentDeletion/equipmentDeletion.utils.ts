@@ -4,20 +4,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { InferType, mixed, object, string } from 'yup';
-import { UUID } from 'node:crypto';
+import { mixed, object, string, type InferType } from 'yup';
+import type { UUID } from 'node:crypto';
 import { EquipmentType } from '../../../utils/types/equipmentType';
 import { getHvdcLccDeletionSchema } from './hvdcLccDeletion';
-import { DeepNullable, FieldConstants, ModificationType, YUP_REQUIRED } from '../../../utils';
-import { EquipmentDeletionDto } from './equipmentDeletion.types';
+import { DeepNullable, FieldConstants, ModificationType } from '../../../utils';
+import type { EquipmentDeletionDto } from './equipmentDeletion.types';
 
 export const equipmentDeletionFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().nullable().required(YUP_REQUIRED),
-        [FieldConstants.TYPE]: mixed<EquipmentType>()
-            .oneOf(Object.values(EquipmentType))
-            .nullable()
-            .required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().nullable().required(),
+        [FieldConstants.TYPE]: mixed<EquipmentType>().oneOf(Object.values(EquipmentType)).nullable().required(),
         [FieldConstants.DELETION_SPECIFIC_DATA]: getHvdcLccDeletionSchema(),
     })
     .required();

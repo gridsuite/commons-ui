@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import yup from '../../../../utils/yupConfig';
+import { object, string, type InferType } from 'yup';
 import {
     getPropertiesFromModification,
     modificationPropertiesSchema,
@@ -13,16 +13,15 @@ import {
 import { FieldConstants, ModificationType, sanitizeString, toModificationOperation } from '../../../../utils';
 import { SubstationModificationDto } from './substationModification.types';
 
-export const substationModificationFormSchema = yup
-    .object()
+export const substationModificationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: yup.string().required(),
-        [FieldConstants.EQUIPMENT_NAME]: yup.string().nullable(),
-        [FieldConstants.COUNTRY]: yup.string().nullable(),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
+        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+        [FieldConstants.COUNTRY]: string().nullable(),
     })
     .concat(modificationPropertiesSchema);
 
-export type SubstationModificationFormData = yup.InferType<typeof substationModificationFormSchema>;
+export type SubstationModificationFormData = InferType<typeof substationModificationFormSchema>;
 
 export const substationModificationEmptyFormData: SubstationModificationFormData = {
     equipmentID: '',

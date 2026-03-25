@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED } from '../../utils';
+import { DUPLICATED_PROPS_ERROR } from '../../utils';
 
 export const networkModificationsEn = {
     'network_modifications.modificationsCount':
@@ -119,7 +119,6 @@ export const networkModificationsEn = {
     Disconnector: 'Disconnector',
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Number of busbars must be greater than or equal to 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Number of sections must be greater than or equal to 1',
-    mustBeGreaterOrEqualToZero: 'Must be greater than or equal to 0',
     CreateCouplingDeviceIdenticalBusBar: 'Bus bar section / bus 1 and 2 must be different',
     CreateSubstationInVoltageLevelIdenticalId: 'Voltage Level ID can not match Substation ID',
     voltageLevelNominalVoltageMaxValueError: 'Low voltage limit must be inferior to high voltage limit',
@@ -127,7 +126,6 @@ export const networkModificationsEn = {
         'Short-circuit current limit must be greater than or equal to 0',
     ShortCircuitCurrentLimitMinMaxError: 'Low short-circuit current limit must be less than or equal to high limit',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
-    [YUP_REQUIRED]: 'This field is required',
     CreateLoad: 'Create load',
     loadType: 'Type',
     ConnectivityTab: 'Connectivity',

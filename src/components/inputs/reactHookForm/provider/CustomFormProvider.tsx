@@ -7,10 +7,9 @@
 
 import { createContext, PropsWithChildren, useMemo } from 'react';
 import { type FieldValues, FormProvider, type UseFormReturn } from 'react-hook-form';
-import * as yup from 'yup';
-import { type ObjectSchema } from 'yup';
+import { object, type ObjectSchema } from 'yup';
 import { getSystemLanguage } from '../../../../hooks/useLocalizedCountries';
-import { GsLang } from '../../../../utils';
+import type { GsLang } from '../../../../utils';
 
 type CustomFormContextProps<TFieldValues extends FieldValues = FieldValues> = {
     removeOptional?: boolean;
@@ -27,7 +26,7 @@ export type MergedFormContextProps<TFieldValues extends FieldValues = FieldValue
 // TODO found how to manage generic type
 export const CustomFormContext = createContext<CustomFormContextProps>({
     removeOptional: false,
-    validationSchema: yup.object(),
+    validationSchema: object(),
     language: getSystemLanguage(),
     isNodeBuilt: false,
     isUpdate: false,

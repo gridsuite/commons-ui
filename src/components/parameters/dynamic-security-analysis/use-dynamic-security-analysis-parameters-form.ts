@@ -8,7 +8,7 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import yup from '../../../utils/yupConfig';
+import { array, number, object, string } from 'yup';
 import {
     DynamicSecurityAnalysisParametersFetchReturn,
     DynamicSecurityAnalysisParametersInfos,
@@ -25,28 +25,26 @@ export enum TabValues {
     CONTINGENCY = 'contingency',
 }
 
-const scenarioFormSchema = yup
-    .object()
+const scenarioFormSchema = object()
     .shape({
-        [SCENARIO_DURATION]: yup.number().required(),
+        [SCENARIO_DURATION]: number().required(),
     })
     .required();
 
-const contingencyFormSchema = yup.object().shape({
-    [CONTINGENCIES_START_TIME]: yup.number().required(),
-    [CONTINGENCIES_LIST_INFOS]: yup
-        .array()
+const contingencyFormSchema = object().shape({
+    [CONTINGENCIES_START_TIME]: number().required(),
+    [CONTINGENCIES_LIST_INFOS]: array()
         .of(
-            yup.object().shape({
-                [ID]: yup.string().required(),
-                [NAME]: yup.string().required(),
+            object().shape({
+                [ID]: string().required(),
+                [NAME]: string().required(),
             })
         )
         .required(),
 });
 
-export const formSchema = yup.object().shape({
-    [PROVIDER]: yup.string().required(),
+export const formSchema = object().shape({
+    [PROVIDER]: string().required(),
     [TabValues.SCENARIO]: scenarioFormSchema,
     [TabValues.CONTINGENCY]: contingencyFormSchema,
 });

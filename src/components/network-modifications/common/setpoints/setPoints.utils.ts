@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { number, TestContext } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { number, type TestContext } from 'yup';
+import { FieldConstants, YUP_REQUIRED } from '../../../../utils';
 
 export const getSetPointsEmptyFormData = (_isEquipmentModification = false) => ({
     [FieldConstants.ACTIVE_POWER_SET_POINT]: null,
@@ -45,7 +45,7 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
             then: (schema) => {
                 return schema
                     .required()
-                    .nonNullable('FieldIsRequired')
+                    .nonNullable(YUP_REQUIRED)
                     .test(
                         'activePowerSetPoint',
                         'ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower',

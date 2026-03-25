@@ -8,10 +8,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { object } from 'yup';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
 import { FilterEditionProps } from '../filter.type';
@@ -23,8 +23,7 @@ import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 import { snackWithFallback } from '../../../utils/error';
 
-const formSchema = yup
-    .object()
+const formSchema = object()
     .shape({
         ...HeaderFilterSchema,
         ...expertFilterSchema,

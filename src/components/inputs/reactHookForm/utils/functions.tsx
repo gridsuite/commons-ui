@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FormattedMessage } from 'react-intl';
-import { getIn, SchemaDescription } from 'yup';
-import { ReactElement } from 'react';
+import { getIn, type SchemaDescription } from 'yup';
+import type { ReactElement } from 'react';
 import { Grid } from '@mui/material';
 
 export function genHelperError(...errors: any[]) {
