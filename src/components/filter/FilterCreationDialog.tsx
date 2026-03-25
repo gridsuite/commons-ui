@@ -24,7 +24,7 @@ import { FilterType } from './constants/FilterConstants';
 import { MAX_CHAR_DESCRIPTION } from '../../utils/constants/uiConstants';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
-import { GsLang } from '../../utils';
+import { DESCRIPTION_LIMIT_ERROR, GsLang, NAME_EMPTY } from '../../utils';
 import { snackWithFallback } from '../../utils/error';
 
 const emptyFormData = {
@@ -40,8 +40,8 @@ const formSchemaByFilterType = (filterType: { id: string }) =>
     yup
         .object()
         .shape({
-            [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
-            [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+            [FieldConstants.NAME]: yup.string().trim().required(NAME_EMPTY),
+            [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
             [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
             ...(filterType?.id === FilterType.EXPLICIT_NAMING.id ? explicitNamingFilterSchema : {}),
             ...(filterType?.id === FilterType.EXPERT.id ? expertFilterSchema : {}),

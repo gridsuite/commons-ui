@@ -12,7 +12,7 @@ import {
     getPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import { FieldConstants, sanitizeString } from '../../../../utils';
+import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, sanitizeString } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
@@ -108,13 +108,13 @@ export const voltageLevelCreationFormSchema = object()
             .nullable()
             .when([FieldConstants.HIDE_NOMINAL_VOLTAGE], {
                 is: (hideNominalVoltage: boolean) => !hideNominalVoltage,
-                then: (schema) => schema.min(0, 'mustBeGreaterOrEqualToZero').required(),
+                then: (schema) => schema.min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
             }),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
             .nullable()
-            .min(0, 'mustBeGreaterOrEqualToZero')
+            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')

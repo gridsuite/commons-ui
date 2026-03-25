@@ -28,6 +28,7 @@ export * from './reportViewerEn';
 export * from './tableEn';
 export * from './topBarEn';
 export * from './treeviewFinderEn';
+export * from './validationEn';
 export * from './networkModificationsEn';
 export * from './external/exportParamsEn';
 export * from './external/importParamsEn';

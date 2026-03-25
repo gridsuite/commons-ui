@@ -5,21 +5,22 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import {
+    CONTINGENCY_LISTS_INFOS,
+    getLimitReductionsFormSchema,
+    ILimitReductionsByVoltageLevel,
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
-    CONTINGENCY_LISTS_INFOS,
-    ILimitReductionsByVoltageLevel,
-    getLimitReductionsFormSchema,
     toFormValuesLimitReductions,
 } from '../common';
 import * as yup from 'yup';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { SAParameters } from './types';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
+import { NORMALIZED_PERCENTAGE } from '../../../utils';
 
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
@@ -35,19 +36,19 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
     const thresholdsSchema = yup.object().shape({
         [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, NORMALIZED_PERCENTAGE)
+            .max(100, NORMALIZED_PERCENTAGE)
             .required(),
         [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, NORMALIZED_PERCENTAGE)
+            .max(100, NORMALIZED_PERCENTAGE)
             .required(),
         [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
         [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, NORMALIZED_PERCENTAGE)
+            .max(100, NORMALIZED_PERCENTAGE)
             .required(),
         [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
     });

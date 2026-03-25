@@ -8,7 +8,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -16,7 +16,13 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
-import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
+import {
+    DESCRIPTION_LIMIT_ERROR,
+    ElementAttributes,
+    ElementType,
+    FieldConstants,
+    MAX_CHAR_DESCRIPTION,
+} from '../../../utils';
 import { useSnackMessage } from '../../../hooks';
 import { DirectoryInitConfig, initializeDirectory } from './utils';
 
@@ -93,7 +99,7 @@ const schema = yup
     .object()
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
         [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
     })
     .required();

@@ -6,7 +6,7 @@
  */
 
 import { number, TestContext } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, YUP_REQUIRED } from '../../../../utils';
 
 export const getSetPointsEmptyFormData = (_isEquipmentModification = false) => ({
     [FieldConstants.ACTIVE_POWER_SET_POINT]: null,
@@ -45,7 +45,7 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
             then: (schema) => {
                 return schema
                     .required()
-                    .nonNullable('FieldIsRequired')
+                    .nonNullable(YUP_REQUIRED)
                     .test(
                         'activePowerSetPoint',
                         'ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower',
