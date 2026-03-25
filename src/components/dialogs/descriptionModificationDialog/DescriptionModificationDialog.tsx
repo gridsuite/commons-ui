@@ -16,6 +16,7 @@ import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
 import { ExpandingTextField } from '../../inputs/reactHookForm/text/ExpandingTextField';
 import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/uiConstants';
 import { snackWithFallback } from '../../../utils/error';
+import { DESCRIPTION_LIMIT_ERROR } from '../../../utils';
 
 export interface DescriptionModificationDialogProps {
     description: string;
@@ -26,7 +27,7 @@ export interface DescriptionModificationDialogProps {
 }
 
 const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
 });
 type SchemaType = yup.InferType<typeof schema>;
 

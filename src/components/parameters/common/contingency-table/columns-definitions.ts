@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
-import { ElementType } from '../../../../utils';
-import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import * as yup from 'yup';
-import { IdName, ContingencyListsInfos } from './types';
+import { ACTIVATED, ColumnsDef, DESCRIPTION, ID, NAME, Parameters } from '../parameter-table';
+import { ElementType, YUP_REQUIRED } from '../../../../utils';
+import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
+import { ContingencyListsInfos, IdName } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [
     {
@@ -58,7 +58,7 @@ export const getContingencyListsInfosFormSchema = () => {
                             })
                         )
                         .required()
-                        .min(1, 'FieldIsRequired'),
+                        .min(1, YUP_REQUIRED),
                     [DESCRIPTION]: yup.string(),
                     [ACTIVATED]: yup.boolean().required(),
                 })
