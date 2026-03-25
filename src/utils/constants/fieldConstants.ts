@@ -91,6 +91,7 @@ export enum FieldConstants {
     COUPLING_OMNIBUS = 'couplingOmnibus',
     HIDE_BUS_BAR_SECTION = 'hideBusBarSection',
     HIDE_NOMINAL_VOLTAGE = 'hideNominalVoltage',
+    HIDE_SUBSTATION_FIELD = 'hideSubstationField',
     HIGH_SHORT_CIRCUIT_CURRENT_LIMIT = 'highShortCircuitCurrentLimit',
     HIGH_VOLTAGE_LIMIT = 'highVoltageLimit',
     LOW_SHORT_CIRCUIT_CURRENT_LIMIT = 'lowShortCircuitCurrentLimit',

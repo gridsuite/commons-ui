@@ -94,6 +94,8 @@ export const networkModificationsFr = {
     Country: 'Pays',
     CreateVoltageLevel: 'Créer un poste',
     VoltageLevelCreationError: "Erreur lors de la création d'un poste",
+    ModifyVoltageLevel: 'Modifier un poste',
+    VoltageLevelModificationError: "Erreur lors de la modification d'un poste",
     SUBSTATION: 'Site',
     VoltageText: 'Tension',
     NominalVoltage: 'Tension nominale',
