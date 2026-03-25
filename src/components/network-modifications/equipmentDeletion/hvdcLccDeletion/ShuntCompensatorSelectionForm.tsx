@@ -29,16 +29,14 @@ export function ShuntCompensatorSelectionForm({
                 </h4>
             </Grid>
             {mcsRows.map((field, index) => (
-                <Grid item key={field.id}>
-                    <Grid container spacing={1} alignItems="center">
-                        <Grid item xs={1}>
-                            <CheckboxInput
-                                name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}
-                            />
-                        </Grid>
-                        <Grid item xs={11}>
-                            <ReadOnlyInput name={`${arrayFormName}[${index}].${FieldConstants.ID}`} />
-                        </Grid>
+                <Grid container spacing={1} alignItems="center" key={field.id}>
+                    <Grid item xs={1}>
+                        <CheckboxInput
+                            name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}
+                        />
+                    </Grid>
+                    <Grid item xs={11}>
+                        <ReadOnlyInput name={`${arrayFormName}[${index}].${FieldConstants.ID}`} />
                     </Grid>
                 </Grid>
             ))}
