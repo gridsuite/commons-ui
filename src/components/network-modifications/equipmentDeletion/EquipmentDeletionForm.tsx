@@ -34,6 +34,21 @@ export interface EquipmentDeletionFormProps {
 
 const NULL_UUID: UUID = '00000000-0000-0000-0000-000000000000';
 
+const EQUIPMENT_TYPE_ORDER: EquipmentType[] = [
+    EquipmentType.SUBSTATION,
+    EquipmentType.VOLTAGE_LEVEL,
+    EquipmentType.LINE,
+    EquipmentType.TWO_WINDINGS_TRANSFORMER,
+    EquipmentType.THREE_WINDINGS_TRANSFORMER,
+    EquipmentType.HVDC_LINE,
+    EquipmentType.GENERATOR,
+    EquipmentType.BATTERY,
+    EquipmentType.LOAD,
+    EquipmentType.SHUNT_COMPENSATOR,
+    EquipmentType.DANGLING_LINE,
+    EquipmentType.STATIC_VAR_COMPENSATOR,
+];
+
 export function EquipmentDeletionForm({
     editData,
     fetchEquipmentIds,
@@ -63,18 +78,7 @@ export function EquipmentDeletionForm({
     const [equipmentsOptions, setEquipmentsOptions] = useState<string[]>([]);
 
     const typesOptions = useMemo(() => {
-        const equipmentTypesToExclude = new Set([
-            EquipmentType.SWITCH,
-            EquipmentType.LCC_CONVERTER_STATION,
-            EquipmentType.VSC_CONVERTER_STATION,
-            EquipmentType.HVDC_CONVERTER_STATION,
-            EquipmentType.BUS,
-            EquipmentType.BUSBAR_SECTION,
-            EquipmentType.TIE_LINE,
-            EquipmentType.BREAKER,
-            EquipmentType.DISCONNECTOR,
-        ]);
-        return Object.values(EquipmentType).filter((equipmentType) => !equipmentTypesToExclude.has(equipmentType));
+        return Object.values(EQUIPMENT_TYPE_ORDER);
     }, []);
 
     useEffect(() => {
