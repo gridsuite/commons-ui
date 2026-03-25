@@ -9,6 +9,7 @@ import { useCallback, useMemo } from 'react';
 import { FieldValues, Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { UUID } from 'node:crypto';
+import { object, string } from 'yup';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
@@ -17,7 +18,6 @@ import {
     getExplicitNamingFilterEmptyFormData,
 } from './explicitNaming/ExplicitNamingFilterForm';
 import { FieldConstants } from '../../utils/constants/fieldConstants';
-import * as yup from 'yup';
 import { FilterForm } from './FilterForm';
 import { expertFilterSchema, getExpertFilterEmptyFormData } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
@@ -37,12 +37,11 @@ const emptyFormData = {
 
 // the schema depends of the type of the filter
 const formSchemaByFilterType = (filterType: { id: string }) =>
-    yup
-        .object()
+    object()
         .shape({
-            [FieldConstants.NAME]: yup.string().trim().required(NAME_EMPTY),
-            [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
-            [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
+            [FieldConstants.NAME]: string().trim().required(NAME_EMPTY),
+            [FieldConstants.DESCRIPTION]: string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
+            [FieldConstants.EQUIPMENT_TYPE]: string().required(),
             ...(filterType?.id === FilterType.EXPLICIT_NAMING.id ? explicitNamingFilterSchema : {}),
             ...(filterType?.id === FilterType.EXPERT.id ? expertFilterSchema : {}),
         })

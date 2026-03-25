@@ -5,10 +5,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
+import { type FieldErrors, useForm, type UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
-import { ObjectSchema } from 'yup';
+import { type SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
+import { number, object, string, type ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import {
     getCommonLoadFlowParametersFormSchema,
@@ -31,7 +31,6 @@ import {
     LIMIT_REDUCTIONS_FORM,
 } from '../common/limitreductions/columns-definitions';
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
-import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { updateParameter } from '../../../services';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
@@ -95,15 +94,13 @@ export const useLoadFlowParametersForm = (
     }, [specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
-        return yup
-            .object({
-                [PROVIDER]: yup.string().required(),
-                [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
-                ...getCommonLoadFlowParametersFormSchema().fields,
-                ...getLimitReductionsFormSchema(limitReductionNumber).fields,
-                ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
-            })
-            .concat(getNameElementEditorSchema(name));
+        return object({
+            [PROVIDER]: string().required(),
+            [PARAM_LIMIT_REDUCTION]: number().nullable(),
+            ...getCommonLoadFlowParametersFormSchema().fields,
+            ...getLimitReductionsFormSchema(limitReductionNumber).fields,
+            ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
+        }).concat(getNameElementEditorSchema(name));
     }, [name, limitReductionNumber, specificParametersDescriptionForProvider]);
 
     const formMethods = useForm({
@@ -119,7 +116,7 @@ export const useLoadFlowParametersForm = (
             },
             [LIMIT_REDUCTIONS_FORM]: [],
         },
-        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
+        resolver: yupResolver(formSchema as unknown as ObjectSchema<any>),
     });
 
     const { watch, reset } = formMethods;

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType, object, string } from 'yup';
+import { object, string, type InferType } from 'yup';
 import {
     DeepNullable,
     FieldConstants,
@@ -25,7 +25,7 @@ import {
     modificationPropertiesSchema,
     toModificationProperties,
 } from '../../common';
-import { LoadModificationDto } from './loadModification.types';
+import type { LoadModificationDto } from './loadModification.types';
 
 export const loadModificationFormSchema = object()
     .shape({

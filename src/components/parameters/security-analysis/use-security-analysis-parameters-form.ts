@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm, UseFormReturn } from 'react-hook-form';
-import { ObjectSchema } from 'yup';
+import { useForm, type UseFormReturn } from 'react-hook-form';
+import type { ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -74,7 +74,7 @@ export const useSecurityAnalysisParametersForm = (
         return getSAParametersFormSchema(name, params?.limitReductions);
     }, [name, params?.limitReductions]);
 
-    const formMethods = useForm({
+    const formMethods = useForm<Record<string, any>>({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
             [PARAM_SA_PROVIDER]: params?.provider,

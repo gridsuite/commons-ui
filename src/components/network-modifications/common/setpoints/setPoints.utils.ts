@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { number, TestContext } from 'yup';
+import { number, type TestContext } from 'yup';
 import { FieldConstants, YUP_REQUIRED } from '../../../../utils';
 
 export const getSetPointsEmptyFormData = (_isEquipmentModification = false) => ({

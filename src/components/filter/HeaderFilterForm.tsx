@@ -7,7 +7,7 @@
 
 import { Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import * as yup from 'yup';
+import { string } from 'yup';
 import { DESCRIPTION_LIMIT_ERROR, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION, NAME_EMPTY } from '../../utils';
 import { DescriptionField, UniqueNameInput } from '../inputs';
 import type { MuiStyles } from '../../utils/styles';
@@ -24,9 +24,9 @@ export const filterStyles = {
 } as const satisfies MuiStyles;
 
 export const HeaderFilterSchema = {
-    [FieldConstants.NAME]: yup.string().trim().required(NAME_EMPTY),
-    [FieldConstants.EQUIPMENT_TYPE]: yup.string().required(),
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
+    [FieldConstants.NAME]: string().trim().required(NAME_EMPTY),
+    [FieldConstants.EQUIPMENT_TYPE]: string().required(),
+    [FieldConstants.DESCRIPTION]: string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
 };
 
 export interface HeaderFilterFormProps {

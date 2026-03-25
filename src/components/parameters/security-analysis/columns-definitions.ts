@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+import { number, object, string } from 'yup';
 import {
     CONTINGENCY_LISTS_INFOS,
     getLimitReductionsFormSchema,
@@ -16,15 +17,14 @@ import {
     PARAM_SA_PROVIDER,
     toFormValuesLimitReductions,
 } from '../common';
-import * as yup from 'yup';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { SAParameters } from './types';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 import { NORMALIZED_PERCENTAGE } from '../../../utils';
 
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
-    const providerSchema = yup.object().shape({
-        [PARAM_SA_PROVIDER]: yup.string().required(),
+    const providerSchema = object().shape({
+        [PARAM_SA_PROVIDER]: string().required(),
     });
 
     const contingencyListsInfosSchema = getContingencyListsInfosFormSchema();
@@ -33,28 +33,24 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
         limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
     );
 
-    const thresholdsSchema = yup.object().shape({
-        [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: yup
-            .number()
+    const thresholdsSchema = object().shape({
+        [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: number()
             .min(0, NORMALIZED_PERCENTAGE)
             .max(100, NORMALIZED_PERCENTAGE)
             .required(),
-        [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
-            .number()
+        [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: number()
             .min(0, NORMALIZED_PERCENTAGE)
             .max(100, NORMALIZED_PERCENTAGE)
             .required(),
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
-        [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
-            .number()
+        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: number().required(),
+        [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: number()
             .min(0, NORMALIZED_PERCENTAGE)
             .max(100, NORMALIZED_PERCENTAGE)
             .required(),
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: number().required(),
     });
 
-    return yup
-        .object()
+    return object()
         .shape({
             ...providerSchema.fields,
             ...contingencyListsInfosSchema.fields,

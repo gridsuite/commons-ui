@@ -6,10 +6,10 @@
  */
 
 import { useCallback } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
-import * as yup from 'yup';
+import { object, string, type InferType } from 'yup';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
@@ -26,10 +26,10 @@ export interface DescriptionModificationDialogProps {
     updateForm?: (data: Record<string, string>) => void;
 }
 
-const schema = yup.object().shape({
-    [FieldConstants.DESCRIPTION]: yup.string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
+const schema = object().shape({
+    [FieldConstants.DESCRIPTION]: string().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
 });
-type SchemaType = yup.InferType<typeof schema>;
+type SchemaType = InferType<typeof schema>;
 
 export function DescriptionModificationDialog({
     description,

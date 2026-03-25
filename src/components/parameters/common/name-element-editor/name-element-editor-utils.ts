@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import * as yup from 'yup';
+import { object, string } from 'yup';
 import { DESCRIPTION, NAME } from '../../../inputs';
 
 export function getNameElementEditorEmptyFormData(
@@ -18,15 +18,14 @@ export function getNameElementEditorEmptyFormData(
 }
 
 export function getNameElementEditorSchema(initialElementName: string | null) {
-    return yup.object().shape({
-        [NAME]: yup
-            .string()
+    return object().shape({
+        [NAME]: string()
             .nullable()
             .when('nameRequiredWhenInitialNameIsSet', {
                 is: () => initialElementName !== null,
-                then: () => yup.string().required(),
-                otherwise: () => yup.string(),
+                then: () => string().required(),
+                otherwise: () => string(),
             }),
-        [DESCRIPTION]: yup.string().nullable(),
+        [DESCRIPTION]: string().nullable(),
     });
 }

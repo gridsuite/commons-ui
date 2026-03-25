@@ -9,7 +9,7 @@ import { Dialog, DialogActions } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
-import { object, ObjectSchema } from 'yup';
+import { object, type ObjectSchema } from 'yup';
 import { getCreateSwitchesEmptyFormData, getCreateSwitchesValidationSchema } from '../../voltageLevelCreation.utils';
 import { CreateSwitchesFormData, SwitchKindFormData } from '../../voltageLevelCreation.types';
 import { FieldConstants } from '../../../../../../utils';

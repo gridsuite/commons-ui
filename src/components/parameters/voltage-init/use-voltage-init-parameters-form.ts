@@ -5,14 +5,18 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
+import { type FieldErrors, useForm, type UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
+import { type SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import * as yup from 'yup';
+import { array, boolean, mixed, number, object, string, type ObjectSchema, type TestContext } from 'yup';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
+    DEFAULT_GENERAL_APPLY_MODIFICATIONS,
+    DEFAULT_REACTIVE_SLACKS_THRESHOLD,
+    DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
+    DEFAULT_UPDATE_BUS_VOLTAGE,
+    GENERAL,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
@@ -20,7 +24,6 @@ import {
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     SHUNT_COMPENSATORS_SELECTION_TYPE,
-    VoltageInitTabValues as TabValues,
     TRANSFORMERS_SELECTION_TYPE,
     UPDATE_BUS_VOLTAGE,
     VARIABLE_Q_GENERATORS,
@@ -28,11 +31,7 @@ import {
     VARIABLE_TRANSFORMERS,
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
-    DEFAULT_GENERAL_APPLY_MODIFICATIONS,
-    DEFAULT_UPDATE_BUS_VOLTAGE,
-    DEFAULT_REACTIVE_SLACKS_THRESHOLD,
-    DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
-    GENERAL,
+    VoltageInitTabValues as TabValues,
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
@@ -94,87 +93,79 @@ export const useVoltageInitParametersForm = ({
     }, []);
 
     const formSchema = useMemo(() => {
-        return yup
-            .object({
-                [TabValues.GENERAL]: yup.object().shape({
-                    [GENERAL_APPLY_MODIFICATIONS]: yup.boolean(),
-                    [UPDATE_BUS_VOLTAGE]: yup.boolean().required(),
-                    [REACTIVE_SLACKS_THRESHOLD]: yup
-                        .number()
-                        .min(0, 'ReactiveSlacksThresholdMustBeGreaterOrEqualToZero')
-                        .required(),
-                    [SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD]: yup
-                        .number()
-                        .min(0, 'ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero')
-                        .required(),
-                }),
-                [VOLTAGE_LIMITS_MODIFICATION]: yup.array().of(
-                    yup.object().shape({
-                        [SELECTED]: yup.boolean().required(),
-                        [FILTERS]: yup
-                            .array()
-                            .of(
-                                yup.object().shape({
-                                    [ID]: yup.string().required(),
-                                    [NAME]: yup.string().required(),
-                                })
-                            )
-                            .min(1, 'FilterInputMinError'),
-                        [LOW_VOLTAGE_LIMIT]: yup.number().nullable(),
-                        [HIGH_VOLTAGE_LIMIT]: yup.number().nullable(),
-                    })
-                ),
-                [VOLTAGE_LIMITS_DEFAULT]: yup.array().of(
-                    yup.object().shape({
-                        [SELECTED]: yup.boolean().required(),
-                        [FILTERS]: yup
-                            .array()
-                            .of(
-                                yup.object().shape({
-                                    [ID]: yup.string().required(),
-                                    [NAME]: yup.string().required(),
-                                })
-                            )
-                            .min(1, 'FilterInputMinError'),
-                        [LOW_VOLTAGE_LIMIT]: yup
-                            .number()
-                            .min(0)
-                            .nullable()
-                            .test((value, context) => {
-                                return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[HIGH_VOLTAGE_LIMIT]);
-                            }),
-                        [HIGH_VOLTAGE_LIMIT]: yup
-                            .number()
-                            .min(0)
-                            .nullable()
-                            .test((value, context) => {
-                                return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);
-                            }),
-                    })
-                ),
-                [GENERATORS_SELECTION_TYPE]: yup.mixed<keyof typeof EquipmentsSelectionType>().required(),
-                [VARIABLE_Q_GENERATORS]: yup.array().of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
-                    })
-                ),
-                [TRANSFORMERS_SELECTION_TYPE]: yup.mixed<keyof typeof EquipmentsSelectionType>().required(),
-                [VARIABLE_TRANSFORMERS]: yup.array().of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
-                    })
-                ),
-                [SHUNT_COMPENSATORS_SELECTION_TYPE]: yup.mixed<keyof typeof EquipmentsSelectionType>().required(),
-                [VARIABLE_SHUNT_COMPENSATORS]: yup.array().of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
-                    })
-                ),
-            })
-            .concat(getNameElementEditorSchema(name));
+        return object({
+            [TabValues.GENERAL]: object().shape({
+                [GENERAL_APPLY_MODIFICATIONS]: boolean(),
+                [UPDATE_BUS_VOLTAGE]: boolean().required(),
+                [REACTIVE_SLACKS_THRESHOLD]: number()
+                    .min(0, 'ReactiveSlacksThresholdMustBeGreaterOrEqualToZero')
+                    .required(),
+                [SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD]: number()
+                    .min(0, 'ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero')
+                    .required(),
+            }),
+            [VOLTAGE_LIMITS_MODIFICATION]: array().of(
+                object().shape({
+                    [SELECTED]: boolean().required(),
+                    [FILTERS]: array()
+                        .of(
+                            object().shape({
+                                [ID]: string().required(),
+                                [NAME]: string().required(),
+                            })
+                        )
+                        .min(1, 'FilterInputMinError'),
+                    [LOW_VOLTAGE_LIMIT]: number().nullable(),
+                    [HIGH_VOLTAGE_LIMIT]: number().nullable(),
+                })
+            ),
+            [VOLTAGE_LIMITS_DEFAULT]: array().of(
+                object().shape({
+                    [SELECTED]: boolean().required(),
+                    [FILTERS]: array()
+                        .of(
+                            object().shape({
+                                [ID]: string().required(),
+                                [NAME]: string().required(),
+                            })
+                        )
+                        .min(1, 'FilterInputMinError'),
+                    [LOW_VOLTAGE_LIMIT]: number()
+                        .min(0)
+                        .nullable()
+                        .test((value: number | null | undefined, context: TestContext) => {
+                            return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[HIGH_VOLTAGE_LIMIT]);
+                        }),
+                    [HIGH_VOLTAGE_LIMIT]: number()
+                        .min(0)
+                        .nullable()
+                        .test((value: number | null | undefined, context: TestContext) => {
+                            return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);
+                        }),
+                })
+            ),
+            [GENERATORS_SELECTION_TYPE]: mixed<keyof typeof EquipmentsSelectionType>().required(),
+            [VARIABLE_Q_GENERATORS]: array().of(
+                object().shape({
+                    [ID]: string().required(),
+                    [NAME]: string().required(),
+                })
+            ),
+            [TRANSFORMERS_SELECTION_TYPE]: mixed<keyof typeof EquipmentsSelectionType>().required(),
+            [VARIABLE_TRANSFORMERS]: array().of(
+                object().shape({
+                    [ID]: string().required(),
+                    [NAME]: string().required(),
+                })
+            ),
+            [SHUNT_COMPENSATORS_SELECTION_TYPE]: mixed<keyof typeof EquipmentsSelectionType>().required(),
+            [VARIABLE_SHUNT_COMPENSATORS]: array().of(
+                object().shape({
+                    [ID]: string().required(),
+                    [NAME]: string().required(),
+                })
+            ),
+        }).concat(getNameElementEditorSchema(name));
     }, [name]);
 
     const formMethods = useForm({
@@ -195,7 +186,7 @@ export const useVoltageInitParametersForm = ({
             [SHUNT_COMPENSATORS_SELECTION_TYPE]: 'NONE_EXCEPT',
             [VARIABLE_SHUNT_COMPENSATORS]: [],
         },
-        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
+        resolver: yupResolver(formSchema as unknown as ObjectSchema<any>),
     });
 
     const { reset } = formMethods;
