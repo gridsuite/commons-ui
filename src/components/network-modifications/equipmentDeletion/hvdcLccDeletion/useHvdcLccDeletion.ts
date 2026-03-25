@@ -16,7 +16,7 @@ export interface UseHvdcLccDeletionProps {
     fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<LccDeletionDto>;
 }
 
-const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeletionProps) => {
+export const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeletionProps) => {
     const { replace: replaceMcsList1 } = useFieldArray({
         name: `${FieldConstants.DELETION_SPECIFIC_DATA}.${FieldConstants.SHUNT_COMPENSATOR_SIDE_1}`,
     });
@@ -101,5 +101,3 @@ const useHvdcLccDeletion = ({ fetchHvdcWithShuntCompensators }: UseHvdcLccDeleti
 
     return { specificUpdate };
 };
-
-export default useHvdcLccDeletion;

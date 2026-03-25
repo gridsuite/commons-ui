@@ -10,7 +10,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { EquipmentDeletionDto, LccDeletionDto } from './equipmentDeletion.types';
-import useHvdcLccDeletion from './hvdcLccDeletion/useHvdcLccDeletion';
+import { useHvdcLccDeletion } from './hvdcLccDeletion/useHvdcLccDeletion';
 import {
     areIdsEqual,
     EquipmentType,
