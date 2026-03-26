@@ -128,6 +128,7 @@ export const networkModificationsEn = {
     ShortCircuitCurrentLimitMinMaxError: 'Low short-circuit current limit must be less than or equal to high limit',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
     [YUP_REQUIRED]: 'This field is required',
+    YupNotTypeNumber: 'This field only accepts numeric values',
     CreateLoad: 'Create load',
     loadType: 'Type',
     ConnectivityTab: 'Connectivity',
