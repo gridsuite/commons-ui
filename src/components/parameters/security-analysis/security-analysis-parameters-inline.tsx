@@ -36,7 +36,7 @@ export function SecurityAnalysisParametersInline({
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
-    fetchContingencyCount: (contingencyListIds: UUID[] | null) => Promise<ContingencyCount>;
+    fetchContingencyCount: (contingencyListIds: string[] | null) => Promise<ContingencyCount>;
     isBuiltCurrentNode: boolean;
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;

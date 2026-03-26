@@ -6,8 +6,18 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
-import { FactorsCount, SensitivityAnalysisParametersInfos } from '../utils';
+import {
+    FactorsCount,
+    SensitivityAnalysisParametersInfos,
+    SensitivityInjectionsSet,
+    SensitivityInjection,
+    SensitivityHVDC,
+    SensitivityPST,
+    SensitivityNodes,
+} from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { CONTAINER_ID, CONTAINER_NAME } from '../components/parameters/common/parameter-table/constants';
+import { EquipmentsContainer } from '../components/parameters/common/parameter-table';
 
 const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/study/v1/sensitivity-analysis/parameters`;
 const PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis`;
@@ -34,13 +44,6 @@ export function fetchSensitivityAnalysisProviders(): Promise<string[]> {
     return backendFetchJson(url);
 }
 
-export function getSensitivityAnalysisParameters(studyUuid: UUID) {
-    console.info('get sensitivity analysis parameters');
-    const url = `${getStudyUrl(studyUuid)}/sensitivity-analysis/parameters`;
-    console.debug(url);
-    return backendFetchJson(url);
-}
-
 export function fetchSensitivityAnalysisParameters(parameterUuid: string) {
     console.info('get sensitivity analysis parameters');
     const url = `${GET_PARAMETERS_PREFIX}/${parameterUuid}`;
@@ -50,7 +53,7 @@ export function fetchSensitivityAnalysisParameters(parameterUuid: string) {
 
 export function setSensitivityAnalysisParameters(
     studyUuid: UUID | null,
-    newParams: SensitivityAnalysisParametersInfos | null
+    newParamsInfos: SensitivityAnalysisParametersInfos<EquipmentsContainer> | null
 ) {
     console.info('set sensitivity analysis parameters');
     const url = `${getStudyUrl(studyUuid)}/sensitivity-analysis/parameters`;
@@ -61,7 +64,7 @@ export function setSensitivityAnalysisParameters(
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: newParams ? JSON.stringify(newParams) : null,
+        body: newParamsInfos ? JSON.stringify(mapSensitivityAnalysisParameters(newParamsInfos)) : null,
     });
 }
 
@@ -69,7 +72,7 @@ export function getSensitivityAnalysisFactorsCount(
     studyUuid: UUID | null,
     currentNodeUuid: UUID,
     currentRootNetworkUuid: UUID,
-    newParams: SensitivityAnalysisParametersInfos,
+    newParams: SensitivityAnalysisParametersInfos<EquipmentsContainer>,
     abortSignal: AbortSignal
 ): Promise<FactorsCount> {
     console.info('get sensitivity analysis parameters computing count');
@@ -85,7 +88,10 @@ export function getSensitivityAnalysisFactorsCount(
     });
 }
 
-export function updateSensitivityAnalysisParameters(parameterUuid: UUID, newParams: any) {
+export function updateSensitivityAnalysisParameters(
+    parameterUuid: UUID,
+    newParamsInfos: SensitivityAnalysisParametersInfos<EquipmentsContainer> | null
+) {
     console.info('set security analysis parameters');
     const setSecurityAnalysisParametersUrl = `${getSensiUrl()}parameters/${parameterUuid}`;
     console.debug(setSecurityAnalysisParametersUrl);
@@ -95,6 +101,6 @@ export function updateSensitivityAnalysisParameters(parameterUuid: UUID, newPara
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: newParams ? JSON.stringify(newParams) : null,
+        body: newParamsInfos ? JSON.stringify(mapSensitivityAnalysisParameters(newParamsInfos)) : null,
     });
 }

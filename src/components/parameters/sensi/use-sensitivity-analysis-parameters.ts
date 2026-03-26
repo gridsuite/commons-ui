@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import { ComputingType, CONTINGENCIES, PROVIDER } from '../common';
+import { ComputingType, CONTINGENCY_LISTS, PROVIDER } from '../common';
 import {
     ElementType,
     FactorsCount,
@@ -56,15 +56,17 @@ import {
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
-import { ACTIVATED, CONTAINER_ID, CONTAINER_NAME } from '../common/parameter-table';
+import { ACTIVATED, CONTAINER_ID, CONTAINER_NAME, EquipmentsContainer } from '../common/parameter-table';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
     formSchema: ObjectSchema<any>;
     formattedProviders: { id: string; label: string }[];
-    fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfos) => any;
-    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos;
-    params: SensitivityAnalysisParametersInfos | null;
+    fromSensitivityAnalysisParamsDataToFormValues: (
+        parameters: SensitivityAnalysisParametersInfos<EquipmentsContainer>
+    ) => any;
+    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos<EquipmentsContainer>;
+    params: SensitivityAnalysisParametersInfos<EquipmentsContainer> | null;
     paramsLoaded: boolean;
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -114,7 +116,8 @@ export const useSensitivityAnalysisParametersForm = ({
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
-    const [factorCountParams, setFactorCountParams] = useState<SensitivityAnalysisParametersInfos | null>(null);
+    const [factorCountParams, setFactorCountParams] =
+        useState<SensitivityAnalysisParametersInfos<EquipmentsContainer> | null>(null);
 
     const emptyFormData = useMemo(() => {
         return {
@@ -253,7 +256,9 @@ export const useSensitivityAnalysisParametersForm = ({
     }, [updateFactorCount]);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
-        (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
+        (
+            parameters: SensitivityAnalysisParametersInfos<EquipmentsContainer>
+        ): SensitivityAnalysisParametersFormSchema => {
             return {
                 [PROVIDER]: parameters[PROVIDER],
                 [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: parameters.flowFlowSensitivityValueThreshold,
@@ -277,8 +282,8 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [DISTRIBUTION_TYPE]: sensiInjectionsSet[DISTRIBUTION_TYPE],
-                            [CONTINGENCIES]:
-                                sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
+                            [CONTINGENCY_LISTS]:
+                                sensiInjectionsSet[CONTINGENCY_LISTS]?.map((sensiInjection) => {
                                     return {
                                         [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
@@ -305,8 +310,8 @@ export const useSensitivityAnalysisParametersForm = ({
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
                                     };
                                 }) ?? [],
-                            [CONTINGENCIES]:
-                                sensiInjections[CONTINGENCIES]?.map((sensiInjection) => {
+                            [CONTINGENCY_LISTS]:
+                                sensiInjections[CONTINGENCY_LISTS]?.map((sensiInjection) => {
                                     return {
                                         [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
@@ -333,8 +338,8 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [SENSITIVITY_TYPE]: sensiInjectionsSet[SENSITIVITY_TYPE],
-                            [CONTINGENCIES]:
-                                sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
+                            [CONTINGENCY_LISTS]:
+                                sensiInjectionsSet[CONTINGENCY_LISTS]?.map((sensiInjection) => {
                                     return {
                                         [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
@@ -361,8 +366,8 @@ export const useSensitivityAnalysisParametersForm = ({
                                     };
                                 }) ?? [],
                             [SENSITIVITY_TYPE]: sensiInjectionsSet[SENSITIVITY_TYPE],
-                            [CONTINGENCIES]:
-                                sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
+                            [CONTINGENCY_LISTS]:
+                                sensiInjectionsSet[CONTINGENCY_LISTS]?.map((sensiInjection) => {
                                     return {
                                         [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
@@ -388,8 +393,8 @@ export const useSensitivityAnalysisParametersForm = ({
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
                                     };
                                 }) ?? [],
-                            [CONTINGENCIES]:
-                                sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
+                            [CONTINGENCY_LISTS]:
+                                sensiInjectionsSet[CONTINGENCY_LISTS]?.map((sensiInjection) => {
                                     return {
                                         [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
                                         [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],

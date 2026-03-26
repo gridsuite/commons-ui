@@ -26,7 +26,7 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { DistributionType, SensitivityType } from '../../../utils';
-import { CONTINGENCIES, PROVIDER } from '../common';
+import { CONTINGENCY_LISTS, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
@@ -39,7 +39,7 @@ const getMonitoredBranchesSchema = () => {
             .of(
                 yup.object().shape({
                     [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
+                    [NAME]: yup.string().nullable().defined(),
                 })
             )
             .required()
@@ -62,12 +62,12 @@ const getSensitivityTypeSchema = () => {
     };
 };
 
-const getContingenciesSchema = () => {
+const getContingencyListsSchema = () => {
     return {
-        [CONTINGENCIES]: yup.array().of(
+        [CONTINGENCY_LISTS]: yup.array().of(
             yup.object().shape({
                 [ID]: yup.string().required(),
-                [NAME]: yup.string().required(),
+                [NAME]: yup.string().nullable().defined(),
             })
         ),
         [ACTIVATED]: yup.boolean().required(),
@@ -84,7 +84,7 @@ export const getSensiHVDCsFormSchema = () => ({
                 .of(
                     yup.object().shape({
                         [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
+                        [NAME]: yup.string().nullable().defined(),
                     })
                 )
                 .required()
@@ -92,7 +92,7 @@ export const getSensiHVDCsFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.min(1, 'FieldIsRequired'),
                 }),
-            ...getContingenciesSchema(),
+            ...getContingencyListsSchema(),
         })
     ),
 });
@@ -114,7 +114,7 @@ export const getSensiHvdcformatNewParams = (newParams: SensitivityAnalysisParame
                     };
                 }),
                 [SENSITIVITY_TYPE]: sensitivityHVDCs[SENSITIVITY_TYPE],
-                [CONTINGENCIES]: sensitivityHVDCs[CONTINGENCIES]?.map((container) => {
+                [CONTINGENCY_LISTS]: sensitivityHVDCs[CONTINGENCY_LISTS]?.map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
                         [CONTAINER_NAME]: container[NAME],
@@ -135,7 +135,7 @@ export const getSensiInjectionsFormSchema = () => ({
                 .of(
                     yup.object().shape({
                         [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
+                        [NAME]: yup.string().nullable().defined(),
                     })
                 )
                 .required()
@@ -143,7 +143,7 @@ export const getSensiInjectionsFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.min(1, 'FieldIsRequired'),
                 }),
-            ...getContingenciesSchema(),
+            ...getContingencyListsSchema(),
         })
     ),
 });
@@ -164,7 +164,7 @@ export const getSensiInjectionsformatNewParams = (newParams: SensitivityAnalysis
                         [CONTAINER_NAME]: container[NAME],
                     };
                 }),
-                [CONTINGENCIES]: sensitivityInjections[CONTINGENCIES]?.map((container) => {
+                [CONTINGENCY_LISTS]: sensitivityInjections[CONTINGENCY_LISTS]?.map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
                         [CONTAINER_NAME]: container[NAME],
@@ -185,7 +185,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                 .of(
                     yup.object().shape({
                         [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
+                        [NAME]: yup.string().nullable().defined(),
                     })
                 )
                 .required()
@@ -200,7 +200,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.required(),
                 }),
-            ...getContingenciesSchema(),
+            ...getContingencyListsSchema(),
         })
     ),
 });
@@ -222,7 +222,7 @@ export interface IRowNewParams {
         [ID]: string;
         [NAME]: string;
     }>;
-    [CONTINGENCIES]: Array<{
+    [CONTINGENCY_LISTS]: Array<{
         [ID]: string;
         [NAME]: string;
     }>;
@@ -234,7 +234,7 @@ export const getGenericRowNewParams = (newRowParams: IRowNewParams) => {
         [INJECTIONS]: newRowParams[INJECTIONS]?.map((container) => container[ID]),
         [HVDC_LINES]: newRowParams[HVDC_LINES]?.map((container) => container[ID]),
         [PSTS]: newRowParams[PSTS]?.map((container) => container[ID]),
-        [CONTINGENCIES]: newRowParams[CONTINGENCIES]?.map((container) => container[ID]),
+        [CONTINGENCY_LISTS]: newRowParams[CONTINGENCY_LISTS]?.map((container) => container[ID]),
     };
 };
 
@@ -255,7 +255,7 @@ export const getSensiInjectionsSetformatNewParams = (newParams: SensitivityAnaly
                     };
                 }),
                 [DISTRIBUTION_TYPE]: sensitivityInjectionSet[DISTRIBUTION_TYPE],
-                [CONTINGENCIES]: sensitivityInjectionSet[CONTINGENCIES]?.map((container) => {
+                [CONTINGENCY_LISTS]: sensitivityInjectionSet[CONTINGENCY_LISTS]?.map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
                         [CONTAINER_NAME]: container[NAME],
@@ -273,16 +273,16 @@ export const getSensiNodesFormSchema = () => ({
             [SUPERVISED_VOLTAGE_LEVELS]: yup.array().of(
                 yup.object().shape({
                     [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
+                    [NAME]: yup.string().nullable().defined(),
                 })
             ),
             [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup.array().of(
                 yup.object().shape({
                     [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
+                    [NAME]: yup.string().nullable().defined(),
                 })
             ),
-            ...getContingenciesSchema(),
+            ...getContingencyListsSchema(),
         })
     ),
 });
@@ -305,7 +305,7 @@ export const getSensiNodesformatNewParams = (newParams: SensitivityAnalysisParam
                         };
                     }
                 ),
-                [CONTINGENCIES]: sensitivityNode[CONTINGENCIES]?.map((container) => {
+                [CONTINGENCY_LISTS]: sensitivityNode[CONTINGENCY_LISTS]?.map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
                         [CONTAINER_NAME]: container[NAME],
@@ -327,7 +327,7 @@ export const getSensiPSTsFormSchema = () => ({
                 .of(
                     yup.object().shape({
                         [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
+                        [NAME]: yup.string().nullable().defined(),
                     })
                 )
                 .required()
@@ -335,7 +335,7 @@ export const getSensiPSTsFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.min(1, 'FieldIsRequired'),
                 }),
-            ...getContingenciesSchema(),
+            ...getContingencyListsSchema(),
         })
     ),
 });
@@ -357,7 +357,7 @@ export const getSensiPstformatNewParams = (newParams: SensitivityAnalysisParamet
                     };
                 }),
                 [SENSITIVITY_TYPE]: sensitivityPSTs[SENSITIVITY_TYPE],
-                [CONTINGENCIES]: sensitivityPSTs[CONTINGENCIES]?.map((container) => {
+                [CONTINGENCY_LISTS]: sensitivityPSTs[CONTINGENCY_LISTS]?.map((container) => {
                     return {
                         [CONTAINER_ID]: container[ID],
                         [CONTAINER_NAME]: container[NAME],
