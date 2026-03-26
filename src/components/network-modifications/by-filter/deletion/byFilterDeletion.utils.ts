@@ -35,6 +35,6 @@ export const byFilterDeletionDtoToForm = (dto: ByFilterDeletionDto): ByFilterDel
 
 export const byFilterDeletionFormToDto = (formData: ByFilterDeletionFormData): ByFilterDeletionDto => ({
     type: ModificationType.BY_FILTER_DELETION,
-    equipmentType: formData[FieldConstants.TYPE] as EquipmentType,
+    equipmentType: formData[FieldConstants.TYPE],
     filters: formData[FieldConstants.FILTERS],
 });
