@@ -6,6 +6,8 @@
  */
 
 export * from './common';
-export * from './by-filter';
+export * from './equipmentDeletion';
 export * from './substation';
 export * from './voltage-level';
+export * from './load';
+export * from './by-filter';
