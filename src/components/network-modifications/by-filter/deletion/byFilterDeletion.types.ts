@@ -6,20 +6,10 @@
  */
 
 import type { EquipmentType, ModificationType } from '../../../../utils';
-
-export type Filter = {
-    id: string;
-    name: string;
-};
+import { Filter } from '../commons/by-filter.type';
 
 export type ByFilterDeletionDto = {
-    uuid: string;
     type: ModificationType;
     equipmentType: EquipmentType;
-    filters: Filter[];
-};
-
-export type ByFilterDeletionFormData = {
-    type: EquipmentType | null;
     filters: Filter[];
 };

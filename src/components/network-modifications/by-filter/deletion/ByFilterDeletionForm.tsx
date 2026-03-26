@@ -6,19 +6,20 @@
  */
 
 import { Grid } from '@mui/material';
-import { useIntl } from 'react-intl';
 import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AutocompleteInput, DirectoryItemsInput } from '../../../inputs';
-import { ElementType, FieldConstants, EquipmentType, Option } from '../../../../utils';
+import { useGetLabelEquipmentTypes } from '../../../../hooks';
+import { ElementType, FieldConstants, EquipmentType, richTypeEquals } from '../../../../utils';
 
 export function ByFilterDeletionForm() {
-    const intl = useIntl();
     const equipmentType = useWatch({
         name: FieldConstants.TYPE,
     });
 
     const { setValue } = useFormContext();
+
+    const getOptionLabel = useGetLabelEquipmentTypes();
 
     const equipmentTypes = useMemo(() => {
         const equipmentTypesToExclude = new Set([
@@ -39,20 +40,13 @@ export function ByFilterDeletionForm() {
         setValue(FieldConstants.FILTERS, []);
     }, [setValue]);
 
-    const getOptionLabel = useCallback(
-        (option: Option) => {
-            const optionId = typeof option === 'string' ? option : option.id;
-            return intl.formatMessage({ id: optionId === EquipmentType.HVDC_LINE ? 'Hvdc' : optionId });
-        },
-        [intl]
-    );
-
     return (
         <Grid container spacing={2} padding={0.5} alignItems="center">
             <Grid item xs={6}>
                 <AutocompleteInput
+                    isOptionEqualToValue={richTypeEquals}
                     name={FieldConstants.TYPE}
-                    label="equipmentType"
+                    label="Type"
                     options={equipmentTypes}
                     onChangeCallback={handleEquipmentTypeChange}
                     getOptionLabel={getOptionLabel}

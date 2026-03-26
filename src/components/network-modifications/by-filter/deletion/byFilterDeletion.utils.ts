@@ -5,13 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants, EquipmentType, YUP_REQUIRED, yupConfig as yup } from '../../../../utils';
-import type { ByFilterDeletionDto, ByFilterDeletionFormData } from './byFilterDeletion.types';
+import { InferType } from 'yup';
+import { FieldConstants, EquipmentType, YUP_REQUIRED, yupConfig as yup, ModificationType } from '../../../../utils';
+import type { ByFilterDeletionDto } from './byFilterDeletion.types';
 
 export const byFilterDeletionFormSchema = yup
     .object()
     .shape({
-        [FieldConstants.TYPE]: yup.mixed<EquipmentType>().required(),
+        [FieldConstants.TYPE]: yup.mixed<EquipmentType>().required(YUP_REQUIRED),
         [FieldConstants.FILTERS]: yup
             .array()
             .of(
@@ -25,14 +26,15 @@ export const byFilterDeletionFormSchema = yup
     })
     .required();
 
+export type ByFilterDeletionFormData = InferType<typeof byFilterDeletionFormSchema>;
+
 export const byFilterDeletionDtoToForm = (dto: ByFilterDeletionDto): ByFilterDeletionFormData => ({
     [FieldConstants.TYPE]: dto.equipmentType,
     [FieldConstants.FILTERS]: dto.filters,
 });
 
-export const byFilterDeletionFormToDto = (
-    formData: ByFilterDeletionFormData
-): Omit<ByFilterDeletionDto, 'uuid' | 'type'> => ({
+export const byFilterDeletionFormToDto = (formData: ByFilterDeletionFormData): ByFilterDeletionDto => ({
+    type: ModificationType.BY_FILTER_DELETION,
     equipmentType: formData[FieldConstants.TYPE] as EquipmentType,
     filters: formData[FieldConstants.FILTERS],
 });
