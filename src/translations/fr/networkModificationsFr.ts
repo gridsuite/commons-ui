@@ -132,6 +132,7 @@ export const networkModificationsFr = {
     ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
     [YUP_REQUIRED]: 'Ce champ doit être renseigné',
+    YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
     CreateLoad: 'Créer une consommation',
     loadType: 'Type',
     ConnectivityTab: 'Connectivité',
