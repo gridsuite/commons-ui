@@ -46,7 +46,7 @@ export function ContingencyTable({
         if (showContingencyCount) {
             const hasNoContingencies =
                 !contingencyListsInfos ||
-                contingencyListsInfos.length === 0 ||
+                (contingencyListsInfos.length ?? 0) === 0 ||
                 contingencyListsInfos.every(
                     (contingencyList) => (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0
                 );
