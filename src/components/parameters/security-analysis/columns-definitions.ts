@@ -65,7 +65,7 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
 
 export const toFormValueSaParameters = (params: SAParameters) => ({
     [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
-    ...toFormValuesContingencyListsInfos(params?.[CONTINGENCY_LISTS_INFOS]),
+    ...toFormValuesContingencyListsInfos(params?.[CONTINGENCY_LISTS_INFOS] ?? []),
     ...toFormValuesLimitReductions(params?.limitReductions),
     // SA specific form values
     [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] * 100,
