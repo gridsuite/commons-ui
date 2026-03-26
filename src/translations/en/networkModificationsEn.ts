@@ -29,6 +29,7 @@ export const networkModificationsEn = {
     'network_modifications.GENERATOR_MODIFICATION': 'Modifying generator {computedLabel}',
     'network_modifications.LINE_CREATION': 'Creating line {computedLabel}',
     'network_modifications.LINE_MODIFICATION': 'Modifying line {computedLabel}',
+    'network_modifications.COMPOSITE_MODIFICATION': '{computedLabel}',
     'network_modifications.TWO_WINDINGS_TRANSFORMER_CREATION': 'Creating 2 windings transformer {computedLabel}',
     'network_modifications.TWO_WINDINGS_TRANSFORMER_MODIFICATION': 'Modifying 2 windings transformer {computedLabel}',
     'network_modifications.OPERATING_STATUS_MODIFICATION':
@@ -129,6 +130,7 @@ export const networkModificationsEn = {
     ShortCircuitCurrentLimitMinMaxError: 'Low short-circuit current limit must be less than or equal to high limit',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
     [YUP_REQUIRED]: 'This field is required',
+    YupNotTypeNumber: 'This field only accepts numeric values',
     CreateLoad: 'Create load',
     loadType: 'Type',
     ConnectivityTab: 'Connectivity',

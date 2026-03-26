@@ -17,6 +17,7 @@ import {
     ModificationType,
     sanitizeString,
     toModificationOperation,
+    YUP_NOT_TYPE_NUMBER,
     YUP_REQUIRED,
 } from '../../../../utils';
 import { FieldType } from '../../../../utils/types/fieldType';
@@ -28,8 +29,12 @@ export const voltageLevelModificationFormSchema = object()
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.HIDE_SUBSTATION_FIELD]: boolean().required(YUP_REQUIRED),
         [FieldConstants.SUBSTATION_ID]: string().nullable(),
-        [FieldConstants.NOMINAL_V]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.NOMINAL_V]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
+            .nullable()
+            .min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'mustBeGreaterOrEqualToZero')
             .when([FieldConstants.HIGH_VOLTAGE_LIMIT], {
@@ -37,8 +42,12 @@ export const voltageLevelModificationFormSchema = object()
                 then: (schema) =>
                     schema.max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
             }),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
+            .nullable()
+            .min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
             .when([FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT], {
@@ -50,6 +59,7 @@ export const voltageLevelModificationFormSchema = object()
                     ),
             }),
         [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero'),
     })
