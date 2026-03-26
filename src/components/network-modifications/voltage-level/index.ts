@@ -5,3 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export * from './creation';
+export * from './voltage-level.type';
+export * from './modification';
