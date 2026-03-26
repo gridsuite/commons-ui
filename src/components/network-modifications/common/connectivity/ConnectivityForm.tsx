@@ -170,10 +170,10 @@ export function ConnectivityForm({
     );
 
     const previousConnectedField = useMemo(() => {
-        if (!isEquipmentModification) {
+        if (!isEquipmentModification || previousValues?.terminalConnected == null) {
             return null;
         }
-        return previousValues?.terminalConnected
+        return previousValues.terminalConnected
             ? intl.formatMessage({ id: 'connected' })
             : intl.formatMessage({ id: 'disconnected' });
     }, [intl, previousValues, isEquipmentModification]);

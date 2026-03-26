@@ -58,3 +58,13 @@ export const areIdsEqual = (val1: Option, val2: Option) => {
 export const getObjectId = (object: string | { id: string }) => {
     return typeof object === 'string' ? object : (object?.id ?? null);
 };
+
+export const richTypeEquals = (a: unknown, b: unknown) => a === b;
+
+export function getIdOrValue(value: any) {
+    return typeof value !== 'string' ? (value?.id ?? null) : value;
+}
+
+export function getLabelOrValue(value: any) {
+    return typeof value !== 'string' ? (value?.label ?? null) : value;
+}
