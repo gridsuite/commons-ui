@@ -77,7 +77,7 @@ export const importParamsEn = {
     'iidm.import.xml.extensions.busbarSectionPosition': 'Busbar section position',
     'iidm.import.xml.extensions.branchStatus': 'Branch status (IIDM version < 1.12)',
     'iidm.import.xml.extensions.cgmesControlAreas': 'Cgmes control areas',
-    'iidm.import.xml.extensions.cgmesDanglingLineBoundaryNode': 'Cgmes dangling line boundary node',
+    'iidm.import.xml.extensions.cgmesBoundaryLineBoundaryNode': 'Cgmes boundary line boundary node',
     'iidm.import.xml.extensions.cgmesLineBoundaryNode': 'Cgmes line boundary node',
     'iidm.import.xml.extensions.cgmesMetadataModels': 'Cgmes models metadata',
     'iidm.import.xml.extensions.cgmesSshMetadata': 'Cgmes ssh metadata',

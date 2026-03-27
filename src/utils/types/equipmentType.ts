@@ -69,7 +69,7 @@ export enum EquipmentType {
     HVDC_CONVERTER_STATION = 'HVDC_CONVERTER_STATION',
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
-    DANGLING_LINE = 'DANGLING_LINE',
+    BOUNDARY_LINE = 'BOUNDARY_LINE',
     TIE_LINE = 'TIE_LINE',
     DISCONNECTOR = 'DISCONNECTOR',
     BREAKER = 'BREAKER',
@@ -184,11 +184,11 @@ export const ALL_EQUIPMENTS: Partial<
         tagLabel: 'equipment_tag/svc',
         shortLabel: 'equipment_short/svc',
     },
-    [EquipmentType.DANGLING_LINE]: {
-        id: EquipmentType.DANGLING_LINE,
-        label: 'DanglingLines',
-        tagLabel: 'equipment_tag/danglingLine',
-        shortLabel: 'equipment_short/danglingLine',
+    [EquipmentType.BOUNDARY_LINE]: {
+        id: EquipmentType.BOUNDARY_LINE,
+        label: 'BoundaryLines',
+        tagLabel: 'equipment_tag/boundaryLine',
+        shortLabel: 'equipment_short/boundaryLine',
     },
     [EquipmentType.BUSBAR_SECTION]: {
         id: EquipmentType.BUSBAR_SECTION,
@@ -257,7 +257,7 @@ export const BASE_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     [EquipmentType.LOAD]: ALL_EQUIPMENTS[EquipmentType.LOAD],
     [EquipmentType.SHUNT_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.SHUNT_COMPENSATOR],
     [EquipmentType.STATIC_VAR_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.STATIC_VAR_COMPENSATOR],
-    [EquipmentType.DANGLING_LINE]: ALL_EQUIPMENTS[EquipmentType.DANGLING_LINE],
+    [EquipmentType.BOUNDARY_LINE]: ALL_EQUIPMENTS[EquipmentType.BOUNDARY_LINE],
 };
 
 export const SEARCH_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
