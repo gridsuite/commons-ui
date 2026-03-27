@@ -8,9 +8,9 @@
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CouplingOmnibusCreation } from './CouplingOmnibusCreation';
-import { ExpandableInput } from '../../../../inputs/reactHookForm/expandableInput/ExpandableInput';
+import { ExpandableInput } from '../../../../inputs';
 import { FieldConstants } from '../../../../../utils';
-import { fetchBusBarSectionsForNewCoupler } from '../../../../../services/networkModification';
+import { fetchBusBarSectionsForNewCoupler } from '../../../../../services';
 
 export function CouplingOmnibusForm() {
     const { setValue, subscribe, trigger, getValues, formState } = useFormContext();
@@ -48,6 +48,13 @@ export function CouplingOmnibusForm() {
                 values: true,
             },
             callback: () => {
+                if (
+                    !getValues(FieldConstants.EQUIPMENT_ID) ||
+                    !getValues(FieldConstants.BUS_BAR_COUNT) ||
+                    !getValues(FieldConstants.SECTION_COUNT)
+                ) {
+                    return;
+                }
                 const switchKinds: string[] = getValues(FieldConstants.SWITCH_KINDS).map(
                     (value: { switchKind: string }) => value.switchKind
                 );
