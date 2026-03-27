@@ -112,20 +112,30 @@ export function ConnectivityForm({
                         selectedOption.busbarCount,
                         selectedOption.sectionCount,
                         selectedOption.switchKinds
-                    ).then((ids) => {
-                        lastFetchedBusesVlIds.current = watchVoltageLevelId;
-                        setBusOrBusbarSectionOptions(ids.map((bbsId) => ({ id: bbsId, label: '' })));
-                    });
+                    )
+                        .then((ids) => {
+                            lastFetchedBusesVlIds.current = watchVoltageLevelId;
+                            setBusOrBusbarSectionOptions(ids.map((bbsId) => ({ id: bbsId, label: '' })));
+                        })
+                        .catch((error) => {
+                            console.error('Failed to fetch busbar sections for new coupler:', error);
+                            setBusOrBusbarSectionOptions([]);
+                        });
                 } else if (fetchBusesOrBusbarSections) {
-                    fetchBusesOrBusbarSections(watchVoltageLevelId).then((busesOrbusbarSections) => {
-                        lastFetchedBusesVlIds.current = watchVoltageLevelId;
-                        setBusOrBusbarSectionOptions(
-                            busesOrbusbarSections?.map((busesOrbusbarSection) => ({
-                                id: busesOrbusbarSection.id,
-                                label: busesOrbusbarSection?.name ?? '',
-                            })) || []
-                        );
-                    });
+                    fetchBusesOrBusbarSections(watchVoltageLevelId)
+                        .then((busesOrbusbarSections) => {
+                            lastFetchedBusesVlIds.current = watchVoltageLevelId;
+                            setBusOrBusbarSectionOptions(
+                                busesOrbusbarSections?.map((busesOrbusbarSection) => ({
+                                    id: busesOrbusbarSection.id,
+                                    label: busesOrbusbarSection?.name ?? '',
+                                })) || []
+                            );
+                        })
+                        .catch((error) => {
+                            console.error('Failed to fetch buses or busbar sections:', error);
+                            setBusOrBusbarSectionOptions([]);
+                        });
                 }
             }
             if (watchVoltageLevelId !== lastFetchedBusesVlIds.current) {
