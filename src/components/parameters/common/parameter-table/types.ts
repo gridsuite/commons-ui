@@ -1,3 +1,5 @@
+import { CONTAINER_ID, CONTAINER_NAME } from './constants';
+
 /**
  * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -24,4 +26,9 @@ export interface ColumnsDef {
     textItems?: boolean;
     descriptionItems?: boolean;
     width?: string;
+}
+
+export interface EquipmentsContainer {
+    [CONTAINER_ID]: string;
+    [CONTAINER_NAME]: string | null;
 }

@@ -21,7 +21,7 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { CONTINGENCIES } from '../common';
+import { CONTINGENCY_LISTS } from '../common';
 import { ACTIVATED, ColumnsDef, Parameters } from '../common/parameter-table';
 
 export const MONITORED_BRANCHES_EQUIPMENT_TYPES = [EquipmentType.LINE, EquipmentType.TWO_WINDINGS_TRANSFORMER];
@@ -83,7 +83,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
     },
     {
         label: 'ContingencyLists',
-        dataKey: CONTINGENCIES,
+        dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
         directoryItems: true,
@@ -122,7 +122,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS = [
     },
     {
         label: 'ContingencyLists',
-        dataKey: CONTINGENCIES,
+        dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
         directoryItems: true,
@@ -170,7 +170,7 @@ export const COLUMNS_DEFINITIONS_HVDCS = [
     },
     {
         label: 'ContingencyLists',
-        dataKey: CONTINGENCIES,
+        dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
         directoryItems: true,
@@ -218,7 +218,7 @@ export const COLUMNS_DEFINITIONS_PSTS = [
     },
     {
         label: 'ContingencyLists',
-        dataKey: CONTINGENCIES,
+        dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
         directoryItems: true,
@@ -257,7 +257,7 @@ export const COLUMNS_DEFINITIONS_NODES = [
     },
     {
         label: 'ContingencyLists',
-        dataKey: CONTINGENCIES,
+        dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
         directoryItems: true,

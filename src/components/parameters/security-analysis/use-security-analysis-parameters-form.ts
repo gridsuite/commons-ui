@@ -32,7 +32,7 @@ import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
 import { SAParameters } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
-import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
+import { NAME, DESCRIPTION, ACTIVATED, CONTAINER_ID, CONTAINER_NAME, ID } from '../common/parameter-table';
 import { ContingencyListsInfos } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
@@ -100,10 +100,12 @@ export const useSecurityAnalysisParametersForm = (
                 return [];
             }
             return formContingencyListsInfos.map((contingencyListsInfos) => ({
-                [CONTINGENCY_LISTS]: contingencyListsInfos[CONTINGENCY_LISTS]?.map((c: Record<string, string>) => ({
-                    [ID]: c[ID],
-                    [NAME]: c[NAME],
-                })),
+                [CONTINGENCY_LISTS]: contingencyListsInfos[CONTINGENCY_LISTS]?.map(
+                    (container: Record<string, string>) => ({
+                        [CONTAINER_ID]: container[ID],
+                        [CONTAINER_NAME]: container[NAME],
+                    })
+                ),
                 [DESCRIPTION]: contingencyListsInfos[DESCRIPTION],
                 [ACTIVATED]: contingencyListsInfos[ACTIVATED],
             }));

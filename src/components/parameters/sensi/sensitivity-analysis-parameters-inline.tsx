@@ -29,6 +29,7 @@ import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
+import { EquipmentsContainer } from '../common/parameter-table';
 
 interface SensitivityAnalysisParametersProps {
     studyUuid: UUID | null;
@@ -71,7 +72,7 @@ export function SensitivityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSensitivityAnalysisParameters(newParams[0].id)
-                    .then((parameters: SensitivityAnalysisParametersInfos) => {
+                    .then((parameters: SensitivityAnalysisParametersInfos<EquipmentsContainer>) => {
                         console.info(`loading the following sensi parameters : ${parameters.uuid}`);
                         reset(sensitivityAnalysisMethods.fromSensitivityAnalysisParamsDataToFormValues(parameters), {
                             keepDefaultValues: true,
