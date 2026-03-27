@@ -44,7 +44,13 @@ export function ContingencyTable({
 
     useEffect(() => {
         if (showContingencyCount) {
-            if (!contingencyListsInfos || contingencyListsInfos.length === 0) {
+            const hasNoContingencies =
+                !contingencyListsInfos ||
+                (contingencyListsInfos.length ?? 0) === 0 ||
+                contingencyListsInfos.every(
+                    (contingencyList) => (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0
+                );
+            if (hasNoContingencies) {
                 setSimulatedContingencyCount(null);
                 return;
             }
