@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CouplingOmnibusCreation } from './CouplingOmnibusCreation';
 import { ExpandableInput } from '../../../../inputs';
@@ -22,19 +22,30 @@ export function CouplingOmnibusForm() {
 
     const [sectionOptions, setSectionOptions] = useState<string[]>([]);
 
+    const setBbsOptions = useCallback(
+        (setValueCallback?: (value: { sectionOptions: string[] }) => void) => {
+            const equipmentId = getValues(FieldConstants.EQUIPMENT_ID);
+            const busBarCount = getValues(FieldConstants.BUS_BAR_COUNT);
+            const sectionCount = getValues(FieldConstants.SECTION_COUNT);
+            if (!equipmentId || !busBarCount || !sectionCount) {
+                return;
+            }
+            const switchKinds: string[] = getValues(FieldConstants.SWITCH_KINDS).map(
+                (value: { switchKind: string }) => value.switchKind
+            );
+            fetchBusBarSectionsForNewCoupler(equipmentId, busBarCount, sectionCount, switchKinds).then((bbsIds) => {
+                setSectionOptions(bbsIds);
+                if (setValueCallback) {
+                    setValueCallback({ sectionOptions: bbsIds });
+                }
+            });
+        },
+        [getValues]
+    );
+
     useEffect(() => {
-        const switchKinds: string[] = getValues(FieldConstants.SWITCH_KINDS).map(
-            (value: { switchKind: string }) => value.switchKind
-        );
-        fetchBusBarSectionsForNewCoupler(
-            getValues(FieldConstants.EQUIPMENT_ID),
-            getValues(FieldConstants.BUS_BAR_COUNT),
-            getValues(FieldConstants.SECTION_COUNT),
-            switchKinds
-        ).then((bbsIds) => {
-            setSectionOptions(bbsIds);
-        });
-    }, [getValues]);
+        setBbsOptions();
+    }, [setBbsOptions]);
 
     useEffect(() => {
         const unsubscribe = subscribe({
@@ -48,29 +59,11 @@ export function CouplingOmnibusForm() {
                 values: true,
             },
             callback: () => {
-                if (
-                    !getValues(FieldConstants.EQUIPMENT_ID) ||
-                    !getValues(FieldConstants.BUS_BAR_COUNT) ||
-                    !getValues(FieldConstants.SECTION_COUNT)
-                ) {
-                    return;
-                }
-                const switchKinds: string[] = getValues(FieldConstants.SWITCH_KINDS).map(
-                    (value: { switchKind: string }) => value.switchKind
-                );
-                fetchBusBarSectionsForNewCoupler(
-                    getValues(FieldConstants.EQUIPMENT_ID),
-                    getValues(FieldConstants.BUS_BAR_COUNT),
-                    getValues(FieldConstants.SECTION_COUNT),
-                    switchKinds
-                ).then((bbsIds) => {
-                    setValue(FieldConstants.COUPLING_OMNIBUS, []);
-                    setSectionOptions(bbsIds);
-                });
+                setBbsOptions(() => setValue(FieldConstants.COUPLING_OMNIBUS, []));
             },
         });
         return () => unsubscribe();
-    }, [subscribe, trigger, getValues, setValue, formState]);
+    }, [subscribe, trigger, setValue, formState, setBbsOptions]);
 
     return (
         <ExpandableInput
