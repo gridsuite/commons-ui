@@ -9,6 +9,7 @@ import { useFieldArray } from 'react-hook-form';
 import { Button, Grid } from '@mui/material';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import { forwardRef, useImperativeHandle } from 'react';
 import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
 import { mergeSx, type MuiStyles } from '../../../../utils';
@@ -43,60 +44,75 @@ export interface ExpandableInputProps {
 // - only 1 state and 1 delete icon that removes the current line
 // - a second state "mark for deletion" with a second icon: the line is not removed
 // and we can cancel this mark to go back to normal state.
-export function ExpandableInput({
-    name,
-    Field, // Used to display each object of an array
-    fieldProps, // Props to pass to Field
-    addButtonLabel,
-    initialValue, // Initial value to display when we add a new entry to array
-    getDeletionMark,
-    deleteCallback,
-    alignItems = 'stretch', // default value for a flex container
-    watchProps = true,
-    disabled = false,
-    disabledDeletion,
-}: Readonly<ExpandableInputProps>) {
-    const {
-        fields: values,
-        append,
-        remove,
-    } = useFieldArray({
-        name,
-    });
+export const ExpandableInput = forwardRef(
+    (
+        {
+            name,
+            Field, // Used to display each object of an array
+            fieldProps, // Props to pass to Field
+            addButtonLabel,
+            initialValue, // Initial value to display when we add a new entry to array
+            getDeletionMark,
+            deleteCallback,
+            alignItems = 'stretch', // default value for a flex container
+            watchProps = true,
+            disabled = false,
+            disabledDeletion,
+        }: Readonly<ExpandableInputProps>,
+        ref
+    ) => {
+        const {
+            fields: values,
+            append,
+            remove,
+            replace,
+        } = useFieldArray({
+            name,
+        });
 
-    return (
-        <Grid item container spacing={2}>
-            <Grid item xs={12}>
-                <ErrorInput name={name} InputField={MidFormError} />
-            </Grid>
-            {watchProps &&
-                values.map((value, idx) => (
-                    <DeletableRow
-                        key={value.id}
-                        alignItems={alignItems}
-                        onClick={() => {
-                            const shouldRemove = deleteCallback ? deleteCallback(idx) : true;
-                            if (shouldRemove) {
-                                remove(idx);
-                            }
-                        }}
-                        deletionMark={getDeletionMark?.(idx)}
-                        disabledDeletion={disabledDeletion?.(idx)}
+        useImperativeHandle(
+            ref,
+            () => ({
+                replaceItems: (newItems: any) => replace(newItems),
+                appendItem: (newItem: any) => append(newItem),
+            }),
+            [append, replace]
+        );
+
+        return (
+            <Grid item container spacing={2}>
+                <Grid item xs={12}>
+                    <ErrorInput name={name} InputField={MidFormError} />
+                </Grid>
+                {watchProps &&
+                    values.map((value, idx) => (
+                        <DeletableRow
+                            key={value.id}
+                            alignItems={alignItems}
+                            onClick={() => {
+                                const shouldRemove = deleteCallback ? deleteCallback(idx) : true;
+                                if (shouldRemove) {
+                                    remove(idx);
+                                }
+                            }}
+                            deletionMark={getDeletionMark?.(idx)}
+                            disabledDeletion={disabledDeletion?.(idx)}
+                        >
+                            <Field name={name} index={idx} {...fieldProps} />
+                        </DeletableRow>
+                    ))}
+                <span>
+                    <Button
+                        disabled={disabled}
+                        fullWidth
+                        sx={mergeSx(styles.button, styles.paddingButton)}
+                        startIcon={<AddIcon />}
+                        onClick={() => append(initialValue)}
                     >
-                        <Field name={name} index={idx} {...fieldProps} />
-                    </DeletableRow>
-                ))}
-            <span>
-                <Button
-                    disabled={disabled}
-                    fullWidth
-                    sx={mergeSx(styles.button, styles.paddingButton)}
-                    startIcon={<AddIcon />}
-                    onClick={() => append(initialValue)}
-                >
-                    {addButtonLabel && <FormattedMessage id={addButtonLabel} />}
-                </Button>
-            </span>
-        </Grid>
-    );
-}
+                        {addButtonLabel && <FormattedMessage id={addButtonLabel} />}
+                    </Button>
+                </span>
+            </Grid>
+        );
+    }
+);
