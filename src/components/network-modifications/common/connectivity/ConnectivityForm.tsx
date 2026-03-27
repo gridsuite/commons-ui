@@ -15,6 +15,7 @@ import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
 import { ConnectablePositionFormInfos, ConnectivityNetworkProps } from './connectivity.type';
+import { fetchBusBarSectionsForNewCoupler } from '../../../../services/networkModification';
 import {
     areIdsEqual,
     CONNECTION_DIRECTIONS,
@@ -40,7 +41,6 @@ import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNul
  * @param direction direction of placement. Either 'row' or 'column', 'row' by default.
  * @param withDirectionsInfos
  * @param withPosition
- * @param newBusOrBusbarSectionOptions list of bus or bus bar sections for the newly created voltage level
  * @param onVoltageLevelChangeCallback callback to be called when the voltage level changes
  * @param isEquipmentModification connectivity form is used in a modification form or not
  * @param previousValues previous values of connectivity form's fields
@@ -56,7 +56,6 @@ interface ConnectivityFormProps extends ConnectivityNetworkProps {
     direction?: GridDirection;
     withDirectionsInfos?: boolean;
     withPosition: boolean;
-    newBusOrBusbarSectionOptions?: Option[];
     onVoltageLevelChangeCallback?: () => void;
     isEquipmentModification?: boolean;
     previousValues?: {
@@ -73,7 +72,6 @@ export function ConnectivityForm({
     direction = 'row',
     withDirectionsInfos = true,
     withPosition = false,
-    newBusOrBusbarSectionOptions = [],
     onVoltageLevelChangeCallback = undefined,
     isEquipmentModification = false,
     previousValues,
@@ -99,26 +97,36 @@ export function ConnectivityForm({
             voltageLevelOptions.map((item) => ({
                 id: item.id,
                 label: item.name ?? '',
+                exist: item.exist,
             })),
         [voltageLevelOptions]
     );
 
     useEffect(() => {
-        if (!fetchBusesOrBusbarSections) {
-            return;
-        }
         if (watchVoltageLevelId) {
-            const existingVoltageLevelOption = voltageLevelOptions.find((option) => option.id === watchVoltageLevelId);
-            if (existingVoltageLevelOption) {
-                fetchBusesOrBusbarSections(watchVoltageLevelId).then((busesOrbusbarSections) => {
-                    lastFetchedBusesVlIds.current = watchVoltageLevelId;
-                    setBusOrBusbarSectionOptions(
-                        busesOrbusbarSections?.map((busesOrbusbarSection) => ({
-                            id: busesOrbusbarSection.id,
-                            label: busesOrbusbarSection?.name ?? '',
-                        })) || []
-                    );
-                });
+            const selectedOption = voltageLevelOptions.find((option) => option.id === watchVoltageLevelId);
+            if (selectedOption) {
+                if (selectedOption.exist === false) {
+                    fetchBusBarSectionsForNewCoupler(
+                        watchVoltageLevelId,
+                        selectedOption.busbarCount,
+                        selectedOption.sectionCount,
+                        selectedOption.switchKinds
+                    ).then((ids) => {
+                        lastFetchedBusesVlIds.current = watchVoltageLevelId;
+                        setBusOrBusbarSectionOptions(ids.map((bbsId) => ({ id: bbsId, label: '' })));
+                    });
+                } else if (fetchBusesOrBusbarSections) {
+                    fetchBusesOrBusbarSections(watchVoltageLevelId).then((busesOrbusbarSections) => {
+                        lastFetchedBusesVlIds.current = watchVoltageLevelId;
+                        setBusOrBusbarSectionOptions(
+                            busesOrbusbarSections?.map((busesOrbusbarSection) => ({
+                                id: busesOrbusbarSection.id,
+                                label: busesOrbusbarSection?.name ?? '',
+                            })) || []
+                        );
+                    });
+                }
             }
             if (watchVoltageLevelId !== lastFetchedBusesVlIds.current) {
                 setBusOrBusbarSectionOptions([]);
@@ -126,13 +134,7 @@ export function ConnectivityForm({
         } else {
             setBusOrBusbarSectionOptions([]);
         }
-    }, [id, fetchBusesOrBusbarSections, voltageLevelOptions, watchVoltageLevelId]);
-
-    useEffect(() => {
-        if (newBusOrBusbarSectionOptions?.length > 0) {
-            setBusOrBusbarSectionOptions(newBusOrBusbarSectionOptions);
-        }
-    }, [newBusOrBusbarSectionOptions]);
+    }, [fetchBusesOrBusbarSections, voltageLevelOptions, watchVoltageLevelId]);
 
     const handleChangeVoltageLevel = useCallback(() => {
         onVoltageLevelChangeCallback?.();
