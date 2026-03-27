@@ -23,7 +23,7 @@ export function CouplingOmnibusForm() {
     const [sectionOptions, setSectionOptions] = useState<string[]>([]);
 
     const setBbsOptions = useCallback(
-        (setValueCallback?: (value: { sectionOptions: string[] }) => void) => {
+        (setValueCB?: (value: { sectionOptions: string[] }) => void) => {
             const equipmentId = getValues(FieldConstants.EQUIPMENT_ID);
             const busBarCount = getValues(FieldConstants.BUS_BAR_COUNT);
             const sectionCount = getValues(FieldConstants.SECTION_COUNT);
@@ -35,8 +35,8 @@ export function CouplingOmnibusForm() {
             );
             fetchBusBarSectionsForNewCoupler(equipmentId, busBarCount, sectionCount, switchKinds).then((bbsIds) => {
                 setSectionOptions(bbsIds);
-                if (setValueCallback) {
-                    setValueCallback({ sectionOptions: bbsIds });
+                if (setValueCB) {
+                    setValueCB({ sectionOptions: bbsIds });
                 }
             });
         },
