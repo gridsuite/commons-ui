@@ -4,6 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+import { Option } from './types';
+
 export type Nullable<T> = { [K in keyof T]: T[K] | null };
 export type DeepNullable<T> = {
     [K in keyof T]: DeepNullable<T[K]> | null;
@@ -44,3 +47,24 @@ export function sanitizeString(val: string | null | undefined): string | null {
 }
 
 export const getIdOrSelf = (e: any) => e?.id ?? e;
+
+export const areIdsEqual = (val1: Option, val2: Option) => {
+    if (typeof val1 !== 'string' && typeof val2 !== 'string') {
+        return val1.id === val2.id;
+    }
+    return val1 === val2;
+};
+
+export const getObjectId = (object: string | { id: string }) => {
+    return typeof object === 'string' ? object : (object?.id ?? null);
+};
+
+export const richTypeEquals = (a: unknown, b: unknown) => a === b;
+
+export function getIdOrValue(value: any) {
+    return typeof value !== 'string' ? (value?.id ?? null) : value;
+}
+
+export function getLabelOrValue(value: any) {
+    return typeof value !== 'string' ? (value?.label ?? null) : value;
+}

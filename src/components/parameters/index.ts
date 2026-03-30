@@ -14,3 +14,4 @@ export * from './pcc-min';
 export * from './security-analysis';
 export * from './sensi';
 export * from './dynamic-margin-calculation';
+export * from './dynamic-security-analysis';
