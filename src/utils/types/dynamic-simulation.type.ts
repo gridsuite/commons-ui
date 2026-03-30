@@ -124,10 +124,6 @@ export type DynamicSimulationParametersInfos = {
     event?: EventInfos[];
 };
 
-export type DynamicSimulationParametersFetchReturn = DynamicSimulationParametersInfos & {
-    mappings?: MappingInfos[];
-};
-
 // --- Types related to model/variables --- //
 
 export type ModelVariableDefinitionInfos = {
