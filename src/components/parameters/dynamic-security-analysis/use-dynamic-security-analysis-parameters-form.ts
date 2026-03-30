@@ -18,12 +18,9 @@ import { PROVIDER } from '../common';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { CONTINGENCIES_LIST_INFOS, CONTINGENCIES_START_TIME, SCENARIO_DURATION } from './constants';
-import { UseComputationParametersFormReturn, useTabs } from '../common/utils';
-
-export enum TabValues {
-    SCENARIO = 'scenario',
-    CONTINGENCY = 'contingency',
-}
+import { UseComputationParametersFormReturn } from '../common/utils';
+import { TabValues } from './dynamic-security-analysis.type';
+import { useTabs } from '../common/hook/use-tabs';
 
 const scenarioFormSchema = yup
     .object()

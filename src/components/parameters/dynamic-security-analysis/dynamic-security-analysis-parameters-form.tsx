@@ -11,15 +11,12 @@ import { ReactNode } from 'react';
 
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { parametersStyles } from '../util/styles';
 import { ProviderParam, TabPanel } from '../common';
-import { getTabStyle } from '../parameters-style';
-import {
-    TabValues,
-    UseDynamicSecurityAnalysisParametersFormReturn,
-} from './use-dynamic-security-analysis-parameters-form';
+import { getTabStyle, parametersStyles } from '../parameters-style';
+import { UseDynamicSecurityAnalysisParametersFormReturn } from './use-dynamic-security-analysis-parameters-form';
 import { mergeSx } from '../../../utils';
 import { CustomFormProvider } from '../../inputs';
+import { TabValues } from './dynamic-security-analysis.type';
 
 type DynamicSecurityAnalysisParametersFormProps = {
     dynamicSecurityAnalysisMethods: UseDynamicSecurityAnalysisParametersFormReturn;
@@ -39,41 +36,39 @@ export function DynamicSecurityAnalysisParametersForm({
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             {renderTitleFields?.()}
             {paramsLoaded ? (
-                <Grid sx={{ height: '100%' }}>
+                <Grid container sx={{ height: '100%' }} direction="column">
                     <Grid container>
                         <ProviderParam options={formattedProviders} />
                     </Grid>
+                    <Grid>
+                        <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                            <Tab
+                                label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
+                                value={TabValues.SCENARIO}
+                                sx={getTabStyle(tabsWithError, TabValues.SCENARIO)}
+                            />
+                            <Tab
+                                label={<FormattedMessage id="DynamicSecurityAnalysisContingency" />}
+                                value={TabValues.CONTINGENCY}
+                                sx={getTabStyle(tabsWithError, TabValues.CONTINGENCY)}
+                            />
+                        </Tabs>
+                    </Grid>
                     <Grid
+                        container
+                        xs
                         key="dsaParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
-                            height: '100%',
                             paddingTop: 0,
+                            width: '100%',
                         })}
                     >
-                        <Grid item width="100%">
-                            <Tabs
-                                value={selectedTab}
-                                variant="scrollable"
-                                onChange={onTabChange}
-                                aria-label="parameters"
-                            >
-                                <Tab
-                                    label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
-                                    value={TabValues.SCENARIO}
-                                    sx={getTabStyle(tabsWithError, TabValues.SCENARIO)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id="DynamicSecurityAnalysisContingency" />}
-                                    value={TabValues.CONTINGENCY}
-                                />
-                            </Tabs>
-                            <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
-                                <ScenarioParameters path={TabValues.SCENARIO} />
-                            </TabPanel>
-                            <TabPanel value={selectedTab} index={TabValues.CONTINGENCY}>
-                                <ContingencyParameters path={TabValues.CONTINGENCY} />
-                            </TabPanel>
-                        </Grid>
+                        <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
+                            <ScenarioParameters path={TabValues.SCENARIO} />
+                        </TabPanel>
+                        <TabPanel value={selectedTab} index={TabValues.CONTINGENCY}>
+                            <ContingencyParameters path={TabValues.CONTINGENCY} />
+                        </TabPanel>
                     </Grid>
                     {renderActions?.()}
                 </Grid>

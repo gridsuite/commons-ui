@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
+import { EquipmentType } from './equipmentType';
 
 export enum SolverType {
     IDA = 'IDA',
@@ -125,4 +126,23 @@ export type DynamicSimulationParametersInfos = {
 
 export type DynamicSimulationParametersFetchReturn = DynamicSimulationParametersInfos & {
     mappings?: MappingInfos[];
+};
+
+// --- Types related to model/variables --- //
+
+export type ModelVariableDefinitionInfos = {
+    name: string;
+    unit: string;
+};
+
+export type VariablesSetInfos = {
+    name: string;
+    variableDefinitions: ModelVariableDefinitionInfos[];
+};
+
+export type DynamicSimulationModelInfos = {
+    modelName: string;
+    equipmentType: EquipmentType;
+    variableDefinitions: ModelVariableDefinitionInfos[];
+    variablesSets: VariablesSetInfos[];
 };

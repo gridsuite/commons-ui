@@ -30,7 +30,8 @@ import {
     STOP_TIME,
 } from './constants';
 import { TabValues } from './dynamic-margin-calculation.type';
-import { UseComputationParametersFormReturn, useTabs } from '../common/utils';
+import { UseComputationParametersFormReturn } from '../common/utils';
+import { useTabs } from '../common/hook/use-tabs';
 
 const formSchema = yup.object().shape({
     [PROVIDER]: yup.string().required(),
@@ -122,7 +123,6 @@ export function useDynamicMarginCalculationParametersForm({
 
     useEffect(() => {
         if (params) {
-            console.log('xxx Resetting form with params:', params);
             reset(toFormValues(params));
         }
     }, [params, paramsLoaded, reset]);
