@@ -8,7 +8,6 @@ import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { CustomAGGrid, type MuiStyles } from '@gridsuite/commons-ui';
 import { AgGridReact } from 'ag-grid-react';
 import { ValueFormatterParams } from 'ag-grid-community';
 import CurveSelectorDialog from './dialog/curve-selector-dialog';
@@ -20,6 +19,8 @@ import { fetchDynamicSimulationModels } from '../../../../services';
 import { VoltageLevelInfos } from '../../../../utils/types/equipmentType';
 import { ExpertFilter, IdentifiableAttributes } from '../../../filter';
 import { Curve as CurveType } from './common/curve.type';
+import { type MuiStyles } from '../../../../utils/styles';
+import { CustomAGGrid } from '../../../customAGGrid';
 
 const styles = {
     grid: {

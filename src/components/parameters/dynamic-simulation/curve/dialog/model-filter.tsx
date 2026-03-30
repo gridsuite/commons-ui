@@ -7,13 +7,13 @@
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Box, Grid, lighten, Typography } from '@mui/material';
-import { type MuiStyles } from '@gridsuite/commons-ui';
 import CheckboxSelect from '../common/checkbox-select';
 import CheckboxTreeview, { CheckboxTreeviewApi } from '../common/checkbox-treeview';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
 import { EquipmentType } from '../../../../../utils/types/equipmentType';
 import { DynamicSimulationModel, ModelVariable } from '../common/curve.type';
 import { modelsToVariables } from './model-filter-utils';
+import { type MuiStyles } from '../../../../../utils/styles';
 
 export type ModelFilterApi = {
     getSelectedVariables: () => ModelVariable[];

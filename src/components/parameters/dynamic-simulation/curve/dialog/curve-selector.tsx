@@ -7,7 +7,6 @@
 import { Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
-import { type MuiStyles } from '@gridsuite/commons-ui';
 import { getReferencedEquipmentTypeForModel } from './curve-selector-utils';
 import ModelFilter, { ModelFilterApi } from './model-filter';
 import EquipmentFilter, { EquipmentFilterApi } from './equipment-filter';
@@ -16,6 +15,7 @@ import { EquipmentType, VoltageLevelInfos } from '../../../../../utils/types/equ
 import { ModelVariable } from '../common/curve.type';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
 import { ExpertFilter, IdentifiableAttributes } from '../../../../filter/filter.type';
+import { type MuiStyles } from '../../../../../utils/styles';
 
 const styles = {
     h6: (theme) => ({

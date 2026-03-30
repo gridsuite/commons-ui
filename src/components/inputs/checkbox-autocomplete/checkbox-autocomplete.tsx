@@ -17,10 +17,10 @@ import {
     styled,
     TextField,
 } from '@mui/material';
-import { type MuiStyles } from '@gridsuite/commons-ui';
 import { useIntl } from 'react-intl';
 import VirtualizedList from './virtualized-list';
 import CheckboxItem from './checkbox-item';
+import { type MuiStyles } from '../../../utils/styles';
 
 // virtualized component CheckboxAutocomplete is customized from the MUI example
 // https://mui.com/material-ui/react-autocomplete/#virtualization

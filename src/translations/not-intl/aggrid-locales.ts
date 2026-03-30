@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { type AgGridLocales, LANG_ENGLISH, LANG_FRENCH } from '@gridsuite/commons-ui';
+import { LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
+import { AgGridLocales } from '../../components/customAGGrid/customAggrid';
 
 // At the moment, only the French locale is needed
 export const AGGRID_LOCALES = {

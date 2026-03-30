@@ -6,9 +6,8 @@
  */
 
 import React, { forwardRef, Ref, useCallback, useImperativeHandle, useMemo, useState } from 'react';
-import { alpha, Checkbox, styled, useTheme } from '@mui/material';
+import { alpha, Checkbox, styled, SxProps, useTheme } from '@mui/material';
 import { SimpleTreeView, TreeItem, treeItemClasses } from '@mui/x-tree-view';
-import { type SxStyle } from '@gridsuite/commons-ui';
 
 const BorderedTreeItem = styled(TreeItem)(({ root }: { root: boolean }) => {
     const theme = useTheme();
@@ -60,7 +59,7 @@ type CheckBoxTreeViewProps<TData extends ItemData = ItemData> = {
     checkAll: boolean;
     onSelectionChanged?: (newSelection: TData[]) => void;
     getLabel: (element: TData) => string;
-    sx: SxStyle;
+    sx?: SxProps;
 };
 
 function CheckboxTreeview<TData extends ItemData>(

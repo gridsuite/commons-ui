@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { ChangeEvent, forwardRef, RefObject, useCallback, useImperativeHandle, useRef } from 'react';
 import { Search } from '@mui/icons-material';
 import { AgGridReact } from 'ag-grid-react';
-import { type MuiStyles } from '@gridsuite/commons-ui';
+import { type MuiStyles } from '../../../../../utils/styles';
 
 const styles = {
     searchSection: (theme) => ({
