@@ -7,7 +7,7 @@
 
 import { boolean, number, object } from 'yup';
 import { MeasurementInfo } from './measurement.type';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, YUP_NOT_TYPE_NUMBER } from '../../../../utils';
 
 export function getPowerWithValidityEmptyFormData(id: string) {
     return {
@@ -21,7 +21,7 @@ export function getPowerWithValidityEmptyFormData(id: string) {
 export function getPowerWithValidityValidationSchema(id: string) {
     return {
         [id]: object().shape({
-            [FieldConstants.VALUE]: number().nullable(),
+            [FieldConstants.VALUE]: number().typeError(YUP_NOT_TYPE_NUMBER).nullable(),
             [FieldConstants.VALIDITY]: boolean().nullable(),
         }),
     };
