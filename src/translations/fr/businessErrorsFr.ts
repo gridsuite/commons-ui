@@ -75,6 +75,8 @@ export const businessErrorsFr = {
         'Seule la dernière règle peut avoir un filtre vide : type {equipmentType}, indice de la règle : {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
+    'sensitivityAnalysis.filtersOrContingenciesListNotFound':
+        "La configuration contient une ou des listes d'aléas ou filtres qui ont été supprimés.",
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
     'pccMin.voltageLevelsLimitExceeded':
         'Le résultat de l’évaluation du filtre donne {voltageLevelSize} postes, ce qui dépasse la limite de {voltageLevelsLimit}.',
