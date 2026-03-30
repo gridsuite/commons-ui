@@ -11,3 +11,5 @@ export const NAME = 'name';
 export const ID = 'id';
 export const ACTIVATED = 'activated';
 export const DESCRIPTION = 'description';
+export const CONTAINER_ID = 'containerId';
+export const CONTAINER_NAME = 'containerName';

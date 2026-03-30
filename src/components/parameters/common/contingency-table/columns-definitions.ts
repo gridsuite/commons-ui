@@ -4,11 +4,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
+import {
+    Parameters,
+    ColumnsDef,
+    DESCRIPTION,
+    ACTIVATED,
+    CONTAINER_NAME,
+    CONTAINER_ID,
+    NAME,
+    ID,
+    EquipmentsContainer,
+} from '../parameter-table';
 import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { IdName, ContingencyListsInfos } from './types';
+import { ContingencyListsInfos } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [
     {
@@ -58,7 +68,10 @@ export const getContingencyListsInfosFormSchema = () => {
                             })
                         )
                         .required()
-                        .min(1, 'FieldIsRequired'),
+                        .when([ACTIVATED], {
+                            is: (activated: boolean) => activated,
+                            then: (schema) => schema.min(1, 'FieldIsRequired'),
+                        }),
                     [DESCRIPTION]: yup.string(),
                     [ACTIVATED]: yup.boolean().required(),
                 })
@@ -70,9 +83,9 @@ export const getContingencyListsInfosFormSchema = () => {
 export const toFormValuesContingencyListsInfos = (contingencyListsInfos: ContingencyListsInfos[]) => {
     return {
         [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: ContingencyListsInfos) => ({
-            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IdName) => ({
-                [NAME]: c[NAME],
-                [ID]: c[ID],
+            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: EquipmentsContainer) => ({
+                [NAME]: c[CONTAINER_NAME],
+                [ID]: c[CONTAINER_ID],
             })),
             [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
             [ACTIVATED]: contingencyListInfos[ACTIVATED],

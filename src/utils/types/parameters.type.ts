@@ -15,6 +15,7 @@ import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type'
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
 import { SAParameters } from '../../components/parameters/security-analysis/types';
 import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
+import { EquipmentsContainer } from '../../components/parameters/common/parameter-table/types';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',
@@ -41,7 +42,7 @@ export type SpecificParametersValues = Record<string, any>;
 export type SpecificParametersPerProvider = Record<string, SpecificParametersValues>;
 
 export type ParametersInfos<T extends ComputingType> = T extends ComputingType.SENSITIVITY_ANALYSIS
-    ? SensitivityAnalysisParametersInfos
+    ? SensitivityAnalysisParametersInfos<EquipmentsContainer>
     : T extends ComputingType.SECURITY_ANALYSIS
       ? SAParameters
       : T extends ComputingType.LOAD_FLOW
