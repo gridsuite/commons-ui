@@ -56,6 +56,8 @@
         "react-resizable-panels": "^3.0.6",
         "reconnecting-websocket": "^4.4.0",
         "type-fest": "^4.41.0",
+        "@tanstack/react-table": "^8.21.3",
+        "@tanstack/react-virtual": "^3.13.18",
         "uuid": "^13.0.0"
     },
     "peerDependencies": {
