@@ -48,7 +48,7 @@ export function useUniqueNameValidation({
     });
 
     const defaultFieldValue = defaultValues?.[name];
-    const directory = selectedDirectory || activeDirectory;
+    const directory = activeDirectory ?? selectedDirectory;
 
     const previousDirectoryRef = useRef<string | undefined>(directory);
 
@@ -58,7 +58,7 @@ export function useUniqueNameValidation({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue !== currentName && directory) {
-                elementExists(activeDirectory ?? selectedDirectory, nameValue, elementType)
+                elementExists(directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {
@@ -84,18 +84,7 @@ export function useUniqueNameValidation({
                 trigger('root.isValidating');
             }
         },
-        [
-            currentName,
-            directory,
-            elementExists,
-            activeDirectory,
-            selectedDirectory,
-            elementType,
-            setError,
-            name,
-            clearErrors,
-            trigger,
-        ]
+        [currentName, directory, elementExists, elementType, setError, name, clearErrors, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
