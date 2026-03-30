@@ -40,7 +40,7 @@ export function LoadDialogTabs({
                 />
 
                 <Tab
-                    label={<FormattedMessage id="LineCharacteristicsTab" />}
+                    label={<FormattedMessage id="CharacteristicsTab" />}
                     sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CHARACTERISTICS_TAB)}
                 />
                 {isModification && (

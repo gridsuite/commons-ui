@@ -8,7 +8,7 @@
 import { Button } from '@mui/material';
 import { FieldValues, SubmitHandler, useFormContext } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { CreateSwitchesFormData } from '../../voltageLevelCreation.types';
+import { CreateSwitchesFormData } from '../../../../voltageLevelCreation.types';
 
 interface CreateSwitchesDialogSubmitButtonProps {
     handleSave: (data: CreateSwitchesFormData) => void | Promise<void>;

@@ -10,10 +10,10 @@ import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
-import { FieldConstants } from '../../../../../utils';
-import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../voltageLevelCreation.types';
-import GridItem from '../../../../grid/grid-item';
-import { TextInput } from '../../../../inputs';
+import { FieldConstants } from '../../../../../../../utils';
+import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../../../voltageLevelCreation.types';
+import GridItem from '../../../../../../grid/grid-item';
+import { TextInput } from '../../../../../../inputs';
 import { CreateSwitchesDialog } from './creation';
 
 export function SwitchesBetweenSections() {
