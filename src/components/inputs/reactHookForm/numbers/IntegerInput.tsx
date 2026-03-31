@@ -8,11 +8,13 @@ import { TextInput, TextInputProps } from '../text/TextInput';
 import { isIntegerNumber } from './utils';
 
 export function IntegerInput(props: TextInputProps) {
-    const inputTransform = (value: string | number | null) => {
+    const inputTransform = (value: string | number | null | undefined) => {
         if (value === '-') {
             return value;
         }
-        return value === null || (typeof value === 'number' && Number.isNaN(value)) ? '' : value.toString();
+        return value === null || value === undefined || (typeof value === 'number' && Number.isNaN(value))
+            ? ''
+            : value.toString();
     };
 
     const outputTransform = (value: string) => {

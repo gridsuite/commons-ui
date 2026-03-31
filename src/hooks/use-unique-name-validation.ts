@@ -48,7 +48,7 @@ export function useUniqueNameValidation({
     });
 
     const defaultFieldValue = defaultValues?.[name];
-    const directory = selectedDirectory || activeDirectory;
+    const directory = activeDirectory ?? selectedDirectory;
 
     const previousDirectoryRef = useRef<string | undefined>(directory);
 
@@ -84,7 +84,7 @@ export function useUniqueNameValidation({
                 trigger('root.isValidating');
             }
         },
-        [currentName, directory, elementType, name, setError, clearErrors, trigger, elementExists]
+        [currentName, directory, elementExists, elementType, setError, name, clearErrors, trigger]
     );
 
     const debouncedHandleCheckName = useDebounce(handleCheckName, 700);
