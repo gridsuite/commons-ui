@@ -47,7 +47,8 @@ export function ContingencyTable({
     );
 
     useEffect(() => {
-        if (!showContingencyCount) {
+        if (!showContingencyCount || !isBuiltCurrentNode) {
+            setIsLoading(false);
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
@@ -57,6 +58,7 @@ export function ContingencyTable({
             (contingencyListsInfos.length ?? 0) === 0 ||
             contingencyListsInfos.every((contingencyList) => (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0);
         if (hasNoContingencies) {
+            setIsLoading(false);
             setSimulatedContingencyCount(null);
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
@@ -96,7 +98,7 @@ export function ContingencyTable({
             controller?.abort(new Error(IGNORE_SIGNAL));
             clearTimeout(loadingTimeoutId);
         };
-    }, [snackError, contingencyListsInfos, fetchContingencyCount, showContingencyCount]);
+    }, [snackError, contingencyListsInfos, fetchContingencyCount, showContingencyCount, isBuiltCurrentNode]);
 
     const renderContingencyCount = () => {
         if (!isBuiltCurrentNode) {
