@@ -28,8 +28,9 @@ export function StructureTab() {
                 <GridItem size={4}>
                     <IntegerInput name={FieldConstants.SECTION_COUNT} label="numberOfSections" />
                 </GridItem>
-                <SwitchesBetweenSections />
             </Grid>
+            <GridSection title="SwitchesBetweenSections" />
+            <SwitchesBetweenSections />
             {displayOmnibus && (
                 <>
                     <GridSection title="Coupling_Omnibus" />

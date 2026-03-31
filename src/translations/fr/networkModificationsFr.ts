@@ -109,7 +109,7 @@ export const networkModificationsFr = {
     BusBarSections: 'Section de jeu de barres',
     BusBarCount: 'Nb de barres',
     numberOfSections: 'Nb de sections',
-    SwitchesBetweenSections: 'OCs entre sections',
+    SwitchesBetweenSections: 'Organes de coupure entre sections',
     Coupling_Omnibus: 'Couplage / omnibus',
     AddCoupling_Omnibus: 'Ajouter couplage / omnibus',
     SwitchBetweenSectionsLabel: 'section_{index1} / section_{index2}',
