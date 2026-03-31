@@ -80,6 +80,7 @@ export const networkModificationsEn = {
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
     ModificationReadError: 'An error occurred while fetching the modification',
     CreateSubstation: 'Create substation',
+    ModifyByAssignment: 'Modify by filter',
     DeleteEquipmentByFilter: 'Delete equipment by filter',
     SubstationCreationError: 'Error while creating substation',
     ModifySubstation: 'Modify substation',
@@ -158,4 +159,8 @@ export const networkModificationsEn = {
     LCCConverterStationShuntCompensators: 'Shunt compensators related to the LCC',
     Side1: 'Side 1',
     Side2: 'Side 2',
+    EquipmentType: 'Equipment type',
+    EditedField: 'Edited field',
+    Value: 'Value',
+    addNewAssignment: 'Modify another field',
 };

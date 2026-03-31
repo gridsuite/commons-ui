@@ -84,6 +84,7 @@ export const networkModificationsFr = {
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Déplacements de départs dans le poste {computedLabel}',
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
     CreateSubstation: 'Créer un site',
+    ModifyByAssignment: 'Modification par filtre',
     DeleteEquipmentByFilter: 'Supprimer des ouvrages par filtre',
     SubstationCreationError: "Erreur lors de la création d'un site'",
     ModifySubstation: 'Modifier un site',
@@ -161,4 +162,8 @@ export const networkModificationsFr = {
     LCCConverterStationShuntCompensators: 'Moyens de compensation liés à la LCC',
     Side1: 'Côté 1',
     Side2: 'Côté 2',
+    EquipmentType: "Type d'ouvrage",
+    EditedField: 'Champ modifié',
+    Value: 'Valeur',
+    addNewAssignment: 'Modifier un autre champ',
 };
