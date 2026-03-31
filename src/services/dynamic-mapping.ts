@@ -20,7 +20,7 @@ export function getDynamicMappings(): Promise<MappingInfos[]> {
     return backendFetchJson(url);
 }
 
-export function fetchDynamicSimulationModels(mapping: string | null): Promise<DynamicSimulationModelInfos[]> {
+export function fetchDynamicSimulationModels(mapping: string): Promise<DynamicSimulationModelInfos[]> {
     console.info(`Fetching dynamic simulation models on mapping '${mapping}' ...`);
 
     const url = `${getDynamicMappingUrl()}mappings/${mapping}/models`;

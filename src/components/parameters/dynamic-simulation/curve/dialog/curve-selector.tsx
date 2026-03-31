@@ -33,7 +33,7 @@ type CurveSelectorProps = {
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;
     evaluateFilterFetcher?: (filter: ExpertFilter) => Promise<IdentifiableAttributes[]>;
-    modelsFetcher?: () => Promise<DynamicSimulationModelInfos[]>;
+    modelsFetcher?: () => Promise<DynamicSimulationModelInfos[]> | undefined;
 };
 
 const CurveSelector = forwardRef<CurveSelectorApi, Readonly<CurveSelectorProps>>(

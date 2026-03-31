@@ -70,7 +70,7 @@ const styles = {
 
 interface ModelFilterProps {
     equipmentType: EquipmentType;
-    modelsFetcher?: () => Promise<DynamicSimulationModelInfos[]>;
+    modelsFetcher?: () => Promise<DynamicSimulationModelInfos[]> | undefined;
 }
 
 const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
@@ -118,7 +118,7 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
 
         // fetch all associated models and variables for study
         useEffect(() => {
-            modelsFetcher?.().then((models: DynamicSimulationModelInfos[]) => {
+            modelsFetcher?.()?.then((models: DynamicSimulationModelInfos[]) => {
                 setAllModels(
                     models.map((model) => ({
                         name: model.modelName,

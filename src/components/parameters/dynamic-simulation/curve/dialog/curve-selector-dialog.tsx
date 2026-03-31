@@ -35,7 +35,7 @@ interface CurveSelectorDialogProps {
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;
     evaluateFilterFetcher?: (filter: ExpertFilter) => Promise<IdentifiableAttributes[]>;
-    modelsFetcher?: () => Promise<DynamicSimulationModelInfos[]>;
+    modelsFetcher?: () => Promise<DynamicSimulationModelInfos[]> | undefined;
 }
 
 function CurveSelectorDialog({
