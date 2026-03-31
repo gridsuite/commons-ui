@@ -6,13 +6,35 @@
  */
 
 import { InferType } from 'yup';
-import { FieldConstants, EquipmentType, YUP_REQUIRED, yupConfig as yup, ModificationType } from '../../../../utils';
+import {
+    FieldConstants,
+    EquipmentType,
+    YUP_REQUIRED,
+    yupConfig as yup,
+    ModificationType,
+    DeepNullable,
+} from '../../../../utils';
 import type { ByFilterDeletionDto } from './byFilterDeletion.types';
+
+export const EQUIPMENT_TYPE_ORDER = [
+    EquipmentType.SUBSTATION,
+    EquipmentType.VOLTAGE_LEVEL,
+    EquipmentType.LINE,
+    EquipmentType.TWO_WINDINGS_TRANSFORMER,
+    EquipmentType.THREE_WINDINGS_TRANSFORMER,
+    EquipmentType.HVDC_LINE,
+    EquipmentType.GENERATOR,
+    EquipmentType.BATTERY,
+    EquipmentType.LOAD,
+    EquipmentType.SHUNT_COMPENSATOR,
+    EquipmentType.DANGLING_LINE,
+    EquipmentType.STATIC_VAR_COMPENSATOR,
+];
 
 export const byFilterDeletionFormSchema = yup
     .object()
     .shape({
-        [FieldConstants.TYPE]: yup.mixed<EquipmentType>().required(YUP_REQUIRED),
+        [FieldConstants.TYPE]: yup.mixed<EquipmentType>().oneOf(EQUIPMENT_TYPE_ORDER).required(YUP_REQUIRED),
         [FieldConstants.FILTERS]: yup
             .array()
             .of(
@@ -38,3 +60,8 @@ export const byFilterDeletionFormToDto = (formData: ByFilterDeletionFormData): B
     equipmentType: formData[FieldConstants.TYPE],
     filters: formData[FieldConstants.FILTERS],
 });
+
+export const emptyFormData: DeepNullable<ByFilterDeletionFormData> = {
+    [FieldConstants.TYPE]: null,
+    [FieldConstants.FILTERS]: [],
+};

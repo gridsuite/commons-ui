@@ -10,7 +10,8 @@ import { useCallback, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AutocompleteInput, DirectoryItemsInput } from '../../../inputs';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
-import { ElementType, FieldConstants, EquipmentType, richTypeEquals } from '../../../../utils';
+import { ElementType, FieldConstants, richTypeEquals } from '../../../../utils';
+import { EQUIPMENT_TYPE_ORDER } from './byFilterDeletion.utils';
 
 export function ByFilterDeletionForm() {
     const equipmentType = useWatch({
@@ -21,24 +22,13 @@ export function ByFilterDeletionForm() {
 
     const getOptionLabel = useGetLabelEquipmentTypes();
 
-    const equipmentTypes = useMemo(() => {
-        const equipmentTypesToExclude = new Set([
-            EquipmentType.SWITCH,
-            EquipmentType.DISCONNECTOR,
-            EquipmentType.BREAKER,
-            EquipmentType.LCC_CONVERTER_STATION,
-            EquipmentType.VSC_CONVERTER_STATION,
-            EquipmentType.HVDC_CONVERTER_STATION,
-            EquipmentType.BUS,
-            EquipmentType.BUSBAR_SECTION,
-            EquipmentType.TIE_LINE,
-        ]);
-        return Object.values(EquipmentType).filter((type) => !equipmentTypesToExclude.has(type));
-    }, []);
-
     const handleEquipmentTypeChange = useCallback(() => {
         setValue(FieldConstants.FILTERS, []);
     }, [setValue]);
+
+    const typesOptions = useMemo(() => {
+        return Object.values(EQUIPMENT_TYPE_ORDER);
+    }, []);
 
     return (
         <Grid container spacing={2} padding={0.5} alignItems="center">
@@ -47,7 +37,7 @@ export function ByFilterDeletionForm() {
                     isOptionEqualToValue={richTypeEquals}
                     name={FieldConstants.TYPE}
                     label="Type"
-                    options={equipmentTypes}
+                    options={typesOptions}
                     onChangeCallback={handleEquipmentTypeChange}
                     getOptionLabel={getOptionLabel}
                     size="small"
@@ -61,7 +51,7 @@ export function ByFilterDeletionForm() {
                     elementType={ElementType.FILTER}
                     titleId="FiltersListsSelection"
                     label="filter"
-                    equipmentTypes={equipmentType ? [equipmentType as EquipmentType] : []}
+                    equipmentTypes={equipmentType ? [equipmentType] : []}
                     disable={!equipmentType}
                 />
             </Grid>
