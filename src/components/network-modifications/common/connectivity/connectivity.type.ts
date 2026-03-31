@@ -33,8 +33,21 @@ type PositionDiagramPaneType = React.ComponentType<{
     voltageLevelId: string;
 }>;
 
+interface NewVoltageLevelOption extends Identifiable {
+    exist: false;
+    busbarCount: number;
+    sectionCount: number;
+    switchKinds: string[];
+}
+
+interface ExistingVoltageLevelOption extends Identifiable {
+    exist?: true;
+}
+
+export type VoltageLevelOption = NewVoltageLevelOption | ExistingVoltageLevelOption;
+
 export interface ConnectivityNetworkProps {
-    voltageLevelOptions?: Identifiable[];
+    voltageLevelOptions: VoltageLevelOption[];
     PositionDiagramPane?: PositionDiagramPaneType;
-    fetchBusesOrBusbarSections?: (voltageLevelId: string) => Promise<Identifiable[]>;
+    fetchBusesOrBusbarSections: (voltageLevelId: string) => Promise<Identifiable[]>;
 }
