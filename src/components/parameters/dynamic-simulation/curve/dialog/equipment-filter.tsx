@@ -130,9 +130,6 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                 selectedCountries,
                 selectedNominalVoltages
             );
-            if (!expertFilter) {
-                return undefined;
-            }
             // the fetcher which evaluates a filter by filter-server
             return evaluateFilterFetcher?.(expertFilter);
         }, [equipmentType, selectedVoltageLevelIds, selectedCountries, selectedNominalVoltages, evaluateFilterFetcher]);
@@ -140,7 +137,7 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
         // fetching filtered equipments
         useEffect(() => {
             let ignore = false;
-            if (gridReady && filteringEquipmentsFetcher) {
+            if (gridReady && filteringEquipmentsFetcher !== undefined) {
                 // when close dialog, the current ref may be null => so check with '?'
                 setIsFetching(true);
                 filteringEquipmentsFetcher

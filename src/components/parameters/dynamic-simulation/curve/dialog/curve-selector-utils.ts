@@ -315,12 +315,12 @@ export const buildExpertRules = (
  */
 export const buildExpertFilter = (
     equipmentType: EquipmentType,
-    voltageLevelIds: string[] | undefined,
-    countries: string[] | undefined,
-    nominalVoltages: number[] | undefined,
+    voltageLevelIds: string[],
+    countries: string[],
+    nominalVoltages: number[],
     substationProperties?: Record<string, string[]>,
     ids?: Record<string, string[]>
-): ExpertFilter | undefined => {
+): ExpertFilter => {
     return {
         ...getTopologyKindIfNecessary(equipmentType), // for optimizing 'search bus' in filter-server
         type: FilterType.EXPERT.id,
