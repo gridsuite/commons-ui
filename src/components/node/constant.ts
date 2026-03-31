@@ -4,6 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export * from './creation';
-export * from './voltage-level.type';
-export * from './modification';
+
+export enum BuildStatus {
+    NOT_BUILT = 'NOT_BUILT',
+    BUILDING = 'BUILDING',
+    BUILT = 'BUILT',
+    BUILT_WITH_WARNING = 'BUILT_WITH_WARNING',
+    BUILT_WITH_ERROR = 'BUILT_WITH_ERROR',
+}

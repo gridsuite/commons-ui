@@ -12,7 +12,7 @@ import {
     getPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import { FieldConstants, sanitizeString, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants, sanitizeString, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
@@ -105,21 +105,28 @@ export const voltageLevelCreationFormSchema = object()
         [FieldConstants.SUBSTATION_CREATION]: creationPropertiesSchema,
         [FieldConstants.HIDE_NOMINAL_VOLTAGE]: boolean().required(YUP_REQUIRED),
         [FieldConstants.NOMINAL_V]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .when([FieldConstants.HIDE_NOMINAL_VOLTAGE], {
                 is: (hideNominalVoltage: boolean) => !hideNominalVoltage,
                 then: (schema) => schema.min(0, 'mustBeGreaterOrEqualToZero').required(YUP_REQUIRED),
             }),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'mustBeGreaterOrEqualToZero')
             .max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
+            .nullable()
+            .min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
             .max(ref(FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT), 'ShortCircuitCurrentLimitMinMaxError'),
         [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
             .when([FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT], {
@@ -128,12 +135,14 @@ export const voltageLevelCreationFormSchema = object()
             }),
         [FieldConstants.HIDE_BUS_BAR_SECTION]: boolean().required(YUP_REQUIRED),
         [FieldConstants.BUS_BAR_COUNT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
                 is: (hideBusBarSection: boolean) => !hideBusBarSection,
                 then: (schema) => schema.min(1, 'BusBarCountMustBeGreaterThanOrEqualToOne').required(YUP_REQUIRED),
             }),
         [FieldConstants.SECTION_COUNT]: number()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
                 is: (hideBusBarSection: boolean) => !hideBusBarSection,
