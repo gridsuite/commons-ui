@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useFormState } from 'react-hook-form';
+import { useFormState, useWatch } from 'react-hook-form';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import GridItem from '../../../grid/grid-item';
@@ -35,6 +35,7 @@ export function VoltageLevelCreationForm({
     const [tabIndex, setTabIndex] = useState(0);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<number[]>([]);
     const { errors } = useFormState();
+    const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
 
     useEffect(() => {
         const tabsInError: number[] = [];
@@ -91,6 +92,7 @@ export function VoltageLevelCreationForm({
                 <Tab
                     label={<FormattedMessage id="StructureTab" />}
                     sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.STRUCTURE_TAB)}
+                    disabled={watchHideBusBarSection}
                 />
                 <Tab
                     label={<FormattedMessage id="AdditionalInformationTab" />}

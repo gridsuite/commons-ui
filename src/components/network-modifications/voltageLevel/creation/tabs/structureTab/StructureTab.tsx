@@ -14,35 +14,32 @@ import { SwitchesBetweenSections } from './switchesBetweenSections';
 import { CouplingOmnibusForm } from './couplingOmnibus';
 
 export function StructureTab() {
-    const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
     const watchBusBarCount = useWatch({ name: FieldConstants.BUS_BAR_COUNT });
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
 
     const displayOmnibus = watchBusBarCount > 1 || watchSectionCount > 1;
     return (
-        !watchHideBusBarSection && (
-            <>
-                <GridSection title="BusBarSections" />
-                <Grid container spacing={2}>
-                    <GridItem size={4}>
-                        <IntegerInput name={FieldConstants.BUS_BAR_COUNT} label="BusBarCount" />
-                    </GridItem>
-                    <GridItem size={4}>
-                        <IntegerInput name={FieldConstants.SECTION_COUNT} label="numberOfSections" />
-                    </GridItem>
-                    <SwitchesBetweenSections />
-                </Grid>
-                {displayOmnibus && (
-                    <>
-                        <GridSection title="Coupling_Omnibus" />
-                        <Grid container>
-                            <GridItem size={12}>
-                                <CouplingOmnibusForm />
-                            </GridItem>
-                        </Grid>
-                    </>
-                )}
-            </>
-        )
+        <>
+            <GridSection title="BusBarSections" />
+            <Grid container spacing={2}>
+                <GridItem size={4}>
+                    <IntegerInput name={FieldConstants.BUS_BAR_COUNT} label="BusBarCount" />
+                </GridItem>
+                <GridItem size={4}>
+                    <IntegerInput name={FieldConstants.SECTION_COUNT} label="numberOfSections" />
+                </GridItem>
+                <SwitchesBetweenSections />
+            </Grid>
+            {displayOmnibus && (
+                <>
+                    <GridSection title="Coupling_Omnibus" />
+                    <Grid container>
+                        <GridItem size={12}>
+                            <CouplingOmnibusForm />
+                        </GridItem>
+                    </Grid>
+                </>
+            )}
+        </>
     );
 }
