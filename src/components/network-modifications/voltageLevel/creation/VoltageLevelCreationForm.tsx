@@ -7,12 +7,11 @@
 
 import { useEffect, useState } from 'react';
 import { useFormState } from 'react-hook-form';
-import { Grid } from '@mui/material';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 import GridItem from '../../../grid/grid-item';
 import { TextInput } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
-import { VoltageLevelCreationTabs } from './VoltageLevelCreationTabs';
-import { VoltageLevelCreationTabsContent } from './VoltageLevelCreationTabsContent';
 import { VoltageLevelTab } from './voltageLevel.constants';
 import {
     isAdditionalInformationTabError,
@@ -20,6 +19,9 @@ import {
     isStructureTabError,
     isSubstationTabError,
 } from './voltageLevelCreation.utils';
+import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
+import { PropertiesForm } from '../../common';
+import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
@@ -70,16 +72,43 @@ export function VoltageLevelCreationForm({
                     <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ margin: 'normal' }} />
                 </GridItem>
             </Grid>
-            <VoltageLevelCreationTabs
-                tabIndex={tabIndex}
-                tabIndexesWithError={tabIndexesWithError}
-                setTabIndex={setTabIndex}
-            />
-            <VoltageLevelCreationTabsContent
-                tabIndex={tabIndex}
-                substationOptions={substationOptions}
-                showDeleteButton={showDeleteSubstationButton}
-            />
+            <Tabs
+                value={tabIndex}
+                variant="scrollable"
+                onChange={(_, newValue) => setTabIndex(newValue)}
+                TabIndicatorProps={{
+                    sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                }}
+            >
+                <Tab
+                    label={<FormattedMessage id="ConnectivityTab" />}
+                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.SUBSTATION_TAB)}
+                />
+                <Tab
+                    label={<FormattedMessage id="CharacteristicsTab" />}
+                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.CHARACTERISTICS_TAB)}
+                />
+                <Tab
+                    label={<FormattedMessage id="StructureTab" />}
+                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.STRUCTURE_TAB)}
+                />
+                <Tab
+                    label={<FormattedMessage id="AdditionalInformationTab" />}
+                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.ADDITIONAL_INFORMATION_TAB)}
+                />
+            </Tabs>
+            <Box hidden={tabIndex !== VoltageLevelTab.SUBSTATION_TAB}>
+                <SubstationTab substationOptions={substationOptions} showDeleteButton={showDeleteSubstationButton} />
+            </Box>
+            <Box hidden={tabIndex !== VoltageLevelTab.CHARACTERISTICS_TAB}>
+                <CharacteristicsTab />
+            </Box>
+            <Box hidden={tabIndex !== VoltageLevelTab.STRUCTURE_TAB}>
+                <StructureTab />
+            </Box>
+            <Box hidden={tabIndex !== VoltageLevelTab.ADDITIONAL_INFORMATION_TAB}>
+                <PropertiesForm networkElementType="voltageLevel" />
+            </Box>
         </>
     );
 }

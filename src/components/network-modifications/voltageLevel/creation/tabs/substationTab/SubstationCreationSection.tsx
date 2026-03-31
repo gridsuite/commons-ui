@@ -23,7 +23,7 @@ export function SubstationCreationSection({
     const intl = useIntl();
     return (
         <>
-            <GridSection title={intl.formatMessage({ id: 'CreateSubstation' })} />
+            <GridSection title="CreateSubstation" />
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <TextInput name={FieldConstants.SUBSTATION_CREATION_ID} label="SubstationId" />
