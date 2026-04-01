@@ -29,7 +29,6 @@ export function StructureTab() {
                     <IntegerInput name={FieldConstants.SECTION_COUNT} label="numberOfSections" />
                 </GridItem>
             </Grid>
-            <GridSection title="SwitchesBetweenSections" />
             <SwitchesBetweenSections />
             {displayOmnibus && (
                 <>
