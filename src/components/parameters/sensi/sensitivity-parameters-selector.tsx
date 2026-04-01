@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Card, CardContent } from '@mui/material';
 import * as sensiParam from './columns-definitions';
 import {
     SensiBranchesTabValues,
@@ -20,12 +20,12 @@ import {
 } from './columns-definitions';
 import { TabPanel } from '../common';
 import { useCreateRowData } from '../../../hooks/use-create-row-data';
-import type { MuiStyles } from '../../../utils/styles';
 import { SensitivityAnalysisParametersFactorCount } from './sensitivity-analysis-parameters-factor-count';
 import { MAX_RESULTS_COUNT, MAX_VARIABLES_COUNT } from './constants';
-import { FactorsCount } from '../../../utils';
+import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { ColumnsDef, ParameterTable } from '../common/parameter-table';
+import { BuildStatus, BuildStatusChip } from '../../node';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -53,9 +53,10 @@ const styles = {
         display: 'flex',
         alignItems: 'end',
         justifyContent: 'right',
+        gap: 0.5,
         flex: 'auto',
         flexGrow: '1',
-        whiteSpace: 'pre-wrap',
+        paddingTop: 1,
     },
 } as const satisfies MuiStyles;
 
@@ -65,6 +66,7 @@ interface SensitivityParametersSelectorProps {
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
+    globalBuildStatus?: BuildStatus;
 }
 
 interface TabInfo {
@@ -78,6 +80,7 @@ function SensitivityParametersSelector({
     factorsCount,
     isDeveloperMode,
     isStudyLinked,
+    globalBuildStatus,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
 
@@ -150,38 +153,46 @@ function SensitivityParametersSelector({
                     ))}
                 </Tabs>
                 {isStudyLinked && (
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <SensitivityAnalysisParametersFactorCount
-                                count={factorsCount.variableCount}
-                                maxCount={MAX_VARIABLES_COUNT}
-                                messageId="sensitivityAnalysis.simulatedVariables"
-                                isLoading={isLoading}
-                            />
-                            <FormattedMessage id="sensitivityAnalysis.separator" />
-                            <FormattedMessage
-                                id="sensitivityAnalysis.maximumFactorsCount"
-                                values={{
-                                    maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString(),
-                                }}
-                            />
-                        </Box>
-                        <Box sx={{ ...styles.boxContent, minWidth: 300 }}>
-                            <SensitivityAnalysisParametersFactorCount
-                                count={factorsCount.resultCount}
-                                maxCount={MAX_RESULTS_COUNT}
-                                messageId="sensitivityAnalysis.simulatedResults"
-                                isLoading={isLoading}
-                            />
-                            <FormattedMessage id="sensitivityAnalysis.separator" />
-                            <FormattedMessage
-                                id="sensitivityAnalysis.maximumFactorsCount"
-                                values={{
-                                    maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString(),
-                                }}
-                            />
-                        </Box>
-                    </Box>
+                    <Card>
+                        <CardContent>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                                <Box sx={{ ...styles.boxContent }}>
+                                    <BuildStatusChip buildStatus={globalBuildStatus} overrideLabel />
+                                </Box>
+
+                                <Box sx={{ ...styles.boxContent }}>
+                                    <SensitivityAnalysisParametersFactorCount
+                                        count={factorsCount.variableCount}
+                                        maxCount={MAX_VARIABLES_COUNT}
+                                        messageId="sensitivityAnalysis.simulatedVariables"
+                                        isLoading={isLoading}
+                                    />
+                                    <FormattedMessage id="sensitivityAnalysis.separator" />
+                                    <FormattedMessage
+                                        id="sensitivityAnalysis.maximumFactorsCount"
+                                        values={{
+                                            maxFactorsCount: MAX_VARIABLES_COUNT.toLocaleString(),
+                                        }}
+                                    />
+                                </Box>
+                                <Box sx={{ ...styles.boxContent }}>
+                                    <SensitivityAnalysisParametersFactorCount
+                                        count={factorsCount.resultCount}
+                                        maxCount={MAX_RESULTS_COUNT}
+                                        messageId="sensitivityAnalysis.simulatedResults"
+                                        isLoading={isLoading}
+                                    />
+                                    <FormattedMessage id="sensitivityAnalysis.separator" />
+                                    <FormattedMessage
+                                        id="sensitivityAnalysis.maximumFactorsCount"
+                                        values={{
+                                            maxFactorsCount: MAX_RESULTS_COUNT.toLocaleString(),
+                                        }}
+                                    />
+                                </Box>
+                            </Box>
+                        </CardContent>
+                    </Card>
                 )}
             </Box>
             {tabInfo.map((tab, index) => (
