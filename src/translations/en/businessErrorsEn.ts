@@ -76,6 +76,8 @@ export const businessErrorsEn = {
         'Only last rule can have empty filter: type {equipmentType}, rule index {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
+    'sensitivityAnalysis.filtersOrContingenciesListsNotFound':
+        'The configuration contains one or more contingencies lists or filters that have been deleted.',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
     'pccMin.voltageLevelsLimitExceeded':
         'The result of filter evaluation gives {voltageLevelSize} voltage levels, which exceeds the limit {voltageLevelsLimit}.',
