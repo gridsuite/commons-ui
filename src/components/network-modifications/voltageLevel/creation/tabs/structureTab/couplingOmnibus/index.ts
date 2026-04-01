@@ -6,4 +6,3 @@
  */
 
 export { CouplingOmnibusForm } from './CouplingOmnibusForm';
-export { CouplingOmnibusCreation } from './CouplingOmnibusCreation';
