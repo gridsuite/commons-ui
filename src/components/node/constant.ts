@@ -5,9 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './common';
-export * from './equipmentDeletion';
-export * from './substation';
-export * from './voltage-level';
-export * from './load';
-export * from './by-filter';
+export enum BuildStatus {
+    NOT_BUILT = 'NOT_BUILT',
+    BUILDING = 'BUILDING',
+    BUILT = 'BUILT',
+    BUILT_WITH_WARNING = 'BUILT_WITH_WARNING',
+    BUILT_WITH_ERROR = 'BUILT_WITH_ERROR',
+}
