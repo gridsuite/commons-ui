@@ -291,3 +291,41 @@ export const voltageLevelCreationDtoToForm = (
         ...getPropertiesFromModification(voltageLevelDto.properties, includePreviousValue),
     };
 };
+
+export function isSubstationTabError(errors: Record<string, unknown> | undefined) {
+    return (
+        errors?.[FieldConstants.ADD_SUBSTATION_CREATION] !== undefined ||
+        errors?.[FieldConstants.SUBSTATION_ID] !== undefined ||
+        errors?.[FieldConstants.SUBSTATION_NAME] !== undefined ||
+        errors?.[FieldConstants.SUBSTATION_CREATION_ID] !== undefined ||
+        errors?.[FieldConstants.SUBSTATION_CREATION] ||
+        errors?.[FieldConstants.COUNTRY] !== undefined
+    );
+}
+
+export function isCharacteristicsTabError(errors: Record<string, unknown> | undefined) {
+    return (
+        errors?.[FieldConstants.HIDE_NOMINAL_VOLTAGE] !== undefined ||
+        errors?.[FieldConstants.NOMINAL_V] !== undefined ||
+        errors?.[FieldConstants.LOW_VOLTAGE_LIMIT] !== undefined ||
+        errors?.[FieldConstants.HIGH_VOLTAGE_LIMIT] !== undefined ||
+        errors?.[FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT] ||
+        errors?.[FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT] !== undefined
+    );
+}
+
+export function isStructureTabError(errors: Record<string, unknown> | undefined) {
+    return (
+        errors?.[FieldConstants.HIDE_BUS_BAR_SECTION] !== undefined ||
+        errors?.[FieldConstants.BUS_BAR_COUNT] !== undefined ||
+        errors?.[FieldConstants.SECTION_COUNT] !== undefined ||
+        errors?.[FieldConstants.SWITCHES_BETWEEN_SECTIONS] !== undefined ||
+        errors?.[FieldConstants.SWITCH_KINDS] ||
+        errors?.[FieldConstants.TOPOLOGY_KIND] !== undefined ||
+        errors?.[FieldConstants.COUPLING_OMNIBUS] !== undefined
+    );
+}
+
+export function isAdditionalInformationTabError(errors: Record<string, unknown> | undefined) {
+    return errors?.[FieldConstants.ADDITIONAL_PROPERTIES] !== undefined;
+}

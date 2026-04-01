@@ -7,10 +7,10 @@
 
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { AutocompleteInput } from '../../../../inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
-import { Option } from '../../../../../utils/types/types';
-import GridItem from '../../../../grid/grid-item';
-import { FieldConstants } from '../../../../../utils';
+import { AutocompleteInput } from '../../../../../../inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
+import { Option } from '../../../../../../../utils/types/types';
+import GridItem from '../../../../../../grid/grid-item';
+import { FieldConstants } from '../../../../../../../utils';
 
 interface CouplingOmnibusCreationProps {
     index: number;

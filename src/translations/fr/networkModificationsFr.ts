@@ -109,7 +109,7 @@ export const networkModificationsFr = {
     BusBarSections: 'Section de jeu de barres',
     BusBarCount: 'Nb de barres',
     numberOfSections: 'Nb de sections',
-    SwitchesBetweenSections: 'OCs entre sections',
+    SwitchesBetweenSections: 'Organes de coupure entre sections',
     Coupling_Omnibus: 'Couplage / omnibus',
     AddCoupling_Omnibus: 'Ajouter couplage / omnibus',
     SwitchBetweenSectionsLabel: 'section_{index1} / section_{index2}',
@@ -136,8 +136,6 @@ export const networkModificationsFr = {
     YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
     CreateLoad: 'Créer une consommation',
     loadType: 'Type',
-    ConnectivityTab: 'Connectivité',
-    LineCharacteristicsTab: 'Caractéristiques',
     VOLTAGE_LEVEL: 'Poste',
     BusBarBus: 'SJB / nœud',
     ConnectionName: 'Nom départ',
@@ -152,7 +150,6 @@ export const networkModificationsFr = {
     NodeNotBuildPositionMessage: 'Veuillez réaliser le nœud pour afficher les positions prises',
     NoVoltageLevelPositionMessage: 'Veuillez choisir un poste pour afficher les positions prises',
     ModifyLoad: 'Modifier une consommation',
-    StateEstimationTab: "Estimation d'état",
     MeasurementsSection: 'Télémesures',
     ValidMeasurement: 'Valide',
     InvalidMeasurement: 'Invalide',
@@ -161,4 +158,12 @@ export const networkModificationsFr = {
     LCCConverterStationShuntCompensators: 'Moyens de compensation liés à la LCC',
     Side1: 'Côté 1',
     Side2: 'Côté 2',
+    Or: 'ou',
+
+    // Tabs
+    ConnectivityTab: 'Connectivité',
+    CharacteristicsTab: 'Caractéristiques',
+    StructureTab: 'Structure',
+    AdditionalInformationTab: 'Compléments',
+    StateEstimationTab: "Estimation d'état",
 };
