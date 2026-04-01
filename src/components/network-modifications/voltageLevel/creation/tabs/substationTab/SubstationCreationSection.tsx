@@ -4,17 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { useIntl } from 'react-intl';
 import { Grid, IconButton, Tooltip } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import { useIntl } from 'react-intl';
-import { TextInput } from '../../../../inputs';
-import { CountrySelectionInput } from '../../../../inputs/reactHookForm/CountrySelectionInput';
-import { PropertiesForm } from '../../../common/properties/PropertiesForm';
-import GridSection from '../../../../grid/grid-section';
-import { LineSeparator } from '../../../../parameters/common/line-separator';
-import { FieldConstants } from '../../../../../utils';
+import { CountrySelectionInput, TextInput } from '../../../../../inputs';
+import GridSection from '../../../../../grid/grid-section';
+import { FieldConstants } from '../../../../../../utils';
+import { PropertiesForm } from '../../../../common';
 
-interface SubstationCreationSectionProps {
+export interface SubstationCreationSectionProps {
     showDeleteButton?: boolean;
     onDelete?: () => void;
 }
@@ -24,9 +22,8 @@ export function SubstationCreationSection({
 }: Readonly<SubstationCreationSectionProps>) {
     const intl = useIntl();
     return (
-        <Grid>
-            <Grid item xs={12} container spacing={2} />
-            <GridSection title={intl.formatMessage({ id: 'CreateSubstation' })} />
+        <>
+            <GridSection title="CreateSubstation" />
             <Grid container spacing={2}>
                 <Grid item xs={4}>
                     <TextInput name={FieldConstants.SUBSTATION_CREATION_ID} label="SubstationId" />
@@ -48,9 +45,6 @@ export function SubstationCreationSection({
                 )}
             </Grid>
             <PropertiesForm id={FieldConstants.SUBSTATION_CREATION} networkElementType="substation" />
-            <Grid item xs={12} paddingTop={2}>
-                <LineSeparator />
-            </Grid>
-        </Grid>
+        </>
     );
 }
