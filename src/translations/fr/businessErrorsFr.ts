@@ -65,6 +65,8 @@ export const businessErrorsFr = {
         'Des postes ont des données Icc incohérentes. Vérifiez les logs pour déterminer lesquels.',
     'shortcircuit.busOutOfNodeCluster': 'Le nœud électrique sélectionné est en dehors de la zone intérieure',
     'securityAnalysis.contingencyListConfigEmpty': 'La configuration ne contient aucun aléas.',
+    'securityAnalysis.missingContingencyList':
+        "La configuration contient une ou des listes d'aléas qui ont été supprimées.",
     'dynamicMapping.mappingNameNotProvided': 'Nom du mapping non fourni',
     'dynamicSecurityAnalysis.providerNotFound': "Simulateur d'analyse de sécurité dynamique non trouvé.",
     'dynamicSecurityAnalysis.contingenciesNotFound': 'Aucun aléa fourni.',
@@ -75,6 +77,8 @@ export const businessErrorsFr = {
         'Seule la dernière règle peut avoir un filtre vide : type {equipmentType}, indice de la règle : {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Trop de facteurs pour exécuter l’analyse de sensibilité : {resultCount} résultats (limite : {resultCountLimit}) et {variableCount} variables (limite : {variableCountLimit}).',
+    'sensitivityAnalysis.filtersOrContingenciesListsNotFound':
+        "La configuration contient une ou des listes d'aléas ou filtres qui ont été supprimés.",
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
     'pccMin.voltageLevelsLimitExceeded':
         'Le résultat de l’évaluation du filtre donne {voltageLevelSize} postes, ce qui dépasse la limite de {voltageLevelsLimit}.',
