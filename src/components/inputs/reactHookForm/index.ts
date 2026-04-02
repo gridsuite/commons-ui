@@ -16,6 +16,7 @@ export * from './booleans';
 export * from './errorManagement';
 export * from './numbers';
 export * from './provider';
+export * from './readOnly';
 export * from './selectInputs';
 export * from './tableInputs';
 export * from './text';
