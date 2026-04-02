@@ -56,7 +56,10 @@ export function ContingencyTable({
         const hasNoContingencies =
             !contingencyListsInfos ||
             (contingencyListsInfos.length ?? 0) === 0 ||
-            contingencyListsInfos.every((contingencyList) => (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0);
+            contingencyListsInfos.every(
+                (contingencyList) =>
+                    !contingencyList[ACTIVATED] || (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0
+            );
         if (hasNoContingencies) {
             setIsLoading(false);
             setSimulatedContingencyCount(null);
@@ -91,7 +94,7 @@ export function ContingencyTable({
                     return;
                 }
                 setIsLoading(false);
-                snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+                snackWithFallback(snackError, error, { headerId: 'getSecurityAnalysisContingenciesCountError' });
             });
 
         return () => {
