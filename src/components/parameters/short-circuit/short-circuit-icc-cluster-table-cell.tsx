@@ -35,7 +35,6 @@ export function ShortCircuitIccClusterTableCell({
                     equipmentTypes={column.equipmentTypes}
                     elementType={column.elementType ?? ''}
                     titleId={column.titleId}
-                    hideErrorMessage
                     label={undefined}
                     itemFilter={undefined}
                     disable={inputsDisabled}

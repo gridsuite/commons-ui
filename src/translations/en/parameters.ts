@@ -313,4 +313,11 @@ export const parametersEn = {
     DynamicMarginCalculationLoadsFilter: 'Loads filter',
     DynamicMarginCalculationLoadsVariation: 'Load variation',
     DynamicMarginCalculationLoadsActive: 'Active',
+    BUILT: 'Built',
+    BUILT_WITH_WARNING: 'Warnings',
+    BUILT_WITH_ERROR: 'Errors',
+    NOT_BUILT: 'Not built',
+    BUILDING: 'Building',
+    NODE_BUILT: 'Node built',
+    NODE_NOT_BUILT: 'Node not built',
 };

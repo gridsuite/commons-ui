@@ -6,7 +6,7 @@
  */
 
 import { number, TestContext } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, YUP_NOT_TYPE_NUMBER } from '../../../../utils';
 
 export const getSetPointsEmptyFormData = (_isEquipmentModification = false) => ({
     [FieldConstants.ACTIVE_POWER_SET_POINT]: null,
@@ -34,6 +34,7 @@ const testValueWithinPowerIntervalOrEqualToZero = (value: number, context: TestC
 
 export const getActivePowerSetPointSchema = (isEquipmentModification = false) => ({
     [FieldConstants.ACTIVE_POWER_SET_POINT]: number()
+        .typeError(YUP_NOT_TYPE_NUMBER)
         .when([], {
             is: () => isEquipmentModification,
             then: (schema) => {
@@ -57,6 +58,7 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
 
 export const getReactivePowerSetPointSchema = (isEquipmentModification = false) => ({
     [FieldConstants.REACTIVE_POWER_SET_POINT]: number()
+        .typeError(YUP_NOT_TYPE_NUMBER)
         .nullable()
         .when([FieldConstants.VOLTAGE_REGULATION], {
             is: (value: string) => !isEquipmentModification && !value,
