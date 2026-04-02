@@ -12,7 +12,7 @@ import { TextInput } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
 import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
-import { PropertiesForm } from '../../common';
+import { filledTextField, PropertiesForm } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 import { useTabsWithError } from '../../../../hooks';
 
@@ -34,15 +34,19 @@ export function VoltageLevelCreationForm({
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <TextInput
                         name={FieldConstants.EQUIPMENT_ID}
                         label="ID"
-                        formProps={{ autoFocus: true, margin: 'normal' }}
+                        formProps={{ autoFocus: true, margin: 'normal', ...filledTextField }}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ margin: 'normal' }} />
+                <Grid item xs={4}>
+                    <TextInput
+                        name={FieldConstants.EQUIPMENT_NAME}
+                        label="Name"
+                        formProps={{ margin: 'normal', ...filledTextField }}
+                    />
                 </Grid>
             </Grid>
             <Tabs
