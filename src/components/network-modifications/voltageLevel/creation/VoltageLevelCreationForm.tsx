@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { useWatch } from 'react-hook-form';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TextInput } from '../../../inputs';
@@ -28,6 +29,7 @@ export function VoltageLevelCreationForm({
         VOLTAGE_LEVEL_TAB_FIELDS,
         VoltageLevelTab.SUBSTATION_TAB
     );
+    const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
 
     return (
         <>
@@ -62,6 +64,7 @@ export function VoltageLevelCreationForm({
                 <Tab
                     label={<FormattedMessage id="StructureTab" />}
                     sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.STRUCTURE_TAB)}
+                    disabled={watchHideBusBarSection}
                 />
                 <Tab
                     label={<FormattedMessage id="AdditionalInformationTab" />}

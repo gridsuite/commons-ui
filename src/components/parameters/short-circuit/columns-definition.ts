@@ -82,14 +82,14 @@ export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
         equipmentTypes: [EquipmentType.GENERATOR, EquipmentType.BATTERY],
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
-        initialValue: [],
+        initialValue: null,
     },
     {
         label: 'ShortCircuitIccClusterType',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_TYPE,
         tooltip: 'ShortCircuitIccClusterTypeTooltip',
         titleId: 'ShortCircuitIccClusterTypeListsSelection',
-        initialValue: [],
+        initialValue: null,
         width: '20%',
     },
     {
