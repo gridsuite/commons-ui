@@ -19,7 +19,7 @@ type TabFieldsMap<T extends number> = Readonly<Partial<Record<T, FieldConstants[
  * @param initialTab - The tab to show on first render.
  */
 export function useTabsWithError<T extends number>(tabFields: TabFieldsMap<T>, initialTab: T) {
-    const { errors } = useFormState();
+    const { errors, submitCount } = useFormState();
     const [tabIndex, setTabIndex] = useState<T>(initialTab);
     const tabIndexRef = useRef(tabIndex);
 
@@ -30,26 +30,21 @@ export function useTabsWithError<T extends number>(tabFields: TabFieldsMap<T>, i
         tabFields[tab]!.some((field) => errors[field] !== undefined)
     );
 
-    // Auto-navigate to the first errored tab when the set of errored tabs changes.
-    // Debounced so rapid input (e.g. typing a number) does not jump tabs mid-entry.
-    // Use a string key as the dependency so the effect fires on value change, not reference change.
-    const errorsKey = tabIndexesWithError.join(',');
+    // Auto-navigate to the first errored tab on submit. Using submitCount as the trigger is the
+    // only reliable signal that the user explicitly requested validation — reacting to errors
+    // directly would cause mid-input tab jumps during on-change revalidation.
     const tabIndexesWithErrorRef = useRef(tabIndexesWithError);
     tabIndexesWithErrorRef.current = tabIndexesWithError;
     useEffect(() => {
-        const timer = setTimeout(() => {
-            const tabs = tabIndexesWithErrorRef.current;
-            if (tabs.length > 0 && !tabs.includes(tabIndexRef.current)) {
-                const tab = tabs[0];
-                tabIndexRef.current = tab;
-                setTabIndex(tab);
-            }
-        }, 500);
-        return () => clearTimeout(timer);
-        // errorsKey is a stable proxy for tabIndexesWithError value changes.
-        // Both refs never change identity.
+        const tabs = tabIndexesWithErrorRef.current;
+        if (tabs.length > 0 && !tabs.includes(tabIndexRef.current)) {
+            const tab = tabs[0];
+            tabIndexRef.current = tab;
+            setTabIndex(tab);
+        }
+        // submitCount is the intentional trigger; refs never change identity.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [errorsKey]);
+    }, [submitCount]);
 
     const handleSetTabIndex = useCallback((tab: T) => {
         tabIndexRef.current = tab;
