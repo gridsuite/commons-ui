@@ -4,11 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { FormattedMessage } from 'react-intl';
 import { Grid } from '@mui/material';
 import { FieldConstants } from '../../../../utils';
 import { CheckboxInput, ReadOnlyInput } from '../../../inputs';
+import GridSection from '../../../grid/grid-section';
 
 interface ShuntCompensatorSelectionFormProps {
     title: string;
@@ -22,12 +21,8 @@ export function ShuntCompensatorSelectionForm({
     mcsRows,
 }: Readonly<ShuntCompensatorSelectionFormProps>) {
     return (
-        <Grid container spacing={1} direction="column">
-            <Grid item>
-                <h4>
-                    <FormattedMessage id={title} />
-                </h4>
-            </Grid>
+        <>
+            <GridSection title={title} heading={4} />
             {mcsRows.map((field, index) => (
                 <Grid container spacing={1} alignItems="center" key={field.id}>
                     <Grid item xs={1}>
@@ -35,11 +30,11 @@ export function ShuntCompensatorSelectionForm({
                             name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}
                         />
                     </Grid>
-                    <Grid item xs={11}>
+                    <Grid item xs>
                         <ReadOnlyInput name={`${arrayFormName}[${index}].${FieldConstants.ID}`} />
                     </Grid>
                 </Grid>
             ))}
-        </Grid>
+        </>
     );
 }

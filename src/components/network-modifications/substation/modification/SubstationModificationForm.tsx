@@ -26,46 +26,40 @@ export function SubstationModificationForm({ substationToModify }: Readonly<Subs
     const { translate } = useLocalizedCountries(locale as GsLang);
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
-    const substationIdField = (
-        <TextField
-            size="small"
-            fullWidth
-            label="ID"
-            value={equipmentId ?? ''}
-            InputProps={{
-                readOnly: true,
-            }}
-            disabled
-            {...filledTextField}
-        />
-    );
-
-    const substationNameField = (
-        <TextInput
-            name={FieldConstants.EQUIPMENT_NAME}
-            label="Name"
-            formProps={filledTextField}
-            previousValue={substationToModify?.name}
-            clearable
-        />
-    );
-
-    const substationCountryField = (
-        <CountrySelectionInput
-            name={FieldConstants.COUNTRY}
-            label="Country"
-            formProps={filledTextField}
-            size="small"
-            previousValue={substationToModify?.country ? translate(substationToModify.country) : ''}
-        />
-    );
-
     return (
         <>
             <Grid container spacing={2}>
-                <GridItem size={4}>{substationIdField}</GridItem>
-                <GridItem size={4}>{substationNameField}</GridItem>
-                <GridItem size={4}>{substationCountryField}</GridItem>
+                <Grid item xs>
+                    <TextField
+                        size="small"
+                        fullWidth
+                        label="ID"
+                        value={equipmentId ?? ''}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        disabled
+                        {...filledTextField}
+                    />
+                </Grid>
+                <Grid item xs>
+                    <TextInput
+                        name={FieldConstants.EQUIPMENT_NAME}
+                        label="Name"
+                        formProps={filledTextField}
+                        previousValue={substationToModify?.name}
+                        clearable
+                    />
+                </Grid>
+                <Grid item xs>
+                    <CountrySelectionInput
+                        name={FieldConstants.COUNTRY}
+                        label="Country"
+                        formProps={filledTextField}
+                        size="small"
+                        previousValue={substationToModify?.country ? translate(substationToModify.country) : ''}
+                    />
+                </Grid>
             </Grid>
             <PropertiesForm networkElementType="substation" isModification />
         </>

@@ -7,7 +7,6 @@
 import { Grid } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import GridSection from '../../../../../grid/grid-section';
-import GridItem from '../../../../../grid/grid-item';
 import { IntegerInput } from '../../../../../inputs';
 import { FieldConstants } from '../../../../../../utils';
 import { SwitchesBetweenSections } from './switchesBetweenSections';
@@ -22,12 +21,12 @@ export function StructureTab() {
         <>
             <GridSection title="BusBarSections" />
             <Grid container spacing={2}>
-                <GridItem size={4}>
+                <Grid item xs={4}>
                     <IntegerInput name={FieldConstants.BUS_BAR_COUNT} label="BusBarCount" />
-                </GridItem>
-                <GridItem size={4}>
+                </Grid>
+                <Grid item xs={4}>
                     <IntegerInput name={FieldConstants.SECTION_COUNT} label="numberOfSections" />
-                </GridItem>
+                </Grid>
             </Grid>
             <SwitchesBetweenSections />
             {displayOmnibus && (

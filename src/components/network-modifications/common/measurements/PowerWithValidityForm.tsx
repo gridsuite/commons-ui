@@ -9,7 +9,6 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Grid } from '@mui/material';
 import { MeasurementProps } from './measurement.type';
-import GridItem from '../../../grid/grid-item';
 import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
 import { FloatInput } from '../../../inputs';
 import {
@@ -32,28 +31,24 @@ export function PowerWithValidityForm({ id, field, measurement }: Readonly<Measu
             : intl.formatMessage({ id: 'InvalidMeasurement' });
     }, [intl, measurement?.validity]);
 
-    const valueField = (
-        <FloatInput
-            name={`${id}.${FieldConstants.VALUE}`}
-            label={field === FieldType.ACTIVE_POWER ? 'ActivePowerText' : 'ReactivePowerText'}
-            adornment={field === FieldType.ACTIVE_POWER ? ActivePowerAdornment : ReactivePowerAdornment}
-            previousValue={convertInputValue(field, measurement?.value)}
-            clearable
-        />
-    );
-
-    const validityField = (
-        <CheckboxNullableInput
-            name={`${id}.${FieldConstants.VALIDITY}`}
-            label="ValidMeasurement"
-            previousValue={previousValidityField}
-        />
-    );
-
     return (
         <Grid container spacing={2}>
-            <GridItem size={6}>{valueField}</GridItem>
-            <GridItem size={6}>{validityField}</GridItem>
+            <Grid item xs={4}>
+                <FloatInput
+                    name={`${id}.${FieldConstants.VALUE}`}
+                    label={field === FieldType.ACTIVE_POWER ? 'ActivePowerText' : 'ReactivePowerText'}
+                    adornment={field === FieldType.ACTIVE_POWER ? ActivePowerAdornment : ReactivePowerAdornment}
+                    previousValue={convertInputValue(field, measurement?.value)}
+                    clearable
+                />
+            </Grid>
+            <Grid item xs>
+                <CheckboxNullableInput
+                    name={`${id}.${FieldConstants.VALIDITY}`}
+                    label="ValidMeasurement"
+                    previousValue={previousValidityField}
+                />
+            </Grid>
         </Grid>
     );
 }

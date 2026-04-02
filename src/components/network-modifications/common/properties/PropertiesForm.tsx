@@ -91,21 +91,17 @@ export function PropertiesForm({ id, networkElementType, isModification = false 
           }
         : {};
 
-    const additionalProps = (
-        <ExpandableInput
-            name={additionalProperties}
-            Field={PropertyForm}
-            fieldProps={{ predefinedProperties }}
-            addButtonLabel="AddProperty"
-            initialValue={initializedProperty()}
-            {...modificationProperties}
-        />
-    );
-
     return (
         <Grid container>
             <GridSection title="AdditionalInformation" />
-            {additionalProps}
+            <ExpandableInput
+                name={additionalProperties}
+                Field={PropertyForm}
+                fieldProps={{ predefinedProperties }}
+                addButtonLabel="AddProperty"
+                initialValue={initializedProperty()}
+                {...modificationProperties}
+            />
         </Grid>
     );
 }

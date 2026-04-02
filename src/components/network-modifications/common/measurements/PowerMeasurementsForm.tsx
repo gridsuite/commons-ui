@@ -8,7 +8,6 @@
 import { Grid } from '@mui/material';
 import { PowerWithValidityForm } from './PowerWithValidityForm';
 import { MeasurementInfo } from './measurement.type';
-import GridItem from '../../../grid/grid-item';
 import { FieldConstants, FieldType } from '../../../../utils';
 
 interface PowerMeasurementsFormProps {
@@ -42,23 +41,23 @@ export function PowerMeasurementsForm({
     const reactivePowerId = `${FieldConstants.STATE_ESTIMATION}.${getReactiveMeasurementType(side)}`;
 
     return (
-        <Grid container spacing={2}>
+        <Grid container direction="column" spacing={2}>
             {!reactivePowerOnly && (
-                <GridItem size={12}>
+                <Grid item>
                     <PowerWithValidityForm
                         id={activePowerId}
                         field={FieldType.ACTIVE_POWER}
                         measurement={activePowerMeasurement}
                     />
-                </GridItem>
+                </Grid>
             )}
-            <GridItem size={12}>
+            <Grid item>
                 <PowerWithValidityForm
                     id={reactivePowerId}
                     field={FieldType.REACTIVE_POWER}
                     measurement={reactivePowerMeasurement}
                 />
-            </GridItem>
+            </Grid>
         </Grid>
     );
 }
