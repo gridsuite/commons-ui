@@ -113,6 +113,7 @@ export function LoadForm({
                 )}
             </Tabs>
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB}>
+                <GridSection title="Connectivity" />
                 <ConnectivityForm
                     withPosition
                     isEquipmentModification={isModification}
