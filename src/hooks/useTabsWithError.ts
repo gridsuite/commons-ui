@@ -31,16 +31,23 @@ export function useTabsWithError<T extends number>(tabFields: TabFieldsMap<T>, i
     );
 
     // Auto-navigate to the first errored tab when the set of errored tabs changes.
+    // Debounced so rapid input (e.g. typing a number) does not jump tabs mid-entry.
     // Use a string key as the dependency so the effect fires on value change, not reference change.
     const errorsKey = tabIndexesWithError.join(',');
+    const tabIndexesWithErrorRef = useRef(tabIndexesWithError);
+    tabIndexesWithErrorRef.current = tabIndexesWithError;
     useEffect(() => {
-        if (tabIndexesWithError.length > 0 && !tabIndexesWithError.includes(tabIndexRef.current)) {
-            const tab = tabIndexesWithError[0];
-            tabIndexRef.current = tab;
-            setTabIndex(tab);
-        }
+        const timer = setTimeout(() => {
+            const tabs = tabIndexesWithErrorRef.current;
+            if (tabs.length > 0 && !tabs.includes(tabIndexRef.current)) {
+                const tab = tabs[0];
+                tabIndexRef.current = tab;
+                setTabIndex(tab);
+            }
+        }, 500);
+        return () => clearTimeout(timer);
         // errorsKey is a stable proxy for tabIndexesWithError value changes.
-        // tabIndexRef is a ref and never changes identity.
+        // Both refs never change identity.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [errorsKey]);
 
