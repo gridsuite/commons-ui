@@ -293,6 +293,8 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
     updateSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    getSecurityAnalysisContingenciesCountError:
+        "Une erreur est survenue lors de l'estimation du nombre d'aléas de l'analyse de sécurité",
     // SensitivityAnalysis
     fetchSensitivityAnalysisParametersError:
         "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sensibilité",
