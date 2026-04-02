@@ -15,6 +15,7 @@ import {
     Settings as SettingsIcon,
     TableView as TableViewIcon,
     Dashboard as DashboardIcon,
+    MiscellaneousServicesRounded as MiscellaneousServicesRoundedIcon,
 } from '@mui/icons-material';
 import { ElementType } from '../types/elementType';
 import type { SxStyle } from '../styles';
@@ -47,6 +48,8 @@ export function getFileIcon(type: ElementType, style: SxStyle) {
             return <HubIcon sx={style} />;
         case ElementType.WORKSPACE:
             return <DashboardIcon sx={style} />;
+        case ElementType.PROCESS_CONFIG:
+            return <MiscellaneousServicesRoundedIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return undefined;
