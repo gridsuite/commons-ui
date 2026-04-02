@@ -25,6 +25,11 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
+export type ExpandableInputHandle = {
+    replaceItems: (newItems: any[]) => void;
+    appendItem: (newItem: any) => void;
+};
+
 export interface ExpandableInputProps {
     name: string;
     Field: React.ComponentType<any>;
