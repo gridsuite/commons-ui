@@ -81,30 +81,6 @@ type CurveInfos = {
     variableId: string;
 };
 
-enum PropertyType {
-    ENUM = 'ENUM',
-    BOOLEAN = 'BOOLEAN',
-    INTEGER = 'INTEGER',
-    FLOAT = 'FLOAT',
-    STRING = 'STRING',
-}
-
-type EventPropertyInfos = {
-    id: UUID;
-    name: string;
-    value: string;
-    type: PropertyType;
-};
-
-type EventInfos = {
-    id: UUID;
-    nodeId: UUID;
-    equipmentId: string;
-    equipmentType: string;
-    eventType: string;
-    properties: EventPropertyInfos[];
-};
-
 export type SolverInfos = IdaSolverInfos | SimSolverInfos;
 
 export type MappingInfos = {
@@ -121,7 +97,6 @@ export type DynamicSimulationParametersInfos = {
     solvers?: SolverInfos[];
     network?: NetworkInfos;
     curves?: CurveInfos[] | null;
-    event?: EventInfos[];
 };
 
 // --- Types related to model/variables --- //
