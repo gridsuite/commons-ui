@@ -278,6 +278,8 @@ export const parametersEn = {
     fetchSecurityAnalysisParametersError: 'An error occured when fetching the security analysis parameters',
     fetchSecurityAnalysisProvidersError: 'An error occured when fetching security analysis provider list',
     updateSecurityAnalysisParametersError: 'An error occurred while updating the security analysis parameters',
+    getSecurityAnalysisContingenciesCountError:
+        'An error occurred while estimating security analysis contingencies count',
     // SensitivityAnalysis
     fetchSensitivityAnalysisParametersError: 'An error occured when fetching the sensitivity analysis parameters',
     fetchSensitivityAnalysisProvidersError: 'An error occured when fetching sensitivity analysis provider list',
