@@ -108,6 +108,16 @@ export function ContingencyTable({
                 </Alert>
             );
         }
+        if (isLoading) {
+            return (
+                <Alert
+                    variant="standard"
+                    icon={<CircularProgress size={22} />}
+                    severity="info"
+                    sx={{ color: 'text.primary' }}
+                />
+            );
+        }
         if (simulatedContingencyCount?.contingencies === 0 && simulatedContingencyCount.notFoundElements === 0) {
             return (
                 <Alert variant="standard" severity="error" sx={{ color: 'text.primary' }}>
@@ -139,7 +149,7 @@ export function ContingencyTable({
                 onFormChanged={() => {}}
                 isValidParameterRow={(row: FieldValues) => row[CONTINGENCY_LISTS]?.length > 0}
             />
-            {showContingencyCount && (isLoading ? <CircularProgress /> : renderContingencyCount())}
+            {showContingencyCount && renderContingencyCount()}
         </Stack>
     );
 }
