@@ -14,8 +14,8 @@ import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.consta
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
 import { PropertiesForm } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
-import { useTabsWithError } from '../../../../hooks';
 import GridItem from '../../../grid/grid-item';
+import { useTabsWithError } from '../../hooks';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];

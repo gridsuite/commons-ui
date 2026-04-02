@@ -7,10 +7,10 @@
 
 import { Grid } from '@mui/material';
 import { LOAD_TAB_FIELDS, LoadDialogTab } from './load.utils';
-import { useTabsWithError } from '../../../../hooks';
 import { LoadDialogHeader, LoadDialogHeaderProps } from './LoadDialogHeader';
 import { LoadDialogTabs } from './LoadDialogTabs';
 import { LoadDialogTabsContent, LoadDialogTabsContentProps } from './LoadDialogTabsContent';
+import { useTabsWithError } from '../../hooks';
 
 interface LoadFormProps
     extends LoadDialogHeaderProps,
