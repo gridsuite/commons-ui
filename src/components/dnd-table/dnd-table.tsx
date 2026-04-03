@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { createPortal } from 'react-dom';
 import { useMemo, useState } from 'react';
 import { UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
 import {
@@ -407,32 +408,38 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         index={index}
                         isDragDisabled={disableDragAndDrop}
                     >
-                        {(provided) => (
-                            <TableRow ref={provided.innerRef} {...provided.draggableProps}>
-                                {!disableDragAndDrop && (
-                                    <Tooltip
-                                        title={intl.formatMessage({
-                                            id: 'DragAndDrop',
-                                        })}
-                                        placement="right"
-                                    >
-                                        <TableCell
-                                            sx={{ textAlign: 'center' }}
-                                            {...(disabled ? {} : { ...provided.dragHandleProps })}
+                        {(provided, snapshot) => {
+                            const tableRow = (
+                                <TableRow ref={provided.innerRef} {...provided.draggableProps}>
+                                    {!disableDragAndDrop && (
+                                        <Tooltip
+                                            title={intl.formatMessage({
+                                                id: 'DragAndDrop',
+                                            })}
+                                            placement="right"
                                         >
-                                            <DragIndicatorIcon />
-                                        </TableCell>
-                                    </Tooltip>
-                                )}
-                                <TableCell sx={{ textAlign: 'center' }}>
-                                    <CheckboxInput
-                                        name={`${arrayFormName}[${index}].${SELECTED}`}
-                                        formProps={{ disabled }}
-                                    />
-                                </TableCell>
-                                {columnsDefinition.map((column) => renderTableCell(row.id, index, column))}
-                            </TableRow>
-                        )}
+                                            <TableCell
+                                                sx={{ textAlign: 'center' }}
+                                                {...(disabled ? {} : { ...provided.dragHandleProps })}
+                                            >
+                                                <DragIndicatorIcon />
+                                            </TableCell>
+                                        </Tooltip>
+                                    )}
+                                    <TableCell sx={{ textAlign: 'center' }}>
+                                        <CheckboxInput
+                                            name={`${arrayFormName}[${index}].${SELECTED}`}
+                                            formProps={{ disabled }}
+                                        />
+                                    </TableCell>
+                                    {columnsDefinition.map((column) => renderTableCell(row.id, index, column))}
+                                </TableRow>
+                            );
+                            // Portal the dragging row to document.body to avoid CSS transform
+                            // ancestors (e.g. react-rnd panels) from breaking position:fixed
+                            // coordinates used by @hello-pangea/dnd during drag.
+                            return snapshot.isDragging ? createPortal(tableRow, document.body) : tableRow;
+                        }}
                     </Draggable>
                 ))}
                 {providedDroppable.placeholder}
