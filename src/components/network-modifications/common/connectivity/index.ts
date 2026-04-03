@@ -9,3 +9,4 @@ export * from './connectivity.type';
 export * from './connectivityForm.utils';
 export * from './ConnectivityForm';
 export * from './BranchConnectivityForm';
+export * from './VoltageLevelConnectivityForm';

@@ -33,7 +33,6 @@ export function LoadDialogTabsContent({
         <>
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB} p={1}>
                 <ConnectivityForm
-                    withPosition
                     isEquipmentModification={isModification}
                     previousValues={{
                         connectablePosition: loadToModify?.connectablePosition,
