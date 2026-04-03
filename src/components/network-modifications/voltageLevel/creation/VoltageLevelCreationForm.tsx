@@ -70,11 +70,7 @@ export function VoltageLevelCreationForm({
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <TextInput
-                            name={FieldConstants.EQUIPMENT_NAME}
-                            label="Name"
-                            formProps={{ ...filledTextField }}
-                        />
+                        <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
                     </Grid>
                 </Grid>
             </Grid>
@@ -88,7 +84,7 @@ export function VoltageLevelCreationForm({
                     }}
                 >
                     <Tab
-                        label={<FormattedMessage id="ConnectivityTab" />}
+                        label={<FormattedMessage id="SubstationTab" />}
                         sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.SUBSTATION_TAB)}
                     />
                     <Tab
