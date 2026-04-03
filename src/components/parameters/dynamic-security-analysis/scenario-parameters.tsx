@@ -6,20 +6,27 @@
  */
 
 import { Grid } from '@mui/material';
-import { makeComponents, TYPES } from '../util/make-component-utils';
 import { SCENARIO_DURATION } from './constants';
+import { ParameterType, SpecificParameterInfos } from '../../../utils';
+import ParameterField from '../common/parameter-field';
 
-const defParams = {
-    [SCENARIO_DURATION]: {
-        type: TYPES.FLOAT,
+const params: SpecificParameterInfos[] = [
+    {
+        name: SCENARIO_DURATION,
+        type: ParameterType.DOUBLE,
         label: 'DynamicSecurityAnalysisScenarioDuration',
     },
-};
+];
 
 function ScenarioParameters({ path }: Readonly<{ path: string }>) {
     return (
-        <Grid xl={8} container>
-            {makeComponents(defParams, path)}
+        <Grid container>
+            {params.map((param: SpecificParameterInfos) => {
+                const { name, type, ...otherParams } = param;
+                return (
+                    <ParameterField key={param.name} id={path} name={param.name} type={param.type} {...otherParams} />
+                );
+            })}
         </Grid>
     );
 }

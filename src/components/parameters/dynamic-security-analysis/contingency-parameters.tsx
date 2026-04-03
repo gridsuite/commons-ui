@@ -7,21 +7,27 @@
 
 import { Grid } from '@mui/material';
 import { ParameterLineDirectoryItemsInput } from '../common';
-import { ElementType } from '../../../utils';
-import { makeComponents, TYPES } from '../util/make-component-utils';
+import { ElementType, ParameterType, SpecificParameterInfos } from '../../../utils';
 import { CONTINGENCIES_LIST_INFOS, CONTINGENCIES_START_TIME } from './constants';
+import ParameterField from '../common/parameter-field';
 
-const defParams = {
-    [CONTINGENCIES_START_TIME]: {
-        type: TYPES.FLOAT,
+const params: SpecificParameterInfos[] = [
+    {
+        name: CONTINGENCIES_START_TIME,
+        type: ParameterType.DOUBLE,
         label: 'DynamicSecurityAnalysisContingenciesStartTime',
     },
-};
+];
 
 function ContingencyParameters({ path }: Readonly<{ path: string }>) {
     return (
-        <Grid xl={8} container>
-            {makeComponents(defParams, path)}
+        <Grid container>
+            {params.map((param: SpecificParameterInfos) => {
+                const { name, type, ...otherParams } = param;
+                return (
+                    <ParameterField key={param.name} id={path} name={param.name} type={param.type} {...otherParams} />
+                );
+            })}
             <ParameterLineDirectoryItemsInput
                 name={`${path}.${CONTINGENCIES_LIST_INFOS}`}
                 elementType={ElementType.CONTINGENCY_LIST}
