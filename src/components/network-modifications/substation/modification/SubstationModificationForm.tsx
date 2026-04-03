@@ -8,7 +8,6 @@
 import { Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
-import GridItem from '../../../grid/grid-item';
 import { TextInput } from '../../../inputs';
 import { CountrySelectionInput } from '../../../inputs/reactHookForm/CountrySelectionInput';
 import { FieldConstants, GsLang } from '../../../../utils';

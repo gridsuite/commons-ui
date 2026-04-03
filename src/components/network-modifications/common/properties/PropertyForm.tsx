@@ -43,7 +43,7 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
     return (
         <>
             {watchPropertyDeletionMark || (watchPropertyAdded === false && watchPropertyPreviousValue) ? (
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <TextInput
                         name={`${name}.${index}.${FieldConstants.NAME}`}
                         label="PropertyName"
@@ -51,7 +51,7 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
                     />
                 </Grid>
             ) : (
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <AutocompleteInput
                         name={`${name}.${index}.${FieldConstants.NAME}`}
                         options={predefinedNames}
@@ -62,7 +62,7 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
                 </Grid>
             )}
             {watchPropertyDeletionMark ? (
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <TextInput
                         name={`${name}.${index}.${FieldConstants.VALUE}`}
                         label="PropertyValue"
@@ -71,7 +71,7 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
                     />
                 </Grid>
             ) : (
-                <Grid item xs={5}>
+                <Grid item xs={4}>
                     <AutocompleteInput
                         name={`${name}.${index}.${FieldConstants.VALUE}`}
                         options={predefinedValues}

@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import { useFormState, useWatch } from 'react-hook-form';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import GridItem from '../../../grid/grid-item';
 import { TextInput } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
 import { VoltageLevelTab } from './voltageLevel.constants';
@@ -20,7 +19,7 @@ import {
     isSubstationTabError,
 } from './voltageLevelCreation.utils';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
-import { PropertiesForm } from '../../common';
+import { filledTextField, PropertiesForm } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 
 export interface VoltageLevelCreationFormProps {
@@ -62,16 +61,20 @@ export function VoltageLevelCreationForm({
     return (
         <>
             <Grid container spacing={2}>
-                <GridItem>
+                <Grid item xs={4}>
                     <TextInput
                         name={FieldConstants.EQUIPMENT_ID}
                         label="ID"
-                        formProps={{ autoFocus: true, margin: 'normal' }}
+                        formProps={{ autoFocus: true, margin: 'normal', ...filledTextField }}
                     />
-                </GridItem>
-                <GridItem>
-                    <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ margin: 'normal' }} />
-                </GridItem>
+                </Grid>
+                <Grid item xs={4}>
+                    <TextInput
+                        name={FieldConstants.EQUIPMENT_NAME}
+                        label="Name"
+                        formProps={{ margin: 'normal', ...filledTextField }}
+                    />
+                </Grid>
             </Grid>
             <Tabs
                 value={tabIndex}

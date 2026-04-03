@@ -32,11 +32,7 @@ export function StructureTab() {
             {displayOmnibus && (
                 <>
                     <GridSection title="Coupling_Omnibus" />
-                    <Grid container>
-                        <GridItem size={12}>
-                            <CouplingOmnibusForm />
-                        </GridItem>
-                    </Grid>
+                    <CouplingOmnibusForm />
                 </>
             )}
         </>

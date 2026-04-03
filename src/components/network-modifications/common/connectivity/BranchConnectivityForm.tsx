@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
 import GridSection from '../../../grid/grid-section';
-import GridItem from '../../../grid/grid-item';
 import { FieldConstants } from '../../../../utils';
 import { ConnectivityNetworkProps } from './connectivity.type';
 import { ConnectivityForm } from './ConnectivityForm';
@@ -64,13 +62,9 @@ export function BranchConnectivityForm({
     return (
         <>
             <GridSection title="Side1" heading={4} />
-            <Grid container spacing={2}>
-                <GridItem size={12}>{connectivity1Field}</GridItem>
-            </Grid>
+            {connectivity1Field}
             <GridSection title="Side2" heading={4} />
-            <Grid container spacing={2}>
-                <GridItem size={12}>{connectivity2Field}</GridItem>
-            </Grid>
+            {connectivity2Field}
         </>
     );
 }
