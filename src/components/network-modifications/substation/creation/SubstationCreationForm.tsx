@@ -14,24 +14,28 @@ import { filledTextField } from '../../common';
 
 export function SubstationCreationForm() {
     return (
-        <>
-            <Grid container spacing={2}>
-                <Grid item xs>
-                    <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={filledTextField} />
-                </Grid>
-                <Grid item xs>
-                    <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
-                </Grid>
-                <Grid item xs>
-                    <CountrySelectionInput
-                        name={FieldConstants.COUNTRY}
-                        label="Country"
-                        formProps={filledTextField}
-                        size="small"
-                    />
+        <Grid container direction="column" spacing={2}>
+            <Grid item>
+                <Grid container spacing={2}>
+                    <Grid item xs>
+                        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={filledTextField} />
+                    </Grid>
+                    <Grid item xs>
+                        <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
+                    </Grid>
+                    <Grid item xs>
+                        <CountrySelectionInput
+                            name={FieldConstants.COUNTRY}
+                            label="Country"
+                            formProps={filledTextField}
+                            size="small"
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
-            <PropertiesForm networkElementType="substation" />
-        </>
+            <Grid item>
+                <PropertiesForm networkElementType="substation" />
+            </Grid>
+        </Grid>
     );
 }
