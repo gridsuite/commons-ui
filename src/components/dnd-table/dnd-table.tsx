@@ -6,7 +6,7 @@
  */
 
 import { createPortal } from 'react-dom';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
 import {
     Box,
@@ -22,7 +22,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
-import { DragDropContext, Draggable, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { ColumnBase, DndColumn, DndColumnType, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
@@ -97,11 +97,12 @@ interface DefaultTableCellProps {
     arrayFormName: string;
     rowIndex: number;
     column: ColumnBase;
+    lockedWidth?: number;
 }
 
-function DefaultTableCell({ arrayFormName, rowIndex, column, ...props }: Readonly<DefaultTableCellProps>) {
+function DefaultTableCell({ arrayFormName, rowIndex, column, lockedWidth, ...props }: Readonly<DefaultTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={{ padding: 1 }}>
+        <TableCell key={column.dataKey} sx={{ padding: 1 }} style={lockedWidth != null ? { width: lockedWidth } : undefined}>
             <RawReadOnlyInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} {...props} />
         </TableCell>
     );
@@ -114,6 +115,7 @@ interface EditableTableCellProps {
     previousValue?: number;
     valueModified: boolean;
     disabled?: boolean;
+    lockedWidth?: number;
 }
 
 function EditableTableCell({
@@ -122,10 +124,11 @@ function EditableTableCell({
     column,
     previousValue,
     valueModified,
+    lockedWidth,
     ...props
 }: Readonly<EditableTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={{ padding: 0.5, maxWidth: column.maxWidth }}>
+        <TableCell key={column.dataKey} sx={{ padding: 0.5, maxWidth: column.maxWidth }} style={lockedWidth != null ? { width: lockedWidth } : undefined}>
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
@@ -247,7 +250,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
 
     const [openAddRowsDialog, setOpenAddRowsDialog] = useState(false);
 
-    function renderTableCell(rowId: string, rowIndex: number, column: DndColumn) {
+    function renderTableCell(rowId: string, rowIndex: number, column: DndColumn, lockedWidth?: number) {
         const CustomTableCell = column.editable ? EditableTableCell : DefaultTableCell;
         return (
             <CustomTableCell
@@ -262,6 +265,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                     getPreviousValue ? getPreviousValue(rowIndex, column, arrayFormName, previousValues) : undefined
                 }
                 valueModified={isValueModified ? isValueModified(rowIndex, arrayFormName) : false}
+                lockedWidth={lockedWidth}
             />
         );
     }
@@ -362,6 +366,20 @@ export function DndTable(props: Readonly<DndTableProps>) {
         }
     };
 
+    // Stores the pixel widths of each cell in the row that is about to be dragged.
+    // Captured in onBeforeDragStart so the portaled clone can lock those widths and
+    // avoid the layout collapse that occurs when the row leaves the table context.
+    const dragCellWidthsRef = useRef<number[]>([]);
+
+    const onBeforeDragStart = (start: DragStart) => {
+        const row = document.querySelector<HTMLElement>(`[data-rbd-draggable-id="${start.draggableId}"]`);
+        if (row) {
+            dragCellWidthsRef.current = Array.from(row.querySelectorAll<HTMLElement>('td, th')).map(
+                (cell) => cell.getBoundingClientRect().width
+            );
+        }
+    };
+
     const onDragEnd = (result: DropResult) => {
         // dropped outside the list
         if (!result.destination) {
@@ -409,6 +427,10 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         isDragDisabled={disableDragAndDrop}
                     >
                         {(provided, snapshot) => {
+                            // When portaling, lock each cell to the width measured before drag
+                            // to prevent layout collapse outside the table context.
+                            const cellWidths = snapshot.isDragging ? dragCellWidthsRef.current : [];
+                            let cellIndex = 0;
                             const tableRow = (
                                 <TableRow ref={provided.innerRef} {...provided.draggableProps}>
                                     {!disableDragAndDrop && (
@@ -420,19 +442,35 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                         >
                                             <TableCell
                                                 sx={{ textAlign: 'center' }}
+                                                style={
+                                                    cellWidths[cellIndex] != null
+                                                        ? { width: cellWidths[cellIndex++] }
+                                                        : { width: undefined }
+                                                }
                                                 {...(disabled ? {} : { ...provided.dragHandleProps })}
                                             >
                                                 <DragIndicatorIcon />
                                             </TableCell>
                                         </Tooltip>
                                     )}
-                                    <TableCell sx={{ textAlign: 'center' }}>
+                                    <TableCell
+                                        sx={{ textAlign: 'center' }}
+                                        style={
+                                            cellWidths[cellIndex] != null
+                                                ? { width: cellWidths[cellIndex++] }
+                                                : { width: undefined }
+                                        }
+                                    >
                                         <CheckboxInput
                                             name={`${arrayFormName}[${index}].${SELECTED}`}
                                             formProps={{ disabled }}
                                         />
                                     </TableCell>
-                                    {columnsDefinition.map((column) => renderTableCell(row.id, index, column))}
+                                    {columnsDefinition.map((column) => {
+                                        const lockedWidth =
+                                            cellWidths[cellIndex] != null ? cellWidths[cellIndex++] : undefined;
+                                        return renderTableCell(row.id, index, column, lockedWidth);
+                                    })}
                                 </TableRow>
                             );
                             // Portal the dragging row to document.body to avoid CSS transform
@@ -450,7 +488,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     return (
         <Grid item container spacing={1}>
             <Grid item container>
-                <DragDropContext onDragEnd={onDragEnd}>
+                <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
                         {(provided) => (
                             <TableContainer
