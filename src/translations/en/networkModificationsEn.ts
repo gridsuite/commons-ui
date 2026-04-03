@@ -81,6 +81,7 @@ export const networkModificationsEn = {
     ModificationReadError: 'An error occurred while fetching the modification',
     CreateSubstation: 'Create substation',
     DeleteEquipmentByFilter: 'Delete equipment by filter',
+    ModifyByAssignment: 'Modify by filter',
     SubstationCreationError: 'Error while creating substation',
     ModifySubstation: 'Modify substation',
     SubstationModificationError: 'Error while modifying substation',
@@ -155,6 +156,10 @@ export const networkModificationsEn = {
     LCCConverterStationShuntCompensators: 'Shunt compensators related to the LCC',
     Side1: 'Side 1',
     Side2: 'Side 2',
+    EquipmentType: 'Equipment type',
+    EditedField: 'Edited field',
+    Value: 'Value',
+    addNewAssignment: 'Modify another field',
     Or: 'or',
 
     // Tabs

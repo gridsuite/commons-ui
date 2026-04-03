@@ -85,6 +85,7 @@ export const networkModificationsFr = {
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
     CreateSubstation: 'Créer un site',
     DeleteEquipmentByFilter: 'Supprimer des ouvrages par filtre',
+    ModifyByAssignment: 'Modification par filtre',
     SubstationCreationError: "Erreur lors de la création d'un site'",
     ModifySubstation: 'Modifier un site',
     SubstationModificationError: "Erreur lors de la modification d'un site",
@@ -158,6 +159,10 @@ export const networkModificationsFr = {
     LCCConverterStationShuntCompensators: 'Moyens de compensation liés à la LCC',
     Side1: 'Côté 1',
     Side2: 'Côté 2',
+    EquipmentType: "Type d'ouvrage",
+    EditedField: 'Champ modifié',
+    Value: 'Valeur',
+    addNewAssignment: 'Modifier un autre champ',
     Or: 'ou',
 
     // Tabs
