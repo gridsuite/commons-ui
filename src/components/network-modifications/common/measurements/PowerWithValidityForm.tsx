@@ -42,7 +42,7 @@ export function PowerWithValidityForm({ id, field, measurement }: Readonly<Measu
                     clearable
                 />
             </Grid>
-            <Grid item xs>
+            <Grid item>
                 <CheckboxNullableInput
                     name={`${id}.${FieldConstants.VALIDITY}`}
                     label="ValidMeasurement"

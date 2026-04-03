@@ -30,7 +30,6 @@ export function SetPointsForm({ previousValues, isModification = false }: Readon
                     />
                 </Grid>
                 <Grid item xs={4}>
-                    {' '}
                     <FloatInput
                         name={FieldConstants.REACTIVE_POWER_SET_POINT}
                         label="ReactivePowerText"

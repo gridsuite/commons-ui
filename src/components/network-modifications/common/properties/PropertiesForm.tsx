@@ -92,7 +92,7 @@ export function PropertiesForm({ id, networkElementType, isModification = false 
         : {};
 
     return (
-        <Grid container>
+        <>
             <GridSection title="AdditionalInformation" />
             <ExpandableInput
                 name={additionalProperties}
@@ -102,6 +102,6 @@ export function PropertiesForm({ id, networkElementType, isModification = false 
                 initialValue={initializedProperty()}
                 {...modificationProperties}
             />
-        </Grid>
+        </>
     );
 }
