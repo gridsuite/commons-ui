@@ -31,7 +31,8 @@ export function LoadDialogTabsContent({
 }: Readonly<LoadDialogTabsContentProps>) {
     return (
         <>
-            <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB} p={1}>
+            <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB}>
+                <GridSection title="ConnectivityTab" />
                 <ConnectivityForm
                     withPosition
                     isEquipmentModification={isModification}
@@ -46,7 +47,7 @@ export function LoadDialogTabsContent({
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                 />
             </Box>
-            <Box hidden={tabIndex !== LoadDialogTab.CHARACTERISTICS_TAB} p={1} sx={{ marginTop: -4 }}>
+            <Box hidden={tabIndex !== LoadDialogTab.CHARACTERISTICS_TAB}>
                 <SetPointsForm
                     previousValues={{
                         activePower: loadToModify?.p0,
@@ -57,7 +58,7 @@ export function LoadDialogTabsContent({
                 <PropertiesForm networkElementType="load" isModification={isModification} />
             </Box>
             {isModification && (
-                <Box hidden={tabIndex !== LoadDialogTab.STATE_ESTIMATION_TAB} p={1} sx={{ marginTop: -4 }}>
+                <Box hidden={tabIndex !== LoadDialogTab.STATE_ESTIMATION_TAB}>
                     <GridSection title="MeasurementsSection" />
                     <PowerMeasurementsForm
                         activePowerMeasurement={loadToModify?.measurementP}
