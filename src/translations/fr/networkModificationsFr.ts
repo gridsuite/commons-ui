@@ -161,6 +161,7 @@ export const networkModificationsFr = {
     Or: 'ou',
 
     // Tabs
+    SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
     CharacteristicsTab: 'Caractéristiques',
     StructureTab: 'Structure',
