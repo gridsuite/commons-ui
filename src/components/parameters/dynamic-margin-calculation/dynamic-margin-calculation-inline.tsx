@@ -106,6 +106,7 @@ export function DynamicMarginCalculationInline({
                 <Grid container item>
                     <Grid
                         sx={mergeSx(parametersStyles.controlParametersItem, {
+                            paddingTop: 1,
                             paddingBottom: 2,
                             paddingLeft: 0,
                         })}

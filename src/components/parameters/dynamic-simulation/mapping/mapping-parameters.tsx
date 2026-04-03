@@ -45,6 +45,7 @@ export function MappingParameters({ path }: Readonly<MappingParametersProps>) {
                 type: ParameterType.STRING,
                 label: 'DynamicSimulationMapping',
                 possibleValues: mappingOptions,
+                sx: { width: '100%' },
             },
         ],
         [mappingOptions]
