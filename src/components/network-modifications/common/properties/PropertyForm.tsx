@@ -7,10 +7,10 @@
 import { useMemo } from 'react';
 
 import { useWatch } from 'react-hook-form';
+import { Grid } from '@mui/material';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
 import { AutocompleteInput, TextInput } from '../../../inputs';
 import { italicFontTextField } from '../form.utils';
-import { Grid } from '@mui/material';
 
 type PropertyFormProps = {
     name: string;
@@ -18,7 +18,7 @@ type PropertyFormProps = {
     predefinedProperties: PredefinedProperties;
 };
 
-export const PropertyForm = ({ name, index, predefinedProperties }: PropertyFormProps) => {
+export function PropertyForm({ name, index, predefinedProperties }: PropertyFormProps) {
     const watchPropertyName = useWatch({ name: `${name}.${index}.${FieldConstants.NAME}` });
     const watchPropertyPreviousValue = useWatch({
         name: `${name}.${index}.${FieldConstants.PREVIOUS_VALUE}`,
@@ -84,4 +84,4 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
             )}
         </>
     );
-};
+}

@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { LoadDialogTab } from './load.utils';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
