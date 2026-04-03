@@ -8,9 +8,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CouplingOmnibusCreation } from './CouplingOmnibusCreation';
-import { ExpandableInput } from '../../../../inputs';
-import { FieldConstants } from '../../../../../utils';
-import { fetchBusBarSectionsForNewCoupler } from '../../../../../services';
+import { ExpandableInput } from '../../../../../../inputs';
+import { FieldConstants } from '../../../../../../../utils';
+import { fetchBusBarSectionsForNewCoupler } from '../../../../../../../services';
 
 export function CouplingOmnibusForm() {
     const { setValue, subscribe, trigger, getValues, formState } = useFormContext();

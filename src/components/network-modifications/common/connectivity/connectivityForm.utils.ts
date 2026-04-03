@@ -6,7 +6,7 @@
  */
 
 import { bool, number, object, string } from 'yup';
-import { VoltageLevelFormInfos } from '../../voltage-level/voltage-level.type';
+import { VoltageLevelFormInfos } from '../../voltageLevel/voltage-level.type';
 import { FieldConstants, YUP_NOT_TYPE_NUMBER } from '../../../../utils';
 
 const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (

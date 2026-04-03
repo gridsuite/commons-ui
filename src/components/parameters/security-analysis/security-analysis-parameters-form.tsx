@@ -54,7 +54,7 @@ export function SecurityAnalysisParametersForm({
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     showContingencyCount: boolean;
-    fetchContingencyCount?: (contingencyListIds: UUID[] | null) => Promise<ContingencyCount>;
+    fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;

@@ -293,6 +293,8 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
     updateSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    getSecurityAnalysisContingenciesCountError:
+        "Une erreur est survenue lors de l'estimation du nombre d'aléas de l'analyse de sécurité",
     // SensitivityAnalysis
     fetchSensitivityAnalysisParametersError:
         "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sensibilité",
@@ -329,4 +331,11 @@ export const parametersFr = {
     DynamicMarginCalculationLoadsFilter: 'Regroupement de charges',
     DynamicMarginCalculationLoadsVariation: 'Variation de charge',
     DynamicMarginCalculationLoadsActive: 'Actif',
+    BUILT: 'Réalisé',
+    BUILT_WITH_WARNING: 'Alertes',
+    BUILT_WITH_ERROR: 'Erreurs',
+    NOT_BUILT: 'Non réalisé',
+    BUILDING: 'En cours de réalisation',
+    NODE_BUILT: 'Nœud réalisé',
+    NODE_NOT_BUILT: 'Nœud non réalisé',
 };

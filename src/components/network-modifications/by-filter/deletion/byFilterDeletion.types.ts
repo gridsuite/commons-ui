@@ -5,9 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './common';
-export * from './equipmentDeletion';
-export * from './substation';
-export * from './voltageLevel';
-export * from './load';
-export * from './by-filter';
+import type { EquipmentType, ModificationType } from '../../../../utils';
+import { Filter } from '../commons/by-filter.type';
+
+export type ByFilterDeletionDto = {
+    type: ModificationType;
+    equipmentType: EquipmentType;
+    filters: Filter[];
+};

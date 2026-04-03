@@ -8,9 +8,9 @@
 import { DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { FieldConstants } from '../../../../../../utils';
-import { SWITCH_TYPE } from '../../voltageLevelCreation.utils';
-import { EnumInput } from '../../../../../inputs';
+import { FieldConstants } from '../../../../../../../../utils';
+import { SWITCH_TYPE } from '../../../../voltageLevelCreation.utils';
+import { EnumInput } from '../../../../../../../inputs';
 
 interface CreateSwitchesFormProps {
     id: string;
