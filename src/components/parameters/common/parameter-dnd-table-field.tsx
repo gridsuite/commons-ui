@@ -10,14 +10,13 @@ import { FormattedMessage } from 'react-intl';
 import { useFieldArray } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { useCallback, useMemo } from 'react';
-import { DndTable, DndTableProps } from '../../dnd-table';
+import { DndTable, DndTableProps, getDefaultRowData } from '../../dnd-table-v2';
 
 export type ParameterDndTableFieldProps = {
-    name: string;
-    label: string;
+    label?: string;
     tooltipProps?: Omit<TooltipProps, 'children'>;
     sxContainerProps?: SxProps;
-} & Omit<DndTableProps, 'arrayFormName' | 'useFieldArrayOutput'>;
+} & Omit<DndTableProps, 'useFieldArrayOutput'>;
 
 export default function ParameterDndTableField({
     name,
@@ -32,11 +31,7 @@ export default function ParameterDndTableField({
     });
 
     const newDefaultRowData = useMemo(() => {
-        const newRowData: Record<string, any> = {};
-        columnsDefinition.forEach((columnDefinition) => {
-            newRowData[columnDefinition.dataKey] = columnDefinition.initialValue || null;
-        });
-        return newRowData;
+        return getDefaultRowData(columnsDefinition);
     }, [columnsDefinition]);
 
     const createRows = useCallback(() => [newDefaultRowData], [newDefaultRowData]);
@@ -44,23 +39,25 @@ export default function ParameterDndTableField({
     const { title, ...otherTooltipProps } = tooltipProps || {};
     return (
         <Grid container sx={sxContainerProps}>
-            <Grid container alignItems="center" paddingBottom={2} paddingTop={2}>
-                <Typography component="span" variant="h6">
-                    <FormattedMessage id={label} />
-                </Typography>
-                {tooltipProps && (
-                    <Tooltip
-                        title={typeof title === 'string' ? <FormattedMessage id={title} /> : title}
-                        placement="right-start"
-                        sx={{ marginLeft: 1 }}
-                        {...otherTooltipProps}
-                    >
-                        <InfoIcon />
-                    </Tooltip>
-                )}
-            </Grid>
+            {label && (
+                <Grid container alignItems="center" paddingBottom={2} paddingTop={2}>
+                    <Typography component="span" variant="h6">
+                        <FormattedMessage id={label} />
+                    </Typography>
+                    {tooltipProps && (
+                        <Tooltip
+                            title={typeof title === 'string' ? <FormattedMessage id={title} /> : title}
+                            placement="right-start"
+                            sx={{ marginLeft: 1 }}
+                            {...otherTooltipProps}
+                        >
+                            <InfoIcon />
+                        </Tooltip>
+                    )}
+                </Grid>
+            )}
             <DndTable
-                arrayFormName={name}
+                name={name}
                 useFieldArrayOutput={useFieldArrayOutput}
                 columnsDefinition={columnsDefinition}
                 createRows={createRows}
