@@ -32,7 +32,7 @@ import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
 import { SAParameters } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
-import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
+import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table';
 import { ContingencyListsInfos } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {

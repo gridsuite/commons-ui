@@ -4,47 +4,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress, Stack } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { Alert, CircularProgress, Grid } from '@mui/material';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { FieldValues, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { useCreateRowData, useSnackMessage } from '../../../../hooks';
-import { ColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
-import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
-import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, ParamContingencyLists } from './columns-definitions';
+import { useSnackMessage } from '../../../../hooks';
+import { ACTIVATED, ID } from '../parameter-table';
+import { CONTINGENCY_LISTS } from '../constants';
+import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS } from './columns-definitions';
 import { ContingencyCount, ContingencyListsInfos } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
-import { snackWithFallback } from '../../../../utils';
+import { MuiStyles, snackWithFallback } from '../../../../utils';
+import ParameterDndTableField from '../parameter-dnd-table-field';
+import { getDefaultRowData } from '../../../dnd-table-v2';
+
+const styles = {
+    alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
+} satisfies MuiStyles;
 
 export function ContingencyTable({
+    name,
     showContingencyCount = false,
     fetchContingencyCount,
     isBuiltCurrentNode,
 }: Readonly<{
+    name: string;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyLists: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     isBuiltCurrentNode?: boolean; // necessary if we want to show the contingency count
 }>) {
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
-    const [rowData, useFieldArrayOutput] = useCreateRowData(ParamContingencyLists);
-    const contingencyListsInfos: ContingencyListsInfos[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
+    const contingencyListsInfos: ContingencyListsInfos[] = useWatch({ name });
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const getColumnsDefinition = useCallback(
-        (columns: ColumnsDef[]) => {
-            if (columns) {
-                return columns.map((column) => ({
-                    ...column,
-                    label: intl.formatMessage({ id: column.label }),
-                }));
-            }
-            return [];
-        },
-        [intl]
-    );
+    const translatedColumnsDefinition = useMemo(() => {
+        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map((colDef) => ({
+            ...colDef,
+            label: intl.formatMessage({ id: colDef.label }),
+        }));
+    }, [intl]);
+
+    const newDefaultRowData = useMemo(() => {
+        return getDefaultRowData(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS);
+    }, []);
+
+    const createRows = useCallback(() => [newDefaultRowData], [newDefaultRowData]);
 
     useEffect(() => {
         if (!showContingencyCount || !isBuiltCurrentNode) {
@@ -106,30 +113,23 @@ export function ContingencyTable({
     const renderContingencyCount = () => {
         if (!isBuiltCurrentNode) {
             return (
-                <Alert variant="standard" severity="warning" sx={{ color: 'text.primary' }}>
+                <Alert variant="standard" severity="warning" sx={styles.alert}>
                     <FormattedMessage id="contingencyCountImpossibleOnUnbuiltNode" />
                 </Alert>
             );
         }
         if (isLoading) {
-            return (
-                <Alert
-                    variant="standard"
-                    icon={<CircularProgress size={22} />}
-                    severity="info"
-                    sx={{ color: 'text.primary' }}
-                />
-            );
+            return <Alert variant="standard" icon={<CircularProgress size={22} />} severity="info" sx={styles.alert} />;
         }
         if (simulatedContingencyCount?.contingencies === 0 && simulatedContingencyCount.notFoundElements === 0) {
             return (
-                <Alert variant="standard" severity="error" sx={{ color: 'text.primary' }}>
+                <Alert variant="standard" severity="error" sx={styles.alert}>
                     <FormattedMessage id="noContingency" />
                 </Alert>
             );
         }
         return (
-            <Alert variant="standard" icon={false} severity="info" sx={{ color: 'text.primary' }}>
+            <Alert variant="standard" icon={false} severity="info" sx={styles.alert}>
                 <FormattedMessage
                     id="xContingenciesWillBeSimulatedAndYNotFound"
                     values={{
@@ -142,17 +142,14 @@ export function ContingencyTable({
     };
 
     return (
-        <Stack spacing={0} sx={{ width: '100%' }}>
-            <ParameterTable
-                arrayFormName={CONTINGENCY_LISTS_INFOS}
-                useFieldArrayOutput={useFieldArrayOutput}
-                columnsDefinition={getColumnsDefinition(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS)}
+        <Grid container direction="column">
+            <ParameterDndTableField
+                name={name}
+                columnsDefinition={translatedColumnsDefinition}
                 tableHeight={270}
-                createRows={rowData}
-                onFormChanged={() => {}}
-                isValidParameterRow={(row: FieldValues) => row[CONTINGENCY_LISTS]?.length > 0}
+                createRows={createRows}
             />
             {showContingencyCount && renderContingencyCount()}
-        </Stack>
+        </Grid>
     );
 }

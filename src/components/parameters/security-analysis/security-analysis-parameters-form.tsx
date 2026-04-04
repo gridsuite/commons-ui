@@ -10,7 +10,7 @@ import { Box, Grid, LinearProgress } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
-import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
+import { CONTINGENCY_LISTS_INFOS, LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
@@ -115,13 +115,12 @@ export function SecurityAnalysisParametersForm({
                                             maxHeight: '100%',
                                         })}
                                     >
-                                        <Grid>
-                                            <ContingencyTable
-                                                showContingencyCount={showContingencyCount}
-                                                fetchContingencyCount={fetchContingencyCount}
-                                                isBuiltCurrentNode={isBuiltCurrentNode}
-                                            />
-                                        </Grid>
+                                        <ContingencyTable
+                                            name={CONTINGENCY_LISTS_INFOS}
+                                            showContingencyCount={showContingencyCount}
+                                            fetchContingencyCount={fetchContingencyCount}
+                                            isBuiltCurrentNode={isBuiltCurrentNode}
+                                        />
                                         <Grid container paddingTop={4} paddingBottom={2}>
                                             <LineSeparator />
                                         </Grid>

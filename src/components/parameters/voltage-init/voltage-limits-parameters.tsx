@@ -6,10 +6,9 @@
  */
 
 import { useMemo } from 'react';
-import { useFieldArray } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { Grid, IconButton, Tooltip, Typography } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { Grid, Tooltip } from '@mui/material';
+import { useIntl } from 'react-intl';
 import {
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
@@ -17,9 +16,10 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { DndColumn, DndColumnType, DndTable, SELECTED } from '../../dnd-table';
+import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table-v2';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { VoltageAdornment } from '../../../utils/constants/adornments';
+import ParameterDndTableField from '../common/parameter-dnd-table-field';
 
 export function VoltageLimitsParameters() {
     const intl = useIntl();
@@ -29,10 +29,10 @@ export function VoltageLimitsParameters() {
                 title={intl.formatMessage({
                     id: 'VoltageLevelFilterTooltip',
                 })}
+                placement="right-start"
+                sx={{ marginLeft: 1 }}
             >
-                <IconButton>
-                    <InfoIcon />
-                </IconButton>
+                <InfoIcon />
             </Tooltip>
         );
     }, [intl]);
@@ -145,44 +145,21 @@ export function VoltageLimitsParameters() {
 
     const createVoltageLimitDefaultRows = () => [newDefaultRowData];
 
-    const useVoltageLimitsModificationFieldArrayOutput = useFieldArray({
-        name: `${VOLTAGE_LIMITS_MODIFICATION}`,
-    });
-
-    const useVoltageLimitsDefaultFieldArrayOutput = useFieldArray({
-        name: `${VOLTAGE_LIMITS_DEFAULT}`,
-    });
-
     return (
         <Grid container>
-            <Grid container alignItems="center">
-                <Typography component="span" variant="h6">
-                    <FormattedMessage id="AdjustExistingLimits" />
-                </Typography>
-                <Tooltip
-                    title={<FormattedMessage id="AdjustExistingLimitsInfo" />}
-                    placement="right-start"
-                    sx={{ marginLeft: 1 }}
-                >
-                    <InfoIcon />
-                </Tooltip>
-            </Grid>
-            <DndTable
-                arrayFormName={`${VOLTAGE_LIMITS_MODIFICATION}`}
+            <ParameterDndTableField
+                name={`${VOLTAGE_LIMITS_MODIFICATION}`}
+                label="AdjustExistingLimits"
+                tooltipProps={{ title: 'AdjustExistingLimitsInfo' }}
                 columnsDefinition={VOLTAGE_LIMITS_MODIFICATION_COLUMNS_DEFINITIONS}
-                useFieldArrayOutput={useVoltageLimitsModificationFieldArrayOutput}
                 createRows={createVoltageLimitModificationRows}
                 tableHeight={270}
                 withAddRowsDialog={false}
             />
-
-            <Typography component="span" variant="h6">
-                <FormattedMessage id="SetDefaultLimits" />
-            </Typography>
-            <DndTable
-                arrayFormName={`${VOLTAGE_LIMITS_DEFAULT}`}
+            <ParameterDndTableField
+                name={`${VOLTAGE_LIMITS_DEFAULT}`}
+                label="SetDefaultLimits"
                 columnsDefinition={VOLTAGE_LIMITS_DEFAULT_COLUMNS_DEFINITIONS}
-                useFieldArrayOutput={useVoltageLimitsDefaultFieldArrayOutput}
                 createRows={createVoltageLimitDefaultRows}
                 tableHeight={270}
                 withAddRowsDialog={false}
