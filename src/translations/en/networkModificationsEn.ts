@@ -163,6 +163,7 @@ export const networkModificationsEn = {
     Or: 'or',
 
     // Tabs
+    SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
     CharacteristicsTab: 'Characteristics',
     StructureTab: 'Structure',

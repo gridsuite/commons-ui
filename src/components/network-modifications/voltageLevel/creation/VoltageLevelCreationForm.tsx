@@ -82,7 +82,7 @@ export function VoltageLevelCreationForm({
                 }}
             >
                 <Tab
-                    label={<FormattedMessage id="ConnectivityTab" />}
+                    label={<FormattedMessage id="SubstationTab" />}
                     sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.SUBSTATION_TAB)}
                 />
                 <Tab
