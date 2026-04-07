@@ -42,6 +42,10 @@ export function ContingencyTable({
 
     const { getValues } = useFormContext();
 
+    const handleOnChange = useCallback(() => {
+        setContingencyCountRefreshTrigger((prevValue) => !prevValue);
+    }, []);
+
     const translatedColumnsDefinition = useMemo(() => {
         return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map((colDef) => ({
             ...colDef,
@@ -49,10 +53,10 @@ export function ContingencyTable({
             // force outdated contingency count when switching between switch and directory items changed
             onChange:
                 colDef.type === DndColumnType.SWITCH || colDef.type === DndColumnType.DIRECTORY_ITEMS
-                    ? () => setContingencyCountRefreshTrigger((prevValue) => !prevValue)
+                    ? handleOnChange
                     : undefined,
         }));
-    }, [intl]);
+    }, [intl, handleOnChange]);
 
     const createRows = useCallback(() => {
         const newDefaultRowData = getDefaultRowData(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS);
@@ -164,7 +168,7 @@ export function ContingencyTable({
                 columnsDefinition={translatedColumnsDefinition}
                 createRows={createRows}
                 tableHeight={270}
-                onChange={() => setContingencyCountRefreshTrigger(true)}
+                onChange={handleOnChange}
             />
             {showContingencyCount && renderContingencyCount()}
         </Grid>
