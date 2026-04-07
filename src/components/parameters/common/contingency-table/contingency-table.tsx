@@ -7,7 +7,7 @@
 import { Alert, CircularProgress, Grid } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../../hooks';
 import { ACTIVATED, ID } from '../parameter-table';
@@ -17,7 +17,7 @@ import { ContingencyCount, ContingencyListsInfos } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback } from '../../../../utils';
 import ParameterDndTableField from '../parameter-dnd-table-field';
-import { getDefaultRowData } from '../../../dnd-table-v2';
+import { DndColumnType, getDefaultRowData } from '../../../dnd-table-v2';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
@@ -36,30 +36,38 @@ export function ContingencyTable({
 }>) {
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
-    const contingencyListsInfos: ContingencyListsInfos[] = useWatch({ name });
     const [isLoading, setIsLoading] = useState(false);
+    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(true);
     const { snackError } = useSnackMessage();
+
+    const { getValues } = useFormContext();
 
     const translatedColumnsDefinition = useMemo(() => {
         return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map((colDef) => ({
             ...colDef,
             label: intl.formatMessage({ id: colDef.label }),
+            // force outdated contingency count when switching between switch and directory items changed
+            onChange:
+                colDef.type === DndColumnType.SWITCH || colDef.type === DndColumnType.DIRECTORY_ITEMS
+                    ? () => setContingencyCountRefreshTrigger((prevValue) => !prevValue)
+                    : undefined,
         }));
     }, [intl]);
 
-    const newDefaultRowData = useMemo(() => {
-        return getDefaultRowData(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS);
+    const createRows = useCallback(() => {
+        const newDefaultRowData = getDefaultRowData(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS);
+        return [newDefaultRowData];
     }, []);
-
-    const createRows = useCallback(() => [newDefaultRowData], [newDefaultRowData]);
 
     useEffect(() => {
         if (!showContingencyCount || !isBuiltCurrentNode) {
             setIsLoading(false);
+            setSimulatedContingencyCount(null);
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
 
+        const contingencyListsInfos: ContingencyListsInfos[] = getValues(name);
         const hasNoContingencies =
             !contingencyListsInfos ||
             (contingencyListsInfos.length ?? 0) === 0 ||
@@ -108,7 +116,15 @@ export function ContingencyTable({
             controller?.abort(new Error(IGNORE_SIGNAL));
             clearTimeout(loadingTimeoutId);
         };
-    }, [snackError, contingencyListsInfos, fetchContingencyCount, showContingencyCount, isBuiltCurrentNode]);
+    }, [
+        snackError,
+        getValues,
+        fetchContingencyCount,
+        showContingencyCount,
+        isBuiltCurrentNode,
+        name,
+        contingencyCountRefreshTrigger,
+    ]);
 
     const renderContingencyCount = () => {
         if (!isBuiltCurrentNode) {
@@ -146,8 +162,9 @@ export function ContingencyTable({
             <ParameterDndTableField
                 name={name}
                 columnsDefinition={translatedColumnsDefinition}
-                tableHeight={270}
                 createRows={createRows}
+                tableHeight={270}
+                onChange={() => setContingencyCountRefreshTrigger(true)}
             />
             {showContingencyCount && renderContingencyCount()}
         </Grid>

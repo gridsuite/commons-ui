@@ -7,7 +7,7 @@
 
 import { Grid, SxProps, Tooltip, TooltipProps, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { useFieldArray } from 'react-hook-form';
+import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { useCallback, useMemo } from 'react';
 import { DndTable, DndTableProps, getDefaultRowData } from '../../dnd-table-v2';
@@ -16,6 +16,8 @@ export type ParameterDndTableFieldProps = {
     label?: string;
     tooltipProps?: Omit<TooltipProps, 'children'>;
     sxContainerProps?: SxProps;
+    // check whether row data is valid before propagate onChange (e.g., to fetch data))
+    isValidRow?: (rowData: FieldValues) => boolean;
 } & Omit<DndTableProps, 'useFieldArrayOutput'>;
 
 export default function ParameterDndTableField({
@@ -24,11 +26,15 @@ export default function ParameterDndTableField({
     columnsDefinition,
     tooltipProps,
     sxContainerProps,
+    onChange,
+    isValidRow,
     ...otherProps
 }: Readonly<ParameterDndTableFieldProps>) {
     const useFieldArrayOutput = useFieldArray({
         name,
     });
+
+    const { getValues } = useFormContext();
 
     const newDefaultRowData = useMemo(() => {
         return getDefaultRowData(columnsDefinition);
@@ -37,6 +43,15 @@ export default function ParameterDndTableField({
     const createRows = useCallback(() => [newDefaultRowData], [newDefaultRowData]);
 
     const { title, ...otherTooltipProps } = tooltipProps || {};
+
+    const handleOnChange = useCallback(() => {
+        const rowsData = getValues(name) || [];
+        const allRowsValid = isValidRow ? rowsData.every((row: FieldValues) => isValidRow(row)) : true;
+        if (allRowsValid) {
+            onChange?.();
+        }
+    }, [getValues, isValidRow, onChange, name]);
+
     return (
         <Grid container sx={sxContainerProps}>
             {label && (
@@ -62,6 +77,7 @@ export default function ParameterDndTableField({
                 columnsDefinition={columnsDefinition}
                 createRows={createRows}
                 withAddRowsDialog={false}
+                onChange={handleOnChange}
                 {...otherProps}
             />
         </Grid>

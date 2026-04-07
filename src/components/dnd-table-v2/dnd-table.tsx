@@ -96,13 +96,8 @@ export interface DndTableProps {
     withResetButton?: boolean;
     withAddRowsDialog?: boolean;
     previousValues?: any[];
-    disableTableCell?: (rowIndex: number, column: any, tableName: string, temporaryLimits?: any[]) => boolean;
-    getPreviousValue?: (
-        rowIndex: number,
-        column: any,
-        tableName: string,
-        temporaryLimits?: any[]
-    ) => number | undefined;
+    disableTableCell?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => boolean;
+    getPreviousValue?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => number | undefined;
     isValueModified?: (index: number, tableName: string) => boolean;
     disableAddingRows?: boolean;
     showMoveArrow?: boolean;
@@ -114,6 +109,7 @@ export interface DndTableProps {
     maxRows?: number;
     disabledDeletion?: boolean;
     multiselect?: boolean;
+    onChange?: () => void;
 }
 
 export function DndTable(props: Readonly<DndTableProps>) {
@@ -141,6 +137,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
         maxRows = MAX_ROWS_NUMBER,
         disabledDeletion,
         multiselect,
+        onChange,
     } = props;
     const intl = useIntl();
 
@@ -210,10 +207,12 @@ export function DndTable(props: Readonly<DndTableProps>) {
         }
 
         remove(rowsToDelete);
+        onChange?.();
     };
 
     const handleDeleteRow = (index: number) => {
         remove(index);
+        onChange?.();
     };
 
     const selectAllRows = () => {
@@ -329,6 +328,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 disableDragAndDrop={disableDragAndDrop}
                                 disabled={disabled}
                                 previousValues={previousValues}
+                                disableTableCell={disableTableCell}
                                 getPreviousValue={getPreviousValue}
                                 isValueModified={isValueModified}
                                 disabledDeletion={disabledDeletion && !multiselect}

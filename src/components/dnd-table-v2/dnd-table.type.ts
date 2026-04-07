@@ -6,7 +6,9 @@
  */
 
 import { JSX, ReactNode } from 'react';
-import { ElementType, EquipmentType } from '../../utils';
+import { ElementType } from '../../utils/types/elementType';
+import { EquipmentType } from '../../utils/types/equipmentType';
+import { Option } from '../../utils/types/types';
 
 export const SELECTED = 'selected';
 export const MAX_ROWS_NUMBER = 100;
@@ -15,6 +17,7 @@ export enum DndColumnType {
     TEXT = 'TEXT',
     NUMERIC = 'NUMERIC',
     AUTOCOMPLETE = 'AUTOCOMPLETE',
+    SELECT = 'SELECT',
     CHIP_ITEMS = 'CHIP_ITEMS',
     DIRECTORY_ITEMS = 'DIRECTORY_ITEMS',
     SWITCH = 'SWITCH',
@@ -31,6 +34,7 @@ export interface ColumnBase {
     editable?: boolean;
     type: DndColumnType;
     initialValue?: any; // should conform to the type field
+    onChange?: (value?: any) => void;
 }
 
 export interface ColumnText extends ColumnBase {
@@ -47,7 +51,12 @@ export interface ColumnNumeric extends ColumnBase {
 
 export interface ColumnAutocomplete extends ColumnBase {
     type: DndColumnType.AUTOCOMPLETE;
-    options: string[];
+    options: Option[];
+}
+
+export interface ColumnSelect extends ColumnBase {
+    type: DndColumnType.SELECT;
+    options: Option[];
 }
 
 export interface ColumnDirectoryItem extends ColumnBase {
@@ -77,6 +86,7 @@ export interface ColumnCustom extends ColumnBase {
 export type DndColumn =
     | ColumnNumeric
     | ColumnAutocomplete
+    | ColumnSelect
     | ColumnText
     | ColumnDirectoryItem
     | ColumnChipsItem

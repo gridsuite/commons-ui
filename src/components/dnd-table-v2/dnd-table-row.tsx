@@ -16,6 +16,7 @@ import {
     DescriptionInput,
     DirectoryItemsInput,
     RawReadOnlyInput,
+    SelectInput,
     SwitchInput,
     TableNumericalInput,
     TableTextInput,
@@ -82,6 +83,9 @@ function EditableTableCell({
                     size="small"
                 />
             )}
+            {column.type === DndColumnType.SELECT && (
+                <SelectInput options={column.options} name={name} size="small" fullWidth disableClearable />
+            )}
             {column.type === DndColumnType.DIRECTORY_ITEMS && (
                 <DirectoryItemsInput
                     name={name}
@@ -90,10 +94,17 @@ function EditableTableCell({
                     titleId={column.titleId}
                     hideErrorMessage
                     label={undefined}
+                    // callback to propagate a chang to parent via column config
+                    onChange={(value) => column.onChange?.(value)}
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && <ChipItemsInput name={name} hideErrorMessage />}
-            {column.type === DndColumnType.SWITCH && <SwitchInput name={name} />}
+            {column.type === DndColumnType.SWITCH && (
+                // callback to propagate a chang to parent via column config
+                <span onChange={() => column.onChange?.()}>
+                    <SwitchInput name={name} />
+                </span>
+            )}
             {column.type === DndColumnType.DESCRIPTIONS && <DescriptionInput name={name} />}
             {column.type === DndColumnType.CUSTOM && column.component(rowIndex)}
         </TableCell>
@@ -109,12 +120,8 @@ export type DndTableRowProps = TableRowProps & {
     disableDragAndDrop: boolean;
     disabled: boolean;
     previousValues?: any[];
-    getPreviousValue?: (
-        rowIndex: number,
-        column: any,
-        tableName: string,
-        temporaryLimits?: any[]
-    ) => number | undefined;
+    disableTableCell?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => boolean;
+    getPreviousValue?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => number | undefined;
     isValueModified?: (index: number, tableName: string) => boolean;
     disabledDeletion?: boolean;
     onDelete?: (index: number) => void;
@@ -128,6 +135,7 @@ export function DndTableRow({
     provided,
     disableDragAndDrop,
     disabled,
+    disableTableCell,
     previousValues,
     getPreviousValue,
     isValueModified,
@@ -171,7 +179,9 @@ export function DndTableRow({
                         name={`${tableName}[${index}].${column.dataKey}`}
                         rowIndex={index}
                         column={column}
-                        disabled={disabled}
+                        disabled={
+                            disableTableCell ? disableTableCell(index, column, tableName, previousValues) : disabled
+                        }
                         previousValue={
                             getPreviousValue ? getPreviousValue(index, column, tableName, previousValues) : undefined
                         }

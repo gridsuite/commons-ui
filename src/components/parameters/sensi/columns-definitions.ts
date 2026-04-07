@@ -11,18 +11,14 @@ import {
     HVDC_LINES,
     INJECTIONS,
     MONITORED_BRANCHES,
-    PARAMETER_SENSI_HVDC,
-    PARAMETER_SENSI_INJECTION,
-    PARAMETER_SENSI_INJECTIONS_SET,
-    PARAMETER_SENSI_NODES,
-    PARAMETER_SENSI_PST,
     PSTS,
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
 import { CONTINGENCIES } from '../common';
-import { ACTIVATED, ColumnsDef, Parameters } from '../common/parameter-table';
+import { ACTIVATED } from '../common/parameter-table';
+import { DndColumn, DndColumnType } from '../../dnd-table-v2';
 
 export const MONITORED_BRANCHES_EQUIPMENT_TYPES = [EquipmentType.LINE, EquipmentType.TWO_WINDINGS_TRANSFORMER];
 export const INJECTION_DISTRIBUTION_TYPES = [
@@ -51,13 +47,13 @@ export const EQUIPMENTS_IN_VOLTAGE_REGULATION_TYPES = [
 ];
 export const HVDC_EQUIPMENT_TYPES = [EquipmentType.HVDC_LINE];
 
-export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_INJECTIONS_SET: DndColumn[] = [
     {
         label: 'SupervisedBranches',
         dataKey: MONITORED_BRANCHES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -67,7 +63,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
         dataKey: INJECTIONS,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: INJECTIONS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -75,9 +71,9 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
     {
         label: 'DistributionType',
         dataKey: DISTRIBUTION_TYPE,
-        equipmentTypes: INJECTION_DISTRIBUTION_TYPES,
+        options: INJECTION_DISTRIBUTION_TYPES,
         initialValue: INJECTION_DISTRIBUTION_TYPES[0].id,
-        menuItems: true,
+        type: DndColumnType.SELECT,
         editable: true,
         width: '16rem',
     },
@@ -86,7 +82,8 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
         dataKey: CONTINGENCIES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
     },
@@ -94,18 +91,18 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: ColumnsDef[] = [
         label: 'Active',
         dataKey: ACTIVATED,
         initialValue: true,
-        checkboxItems: true,
+        type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
     },
 ];
-export const COLUMNS_DEFINITIONS_INJECTIONS = [
+export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
     {
         label: 'SupervisedBranches',
         dataKey: MONITORED_BRANCHES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -115,7 +112,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS = [
         dataKey: INJECTIONS,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: INJECTIONS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -125,7 +122,8 @@ export const COLUMNS_DEFINITIONS_INJECTIONS = [
         dataKey: CONTINGENCIES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
     },
@@ -133,18 +131,18 @@ export const COLUMNS_DEFINITIONS_INJECTIONS = [
         label: 'Active',
         dataKey: ACTIVATED,
         initialValue: true,
-        checkboxItems: true,
+        type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
     },
 ];
-export const COLUMNS_DEFINITIONS_HVDCS = [
+export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
     {
         label: 'SupervisedBranches',
         dataKey: MONITORED_BRANCHES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -152,9 +150,9 @@ export const COLUMNS_DEFINITIONS_HVDCS = [
     {
         label: 'SensitivityType',
         dataKey: SENSITIVITY_TYPE,
-        equipmentTypes: SENSITIVITY_TYPES,
+        options: SENSITIVITY_TYPES,
         initialValue: SENSITIVITY_TYPES[0].id,
-        menuItems: true,
+        type: DndColumnType.SELECT,
         editable: true,
         width: '9rem',
     },
@@ -163,7 +161,7 @@ export const COLUMNS_DEFINITIONS_HVDCS = [
         dataKey: HVDC_LINES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: HVDC_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -173,7 +171,8 @@ export const COLUMNS_DEFINITIONS_HVDCS = [
         dataKey: CONTINGENCIES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
     },
@@ -181,18 +180,18 @@ export const COLUMNS_DEFINITIONS_HVDCS = [
         label: 'Active',
         dataKey: ACTIVATED,
         initialValue: true,
-        checkboxItems: true,
+        type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
     },
 ];
-export const COLUMNS_DEFINITIONS_PSTS = [
+export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
     {
         label: 'SupervisedBranches',
         dataKey: MONITORED_BRANCHES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -200,9 +199,9 @@ export const COLUMNS_DEFINITIONS_PSTS = [
     {
         label: 'SensitivityType',
         dataKey: SENSITIVITY_TYPE,
-        equipmentTypes: SENSITIVITY_TYPES,
+        options: SENSITIVITY_TYPES,
         initialValue: SENSITIVITY_TYPES[0].id,
-        menuItems: true,
+        type: DndColumnType.SELECT,
         editable: true,
         width: '9rem',
     },
@@ -211,7 +210,7 @@ export const COLUMNS_DEFINITIONS_PSTS = [
         dataKey: PSTS,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: PSTS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -221,7 +220,8 @@ export const COLUMNS_DEFINITIONS_PSTS = [
         dataKey: CONTINGENCIES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
     },
@@ -229,18 +229,18 @@ export const COLUMNS_DEFINITIONS_PSTS = [
         label: 'Active',
         dataKey: ACTIVATED,
         initialValue: true,
-        checkboxItems: true,
+        type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
     },
 ];
-export const COLUMNS_DEFINITIONS_NODES = [
+export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
     {
         label: 'MonitoredVoltageLevels',
         dataKey: SUPERVISED_VOLTAGE_LEVELS,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: MONITORED_VOLTAGE_LEVELS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -250,7 +250,7 @@ export const COLUMNS_DEFINITIONS_NODES = [
         dataKey: EQUIPMENTS_IN_VOLTAGE_REGULATION,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
         equipmentTypes: EQUIPMENTS_IN_VOLTAGE_REGULATION_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
@@ -260,7 +260,8 @@ export const COLUMNS_DEFINITIONS_NODES = [
         dataKey: CONTINGENCIES,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
     },
@@ -268,36 +269,11 @@ export const COLUMNS_DEFINITIONS_NODES = [
         label: 'Active',
         dataKey: ACTIVATED,
         initialValue: true,
-        checkboxItems: true,
+        type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
     },
 ];
-
-export const SensiInjectionsSet: Parameters = {
-    columnsDef: COLUMNS_DEFINITIONS_INJECTIONS_SET,
-    name: PARAMETER_SENSI_INJECTIONS_SET,
-};
-
-export const SensiInjection: Parameters = {
-    columnsDef: COLUMNS_DEFINITIONS_INJECTIONS,
-    name: PARAMETER_SENSI_INJECTION,
-};
-
-export const SensiHvdcs: Parameters = {
-    columnsDef: COLUMNS_DEFINITIONS_HVDCS,
-    name: PARAMETER_SENSI_HVDC,
-};
-
-export const SensiPsts: Parameters = {
-    columnsDef: COLUMNS_DEFINITIONS_PSTS,
-    name: PARAMETER_SENSI_PST,
-};
-
-export const SensiNodes: Parameters = {
-    columnsDef: COLUMNS_DEFINITIONS_NODES,
-    name: PARAMETER_SENSI_NODES,
-};
 
 export enum SensiTabValues {
     'SensitivityBranches' = 0,
