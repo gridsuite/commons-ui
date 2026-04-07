@@ -6,7 +6,7 @@
  */
 
 import { Box, Checkbox, Theme, Tooltip } from '@mui/material';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomCellRendererProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
@@ -172,28 +172,17 @@ export function MessageLogCellRenderer({
 }>) {
     const marginLeft = (param.data?.depth ?? 0) * 2; // add indentation based on depth
     const textRef = useRef<HTMLDivElement>(null);
-    const [isEllipsisActive, setIsEllipsisActive] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
 
-    const checkEllipsis = () => {
+    const handleMouseEnter = () => {
         if (textRef.current) {
-            const zoomLevel = window.devicePixelRatio;
-            const adjustedScrollWidth = textRef.current.scrollWidth / zoomLevel;
-            const adjustedClientWidth = textRef.current.clientWidth / zoomLevel;
-            setIsEllipsisActive(adjustedScrollWidth > adjustedClientWidth);
+            setShowTooltip(textRef.current.scrollWidth > textRef.current.clientWidth);
         }
     };
 
-    useEffect(() => {
-        checkEllipsis();
-        const resizeObserver = new ResizeObserver(() => checkEllipsis());
-        if (textRef.current) {
-            resizeObserver.observe(textRef.current);
-        }
-
-        return () => {
-            resizeObserver.disconnect();
-        };
-    }, [param.value]);
+    const handleMouseLeave = () => {
+        setShowTooltip(false);
+    };
 
     const escapeRegExp = (string: string) => {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -238,9 +227,17 @@ export function MessageLogCellRenderer({
 
     return (
         <Box sx={mergeSx(styles.tableCell)}>
-            <Tooltip disableFocusListener disableTouchListener title={isEllipsisActive ? param.value : ''}>
+            <Tooltip
+                disableFocusListener
+                disableTouchListener
+                disableHoverListener
+                open={showTooltip}
+                title={param.value}
+            >
                 <Box
                     ref={textRef}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                     sx={{
                         ...styles.overflow,
                         marginLeft,
