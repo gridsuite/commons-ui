@@ -59,6 +59,13 @@ export const getCommonShortCircuitParametersFormSchema = () => {
     });
 };
 
+const requiredWhenActive = <T extends yup.AnySchema>(schema: T) =>
+    schema.when('active', {
+        is: true,
+        then: (s) => s.required(),
+        otherwise: (s) => s.notRequired().nullable(),
+    });
+
 export const getSpecificShortCircuitParametersFormSchema = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[] | undefined
 ) => {
@@ -74,11 +81,11 @@ export const getSpecificShortCircuitParametersFormSchema = (
               .of(
                   yup.object<PowerElectronicsMaterial & { active: boolean }>().shape({
                       active: yup.boolean().required(),
-                      alpha: yup.number().required(),
-                      u0: yup.number().required(),
-                      usMin: yup.number().required(),
-                      usMax: yup.number().required(),
-                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
+                      alpha: requiredWhenActive(yup.number()),
+                      u0: requiredWhenActive(yup.number()),
+                      usMin: requiredWhenActive(yup.number()),
+                      usMax: requiredWhenActive(yup.number()),
+                      type: requiredWhenActive(yup.string().oneOf(['WIND', 'SOLAR', 'HVDC'])),
                   })
               )
               .required()
@@ -107,17 +114,25 @@ export const getSpecificShortCircuitParametersFormSchema = (
               .of(
                   yup.object<FormPowerElectronicsCluster & { active: boolean }>().shape({
                       active: yup.boolean().required(),
-                      alpha: yup.number().required(),
-                      u0: yup.number().required(),
-                      usMin: yup.number().required(),
-                      usMax: yup.number().required(),
-                      filters: yup.array().of(
-                          yup.object<FilterPOJO>().shape({
-                              [ID]: yup.string().required(),
-                              [NAME]: yup.string().required(),
-                          })
-                      ),
-                      type: yup.string().oneOf(['GENERATOR', 'HVDC']).required(),
+                      alpha: requiredWhenActive(yup.number()),
+                      u0: requiredWhenActive(yup.number()),
+                      usMin: requiredWhenActive(yup.number()),
+                      usMax: requiredWhenActive(yup.number()),
+                      filters: yup
+                          .array()
+                          .of(
+                              yup.object<FilterPOJO>().shape({
+                                  [ID]: yup.string().required(),
+                                  [NAME]: yup.string().required(),
+                              })
+                          )
+                          .nullable()
+                          .when('active', {
+                              is: true,
+                              then: (s) => s.required().min(1, 'FilterInputMinError'),
+                              otherwise: (s) => s.notRequired().nullable(),
+                          }),
+                      type: requiredWhenActive(yup.string().oneOf(['GENERATOR', 'HVDC']).nullable()),
                   })
               )
               .required()

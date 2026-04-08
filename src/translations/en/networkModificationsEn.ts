@@ -80,6 +80,7 @@ export const networkModificationsEn = {
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
     ModificationReadError: 'An error occurred while fetching the modification',
     CreateSubstation: 'Create substation',
+    DeleteEquipmentByFilter: 'Delete equipment by filter',
     SubstationCreationError: 'Error while creating substation',
     ModifySubstation: 'Modify substation',
     SubstationModificationError: 'Error while modifying substation',
@@ -132,8 +133,6 @@ export const networkModificationsEn = {
     YupNotTypeNumber: 'This field only accepts numeric values',
     CreateLoad: 'Create load',
     loadType: 'Type',
-    ConnectivityTab: 'Connectivity',
-    LineCharacteristicsTab: 'Characteristics',
     VOLTAGE_LEVEL: 'Voltage Level',
     BusBarBus: 'Bus bar section / bus',
     ConnectionName: 'Connection name',
@@ -148,7 +147,6 @@ export const networkModificationsEn = {
     NodeNotBuildPositionMessage: 'Build the node to display taken positions',
     NoVoltageLevelPositionMessage: 'Select a voltage level to display taken positions',
     ModifyLoad: 'Modify load',
-    StateEstimationTab: 'State estimation',
     MeasurementsSection: 'Measurements',
     ValidMeasurement: 'Valid',
     InvalidMeasurement: 'Invalid',
@@ -157,4 +155,13 @@ export const networkModificationsEn = {
     LCCConverterStationShuntCompensators: 'Shunt compensators related to the LCC',
     Side1: 'Side 1',
     Side2: 'Side 2',
+    Or: 'or',
+
+    // Tabs
+    SubstationTab: 'Substation',
+    ConnectivityTab: 'Connectivity',
+    CharacteristicsTab: 'Characteristics',
+    StructureTab: 'Structure',
+    AdditionalInformationTab: 'Additional information',
+    StateEstimationTab: 'State estimation',
 };

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { array, object, string } from 'yup';
-import { FieldConstants, YUP_REQUIRED } from '../../../../../../utils';
+import { FieldConstants, YUP_REQUIRED } from '../../../../../../../../utils';
 
 export const getSwitchTypeSchema = () =>
     object().shape({
