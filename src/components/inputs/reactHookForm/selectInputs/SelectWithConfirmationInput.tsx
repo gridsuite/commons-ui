@@ -6,9 +6,20 @@
  */
 import { useState } from 'react';
 import { useController } from 'react-hook-form';
-import { Select, SelectChangeEvent, MenuItem, FormControl, InputLabel } from '@mui/material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PopupConfirmationDialog } from '../../../dialogs';
 
 interface SelectWithConfirmationInputProps {
     name: string;
@@ -37,6 +48,7 @@ export function SelectWithConfirmationInput({
     });
 
     const selectedValue = typeof value === 'string' ? value : '';
+
     const handleChange = (event: SelectChangeEvent) => {
         if (selectedValue && isModification) {
             setOpenConfirmationDialog(true);
@@ -72,13 +84,22 @@ export function SelectWithConfirmationInput({
                     ))}
                 </Select>
             </FormControl>
-            <PopupConfirmationDialog
-                message="changeTypeConfirmation"
-                openConfirmationPopup={openConfirmationDialog}
-                setOpenConfirmationPopup={setOpenConfirmationDialog}
-                handlePopupConfirmation={handleValidate}
-                validateButtonLabel="button.changeType"
-            />
+            <Dialog open={openConfirmationDialog} aria-labelledby="dialog-title-change-equipment-type">
+                <DialogTitle id="dialog-title-change-equipment-type">Confirmation</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <FormattedMessage id="changeTypeConfirmation" />
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenConfirmationDialog(false)} variant="outlined">
+                        <FormattedMessage id="cancel" />
+                    </Button>
+                    <Button onClick={handleValidate} variant="outlined">
+                        <FormattedMessage id="button.changeType" />
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

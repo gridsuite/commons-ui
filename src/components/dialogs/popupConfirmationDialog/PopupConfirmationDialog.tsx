@@ -7,7 +7,6 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 
 export interface PopupConfirmationDialogProps {
     message: string;
@@ -31,7 +30,9 @@ export function PopupConfirmationDialog({
                 <DialogContentText>{message && <FormattedMessage id={message} />}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <CancelButton onClick={() => setOpenConfirmationPopup(false)} />
+                <Button onClick={() => setOpenConfirmationPopup(false)} variant="outlined">
+                    <FormattedMessage id="cancel" />
+                </Button>
                 <Button onClick={handlePopupConfirmation} variant="outlined">
                     <FormattedMessage id={validateButtonLabel ?? 'validate'} />
                 </Button>
