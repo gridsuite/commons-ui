@@ -19,3 +19,4 @@ export * from './useSelectAppearance';
 export * from './use-parameters-backend';
 export * from './use-create-row-data';
 export * from './useGetLabelEquipmentTypes';
+export * from './useTabsWithError';
