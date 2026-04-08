@@ -39,9 +39,7 @@ export const emptyModificationByAssignmentFormData: DeepNullable<ModificationByA
     assignments: [getAssignmentInitialValue()],
 };
 
-export const modificationByAssignmentDtoToForm = (
-    dto: ModificationByAssignmentDto
-): ModificationByAssignmentFormData => ({
+export const modificationByAssignmentDtoToForm = (dto: ModificationByAssignmentDto): ModificationByAssignmentFormData => ({
     equipmentType: dto.equipmentType,
     assignments: dto.assignmentInfosList?.map((info) => {
         const assignment = getAssignmentFromEditData(info);
