@@ -4,8 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Option } from '../../../../../utils';
-import { BY_FILTER_FIELDS } from '../../commons/byFilterFields';
+import { EquipmentType, Option } from '../../../../../utils';
 import { Filter } from '../../commons/by-filter.type';
 
 // --- types for the configuration, see the constants file --- //
@@ -32,18 +31,16 @@ export type FieldOptionType = {
     inputConverter?: (value: number) => number | undefined;
 };
 
-// --- types for the form model --- //
-
 export type Assignment = {
-    [BY_FILTER_FIELDS.FILTERS]: Filter[];
-    [BY_FILTER_FIELDS.EDITED_FIELD]: string;
-    [BY_FILTER_FIELDS.VALUE]: string | number | boolean;
-    [BY_FILTER_FIELDS.PROPERTY_NAME]?: string;
+    filters: Filter[];
+    editedField: string;
+    value: string | number | boolean;
+    propertyName?: string;
 };
 
 export type ModificationByAssignment = {
-    [BY_FILTER_FIELDS.EQUIPMENT_TYPE]: string;
-    [BY_FILTER_FIELDS.ASSIGNMENTS]: Assignment[];
+    equipmentType: EquipmentType;
+    assignments: Assignment[];
 };
 
 export type FieldValue = string | number | boolean;

@@ -9,11 +9,11 @@ import {
     convertInputValue,
     convertOutputValue,
     DeepNullable,
+    EquipmentType,
     FieldType,
     ModificationType,
     yupConfig as yup,
 } from '../../../../utils';
-import { BY_FILTER_FIELDS } from '../commons/byFilterFields';
 import {
     getAssignmentFromEditData,
     getAssignmentInitialValue,
@@ -27,31 +27,29 @@ const emptyValueStr = '—';
 export const modificationByAssignmentFormSchema = yup
     .object()
     .shape({
-        [BY_FILTER_FIELDS.EQUIPMENT_TYPE]: yup.string().required(),
-        [BY_FILTER_FIELDS.ASSIGNMENTS]: getAssignmentsSchema(emptyValueStr),
+        equipmentType: yup.string().required(),
+        assignments: getAssignmentsSchema(emptyValueStr),
     })
     .required();
 
 export type ModificationByAssignmentFormData = InferType<typeof modificationByAssignmentFormSchema>;
 
 export const emptyModificationByAssignmentFormData: DeepNullable<ModificationByAssignmentFormData> = {
-    [BY_FILTER_FIELDS.EQUIPMENT_TYPE]: '',
-    [BY_FILTER_FIELDS.ASSIGNMENTS]: [getAssignmentInitialValue()],
+    equipmentType: '',
+    assignments: [getAssignmentInitialValue()],
 };
 
-export const modificationByAssignmentDtoToForm = (
-    dto: ModificationByAssignmentDto
-): ModificationByAssignmentFormData => ({
-    [BY_FILTER_FIELDS.EQUIPMENT_TYPE]: dto.equipmentType,
-    [BY_FILTER_FIELDS.ASSIGNMENTS]: dto.assignmentInfosList?.map((info) => {
+export const modificationByAssignmentDtoToForm = (dto: ModificationByAssignmentDto): ModificationByAssignmentFormData => ({
+    equipmentType: dto.equipmentType,
+    assignments: dto.assignmentInfosList?.map((info) => {
         const assignment = getAssignmentFromEditData(info);
-        const fieldKey = assignment[BY_FILTER_FIELDS.EDITED_FIELD] as keyof typeof FieldType;
+        const fieldKey = assignment.editedField as keyof typeof FieldType;
         const field = FieldType[fieldKey];
-        const value = assignment[BY_FILTER_FIELDS.VALUE];
+        const { value } = assignment;
         const valueConverted = convertInputValue(field, value);
         return {
             ...assignment,
-            [BY_FILTER_FIELDS.VALUE]: valueConverted !== 0 && !valueConverted ? emptyValueStr : valueConverted,
+            value: valueConverted !== 0 && !valueConverted ? emptyValueStr : valueConverted,
         };
     }) ?? [getAssignmentInitialValue()],
 });
@@ -60,15 +58,15 @@ export const modificationByAssignmentFormToDto = (
     formData: ModificationByAssignmentFormData
 ): ModificationByAssignmentDto => ({
     type: ModificationType.MODIFICATION_BY_ASSIGNMENT,
-    equipmentType: formData[BY_FILTER_FIELDS.EQUIPMENT_TYPE],
-    assignmentInfosList: formData[BY_FILTER_FIELDS.ASSIGNMENTS].map((assignment) => {
-        const fieldKey = assignment[BY_FILTER_FIELDS.EDITED_FIELD] as keyof typeof FieldType;
+    equipmentType: formData.equipmentType as EquipmentType,
+    assignmentInfosList: formData.assignments.map((assignment) => {
+        const fieldKey = assignment.editedField as keyof typeof FieldType;
         const field: FieldType = FieldType[fieldKey];
-        const value = assignment[BY_FILTER_FIELDS.VALUE] === emptyValueStr ? '' : assignment[BY_FILTER_FIELDS.VALUE];
+        const value = assignment.value === emptyValueStr ? '' : assignment.value;
         return {
             ...assignment,
-            dataType: getDataType(assignment[BY_FILTER_FIELDS.EDITED_FIELD]),
-            [BY_FILTER_FIELDS.VALUE]: convertOutputValue(field, value),
+            dataType: getDataType(assignment.editedField),
+            value: convertOutputValue(field, value),
         };
     }),
 });

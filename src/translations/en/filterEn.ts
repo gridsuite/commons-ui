@@ -32,6 +32,7 @@ export const filterEn = {
     nameEmpty: 'The name is empty',
     equipmentType: 'Equipment type',
     changeTypeMessage: 'The equipment type will be changed and the current configuration will be erased.',
+    changeTypeConfirmation: 'The equipment type will be changed and current assignments will be reset.',
     PropertyValues: 'Property values',
     PropertyValues1: 'Property values 1',
     PropertyValues2: 'Property values 2',

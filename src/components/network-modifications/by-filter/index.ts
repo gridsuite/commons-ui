@@ -7,4 +7,3 @@
 
 export * from './deletion';
 export * from './assignment';
-export { BY_FILTER_FIELDS } from './commons/byFilterFields';

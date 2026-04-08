@@ -9,7 +9,7 @@ import { useCallback, useMemo } from 'react';
 import { DensityLarge as DensityLargeIcon } from '@mui/icons-material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { areIdsEqual, ElementType, FieldType, getIdOrValue, Option } from '../../../../../utils';
+import { areIdsEqual, ElementType, FieldConstants, FieldType, getIdOrValue, Option } from '../../../../../utils';
 import { useFormatLabelWithUnit, usePredefinedProperties, usePrevious } from '../../../../../hooks';
 import {
     AutocompleteInput,
@@ -20,7 +20,6 @@ import {
     SwitchInput,
     TextInput,
 } from '../../../../inputs';
-import { BY_FILTER_FIELDS } from '../../commons/byFilterFields';
 import { DataType } from './assignment.type';
 import GridItem from '../../../../grid/grid-item';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment-constants';
@@ -40,11 +39,11 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     const intl = useIntl();
 
     const watchEditedField = useWatch({
-        name: `${name}.${index}.${BY_FILTER_FIELDS.EDITED_FIELD}`,
+        name: `${name}.${index}.${FieldConstants.EDITED_FIELD}`,
     });
 
     const watchEquipmentType: EquipmentTypeOptionType = useWatch({
-        name: BY_FILTER_FIELDS.EQUIPMENT_TYPE,
+        name: FieldConstants.EQUIPMENT_TYPE,
     });
 
     const equipmentFields = useMemo(
@@ -75,7 +74,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     }, [watchEditedField, equipmentFields]);
 
     const watchPropertyName = useWatch({
-        name: `${name}.${index}.${BY_FILTER_FIELDS.PROPERTY_NAME}`,
+        name: `${name}.${index}.${FieldConstants.PROPERTY_NAME}`,
     });
 
     const predefinedPropertiesNames = useMemo(() => {
@@ -92,7 +91,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
 
     const prevDataType = usePrevious(dataType);
     if (prevDataType && prevDataType !== dataType) {
-        setValue(`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`, dataType === DataType.BOOLEAN ? false : null);
+        setValue(`${name}.${index}.${FieldConstants.VALUE}`, dataType === DataType.BOOLEAN ? false : null);
     }
 
     const emptyValueStr = useMemo(() => {
@@ -104,7 +103,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     const renderAutoCompleteSettableToNone = useCallback(
         (numberOnly?: boolean) => (
             <AutocompleteInput
-                name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`}
+                name={`${name}.${index}.${FieldConstants.VALUE}`}
                 label="ValueOrEmptyField"
                 options={[emptyValueStr]}
                 size="small"
@@ -112,11 +111,11 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
                     numberOnly
                         ? (option: Option | null) => {
                               if (option && option !== emptyValueStr && Number.isNaN(Number(option))) {
-                                  setError(`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`, {
+                                  setError(`${name}.${index}.${FieldConstants.VALUE}`, {
                                       message: 'NumericValueOrEmptyField',
                                   });
                               } else {
-                                  setError(`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`, {
+                                  setError(`${name}.${index}.${FieldConstants.VALUE}`, {
                                       message: '',
                                   });
                               }
@@ -133,7 +132,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
 
     const filtersField = (
         <DirectoryItemsInput
-            name={`${name}.${index}.${BY_FILTER_FIELDS.FILTERS}`}
+            name={`${name}.${index}.${FieldConstants.FILTERS}`}
             equipmentTypes={[watchEquipmentType]}
             elementType={ElementType.FILTER}
             label="filter"
@@ -144,7 +143,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
 
     const editedField = (
         <AutocompleteInput
-            name={`${name}.${index}.${BY_FILTER_FIELDS.EDITED_FIELD}`}
+            name={`${name}.${index}.${FieldConstants.EDITED_FIELD}`}
             options={equipmentFields}
             label="EditedField"
             size="small"
@@ -157,7 +156,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
 
     const propertyNameField = (
         <AutocompleteInput
-            name={`${name}.${index}.${BY_FILTER_FIELDS.PROPERTY_NAME}`}
+            name={`${name}.${index}.${FieldConstants.PROPERTY_NAME}`}
             options={predefinedPropertiesNames}
             label="PropertyName"
             size="small"
@@ -169,7 +168,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         if (dataType === DataType.PROPERTY) {
             return (
                 <AutocompleteInput
-                    name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`}
+                    name={`${name}.${index}.${FieldConstants.VALUE}`}
                     label="PropertyValue"
                     options={predefinedPropertiesValues}
                     size="small"
@@ -179,17 +178,17 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         }
 
         if (dataType === DataType.INTEGER) {
-            return <IntegerInput name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`} label="Value" />;
+            return <IntegerInput name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
         }
 
         if (dataType === DataType.BOOLEAN) {
-            return <SwitchInput name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`} formProps={{ value: false }} />;
+            return <SwitchInput name={`${name}.${index}.${FieldConstants.VALUE}`} formProps={{ value: false }} />;
         }
 
         if (dataType === DataType.ENUM) {
             return (
                 <SelectInput
-                    name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`}
+                    name={`${name}.${index}.${FieldConstants.VALUE}`}
                     label="Value"
                     options={options}
                     size="small"
@@ -202,14 +201,14 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         }
 
         if (dataType === DataType.STRING) {
-            return <TextInput name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`} label="Value" clearable />;
+            return <TextInput name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" clearable />;
         }
 
         if (dataType === DataType.DOUBLE && settableToNone) {
             return renderAutoCompleteSettableToNone(true);
         }
 
-        return <FloatInput name={`${name}.${index}.${BY_FILTER_FIELDS.VALUE}`} label="Value" />;
+        return <FloatInput name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
     }, [dataType, settableToNone, name, index, predefinedPropertiesValues, options, renderAutoCompleteSettableToNone]);
 
     return (

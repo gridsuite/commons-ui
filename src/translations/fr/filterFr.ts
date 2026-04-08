@@ -32,6 +32,7 @@ export const filterFr = {
     nameEmpty: 'Le nom est vide',
     equipmentType: "Type d'ouvrage",
     changeTypeMessage: "Le type d'ouvrage sera modifié et la configuration actuelle sera perdue.",
+    changeTypeConfirmation: "Le type d'ouvrage sera modifié et les modifications en cours seront réinitialisées.",
     PropertyValues: 'Valeurs de la propriété',
     PropertyValues1: 'Valeurs de la propriété 1',
     PropertyValues2: 'Valeurs de la propriété 2',

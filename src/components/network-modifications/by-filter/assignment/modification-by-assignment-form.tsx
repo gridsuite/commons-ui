@@ -7,9 +7,8 @@
 
 import { Box, Grid } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { BY_FILTER_FIELDS } from '../commons/byFilterFields';
-import { ExpandableInput, AutocompleteInput } from '../../../inputs';
-import { mergeSx } from '../../../../utils';
+import { ExpandableInput, SelectWithConfirmationInput } from '../../../inputs';
+import { FieldConstants, mergeSx } from '../../../../utils';
 import { unscrollableDialogStyles } from '../../../dialogs';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
 import GridItem from '../../../grid/grid-item';
@@ -19,7 +18,7 @@ import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment/assignm
 
 const EQUIPMENT_TYPE_OPTIONS: EquipmentTypeOptionType[] = Object.keys(EQUIPMENTS_FIELDS) as EquipmentTypeOptionType[];
 
-export function ModificationByAssignmentForm() {
+export function ModificationByAssignmentForm({ isModification }: Readonly<{ isModification?: boolean }>) {
     const { setValue, getValues } = useFormContext();
 
     const getOptionLabel = useGetLabelEquipmentTypes();
@@ -31,26 +30,26 @@ export function ModificationByAssignmentForm() {
     };
 
     const equipmentTypeField = (
-        <AutocompleteInput
-            name={BY_FILTER_FIELDS.EQUIPMENT_TYPE}
+        <SelectWithConfirmationInput
+            name={FieldConstants.EQUIPMENT_TYPE}
             label="EquipmentType"
             options={EQUIPMENT_TYPE_OPTIONS}
-            onChangeCallback={() => {
+            onValidate={() => {
                 setValue(
-                    BY_FILTER_FIELDS.ASSIGNMENTS,
-                    getValues(BY_FILTER_FIELDS.ASSIGNMENTS).map(() => ({
+                    FieldConstants.ASSIGNMENTS,
+                    getValues(FieldConstants.ASSIGNMENTS).map(() => ({
                         ...getAssignmentInitialValue(),
                     }))
                 );
             }}
             getOptionLabel={getEquipmentTypeOptionLabel}
-            size="small"
+            isModification={isModification}
         />
     );
 
     const assignmentsField = (
         <ExpandableInput
-            name={BY_FILTER_FIELDS.ASSIGNMENTS}
+            name={FieldConstants.ASSIGNMENTS}
             Field={AssignmentForm}
             addButtonLabel="addNewAssignment"
             initialValue={getAssignmentInitialValue()}
