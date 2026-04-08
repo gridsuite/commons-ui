@@ -6,23 +6,25 @@
  */
 
 import { createPortal } from 'react-dom';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
 import {
     Box,
     Checkbox,
     CheckboxProps,
     Grid,
+    type SxProps,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
+    type Theme,
     Tooltip,
 } from '@mui/material';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
-import { DragDropContext, Draggable, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { ColumnBase, DndColumn, DndColumnType, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
@@ -40,7 +42,7 @@ import {
     TableTextInput,
 } from '../inputs';
 import { ChipItemsInput } from '../inputs/reactHookForm/chip-items-input';
-import type { MuiStyles } from '../../utils/styles';
+import { mergeSx, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     columnsStyle: {
@@ -97,11 +99,12 @@ interface DefaultTableCellProps {
     arrayFormName: string;
     rowIndex: number;
     column: ColumnBase;
+    width?: SxProps<Theme>;
 }
 
-function DefaultTableCell({ arrayFormName, rowIndex, column, ...props }: Readonly<DefaultTableCellProps>) {
+function DefaultTableCell({ arrayFormName, rowIndex, column, width, ...props }: Readonly<DefaultTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={{ padding: 1 }}>
+        <TableCell key={column.dataKey} sx={mergeSx({ padding: 1 }, width)}>
             <RawReadOnlyInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} {...props} />
         </TableCell>
     );
@@ -111,6 +114,7 @@ interface EditableTableCellProps {
     arrayFormName: string;
     rowIndex: number;
     column: DndColumn;
+    width?: SxProps<Theme>;
     previousValue?: number;
     valueModified: boolean;
     disabled?: boolean;
@@ -120,12 +124,13 @@ function EditableTableCell({
     arrayFormName,
     rowIndex,
     column,
+    width,
     previousValue,
     valueModified,
     ...props
 }: Readonly<EditableTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={{ padding: 0.5, maxWidth: column.maxWidth }}>
+        <TableCell key={column.dataKey} sx={mergeSx({ padding: 0.5, maxWidth: column.maxWidth }, width)}>
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
@@ -247,7 +252,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
 
     const [openAddRowsDialog, setOpenAddRowsDialog] = useState(false);
 
-    function renderTableCell(rowId: string, rowIndex: number, column: DndColumn) {
+    function renderTableCell(rowId: string, rowIndex: number, column: DndColumn, width?: SxProps<Theme>) {
         const CustomTableCell = column.editable ? EditableTableCell : DefaultTableCell;
         return (
             <CustomTableCell
@@ -262,6 +267,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                     getPreviousValue ? getPreviousValue(rowIndex, column, arrayFormName, previousValues) : undefined
                 }
                 valueModified={isValueModified ? isValueModified(rowIndex, arrayFormName) : false}
+                width={width}
             />
         );
     }
@@ -362,7 +368,30 @@ export function DndTable(props: Readonly<DndTableProps>) {
         }
     };
 
+    // Stores captured cell widths for the row being dragged, so the
+    // portalled row keeps the original column layout.
+    const dragCellWidthsRef = useRef<number[]>([]);
+    const cellIdxRef = useRef(0);
+
+    const onBeforeDragStart = useCallback((start: DragStart) => {
+        const row = document.querySelector<HTMLTableRowElement>(`[data-rfd-draggable-id="${start.draggableId}"]`);
+        if (row) {
+            dragCellWidthsRef.current = Array.from(row.cells, (cell) => cell.offsetWidth);
+        }
+    }, []);
+
+    const nextLockedWidthSx = useCallback((isDragging: boolean) => {
+        const cellWidths = dragCellWidthsRef.current;
+        const cellIdx = cellIdxRef.current;
+        if (!isDragging || cellWidths[cellIdx] == null) {
+            return undefined;
+        }
+        cellIdxRef.current += 1;
+        return { width: cellWidths[cellIdx], boxSizing: 'border-box' };
+    }, []);
+
     const onDragEnd = (result: DropResult) => {
+        dragCellWidthsRef.current = [];
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -409,6 +438,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         isDragDisabled={disableDragAndDrop}
                     >
                         {(provided, snapshot) => {
+                            cellIdxRef.current = 0;
                             const tableRow = (
                                 <TableRow ref={provided.innerRef} {...provided.draggableProps}>
                                     {!disableDragAndDrop && (
@@ -419,20 +449,27 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                             placement="right"
                                         >
                                             <TableCell
-                                                sx={{ textAlign: 'center' }}
+                                                sx={mergeSx(
+                                                    { textAlign: 'center' },
+                                                    nextLockedWidthSx(snapshot.isDragging)
+                                                )}
                                                 {...(disabled ? {} : { ...provided.dragHandleProps })}
                                             >
                                                 <DragIndicatorIcon />
                                             </TableCell>
                                         </Tooltip>
                                     )}
-                                    <TableCell sx={{ textAlign: 'center' }}>
+                                    <TableCell
+                                        sx={mergeSx({ textAlign: 'center' }, nextLockedWidthSx(snapshot.isDragging))}
+                                    >
                                         <CheckboxInput
                                             name={`${arrayFormName}[${index}].${SELECTED}`}
                                             formProps={{ disabled }}
                                         />
                                     </TableCell>
-                                    {columnsDefinition.map((column) => renderTableCell(row.id, index, column))}
+                                    {columnsDefinition.map((column) =>
+                                        renderTableCell(row.id, index, column, nextLockedWidthSx(snapshot.isDragging))
+                                    )}
                                 </TableRow>
                             );
                             // Portal the dragging row to document.body to avoid CSS transform
@@ -450,7 +487,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     return (
         <Grid item container spacing={1}>
             <Grid item container>
-                <DragDropContext onDragEnd={onDragEnd}>
+                <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
                         {(provided) => (
                             <TableContainer
