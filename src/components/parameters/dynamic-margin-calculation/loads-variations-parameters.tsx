@@ -28,7 +28,7 @@ import {
 } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../inputs';
-import ParameterDndTableField from '../common/parameter-dnd-table-field';
+import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn, DndColumnType } from '../../dnd-table';
 
 export const formSchema = yup.object().shape({
@@ -86,7 +86,7 @@ const params: (SpecificParameterInfos & { sx?: SxProps })[] = [
         ],
         sx: { width: '100%' },
     },
-    // LOADS_VARIATIONS displayed in a separated component, i.e., ParameterDndTableField
+    // LOADS_VARIATIONS displayed in a separated component, i.e., ParameterTableField
 ];
 
 const loadsVariationsColumnsDefinition: DndColumn[] = [
@@ -133,12 +133,13 @@ export default function LoadsVariationsParameters({ path }: Readonly<{ path: str
                     <ParameterField key={param.name} id={path} name={param.name} type={param.type} {...otherParams} />
                 );
             })}
-            <ParameterDndTableField
+            <ParameterTableField
                 name={`${path}.${LOADS_VARIATIONS}`}
                 label="DynamicMarginCalculationLoadsVariations"
                 tooltipProps={{ title: 'DynamicMarginCalculationLoadsVariations' }}
                 columnsDefinition={translatedColumnsDefinition}
                 tableHeight={270}
+                maxRows={2}
             />
         </Grid>
     );

@@ -44,6 +44,7 @@ type EditableTableCellProps = {
     previousValue?: number;
     valueModified: boolean;
     disabled?: boolean;
+    onChangeCell?: (value?: any) => void;
 };
 
 function EditableTableCell({
@@ -52,6 +53,7 @@ function EditableTableCell({
     column,
     previousValue,
     valueModified,
+    onChangeCell,
     ...props
 }: Readonly<EditableTableCellProps>) {
     return (
@@ -95,13 +97,13 @@ function EditableTableCell({
                     hideErrorMessage
                     label={undefined}
                     // callback to propagate a chang to parent via column config
-                    onChange={(value) => column.onChange?.(value)}
+                    onChange={(value) => column.shouldHandleOnChangeCell && onChangeCell?.(value)}
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && <ChipItemsInput name={name} hideErrorMessage />}
             {column.type === DndColumnType.SWITCH && (
                 // callback to propagate a chang to parent via column config
-                <span onChange={() => column.onChange?.()}>
+                <span onChange={() => column.shouldHandleOnChangeCell && onChangeCell?.()}>
                     <SwitchInput name={name} />
                 </span>
             )}
@@ -124,7 +126,8 @@ export type DndTableRowProps = TableRowProps & {
     getPreviousValue?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => number | undefined;
     isValueModified?: (index: number, tableName: string) => boolean;
     disabledDeletion?: boolean;
-    onDelete?: (index: number) => void;
+    onChangeRow?: (index: number) => void;
+    onDeleteRow?: (index: number) => void;
     multiselect?: boolean;
 };
 export function DndTableRow({
@@ -140,7 +143,8 @@ export function DndTableRow({
     getPreviousValue,
     isValueModified,
     disabledDeletion,
-    onDelete,
+    onChangeRow,
+    onDeleteRow,
     multiselect,
 }: Readonly<DndTableRowProps>) {
     const intl = useIntl();
@@ -150,9 +154,9 @@ export function DndTableRow({
             ref={provided.innerRef}
             {...provided.draggableProps}
             onClick={() => {
-                onDelete?.(index);
+                onDeleteRow?.(index);
             }}
-            disabledDeletion={(disabledDeletion && !onDelete) || multiselect}
+            disabledDeletion={(disabledDeletion && !onDeleteRow) || multiselect}
         >
             {!disableDragAndDrop && (
                 <Tooltip
@@ -186,6 +190,7 @@ export function DndTableRow({
                             getPreviousValue ? getPreviousValue(index, column, tableName, previousValues) : undefined
                         }
                         valueModified={isValueModified ? isValueModified(index, tableName) : false}
+                        onChangeCell={() => onChangeRow?.(index)}
                     />
                 );
             })}

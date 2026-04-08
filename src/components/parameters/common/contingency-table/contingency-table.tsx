@@ -10,14 +10,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../../hooks';
-import { ACTIVATED, ID } from '../parameter-table';
+import { ParameterTableField, ACTIVATED, ID } from '../parameter-table-field';
 import { CONTINGENCY_LISTS } from '../constants';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS } from './columns-definitions';
 import { ContingencyCount, ContingencyListsInfos } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback } from '../../../../utils';
-import ParameterDndTableField from '../parameter-dnd-table-field';
-import { DndColumnType, getDefaultRowData } from '../../../dnd-table-v2';
+import { DndColumn, DndColumnType, getDefaultRowData } from '../../../dnd-table-v2';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
@@ -46,17 +45,20 @@ export function ContingencyTable({
         setContingencyCountRefreshTrigger((prevValue) => !prevValue);
     }, []);
 
-    const translatedColumnsDefinition = useMemo(() => {
-        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map((colDef) => ({
-            ...colDef,
-            label: intl.formatMessage({ id: colDef.label }),
-            // force outdated contingency count when switching between switch and directory items changed
-            onChange:
-                colDef.type === DndColumnType.SWITCH || colDef.type === DndColumnType.DIRECTORY_ITEMS
-                    ? handleOnChange
-                    : undefined,
-        }));
-    }, [intl, handleOnChange]);
+    const columnsDefinition = useMemo(() => {
+        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map(
+            (colDef) =>
+                ({
+                    ...colDef,
+                    label: intl.formatMessage({ id: colDef.label }),
+                    // force outdated contingency count when switching between switch and directory items changed
+                    shouldHandleOnChangeCell:
+                        colDef.type === DndColumnType.SWITCH || colDef.type === DndColumnType.DIRECTORY_ITEMS
+                            ? true
+                            : undefined,
+                }) satisfies DndColumn
+        );
+    }, [intl]);
 
     const createRows = useCallback(() => {
         const newDefaultRowData = getDefaultRowData(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS);
@@ -70,6 +72,7 @@ export function ContingencyTable({
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
+        console.log('xxx useEffect triggered to fetch contingency count with name:', name);
 
         const contingencyListsInfos: ContingencyListsInfos[] = getValues(name);
         const hasNoContingencies =
@@ -79,6 +82,7 @@ export function ContingencyTable({
                 (contingencyList) =>
                     !contingencyList[ACTIVATED] || (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0
             );
+        console.log('xxx contingencyListsInfos:', contingencyListsInfos);
         if (hasNoContingencies) {
             setIsLoading(false);
             setSimulatedContingencyCount(null);
@@ -163,9 +167,9 @@ export function ContingencyTable({
 
     return (
         <Grid container direction="column">
-            <ParameterDndTableField
+            <ParameterTableField
                 name={name}
-                columnsDefinition={translatedColumnsDefinition}
+                columnsDefinition={columnsDefinition}
                 createRows={createRows}
                 tableHeight={270}
                 onChange={handleOnChange}

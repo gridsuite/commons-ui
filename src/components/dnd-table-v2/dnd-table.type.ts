@@ -34,7 +34,7 @@ export interface ColumnBase {
     editable?: boolean;
     type: DndColumnType;
     initialValue?: any; // should conform to the type field
-    onChange?: (value?: any) => void;
+    shouldHandleOnChangeCell?: boolean;
 }
 
 export interface ColumnText extends ColumnBase {

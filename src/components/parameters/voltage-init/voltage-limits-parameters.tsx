@@ -19,7 +19,7 @@ import { ElementType, EquipmentType } from '../../../utils';
 import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table-v2';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { VoltageAdornment } from '../../../utils/constants/adornments';
-import ParameterDndTableField from '../common/parameter-dnd-table-field';
+import { ParameterTableField } from '../common/parameter-table-field';
 
 export function VoltageLimitsParameters() {
     const intl = useIntl();
@@ -147,7 +147,7 @@ export function VoltageLimitsParameters() {
 
     return (
         <Grid container>
-            <ParameterDndTableField
+            <ParameterTableField
                 name={`${VOLTAGE_LIMITS_MODIFICATION}`}
                 label="AdjustExistingLimits"
                 tooltipProps={{ title: 'AdjustExistingLimitsInfo' }}
@@ -156,7 +156,7 @@ export function VoltageLimitsParameters() {
                 tableHeight={270}
                 withAddRowsDialog={false}
             />
-            <ParameterDndTableField
+            <ParameterTableField
                 name={`${VOLTAGE_LIMITS_DEFAULT}`}
                 label="SetDefaultLimits"
                 columnsDefinition={VOLTAGE_LIMITS_DEFAULT_COLUMNS_DEFINITIONS}

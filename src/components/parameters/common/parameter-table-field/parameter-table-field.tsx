@@ -9,8 +9,8 @@ import { Grid, SxProps, Tooltip, TooltipProps, Typography } from '@mui/material'
 import { FormattedMessage } from 'react-intl';
 import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { useCallback, useMemo } from 'react';
-import { DndTable, DndTableProps, getDefaultRowData } from '../../dnd-table-v2';
+import { useCallback, useMemo, useRef } from 'react';
+import { DndColumn, DndTable, DndTableProps, getDefaultRowData } from '../../../dnd-table-v2';
 
 export type ParameterDndTableFieldProps = {
     label?: string;
@@ -18,9 +18,10 @@ export type ParameterDndTableFieldProps = {
     sxContainerProps?: SxProps;
     // check whether row data is valid before propagate onChange (e.g., to fetch data))
     isValidRow?: (rowData: FieldValues) => boolean;
-} & Omit<DndTableProps, 'useFieldArrayOutput'>;
+    onChange?: () => void;
+} & Omit<DndTableProps, 'useFieldArrayOutput' | 'onChange' | 'onDelete'>;
 
-export default function ParameterDndTableField({
+export function ParameterTableField({
     name,
     label,
     columnsDefinition,
@@ -44,13 +45,31 @@ export default function ParameterDndTableField({
 
     const { title, ...otherTooltipProps } = tooltipProps || {};
 
-    const handleOnChange = useCallback(() => {
-        const rowsData = getValues(name) || [];
-        const allRowsValid = isValidRow ? rowsData.every((row: FieldValues) => isValidRow(row)) : true;
-        if (allRowsValid) {
-            onChange?.();
-        }
-    }, [getValues, isValidRow, onChange, name]);
+    const handleOnChange = useCallback(
+        (changedRow: any) => {
+            console.log('xxx handleOnChange called with changedRow:', changedRow);
+            if (isValidRow ? isValidRow(changedRow) : true) {
+                console.log('xxx triggering onChange');
+                onChange?.();
+            }
+        },
+        [isValidRow, onChange]
+    );
+
+    const handleOnDelete = useCallback(
+        (removedRows: any[]) => {
+            console.log('xxx handleOnDelete called with removedRows:', removedRows);
+            const wasValidRowCount = removedRows.filter((row: FieldValues) =>
+                isValidRow ? isValidRow(row) : true
+            ).length;
+            if (wasValidRowCount > 0) {
+                // trigger onChange to propagate the deletion of valid rows
+                console.log('xxx triggering onChange when deleting rows, wasValidRowCount:', wasValidRowCount);
+                onChange?.();
+            }
+        },
+        [isValidRow, onChange]
+    );
 
     return (
         <Grid container sx={sxContainerProps}>
@@ -78,6 +97,7 @@ export default function ParameterDndTableField({
                 createRows={createRows}
                 withAddRowsDialog={false}
                 onChange={handleOnChange}
+                onDelete={handleOnDelete}
                 {...otherProps}
             />
         </Grid>

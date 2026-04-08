@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
 import {
     Box,
@@ -109,7 +109,8 @@ export interface DndTableProps {
     maxRows?: number;
     disabledDeletion?: boolean;
     multiselect?: boolean;
-    onChange?: () => void;
+    onChange?: (changedRow: any) => void;
+    onDelete?: (removedRows: any[]) => void;
 }
 
 export function DndTable(props: Readonly<DndTableProps>) {
@@ -138,6 +139,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
         disabledDeletion,
         multiselect,
         onChange,
+        onDelete,
     } = props;
     const intl = useIntl();
 
@@ -207,13 +209,16 @@ export function DndTable(props: Readonly<DndTableProps>) {
         }
 
         remove(rowsToDelete);
-        onChange?.();
+        onDelete?.(rowsToDelete.map((index) => currentRowsValues[index]));
     };
 
-    const handleDeleteRow = (index: number) => {
-        remove(index);
-        onChange?.();
-    };
+    const handleDeleteRow = useCallback(
+        (index: number) => {
+            remove(index);
+            onDelete?.([getValues(name)[index]]);
+        },
+        [onDelete, getValues, name, remove]
+    );
 
     const selectAllRows = () => {
         for (let i = 0; i < currentRows.length; i++) {
@@ -308,6 +313,12 @@ export function DndTable(props: Readonly<DndTableProps>) {
         );
     }
 
+    const handleChangeRow = useCallback(
+        (index: number) => {
+            onChange?.(getValues(name)[index]);
+        },
+        [getValues, name, onChange]
+    );
     function renderTableBody(providedDroppable: DroppableProvided) {
         return (
             <TableBody>
@@ -332,7 +343,8 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 getPreviousValue={getPreviousValue}
                                 isValueModified={isValueModified}
                                 disabledDeletion={disabledDeletion && !multiselect}
-                                onDelete={handleDeleteRow}
+                                onChangeRow={handleChangeRow}
+                                onDeleteRow={handleDeleteRow}
                                 multiselect={multiselect}
                             />
                         )}

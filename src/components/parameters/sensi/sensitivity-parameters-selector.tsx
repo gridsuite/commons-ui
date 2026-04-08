@@ -31,7 +31,7 @@ import {
 import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { BuildStatus, BuildStatusChip } from '../../node';
-import ParameterDndTableField from '../common/parameter-dnd-table-field';
+import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn, DndColumnType, getDefaultRowData } from '../../dnd-table-v2';
 
 const styles = {
@@ -116,45 +116,45 @@ function SensitivityParametersSelector({
     const getColumnsDefinition = useCallback(
         (sensiColumns: DndColumn[]) => {
             if (sensiColumns) {
-                return sensiColumns.map((column) => ({
-                    ...column,
-                    label: intl.formatMessage({ id: column.label }),
-                    onChange:
-                        column.type === DndColumnType.DIRECTORY_ITEMS || column.type === DndColumnType.SWITCH
-                            ? () => onFormChanged()
-                            : undefined,
-                }));
+                return sensiColumns.map(
+                    (column) =>
+                        ({
+                            ...column,
+                            label: intl.formatMessage({ id: column.label }),
+                            shouldHandleOnChangeCell:
+                                column.type === DndColumnType.DIRECTORY_ITEMS || column.type === DndColumnType.SWITCH
+                                    ? true
+                                    : undefined,
+                        }) satisfies DndColumn
+                );
             }
             return [];
         },
-        [intl, onFormChanged]
+        [intl]
     );
 
-    const translatedColumnsDefinitionInjectionsSet = useMemo(
+    const columnsDefinitionInjectionsSet = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_INJECTIONS_SET),
         [getColumnsDefinition]
     );
     const createRowsInjectionsSet = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_INJECTIONS_SET)], []);
 
-    const translatedColumnsDefinitionInjections = useMemo(
+    const columnsDefinitionInjections = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_INJECTIONS),
         [getColumnsDefinition]
     );
     const createRowsInjections = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_INJECTIONS)], []);
 
-    const translatedColumnsDefinitionHvdc = useMemo(
+    const columnsDefinitionHvdc = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_HVDCS),
         [getColumnsDefinition]
     );
     const createRowsHvdc = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_HVDCS)], []);
 
-    const translatedColumnsDefinitionPst = useMemo(
-        () => getColumnsDefinition(COLUMNS_DEFINITIONS_PSTS),
-        [getColumnsDefinition]
-    );
+    const columnsDefinitionPst = useMemo(() => getColumnsDefinition(COLUMNS_DEFINITIONS_PSTS), [getColumnsDefinition]);
     const createRowsPst = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_PSTS)], []);
 
-    const translatedColumnsDefinitionNodes = useMemo(
+    const columnsDefinitionNodes = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_NODES),
         [getColumnsDefinition]
     );
@@ -245,9 +245,9 @@ function SensitivityParametersSelector({
                             </Tabs>
 
                             <TabPanel index={SensiBranchesTabValues.SensiInjectionsSet} value={subTabValue}>
-                                <ParameterDndTableField
+                                <ParameterTableField
                                     name={PARAMETER_SENSI_INJECTIONS_SET}
-                                    columnsDefinition={translatedColumnsDefinitionInjectionsSet}
+                                    columnsDefinition={columnsDefinitionInjectionsSet}
                                     createRows={createRowsInjectionsSet}
                                     tableHeight={300}
                                     onChange={onFormChanged}
@@ -255,9 +255,9 @@ function SensitivityParametersSelector({
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiInjection} value={subTabValue}>
-                                <ParameterDndTableField
+                                <ParameterTableField
                                     name={PARAMETER_SENSI_INJECTION}
-                                    columnsDefinition={translatedColumnsDefinitionInjections}
+                                    columnsDefinition={columnsDefinitionInjections}
                                     createRows={createRowsInjections}
                                     tableHeight={300}
                                     onChange={onFormChanged}
@@ -265,9 +265,9 @@ function SensitivityParametersSelector({
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiHVDC} value={subTabValue}>
-                                <ParameterDndTableField
+                                <ParameterTableField
                                     name={PARAMETER_SENSI_HVDC}
-                                    columnsDefinition={translatedColumnsDefinitionHvdc}
+                                    columnsDefinition={columnsDefinitionHvdc}
                                     createRows={createRowsHvdc}
                                     tableHeight={300}
                                     onChange={onFormChanged}
@@ -275,9 +275,9 @@ function SensitivityParametersSelector({
                                 />
                             </TabPanel>
                             <TabPanel index={SensiBranchesTabValues.SensiPST} value={subTabValue}>
-                                <ParameterDndTableField
+                                <ParameterTableField
                                     name={PARAMETER_SENSI_PST}
-                                    columnsDefinition={translatedColumnsDefinitionPst}
+                                    columnsDefinition={columnsDefinitionPst}
                                     createRows={createRowsPst}
                                     tableHeight={300}
                                     onChange={onFormChanged}
@@ -287,9 +287,9 @@ function SensitivityParametersSelector({
                         </>
                     )}
                     {tabValue === SensiTabValues.SensitivityNodes && (
-                        <ParameterDndTableField
+                        <ParameterTableField
                             name={PARAMETER_SENSI_NODES}
-                            columnsDefinition={translatedColumnsDefinitionNodes}
+                            columnsDefinition={columnsDefinitionNodes}
                             createRows={createRowsNodes}
                             tableHeight={367}
                             onChange={onFormChanged}

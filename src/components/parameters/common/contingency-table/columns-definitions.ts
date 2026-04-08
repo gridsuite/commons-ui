@@ -4,9 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table';
-import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
+import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
+import { ElementType } from '../../../../utils';
 import yup from '../../../../utils/yupConfig';
 import { ContingencyListsInfos, IdName } from './types';
 import { DndColumn, DndColumnType } from '../../../dnd-table-v2';

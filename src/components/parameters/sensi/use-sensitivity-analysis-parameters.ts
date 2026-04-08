@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import { ComputingType, CONTINGENCIES, PROVIDER } from '../common';
+import { ComputingType } from '../common/computing-type';
 import {
     ElementType,
     FactorsCount,
@@ -58,7 +58,8 @@ import {
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
-import { ACTIVATED } from '../common/parameter-table';
+import { CONTINGENCIES, PROVIDER } from '../common/constants';
+import { ACTIVATED } from '../common/parameter-table-field';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;

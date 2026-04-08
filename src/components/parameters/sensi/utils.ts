@@ -32,7 +32,7 @@ import { CONTINGENCIES, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
-import { ACTIVATED } from '../common/parameter-table';
+import { ACTIVATED } from '../common/parameter-table-field';
 
 const getMonitoredBranchesSchema = () => {
     return {
