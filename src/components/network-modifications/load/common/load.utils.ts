@@ -20,5 +20,5 @@ export const LOAD_TAB_FIELDS: Readonly<Partial<Record<LoadDialogTab, FieldConsta
         FieldConstants.REACTIVE_POWER_SET_POINT,
         FieldConstants.ADDITIONAL_PROPERTIES,
     ],
-    // STATE_ESTIMATION_TAB has no tracked validation errors
+    [LoadDialogTab.STATE_ESTIMATION_TAB]: [FieldConstants.STATE_ESTIMATION],
 };
