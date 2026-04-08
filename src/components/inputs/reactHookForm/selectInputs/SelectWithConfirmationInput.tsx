@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useController } from 'react-hook-form';
 import { Select, SelectChangeEvent, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { PopupConfirmationDialog } from '../../../dialogs';
+import { PopupConfirmationDialog } from '../../../dialogs/popupConfirmationDialog';
 
 interface SelectWithConfirmationInputProps {
     name: string;
