@@ -22,6 +22,7 @@ import {
     getDataType,
 } from './assignment/assignment-utils';
 import { ModificationByAssignmentDto } from './modificationByAssignment.types';
+import { DataType } from './assignment/assignment.type';
 
 const emptyValueStr = '—';
 
@@ -68,7 +69,7 @@ export const modificationByAssignmentFormToDto = (
         const value = assignment.value === emptyValueStr ? '' : assignment.value;
         return {
             ...assignment,
-            dataType: getDataType(assignment.editedField),
+            dataType: getDataType(assignment.editedField) ?? DataType.STRING,
             value: convertOutputValue(field, value),
         };
     }),
