@@ -4,9 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { TableCell, TableRowProps, Tooltip } from '@mui/material';
+import { SxProps, TableCell, TableRowProps, Theme, Tooltip } from '@mui/material';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
-import { DraggableProvided } from '@hello-pangea/dnd';
+import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { CheckboxInput } from '../inputs/reactHookForm/booleans/CheckboxInput';
 import { ColumnBase, DndColumn, DndColumnType, SELECTED } from './dnd-table.type';
@@ -22,16 +22,18 @@ import {
     TableTextInput,
 } from '../inputs';
 import { DeletableTableRow } from './deletable-table-row';
+import { mergeSx } from '../../utils';
 
 type DefaultTableCellProps = {
     name: string;
     rowIndex: number;
     column: ColumnBase;
+    width?: SxProps<Theme>;
 };
 
-function DefaultTableCell({ name, rowIndex, column, ...props }: Readonly<DefaultTableCellProps>) {
+function DefaultTableCell({ name, rowIndex, column, width, ...props }: Readonly<DefaultTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={{ padding: 1 }}>
+        <TableCell key={column.dataKey} sx={mergeSx({ padding: 1 }, width)}>
             <RawReadOnlyInput name={name} {...props} />
         </TableCell>
     );
@@ -41,6 +43,7 @@ type EditableTableCellProps = {
     name: string;
     rowIndex: number;
     column: DndColumn;
+    width?: SxProps<Theme>;
     previousValue?: number;
     valueModified: boolean;
     disabled?: boolean;
@@ -51,13 +54,14 @@ function EditableTableCell({
     name,
     rowIndex,
     column,
+    width,
     previousValue,
     valueModified,
     onChangeCell,
     ...props
 }: Readonly<EditableTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={{ padding: 0.5, maxWidth: column.maxWidth }}>
+        <TableCell key={column.dataKey} sx={mergeSx({ padding: 0.5, maxWidth: column.maxWidth }, width)}>
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
@@ -119,6 +123,7 @@ export type DndTableRowProps = TableRowProps & {
     columnsDefinition: DndColumn[];
     index: number;
     provided: DraggableProvided;
+    snapshot: DraggableStateSnapshot;
     disableDragAndDrop: boolean;
     disabled: boolean;
     previousValues?: any[];
@@ -129,6 +134,7 @@ export type DndTableRowProps = TableRowProps & {
     onChangeRow?: (index: number) => void;
     onDeleteRow?: (index: number) => void;
     multiselect?: boolean;
+    nextSnapshotCellWidthSx: (isDragging: boolean) => SxProps<Theme> | undefined;
 };
 export function DndTableRow({
     rowId,
@@ -136,6 +142,7 @@ export function DndTableRow({
     columnsDefinition,
     index,
     provided,
+    snapshot,
     disableDragAndDrop,
     disabled,
     disableTableCell,
@@ -146,6 +153,7 @@ export function DndTableRow({
     onChangeRow,
     onDeleteRow,
     multiselect,
+    nextSnapshotCellWidthSx,
 }: Readonly<DndTableRowProps>) {
     const intl = useIntl();
 
@@ -165,13 +173,16 @@ export function DndTableRow({
                     })}
                     placement="right"
                 >
-                    <TableCell sx={{ textAlign: 'center' }} {...(disabled ? {} : { ...provided.dragHandleProps })}>
+                    <TableCell
+                        sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}
+                        {...(disabled ? {} : { ...provided.dragHandleProps })}
+                    >
                         <DragIndicatorIcon />
                     </TableCell>
                 </Tooltip>
             )}
             {multiselect && (
-                <TableCell sx={{ textAlign: 'center' }}>
+                <TableCell sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}>
                     <CheckboxInput name={`${tableName}[${index}].${SELECTED}`} formProps={{ disabled }} />
                 </TableCell>
             )}
@@ -183,6 +194,7 @@ export function DndTableRow({
                         name={`${tableName}[${index}].${column.dataKey}`}
                         rowIndex={index}
                         column={column}
+                        width={nextSnapshotCellWidthSx(snapshot.isDragging)}
                         disabled={
                             disableTableCell ? disableTableCell(index, column, tableName, previousValues) : disabled
                         }

@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
 import {
     Box,
@@ -21,7 +22,7 @@ import {
     TableRow,
     Tooltip,
 } from '@mui/material';
-import { DragDropContext, Draggable, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { DndColumn, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
@@ -262,7 +263,31 @@ export function DndTable(props: Readonly<DndTableProps>) {
         }
     };
 
+    // Stores captured cell widths for the row being dragged, so the
+    // portalled row keeps the original column layout.
+    const snapshotCellWidthsRef = useRef<number[]>([]);
+    const cellIdxRef = useRef(0);
+
+    const onBeforeDragStart = useCallback((start: DragStart) => {
+        // take a photo on cell widths of the being dragged row
+        const row = document.querySelector<HTMLTableRowElement>(`[data-rfd-draggable-id="${start.draggableId}"]`);
+        if (row) {
+            snapshotCellWidthsRef.current = Array.from(row.cells, (cell) => cell.offsetWidth);
+        }
+    }, []);
+
+    const nextSnapshotCellWidthSx = useCallback((isDragging: boolean) => {
+        const cellWidths = snapshotCellWidthsRef.current;
+        const cellIdx = cellIdxRef.current;
+        if (!isDragging || cellWidths[cellIdx] == null) {
+            return undefined;
+        }
+        cellIdxRef.current += 1;
+        return { width: cellWidths[cellIdx], boxSizing: 'border-box' };
+    }, []);
+
     const onDragEnd = (result: DropResult) => {
+        snapshotCellWidthsRef.current = [];
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -337,25 +362,34 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         index={index}
                         isDragDisabled={disableDragAndDrop}
                     >
-                        {(provided) => (
-                            <DndTableRow
-                                provided={provided}
-                                rowId={row.id}
-                                tableName={name}
-                                columnsDefinition={columnsDefinition}
-                                index={index}
-                                disableDragAndDrop={disableDragAndDrop}
-                                disabled={disabled}
-                                previousValues={previousValues}
-                                disableTableCell={disableTableCell}
-                                getPreviousValue={getPreviousValue}
-                                isValueModified={isValueModified}
-                                disabledDeletion={disabledDeletion && !multiselect}
-                                onChangeRow={handleChangeRow}
-                                onDeleteRow={handleDeleteRow}
-                                multiselect={multiselect}
-                            />
-                        )}
+                        {(provided, snapshot) => {
+                            cellIdxRef.current = 0;
+                            const tableRow = (
+                                <DndTableRow
+                                    provided={provided}
+                                    snapshot={snapshot}
+                                    rowId={row.id}
+                                    tableName={name}
+                                    columnsDefinition={columnsDefinition}
+                                    index={index}
+                                    disableDragAndDrop={disableDragAndDrop}
+                                    disabled={disabled}
+                                    previousValues={previousValues}
+                                    disableTableCell={disableTableCell}
+                                    getPreviousValue={getPreviousValue}
+                                    isValueModified={isValueModified}
+                                    disabledDeletion={disabledDeletion && !multiselect}
+                                    onChangeRow={handleChangeRow}
+                                    onDeleteRow={handleDeleteRow}
+                                    multiselect={multiselect}
+                                    nextSnapshotCellWidthSx={nextSnapshotCellWidthSx}
+                                />
+                            );
+                            // Portal the dragging row to document.body to avoid CSS transform
+                            // ancestors (e.g. react-rnd panels) from breaking position:fixed
+                            // coordinates used by @hello-pangea/dnd during drag.
+                            return snapshot.isDragging ? createPortal(tableRow, document.body) : tableRow;
+                        }}
                     </Draggable>
                 ))}
                 {providedDroppable.placeholder}
@@ -366,7 +400,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     return (
         <Grid item container spacing={1}>
             <Grid item container>
-                <DragDropContext onDragEnd={onDragEnd}>
+                <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
                         {(provided) => (
                             <TableContainer
