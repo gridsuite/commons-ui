@@ -80,6 +80,7 @@ export const toFormValuesContingencyListsInfos = (contingencyListsInfos: Conting
     };
 };
 
-export const isValidContingencyRow = (row: FieldValues) => {
-    return row[ACTIVATED] && row[CONTINGENCY_LISTS]?.length > 0;
+export const isValidContingencyRow = (row?: FieldValues) => {
+    const contingencyLists = row?.[CONTINGENCY_LISTS];
+    return row?.[ACTIVATED] === true && Array.isArray(contingencyLists) && contingencyLists.length > 0;
 };
