@@ -301,13 +301,13 @@ export const FIELD_OPTIONS: Record<string, FieldOptionType> = {
     },
     SELECTED_OPERATIONAL_LIMITS_GROUP_ID1: {
         id: FieldType.SELECTED_OPERATIONAL_LIMITS_GROUP_ID1,
-        label: 'selectedOperationalLimitsGroupId1',
+        label: 'selectedOperationalLimitsGroup1',
         dataType: DataType.STRING,
         settableToNone: true,
     },
     SELECTED_OPERATIONAL_LIMITS_GROUP_ID2: {
         id: FieldType.SELECTED_OPERATIONAL_LIMITS_GROUP_ID2,
-        label: 'selectedOperationalLimitsGroupId2',
+        label: 'selectedOperationalLimitsGroup2',
         dataType: DataType.STRING,
         settableToNone: true,
     },
