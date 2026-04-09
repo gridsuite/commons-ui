@@ -45,7 +45,10 @@ export function ParameterTableField({
         return getDefaultRowData(columnsDefinition);
     }, [columnsDefinition]);
 
-    const createRows = useCallback(() => [newDefaultRowData], [newDefaultRowData]);
+    const createRows = useCallback(
+        (numberOfRows: number) => Array.from({ length: numberOfRows }, () => ({ ...newDefaultRowData })),
+        [newDefaultRowData]
+    );
 
     const { title, ...otherTooltipProps } = tooltipProps || {};
 
