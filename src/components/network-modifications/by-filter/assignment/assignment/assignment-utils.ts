@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Schema } from 'yup';
-import { yupConfig as yup } from '../../../../../utils';
+import { FieldConstants, yupConfig as yup } from '../../../../../utils';
 import { Assignment, DataType, FieldOptionType, FieldValue } from './assignment.type';
 import { FIELD_OPTIONS } from './assignment-constants';
 
@@ -52,10 +52,10 @@ function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_
 }
 
 export const getAssignmentInitialValue = () => ({
-    filters: [],
-    editedField: null,
-    propertyName: null,
-    value: null,
+    [FieldConstants.FILTERS]: [],
+    [FieldConstants.EDITED_FIELD]: null,
+    [FieldConstants.PROPERTY_NAME]: null,
+    [FieldConstants.VALUE]: null,
 });
 
 export function getAssignmentsSchema(emptyValueStr: string) {
@@ -63,27 +63,29 @@ export function getAssignmentsSchema(emptyValueStr: string) {
         .array()
         .of(
             yup.object().shape({
-                filters: yup
+                [FieldConstants.FILTERS]: yup
                     .array()
                     .of(
                         yup.object().shape({
-                            id: yup.string().required(),
-                            name: yup.string().required(),
+                            [FieldConstants.ID]: yup.string().required(),
+                            [FieldConstants.NAME]: yup.string().required(),
                         })
                     )
                     .required()
                     .min(1, 'YupRequired'),
-                editedField: yup.string().required(),
-                propertyName: yup.string().when(['editedField'], ([editedField], schema) => {
-                    const dataType = getDataType(editedField);
-                    if (dataType === DataType.PROPERTY) {
-                        return schema.required();
-                    }
-                    return schema.nullable();
-                }),
-                value: yup
+                [FieldConstants.EDITED_FIELD]: yup.string().required(),
+                [FieldConstants.PROPERTY_NAME]: yup
+                    .string()
+                    .when([FieldConstants.EDITED_FIELD], ([editedField], schema) => {
+                        const dataType = getDataType(editedField);
+                        if (dataType === DataType.PROPERTY) {
+                            return schema.required();
+                        }
+                        return schema.nullable();
+                    }),
+                [FieldConstants.VALUE]: yup
                     .mixed<FieldValue>()
-                    .when(['editedField'], ([editedField]) => {
+                    .when([FieldConstants.EDITED_FIELD], ([editedField]) => {
                         const dataType = getDataType(editedField);
                         const unsettable = getUnsettable(editedField);
                         return getValueSchema(emptyValueStr, dataType, unsettable);
@@ -97,6 +99,6 @@ export function getAssignmentsSchema(emptyValueStr: string) {
 export function getAssignmentFromEditData(assignment: Assignment): Assignment {
     return {
         ...assignment,
-        filters: assignment.filters.map((filter) => ({ ...filter })),
+        [FieldConstants.FILTERS]: assignment.filters.map((filter) => ({ ...filter })),
     };
 }

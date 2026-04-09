@@ -4,12 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { InferType } from 'yup';
+import { InferType, mixed } from 'yup';
 import {
     convertInputValue,
     convertOutputValue,
     DeepNullable,
     EquipmentType,
+    FieldConstants,
     FieldType,
     ModificationType,
     yupConfig as yup,
@@ -27,23 +28,23 @@ const emptyValueStr = '—';
 export const modificationByAssignmentFormSchema = yup
     .object()
     .shape({
-        equipmentType: yup.string().required(),
-        assignments: getAssignmentsSchema(emptyValueStr),
+        [FieldConstants.EQUIPMENT_TYPE]: mixed<EquipmentType>().oneOf(Object.values(EquipmentType)).required(),
+        [FieldConstants.ASSIGNMENTS]: getAssignmentsSchema(emptyValueStr),
     })
     .required();
 
 export type ModificationByAssignmentFormData = InferType<typeof modificationByAssignmentFormSchema>;
 
 export const emptyModificationByAssignmentFormData: DeepNullable<ModificationByAssignmentFormData> = {
-    equipmentType: '',
-    assignments: [getAssignmentInitialValue()],
+    [FieldConstants.EQUIPMENT_TYPE]: null,
+    [FieldConstants.ASSIGNMENTS]: [getAssignmentInitialValue()],
 };
 
 export const modificationByAssignmentDtoToForm = (
     dto: ModificationByAssignmentDto
 ): ModificationByAssignmentFormData => ({
-    equipmentType: dto.equipmentType,
-    assignments: dto.assignmentInfosList?.map((info) => {
+    [FieldConstants.EQUIPMENT_TYPE]: dto.equipmentType,
+    [FieldConstants.ASSIGNMENTS]: dto.assignmentInfosList?.map((info) => {
         const assignment = getAssignmentFromEditData(info);
         const fieldKey = assignment.editedField as keyof typeof FieldType;
         const field = FieldType[fieldKey];
@@ -60,7 +61,7 @@ export const modificationByAssignmentFormToDto = (
     formData: ModificationByAssignmentFormData
 ): ModificationByAssignmentDto => ({
     type: ModificationType.MODIFICATION_BY_ASSIGNMENT,
-    equipmentType: formData.equipmentType as EquipmentType,
+    equipmentType: formData.equipmentType,
     assignmentInfosList: formData.assignments.map((assignment) => {
         const fieldKey = assignment.editedField as keyof typeof FieldType;
         const field: FieldType = FieldType[fieldKey];
