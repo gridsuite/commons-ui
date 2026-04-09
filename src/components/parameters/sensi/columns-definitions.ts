@@ -89,6 +89,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: DndColumn[] = [
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
         type: DndColumnType.SWITCH,
