@@ -129,6 +129,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
         type: DndColumnType.SWITCH,
@@ -178,6 +179,7 @@ export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
         type: DndColumnType.SWITCH,
@@ -227,6 +229,7 @@ export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
         type: DndColumnType.SWITCH,
@@ -267,6 +270,7 @@ export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
         type: DndColumnType.SWITCH,

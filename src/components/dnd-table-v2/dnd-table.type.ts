@@ -6,6 +6,7 @@
  */
 
 import { JSX, ReactNode } from 'react';
+import { SxProps, Theme } from '@mui/material';
 import { ElementType } from '../../utils/types/elementType';
 import { EquipmentType } from '../../utils/types/equipmentType';
 import { Option } from '../../utils/types/types';
@@ -30,6 +31,7 @@ export interface ColumnBase {
     maxWidth?: number | string;
     width?: number | string;
     label?: string;
+    sxHeader?: SxProps<Theme>;
     extra?: JSX.Element;
     editable?: boolean;
     type: DndColumnType;

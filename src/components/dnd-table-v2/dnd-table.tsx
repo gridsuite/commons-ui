@@ -29,7 +29,7 @@ import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
 import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
 import { ErrorInput, FieldErrorAlert } from '../inputs';
-import type { MuiStyles } from '../../utils/styles';
+import { mergeSx, MuiStyles } from '../../utils/styles';
 import { DndTableRow } from './dnd-table-row';
 
 const styles = {
@@ -288,7 +288,13 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         </TableCell>
                     )}
                     {columnsDefinition.map((column) => (
-                        <TableCell key={column.dataKey} sx={{ width: column.width, maxWidth: column.maxWidth }}>
+                        <TableCell
+                            key={column.dataKey}
+                            sx={mergeSx(
+                                { width: column.width, maxWidth: column.maxWidth, textAlign: 'right' },
+                                column.sxHeader
+                            )}
+                        >
                             <Box sx={styles.columnsStyle}>
                                 {column.label}
                                 {column.extra}

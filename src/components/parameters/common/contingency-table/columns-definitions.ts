@@ -25,6 +25,7 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
     },
     {
         label: 'description',
+        sxHeader: { textAlign: 'center' },
         dataKey: DESCRIPTION,
         initialValue: '',
         editable: true,
@@ -33,6 +34,7 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
         editable: true,
