@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { FieldValues } from 'react-hook-form';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
 import { ElementType } from '../../../../utils';
@@ -75,4 +76,8 @@ export const toFormValuesContingencyListsInfos = (contingencyListsInfos: Conting
             [ACTIVATED]: contingencyListInfos[ACTIVATED],
         })),
     };
+};
+
+export const isValidContingencyRow = (row: FieldValues) => {
+    return row[ACTIVATED] && row[CONTINGENCY_LISTS]?.length > 0;
 };

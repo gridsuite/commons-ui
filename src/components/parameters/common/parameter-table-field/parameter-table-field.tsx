@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useRef } from 'react';
-import { DndColumn, DndTable, DndTableProps, getDefaultRowData } from '../../../dnd-table-v2';
+import { DndTable, DndTableProps, getDefaultRowData } from '../../../dnd-table-v2';
 
 export type ParameterDndTableFieldProps = {
     label?: string;
@@ -36,6 +36,10 @@ export function ParameterTableField({
     });
 
     const { getValues } = useFormContext();
+    // This Ref keeps the previous valid row count to optimize whether propagating onChange
+    const validRowCountRef = useRef(
+        getValues(name).filter((row: FieldValues) => (isValidRow ? isValidRow(row) : true)).length
+    );
 
     const newDefaultRowData = useMemo(() => {
         return getDefaultRowData(columnsDefinition);
@@ -47,24 +51,29 @@ export function ParameterTableField({
 
     const handleOnChange = useCallback(
         (changedRow: any) => {
-            console.log('xxx handleOnChange called with changedRow:', changedRow);
+            const currentValidRowCount = getValues(name).filter((row: FieldValues) =>
+                isValidRow ? isValidRow(row) : true
+            ).length;
+            const previousValidRowCount = validRowCountRef.current;
+            validRowCountRef.current = currentValidRowCount;
+
             if (isValidRow ? isValidRow(changedRow) : true) {
-                console.log('xxx triggering onChange');
+                onChange?.();
+            } else if (previousValidRowCount !== currentValidRowCount) {
                 onChange?.();
             }
         },
-        [isValidRow, onChange]
+        [isValidRow, onChange, getValues, name]
     );
 
     const handleOnDelete = useCallback(
         (removedRows: any[]) => {
-            console.log('xxx handleOnDelete called with removedRows:', removedRows);
             const wasValidRowCount = removedRows.filter((row: FieldValues) =>
                 isValidRow ? isValidRow(row) : true
             ).length;
             if (wasValidRowCount > 0) {
+                validRowCountRef.current -= wasValidRowCount;
                 // trigger onChange to propagate the deletion of valid rows
-                console.log('xxx triggering onChange when deleting rows, wasValidRowCount:', wasValidRowCount);
                 onChange?.();
             }
         },

@@ -77,7 +77,7 @@ export function SecurityAnalysisParametersForm({
                 >
                     <Box sx={styles.securityAnalysisParameters}>
                         {renderTitleFields?.()}
-                        {securityAnalysisMethods.paramsLoaded ? (
+                        {securityAnalysisMethods.paramsFormInitialized ? (
                             <>
                                 <Grid
                                     container

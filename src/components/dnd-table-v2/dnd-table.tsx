@@ -208,14 +208,16 @@ export function DndTable(props: Readonly<DndTableProps>) {
             }
         }
 
+        const removedRows = rowsToDelete.map((index) => currentRowsValues[index]);
         remove(rowsToDelete);
-        onDelete?.(rowsToDelete.map((index) => currentRowsValues[index]));
+        onDelete?.(removedRows);
     };
 
     const handleDeleteRow = useCallback(
         (index: number) => {
+            const removedRow = getValues(name)[index];
             remove(index);
-            onDelete?.([getValues(name)[index]]);
+            onDelete?.([removedRow]);
         },
         [onDelete, getValues, name, remove]
     );

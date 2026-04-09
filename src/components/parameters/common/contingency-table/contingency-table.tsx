@@ -10,9 +10,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../../hooks';
-import { ParameterTableField, ACTIVATED, ID } from '../parameter-table-field';
+import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
 import { CONTINGENCY_LISTS } from '../constants';
-import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS } from './columns-definitions';
+import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
 import { ContingencyCount, ContingencyListsInfos } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback } from '../../../../utils';
@@ -72,7 +72,6 @@ export function ContingencyTable({
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
-        console.log('xxx useEffect triggered to fetch contingency count with name:', name);
 
         const contingencyListsInfos: ContingencyListsInfos[] = getValues(name);
         const hasNoContingencies =
@@ -82,7 +81,6 @@ export function ContingencyTable({
                 (contingencyList) =>
                     !contingencyList[ACTIVATED] || (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0
             );
-        console.log('xxx contingencyListsInfos:', contingencyListsInfos);
         if (hasNoContingencies) {
             setIsLoading(false);
             setSimulatedContingencyCount(null);
@@ -173,6 +171,7 @@ export function ContingencyTable({
                 createRows={createRows}
                 tableHeight={270}
                 onChange={handleOnChange}
+                isValidRow={isValidContingencyRow}
             />
             {showContingencyCount && renderContingencyCount()}
         </Grid>

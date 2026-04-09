@@ -68,7 +68,7 @@ export interface UseSensitivityAnalysisParametersReturn {
     fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos;
     params: SensitivityAnalysisParametersInfos | null;
-    paramsLoaded: boolean;
+    paramsFormInitialized: boolean;
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
@@ -111,12 +111,11 @@ export const useSensitivityAnalysisParametersForm = ({
     description,
 }: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
     const { providers, params, updateParameters } = parametersBackend;
-    const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
     const { snackError } = useSnackMessage();
     const [factorsCount, setFactorsCount] = useState<FactorsCount>(DEFAULT_FACTOR_COUNT);
     const [factorCountRefreshTrigger, setFactorCountRefreshTrigger] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSubmitAction, setIsSubmitAction] = useState(false);
+    const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
 
     const emptyFormData = useMemo(() => {
         return {
@@ -173,7 +172,7 @@ export const useSensitivityAnalysisParametersForm = ({
     }, []);
 
     useEffect(() => {
-        if (!currentNodeUuid || !currentRootNetworkUuid) {
+        if (!currentNodeUuid || !currentRootNetworkUuid || !paramsFormInitialized) {
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
@@ -250,6 +249,7 @@ export const useSensitivityAnalysisParametersForm = ({
         getValues,
         formatNewParams,
         resetFactorsCount,
+        paramsFormInitialized,
     ]);
 
     const onFormChanged = useCallback(() => {
@@ -409,18 +409,16 @@ export const useSensitivityAnalysisParametersForm = ({
 
     const onSaveInline = useCallback(
         (newParams: Record<string, any>) => {
-            setIsSubmitAction(true);
             setSensitivityAnalysisParameters(studyUuid, formatNewParams(newParams))
                 .then(() => {
                     const formattedParams = formatNewParams(newParams);
-                    setSensitivityAnalysisParams(formattedParams);
                     updateParameters(formattedParams);
                 })
                 .catch((error) => {
                     snackWithFallback(snackError, error, { headerId: 'updateSensitivityAnalysisParametersError' });
                 });
         },
-        [setSensitivityAnalysisParams, snackError, studyUuid, formatNewParams, updateParameters]
+        [snackError, studyUuid, formatNewParams, updateParameters]
     );
 
     const onSaveDialog = useCallback(
@@ -441,30 +439,15 @@ export const useSensitivityAnalysisParametersForm = ({
     );
 
     useEffect(() => {
-        if (sensitivityAnalysisParams) {
-            reset(fromSensitivityAnalysisParamsDataToFormValues(sensitivityAnalysisParams));
-            if (!isSubmitAction) {
-                onFormChanged();
-            }
-        }
-    }, [
-        fromSensitivityAnalysisParamsDataToFormValues,
-        sensitivityAnalysisParams,
-        isSubmitAction,
-        reset,
-        onFormChanged,
-    ]);
-    useEffect(() => {
         if (params) {
             reset(fromSensitivityAnalysisParamsDataToFormValues(params));
+            setParamsFormInitialized(true);
         }
     }, [params, reset, fromSensitivityAnalysisParamsDataToFormValues]);
 
     const isMaxResultsReached = useMemo(() => factorsCount.resultCount > MAX_RESULTS_COUNT, [factorsCount]);
 
     const isMaxVariablesReached = useMemo(() => factorsCount.variableCount > MAX_VARIABLES_COUNT, [factorsCount]);
-
-    const paramsLoaded = useMemo(() => !!params, [params]);
 
     return {
         formMethods,
@@ -473,7 +456,7 @@ export const useSensitivityAnalysisParametersForm = ({
         fromSensitivityAnalysisParamsDataToFormValues,
         formatNewParams,
         params,
-        paramsLoaded,
+        paramsFormInitialized,
         isStudyLinked,
         onSaveInline,
         onSaveDialog,

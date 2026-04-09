@@ -64,7 +64,7 @@ export function SensitivityAnalysisParametersForm({
         >
             <Box sx={styles.sensibilityAnalysisParameters}>
                 {renderTitleFields?.()}
-                {sensitivityAnalysisMethods.paramsLoaded ? (
+                {sensitivityAnalysisMethods.paramsFormInitialized ? (
                     <Box sx={mergeSx(parametersStyles.scrollableGrid, { paddingTop: 0, maxHeight: '100%' })}>
                         <Grid
                             container
