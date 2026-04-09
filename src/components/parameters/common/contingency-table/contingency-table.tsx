@@ -36,13 +36,13 @@ export function ContingencyTable({
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(true);
+    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
     const { snackError } = useSnackMessage();
 
     const { getValues } = useFormContext();
 
     const handleOnChange = useCallback(() => {
-        setContingencyCountRefreshTrigger((prevValue) => !prevValue);
+        setContingencyCountRefreshTrigger((prevValue) => prevValue + 1);
     }, []);
 
     const columnsDefinition = useMemo(() => {

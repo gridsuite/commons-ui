@@ -113,7 +113,7 @@ export const useSensitivityAnalysisParametersForm = ({
     const { providers, params, updateParameters } = parametersBackend;
     const { snackError } = useSnackMessage();
     const [factorsCount, setFactorsCount] = useState<FactorsCount>(DEFAULT_FACTOR_COUNT);
-    const [factorCountRefreshTrigger, setFactorCountRefreshTrigger] = useState(true);
+    const [factorCountRefreshTrigger, setFactorCountRefreshTrigger] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
 
@@ -253,7 +253,7 @@ export const useSensitivityAnalysisParametersForm = ({
     ]);
 
     const onFormChanged = useCallback(() => {
-        setFactorCountRefreshTrigger((prevState) => !prevState);
+        setFactorCountRefreshTrigger((prevState) => prevState + 1);
     }, []);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
