@@ -27,17 +27,19 @@ export function BooleanInput<TInput extends InputTypes>({
     Input,
     ...props
 }: Readonly<BooleanInputProps<TInput>>) {
+    const { onChange, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {
-        field: { onChange, value, ref },
+        field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
 
     const intl = useIntl();
 
     const handleChangeValue = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            onChange(event.target.checked);
+            onChangeRhf(event.target.checked);
+            onChange?.(event, event.target.checked);
         },
-        [onChange]
+        [onChange, onChangeRhf]
     );
 
     const CustomInput = (
@@ -46,7 +48,7 @@ export function BooleanInput<TInput extends InputTypes>({
             onChange={handleChangeValue}
             inputRef={ref}
             inputProps={{ 'aria-label': 'primary checkbox' }}
-            {...(formProps as any)}
+            {...(otherFormProps as any)}
             {...props}
         />
     );

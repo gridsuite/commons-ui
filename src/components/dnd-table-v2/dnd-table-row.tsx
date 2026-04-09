@@ -100,16 +100,19 @@ function EditableTableCell({
                     titleId={column.titleId}
                     hideErrorMessage
                     label={undefined}
-                    // callback to propagate a chang to parent via column config
+                    // callback to propagate a change to parent via column config
                     onChange={(value) => column.shouldHandleOnChangeCell && onChangeCell?.(value)}
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && <ChipItemsInput name={name} hideErrorMessage />}
             {column.type === DndColumnType.SWITCH && (
-                // callback to propagate a chang to parent via column config
-                <span onChange={() => column.shouldHandleOnChangeCell && onChangeCell?.()}>
-                    <SwitchInput name={name} />
-                </span>
+                <SwitchInput
+                    name={name}
+                    formProps={{
+                        // callback to propagate a change to parent via column config
+                        onChange: (_, checked) => column.shouldHandleOnChangeCell && onChangeCell?.(checked),
+                    }}
+                />
             )}
             {column.type === DndColumnType.DESCRIPTIONS && <DescriptionInput name={name} />}
             {column.type === DndColumnType.CUSTOM && column.component(rowIndex)}
