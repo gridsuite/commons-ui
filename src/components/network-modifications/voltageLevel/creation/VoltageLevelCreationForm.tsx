@@ -5,23 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useState } from 'react';
-import { useFormState, useWatch } from 'react-hook-form';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import GridItem from '../../../grid/grid-item';
+import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
-import { VoltageLevelTab } from './voltageLevel.constants';
-import {
-    isAdditionalInformationTabError,
-    isCharacteristicsTabError,
-    isStructureTabError,
-    isSubstationTabError,
-} from './voltageLevelCreation.utils';
+import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
 import { PropertiesForm } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
+import GridItem from '../../../grid/grid-item';
+import { useTabsWithError } from '../../hooks';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
@@ -32,32 +26,11 @@ export function VoltageLevelCreationForm({
     substationOptions,
     showDeleteSubstationButton = true,
 }: VoltageLevelCreationFormProps = {}) {
-    const [tabIndex, setTabIndex] = useState(0);
-    const [tabIndexesWithError, setTabIndexesWithError] = useState<number[]>([]);
-    const { errors } = useFormState();
+    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<VoltageLevelTab>(
+        VOLTAGE_LEVEL_TAB_FIELDS,
+        VoltageLevelTab.SUBSTATION_TAB
+    );
     const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
-
-    useEffect(() => {
-        const tabsInError: number[] = [];
-        if (isSubstationTabError(errors)) {
-            tabsInError.push(VoltageLevelTab.SUBSTATION_TAB);
-        }
-        if (isCharacteristicsTabError(errors)) {
-            tabsInError.push(VoltageLevelTab.CHARACTERISTICS_TAB);
-        }
-        if (isStructureTabError(errors)) {
-            tabsInError.push(VoltageLevelTab.STRUCTURE_TAB);
-        }
-        if (isAdditionalInformationTabError(errors)) {
-            tabsInError.push(VoltageLevelTab.ADDITIONAL_INFORMATION_TAB);
-        }
-        if (tabsInError.length > 0) {
-            setTabIndex((currentTabIndex) => {
-                return tabsInError.includes(currentTabIndex) ? currentTabIndex : tabsInError[0];
-            });
-        }
-        setTabIndexesWithError(tabsInError);
-    }, [errors]);
 
     return (
         <>
