@@ -16,7 +16,6 @@ interface SelectWithConfirmationInputProps {
     onValidate: () => void;
     getOptionLabel?: (option: string) => string;
     label: string;
-    isModification?: boolean;
 }
 
 export function SelectWithConfirmationInput({
@@ -25,7 +24,6 @@ export function SelectWithConfirmationInput({
     onValidate,
     getOptionLabel,
     label,
-    isModification,
 }: Readonly<SelectWithConfirmationInputProps>) {
     const intl = useIntl();
     const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
@@ -36,9 +34,8 @@ export function SelectWithConfirmationInput({
         name,
     });
 
-    const selectedValue = typeof value === 'string' ? value : '';
     const handleChange = (event: SelectChangeEvent) => {
-        if (selectedValue && isModification) {
+        if (value) {
             setOpenConfirmationDialog(true);
             setNewValue(event.target.value);
         } else {
@@ -59,7 +56,7 @@ export function SelectWithConfirmationInput({
                     <FormattedMessage id={label} />
                 </InputLabel>
                 <Select
-                    value={selectedValue}
+                    value={value ?? ''}
                     size="small"
                     fullWidth
                     onChange={handleChange}

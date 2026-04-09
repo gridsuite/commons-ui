@@ -18,7 +18,7 @@ import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment/assignm
 
 const EQUIPMENT_TYPE_OPTIONS: EquipmentTypeOptionType[] = Object.keys(EQUIPMENTS_FIELDS) as EquipmentTypeOptionType[];
 
-export function ModificationByAssignmentForm({ isModification }: Readonly<{ isModification?: boolean }>) {
+export function ModificationByAssignmentForm() {
     const { setValue, getValues } = useFormContext();
 
     const getOptionLabel = useGetLabelEquipmentTypes();
@@ -43,7 +43,6 @@ export function ModificationByAssignmentForm({ isModification }: Readonly<{ isMo
                 );
             }}
             getOptionLabel={getEquipmentTypeOptionLabel}
-            isModification={isModification}
         />
     );
 
