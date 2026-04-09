@@ -205,6 +205,7 @@ export const networkModificationsEn = {
     NumericValueOrEmptyField: 'Numeric value or Empty the field',
     ValueOrEmptyField: 'Value or Empty the field',
     addNewAssignment: 'Modify another field',
+    changeTypeConfirmation: 'The type will be changed. All fields values will be erased.',
     Or: 'or',
 
     // Tabs

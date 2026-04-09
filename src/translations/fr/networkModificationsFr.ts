@@ -208,6 +208,7 @@ export const networkModificationsFr = {
     NumericValueOrEmptyField: 'Valeur numérique ou Vider le champ',
     ValueOrEmptyField: 'Valeur ou Vider le champ',
     addNewAssignment: 'Modifier un autre champ',
+    changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
     Or: 'ou',
 
     // Tabs
