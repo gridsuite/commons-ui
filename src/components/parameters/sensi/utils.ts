@@ -38,7 +38,7 @@ const getMonitoredBranchesSchema = () => {
             .array()
             .of(
                 yup.object().shape({
-                    [ID]: yup.string().required(),
+                    [ID]: yup.string().uuid().required(),
                     [NAME]: yup.string().nullable().defined(),
                 })
             )
@@ -66,7 +66,7 @@ const getContingencyListsSchema = () => {
     return {
         [CONTINGENCY_LISTS]: yup.array().of(
             yup.object().shape({
-                [ID]: yup.string().required(),
+                [ID]: yup.string().uuid().required(),
                 [NAME]: yup.string().nullable().defined(),
             })
         ),
@@ -83,7 +83,7 @@ export const getSensiHVDCsFormSchema = () => ({
                 .array()
                 .of(
                     yup.object().shape({
-                        [ID]: yup.string().required(),
+                        [ID]: yup.string().uuid().required(),
                         [NAME]: yup.string().nullable().defined(),
                     })
                 )
@@ -134,7 +134,7 @@ export const getSensiInjectionsFormSchema = () => ({
                 .array()
                 .of(
                     yup.object().shape({
-                        [ID]: yup.string().required(),
+                        [ID]: yup.string().uuid().required(),
                         [NAME]: yup.string().nullable().defined(),
                     })
                 )
@@ -184,7 +184,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                 .array()
                 .of(
                     yup.object().shape({
-                        [ID]: yup.string().required(),
+                        [ID]: yup.string().uuid().required(),
                         [NAME]: yup.string().nullable().defined(),
                     })
                 )
@@ -272,13 +272,13 @@ export const getSensiNodesFormSchema = () => ({
         yup.object().shape({
             [SUPERVISED_VOLTAGE_LEVELS]: yup.array().of(
                 yup.object().shape({
-                    [ID]: yup.string().required(),
+                    [ID]: yup.string().uuid().required(),
                     [NAME]: yup.string().nullable().defined(),
                 })
             ),
             [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup.array().of(
                 yup.object().shape({
-                    [ID]: yup.string().required(),
+                    [ID]: yup.string().uuid().required(),
                     [NAME]: yup.string().nullable().defined(),
                 })
             ),
@@ -326,7 +326,7 @@ export const getSensiPSTsFormSchema = () => ({
                 .array()
                 .of(
                     yup.object().shape({
-                        [ID]: yup.string().required(),
+                        [ID]: yup.string().uuid().required(),
                         [NAME]: yup.string().nullable().defined(),
                     })
                 )

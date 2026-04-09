@@ -20,40 +20,40 @@ export enum SensitivityType {
     DELTA_A = 'DELTA_A',
 }
 
-interface SensitivityParamsCommon<T extends EquipmentsContainer | string> {
+interface SensitivityParamsCommon<T extends EquipmentsContainer | UUID> {
     contingencyLists?: T[];
     activated?: boolean | null;
 }
 
-export interface SensitivityInjectionsSet<T extends EquipmentsContainer | string> extends SensitivityParamsCommon<T> {
+export interface SensitivityInjectionsSet<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     injections?: T[];
     distributionType?: DistributionType;
 }
 
-export interface SensitivityInjection<T extends EquipmentsContainer | string> extends SensitivityParamsCommon<T> {
+export interface SensitivityInjection<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     injections?: T[];
 }
 
-export interface SensitivityHVDC<T extends EquipmentsContainer | string> extends SensitivityParamsCommon<T> {
+export interface SensitivityHVDC<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     sensitivityType?: SensitivityType;
     hvdcs?: T[];
 }
 
-export interface SensitivityPST<T extends EquipmentsContainer | string> extends SensitivityParamsCommon<T> {
+export interface SensitivityPST<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     sensitivityType?: SensitivityType;
     psts?: T[];
 }
 
-export interface SensitivityNodes<T extends EquipmentsContainer | string> extends SensitivityParamsCommon<T> {
+export interface SensitivityNodes<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
     monitoredVoltageLevels?: T[];
     equipmentsInVoltageRegulation?: T[];
 }
 
-export interface SensitivityAnalysisParametersInfos<T extends EquipmentsContainer | string> {
+export interface SensitivityAnalysisParametersInfos<T extends EquipmentsContainer | UUID> {
     provider: string;
     uuid?: UUID;
     date?: Date;
@@ -67,6 +67,7 @@ export interface SensitivityAnalysisParametersInfos<T extends EquipmentsContaine
     sensitivityPST?: SensitivityPST<T>[];
     sensitivityNodes?: SensitivityNodes<T>[];
 }
+// = SensitivityAnalysisParametersFormSchema && uuid, date, name
 
 export interface FactorsCount {
     resultCount: number;

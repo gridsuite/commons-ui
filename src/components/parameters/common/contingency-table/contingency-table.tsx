@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldValues, useWatch } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { useCreateRowData, useSnackMessage } from '../../../../hooks';
-import { ColumnsDef, ID, ACTIVATED, ParameterTable, CONTAINER_ID } from '../parameter-table';
+import { ColumnsDef, ACTIVATED, ParameterTable, CONTAINER_ID } from '../parameter-table';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, ParamContingencyLists } from './columns-definitions';
 import { ContingencyCount, ContingencyListsInfos } from './types';
@@ -78,7 +78,9 @@ export function ContingencyTable({
         fetchContingencyCount?.(
             contingencyListsInfos
                 .filter((lists) => lists[ACTIVATED])
-                .flatMap((lists) => lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[ID])),
+                .flatMap((lists) =>
+                    lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[CONTAINER_ID] as UUID)
+                ),
             abortSignal
         )
             .then((contingencyCount) => {
