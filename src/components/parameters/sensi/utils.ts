@@ -25,12 +25,12 @@ import {
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
-import { DistributionType, SensitivityType } from '../../../utils';
 import { CONTINGENCY_LISTS, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
 import { ACTIVATED, CONTAINER_ID, CONTAINER_NAME } from '../common/parameter-table';
+import { DistributionType, SensitivityType } from './sensitivity-analysis.type';
 
 const getMonitoredBranchesSchema = () => {
     return {

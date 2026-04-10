@@ -13,7 +13,7 @@ import { VoltageInitStudyParameters } from '../components/parameters/voltage-ini
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
-const getStudyUrl = (studyUuid: UUID | null) =>
+export const getStudyUrl = (studyUuid: UUID | null) =>
     `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {

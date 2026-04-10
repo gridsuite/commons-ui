@@ -301,8 +301,8 @@ const formatElectronicsClustersParamString = (
         return {
             ...rest,
             filters: filters.map((filter) => ({
-                [ID]: filter.filterId,
-                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+                [ID]: filter[FILTER_ID],
+                [NAME]: filter[FILTER_NAME], // from back to front -> {id: uuid, name: string}
             })),
         };
     });

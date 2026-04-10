@@ -6,7 +6,9 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { EquipmentsContainer } from '../../components/parameters/common/parameter-table/types';
+import { EquipmentsContainer } from '../common/parameter-table/types';
+
+type EquipmentInfos = EquipmentsContainer | UUID;
 
 export enum DistributionType {
     PROPORTIONAL = 'PROPORTIONAL',
@@ -20,40 +22,40 @@ export enum SensitivityType {
     DELTA_A = 'DELTA_A',
 }
 
-interface SensitivityParamsCommon<T extends EquipmentsContainer | UUID> {
+interface SensitivityParamsCommon<T extends EquipmentInfos> {
     contingencyLists?: T[];
     activated?: boolean | null;
 }
 
-export interface SensitivityInjectionsSet<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
+export interface SensitivityInjectionsSet<T extends EquipmentInfos> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     injections?: T[];
     distributionType?: DistributionType;
 }
 
-export interface SensitivityInjection<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
+export interface SensitivityInjection<T extends EquipmentInfos> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     injections?: T[];
 }
 
-export interface SensitivityHVDC<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
+export interface SensitivityHVDC<T extends EquipmentInfos> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     sensitivityType?: SensitivityType;
     hvdcs?: T[];
 }
 
-export interface SensitivityPST<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
+export interface SensitivityPST<T extends EquipmentInfos> extends SensitivityParamsCommon<T> {
     monitoredBranches?: T[];
     sensitivityType?: SensitivityType;
     psts?: T[];
 }
 
-export interface SensitivityNodes<T extends EquipmentsContainer | UUID> extends SensitivityParamsCommon<T> {
+export interface SensitivityNodes<T extends EquipmentInfos> extends SensitivityParamsCommon<T> {
     monitoredVoltageLevels?: T[];
     equipmentsInVoltageRegulation?: T[];
 }
 
-export interface SensitivityAnalysisParametersInfos<T extends EquipmentsContainer | UUID> {
+export interface SensitivityAnalysisParameters<T extends EquipmentInfos> {
     provider: string;
     uuid?: UUID;
     date?: Date;
@@ -67,7 +69,9 @@ export interface SensitivityAnalysisParametersInfos<T extends EquipmentsContaine
     sensitivityPST?: SensitivityPST<T>[];
     sensitivityNodes?: SensitivityNodes<T>[];
 }
-// = SensitivityAnalysisParametersFormSchema && uuid, date, name
+
+export type SensitivityAnalysisParametersInfos = SensitivityAnalysisParameters<UUID>;
+export type SensitivityAnalysisParametersInfosEnriched = SensitivityAnalysisParameters<EquipmentsContainer>;
 
 export interface FactorsCount {
     resultCount: number;

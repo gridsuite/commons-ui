@@ -6,32 +6,32 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
-import { getStudyUrl } from './security-analysis';
-import { FilterIdentifier, FILTERS } from '../utils/constants/filterConstant';
+import { enrichPccMinParameters, mapPccMinParameters } from './pcc-min.utils';
+import { getStudyUrl } from './study';
+import { PccMinParameters, PccMinParametersEnriched } from '../components/parameters/pcc-min/pcc-min-form-utils';
 
-export type PccMinParameters = {
-    [FILTERS]: FilterIdentifier[];
-};
 const PREFIX_PCC_MIN_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/pcc-min`;
 
 function getPccMinUrl() {
     return `${PREFIX_PCC_MIN_SERVER_QUERIES}/v1/`;
 }
-export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParameters | null> {
+export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParametersEnriched | null> {
     console.info('get pcc min study parameters');
-    const getPccMintParams = `${getStudyUrl(studyUuid)}/pcc-min/parameters`;
-    console.debug(getPccMintParams);
-    return backendFetchJson(getPccMintParams);
+    const url = `${getStudyUrl(studyUuid)}/pcc-min/parameters`;
+    console.debug(url);
+    const parametersPromise: Promise<PccMinParameters> = backendFetchJson(url);
+    return parametersPromise.then((parameters) => enrichPccMinParameters(parameters));
 }
 
-export function fetchPccMinParameters(parameterUuid: UUID): Promise<PccMinParameters> {
+export function fetchPccMinParameters(parameterUuid: UUID): Promise<PccMinParametersEnriched> {
     console.info('fetch pcc min parameters');
     const url = `${getPccMinUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
     console.debug(url);
-    return backendFetchJson(url);
+    const parametersPromise: Promise<PccMinParameters> = backendFetchJson(url);
+    return parametersPromise.then((parameters) => enrichPccMinParameters(parameters));
 }
 
-export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMinParameters | null) {
+export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMinParametersEnriched | null) {
     console.info('set study pcc min parameters');
     const url = `${getStudyUrl(studyUuid)}/pcc-min/parameters`;
     console.debug(url);
@@ -41,6 +41,6 @@ export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMin
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: newParams == null ? null : JSON.stringify(newParams),
+        body: newParams == null ? null : JSON.stringify(mapPccMinParameters(newParams)),
     });
 }

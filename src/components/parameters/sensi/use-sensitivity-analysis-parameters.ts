@@ -14,7 +14,7 @@ import {
     ElementType,
     FactorsCount,
     FieldConstants,
-    SensitivityAnalysisParametersInfos,
+    SensitivityAnalysisParametersInfosEnriched,
     snackWithFallback,
     UseParametersBackendReturnProps,
 } from '../../../utils';
@@ -56,17 +56,15 @@ import {
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
-import { ACTIVATED, CONTAINER_ID, CONTAINER_NAME, EquipmentsContainer } from '../common/parameter-table';
+import { ACTIVATED, CONTAINER_ID, CONTAINER_NAME } from '../common/parameter-table';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
     formSchema: ObjectSchema<any>;
     formattedProviders: { id: string; label: string }[];
-    fromSensitivityAnalysisParamsDataToFormValues: (
-        parameters: SensitivityAnalysisParametersInfos<EquipmentsContainer>
-    ) => any;
-    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos<EquipmentsContainer>;
-    params: SensitivityAnalysisParametersInfos<EquipmentsContainer> | null;
+    fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfosEnriched) => any;
+    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfosEnriched;
+    params: SensitivityAnalysisParametersInfosEnriched | null;
     paramsLoaded: boolean;
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -116,8 +114,7 @@ export const useSensitivityAnalysisParametersForm = ({
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
-    const [factorCountParams, setFactorCountParams] =
-        useState<SensitivityAnalysisParametersInfos<EquipmentsContainer> | null>(null);
+    const [factorCountParams, setFactorCountParams] = useState<SensitivityAnalysisParametersInfosEnriched | null>(null);
 
     const emptyFormData = useMemo(() => {
         return {
@@ -256,9 +253,7 @@ export const useSensitivityAnalysisParametersForm = ({
     }, [updateFactorCount]);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
-        (
-            parameters: SensitivityAnalysisParametersInfos<EquipmentsContainer>
-        ): SensitivityAnalysisParametersFormSchema => {
+        (parameters: SensitivityAnalysisParametersInfosEnriched): SensitivityAnalysisParametersFormSchema => {
             return {
                 [PROVIDER]: parameters[PROVIDER],
                 [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: parameters.flowFlowSensitivityValueThreshold,

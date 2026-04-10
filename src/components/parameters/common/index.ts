@@ -16,3 +16,5 @@ export * from './widget';
 export * from './voltage-level-table';
 export * from './limitreductions';
 export * from './contingency-table';
+export { mapIdsToEquipmentsContainer } from './utils';
+export { mapEquipmentsContainerToIds } from './utils';

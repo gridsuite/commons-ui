@@ -15,11 +15,15 @@ import { CreateParameterDialog, LabelledButton } from '../common';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
-import { fetchPccMinParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
+import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { ElementType, snackWithFallback } from '../../../utils';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { fromPccMinParametersFormToParamValues, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
+import {
+    fromPccMinParametersFormToParamValues,
+    fromPccMinParamsDataToFormValues,
+    PccMinParametersEnriched,
+} from './pcc-min-form-utils';
 
 export function PccMinParametersInLine({
     studyUuid,
@@ -28,7 +32,7 @@ export function PccMinParametersInLine({
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    pccMinParameters: PccMinParameters | null;
+    pccMinParameters: PccMinParametersEnriched | null;
 }>) {
     const pccMinMethods = UsePccMinParametersForm({
         parametersUuid: null,

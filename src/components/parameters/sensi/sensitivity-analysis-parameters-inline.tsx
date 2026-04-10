@@ -12,7 +12,7 @@ import type { UUID } from 'node:crypto';
 import {
     ElementType,
     mergeSx,
-    SensitivityAnalysisParametersInfos,
+    SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
 } from '../../../utils';
 import { ComputingType, CreateParameterDialog } from '../common';
@@ -30,7 +30,6 @@ import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parame
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
 import { BuildStatus } from '../../node/constant';
-import { EquipmentsContainer } from '../common/parameter-table';
 
 interface SensitivityAnalysisParametersProps {
     studyUuid: UUID | null;
@@ -75,7 +74,7 @@ export function SensitivityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSensitivityAnalysisParameters(newParams[0].id)
-                    .then((parameters: SensitivityAnalysisParametersInfos<EquipmentsContainer>) => {
+                    .then((parameters: SensitivityAnalysisParametersInfosEnriched) => {
                         console.info(`loading the following sensi parameters : ${parameters.uuid}`);
                         reset(sensitivityAnalysisMethods.fromSensitivityAnalysisParamsDataToFormValues(parameters), {
                             keepDefaultValues: true,

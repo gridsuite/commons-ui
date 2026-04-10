@@ -9,16 +9,16 @@ import {
     ColumnsDef,
     DESCRIPTION,
     ACTIVATED,
-    CONTAINER_NAME,
-    CONTAINER_ID,
     NAME,
     ID,
     EquipmentsContainer,
+    CONTAINER_NAME,
+    CONTAINER_ID,
 } from '../parameter-table';
 import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { ContingencyListsInfos } from './types';
+import { ContingencyListsInfosEnriched } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [
     {
@@ -80,15 +80,17 @@ export const getContingencyListsInfosFormSchema = () => {
         .required();
 };
 
-export const toFormValuesContingencyListsInfos = (contingencyListsInfos: ContingencyListsInfos[]) => {
+export const toFormValuesContingencyListsInfos = (contingencyListsInfos: ContingencyListsInfosEnriched[]) => {
     return {
-        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: ContingencyListsInfos) => ({
-            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: EquipmentsContainer) => ({
-                [NAME]: c[CONTAINER_NAME],
-                [ID]: c[CONTAINER_ID],
-            })),
-            [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
-            [ACTIVATED]: contingencyListInfos[ACTIVATED],
-        })),
+        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map(
+            (contingencyListInfos: ContingencyListsInfosEnriched) => ({
+                [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: EquipmentsContainer) => ({
+                    [NAME]: c[CONTAINER_NAME],
+                    [ID]: c[CONTAINER_ID],
+                })),
+                [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
+                [ACTIVATED]: contingencyListInfos[ACTIVATED],
+            })
+        ),
     };
 };
