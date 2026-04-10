@@ -10,20 +10,20 @@ import { useWatch } from 'react-hook-form';
 import { AutocompleteInput, useCustomFormContext } from '../../../inputs';
 import { areIdsEqual, FieldConstants, getObjectId, Option } from '../../../../utils';
 import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
-import { ConnectablePositionFormInfos, ConnectivityNetworkProps } from './connectivity.type';
+import { ConnectivityNetworkProps } from './connectivity.type';
 import { fetchBusBarSectionsForNewCoupler } from '../../../../services';
+
+export interface VoltageLevelConnectivityFormPreviousValuesProps {
+    voltageLevelId?: string;
+    busOrBusbarSectionId?: string;
+}
 
 export interface VoltageLevelConnectivityFormProps extends ConnectivityNetworkProps {
     id?: string;
     voltageLevelSelectLabel?: string;
     onVoltageLevelChangeCallback?: () => void;
     isEquipmentModification?: boolean;
-    previousValues?: {
-        connectablePosition?: ConnectablePositionFormInfos;
-        voltageLevelId?: string;
-        busOrBusbarSectionId?: string;
-        terminalConnected?: boolean | null;
-    };
+    previousValues?: VoltageLevelConnectivityFormPreviousValuesProps;
 }
 
 export function VoltageLevelConnectivityForm({

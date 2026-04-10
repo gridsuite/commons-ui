@@ -12,7 +12,12 @@ import { CONNECTION_DIRECTIONS, FieldConstants, getConnectionDirectionLabel } fr
 import { SelectInput, SwitchInput, TextInput } from '../../../inputs';
 import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
 import { PositionForm } from './PositionForm';
-import { VoltageLevelConnectivityForm, VoltageLevelConnectivityFormProps } from './VoltageLevelConnectivityForm';
+import {
+    VoltageLevelConnectivityForm,
+    VoltageLevelConnectivityFormPreviousValuesProps,
+    VoltageLevelConnectivityFormProps,
+} from './VoltageLevelConnectivityForm';
+import { ConnectablePositionFormInfos } from './connectivity.type';
 
 /**
  * Hook to handle a 'connectivity value' (voltage level, bus or bus bar section)
@@ -30,7 +35,14 @@ import { VoltageLevelConnectivityForm, VoltageLevelConnectivityFormProps } from 
  * @returns JSX.Element
  */
 
-interface ConnectivityFormProps extends VoltageLevelConnectivityFormProps {}
+interface ConnectivityFormPreviousValuesProps extends VoltageLevelConnectivityFormPreviousValuesProps {
+    connectablePosition?: ConnectablePositionFormInfos;
+    terminalConnected?: boolean | null;
+}
+
+interface ConnectivityFormProps extends VoltageLevelConnectivityFormProps {
+    previousValues?: ConnectivityFormPreviousValuesProps;
+}
 
 export function ConnectivityForm({
     id = FieldConstants.CONNECTIVITY,
@@ -64,6 +76,7 @@ export function ConnectivityForm({
                     id={id}
                     voltageLevelSelectLabel={voltageLevelSelectLabel}
                     onVoltageLevelChangeCallback={onVoltageLevelChangeCallback}
+                    isEquipmentModification={isEquipmentModification}
                     previousValues={previousValues}
                     voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
