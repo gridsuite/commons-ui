@@ -7,8 +7,8 @@
 import { useMemo } from 'react';
 
 import { useWatch } from 'react-hook-form';
+import { Grid } from '@mui/material';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
-import GridItem from '../../../grid/grid-item';
 import { AutocompleteInput, TextInput } from '../../../inputs';
 import { italicFontTextField } from '../form.utils';
 
@@ -18,7 +18,7 @@ type PropertyFormProps = {
     predefinedProperties: PredefinedProperties;
 };
 
-export const PropertyForm = ({ name, index, predefinedProperties }: PropertyFormProps) => {
+export function PropertyForm({ name, index, predefinedProperties }: PropertyFormProps) {
     const watchPropertyName = useWatch({ name: `${name}.${index}.${FieldConstants.NAME}` });
     const watchPropertyPreviousValue = useWatch({
         name: `${name}.${index}.${FieldConstants.PREVIOUS_VALUE}`,
@@ -40,60 +40,48 @@ export const PropertyForm = ({ name, index, predefinedProperties }: PropertyForm
         return values.sort((a, b) => a.localeCompare(b));
     }, [watchPropertyName, predefinedProperties]);
 
-    const nameField = (
-        <AutocompleteInput
-            name={`${name}.${index}.${FieldConstants.NAME}`}
-            options={predefinedNames}
-            label="PropertyName"
-            size="small"
-            allowNewValue
-        />
+    return (
+        <>
+            {watchPropertyDeletionMark || (watchPropertyAdded === false && watchPropertyPreviousValue) ? (
+                <Grid item xs={4}>
+                    <TextInput
+                        name={`${name}.${index}.${FieldConstants.NAME}`}
+                        label="PropertyName"
+                        formProps={{ disabled: true, ...italicFontTextField }}
+                    />
+                </Grid>
+            ) : (
+                <Grid item xs={4}>
+                    <AutocompleteInput
+                        name={`${name}.${index}.${FieldConstants.NAME}`}
+                        options={predefinedNames}
+                        label="PropertyName"
+                        size="small"
+                        allowNewValue
+                    />
+                </Grid>
+            )}
+            {watchPropertyDeletionMark ? (
+                <Grid item xs={4}>
+                    <TextInput
+                        name={`${name}.${index}.${FieldConstants.VALUE}`}
+                        label="PropertyValue"
+                        previousValue={watchPropertyPreviousValue}
+                        formProps={{ disabled: true, ...italicFontTextField }}
+                    />
+                </Grid>
+            ) : (
+                <Grid item xs={4}>
+                    <AutocompleteInput
+                        name={`${name}.${index}.${FieldConstants.VALUE}`}
+                        options={predefinedValues}
+                        label="PropertyValue"
+                        size="small"
+                        allowNewValue
+                        previousValue={watchPropertyPreviousValue}
+                    />
+                </Grid>
+            )}
+        </>
     );
-
-    const nameReadOnlyField = (
-        <TextInput
-            name={`${name}.${index}.${FieldConstants.NAME}`}
-            label="PropertyName"
-            formProps={{ disabled: true, ...italicFontTextField }}
-        />
-    );
-
-    const valueField = (
-        <AutocompleteInput
-            name={`${name}.${index}.${FieldConstants.VALUE}`}
-            options={predefinedValues}
-            label="PropertyValue"
-            size="small"
-            allowNewValue
-            previousValue={watchPropertyPreviousValue}
-        />
-    );
-
-    const valueReadOnlyField = (
-        <TextInput
-            name={`${name}.${index}.${FieldConstants.VALUE}`}
-            label="PropertyValue"
-            previousValue={watchPropertyPreviousValue}
-            formProps={{ disabled: true, ...italicFontTextField }}
-        />
-    );
-
-    function renderPropertyLine() {
-        return (
-            <>
-                {watchPropertyDeletionMark || (watchPropertyAdded === false && watchPropertyPreviousValue) ? (
-                    <GridItem size={5}>{nameReadOnlyField}</GridItem>
-                ) : (
-                    <GridItem size={5}>{nameField}</GridItem>
-                )}
-                {watchPropertyDeletionMark ? (
-                    <GridItem size={5}>{valueReadOnlyField}</GridItem>
-                ) : (
-                    <GridItem size={5}>{valueField}</GridItem>
-                )}
-            </>
-        );
-    }
-
-    return renderPropertyLine();
-};
+}

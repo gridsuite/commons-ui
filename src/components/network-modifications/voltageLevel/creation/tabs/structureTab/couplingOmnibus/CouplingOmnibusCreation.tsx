@@ -7,9 +7,9 @@
 
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { Grid } from '@mui/material';
 import { AutocompleteInput } from '../../../../../../inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
 import { Option } from '../../../../../../../utils/types/types';
-import GridItem from '../../../../../../grid/grid-item';
 import { FieldConstants } from '../../../../../../../utils';
 
 interface CouplingOmnibusCreationProps {
@@ -39,7 +39,7 @@ export function CouplingOmnibusCreation({ index, sectionOptions }: Readonly<Coup
 
     return (
         <>
-            <GridItem size={4}>
+            <Grid item xs={4}>
                 <AutocompleteInput
                     allowNewValue
                     forcePopupIcon
@@ -48,8 +48,8 @@ export function CouplingOmnibusCreation({ index, sectionOptions }: Readonly<Coup
                     options={sectionOptions ?? []}
                     size="small"
                 />
-            </GridItem>
-            <GridItem size={4}>
+            </Grid>
+            <Grid item xs={4}>
                 <AutocompleteInput
                     allowNewValue
                     forcePopupIcon
@@ -58,7 +58,7 @@ export function CouplingOmnibusCreation({ index, sectionOptions }: Readonly<Coup
                     options={sectionOptions ?? []}
                     size="small"
                 />
-            </GridItem>
+            </Grid>
         </>
     );
 }
