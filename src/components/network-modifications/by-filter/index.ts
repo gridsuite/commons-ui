@@ -6,3 +6,4 @@
  */
 
 export * from './deletion';
+export * from './assignment';
