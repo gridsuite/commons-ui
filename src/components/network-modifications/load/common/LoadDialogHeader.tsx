@@ -5,13 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { LoadFormInfos } from './load.types';
 import { filledTextField } from '../../common';
 import { SelectInput, TextInput } from '../../../inputs';
-import GridItem from '../../../grid/grid-item';
 import { FieldConstants, getLoadTypeLabel, LOAD_TYPES } from '../../../../utils';
 
 export interface LoadDialogHeaderProps {
@@ -68,18 +67,16 @@ export function LoadDialogHeader({ loadToModify, isModification = false }: Reado
     );
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '15px',
-            }}
-        >
-            <Grid container spacing={2}>
-                <GridItem size={4}>{loadIdField}</GridItem>
-                <GridItem size={4}>{loadNameField}</GridItem>
-                <GridItem size={4}>{loadTypeField}</GridItem>
+        <Grid container spacing={2}>
+            <Grid item xs>
+                {loadIdField}
             </Grid>
-        </Box>
+            <Grid item xs>
+                {loadNameField}
+            </Grid>
+            <Grid item xs>
+                {loadTypeField}
+            </Grid>
+        </Grid>
     );
 }
