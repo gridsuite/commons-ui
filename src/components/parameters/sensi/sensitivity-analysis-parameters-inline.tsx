@@ -52,7 +52,6 @@ export function SensitivityAnalysisParametersInline({
 }: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
-    console.info(`globalBuildStatus : ${globalBuildStatus}`);
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
         studyUuid,
         currentNodeUuid,
@@ -61,6 +60,7 @@ export function SensitivityAnalysisParametersInline({
         name: null,
         description: null,
         parametersUuid: null,
+        globalBuildStatus: globalBuildStatus
     });
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);

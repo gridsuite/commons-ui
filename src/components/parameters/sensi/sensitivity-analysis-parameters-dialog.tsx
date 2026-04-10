@@ -50,6 +50,7 @@ export function SensitivityAnalysisParametersDialog({
         parametersUuid: id,
         name,
         description,
+        globalBuildStatus,
     });
     const {
         formState: { errors, dirtyFields },
