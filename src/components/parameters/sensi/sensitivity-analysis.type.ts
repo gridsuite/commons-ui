@@ -6,7 +6,8 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { EquipmentsContainer } from '../common/parameter-table/types';
+
+import { EquipmentsContainer } from '../../../utils';
 
 type EquipmentInfos = EquipmentsContainer | UUID;
 

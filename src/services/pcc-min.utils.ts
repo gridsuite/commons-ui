@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { fetchElementNames } from './directory';
-import { FILTERS } from '../utils';
-import { mapEquipmentsContainerToIds, mapIdsToEquipmentsContainer } from '../components/parameters/common/utils';
+import { FILTERS, mapEquipmentsContainerToIds, mapIdsToEquipmentsContainer } from '../utils';
 import { PccMinParameters, PccMinParametersEnriched } from '../components/parameters/pcc-min/pcc-min-form-utils';
 
 export function mapPccMinParameters(parameters: PccMinParametersEnriched): PccMinParameters {

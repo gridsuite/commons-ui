@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { fetchElementNames } from './directory';
-import { mapEquipmentsContainerToIds, mapIdsToEquipmentsContainer } from '../components/parameters/common/utils';
 import {
     SensitivityAnalysisParametersInfos,
     SensitivityAnalysisParametersInfosEnriched,
 } from '../components/parameters/sensi/sensitivity-analysis.type';
+import { mapEquipmentsContainerToIds, mapIdsToEquipmentsContainer } from '../utils';
 
 export function mapSensitivityAnalysisParameters(
     parametersInfos: SensitivityAnalysisParametersInfosEnriched

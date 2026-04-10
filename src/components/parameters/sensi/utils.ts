@@ -62,7 +62,7 @@ const getSensitivityTypeSchema = () => {
     };
 };
 
-const getContingencyListsSchema = () => {
+const getContingenciesSchema = () => {
     return {
         [CONTINGENCY_LISTS]: yup.array().of(
             yup.object().shape({
@@ -92,7 +92,7 @@ export const getSensiHVDCsFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.min(1, 'FieldIsRequired'),
                 }),
-            ...getContingencyListsSchema(),
+            ...getContingenciesSchema(),
         })
     ),
 });
@@ -143,7 +143,7 @@ export const getSensiInjectionsFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.min(1, 'FieldIsRequired'),
                 }),
-            ...getContingencyListsSchema(),
+            ...getContingenciesSchema(),
         })
     ),
 });
@@ -200,7 +200,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.required(),
                 }),
-            ...getContingencyListsSchema(),
+            ...getContingenciesSchema(),
         })
     ),
 });
@@ -282,7 +282,7 @@ export const getSensiNodesFormSchema = () => ({
                     [NAME]: yup.string().nullable().defined(),
                 })
             ),
-            ...getContingencyListsSchema(),
+            ...getContingenciesSchema(),
         })
     ),
 });
@@ -335,7 +335,7 @@ export const getSensiPSTsFormSchema = () => ({
                     is: (activated: boolean) => activated,
                     then: (schema) => schema.min(1, 'FieldIsRequired'),
                 }),
-            ...getContingencyListsSchema(),
+            ...getContingenciesSchema(),
         })
     ),
 });

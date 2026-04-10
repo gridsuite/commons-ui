@@ -7,7 +7,8 @@
 import { UUID } from 'node:crypto';
 import { ACTIVATED, DESCRIPTION } from '../parameter-table/constants';
 import { CONTINGENCY_LISTS } from '../constants';
-import { EquipmentsContainer } from '../parameter-table/types';
+
+import { EquipmentsContainer } from '../../../../utils';
 
 export interface ContingencyListsInfosEnriched {
     [CONTINGENCY_LISTS]: EquipmentsContainer[];

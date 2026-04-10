@@ -7,6 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { MessageDescriptor, PrimitiveType } from 'react-intl';
 import { ElementType } from './elementType';
+import { CONTAINER_ID, CONTAINER_NAME } from '../../components/parameters/common/parameter-table/constants';
 
 export type Input = string | number;
 
@@ -85,3 +86,7 @@ export type ErrorMessageDescriptor = {
     descriptor: MessageDescriptor;
     values?: FormatValues;
 };
+export interface EquipmentsContainer {
+    [CONTAINER_ID]: string;
+    [CONTAINER_NAME]: string | null;
+}

@@ -21,3 +21,5 @@ export * from './loadflow.type';
 export * from '../../components/parameters/sensi/sensitivity-analysis.type';
 export * from './dynamic-margin-calculation.type';
 export * from './network-modification-types';
+export { mapIdsToEquipmentsContainer } from './utils';
+export { mapEquipmentsContainerToIds } from './utils';

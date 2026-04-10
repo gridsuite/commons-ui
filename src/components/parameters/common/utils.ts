@@ -7,7 +7,6 @@
 import { ObjectSchema } from 'yup';
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { FieldErrors, UseFormReturn } from 'react-hook-form';
-import type { UUID } from 'node:crypto';
 import {
     isObjectEmpty,
     ParameterType,
@@ -17,8 +16,6 @@ import {
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
 import yup from '../../../utils/yupConfig';
-import { EquipmentsContainer } from './parameter-table/types';
-import { CONTAINER_ID, CONTAINER_NAME } from './parameter-table';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
     const shape: { [key: string]: yup.AnySchema } = {};
@@ -180,19 +177,4 @@ export function useTabs<TTabValue extends string>({
         onTabChange: handleTabChange,
         onError,
     };
-}
-export function mapEquipmentsContainerToIds(containers: EquipmentsContainer[] | undefined): UUID[] {
-    return (containers ? containers.map((c) => c.containerId) : []) as UUID[];
-}
-
-export function mapIdsToEquipmentsContainer(
-    ids: UUID[] | undefined,
-    elementNames: Map<UUID, string>
-): EquipmentsContainer[] {
-    return ids
-        ? ids.map((id) => ({
-              [CONTAINER_ID]: id,
-              [CONTAINER_NAME]: elementNames.get(id) ?? null,
-          }))
-        : [];
 }

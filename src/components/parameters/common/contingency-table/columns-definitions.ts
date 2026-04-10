@@ -11,11 +11,10 @@ import {
     ACTIVATED,
     NAME,
     ID,
-    EquipmentsContainer,
     CONTAINER_NAME,
     CONTAINER_ID,
 } from '../parameter-table';
-import { ElementType } from '../../../../utils';
+import { ElementType, EquipmentsContainer } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
 import { ContingencyListsInfosEnriched } from './types';

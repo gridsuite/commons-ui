@@ -6,7 +6,7 @@
  */
 import { fetchElementNames } from './directory';
 import { SAParameters, SAParametersEnriched } from '../components/parameters/security-analysis/types';
-import { mapEquipmentsContainerToIds, mapIdsToEquipmentsContainer } from '../components/parameters/common/utils';
+import { mapEquipmentsContainerToIds, mapIdsToEquipmentsContainer } from '../utils';
 
 export function mapSecurityAnalysisParameters(parameters: SAParametersEnriched): SAParameters {
     return {

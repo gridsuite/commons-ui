@@ -4,8 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { CONTAINER_ID, CONTAINER_NAME } from './constants';
-
 export interface Parameters {
     columnsDef: ColumnsDef[];
     name: string;
@@ -26,9 +24,4 @@ export interface ColumnsDef {
     textItems?: boolean;
     descriptionItems?: boolean;
     width?: string;
-}
-
-export interface EquipmentsContainer {
-    [CONTAINER_ID]: string;
-    [CONTAINER_NAME]: string | null;
 }

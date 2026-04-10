@@ -7,8 +7,8 @@
 
 import { UUID } from 'node:crypto';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
-import { EquipmentsContainer } from '../common/parameter-table/types';
 import { NAME } from '../common/parameter-table/constants';
+import { EquipmentsContainer } from '../../../utils';
 
 export const fromPccMinParametersFormToParamValues = (
     newParams: Record<string, any>
