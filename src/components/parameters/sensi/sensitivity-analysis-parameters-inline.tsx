@@ -60,7 +60,7 @@ export function SensitivityAnalysisParametersInline({
         name: null,
         description: null,
         parametersUuid: null,
-        globalBuildStatus: globalBuildStatus
+        globalBuildStatus: globalBuildStatus,
     });
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
