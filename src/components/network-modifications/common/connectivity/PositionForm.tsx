@@ -34,8 +34,8 @@ export function PositionForm({
 
     const [isDiagramPaneOpen, setIsDiagramPaneOpen] = useState(false);
     const { isNodeBuilt } = useCustomFormContext();
-    // @ts-ignore
-    const watchVoltageLevelId = useWatch({
+
+    const watchVoltageLevelId: string | null | undefined = useWatch({
         name: `${id}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
     });
 
@@ -97,11 +97,13 @@ export function PositionForm({
                             </Tooltip>
                         </IconButton>
                     </Grid>
-                    <PositionDiagramPane
-                        open={isDiagramPaneOpen}
-                        onClose={handleCloseDiagramPane}
-                        voltageLevelId={voltageLevelForPositionIcon}
-                    />
+                    {voltageLevelForPositionIcon && (
+                        <PositionDiagramPane
+                            open={isDiagramPaneOpen}
+                            onClose={handleCloseDiagramPane}
+                            voltageLevelId={voltageLevelForPositionIcon}
+                        />
+                    )}
                 </>
             )}
         </Grid>
