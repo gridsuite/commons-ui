@@ -15,11 +15,12 @@ import {
     fromPccMinParametersFormToParamValues,
     fromPccMinParamsDataToFormValues,
     fromStudyPccMinParamsDataToFormValues,
+    PccMinParametersEnriched,
 } from './pcc-min-form-utils';
 import { useSnackMessage } from '../../../hooks';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
-import { fetchPccMinParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
+import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { updateParameter } from '../../../services';
 import { ElementType, snackWithFallback } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
@@ -45,7 +46,7 @@ type UsePccMinParametersFormProps =
           name: null;
           description: null;
           studyUuid: UUID | null;
-          parameters: PccMinParameters | null;
+          parameters: PccMinParametersEnriched | null;
       };
 
 export const UsePccMinParametersForm = ({

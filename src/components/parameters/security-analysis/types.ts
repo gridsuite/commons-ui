@@ -15,10 +15,10 @@ import {
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
 } from '../common/constants';
-import { ContingencyListsInfos } from '../common/contingency-table/types';
+import { ContingencyListsInfos, ContingencyListsInfosEnriched } from '../common/contingency-table/types';
 import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
 
-export interface SAParameters {
+export type SAParameters = {
     uuid?: UUID;
     [PARAM_SA_PROVIDER]: string;
     [CONTINGENCY_LISTS_INFOS]: ContingencyListsInfos[];
@@ -28,4 +28,8 @@ export interface SAParameters {
     [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
     [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
     [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
-}
+};
+
+export type SAParametersEnriched = Omit<SAParameters, typeof CONTINGENCY_LISTS_INFOS> & {
+    [CONTINGENCY_LISTS_INFOS]: ContingencyListsInfosEnriched[];
+};

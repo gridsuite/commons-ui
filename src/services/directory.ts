@@ -75,3 +75,17 @@ export function hasElementPermission(elementUuid: UUID, permission: PermissionTy
             return false;
         });
 }
+
+export function fetchElementNames(elementUuids: Set<string>) {
+    console.info('fetch directory element names');
+
+    const params = new URLSearchParams();
+    elementUuids.forEach((id) => {
+        params.append('ids', id);
+    });
+
+    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/name?${params.toString()}`;
+    console.log(url);
+
+    return backendFetchJson(url);
+}

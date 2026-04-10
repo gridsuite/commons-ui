@@ -5,11 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PccMinParameters } from '../../../services';
-import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
-import { NAME } from '../../inputs';
+import { UUID } from 'node:crypto';
+import { FILTERS, ID } from '../../../utils/constants/filterConstant';
+import { NAME } from '../common/parameter-table/constants';
+import { EquipmentsContainer } from '../../../utils';
 
-export const fromPccMinParametersFormToParamValues = (newParams: Record<string, any>): PccMinParameters | null => ({
+export const fromPccMinParametersFormToParamValues = (
+    newParams: Record<string, any>
+): PccMinParametersEnriched | null => ({
     filters:
         newParams[FILTERS]?.map((filter: any) => ({
             filterId: filter[ID],
@@ -17,7 +20,7 @@ export const fromPccMinParametersFormToParamValues = (newParams: Record<string, 
         })) ?? [],
 });
 
-export const fromPccMinParamsDataToFormValues = (parameters: PccMinParameters | null): Record<string, any> => ({
+export const fromPccMinParamsDataToFormValues = (parameters: PccMinParametersEnriched | null): Record<string, any> => ({
     [FILTERS]:
         parameters?.[FILTERS]?.map((filter) => ({
             [ID]: filter[FILTER_ID],
@@ -25,10 +28,18 @@ export const fromPccMinParamsDataToFormValues = (parameters: PccMinParameters | 
         })) ?? [],
 });
 
-export const fromStudyPccMinParamsDataToFormValues = (parameters: PccMinParameters | null): Record<string, any> => ({
+export const fromStudyPccMinParamsDataToFormValues = (
+    parameters: PccMinParametersEnriched | null
+): Record<string, any> => ({
     [FILTERS]:
         parameters?.[FILTERS]?.map((filter) => ({
             [ID]: filter[FILTER_ID],
             [NAME]: filter[FILTER_NAME],
         })) ?? [],
 });
+export type PccMinParametersEnriched = {
+    [FILTERS]: EquipmentsContainer[];
+};
+export type PccMinParameters = {
+    [FILTERS]: UUID[];
+};

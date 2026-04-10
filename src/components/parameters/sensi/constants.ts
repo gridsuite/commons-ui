@@ -23,8 +23,6 @@ export const PARAMETER_SENSI_INJECTION = 'sensitivityInjection';
 export const PARAMETER_SENSI_HVDC = 'sensitivityHVDC';
 export const PARAMETER_SENSI_PST = 'sensitivityPST';
 export const PARAMETER_SENSI_NODES = 'sensitivityNodes';
-export const CONTAINER_ID = 'containerId';
-export const CONTAINER_NAME = 'containerName';
 
 export const MAX_RESULTS_COUNT = 500000;
 export const MAX_VARIABLES_COUNT = 5000;

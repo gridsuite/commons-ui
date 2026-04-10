@@ -11,9 +11,9 @@ import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
 import type { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
 import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
-import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
+import { SensitivityAnalysisParametersInfosEnriched } from '../../components/parameters/sensi/sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
-import { SAParameters } from '../../components/parameters/security-analysis/types';
+import { SAParametersEnriched } from '../../components/parameters/security-analysis/types';
 import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
 
 export enum ParameterType {
@@ -41,9 +41,9 @@ export type SpecificParametersValues = Record<string, any>;
 export type SpecificParametersPerProvider = Record<string, SpecificParametersValues>;
 
 export type ParametersInfos<T extends ComputingType> = T extends ComputingType.SENSITIVITY_ANALYSIS
-    ? SensitivityAnalysisParametersInfos
+    ? SensitivityAnalysisParametersInfosEnriched
     : T extends ComputingType.SECURITY_ANALYSIS
-      ? SAParameters
+      ? SAParametersEnriched
       : T extends ComputingType.LOAD_FLOW
         ? LoadFlowParametersInfos
         : T extends ComputingType.DYNAMIC_SIMULATION

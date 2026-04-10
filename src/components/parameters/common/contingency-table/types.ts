@@ -5,15 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
-import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table/constants';
+import { ACTIVATED, DESCRIPTION } from '../parameter-table/constants';
 import { CONTINGENCY_LISTS } from '../constants';
 
-export interface IdName {
-    [ID]: UUID;
-    [NAME]: string;
+import { EquipmentsContainer } from '../../../../utils';
+
+export interface ContingencyListsInfosEnriched {
+    [CONTINGENCY_LISTS]: EquipmentsContainer[];
+    [DESCRIPTION]: string;
+    [ACTIVATED]: boolean;
 }
+
 export interface ContingencyListsInfos {
-    [CONTINGENCY_LISTS]: IdName[];
+    [CONTINGENCY_LISTS]: UUID[];
     [DESCRIPTION]: string;
     [ACTIVATED]: boolean;
 }
