@@ -90,7 +90,7 @@ type UseSensitivityAnalysisParametersFormProps =
           currentRootNetworkUuid: null;
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: UUID;
-          globalBuildStatus: BuildStatus;
+          globalBuildStatus: BuildStatus | undefined;
       }
     | {
           name: null;
