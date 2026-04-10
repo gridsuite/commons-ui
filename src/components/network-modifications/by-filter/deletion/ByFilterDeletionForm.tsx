@@ -4,9 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import { Grid } from '@mui/material';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AutocompleteInput, DirectoryItemsInput } from '../../../inputs';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
@@ -26,25 +25,20 @@ export function ByFilterDeletionForm() {
         setValue(FieldConstants.FILTERS, []);
     }, [setValue]);
 
-    const typesOptions = useMemo(() => {
-        return Object.values(EQUIPMENT_TYPE_ORDER);
-    }, []);
-
     return (
-        <Grid container spacing={2} padding={0.5} alignItems="center">
-            <Grid item xs={6}>
+        <Grid container spacing={2} pt={1}>
+            <Grid item xs>
                 <AutocompleteInput
                     isOptionEqualToValue={richTypeEquals}
                     name={FieldConstants.TYPE}
                     label="Type"
-                    options={typesOptions}
+                    options={EQUIPMENT_TYPE_ORDER}
                     onChangeCallback={handleEquipmentTypeChange}
                     getOptionLabel={getOptionLabel}
                     size="small"
-                    formProps={{ variant: 'filled' }}
                 />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs>
                 <DirectoryItemsInput
                     key={equipmentType}
                     name={FieldConstants.FILTERS}

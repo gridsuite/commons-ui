@@ -23,7 +23,6 @@ import { filledTextField } from '../common';
 import { AutocompleteInput } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
 import { HvdcLccDeletionSpecificForm } from './hvdcLccDeletion/HvdcLccDeletionSpecificForm';
-import GridItem from '../../grid/grid-item';
 import { useGetLabelEquipmentTypes } from '../../../hooks/useGetLabelEquipmentTypes';
 
 export interface EquipmentDeletionFormProps {
@@ -144,47 +143,47 @@ export function EquipmentDeletionForm({
         setValue(FieldConstants.EQUIPMENT_ID, null);
     }, [setValue]);
 
-    const equipmentTypeField = (
-        <AutocompleteInput
-            isOptionEqualToValue={richTypeEquals}
-            name={FieldConstants.TYPE}
-            label="Type"
-            options={typesOptions}
-            onChangeCallback={handleTypeChange}
-            getOptionLabel={getOptionLabel}
-            size="small"
-            inputTransform={(value) => typesOptions.find((option) => option === value) || value}
-            formProps={filledTextField}
-        />
-    );
-
-    const equipmentField = (
-        <AutocompleteInput
-            isOptionEqualToValue={areIdsEqual}
-            allowNewValue
-            forcePopupIcon
-            name={FieldConstants.EQUIPMENT_ID}
-            label="ID"
-            options={equipmentsOptions}
-            getOptionLabel={getObjectId}
-            // hack to work with freesolo autocomplete
-            // setting null programmatically when freesolo is enable won't empty the field
-            inputTransform={(value) => value ?? ''}
-            outputTransform={(value: any) => (value === '' ? null : getObjectId(value))}
-            size="small"
-            formProps={filledTextField}
-        />
-    );
-
     return (
-        <>
-            <Grid container spacing={2}>
-                <GridItem>{equipmentTypeField}</GridItem>
-                <GridItem>{equipmentField}</GridItem>
+        <Grid container direction="column">
+            <Grid item>
+                <Grid container spacing={2}>
+                    <Grid item xs>
+                        <AutocompleteInput
+                            isOptionEqualToValue={richTypeEquals}
+                            name={FieldConstants.TYPE}
+                            label="Type"
+                            options={typesOptions}
+                            onChangeCallback={handleTypeChange}
+                            getOptionLabel={getOptionLabel}
+                            size="small"
+                            inputTransform={(value) => typesOptions.find((option) => option === value) || value}
+                            formProps={filledTextField}
+                        />
+                    </Grid>
+                    <Grid item xs>
+                        <AutocompleteInput
+                            isOptionEqualToValue={areIdsEqual}
+                            allowNewValue
+                            forcePopupIcon
+                            name={FieldConstants.EQUIPMENT_ID}
+                            label="ID"
+                            options={equipmentsOptions}
+                            getOptionLabel={getObjectId}
+                            // hack to work with freesolo autocomplete
+                            // setting null programmatically when freesolo is enable won't empty the field
+                            inputTransform={(value) => value ?? ''}
+                            outputTransform={(value: any) => (value === '' ? null : getObjectId(value))}
+                            size="small"
+                            formProps={filledTextField}
+                        />
+                    </Grid>
+                </Grid>
             </Grid>
-            {watchSpecificData?.specificType === FieldConstants.HVDC_LINE_LCC_DELETION_SPECIFIC_TYPE && (
-                <HvdcLccDeletionSpecificForm />
-            )}
-        </>
+            <Grid item>
+                {watchSpecificData?.specificType === FieldConstants.HVDC_LINE_LCC_DELETION_SPECIFIC_TYPE && (
+                    <HvdcLccDeletionSpecificForm />
+                )}
+            </Grid>
+        </Grid>
     );
 }
