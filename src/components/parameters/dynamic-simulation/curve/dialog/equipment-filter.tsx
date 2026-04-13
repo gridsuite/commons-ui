@@ -134,12 +134,14 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
             return evaluateFilterFetcher?.(expertFilter);
         }, [equipmentType, selectedVoltageLevelIds, selectedCountries, selectedNominalVoltages, evaluateFilterFetcher]);
 
+        const [selectedRowsLength, setSelectedRowsLength] = useState(0);
         // fetching filtered equipments
         useEffect(() => {
             let ignore = false;
             if (gridReady && filteringEquipmentsFetcher !== undefined) {
-                // when close dialog, the current ref may be null => so check with '?'
                 setIsFetching(true);
+                setEquipmentRowData([]);
+                setSelectedRowsLength(0);
                 filteringEquipmentsFetcher
                     .then((equipments) => {
                         // using ignore flag to cancel fetches that do not return in order
@@ -148,19 +150,21 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                         }
                     })
                     .catch((error: Error) => {
-                        snackWithFallback(snackError, error, { headerId: 'FilterEvaluationError' });
+                        if (!ignore) {
+                            snackWithFallback(snackError, error, { headerId: 'FilterEvaluationError' });
+                        }
                     })
                     .finally(() => {
-                        setIsFetching(false);
+                        if (!ignore) {
+                            setIsFetching(false);
+                        }
                     });
             }
             return () => {
                 ignore = true;
             };
         }, [filteringEquipmentsFetcher, gridReady, snackError]);
-
         // grid configuration
-        const [selectedRowsLength, setSelectedRowsLength] = useState(0);
         const columnDefs = useMemo(() => {
             return [
                 {
