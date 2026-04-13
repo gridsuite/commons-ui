@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactElement } from 'react';
+import { CSSProperties, HTMLAttributes, Key } from 'react';
 import type { RowComponentProps } from 'react-window';
 import CheckboxItem from './checkbox-item';
 
@@ -16,7 +16,7 @@ export type VirtualizedItem = [
     option: string,
     selected: boolean,
     getOptionLabel: (option: string) => string,
-    itemProps?: ReactElement,
+    itemProps?: HTMLAttributes<HTMLElement> & { key: Key; style?: CSSProperties },
 ];
 
 function VirtualizedListItem({
@@ -28,16 +28,17 @@ function VirtualizedListItem({
 }) {
     const [option, selected, getOptionLabel, itemProps] = itemData[index];
 
-    const { key, ...restItemProps } = itemProps ?? {};
+    const { key, style: itemStyle, ...restItemProps } = itemProps ?? {};
     return (
         <CheckboxItem
             option={option}
             selected={selected}
             getOptionLabel={getOptionLabel}
             style={{
+                ...itemStyle,
                 ...style,
             }}
-            key={itemProps?.key}
+            key={key}
             {...restItemProps}
         />
     );
