@@ -13,7 +13,7 @@ import { useCreateRowData, useSnackMessage } from '../../../../hooks';
 import { ColumnsDef, ID, ACTIVATED, ParameterTable } from '../parameter-table';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, ParamContingencyLists } from './columns-definitions';
-import { ContingencyCount, ContingencyListsInfos } from './types';
+import { ContingencyCount, ContingencyListsInfosEnriched } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { snackWithFallback } from '../../../../utils';
 
@@ -29,7 +29,7 @@ export function ContingencyTable({
     const intl = useIntl();
     const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
     const [rowData, useFieldArrayOutput] = useCreateRowData(ParamContingencyLists);
-    const contingencyListsInfos: ContingencyListsInfos[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
+    const contingencyListsInfos: ContingencyListsInfosEnriched[] = useWatch({ name: CONTINGENCY_LISTS_INFOS });
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 

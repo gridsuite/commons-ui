@@ -15,10 +15,12 @@ import {
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
 } from '../common/constants';
-import { ContingencyListsInfos } from '../common/contingency-table/types';
+import { ContingencyListsInfos, ContingencyListsInfosEnriched, IdName } from '../common/contingency-table/types';
 import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
+import { fetchElementNames } from '../../../services/directory';
+import { ID, NAME } from '../common/parameter-table/constants';
 
-export interface SAParameters {
+export type SAParameters = {
     uuid?: UUID;
     [PARAM_SA_PROVIDER]: string;
     [CONTINGENCY_LISTS_INFOS]: ContingencyListsInfos[];
@@ -28,4 +30,53 @@ export interface SAParameters {
     [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
     [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: number;
     [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: number;
+};
+
+export type SAParametersEnriched = Omit<SAParameters, typeof CONTINGENCY_LISTS_INFOS> & {
+    [CONTINGENCY_LISTS_INFOS]: ContingencyListsInfosEnriched[];
+};
+
+export function mapSecurityAnalysisParameters(parameters: SAParametersEnriched): SAParameters {
+    return {
+        ...parameters,
+        contingencyListsInfos: parameters.contingencyListsInfos?.map((clInfos) => {
+            return {
+                ...clInfos,
+                contingencyLists: clInfos.contingencyLists.map((c) => c.id),
+            };
+        }),
+    };
+}
+
+function getEquipmentsContainerIds(params: SAParameters): Set<string> {
+    const allContainerIds = params.contingencyListsInfos
+        ? params.contingencyListsInfos.flatMap((cli) => cli.contingencyLists ?? [])
+        : [];
+    return new Set(allContainerIds);
+}
+
+export function enrichSecurityAnalysisParameters(parameters: SAParameters): Promise<SAParametersEnriched> {
+    const allElementIds = getEquipmentsContainerIds(parameters);
+
+    return fetchElementNames(allElementIds).then((elementNames) => {
+        const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
+            return ids
+                ? ids.map((id) => ({
+                      [ID]: id,
+                      [NAME]: elementNames.get(id) ?? null,
+                  }))
+                : [];
+        };
+        return {
+            ...parameters,
+            contingencyListsInfos: parameters.contingencyListsInfos
+                ? parameters.contingencyListsInfos.map((cli) => {
+                      return {
+                          ...cli,
+                          contingencyLists: mapIdsToIdNames(cli.contingencyLists),
+                      };
+                  })
+                : [],
+        };
+    });
 }

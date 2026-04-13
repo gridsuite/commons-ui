@@ -19,9 +19,9 @@ import {
 import { useSnackMessage } from '../../../hooks';
 import { DESCRIPTION, NAME } from '../../inputs';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
-import { fetchPccMinParameters, PccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
+import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { updateParameter } from '../../../services';
-import { ElementType, snackWithFallback } from '../../../utils';
+import { ElementType, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 
 export interface UsePccMinParametersFormReturn {
@@ -45,7 +45,7 @@ type UsePccMinParametersFormProps =
           name: null;
           description: null;
           studyUuid: UUID | null;
-          parameters: PccMinParameters | null;
+          parameters: PccMinParametersEnriched | null;
       };
 
 export const UsePccMinParametersForm = ({

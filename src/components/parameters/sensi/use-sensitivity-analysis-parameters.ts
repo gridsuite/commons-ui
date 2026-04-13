@@ -14,7 +14,7 @@ import {
     ElementType,
     FactorsCount,
     FieldConstants,
-    SensitivityAnalysisParametersInfos,
+    SensitivityAnalysisParametersInfosEnriched,
     snackWithFallback,
     UseParametersBackendReturnProps,
 } from '../../../utils';
@@ -64,9 +64,9 @@ export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
     formSchema: ObjectSchema<any>;
     formattedProviders: { id: string; label: string }[];
-    fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfos) => any;
-    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos;
-    params: SensitivityAnalysisParametersInfos | null;
+    fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfosEnriched) => any;
+    formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfosEnriched;
+    params: SensitivityAnalysisParametersInfosEnriched | null;
     paramsLoaded: boolean;
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -116,7 +116,7 @@ export const useSensitivityAnalysisParametersForm = ({
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmitAction, setIsSubmitAction] = useState(false);
 
-    const [factorCountParams, setFactorCountParams] = useState<SensitivityAnalysisParametersInfos | null>(null);
+    const [factorCountParams, setFactorCountParams] = useState<SensitivityAnalysisParametersInfosEnriched | null>(null);
 
     const emptyFormData = useMemo(() => {
         return {
@@ -255,7 +255,7 @@ export const useSensitivityAnalysisParametersForm = ({
     }, [updateFactorCount]);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
-        (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
+        (parameters: SensitivityAnalysisParametersInfosEnriched): SensitivityAnalysisParametersFormSchema => {
             return {
                 [PROVIDER]: parameters[PROVIDER],
                 [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: parameters.flowFlowSensitivityValueThreshold,

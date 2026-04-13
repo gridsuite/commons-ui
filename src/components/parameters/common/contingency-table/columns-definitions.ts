@@ -8,7 +8,7 @@ import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../par
 import { ElementType } from '../../../../utils';
 import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { IdName, ContingencyListsInfos } from './types';
+import { IdName, ContingencyListsInfosEnriched } from './types';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [
     {
@@ -67,15 +67,17 @@ export const getContingencyListsInfosFormSchema = () => {
         .required();
 };
 
-export const toFormValuesContingencyListsInfos = (contingencyListsInfos: ContingencyListsInfos[]) => {
+export const toFormValuesContingencyListsInfos = (contingencyListsInfos: ContingencyListsInfosEnriched[]) => {
     return {
-        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map((contingencyListInfos: ContingencyListsInfos) => ({
-            [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IdName) => ({
-                [NAME]: c[NAME],
-                [ID]: c[ID],
-            })),
-            [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
-            [ACTIVATED]: contingencyListInfos[ACTIVATED],
-        })),
+        [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map(
+            (contingencyListInfos: ContingencyListsInfosEnriched) => ({
+                [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IdName) => ({
+                    [NAME]: c[NAME],
+                    [ID]: c[ID],
+                })),
+                [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
+                [ACTIVATED]: contingencyListInfos[ACTIVATED],
+            })
+        ),
     };
 };

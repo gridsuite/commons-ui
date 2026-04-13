@@ -17,7 +17,7 @@ import { CreateParameterDialog, LabelledButton } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
-import { VoltageInitStudyParameters } from './voltage-init.type';
+import { VoltageInitStudyParametersEnriched } from './voltage-init.type';
 import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
 import {
     fromVoltageInitParametersFormToParamValues,
@@ -34,7 +34,7 @@ export function VoltageInitParametersInLine({
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    voltageInitParameters: VoltageInitStudyParameters | null;
+    voltageInitParameters: VoltageInitStudyParametersEnriched | null;
 }>) {
     const voltageInitMethods = useVoltageInitParametersForm({
         parametersUuid: null,

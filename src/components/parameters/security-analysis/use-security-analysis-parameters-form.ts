@@ -30,19 +30,19 @@ import { getNameElementEditorEmptyFormData } from '../common/name-element-editor
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { SAParameters } from './types';
+import { SAParametersEnriched } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
-import { ContingencyListsInfos } from '../common/contingency-table/types';
+import { ContingencyListsInfosEnriched } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     formattedProviders: { id: string; label: string }[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
-    toFormValueSaParameters: (_params: SAParameters) => any;
-    formatNewParams: (formData: Record<string, any>) => SAParameters;
-    params: SAParameters | null;
+    toFormValueSaParameters: (_params: SAParametersEnriched) => any;
+    formatNewParams: (formData: Record<string, any>) => SAParametersEnriched;
+    params: SAParametersEnriched | null;
     watchProvider: string | undefined;
     paramsLoaded: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -95,7 +95,7 @@ export const useSecurityAnalysisParametersForm = (
     const paramsLoaded = useMemo(() => !!params && !!watchProvider, [watchProvider, params]);
 
     const toContingencyListsInfos = useCallback(
-        (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfos[] => {
+        (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfosEnriched[] => {
             if (!formContingencyListsInfos) {
                 return [];
             }
