@@ -123,26 +123,24 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
         }, [voltageLevelsFetcher, countriesFetcher, snackError]);
 
         // build fetcher which filters equipments
-        const filteringEquipmentsFetcher = useMemo(() => {
-            const expertFilter = buildExpertFilter(
+        const expertFilter = useMemo(() => {
+            return buildExpertFilter(
                 equipmentType,
                 selectedVoltageLevelIds,
                 selectedCountries,
                 selectedNominalVoltages
             );
-            // the fetcher which evaluates a filter by filter-server
-            return evaluateFilterFetcher?.(expertFilter);
-        }, [equipmentType, selectedVoltageLevelIds, selectedCountries, selectedNominalVoltages, evaluateFilterFetcher]);
+        }, [equipmentType, selectedVoltageLevelIds, selectedCountries, selectedNominalVoltages]);
 
         const [selectedRowsLength, setSelectedRowsLength] = useState(0);
         // fetching filtered equipments
         useEffect(() => {
             let ignore = false;
-            if (gridReady && filteringEquipmentsFetcher !== undefined) {
+            if (gridReady && evaluateFilterFetcher) {
                 setIsFetching(true);
                 setEquipmentRowData([]);
                 setSelectedRowsLength(0);
-                filteringEquipmentsFetcher
+                evaluateFilterFetcher(expertFilter)
                     .then((equipments) => {
                         // using ignore flag to cancel fetches that do not return in order
                         if (!ignore) {
@@ -163,7 +161,7 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
             return () => {
                 ignore = true;
             };
-        }, [filteringEquipmentsFetcher, gridReady, snackError]);
+        }, [evaluateFilterFetcher, expertFilter, gridReady, snackError]);
         // grid configuration
         const columnDefs = useMemo(() => {
             return [
