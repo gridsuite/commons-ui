@@ -119,7 +119,10 @@ export function useDynamicMarginCalculationParametersForm({
         resolver: yupResolver(returnFormSchema),
     });
 
-    const { reset } = returnFormMethods;
+    const {
+        reset,
+        formState: { errors },
+    } = returnFormMethods;
 
     useEffect(() => {
         if (params) {
@@ -131,6 +134,7 @@ export function useDynamicMarginCalculationParametersForm({
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
         tabEnum: TabValues,
+        formErrors: errors,
     });
 
     return {

@@ -123,11 +123,13 @@ export function useDynamicSecurityAnalysisParametersForm({
         resolver: yupResolver(returnFormSchema),
     });
 
-    const { reset } = returnFormMethods;
+    const {
+        reset,
+        formState: { errors },
+    } = returnFormMethods;
 
     useEffect(() => {
         if (params) {
-            console.log('xxx Resetting form with params:', params);
             reset(toFormValues(params));
         }
     }, [params, paramsLoaded, reset]);
@@ -136,6 +138,7 @@ export function useDynamicSecurityAnalysisParametersForm({
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
         defaultTab: TabValues.SCENARIO,
         tabEnum: TabValues,
+        formErrors: errors,
     });
 
     return {

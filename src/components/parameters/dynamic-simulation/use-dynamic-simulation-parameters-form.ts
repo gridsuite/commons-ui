@@ -130,7 +130,10 @@ export function useDynamicSimulationParametersForm({
         resolver: yupResolver(returnFormSchema),
     });
 
-    const { reset } = returnFormMethods;
+    const {
+        reset,
+        formState: { errors },
+    } = returnFormMethods;
 
     useEffect(() => {
         if (params) {
@@ -142,6 +145,7 @@ export function useDynamicSimulationParametersForm({
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
         tabEnum: TabValues,
+        formErrors: errors,
     });
 
     return {
