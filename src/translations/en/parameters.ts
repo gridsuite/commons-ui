@@ -408,6 +408,7 @@ export const parametersEn = {
     DynamicSimulationNetworkTransformerTolV: 'Voltage regulation tolerance (half deadband of the tap changer) in pu',
 
     // Curve tab
+    DynamicSimulationModelsFetcherError: 'An error occurred while fetching the models list',
     DynamicSimulationCurveSelectedNumber: 'Selected',
     DynamicSimulationCurveDynamicModelHeader: 'Network object name',
     DynamicSimulationCurveVariableHeader: 'Variable',

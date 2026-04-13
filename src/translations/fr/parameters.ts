@@ -432,6 +432,7 @@ export const parametersFr = {
     DynamicSimulationNetworkTransformerTolV: 'Bande morte pour la régulation de tension (demi bande) en pu',
 
     // Curve tab
+    DynamicSimulationModelsFetcherError: 'Une erreur est survenue lors de la récupération des modèles disponibles',
     DynamicSimulationCurveSelectedNumber: 'Sélectionné',
     DynamicSimulationCurveDynamicModelHeader: 'Nom objet réseau',
     DynamicSimulationCurveVariableHeader: 'Variable',

@@ -14,6 +14,8 @@ import { EquipmentType } from '../../../../../utils/types/equipmentType';
 import { DynamicSimulationModel, ModelVariable } from '../common/curve.type';
 import { modelsToVariables } from './model-filter-utils';
 import { type MuiStyles } from '../../../../../utils/styles';
+import { snackWithFallback } from '../../../../../utils/error';
+import { useSnackMessage } from '../../../../../hooks/useSnackMessage';
 
 export type ModelFilterApi = {
     getSelectedVariables: () => ModelVariable[];
@@ -76,6 +78,8 @@ interface ModelFilterProps {
 const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
     ({ equipmentType = EquipmentType.GENERATOR, modelsFetcher }, ref) => {
         const intl = useIntl();
+        const { snackError } = useSnackMessage();
+
         const [allModels, setAllModels] = useState<DynamicSimulationModel[]>([]);
         const [variables, setVariables] = useState<ModelVariable[]>([]);
         const variablesRef = useRef<CheckboxTreeviewApi<ModelVariable>>(null);
@@ -119,19 +123,23 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
 
         // fetch all associated models and variables for study
         useEffect(() => {
-            modelsFetcher?.()?.then((models: DynamicSimulationModelInfos[]) => {
-                setAllModels(
-                    models.map((model) => ({
-                        name: model.modelName,
-                        equipmentType: model.equipmentType,
-                    }))
-                );
+            modelsFetcher?.()
+                ?.then((models: DynamicSimulationModelInfos[]) => {
+                    setAllModels(
+                        models.map((model) => ({
+                            name: model.modelName,
+                            equipmentType: model.equipmentType,
+                        }))
+                    );
 
-                // transform models to variables
-                const variablesArray = modelsToVariables(models);
-                setVariables(variablesArray);
-            });
-        }, [modelsFetcher]);
+                    // transform models to variables
+                    const variablesArray = modelsToVariables(models);
+                    setVariables(variablesArray);
+                })
+                .catch((error: Error) => {
+                    snackWithFallback(snackError, error, { headerId: 'DynamicSimulationModelsFetcherError' });
+                });
+        }, [modelsFetcher, snackError]);
 
         const getSelectedVariables = useCallback((): ModelVariable[] => {
             return (
