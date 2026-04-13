@@ -78,6 +78,7 @@ interface CheckboxAutocompleteProps<Value>
     maxSelection?: number;
     options: Value[];
     getOptionLabel: (option: Value) => string;
+    value: Value[];
     onChange: (value: Value[]) => void;
 }
 
