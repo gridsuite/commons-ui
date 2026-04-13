@@ -7,7 +7,6 @@
 import { useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import GridSection from '../../../../../grid/grid-section';
-import GridItem from '../../../../../grid/grid-item';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../../../utils';
 import { FloatInput } from '../../../../../inputs';
 
@@ -19,46 +18,46 @@ export function CharacteristicsTab() {
             <GridSection title="VoltageText" />
             <Grid container spacing={2}>
                 {!watchHideNominalVoltage && (
-                    <GridItem size={4}>
+                    <Grid item xs={4}>
                         <FloatInput
                             name={FieldConstants.NOMINAL_V}
                             label="NominalVoltage"
                             adornment={VoltageAdornment}
                         />
-                    </GridItem>
+                    </Grid>
                 )}
-                <GridItem size={4}>
+                <Grid item xs={4}>
                     <FloatInput
                         name={FieldConstants.LOW_VOLTAGE_LIMIT}
                         label="LowVoltageLimit"
                         adornment={VoltageAdornment}
                     />
-                </GridItem>
-                <GridItem size={4}>
+                </Grid>
+                <Grid item xs={4}>
                     <FloatInput
                         name={FieldConstants.HIGH_VOLTAGE_LIMIT}
                         label="HighVoltageLimit"
                         adornment={VoltageAdornment}
                     />
-                </GridItem>
+                </Grid>
             </Grid>
 
             <GridSection title="ShortCircuit" />
             <Grid container spacing={2}>
-                <GridItem size={4}>
+                <Grid item xs={4}>
                     <FloatInput
                         name={FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT}
                         label="LowShortCircuitCurrentLimit"
                         adornment={KiloAmpereAdornment}
                     />
-                </GridItem>
-                <GridItem size={4}>
+                </Grid>
+                <Grid item xs={4}>
                     <FloatInput
                         name={FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT}
                         label="HighShortCircuitCurrentLimit"
                         adornment={KiloAmpereAdornment}
                     />
-                </GridItem>
+                </Grid>
             </Grid>
         </>
     );

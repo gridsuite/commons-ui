@@ -25,13 +25,13 @@ export function SubstationCreationSection({
         <>
             <GridSection title="CreateSubstation" />
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid item xs>
                     <TextInput name={FieldConstants.SUBSTATION_CREATION_ID} label="SubstationId" />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs>
                     <TextInput name={FieldConstants.SUBSTATION_NAME} label="substationName" />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs>
                     <CountrySelectionInput name={FieldConstants.COUNTRY} label="Country" size="small" />
                 </Grid>
                 {showDeleteButton && onDelete && (
