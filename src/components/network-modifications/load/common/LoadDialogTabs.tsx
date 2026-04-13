@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { LoadDialogTab } from './load.utils';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
@@ -25,31 +25,29 @@ export function LoadDialogTabs({
     isModification = false,
 }: Readonly<LoadDialogTabsProps>) {
     return (
-        <Grid container>
-            <Tabs
-                value={tabIndex}
-                variant="scrollable"
-                onChange={(event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
-                TabIndicatorProps={{
-                    sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
-                }}
-            >
-                <Tab
-                    label={<FormattedMessage id="ConnectivityTab" />}
-                    sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CONNECTIVITY_TAB)}
-                />
+        <Tabs
+            value={tabIndex}
+            variant="scrollable"
+            onChange={(event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
+            TabIndicatorProps={{
+                sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+            }}
+        >
+            <Tab
+                label={<FormattedMessage id="ConnectivityTab" />}
+                sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CONNECTIVITY_TAB)}
+            />
 
+            <Tab
+                label={<FormattedMessage id="CharacteristicsTab" />}
+                sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CHARACTERISTICS_TAB)}
+            />
+            {isModification && (
                 <Tab
-                    label={<FormattedMessage id="LineCharacteristicsTab" />}
-                    sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CHARACTERISTICS_TAB)}
+                    label={<FormattedMessage id="StateEstimationTab" />}
+                    sx={getTabStyle(tabIndexesWithError, LoadDialogTab.STATE_ESTIMATION_TAB)}
                 />
-                {isModification && (
-                    <Tab
-                        label={<FormattedMessage id="StateEstimationTab" />}
-                        sx={getTabStyle(tabIndexesWithError, LoadDialogTab.STATE_ESTIMATION_TAB)}
-                    />
-                )}
-            </Tabs>
-        </Grid>
+            )}
+        </Tabs>
     );
 }
