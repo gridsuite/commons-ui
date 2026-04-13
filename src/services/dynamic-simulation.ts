@@ -36,7 +36,7 @@ export function updateDynamicSimulationParameters(
     const url = `${getDynamicSimulationUrl()}parameters/${parameterUuid}`;
     console.debug(url);
     return backendFetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
