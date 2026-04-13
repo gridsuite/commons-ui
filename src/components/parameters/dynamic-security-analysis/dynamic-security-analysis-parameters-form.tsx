@@ -56,6 +56,7 @@ export function DynamicSecurityAnalysisParametersForm({
                     </Grid>
                     <Grid
                         container
+                        item
                         xs
                         key="dsaParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
