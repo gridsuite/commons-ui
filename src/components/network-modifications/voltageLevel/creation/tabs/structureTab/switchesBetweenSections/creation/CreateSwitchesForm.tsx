@@ -24,16 +24,9 @@ function CreateSwitchesForm({ id }: Readonly<CreateSwitchesFormProps>) {
                 <FormattedMessage id="SwitchesBetweenSections" />
             </DialogTitle>
             <DialogContent>
-                <Grid
-                    container
-                    spacing={2}
-                    direction="column"
-                    style={{
-                        paddingTop: '5px',
-                    }}
-                >
+                <Grid container spacing={2} direction="column" pt={1}>
                     {rows.map((value, index) => (
-                        <Grid container item key={value.id}>
+                        <Grid item key={value.id}>
                             <EnumInput
                                 options={Object.values(SWITCH_TYPE)}
                                 name={`${id}.${index}.${FieldConstants.SWITCH_KIND}`}

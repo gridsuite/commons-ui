@@ -12,7 +12,6 @@ import { useIntl } from 'react-intl';
 import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { FieldConstants } from '../../../../../../../utils';
 import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../../../voltageLevelCreation.types';
-import GridItem from '../../../../../../grid/grid-item';
 import { TextInput } from '../../../../../../inputs';
 import { CreateSwitchesDialog } from './creation';
 import GridSection from '../../../../../../grid/grid-section';
@@ -90,16 +89,14 @@ export function SwitchesBetweenSections() {
     return (
         <>
             <GridSection title="SwitchesBetweenSections" />
-            <GridItem size={4}>
-                <TextInput
-                    name={FieldConstants.SWITCHES_BETWEEN_SECTIONS}
-                    label="SwitchesBetweenSections"
-                    formProps={{
-                        multiline: true,
-                    }}
-                    customAdornment={addIconAdornment(handleClickOpenSwitchesPane)}
-                />
-            </GridItem>
+            <TextInput
+                name={FieldConstants.SWITCHES_BETWEEN_SECTIONS}
+                label="SwitchesBetweenSections"
+                formProps={{
+                    multiline: true,
+                }}
+                customAdornment={addIconAdornment(handleClickOpenSwitchesPane)}
+            />
             {openCreateSwitchesDialog && (
                 <CreateSwitchesDialog
                     openCreateSwitchesDialog={openCreateSwitchesDialog}

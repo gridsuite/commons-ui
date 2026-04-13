@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { fetchPredefinedProperties, initializedProperty } from './propertyUtils';
@@ -91,21 +90,17 @@ export function PropertiesForm({ id, networkElementType, isModification = false 
           }
         : {};
 
-    const additionalProps = (
-        <ExpandableInput
-            name={additionalProperties}
-            Field={PropertyForm}
-            fieldProps={{ predefinedProperties }}
-            addButtonLabel="AddProperty"
-            initialValue={initializedProperty()}
-            {...modificationProperties}
-        />
-    );
-
     return (
-        <Grid container>
+        <>
             <GridSection title="AdditionalInformation" />
-            {additionalProps}
-        </Grid>
+            <ExpandableInput
+                name={additionalProperties}
+                Field={PropertyForm}
+                fieldProps={{ predefinedProperties }}
+                addButtonLabel="AddProperty"
+                initialValue={initializedProperty()}
+                {...modificationProperties}
+            />
+        </>
     );
 }
