@@ -110,7 +110,8 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
             () =>
                 variables.filter((elem) =>
                     selectedModels.some((model) => {
-                        return elem.id.includes(associatedModels[model]);
+                        const modelName = associatedModels[model];
+                        return elem.id === modelName || elem.id.startsWith(`${modelName}/`);
                     })
                 ),
             [variables, selectedModels, associatedModels]
