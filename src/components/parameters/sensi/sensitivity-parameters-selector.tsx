@@ -32,7 +32,7 @@ import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { BuildStatus, BuildStatusChip } from '../../node';
 import { ParameterTableField } from '../common/parameter-table-field';
-import { DndColumn, getDefaultRowData } from '../../dnd-table-v2';
+import { DndColumn } from '../../dnd-table-v2';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -133,28 +133,23 @@ function SensitivityParametersSelector({
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_INJECTIONS_SET),
         [getColumnsDefinition]
     );
-    const createRowsInjectionsSet = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_INJECTIONS_SET)], []);
 
     const columnsDefinitionInjections = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_INJECTIONS),
         [getColumnsDefinition]
     );
-    const createRowsInjections = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_INJECTIONS)], []);
 
     const columnsDefinitionHvdc = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_HVDCS),
         [getColumnsDefinition]
     );
-    const createRowsHvdc = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_HVDCS)], []);
 
     const columnsDefinitionPst = useMemo(() => getColumnsDefinition(COLUMNS_DEFINITIONS_PSTS), [getColumnsDefinition]);
-    const createRowsPst = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_PSTS)], []);
 
     const columnsDefinitionNodes = useMemo(
         () => getColumnsDefinition(COLUMNS_DEFINITIONS_NODES),
         [getColumnsDefinition]
     );
-    const createRowsNodes = useCallback(() => [getDefaultRowData(COLUMNS_DEFINITIONS_NODES)], []);
 
     useEffect(() => {
         if (!isDeveloperMode) {
@@ -244,7 +239,6 @@ function SensitivityParametersSelector({
                                 <ParameterTableField
                                     name={PARAMETER_SENSI_INJECTIONS_SET}
                                     columnsDefinition={columnsDefinitionInjectionsSet}
-                                    createRows={createRowsInjectionsSet}
                                     tableHeight={300}
                                     onChange={onFormChanged}
                                     isValidRow={isValidSensiParameterRow}
@@ -254,7 +248,6 @@ function SensitivityParametersSelector({
                                 <ParameterTableField
                                     name={PARAMETER_SENSI_INJECTION}
                                     columnsDefinition={columnsDefinitionInjections}
-                                    createRows={createRowsInjections}
                                     tableHeight={300}
                                     onChange={onFormChanged}
                                     isValidRow={isValidSensiParameterRow}
@@ -264,7 +257,6 @@ function SensitivityParametersSelector({
                                 <ParameterTableField
                                     name={PARAMETER_SENSI_HVDC}
                                     columnsDefinition={columnsDefinitionHvdc}
-                                    createRows={createRowsHvdc}
                                     tableHeight={300}
                                     onChange={onFormChanged}
                                     isValidRow={isValidSensiParameterRow}
@@ -274,7 +266,6 @@ function SensitivityParametersSelector({
                                 <ParameterTableField
                                     name={PARAMETER_SENSI_PST}
                                     columnsDefinition={columnsDefinitionPst}
-                                    createRows={createRowsPst}
                                     tableHeight={300}
                                     onChange={onFormChanged}
                                     isValidRow={isValidSensiParameterRow}
@@ -286,7 +277,6 @@ function SensitivityParametersSelector({
                         <ParameterTableField
                             name={PARAMETER_SENSI_NODES}
                             columnsDefinition={columnsDefinitionNodes}
-                            createRows={createRowsNodes}
                             tableHeight={367}
                             onChange={onFormChanged}
                             isValidRow={isValidSensiParameterRow}

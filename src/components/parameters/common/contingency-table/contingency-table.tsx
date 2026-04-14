@@ -16,7 +16,7 @@ import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } fr
 import { ContingencyCount, ContingencyListsInfos } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback } from '../../../../utils';
-import { DndColumn, getDefaultRowData } from '../../../dnd-table-v2';
+import { DndColumn } from '../../../dnd-table-v2';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
@@ -54,11 +54,6 @@ export function ContingencyTable({
                 }) satisfies DndColumn
         );
     }, [intl]);
-
-    const createRows = useCallback(() => {
-        const newDefaultRowData = getDefaultRowData(COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS);
-        return [newDefaultRowData];
-    }, []);
 
     useEffect(() => {
         if (!showContingencyCount || !isBuiltCurrentNode) {
@@ -163,7 +158,6 @@ export function ContingencyTable({
             <ParameterTableField
                 name={name}
                 columnsDefinition={columnsDefinition}
-                createRows={createRows}
                 tableHeight={270}
                 onChange={handleOnChange}
                 isValidRow={isValidContingencyRow}
