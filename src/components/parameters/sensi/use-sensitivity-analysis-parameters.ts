@@ -218,7 +218,11 @@ export const useSensitivityAnalysisParametersForm = ({
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
-        if (globalBuildStatus === BuildStatus.NOT_BUILT || globalBuildStatus === BuildStatus.BUILDING) {
+        if (
+            globalBuildStatus === BuildStatus.NOT_BUILT ||
+            globalBuildStatus === BuildStatus.BUILDING ||
+            globalBuildStatus === undefined
+        ) {
             setFactorsCount(DEFAULT_FACTOR_COUNT);
             return () => {};
         }
@@ -240,16 +244,16 @@ export const useSensitivityAnalysisParametersForm = ({
         )
             .then((factorsCountResponse) => {
                 setFactorsCount(factorsCountResponse);
-                loadingTimeoutId = setTimeout(() => {
-                    setIsLoading(false);
-                }, 500);
             })
             .catch((error) => {
                 if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
                     return;
                 }
-                setIsLoading(false);
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+            })
+            .finally(() => {
+                setIsLoading(false);
+                loadingTimeoutId = setTimeout(() => {}, 500);
             });
 
         return () => {
