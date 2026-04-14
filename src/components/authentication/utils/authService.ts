@@ -70,24 +70,8 @@ function reload() {
 }
 
 function reloadTimerOnExpiresIn(user: User, userManager: UserManager, expiresIn: number) {
-    // We deliberately patch `expires_at` directly via User.fromStorageString() rather than
-    // assigning to the `expires_in` setter exposed by oidc-client-ts.
-    //
-    // oidc-client-ts does expose a `set expires_in` accessor, but its internal
-    // implementation — how it translates the incoming seconds value into `expires_at` — is not
-    // part of the library's documented public contract and could change or be removed in any
-    // minor release without being considered a breaking change.
-    //
-    // By contrast, `expires_at`, `toStorageString()` and `fromStorageString()` are all explicitly
-    // documented public APIs. Patching `expires_at` ourselves means we own the arithmetic
-    // (now + expiresIn) and are not dependent on any undocumented setter behaviour.
-    // This makes the timer manipulation resilient to future internal refactoring of oidc-client-ts
-    const newExpiresAt = Math.floor(Date.now() / 1000) + expiresIn;
-    const storageString = user.toStorageString();
-    const parsed = JSON.parse(storageString);
-    parsed.expires_at = newExpiresAt;
-    const patchedUser = User.fromStorageString(JSON.stringify(parsed));
-    userManager.storeUser(patchedUser).then(() => {
+    user.expires_in = expiresIn; // eslint-disable-line no-param-reassign
+    userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
 }
