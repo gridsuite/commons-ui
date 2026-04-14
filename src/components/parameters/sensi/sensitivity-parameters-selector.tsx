@@ -32,7 +32,7 @@ import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { BuildStatus, BuildStatusChip } from '../../node';
 import { ParameterTableField } from '../common/parameter-table-field';
-import { DndColumn, DndColumnType, getDefaultRowData } from '../../dnd-table-v2';
+import { DndColumn, getDefaultRowData } from '../../dnd-table-v2';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -121,10 +121,6 @@ function SensitivityParametersSelector({
                         ({
                             ...column,
                             label: intl.formatMessage({ id: column.label }),
-                            shouldHandleOnChangeCell:
-                                column.type === DndColumnType.DIRECTORY_ITEMS || column.type === DndColumnType.SWITCH
-                                    ? true
-                                    : undefined,
                         }) satisfies DndColumn
                 );
             }

@@ -36,6 +36,8 @@ export interface ColumnBase {
     editable?: boolean;
     type: DndColumnType;
     initialValue?: any; // should conform to the type field
+    // to force to propagate a change event to the parent component via callback
+    // for example, refresh contingency count against a change of selected contingency
     shouldHandleOnChangeCell?: boolean;
 }
 

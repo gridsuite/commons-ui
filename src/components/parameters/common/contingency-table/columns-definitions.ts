@@ -22,6 +22,7 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
         equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'description',
@@ -40,6 +41,7 @@ export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
         editable: true,
         width: '4rem',
         type: DndColumnType.SWITCH,
+        shouldHandleOnChangeCell: true,
     },
 ];
 

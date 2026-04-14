@@ -316,7 +316,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         <TableCell
                             key={column.dataKey}
                             sx={mergeSx(
-                                { width: column.width, maxWidth: column.maxWidth, textAlign: 'right' },
+                                { width: column.width, maxWidth: column.maxWidth, textAlign: 'left' },
                                 column.sxHeader
                             )}
                         >

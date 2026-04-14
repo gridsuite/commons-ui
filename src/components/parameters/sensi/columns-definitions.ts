@@ -57,6 +57,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: DndColumn[] = [
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Injections',
@@ -67,6 +68,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: DndColumn[] = [
         equipmentTypes: INJECTIONS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'DistributionType',
@@ -86,6 +88,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: DndColumn[] = [
         equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Active',
@@ -95,6 +98,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS_SET: DndColumn[] = [
         type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
+        shouldHandleOnChangeCell: true,
     },
 ];
 export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
@@ -107,6 +111,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Injections',
@@ -117,6 +122,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
         equipmentTypes: INJECTIONS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'ContingencyLists',
@@ -127,6 +133,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
         equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Active',
@@ -136,6 +143,7 @@ export const COLUMNS_DEFINITIONS_INJECTIONS: DndColumn[] = [
         type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
+        shouldHandleOnChangeCell: true,
     },
 ];
 export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
@@ -148,6 +156,7 @@ export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'SensitivityType',
@@ -167,6 +176,7 @@ export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
         equipmentTypes: HVDC_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'ContingencyLists',
@@ -177,6 +187,7 @@ export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
         equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Active',
@@ -186,6 +197,7 @@ export const COLUMNS_DEFINITIONS_HVDCS: DndColumn[] = [
         type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
+        shouldHandleOnChangeCell: true,
     },
 ];
 export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
@@ -198,6 +210,7 @@ export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
         equipmentTypes: MONITORED_BRANCHES_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'SensitivityType',
@@ -217,6 +230,7 @@ export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
         equipmentTypes: PSTS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'ContingencyLists',
@@ -227,6 +241,7 @@ export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
         equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Active',
@@ -236,6 +251,7 @@ export const COLUMNS_DEFINITIONS_PSTS: DndColumn[] = [
         type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
+        shouldHandleOnChangeCell: true,
     },
 ];
 export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
@@ -248,6 +264,7 @@ export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
         equipmentTypes: MONITORED_VOLTAGE_LEVELS_EQUIPMENT_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'EquipmentsInVoltageRegulation',
@@ -258,6 +275,7 @@ export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
         equipmentTypes: EQUIPMENTS_IN_VOLTAGE_REGULATION_TYPES,
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'ContingencyLists',
@@ -268,6 +286,7 @@ export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
         equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'Active',
@@ -277,6 +296,7 @@ export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
         type: DndColumnType.SWITCH,
         editable: true,
         width: '4rem',
+        shouldHandleOnChangeCell: true,
     },
 ];
 

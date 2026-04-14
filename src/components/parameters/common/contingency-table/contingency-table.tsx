@@ -16,7 +16,7 @@ import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } fr
 import { ContingencyCount, ContingencyListsInfos } from './types';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback } from '../../../../utils';
-import { DndColumn, DndColumnType, getDefaultRowData } from '../../../dnd-table-v2';
+import { DndColumn, getDefaultRowData } from '../../../dnd-table-v2';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
@@ -51,11 +51,6 @@ export function ContingencyTable({
                 ({
                     ...colDef,
                     label: intl.formatMessage({ id: colDef.label }),
-                    // force outdated contingency count when switching between switch and directory items changed
-                    shouldHandleOnChangeCell:
-                        colDef.type === DndColumnType.SWITCH || colDef.type === DndColumnType.DIRECTORY_ITEMS
-                            ? true
-                            : undefined,
                 }) satisfies DndColumn
         );
     }, [intl]);
