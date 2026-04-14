@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { forwardRef, Ref, useCallback, useImperativeHandle, useMemo, useState } from 'react';
+import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { alpha, Checkbox, styled, SxProps, useTheme } from '@mui/material';
 import { SimpleTreeView, TreeItem, treeItemClasses } from '@mui/x-tree-view';
 
@@ -74,11 +74,9 @@ function CheckboxTreeview<TData extends ItemData>(
     const [itemStates, setItemStates] = useState(initialItemStates);
 
     // used to reset internal state when initial data changed
-    const [prevItems, setPrevItems] = useState(items);
-    if (items !== prevItems) {
-        setPrevItems(items);
+    useEffect(() => {
         setItemStates(initialItemStates);
-    }
+    }, [initialItemStates]);
 
     const updateItemState = useCallback(
         (_itemStates: Record<string, CheckState>, _items: TData[], onClickedId: string) => {
