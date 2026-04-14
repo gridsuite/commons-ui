@@ -47,7 +47,7 @@
         "jwt-decode": "^4.0.0",
         "localized-countries": "^2.0.0",
         "mui-nested-menu": "^4.0.1",
-        "oidc-client": "^1.11.5",
+        "oidc-client-ts": "^3.5.0",
         "prop-types": "^15.8.1",
         "react-csv-downloader": "^3.3.0",
         "react-dnd": "^16.0.1",

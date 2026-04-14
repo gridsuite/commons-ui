@@ -7,7 +7,7 @@
 import { Dispatch } from 'react';
 import { type Location, type NavigateFunction } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
-import { Log, User, UserManager } from 'oidc-client';
+import { Log, User, UserManager } from 'oidc-client-ts';
 import { UserManagerMock } from './userManagerMock';
 import {
     AuthenticationActions,
@@ -38,7 +38,7 @@ type CustomUserManager = UserManager & {
 
 declare global {
     interface Window {
-        OIDCLog?: Log;
+        OIDCLog?: typeof Log;
     }
 }
 
@@ -48,7 +48,7 @@ window.OIDCLog = Log;
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
-const accessTokenExpiringNotificationTime = 60; // seconds
+const accessTokenExpiringNotificationTimeInSeconds = 60;
 
 function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
@@ -70,15 +70,32 @@ function reload() {
 }
 
 function reloadTimerOnExpiresIn(user: User, userManager: UserManager, expiresIn: number) {
-    // Not allowed by TS because expires_in is supposed to be readonly
-    // @ts-expect-error TS2540: Cannot assign to expires_in because it is a read-only property.
-    user.expires_in = expiresIn; // eslint-disable-line no-param-reassign
-    userManager.storeUser(user).then(() => {
+    // We deliberately patch `expires_at` directly via User.fromStorageString() rather than
+    // assigning to the `expires_in` setter exposed by oidc-client-ts.
+    //
+    // oidc-client-ts does expose a `set expires_in` accessor, but its internal
+    // implementation — how it translates the incoming seconds value into `expires_at` — is not
+    // part of the library's documented public contract and could change or be removed in any
+    // minor release without being considered a breaking change.
+    //
+    // By contrast, `expires_at`, `toStorageString()` and `fromStorageString()` are all explicitly
+    // documented public APIs. Patching `expires_at` ourselves means we own the arithmetic
+    // (now + expiresIn) and are not dependent on any undocumented setter behaviour.
+    // This makes the timer manipulation resilient to future internal refactoring of oidc-client-ts
+    const newExpiresAt = Math.floor(Date.now() / 1000) + expiresIn;
+    const storageString = user.toStorageString();
+    const parsed = JSON.parse(storageString);
+    parsed.expires_at = newExpiresAt;
+    const patchedUser = User.fromStorageString(JSON.stringify(parsed));
+    userManager.storeUser(patchedUser).then(() => {
         userManager.getUser();
     });
 }
 
 function getIdTokenExpiresIn(user: User) {
+    if (!user.id_token) {
+        return 0;
+    }
     const now = Date.now() / 1000;
     const { exp } = jwtDecode(user.id_token);
     if (exp === undefined) {
@@ -102,7 +119,10 @@ function handleSigninSilent(dispatch: Dispatch<AuthenticationActions>, userManag
     });
 }
 
-function computeMinExpiresIn(expiresIn: number, idToken: string, maxExpiresIn: number | undefined) {
+function computeMinExpiresIn(expiresIn: number, idToken: string | undefined, maxExpiresIn: number | undefined) {
+    if (!idToken) {
+        return expiresIn;
+    }
     const now = Date.now() / 1000;
     const { exp } = jwtDecode(idToken);
     if (exp === undefined) {
@@ -144,7 +164,7 @@ export function logout(dispatch: Dispatch<AuthenticationActions>, userManagerIns
             return userManagerInstance
                 .signoutRedirect({
                     extraQueryParams: {
-                        TargetResource: userManagerInstance.settings.post_logout_redirect_uri,
+                        TargetResource: userManagerInstance.settings.post_logout_redirect_uri ?? '',
                     },
                 })
                 .then(() => {
@@ -178,7 +198,7 @@ export function dispatchUser(dispatch: Dispatch<AuthenticationActions>, userMana
             reloadTimerOnExpiresIn(
                 user,
                 userManagerInstance,
-                computeMinExpiresIn(user.expires_in, user.id_token, userManagerInstance.idpSettings?.maxExpiresIn)
+                computeMinExpiresIn(user.expires_in ?? 0, user.id_token, userManagerInstance.idpSettings?.maxExpiresIn)
             );
             return dispatch(setLoggedUser(user));
         }
@@ -243,7 +263,7 @@ function handleUser(dispatch: Dispatch<AuthenticationActions>, userManager: Cust
 
     userManager.events.addSilentRenewError((error) => {
         console.debug(error);
-        // Wait for accessTokenExpiringNotificationTime so that the user is expired and not between expiring and expired
+        // Wait for accessTokenExpiringNotificationTimeInSeconds so that the user is expired and not between expiring and expired
         // otherwise the library will fire AccessTokenExpiring everytime we do getUser()
         // Indeed, getUSer() => loadUser() => load() on events => if it's already expiring it will be init and triggerred again
         window.setTimeout(() => {
@@ -269,7 +289,7 @@ function handleUser(dispatch: Dispatch<AuthenticationActions>, userManager: Cust
                         console.log(
                             `Error in silent renew, but idtoken ALMOST expiring (expiring in${idTokenExpiresIn}) => last chance, next error will logout`,
                             `maxExpiresIn = ${userManager.idpSettings.maxExpiresIn}`,
-                            `last renew attempt in ${idTokenExpiresIn - accessTokenExpiringNotificationTime}seconds`,
+                            `last renew attempt in ${idTokenExpiresIn - accessTokenExpiringNotificationTimeInSeconds}seconds`,
                             error
                         );
                         reloadTimerOnExpiresIn(user, userManager, idTokenExpiresIn);
@@ -287,8 +307,8 @@ function handleUser(dispatch: Dispatch<AuthenticationActions>, userManager: Cust
                     );
                 }
             });
-        }, accessTokenExpiringNotificationTime * 1000);
-        // Should be min(accessTokenExpiringNotificationTime * 1000, idTokenExpiresIn) to avoid rare case
+        }, accessTokenExpiringNotificationTimeInSeconds * 1000);
+        // Should be min(accessTokenExpiringNotificationTimeInSeconds * 1000, idTokenExpiresIn) to avoid rare case
         // when user connection is dying and you refresh the page between expiring and expired.
         // but gateway has a DEFAULT_MAX_CLOCK_SKEW = 60s then the token is still valid for this time
         // even if expired
@@ -304,7 +324,11 @@ export async function initializeAuthenticationDev(
     isSilentRenew: boolean,
     isSigninCallback: boolean
 ) {
-    const userManager: UserManager = new UserManagerMock({});
+    const userManager = new UserManagerMock({
+        authority: 'mock',
+        client_id: 'mock',
+        redirect_uri: 'mock',
+    }) as unknown as UserManager;
     if (!isSilentRenew) {
         handleUser(dispatch, userManager);
         if (!isSigninCallback) {
@@ -330,7 +354,7 @@ export async function initializeAuthenticationProd(
             silent_redirect_uri: idpSettings.silent_redirect_uri,
             scope: idpSettings.scope,
             automaticSilentRenew: !isSilentRenew,
-            accessTokenExpiringNotificationTime,
+            accessTokenExpiringNotificationTimeInSeconds,
             response_type: 'code',
         };
         const userManager: CustomUserManager = new UserManager(settings);

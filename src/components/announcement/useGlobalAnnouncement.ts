@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { v4 } from 'uuid';
 import { useCallback, useEffect, useState } from 'react';
-import type { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
 import { fetchCurrentAnnouncement } from '../../services/userAdmin';
 import { NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../notifications/hooks/useNotificationsListener';
