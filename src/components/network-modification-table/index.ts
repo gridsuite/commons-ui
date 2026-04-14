@@ -6,9 +6,10 @@ import NetworkModificationsTable from './network-modification-table/network-modi
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './network-table-styles';
+export * from './network-modification-table-styles';
 export * from './columns-definition';
 export * from './network-modifications-table';
 export * from './use-modifications-drag-and-drop';
 export * from './renderers';
 export * from './row';
+export * from './utils';

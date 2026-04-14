@@ -5,17 +5,46 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { DragDropContext, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import {
+    ColumnDef,
+    ExpandedState,
+    flexRender,
+    getCoreRowModel,
+    getExpandedRowModel,
+    Updater,
+    useReactTable,
+} from '@tanstack/react-table';
+import { DragDropContext, Droppable, DroppableProvided } from '@hello-pangea/dnd';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { UUID } from 'node:crypto';
 import { NetworkModificationEditorNameHeaderProps } from './renderers';
+import {
+    createHeaderCellStyle,
+    MODIFICATION_ROW_HEIGHT,
+    networkModificationTableStyles,
+} from './network-modification-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
+import { useTheme } from '@mui/material/styles';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
-import { NetworkModificationMetadata } from '../../hooks';
-import { createHeaderCellStyle, MODIFICATION_ROW_HEIGHT, networkTableStyles } from './network-table-styles';
+import {
+    ComposedModificationMetadata,
+    fetchSubModificationsForExpandedRows,
+    findAllLoadedCompositeModifications,
+    formatToComposedModification,
+    isCompositeModification,
+    mergeSubModificationsIntoTree,
+} from './utils';
+import { NetworkModificationMetadata } from '@gridsuite/commons-ui';
+import { UUID } from 'node:crypto';
 import { ModificationRow } from './row';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
@@ -23,52 +52,107 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     setModifications: Dispatch<SetStateAction<NetworkModificationMetadata[]>>;
     handleCellClick: (modification: NetworkModificationMetadata) => void;
     isRowDragDisabled?: boolean;
-    onRowDragStart: (event: DragStart) => void;
-    onRowDragEnd: (event: DropResult) => void;
+    onRowDragStart: () => void;
+    onRowDragEnd: () => void;
     onRowSelected: (selectedRows: NetworkModificationMetadata[]) => void;
     createAllColumns: (isRowDragDisabled: boolean,
-                        modificationsCount: number,
-                        nameHeaderProps: NameHeaderProps,
-                        setModifications: React.Dispatch<SetStateAction<NetworkModificationMetadata[]>>
-    ) => ColumnDef<NetworkModificationMetadata, any>[];
+                       modificationsCount: number,
+                       nameHeaderProps: NameHeaderProps,
+                       setModifications: React.Dispatch<SetStateAction<ComposedModificationMetadata[]>>
+    ) => ColumnDef<ComposedModificationMetadata, any>[];
     highlightedModificationUuid: UUID | null;
+    studyUuid: UUID | null;
+    currentNodeId?: UUID;
 }
 
 export function NetworkModificationsTable({
-                                              modifications,
-                                              setModifications,
-                                              handleCellClick,
-                                              isRowDragDisabled = false,
-                                              onRowDragStart,
-                                              onRowDragEnd,
-                                              onRowSelected,
-                                              createAllColumns,
-                                              highlightedModificationUuid,
-                                              ...nameHeaderProps
+                                          modifications,
+                                          setModifications,
+                                          handleCellClick,
+                                          isRowDragDisabled = false,
+                                          onRowDragStart,
+                                          onRowDragEnd,
+                                          onRowSelected,
+                                          createAllColumns,
+                                          highlightedModificationUuid,
+                                          studyUuid = null,
+                                          currentNodeId = undefined,
+                                          ...nameHeaderProps
                                           }: Readonly<NetworkModificationsTableProps>) {
     const theme = useTheme();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const lastClickedIndex = useRef<number | null>(null);
 
-    const columns = useMemo<ColumnDef<NetworkModificationMetadata>[]>(() =>
-        createAllColumns(isRowDragDisabled ?? false,
-            modifications.length,
+    const columns = useMemo<ColumnDef<ComposedModificationMetadata>[]>(() =>
+            createAllColumns(isRowDragDisabled ?? false,
+                modifications.length,
+                nameHeaderProps,
+                setComposedModifications)
+        , [
+            isRowDragDisabled,
+            modifications,
             nameHeaderProps,
-            setModifications)
-    , [
-    isRowDragDisabled,
-    modifications,
-    nameHeaderProps,
-    setModifications,
-]);
+            setModifications,
+        ]);
+
+
+    const [expanded, setExpanded] = useState<ExpandedState>({});
+
+    const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
+        formatToComposedModification(modifications)
+    );
+
+    useEffect(() => {
+        setComposedModifications((prevMods) => {
+            // Rebuild from the new modifications prop, carrying over already-fetched subModifications
+            // to avoid a visual flash of empty children while re-fetches are in flight.
+            const nextMods = mergeSubModificationsIntoTree(formatToComposedModification(modifications), prevMods);
+
+            // Re-fetch for any composite that already has loaded sub-modifications, regardless of
+            // whether it is currently expanded to avoid stale state
+            let loadedComposite: ComposedModificationMetadata[] = [];
+            findAllLoadedCompositeModifications(nextMods, loadedComposite);
+            fetchSubModificationsForExpandedRows(
+                loadedComposite.map((mod) => mod.uuid),
+                nextMods,
+                setComposedModifications,
+                true
+            );
+            return nextMods;
+        });
+    }, [modifications]);
+
+    const handleExpandRow = useCallback((updater: Updater<ExpandedState>) => {
+        setExpanded((prevExpanded: ExpandedState) => {
+            const nextExpanded: ExpandedState = typeof updater === 'function' ? updater(prevExpanded) : updater;
+
+            const prevRecord = prevExpanded === true ? {} : prevExpanded;
+            const nextRecord = nextExpanded === true ? {} : nextExpanded;
+            const newlyExpandedIds = Object.keys(nextRecord).filter((id) => nextRecord[id] && !prevRecord[id]);
+
+            setComposedModifications((prevMods) => {
+                fetchSubModificationsForExpandedRows(newlyExpandedIds, prevMods, setComposedModifications);
+                return [...prevMods];
+            });
+
+            return nextExpanded;
+        });
+    }, []);
 
     const table = useReactTable({
-        data: modifications,
+        data: composedModifications,
         columns,
+        state: { expanded },
         getCoreRowModel: getCoreRowModel(),
-        getRowId: (row:any) => row.uuid,
+        getExpandedRowModel: getExpandedRowModel(),
+        getSubRows: (row:ComposedModificationMetadata) => row.subModifications,
+        getRowId: (row) => row.uuid,
+        getRowCanExpand: (row) => isCompositeModification(row.original),
         enableRowSelection: true,
+        enableSubRowSelection: false,
+        enableExpanding: true,
+        onExpandedChange: handleExpandRow,
         meta: { lastClickedIndex, onRowSelected },
     });
 
@@ -85,11 +169,16 @@ export function NetworkModificationsTable({
     const { handleDragUpdate, handleDragEnd, renderClone } = useModificationsDragAndDrop({
         rows,
         containerRef,
-        onRowDragEnd,
+        composedModifications,
+        setComposedModifications,
+        onDragEnd: onRowDragEnd,
+        studyUuid,
+        currentNodeUuid: currentNodeId,
     });
 
     useEffect(() => {
         table.resetRowSelection();
+        table.resetExpanded();
         lastClickedIndex.current = null;
     }, [table]);
 
@@ -104,14 +193,14 @@ export function NetworkModificationsTable({
 
     return (
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={onRowDragStart} onDragUpdate={handleDragUpdate}>
-            <Box sx={networkTableStyles.tableWrapper}>
+            <Box sx={networkModificationTableStyles.tableWrapper}>
                 <Droppable droppableId="modifications-table" mode="virtual" renderClone={renderClone}>
                     {(provided: DroppableProvided) => (
-                        <Box ref={containerRef} sx={networkTableStyles.container}>
-                            <Table sx={networkTableStyles.table}>
-                                <TableHead sx={networkTableStyles.thead}>
+                        <Box ref={containerRef} sx={networkModificationTableStyles.container}>
+                            <Table sx={networkModificationTableStyles.table}>
+                                <TableHead sx={networkModificationTableStyles.thead}>
                                     {table.getHeaderGroups().map((headerGroup) => (
-                                        <TableRow key={headerGroup.id} sx={networkTableStyles.tableRow}>
+                                        <TableRow key={headerGroup.id} sx={networkModificationTableStyles.tableRow}>
                                             {headerGroup.headers.map((header) => (
                                                 <TableCell
                                                     key={header.id}
@@ -132,7 +221,10 @@ export function NetworkModificationsTable({
                                 <TableBody
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    sx={{ ...networkTableStyles.tableBody, height: `${virtualizer.getTotalSize()}px` }}
+                                    sx={{
+                                        ...networkModificationTableStyles.tableBody,
+                                        height: `${virtualizer.getTotalSize()}px`,
+                                    }}
                                 >
                                     {virtualItems.map((virtualRow) => {
                                         const row = rows[virtualRow.index];

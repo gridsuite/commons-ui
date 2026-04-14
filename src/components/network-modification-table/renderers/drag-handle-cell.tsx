@@ -5,21 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box } from '@mui/material';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import { networkTableStyles } from '../network-table-styles';
+import { Box } from '@mui/material';
+import { networkModificationTableStyles } from '../network-modification-table-styles';
+import { FunctionComponent } from 'react';
 
-interface DragHandleCellProps {
-    isRowDragDisabled: boolean;
-}
-
-export const DragHandleCell = ({
-       isRowDragDisabled,
-    }:Readonly<DragHandleCellProps>) => {
+export const DragHandleCell: FunctionComponent<{ isRowDragDisabled: boolean }> = ({ isRowDragDisabled }) => {
     return (
-        isRowDragDisabled ? undefined:
-        <Box sx={networkTableStyles.dragHandle}>
-            <DragIndicatorIcon fontSize="small" sx={networkTableStyles.dragIndicatorIcon} />
+        <Box sx={networkModificationTableStyles.dragHandle}>
+            {!isRowDragDisabled && (
+                <DragIndicatorIcon fontSize="small" sx={networkModificationTableStyles.dragIndicatorIcon} />
+            )}
         </Box>
     );
 };

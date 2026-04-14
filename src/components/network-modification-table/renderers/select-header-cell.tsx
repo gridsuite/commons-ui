@@ -8,15 +8,15 @@
 import React, { FunctionComponent, useCallback } from 'react';
 import { Checkbox } from '@mui/material';
 import { Table } from '@tanstack/react-table';
-import { NetworkModificationMetadata } from '../../../hooks';
+import { ComposedModificationMetadata } from '../utils';
 
 interface SelectHeaderCellProps {
-    table: Table<NetworkModificationMetadata>;
+    table: Table<ComposedModificationMetadata>;
 }
 
 export const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ table }) => {
     const handleClick = useCallback(() => {
-        const meta: any = table.options.meta;
+        const meta = table.options.meta;
         if (meta) {
             const nextSelectedRows = table.getIsAllRowsSelected()
                 ? []
@@ -31,7 +31,7 @@ export const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ tab
         <Checkbox
             size="small"
             checked={table.getIsAllRowsSelected()}
-            indeterminate={table.getIsSomeRowsSelected()}
+            indeterminate={table.getSelectedRowModel().flatRows.length !== 0 && !table.getIsAllRowsSelected()}
             onClick={handleClick}
         />
     );
