@@ -30,14 +30,20 @@ export type CurvePreviewApi = {
     getCurves: () => Curve[];
 };
 
+function isSameCurve(curve1: Curve, curve2: Curve): boolean {
+    return (
+        curve1.equipmentType === curve2.equipmentType &&
+        curve1.equipmentId === curve2.equipmentId &&
+        curve1.variableId === curve2.variableId
+    );
+}
+
 function isCurveAlreadyAdded(curves: Curve[], curve: Curve): boolean {
-    return curves.some((elem) => elem.equipmentId === curve.equipmentId && elem.variableId === curve.variableId);
+    return curves.some((elem) => isSameCurve(elem, curve));
 }
 
 function isRowSelected(elem: Curve, selectedRows: Curve[]): boolean {
-    return selectedRows.some(
-        (selectedElem) => elem.equipmentId === selectedElem.equipmentId && elem.variableId === selectedElem.variableId
-    );
+    return selectedRows.some((selectedElem) => isSameCurve(elem, selectedElem));
 }
 
 const CurvePreview = forwardRef<CurvePreviewApi>((props, ref) => {
