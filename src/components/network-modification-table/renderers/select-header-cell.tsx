@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { Checkbox } from '@mui/material';
 import { Table } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../utils';
@@ -14,9 +14,9 @@ interface SelectHeaderCellProps {
     table: Table<ComposedModificationMetadata>;
 }
 
-export const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ table }) => {
+export function SelectHeaderCell({ table }: SelectHeaderCellProps) {
     const handleClick = useCallback(() => {
-        const meta = table.options.meta;
+        const { meta } = table.options;
         if (meta) {
             const nextSelectedRows = table.getIsAllRowsSelected()
                 ? []
@@ -35,4 +35,4 @@ export const SelectHeaderCell: FunctionComponent<SelectHeaderCellProps> = ({ tab
             onClick={handleClick}
         />
     );
-};
+}

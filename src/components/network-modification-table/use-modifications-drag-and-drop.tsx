@@ -67,7 +67,7 @@ const isDropForbidden = (
         return true;
     }
 
-    //Can't drag a composite in its own subtree
+    // Can't drag a composite in its own subtree
     return !!(
         isCompositeModification(sourceRow.original) &&
         findModificationInTree(targetRow.original.uuid, [sourceRow.original])

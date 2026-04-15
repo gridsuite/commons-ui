@@ -201,12 +201,12 @@ export function moveSubModificationInTree(
             newTargetSubs,
             modsWithoutTheMovedModification
         );
-    } else {
-        const insertIdx = beforeUuid ? modsWithoutTheMovedModification.findIndex((m) => m.uuid === beforeUuid) : -1;
-        const result = [...modsWithoutTheMovedModification];
-        result.splice(insertIdx === -1 ? result.length : insertIdx, 0, movedMod);
-        return result;
     }
+
+    const insertIdx = beforeUuid ? modsWithoutTheMovedModification.findIndex((m) => m.uuid === beforeUuid) : -1;
+    const result = [...modsWithoutTheMovedModification];
+    result.splice(insertIdx === -1 ? result.length : insertIdx, 0, movedMod);
+    return result;
 }
 
 export function fetchSubModificationsForExpandedRows(

@@ -5,32 +5,32 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip, useTheme } from '@mui/material';
+import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,
     createNameCellRootStyle,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
-import { KeyboardArrowRight } from '@mui/icons-material'
-import { KeyboardArrowDown } from '@mui/icons-material'
-import DepthBox from './depth-box';
+import { DepthBox } from './depth-box';
 import { ComposedModificationMetadata, isCompositeModification } from '../utils';
-import { useTheme } from '@mui/material';
 import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
 import { mergeSx } from '../../../utils';
 
-export const NameCell: FunctionComponent<{
+interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
-}> = ({ row }) => {
+}
+
+export function NameCell({ row }: Readonly<NameCellProps>) {
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
 
-    const depth = row.depth;
+    const { depth } = row;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -45,7 +45,7 @@ export const NameCell: FunctionComponent<{
     const label = useMemo(() => getModificationLabel(row.original), [getModificationLabel, row.original]);
 
     const renderDepthBox = () => {
-        let depthLevelCount = depth;
+        const depthLevelCount = depth;
         return Array.from({ length: depthLevelCount }, (_, i) => (
             <DepthBox
                 key={i}
@@ -98,4 +98,4 @@ export const NameCell: FunctionComponent<{
             </Box>
         </Box>
     );
-};
+}

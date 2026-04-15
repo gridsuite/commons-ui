@@ -7,7 +7,11 @@
 
 import React, { useCallback } from 'react';
 import { flexRender, Row } from '@tanstack/react-table';
-import { Box, TableCell, TableRow, Tooltip } from '@mui/material';
+import { Box, TableCell, TableRow, Tooltip, useTheme } from '@mui/material';
+import { Draggable, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
+import { VirtualItem } from '@tanstack/react-virtual';
+import { FormattedMessage } from 'react-intl';
+import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
 import {
     COLUMNS_WITHOUT_BORDER,
     createCellContentWrapperSx,
@@ -15,11 +19,6 @@ import {
     createRowSx,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
-import { Draggable, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
-import { VirtualItem } from '@tanstack/react-virtual';
-import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
-import { useTheme } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
 import { ComposedModificationMetadata, isCompositeModification } from '../utils';
 import { mergeSx } from '../../../utils';
 
@@ -31,8 +30,13 @@ interface ModificationRowProps {
     highlightedModificationUuid: string | null;
 }
 
-export function ModificationRow (
-    { virtualRow, row, handleCellClick, isRowDragDisabled, highlightedModificationUuid }:Readonly<ModificationRowProps>) {
+export function ModificationRow({
+    virtualRow,
+    row,
+    handleCellClick,
+    isRowDragDisabled,
+    highlightedModificationUuid,
+}: Readonly<ModificationRowProps>) {
     const isHighlighted = row.original.uuid === highlightedModificationUuid;
     const theme = useTheme();
     const isExpanded = row.getIsExpanded() && row.subRows.length > 0;
@@ -82,7 +86,7 @@ export function ModificationRow (
                                         key={cell.id}
                                         sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
                                     >
-                                        <Tooltip title={<FormattedMessage id={'moveModification'} />} arrow>
+                                        <Tooltip title={<FormattedMessage id="moveModification" />} arrow>
                                             <Box
                                                 sx={createCellContentWrapperSx(theme, cellWithoutBorders)}
                                                 {...provided.dragHandleProps}

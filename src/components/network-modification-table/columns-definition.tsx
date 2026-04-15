@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    NetworkModificationEditorNameHeaderProps,
-} from './renderers';
+import { NetworkModificationEditorNameHeaderProps } from './renderers';
 
 const CHIP_PADDING_PX = 24;
 const CHAR_WIDTH_PX = 8;

@@ -104,7 +104,8 @@ export function changeCompositeSubModificationOrder(
     if (sourceCompositeUuid) params.set('sourceCompositeUuid', sourceCompositeUuid);
     if (targetCompositeUuid) params.set('targetCompositeUuid', targetCompositeUuid);
     if (beforeUuid) params.set('beforeUuid', beforeUuid);
-    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/composite-sub-modification/${modificationUuid}${(params.toString() ? `?${params.toString()}` : ``)}`;
+    const paramsStr = params.toString() ? `?${params.toString()}` : ``;
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/composite-sub-modification/${modificationUuid}${paramsStr}`;
     console.debug(url);
     return backendFetch(url, { method: 'put' });
 }

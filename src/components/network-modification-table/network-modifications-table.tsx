@@ -5,21 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, {
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
-import { Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import React, { SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import {
     ColumnDef,
     ExpandedState,
     flexRender,
     getCoreRowModel,
-    getExpandedRowModel, RowModel,
+    getExpandedRowModel,
+    RowModel,
     Updater,
     useReactTable,
 } from '@tanstack/react-table';
@@ -33,7 +27,6 @@ import {
     networkModificationTableStyles,
 } from './network-modification-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
-import { useTheme } from '@mui/material';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import {
     ComposedModificationMetadata,
@@ -88,18 +81,16 @@ export function NetworkModificationsTable({
         formatToComposedModification(modifications)
     );
 
-    const columns = useMemo<ColumnDef<ComposedModificationMetadata>[]>(() =>
-            createAllColumns(isRowDragDisabled ?? false,
+    const columns = useMemo<ColumnDef<ComposedModificationMetadata>[]>(
+        () =>
+            createAllColumns(
+                isRowDragDisabled ?? false,
                 modifications.length,
                 nameHeaderProps,
-                setComposedModifications)
-        , [
-            isRowDragDisabled,
-            modifications,
-            nameHeaderProps,
-            setComposedModifications,
-        ]);
-
+                setComposedModifications
+            ),
+        [createAllColumns, isRowDragDisabled, modifications.length, nameHeaderProps]
+    );
 
     useEffect(() => {
         setComposedModifications((prevMods) => {
@@ -109,7 +100,7 @@ export function NetworkModificationsTable({
 
             // Re-fetch for any composite that already has loaded sub-modifications, regardless of
             // whether it is currently expanded to avoid stale state
-            let loadedComposite: ComposedModificationMetadata[] = [];
+            const loadedComposite: ComposedModificationMetadata[] = [];
             findAllLoadedCompositeModifications(nextMods, loadedComposite);
             fetchSubModificationsForExpandedRows(
                 loadedComposite.map((mod) => mod.uuid),

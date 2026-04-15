@@ -7,7 +7,6 @@
 
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { FunctionComponent } from 'react';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
 
 export interface NetworkModificationEditorNameHeaderProps {
@@ -18,22 +17,18 @@ export interface NetworkModificationEditorNameHeaderProps {
     pendingState: boolean;
 }
 
-export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModificationEditorNameHeaderProps> = (
-    props
-) => {
-    const {
-        modificationCount,
-        isFetchingModifications,
-        isImpactedByNotification,
-        notificationMessageId,
-        pendingState,
-    } = props;
-
+export function NetworkModificationEditorNameHeader({
+    modificationCount,
+    isFetchingModifications,
+    isImpactedByNotification,
+    notificationMessageId,
+    pendingState,
+}: Readonly<NetworkModificationEditorNameHeaderProps>) {
     if (isImpactedByNotification() && notificationMessageId) {
         return (
             <Box sx={networkModificationTableStyles.modificationNameHeader}>
                 <Box sx={networkModificationTableStyles.icon}>
-                    <CircularProgress size={'1em'} sx={networkModificationTableStyles.modificationCircularProgress} />
+                    <CircularProgress size="1em" sx={networkModificationTableStyles.modificationCircularProgress} />
                 </Box>
                 <Typography noWrap>
                     <FormattedMessage id={notificationMessageId} />
@@ -46,10 +41,10 @@ export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModif
         return (
             <Box sx={networkModificationTableStyles.modificationNameHeader}>
                 <Box sx={networkModificationTableStyles.icon}>
-                    <CircularProgress size={'1em'} sx={networkModificationTableStyles.modificationCircularProgress} />
+                    <CircularProgress size="1em" sx={networkModificationTableStyles.modificationCircularProgress} />
                 </Box>
                 <Typography noWrap>
-                    <FormattedMessage id={'network_modifications.modifications'} />
+                    <FormattedMessage id="network_modifications.modifications" />
                 </Typography>
             </Box>
         );
@@ -59,12 +54,12 @@ export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModif
         <Box sx={networkModificationTableStyles.modificationNameHeader}>
             {pendingState && (
                 <Box sx={networkModificationTableStyles.icon}>
-                    <CircularProgress size={'1em'} sx={networkModificationTableStyles.modificationCircularProgress} />
+                    <CircularProgress size="1em" sx={networkModificationTableStyles.modificationCircularProgress} />
                 </Box>
             )}
             <Typography noWrap>
                 <FormattedMessage
-                    id={'network_modifications.modificationsCount'}
+                    id="network_modifications.modificationsCount"
                     values={{
                         count: modificationCount ?? '',
                         hide: pendingState,
@@ -73,4 +68,4 @@ export const NetworkModificationEditorNameHeader: FunctionComponent<NetworkModif
             </Typography>
         </Box>
     );
-};
+}

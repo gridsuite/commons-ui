@@ -5,11 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MuiStyles } from '@gridsuite/commons-ui';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { SxProps, Theme } from '@mui/material';
-import { alpha, darken, lighten } from '@mui/material/styles';
+import { SxProps, Theme, alpha, darken, lighten } from '@mui/material';
 import { CSSProperties } from 'react';
+import { MuiStyles } from '../../utils';
 
 const HIGHLIGHT_COLOR_BASE = 'rgba(144, 202, 249, 0.16)';
 const HIGHLIGHT_COLOR_HOVER = 'rgba(144, 202, 249, 0.24)';
@@ -219,8 +218,6 @@ export const networkModificationTableStyles = {
         marginRight: theme.spacing(2),
         color: theme.palette.secondary.main,
     }),
-
-
 } as const satisfies MuiStyles;
 
 // Dynamic styles
@@ -288,7 +285,7 @@ export const createEditDescriptionStyle = (description: string | undefined): SxP
 
 export const createCellStyle = (cell: any, isAutoExtensible: boolean) => {
     const size = cell.column.getSize();
-    const minSize = cell.column.columnDef.minSize;
+    const { minSize } = cell.column.columnDef;
 
     return {
         ...cell.column.columnDef.meta?.cellStyle,
@@ -311,7 +308,7 @@ export const createHeaderCellStyle = (
     isAutoExtensible: boolean
 ) => {
     const size = header.column.getSize();
-    const minSize = header.column.columnDef.minSize;
+    const { minSize } = header.column.columnDef;
 
     return {
         ...header.column.columnDef.meta?.cellStyle,

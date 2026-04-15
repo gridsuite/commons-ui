@@ -6,12 +6,12 @@
  */
 
 import { Box } from '@mui/material';
-import { networkModificationTableStyles } from '../network-modification-table-styles';
 import { Row } from '@tanstack/react-table';
-import { ComposedModificationMetadata } from '../utils';
-import { DragIndicator } from '@mui/icons-material'
+import { DragIndicator } from '@mui/icons-material';
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
+import { ComposedModificationMetadata } from '../utils';
+import { networkModificationTableStyles } from '../network-modification-table-styles';
 import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
 import { mergeSx } from '../../../utils';
 

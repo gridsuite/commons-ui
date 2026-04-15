@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Checkbox } from '@mui/material';
 import { Row, Table } from '@tanstack/react-table';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
@@ -16,8 +16,8 @@ interface SelectCellRendererProps {
     table: Table<ComposedModificationMetadata>;
 }
 
-export const SelectCell: FunctionComponent<SelectCellRendererProps> = ({ row, table }) => {
-    const meta = table.options.meta;
+export function SelectCell({ row, table }: Readonly<SelectCellRendererProps>) {
+    const { meta } = table.options;
 
     const handleChange = useCallback(
         (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,4 +81,4 @@ export const SelectCell: FunctionComponent<SelectCellRendererProps> = ({ row, ta
             sx={networkModificationTableStyles.selectCheckBox}
         />
     );
-};
+}
