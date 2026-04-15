@@ -34,7 +34,9 @@
         "lint": "eslint . --max-warnings 0",
         "lint:fix": "eslint . --fix",
         "lint:format": "prettier --check --cache .",
-        "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\""
+        "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\"",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@ag-grid-community/locale": "^33.3.2",
@@ -92,6 +94,8 @@
         "@mui/lab": "5.0.0-alpha.175",
         "@mui/material": "^5.18.0",
         "@react-hook/window-size": "^3.1.1",
+        "@storybook/addon-docs": "^10.3.5",
+        "@storybook/react-vite": "^10.3.5",
         "@stylistic/eslint-plugin": "^3.1.0",
         "@testing-library/jest-dom": "^6.8.0",
         "@testing-library/react": "^16.3.0",
@@ -137,6 +141,7 @@
         "react-papaparse": "^4.4.0",
         "react-resizable": "^3.0.5",
         "react-router": "^7.8.2",
+        "storybook": "^10.3.5",
         "ts-node": "^10.9.2",
         "typescript": "~5.9.3",
         "typescript-eslint": "^8.46.2",
