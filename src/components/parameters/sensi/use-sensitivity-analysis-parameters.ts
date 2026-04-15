@@ -14,6 +14,7 @@ import {
     ElementType,
     FactorsCount,
     FieldConstants,
+    mapSensitivityAnalysisParameters,
     SensitivityAnalysisParametersInfosEnriched,
     snackWithFallback,
     UseParametersBackendReturnProps,
@@ -426,7 +427,7 @@ export const useSensitivityAnalysisParametersForm = ({
             if (parametersUuid) {
                 updateParameter(
                     parametersUuid,
-                    formatNewParams(formData),
+                    mapSensitivityAnalysisParameters(formatNewParams(formData)),
                     formData[FieldConstants.NAME],
                     ElementType.SENSITIVITY_PARAMETERS,
                     formData[FieldConstants.DESCRIPTION] ?? ''

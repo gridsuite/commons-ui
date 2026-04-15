@@ -58,12 +58,14 @@ function getEquipmentsContainerIds(params: SAParameters): Set<string> {
 export function enrichSecurityAnalysisParameters(parameters: SAParameters): Promise<SAParametersEnriched> {
     const allElementIds = getEquipmentsContainerIds(parameters);
 
-    return fetchElementNames(allElementIds).then((elementNames) => {
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+
+    return elementNamesPromise.then((elementNames) => {
         const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
             return ids
                 ? ids.map((id) => ({
                       [ID]: id,
-                      [NAME]: elementNames.get(id) ?? null,
+                      [NAME]: elementNames?.[id] ?? null,
                   }))
                 : [];
         };

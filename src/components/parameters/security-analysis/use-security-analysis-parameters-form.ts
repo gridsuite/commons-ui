@@ -30,7 +30,7 @@ import { getNameElementEditorEmptyFormData } from '../common/name-element-editor
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { SAParametersEnriched } from './types';
+import { mapSecurityAnalysisParameters, SAParametersEnriched } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
 import { ContingencyListsInfosEnriched } from '../common/contingency-table/types';
@@ -163,7 +163,7 @@ export const useSecurityAnalysisParametersForm = (
             if (parametersUuid) {
                 updateParameter(
                     parametersUuid,
-                    formatNewParams(formData),
+                    mapSecurityAnalysisParameters(formatNewParams(formData)),
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''

@@ -214,12 +214,14 @@ export function enrichSensitivityAnalysisParameters(
 ): Promise<SensitivityAnalysisParametersInfosEnriched> {
     const allElementIds = getEquipmentsContainerIds(parameters);
 
-    return fetchElementNames(allElementIds).then((elementNames) => {
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+
+    return elementNamesPromise.then((elementNames) => {
         const mapIdsToEquipmentsContainer = (ids: UUID[] | undefined): EquipmentsContainer[] => {
             return ids
                 ? ids.map((id) => ({
                       containerId: id,
-                      containerName: elementNames.get(id) ?? null,
+                      containerName: elementNames?.[id] ?? null,
                   }))
                 : [];
         };

@@ -11,6 +11,7 @@ export * from './explore';
 export * from './loadflow';
 export * from './pcc-min';
 export * from './security-analysis';
+export * from './sensitivity-analysis';
 export * from './study';
 export * from './study-config';
 export * from './userAdmin';

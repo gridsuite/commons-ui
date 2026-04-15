@@ -23,24 +23,26 @@ export function mapPccMinParameters(parametersInfos: PccMinParametersEnriched): 
 }
 
 function getFilterIdentifierIds(params: PccMinParameters): Set<string> {
-    return new Set(params.filters);
+    return new Set(params[FILTERS]);
 }
 
 export function enrichPccMinParameters(parameters: PccMinParameters): Promise<PccMinParametersEnriched> {
     const allElementIds = getFilterIdentifierIds(parameters);
 
-    return fetchElementNames(allElementIds).then((elementNames) => {
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+
+    return elementNamesPromise.then((elementNames) => {
         const mapIdsToFilterIdentifiers = (ids: UUID[] | undefined): FilterIdentifier[] => {
             return ids
                 ? ids.map((id) => ({
                       filterId: id,
-                      filterName: elementNames.get(id) ?? null,
+                      filterName: elementNames?.[id] ?? null,
                   }))
                 : [];
         };
         return {
             ...parameters,
-            [FILTERS]: mapIdsToFilterIdentifiers(parameters.filters),
+            [FILTERS]: mapIdsToFilterIdentifiers(parameters[FILTERS]),
         };
     });
 }

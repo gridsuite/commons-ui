@@ -19,7 +19,7 @@ import { fetchPccMinParameters, updatePccMinParameters } from '../../../services
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { ElementType, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { fromPccMinParametersFormToParamValues, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
+import { fromPccMinParametersFormToParamValuesEnriched, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
 
 export function PccMinParametersInLine({
     studyUuid,
@@ -115,7 +115,7 @@ export function PccMinParametersInLine({
                                 onClose={() => setOpenCreateParameterDialog(false)}
                                 parameterValues={getValues}
                                 parameterFormatter={(params: Record<string, any>) =>
-                                    fromPccMinParametersFormToParamValues(params)
+                                    fromPccMinParametersFormToParamValuesEnriched(params)
                                 }
                                 parameterType={ElementType.PCC_MIN_PARAMETERS}
                             />

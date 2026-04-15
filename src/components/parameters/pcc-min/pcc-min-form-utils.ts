@@ -7,16 +7,20 @@
 
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { NAME } from '../../inputs';
-import { PccMinParametersEnriched } from '../../../utils';
+import { PccMinParameters, PccMinParametersEnriched } from '../../../utils';
 
-export const fromPccMinParametersFormToParamValues = (
+export const fromPccMinParametersFormToParamValuesEnriched = (
     newParams: Record<string, any>
-): PccMinParametersEnriched | null => ({
+): PccMinParametersEnriched => ({
     filters:
         newParams[FILTERS]?.map((filter: any) => ({
             filterId: filter[ID],
             filterName: filter[NAME],
         })) ?? [],
+});
+
+export const fromPccMinParametersFormToParamValues = (newParams: Record<string, any>): PccMinParameters => ({
+    filters: newParams[FILTERS]?.map((filter: any) => filter[ID]) ?? [],
 });
 
 export const fromPccMinParamsDataToFormValues = (parameters: PccMinParametersEnriched | null): Record<string, any> => ({

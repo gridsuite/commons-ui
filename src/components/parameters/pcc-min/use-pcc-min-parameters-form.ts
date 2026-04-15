@@ -13,6 +13,7 @@ import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import {
     fromPccMinParametersFormToParamValues,
+    fromPccMinParametersFormToParamValuesEnriched,
     fromPccMinParamsDataToFormValues,
     fromStudyPccMinParamsDataToFormValues,
 } from './pcc-min-form-utils';
@@ -85,12 +86,14 @@ export const UsePccMinParametersForm = ({
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
             if (studyUuid) {
-                updatePccMinParameters(studyUuid, fromPccMinParametersFormToParamValues(formData)).catch((error) => {
-                    snackError({
-                        messageTxt: error.message,
-                        headerId: 'updatePccMinParametersError',
-                    });
-                });
+                updatePccMinParameters(studyUuid, fromPccMinParametersFormToParamValuesEnriched(formData)).catch(
+                    (error) => {
+                        snackError({
+                            messageTxt: error.message,
+                            headerId: 'updatePccMinParametersError',
+                        });
+                    }
+                );
             }
         },
         [snackError, studyUuid]
