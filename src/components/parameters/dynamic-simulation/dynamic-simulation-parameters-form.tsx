@@ -82,6 +82,7 @@ export function DynamicSimulationForm({
                     </Grid>
                     <Grid
                         container
+                        item
                         xs
                         key="dsParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
