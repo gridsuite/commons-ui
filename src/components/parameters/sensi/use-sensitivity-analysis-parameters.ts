@@ -260,7 +260,15 @@ export const useSensitivityAnalysisParametersForm = ({
             clearTimeout(loadingTimeoutId);
         };
         // globalBuildStatus is needed because when the node is build the factors must be recalculated
-    }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams, globalBuildStatus, isRootNode]);
+    }, [
+        snackError,
+        studyUuid,
+        currentRootNetworkUuid,
+        currentNodeUuid,
+        factorCountParams,
+        globalBuildStatus,
+        isRootNode,
+    ]);
 
     const onFormChanged = useCallback(() => {
         updateFactorCount();
