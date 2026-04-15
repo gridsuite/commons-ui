@@ -23,7 +23,7 @@ export function isCompositeModification(modification: ComposedModificationMetada
 /**
  *
  * @param modifications source where the composite modifications are looked for
- * @param composites result : all the composite modificcations found
+ * @param composites result : all the composite modifications found
  */
 export function findAllLoadedCompositeModifications(
     modifications: ComposedModificationMetadata[],

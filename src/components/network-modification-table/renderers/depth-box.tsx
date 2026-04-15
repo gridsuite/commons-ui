@@ -22,7 +22,7 @@ function getDepthBoxStyle(displayAsFolder: boolean | undefined, firstLevel: bool
     return firstLevel ? networkModificationTableStyles.firstLevelDepthBox : networkModificationTableStyles.depthBox;
 }
 
-export function DepthBox({ firstLevel, displayAsFolder = false }: DepthBoxProps) {
+export function DepthBox({ firstLevel, displayAsFolder = false }: Readonly<DepthBoxProps>) {
     return (
         <Box sx={getDepthBoxStyle(displayAsFolder, firstLevel)}>
             {displayAsFolder ? (
