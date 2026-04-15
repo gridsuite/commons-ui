@@ -83,7 +83,7 @@ interface CheckboxAutocompleteProps<Value>
 }
 
 export function CheckboxAutocomplete<Value>({
-    id = '',
+    id,
     virtualize = false,
     maxSelection = 0,
     options,
@@ -157,7 +157,7 @@ export function CheckboxAutocomplete<Value>({
 
     return (
         <Autocomplete
-            id={`checkbox-autocomplete-${id}`}
+            id={id ? `checkbox-autocomplete-${id}` : undefined}
             sx={styles.autocomplete}
             disableCloseOnSelect
             size="small"
