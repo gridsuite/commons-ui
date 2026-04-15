@@ -36,7 +36,8 @@
         "lint:format": "prettier --check --cache .",
         "licenses-check": "license-checker --summary --excludePrivatePackages --production --onlyAllow \"$( jq -r .onlyAllow[] license-checker-config.json | tr '\n' ';')\" --excludePackages \"$( jq -r .excludePackages[] license-checker-config.json | tr '\n' ';')\"",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "build-demo": "vite build --config vite.demo.config.ts"
     },
     "dependencies": {
         "@ag-grid-community/locale": "^33.3.2",

@@ -31,3 +31,5 @@ node_modules/
 
 # Storybook
 /storybook-static/
+demo-dist/
+gh-pages/

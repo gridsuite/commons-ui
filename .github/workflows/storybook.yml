@@ -1,4 +1,4 @@
-name: Deploy Storybook to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -33,10 +33,21 @@ jobs:
       - name: Build Storybook
         run: npm run build-storybook
 
+      - name: Build Demo app
+        run: npm run build-demo
+
+      - name: Assemble GitHub Pages artifact
+        run: |
+          mkdir -p gh-pages/demo
+          # Demo app at /demo
+          cp -r demo-dist/. gh-pages/demo
+          # Storybook at the root
+          cp -r storybook-static/. gh-pages
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: storybook-static
+          path: gh-pages
 
   deploy:
     needs: build
