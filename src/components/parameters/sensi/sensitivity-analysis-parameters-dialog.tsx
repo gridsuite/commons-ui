@@ -52,6 +52,7 @@ export function SensitivityAnalysisParametersDialog({
         name,
         description,
         globalBuildStatus,
+        isRootNode,
     });
     const {
         formState: { errors, dirtyFields },

@@ -63,6 +63,7 @@ export function SensitivityAnalysisParametersInline({
         description: null,
         parametersUuid: null,
         globalBuildStatus,
+        isRootNode,
     });
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);

@@ -91,6 +91,7 @@ type UseSensitivityAnalysisParametersFormProps =
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: UUID;
           globalBuildStatus: BuildStatus | undefined;
+          isRootNode: boolean;
       }
     | {
           name: null;
@@ -101,6 +102,7 @@ type UseSensitivityAnalysisParametersFormProps =
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: null;
           globalBuildStatus: BuildStatus | undefined;
+          isRootNode: boolean;
       };
 
 export const useSensitivityAnalysisParametersForm = ({
@@ -112,6 +114,7 @@ export const useSensitivityAnalysisParametersForm = ({
     name,
     description,
     globalBuildStatus,
+    isRootNode,
 }: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
     const { providers, params, updateParameters } = parametersBackend;
     const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
@@ -218,11 +221,7 @@ export const useSensitivityAnalysisParametersForm = ({
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
         }
-        if (
-            globalBuildStatus === BuildStatus.NOT_BUILT ||
-            globalBuildStatus === BuildStatus.BUILDING ||
-            globalBuildStatus === BuildStatus.ROOT_NODE
-        ) {
+        if (globalBuildStatus === BuildStatus.NOT_BUILT || globalBuildStatus === BuildStatus.BUILDING || isRootNode) {
             setFactorsCount(DEFAULT_FACTOR_COUNT);
             return () => {};
         }
@@ -261,7 +260,7 @@ export const useSensitivityAnalysisParametersForm = ({
             clearTimeout(loadingTimeoutId);
         };
         // globalBuildStatus is needed because when the node is build the factors must be recalculated
-    }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams, globalBuildStatus]);
+    }, [snackError, studyUuid, currentRootNetworkUuid, currentNodeUuid, factorCountParams, globalBuildStatus, isRootNode]);
 
     const onFormChanged = useCallback(() => {
         updateFactorCount();
