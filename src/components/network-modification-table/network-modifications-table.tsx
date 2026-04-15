@@ -29,7 +29,6 @@ import {
 import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import {
-    ComposedModificationMetadata,
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
     formatToComposedModification,
@@ -37,7 +36,7 @@ import {
     mergeSubModificationsIntoTree,
 } from './utils';
 import { ModificationRow } from './row';
-import { NetworkModificationMetadata } from '../../hooks';
+import { ComposedModificationMetadata, NetworkModificationMetadata } from '../../utils';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];

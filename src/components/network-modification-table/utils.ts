@@ -8,18 +8,13 @@
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
 import { getNetworkModificationsFromComposite } from '../../services';
-import { NetworkModificationMetadata } from '../../hooks';
-import { MODIFICATION_TYPES } from '../../utils';
+import { ComposedModificationMetadata, MODIFICATION_TYPES, NetworkModificationMetadata } from '../../utils';
 
 export const formatToComposedModification = (
     modifications: NetworkModificationMetadata[]
 ): ComposedModificationMetadata[] => {
     return modifications.map((modification) => ({ ...modification, subModifications: [] }));
 };
-
-export interface ComposedModificationMetadata extends NetworkModificationMetadata {
-    subModifications: ComposedModificationMetadata[];
-}
 
 export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.messageType === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
@@ -34,18 +29,20 @@ export function findAllLoadedCompositeModifications(
     modifications: ComposedModificationMetadata[],
     composites: ComposedModificationMetadata[]
 ) {
-    for (const modification of modifications) {
+    modifications.forEach((modification) => {
         if (isCompositeModification(modification) && modification.subModifications.length > 0) {
             composites.push(modification);
             findAllLoadedCompositeModifications(modification.subModifications, composites);
         }
-    }
+    });
 }
 
 export function findModificationInTree(
     uuid: string,
     mods: ComposedModificationMetadata[]
 ): ComposedModificationMetadata | undefined {
+    // I think that array iteration is much less readable in this case :
+    // eslint-disable-next-line no-restricted-syntax
     for (const mod of mods) {
         if (mod.uuid === uuid) {
             return mod;
@@ -151,7 +148,7 @@ function getModificationInTree(
  * @param movingUuid moved submodification uuid
  * @param sourceParentUuid composite from which movingUuid comes from. null if movingUuid is at the root level
  * @param targetParentUuid composite where movingUuid is moved. null if movingUuid is moved to the root level
- * @param beforeUuid movingUuid is moved just after beforeUuid. If null, movingUuid is moved to the end.
+ * @param beforeUuid movingUuid is moved just before beforeUuid. If null, movingUuid is moved to the end.
  * @param mods all the network modifications of the tree
  * @return mods updated according to the moved submodification
  */

@@ -17,9 +17,9 @@ import {
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
-import { ComposedModificationMetadata, isCompositeModification } from '../utils';
-import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
-import { mergeSx } from '../../../utils';
+import { isCompositeModification } from '../utils';
+import { useModificationLabelComputer } from '../../../hooks';
+import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata } from '../../../utils';
 
 interface NameCellProps {
     row: Row<ComposedModificationMetadata>;

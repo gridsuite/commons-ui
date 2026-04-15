@@ -19,8 +19,8 @@ import {
     createRowSx,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
-import { ComposedModificationMetadata, isCompositeModification } from '../utils';
-import { mergeSx } from '../../../utils';
+import { isCompositeModification } from '../utils';
+import { ComposedModificationMetadata, mergeSx } from '../../../utils';
 
 interface ModificationRowProps {
     virtualRow: VirtualItem;

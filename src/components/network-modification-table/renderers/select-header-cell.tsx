@@ -8,7 +8,7 @@
 import React, { useCallback } from 'react';
 import { Checkbox } from '@mui/material';
 import { Table } from '@tanstack/react-table';
-import { ComposedModificationMetadata } from '../utils';
+import { ComposedModificationMetadata } from '../../../utils';
 
 interface SelectHeaderCellProps {
     table: Table<ComposedModificationMetadata>;

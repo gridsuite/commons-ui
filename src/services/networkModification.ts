@@ -7,8 +7,8 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
-import { NetworkModificationMetadata } from '../hooks';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { NetworkModificationMetadata } from '../utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
 

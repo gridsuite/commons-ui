@@ -16,15 +16,10 @@ import {
     DROP_INDICATOR_BOTTOM,
     DROP_INDICATOR_TOP,
 } from './network-modification-table-styles';
-import {
-    ComposedModificationMetadata,
-    findModificationInTree,
-    isCompositeModification,
-    moveSubModificationInTree,
-} from './utils';
+import { findModificationInTree, isCompositeModification, moveSubModificationInTree } from './utils';
 import { changeCompositeSubModificationOrder, changeNetworkModificationOrder } from '../../services';
 import { useSnackMessage } from '../../hooks';
-import { snackWithFallback } from '../../utils';
+import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
 interface UseModificationsDragAndDropParams {
     rows: Row<ComposedModificationMetadata>[];
@@ -47,8 +42,12 @@ interface UseModificationsDragAndDropReturn {
 }
 
 const clearRowDragIndicators = (container: HTMLDivElement | null): void => {
-    container?.querySelectorAll<HTMLElement>('[data-row-id]').forEach((el) => {
-        el.style.boxShadow = '';
+    const rowElements = container?.querySelectorAll<HTMLElement>('[data-row-id]');
+
+    rowElements?.forEach((rowElement) => {
+        // because eslint don't want reassign but also don't want a "for" loop... :
+        // eslint-disable-next-line no-param-reassign
+        rowElement.style.boxShadow = '';
     });
 };
 

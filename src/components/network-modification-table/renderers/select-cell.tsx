@@ -9,7 +9,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Checkbox } from '@mui/material';
 import { Row, Table } from '@tanstack/react-table';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
-import { ComposedModificationMetadata } from '../utils';
+import { ComposedModificationMetadata } from '../../../utils';
 
 interface SelectCellRendererProps {
     row: Row<ComposedModificationMetadata>;

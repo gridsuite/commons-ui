@@ -10,10 +10,9 @@ import { Row } from '@tanstack/react-table';
 import { DragIndicator } from '@mui/icons-material';
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { ComposedModificationMetadata } from '../utils';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
-import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
-import { mergeSx } from '../../../utils';
+import { useModificationLabelComputer } from '../../../hooks';
+import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata } from '../../../utils';
 
 interface DragCloneRowProps {
     row: Row<ComposedModificationMetadata>;
