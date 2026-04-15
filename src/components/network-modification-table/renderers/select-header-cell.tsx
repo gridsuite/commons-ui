@@ -14,7 +14,7 @@ interface SelectHeaderCellProps {
     table: Table<ComposedModificationMetadata>;
 }
 
-export function SelectHeaderCell({ table }: SelectHeaderCellProps) {
+export function SelectHeaderCell({ table }: Readonly<SelectHeaderCellProps>) {
     const handleClick = useCallback(() => {
         const { meta } = table.options;
         if (meta) {

@@ -13,7 +13,6 @@ import {
     flexRender,
     getCoreRowModel,
     getExpandedRowModel,
-    RowModel,
     Updater,
     useReactTable,
 } from '@tanstack/react-table';
@@ -144,7 +143,7 @@ export function NetworkModificationsTable({
         meta: { lastClickedIndex, onRowSelected },
     });
 
-    const { rows } = table.getRowModel() as RowModel<ComposedModificationMetadata>;
+    const { rows } = table.getRowModel();
 
     const virtualizer = useVirtualizer({
         count: rows.length,
