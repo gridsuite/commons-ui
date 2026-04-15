@@ -322,4 +322,5 @@ export const parametersEn = {
     BUILDING: 'Building',
     NODE_BUILT: 'Node built',
     NODE_NOT_BUILT: 'Node not built',
+    ROOT_NODE: 'Root node',
 };

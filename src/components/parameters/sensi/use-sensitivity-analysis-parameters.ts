@@ -221,7 +221,7 @@ export const useSensitivityAnalysisParametersForm = ({
         if (
             globalBuildStatus === BuildStatus.NOT_BUILT ||
             globalBuildStatus === BuildStatus.BUILDING ||
-            globalBuildStatus === undefined
+            globalBuildStatus === BuildStatus.ROOT_NODE
         ) {
             setFactorsCount(DEFAULT_FACTOR_COUNT);
             return () => {};

@@ -264,9 +264,9 @@ export const parametersFr = {
     PSTS: 'TDs',
     Active: 'Actif',
     'sensitivityAnalysis.simulatedResults':
-        '{count, plural, =0 {0 résultat} =1 {1 résultat} other {#{suffix} résultats}}',
+        '{count, plural, =0 {0 résultat} =1 {1 résultat} =-1 {- résultat} other {#{suffix} résultats}}',
     'sensitivityAnalysis.simulatedVariables':
-        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+        '{count, plural, =0 {0 variable} =1 {1 variable} =-1 {- variable} other {#{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Evaluation en cours...',
@@ -338,4 +338,5 @@ export const parametersFr = {
     BUILDING: 'En cours de réalisation',
     NODE_BUILT: 'Nœud réalisé',
     NODE_NOT_BUILT: 'Nœud non réalisé',
+    ROOT_NODE: 'Nœud racine',
 };

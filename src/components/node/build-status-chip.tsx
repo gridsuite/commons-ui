@@ -23,6 +23,7 @@ function getBuildStatusSx(buildStatus?: BuildStatus): SxStyle {
                 bg = bs.success;
                 break;
             case BuildStatus.BUILT_WITH_WARNING:
+            case BuildStatus.ROOT_NODE:
                 bg = bs.warning;
                 break;
             case BuildStatus.BUILT_WITH_ERROR:
@@ -74,6 +75,8 @@ export function BuildStatusChip({
             labelId = 'NODE_BUILT';
         } else if (labelId === BuildStatus.NOT_BUILT) {
             labelId = 'NODE_NOT_BUILT';
+        } else if (labelId === BuildStatus.ROOT_NODE) {
+            labelId = 'ROOT_NODE';
         }
     }
     const label = intl.formatMessage({ id: labelId });
