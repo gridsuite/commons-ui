@@ -7,7 +7,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { MultipleSelectionDialog } from '../src/components/multipleSelectionDialog';
+import { PopupConfirmationDialog } from '../src/components/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
+import { CustomMuiDialog } from '../src/components/dialogs/customMuiDialog/CustomMuiDialog';
+import { TextInput } from '../src/components/inputs/reactHookForm/text/TextInput';
+import { DescriptionModificationDialog } from '../src/components/dialogs/descriptionModificationDialog/DescriptionModificationDialog';
 
 type ColumnItem = { id: string; label: string };
 
@@ -33,6 +40,8 @@ const meta: Meta = {
 };
 
 export default meta;
+
+// ─── MultipleSelectionDialog ──────────────────────────────────────────────────
 
 export const Default: StoryObj = {
     name: 'Column visibility picker',
@@ -81,4 +90,132 @@ export const OpenByDefault: StoryObj = {
             />
         </Box>
     ),
+};
+
+// ─── PopupConfirmationDialog ──────────────────────────────────────────────────
+
+export const PopupConfirmationDialogStory: StoryObj = {
+    name: 'PopupConfirmationDialog',
+    render: () => {
+        const [open, setOpen] = useState(false);
+        const [confirmed, setConfirmed] = useState(false);
+        return (
+            <Stack spacing={2} alignItems="flex-start">
+                <Button variant="outlined" color="error" onClick={() => setOpen(true)}>
+                    Delete element
+                </Button>
+                {confirmed && <Typography color="success.main">Deletion confirmed!</Typography>}
+                <PopupConfirmationDialog
+                    message="deleteEquipment"
+                    openConfirmationPopup={open}
+                    setOpenConfirmationPopup={setOpen}
+                    handlePopupConfirmation={() => {
+                        setOpen(false);
+                        setConfirmed(true);
+                    }}
+                />
+            </Stack>
+        );
+    },
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'A lightweight confirmation dialog with Cancel and Validate actions. The `message` prop is a translation key shown as the dialog body.',
+            },
+        },
+    },
+};
+
+// ─── CustomMuiDialog ──────────────────────────────────────────────────────────
+
+const customDialogSchema = yup.object({ label: yup.string().required() });
+
+function CustomMuiDialogDemo() {
+    const [open, setOpen] = useState(false);
+    const [saved, setSaved] = useState<string | null>(null);
+    const methods = useForm({
+        defaultValues: { label: '' },
+        resolver: yupResolver(customDialogSchema),
+    });
+    return (
+        <Stack spacing={2} alignItems="flex-start">
+            <Button variant="outlined" onClick={() => setOpen(true)}>
+                Open dialog
+            </Button>
+            {saved && (
+                <Typography variant="body2">
+                    Saved label: <strong>{saved}</strong>
+                </Typography>
+            )}
+            <CustomMuiDialog
+                open={open}
+                onClose={() => {
+                    setOpen(false);
+                    methods.reset();
+                }}
+                onSave={(data) => {
+                    setSaved(data.label);
+                }}
+                formContext={{ ...methods, validationSchema: customDialogSchema }}
+                titleId="inputs/name"
+            >
+                <Box sx={{ pt: 1 }}>
+                    <TextInput name="label" label="inputs/name" />
+                </Box>
+            </CustomMuiDialog>
+        </Stack>
+    );
+}
+
+export const CustomMuiDialogStory: StoryObj = {
+    name: 'CustomMuiDialog',
+    render: () => <CustomMuiDialogDemo />,
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'A dialog that wraps `CustomFormProvider` and provides Save / Cancel buttons with built-in form submission. The `formContext` prop is the merged result of `useForm()` + validation schema.',
+            },
+        },
+    },
+};
+
+// ─── DescriptionModificationDialog ───────────────────────────────────────────
+
+function DescriptionModificationDialogDemo() {
+    const [open, setOpen] = useState(false);
+    const [description, setDescription] = useState('Initial description text.');
+    return (
+        <Stack spacing={2} alignItems="flex-start">
+            <Button variant="outlined" onClick={() => setOpen(true)}>
+                Edit description
+            </Button>
+            <Typography variant="body2">
+                Current description: <em>{description || '(empty)'}</em>
+            </Typography>
+            <DescriptionModificationDialog
+                open={open}
+                description={description}
+                onClose={() => setOpen(false)}
+                updateForm={(data) => {
+                    setDescription(data.description ?? '');
+                    setOpen(false);
+                }}
+            />
+        </Stack>
+    );
+}
+
+export const DescriptionModificationDialogStory: StoryObj = {
+    name: 'DescriptionModificationDialog',
+    render: () => <DescriptionModificationDialogDemo />,
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    'A dialog for editing a textual description. Provides `updateElement` for async backend updates and `updateForm` for local state updates.',
+            },
+        },
+    },
 };

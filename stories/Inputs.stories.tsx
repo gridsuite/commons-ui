@@ -15,6 +15,16 @@ import { TextInput } from '../src/components/inputs/reactHookForm/text/TextInput
 import { SelectInput } from '../src/components/inputs/reactHookForm/selectInputs/SelectInput';
 import { SelectClearable } from '../src/components/inputs/SelectClearable';
 import { ActivableChip } from '../src/components/inputs/ActivableChip';
+import { CheckboxInput } from '../src/components/inputs/reactHookForm/booleans/CheckboxInput';
+import { SwitchInput } from '../src/components/inputs/reactHookForm/booleans/SwitchInput';
+import { RadioInput } from '../src/components/inputs/reactHookForm/booleans/RadioInput';
+import { FloatInput } from '../src/components/inputs/reactHookForm/numbers/FloatInput';
+import { IntegerInput } from '../src/components/inputs/reactHookForm/numbers/IntegerInput';
+import { SliderInput } from '../src/components/inputs/reactHookForm/numbers/SliderInput';
+import { RangeInput, DEFAULT_RANGE_VALUE, getRangeInputSchema } from '../src/components/inputs/reactHookForm/numbers/RangeInput';
+import { AutocompleteInput } from '../src/components/inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
+import { MultipleAutocompleteInput } from '../src/components/inputs/reactHookForm/autocompleteInputs/MultipleAutocompleteInput';
+import { OverflowableChip } from '../src/components/inputs/reactHookForm/OverflowableChip';
 
 // ─── Shared form wrapper helper ──────────────────────────────────────────────
 
@@ -168,6 +178,133 @@ export const ActivableChipInputStory: StoryObj = {
         docs: {
             description: {
                 story: 'A toggleable chip with a visual indicator (checkmark / cross icon) and tooltip.',
+            },
+        },
+    },
+};
+
+// ─── Boolean inputs ───────────────────────────────────────────────────────────
+
+const boolSchema = yup.object({
+    agreeTerms: yup.boolean().required(),
+    notifications: yup.boolean().required(),
+    severity: yup.string().required(),
+});
+
+export const BooleanInputsStory: StoryObj = {
+    name: 'Boolean inputs (Checkbox, Switch, Radio)',
+    render: () => (
+        <FormWrapper schema={boolSchema} defaultValues={{ agreeTerms: false, notifications: true, severity: 'warning' }}>
+            <CheckboxInput name="agreeTerms" label="inputs/agreeTerms" />
+            <SwitchInput name="notifications" label="inputs/notifications" />
+            <RadioInput
+                name="severity"
+                label="inputs/severity"
+                options={[
+                    { id: 'info', label: 'Info' },
+                    { id: 'warning', label: 'Warning' },
+                    { id: 'error', label: 'Error' },
+                ]}
+            />
+        </FormWrapper>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    '`CheckboxInput` and `SwitchInput` wrap MUI controls via `BooleanInput`. `RadioInput` provides a labeled radio group. All are RHF-controlled.',
+            },
+        },
+    },
+};
+
+// ─── Numeric inputs ───────────────────────────────────────────────────────────
+
+const numericSchema = yup.object({
+    voltage: yup.number().nullable(),
+    iterations: yup.number().nullable(),
+    tolerance: yup.number().nullable(),
+    range: getRangeInputSchema('range'),
+});
+
+export const NumericInputsStory: StoryObj = {
+    name: 'Numeric inputs (Float, Integer, Slider, Range)',
+    render: () => (
+        <FormWrapper
+            schema={numericSchema}
+            defaultValues={{ voltage: 400.0, iterations: 30, tolerance: 50, range: DEFAULT_RANGE_VALUE }}
+        >
+            <FloatInput name="voltage" label="inputs/voltage" adornment={{ position: 'end', text: 'kV' }} />
+            <IntegerInput name="iterations" label="inputs/maxIterations" />
+            <Box sx={{ px: 1 }}>
+                <Typography variant="caption" color="text.secondary">Tolerance (%)</Typography>
+                <SliderInput name="tolerance" min={0} max={100} step={1} valueLabelDisplay="auto" />
+            </Box>
+            <RangeInput name="range" label="inputs/voltageRange" />
+        </FormWrapper>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    '`FloatInput` and `IntegerInput` extend `TextInput` with numeric constraints. `SliderInput` is a MUI Slider controlled via RHF. `RangeInput` captures a min/max numeric range.',
+            },
+        },
+    },
+};
+
+// ─── Autocomplete inputs ──────────────────────────────────────────────────────
+
+const EQUIPMENT_OPTIONS = [
+    { id: 'generator', label: 'Generator' },
+    { id: 'load', label: 'Load' },
+    { id: 'transformer', label: 'Transformer' },
+    { id: 'bus', label: 'Bus' },
+    { id: 'line', label: 'Line' },
+];
+
+const autocompleteSchema = yup.object({
+    equipmentType: yup.object().nullable(),
+    selectedTypes: yup.array(),
+});
+
+export const AutocompleteInputsStory: StoryObj = {
+    name: 'Autocomplete inputs (single & multiple)',
+    render: () => (
+        <FormWrapper schema={autocompleteSchema} defaultValues={{ equipmentType: null, selectedTypes: [] }}>
+            <AutocompleteInput name="equipmentType" label="inputs/equipmentType" options={EQUIPMENT_OPTIONS} />
+            <MultipleAutocompleteInput name="selectedTypes" label="inputs/equipmentTypes" options={EQUIPMENT_OPTIONS} />
+        </FormWrapper>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    '`AutocompleteInput` wraps MUI `Autocomplete` for single selection. `MultipleAutocompleteInput` supports multi-selection with chip display. Both integrate with `react-hook-form`.',
+            },
+        },
+    },
+};
+
+// ─── OverflowableChip ─────────────────────────────────────────────────────────
+
+export const OverflowableChipStory: StoryObj = {
+    name: 'OverflowableChip',
+    render: () => (
+        <Stack spacing={2} sx={{ maxWidth: 300 }}>
+            <Typography variant="caption" color="text.secondary">
+                Text truncates with a tooltip when it exceeds 20 characters
+            </Typography>
+            <OverflowableChip label="Short label" color="primary" />
+            <OverflowableChip label="A very long label that will overflow and show a tooltip" color="secondary" />
+            <OverflowableChip label="Deletable chip example" onDelete={() => {}} />
+        </Stack>
+    ),
+    parameters: {
+        docs: {
+            description: {
+                story:
+                    '`OverflowableChip` is a MUI Chip that truncates its label with `OverflowableText` when it exceeds ~20 characters. It is standalone — no RHF context required.',
             },
         },
     },
