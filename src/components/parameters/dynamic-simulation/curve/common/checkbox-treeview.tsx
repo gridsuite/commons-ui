@@ -6,11 +6,10 @@
  */
 
 import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import { alpha, Checkbox, styled, SxProps, useTheme } from '@mui/material';
+import { alpha, Checkbox, styled, SxProps, Theme, useTheme } from '@mui/material';
 import { SimpleTreeView, TreeItem, treeItemClasses } from '@mui/x-tree-view';
 
-const BorderedTreeItem = styled(TreeItem)(({ root }: { root: boolean }) => {
-    const theme = useTheme();
+const BorderedTreeItem = styled(TreeItem)(({ theme, root }: { theme: Theme; root: boolean }) => {
     const border = `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`;
     return {
         position: 'relative',
@@ -66,6 +65,8 @@ function CheckboxTreeview<TData extends ItemData>(
     { data: items, checkAll, onSelectionChanged, getLabel, sx }: Readonly<CheckBoxTreeViewProps<TData>>,
     ref: Ref<CheckboxTreeviewApi<TData>>
 ) {
+    const theme = useTheme();
+
     const initialItemStates = useMemo<Record<string, CheckState>>(
         () => Object.fromEntries(items.map((elem) => [elem.id, checkAll ? CheckState.CHECKED : CheckState.UNCHECKED])),
         [items, checkAll]
@@ -201,6 +202,7 @@ function CheckboxTreeview<TData extends ItemData>(
 
             return itemsToRender.map((elem) => (
                 <BorderedTreeItem
+                    theme={theme}
                     key={elem.id}
                     itemId={elem.id}
                     onClick={handleExpand}
@@ -220,7 +222,7 @@ function CheckboxTreeview<TData extends ItemData>(
                 </BorderedTreeItem>
             ));
         },
-        [itemsByParent, itemStates, handleItemSelect, handleExpand, getLabel]
+        [itemsByParent, theme, handleExpand, itemStates, getLabel, handleItemSelect]
     );
 
     return <SimpleTreeView sx={sx}>{renderTree(null)}</SimpleTreeView>;
