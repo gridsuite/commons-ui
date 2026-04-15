@@ -159,7 +159,11 @@ function SensitivityParametersSelector({
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                 <Box sx={{ ...styles.boxContent }}>
-                                    <BuildStatusChip buildStatus={globalBuildStatus} overrideLabel isRootNode={isRootNode} />
+                                    <BuildStatusChip
+                                        buildStatus={globalBuildStatus}
+                                        overrideLabel
+                                        isRootNode={isRootNode}
+                                    />
                                 </Box>
 
                                 <Box sx={{ ...styles.boxContent }}>
