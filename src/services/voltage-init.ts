@@ -6,31 +6,15 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetchJson } from './utils';
-import {
-    enrichVoltageInitParameters,
-    VoltageInitParametersInfos,
-    VoltageInitParametersInfosEnriched,
-    VoltageInitStudyParameters,
-} from '../components/parameters/voltage-init/voltage-init.type';
-import { getStudyUrl } from './security-analysis';
+import { VoltageInitParameters } from '../components/parameters/voltage-init/voltage-init.type';
 
 export function getVoltageInitUrl() {
     return `${import.meta.env.VITE_API_GATEWAY}/voltage-init/v1/`;
 }
 
-export function getVoltageInitParameters(parameterUuid: UUID): Promise<VoltageInitParametersInfosEnriched> {
+export function getVoltageInitParameters(parameterUuid: UUID): Promise<VoltageInitParameters> {
     console.info('get voltage init parameters');
-    const url = `${getVoltageInitUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
-    console.debug(url);
-    const parametersPromise: Promise<VoltageInitParametersInfos> = backendFetchJson(url);
-    return parametersPromise.then((parameters) => enrichVoltageInitParameters(parameters));
-}
-
-export function getVoltageInitStudyParameters(studyUuid: UUID): Promise<VoltageInitStudyParameters> {
-    console.info('get voltage init study parameters');
-    const getVoltageInitParams = `${getStudyUrl(studyUuid)}/voltage-init/parameters`;
+    const getVoltageInitParams = `${getVoltageInitUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
     console.debug(getVoltageInitParams);
     return backendFetchJson(getVoltageInitParams);
 }
-
-// update ?? sûrement dans gridstudy-app

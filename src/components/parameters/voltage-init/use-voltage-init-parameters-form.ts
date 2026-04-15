@@ -38,7 +38,7 @@ import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters 
 import { useSnackMessage } from '../../../hooks';
 import { ElementType, isBlankOrEmpty } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
-import { EquipmentsSelectionType, VoltageInitStudyParametersEnriched } from './voltage-init.type';
+import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
     fromStudyVoltageInitParamsDataToFormValues,
     fromVoltageInitParametersFormToParamValues,
@@ -74,7 +74,7 @@ type UseVoltageInitParametersFormProps =
           name: null;
           description: null;
           studyUuid: UUID | null;
-          parameters: VoltageInitStudyParametersEnriched | null;
+          parameters: VoltageInitStudyParameters | null;
       };
 
 export const useVoltageInitParametersForm = ({

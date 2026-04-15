@@ -6,12 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import {
-    EquipmentsSelectionType,
-    VoltageInitParametersInfosEnriched,
-    VoltageInitStudyParameters,
-    VoltageInitStudyParametersEnriched,
-} from './voltage-init.type';
+import { EquipmentsSelectionType, VoltageInitParameters, VoltageInitStudyParameters } from './voltage-init.type';
 import {
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
@@ -115,9 +110,7 @@ export const fromVoltageInitParametersFormToParamValues = (
 };
 
 // init Form from voltage-init parameters
-export const fromVoltageInitParamsDataToFormValues = (
-    parameters: VoltageInitParametersInfosEnriched
-): Record<string, any> => {
+export const fromVoltageInitParamsDataToFormValues = (parameters: VoltageInitParameters): Record<string, any> => {
     return {
         [TabValues.GENERAL]: {
             [GENERAL_APPLY_MODIFICATIONS]: DEFAULT_GENERAL_APPLY_MODIFICATIONS,
@@ -180,7 +173,7 @@ export const fromVoltageInitParamsDataToFormValues = (
 
 // init Form from study parameters
 export const fromStudyVoltageInitParamsDataToFormValues = (
-    parameters: VoltageInitStudyParametersEnriched
+    parameters: VoltageInitStudyParameters
 ): Record<string, any> => {
     return {
         [TabValues.GENERAL]: {
