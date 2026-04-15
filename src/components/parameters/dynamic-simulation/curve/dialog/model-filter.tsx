@@ -183,7 +183,7 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
                         <CheckboxSelect
                             options={initialSelectedModels}
                             getOptionLabel={getModelLabel}
-                            value={initialSelectedModels}
+                            value={selectedModels}
                             onChange={handleModelChange}
                             disabled={initialSelectedModels.length === 1 /* disabled if only one model to choose */}
                         />
