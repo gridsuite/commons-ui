@@ -49,7 +49,6 @@ import { ModificationRow } from './row';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
-    setModifications: Dispatch<SetStateAction<NetworkModificationMetadata[]>>;
     handleCellClick: (modification: NetworkModificationMetadata) => void;
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
@@ -59,7 +58,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
                        modificationsCount: number,
                        nameHeaderProps: NameHeaderProps,
                        setModifications: React.Dispatch<SetStateAction<ComposedModificationMetadata[]>>
-    ) => ColumnDef<ComposedModificationMetadata, any>[];
+    ) => ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
@@ -67,7 +66,6 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
 
 export function NetworkModificationsTable({
                                           modifications,
-                                          setModifications,
                                           handleCellClick,
                                           isRowDragDisabled = false,
                                           onRowDragStart,
