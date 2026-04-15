@@ -11,10 +11,15 @@ import { Row } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../utils';
 import { DragIndicator } from '@mui/icons-material'
 import React, { useCallback } from 'react';
-import { mergeSx, NetworkModificationMetadata, useModificationLabelComputer } from '@gridsuite/commons-ui';
 import { useIntl } from 'react-intl';
+import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
+import { mergeSx } from '../../../utils';
 
-const DragCloneRow = ({ row }: { row: Row<ComposedModificationMetadata> }) => {
+interface DragCloneRowProps {
+    row: Row<ComposedModificationMetadata>;
+}
+
+export function DragCloneRow({ row }: Readonly<DragCloneRowProps>) {
     const intl = useIntl();
     const { computeLabel } = useModificationLabelComputer();
 
@@ -40,6 +45,4 @@ const DragCloneRow = ({ row }: { row: Row<ComposedModificationMetadata> }) => {
             </Box>
         </Box>
     );
-};
-
-export default DragCloneRow;
+}

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { flexRender, Row } from '@tanstack/react-table';
 import { Box, TableCell, TableRow, Tooltip } from '@mui/material';
 import {
@@ -18,10 +18,10 @@ import {
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { VirtualItem } from '@tanstack/react-virtual';
 import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { mergeSx } from '@gridsuite/commons-ui';
 import { ComposedModificationMetadata, isCompositeModification } from '../utils';
+import { mergeSx } from '../../../utils';
 
 interface ModificationRowProps {
     virtualRow: VirtualItem;
@@ -31,118 +31,117 @@ interface ModificationRowProps {
     highlightedModificationUuid: string | null;
 }
 
-export const ModificationRow = memo<ModificationRowProps>(
-    ({ virtualRow, row, handleCellClick, isRowDragDisabled, highlightedModificationUuid }) => {
-        const isHighlighted = row.original.uuid === highlightedModificationUuid;
-        const theme = useTheme();
-        const isExpanded = row.getIsExpanded() && row.subRows.length > 0;
+export function ModificationRow (
+    { virtualRow, row, handleCellClick, isRowDragDisabled, highlightedModificationUuid }:Readonly<ModificationRowProps>) {
+    const isHighlighted = row.original.uuid === highlightedModificationUuid;
+    const theme = useTheme();
+    const isExpanded = row.getIsExpanded() && row.subRows.length > 0;
 
-        const handleCellClickCallback = useCallback(
-            (columnId: string) => {
-                if (columnId === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id) {
-                    handleCellClick?.(row.original);
-                }
-            },
-            [handleCellClick, row.original]
-        );
+    const handleCellClickCallback = useCallback(
+        (columnId: string) => {
+            if (columnId === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id) {
+                handleCellClick?.(row.original);
+            }
+        },
+        [handleCellClick, row.original]
+    );
 
-        return (
-            <Draggable draggableId={row.id} index={virtualRow.index} isDragDisabled={isRowDragDisabled}>
-                {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
-                    const { style, ...draggablePropsWithoutStyle } = provided.draggableProps;
-                    return (
-                        <TableRow
-                            ref={provided.innerRef}
-                            {...draggablePropsWithoutStyle}
-                            data-row-id={row.original.uuid}
-                            sx={mergeSx(
-                                networkModificationTableStyles.tableRow,
-                                createRowSx(
-                                    theme,
-                                    isHighlighted,
-                                    snapshot.isDragging,
-                                    virtualRow,
-                                    row.depth,
-                                    isCompositeModification(row.original)
-                                )
-                            )}
-                        >
-                            {row.getVisibleCells().map((cell) => {
-                                const isNameColumn = cell.column.id === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id;
-                                const isDragHandle = cell.column.id === BASE_MODIFICATION_TABLE_COLUMNS.DRAG_HANDLE.id;
-                                const isCheckboxColumn = cell.column.id === BASE_MODIFICATION_TABLE_COLUMNS.SELECT.id;
-                                const cellContent = flexRender(cell.column.columnDef.cell, cell.getContext());
-                                const cellWithoutBorders =
-                                    (isExpanded || row.depth > 0) &&
-                                    COLUMNS_WITHOUT_BORDER.has(cell.column.columnDef.id ?? '');
-                                // Tooltip for drag
-                                if (isDragHandle) {
-                                    return (
-                                        <TableCell
-                                            key={cell.id}
-                                            sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
-                                        >
-                                            <Tooltip title={<FormattedMessage id={'moveModification'} />} arrow>
-                                                <Box
-                                                    sx={createCellContentWrapperSx(theme, cellWithoutBorders)}
-                                                    {...provided.dragHandleProps}
-                                                >
-                                                    {cellContent}
-                                                </Box>
-                                            </Tooltip>
-                                        </TableCell>
-                                    );
-                                }
-
-                                // Tooltip for checkbox
-                                if (isCheckboxColumn) {
-                                    return (
-                                        <TableCell
-                                            key={cell.id}
-                                            sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
-                                            onClick={() => handleCellClickCallback(cell.column.id)}
-                                        >
-                                            <Tooltip
-                                                title={
-                                                    <FormattedMessage
-                                                        id={
-                                                            row.getIsSelected()
-                                                                ? 'deselectModification'
-                                                                : 'selectModification'
-                                                        }
-                                                    />
-                                                }
-                                                arrow
+    return (
+        <Draggable draggableId={row.id} index={virtualRow.index} isDragDisabled={isRowDragDisabled}>
+            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
+                const { style, ...draggablePropsWithoutStyle } = provided.draggableProps;
+                return (
+                    <TableRow
+                        ref={provided.innerRef}
+                        {...draggablePropsWithoutStyle}
+                        data-row-id={row.original.uuid}
+                        sx={mergeSx(
+                            networkModificationTableStyles.tableRow,
+                            createRowSx(
+                                theme,
+                                isHighlighted,
+                                snapshot.isDragging,
+                                virtualRow,
+                                row.depth,
+                                isCompositeModification(row.original)
+                            )
+                        )}
+                    >
+                        {row.getVisibleCells().map((cell) => {
+                            const isNameColumn = cell.column.id === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id;
+                            const isDragHandle = cell.column.id === BASE_MODIFICATION_TABLE_COLUMNS.DRAG_HANDLE.id;
+                            const isCheckboxColumn = cell.column.id === BASE_MODIFICATION_TABLE_COLUMNS.SELECT.id;
+                            const cellContent = flexRender(cell.column.columnDef.cell, cell.getContext());
+                            const cellWithoutBorders =
+                                (isExpanded || row.depth > 0) &&
+                                COLUMNS_WITHOUT_BORDER.has(cell.column.columnDef.id ?? '');
+                            // Tooltip for drag
+                            if (isDragHandle) {
+                                return (
+                                    <TableCell
+                                        key={cell.id}
+                                        sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
+                                    >
+                                        <Tooltip title={<FormattedMessage id={'moveModification'} />} arrow>
+                                            <Box
+                                                sx={createCellContentWrapperSx(theme, cellWithoutBorders)}
+                                                {...provided.dragHandleProps}
                                             >
-                                                <Box sx={createCellContentWrapperSx(theme, cellWithoutBorders)}>
-                                                    {cellContent}
-                                                </Box>
-                                            </Tooltip>
-                                        </TableCell>
-                                    );
-                                }
+                                                {cellContent}
+                                            </Box>
+                                        </Tooltip>
+                                    </TableCell>
+                                );
+                            }
 
+                            // Tooltip for checkbox
+                            if (isCheckboxColumn) {
                                 return (
                                     <TableCell
                                         key={cell.id}
                                         sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
                                         onClick={() => handleCellClickCallback(cell.column.id)}
                                     >
-                                        {isNameColumn ? (
-                                            // NameCell owns its own borders entirely
-                                            flexRender(cell.column.columnDef.cell, cell.getContext())
-                                        ) : (
+                                        <Tooltip
+                                            title={
+                                                <FormattedMessage
+                                                    id={
+                                                        row.getIsSelected()
+                                                            ? 'deselectModification'
+                                                            : 'selectModification'
+                                                    }
+                                                />
+                                            }
+                                            arrow
+                                        >
                                             <Box sx={createCellContentWrapperSx(theme, cellWithoutBorders)}>
                                                 {cellContent}
                                             </Box>
-                                        )}
+                                        </Tooltip>
                                     </TableCell>
                                 );
-                            })}
-                        </TableRow>
-                    );
-                }}
-            </Draggable>
-        );
-    }
-);
+                            }
+
+                            return (
+                                <TableCell
+                                    key={cell.id}
+                                    sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
+                                    onClick={() => handleCellClickCallback(cell.column.id)}
+                                >
+                                    {isNameColumn ? (
+                                        // NameCell owns its own borders entirely
+                                        flexRender(cell.column.columnDef.cell, cell.getContext())
+                                    ) : (
+                                        <Box sx={createCellContentWrapperSx(theme, cellWithoutBorders)}>
+                                            {cellContent}
+                                        </Box>
+                                    )}
+                                </TableCell>
+                            );
+                        })}
+                    </TableRow>
+                );
+            }}
+        </Draggable>
+    );
+}

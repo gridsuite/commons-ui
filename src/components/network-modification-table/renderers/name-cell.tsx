@@ -7,7 +7,6 @@
 
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
-import { mergeSx, NetworkModificationMetadata, useModificationLabelComputer } from '@gridsuite/commons-ui';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import {
@@ -20,7 +19,9 @@ import { KeyboardArrowRight } from '@mui/icons-material'
 import { KeyboardArrowDown } from '@mui/icons-material'
 import DepthBox from './depth-box';
 import { ComposedModificationMetadata, isCompositeModification } from '../utils';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material';
+import { NetworkModificationMetadata, useModificationLabelComputer } from '../../../hooks';
+import { mergeSx } from '../../../utils';
 
 export const NameCell: FunctionComponent<{
     row: Row<ComposedModificationMetadata>;

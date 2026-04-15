@@ -71,10 +71,7 @@ export function getNetworkModificationsFromComposite(
     const urlSearchParams = new URLSearchParams();
     compositeModificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
     urlSearchParams.append('onlyMetadata', String(onlyMetadata));
-    const url =
-        getBaseNetworkModificationUrl() +
-        '/network-composite-modifications/network-modifications?' +
-        urlSearchParams.toString();
+    const url = `${getBaseNetworkModificationUrl()}/network-composite-modifications/network-modifications?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
 }
@@ -102,16 +99,12 @@ export function changeCompositeSubModificationOrder(
     targetCompositeUuid: UUID | null,
     beforeUuid: UUID | null
 ) {
-    console.info('move composite sub-modification ' + modificationUuid + ' in node ' + nodeUuid);
+    console.info(`move composite sub-modification ${modificationUuid} in node ${nodeUuid}`);
     const params = new URLSearchParams();
     if (sourceCompositeUuid) params.set('sourceCompositeUuid', sourceCompositeUuid);
     if (targetCompositeUuid) params.set('targetCompositeUuid', targetCompositeUuid);
     if (beforeUuid) params.set('beforeUuid', beforeUuid);
-    const url =
-        getStudyUrlWithNodeUuid(studyUuid, nodeUuid) +
-        '/composite-sub-modification/' +
-        modificationUuid +
-        (params.toString() ? '?' + params.toString() : '');
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/composite-sub-modification/${modificationUuid}${(params.toString() ? `?${params.toString()}` : ``)}`;
     console.debug(url);
     return backendFetch(url, { method: 'put' });
 }
@@ -120,15 +113,11 @@ export function changeNetworkModificationOrder(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
     itemUuid: UUID,
-    beforeUuid: UUID
+    beforeUuid: UUID | null
 ) {
-    console.info('reorder node ' + nodeUuid + ' of study ' + studyUuid + ' ...');
-    const url =
-        getStudyUrlWithNodeUuid(studyUuid, nodeUuid) +
-        '/network-modification/' +
-        itemUuid +
-        '?' +
-        new URLSearchParams({ beforeUuid: beforeUuid || '' }).toString();
+    console.info(`reorder node ${nodeUuid} of study ${studyUuid}`);
+    const beforeParam = new URLSearchParams({ beforeUuid: beforeUuid || '' }).toString();
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${itemUuid}?${beforeParam}`;
     console.debug(url);
     return backendFetch(url, { method: 'put' });
 }

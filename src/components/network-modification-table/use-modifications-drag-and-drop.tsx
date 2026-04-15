@@ -8,22 +8,23 @@
 import React, { JSX, RefObject, useCallback } from 'react';
 import { Row } from '@tanstack/react-table';
 import { DraggableProvided, DraggableRubric, DraggableStateSnapshot, DragUpdate, DropResult } from '@hello-pangea/dnd';
-import DragCloneRow from './row/drag-row-clone';
+import type { UUID } from 'node:crypto';
+import { DragCloneRow } from './row';
 import {
     DROP_FORBIDDEN_INDICATOR_BOTTOM,
     DROP_FORBIDDEN_INDICATOR_TOP,
     DROP_INDICATOR_BOTTOM,
     DROP_INDICATOR_TOP,
 } from './network-modification-table-styles';
-import { snackWithFallback, useSnackMessage } from '@gridsuite/commons-ui';
 import {
     ComposedModificationMetadata,
     findModificationInTree,
     isCompositeModification,
     moveSubModificationInTree,
 } from './utils';
-import type { UUID } from 'node:crypto';
 import { changeCompositeSubModificationOrder, changeNetworkModificationOrder } from '../../services';
+import { useSnackMessage } from '../../hooks';
+import { snackWithFallback } from '../../utils';
 
 interface UseModificationsDragAndDropParams {
     rows: Row<ComposedModificationMetadata>[];
@@ -96,14 +97,14 @@ function getContainerShadow(forbidden: boolean, isMovingDown: boolean) {
 }
 
 export const useModificationsDragAndDrop = ({
-                                                rows,
-                                                containerRef,
-                                                composedModifications,
-                                                setComposedModifications,
-                                                onDragEnd,
-                                                studyUuid = null,
-                                                currentNodeUuid = undefined,
-                                            }: UseModificationsDragAndDropParams): UseModificationsDragAndDropReturn => {
+    rows,
+    containerRef,
+    composedModifications,
+    setComposedModifications,
+    onDragEnd,
+    studyUuid = null,
+    currentNodeUuid = undefined,
+}: UseModificationsDragAndDropParams): UseModificationsDragAndDropReturn => {
     const { snackError } = useSnackMessage();
 
     const handleDragUpdate = useCallback(
@@ -219,7 +220,7 @@ export const useModificationsDragAndDrop = ({
                 updatedModifications.splice(newPosition, 0, movedItem);
                 setComposedModifications(updatedModifications);
 
-                const before = updatedModifications[newPosition + 1]?.uuid ?? null;
+                const before: UUID | null = updatedModifications[newPosition + 1]?.uuid ?? null;
 
                 changeNetworkModificationOrder(studyUuid, currentNodeUuid, movedItem.uuid, before).catch((error) => {
                     snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });

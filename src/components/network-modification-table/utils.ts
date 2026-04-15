@@ -5,10 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { MODIFICATION_TYPES, NetworkModificationMetadata } from '@gridsuite/commons-ui';
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
 import { getNetworkModificationsFromComposite } from '../../services';
+import { NetworkModificationMetadata } from '../../hooks';
+import { MODIFICATION_TYPES } from '../../utils';
 
 export const formatToComposedModification = (
     modifications: NetworkModificationMetadata[]
@@ -167,7 +168,7 @@ export function moveSubModificationInTree(
         mods
     );
     if (!movedMod) {
-        console.error("Can't find the " + movingUuid + ' modification that should be moved');
+        console.error(`Can't find the ${movingUuid} modification that should be moved`);
         return mods;
     }
     let modsWithoutTheMovedModification: ComposedModificationMetadata[];
