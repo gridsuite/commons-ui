@@ -12,10 +12,11 @@ import { useIntl } from 'react-intl';
 interface GridButtonsProps {
     onAddButton: () => void;
     onDeleteButton: () => void;
-    disabled?: boolean;
+    disabledAdd?: boolean;
+    disabledDelete?: boolean;
 }
 
-export function GridButtons({ onAddButton, onDeleteButton, disabled }: Readonly<GridButtonsProps>) {
+export function GridButtons({ onAddButton, onDeleteButton, disabledAdd, disabledDelete }: Readonly<GridButtonsProps>) {
     const intl = useIntl();
 
     const handleAddButton = useCallback(() => {
@@ -24,8 +25,6 @@ export function GridButtons({ onAddButton, onDeleteButton, disabled }: Readonly<
     const handleDeleteButton = useCallback(() => {
         onDeleteButton();
     }, [onDeleteButton]);
-
-    const hasSelectedRow = false;
 
     return (
         <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}>
@@ -37,7 +36,7 @@ export function GridButtons({ onAddButton, onDeleteButton, disabled }: Readonly<
                     placement="top"
                 >
                     <span>
-                        <IconButton color="primary" onClick={() => handleAddButton()} disabled={disabled}>
+                        <IconButton color="primary" onClick={() => handleAddButton()} disabled={disabledAdd}>
                             <AddCircle />
                         </IconButton>
                     </span>
@@ -51,11 +50,7 @@ export function GridButtons({ onAddButton, onDeleteButton, disabled }: Readonly<
                     placement="top"
                 >
                     <span>
-                        <IconButton
-                            color="primary"
-                            onClick={() => handleDeleteButton()}
-                            disabled={disabled || hasSelectedRow}
-                        >
+                        <IconButton color="primary" onClick={() => handleDeleteButton()} disabled={disabledDelete}>
                             <Delete />
                         </IconButton>
                     </span>

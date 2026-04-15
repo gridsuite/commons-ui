@@ -184,7 +184,11 @@ function CurveParameters({
                             })} (${selectedRowsLength} / ${rowData.length})`}
                         </Typography>
                     </Grid>
-                    <GridButtons onAddButton={handleAdd} onDeleteButton={handleDelete} />
+                    <GridButtons
+                        onAddButton={handleAdd}
+                        onDeleteButton={handleDelete}
+                        disabledDelete={!selectedRowsLength}
+                    />
                 </Grid>
                 {/* aggrid for configured curves */}
                 <Grid item xs>
