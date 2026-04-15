@@ -6,6 +6,7 @@
  */
 import yup from '../../../../utils/yupConfig';
 import { TimeDelay } from './time-delay-parameters-constants';
+import { isEmpty } from '../../../../utils/functions';
 
 export const timeDelayFormSchema = yup.object().shape({
     [TimeDelay.START_TIME]: yup.number().required(),
@@ -13,7 +14,7 @@ export const timeDelayFormSchema = yup.object().shape({
         .number()
         .required()
         .when([TimeDelay.START_TIME], ([startTime], schema) => {
-            if (startTime) {
+            if (!isEmpty(startTime)) {
                 return schema.min(startTime, 'DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime');
             }
             return schema;
