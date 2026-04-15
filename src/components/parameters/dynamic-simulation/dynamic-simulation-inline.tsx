@@ -9,13 +9,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { Grid } from '@mui/material';
-import {
-    ElementType,
-    mergeSx,
-    snackWithFallback,
-    UseParametersBackendReturnProps,
-    VoltageLevelInfos,
-} from '../../../utils';
+import { ElementType, mergeSx, snackWithFallback, VoltageLevelInfos } from '../../../utils';
+import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
 
 import { useSnackMessage } from '../../../hooks';
@@ -32,6 +27,7 @@ import {
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
 import { fetchDynamicSimulationParameters } from '../../../services/dynamic-simulation';
 import { ExpertFilter, IdentifiableAttributes } from '../../filter';
+import useDefaultParams from './hook/use-default-params';
 
 type DynamicSimulationInlineProps = {
     studyUuid: UUID | null;
@@ -61,6 +57,10 @@ export function DynamicSimulationInline({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
+    // since RHF does not support API like getDefaultValues =>
+    // manually manage default params (in dto format) to use while merging with the form
+    const { getDefaultParams, setDefaultParams } = useDefaultParams(params);
+
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
@@ -83,9 +83,9 @@ export function DynamicSimulationInline({
     const onSubmit = useCallback(
         (formData: FieldValues) => {
             // update params after convert form representation to dto representation
-            updateParameters(toParamsInfos(formData, params));
+            updateParameters(toParamsInfos(formData, getDefaultParams()));
         },
-        [updateParameters, params]
+        [updateParameters, getDefaultParams]
     );
 
     const handleLoadParameter = useCallback(
@@ -98,6 +98,7 @@ export function DynamicSimulationInline({
                         reset(toFormValues(_params), {
                             keepDefaultValues: true,
                         });
+                        setDefaultParams(_params);
                     })
                     .catch((error: Error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
@@ -105,7 +106,7 @@ export function DynamicSimulationInline({
             }
             setOpenSelectParameterDialog(false);
         },
-        [reset, snackError]
+        [reset, setDefaultParams, snackError]
     );
 
     useEffect(() => {
@@ -141,7 +142,7 @@ export function DynamicSimulationInline({
                         open={openCreateParameterDialog}
                         onClose={() => setOpenCreateParameterDialog(false)}
                         parameterValues={getValues}
-                        parameterFormatter={(formData) => toParamsInfos(formData, params)}
+                        parameterFormatter={(formData) => toParamsInfos(formData, getDefaultParams())}
                         parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
                     />
                 )}
