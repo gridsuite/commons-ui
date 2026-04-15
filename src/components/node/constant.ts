@@ -11,5 +11,4 @@ export enum BuildStatus {
     BUILT = 'BUILT',
     BUILT_WITH_WARNING = 'BUILT_WITH_WARNING',
     BUILT_WITH_ERROR = 'BUILT_WITH_ERROR',
-    ROOT_NODE = 'ROOT_NODE',
 }

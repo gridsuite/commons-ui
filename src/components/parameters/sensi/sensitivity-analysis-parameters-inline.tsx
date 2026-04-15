@@ -38,6 +38,7 @@ interface SensitivityAnalysisParametersProps {
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
     globalBuildStatus?: BuildStatus;
+    isRootNode: boolean;
     isDeveloperMode: boolean;
 }
 
@@ -48,6 +49,7 @@ export function SensitivityAnalysisParametersInline({
     parametersBackend,
     setHaveDirtyFields,
     globalBuildStatus,
+    isRootNode,
     isDeveloperMode,
 }: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
@@ -119,6 +121,7 @@ export function SensitivityAnalysisParametersInline({
         <SensitivityAnalysisParametersForm
             sensitivityAnalysisMethods={sensitivityAnalysisMethods}
             isDeveloperMode={isDeveloperMode}
+            isRootNode={isRootNode}
             globalBuildStatus={globalBuildStatus}
             renderActions={() => {
                 return (

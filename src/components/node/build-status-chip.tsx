@@ -11,7 +11,7 @@ import { useIntl } from 'react-intl';
 import { mergeSx, SxStyle } from '../../utils';
 import { BuildStatus } from './constant';
 
-function getBuildStatusSx(buildStatus?: BuildStatus): SxStyle {
+function getBuildStatusSx(isRootNode: boolean, buildStatus?: BuildStatus): SxStyle {
     return (theme) => {
         // @ts-ignore
         const bs = theme.node.buildStatus;
@@ -23,7 +23,6 @@ function getBuildStatusSx(buildStatus?: BuildStatus): SxStyle {
                 bg = bs.success;
                 break;
             case BuildStatus.BUILT_WITH_WARNING:
-            case BuildStatus.ROOT_NODE:
                 bg = bs.warning;
                 break;
             case BuildStatus.BUILT_WITH_ERROR:
@@ -33,7 +32,9 @@ function getBuildStatusSx(buildStatus?: BuildStatus): SxStyle {
                 bg = bs.notBuilt;
                 break;
         }
-
+        if (isRootNode) {
+            bg = bs.warning;
+        }
         return {
             background: bg,
             // only set explicit contrast color when it's the "notBuilt" background
@@ -58,6 +59,7 @@ type BuildStatusChipProps = {
     sx?: SxStyle;
     icon?: ReactElement;
     onClick?: (e: React.MouseEvent) => void;
+    isRootNode: boolean;
     overrideLabel?: boolean;
 };
 
@@ -66,17 +68,18 @@ export function BuildStatusChip({
     sx,
     icon,
     onClick,
+    isRootNode,
     overrideLabel = false,
 }: Readonly<BuildStatusChipProps>) {
     const intl = useIntl();
     let labelId = buildStatus?.toString();
-    if (overrideLabel) {
+    if (isRootNode) {
+        labelId = 'ROOT_NODE';
+    } else if (overrideLabel) {
         if (labelId === BuildStatus.BUILT) {
             labelId = 'NODE_BUILT';
         } else if (labelId === BuildStatus.NOT_BUILT) {
             labelId = 'NODE_NOT_BUILT';
-        } else if (labelId === BuildStatus.ROOT_NODE) {
-            labelId = 'ROOT_NODE';
         }
     }
     const label = intl.formatMessage({ id: labelId });
@@ -87,7 +90,7 @@ export function BuildStatusChip({
             size="small"
             icon={icon}
             onClick={onClick}
-            sx={mergeSx(getBuildStatusSx(buildStatus), sx, baseStyle)}
+            sx={mergeSx(getBuildStatusSx(isRootNode, buildStatus), sx, baseStyle)}
         />
     );
 }
