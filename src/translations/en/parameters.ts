@@ -256,9 +256,10 @@ export const parametersEn = {
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
     PSTS: 'PSTs',
     Active: 'Active',
-    'sensitivityAnalysis.simulatedResults': '{count, plural, =0 {0 result} =1 {1 result} other {#{suffix} results}}',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, plural, =0 {0 result} =1 {1 result} =-1 {- result} other {#{suffix} results}}',
     'sensitivityAnalysis.simulatedVariables':
-        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+        '{count, plural, =0 {0 variable} =1 {1 variable} =-1 {- variable} other {#{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Calculation in progress...',
