@@ -4,10 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useEffect, useMemo } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { FieldValues } from 'react-hook-form';
 import { UseComputationParametersFormReturn } from '../common/utils';
 import { DynamicSimulationParametersInfos, SolverInfos } from '../../../utils/types/dynamic-simulation.type';
 import { TabValues } from './dynamic-simulation.type';
@@ -23,7 +20,7 @@ import { TimeDelay } from './time-delay';
 import { Solver } from './solver';
 import { MAPPING } from './mapping';
 import { Curve } from './curve/curve-parameters-constants';
-import { useTabs } from '../common/hook/use-tabs';
+import { useParametersForm } from '../common/hook/use-parameters-form';
 
 const formSchema = yup.object().shape({
     [PROVIDER]: yup.string().required(),
@@ -89,7 +86,6 @@ export const toParamsInfos = (
     curves: _formData[TabValues.TAB_CURVE][Curve.CURVES],
 });
 
-export type UseDynamicSimulationParametersFormReturn = UseComputationParametersFormReturn<TabValues>;
 type UseDynamicSimulationParametersFormProps = {
     providers: Record<string, string>;
     params: DynamicSimulationParametersInfos | null;
@@ -97,66 +93,14 @@ type UseDynamicSimulationParametersFormProps = {
     name: string | null;
     description: string | null;
 };
-export function useDynamicSimulationParametersForm({
-    providers,
-    params,
-    name: initialName,
-    description: initialDescription,
-}: Readonly<UseDynamicSimulationParametersFormProps>): UseDynamicSimulationParametersFormReturn {
-    const paramsLoaded = useMemo(() => !!params, [params]);
 
-    const formattedProviders = useMemo(
-        () =>
-            Object.entries(providers).map(([key, value]) => ({
-                id: key,
-                label: value,
-            })),
-        [providers]
-    );
-
-    const returnFormSchema = useMemo(() => {
-        return initialName === null ? formSchema : formSchema.concat(getNameElementEditorSchema(initialName));
-    }, [initialName]);
-
-    const newEmptyFormData: any = useMemo(() => {
-        return {
-            ...(initialName === null ? {} : getNameElementEditorEmptyFormData(initialName, initialDescription)),
-            ...emptyFormData,
-        };
-    }, [initialName, initialDescription]);
-
-    const returnFormMethods = useForm({
-        defaultValues: newEmptyFormData,
-        resolver: yupResolver(returnFormSchema),
+export function useDynamicSimulationParametersForm(
+    props: Readonly<UseDynamicSimulationParametersFormProps>
+): UseComputationParametersFormReturn {
+    return useParametersForm({
+        ...props,
+        formSchema,
+        emptyFormData,
+        toFormValues,
     });
-
-    const {
-        reset,
-        formState: { errors },
-    } = returnFormMethods;
-
-    useEffect(() => {
-        if (params) {
-            reset(toFormValues(params));
-        }
-    }, [params, paramsLoaded, reset]);
-
-    /* tab-related handling */
-    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
-        defaultTab: TabValues.TAB_TIME_DELAY,
-        tabEnum: TabValues,
-        formErrors: errors,
-    });
-
-    return {
-        formMethods: returnFormMethods,
-        formSchema: returnFormSchema,
-        paramsLoaded,
-        formattedProviders,
-        /* tab-related handling */
-        selectedTab,
-        tabsWithError,
-        onTabChange,
-        onError,
-    };
 }

@@ -14,7 +14,6 @@ import {
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
 import yup from '../../../utils/yupConfig';
-import { UseTabs } from './hook/use-tabs';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
     const shape: { [key: string]: yup.AnySchema } = {};
@@ -115,7 +114,7 @@ export const setSpecificParameters = (
     formMethods.setValue(SPECIFIC_PARAMETERS, specificParamsValues);
 };
 
-export type UseComputationParametersFormReturn<TTabValue extends string> = UseTabs<TTabValue> & {
+export type UseComputationParametersFormReturn = {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     paramsLoaded: boolean;

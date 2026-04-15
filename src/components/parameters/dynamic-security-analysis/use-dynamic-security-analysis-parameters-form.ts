@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldValues, useForm } from 'react-hook-form';
-import { useEffect, useMemo } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import {
     DynamicSecurityAnalysisParametersFetchReturn,
@@ -15,12 +13,11 @@ import {
     ID,
 } from '../../../utils';
 import { PROVIDER } from '../common';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { CONTINGENCIES_LIST_INFOS, CONTINGENCIES_START_TIME, SCENARIO_DURATION } from './constants';
 import { UseComputationParametersFormReturn } from '../common/utils';
 import { TabValues } from './dynamic-security-analysis.type';
-import { useTabs } from '../common/hook/use-tabs';
+import { useParametersForm } from '../common/hook/use-parameters-form';
 
 const scenarioFormSchema = yup
     .object()
@@ -81,7 +78,6 @@ export const toParamsInfos = (_formData: FieldValues): DynamicSecurityAnalysisPa
     contingencyListInfos: _formData[TabValues.CONTINGENCY][CONTINGENCIES_LIST_INFOS],
 });
 
-export type UseDynamicSecurityAnalysisParametersFormReturn = UseComputationParametersFormReturn<TabValues>;
 type UseDynamicSecurityAnalysisParametersFormProps = {
     providers: Record<string, string>;
     params: DynamicSecurityAnalysisParametersInfos | null;
@@ -90,66 +86,13 @@ type UseDynamicSecurityAnalysisParametersFormProps = {
     description: string | null;
 };
 
-export function useDynamicSecurityAnalysisParametersForm({
-    providers,
-    params,
-    name: initialName,
-    description: initialDescription,
-}: Readonly<UseDynamicSecurityAnalysisParametersFormProps>): UseDynamicSecurityAnalysisParametersFormReturn {
-    const paramsLoaded = useMemo(() => !!params, [params]);
-
-    const formattedProviders = useMemo(
-        () =>
-            Object.entries(providers).map(([key, value]) => ({
-                id: key,
-                label: value,
-            })),
-        [providers]
-    );
-
-    const returnFormSchema = useMemo(() => {
-        return initialName === null ? formSchema : formSchema.concat(getNameElementEditorSchema(initialName));
-    }, [initialName]);
-
-    const newEmptyFormData: any = useMemo(() => {
-        return {
-            ...(initialName === null ? {} : getNameElementEditorEmptyFormData(initialName, initialDescription)),
-            ...emptyFormData,
-        };
-    }, [initialName, initialDescription]);
-
-    const returnFormMethods = useForm({
-        defaultValues: newEmptyFormData,
-        resolver: yupResolver(returnFormSchema),
+export function useDynamicSecurityAnalysisParametersForm(
+    props: Readonly<UseDynamicSecurityAnalysisParametersFormProps>
+): UseComputationParametersFormReturn {
+    return useParametersForm({
+        ...props,
+        formSchema,
+        emptyFormData,
+        toFormValues,
     });
-
-    const {
-        reset,
-        formState: { errors },
-    } = returnFormMethods;
-
-    useEffect(() => {
-        if (params) {
-            reset(toFormValues(params));
-        }
-    }, [params, paramsLoaded, reset]);
-
-    /* tab-related handling */
-    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
-        defaultTab: TabValues.SCENARIO,
-        tabEnum: TabValues,
-        formErrors: errors,
-    });
-
-    return {
-        formMethods: returnFormMethods,
-        formSchema: returnFormSchema,
-        paramsLoaded,
-        formattedProviders,
-        /* tab-related handling */
-        selectedTab,
-        tabsWithError,
-        onTabChange,
-        onError,
-    };
 }

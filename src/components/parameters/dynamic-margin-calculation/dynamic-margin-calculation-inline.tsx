@@ -9,7 +9,7 @@ import type { UUID } from 'node:crypto';
 import { Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { FieldValues } from 'react-hook-form';
+import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
 import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
@@ -28,6 +28,7 @@ import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
 import { useSnackMessage } from '../../../hooks';
+import { CustomFormProvider } from '../../inputs';
 
 type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
@@ -53,7 +54,7 @@ export function DynamicMarginCalculationInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formMethods, onError } = dynamicMarginCalculationMethods;
+    const { formSchema, formMethods } = dynamicMarginCalculationMethods;
     const { reset, handleSubmit, getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
@@ -100,7 +101,7 @@ export function DynamicMarginCalculationInline({
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = () => {
+    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
         return (
             <>
                 <Grid container item>
@@ -118,7 +119,7 @@ export function DynamicMarginCalculationInline({
                         />
                         <LabelledButton disabled callback={() => setOpenCreateParameterDialog(true)} label="save" />
                         <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onError)}>
+                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
                             <FormattedMessage id="validate" />
                         </SubmitButton>
                     </Grid>
@@ -162,9 +163,11 @@ export function DynamicMarginCalculationInline({
         );
     };
     return (
-        <DynamicMarginCalculationForm
-            dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
-            renderActions={renderActions}
-        />
+        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+            <DynamicMarginCalculationForm
+                dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
+                renderActions={renderActions}
+            />
+        </CustomFormProvider>
     );
 }

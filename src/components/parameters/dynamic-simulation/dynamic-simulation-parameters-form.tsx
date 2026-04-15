@@ -7,8 +7,9 @@
 import { ReactNode } from 'react';
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CustomFormProvider } from '../../inputs';
+import { FieldErrors } from 'react-hook-form';
 import { ProviderParam, TabPanel } from '../common';
+import { useTabs } from '../common/hook/use-tabs';
 
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { VoltageLevelInfos } from '../../../utils/types/equipmentType';
@@ -16,16 +17,16 @@ import { mergeSx } from '../../../utils/styles';
 import { TabValues } from './dynamic-simulation.type';
 import { TimeDelayParameters } from './time-delay';
 import { SolverParameters } from './solver';
-import { UseDynamicSimulationParametersFormReturn } from './use-dynamic-simulation-parameters-form';
 import { MAPPING, MappingParameters } from './mapping';
 import { NetworkParameters } from './network';
 import CurveParameters from './curve/curve-parameters';
 import { ExpertFilter, IdentifiableAttributes } from '../../filter';
+import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSimulationFormProps = {
-    dynamicSimulationMethods: UseDynamicSimulationParametersFormReturn;
+    dynamicSimulationMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
     // fetchers for curve parameters
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;
@@ -41,10 +42,15 @@ export function DynamicSimulationForm({
     countriesFetcher,
     evaluateFilterFetcher,
 }: Readonly<DynamicSimulationFormProps>) {
-    const { formMethods, formSchema, paramsLoaded, formattedProviders, selectedTab, onTabChange, tabsWithError } =
-        dynamicSimulationMethods;
+    const { paramsLoaded, formattedProviders } = dynamicSimulationMethods;
+
+    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
+        defaultTab: TabValues.TAB_TIME_DELAY,
+        tabEnum: TabValues,
+    });
+
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+        <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
                 <Grid container sx={{ height: '100%' }} direction="column">
@@ -112,11 +118,11 @@ export function DynamicSimulationForm({
                             />
                         </TabPanel>
                     </Grid>
-                    {renderActions?.()}
+                    {renderActions?.(onError)}
                 </Grid>
             ) : (
                 <LinearProgress />
             )}
-        </CustomFormProvider>
+        </>
     );
 }

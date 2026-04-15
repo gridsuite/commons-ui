@@ -9,19 +9,20 @@ import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ReactNode } from 'react';
 
+import { FieldErrors } from 'react-hook-form';
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
 import { ProviderParam, TabPanel } from '../common';
+import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
-import { UseDynamicSecurityAnalysisParametersFormReturn } from './use-dynamic-security-analysis-parameters-form';
 import { mergeSx } from '../../../utils';
-import { CustomFormProvider } from '../../inputs';
 import { TabValues } from './dynamic-security-analysis.type';
+import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSecurityAnalysisParametersFormProps = {
-    dynamicSecurityAnalysisMethods: UseDynamicSecurityAnalysisParametersFormReturn;
+    dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
 };
 
 export function DynamicSecurityAnalysisParametersForm({
@@ -29,11 +30,15 @@ export function DynamicSecurityAnalysisParametersForm({
     renderTitleFields,
     renderActions,
 }: Readonly<DynamicSecurityAnalysisParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoaded, formattedProviders, selectedTab, onTabChange, tabsWithError } =
-        dynamicSecurityAnalysisMethods;
+    const { paramsLoaded, formattedProviders } = dynamicSecurityAnalysisMethods;
+
+    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
+        defaultTab: TabValues.SCENARIO,
+        tabEnum: TabValues,
+    });
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+        <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
                 <Grid container sx={{ height: '100%' }} direction="column">
@@ -71,11 +76,11 @@ export function DynamicSecurityAnalysisParametersForm({
                             <ContingencyParameters path={TabValues.CONTINGENCY} />
                         </TabPanel>
                     </Grid>
-                    {renderActions?.()}
+                    {renderActions?.(onError)}
                 </Grid>
             ) : (
                 <LinearProgress />
             )}
-        </CustomFormProvider>
+        </>
     );
 }

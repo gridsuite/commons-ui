@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { FieldValues } from 'react-hook-form';
+import { FieldErrors, FieldValues } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { ElementType, mergeSx, snackWithFallback, VoltageLevelInfos } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
@@ -16,7 +16,7 @@ import { ComputingType, CreateParameterDialog, LabelledButton } from '../common'
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { parametersStyles } from '../parameters-style';
-import { SubmitButton } from '../../inputs';
+import { CustomFormProvider, SubmitButton } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { PopupConfirmationDialog } from '../../dialogs';
 import {
@@ -65,7 +65,7 @@ export function DynamicSimulationInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formMethods, onError } = dynamicSimulationMethods;
+    const { formSchema, formMethods } = dynamicSimulationMethods;
     const { reset, handleSubmit, getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
@@ -113,7 +113,7 @@ export function DynamicSimulationInline({
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = () => {
+    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
         return (
             <>
                 <Grid container item>
@@ -131,7 +131,7 @@ export function DynamicSimulationInline({
                         />
                         <LabelledButton disabled callback={() => setOpenCreateParameterDialog(true)} label="save" />
                         <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onError)}>
+                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
                             <FormattedMessage id="validate" />
                         </SubmitButton>
                     </Grid>
@@ -175,12 +175,14 @@ export function DynamicSimulationInline({
         );
     };
     return (
-        <DynamicSimulationForm
-            dynamicSimulationMethods={dynamicSimulationMethods}
-            renderActions={renderActions}
-            voltageLevelsFetcher={voltageLevelsFetcher}
-            countriesFetcher={countriesFetcher}
-            evaluateFilterFetcher={evaluateFilterFetcher}
-        />
+        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+            <DynamicSimulationForm
+                dynamicSimulationMethods={dynamicSimulationMethods}
+                renderActions={renderActions}
+                voltageLevelsFetcher={voltageLevelsFetcher}
+                countriesFetcher={countriesFetcher}
+                evaluateFilterFetcher={evaluateFilterFetcher}
+            />
+        </CustomFormProvider>
     );
 }
