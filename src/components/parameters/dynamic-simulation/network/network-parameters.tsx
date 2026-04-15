@@ -112,7 +112,7 @@ const params = [
     },
 ];
 
-export function NetworkParameters({ path }: { path: string }) {
+export function NetworkParameters({ path }: Readonly<{ path: string }>) {
     return (
         <Grid container>
             {params.map((param: SpecificParameterInfos) => {

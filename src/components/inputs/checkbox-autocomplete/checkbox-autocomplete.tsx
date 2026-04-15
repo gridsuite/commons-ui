@@ -90,7 +90,7 @@ export function CheckboxAutocomplete<Value>({
     getOptionLabel,
     onChange,
     ...otherProps
-}: CheckboxAutocompleteProps<Value>) {
+}: Readonly<CheckboxAutocompleteProps<Value>>) {
     const intl = useIntl();
 
     // used to manage search text

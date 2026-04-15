@@ -22,7 +22,7 @@ const params: SpecificParameterInfos[] = [
     },
 ];
 
-export function TimeDelayParameters({ path }: { path: string }) {
+export function TimeDelayParameters({ path }: Readonly<{ path: string }>) {
     return (
         <Grid container>
             {params.map((param: SpecificParameterInfos) => {

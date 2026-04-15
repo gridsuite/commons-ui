@@ -42,7 +42,7 @@ const params: SpecificParameterInfos[] = [
     },
 ];
 
-export function IdaSolverParameters({ path }: { path: string }) {
+export function IdaSolverParameters({ path }: Readonly<{ path: string }>) {
     return (
         <>
             {params.map((param: SpecificParameterInfos) => {

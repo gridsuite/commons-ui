@@ -102,7 +102,7 @@ const params: SpecificParameterInfos[] = [
     },
 ];
 
-export function SimplifiedSolverParameters({ path }: { path: string }) {
+export function SimplifiedSolverParameters({ path }: Readonly<{ path: string }>) {
     return (
         <>
             {params.map((param: SpecificParameterInfos) => {

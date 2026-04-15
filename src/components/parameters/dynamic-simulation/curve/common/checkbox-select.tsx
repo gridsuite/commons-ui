@@ -57,10 +57,10 @@ function CheckboxSelect({
             const values = Array.isArray(eventValue) ? eventValue : [eventValue];
 
             let newSelectedOptions: string[];
-            if (values.find((elem) => elem === CHECK_ALL.value)) {
+            if (values.some((elem) => elem === CHECK_ALL.value)) {
                 // must check all items
                 newSelectedOptions = options;
-            } else if (values.find((elem) => elem === UNCHECK_ALL.value)) {
+            } else if (values.some((elem) => elem === UNCHECK_ALL.value)) {
                 // must un check all items
                 newSelectedOptions = [];
             } else {
@@ -105,7 +105,7 @@ function CheckboxSelect({
             </MenuItem>
             {options.map((option) => (
                 <MenuItem key={option} value={option}>
-                    <Checkbox checked={selectedOptions.indexOf(option) > -1} />
+                    <Checkbox checked={selectedOptions.includes(option)} />
                     <ListItemText>{getOptionLabel(option)}</ListItemText>
                 </MenuItem>
             ))}

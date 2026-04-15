@@ -26,7 +26,7 @@ interface CheckboxItemProps<Value> extends HTMLAttributes<HTMLElement> {
     getOptionLabel: (option: Value) => string;
 }
 
-function CheckboxItem<Value>({ option, selected, getOptionLabel, ...otherProps }: CheckboxItemProps<Value>) {
+function CheckboxItem<Value>({ option, selected, getOptionLabel, ...otherProps }: Readonly<CheckboxItemProps<Value>>) {
     return (
         <Typography component="li" {...otherProps} noWrap>
             <Checkbox style={styles.checkbox} checked={selected} />

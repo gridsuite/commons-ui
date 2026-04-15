@@ -190,7 +190,7 @@ function CheckboxTreeview<TData extends ItemData>(
         items.forEach((item) => {
             const key = item.parentId ?? null; // using null as a key for root items
             if (!map.has(key)) map.set(key, []);
-            map.get(key)!.push(item);
+            map.get(key)?.push(item);
         });
         return map;
     }, [items]);

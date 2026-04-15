@@ -126,7 +126,7 @@ const params: SpecificParameterInfos[] = [
     },
 ];
 
-export function CommonSolverParameters({ path }: { path: string }) {
+export function CommonSolverParameters({ path }: Readonly<{ path: string }>) {
     return (
         <>
             {params.map((param: SpecificParameterInfos) => {
