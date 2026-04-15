@@ -9,16 +9,15 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { mergeSx, NetworkModificationMetadata, useModificationLabelComputer } from '@gridsuite/commons-ui';
 import { useIntl } from 'react-intl';
-import { Box, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip } from '@mui/material';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,
     createNameCellRootStyle,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
-import IconButton from '@mui/material/IconButton';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { KeyboardArrowRight } from '@mui/icons-material'
+import { KeyboardArrowDown } from '@mui/icons-material'
 import DepthBox from './depth-box';
 import { ComposedModificationMetadata, isCompositeModification } from '../utils';
 import { useTheme } from '@mui/material/styles';
@@ -76,9 +75,9 @@ export const NameCell: FunctionComponent<{
                             aria-label={row.getIsExpanded() ? 'Collapse' : 'Expand'}
                         >
                             {row.getIsExpanded() ? (
-                                <KeyboardArrowDownIcon fontSize="small" />
+                                <KeyboardArrowDown fontSize="small" />
                             ) : (
-                                <KeyboardArrowRightIcon fontSize="small" />
+                                <KeyboardArrowRight fontSize="small" />
                             )}
                         </IconButton>
                     </Box>

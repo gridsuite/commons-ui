@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
 import { Row } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../utils';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { DragIndicator } from '@mui/icons-material'
 import React, { useCallback } from 'react';
 import { mergeSx, NetworkModificationMetadata, useModificationLabelComputer } from '@gridsuite/commons-ui';
 import { useIntl } from 'react-intl';
@@ -32,7 +32,7 @@ const DragCloneRow = ({ row }: { row: Row<ComposedModificationMetadata> }) => {
         <Box sx={networkModificationTableStyles.dragRowClone}>
             <Box sx={networkModificationTableStyles.tableCell}>
                 <Box sx={mergeSx(networkModificationTableStyles.dragHandle, { opacity: 1 })}>
-                    <DragIndicatorIcon fontSize="small" sx={networkModificationTableStyles.dragIndicatorIcon} />
+                    <DragIndicator sx={networkModificationTableStyles.dragIndicatorIcon} />
                 </Box>
             </Box>
             <Box sx={networkModificationTableStyles.tableCell}>

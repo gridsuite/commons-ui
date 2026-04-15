@@ -84,6 +84,12 @@ export function NetworkModificationsTable({
     const containerRef = useRef<HTMLDivElement | null>(null);
     const lastClickedIndex = useRef<number | null>(null);
 
+    const [expanded, setExpanded] = useState<ExpandedState>({});
+
+    const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
+        formatToComposedModification(modifications)
+    );
+
     const columns = useMemo<ColumnDef<ComposedModificationMetadata>[]>(() =>
             createAllColumns(isRowDragDisabled ?? false,
                 modifications.length,
@@ -93,15 +99,9 @@ export function NetworkModificationsTable({
             isRowDragDisabled,
             modifications,
             nameHeaderProps,
-            setModifications,
+            setComposedModifications,
         ]);
 
-
-    const [expanded, setExpanded] = useState<ExpandedState>({});
-
-    const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
-        formatToComposedModification(modifications)
-    );
 
     useEffect(() => {
         setComposedModifications((prevMods) => {
