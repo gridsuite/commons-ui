@@ -87,9 +87,7 @@ function CheckboxSelect({
                     return getOptionLabel(_selectedOptions[0]);
                 }
                 if (_selectedOptions.length > 1) {
-                    return `${getOptionLabel(_selectedOptions.at(_selectedOptions.length - 1)!)} (+${
-                        _selectedOptions.length - 1
-                    })`;
+                    return `${getOptionLabel(_selectedOptions.at(-1) ?? '')} (+${_selectedOptions.length - 1})`;
                 }
                 return '';
             }}
