@@ -51,7 +51,7 @@ const styles = {
     }),
     boxContent: {
         display: 'flex',
-        alignItems: 'end',
+        alignItems: 'center',
         justifyContent: 'right',
         gap: 0.5,
         flex: 'auto',
