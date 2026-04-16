@@ -18,7 +18,7 @@ export interface ParametersEditionDialogProps {
     name: string;
     description: string | null;
     activeDirectory: UUID;
-    isRootNode: boolean;
+    isRootNode?: boolean;
     language?: GsLang;
     user: User | null;
     globalBuildStatus?: BuildStatus;
