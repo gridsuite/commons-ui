@@ -217,6 +217,8 @@ export const useSensitivityAnalysisParametersForm = ({
     }, [currentNodeUuid, currentRootNetworkUuid, formatNewParams, getValues, resetFactorsCount]);
 
     useEffect(() => {
+        let active = true;
+
         if (!factorCountParams || !currentNodeUuid || !currentRootNetworkUuid) {
             // return a no-op cleanup function to ignore eslint consistent-return
             return () => {};
@@ -242,7 +244,9 @@ export const useSensitivityAnalysisParametersForm = ({
             abortSignal
         )
             .then((factorsCountResponse) => {
-                setFactorsCount(factorsCountResponse);
+                if (active) {
+                    setFactorsCount(factorsCountResponse);
+                }
             })
             .catch((error) => {
                 if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
@@ -251,13 +255,17 @@ export const useSensitivityAnalysisParametersForm = ({
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
             })
             .finally(() => {
-                setIsLoading(false);
-                loadingTimeoutId = setTimeout(() => {}, 500);
+                if (active) {
+                    // not too quick
+                    loadingTimeoutId = setTimeout(() => setIsLoading(false), 500);
+                }
             });
 
         return () => {
+            active = false;
             controller?.abort(new Error(IGNORE_SIGNAL));
             clearTimeout(loadingTimeoutId);
+            setIsLoading(false);
         };
         // globalBuildStatus is needed because when the node is build the factors must be recalculated
     }, [
