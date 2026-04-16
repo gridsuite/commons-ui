@@ -69,7 +69,7 @@ function CurveParameters({
             const notYetAddedCurves = newCurves.filter(
                 // use functional keys to lookup
                 (curve) =>
-                    !rowData.find(
+                    !rowData.some(
                         (elem) =>
                             elem[Curve.EQUIPMENT_ID] === curve[Curve.EQUIPMENT_ID] &&
                             elem[Curve.VARIABLE_ID] === curve[Curve.VARIABLE_ID]

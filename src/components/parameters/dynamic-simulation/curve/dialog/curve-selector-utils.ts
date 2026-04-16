@@ -209,7 +209,7 @@ export const buildExpertRules = (
         if ((eqType as EquipmentType) === EquipmentType.SUBSTATION) {
             if (EQUIPMENTS_WITH_ONE_SUBSTATION.includes(equipmentType)) {
                 const idsRule = {
-                    field: equipmentType !== EquipmentType.SUBSTATION ? FieldType.SUBSTATION_ID : FieldType.ID,
+                    field: equipmentType === EquipmentType.SUBSTATION ? FieldType.ID : FieldType.SUBSTATION_ID,
                     operator: OperatorType.IN,
                     values,
                     dataType: DataType.STRING,
@@ -239,7 +239,7 @@ export const buildExpertRules = (
         } else if ((eqType as EquipmentType) === EquipmentType.VOLTAGE_LEVEL) {
             if (EQUIPMENTS_WITH_ONE_NOMINAL_VOLTAGE.includes(equipmentType)) {
                 const idsRule = {
-                    field: equipmentType !== EquipmentType.VOLTAGE_LEVEL ? FieldType.VOLTAGE_LEVEL_ID : FieldType.ID,
+                    field: equipmentType === EquipmentType.VOLTAGE_LEVEL ? FieldType.ID : FieldType.VOLTAGE_LEVEL_ID,
                     operator: OperatorType.IN,
                     values,
                     dataType: DataType.STRING,
