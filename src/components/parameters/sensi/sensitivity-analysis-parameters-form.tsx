@@ -49,12 +49,14 @@ export function SensitivityAnalysisParametersForm({
     renderTitleFields,
     renderActions,
     isDeveloperMode,
+    isRootNode,
     globalBuildStatus,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
+    isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
 }>) {
     return (
@@ -110,6 +112,7 @@ export function SensitivityAnalysisParametersForm({
                                     factorsCount={sensitivityAnalysisMethods.factorsCount}
                                     isDeveloperMode={isDeveloperMode}
                                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
+                                    isRootNode={isRootNode}
                                     globalBuildStatus={globalBuildStatus}
                                 />
                             </Grid>
