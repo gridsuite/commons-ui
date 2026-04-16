@@ -158,7 +158,7 @@ function CheckboxTreeview<TData extends ItemData>(
                 const selectedItems = items.filter(
                     (item) =>
                         newItemStates[item.id] === CheckState.CHECKED &&
-                        !items.find((elem) => elem.parentId === item.id) // no children
+                        items.every((elem) => elem.parentId !== item.id) // no children
                 );
                 onSelectionChanged(selectedItems);
             }
