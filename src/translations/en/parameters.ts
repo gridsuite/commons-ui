@@ -256,9 +256,10 @@ export const parametersEn = {
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
     PSTS: 'PSTs',
     Active: 'Active',
-    'sensitivityAnalysis.simulatedResults': '{count, plural, =0 {0 result} =1 {1 result} other {#{suffix} results}}',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, select, null {- result} 0 {0 result} 1 {1 result} other {{count}{suffix} results}}',
     'sensitivityAnalysis.simulatedVariables':
-        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+        '{count, select, null {- variable} 0 {0 variable} 1 {1 variable} other {{count}{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Calculation in progress...',
@@ -322,4 +323,5 @@ export const parametersEn = {
     BUILDING: 'Building',
     NODE_BUILT: 'Node built',
     NODE_NOT_BUILT: 'Node not built',
+    ROOT_NODE: 'Root node',
 };
