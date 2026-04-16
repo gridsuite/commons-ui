@@ -58,7 +58,7 @@ const styles = {
     }),
     boxContent: {
         display: 'flex',
-        alignItems: 'end',
+        alignItems: 'center',
         justifyContent: 'right',
         gap: 0.5,
         flex: 'auto',
@@ -73,6 +73,7 @@ interface SensitivityParametersSelectorProps {
     factorsCount: FactorsCount;
     isDeveloperMode: boolean;
     isStudyLinked: boolean;
+    isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
 }
 
@@ -87,6 +88,7 @@ function SensitivityParametersSelector({
     factorsCount,
     isDeveloperMode,
     isStudyLinked,
+    isRootNode,
     globalBuildStatus,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
@@ -179,7 +181,11 @@ function SensitivityParametersSelector({
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                 <Box sx={{ ...styles.boxContent }}>
-                                    <BuildStatusChip buildStatus={globalBuildStatus} overrideLabel />
+                                    <BuildStatusChip
+                                        buildStatus={globalBuildStatus}
+                                        overrideLabel
+                                        isRootNode={isRootNode}
+                                    />
                                 </Box>
 
                                 <Box sx={{ ...styles.boxContent }}>

@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldValues, useForm } from 'react-hook-form';
-import { useEffect, useMemo } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import { DynamicMarginCalculationParametersInfos } from '../../../utils/types/dynamic-margin-calculation.type';
 import { emptyFormData as timeDelayEmptyFormData, formSchema as timeDelayFormSchema } from './time-delay-parameters';
@@ -17,7 +15,7 @@ import {
 } from './loads-variations-parameters';
 import { ID } from '../../../utils';
 import { PROVIDER } from '../common';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { useParametersForm } from '../common/hook/use-parameters-form';
 import {
     ACCURACY,
     CALCULATION_TYPE,
@@ -30,7 +28,7 @@ import {
     STOP_TIME,
 } from './constants';
 import { TabValues } from './dynamic-margin-calculation.type';
-import { UseComputationParametersFormReturn, useTabs } from '../common/utils';
+import { UseComputationParametersFormReturn } from '../common/utils';
 
 const formSchema = yup.object().shape({
     [PROVIDER]: yup.string().required(),
@@ -76,7 +74,6 @@ export const toParamsInfos = (_formData: FieldValues): DynamicMarginCalculationP
     loadsVariations: _formData[TabValues.TAB_LOADS_VARIATIONS][LOADS_VARIATIONS],
 });
 
-export type UseDynamicMarginCalculationParametersFormReturn = UseComputationParametersFormReturn<TabValues>;
 export type UseParametersFormProps = {
     providers: Record<string, string>;
     params: DynamicMarginCalculationParametersInfos | null;
@@ -85,63 +82,13 @@ export type UseParametersFormProps = {
     description: string | null;
 };
 
-export function useDynamicMarginCalculationParametersForm({
-    providers,
-    params,
-    name: initialName,
-    description: initialDescription,
-}: Readonly<UseParametersFormProps>): UseDynamicMarginCalculationParametersFormReturn {
-    const paramsLoaded = useMemo(() => !!params, [params]);
-
-    const formattedProviders = useMemo(
-        () =>
-            Object.entries(providers).map(([key, value]) => ({
-                id: key,
-                label: value,
-            })),
-        [providers]
-    );
-
-    const returnFormSchema = useMemo(() => {
-        return initialName === null ? formSchema : formSchema.concat(getNameElementEditorSchema(initialName));
-    }, [initialName]);
-
-    const newEmptyFormData: any = useMemo(() => {
-        return {
-            ...(initialName === null ? {} : getNameElementEditorEmptyFormData(initialName, initialDescription)),
-            ...emptyFormData,
-        };
-    }, [initialName, initialDescription]);
-
-    const returnFormMethods = useForm({
-        defaultValues: newEmptyFormData,
-        resolver: yupResolver(returnFormSchema),
+export function useDynamicMarginCalculationParametersForm(
+    props: Readonly<UseParametersFormProps>
+): UseComputationParametersFormReturn {
+    return useParametersForm({
+        ...props,
+        formSchema,
+        emptyFormData,
+        toFormValues,
     });
-
-    const { reset } = returnFormMethods;
-
-    useEffect(() => {
-        if (params) {
-            console.log('xxx Resetting form with params:', params);
-            reset(toFormValues(params));
-        }
-    }, [params, paramsLoaded, reset]);
-
-    /* tab-related handling */
-    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
-        defaultTab: TabValues.TAB_TIME_DELAY,
-        tabEnum: TabValues,
-    });
-
-    return {
-        formMethods: returnFormMethods,
-        formSchema: returnFormSchema,
-        paramsLoaded,
-        formattedProviders,
-        /* tab-related handling */
-        selectedTab,
-        tabsWithError,
-        onTabChange,
-        onError,
-    };
 }

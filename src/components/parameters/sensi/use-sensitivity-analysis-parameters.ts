@@ -58,6 +58,7 @@ import {
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
+import { BuildStatus } from '../../node';
 import { CONTINGENCIES, PROVIDER } from '../common/constants';
 import { ACTIVATED } from '../common/parameter-table-field';
 
@@ -90,6 +91,8 @@ type UseSensitivityAnalysisParametersFormProps =
           currentRootNetworkUuid: null;
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: UUID;
+          globalBuildStatus: BuildStatus | undefined;
+          isRootNode: boolean;
       }
     | {
           name: null;
@@ -99,6 +102,8 @@ type UseSensitivityAnalysisParametersFormProps =
           currentRootNetworkUuid: UUID | null;
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: null;
+          globalBuildStatus: BuildStatus | undefined;
+          isRootNode: boolean;
       };
 
 export const useSensitivityAnalysisParametersForm = ({
@@ -109,6 +114,8 @@ export const useSensitivityAnalysisParametersForm = ({
     parametersUuid,
     name,
     description,
+    globalBuildStatus,
+    isRootNode,
 }: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
     const { providers, params, updateParameters } = parametersBackend;
     const { snackError } = useSnackMessage();
@@ -172,8 +179,14 @@ export const useSensitivityAnalysisParametersForm = ({
     }, []);
 
     useEffect(() => {
+        let active = true;
         if (!currentNodeUuid || !currentRootNetworkUuid || !paramsFormInitialized) {
             // return a no-op cleanup function to ignore eslint consistent-return
+            return () => {};
+        }
+
+        if (globalBuildStatus === BuildStatus.NOT_BUILT || globalBuildStatus === BuildStatus.BUILDING || isRootNode) {
+            setFactorsCount(DEFAULT_FACTOR_COUNT);
             return () => {};
         }
 
@@ -223,23 +236,30 @@ export const useSensitivityAnalysisParametersForm = ({
             abortSignal
         )
             .then((factorsCountResponse) => {
-                setFactorsCount(factorsCountResponse);
-                loadingTimeoutId = setTimeout(() => {
-                    setIsLoading(false);
-                }, 500);
+                if (active) {
+                    setFactorsCount(factorsCountResponse);
+                }
             })
             .catch((error) => {
                 if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
                     return;
                 }
-                setIsLoading(false);
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+            })
+            .finally(() => {
+                if (active) {
+                    // not too quick
+                    loadingTimeoutId = setTimeout(() => setIsLoading(false), 500);
+                }
             });
 
         return () => {
+            active = false;
             controller?.abort(new Error(IGNORE_SIGNAL));
             clearTimeout(loadingTimeoutId);
+            setIsLoading(false);
         };
+        // globalBuildStatus is needed because when the node is build the factors must be recalculated
     }, [
         snackError,
         studyUuid,
@@ -250,6 +270,8 @@ export const useSensitivityAnalysisParametersForm = ({
         formatNewParams,
         resetFactorsCount,
         paramsFormInitialized,
+        globalBuildStatus,
+        isRootNode,
     ]);
 
     const onFormChanged = useCallback(() => {
@@ -445,9 +467,15 @@ export const useSensitivityAnalysisParametersForm = ({
         }
     }, [params, reset, fromSensitivityAnalysisParamsDataToFormValues]);
 
-    const isMaxResultsReached = useMemo(() => factorsCount.resultCount > MAX_RESULTS_COUNT, [factorsCount]);
+    const isMaxResultsReached = useMemo(
+        () => factorsCount.resultCount !== null && factorsCount.resultCount > MAX_RESULTS_COUNT,
+        [factorsCount]
+    );
 
-    const isMaxVariablesReached = useMemo(() => factorsCount.variableCount > MAX_VARIABLES_COUNT, [factorsCount]);
+    const isMaxVariablesReached = useMemo(
+        () => factorsCount.variableCount !== null && factorsCount.variableCount > MAX_VARIABLES_COUNT,
+        [factorsCount]
+    );
 
     return {
         formMethods,
