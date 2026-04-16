@@ -28,4 +28,4 @@ export const CONTAINER_NAME = 'containerName';
 
 export const MAX_RESULTS_COUNT = 500000;
 export const MAX_VARIABLES_COUNT = 5000;
-export const DEFAULT_FACTOR_COUNT = { resultCount: -1, variableCount: -1 };
+export const DEFAULT_FACTOR_COUNT = { resultCount: null, variableCount: null };

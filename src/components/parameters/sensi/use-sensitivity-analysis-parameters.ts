@@ -478,9 +478,15 @@ export const useSensitivityAnalysisParametersForm = ({
         }
     }, [params, reset, fromSensitivityAnalysisParamsDataToFormValues]);
 
-    const isMaxResultsReached = useMemo(() => factorsCount.resultCount > MAX_RESULTS_COUNT, [factorsCount]);
+    const isMaxResultsReached = useMemo(
+        () => factorsCount.resultCount !== null && factorsCount.resultCount > MAX_RESULTS_COUNT,
+        [factorsCount]
+    );
 
-    const isMaxVariablesReached = useMemo(() => factorsCount.variableCount > MAX_VARIABLES_COUNT, [factorsCount]);
+    const isMaxVariablesReached = useMemo(
+        () => factorsCount.variableCount !== null && factorsCount.variableCount > MAX_VARIABLES_COUNT,
+        [factorsCount]
+    );
 
     const paramsLoaded = useMemo(() => !!params, [params]);
 
