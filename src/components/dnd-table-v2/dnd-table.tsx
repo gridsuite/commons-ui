@@ -179,7 +179,9 @@ export function DndTable(props: Readonly<DndTableProps>) {
         });
 
         // note: an id prop is automatically added in each row
-        append(rowsToAdd);
+        if (rowsToAdd) {
+            append(rowsToAdd);
+        }
     };
 
     const handleAddRowsButton = () => {

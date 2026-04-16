@@ -167,7 +167,7 @@ export function DndTableRow({
             onClick={() => {
                 onDeleteRow?.(index);
             }}
-            disabledDeletion={(disabledDeletion && !onDeleteRow) || multiselect}
+            disabledDeletion={disabledDeletion || !onDeleteRow || multiselect}
         >
             {!disableDragAndDrop && (
                 <Tooltip
