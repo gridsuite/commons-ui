@@ -36,11 +36,7 @@ export const useCsvExport = () => {
                 // If the language is in French, we change the decimal separator
                 if (props.language === LANG_FRENCH && typeof params.value === 'number') {
                     const fractionDigits = params.column.getColDef()?.cellRendererParams?.fractionDigits;
-                    const roundedValue =
-                        fractionDigits != null && params.value != null
-                            ? params.value.toFixed(fractionDigits)
-                            : params.value;
-
+                    const roundedValue = fractionDigits != null ? params.value.toFixed(fractionDigits) : params.value;
                     return roundedValue.toString().replace('.', ',');
                 }
                 return params.value;
