@@ -34,11 +34,19 @@ export const useCsvExport = () => {
                     return formatNAValue(params.value);
                 }
                 // If the language is in French, we change the decimal separator
-                if (props.language === LANG_FRENCH && typeof params.value === 'number') {
-                    const fractionDigits = params.column.getColDef()?.cellRendererParams?.fractionDigits;
-                    const roundedValue = fractionDigits != null ? params.value.toFixed(fractionDigits) : params.value;
-                    return roundedValue.toString().replace('.', ',');
+                if (typeof params.value === 'number') {
+                    const fractionDigits =
+                        params.column.getColDef()?.cellRendererParams?.fractionDigits ??
+                        params.column.getColDef()?.context?.fractionDigits;
+                    const roundedValue =
+                        fractionDigits != null && !Number.isNaN(params.value)
+                            ? params.value.toFixed(fractionDigits)
+                            : params.value;
+                    if (props.language === LANG_FRENCH) {
+                        return roundedValue.toString().replace('.', ',');
+                    }
                 }
+
                 return params.value;
             };
             const getCSVFilename = (tableName: string) => {
