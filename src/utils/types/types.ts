@@ -85,3 +85,15 @@ export type ErrorMessageDescriptor = {
     descriptor: MessageDescriptor;
     values?: FormatValues;
 };
+
+/**
+ * Represent an item/object in directories.
+ */
+export type ItemSelectionForCopy = {
+    sourceItemUuid: UUID | null;
+    typeItem: string | null;
+    nameItem: string | null;
+    descriptionItem: string | null;
+    parentDirectoryUuid: UUID | null;
+    specificTypeItem: string | null;
+};

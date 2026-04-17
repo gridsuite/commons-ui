@@ -9,7 +9,7 @@ import type { UUID } from 'node:crypto';
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { FieldValues } from 'react-hook-form';
+import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
 import { ElementType, mergeSx } from '../../../utils';
@@ -23,6 +23,7 @@ import { PopupConfirmationDialog } from '../../dialogs/popupConfirmationDialog/P
 import { parametersStyles } from '../parameters-style';
 import { CreateParameterDialog } from '../common';
 import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
+import { CustomFormProvider } from '../../inputs';
 
 type DynamicSecurityAnalysisInlineProps = {
     studyUuid: UUID | null;
@@ -45,7 +46,7 @@ export function DynamicSecurityAnalysisInline({
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formMethods, onError } = dynamicSecurityAnalysisMethods;
+    const { formSchema, formMethods } = dynamicSecurityAnalysisMethods;
     const { handleSubmit, getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
@@ -72,18 +73,19 @@ export function DynamicSecurityAnalysisInline({
         setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = () => {
+    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
         return (
             <>
                 <Grid container item>
                     <Grid
                         sx={mergeSx(parametersStyles.controlParametersItem, {
+                            paddingTop: 1,
                             paddingBottom: 2,
                             paddingLeft: 0,
                         })}
                     >
                         <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onError)}>
+                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
                             <FormattedMessage id="validate" />
                         </SubmitButton>
                     </Grid>
@@ -112,9 +114,11 @@ export function DynamicSecurityAnalysisInline({
         );
     };
     return (
-        <DynamicSecurityAnalysisParametersForm
-            dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
-            renderActions={renderActions}
-        />
+        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+            <DynamicSecurityAnalysisParametersForm
+                dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
+                renderActions={renderActions}
+            />
+        </CustomFormProvider>
     );
 }
