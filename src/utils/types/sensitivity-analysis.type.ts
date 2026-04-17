@@ -79,8 +79,8 @@ export type SensitivityAnalysisParametersInfosEnriched = SensitivityAnalysisPara
 export type SensitivityAnalysisParametersInfos = SensitivityAnalysisParameters<UUID>;
 
 export interface FactorsCount {
-    resultCount: number;
-    variableCount: number;
+    resultCount: number | null;
+    variableCount: number | null;
 }
 
 // result types

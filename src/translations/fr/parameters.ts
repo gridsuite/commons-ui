@@ -264,9 +264,9 @@ export const parametersFr = {
     PSTS: 'TDs',
     Active: 'Actif',
     'sensitivityAnalysis.simulatedResults':
-        '{count, plural, =0 {0 résultat} =1 {1 résultat} other {#{suffix} résultats}}',
+        '{count, select, null {- résultat} 0 {0 résultat} 1 {1 résultat} other {{count}{suffix} résultats}}',
     'sensitivityAnalysis.simulatedVariables':
-        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+        '{count, select, null {- variable} 0 {0 variable} 1 {1 variable} other {{count}{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Evaluation en cours...',
@@ -309,17 +309,171 @@ export const parametersFr = {
     PccMinParametersError: 'Erreur lors de la mise à jour des paramètres de pcc du min',
     updatePccMinParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres de pcc min',
     pccMinParamFilter: 'Définition des postes en défaut',
+
+    Dynawo: 'Dynawo',
+    // DynamicSimulation
+    // DS Parameters tabs
+    DynamicSimulationTimeDelay: 'Temporisation',
+    DynamicSimulationSolver: 'Solveur',
+    DynamicSimulationMapping: 'Mappage',
+    DynamicSimulationNetwork: 'Réseau',
+    DynamicSimulationCurve: 'Courbes',
+
+    // Time delay tab
+    DynamicSimulationStartTime: 'Temps de début',
+    DynamicSimulationStopTime: "Temps d'arrêt",
+    DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime:
+        "Temps d'arrêt doit être supérieur ou égal au temps de début",
+
+    // Solver tab
+    DynamicSimulationSolverType: 'Type de solveur',
+    DynamicSimulationSolverIDA: 'Solveur IDA',
+    DynamicSimulationSolverSIM: 'Solveur simplifié',
+
+    DynamicSimulationIDASolverOrder: 'Ordre (1 ou 2)',
+    DynamicSimulationIDASolverInitStep: 'Pas de temps initial',
+    DynamicSimulationIDASolverMinStep: 'Pas de temps minimum',
+    DynamicSimulationIDASolverMaxStep: 'Pas de temps maximum',
+    DynamicSimulationIDASolverAbsAccuracy: 'Précision absolue',
+    DynamicSimulationIDASolverRelAccuracy: 'Précision relative',
+    DynamicSimulationIDASolverOrderMustBeOneOfValues: 'Ordre devrait être 1 ou 2',
+
+    DynamicSimulationSimplifiedSolverHMin: 'Pas de temps minimum',
+    DynamicSimulationSimplifiedSolverHMax: 'Pas de temps maximum',
+    DynamicSimulationSimplifiedSolverKReduceStep: 'Facteur de réduction du pas de temps',
+    DynamicSimulationSimplifiedSolverMaxNewtonTry: 'Nombre maximum de résolutions de Newton pour un pas de calcul',
+    DynamicSimulationSimplifiedSolverLinearSolverName: 'Solveur linéaire choisi',
+    DynamicSimulationSimplifiedSolverFNormTol: "Critère d'arrêt sur la norme L2 des résidus",
+    DynamicSimulationSimplifiedSolverInitialAddTol: "Critère d'arrêt à l'initialisation",
+    DynamicSimulationSimplifiedSolverScStepTol: "Critère d'arrêt sur la variation à l'itération courante",
+    DynamicSimulationSimplifiedSolverMxNewTStep: 'Variation maximale pour une itération',
+    DynamicSimulationSimplifiedSolverMsbset: "Nombre maximal d'itérations sans recalcul du Jacobien",
+    DynamicSimulationSimplifiedSolverMxIter: "Nombre maximal d'itérations",
+    DynamicSimulationSimplifiedSolverPrintFl: 'Niveau de détail du log de sortie',
+    DynamicSimulationSimplifiedSolverOptimizeAlgebraicResidualsEvaluations:
+        "Active l'optimisation du nombre d'évaluations des résidus algébrique",
+    DynamicSimulationSimplifiedSolverSkipNRIfInitialGuessOK:
+        'Active la possibilité de passer les itérations suivantes si la simulation est stable',
+    DynamicSimulationSimplifiedSolverEnableSilentZ:
+        "Active la possibilité de minimiser le nombre d'évaluations des racines en analysant la portée des variables discrètes",
+    DynamicSimulationSimplifiedSolverOptimizeReInitAlgebraicResidualsEvaluations:
+        "Active l'optimisation du nombre d'évaluations des résidus algébriques durant la restauration algébrique",
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestoration:
+        'Précise le type de changement de mode minimal pour lequel une restauration algébrique est nécéssaire (ALGEBRAIC ou ALGEBRAIC_J_UPDATE)',
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestorationInit:
+        "Précise le type de changement de mode minimal pour lequel une restauration algébrique est nécéssaire pendant l'init (ALGEBRAIC ou ALGEBRAIC_J_UPDATE)",
+
+    DynamicSimulationSolverFNormTolAlg: "Critère d'arrêt sur la norme L2 des résidus pour la restauration algébrique",
+    DynamicSimulationSolverInitialAddTolAlg: "Critère d'arrêt à l'initialisation pour la restauration algébrique",
+    DynamicSimulationSolverScStepTolAlg:
+        "Critère d'arrêt sur la variation à l'itération courante pour la restauration algébrique",
+    DynamicSimulationSolverMxNewTStepAlg: 'Variation maximale pour une itération pour la restauration algébrique',
+    DynamicSimulationSolverMsbsetAlg:
+        "Nombre maximal d'itérations sans recalcul du Jacobien pour la restauration algébrique",
+    DynamicSimulationSolverMxIterAlg: "Nombre maximal d'itérations pour la restauration algébrique",
+    DynamicSimulationSolverPrintFlAlg: 'Niveau de détail du log de sortie pour la restauration algébrique',
+    DynamicSimulationSolverFNormTolAlgJ:
+        "Critère d'arrêt sur la norme L2 des résidus pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverInitialAddTolAlgJ:
+        "Critère d'arrêt à l'initialisation pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverScStepTolAlgJ:
+        "Critère d'arrêt sur la variation à l'itération courante pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverMxNewTStepAlgJ:
+        'Variation maximale pour une itération pour la restauration algébrique (avec recalcul du Jacobien)',
+    DynamicSimulationSolverMsbsetAlgJ:
+        "Nombre maximal d'itérations sans recalcul du Jacobien pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverMxIterAlgJ:
+        "Nombre maximal d'itérations pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverPrintFlAlgJ:
+        'Niveau de détail du log de sortie pour la restauration algébrique (avec recalcul du Jacobien)',
+    DynamicSimulationSolverFNormTolAlgInit:
+        "Critère d'arrêt sur la norme L2 des résidus pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverInitialAddTolAlgInit:
+        "Critère d'arrêt à l'initialisation pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverScStepTolAlgInit:
+        "Critère d'arrêt sur la variation à l'itération courante pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMxNewTStepAlgInit:
+        "Variation maximale pour une itération pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMsbsetAlgInit:
+        "Nombre maximal d'itérations sans recalcul du Initacobien pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMxIterAlgInit: "Nombre maximal d'itérations pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverPrintFlAlgInit:
+        "Niveau de détail du log de sortie pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMaximumNumberSlowStepIncrease: "Nombre maximum d'itérations avec un pas de temps trop petit",
+    DynamicSimulationSolverMinimalAcceptableStep: 'Pas de temps minimum acceptable',
+
+    // Network tab
+    DynamicSimulationNetworkCapacitorNoReclosingDelay:
+        'Temporisation avant la possibilité de réenclencher le MCS en s (capacité)',
+    DynamicSimulationNetworkReactanceNoReclosingDelay:
+        'Temporisation avant la possibilité de réenclencher le MCS en s (réactance)',
+    DynamicSimulationNetworkDanglingLineCurrentLimitMaxTimeOperation:
+        'Seuil de temps au delà duquel les limiteurs de courant ne doivent pas agir en s',
+    DynamicSimulationNetworkLineCurrentLimitMaxTimeOperation:
+        'Seuil de temps au-delà duquel les limiteurs de courant ne doivent pas agir en s',
+    DynamicSimulationNetworkLoadTp: 'Constante de temps pour intégration du changement de consigne active, en s',
+    DynamicSimulationNetworkLoadTq: 'Constante de temps pour intégration du changement de consigne réactive, en s',
+    DynamicSimulationNetworkLoadAlpha: 'Sensibilité exponentielle de la consommation active à la tension',
+    DynamicSimulationNetworkLoadAlphaLong:
+        'Sensibilité exponentielle de la consommation active à la tension (comportement long terme)',
+    DynamicSimulationNetworkLoadBeta: 'Sensibilité exponentielle de la consommation réactive à la tension',
+    DynamicSimulationNetworkLoadBetaLong:
+        'Sensibilité exponentielle de la consommation réactive à la tension (comportement long terme)',
+    DynamicSimulationNetworkLoadIsControllable: 'Modification possible de P/Q ?',
+    DynamicSimulationNetworkLoadIsRestorative: 'Charge restaurative ?',
+    DynamicSimulationNetworkLoadZPMax: 'Vitesse max de variation de la puissance active en pu/s',
+    DynamicSimulationNetworkLoadZQMax: 'Vitesse max de variation de la puissance réactive en pu/s',
+    DynamicSimulationNetworkTransformerCurrentLimitMaxTimeOperation:
+        'Seuil de temps au delà duquel les limiteurs de courant ne doivent pas agir, en s',
+    DynamicSimulationNetworkTransformerT1StHT: 'Délai avant changement de prise pour la 1ère fois (HT) en s',
+    DynamicSimulationNetworkTransformerT1StTHT: 'Délai avant changement de prise pour la 1ère fois (THT) en s',
+    DynamicSimulationNetworkTransformerTNextHT: 'Délai avant changement de prise (HT) en s',
+    DynamicSimulationNetworkTransformerTNextTHT: 'Délai avant changement de prise (THT) en s',
+    DynamicSimulationNetworkTransformerTolV: 'Bande morte pour la régulation de tension (demi bande) en pu',
+
+    // Curve tab
+    DynamicSimulationModelsFetcherError: 'Une erreur est survenue lors de la récupération des modèles disponibles',
+    DynamicSimulationCurveSelectedNumber: 'Sélectionné',
+    DynamicSimulationCurveDynamicModelHeader: 'Nom objet réseau',
+    DynamicSimulationCurveVariableHeader: 'Variable',
+    DynamicSimulationCurveSelectorDialogTitle: 'Éditer la liste des courbes à tracer',
+    DynamicSimulationCurveToAdd: 'Courbes à ajouter',
+    DynamicSimulationCurveEquipmentType: "Type d'ouvrage",
+    DynamicSimulationCurvePost: 'Postes',
+    DynamicSimulationCurveCountry: 'Pays',
+    DynamicSimulationCurveTension: 'Tension nominale',
+    DynamicSimulationCurveEquipmentFilter: 'Filtrer les ouvrages',
+    DynamicSimulationCurveCurveFilter: 'Filtrer les courbes',
+    DynamicSimulationCurveEquipment: 'Ouvrages',
+    DynamicSimulationCurveModel: 'Association modèle',
+    DynamicSimulationCurveVariable: 'Variables',
+    DynamicSimulationAdd: 'Ajouter',
+    DynamicSimulationClose: 'Fermer',
+
+    // DynamicSecurityAnalysis
+    // DSA Parameters tabs
+    DynamicSecurityAnalysisScenario: 'Scénario',
+    DynamicSecurityAnalysisContingency: 'Aléas',
+
+    // Scenario tab
+    DynamicSecurityAnalysisScenarioDuration: 'Durée du scenario',
+
+    // Contingency tab
+    DynamicSecurityAnalysisContingenciesStartTime: 'Temps de début des aléas',
+
     // DynamicMarginCalculation
-    DynamicMarginCalculationParametersError: 'Erreur lors de la mise à jour des paramètres du calcul du marge',
-    updateDynamicMarginCalculationParametersError:
-        'Une erreur est survenue lors de la mise a jour des paramètres du calcul du marge',
+    // DMC Parameters tabs
     DynamicMarginCalculationTimeDelayTab: 'Temporisation',
     DynamicMarginCalculationLoadsVariationsTab: 'Variations de charge',
+
+    // Time delay tab
     DynamicMarginCalculationStartTime: 'Temps de début',
     DynamicMarginCalculationStopTime: "Temps d'arrêt",
     DynamicMarginCalculationMarginCalculationStartTime: 'Temps de début de du calcul de marge',
     DynamicMarginCalculationLoadIncreaseStartTime: "Temps de début de l'augmentation de charge",
     DynamicMarginCalculationLoadIncreaseStopTime: "Temps d'arrêt de l'augmentation de charge",
+
+    // Loads variations tab
     DynamicMarginCalculationCalculationType: 'Type de calcul',
     DynamicMarginCalculationAccuracy: 'Précision',
     DynamicMarginCalculationLoadModelsRule: 'Règle des modèles de charge',
@@ -331,6 +485,8 @@ export const parametersFr = {
     DynamicMarginCalculationLoadsFilter: 'Regroupement de charges',
     DynamicMarginCalculationLoadsVariation: 'Variation de charge',
     DynamicMarginCalculationLoadsActive: 'Actif',
+
+    // Node states
     BUILT: 'Réalisé',
     BUILT_WITH_WARNING: 'Alertes',
     BUILT_WITH_ERROR: 'Erreurs',
@@ -338,4 +494,5 @@ export const parametersFr = {
     BUILDING: 'En cours de réalisation',
     NODE_BUILT: 'Nœud réalisé',
     NODE_NOT_BUILT: 'Nœud non réalisé',
+    ROOT_NODE: 'Nœud racine',
 };

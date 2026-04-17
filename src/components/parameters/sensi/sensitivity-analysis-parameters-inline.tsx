@@ -38,6 +38,7 @@ interface SensitivityAnalysisParametersProps {
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
     setHaveDirtyFields: (isDirty: boolean) => void;
     globalBuildStatus?: BuildStatus;
+    isRootNode: boolean;
     isDeveloperMode: boolean;
 }
 
@@ -48,11 +49,11 @@ export function SensitivityAnalysisParametersInline({
     parametersBackend,
     setHaveDirtyFields,
     globalBuildStatus,
+    isRootNode,
     isDeveloperMode,
 }: Readonly<SensitivityAnalysisParametersProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
-    console.info(`globalBuildStatus : ${globalBuildStatus}`);
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
         studyUuid,
         currentNodeUuid,
@@ -61,6 +62,8 @@ export function SensitivityAnalysisParametersInline({
         name: null,
         description: null,
         parametersUuid: null,
+        globalBuildStatus,
+        isRootNode,
     });
 
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
@@ -119,6 +122,7 @@ export function SensitivityAnalysisParametersInline({
         <SensitivityAnalysisParametersForm
             sensitivityAnalysisMethods={sensitivityAnalysisMethods}
             isDeveloperMode={isDeveloperMode}
+            isRootNode={isRootNode}
             globalBuildStatus={globalBuildStatus}
             renderActions={() => {
                 return (

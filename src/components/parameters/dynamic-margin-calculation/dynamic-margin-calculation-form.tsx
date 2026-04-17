@@ -8,21 +8,22 @@
 import { ReactNode } from 'react';
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { UseDynamicMarginCalculationParametersFormReturn } from './use-dynamic-margin-calculation-parameters-form';
+import { FieldErrors } from 'react-hook-form';
 import { mergeSx } from '../../../utils';
-import { CustomFormProvider } from '../../inputs';
 import { ProviderParam } from '../common';
+import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
 import TimeDelayParameters from './time-delay-parameters';
 import LoadsVariationsParameters from './loads-variations-parameters';
 
 import { TabValues } from './dynamic-margin-calculation.type';
+import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicMarginCalculationFormProps = {
-    dynamicMarginCalculationMethods: UseDynamicMarginCalculationParametersFormReturn;
+    dynamicMarginCalculationMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
 };
 
 export function DynamicMarginCalculationForm({
@@ -30,10 +31,14 @@ export function DynamicMarginCalculationForm({
     renderTitleFields,
     renderActions,
 }: Readonly<DynamicMarginCalculationFormProps>) {
-    const { formMethods, formSchema, paramsLoaded, formattedProviders, selectedTab, onTabChange, tabsWithError } =
-        dynamicMarginCalculationMethods;
+    const { paramsLoaded, formattedProviders } = dynamicMarginCalculationMethods;
+
+    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
+        defaultTab: Object.values(TabValues)[0],
+        tabEnum: TabValues,
+    });
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+        <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
                 <Grid container sx={{ height: '100%' }} direction="column">
@@ -70,11 +75,11 @@ export function DynamicMarginCalculationForm({
                             <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
                         </TabPanel>
                     </Grid>
-                    {renderActions?.()}
+                    {renderActions?.(onError)}
                 </Grid>
             ) : (
                 <LinearProgress />
             )}
-        </CustomFormProvider>
+        </>
     );
 }

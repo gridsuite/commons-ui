@@ -6,7 +6,7 @@
  */
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
@@ -32,7 +32,7 @@ import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
-import { ID, NAME, DESCRIPTION, ACTIVATED } from '../common/parameter-table';
+import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
 import { ContingencyListsInfosEnriched } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
@@ -44,7 +44,7 @@ export interface UseSecurityAnalysisParametersFormReturn {
     formatNewParams: (formData: Record<string, any>) => SAParametersEnriched;
     params: SAParametersEnriched | null;
     watchProvider: string | undefined;
-    paramsLoaded: boolean;
+    paramsFormInitialized: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
 }
@@ -93,6 +93,7 @@ export const useSecurityAnalysisParametersForm = (
     const watchProvider = watch(PARAM_SA_PROVIDER) as string | undefined;
 
     const paramsLoaded = useMemo(() => !!params && !!watchProvider, [watchProvider, params]);
+    const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
 
     const toContingencyListsInfos = useCallback(
         (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfosEnriched[] => {
@@ -195,6 +196,7 @@ export const useSecurityAnalysisParametersForm = (
             return;
         }
         reset(toFormValueSaParameters(params));
+        setParamsFormInitialized(true);
     }, [paramsLoaded, params, reset]);
 
     return {
@@ -206,7 +208,7 @@ export const useSecurityAnalysisParametersForm = (
         formatNewParams,
         params,
         watchProvider,
-        paramsLoaded,
+        paramsFormInitialized,
         onSaveInline,
         onSaveDialog,
     };

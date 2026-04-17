@@ -7,12 +7,12 @@
 
 import { TableCell } from '@mui/material';
 import {
+    DescriptionInput,
     DirectoryItemsInput,
     FloatInput,
     MuiSelectInput,
     SwitchInput,
     TextInput,
-    DescriptionInput,
 } from '../../../inputs';
 
 function EditableTableCell(arrayFormName: string, rowIndex: number, column: any, onRowChanged: () => void) {
@@ -32,7 +32,7 @@ function EditableTableCell(arrayFormName: string, rowIndex: number, column: any,
                     hideErrorMessage
                     label={undefined}
                     itemFilter={undefined}
-                    onRowChanged={onRowChanged}
+                    onChange={onRowChanged}
                 />
             )}
             {column.menuItems && (
