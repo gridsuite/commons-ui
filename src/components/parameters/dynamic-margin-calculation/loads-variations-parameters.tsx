@@ -140,7 +140,6 @@ export default function LoadsVariationsParameters({ path }: Readonly<{ path: str
                 tooltipProps={{ title: 'DynamicMarginCalculationLoadsVariations' }}
                 columnsDefinition={columnsDefinition}
                 tableHeight={270}
-                disableDragAndDrop
             />
         </Grid>
     );

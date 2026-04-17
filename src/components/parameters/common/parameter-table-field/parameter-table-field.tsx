@@ -38,7 +38,7 @@ export function ParameterTableField({
     const { getValues } = useFormContext();
     // This Ref keeps the previous valid row count to optimize whether propagating onChange
     const validRowCountRef = useRef(
-        getValues(name).filter((row: FieldValues) => (isValidRow ? isValidRow(row) : true)).length
+        getValues(name)?.filter((row: FieldValues) => (isValidRow ? isValidRow(row) : true)).length
     );
 
     const newDefaultRowData = useMemo(() => {
