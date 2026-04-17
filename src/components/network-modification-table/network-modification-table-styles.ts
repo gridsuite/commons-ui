@@ -127,8 +127,6 @@ export const networkModificationTableStyles = {
     },
     nameCellTogglerBox: {
         width: `${DEPTH_CELL_WIDTH}px`,
-        flexShrink: 0,
-        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -261,8 +259,19 @@ export const createRowSx = (
         backgroundColor: isHighlighted ? HIGHLIGHT_COLOR_HOVER : ROW_HOVER_COLOR,
     },
     ...(isDragging && { zIndex: 1, transform: 'none' }),
+    // 'border' &::before has to be used instead of borderTop in order for the virtualizer to compute the right cell height
     ...(depth === 0 && {
-        borderTop: `1px solid ${createCellBorderColor(theme)}`,
+        position: 'absolute',
+        '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '1px',
+            backgroundColor: createCellBorderColor(theme),
+            pointerEvents: 'none',
+        },
     }),
 });
 
@@ -313,11 +322,16 @@ export const createHeaderCellStyle = (
     isLast: boolean,
     isAutoExtensible: boolean
 ) => {
-    const size = header.column.getSize();
-    const { minSize } = header.column.columnDef;
+    const {
+        column: {
+            getSize,
+            columnDef: { minSize, meta },
+        },
+    } = header;
+    const size = getSize();
 
     return {
-        ...header.column.columnDef.meta?.cellStyle,
+        ...meta?.cellStyle,
         flex: isAutoExtensible ? `1 1 ${size}px` : `0 1 ${size}px`,
         minWidth: minSize ? `${minSize}px` : undefined,
         height: `${MODIFICATION_ROW_HEIGHT}px`,
