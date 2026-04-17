@@ -39,7 +39,7 @@ export const networkModificationTableStyles = {
         position: 'relative',
         flexGrow: 1,
         overflow: 'auto',
-        height: '100%',
+        height: `${MODIFICATION_ROW_HEIGHT}px`,
     },
     table: (theme) => ({
         width: '100%',
@@ -150,7 +150,7 @@ export const networkModificationTableStyles = {
         position: 'relative',
     },
     firstLevelFolderDepthBox: (theme) => ({
-        width: `${DEPTH_CELL_WIDTH / 2}px`,
+        width: `${1 + DEPTH_CELL_WIDTH / 2}px`,
         display: 'flex',
         alignSelf: 'stretch',
         position: 'relative',
@@ -180,7 +180,7 @@ export const networkModificationTableStyles = {
         position: 'absolute',
         top: '50%',
         left: '100%',
-        width: '5px',
+        width: '6px',
         height: '1px',
         backgroundColor: createCellBorderColor(theme),
     }),
@@ -284,11 +284,17 @@ export const createEditDescriptionStyle = (description: string | undefined): SxP
 });
 
 export const createCellStyle = (cell: any, isAutoExtensible: boolean) => {
-    const size = cell.column.getSize();
-    const { minSize } = cell.column.columnDef;
+    const {
+        column: {
+            getSize,
+            columnDef: { minSize, meta },
+        },
+    } = cell;
+
+    const size = getSize();
 
     return {
-        ...cell.column.columnDef.meta?.cellStyle,
+        ...meta?.cellStyle,
         padding: 0,
         flex: isAutoExtensible ? `1 1 ${size}px` : `0 1 ${size}px`,
         minWidth: minSize ? `${minSize}px` : undefined,
@@ -335,17 +341,15 @@ export const createCellContentWrapperSx = (theme: Theme, withoutBorders: boolean
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    height: '100%',
+    height: `${MODIFICATION_ROW_HEIGHT}px`,
     borderTop: withoutBorders ? 'none' : `1px solid ${createCellBorderColor(theme)}`,
     borderBottom: withoutBorders ? 'none' : `1px solid ${createCellBorderColor(theme)}`,
 });
 
 export const createNameCellRootStyle = (theme: Theme, isExpanded: boolean, depth: number) => ({
-    height: '100%',
+    height: `${MODIFICATION_ROW_HEIGHT}px`,
     width: '100%',
     display: 'flex',
-    alignItems: 'stretch',
-    gap: 0,
     ...(depth === 0 &&
         !isExpanded && {
             borderTop: `1px solid ${createCellBorderColor(theme)}`,
