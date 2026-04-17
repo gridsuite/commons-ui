@@ -380,7 +380,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                     disableTableCell={disableTableCell}
                                     getPreviousValue={getPreviousValue}
                                     isValueModified={isValueModified}
-                                    disabledDeletion={disabledDeletion && !multiselect}
+                                    disabledDeletion={disabledDeletion}
                                     onChangeRow={handleChangeRow}
                                     onDeleteRow={handleDeleteRow}
                                     multiselect={multiselect}
