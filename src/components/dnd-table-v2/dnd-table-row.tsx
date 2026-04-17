@@ -47,7 +47,7 @@ type EditableTableCellProps = {
     previousValue?: number;
     valueModified: boolean;
     disabled?: boolean;
-    onChangeCell?: (value?: any) => void;
+    onChangeCell: (value?: any) => void;
 };
 
 function EditableTableCell({
@@ -134,8 +134,8 @@ export type DndTableRowProps = TableRowProps & {
     getPreviousValue?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => number | undefined;
     isValueModified?: (index: number, tableName: string) => boolean;
     disabledDeletion?: boolean;
-    onChangeRow?: (index: number) => void;
-    onDeleteRow?: (index: number) => void;
+    onChangeRow: (index: number) => void;
+    onDeleteRow: (index: number) => void;
     multiselect?: boolean;
     nextSnapshotCellWidthSx: (isDragging: boolean) => SxProps<Theme> | undefined;
 };
@@ -165,9 +165,9 @@ export function DndTableRow({
             ref={provided.innerRef}
             {...provided.draggableProps}
             onClick={() => {
-                onDeleteRow?.(index);
+                onDeleteRow(index);
             }}
-            disabledDeletion={disabledDeletion || !onDeleteRow || multiselect}
+            disabledDeletion={disabledDeletion || multiselect}
         >
             {!disableDragAndDrop && (
                 <Tooltip
@@ -205,7 +205,7 @@ export function DndTableRow({
                             getPreviousValue ? getPreviousValue(index, column, tableName, previousValues) : undefined
                         }
                         valueModified={isValueModified ? isValueModified(index, tableName) : false}
-                        onChangeCell={() => onChangeRow?.(index)}
+                        onChangeCell={() => onChangeRow(index)}
                     />
                 );
             })}
