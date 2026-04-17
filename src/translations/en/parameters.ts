@@ -256,9 +256,10 @@ export const parametersEn = {
     EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
     PSTS: 'PSTs',
     Active: 'Active',
-    'sensitivityAnalysis.simulatedResults': '{count, plural, =0 {0 result} =1 {1 result} other {#{suffix} results}}',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, select, null {- result} 0 {0 result} 1 {1 result} other {{count}{suffix} results}}',
     'sensitivityAnalysis.simulatedVariables':
-        '{count, plural, =0 {0 variable} =1 {1 variable} other {#{suffix} variables}}',
+        '{count, select, null {- variable} 0 {0 variable} 1 {1 variable} other {{count}{suffix} variables}}',
     'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
     'sensitivityAnalysis.separator': '  |  ',
     loadingComputing: 'Calculation in progress...',
@@ -292,18 +293,164 @@ export const parametersEn = {
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
+
+    Dynawo: 'Dynawo',
+    // DynamicSimulation
+    // DS Parameters tabs
+    DynamicSimulationTimeDelay: 'Time delay',
+    DynamicSimulationSolver: 'Solver',
+    DynamicSimulationMapping: 'Mapping',
+    DynamicSimulationNetwork: 'Network',
+    DynamicSimulationCurve: 'Curves',
+
+    // Time delay tab
+    DynamicSimulationStartTime: 'Start time',
+    DynamicSimulationStopTime: 'Stop time',
+    DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime:
+        'Stop time must be greater than or equal to start time',
+
+    // Solver tab
+    DynamicSimulationSolverType: 'Solver type',
+    DynamicSimulationSolverIDA: 'IDA Solver',
+    DynamicSimulationSolverSIM: 'Simplified Solver',
+
+    DynamicSimulationIDASolverOrder: 'Order (1 or 2)',
+    DynamicSimulationIDASolverInitStep: 'Initial time step',
+    DynamicSimulationIDASolverMinStep: 'Minimum time step',
+    DynamicSimulationIDASolverMaxStep: 'Maximum time step',
+    DynamicSimulationIDASolverAbsAccuracy: 'Absolute accuracy',
+    DynamicSimulationIDASolverRelAccuracy: 'Relative accuracy',
+    DynamicSimulationIDASolverOrderMustBeOneOfValues: 'Order must be 1 or 2',
+
+    DynamicSimulationSimplifiedSolverHMin: 'Minimum time step',
+    DynamicSimulationSimplifiedSolverHMax: 'Maximum time step',
+    DynamicSimulationSimplifiedSolverKReduceStep: 'Time step reduction factor',
+    DynamicSimulationSimplifiedSolverMaxNewtonTry: 'Maximum Newton resolutions number for one step',
+    DynamicSimulationSimplifiedSolverLinearSolverName: 'Chosen linear solver',
+    DynamicSimulationSimplifiedSolverFNormTol: 'Stopping tolerance on L2-norm of residual function',
+    DynamicSimulationSimplifiedSolverInitialAddTol: 'Stopping tolerance on initialization',
+    DynamicSimulationSimplifiedSolverScStepTol: 'Scaled step length tolerance',
+    DynamicSimulationSimplifiedSolverMxNewTStep: 'Maximum allowable scaled step length',
+    DynamicSimulationSimplifiedSolverMsbset:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine',
+    DynamicSimulationSimplifiedSolverMxIter: 'Maximum number of nonlinear iterations',
+    DynamicSimulationSimplifiedSolverPrintFl: 'Level of verbosity of output',
+    DynamicSimulationSimplifiedSolverOptimizeAlgebraicResidualsEvaluations:
+        'Enable the optimizations of algebraic residuals evaluations',
+    DynamicSimulationSimplifiedSolverSkipNRIfInitialGuessOK:
+        'Enable the possibility to skip next iterations if the simulation is stable',
+    DynamicSimulationSimplifiedSolverEnableSilentZ:
+        'Enable the analysis of the discrete variables scope to minimize the number of zero-crossing evaluations',
+    DynamicSimulationSimplifiedSolverOptimizeReInitAlgebraicResidualsEvaluations:
+        'Enable the optimizations of algebraic residuals evaluations during algebraic restoration',
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestoration:
+        'Specify the minimum mode change type for which an algebraic restoration is done (ALGEBRAIC or ALGEBRAIC_J_UPDATE)',
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestorationInit:
+        'Specify the minimum mode change type for which an algebraic restoration is done at init (ALGEBRAIC or ALGEBRAIC_J_UPDATE)',
+
+    DynamicSimulationSolverFNormTolAlg: 'Stopping tolerance on L2-norm of residual function for algebraic restoration',
+    DynamicSimulationSolverInitialAddTolAlg: 'Stopping tolerance on initialization for algebraic restoration',
+    DynamicSimulationSolverScStepTolAlg: 'Scaled step length tolerance for algebraic restoration',
+    DynamicSimulationSolverMxNewTStepAlg: 'Maximum allowable scaled step length for algebraic restoration',
+    DynamicSimulationSolverMsbsetAlg:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine for algebraic restoration',
+    DynamicSimulationSolverMxIterAlg: 'Maximum number of nonlinear iterations for algebraic restoration',
+    DynamicSimulationSolverPrintFlAlg: 'Level of verbosity of output for algebraic restoration',
+    DynamicSimulationSolverFNormTolAlgJ:
+        'Stopping tolerance on L2-norm of residual function for algebraic restoration (with J update)',
+    DynamicSimulationSolverInitialAddTolAlgJ:
+        'Stopping tolerance on initialization for algebraic restoration (with J update)',
+    DynamicSimulationSolverScStepTolAlgJ: 'Scaled step length tolerance for algebraic restoration (with J update)',
+    DynamicSimulationSolverMxNewTStepAlgJ:
+        'Maximum allowable scaled step length for algebraic restoration (with J update)',
+    DynamicSimulationSolverMsbsetAlgJ:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine for algebraic restoration (with J update)',
+    DynamicSimulationSolverMxIterAlgJ:
+        'Maximum number of nonlinear iterations for algebraic restoration (with J update)',
+    DynamicSimulationSolverPrintFlAlgJ: 'Level of verbosity of output for algebraic restoration (with J update)',
+    DynamicSimulationSolverFNormTolAlgInit:
+        'Stopping tolerance on L2-norm of residual function for algebraic restoration (for Init update)',
+    DynamicSimulationSolverInitialAddTolAlgInit:
+        'Stopping tolerance on initialization for algebraic restoration (for Init update)',
+    DynamicSimulationSolverScStepTolAlgInit: 'Scaled step length tolerance for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMxNewTStepAlgInit:
+        'Maximum allowable scaled step length for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMsbsetAlgInit:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMxIterAlgInit:
+        'Maximum number of nonlinear iterations for algebraic restoration (for Init update)',
+    DynamicSimulationSolverPrintFlAlgInit: 'Level of verbosity of output for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMaximumNumberSlowStepIncrease:
+        'Maximum number of consecutive steps with a too small time step',
+    DynamicSimulationSolverMinimalAcceptableStep: 'Minimal acceptable value for a time step',
+
+    // Network tab
+    DynamicSimulationNetworkCapacitorNoReclosingDelay: 'Time lag before reclosing in s (capacitor)',
+    DynamicSimulationNetworkReactanceNoReclosingDelay: 'Time lag before reclosing in s (reactance)',
+    DynamicSimulationNetworkDanglingLineCurrentLimitMaxTimeOperation:
+        'Time threshold over which current limiter should not operate in s',
+    DynamicSimulationNetworkLineCurrentLimitMaxTimeOperation: 'Line current limit Max Time Operation',
+    DynamicSimulationNetworkLoadTp: 'Time constant for integration of active power setpoint change, in s',
+    DynamicSimulationNetworkLoadTq: 'Time constant for integration of reactive power setpoint change, in s',
+    DynamicSimulationNetworkLoadAlpha: 'Active load exponential sensitivity to voltage',
+    DynamicSimulationNetworkLoadAlphaLong: 'Active load exponential sensitivity to voltage (long term behaviour)',
+    DynamicSimulationNetworkLoadBeta: 'Reactive load exponential sensitivity to voltage',
+    DynamicSimulationNetworkLoadBetaLong: 'Reactive load exponential sensitivity to voltage (long term behaviour)',
+    DynamicSimulationNetworkLoadIsControllable: 'Load is controllable if checked (ie P/Q could be changed)',
+    DynamicSimulationNetworkLoadIsRestorative: 'Load is restorative if checked (P=Pc and Q=Qc even if voltage change)',
+    DynamicSimulationNetworkLoadZPMax: 'Max speed of active power variation in pu/s',
+    DynamicSimulationNetworkLoadZQMax: 'Max speed of reactive power variation in pu/s',
+    DynamicSimulationNetworkTransformerCurrentLimitMaxTimeOperation:
+        'Time threshold over which current limiter should not operate, in s',
+    DynamicSimulationNetworkTransformerT1StHT: 'Time delay before changing tap for the first time (HV voltage) in s',
+    DynamicSimulationNetworkTransformerT1StTHT: 'Time delay before changing tap for the first time (VHV voltage) in s',
+    DynamicSimulationNetworkTransformerTNextHT: 'Time delay before changing tap (HV voltage) in s',
+    DynamicSimulationNetworkTransformerTNextTHT: 'Time delay before changing tap (VHV voltage) in s',
+    DynamicSimulationNetworkTransformerTolV: 'Voltage regulation tolerance (half deadband of the tap changer) in pu',
+
+    // Curve tab
+    DynamicSimulationModelsFetcherError: 'An error occurred while fetching the models list',
+    DynamicSimulationCurveSelectedNumber: 'Selected',
+    DynamicSimulationCurveDynamicModelHeader: 'Network object name',
+    DynamicSimulationCurveVariableHeader: 'Variable',
+    DynamicSimulationCurveSelectorDialogTitle: 'Edit curves list to trace',
+    DynamicSimulationCurveToAdd: 'Curve to add',
+    DynamicSimulationCurveEquipmentType: 'Equipement type',
+    DynamicSimulationCurvePost: 'Voltage levels',
+    DynamicSimulationCurveCountry: 'Country',
+    DynamicSimulationCurveTension: 'Nominal voltage',
+    DynamicSimulationCurveEquipmentFilter: 'Equipment filter',
+    DynamicSimulationCurveCurveFilter: 'Curve filter',
+    DynamicSimulationCurveEquipment: 'Equipments',
+    DynamicSimulationCurveModel: 'Associated model',
+    DynamicSimulationCurveVariable: 'Variables',
+    DynamicSimulationAdd: 'Add',
+    DynamicSimulationClose: 'Close',
+
+    // DynamicSecurityAnalysis
+    // DSA Parameters tabs
+    DynamicSecurityAnalysisScenario: 'Scenario',
+    DynamicSecurityAnalysisContingency: 'Contingency',
+
+    // Scenario tab
+    DynamicSecurityAnalysisScenarioDuration: 'Scenario duration',
+
+    // Contingency tab
+    DynamicSecurityAnalysisContingenciesStartTime: 'Contingencies start time',
+
     // DynamicMarginCalculation
-    DynamicMarginCalculationParametersError:
-        'An error occurred while updating the dynamic margin calculation parameters',
-    updateDynamicMarginCalculationParametersError:
-        'An error occurred while updating the dynamic margin calculation parameters',
+    // DMC Parameters tabs
     DynamicMarginCalculationTimeDelayTab: 'Time delay',
     DynamicMarginCalculationLoadsVariationsTab: 'Load variations',
+
+    // Time delay tab
     DynamicMarginCalculationStartTime: 'Start time',
     DynamicMarginCalculationStopTime: 'Stop time',
     DynamicMarginCalculationMarginCalculationStartTime: 'Margin calculation start time',
     DynamicMarginCalculationLoadIncreaseStartTime: 'Load increase start time',
     DynamicMarginCalculationLoadIncreaseStopTime: 'Load increase stop time',
+
+    // Loads variations tab
     DynamicMarginCalculationCalculationType: 'Calculation type',
     DynamicMarginCalculationAccuracy: 'Accuracy',
     DynamicMarginCalculationLoadModelsRule: 'Load models rule',
@@ -315,6 +462,8 @@ export const parametersEn = {
     DynamicMarginCalculationLoadsFilter: 'Loads filter',
     DynamicMarginCalculationLoadsVariation: 'Load variation',
     DynamicMarginCalculationLoadsActive: 'Active',
+
+    // Node states
     BUILT: 'Built',
     BUILT_WITH_WARNING: 'Warnings',
     BUILT_WITH_ERROR: 'Errors',
@@ -322,4 +471,5 @@ export const parametersEn = {
     BUILDING: 'Building',
     NODE_BUILT: 'Node built',
     NODE_NOT_BUILT: 'Node not built',
+    ROOT_NODE: 'Root node',
 };
