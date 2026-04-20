@@ -9,22 +9,20 @@ import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ReactNode } from 'react';
 
+import { FieldErrors } from 'react-hook-form';
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { parametersStyles } from '../util/styles';
 import { ProviderParam, TabPanel } from '../common';
-import { getTabStyle } from '../parameters-style';
-import {
-    TabValues,
-    UseDynamicSecurityAnalysisParametersFormReturn,
-} from './use-dynamic-security-analysis-parameters-form';
+import { useTabs } from '../common/hook/use-tabs';
+import { getTabStyle, parametersStyles } from '../parameters-style';
 import { mergeSx } from '../../../utils';
-import { CustomFormProvider } from '../../inputs';
+import { TabValues } from './dynamic-security-analysis.type';
+import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSecurityAnalysisParametersFormProps = {
-    dynamicSecurityAnalysisMethods: UseDynamicSecurityAnalysisParametersFormReturn;
+    dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
 };
 
 export function DynamicSecurityAnalysisParametersForm({
@@ -32,54 +30,57 @@ export function DynamicSecurityAnalysisParametersForm({
     renderTitleFields,
     renderActions,
 }: Readonly<DynamicSecurityAnalysisParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoaded, formattedProviders, selectedTab, onTabChange, tabsWithError } =
-        dynamicSecurityAnalysisMethods;
+    const { paramsLoaded, formattedProviders } = dynamicSecurityAnalysisMethods;
+
+    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
+        defaultTab: TabValues.SCENARIO,
+        tabEnum: TabValues,
+    });
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
+        <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
-                <Grid sx={{ height: '100%' }}>
+                <Grid container sx={{ height: '100%' }} direction="column">
                     <Grid container>
                         <ProviderParam options={formattedProviders} />
                     </Grid>
+                    <Grid>
+                        <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                            <Tab
+                                label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
+                                value={TabValues.SCENARIO}
+                                sx={getTabStyle(tabsWithError, TabValues.SCENARIO)}
+                            />
+                            <Tab
+                                label={<FormattedMessage id="DynamicSecurityAnalysisContingency" />}
+                                value={TabValues.CONTINGENCY}
+                                sx={getTabStyle(tabsWithError, TabValues.CONTINGENCY)}
+                            />
+                        </Tabs>
+                    </Grid>
                     <Grid
+                        container
+                        item
+                        xs
                         key="dsaParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
-                            height: '100%',
                             paddingTop: 0,
+                            width: '100%',
                         })}
                     >
-                        <Grid item width="100%">
-                            <Tabs
-                                value={selectedTab}
-                                variant="scrollable"
-                                onChange={onTabChange}
-                                aria-label="parameters"
-                            >
-                                <Tab
-                                    label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
-                                    value={TabValues.SCENARIO}
-                                    sx={getTabStyle(tabsWithError, TabValues.SCENARIO)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id="DynamicSecurityAnalysisContingency" />}
-                                    value={TabValues.CONTINGENCY}
-                                />
-                            </Tabs>
-                            <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
-                                <ScenarioParameters path={TabValues.SCENARIO} />
-                            </TabPanel>
-                            <TabPanel value={selectedTab} index={TabValues.CONTINGENCY}>
-                                <ContingencyParameters path={TabValues.CONTINGENCY} />
-                            </TabPanel>
-                        </Grid>
+                        <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
+                            <ScenarioParameters path={TabValues.SCENARIO} />
+                        </TabPanel>
+                        <TabPanel value={selectedTab} index={TabValues.CONTINGENCY}>
+                            <ContingencyParameters path={TabValues.CONTINGENCY} />
+                        </TabPanel>
                     </Grid>
-                    {renderActions?.()}
+                    {renderActions?.(onError)}
                 </Grid>
             ) : (
                 <LinearProgress />
             )}
-        </CustomFormProvider>
+        </>
     );
 }
