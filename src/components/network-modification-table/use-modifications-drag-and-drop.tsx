@@ -66,9 +66,16 @@ const computeTargetDepth = (
     sourceRow: Row<ComposedModificationMetadata>,
     targetRow: Row<ComposedModificationMetadata>
 ) => {
-    const sourceRowIndex = sourceRow.depth > 0 ? getNestedRowRootParent(sourceRow).index : sourceRow.index;
-    const targetRowIndex = targetRow.depth > 0 ? getNestedRowRootParent(targetRow).index : targetRow.index;
-    const isDraggingDown = sourceRowIndex < targetRowIndex;
+    let isDraggingDown: boolean;
+    if (sourceRow.depth !== targetRow.depth) {
+        const sourceRowIndex = sourceRow.depth > 0 ? getNestedRowRootParent(sourceRow).index : sourceRow.index;
+        const targetRowIndex = targetRow.depth > 0 ? getNestedRowRootParent(targetRow).index : targetRow.index;
+        isDraggingDown =
+            sourceRowIndex !== targetRowIndex ? sourceRowIndex < targetRowIndex : sourceRow.index < targetRow.index;
+    } else {
+        isDraggingDown = sourceRow.index < targetRow.index;
+    }
+
     return isCompositeModification(targetRow.original) && targetRow.getIsExpanded() && isDraggingDown
         ? targetRow.depth + 1
         : targetRow.depth;
