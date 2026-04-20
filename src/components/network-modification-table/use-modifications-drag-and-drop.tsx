@@ -16,10 +16,18 @@ import {
     DROP_INDICATOR_BOTTOM,
     DROP_INDICATOR_TOP,
 } from './network-modification-table-styles';
-import { findModificationInTree, isCompositeModification, moveSubModificationInTree } from './utils';
+import {
+    findModificationInTree,
+    getNestedRowRootParent,
+    isCompositeModification,
+    moveSubModificationInTree,
+} from './utils';
 import { changeCompositeSubModificationOrder, changeNetworkModificationOrder } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
+import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
+
+const MAX_NESTING_DEPTH = 5;
 
 interface UseModificationsDragAndDropParams {
     rows: Row<ComposedModificationMetadata>[];
@@ -49,28 +57,38 @@ const clearRowDragIndicators = (container: HTMLDivElement | null): void => {
         // eslint-disable-next-line no-param-reassign
         rowElement.style.boxShadow = '';
     });
+
+    // Remove the chip overlay layer anchored on the scroll container
+    container?.querySelectorAll<HTMLElement>(`[${CHIP_ATTR}]`).forEach((chip) => chip.remove());
+};
+
+const computeTargetDepth = (
+    sourceRow: Row<ComposedModificationMetadata>,
+    targetRow: Row<ComposedModificationMetadata>
+) => {
+    const sourceRowIndex = sourceRow.depth > 0 ? getNestedRowRootParent(sourceRow).index : sourceRow.index;
+    const targetRowIndex = targetRow.depth > 0 ? getNestedRowRootParent(targetRow).index : targetRow.index;
+    const isDraggingDown = sourceRowIndex < targetRowIndex;
+    return isCompositeModification(targetRow.original) && targetRow.getIsExpanded() && isDraggingDown
+        ? targetRow.depth + 1
+        : targetRow.depth;
 };
 
 const isDropForbidden = (
     sourceRow: Row<ComposedModificationMetadata>,
     targetRow: Row<ComposedModificationMetadata>
 ): boolean => {
-    const isDraggingDown = targetRow.index > sourceRow.index;
-    // Can't move composite inside another composite for now.
-    // TODO : that test should be removed or at least updated when the composite modifications 5-depth limit is implemented
-    if (
-        isCompositeModification(sourceRow.original) &&
-        ((isCompositeModification(targetRow.original) && targetRow.getIsExpanded() && isDraggingDown) ||
-            isCompositeModification(targetRow.getParentRow()?.original))
-    ) {
-        return true;
+    if (isCompositeModification(sourceRow.original)) {
+        const targetDepth = computeTargetDepth(sourceRow, targetRow);
+        return (
+            (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_NESTING_DEPTH ||
+            !!(
+                isCompositeModification(sourceRow.original) &&
+                findModificationInTree(targetRow.original.uuid, [sourceRow.original])
+            )
+        );
     }
-
-    // Can't drag a composite in its own subtree
-    return !!(
-        isCompositeModification(sourceRow.original) &&
-        findModificationInTree(targetRow.original.uuid, [sourceRow.original])
-    );
+    return false;
 };
 
 // When entering an expanded composite from outside, the target composite is the
@@ -127,6 +145,9 @@ export const useModificationsDragAndDrop = ({
             const isMovingDown = destination.index > source.index;
 
             el.style.boxShadow = getContainerShadow(forbidden, isMovingDown);
+            if (forbidden && containerRef.current) {
+                injectForbiddenChips(containerRef.current, el, isMovingDown);
+            }
         },
         [rows, containerRef]
     );

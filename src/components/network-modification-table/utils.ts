@@ -7,6 +7,7 @@
 
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
+import { Row } from '@tanstack/react-table';
 import { getNetworkModificationsFromComposite } from '../../services';
 import { ComposedModificationMetadata, MODIFICATION_TYPES, NetworkModificationMetadata } from '../../utils';
 
@@ -235,4 +236,11 @@ export function fetchSubModificationsForExpandedRows(
             }, prev)
         );
     });
+}
+
+export function getNestedRowRootParent(nestedRow: Row<ComposedModificationMetadata>) {
+    if (nestedRow.getParentRow() !== undefined) {
+        return getNestedRowRootParent(nestedRow.getParentRow()!);
+    }
+    return nestedRow;
 }
