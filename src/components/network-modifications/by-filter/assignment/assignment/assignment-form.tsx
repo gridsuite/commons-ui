@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DensityLarge as DensityLargeIcon } from '@mui/icons-material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { areIdsEqual, ElementType, FieldConstants, FieldType, getIdOrValue, Option } from '../../../../../utils';
-import { useFormatLabelWithUnit, usePredefinedProperties, usePrevious } from '../../../../../hooks';
+import { useFormatLabelWithUnit, usePredefinedProperties } from '../../../../../hooks';
 import {
     AutocompleteInput,
     DirectoryItemsInput,
@@ -23,6 +23,7 @@ import {
 import { DataType } from './assignment.type';
 import GridItem from '../../../../grid/grid-item';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment-constants';
+import { EMPTY_FIELD_VALUE } from './assignment-utils';
 
 interface AssignmentFormProps {
     name: string;
@@ -89,28 +90,40 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         return equipmentFields?.find((fieldOption) => fieldOption?.id === watchEditedField)?.values ?? [];
     }, [watchEditedField, equipmentFields]);
 
-    const prevDataType = usePrevious(dataType);
-    if (prevDataType && prevDataType !== dataType) {
-        setValue(`${name}.${index}.${FieldConstants.VALUE}`, dataType === DataType.BOOLEAN ? false : null);
-    }
-
-    const emptyValueStr = useMemo(() => {
+    const emptyFieldLabel = useMemo(() => {
         return intl.formatMessage({ id: 'EmptyField' });
     }, [intl]);
-
     const formatLabelWithUnit = useFormatLabelWithUnit();
+
+    const prevEditedField = useRef(watchEditedField);
+    const [editedFieldKey, setEditedFieldKey] = useState(watchEditedField);
+    useEffect(() => {
+        if (prevEditedField.current !== watchEditedField) {
+            prevEditedField.current = watchEditedField;
+            setValue(`${name}.${index}.${FieldConstants.VALUE}`, dataType === DataType.BOOLEAN ? false : null);
+            setValue(`${name}.${index}.${FieldConstants.PROPERTY_NAME}`, null);
+            setEditedFieldKey(watchEditedField);
+        }
+    }, [dataType, index, name, setValue, watchEditedField]);
 
     const renderAutoCompleteSettableToNone = useCallback(
         (numberOnly?: boolean) => (
             <AutocompleteInput
+                key={editedFieldKey}
                 name={`${name}.${index}.${FieldConstants.VALUE}`}
                 label="ValueOrEmptyField"
-                options={[emptyValueStr]}
+                options={[emptyFieldLabel]}
                 size="small"
                 onCheckNewValue={
                     numberOnly
                         ? (option: Option | null) => {
-                              if (option && option !== emptyValueStr && Number.isNaN(Number(option))) {
+                              const optionValue = getIdOrValue(option);
+                              if (
+                                  optionValue &&
+                                  optionValue !== emptyFieldLabel &&
+                                  optionValue !== EMPTY_FIELD_VALUE &&
+                                  Number.isNaN(Number(optionValue))
+                              ) {
                                   setError(`${name}.${index}.${FieldConstants.VALUE}`, {
                                       message: 'NumericValueOrEmptyField',
                                   });
@@ -124,10 +137,18 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
                         : undefined
                 }
                 getOptionLabel={(option: Option) => (typeof option !== 'string' ? (option?.label ?? option) : option)}
+                inputTransform={(value: Option | null) => (value === EMPTY_FIELD_VALUE ? emptyFieldLabel : value)}
+                outputTransform={(value: Option | null) => {
+                    const optionValue = getIdOrValue(value);
+                    if (optionValue === emptyFieldLabel) {
+                        return EMPTY_FIELD_VALUE;
+                    }
+                    return optionValue ?? null;
+                }}
                 allowNewValue
             />
         ),
-        [emptyValueStr, index, name, setError]
+        [emptyFieldLabel, index, name, setError, editedFieldKey]
     );
 
     const filtersField = (
@@ -164,52 +185,53 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         />
     );
 
-    const valueField = useMemo(() => {
-        if (dataType === DataType.PROPERTY) {
-            return (
-                <AutocompleteInput
-                    name={`${name}.${index}.${FieldConstants.VALUE}`}
-                    label="PropertyValue"
-                    options={predefinedPropertiesValues}
-                    size="small"
-                    allowNewValue
-                />
-            );
-        }
-
-        if (dataType === DataType.INTEGER) {
-            return <IntegerInput name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
-        }
-
-        if (dataType === DataType.BOOLEAN) {
-            return <SwitchInput name={`${name}.${index}.${FieldConstants.VALUE}`} formProps={{ value: false }} />;
-        }
-
-        if (dataType === DataType.ENUM) {
-            return (
-                <SelectInput
-                    name={`${name}.${index}.${FieldConstants.VALUE}`}
-                    label="Value"
-                    options={options}
-                    size="small"
-                />
-            );
-        }
-
-        if (dataType === DataType.STRING && settableToNone) {
-            return renderAutoCompleteSettableToNone();
-        }
-
-        if (dataType === DataType.STRING) {
-            return <TextInput name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" clearable />;
-        }
-
-        if (dataType === DataType.DOUBLE && settableToNone) {
-            return renderAutoCompleteSettableToNone(true);
-        }
-
-        return <FloatInput name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
-    }, [dataType, settableToNone, name, index, predefinedPropertiesValues, options, renderAutoCompleteSettableToNone]);
+    let valueField;
+    if (dataType === DataType.PROPERTY) {
+        valueField = (
+            <AutocompleteInput
+                key={editedFieldKey}
+                name={`${name}.${index}.${FieldConstants.VALUE}`}
+                label="PropertyValue"
+                options={predefinedPropertiesValues}
+                size="small"
+                allowNewValue
+            />
+        );
+    } else if (dataType === DataType.INTEGER) {
+        valueField = (
+            <IntegerInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />
+        );
+    } else if (dataType === DataType.BOOLEAN) {
+        valueField = (
+            <SwitchInput
+                key={editedFieldKey}
+                name={`${name}.${index}.${FieldConstants.VALUE}`}
+                formProps={{ value: false }}
+            />
+        );
+    } else if (dataType === DataType.ENUM) {
+        valueField = (
+            <SelectInput
+                key={editedFieldKey}
+                name={`${name}.${index}.${FieldConstants.VALUE}`}
+                label="Value"
+                options={options}
+                size="small"
+            />
+        );
+    } else if (dataType === DataType.STRING && settableToNone) {
+        valueField = renderAutoCompleteSettableToNone();
+    } else if (dataType === DataType.STRING) {
+        valueField = (
+            <TextInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" clearable />
+        );
+    } else if (dataType === DataType.DOUBLE && settableToNone) {
+        valueField = renderAutoCompleteSettableToNone(true);
+    } else {
+        valueField = (
+            <FloatInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />
+        );
+    }
 
     return (
         <>
