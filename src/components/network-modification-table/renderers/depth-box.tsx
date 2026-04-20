@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {Box} from '@mui/material';
-import {networkModificationTableStyles} from '../network-modification-table-styles';
+import { Box } from '@mui/material';
+import { networkModificationTableStyles } from '../network-modification-table-styles';
 
 interface DepthBoxProps {
     firstLevel: boolean;
@@ -20,16 +20,15 @@ function getDepthBoxStyle(displayAsFolder: boolean | undefined) {
     return networkModificationTableStyles.depthBox;
 }
 
-export function DepthBox({firstLevel, displayAsFolder = false}: Readonly<DepthBoxProps>) {
+export function DepthBox({ firstLevel, displayAsFolder = false }: Readonly<DepthBoxProps>) {
     return (
         <>
             {
                 /* double width depth box only on the first level*/
-                (firstLevel && <Box sx={getDepthBoxStyle(displayAsFolder)}/>)
+                firstLevel && <Box sx={getDepthBoxStyle(displayAsFolder)} />
             }
             <Box sx={getDepthBoxStyle(displayAsFolder)}>
-                {(displayAsFolder &&
-                    <Box sx={networkModificationTableStyles.depthBoxTick}/>)}
+                {displayAsFolder && <Box sx={networkModificationTableStyles.depthBoxTick} />}
             </Box>
         </>
     );
