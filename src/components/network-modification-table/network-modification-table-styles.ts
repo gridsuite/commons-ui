@@ -39,7 +39,7 @@ export const networkModificationTableStyles = {
         position: 'relative',
         flexGrow: 1,
         overflow: 'auto',
-        height: `${MODIFICATION_ROW_HEIGHT}px`,
+        height: '100%',
     },
     table: (theme) => ({
         width: '100%',
@@ -293,21 +293,15 @@ export const createEditDescriptionStyle = (description: string | undefined): SxP
 });
 
 export const createCellStyle = (cell: any, isAutoExtensible: boolean) => {
-    const {
-        column: {
-            getSize,
-            columnDef: { minSize, meta },
-        },
-    } = cell;
-
-    const size = getSize();
+    const size = cell.column.getSize();
+    const { minSize } = cell.column.columnDef;
 
     return {
-        ...meta?.cellStyle,
+        ...cell.column.columnDef.meta?.cellStyle,
         padding: 0,
         flex: isAutoExtensible ? `1 1 ${size}px` : `0 1 ${size}px`,
         minWidth: minSize ? `${minSize}px` : undefined,
-        height: `${MODIFICATION_ROW_HEIGHT}px`,
+        height: '100%',
         display: 'flex',
         alignItems: 'center',
         borderTop: 'none',
@@ -361,9 +355,11 @@ export const createCellContentWrapperSx = (theme: Theme, withoutBorders: boolean
 });
 
 export const createNameCellRootStyle = (theme: Theme, isExpanded: boolean, depth: number) => ({
-    height: `${MODIFICATION_ROW_HEIGHT}px`,
+    height: '100%',
     width: '100%',
     display: 'flex',
+    alignItems: 'stretch',
+    gap: 0,
     ...(depth === 0 &&
         !isExpanded && {
             borderTop: `1px solid ${createCellBorderColor(theme)}`,
