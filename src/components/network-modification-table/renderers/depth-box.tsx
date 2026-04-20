@@ -24,7 +24,7 @@ export function DepthBox({ firstLevel, displayAsFolder = false }: Readonly<Depth
     return (
         <>
             {
-                /* double width depth box only on the first level*/
+                /* double width depth box only on the first level */
                 firstLevel && <Box sx={getDepthBoxStyle(displayAsFolder)} />
             }
             <Box sx={getDepthBoxStyle(displayAsFolder)}>
