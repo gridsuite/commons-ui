@@ -20,14 +20,13 @@ import {
     findModificationInTree,
     getNestedRowRootParent,
     isCompositeModification,
+    MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
 import { changeCompositeSubModificationOrder, changeNetworkModificationOrder } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
-
-const MAX_NESTING_DEPTH = 5;
 
 interface UseModificationsDragAndDropParams {
     rows: Row<ComposedModificationMetadata>[];
@@ -88,7 +87,7 @@ const isDropForbidden = (
     if (isCompositeModification(sourceRow.original)) {
         const targetDepth = computeTargetDepth(sourceRow, targetRow);
         return (
-            (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_NESTING_DEPTH ||
+            (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
             !!(
                 isCompositeModification(sourceRow.original) &&
                 findModificationInTree(targetRow.original.uuid, [sourceRow.original])

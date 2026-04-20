@@ -11,6 +11,8 @@ import { Row } from '@tanstack/react-table';
 import { getNetworkModificationsFromComposite } from '../../services';
 import { ComposedModificationMetadata, MODIFICATION_TYPES, NetworkModificationMetadata } from '../../utils';
 
+export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
 export const formatToComposedModification = (
     modifications: NetworkModificationMetadata[]
 ): ComposedModificationMetadata[] => {
