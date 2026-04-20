@@ -96,20 +96,20 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     const formatLabelWithUnit = useFormatLabelWithUnit();
 
     const prevEditedField = useRef(watchEditedField);
-    const [valueResetKey, setValueResetKey] = useState(watchEditedField);
+    const [editedFieldKey, setEditedFieldKey] = useState(watchEditedField);
     useEffect(() => {
         if (prevEditedField.current !== watchEditedField) {
             prevEditedField.current = watchEditedField;
             setValue(`${name}.${index}.${FieldConstants.VALUE}`, dataType === DataType.BOOLEAN ? false : null);
             setValue(`${name}.${index}.${FieldConstants.PROPERTY_NAME}`, null);
-            setValueResetKey(watchEditedField);
+            setEditedFieldKey(watchEditedField);
         }
     }, [dataType, index, name, setValue, watchEditedField]);
 
     const renderAutoCompleteSettableToNone = useCallback(
         (numberOnly?: boolean) => (
             <AutocompleteInput
-                key={valueResetKey}
+                key={editedFieldKey}
                 name={`${name}.${index}.${FieldConstants.VALUE}`}
                 label="ValueOrEmptyField"
                 options={[emptyFieldLabel]}
@@ -148,7 +148,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
                 allowNewValue
             />
         ),
-        [emptyFieldLabel, index, name, setError, valueResetKey]
+        [emptyFieldLabel, index, name, setError, editedFieldKey]
     );
 
     const filtersField = (
@@ -189,7 +189,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     if (dataType === DataType.PROPERTY) {
         valueField = (
             <AutocompleteInput
-                key={valueResetKey}
+                key={editedFieldKey}
                 name={`${name}.${index}.${FieldConstants.VALUE}`}
                 label="PropertyValue"
                 options={predefinedPropertiesValues}
@@ -199,12 +199,12 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         );
     } else if (dataType === DataType.INTEGER) {
         valueField = (
-            <IntegerInput key={valueResetKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />
+            <IntegerInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />
         );
     } else if (dataType === DataType.BOOLEAN) {
         valueField = (
             <SwitchInput
-                key={valueResetKey}
+                key={editedFieldKey}
                 name={`${name}.${index}.${FieldConstants.VALUE}`}
                 formProps={{ value: false }}
             />
@@ -212,7 +212,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     } else if (dataType === DataType.ENUM) {
         valueField = (
             <SelectInput
-                key={valueResetKey}
+                key={editedFieldKey}
                 name={`${name}.${index}.${FieldConstants.VALUE}`}
                 label="Value"
                 options={options}
@@ -223,12 +223,12 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
         valueField = renderAutoCompleteSettableToNone();
     } else if (dataType === DataType.STRING) {
         valueField = (
-            <TextInput key={valueResetKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" clearable />
+            <TextInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" clearable />
         );
     } else if (dataType === DataType.DOUBLE && settableToNone) {
         valueField = renderAutoCompleteSettableToNone(true);
     } else {
-        valueField = <FloatInput key={valueResetKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
+        valueField = <FloatInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
     }
 
     return (
