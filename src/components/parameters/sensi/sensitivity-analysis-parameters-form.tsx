@@ -11,7 +11,7 @@ import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analys
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
-import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
+import { SensitivityAnalysisFields } from './sensitivity-parameters-fields';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { BuildStatus } from '../../node/constant';
@@ -49,12 +49,14 @@ export function SensitivityAnalysisParametersForm({
     renderTitleFields,
     renderActions,
     isDeveloperMode,
+    isRootNode,
     globalBuildStatus,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
+    isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
 }>) {
     return (
@@ -64,7 +66,7 @@ export function SensitivityAnalysisParametersForm({
         >
             <Box sx={styles.sensibilityAnalysisParameters}>
                 {renderTitleFields?.()}
-                {sensitivityAnalysisMethods.paramsLoaded ? (
+                {sensitivityAnalysisMethods.paramsFormInitialized ? (
                     <Box sx={mergeSx(parametersStyles.scrollableGrid, { paddingTop: 0, maxHeight: '100%' })}>
                         <Grid
                             container
@@ -110,6 +112,7 @@ export function SensitivityAnalysisParametersForm({
                                     factorsCount={sensitivityAnalysisMethods.factorsCount}
                                     isDeveloperMode={isDeveloperMode}
                                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
+                                    isRootNode={isRootNode}
                                     globalBuildStatus={globalBuildStatus}
                                 />
                             </Grid>

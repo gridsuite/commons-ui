@@ -7,9 +7,15 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { Grid } from '@mui/material';
+import { forwardRef, useImperativeHandle } from 'react';
 import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
 import { AddButton } from '../../../addButton';
+
+export type ExpandableInputHandle = {
+    replaceItems: (newItems: any[]) => void;
+    appendItem: (newItem: any) => void;
+};
 
 export interface ExpandableInputProps {
     name: string;
@@ -30,54 +36,69 @@ export interface ExpandableInputProps {
 // - only 1 state and 1 delete icon that removes the current line
 // - a second state "mark for deletion" with a second icon: the line is not removed
 // and we can cancel this mark to go back to normal state.
-export function ExpandableInput({
-    name,
-    Field, // Used to display each object of an array
-    fieldProps, // Props to pass to Field
-    addButtonLabel,
-    initialValue, // Initial value to display when we add a new entry to array
-    getDeletionMark,
-    deleteCallback,
-    alignItems = 'stretch', // default value for a flex container
-    watchProps = true,
-    disabled = false,
-    disabledDeletion,
-}: Readonly<ExpandableInputProps>) {
-    const {
-        fields: values,
-        append,
-        remove,
-    } = useFieldArray({
-        name,
-    });
+export const ExpandableInput = forwardRef(
+    (
+        {
+            name,
+            Field, // Used to display each object of an array
+            fieldProps, // Props to pass to Field
+            addButtonLabel,
+            initialValue, // Initial value to display when we add a new entry to array
+            getDeletionMark,
+            deleteCallback,
+            alignItems = 'stretch', // default value for a flex container
+            watchProps = true,
+            disabled = false,
+            disabledDeletion,
+        }: Readonly<ExpandableInputProps>,
+        ref
+    ) => {
+        const {
+            fields: values,
+            append,
+            remove,
+            replace,
+        } = useFieldArray({
+            name,
+        });
 
-    return (
-        <Grid item container spacing={2}>
-            <Grid item xs={12}>
-                <ErrorInput name={name} InputField={MidFormError} />
-            </Grid>
-            {watchProps &&
-                values.map((value, idx) => (
-                    <DeletableRow
-                        key={value.id}
-                        alignItems={alignItems}
-                        onClick={() => {
-                            const shouldRemove = deleteCallback ? deleteCallback(idx) : true;
-                            if (shouldRemove) {
-                                remove(idx);
-                            }
-                        }}
-                        deletionMark={getDeletionMark?.(idx)}
-                        disabledDeletion={disabledDeletion?.(idx)}
-                    >
-                        <Field name={name} index={idx} {...fieldProps} />
-                    </DeletableRow>
-                ))}
-            {addButtonLabel && (
-                <Grid item>
-                    <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
+        useImperativeHandle(
+            ref,
+            () => ({
+                replaceItems: (newItems: any) => replace(newItems),
+                appendItem: (newItem: any) => append(newItem),
+            }),
+            [append, replace]
+        );
+
+        return (
+            <Grid item container spacing={2}>
+                <Grid item xs={12}>
+                    <ErrorInput name={name} InputField={MidFormError} />
                 </Grid>
-            )}
-        </Grid>
-    );
-}
+                {watchProps &&
+                    values.map((value, idx) => (
+                        <DeletableRow
+                            key={value.id}
+                            alignItems={alignItems}
+                            onClick={() => {
+                                const shouldRemove = deleteCallback ? deleteCallback(idx) : true;
+                                if (shouldRemove) {
+                                    remove(idx);
+                                }
+                            }}
+                            deletionMark={getDeletionMark?.(idx)}
+                            disabledDeletion={disabledDeletion?.(idx)}
+                        >
+                            <Field name={name} index={idx} {...fieldProps} />
+                        </DeletableRow>
+                    ))}
+                {addButtonLabel && (
+                    <Grid item>
+                        <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
+                    </Grid>
+                )}
+            </Grid>
+        );
+    }
+);
