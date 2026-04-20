@@ -228,7 +228,9 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
     } else if (dataType === DataType.DOUBLE && settableToNone) {
         valueField = renderAutoCompleteSettableToNone(true);
     } else {
-        valueField = <FloatInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />;
+        valueField = (
+            <FloatInput key={editedFieldKey} name={`${name}.${index}.${FieldConstants.VALUE}`} label="Value" />
+        );
     }
 
     return (
