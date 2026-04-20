@@ -19,8 +19,6 @@ interface PositionFormProps extends Pick<ConnectivityNetworkProps, 'PositionDiag
     previousValues?: {
         connectablePosition?: ConnectablePositionFormInfos;
         voltageLevelId?: string;
-        busOrBusbarSectionId?: string;
-        terminalConnected?: boolean | null;
     };
 }
 
