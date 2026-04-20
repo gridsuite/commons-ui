@@ -31,3 +31,4 @@ export * from './muiTable';
 export * from './resizablePanels';
 export * from './network-modifications';
 export * from './node';
+export * from './network-modification-table';
