@@ -27,6 +27,7 @@ import {
 } from './network-modification-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
+import { useModificationsSelection } from './use-modifications-selection';
 import {
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
@@ -71,13 +72,17 @@ export function NetworkModificationsTable({
     const theme = useTheme();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const lastClickedIndex = useRef<number | null>(null);
 
     const [expanded, setExpanded] = useState<ExpandedState>({});
 
     const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
         formatToComposedModification(modifications)
     );
+
+    const { rowSelection, onRowSelectionChange, lastClickedIndex, emitCuratedSelection } = useModificationsSelection({
+        modifications: composedModifications,
+        onRowSelected,
+    });
 
     const columns = useMemo<ColumnDef<ComposedModificationMetadata>[]>(
         () =>
@@ -130,20 +135,25 @@ export function NetworkModificationsTable({
     const table = useReactTable<ComposedModificationMetadata>({
         data: composedModifications,
         columns,
-        state: { expanded },
+        state: { expanded, rowSelection },
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
         getSubRows: (row) => row.subModifications,
         getRowId: (row) => row.uuid,
         getRowCanExpand: (row) => isCompositeModification(row.original),
         enableRowSelection: true,
-        enableSubRowSelection: false,
+        enableSubRowSelection: true,
         enableExpanding: true,
         onExpandedChange: handleExpandRow,
+        onRowSelectionChange,
         meta: { lastClickedIndex, onRowSelected },
     });
 
     const { rows } = table.getRowModel();
+
+    useEffect(() => {
+        emitCuratedSelection(rows.filter((r) => r.depth === 0));
+    }, [rowSelection, rows, emitCuratedSelection]);
 
     const virtualizer = useVirtualizer({
         count: rows.length,
@@ -167,7 +177,7 @@ export function NetworkModificationsTable({
         table.resetRowSelection();
         table.resetExpanded();
         lastClickedIndex.current = null;
-    }, [table]);
+    }, [lastClickedIndex, table, currentNodeId]);
 
     useEffect(() => {
         if (highlightedModificationUuid && containerRef.current) {
