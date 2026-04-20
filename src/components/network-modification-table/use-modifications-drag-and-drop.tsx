@@ -22,10 +22,10 @@ import {
     isCompositeModification,
     moveSubModificationInTree,
 } from './utils';
+import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
 import { changeCompositeSubModificationOrder, changeNetworkModificationOrder } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
-import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
 
 const MAX_NESTING_DEPTH = 5;
 
