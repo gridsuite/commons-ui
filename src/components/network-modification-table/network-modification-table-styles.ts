@@ -140,39 +140,20 @@ export const networkModificationTableStyles = {
         minWidth: 0,
     },
     // depth-box
-    firstLevelDepthBox: {
-        width: `${DEPTH_CELL_WIDTH}px`,
-        display: 'flex',
-        justifyContent: 'center',
-        alignSelf: 'stretch',
-        position: 'relative',
-    },
-    firstLevelFolderDepthBox: (theme) => ({
-        width: `${1 + DEPTH_CELL_WIDTH / 2}px`,
-        display: 'flex',
-        alignSelf: 'stretch',
-        position: 'relative',
-        borderRight: `1px solid ${createCellBorderColor(theme)}`,
-    }),
     folderDepthBox: (theme) => ({
-        width: `${1 + DEPTH_CELL_WIDTH / 2}px`,
+        width: `${DEPTH_CELL_WIDTH / 2}px`,
         display: 'flex',
         alignSelf: 'stretch',
         position: 'relative',
         borderRight: `1px solid ${createCellBorderColor(theme)}`,
-        borderLeft: `1px solid ${createCellBorderColor(theme)}`,
     }),
-    depthBox: {
+    depthBox: (theme) => ({
         width: `${DEPTH_CELL_WIDTH / 2}px`,
         display: 'flex',
         justifyContent: 'flex-start',
         alignSelf: 'stretch',
         position: 'relative',
-    },
-    depthBoxLine: (theme) => ({
-        width: '1px',
-        backgroundColor: createCellBorderColor(theme),
-        alignSelf: 'stretch',
+        borderRight: `1px solid ${createCellBorderColor(theme)}`,
     }),
     depthBoxTick: (theme) => ({
         position: 'absolute',

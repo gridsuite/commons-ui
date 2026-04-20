@@ -5,31 +5,32 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box } from '@mui/material';
-import { networkModificationTableStyles } from '../network-modification-table-styles';
+import {Box} from '@mui/material';
+import {networkModificationTableStyles} from '../network-modification-table-styles';
 
 interface DepthBoxProps {
     firstLevel: boolean;
     displayAsFolder?: boolean;
 }
 
-function getDepthBoxStyle(displayAsFolder: boolean | undefined, firstLevel: boolean) {
+function getDepthBoxStyle(displayAsFolder: boolean | undefined) {
     if (displayAsFolder) {
-        return firstLevel
-            ? networkModificationTableStyles.firstLevelFolderDepthBox
-            : networkModificationTableStyles.folderDepthBox;
+        return networkModificationTableStyles.folderDepthBox;
     }
-    return firstLevel ? networkModificationTableStyles.firstLevelDepthBox : networkModificationTableStyles.depthBox;
+    return networkModificationTableStyles.depthBox;
 }
 
-export function DepthBox({ firstLevel, displayAsFolder = false }: Readonly<DepthBoxProps>) {
+export function DepthBox({firstLevel, displayAsFolder = false}: Readonly<DepthBoxProps>) {
     return (
-        <Box sx={getDepthBoxStyle(displayAsFolder, firstLevel)}>
-            {displayAsFolder ? (
-                <Box sx={networkModificationTableStyles.depthBoxTick} />
-            ) : (
-                <Box sx={networkModificationTableStyles.depthBoxLine} />
-            )}
-        </Box>
+        <>
+            {
+                /* double width depth box only on the first level*/
+                (firstLevel && <Box sx={getDepthBoxStyle(displayAsFolder)}/>)
+            }
+            <Box sx={getDepthBoxStyle(displayAsFolder)}>
+                {(displayAsFolder &&
+                    <Box sx={networkModificationTableStyles.depthBoxTick}/>)}
+            </Box>
+        </>
     );
 }
