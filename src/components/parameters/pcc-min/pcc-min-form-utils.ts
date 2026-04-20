@@ -5,11 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PccMinParameters } from '../../../services';
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { NAME } from '../../inputs';
+import { PccMinParameters, PccMinParametersEnriched } from '../../../utils';
 
-export const fromPccMinParametersFormToParamValues = (newParams: Record<string, any>): PccMinParameters | null => ({
+export const fromPccMinParametersFormToParamValuesEnriched = (
+    newParams: Record<string, any>
+): PccMinParametersEnriched => ({
     filters:
         newParams[FILTERS]?.map((filter: any) => ({
             filterId: filter[ID],
@@ -17,7 +19,11 @@ export const fromPccMinParametersFormToParamValues = (newParams: Record<string, 
         })) ?? [],
 });
 
-export const fromPccMinParamsDataToFormValues = (parameters: PccMinParameters | null): Record<string, any> => ({
+export const fromPccMinParametersFormToParamValues = (newParams: Record<string, any>): PccMinParameters => ({
+    filters: newParams[FILTERS]?.map((filter: any) => filter[ID]) ?? [],
+});
+
+export const fromPccMinParamsDataToFormValues = (parameters: PccMinParametersEnriched | null): Record<string, any> => ({
     [FILTERS]:
         parameters?.[FILTERS]?.map((filter) => ({
             [ID]: filter[FILTER_ID],
@@ -25,7 +31,9 @@ export const fromPccMinParamsDataToFormValues = (parameters: PccMinParameters | 
         })) ?? [],
 });
 
-export const fromStudyPccMinParamsDataToFormValues = (parameters: PccMinParameters | null): Record<string, any> => ({
+export const fromStudyPccMinParamsDataToFormValues = (
+    parameters: PccMinParametersEnriched | null
+): Record<string, any> => ({
     [FILTERS]:
         parameters?.[FILTERS]?.map((filter) => ({
             [ID]: filter[FILTER_ID],

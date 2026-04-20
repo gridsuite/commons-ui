@@ -22,7 +22,7 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
-import { SAParameters } from './types';
+import { SAParametersEnriched } from './types';
 import { toFormValueSaParameters } from './columns-definitions';
 import { ContingencyCount } from '../common/contingency-table/types';
 
@@ -71,7 +71,7 @@ export function SecurityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSecurityAnalysisParameters(newParams[0].id)
-                    .then((parameters: SAParameters) => {
+                    .then((parameters: SAParametersEnriched) => {
                         console.info(`loading the following security analysis parameters :  ${parameters.uuid}`);
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,

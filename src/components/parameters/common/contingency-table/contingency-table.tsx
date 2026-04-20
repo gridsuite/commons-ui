@@ -9,11 +9,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { useSnackMessage } from '../../../../hooks';
-import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
-import { CONTINGENCY_LISTS } from '../constants';
+import { ID, ACTIVATED, ParameterTableField } from '../parameter-table-field';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
-import { ContingencyCount, ContingencyListsInfos } from './types';
+import { ContingencyCount, ContingencyListsInfosEnriched } from './types';
+import { useSnackMessage } from '../../../../hooks';
+import { CONTINGENCY_LISTS } from '../constants';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback } from '../../../../utils';
 import { DndColumn } from '../../../dnd-table-v2';
@@ -63,7 +63,7 @@ export function ContingencyTable({
             return () => {};
         }
 
-        const contingencyListsInfos: ContingencyListsInfos[] = getValues(name);
+        const contingencyListsInfos: ContingencyListsInfosEnriched[] = getValues(name);
         const hasNoContingencies =
             !contingencyListsInfos ||
             (contingencyListsInfos.length ?? 0) === 0 ||

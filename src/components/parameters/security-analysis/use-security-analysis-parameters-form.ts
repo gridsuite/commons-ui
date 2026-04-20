@@ -30,19 +30,19 @@ import { getNameElementEditorEmptyFormData } from '../common/name-element-editor
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { SAParameters } from './types';
+import { mapSecurityAnalysisParameters, SAParametersEnriched } from './types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
-import { ContingencyListsInfos } from '../common/contingency-table/types';
+import { ContingencyListsInfosEnriched } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     formattedProviders: { id: string; label: string }[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
-    toFormValueSaParameters: (_params: SAParameters) => any;
-    formatNewParams: (formData: Record<string, any>) => SAParameters;
-    params: SAParameters | null;
+    toFormValueSaParameters: (_params: SAParametersEnriched) => any;
+    formatNewParams: (formData: Record<string, any>) => SAParametersEnriched;
+    params: SAParametersEnriched | null;
     watchProvider: string | undefined;
     paramsFormInitialized: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -96,7 +96,7 @@ export const useSecurityAnalysisParametersForm = (
     const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
 
     const toContingencyListsInfos = useCallback(
-        (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfos[] => {
+        (formContingencyListsInfos: Record<string, any>[]): ContingencyListsInfosEnriched[] => {
             if (!formContingencyListsInfos) {
                 return [];
             }
@@ -164,7 +164,7 @@ export const useSecurityAnalysisParametersForm = (
             if (parametersUuid) {
                 updateParameter(
                     parametersUuid,
-                    formatNewParams(formData),
+                    mapSecurityAnalysisParameters(formatNewParams(formData)),
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''

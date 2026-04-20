@@ -8,6 +8,12 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
+import {
+    enrichSecurityAnalysisParameters,
+    mapSecurityAnalysisParameters,
+    SAParameters,
+    SAParametersEnriched,
+} from '../components/parameters/security-analysis/types';
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
 
@@ -25,11 +31,12 @@ export function fetchSecurityAnalysisProviders() {
     return backendFetchJson(url);
 }
 
-export function fetchSecurityAnalysisParameters(parameterUuid: string) {
+export function fetchSecurityAnalysisParameters(parameterUuid: string): Promise<SAParametersEnriched> {
     console.info('fetch security analysis parameters');
     const url = `${getSecurityAnalysisUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
     console.debug(url);
-    return backendFetchJson(url);
+    const parametersPromise: Promise<SAParameters> = backendFetchJson(url);
+    return parametersPromise.then((parameters) => enrichSecurityAnalysisParameters(parameters));
 }
 
 export function getSecurityAnalysisDefaultLimitReductions() {
@@ -39,14 +46,15 @@ export function getSecurityAnalysisDefaultLimitReductions() {
     return backendFetchJson(url);
 }
 
-export function getSecurityAnalysisParameters(studyUuid: UUID) {
+export function getSecurityAnalysisParameters(studyUuid: UUID): Promise<SAParametersEnriched> {
     console.info('get security analysis parameters');
     const url = `${getStudyUrl(studyUuid)}/security-analysis/parameters`;
     console.debug(url);
-    return backendFetchJson(url);
+    const parametersPromise: Promise<SAParameters> = backendFetchJson(url);
+    return parametersPromise.then((parameters) => enrichSecurityAnalysisParameters(parameters));
 }
 
-export function setSecurityAnalysisParameters(studyUuid: UUID, newParams: any) {
+export function setSecurityAnalysisParameters(studyUuid: UUID, newParams: SAParametersEnriched | null) {
     console.info('set security analysis parameters');
     const url = `${getStudyUrl(studyUuid)}/security-analysis/parameters`;
     console.debug(url);
@@ -56,11 +64,11 @@ export function setSecurityAnalysisParameters(studyUuid: UUID, newParams: any) {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: newParams ? JSON.stringify(newParams) : null,
+        body: newParams ? JSON.stringify(mapSecurityAnalysisParameters(newParams)) : null,
     });
 }
 
-export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams: any) {
+export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams: SAParametersEnriched | null) {
     console.info('set security analysis parameters');
     const setSecurityAnalysisParametersUrl = `${getSecurityAnalysisUrl()}parameters/${parameterUuid}`;
     console.debug(setSecurityAnalysisParametersUrl);
@@ -70,6 +78,6 @@ export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams:
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: newParams ? JSON.stringify(newParams) : null,
+        body: newParams ? JSON.stringify(mapSecurityAnalysisParameters(newParams)) : null,
     });
 }
