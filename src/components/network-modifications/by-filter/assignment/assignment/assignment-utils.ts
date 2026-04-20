@@ -5,9 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Schema } from 'yup';
-import { FieldConstants, yupConfig as yup } from '../../../../../utils';
+import { FieldConstants, YUP_REQUIRED, yupConfig as yup } from '../../../../../utils';
 import { Assignment, DataType, FieldOptionType, FieldValue } from './assignment.type';
 import { FIELD_OPTIONS } from './assignment-constants';
+
+export const EMPTY_FIELD_VALUE = '—';
 
 export const getFieldOption = (fieldName?: string | null): FieldOptionType | undefined => {
     return Object.values(FIELD_OPTIONS).find((fieldOption) => fieldOption.id === fieldName);
@@ -48,7 +50,7 @@ function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_
             schema = yup.number();
     }
 
-    return schema.required();
+    return schema.required(YUP_REQUIRED);
 }
 
 export const getAssignmentInitialValue = () => ({
@@ -72,14 +74,14 @@ export function getAssignmentsSchema(emptyValueStr: string) {
                         })
                     )
                     .required()
-                    .min(1, 'YupRequired'),
-                [FieldConstants.EDITED_FIELD]: yup.string().required(),
+                    .min(1, YUP_REQUIRED),
+                [FieldConstants.EDITED_FIELD]: yup.string().required(YUP_REQUIRED),
                 [FieldConstants.PROPERTY_NAME]: yup
                     .string()
                     .when([FieldConstants.EDITED_FIELD], ([editedField], schema) => {
                         const dataType = getDataType(editedField);
                         if (dataType === DataType.PROPERTY) {
-                            return schema.required();
+                            return schema.required(YUP_REQUIRED);
                         }
                         return schema.nullable();
                     }),
@@ -90,7 +92,7 @@ export function getAssignmentsSchema(emptyValueStr: string) {
                         const unsettable = getUnsettable(editedField);
                         return getValueSchema(emptyValueStr, dataType, unsettable);
                     })
-                    .required(),
+                    .required(YUP_REQUIRED),
             })
         )
         .required();
