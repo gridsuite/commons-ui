@@ -210,6 +210,14 @@ export const networkModificationsFr = {
     addNewAssignment: 'Modifier un autre champ',
     changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
     Or: 'ou',
+    NormalizedPercentage: 'This percentage must be between 0 and 100',
+    On: 'Activé',
+    Off: 'Désactivé',
+    FrequencyRegulation: 'Compensation',
+    Droop: 'Statisme',
+    activePowerControlTooltip:
+        'Clé de distribution de la puissance au nœud bilan : maxP/Statisme, statisme par défaut = 4 (valable pour le mode compensation proportionnel à la puissance maximale des groupes)',
+    NoModification: 'Pas de modification',
 
     // Tabs
     SubstationTab: 'Site',

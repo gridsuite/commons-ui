@@ -207,6 +207,14 @@ export const networkModificationsEn = {
     addNewAssignment: 'Modify another field',
     changeTypeConfirmation: 'The type will be changed. All fields values will be erased.',
     Or: 'or',
+    NormalizedPercentage: 'Ce pourcentage doit être compris entre 0 et 100',
+    On: 'On',
+    Off: 'Off',
+    FrequencyRegulation: 'Active power regulation',
+    Droop: 'Droop',
+    activePowerControlTooltip:
+        'Slack bus active power repartition key: maxP/droop, default droop = 4 (used if balanceType is PROPORTIONAL_TO_GENERATION_P_MAX)',
+    NoModification: 'No modification',
 
     // Tabs
     SubstationTab: 'Substation',
