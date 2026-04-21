@@ -7,7 +7,6 @@
 
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
-import { Row } from '@tanstack/react-table';
 import { getNetworkModificationsFromComposite } from '../../services';
 import { ComposedModificationMetadata, MODIFICATION_TYPES, NetworkModificationMetadata } from '../../utils';
 
