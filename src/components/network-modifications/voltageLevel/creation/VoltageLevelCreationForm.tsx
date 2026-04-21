@@ -12,9 +12,8 @@ import { TextInput } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
 import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
-import { PropertiesForm } from '../../common';
+import { filledTextField, PropertiesForm } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
-import GridItem from '../../../grid/grid-item';
 import { useTabsWithError } from '../../hooks';
 
 export interface VoltageLevelCreationFormProps {
@@ -33,57 +32,66 @@ export function VoltageLevelCreationForm({
     const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
 
     return (
-        <>
-            <Grid container spacing={2}>
-                <GridItem>
-                    <TextInput
-                        name={FieldConstants.EQUIPMENT_ID}
-                        label="ID"
-                        formProps={{ autoFocus: true, margin: 'normal' }}
-                    />
-                </GridItem>
-                <GridItem>
-                    <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ margin: 'normal' }} />
-                </GridItem>
+        <Grid container direction="column" spacing={2}>
+            <Grid item>
+                <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                        <TextInput
+                            name={FieldConstants.EQUIPMENT_ID}
+                            label="ID"
+                            formProps={{ autoFocus: true, ...filledTextField }}
+                        />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
+                    </Grid>
+                </Grid>
             </Grid>
-            <Tabs
-                value={tabIndex}
-                variant="scrollable"
-                onChange={(_, newValue) => setTabIndex(newValue)}
-                TabIndicatorProps={{
-                    sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
-                }}
-            >
-                <Tab
-                    label={<FormattedMessage id="SubstationTab" />}
-                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.SUBSTATION_TAB)}
-                />
-                <Tab
-                    label={<FormattedMessage id="CharacteristicsTab" />}
-                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.CHARACTERISTICS_TAB)}
-                />
-                <Tab
-                    label={<FormattedMessage id="StructureTab" />}
-                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.STRUCTURE_TAB)}
-                    disabled={watchHideBusBarSection}
-                />
-                <Tab
-                    label={<FormattedMessage id="AdditionalInformationTab" />}
-                    sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.ADDITIONAL_INFORMATION_TAB)}
-                />
-            </Tabs>
-            <Box hidden={tabIndex !== VoltageLevelTab.SUBSTATION_TAB}>
-                <SubstationTab substationOptions={substationOptions} showDeleteButton={showDeleteSubstationButton} />
-            </Box>
-            <Box hidden={tabIndex !== VoltageLevelTab.CHARACTERISTICS_TAB}>
-                <CharacteristicsTab />
-            </Box>
-            <Box hidden={tabIndex !== VoltageLevelTab.STRUCTURE_TAB}>
-                <StructureTab />
-            </Box>
-            <Box hidden={tabIndex !== VoltageLevelTab.ADDITIONAL_INFORMATION_TAB}>
-                <PropertiesForm networkElementType="voltageLevel" />
-            </Box>
-        </>
+            <Grid item>
+                <Tabs
+                    value={tabIndex}
+                    variant="scrollable"
+                    onChange={(_, newValue) => setTabIndex(newValue)}
+                    TabIndicatorProps={{
+                        sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                    }}
+                >
+                    <Tab
+                        label={<FormattedMessage id="SubstationTab" />}
+                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.SUBSTATION_TAB)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="CharacteristicsTab" />}
+                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.CHARACTERISTICS_TAB)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="StructureTab" />}
+                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.STRUCTURE_TAB)}
+                        disabled={watchHideBusBarSection}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="AdditionalInformationTab" />}
+                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.ADDITIONAL_INFORMATION_TAB)}
+                    />
+                </Tabs>
+            </Grid>
+            <Grid item>
+                <Box hidden={tabIndex !== VoltageLevelTab.SUBSTATION_TAB}>
+                    <SubstationTab
+                        substationOptions={substationOptions}
+                        showDeleteButton={showDeleteSubstationButton}
+                    />
+                </Box>
+                <Box hidden={tabIndex !== VoltageLevelTab.CHARACTERISTICS_TAB}>
+                    <CharacteristicsTab />
+                </Box>
+                <Box hidden={tabIndex !== VoltageLevelTab.STRUCTURE_TAB}>
+                    <StructureTab />
+                </Box>
+                <Box hidden={tabIndex !== VoltageLevelTab.ADDITIONAL_INFORMATION_TAB}>
+                    <PropertiesForm networkElementType="voltageLevel" />
+                </Box>
+            </Grid>
+        </Grid>
     );
 }

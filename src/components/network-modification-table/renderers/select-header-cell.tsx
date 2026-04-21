@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import React, { useCallback } from 'react';
+import { Checkbox } from '@mui/material';
+import { Table } from '@tanstack/react-table';
+import { ComposedModificationMetadata } from '../../../utils';
+
+interface SelectHeaderCellProps {
+    table: Table<ComposedModificationMetadata>;
+}
+
+export function SelectHeaderCell({ table }: Readonly<SelectHeaderCellProps>) {
+    const handleClick = useCallback(() => {
+        const { meta } = table.options;
+        if (meta) {
+            const nextSelectedRows = table.getIsAllRowsSelected()
+                ? []
+                : table.getCoreRowModel().rows.map((r) => r.original);
+            meta.onRowSelected?.(nextSelectedRows);
+            meta.lastClickedIndex.current = null;
+        }
+        table.toggleAllRowsSelected();
+    }, [table]);
+
+    return (
+        <Checkbox
+            size="small"
+            checked={table.getIsAllRowsSelected()}
+            indeterminate={table.getSelectedRowModel().flatRows.length !== 0 && !table.getIsAllRowsSelected()}
+            onClick={handleClick}
+        />
+    );
+}

@@ -6,27 +6,29 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { FieldConstants, GsLang } from '../../utils';
+import { EquipmentType, FieldConstants, GsLang } from '../../utils';
+import { ItemSelectionForCopy } from '../../utils/types/types';
 import { RuleGroupTypeExport } from './expert/expertFilter.type';
 import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
+import { FilterType } from './constants/FilterConstants';
 
-/**
- * Represent an item/object in directories.
- */
-export type ItemSelectionForCopy = {
-    sourceItemUuid: UUID | null;
-    typeItem: string | null;
-    nameItem: string | null;
-    descriptionItem: string | null;
-    parentDirectoryUuid: UUID | null;
-    specificTypeItem: string | null;
-};
-
-type EquipmentsFilter = {
+export type EquipmentsFilter = {
     equipmentID: string;
     distributionKey?: number;
 };
+
+export interface IdentifiableAttributes {
+    id: string;
+    type: EquipmentType;
+    distributionKey: number;
+}
+
+export interface FilterEquipments {
+    filterId: UUID;
+    identifiableAttributes: IdentifiableAttributes[];
+    notFoundEquipments: string[];
+}
 
 export interface FilterEditionProps {
     id: string;
@@ -48,10 +50,22 @@ export interface FilterEditionProps {
     isDeveloperMode: boolean;
 }
 
-export interface NewFilterType {
-    id: string | null;
+export type NewFilterType = ExpertFilter | ExplicitNamingFilter;
+
+type BaseFilter = {
+    id?: string | null;
+    name?: string;
     type: string;
-    equipmentType: string;
-    rules?: RuleGroupTypeExport;
+    equipmentType: string; // TODO must be EquipmentType enum
+};
+
+export type ExpertFilter = BaseFilter & {
+    type: typeof FilterType.EXPERT.id;
+    rules: RuleGroupTypeExport;
+    topologyKind?: string; // TODO must be TopologyKind enum
+};
+
+export type ExplicitNamingFilter = BaseFilter & {
+    type: typeof FilterType.EXPLICIT_NAMING.id;
     filterEquipmentsAttributes?: EquipmentsFilter[];
-}
+};

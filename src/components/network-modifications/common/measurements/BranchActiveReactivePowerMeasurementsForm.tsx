@@ -8,21 +8,13 @@
 import { BranchActiveReactivePowerMeasurementsFormProps } from './measurement.type';
 import { PowerMeasurementsForm } from './PowerMeasurementsForm';
 import GridSection from '../../../grid/grid-section';
-import { MuiStyles } from '../../../../utils';
-
-const styles = {
-    h3: {
-        marginTop: 0,
-        marginBottom: 0,
-    },
-} as const satisfies MuiStyles;
 
 export function BranchActiveReactivePowerMeasurementsForm({
     equipmentToModify,
 }: Readonly<BranchActiveReactivePowerMeasurementsFormProps>) {
     return (
         <>
-            <GridSection title="MeasurementsSection" customStyle={styles.h3} />
+            <GridSection title="MeasurementsSection" />
             <GridSection title="Side1" heading={4} />
             <PowerMeasurementsForm
                 side={1}

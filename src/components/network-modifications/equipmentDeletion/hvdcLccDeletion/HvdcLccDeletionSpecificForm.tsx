@@ -9,7 +9,6 @@ import { Grid } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
 import { FieldConstants } from '../../../../utils';
 import GridSection from '../../../grid/grid-section';
-import GridItem from '../../../grid/grid-item';
 import { ShuntCompensatorSelectionForm } from './ShuntCompensatorSelectionForm';
 
 export function HvdcLccDeletionSpecificForm() {
@@ -21,24 +20,24 @@ export function HvdcLccDeletionSpecificForm() {
     });
 
     return (
-        <Grid container spacing={1} direction="column" paddingTop={2} paddingLeft={1}>
+        <>
             <GridSection title="LCCConverterStationShuntCompensators" />
-            <Grid container spacing={1}>
-                <GridItem>
+            <Grid container spacing={2}>
+                <Grid item xs>
                     <ShuntCompensatorSelectionForm
                         title="Side1"
                         arrayFormName={`${FieldConstants.DELETION_SPECIFIC_DATA}.${FieldConstants.SHUNT_COMPENSATOR_SIDE_1}`}
                         mcsRows={mcsRows1}
                     />
-                </GridItem>
-                <GridItem>
+                </Grid>
+                <Grid item xs>
                     <ShuntCompensatorSelectionForm
                         title="Side2"
                         arrayFormName={`${FieldConstants.DELETION_SPECIFIC_DATA}.${FieldConstants.SHUNT_COMPENSATOR_SIDE_2}`}
                         mcsRows={mcsRows2}
                     />
-                </GridItem>
+                </Grid>
             </Grid>
-        </Grid>
+        </>
     );
 }

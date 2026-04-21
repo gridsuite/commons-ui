@@ -16,21 +16,21 @@ import {
     yupConfig as yup,
 } from '../../../../utils';
 import {
+    EMPTY_FIELD_VALUE,
     getAssignmentFromEditData,
     getAssignmentInitialValue,
     getAssignmentsSchema,
     getDataType,
+    getUnsettable,
 } from './assignment/assignment-utils';
 import { ModificationByAssignmentDto } from './modificationByAssignment.types';
 import { DataType } from './assignment/assignment.type';
-
-const emptyValueStr = '—';
 
 export const modificationByAssignmentFormSchema = yup
     .object()
     .shape({
         [FieldConstants.EQUIPMENT_TYPE]: mixed<EquipmentType>().oneOf(Object.values(EquipmentType)).required(),
-        [FieldConstants.ASSIGNMENTS]: getAssignmentsSchema(emptyValueStr),
+        [FieldConstants.ASSIGNMENTS]: getAssignmentsSchema(EMPTY_FIELD_VALUE),
     })
     .required();
 
@@ -51,9 +51,10 @@ export const modificationByAssignmentDtoToForm = (
         const field = FieldType[fieldKey];
         const { value } = assignment;
         const valueConverted = convertInputValue(field, value);
+        const unsettable = getUnsettable(assignment.editedField);
         return {
             ...assignment,
-            value: valueConverted !== 0 && !valueConverted ? emptyValueStr : valueConverted,
+            value: unsettable && valueConverted !== 0 && !valueConverted ? EMPTY_FIELD_VALUE : valueConverted,
         };
     }) ?? [getAssignmentInitialValue()],
 });
@@ -66,7 +67,7 @@ export const modificationByAssignmentFormToDto = (
     assignmentInfosList: formData.assignments.map((assignment) => {
         const fieldKey = assignment.editedField as keyof typeof FieldType;
         const field: FieldType = FieldType[fieldKey];
-        const value = assignment.value === emptyValueStr ? '' : assignment.value;
+        const value = assignment.value === EMPTY_FIELD_VALUE ? '' : assignment.value;
         return {
             ...assignment,
             dataType: getDataType(assignment.editedField) ?? DataType.STRING,
