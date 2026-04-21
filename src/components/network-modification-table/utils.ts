@@ -10,6 +10,8 @@ import type { UUID } from 'node:crypto';
 import { getNetworkModificationsFromComposite } from '../../services';
 import { ComposedModificationMetadata, MODIFICATION_TYPES, NetworkModificationMetadata } from '../../utils';
 
+export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
 export const formatToComposedModification = (
     modifications: NetworkModificationMetadata[]
 ): ComposedModificationMetadata[] => {

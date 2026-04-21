@@ -154,7 +154,7 @@ export function NetworkModificationsTable({
     const virtualItems = virtualizer.getVirtualItems();
 
     const { handleDragUpdate, handleDragEnd, renderClone } = useModificationsDragAndDrop({
-        rows,
+        table,
         containerRef,
         composedModifications,
         setComposedModifications,
