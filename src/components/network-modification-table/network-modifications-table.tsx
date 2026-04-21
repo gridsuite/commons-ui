@@ -79,7 +79,7 @@ export function NetworkModificationsTable({
         formatToComposedModification(modifications)
     );
 
-    const { rowSelection, onRowSelectionChange, lastClickedIndex, emitCuratedSelection } = useModificationsSelection({
+    const { rowSelection, onRowSelectionChange, lastClickedIndex, emitSelection } = useModificationsSelection({
         modifications: composedModifications,
         onRowSelected,
     });
@@ -152,8 +152,8 @@ export function NetworkModificationsTable({
     const { rows, flatRows } = table.getRowModel();
 
     useEffect(() => {
-        emitCuratedSelection(flatRows);
-    }, [rowSelection, flatRows, emitCuratedSelection]);
+        emitSelection(flatRows);
+    }, [rowSelection, flatRows, emitSelection]);
 
     const virtualizer = useVirtualizer({
         count: rows.length,

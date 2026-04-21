@@ -10,12 +10,7 @@ import { Row, RowSelectionState, Updater } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../../utils';
 
 /**
- * Re-derive parent composite entries in the row-selection map so that a composite is marked
- * fully selected (entry === true) only when every one of its loaded children is fully selected.
- *
- * Tanstack selected row model doesn't automatically set indeterminate status to parent row if
- * one subrow is deselected so we perform it here
- *
+ * Ensures all subrows of a composite are selected if the composite also is, otherwise deselected the composite
  */
 function normalizeCompositeSelection(
     rawSelection: RowSelectionState,
@@ -29,7 +24,7 @@ function normalizeCompositeSelection(
             return next[node.uuid];
         }
         // Recurse first so nested composites are resolved bottom-up.
-        const everyChildSelected = children.map((child) => visit(child)).every(Boolean);
+        const everyChildSelected = children.map((child) => visit(child)).every((child) => child);
         if (everyChildSelected) {
             next[node.uuid] = true;
         } else {
@@ -51,7 +46,7 @@ function normalizeCompositeSelection(
  *     but its descendants are still examined so selected leaves below are emitted individually.
  *   - A selected subrow is included if the parent composite isn't.
  */
-function collectCuratedSelection(flatRows: Row<ComposedModificationMetadata>[]): ComposedModificationMetadata[] {
+function collectSelection(flatRows: Row<ComposedModificationMetadata>[]): ComposedModificationMetadata[] {
     const acc: ComposedModificationMetadata[] = [];
     // When we emit a fully-selected composite, we skip every subsequent row whose depth is
     // greater than its depth - those are its descendants in pre-order. -1 = not skipping.
@@ -102,7 +97,7 @@ interface UseModificationsSelectionResult {
     rowSelection: RowSelectionState;
     onRowSelectionChange: (updater: Updater<RowSelectionState>) => void;
     lastClickedIndex: RefObject<number | null>;
-    emitCuratedSelection: (flatRows: Row<ComposedModificationMetadata>[]) => void;
+    emitSelection: (flatRows: Row<ComposedModificationMetadata>[]) => void;
 }
 
 export function useModificationsSelection({
@@ -122,9 +117,9 @@ export function useModificationsSelection({
         [modifications]
     );
 
-    const emitCuratedSelection = useCallback(
+    const emitSelection = useCallback(
         (flatRows: Row<ComposedModificationMetadata>[]) => {
-            onRowSelected(collectCuratedSelection(flatRows));
+            onRowSelected(collectSelection(flatRows));
         },
         [onRowSelected]
     );
@@ -135,5 +130,5 @@ export function useModificationsSelection({
         setRowSelection((prev) => propagateSelectionToLoadedDescendants(prev, modifications));
     }, [modifications]);
 
-    return { rowSelection, onRowSelectionChange, lastClickedIndex, emitCuratedSelection };
+    return { rowSelection, onRowSelectionChange, lastClickedIndex, emitSelection };
 }
