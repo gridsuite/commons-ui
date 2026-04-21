@@ -91,7 +91,7 @@ export const EQUIPMENTS_WITH_ONE_NOMINAL_VOLTAGE = [
 export const EQUIPMENTS_WITH_TWO_NOMINAL_VOLTAGES = [
     EquipmentType.LINE,
     EquipmentType.TIE_LINE,
-    EquipmentType.DANGLING_LINE,
+    EquipmentType.BOUNDARY_LINE,
     EquipmentType.HVDC_LINE,
     EquipmentType.TWO_WINDINGS_TRANSFORMER,
 ];

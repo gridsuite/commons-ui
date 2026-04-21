@@ -16,9 +16,9 @@ const params = [
         label: 'DynamicSimulationNetworkCapacitorNoReclosingDelay',
     },
     {
-        name: Network.DANGLING_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION,
+        name: Network.BOUNDARY_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION,
         type: ParameterType.DOUBLE,
-        label: 'DynamicSimulationNetworkDanglingLineCurrentLimitMaxTimeOperation',
+        label: 'DynamicSimulationNetworkBoundaryLineCurrentLimitMaxTimeOperation',
     },
     {
         name: Network.LINE_CURRENT_LIMIT_MAX_TIME_OPERATION,
