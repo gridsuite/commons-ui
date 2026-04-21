@@ -23,14 +23,13 @@ function normalizeCompositeSelection(
 ): RowSelectionState {
     const next: RowSelectionState = { ...rawSelection };
 
-    function visit(node: ComposedModificationMetadata): boolean {
+    const visit = (node: ComposedModificationMetadata): boolean => {
         const children = node.subModifications;
         if (!children || children.length === 0) {
             return next[node.uuid];
         }
         // Recurse first so nested composites are resolved bottom-up.
-        const childStates = children.map(visit);
-        const everyChildSelected = childStates.every(Boolean);
+        const everyChildSelected = children.map((child) => visit(child)).every(Boolean);
         if (everyChildSelected) {
             next[node.uuid] = true;
         } else {
@@ -38,28 +37,37 @@ function normalizeCompositeSelection(
             delete next[node.uuid];
         }
         return everyChildSelected;
-    }
+    };
 
-    roots.forEach(visit);
+    roots.forEach((root) => visit(root));
     return next;
 }
 
 /**
- * Walk the row tree and produce the curated selection :
- *   - A fully-selected composite is included as-is (its children are implicitly included
- *     through the composite and must NOT be duplicated individually).
+ * Walk through modifications list and include in the selection:
+ *   - A fully-selected composite is included as-is and its descendants are skipped (its children
+ *     are implicitly included through the composite and must NOT be duplicated individually).
  *   - An indeterminate composite is treated as unselected: the composite itself is excluded,
- *     and the recursion descends to emit its selected descendants individually.
- *   - A selected leaf is included.
+ *     but its descendants are still examined so selected leaves below are emitted individually.
+ *   - A selected subrow is included if the parent composite isn't.
  */
-function collectCuratedSelection(rows: Row<ComposedModificationMetadata>[], acc: ComposedModificationMetadata[]): void {
-    rows.forEach((row) => {
+function collectCuratedSelection(flatRows: Row<ComposedModificationMetadata>[]): ComposedModificationMetadata[] {
+    const acc: ComposedModificationMetadata[] = [];
+    // When we emit a fully-selected composite, we skip every subsequent row whose depth is
+    // greater than its depth - those are its descendants in pre-order. -1 = not skipping.
+    let skipBelowDepth = -1;
+
+    flatRows.forEach((row) => {
+        if (skipBelowDepth >= 0 && row.depth > skipBelowDepth) {
+            return;
+        }
+        skipBelowDepth = -1;
         if (row.getIsSelected()) {
             acc.push(row.original);
-        } else if (row.getIsSomeSelected()) {
-            collectCuratedSelection(row.subRows, acc);
+            skipBelowDepth = row.depth;
         }
     });
+    return acc;
 }
 
 function propagateSelectionToLoadedDescendants(
@@ -94,7 +102,7 @@ interface UseModificationsSelectionResult {
     rowSelection: RowSelectionState;
     onRowSelectionChange: (updater: Updater<RowSelectionState>) => void;
     lastClickedIndex: RefObject<number | null>;
-    emitCuratedSelection: (rootRows: Row<ComposedModificationMetadata>[]) => void;
+    emitCuratedSelection: (flatRows: Row<ComposedModificationMetadata>[]) => void;
 }
 
 export function useModificationsSelection({
@@ -115,10 +123,8 @@ export function useModificationsSelection({
     );
 
     const emitCuratedSelection = useCallback(
-        (rootRows: Row<ComposedModificationMetadata>[]) => {
-            const curated: ComposedModificationMetadata[] = [];
-            collectCuratedSelection(rootRows, curated);
-            onRowSelected(curated);
+        (flatRows: Row<ComposedModificationMetadata>[]) => {
+            onRowSelected(collectCuratedSelection(flatRows));
         },
         [onRowSelected]
     );

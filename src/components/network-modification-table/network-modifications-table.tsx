@@ -149,11 +149,11 @@ export function NetworkModificationsTable({
         meta: { lastClickedIndex, onRowSelected },
     });
 
-    const { rows } = table.getRowModel();
+    const { rows, flatRows } = table.getRowModel();
 
     useEffect(() => {
-        emitCuratedSelection(rows.filter((r) => r.depth === 0));
-    }, [rowSelection, rows, emitCuratedSelection]);
+        emitCuratedSelection(flatRows);
+    }, [rowSelection, flatRows, emitCuratedSelection]);
 
     const virtualizer = useVirtualizer({
         count: rows.length,
