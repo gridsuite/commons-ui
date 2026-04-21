@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { Box } from '@mui/material';
+import { Row } from '@tanstack/react-table';
+import { DragIndicator } from '@mui/icons-material';
+import React, { useCallback } from 'react';
+import { useIntl } from 'react-intl';
+import { networkModificationTableStyles } from '../network-modification-table-styles';
+import { useModificationLabelComputer } from '../../../hooks';
+import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata } from '../../../utils';
+
+interface DragCloneRowProps {
+    row: Row<ComposedModificationMetadata>;
+}
+
+export function DragCloneRow({ row }: Readonly<DragCloneRowProps>) {
+    const intl = useIntl();
+    const { computeLabel } = useModificationLabelComputer();
+
+    const getModificationLabel = useCallback(
+        (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
+            return intl.formatMessage(
+                { id: `network_modifications.${modification.messageType}` },
+                { ...(modification as NetworkModificationMetadata), ...computeLabel(modification, formatBold) }
+            );
+        },
+        [computeLabel, intl]
+    );
+
+    return (
+        <Box sx={networkModificationTableStyles.dragRowClone}>
+            <Box sx={networkModificationTableStyles.tableCell}>
+                <Box sx={mergeSx(networkModificationTableStyles.dragHandle, { opacity: 1 })}>
+                    <DragIndicator sx={networkModificationTableStyles.dragIndicatorIcon} />
+                </Box>
+            </Box>
+            <Box sx={networkModificationTableStyles.tableCell}>
+                <Box sx={networkModificationTableStyles.modificationLabel}>{getModificationLabel(row.original)}</Box>
+            </Box>
+        </Box>
+    );
+}
