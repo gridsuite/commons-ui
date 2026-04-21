@@ -239,10 +239,3 @@ export function fetchSubModificationsForExpandedRows(
         );
     });
 }
-
-export function getNestedRowRootParent(nestedRow: Row<ComposedModificationMetadata>) {
-    if (nestedRow.getParentRow() !== undefined) {
-        return getNestedRowRootParent(nestedRow.getParentRow()!);
-    }
-    return nestedRow;
-}
