@@ -20,9 +20,7 @@ function normalizeCompositeSelection(
 
     const visit = (node: ComposedModificationMetadata): boolean => {
         const children = node.subModifications;
-        // Exception for composite having only one children we want to be able to select the modification individually
-        // without selecting the composite
-        if (!children || children.length === 0 || children.length === 1) {
+        if (!children || children.length === 0) {
             return next[node.uuid];
         }
         // Recurse first so nested composites are resolved bottom-up.
