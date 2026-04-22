@@ -22,7 +22,7 @@ export function SelectHeaderCell({ table }: Readonly<SelectHeaderCellProps>) {
                 ? []
                 : table.getCoreRowModel().rows.map((r) => r.original);
             meta.onRowSelected?.(nextSelectedRows);
-            meta.lastClickedIndex.current = null;
+            meta.lastClickedRowId.current = null;
         }
         table.toggleAllRowsSelected();
     }, [table]);
