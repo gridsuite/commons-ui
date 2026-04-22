@@ -26,7 +26,7 @@ function normalizeCompositeSelection(
             return next[node.uuid];
         }
         // Recurse first so nested composites are resolved bottom-up.
-        const everyChildSelected = children.map((child) => visit(child)).every((child) => child);
+        const everyChildSelected = children.map((child) => visit(child)).every(Boolean);
         if (everyChildSelected) {
             next[node.uuid] = true;
         } else {
