@@ -12,3 +12,4 @@ export * from './substation';
 export * from './voltageLevel';
 export * from './load';
 export * from './by-filter';
+export * from './generator';

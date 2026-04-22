@@ -6,7 +6,7 @@
  */
 
 import { number, TestContext } from 'yup';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER } from '../../../../utils';
+import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
 
 export const getSetPointsEmptyFormData = (_isEquipmentModification = false) => ({
     [FieldConstants.ACTIVE_POWER_SET_POINT]: null,
@@ -45,7 +45,7 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
             is: () => !isEquipmentModification,
             then: (schema) => {
                 return schema
-                    .required()
+                    .required(YUP_REQUIRED)
                     .nonNullable('FieldIsRequired')
                     .test(
                         'activePowerSetPoint',
@@ -62,7 +62,7 @@ export const getReactivePowerSetPointSchema = (isEquipmentModification = false) 
         .nullable()
         .when([FieldConstants.VOLTAGE_REGULATION], {
             is: (value: string) => !isEquipmentModification && !value,
-            then: (schema) => schema.required(),
+            then: (schema) => schema.required(YUP_REQUIRED),
         }),
 });
 

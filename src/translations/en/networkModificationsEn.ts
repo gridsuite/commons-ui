@@ -215,6 +215,30 @@ export const networkModificationsEn = {
     activePowerControlTooltip:
         'Slack bus active power repartition key: maxP/droop, default droop = 4 (used if balanceType is PROPORTIONAL_TO_GENERATION_P_MAX)',
     NoModification: 'No modification',
+    ReactiveLimitsKindMinMax: 'By range',
+    ReactiveLimitsKindCurve: 'By diagram',
+    MinimumReactivePower: 'Minimum reactive power',
+    MaximumReactivePower: 'Maximum reactive power',
+    ReactiveCapabilityCurveCreationErrorMissingPoints:
+        'The table of reactive capability curve must have at least four points.',
+    ReactiveCapabilityCurveCreationErrorPInvalid: 'Each active power value must be a valid unique number.',
+    ReactiveCapabilityCurveCreationErrorPOutOfRange:
+        'Each active power value must be within the min P and max P values.',
+    ReactiveCapabilityCurveCreationErrorQminPQmaxPIncoherence:
+        'Each minimum reactive power value must be less than or equal to the corresponding maximum reactive power value.',
+    ReactiveCapabilityCurveCreationErrorMissingNegativeP:
+        'The reactive capability curve table must have at least one row with negative active power',
+    ReactiveCapabilityCurveCreationErrorMissingPositiveP:
+        'The reactive capability curve table must have at least one row with positive active power',
+    P: 'P{labelSuffix}',
+    QminP: 'QminP{labelSuffix}',
+    QmaxP: 'QmaxP{labelSuffix}',
+    QminPmax: 'QminPmax',
+    QmaxPmax: 'QmaxPmax',
+    Pmin: 'Pmin',
+    QminPmin: 'QminPmin',
+    QmaxPmin: 'QmaxPmin',
+    Pmax: 'Pmax',
 
     // Tabs
     SubstationTab: 'Substation',
