@@ -6,7 +6,7 @@
  */
 import { InferType, mixed, object, string } from 'yup';
 import { UUID } from 'node:crypto';
-import { EquipmentType } from '../../../utils/types/equipmentType';
+import { EquipmentType, ExtendedEquipmentType } from '../../../utils/types/equipmentType';
 import { getHvdcLccDeletionSchema } from './hvdcLccDeletion';
 import { DeepNullable, FieldConstants, ModificationType, YUP_REQUIRED } from '../../../utils';
 import { EquipmentDeletionDto } from './equipmentDeletion.types';
@@ -14,8 +14,9 @@ import { EquipmentDeletionDto } from './equipmentDeletion.types';
 export const equipmentDeletionFormSchema = object()
     .shape({
         [FieldConstants.EQUIPMENT_ID]: string().nullable().required(YUP_REQUIRED),
-        [FieldConstants.TYPE]: mixed<EquipmentType>()
+        [FieldConstants.TYPE]: mixed<EquipmentType | ExtendedEquipmentType>()
             .oneOf(Object.values(EquipmentType))
+            .oneOf(Object.values(ExtendedEquipmentType))
             .nullable()
             .required(YUP_REQUIRED),
         [FieldConstants.DELETION_SPECIFIC_DATA]: getHvdcLccDeletionSchema(),
@@ -34,7 +35,7 @@ export const equipmentDeletionFormToDto = (form: EquipmentDeletionFormData): Equ
     return {
         type: ModificationType.EQUIPMENT_DELETION,
         equipmentId: form.equipmentID as UUID,
-        equipmentType: form.type,
+        equipmentType: form.type === ExtendedEquipmentType.HVDC_LINE_LCC || form.type === ExtendedEquipmentType.HVDC_LINE_VSC ? EquipmentType.HVDC_LINE : form.type,
         equipmentInfos: form.equipmentInfos ?? undefined,
     };
 };

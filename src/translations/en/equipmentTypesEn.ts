@@ -21,6 +21,8 @@ export const equipmentTypesEn = {
     SHUNT_COMPENSATOR: 'Shunt Compensator',
     STATIC_VAR_COMPENSATOR: 'Static Var Compensator',
     HVDC_LINE: 'HVDC Line',
+    HVDC_LINE_VSC: 'HVDC Line (VSC)',
+    HVDC_LINE_LCC: 'HVDC Line (LCC)',
     HVDC_CONVERTER_STATION: 'HVDC Converter Station',
     VSC_CONVERTER_STATION: 'Vsc Converter Station',
     LCC_CONVERTER_STATION: 'Lcc Converter Station',
