@@ -28,21 +28,12 @@ export function ShortCircuitParametersEditionDialog({
     activeDirectory,
     user,
     language,
-    isDeveloperMode,
-}: Readonly<ParametersEditionDialogProps & { isDeveloperMode: boolean }>) {
-    const parametersBackend = useParametersBackend(
-        user,
-        id,
-        ComputingType.SHORT_CIRCUIT,
-        OptionalServicesStatus.Up,
-        null,
-        null,
-        null,
-        null,
-        fetchShortCircuitParameters,
-        updateShortCircuitParameters,
-        getShortCircuitSpecificParametersDescription
-    );
+}: Readonly<ParametersEditionDialogProps>) {
+    const parametersBackend = useParametersBackend(user, id, ComputingType.SHORT_CIRCUIT, OptionalServicesStatus.Up, {
+        backendFetchParameters: fetchShortCircuitParameters,
+        backendUpdateParameters: updateShortCircuitParameters,
+        backendFetchSpecificParametersDescription: getShortCircuitSpecificParametersDescription,
+    });
 
     const shortCircuitMethods = useShortCircuitParametersForm({
         parametersBackend,
@@ -62,16 +53,18 @@ export function ShortCircuitParametersEditionDialog({
             onClose={onClose}
             onSave={shortCircuitMethods.onSaveDialog}
             onValidationError={shortCircuitMethods.onValidationError}
-            formSchema={shortCircuitMethods.formSchema}
-            formMethods={shortCircuitMethods.formMethods}
+            formContext={{
+                ...shortCircuitMethods.formMethods,
+                validationSchema: shortCircuitMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
+            maxWidth="lg"
         >
             <ShortCircuitParametersForm
                 shortCircuitMethods={shortCircuitMethods}
-                isDeveloperMode={isDeveloperMode}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm

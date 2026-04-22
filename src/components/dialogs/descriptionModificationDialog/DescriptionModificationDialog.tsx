@@ -6,7 +6,6 @@
  */
 
 import { useCallback } from 'react';
-import type { UUID } from 'node:crypto';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box } from '@mui/material';
@@ -19,11 +18,11 @@ import { MAX_CHAR_DESCRIPTION } from '../../../utils/constants/uiConstants';
 import { snackWithFallback } from '../../../utils/error';
 
 export interface DescriptionModificationDialogProps {
-    elementUuid: UUID;
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement: (uuid: UUID, data: Record<string, string>) => Promise<Response>;
+    updateElement?: (data: Record<string, string>) => Promise<Response>;
+    updateForm?: (data: Record<string, string>) => void;
 }
 
 const schema = yup.object().shape({
@@ -32,11 +31,11 @@ const schema = yup.object().shape({
 type SchemaType = yup.InferType<typeof schema>;
 
 export function DescriptionModificationDialog({
-    elementUuid,
     description,
     open,
     onClose,
     updateElement,
+    updateForm,
 }: Readonly<DescriptionModificationDialogProps>) {
     const { snackError } = useSnackMessage();
 
@@ -60,13 +59,16 @@ export function DescriptionModificationDialog({
 
     const onSubmit = useCallback<SubmitHandler<SchemaType>>(
         (data) => {
-            updateElement(elementUuid, {
+            updateElement?.({
                 [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION]?.trim() ?? '',
             }).catch((error: unknown) => {
                 snackWithFallback(snackError, error, { headerId: 'descriptionModificationError' });
             });
+            updateForm?.({
+                [FieldConstants.DESCRIPTION]: data[FieldConstants.DESCRIPTION]?.trim() ?? '',
+            });
         },
-        [elementUuid, updateElement, snackError]
+        [updateElement, updateForm, snackError]
     );
 
     return (
@@ -74,10 +76,8 @@ export function DescriptionModificationDialog({
             open={open}
             onClose={onCancel}
             onSave={onSubmit}
-            formSchema={schema}
-            formMethods={methods}
+            formContext={{ ...methods, validationSchema: schema, removeOptional: true }}
             titleId="description"
-            removeOptional
         >
             <Box paddingTop={1}>
                 <ExpandingTextField

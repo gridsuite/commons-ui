@@ -7,7 +7,6 @@
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
-    fetchDefaultSensitivityAnalysisProvider,
     fetchSensitivityAnalysisParameters,
     fetchSensitivityAnalysisProviders,
     updateSensitivityAnalysisParameters,
@@ -28,6 +27,8 @@ export function SensitivityAnalysisParametersDialog({
     activeDirectory,
     language,
     user,
+    globalBuildStatus,
+    isRootNode = false,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
@@ -35,12 +36,11 @@ export function SensitivityAnalysisParametersDialog({
         id,
         ComputingType.SENSITIVITY_ANALYSIS,
         OptionalServicesStatus.Up,
-        fetchSensitivityAnalysisProviders,
-        null,
-        fetchDefaultSensitivityAnalysisProvider,
-        null,
-        fetchSensitivityAnalysisParameters,
-        updateSensitivityAnalysisParameters
+        {
+            backendFetchProviders: fetchSensitivityAnalysisProviders,
+            backendFetchParameters: fetchSensitivityAnalysisParameters,
+            backendUpdateParameters: updateSensitivityAnalysisParameters,
+        }
     );
 
     const sensitivityAnalysisMethods = useSensitivityAnalysisParametersForm({
@@ -51,6 +51,8 @@ export function SensitivityAnalysisParametersDialog({
         parametersUuid: id,
         name,
         description,
+        globalBuildStatus,
+        isRootNode,
     });
     const {
         formState: { errors, dirtyFields },
@@ -62,16 +64,20 @@ export function SensitivityAnalysisParametersDialog({
             open={open}
             onClose={onClose}
             onSave={sensitivityAnalysisMethods.onSaveDialog}
-            formSchema={sensitivityAnalysisMethods.formSchema}
-            formMethods={sensitivityAnalysisMethods.formMethods}
+            formContext={{
+                ...sensitivityAnalysisMethods.formMethods,
+                validationSchema: sensitivityAnalysisMethods.formSchema,
+                removeOptional: true,
+                language,
+            }}
             titleId={titleId}
-            removeOptional
-            language={language}
             disabledSave={disableSave}
         >
             <SensitivityAnalysisParametersForm
                 sensitivityAnalysisMethods={sensitivityAnalysisMethods}
                 isDeveloperMode={isDeveloperMode}
+                isRootNode={isRootNode}
+                globalBuildStatus={globalBuildStatus}
                 renderTitleFields={() => {
                     return (
                         <NameElementEditorForm

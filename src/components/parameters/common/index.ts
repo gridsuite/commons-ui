@@ -6,7 +6,7 @@
  */
 
 export * from './computing-type';
-export * from './constant';
+export * from './constants';
 export * from './parameters-edition-dialog-props';
 export * from './line-separator';
 export * from './parameters';
@@ -15,3 +15,5 @@ export * from './ProviderParam';
 export * from './widget';
 export * from './voltage-level-table';
 export * from './limitreductions';
+export * from './contingency-table';
+export * from './hook';

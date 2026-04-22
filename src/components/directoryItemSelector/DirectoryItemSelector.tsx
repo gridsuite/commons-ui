@@ -7,20 +7,23 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import type { MuiStyles } from '../../utils/styles';
-import { getFileIcon } from '../../utils/mapper/getFileIcon';
-import { ElementType } from '../../utils/types/elementType';
-import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder/TreeViewFinder';
-import { useSnackMessage } from '../../hooks/useSnackMessage';
+import type { MuiStyles } from '../../utils';
+import {
+    getFileIcon,
+    ElementType,
+    arraysContainIdenticalStrings,
+    ElementAttributes,
+    snackWithFallback,
+} from '../../utils';
+import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder';
+import { useSnackMessage } from '../../hooks';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
-import { ElementAttributes } from '../../utils';
 import {
     fetchChildrenForExpandedNodes,
     getExpansionPathsForSelected,
     initializeFromLastSelected,
     saveLastSelectedDirectoryFromNode,
 } from './utils';
-import { snackWithFallback } from '../../utils/error';
 
 const styles = {
     icon: (theme) => ({
@@ -184,6 +187,7 @@ export function DirectoryItemSelector({
     ...otherTreeViewFinderProps
 }: Readonly<DirectoryItemSelectorProps>) {
     const [data, setData] = useState<TreeViewFinderNodeProps[]>([]);
+    const [lastFetchedEquipmentTypes, setLastFetchedEquipmentTypes] = useState<string[]>();
     const [rootDirectories, setRootDirectories] = useState<ElementAttributes[]>([]);
     const [isRootsLoaded, setIsRootsLoaded] = useState(false);
     const [autoExpandedNodes, setAutoExpandedNodes] = useState<UUID[]>([]);
@@ -297,15 +301,22 @@ export function DirectoryItemSelector({
         [types, equipmentTypes, itemFilter, contentFilter, addToDirectory]
     );
 
-    // Helper function to fetch children for a node if not already loaded
+    // Helper function to fetch children for a node if it is not already loaded, or if a refresh is needed
     const fetchNodeChildrenIfNeeded = useCallback(
         async (nodeId: UUID): Promise<void> => {
             const node = nodeMap.current[nodeId];
-            if (node && (!node.children || node.children.length === 0) && node.type === ElementType.DIRECTORY) {
+            if (
+                node &&
+                (!node.children ||
+                    node.children.length === 0 ||
+                    !arraysContainIdenticalStrings(equipmentTypes, lastFetchedEquipmentTypes)) &&
+                node.type === ElementType.DIRECTORY
+            ) {
+                setLastFetchedEquipmentTypes(equipmentTypes);
                 await fetchDirectoryChildren(nodeId);
             }
         },
-        [fetchDirectoryChildren]
+        [equipmentTypes, lastFetchedEquipmentTypes, setLastFetchedEquipmentTypes, fetchDirectoryChildren]
     );
 
     // Handle expansion from selected items

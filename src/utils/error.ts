@@ -5,10 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SnackInputs, UseSnackMessageReturn } from '../hooks/useSnackMessage';
-import { ProblemDetailError } from './types/ProblemDetailError';
-import { NetworkTimeoutError } from './types/NetworkTimeoutError';
-
-import { formatMessageValues } from './types';
+import { ErrorMessageDescriptor, NetworkTimeoutError, ProblemDetailError } from './types';
 
 export type HeaderSnackInputs = Pick<SnackInputs, 'headerId' | 'headerTxt' | 'headerValues'>;
 
@@ -20,37 +17,44 @@ export function catchErrorHandler(error: unknown, callback: (message: string) =>
     }
 }
 
+export function extractErrorMessageDescriptor(error: unknown, errorMessageIdFallback: string): ErrorMessageDescriptor {
+    if (error instanceof NetworkTimeoutError) {
+        return { descriptor: { id: error.message } };
+    }
+
+    if (error instanceof ProblemDetailError) {
+        if (error.businessErrorCode) {
+            return {
+                descriptor: { id: error.businessErrorCode },
+                values: error.businessErrorValues,
+            };
+        }
+        return {
+            descriptor: { id: 'errors.technicalError' },
+            values: {
+                message: error.message,
+                serverName: error.serverName,
+                timestamp: error.timestamp,
+                traceId: error.traceId,
+            },
+        };
+    }
+
+    return { descriptor: { id: errorMessageIdFallback } };
+}
+
 export function snackWithFallback(
     snackError: UseSnackMessageReturn['snackError'],
     error: unknown,
     headerInputs?: HeaderSnackInputs
 ) {
-    if (error instanceof NetworkTimeoutError) {
+    if (error instanceof NetworkTimeoutError || error instanceof ProblemDetailError) {
+        const { descriptor, values } = extractErrorMessageDescriptor(error, '');
         snackError({
-            messageId: error.message,
+            messageId: descriptor.id,
+            messageValues: values,
             ...headerInputs,
         });
-        return;
-    }
-    if (error instanceof ProblemDetailError) {
-        if (error.businessErrorCode) {
-            snackError({
-                messageId: error.businessErrorCode,
-                messageValues: error.businessErrorValues ? formatMessageValues(error.businessErrorValues) : undefined,
-                ...headerInputs,
-            });
-        } else {
-            snackError({
-                messageId: 'errors.technicalError',
-                messageValues: {
-                    message: error.message,
-                    serverName: error.serverName,
-                    timestamp: error.timestamp.toLocaleString(), // It would require refactoring to adapt with GS language so we keep it like that for now
-                    traceId: error.traceId,
-                },
-                ...headerInputs,
-            });
-        }
     } else {
         catchErrorHandler(error, (message) => {
             snackError({

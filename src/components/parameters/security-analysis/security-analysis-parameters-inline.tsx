@@ -11,14 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import {
-    ComputingType,
-    CreateParameterDialog,
-    ISAParameters,
-    LabelledButton,
-    LineSeparator,
-    toFormValueSaParameters,
-} from '../common';
+import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { SubmitButton } from '../../inputs';
@@ -29,55 +22,48 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
+import { SAParameters } from './types';
+import { toFormValueSaParameters } from './columns-definitions';
+import { ContingencyCount } from '../common/contingency-table/types';
 
 export function SecurityAnalysisParametersInline({
     studyUuid,
     parametersBackend,
+    fetchContingencyCount,
+    isBuiltCurrentNode,
     setHaveDirtyFields,
     isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
+    fetchContingencyCount: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
+    isBuiltCurrentNode: boolean;
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
-    const [, , , , resetProvider, , , , resetParameters, , ,] = parametersBackend;
+    const { resetParameters } = parametersBackend;
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
 
     const { snackError } = useSnackMessage();
 
     const { handleSubmit, formState, reset, getValues } = securityAnalysisMethods.formMethods;
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-            resetProvider();
-        } else if (pendingResetAction === 'parameters') {
-            resetParameters();
-        }
+        resetParameters();
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [resetParameters]);
 
     const handleResetAllClick = useCallback(() => {
-        setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
     const handleCancelReset = useCallback(() => {
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
     }, []);
 
     const handleLoadParameter = useCallback(
@@ -85,7 +71,7 @@ export function SecurityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSecurityAnalysisParameters(newParams[0].id)
-                    .then((parameters: ISAParameters) => {
+                    .then((parameters: SAParameters) => {
                         console.info(`loading the following security analysis parameters :  ${parameters.uuid}`);
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,
@@ -107,6 +93,9 @@ export function SecurityAnalysisParametersInline({
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
+            showContingencyCount
+            fetchContingencyCount={fetchContingencyCount}
+            isBuiltCurrentNode={isBuiltCurrentNode}
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {
                 return (
@@ -126,10 +115,6 @@ export function SecurityAnalysisParametersInline({
                                 />
                                 <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
                                 <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                                <LabelledButton
-                                    label="resetProviderValuesToDefault"
-                                    callback={handleResetParametersClick}
-                                />
                                 <SubmitButton
                                     onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
                                     variant="outlined"

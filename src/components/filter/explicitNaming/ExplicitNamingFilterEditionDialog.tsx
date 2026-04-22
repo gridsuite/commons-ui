@@ -19,7 +19,8 @@ import { explicitNamingFilterSchema } from './ExplicitNamingFilterForm';
 
 import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FilterForm } from '../FilterForm';
-import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { FilterType } from '../constants/FilterConstants';
+import { NO_ITEM_SELECTION_FOR_COPY } from '../../../utils/directory-utils';
 import { FilterEditionProps } from '../filter.type';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
@@ -118,14 +119,16 @@ export function ExplicitNamingFilterEditionDialog({
             open={open}
             onClose={onClose}
             onSave={onSubmit}
-            formSchema={formSchema}
-            formMethods={formMethods}
+            formContext={{
+                ...formMethods,
+                validationSchema: formSchema,
+                removeOptional: true,
+                language,
+                isDeveloperMode,
+            }}
             titleId={titleId}
-            removeOptional
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
-            language={language}
-            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             {isDataReady && (

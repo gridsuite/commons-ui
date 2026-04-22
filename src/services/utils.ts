@@ -10,20 +10,13 @@ import { ProblemDetailError } from '../utils/types/ProblemDetailError';
 import { NetworkTimeoutError } from '../utils/types/NetworkTimeoutError';
 import { CustomError } from '../utils/types/CustomError';
 
-const DEFAULT_TIMEOUT_MS = 50_000;
+export const DEFAULT_TIMEOUT_MS = 50_000;
+export const IGNORE_SIGNAL = 'IGNORE_SIGNAL';
 
 /** Optional convenience: allow per-call timeout override without crafting a signal manually. */
 type FetchInitWithTimeout = RequestInit & {
     /** If provided and no signal is set, use this as the timeout override (ms). */
     timeoutMs?: number;
-};
-
-const parseError = (text: string) => {
-    try {
-        return JSON.parse(text);
-    } catch {
-        return null;
-    }
 };
 
 /**
@@ -57,37 +50,93 @@ const prepareRequest = (init: FetchInitWithTimeout | undefined, token?: string) 
     return initWithSignal;
 };
 
-export const convertToCustomError = (textError: string) => {
-    const errorJson = parseError(textError);
-    if (errorJson?.server && errorJson?.timestamp && errorJson?.traceId && errorJson?.detail) {
-        let date: Date = new Date(); // Fallback to current timestamp
-        try {
-            date = new Date(errorJson.timestamp);
-        } catch {
-            // Ignore
-        }
-        return new ProblemDetailError(
-            errorJson.detail,
-            errorJson.server,
-            date,
-            errorJson.traceId,
-            errorJson.status,
-            errorJson.businessErrorCode,
-            errorJson.businessErrorValues
-        );
+type ProblemDetailDto = {
+    status: number;
+    server: string;
+    timestamp: string;
+    traceId: string;
+    detail: string;
+    businessErrorCode?: string;
+    businessErrorValues?: Record<string, unknown>;
+};
+
+const isProblemDetail = (error: unknown): error is ProblemDetailDto => {
+    if (typeof error !== 'object' || error === null) {
+        return false;
     }
-    return new CustomError(
-        errorJson.detail,
-        errorJson.status,
-        errorJson.businessErrorCode,
-        errorJson.businessErrorValues
+
+    const e = error as Record<string, unknown>;
+
+    return (
+        typeof e.status === 'number' &&
+        typeof e.server === 'string' &&
+        typeof e.timestamp === 'string' &&
+        typeof e.traceId === 'string' &&
+        typeof e.detail === 'string'
     );
 };
 
-const handleError = (response: Response) => {
-    return response.text().then((text: string) => {
-        throw convertToCustomError(text);
-    });
+export const parseError = (errorTxt: string) => {
+    let error: unknown;
+    try {
+        error = JSON.parse(errorTxt);
+    } catch {
+        return new Error(errorTxt);
+    }
+
+    if (isProblemDetail(error)) {
+        return new ProblemDetailError(
+            error.status,
+            error.detail,
+            error.server,
+            error.timestamp,
+            error.traceId,
+            error.businessErrorCode,
+            error.businessErrorValues
+        );
+    }
+
+    return new Error(errorTxt);
+};
+
+export const handleNotOkResponse = async (response: Response): Promise<never> => {
+    let bodyText: string;
+
+    try {
+        bodyText = await response.text();
+    } catch (error) {
+        throw new CustomError(response.status, 'Error in error: unable to read response body', {
+            cause: error,
+        });
+    }
+
+    const contentType = response.headers.get('content-type') ?? '';
+    if (!contentType.includes('application/json') && !contentType.includes('application/problem+json')) {
+        throw new CustomError(response.status, bodyText);
+    }
+
+    let body: unknown;
+    try {
+        body = JSON.parse(bodyText);
+    } catch (error) {
+        throw new CustomError(response.status, `Error in error: unable to parse json response from text\n${bodyText}`, {
+            cause: error,
+        });
+    }
+
+    if (isProblemDetail(body)) {
+        throw new ProblemDetailError(
+            body.status,
+            body.detail,
+            body.server,
+            body.timestamp,
+            body.traceId,
+            body.businessErrorCode,
+            body.businessErrorValues
+        );
+    }
+
+    throw new CustomError(response.status, bodyText);
 };
 
 const handleTimeoutError = (error: unknown) => {
@@ -99,7 +148,7 @@ const handleTimeoutError = (error: unknown) => {
 
 const safeFetch = (url: string, initCopy: RequestInit) => {
     return fetch(url, initCopy)
-        .then((response) => (response.ok ? response : handleError(response)))
+        .then((response) => (response.ok ? response : handleNotOkResponse(response)))
         .catch(handleTimeoutError);
 };
 
@@ -126,3 +175,7 @@ export const backendFetchFile = (url: string, init: RequestInit, token?: string)
 export const getRequestParamFromList = (paramName: string, params: string[] = []) => {
     return new URLSearchParams(params.map((param) => [paramName, param]));
 };
+
+export function safeEncodeURIComponent(value: string | null | undefined): string {
+    return value != null ? encodeURIComponent(value) : '';
+}

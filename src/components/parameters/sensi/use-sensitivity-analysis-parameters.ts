@@ -9,30 +9,29 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import { ComputingType, PROVIDER } from '../common';
+import { ComputingType } from '../common/computing-type';
 import {
     ElementType,
     FactorsCount,
     FieldConstants,
     SensitivityAnalysisParametersInfos,
+    snackWithFallback,
     UseParametersBackendReturnProps,
 } from '../../../utils';
 import {
+    filterSensiParameterRows,
     getFormSchema,
     getSensiHvdcformatNewParams,
     getSensiInjectionsformatNewParams,
     getSensiInjectionsSetformatNewParams,
     getSensiNodesformatNewParams,
     getSensiPstformatNewParams,
-    filterSensiParameterRows,
     SensitivityAnalysisParametersFormSchema,
 } from './utils';
 import {
-    ACTIVATED,
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     CONTAINER_ID,
     CONTAINER_NAME,
-    CONTINGENCIES,
     DEFAULT_FACTOR_COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
@@ -56,10 +55,12 @@ import {
     getSensitivityAnalysisFactorsCount,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { updateParameter } from '../../../services';
+import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
-import { snackWithFallback } from '../../../utils/error';
+import { BuildStatus } from '../../node';
+import { CONTINGENCIES, PROVIDER } from '../common/constants';
+import { ACTIVATED } from '../common/parameter-table-field';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
@@ -68,7 +69,7 @@ export interface UseSensitivityAnalysisParametersReturn {
     fromSensitivityAnalysisParamsDataToFormValues: (parameters: SensitivityAnalysisParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => SensitivityAnalysisParametersInfos;
     params: SensitivityAnalysisParametersInfos | null;
-    paramsLoaded: boolean;
+    paramsFormInitialized: boolean;
     isStudyLinked: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
@@ -90,6 +91,8 @@ type UseSensitivityAnalysisParametersFormProps =
           currentRootNetworkUuid: null;
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: UUID;
+          globalBuildStatus: BuildStatus | undefined;
+          isRootNode: boolean;
       }
     | {
           name: null;
@@ -99,6 +102,8 @@ type UseSensitivityAnalysisParametersFormProps =
           currentRootNetworkUuid: UUID | null;
           parametersBackend: UseParametersBackendReturnProps<ComputingType.SENSITIVITY_ANALYSIS>;
           parametersUuid: null;
+          globalBuildStatus: BuildStatus | undefined;
+          isRootNode: boolean;
       };
 
 export const useSensitivityAnalysisParametersForm = ({
@@ -109,13 +114,15 @@ export const useSensitivityAnalysisParametersForm = ({
     parametersUuid,
     name,
     description,
+    globalBuildStatus,
+    isRootNode,
 }: UseSensitivityAnalysisParametersFormProps): UseSensitivityAnalysisParametersReturn => {
-    const [providers, , , , , params, , updateParameters] = parametersBackend;
-    const [sensitivityAnalysisParams, setSensitivityAnalysisParams] = useState(params);
+    const { providers, params, updateParameters } = parametersBackend;
     const { snackError } = useSnackMessage();
     const [factorsCount, setFactorsCount] = useState<FactorsCount>(DEFAULT_FACTOR_COUNT);
+    const [factorCountRefreshTrigger, setFactorCountRefreshTrigger] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSubmitAction, setIsSubmitAction] = useState(false);
+    const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
 
     const emptyFormData = useMemo(() => {
         return {
@@ -171,13 +178,19 @@ export const useSensitivityAnalysisParametersForm = ({
         setFactorsCount(DEFAULT_FACTOR_COUNT);
     }, []);
 
-    const updateFactorCount = useCallback(() => {
-        if (!currentNodeUuid || !currentRootNetworkUuid) {
-            return;
+    useEffect(() => {
+        let active = true;
+        if (!currentNodeUuid || !currentRootNetworkUuid || !paramsFormInitialized) {
+            // return a no-op cleanup function to ignore eslint consistent-return
+            return () => {};
+        }
+
+        if (globalBuildStatus === BuildStatus.NOT_BUILT || globalBuildStatus === BuildStatus.BUILDING || isRootNode) {
+            setFactorsCount(DEFAULT_FACTOR_COUNT);
+            return () => {};
         }
 
         const formValues = getValues();
-
         const filteredInjectionsSet = filterSensiParameterRows(formValues[PARAMETER_SENSI_INJECTIONS_SET]);
         const filteredInjection = filterSensiParameterRows(formValues[PARAMETER_SENSI_INJECTION]);
         const filteredHvdc = filterSensiParameterRows(formValues[PARAMETER_SENSI_HVDC]);
@@ -193,7 +206,8 @@ export const useSensitivityAnalysisParametersForm = ({
 
         if (!hasAnyEntries) {
             resetFactorsCount();
-            return;
+            // return a no-op cleanup function to ignore eslint consistent-return
+            return () => {};
         }
 
         const filteredFormValues = {
@@ -204,30 +218,65 @@ export const useSensitivityAnalysisParametersForm = ({
             [PARAMETER_SENSI_PST]: filteredPst,
             [PARAMETER_SENSI_NODES]: filteredNodes,
         };
+        const factorCountParams = formatNewParams(filteredFormValues);
 
+        // timeout to avoid a 'flash' of the loading state when backend responds instantly
+        let loadingTimeoutId: ReturnType<typeof setTimeout>;
+
+        const controller = new AbortController();
+        // build a signal which allows us to cancel the fetch by calling controller.abort() or the timeout fires
+        const abortSignal = AbortSignal.any([controller.signal, AbortSignal.timeout(DEFAULT_TIMEOUT_MS)]);
         setIsLoading(true);
+
         getSensitivityAnalysisFactorsCount(
             studyUuid,
             currentNodeUuid,
             currentRootNetworkUuid,
-            formatNewParams(filteredFormValues)
+            factorCountParams,
+            abortSignal
         )
             .then((factorsCountResponse) => {
-                setFactorsCount(factorsCountResponse);
-                const timeoutId = setTimeout(() => {
-                    setIsLoading(false);
-                }, 500);
-                return () => clearTimeout(timeoutId);
+                if (active) {
+                    setFactorsCount(factorsCountResponse);
+                }
             })
             .catch((error) => {
-                setIsLoading(false);
+                if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
+                    return;
+                }
                 snackWithFallback(snackError, error, { headerId: 'getSensitivityAnalysisFactorsCountError' });
+            })
+            .finally(() => {
+                if (active) {
+                    // not too quick
+                    loadingTimeoutId = setTimeout(() => setIsLoading(false), 500);
+                }
             });
-    }, [snackError, studyUuid, currentRootNetworkUuid, formatNewParams, currentNodeUuid, getValues, resetFactorsCount]);
+
+        return () => {
+            active = false;
+            controller?.abort(new Error(IGNORE_SIGNAL));
+            clearTimeout(loadingTimeoutId);
+            setIsLoading(false);
+        };
+        // globalBuildStatus is needed because when the node is build the factors must be recalculated
+    }, [
+        snackError,
+        studyUuid,
+        currentRootNetworkUuid,
+        currentNodeUuid,
+        factorCountRefreshTrigger,
+        getValues,
+        formatNewParams,
+        resetFactorsCount,
+        paramsFormInitialized,
+        globalBuildStatus,
+        isRootNode,
+    ]);
 
     const onFormChanged = useCallback(() => {
-        updateFactorCount();
-    }, [updateFactorCount]);
+        setFactorCountRefreshTrigger((prevState) => prevState + 1);
+    }, []);
 
     const fromSensitivityAnalysisParamsDataToFormValues = useCallback(
         (parameters: SensitivityAnalysisParametersInfos): SensitivityAnalysisParametersFormSchema => {
@@ -382,18 +431,16 @@ export const useSensitivityAnalysisParametersForm = ({
 
     const onSaveInline = useCallback(
         (newParams: Record<string, any>) => {
-            setIsSubmitAction(true);
             setSensitivityAnalysisParameters(studyUuid, formatNewParams(newParams))
                 .then(() => {
                     const formattedParams = formatNewParams(newParams);
-                    setSensitivityAnalysisParams(formattedParams);
                     updateParameters(formattedParams);
                 })
                 .catch((error) => {
                     snackWithFallback(snackError, error, { headerId: 'updateSensitivityAnalysisParametersError' });
                 });
         },
-        [setSensitivityAnalysisParams, snackError, studyUuid, formatNewParams, updateParameters]
+        [snackError, studyUuid, formatNewParams, updateParameters]
     );
 
     const onSaveDialog = useCallback(
@@ -414,30 +461,21 @@ export const useSensitivityAnalysisParametersForm = ({
     );
 
     useEffect(() => {
-        if (sensitivityAnalysisParams) {
-            reset(fromSensitivityAnalysisParamsDataToFormValues(sensitivityAnalysisParams));
-            if (!isSubmitAction) {
-                onFormChanged();
-            }
-        }
-    }, [
-        fromSensitivityAnalysisParamsDataToFormValues,
-        sensitivityAnalysisParams,
-        isSubmitAction,
-        reset,
-        onFormChanged,
-    ]);
-    useEffect(() => {
         if (params) {
             reset(fromSensitivityAnalysisParamsDataToFormValues(params));
+            setParamsFormInitialized(true);
         }
     }, [params, reset, fromSensitivityAnalysisParamsDataToFormValues]);
 
-    const isMaxResultsReached = useMemo(() => factorsCount.resultCount > MAX_RESULTS_COUNT, [factorsCount]);
+    const isMaxResultsReached = useMemo(
+        () => factorsCount.resultCount !== null && factorsCount.resultCount > MAX_RESULTS_COUNT,
+        [factorsCount]
+    );
 
-    const isMaxVariablesReached = useMemo(() => factorsCount.variableCount > MAX_VARIABLES_COUNT, [factorsCount]);
-
-    const paramsLoaded = useMemo(() => !!params, [params]);
+    const isMaxVariablesReached = useMemo(
+        () => factorsCount.variableCount !== null && factorsCount.variableCount > MAX_VARIABLES_COUNT,
+        [factorsCount]
+    );
 
     return {
         formMethods,
@@ -446,7 +484,7 @@ export const useSensitivityAnalysisParametersForm = ({
         fromSensitivityAnalysisParamsDataToFormValues,
         formatNewParams,
         params,
-        paramsLoaded,
+        paramsFormInitialized,
         isStudyLinked,
         onSaveInline,
         onSaveDialog,

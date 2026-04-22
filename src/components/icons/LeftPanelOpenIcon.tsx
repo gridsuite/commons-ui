@@ -6,18 +6,8 @@
  */
 
 import LeftPanelOpen from '@material-symbols/svg-400/outlined/left_panel_open.svg?react';
-import { useTheme } from '@mui/material';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
 
-export function LeftPanelOpenIcon() {
-    const theme = useTheme();
-
-    return (
-        <LeftPanelOpen
-            style={{
-                width: 24,
-                height: 24,
-                fill: theme.palette.text.primary,
-            }}
-        />
-    );
+export function LeftPanelOpenIcon(props: SvgIconProps) {
+    return <SvgIcon component={LeftPanelOpen} inheritViewBox {...props} />;
 }

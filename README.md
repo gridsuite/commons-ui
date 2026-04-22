@@ -46,7 +46,6 @@ Only in this case, you need to follow the steps below:
 - [Make a release action](https://github.com/gridsuite/commons-ui/actions/workflows/release.yml)
 - In the 'run workflow' combobox select, let the branch on main
 - Enter the type of evolution (major | minor | patch)
-- Enter your NPM access token (when you create it, check the **Bypass two-factor authentication** checkbox to bypass 2FA, set **Packages and scopes** → **Permissions** to **Read and write** and let **Organizations** → **Permissions** to **No access**, see the [access token documentation](https://docs.npmjs.com/creating-and-viewing-access-tokens) for details)
 - Click 'run workflow'
 
 Otherwise ask someone who has the permission.

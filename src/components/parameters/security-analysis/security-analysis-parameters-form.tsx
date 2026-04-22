@@ -7,12 +7,15 @@
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Grid, LinearProgress } from '@mui/material';
+import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
-import { LineSeparator, PARAM_SA_PROVIDER } from '../common';
+import { CONTINGENCY_LISTS_INFOS, LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
+import { ContingencyTable } from '../common/contingency-table';
+import { ContingencyCount } from '../common/contingency-table/types';
 
 const styles = {
     form: {
@@ -42,11 +45,17 @@ const styles = {
 
 export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
+    showContingencyCount,
+    fetchContingencyCount,
+    isBuiltCurrentNode,
     renderTitleFields,
     renderActions,
     isDeveloperMode,
 }: Readonly<{
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
+    showContingencyCount: boolean;
+    fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
+    isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
@@ -56,7 +65,7 @@ export function SecurityAnalysisParametersForm({
             validationSchema={securityAnalysisMethods.formSchema}
             {...securityAnalysisMethods.formMethods}
         >
-            <Grid item sx={{ height: '100%' }} xl={9} lg={11} md={12}>
+            <Grid item sx={{ height: '100%' }}>
                 <Box
                     sx={{
                         height: '100%',
@@ -68,7 +77,7 @@ export function SecurityAnalysisParametersForm({
                 >
                     <Box sx={styles.securityAnalysisParameters}>
                         {renderTitleFields?.()}
-                        {securityAnalysisMethods.paramsLoaded ? (
+                        {securityAnalysisMethods.paramsFormInitialized ? (
                             <>
                                 <Grid
                                     container
@@ -101,13 +110,23 @@ export function SecurityAnalysisParametersForm({
                                 >
                                     <Grid
                                         container
+                                        key="securityAnalysisParameters"
                                         sx={mergeSx(parametersStyles.scrollableGrid, {
                                             maxHeight: '100%',
                                         })}
                                     >
+                                        <ContingencyTable
+                                            name={CONTINGENCY_LISTS_INFOS}
+                                            showContingencyCount={showContingencyCount}
+                                            fetchContingencyCount={fetchContingencyCount}
+                                            isBuiltCurrentNode={isBuiltCurrentNode}
+                                        />
+                                        <Grid container paddingTop={4} paddingBottom={2}>
+                                            <LineSeparator />
+                                        </Grid>
                                         <SecurityAnalysisParametersSelector
                                             params={securityAnalysisMethods.params}
-                                            currentProvider={securityAnalysisMethods.currentProvider?.trim()}
+                                            currentProvider={securityAnalysisMethods.watchProvider?.trim()}
                                             isDeveloperMode={isDeveloperMode}
                                             defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                                         />

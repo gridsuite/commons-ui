@@ -17,6 +17,7 @@ export type Metadata = {
     hiddenInAppsMenu: boolean;
     hiddenUserInformation: boolean;
     resources?: MetaDataRessources[];
+    useBusbarIdAsContingencyNameForPolygonCreation?: boolean;
 };
 
 export type StudyMetadata = Metadata & {
@@ -31,6 +32,13 @@ export type StudyMetadata = Metadata & {
     favoriteCountries?: string[];
     substationPropertiesGlobalFilters?: Map<string, string[]>; // used to generate user specific global filters
     baseMapOptions?: { id: string; label: string }[];
+    copyCsvSeparator?: string;
+    temporaryLimitsNamesForCatalog?: string[];
+};
+
+export type ExploreMetadata = Metadata & {
+    name: 'Explore';
+    maxFileSizeInMb?: number;
 };
 
 type ThemeColors = Record<string, string>;

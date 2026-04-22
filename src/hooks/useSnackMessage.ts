@@ -9,14 +9,15 @@ import { RefObject, useCallback } from 'react';
 import { BaseVariant, closeSnackbar as closeSnackbarFromNotistack, OptionsObject, useSnackbar } from 'notistack';
 import { IntlShape } from 'react-intl';
 import { useIntlRef } from './useIntlRef';
+import { FormatValues } from '../utils/types';
 
 export interface SnackInputs extends Omit<OptionsObject, 'variant' | 'style'> {
     messageTxt?: string;
     messageId?: string;
-    messageValues?: Record<string, string>;
+    messageValues?: FormatValues;
     headerTxt?: string;
     headerId?: string;
-    headerValues?: Record<string, string>;
+    headerValues?: FormatValues;
 }
 
 export interface UseSnackMessageReturn {

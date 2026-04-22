@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 import { LineSeparator } from './line-separator';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput } from '../../inputs';
-import { PROVIDER } from './constant';
+import { PROVIDER } from './constants';
 import type { MuiStyles } from '../../../utils/styles';
 
 export interface ProviderParamProps {
@@ -26,7 +26,7 @@ const styles = {
 export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
     return (
         <>
-            <Grid xl={8} container sx={styles.providerParam} paddingRight={1}>
+            <Grid container sx={styles.providerParam} paddingRight={1}>
                 <Grid item xs sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
@@ -34,7 +34,7 @@ export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
                     <MuiSelectInput name={PROVIDER} size="small" fullWidth options={options} />
                 </Grid>
             </Grid>
-            <Grid container paddingTop={1} paddingRight={1} xl={8}>
+            <Grid container paddingTop={1} paddingRight={1}>
                 <LineSeparator />
             </Grid>
         </>

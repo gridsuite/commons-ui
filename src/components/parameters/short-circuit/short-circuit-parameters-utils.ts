@@ -7,7 +7,10 @@
 
 import {
     InitialVoltage,
+    NODE_CLUSTER,
+    NODE_CLUSTER_FILTER_IDS,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -17,15 +20,28 @@ import {
 } from './constants';
 import yup from '../../../utils/yupConfig';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
+import { ID, snackWithFallback, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
 
-import type { PowerElectronicsMaterial } from './short-circuit-parameters.type';
+import {
+    FilterPOJO,
+    FormPowerElectronicsCluster,
+    type PowerElectronicsCluster,
+    type PowerElectronicsMaterial,
+} from './short-circuit-parameters.type';
 import {
     formatSpecificParameters,
     getAllSpecificParametersValues,
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
 } from '../common/utils';
+import { NAME } from '../../inputs';
+import { SnackInputs } from '../../../hooks';
+
+export enum ShortCircuitParametersTabValues {
+    GENERAL = 'General',
+    STUDY_AREA = 'StudyArea',
+    POWER_ELECTRONICS = 'PowerElectronics',
+}
 
 export const getCommonShortCircuitParametersFormSchema = () => {
     return yup.object().shape({
@@ -43,6 +59,13 @@ export const getCommonShortCircuitParametersFormSchema = () => {
     });
 };
 
+const requiredWhenActive = <T extends yup.AnySchema>(schema: T) =>
+    schema.when('active', {
+        is: true,
+        then: (s) => s.required(),
+        otherwise: (s) => s.notRequired().nullable(),
+    });
+
 export const getSpecificShortCircuitParametersFormSchema = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[] | undefined
 ) => {
@@ -58,11 +81,58 @@ export const getSpecificShortCircuitParametersFormSchema = (
               .of(
                   yup.object<PowerElectronicsMaterial & { active: boolean }>().shape({
                       active: yup.boolean().required(),
-                      alpha: yup.number().required(),
-                      u0: yup.number().required(),
-                      usMin: yup.number().required(),
-                      usMax: yup.number().required(),
-                      type: yup.string().oneOf(['WIND', 'SOLAR', 'HVDC']).required(),
+                      alpha: requiredWhenActive(yup.number()),
+                      u0: requiredWhenActive(yup.number()),
+                      usMin: requiredWhenActive(yup.number()),
+                      usMax: requiredWhenActive(yup.number()),
+                      type: requiredWhenActive(yup.string().oneOf(['WIND', 'SOLAR', 'HVDC'])),
+                  })
+              )
+              .required()
+        : undefined;
+
+    const nodeClusterParam = specificParametersDescriptionForProvider?.find(
+        (specificParam) => specificParam.name === NODE_CLUSTER
+    );
+
+    const nodeClusterSchema = nodeClusterParam
+        ? yup.array().of(
+              yup.object<FilterPOJO>().shape({
+                  [ID]: yup.string().required(),
+                  [NAME]: yup.string().required(),
+              })
+          )
+        : undefined;
+
+    const powerElectronicsClustersParam = specificParametersDescriptionForProvider?.find(
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
+    );
+
+    const powerElectronicsClustersSchema = powerElectronicsClustersParam
+        ? yup
+              .array<FormPowerElectronicsCluster & { active: boolean }>()
+              .of(
+                  yup.object<FormPowerElectronicsCluster & { active: boolean }>().shape({
+                      active: yup.boolean().required(),
+                      alpha: requiredWhenActive(yup.number()),
+                      u0: requiredWhenActive(yup.number()),
+                      usMin: requiredWhenActive(yup.number()),
+                      usMax: requiredWhenActive(yup.number()),
+                      filters: yup
+                          .array()
+                          .of(
+                              yup.object<FilterPOJO>().shape({
+                                  [ID]: yup.string().required(),
+                                  [NAME]: yup.string().required(),
+                              })
+                          )
+                          .nullable()
+                          .when('active', {
+                              is: true,
+                              then: (s) => s.required().min(1, 'FilterInputMinError'),
+                              otherwise: (s) => s.notRequired().nullable(),
+                          }),
+                      type: requiredWhenActive(yup.string().oneOf(['GENERATOR', 'HVDC']).nullable()),
                   })
               )
               .required()
@@ -79,6 +149,10 @@ export const getSpecificShortCircuitParametersFormSchema = (
         ...(powerElectronicsMaterialsSchema
             ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: powerElectronicsMaterialsSchema }
             : {}),
+        ...(powerElectronicsClustersSchema
+            ? { [SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]: powerElectronicsClustersSchema }
+            : {}),
+        ...(nodeClusterSchema ? { [NODE_CLUSTER_FILTER_IDS]: nodeClusterSchema } : {}),
     };
 
     const overrideSchema = yup.object().shape({
@@ -89,18 +163,36 @@ export const getSpecificShortCircuitParametersFormSchema = (
     return defaultSchema.concat(overrideSchema);
 };
 
-const parsepowerElectronicsMaterialsParamString = (paramString: string): PowerElectronicsMaterial[] => {
+const parsePowerElectronicsMaterialsParamString = (
+    paramString: string,
+    snackError: (message: SnackInputs) => void
+): PowerElectronicsMaterial[] => {
     // Attempt to parse the string into an array of PowerElectronicsMaterial objects
     try {
         return JSON.parse(paramString);
     } catch (error) {
         console.error('Error parsing power electronics materials parameter string:', error);
+        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsMaterialsParamParsingError' });
+        return [];
+    }
+};
+
+const parsePowerElectronicsClustersParamString = (
+    paramString: string,
+    snackError: (message: SnackInputs) => void
+): (PowerElectronicsCluster & { active: boolean })[] => {
+    // Attempt to parse the string into an array of PowerElectronicsCluster objects
+    try {
+        return JSON.parse(paramString);
+    } catch (error) {
+        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsClustersParamParsingError' });
         return [];
     }
 };
 
 export const getDefaultShortCircuitSpecificParamsValues = (
-    specificParametersDescriptionForProvider: SpecificParameterInfos[]
+    specificParametersDescriptionForProvider: SpecificParameterInfos[],
+    snackError: (message: SnackInputs) => void
 ): SpecificParametersValues => {
     const defaultValues: SpecificParametersValues = getDefaultSpecificParamsValues(
         specificParametersDescriptionForProvider
@@ -109,14 +201,28 @@ export const getDefaultShortCircuitSpecificParamsValues = (
         (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
     );
     if (powerElectronicsMaterialsParam) {
-        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsepowerElectronicsMaterialsParamString(
-            powerElectronicsMaterialsParam.defaultValue
+        const electronicsMaterialsArray: PowerElectronicsMaterial[] = parsePowerElectronicsMaterialsParamString(
+            powerElectronicsMaterialsParam.defaultValue,
+            snackError
         );
 
         defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = electronicsMaterialsArray.map((material) => ({
             ...material,
             active: false,
         }));
+    }
+    const nodeClusterParam = specificParametersDescriptionForProvider.find(
+        (specificParam) => specificParam.name === NODE_CLUSTER
+    );
+    if (nodeClusterParam) {
+        // there is no default params for node clusters filter ids for now
+        defaultValues[NODE_CLUSTER_FILTER_IDS] = [];
+    }
+    const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
+        (specificParam) => specificParam.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
+    );
+    if (powerElectronicsClustersParam) {
+        defaultValues[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = []; // there is no default params for clusters for now
     }
     return defaultValues;
 };
@@ -127,41 +233,88 @@ export const getShortCircuitSpecificParametersValues = (
 ): SpecificParametersValues => {
     const powerElectronicsMaterialsParam: (PowerElectronicsMaterial & { active: boolean })[] =
         formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS];
-    if (powerElectronicsMaterialsParam) {
+    const powerElectronicsClustersParam: (FormPowerElectronicsCluster & { active: boolean })[] =
+        formData[SPECIFIC_PARAMETERS][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
+    const nodeClusterFilterIds: FilterPOJO[] = formData[SPECIFIC_PARAMETERS][NODE_CLUSTER_FILTER_IDS];
+    const finalSpecificParameters: Record<string, any> = getAllSpecificParametersValues(
+        formData,
+        _specificParametersValues
+    );
+    if (powerElectronicsMaterialsParam && powerElectronicsClustersParam) {
         // create pretty JSON
-        return {
-            ...getAllSpecificParametersValues(formData, _specificParametersValues),
-            [SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS]: JSON.stringify(
-                powerElectronicsMaterialsParam
-                    .filter((sParam) => sParam.active) // keep only active ones
-                    .map((sParam) => {
-                        const { active, ...rest } = sParam; // remove 'active' property
-                        return rest;
-                    })
-            ),
-        };
+        finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = JSON.stringify(
+            powerElectronicsMaterialsParam
+                .filter((sParam) => sParam.active) // keep only active ones
+                .map((sParam) => {
+                    const { active, ...rest } = sParam; // remove 'active' property
+                    return rest;
+                })
+        );
+        finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = JSON.stringify(
+            powerElectronicsClustersParam.map((sParam) => {
+                const { filters, ...rest } = sParam;
+                const lightFilters = // keep only id and name in filters for backend
+                    filters?.map((filter) => ({
+                        filterId: filter[ID],
+                        filterName: filter.name,
+                    })) ?? [];
+                return { ...rest, filters: lightFilters };
+            })
+        );
     }
-    return getAllSpecificParametersValues(formData, _specificParametersValues);
+    if (nodeClusterFilterIds) {
+        const lightFilters = nodeClusterFilterIds.map((filter) => {
+            return {
+                filterId: filter[ID],
+                filterName: filter.name,
+            };
+        });
+        finalSpecificParameters[NODE_CLUSTER_FILTER_IDS] = JSON.stringify(lightFilters);
+    }
+    return finalSpecificParameters;
 };
 
 const formatElectronicsMaterialsParamString = (
     defaultValues: PowerElectronicsMaterial[],
-    specificParamValue: string
+    specificParamValue: string,
+    snackError: (message: SnackInputs) => void
 ) => {
-    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] =
-        parsepowerElectronicsMaterialsParamString(specificParamValue);
+    const electronicsMaterialsArrayInParams: PowerElectronicsMaterial[] = parsePowerElectronicsMaterialsParamString(
+        specificParamValue,
+        snackError
+    );
     return defaultValues.map((material) => {
         const foundInParams = electronicsMaterialsArrayInParams.find((m) => m.type === material.type);
         return foundInParams ? { ...foundInParams, active: true } : { ...material, active: false };
     });
 };
 
+const formatElectronicsClustersParamString = (
+    defaultValues: PowerElectronicsCluster[],
+    specificParamValue: string,
+    snackError: (message: SnackInputs) => void
+) => {
+    const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
+        parsePowerElectronicsClustersParamString(specificParamValue, snackError);
+    return electronicsClustersArrayInParams.map((cluster) => {
+        const { filters, ...rest } = cluster;
+        return {
+            ...rest,
+            filters: filters.map((filter) => ({
+                [ID]: filter.filterId,
+                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+            })),
+        };
+    });
+};
+
 export const formatShortCircuitSpecificParameters = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
-    specificParamsList: SpecificParametersValues
+    specificParamsList: SpecificParametersValues,
+    snackError: (message: SnackInputs) => void
 ): SpecificParametersValues => {
     if (!specificParamsList) {
-        return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider);
+        return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider, snackError);
     }
 
     // reuse generic formatter for specific params
@@ -174,12 +327,49 @@ export const formatShortCircuitSpecificParameters = (
     if (powerParam) {
         if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS)) {
             formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = formatElectronicsMaterialsParamString(
-                getDefaultShortCircuitSpecificParamsValues([powerParam])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS],
-                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] as string
+                getDefaultShortCircuitSpecificParamsValues([powerParam], snackError)?.[
+                    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
+                ],
+                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] as string,
+                snackError
             );
         } else {
             formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] = getDefaultSpecificParamsValues([powerParam])?.[
                 SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS
+            ];
+        }
+    }
+
+    // handle special power-electronics-clusters case by overriding the generic result
+    const powerElectronicsClustersParam = specificParametersDescriptionForProvider.find(
+        (p) => p.name === SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
+    );
+    if (powerElectronicsClustersParam) {
+        if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = formatElectronicsClustersParamString(
+                getDefaultShortCircuitSpecificParamsValues([powerElectronicsClustersParam], snackError)?.[
+                    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
+                ],
+                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] as string,
+                snackError
+            );
+        } else {
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = getDefaultSpecificParamsValues([
+                powerElectronicsClustersParam,
+            ])?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS];
+        }
+    }
+    const nodeClusterParam = specificParametersDescriptionForProvider.find((p) => p.name === NODE_CLUSTER);
+    if (nodeClusterParam) {
+        if (Object.hasOwn(specificParamsList, NODE_CLUSTER_FILTER_IDS)) {
+            const filters = JSON.parse(specificParamsList[NODE_CLUSTER_FILTER_IDS]);
+            formatted[NODE_CLUSTER_FILTER_IDS] = filters.map((filter: { filterId: any; filterName: any }) => ({
+                [ID]: filter.filterId,
+                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+            }));
+        } else {
+            formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[
+                NODE_CLUSTER_FILTER_IDS
             ];
         }
     }

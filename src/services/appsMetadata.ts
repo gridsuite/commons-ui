@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { BaseVoltage, Metadata, StudyMetadata } from '../utils';
+import { BaseVoltage, ExploreMetadata, Metadata, StudyMetadata } from '../utils';
 
 // https://github.com/gridsuite/deployment/blob/main/docker-compose/docker-compose.base.yml
 // https://github.com/gridsuite/deployment/blob/main/k8s/resources/common/config/apps-metadata.json
@@ -35,6 +35,10 @@ export async function fetchAppsMetadata(): Promise<Metadata[]> {
 
 export function isStudyMetadata(metadata: Metadata): metadata is StudyMetadata {
     return metadata.name === 'Study';
+}
+
+export function isExploreMetadata(metadata: Metadata): metadata is ExploreMetadata {
+    return metadata.name === 'Explore';
 }
 
 export async function fetchStudyMetadata(): Promise<StudyMetadata> {

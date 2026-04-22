@@ -8,3 +8,4 @@ export * from './DescriptionField';
 export * from './ExpandingTextField';
 export * from './TextInput';
 export * from './UniqueNameInput';
+export * from './DescriptionInput';

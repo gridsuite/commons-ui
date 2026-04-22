@@ -6,3 +6,4 @@
  */
 
 export * from './pcc-min-parameters-inline';
+export * from './pcc-min-parameters-dialog';

@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, backendFetchText } from './utils';
-import { safeEncodeURIComponent } from './security-analysis';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { FactorsCount, SensitivityAnalysisParametersInfos } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 
@@ -70,7 +69,8 @@ export function getSensitivityAnalysisFactorsCount(
     studyUuid: UUID | null,
     currentNodeUuid: UUID,
     currentRootNetworkUuid: UUID,
-    newParams: SensitivityAnalysisParametersInfos
+    newParams: SensitivityAnalysisParametersInfos,
+    abortSignal: AbortSignal
 ): Promise<FactorsCount> {
     console.info('get sensitivity analysis parameters computing count');
     const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, currentNodeUuid, currentRootNetworkUuid)}/sensitivity-analysis/factor-count`;
@@ -81,14 +81,8 @@ export function getSensitivityAnalysisFactorsCount(
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(newParams),
+        signal: abortSignal,
     });
-}
-
-export function fetchDefaultSensitivityAnalysisProvider() {
-    console.info('fetch default sensitivity analysis provider');
-    const url = `${PREFIX_STUDY_QUERIES}/v1/sensitivity-analysis-default-provider`;
-    console.debug(url);
-    return backendFetchText(url);
 }
 
 export function updateSensitivityAnalysisParameters(parameterUuid: UUID, newParams: any) {

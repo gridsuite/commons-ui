@@ -7,19 +7,7 @@
 
 import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
-import type { UUID } from 'node:crypto';
-import { MODIFICATION_TYPES, EquipmentType } from '../utils';
-
-export interface NetworkModificationMetadata {
-    uuid: UUID;
-    type: string;
-    date: Date;
-    stashed: boolean;
-    activated: boolean;
-    description: string;
-    messageType: string;
-    messageValues: string;
-}
+import { EquipmentType, MODIFICATION_TYPES, NetworkModificationMetadata } from '../utils';
 
 interface ModificationValues {
     equipmentId: string;
@@ -115,6 +103,8 @@ export const useModificationLabelComputer = () => {
                         return `: ${modificationMetadata.rootNetworkName} / ${modificationMetadata.nodeName} / ${computedDateFormatted}`;
                     }
                     return '';
+                case MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type:
+                    return modificationMetadata.name;
                 default:
                     return modificationMetadata.equipmentId || '';
             }

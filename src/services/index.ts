@@ -17,3 +17,8 @@ export * from './userAdmin';
 export * from './utils';
 export * from './voltage-init';
 export * from './short-circuit-analysis';
+export * from './networkModification';
+export * from './dynamic-mapping';
+export * from './dynamic-simulation';
+export * from './dynamic-security-analysis';
+export * from './dynamic-margin-calculation';

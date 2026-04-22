@@ -40,40 +40,26 @@ export function LoadFlowParametersInline({
     setHaveDirtyFields: (isDirty: boolean) => void;
     isDeveloperMode: boolean;
 }>) {
-    const [, , , , resetProvider, , , , resetParameters, ,] = parametersBackend;
+    const { resetParameters } = parametersBackend;
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, null, null, null);
 
     const intl = useIntl();
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-    const [pendingResetAction, setPendingResetAction] = useState<'all' | 'parameters' | null>(null);
     const { snackError } = useSnackMessage();
 
     const executeResetAction = useCallback(() => {
-        if (pendingResetAction === 'all') {
-            resetParameters();
-            resetProvider();
-        } else if (pendingResetAction === 'parameters') {
-            resetParameters();
-        }
+        resetParameters();
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
-    }, [pendingResetAction, resetParameters, resetProvider]);
+    }, [resetParameters]);
 
     const handleResetAllClick = useCallback(() => {
-        setPendingResetAction('all');
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleResetParametersClick = useCallback(() => {
-        setPendingResetAction('parameters');
         setOpenResetConfirmation(true);
     }, []);
 
     const handleCancelReset = useCallback(() => {
         setOpenResetConfirmation(false);
-        setPendingResetAction(null);
     }, []);
 
     const { reset, getValues, formState, handleSubmit } = loadflowMethods.formMethods;
@@ -84,7 +70,6 @@ export function LoadFlowParametersInline({
                 setOpenSelectParameterDialog(false);
                 fetchLoadFlowParameters(newParams[0].id)
                     .then((parameters) => {
-                        loadflowMethods.setCurrentProvider(parameters.provider);
                         console.info(`loading the following loadflow parameters : ${parameters.uuid}`);
                         reset(loadflowMethods.toLoadFlowFormValues(parameters), {
                             keepDefaultValues: true,
@@ -122,12 +107,17 @@ export function LoadFlowParametersInline({
                                 <LabelledButton
                                     callback={() => setOpenSelectParameterDialog(true)}
                                     label="settings.button.chooseSettings"
+                                    data-testid="LfChooseParametersButton"
                                 />
-                                <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
                                 <LabelledButton
-                                    label="resetProviderValuesToDefault"
-                                    callback={handleResetParametersClick}
+                                    callback={() => setOpenCreateParameterDialog(true)}
+                                    label="save"
+                                    data-testid="LfSaveButton"
+                                />
+                                <LabelledButton
+                                    callback={handleResetAllClick}
+                                    label="resetToDefault"
+                                    data-testid="LfResetToDefaultButton"
                                 />
                                 <SubmitButton
                                     onClick={handleSubmit(
@@ -135,6 +125,7 @@ export function LoadFlowParametersInline({
                                         loadflowMethods.onValidationError
                                     )}
                                     variant="outlined"
+                                    data-testid="LfValidateButton"
                                 >
                                     <FormattedMessage id="validate" />
                                 </SubmitButton>

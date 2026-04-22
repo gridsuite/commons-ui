@@ -8,3 +8,5 @@ export * from './CountriesInput';
 export * from './InputWithPopupConfirmation';
 export * from './MuiSelectInput';
 export * from './SelectInput';
+export * from './SelectWithConfirmationInput';
+export * from './EnumInput';

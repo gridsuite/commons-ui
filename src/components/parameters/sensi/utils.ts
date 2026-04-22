@@ -8,11 +8,9 @@
 import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import {
-    ACTIVATED,
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     CONTAINER_ID,
     CONTAINER_NAME,
-    CONTINGENCIES,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
     FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD,
@@ -30,10 +28,11 @@ import {
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
 import { DistributionType, SensitivityType } from '../../../utils';
-import { PROVIDER } from '../common';
+import { CONTINGENCIES, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../inputs';
 import { ID } from '../../../utils/constants/filterConstant';
+import { ACTIVATED } from '../common/parameter-table-field';
 
 const getMonitoredBranchesSchema = () => {
     return {
@@ -381,20 +380,20 @@ export const hasVariables = (row: any): boolean => {
     );
 };
 
-export const hasMonitoredEquipments = (row: any): boolean => {
+export const hasMonitoredEquipments = (row: FieldValues): boolean => {
     return row[MONITORED_BRANCHES]?.length > 0 || row[SUPERVISED_VOLTAGE_LEVELS]?.length > 0;
 };
 
-export const isActivatedSensiParameterRow = (entry: FieldValues) => {
-    return entry[ACTIVATED];
+export const isActivatedSensiParameterRow = (row: FieldValues) => {
+    return row[ACTIVATED];
 };
 
-export const isValidSensiParameterRow = (entry: FieldValues) => {
-    return isActivatedSensiParameterRow(entry) && hasMonitoredEquipments(entry) && hasVariables(entry);
+export const isValidSensiParameterRow = (row: FieldValues) => {
+    return isActivatedSensiParameterRow(row) && hasMonitoredEquipments(row) && hasVariables(row);
 };
 
-export const filterSensiParameterRows = (entries?: FieldValues[]) =>
-    (entries ?? []).filter((entry) => isValidSensiParameterRow(entry));
+export const filterSensiParameterRows = (rows?: FieldValues[]) =>
+    (rows ?? []).filter((row) => isValidSensiParameterRow(row));
 
 export const formSchema = yup
     .object()

@@ -14,9 +14,10 @@ import { Option } from '../../../../utils/types/types';
 export interface CountryInputProps {
     name: string;
     label: string;
+    dataTestId?: string;
 }
 
-export function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
+export function CountriesInput({ name, label, dataTestId }: Readonly<CountryInputProps>) {
     const { language } = useCustomFormContext();
     const { translate, countryCodes } = useLocalizedCountries(language!);
 
@@ -32,6 +33,7 @@ export function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
 
     return (
         <AutocompleteInput
+            data-testid={dataTestId}
             name={name}
             label={label}
             options={countryCodes}
@@ -39,9 +41,18 @@ export function CountriesInput({ name, label }: Readonly<CountryInputProps>) {
             fullWidth
             multiple
             renderTags={(val: any[], getTagsProps: any) =>
-                val.map((code: string, index: number) => (
-                    <Chip key={code} size="small" label={translate(code)} {...getTagsProps({ index })} />
-                ))
+                val.map((code: string, index: number) => {
+                    const { key, ...tagProps } = getTagsProps({ index });
+                    return (
+                        <Chip
+                            key={key ?? code}
+                            data-testid={`${dataTestId}.${code}`}
+                            size="small"
+                            label={translate(code)}
+                            {...tagProps}
+                        />
+                    );
+                })
             }
         />
     );

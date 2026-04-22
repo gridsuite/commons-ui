@@ -7,7 +7,4 @@
 export { LeftPanelOpenIcon } from './LeftPanelOpenIcon';
 export { ArrowsOutputIcon } from './ArrowsOutputIcon';
 export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
-export { DeviceHubIcon } from './DeviceHubIcon';
-export { TuneIcon } from './TuneIcon';
-export { PhotoLibraryIcon } from './PhotoLibraryIcon';
 export { EditNoteIcon } from './EditNoteIcon';

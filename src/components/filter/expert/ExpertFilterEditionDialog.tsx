@@ -13,7 +13,8 @@ import { FetchStatus } from '../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../dialogs/customMuiDialog/CustomMuiDialog';
-import { FilterType, NO_ITEM_SELECTION_FOR_COPY } from '../constants/FilterConstants';
+import { FilterType } from '../constants/FilterConstants';
+import { NO_ITEM_SELECTION_FOR_COPY } from '../../../utils/directory-utils';
 import { FilterEditionProps } from '../filter.type';
 import { FilterForm } from '../FilterForm';
 import { saveExpertFilter } from '../utils/filterApi';
@@ -113,14 +114,16 @@ export function ExpertFilterEditionDialog({
             open={open}
             onClose={onClose}
             onSave={onSubmit}
-            formSchema={formSchema}
-            formMethods={formMethods}
+            formContext={{
+                ...formMethods,
+                validationSchema: formSchema,
+                removeOptional: true,
+                language,
+                isDeveloperMode,
+            }}
             titleId={titleId}
-            removeOptional
             disabledSave={!!nameError || !!isValidating}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
-            language={language}
-            isDeveloperMode={isDeveloperMode}
             unscrollableFullHeight
         >
             {isDataReady && <FilterForm activeDirectory={activeDirectory} filterType={FilterType.EXPERT} isEditing />}

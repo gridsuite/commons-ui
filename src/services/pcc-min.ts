@@ -12,12 +12,23 @@ import { FilterIdentifier, FILTERS } from '../utils/constants/filterConstant';
 export type PccMinParameters = {
     [FILTERS]: FilterIdentifier[];
 };
+const PREFIX_PCC_MIN_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/pcc-min`;
 
+function getPccMinUrl() {
+    return `${PREFIX_PCC_MIN_SERVER_QUERIES}/v1/`;
+}
 export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParameters | null> {
     console.info('get pcc min study parameters');
     const getPccMintParams = `${getStudyUrl(studyUuid)}/pcc-min/parameters`;
     console.debug(getPccMintParams);
     return backendFetchJson(getPccMintParams);
+}
+
+export function fetchPccMinParameters(parameterUuid: UUID): Promise<PccMinParameters> {
+    console.info('fetch pcc min parameters');
+    const url = `${getPccMinUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
+    console.debug(url);
+    return backendFetchJson(url);
 }
 
 export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMinParameters | null) {
@@ -30,6 +41,6 @@ export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMin
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newParams),
+        body: newParams == null ? null : JSON.stringify(newParams),
     });
 }

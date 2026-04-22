@@ -132,7 +132,7 @@ export function ViolationsHidingParameters() {
 
             {fieldsToShow?.map((item) => {
                 return (
-                    <Grid item xs={16} xl={6.25} key={item.label}>
+                    <Grid item key={item.label}>
                         <SecurityAnalysisFields {...item} />
                     </Grid>
                 );

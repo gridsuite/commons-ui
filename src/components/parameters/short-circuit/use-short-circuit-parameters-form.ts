@@ -7,19 +7,22 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
     InitialVoltage,
+    NODE_CLUSTER_FILTER_IDS,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
+    SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
+    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
-    SHORT_CIRCUIT_WITH_FEEDER_RESULT,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
@@ -37,18 +40,21 @@ import {
     getDefaultShortCircuitSpecificParamsValues,
     getShortCircuitSpecificParametersValues,
     getSpecificShortCircuitParametersFormSchema,
+    ShortCircuitParametersTabValues,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
+    selectedTab: ShortCircuitParametersTabValues;
+    handleTabChange: (event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => void;
+    tabIndexesWithError: ShortCircuitParametersTabValues[];
     resetAll: (predefinedParameter: PredefinedParameters) => void;
     specificParametersDescriptionForProvider: SpecificParameterInfos[];
     toShortCircuitFormValues: (_params: ShortCircuitParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => ShortCircuitParametersInfos;
     params: ShortCircuitParametersInfos | null;
-    provider: string | undefined;
     paramsLoaded: boolean;
     onValidationError: (errors: FieldErrors) => void;
     onSaveInline: (formData: Record<string, any>) => void;
@@ -69,19 +75,28 @@ export const useShortCircuitParametersForm = ({
     name,
     description,
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
-    const [, provider, , , , params, , updateParameters, , specificParamsDescriptions] = parametersBackend;
+    const { params, updateParameters, specificParamsDescription } = parametersBackend;
+    const provider = params?.provider;
+    const [selectedTab, setSelectedTab] = useState<ShortCircuitParametersTabValues>(
+        ShortCircuitParametersTabValues.GENERAL
+    );
+    const [tabIndexesWithError, setTabIndexesWithError] = useState<ShortCircuitParametersTabValues[]>([]);
     const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
 
+    const handleTabChange = useCallback((event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => {
+        setSelectedTab(newValue);
+    }, []);
+
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
-        return provider && specificParamsDescriptions?.[provider] ? specificParamsDescriptions[provider] : [];
-    }, [provider, specificParamsDescriptions]);
+        return provider && specificParamsDescription?.[provider] ? specificParamsDescription[provider] : [];
+    }, [provider, specificParamsDescription]);
 
     const specificParametersDefaultValues = useMemo(() => {
         return {
-            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider),
+            ...getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider, snackError),
         };
-    }, [specificParametersDescriptionForProvider]);
+    }, [snackError, specificParametersDescriptionForProvider]);
 
     const formSchema = useMemo(() => {
         return yup
@@ -112,36 +127,54 @@ export const useShortCircuitParametersForm = ({
 
     const { reset, setValue } = formMethods;
 
-    // when ever the predefined parameter is manually changed, we need to reset all parameters
+    // when ever the predefined parameter is manually changed, we need to reset all dependent parameters
     const resetAll = useCallback(
         (predefinedParameter: PredefinedParameters) => {
             const dirty = { shouldDirty: true };
+
+            // SHORT_CIRCUIT_WITH_FEEDER_RESULT isn't reset by predefined parameters change
+            setValue(`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_LOADS}`, false, dirty);
             setValue(
-                COMMON_PARAMETERS,
-                {
-                    ...params?.commonParameters, // for VERSION_PARAMETER and other non managed params
-                    [SHORT_CIRCUIT_WITH_FEEDER_RESULT]: false,
-                    [SHORT_CIRCUIT_WITH_LOADS]: false,
-                    [SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS]:
-                        predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
-                    [SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS]: false,
-                    [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: false,
-                    [SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE]:
-                        predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
-                            ? InitialVoltage.CEI909
-                            : InitialVoltage.NOMINAL,
-                },
+                `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS}`,
+                predefinedParameter !== PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
                 dirty
             );
+            setValue(`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS}`, false, dirty);
+            setValue(`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_NEUTRAL_POSITION}`, false, dirty);
+            setValue(
+                `${COMMON_PARAMETERS}.${SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE}`,
+                predefinedParameter === PredefinedParameters.ICC_MAX_WITH_CEI909
+                    ? InitialVoltage.CEI909
+                    : InitialVoltage.NOMINAL,
+                dirty
+            );
+
             setValue(SHORT_CIRCUIT_PREDEFINED_PARAMS, predefinedParameter, dirty);
 
-            setValue(
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS}`,
-                predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
-                dirty
+            // reset only if present in specific parameters description for provider
+            const onlyStartedGeneratorsInCalculationCluster = specificParametersDescriptionForProvider?.find(
+                (specificParam) => specificParam.name === SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER
             );
+            if (onlyStartedGeneratorsInCalculationCluster) {
+                setValue(
+                    `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
+                    predefinedParameter === PredefinedParameters.ICC_MIN_WITH_NOMINAL_VOLTAGE_MAP,
+                    dirty
+                );
+            }
+            const onlyStartedGeneratorsOutsideCalculationCluster = specificParametersDescriptionForProvider?.find(
+                (specificParam) =>
+                    specificParam.name === SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER
+            );
+            if (onlyStartedGeneratorsOutsideCalculationCluster) {
+                setValue(
+                    `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER}`,
+                    true, // for all predefined parameters
+                    dirty
+                );
+            }
         },
-        [params?.commonParameters, setValue]
+        [setValue, specificParametersDescriptionForProvider]
     );
 
     const formatNewParams = useCallback(
@@ -184,7 +217,7 @@ export const useShortCircuitParametersForm = ({
                 return {};
             }
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[provider];
-            const values = {
+            return {
                 [PROVIDER]: _params.provider,
                 [SHORT_CIRCUIT_PREDEFINED_PARAMS]: _params.predefinedParameters,
                 [COMMON_PARAMETERS]: {
@@ -199,18 +232,38 @@ export const useShortCircuitParametersForm = ({
                 [SPECIFIC_PARAMETERS]: {
                     ...formatShortCircuitSpecificParameters(
                         specificParametersDescriptionForProvider,
-                        specificParamsListForCurrentProvider
+                        specificParamsListForCurrentProvider,
+                        snackError
                     ),
                 },
             };
-            return values;
         },
-        [provider, specificParametersDescriptionForProvider]
+        [provider, snackError, specificParametersDescriptionForProvider]
     );
 
-    const onValidationError = useCallback((_errors: FieldErrors) => {
-        console.error('onValidationError: ', _errors);
-    }, []);
+    const onValidationError = useCallback(
+        (_errors: FieldErrors) => {
+            console.error('onValidationError: ', _errors);
+            const tabsInError = [];
+            if (
+                (_errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] ||
+                    _errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]) &&
+                ShortCircuitParametersTabValues.POWER_ELECTRONICS !== selectedTab
+            ) {
+                tabsInError.push(ShortCircuitParametersTabValues.POWER_ELECTRONICS);
+            }
+            if (
+                (_errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER] ||
+                    _errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER] ||
+                    _errors?.[NODE_CLUSTER_FILTER_IDS]) &&
+                ShortCircuitParametersTabValues.STUDY_AREA !== selectedTab
+            ) {
+                tabsInError.push(ShortCircuitParametersTabValues.STUDY_AREA);
+            }
+            setTabIndexesWithError(tabsInError);
+        },
+        [selectedTab]
+    );
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
@@ -238,7 +291,7 @@ export const useShortCircuitParametersForm = ({
     );
 
     useEffect(() => {
-        if (!params || !provider || !specificParamsDescriptions) {
+        if (!params || !provider || !specificParamsDescription) {
             return;
         }
         reset(toShortCircuitFormValues(params));
@@ -246,16 +299,18 @@ export const useShortCircuitParametersForm = ({
         // form Schema and default values. this paramsLoaded State is used to determine
         // if form is correctly initialized and that we are able to render form inputs
         setParamsLoaded(true);
-    }, [provider, params, reset, specificParamsDescriptions, toShortCircuitFormValues]);
+    }, [provider, params, reset, specificParamsDescription, toShortCircuitFormValues]);
 
     return {
         formMethods,
         formSchema,
+        selectedTab,
+        handleTabChange,
+        tabIndexesWithError,
         specificParametersDescriptionForProvider,
         toShortCircuitFormValues,
         formatNewParams,
         params,
-        provider,
         paramsLoaded,
         onValidationError,
         onSaveInline,

@@ -6,6 +6,8 @@
  */
 
 export const businessErrorsEn = {
+    'case.noAvailableImporter': 'No available importer found for this file',
+    'case.illegalFileName': 'The file name is not accepted.',
     'directory.permissionDenied': 'You are not allowed to perform this action.',
     'directory.elementNameBlank': 'Element name must not be blank.',
     'directory.notDirectory': 'The selected element is not a directory.',
@@ -13,10 +15,13 @@ export const businessErrorsEn = {
     'directory.moveInDescendantNotAllowed': 'Cannot move an element inside one of its descendants.',
     'directory.someElementsAreMissing': 'Some of the requested directory elements are missing.',
     'directory.elementNotFound': 'The requested directory element could not be found.',
+    'directory.parentPermissionDenied': "You don't have sufficient rights on parent folder",
+    'directory.childPermissionDenied':
+        'The folder contains at least one subfolder for which you do not have sufficient rights',
+    'directory.targetPermissionDenied': "You don't have sufficient rights on target folder",
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
-    'explore.incorrectCaseFile': 'The provided case file is incorrect.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
     'study.loadflowError': 'Loadflow error.',
@@ -35,6 +40,7 @@ export const businessErrorsEn = {
     'study.networkExportFailed': 'Failed to export network.',
     'study.tooManyNadConfigs': 'Maximum number of NAD configuration exceeded.',
     'study.tooManyMapCards': 'Maximum number of cards exceeded.',
+    'study.elementAlreadyExists': 'An element with the name {fileName} already exists',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',
@@ -56,6 +62,10 @@ export const businessErrorsEn = {
     'shortcircuit.missingExtensionData': 'Missing short-circuit extension data.',
     'shortcircuit.inconsistentVoltageLevels':
         'Some voltage levels have wrong isc values. Check out the logs to find which ones.',
+    'shortcircuit.busOutOfNodeCluster': 'Selected bus is out of node cluster',
+    'securityAnalysis.contingencyListConfigEmpty': 'The configuration does not contain any contingency.',
+    'securityAnalysis.missingContingencyList':
+        'The configuration contains one or more contingency lists that have been deleted.',
     'dynamicMapping.mappingNameNotProvided': 'Mapping name not provided',
     'dynamicSecurityAnalysis.providerNotFound': 'Dynamic security analysis provider not found.',
     'dynamicSecurityAnalysis.contingenciesNotFound': 'No contingencies provided.',
@@ -66,4 +76,20 @@ export const businessErrorsEn = {
         'Only last rule can have empty filter: type {equipmentType}, rule index {index}.',
     'sensitivityAnalysis.tooManyFactors':
         'Too many factors to run sensitivity analysis: {resultCount} results (limit: {resultCountLimit}) and {variableCount} variables (limit: {variableCountLimit}).',
+    'sensitivityAnalysis.filtersOrContingenciesListsNotFound':
+        'The configuration contains one or more contingencies lists or filters that have been deleted.',
+    'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'pccMin.voltageLevelsLimitExceeded':
+        'The result of filter evaluation gives {voltageLevelSize} voltage levels, which exceeds the limit {voltageLevelsLimit}.',
+    'diagram.invalidEquipmentType':
+        'The equipment {id} of type {equipmentType} is not a substation or voltage level in given network',
+    'diagram.invalidSubstationLayout': "Given substation layout {substationLayout} doesn't exist",
+    'diagram.invalidDisplayMode': "Given sld display mode {sldDisplayMode} doesn't exist",
+    'diagram.maxVoltageLevelDisplayed':
+        'You need to reduce the number of voltage levels to be displayed in the network area diagram (current {nbVoltageLevels}, maximum {maxVoltageLevels})',
+    'diagram.equipmentNotFound': 'Voltage level or substation {id} not found',
+    'diagram.noConfiguredPosition': 'No configured position found',
+    'diagram.noVoltageLevelFound': 'No voltage level found for this network area diagram',
+    'dynamicMarginCalculation.providerNotFound': 'Dynamic margin calculation provider not found.',
+    'dynamicMarginCalculation.loadFilterNotFound': 'Some load filters do not exist: {filterUuids}',
 };

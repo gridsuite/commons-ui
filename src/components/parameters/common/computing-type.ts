@@ -13,6 +13,7 @@ export enum ComputingType {
     SHORT_CIRCUIT_ONE_BUS = 'SHORT_CIRCUIT_ONE_BUS',
     DYNAMIC_SIMULATION = 'DYNAMIC_SIMULATION',
     DYNAMIC_SECURITY_ANALYSIS = 'DYNAMIC_SECURITY_ANALYSIS',
+    DYNAMIC_MARGIN_CALCULATION = 'DYNAMIC_MARGIN_CALCULATION',
     VOLTAGE_INITIALIZATION = 'VOLTAGE_INITIALIZATION',
     STATE_ESTIMATION = 'STATE_ESTIMATION',
     PCC_MIN = 'PCC_MIN',
@@ -40,6 +41,8 @@ export const formatComputingTypeLabel = (type: ComputingType): string | undefine
             return 'DynamicSimulation';
         case ComputingType.DYNAMIC_SECURITY_ANALYSIS:
             return 'DynamicSecurityAnalysis';
+        case ComputingType.DYNAMIC_MARGIN_CALCULATION:
+            return 'DynamicMarginCalculation';
         case ComputingType.STATE_ESTIMATION:
             return 'StateEstimation';
         case ComputingType.PCC_MIN:

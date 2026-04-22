@@ -12,10 +12,11 @@ import {
     IST_FORM,
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
+    toFormValuesLimitReductions,
 } from '../common';
 import {
     BALANCE_TYPE,
-    CONNECTED_COMPONENT_MODE,
+    CONNECTED_MODE,
     COUNTRIES_TO_BALANCE,
     DC,
     DC_POWER_FACTOR,
@@ -33,7 +34,6 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import { toFormValuesLimitReductions } from '../common/limitreductions/limit-reductions-form-util';
 import yup from '../../../utils/yupConfig';
 
 export enum TabValues {
@@ -47,7 +47,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
         [DC]: yup.boolean().required(),
         [BALANCE_TYPE]: yup.string().required(),
         [COUNTRIES_TO_BALANCE]: yup.array().of(yup.string()).required(),
-        [CONNECTED_COMPONENT_MODE]: yup.string().required(),
+        [CONNECTED_MODE]: yup.string().required(),
         [HVDC_AC_EMULATION]: yup.boolean().required(),
     });
 };
