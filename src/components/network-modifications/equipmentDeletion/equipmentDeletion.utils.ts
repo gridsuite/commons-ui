@@ -35,7 +35,10 @@ export const equipmentDeletionFormToDto = (form: EquipmentDeletionFormData): Equ
     return {
         type: ModificationType.EQUIPMENT_DELETION,
         equipmentId: form.equipmentID as UUID,
-        equipmentType: form.type === ExtendedEquipmentType.HVDC_LINE_LCC || form.type === ExtendedEquipmentType.HVDC_LINE_VSC ? EquipmentType.HVDC_LINE : form.type,
+        equipmentType:
+            form.type === ExtendedEquipmentType.HVDC_LINE_LCC || form.type === ExtendedEquipmentType.HVDC_LINE_VSC
+                ? EquipmentType.HVDC_LINE
+                : form.type,
         equipmentInfos: form.equipmentInfos ?? undefined,
     };
 };
