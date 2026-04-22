@@ -35,19 +35,21 @@ export function SelectCell({ row, table }: Readonly<SelectCellRendererProps>) {
         (event: React.MouseEvent<HTMLButtonElement>) => {
             const rows = table.getRowModel().flatRows;
             const currentIndex = rows.indexOf(row);
-            const anchorIndex = meta?.lastClickedIndex.current;
+            const anchorRowId = meta?.lastClickedRowId.current;
+            const anchorIndex =
+                anchorRowId == null ? null : rows.findIndex((candidate) => candidate.id === anchorRowId);
             const targetSelected = !isSelected;
 
             // When shift is held and a previous click exists, select or deselect the contiguous range between
             // the two clicks instead of toggling a single row.
-            if (event.shiftKey && anchorIndex != null) {
+            if (event.shiftKey && anchorIndex != null && anchorIndex !== -1) {
                 toggleRange(rows, anchorIndex, currentIndex, targetSelected);
             } else {
                 row.toggleSelected(targetSelected);
             }
 
             if (meta) {
-                meta.lastClickedIndex.current = currentIndex;
+                meta.lastClickedRowId.current = row.id;
             }
         },
         [table, row, meta, isSelected]

@@ -20,7 +20,9 @@ function normalizeCompositeSelection(
 
     const visit = (node: ComposedModificationMetadata): boolean => {
         const children = node.subModifications;
-        if (!children || children.length === 0) {
+        // Exception for composite having only one children we want to be able to select the modification individually
+        // without selecting the composite
+        if (!children || children.length === 0 || children.length === 1) {
             return next[node.uuid];
         }
         // Recurse first so nested composites are resolved bottom-up.
@@ -96,7 +98,7 @@ interface UseModificationsSelectionParams {
 interface UseModificationsSelectionResult {
     rowSelection: RowSelectionState;
     onRowSelectionChange: (updater: Updater<RowSelectionState>) => void;
-    lastClickedIndex: RefObject<number | null>;
+    lastClickedRowId: RefObject<string | null>;
     emitSelection: (flatRows: Row<ComposedModificationMetadata>[]) => void;
 }
 
@@ -105,7 +107,7 @@ export function useModificationsSelection({
     onRowSelected,
 }: UseModificationsSelectionParams): UseModificationsSelectionResult {
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-    const lastClickedIndex = useRef<number | null>(null);
+    const lastClickedRowId = useRef<string | null>(null);
 
     const onRowSelectionChange = useCallback(
         (updater: Updater<RowSelectionState>) => {
@@ -130,5 +132,5 @@ export function useModificationsSelection({
         setRowSelection((prev) => propagateSelectionToLoadedDescendants(prev, modifications));
     }, [modifications]);
 
-    return { rowSelection, onRowSelectionChange, lastClickedIndex, emitSelection };
+    return { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection };
 }

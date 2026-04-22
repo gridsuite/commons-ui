@@ -79,7 +79,7 @@ export function NetworkModificationsTable({
         formatToComposedModification(modifications)
     );
 
-    const { rowSelection, onRowSelectionChange, lastClickedIndex, emitSelection } = useModificationsSelection({
+    const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
         modifications: composedModifications,
         onRowSelected,
     });
@@ -146,7 +146,7 @@ export function NetworkModificationsTable({
         enableExpanding: true,
         onExpandedChange: handleExpandRow,
         onRowSelectionChange,
-        meta: { lastClickedIndex, onRowSelected },
+        meta: { lastClickedRowId, onRowSelected },
     });
 
     const { rows, flatRows } = table.getRowModel();
@@ -176,8 +176,8 @@ export function NetworkModificationsTable({
     useEffect(() => {
         table.resetRowSelection();
         table.resetExpanded();
-        lastClickedIndex.current = null;
-    }, [lastClickedIndex, table, currentNodeId]);
+        lastClickedRowId.current = null;
+    }, [lastClickedRowId, table, currentNodeId]);
 
     useEffect(() => {
         if (highlightedModificationUuid && containerRef.current) {
