@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Checkbox } from '@mui/material';
 import { Row, Table } from '@tanstack/react-table';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
@@ -16,66 +16,50 @@ interface SelectCellRendererProps {
     table: Table<ComposedModificationMetadata>;
 }
 
+function toggleRange(rows: Row<ComposedModificationMetadata>[], from: number, to: number, targetSelected: boolean) {
+    const [start, end] = from <= to ? [from, to] : [to, from];
+    rows.slice(start, end + 1).forEach((r) => {
+        if (r.getCanSelect()) {
+            r.toggleSelected(targetSelected);
+        }
+    });
+}
+
 export function SelectCell({ row, table }: Readonly<SelectCellRendererProps>) {
     const { meta } = table.options;
+
+    const isSelected = row.getIsSelected();
+    const isIndeterminate = !isSelected && row.getIsSomeSelected();
 
     const handleChange = useCallback(
         (event: React.MouseEvent<HTMLButtonElement>) => {
             const rows = table.getRowModel().flatRows;
             const currentIndex = rows.indexOf(row);
-            const nextSelection = { ...table.getState().rowSelection };
+            const anchorRowId = meta?.lastClickedRowId.current;
+            const anchorIndex =
+                anchorRowId == null ? null : rows.findIndex((candidate) => candidate.id === anchorRowId);
+            const targetSelected = !isSelected;
 
             // When shift is held and a previous click exists, select or deselect the contiguous range between
             // the two clicks instead of toggling a single row.
-            if (
-                event.shiftKey &&
-                meta?.lastClickedIndex.current !== null &&
-                meta?.lastClickedIndex.current !== undefined
-            ) {
-                const lastIndex = meta.lastClickedIndex.current;
-                const [from, to] = lastIndex < currentIndex ? [lastIndex, currentIndex] : [currentIndex, lastIndex];
-                const isRowSelected = row.getIsSelected();
-
-                rows.slice(from, to + 1).forEach((r) => {
-                    if (r.getCanSelect()) {
-                        r.toggleSelected(!isRowSelected);
-                        if (isRowSelected) {
-                            delete nextSelection[r.id];
-                        } else {
-                            nextSelection[r.id] = true;
-                        }
-                    }
-                });
+            if (event.shiftKey && anchorIndex != null && anchorIndex !== -1) {
+                toggleRange(rows, anchorIndex, currentIndex, targetSelected);
             } else {
-                row.toggleSelected();
-                if (row.getIsSelected()) {
-                    // was selected, now toggled off
-                    delete nextSelection[row.id];
-                } else {
-                    // was unselected, now toggled on
-                    nextSelection[row.id] = true;
-                }
+                row.toggleSelected(targetSelected);
             }
 
             if (meta) {
-                meta.lastClickedIndex.current = currentIndex;
-                const selectedRows = rows.filter((r) => nextSelection[r.id]).map((r) => r.original);
-                meta.onRowSelected?.(selectedRows);
+                meta.lastClickedRowId.current = row.id;
             }
         },
-        [table, row, meta]
-    );
-
-    const hasPartiallySelectedSubRows = useMemo(
-        () => row.subRows.some((subRow) => subRow.getIsSelected()) && !row.getIsSelected(),
-        [row]
+        [table, row, meta, isSelected]
     );
 
     return (
         <Checkbox
             size="small"
-            checked={row.getIsSelected()}
-            indeterminate={hasPartiallySelectedSubRows}
+            checked={isSelected}
+            indeterminate={isIndeterminate}
             disabled={!row.getCanSelect()}
             onClick={handleChange}
             sx={networkModificationTableStyles.selectCheckBox}
