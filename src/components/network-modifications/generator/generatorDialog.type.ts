@@ -69,7 +69,7 @@ export type GeneratorDialogSchemaBaseForm = {
 };
 
 export type GeneratorCreationDialogSchemaForm = {
-    [FieldConstants.EQUIPMENT_ID]: string;
+    equipmentId: string;
 } & GeneratorDialogSchemaBaseForm;
 
 export type GeneratorModificationDialogSchemaForm = Partial<GeneratorDialogSchemaBaseForm>;
