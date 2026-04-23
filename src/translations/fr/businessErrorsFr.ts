@@ -95,5 +95,5 @@ export const businessErrorsFr = {
     'dynamicMarginCalculation.loadFilterNotFound': "Certains filtres de consommations n'existent pas : {filterUuids}",
 
     'monitor.server.differentProcessConfigType':
-        'Impossible de comparer 2 configurations de processus de type différent',
+        'Impossible de comparer 2 configurations de processus de type différent : {processConfigEntity1Type} vs {processConfigEntity2Type}',
 };
