@@ -92,4 +92,6 @@ export const businessErrorsEn = {
     'diagram.noVoltageLevelFound': 'No voltage level found for this network area diagram',
     'dynamicMarginCalculation.providerNotFound': 'Dynamic margin calculation provider not found.',
     'dynamicMarginCalculation.loadFilterNotFound': 'Some load filters do not exist: {filterUuids}',
+
+    'monitor.server.differentProcessConfigType': 'Cannot compare 2 different process config types',
 };

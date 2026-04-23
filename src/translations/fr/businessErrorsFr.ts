@@ -93,4 +93,7 @@ export const businessErrorsFr = {
     'diagram.noVoltageLevelFound': 'Aucun poste trouvé pour cette image nodale de zone',
     'dynamicMarginCalculation.providerNotFound': 'Simulateur du calcul de marge dynamique non trouvé.',
     'dynamicMarginCalculation.loadFilterNotFound': "Certains filtres de consommations n'existent pas : {filterUuids}",
+
+    'monitor.server.differentProcessConfigType':
+        'Impossible de comparer 2 configurations de processus de type différent',
 };
