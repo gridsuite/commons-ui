@@ -79,7 +79,7 @@ export const COLUMNS_DEFINITIONS_ICC_CLUSTERS: IccClusterIColumnsDef[] = [
         label: 'ShortCircuitIccClusterFilters',
         dataKey: SHORT_CIRCUIT_ICC_CLUSTER_FILTERS,
         tooltip: 'ShortCircuitIccClusterFiltersTooltip',
-        equipmentTypes: [EquipmentType.GENERATOR, EquipmentType.BATTERY],
+        equipmentTypes: [EquipmentType.GENERATOR, EquipmentType.BATTERY, EquipmentType.HVDC_LINE],
         elementType: ElementType.FILTER,
         titleId: 'FiltersListsSelection',
         initialValue: null,
