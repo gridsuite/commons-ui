@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { useController } from 'react-hook-form';
 import { useCallback, useState } from 'react';
 import { EditNoteIcon } from '../../../icons';
@@ -63,11 +64,11 @@ export function DescriptionInput({ name }: Readonly<DescriptionInputProps>) {
 
     const tooltipBox = value ? <Box sx={styles.descriptionTooltip}> {descriptionLines?.join('\n')} </Box> : undefined;
     const icon = (
-        <Tooltip title={tooltipBox} arrow placement="right">
+        <CustomTooltip title={tooltipBox}>
             <IconButton onClick={handleModifyDescription} sx={styles.coloredButton}>
                 <EditNoteIcon empty={!value} />
             </IconButton>
-        </Tooltip>
+        </CustomTooltip>
     );
 
     return (

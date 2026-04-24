@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, GridDirection, IconButton, Tooltip } from '@mui/material';
+import { Grid, GridDirection, IconButton } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     ExploreOffOutlined as ExploreOffOutlinedIcon,
     ExploreOutlined as ExploreOutlinedIcon,
@@ -297,7 +298,7 @@ export function ConnectivityForm({
             disableRipple={!isNodeBuilt || !voltageLevelForPositionIcon}
             edge="start"
         >
-            <Tooltip
+            <CustomTooltip
                 title={intl.formatMessage({
                     id: getPositionIconTooltipMessageId,
                 })}
@@ -307,7 +308,7 @@ export function ConnectivityForm({
                 ) : (
                     <ExploreOffOutlinedIcon color="action" />
                 )}
-            </Tooltip>
+            </CustomTooltip>
         </IconButton>
     );
 

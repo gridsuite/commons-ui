@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { TableCell, TableRow, Tooltip, IconButton } from '@mui/material';
+import { TableCell, TableRow, IconButton } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Delete as DeleteIcon } from '@mui/icons-material';
@@ -48,7 +49,7 @@ export function TableRowComponent({
             {!disableDelete && (
                 <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
                     {isHover && (
-                        <Tooltip
+                        <CustomTooltip
                             title={intl.formatMessage({
                                 id: 'DeleteRows',
                             })}
@@ -56,7 +57,7 @@ export function TableRowComponent({
                             <IconButton onClick={() => handleDeleteButton(index)}>
                                 <DeleteIcon />
                             </IconButton>
-                        </Tooltip>
+                        </CustomTooltip>
                     )}
                 </TableCell>
             )}

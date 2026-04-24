@@ -7,7 +7,8 @@
 
 import { useMemo } from 'react';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { Grid, Tooltip } from '@mui/material';
+import { Grid } from '@mui/material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { useIntl } from 'react-intl';
 import {
     HIGH_VOLTAGE_LIMIT,
@@ -25,15 +26,14 @@ export function VoltageLimitsParameters() {
     const intl = useIntl();
     const VoltageLevelFilterTooltip = useMemo(() => {
         return (
-            <Tooltip
+            <CustomTooltip
                 title={intl.formatMessage({
                     id: 'VoltageLevelFilterTooltip',
                 })}
-                placement="right-start"
                 sx={{ marginLeft: 1 }}
             >
                 <InfoIcon />
-            </Tooltip>
+            </CustomTooltip>
         );
     }, [intl]);
 

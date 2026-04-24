@@ -6,7 +6,8 @@
  */
 import type { UUID } from 'node:crypto';
 import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useState } from 'react';
-import { Alert, type AlertColor, type AlertProps, AlertTitle, Collapse, Tooltip, useTheme } from '@mui/material';
+import { Alert, type AlertColor, type AlertProps, AlertTitle, Collapse, useTheme } from '@mui/material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { Campaign as CampaignIcon } from '@mui/icons-material';
 import type { User } from 'oidc-client';
 import { AnnouncementSeverity } from '../../utils/types';
@@ -106,9 +107,9 @@ export function AnnouncementBanner({
                 sx={styles.alert}
             >
                 {title && <AlertTitle>{title}</AlertTitle>}
-                <Tooltip title={children} placement="bottom">
+                <CustomTooltip title={children}>
                     <span>{children}</span>
-                </Tooltip>
+                </CustomTooltip>
             </Alert>
         </Collapse>
     );

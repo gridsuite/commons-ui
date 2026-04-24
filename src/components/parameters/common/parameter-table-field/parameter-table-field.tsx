@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, SxProps, Tooltip, TooltipProps, Typography } from '@mui/material';
+import { Grid, SxProps, TooltipProps, Typography } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { FormattedMessage } from 'react-intl';
 import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
@@ -91,14 +92,13 @@ export function ParameterTableField({
                         <FormattedMessage id={label} />
                     </Typography>
                     {tooltipProps && (
-                        <Tooltip
+                        <CustomTooltip
                             title={typeof title === 'string' ? <FormattedMessage id={title} /> : title}
-                            placement="right-start"
                             sx={{ marginLeft: 1 }}
                             {...otherTooltipProps}
                         >
                             <InfoIcon />
-                        </Tooltip>
+                        </CustomTooltip>
                     )}
                 </Grid>
             )}

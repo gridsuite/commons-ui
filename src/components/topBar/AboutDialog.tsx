@@ -22,13 +22,13 @@ import {
     Fade,
     Grid,
     Stack,
-    Tooltip,
     tooltipClasses,
     Typography,
     useMediaQuery,
     useTheme,
     Zoom,
 } from '@mui/material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
@@ -203,13 +203,11 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                 },
             }}
         >
-            <Tooltip
+            <CustomTooltip
                 TransitionComponent={Zoom}
                 enterDelay={2500}
                 enterNextDelay={350}
                 leaveDelay={200}
-                placement="bottom-start"
-                arrow
                 sx={moduleStyles.tooltip}
                 title={
                     <>
@@ -260,7 +258,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                         {gitTag || version || null}
                     </Typography>
                 </Stack>
-            </Tooltip>
+            </CustomTooltip>
         </Grid>
     );
 }

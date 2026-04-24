@@ -12,10 +12,10 @@ import {
     DialogTitle,
     Grid,
     IconButton,
-    Tooltip,
     Typography,
     useTheme,
 } from '@mui/material';
+import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 import { useCallback, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ArrowCircleLeft, ArrowCircleRight } from '@mui/icons-material';
@@ -119,11 +119,10 @@ function CurveSelectorDialog({
                     </Grid>
                     <Grid item container direction="column" justifyContent="center" alignItems="center" xs={0.5}>
                         <Grid item>
-                            <Tooltip
+                            <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'AddRows',
                                 })}
-                                placement="top"
                             >
                                 <span>
                                     <IconButton
@@ -134,14 +133,13 @@ function CurveSelectorDialog({
                                         <ArrowCircleRight />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                         </Grid>
                         <Grid item>
-                            <Tooltip
+                            <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'DeleteRows',
                                 })}
-                                placement="top"
                             >
                                 <span>
                                     <IconButton
@@ -152,7 +150,7 @@ function CurveSelectorDialog({
                                         <ArrowCircleLeft />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                         </Grid>
                     </Grid>
                     <Grid item container xs direction="column">

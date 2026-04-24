@@ -12,9 +12,9 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Tooltip,
     IconButton,
 } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
@@ -108,7 +108,7 @@ export function ParameterTable({
                             </TableCell>
                         ))}
                         <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
-                            <Tooltip
+                            <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'AddRows',
                                 })}
@@ -118,7 +118,7 @@ export function ParameterTable({
                                         <AddCircleIcon />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                         </TableCell>
                     </TableRow>
                 </TableHead>

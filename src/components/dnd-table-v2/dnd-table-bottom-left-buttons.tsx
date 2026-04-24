@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { Replay as ReplayIcon, Upload as UploadIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 
@@ -33,11 +34,10 @@ export function DndTableBottomLeftButtons({
     return (
         <Grid container item xs spacing={1}>
             <Grid item>
-                <Tooltip
+                <CustomTooltip
                     title={intl.formatMessage({
                         id: uploadButtonMessageId,
                     })}
-                    placement="top"
                 >
                     <span>
                         <IconButton
@@ -48,22 +48,21 @@ export function DndTableBottomLeftButtons({
                             <UploadIcon />
                         </IconButton>
                     </span>
-                </Tooltip>
+                </CustomTooltip>
             </Grid>
             {withResetButton && (
                 <Grid item>
-                    <Tooltip
+                    <CustomTooltip
                         title={intl.formatMessage({
                             id: resetButtonMessageId,
                         })}
-                        placement="top"
                     >
                         <span>
                             <IconButton color="primary" onClick={() => handleResetButton()} disabled={disabled}>
                                 <ReplayIcon />
                             </IconButton>
                         </span>
-                    </Tooltip>
+                    </CustomTooltip>
                 </Grid>
             )}
         </Grid>

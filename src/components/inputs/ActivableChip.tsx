@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Chip, Tooltip } from '@mui/material';
+import { Chip } from '@mui/material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { CheckCircleOutline, Cancel } from '@mui/icons-material';
 
 export interface ActivableChipProps {
@@ -20,7 +21,7 @@ export function ActivableChip(props: Readonly<ActivableChipProps>) {
     const { isActivated, label, tooltipMessage, onClick, isDisabled } = props;
 
     return (
-        <Tooltip title={tooltipMessage} arrow>
+        <CustomTooltip title={tooltipMessage}>
             <Chip
                 label={label}
                 deleteIcon={isActivated ? <CheckCircleOutline /> : <Cancel />}
@@ -31,6 +32,6 @@ export function ActivableChip(props: Readonly<ActivableChipProps>) {
                 onClick={onClick}
                 disabled={isDisabled}
             />
-        </Tooltip>
+        </CustomTooltip>
     );
 }

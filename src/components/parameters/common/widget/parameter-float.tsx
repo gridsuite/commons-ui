@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, Tooltip } from '@mui/material';
+import { Grid } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { FormattedMessage } from 'react-intl';
 import { FloatInput } from '../../../inputs';
 
@@ -39,7 +40,7 @@ export function ParameterFloat({
     );
 
     if (tooltip) {
-        return <Tooltip title={<FormattedMessage id={tooltip} />}>{content}</Tooltip>;
+        return <CustomTooltip title={<FormattedMessage id={tooltip} />}>{content}</CustomTooltip>;
     }
     return content;
 }

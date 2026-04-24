@@ -6,7 +6,8 @@
  */
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { IconButton, TableCell, TableRow, TableRowProps, Tooltip } from '@mui/material';
+import { IconButton, TableCell, TableRow, TableRowProps } from '@mui/material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 
 type DeletableTableRowProps = TableRowProps & {
@@ -32,7 +33,7 @@ export function DeletableTableRow({
             {!disabledDeletion && (
                 <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
                     {isMouseHover && (
-                        <Tooltip
+                        <CustomTooltip
                             title={intl.formatMessage({
                                 id: 'DeleteRows',
                             })}
@@ -40,7 +41,7 @@ export function DeletableTableRow({
                             <IconButton onClick={onClick}>
                                 <DeleteIcon />
                             </IconButton>
-                        </Tooltip>
+                        </CustomTooltip>
                     )}
                 </TableCell>
             )}

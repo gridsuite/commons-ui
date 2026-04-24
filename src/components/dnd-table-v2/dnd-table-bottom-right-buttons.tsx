@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import {
     AddCircle as AddCircleIcon,
     ArrowDownward as ArrowDownwardIcon,
@@ -14,6 +14,7 @@ import {
 } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { SELECTED } from './dnd-table.type';
 
 export interface DndTableBottomRightButtonsProps {
@@ -50,11 +51,10 @@ export function DndTableBottomRightButtons({
     return (
         <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end' }}>
             <Grid item>
-                <Tooltip
+                <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DndAddRows',
                     })}
-                    placement="top"
                 >
                     <span>
                         <IconButton
@@ -65,14 +65,13 @@ export function DndTableBottomRightButtons({
                             <AddCircleIcon />
                         </IconButton>
                     </span>
-                </Tooltip>
+                </CustomTooltip>
             </Grid>
             <Grid item>
-                <Tooltip
+                <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DndDeleteRows',
                     })}
-                    placement="top"
                 >
                     <span>
                         <IconButton
@@ -83,16 +82,15 @@ export function DndTableBottomRightButtons({
                             <DeleteIcon />
                         </IconButton>
                     </span>
-                </Tooltip>
+                </CustomTooltip>
             </Grid>
             {showMoveArrow && (
                 <>
                     <Grid item>
-                        <Tooltip
+                        <CustomTooltip
                             title={intl.formatMessage({
                                 id: 'MoveUpRows',
                             })}
-                            placement="top"
                         >
                             <span>
                                 <IconButton
@@ -103,14 +101,13 @@ export function DndTableBottomRightButtons({
                                     <ArrowUpwardIcon />
                                 </IconButton>
                             </span>
-                        </Tooltip>
+                        </CustomTooltip>
                     </Grid>
                     <Grid item>
-                        <Tooltip
+                        <CustomTooltip
                             title={intl.formatMessage({
                                 id: 'MoveDownRows',
                             })}
-                            placement="top"
                         >
                             <span>
                                 <IconButton
@@ -121,7 +118,7 @@ export function DndTableBottomRightButtons({
                                     <ArrowDownwardIcon />
                                 </IconButton>
                             </span>
-                        </Tooltip>
+                        </CustomTooltip>
                     </Grid>
                 </>
             )}

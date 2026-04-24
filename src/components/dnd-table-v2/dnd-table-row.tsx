@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { SxProps, TableCell, TableRowProps, Theme, Tooltip } from '@mui/material';
+import { SxProps, TableCell, TableRowProps, Theme } from '@mui/material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
@@ -170,11 +171,10 @@ export function DndTableRow({
             disabledDeletion={disabledDeletion || multiselect}
         >
             {!disableDragAndDrop && (
-                <Tooltip
+                <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DragAndDrop',
                     })}
-                    placement="right"
                 >
                     <TableCell
                         sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}
@@ -182,7 +182,7 @@ export function DndTableRow({
                     >
                         <DragIndicatorIcon />
                     </TableCell>
-                </Tooltip>
+                </CustomTooltip>
             )}
             {multiselect && (
                 <TableCell sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}>

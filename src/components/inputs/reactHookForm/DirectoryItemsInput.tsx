@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select, Tooltip } from '@mui/material';
+import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select } from '@mui/material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { DriveFolderUpload } from '@mui/icons-material';
 import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
@@ -271,13 +272,13 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                     }
                     renderValue={(directoryElements: TreeViewFinderNodeProps[]) => (
                         <Box sx={styles.renderDirectoryElements}>
-                            <Tooltip title={intl.formatMessage({ id: titleId })}>
+                            <CustomTooltip title={intl.formatMessage({ id: titleId })}>
                                 <span>
                                     <IconButton size="small" disabled={disable}>
                                         <DriveFolderUpload />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                             {directoryElements?.map((item, index) => {
                                 const elementName =
                                     watchedElements?.[index]?.[NAME] ??

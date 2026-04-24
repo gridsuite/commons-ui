@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid, IconButton, styled, Tooltip } from '@mui/material';
+import { Box, Grid, IconButton, styled } from '@mui/material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     ArrowCircleDown,
     ArrowCircleUp,
@@ -59,14 +60,13 @@ export function BottomRightButtons({
                 <Grid item xs={1}>
                     {csvProps && (
                         <InnerColoredButton onClick={() => setUploaderOpen(true)}>
-                            <Tooltip
+                            <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'ImportCSV',
                                 })}
-                                placement="bottom"
                             >
                                 <Upload />
-                            </Tooltip>
+                            </CustomTooltip>
                         </InnerColoredButton>
                     )}
                 </Grid>

@@ -14,8 +14,8 @@ import {
     TableHead,
     TableRow,
     Theme,
-    Tooltip,
 } from '@mui/material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
@@ -71,20 +71,20 @@ export function ShortCircuitIccClusterTable({
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
-                            <Tooltip key={column.dataKey} title={column.tooltip}>
+                            <CustomTooltip key={column.dataKey} title={column.tooltip}>
                                 <TableCell align="center" sx={{ width: column.width }}>
                                     {column.label}
                                 </TableCell>
-                            </Tooltip>
+                            </CustomTooltip>
                         ))}
                         <TableCell align="center" sx={{ width: '5%' }}>
-                            <Tooltip title={<FormattedMessage id="AddRows" />}>
+                            <CustomTooltip title={<FormattedMessage id="AddRows" />}>
                                 <span>
                                     <IconButton size="small" disabled={false} onClick={handleAddRowsButton}>
                                         <AddCircleIcon fontSize="small" />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                         </TableCell>
                     </TableRow>
                 </TableHead>

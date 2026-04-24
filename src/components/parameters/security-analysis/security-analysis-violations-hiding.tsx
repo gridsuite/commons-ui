@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tooltip, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { useIntl } from 'react-intl';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { parametersStyles } from '../parameters-style';
@@ -64,9 +65,9 @@ function SecurityAnalysisFields({
                     />
                 </Grid>
             )}
-            <Tooltip title={intl.formatMessage({ id: tooltipInfoId })} placement="left-start">
+            <CustomTooltip title={intl.formatMessage({ id: tooltipInfoId })}>
                 <InfoIcon />
-            </Tooltip>
+            </CustomTooltip>
         </Grid>
     );
 }
@@ -120,13 +121,12 @@ export function ViolationsHidingParameters() {
                             id: 'securityAnalysis.violationsHiding',
                         })}
                     </Typography>
-                    <Tooltip
+                    <CustomTooltip
                         sx={parametersStyles.tooltip}
                         title={intl.formatMessage({ id: 'securityAnalysis.toolTip.violationsHiding' })}
-                        placement="left-start"
                     >
                         <InfoIcon />
-                    </Tooltip>
+                    </CustomTooltip>
                 </Grid>
             </Grid>
 
