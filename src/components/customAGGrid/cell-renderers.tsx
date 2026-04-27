@@ -6,11 +6,11 @@
  */
 
 import { Box, Checkbox, Theme } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { ReactNode, useRef, useState } from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomCellRendererProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { isBlankOrEmpty, mergeSx, MuiStyles } from '../../utils';
 
 const styles = {

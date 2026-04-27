@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Box, IconButton } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { useController } from 'react-hook-form';
 import { useCallback, useState } from 'react';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { EditNoteIcon } from '../../../icons';
 import { MuiStyles } from '../../../../utils';
 import { useCustomFormContext } from '../provider';

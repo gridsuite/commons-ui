@@ -20,9 +20,9 @@ import {
     TextFieldProps,
     Typography,
 } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
 import type { MuiStyles } from '../../utils/styles';
 

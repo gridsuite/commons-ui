@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Box, Grid, IconButton, styled } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     ArrowCircleDown,
     ArrowCircleUp,
@@ -16,6 +15,7 @@ import {
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { ErrorInput } from '../errorManagement/ErrorInput';
 import { FieldErrorAlert } from '../errorManagement/FieldErrorAlert';
 import { CsvUploader } from './csvUploader/CsvUploader';

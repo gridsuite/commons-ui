@@ -22,10 +22,10 @@ import {
     TableRow,
     type Theme,
 } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { ColumnBase, DndColumn, DndColumnType, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';

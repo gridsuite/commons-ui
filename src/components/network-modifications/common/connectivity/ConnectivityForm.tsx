@@ -6,7 +6,6 @@
  */
 
 import { Grid, GridDirection, IconButton } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     ExploreOffOutlined as ExploreOffOutlinedIcon,
     ExploreOutlined as ExploreOutlinedIcon,
@@ -14,6 +13,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
 import { ConnectablePositionFormInfos, ConnectivityNetworkProps } from './connectivity.type';
 import { fetchBusBarSectionsForNewCoupler } from '../../../../services/networkModification';

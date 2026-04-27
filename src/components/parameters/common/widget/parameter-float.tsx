@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { FloatInput } from '../../../inputs';
 
 export interface ParameterFloatProps {

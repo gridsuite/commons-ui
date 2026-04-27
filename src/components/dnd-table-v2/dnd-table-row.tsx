@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SxProps, TableCell, TableRowProps, Theme } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { CheckboxInput } from '../inputs/reactHookForm/booleans/CheckboxInput';
 import { ColumnBase, DndColumn, DndColumnType, SELECTED } from './dnd-table.type';
 import {

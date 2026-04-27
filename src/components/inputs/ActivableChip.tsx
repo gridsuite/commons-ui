@@ -6,8 +6,8 @@
  */
 
 import { Chip } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { CheckCircleOutline, Cancel } from '@mui/icons-material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 
 export interface ActivableChipProps {
     isActivated: boolean;

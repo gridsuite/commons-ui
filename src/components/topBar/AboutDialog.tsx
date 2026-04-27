@@ -28,10 +28,10 @@ import {
     useTheme,
     Zoom,
 } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { LogoText } from './GridLogo';
 import type { MuiStyles } from '../../utils/styles';
 

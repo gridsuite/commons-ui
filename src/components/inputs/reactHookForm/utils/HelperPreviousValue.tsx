@@ -7,8 +7,8 @@
 
 import { useIntl } from 'react-intl';
 import { FormHelperText, Stack, Typography } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { Input } from '../../../../utils';
 
 export interface HelperPreviousValueProps {

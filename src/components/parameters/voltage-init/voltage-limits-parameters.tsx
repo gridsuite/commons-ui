@@ -8,8 +8,8 @@
 import { useMemo } from 'react';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { Grid } from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,

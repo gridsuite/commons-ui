@@ -6,8 +6,8 @@
  */
 import { useIntl } from 'react-intl';
 import { Grid, IconButton } from '@mui/material';
-import { CustomTooltip } from '../../../../../tooltip/CustomTooltip';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../../../../../tooltip/CustomTooltip';
 import { CountrySelectionInput, TextInput } from '../../../../../inputs';
 import GridSection from '../../../../../grid/grid-section';
 import { FieldConstants } from '../../../../../../utils';

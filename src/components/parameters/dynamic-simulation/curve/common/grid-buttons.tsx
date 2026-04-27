@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid, IconButton } from '@mui/material';
-import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 import { AddCircle, Delete } from '@mui/icons-material';
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 
 interface GridButtonsProps {
     onAddButton: () => void;

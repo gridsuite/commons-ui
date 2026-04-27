@@ -9,8 +9,8 @@ import React, { useCallback, useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, useTheme } from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,

@@ -6,12 +6,12 @@
  */
 
 import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select } from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { DriveFolderUpload } from '@mui/icons-material';
 import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { useCustomFormContext } from './provider';
 import { ErrorInput, MidFormError } from './errorManagement';
 import { useSnackMessage } from '../../../hooks';

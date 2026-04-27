@@ -6,8 +6,8 @@
  */
 
 import { Chip, Grid, SxProps, Typography } from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
 import { ParameterType } from '../../../utils/types/parameters.type';
 import {

@@ -7,8 +7,8 @@
 import { PropsWithChildren, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Grid, IconButton } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { Delete as DeleteIcon, RestoreFromTrash as RestoreFromTrashIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 
 export interface DeletableRowProps extends PropsWithChildren {
     alignItems: string;

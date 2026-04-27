@@ -6,9 +6,9 @@
  */
 
 import { Grid, Typography } from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { useIntl } from 'react-intl';
 import { Info as InfoIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
 import { FloatInput } from '../../inputs';
 import {

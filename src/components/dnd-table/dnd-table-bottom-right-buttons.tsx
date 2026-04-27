@@ -6,7 +6,6 @@
  */
 
 import { Grid, IconButton } from '@mui/material';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
 import {
     AddCircle as AddCircleIcon,
     ArrowDownward as ArrowDownwardIcon,
@@ -15,6 +14,7 @@ import {
 } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { SELECTED } from './dnd-table.type';
 
 export interface DndTableBottomRightButtonsProps {

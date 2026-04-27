@@ -4,21 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    IconButton,
-} from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { TableRowComponent } from './table-row';
 import { MAX_ROWS_NUMBER } from './constants';
 import { ColumnsDef } from './types';

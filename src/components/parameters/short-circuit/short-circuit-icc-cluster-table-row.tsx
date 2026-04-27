@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { IconButton, TableCell, TableRow } from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccClusterIColumnsDef, SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE } from './columns-definition';
 import { ShortCircuitIccClusterTableCell } from './short-circuit-icc-cluster-table-cell';
 

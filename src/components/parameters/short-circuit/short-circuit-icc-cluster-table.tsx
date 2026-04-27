@@ -5,21 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    IconButton,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Theme,
-} from '@mui/material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useCallback } from 'react';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccClusterIColumnsDef } from './columns-definition';
 import { ShortCircuitIccClusterTableRow } from './short-circuit-icc-cluster-table-row';
 

@@ -15,10 +15,10 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 import { useCallback, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ArrowCircleLeft, ArrowCircleRight } from '@mui/icons-material';
+import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 import CurvePreview, { CurvePreviewApi } from './curve-preview';
 import CurveSelector, { CurveSelectorApi } from './curve-selector';
 import { mergeSx } from '../../../../../utils/styles';

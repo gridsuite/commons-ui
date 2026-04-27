@@ -6,8 +6,8 @@
  */
 
 import { TableCell } from '@mui/material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     LimitReductionIColumnsDef,
     LIMIT_REDUCTIONS_FORM,
