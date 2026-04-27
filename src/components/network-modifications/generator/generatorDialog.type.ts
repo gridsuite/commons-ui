@@ -100,7 +100,7 @@ export interface GeneratorFormInfos {
     busOrBusbarSectionId: string;
     connectionDirection: string | null;
     connectionName?: string | null;
-    connectionPosition?: string | null;
+    connectionPosition?: number | null;
     terminalConnected?: boolean | null;
     properties: Record<string, string> | undefined;
 }
