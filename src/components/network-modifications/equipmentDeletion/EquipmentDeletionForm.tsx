@@ -14,6 +14,7 @@ import { useHvdcLccDeletion } from './hvdcLccDeletion/useHvdcLccDeletion';
 import {
     areIdsEqual,
     EquipmentType,
+    ExtendedEquipmentType,
     FieldConstants,
     getObjectId,
     richTypeEquals,
@@ -27,19 +28,20 @@ import { useGetLabelEquipmentTypes } from '../../../hooks/useGetLabelEquipmentTy
 
 export interface EquipmentDeletionFormProps {
     editData?: EquipmentDeletionDto;
-    fetchEquipmentIds?: (eqptType: EquipmentType) => Promise<string[]>;
+    fetchEquipmentIds?: (eqptType: EquipmentType | ExtendedEquipmentType) => Promise<string[]>;
     fetchHvdcWithShuntCompensators?: (hvdcLineId: UUID) => Promise<LccDeletionDto>;
 }
 
 const NULL_UUID: UUID = '00000000-0000-0000-0000-000000000000';
 
-const EQUIPMENT_TYPE_ORDER: EquipmentType[] = [
+const EQUIPMENT_TYPE_ORDER: (EquipmentType | ExtendedEquipmentType)[] = [
     EquipmentType.SUBSTATION,
     EquipmentType.VOLTAGE_LEVEL,
     EquipmentType.LINE,
     EquipmentType.TWO_WINDINGS_TRANSFORMER,
     EquipmentType.THREE_WINDINGS_TRANSFORMER,
-    EquipmentType.HVDC_LINE,
+    ExtendedEquipmentType.HVDC_LINE_VSC,
+    ExtendedEquipmentType.HVDC_LINE_LCC,
     EquipmentType.GENERATOR,
     EquipmentType.BATTERY,
     EquipmentType.LOAD,

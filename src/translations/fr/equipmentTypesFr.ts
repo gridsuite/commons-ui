@@ -21,6 +21,8 @@ export const equipmentTypesFr = {
     SHUNT_COMPENSATOR: 'MCS',
     STATIC_VAR_COMPENSATOR: 'CSPR',
     HVDC_LINE: 'Ligne HVDC',
+    HVDC_LINE_VSC: 'Ligne HVDC (VSC)',
+    HVDC_LINE_LCC: 'Ligne HVDC (LCC)',
     HVDC_CONVERTER_STATION: 'Station de conversion HVDC',
     VSC_CONVERTER_STATION: 'Station de conversion VSC',
     LCC_CONVERTER_STATION: 'Station de conversion LCC',
