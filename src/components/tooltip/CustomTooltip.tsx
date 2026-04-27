@@ -11,7 +11,7 @@ export function CustomTooltip(props: TooltipProps) {
     const { children, ...tooltipProps } = props;
     return (
         <Tooltip arrow enterDelay={250} {...tooltipProps}>
-            <span>{children}</span>
+            {children}
         </Tooltip>
     );
 }
