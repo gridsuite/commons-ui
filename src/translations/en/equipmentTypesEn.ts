@@ -24,7 +24,7 @@ export const equipmentTypesEn = {
     HVDC_CONVERTER_STATION: 'HVDC Converter Station',
     VSC_CONVERTER_STATION: 'Vsc Converter Station',
     LCC_CONVERTER_STATION: 'Lcc Converter Station',
-    DANGLING_LINE: 'Dangling Line',
+    BOUNDARY_LINE: 'Boundary Line',
     TIE_LINE: 'Tie line',
     DISCONNECTOR: 'Disconnector',
     BREAKER: 'Breaker',

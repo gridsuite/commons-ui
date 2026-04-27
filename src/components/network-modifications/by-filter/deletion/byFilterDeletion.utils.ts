@@ -27,7 +27,7 @@ export const EQUIPMENT_TYPE_ORDER = [
     EquipmentType.BATTERY,
     EquipmentType.LOAD,
     EquipmentType.SHUNT_COMPENSATOR,
-    EquipmentType.DANGLING_LINE,
+    EquipmentType.BOUNDARY_LINE,
     EquipmentType.STATIC_VAR_COMPENSATOR,
 ];
 

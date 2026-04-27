@@ -24,7 +24,7 @@ export const equipmentTypesForPredefinedPropertiesMapper = (type: string): strin
         case 'VOLTAGE_LEVEL':
             return 'voltageLevel';
         case 'BUSBAR_SECTION':
-        case 'DANGLING_LINE':
+        case 'BOUNDARY_LINE':
         case 'HVDC_LINE':
         case 'LCC_CONVERTER_STATION':
         case 'THREE_WINDINGS_TRANSFORMER':
