@@ -41,7 +41,7 @@ import {
     Person as PersonIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
-import type { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';

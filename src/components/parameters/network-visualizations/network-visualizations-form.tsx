@@ -8,7 +8,7 @@
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
 import { UseNetworkVisualizationParametersFormReturn } from './use-network-visualizations-parameters-form';
 import { CustomFormProvider } from '../../inputs';
 import { NetworkVisualizationTabValues as TabValues } from './constants';

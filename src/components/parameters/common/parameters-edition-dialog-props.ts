@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
 import { GsLang } from '../../../utils';
 import { BuildStatus } from '../../node/constant';
 

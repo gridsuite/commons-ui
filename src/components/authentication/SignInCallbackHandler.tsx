@@ -6,7 +6,7 @@
  */
 
 import { useEffect } from 'react';
-import type { UserManager } from 'oidc-client';
+import type { UserManager } from 'oidc-client-ts';
 
 export interface SignInCallbackHandlerProps {
     userManager: UserManager | null;
