@@ -10,7 +10,6 @@ import { flexRender, Row } from '@tanstack/react-table';
 import { Box, TableCell, TableRow, useTheme } from '@mui/material';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { FormattedMessage } from 'react-intl';
 import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
 import {
     COLUMNS_WITHOUT_BORDER,
