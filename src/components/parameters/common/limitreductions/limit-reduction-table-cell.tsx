@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { TableCell, Tooltip } from '@mui/material';
+import { TableCell } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     LimitReductionIColumnsDef,
     LIMIT_REDUCTIONS_FORM,
@@ -25,7 +26,7 @@ export function LimitReductionTableCell({
     limits: ILimitReductionsByVoltageLevel[];
 }>) {
     return column.dataKey === VOLTAGE_LEVELS_FORM && limits[rowIndex] ? (
-        <Tooltip
+        <CustomTooltip
             title={
                 <FormattedMessage
                     id="VoltageRangeInterval"
@@ -39,7 +40,7 @@ export function LimitReductionTableCell({
             <TableCell sx={{ fontWeight: 'bold' }}>
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             </TableCell>
-        </Tooltip>
+        </CustomTooltip>
     ) : (
         <TableCell sx={{ fontWeight: 'bold' }}>
             {column.dataKey === VOLTAGE_LEVELS_FORM ? (

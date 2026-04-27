@@ -18,11 +18,11 @@ import {
     Switch,
     TextField,
     TextFieldProps,
-    Tooltip,
     Typography,
 } from '@mui/material';
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
 import type { MuiStyles } from '../../utils/styles';
 
@@ -433,7 +433,7 @@ export function FlatParameters({
             {paramsAsArray.map((param, index) => (
                 <Fragment key={param.name}>
                     <ListItem sx={styles.paramListItem}>
-                        <Tooltip
+                        <CustomTooltip
                             title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
                             enterDelay={1200}
                             key={param.name}
@@ -441,7 +441,7 @@ export function FlatParameters({
                             <Typography sx={styles.paramName}>
                                 <FormattedMessage id={param.name} defaultMessage={param.name.slice(prefix.length)} />
                             </Typography>
-                        </Tooltip>
+                        </CustomTooltip>
                         {renderField(param)}
                     </ListItem>
                     {showSeparator && index !== paramsAsArray.length - 1 && <Divider />}

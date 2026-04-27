@@ -6,8 +6,9 @@
  */
 import { PropsWithChildren, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, RestoreFromTrash as RestoreFromTrashIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 
 export interface DeletableRowProps extends PropsWithChildren {
     alignItems: string;
@@ -38,7 +39,7 @@ export function DeletableRow({
             {children}
             <Grid item xs={1}>
                 {isMouseHover && !disabledDeletion && (
-                    <Tooltip
+                    <CustomTooltip
                         title={intl.formatMessage({
                             id: deletionMark ? 'button.restore' : 'DeleteRows',
                         })}
@@ -46,7 +47,7 @@ export function DeletableRow({
                         <IconButton onClick={onClick}>
                             {deletionMark ? <RestoreFromTrashIcon /> : <DeleteIcon />}
                         </IconButton>
-                    </Tooltip>
+                    </CustomTooltip>
                 )}
             </Grid>
         </Grid>

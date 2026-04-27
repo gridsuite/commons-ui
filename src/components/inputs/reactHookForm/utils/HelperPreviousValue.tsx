@@ -6,8 +6,9 @@
  */
 
 import { useIntl } from 'react-intl';
-import { FormHelperText, Stack, Tooltip, Typography } from '@mui/material';
+import { FormHelperText, Stack, Typography } from '@mui/material';
 import { InfoOutlined, WarningAmberRounded } from '@mui/icons-material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { Input } from '../../../../utils';
 
 export interface HelperPreviousValueProps {
@@ -39,10 +40,8 @@ export function HelperPreviousValue({
         <FormHelperText error={false} sx={{ marginLeft: 0 }}>
             {!disabledTooltip ? (
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                    <Tooltip
+                    <CustomTooltip
                         title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
-                        placement="right"
-                        arrow
                         PopperProps={{
                             modifiers: [
                                 {
@@ -59,7 +58,7 @@ export function HelperPreviousValue({
                         ) : (
                             <WarningAmberRounded color="warning" fontSize="small" />
                         )}
-                    </Tooltip>
+                    </CustomTooltip>
                     <Typography noWrap fontSize={11} align="center">
                         {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
                     </Typography>

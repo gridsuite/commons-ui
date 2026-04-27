@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { IconButton, TableCell, TableRow, Tooltip } from '@mui/material';
+import { IconButton, TableCell, TableRow } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccClusterIColumnsDef, SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE } from './columns-definition';
 import { ShortCircuitIccClusterTableCell } from './short-circuit-icc-cluster-table-cell';
 
@@ -43,11 +44,11 @@ export function ShortCircuitIccClusterTableRow({
             ))}
             <TableCell align="center">
                 {isHover && (
-                    <Tooltip title={<FormattedMessage id="DeleteRows" />}>
+                    <CustomTooltip title={<FormattedMessage id="DeleteRows" />}>
                         <IconButton size="small" onClick={() => onDeleteButton(index)}>
                             <DeleteIcon fontSize="small" />
                         </IconButton>
-                    </Tooltip>
+                    </CustomTooltip>
                 )}
             </TableCell>
         </TableRow>

@@ -4,10 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import { AddCircle, Delete } from '@mui/icons-material';
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 
 interface GridButtonsProps {
     onAddButton: () => void;
@@ -29,32 +30,30 @@ export function GridButtons({ onAddButton, onDeleteButton, disabledAdd, disabled
     return (
         <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}>
             <Grid item>
-                <Tooltip
+                <CustomTooltip
                     title={intl.formatMessage({
                         id: 'AddRows',
                     })}
-                    placement="top"
                 >
                     <span>
                         <IconButton color="primary" onClick={() => handleAddButton()} disabled={disabledAdd}>
                             <AddCircle />
                         </IconButton>
                     </span>
-                </Tooltip>
+                </CustomTooltip>
             </Grid>
             <Grid item>
-                <Tooltip
+                <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DeleteRows',
                     })}
-                    placement="top"
                 >
                     <span>
                         <IconButton color="primary" onClick={() => handleDeleteButton()} disabled={disabledDelete}>
                             <Delete />
                         </IconButton>
                     </span>
-                </Tooltip>
+                </CustomTooltip>
             </Grid>
         </Grid>
     );
