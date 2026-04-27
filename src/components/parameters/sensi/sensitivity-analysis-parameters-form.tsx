@@ -11,7 +11,7 @@ import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analys
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
-import { SensitivityAnalysisFields } from './sensitivity-Flow-parameters';
+import { SensitivityAnalysisFields } from './sensitivity-parameters-fields';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { BuildStatus } from '../../node/constant';
@@ -66,7 +66,7 @@ export function SensitivityAnalysisParametersForm({
         >
             <Box sx={styles.sensibilityAnalysisParameters}>
                 {renderTitleFields?.()}
-                {sensitivityAnalysisMethods.paramsLoaded ? (
+                {sensitivityAnalysisMethods.paramsFormInitialized ? (
                     <Box sx={mergeSx(parametersStyles.scrollableGrid, { paddingTop: 0, maxHeight: '100%' })}>
                         <Grid
                             container

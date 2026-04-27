@@ -7,19 +7,7 @@
 
 import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
-import type { UUID } from 'node:crypto';
-import { MODIFICATION_TYPES, EquipmentType, ModificationType } from '../utils';
-
-export interface NetworkModificationMetadata {
-    uuid: UUID;
-    type: ModificationType;
-    date: Date;
-    stashed: boolean;
-    activated: boolean;
-    description: string;
-    messageType: string;
-    messageValues: string;
-}
+import { EquipmentType, MODIFICATION_TYPES, NetworkModificationMetadata } from '../utils';
 
 interface ModificationValues {
     equipmentId: string;
