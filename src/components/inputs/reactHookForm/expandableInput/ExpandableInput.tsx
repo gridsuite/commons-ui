@@ -6,24 +6,11 @@
  */
 
 import { useFieldArray } from 'react-hook-form';
-import { Button, Grid } from '@mui/material';
-import { ControlPoint as AddIcon } from '@mui/icons-material';
-import { FormattedMessage } from 'react-intl';
+import { Grid } from '@mui/material';
 import { forwardRef, useImperativeHandle } from 'react';
 import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
-import { mergeSx, type MuiStyles } from '../../../../utils';
-
-const styles = {
-    button: (theme) => ({
-        justifyContent: 'flex-start',
-        fontSize: 'small',
-        marginTop: theme.spacing(1),
-    }),
-    paddingButton: (theme) => ({
-        paddingLeft: theme.spacing(2),
-    }),
-} as const satisfies MuiStyles;
+import { AddButton } from '../../../addButton';
 
 export type ExpandableInputHandle = {
     replaceItems: (newItems: any[]) => void;
@@ -106,17 +93,11 @@ export const ExpandableInput = forwardRef(
                             <Field name={name} index={idx} {...fieldProps} />
                         </DeletableRow>
                     ))}
-                <span>
-                    <Button
-                        disabled={disabled}
-                        fullWidth
-                        sx={mergeSx(styles.button, styles.paddingButton)}
-                        startIcon={<AddIcon />}
-                        onClick={() => append(initialValue)}
-                    >
-                        {addButtonLabel && <FormattedMessage id={addButtonLabel} />}
-                    </Button>
-                </span>
+                {addButtonLabel && (
+                    <Grid item>
+                        <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
+                    </Grid>
+                )}
             </Grid>
         );
     }

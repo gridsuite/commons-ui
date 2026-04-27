@@ -6,13 +6,13 @@
  */
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Button, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useCallback, useEffect } from 'react';
-import { ControlPoint } from '@mui/icons-material';
 import { FieldConstants } from '../../../../../../utils';
 import { fetchDefaultCountry } from '../../../../../../services';
 import { AutocompleteInput, TextInput } from '../../../../../inputs';
 import { SubstationCreationSection, SubstationCreationSectionProps } from './SubstationCreationSection';
+import { AddButton } from '../../../../../addButton';
 
 export interface SubstationTabContentProps extends Pick<SubstationCreationSectionProps, 'showDeleteButton'> {
     substationOptions?: string[];
@@ -69,9 +69,7 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
                 <FormattedMessage id="Or" />
             </Grid>
             <Grid item>
-                <Button variant="text" color="primary" startIcon={<ControlPoint />} onClick={handleCreateSubstation}>
-                    <FormattedMessage id="CreateSubstation" />
-                </Button>
+                <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />
             </Grid>
         </Grid>
     );
