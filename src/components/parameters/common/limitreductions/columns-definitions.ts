@@ -42,8 +42,8 @@ export enum TabValues {
 }
 
 export const TAB_INFO = [
-    { label: TabValues[TabValues.General], developerModeOnly: false },
-    { label: TabValues[TabValues.LimitReductions], developerModeOnly: false },
+    { label: TabValues[TabValues.General], developerModeOnly: false, dataTestId: 'GeneralSa' },
+    { label: TabValues[TabValues.LimitReductions], developerModeOnly: false, dataTestId: 'LimitReductionsSa' },
 ];
 
 export interface LimitReductionIColumnsDef {
