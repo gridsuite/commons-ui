@@ -207,7 +207,7 @@ export const networkModificationsEn = {
     addNewAssignment: 'Modify another field',
     changeTypeConfirmation: 'The type will be changed. All fields values will be erased.',
     Or: 'or',
-    NormalizedPercentage: 'Ce pourcentage doit être compris entre 0 et 100',
+    NormalizedPercentage: 'This percentage must be between 0 and 100',
     On: 'On',
     Off: 'Off',
     FrequencyRegulation: 'Active power regulation',
