@@ -359,6 +359,7 @@ export function TopBar({
                         <Button
                             aria-controls="settings-menu"
                             aria-haspopup="true"
+                            aria-label="User settings"
                             sx={styles.userButton}
                             onClick={handleToggleSettingsMenu}
                             color="inherit"
@@ -367,9 +368,7 @@ export function TopBar({
                             startIcon={
                                 <Avatar>
                                     <Typography sx={styles.name}>
-                                        {user.profile.name !== undefined
-                                            ? abbreviationFromUserName(user.profile.name)
-                                            : ''}
+                                        {user.profile.name ? abbreviationFromUserName(user.profile.name) : '?'}
                                     </Typography>
                                 </Avatar>
                             }
