@@ -9,10 +9,10 @@ import { MouseEvent, PropsWithChildren, ReactNode, useMemo, useState } from 'rea
 import { FormattedMessage } from 'react-intl';
 import {
     AppBar,
+    Avatar,
     Box,
     Button,
     ClickAwayListener,
-    darken,
     IconButton,
     ListItemIcon,
     ListItemText,
@@ -74,14 +74,18 @@ const getStyles = (dense: boolean = false) => {
             textDecoration: 'none',
             color: 'inherit',
         },
+        userButton: (theme) => ({
+            '& .MuiButton-startIcon': {
+                marginRight: '0px',
+            },
+            '& .MuiButton-endIcon ': {
+                '& > :first-child': {
+                    fontSize: theme.spacing(4), // 32px large icon
+                },
+            },
+        }),
         name: (theme) => ({
-            backgroundColor: darken(theme.palette.background.paper, 0.1),
-            paddingTop: theme.spacing(dense ? 0.625 : 1.25),
-            borderRadius: '100%',
-            fontWeight: '400',
-            textTransform: 'uppercase',
-            height: theme.spacing(dense ? 4.5 : 6),
-            width: theme.spacing(dense ? 4.5 : 6),
+            color: theme.palette.text.primary,
         }),
         arrowIcon: (theme) => ({
             fontSize: theme.spacing(dense ? 4 : 5),
@@ -103,12 +107,6 @@ const getStyles = (dense: boolean = false) => {
         sizeLabel: {
             fontSize: '16px',
         },
-        showHideMenu: (theme) => ({
-            padding: 0,
-            borderRadius: '50%',
-            minWidth: theme.spacing(dense ? 5 : 6.875),
-            minHeight: theme.spacing(dense ? 5 : 6.875),
-        }),
         toggleButtonGroup: {
             marginLeft: '15px',
             pointerEvents: 'auto',
@@ -361,22 +359,22 @@ export function TopBar({
                         <Button
                             aria-controls="settings-menu"
                             aria-haspopup="true"
-                            sx={styles.showHideMenu}
+                            sx={styles.userButton}
                             onClick={handleToggleSettingsMenu}
                             color="inherit"
                             style={anchorElSettingsMenu ? { cursor: 'initial' } : { cursor: 'pointer' }}
                             data-testid="SettingsMenu"
-                        >
-                            <Box component="span" sx={styles.name}>
-                                {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
-                            </Box>
-                            {!dense &&
-                                (anchorElSettingsMenu ? (
-                                    <ArrowDropUpIcon sx={styles.arrowIcon} />
-                                ) : (
-                                    <ArrowDropDownIcon sx={styles.arrowIcon} />
-                                ))}
-                        </Button>
+                            startIcon={
+                                <Avatar>
+                                    <Typography sx={styles.name}>
+                                        {user.profile.name !== undefined
+                                            ? abbreviationFromUserName(user.profile.name)
+                                            : ''}
+                                    </Typography>
+                                </Avatar>
+                            }
+                            endIcon={!dense && (anchorElSettingsMenu ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />)}
+                        />
 
                         {/* Settings menu */}
                         <Popper
