@@ -7,7 +7,7 @@
 import { Tooltip, TooltipProps } from '@mui/material';
 
 // Wrapper around MUI Tooltip that applies the app's UX guidelines (arrow + 250ms enter delay) by default.
-export function CustomTooltip(props: TooltipProps) {
+export function CustomTooltip(props: Readonly<TooltipProps>) {
     const { children, ...tooltipProps } = props;
     return (
         <Tooltip arrow enterDelay={250} {...tooltipProps}>
