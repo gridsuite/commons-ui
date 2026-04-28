@@ -11,6 +11,7 @@ import { CancelButton } from '../../inputs/reactHookForm/utils/CancelButton';
 
 export interface PopupConfirmationDialogProps {
     message: string;
+    isTranslationNeeded?: boolean;
     validateButtonLabel?: string;
     openConfirmationPopup: boolean;
     setOpenConfirmationPopup: (value: boolean) => void;
@@ -19,6 +20,7 @@ export interface PopupConfirmationDialogProps {
 
 export function PopupConfirmationDialog({
     message,
+    isTranslationNeeded = true,
     validateButtonLabel,
     openConfirmationPopup,
     setOpenConfirmationPopup,
@@ -28,7 +30,9 @@ export function PopupConfirmationDialog({
         <Dialog open={openConfirmationPopup} aria-labelledby="dialog-title-change-equipment-type">
             <DialogTitle id="dialog-title-change-equipment-type">Confirmation</DialogTitle>
             <DialogContent>
-                <DialogContentText>{message && <FormattedMessage id={message} />}</DialogContentText>
+                <DialogContentText>
+                    {message && (isTranslationNeeded ? <FormattedMessage id={message} /> : message)}
+                </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <CancelButton onClick={() => setOpenConfirmationPopup(false)} />

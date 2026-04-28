@@ -30,7 +30,6 @@ export function BranchConnectivityForm({
             <GridSection title="Side1" heading={4} />
             <ConnectivityForm
                 id={id1}
-                withPosition
                 isEquipmentModification={isModification}
                 previousValues={{
                     connectablePosition: previousValues?.connectablePosition1,
@@ -45,7 +44,6 @@ export function BranchConnectivityForm({
             <GridSection title="Side2" heading={4} />
             <ConnectivityForm
                 id={id2}
-                withPosition
                 isEquipmentModification={isModification}
                 previousValues={{
                     connectablePosition: previousValues?.connectablePosition2,
