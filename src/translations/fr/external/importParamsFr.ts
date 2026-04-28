@@ -75,7 +75,7 @@ export const importParamsFr = {
     'iidm.import.xml.extensions.busbarSectionPosition': 'Position des SJBs',
     'iidm.import.xml.extensions.branchStatus': 'Statut de consignation et de déclenchement (Version IIDM < 1.12)',
     'iidm.import.xml.extensions.cgmesControlAreas': 'Cgmes - zone géographique',
-    'iidm.import.xml.extensions.cgmesDanglingLineBoundaryNode': 'Code EIC des lignes frontières (ligne non mergée)',
+    'iidm.import.xml.extensions.cgmesBoundaryLineBoundaryNode': 'Code EIC des lignes frontières (ligne non mergée)',
     'iidm.import.xml.extensions.cgmesLineBoundaryNode': 'Code EIC des lignes frontières (ligne complète)',
     'iidm.import.xml.extensions.cgmesMetadataModels': 'Cgmes - Métadonnées des modèles',
     'iidm.import.xml.extensions.cgmesSshMetadata': 'Cgmes - ssh métadonnées',
