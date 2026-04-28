@@ -55,25 +55,13 @@ it('renders', () => {
                     onDeveloperModeClick={() => {}}
                     onLogoutClick={() => {}}
                     onLogoClick={() => {}}
-                    user={{
-                        profile: {
-                            name: 'John Doe',
-                            iss: 'issuer',
-                            sub: 'sub',
-                            aud: 'aud',
-                            exp: 213443,
-                            iat: 3214324,
-                        },
-                        id_token: 'id_token',
-                        access_token: 'access_token',
-                        token_type: 'code',
-                        scope: 'scope',
-                        expires_at: 123343,
-                        scopes: ['code', 'token'],
-                        expired: false,
-                        state: null,
-                        toStorageString: () => 'stored',
-                        expires_in: 1232,
+                    userProfile={{
+                        name: 'John Doe',
+                        iss: 'issuer',
+                        sub: 'sub',
+                        aud: 'aud',
+                        exp: 213443,
+                        iat: 3214324,
                     }}
                     appsAndUrls={apps}
                     language={LANG_ENGLISH}

@@ -5,19 +5,25 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { User } from 'oidc-client';
+import type { Profile } from 'oidc-client';
 import { useGlobalAnnouncement } from './useGlobalAnnouncement';
 import { AnnouncementBanner, type AnnouncementBannerProps } from './AnnouncementBanner';
 
 export type AnnouncementNotificationProps = {
-    user: User | null;
+    userProfile: Profile | null;
     sx?: AnnouncementBannerProps['sx'];
 };
 
-export function AnnouncementNotification({ user, sx }: Readonly<AnnouncementNotificationProps>) {
-    const { id, severity, message, duration } = useGlobalAnnouncement(user) ?? {};
+export function AnnouncementNotification({ userProfile, sx }: Readonly<AnnouncementNotificationProps>) {
+    const { id, severity, message, duration } = useGlobalAnnouncement(userProfile) ?? {};
     return (
-        <AnnouncementBanner user={user ?? undefined} id={id} severity={severity} duration={duration} sx={sx}>
+        <AnnouncementBanner
+            userProfile={userProfile ?? undefined}
+            id={id}
+            severity={severity}
+            duration={duration}
+            sx={sx}
+        >
             {message}
         </AnnouncementBanner>
     );

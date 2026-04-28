@@ -10,6 +10,7 @@ import { PropsWithChildren, useEffect, useMemo, useRef } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
+import { getUserToken } from '../../redux';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
@@ -34,9 +35,8 @@ export type NotificationsProviderProps = {
      * by the parent; the provider appends the token at connection time.
      * This keeps URL references stable across silent token renewals.
      */
-    getToken?: () => string | undefined;
 };
-export function NotificationsProvider({ urls, getToken, children }: PropsWithChildren<NotificationsProviderProps>) {
+export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
     const {
         broadcast: broadcastMessage,
         addListener: addListenerMessage,
@@ -47,18 +47,14 @@ export function NotificationsProvider({ urls, getToken, children }: PropsWithChi
         addListener: addListenerOnReopen,
         removeListener: removeListenerOnReopen,
     } = useListenerManager<ListenerOnReopen>(urls);
-    const getTokenRef = useRef(getToken);
-    useEffect(() => {
-        getTokenRef.current = getToken;
-    }, [getToken]);
+
     useEffect(() => {
         const connections = Object.entries(urls)
             .filter(isUrlDefined)
             .map(([urlKey, url]) => {
                 const rws = new ReconnectingWebSocket(
                     () => {
-                        const fetchToken = getTokenRef.current;
-                        return fetchToken ? appendToken(url, fetchToken()) : url;
+                        return appendToken(url, getUserToken());
                     },
                     [],
                     {

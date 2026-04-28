@@ -7,12 +7,12 @@
 
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import type { User } from 'oidc-client';
+import type { Profile } from 'oidc-client';
 import { Fragment, useEffect, useState } from 'react';
-import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
-import { fetchUserDetails } from '../../services/userAdmin';
-import { UserDetail } from '../../utils/types/types';
-import type { MuiStyles } from '../../utils/styles';
+import { CancelButton } from '../inputs';
+import { fetchUserDetails } from '../../services';
+import { UserDetail } from '../../utils';
+import type { MuiStyles } from '../../utils';
 
 const styles = {
     DialogTitle: { fontSize: '1.5rem' },
@@ -25,10 +25,10 @@ const styles = {
 interface UserInformationDialogProps {
     openDialog: boolean;
     onClose: () => void;
-    user: User | undefined;
+    userProfile: Profile | undefined;
 }
 
-function UserInformationDialog({ openDialog, user, onClose }: UserInformationDialogProps) {
+function UserInformationDialog({ openDialog, userProfile, onClose }: UserInformationDialogProps) {
     const [userDetails, setUserDetails] = useState<UserDetail | undefined>(undefined);
 
     const getUserDetails = (userName: string) => {
@@ -42,16 +42,16 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
     };
 
     useEffect(() => {
-        if (openDialog && user?.profile.sub) {
-            getUserDetails(user?.profile.sub);
+        if (openDialog && userProfile?.sub) {
+            getUserDetails(userProfile.sub);
         }
-    }, [openDialog, user]);
+    }, [openDialog, userProfile]);
 
-    const rolesString = user?.profile?.profile ?? '';
+    const rolesString = userProfile?.profile ?? '';
     const rolesList = rolesString ? rolesString.split('|').map((role) => role.trim()) : [];
 
     return (
-        <Dialog open={openDialog && !!user && !!userDetails} onClose={onClose}>
+        <Dialog open={openDialog && !!userProfile && !!userDetails} onClose={onClose}>
             <DialogTitle fontWeight="bold" sx={styles.DialogTitle}>
                 <FormattedMessage id="user-information-dialog/title" />
             </DialogTitle>

@@ -41,7 +41,7 @@ import {
     Person as PersonIcon,
     WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
-import type { User } from 'oidc-client';
+import type { Profile } from 'oidc-client';
 import { GridLogo, GridLogoProps } from './GridLogo';
 import { AboutDialog, AboutDialogProps } from './AboutDialog';
 import { LogoutProps } from '../authentication/Logout';
@@ -172,7 +172,7 @@ export type TopBarProps = Omit<GridLogoProps, 'onClick'> &
     Omit<LogoutProps, 'disabled'> &
     Omit<AboutDialogProps, 'open' | 'onClose'> & {
         onLogoClick: GridLogoProps['onClick'];
-        user?: User;
+        userProfile?: Profile;
         onAboutClick?: () => void;
         logoAboutDialog?: ReactNode;
         appsAndUrls: Metadata[];
@@ -196,7 +196,7 @@ export function TopBar({
     logoAboutDialog,
     onLogoutClick,
     onLogoClick,
-    user,
+    userProfile,
     children,
     appsAndUrls,
     onAboutClick,
@@ -296,11 +296,11 @@ export function TopBar({
 
     return (
         <AppBar position="static" color="default">
-            {user && developerMode && <DevModeBanner />}
+            {userProfile && developerMode && <DevModeBanner />}
             <Toolbar variant={dense ? 'dense' : 'regular'} sx={styles.toolbar}>
                 {logoClickable}
                 <Box sx={styles.grow}>{children}</Box>
-                {user && !dense && (
+                {userProfile && !dense && (
                     <Box>
                         <IconButton
                             aria-label="apps"
@@ -355,7 +355,7 @@ export function TopBar({
                         </StyledMenu>
                     </Box>
                 )}
-                {user && (
+                {userProfile && (
                     <Box sx={styles.menuContainer}>
                         {/* Button width abbreviation and arrow icon */}
                         <Button
@@ -368,7 +368,7 @@ export function TopBar({
                             data-testid="SettingsMenu"
                         >
                             <Box component="span" sx={styles.name}>
-                                {user.profile.name !== undefined ? abbreviationFromUserName(user.profile.name) : ''}
+                                {userProfile.name !== undefined ? abbreviationFromUserName(userProfile.name) : ''}
                             </Box>
                             {!dense &&
                                 (anchorElSettingsMenu ? (
@@ -394,9 +394,9 @@ export function TopBar({
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Box component="span" sx={styles.sizeLabel}>
-                                                    {user.profile.name} <br />
+                                                    {userProfile.name} <br />
                                                     <Box component="span" sx={styles.userMail}>
-                                                        {user.profile.email}
+                                                        {userProfile.email}
                                                     </Box>
                                                 </Box>
                                             </ListItemText>
@@ -600,20 +600,20 @@ export function TopBar({
                 )}
 
                 <UserInformationDialog
-                    openDialog={userInformationDialogOpen && !!user}
-                    user={user}
+                    openDialog={userInformationDialogOpen && !!userProfile}
+                    userProfile={userProfile}
                     onClose={closeUserInformationDialog}
                 />
 
                 <UserSettingsDialog
-                    openDialog={userSettingsDialogOpen && !!user}
+                    openDialog={userSettingsDialogOpen && !!userProfile}
                     onClose={closeUserSettingsDialog}
                     developerMode={developerMode}
                     onDeveloperModeClick={onDeveloperModeClick}
                 />
 
                 <AboutDialog
-                    open={isAboutDialogOpen && !!user}
+                    open={isAboutDialogOpen && !!userProfile}
                     onClose={() => setAboutDialogOpen(false)}
                     appName={appName}
                     appVersion={appVersion}

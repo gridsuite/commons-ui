@@ -8,7 +8,7 @@ import type { UUID } from 'node:crypto';
 import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { Alert, type AlertColor, type AlertProps, AlertTitle, Collapse, Tooltip, useTheme } from '@mui/material';
 import { Campaign as CampaignIcon } from '@mui/icons-material';
-import type { User } from 'oidc-client';
+import type { Profile } from 'oidc-client';
 import { AnnouncementSeverity } from '../../utils/types';
 import type { MuiStyles } from '../../utils/styles';
 
@@ -32,7 +32,7 @@ const styles = {
 
 export type AnnouncementBannerProps = PropsWithChildren<{
     // message only visible if user logged
-    user?: User | {};
+    userProfile?: Profile | {};
     /** only field used to detect if msg change */
     id?: UUID;
     duration?: number;
@@ -57,7 +57,7 @@ function convertSeverity(severity: AnnouncementSeverity): AlertColor | undefined
 }
 
 export function AnnouncementBanner({
-    user,
+    userProfile,
     id,
     severity = AnnouncementSeverity.INFO,
     title,
@@ -94,7 +94,7 @@ export function AnnouncementBanner({
     const handleClose = useCallback(() => setVisible(false), []);
 
     return (
-        <Collapse in={user !== undefined && visible} unmountOnExit sx={sx} style={{ margin: theme.spacing(1) }}>
+        <Collapse in={userProfile !== undefined && visible} unmountOnExit sx={sx} style={{ margin: theme.spacing(1) }}>
             <Alert
                 variant="filled"
                 elevation={0}
