@@ -9,7 +9,7 @@ import yup from '../../../../utils/yupConfig';
 
 export const networkFormSchema = yup.object().shape({
     [Network.CAPACITOR_NO_RECLOSING_DELAY]: yup.number().required(),
-    [Network.DANGLING_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION]: yup.number().required(),
+    [Network.BOUNDARY_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION]: yup.number().required(),
     [Network.LINE_CURRENT_LIMIT_MAX_TIME_OPERATION]: yup.number().required(),
     [Network.LOAD_TP]: yup.number().required(),
     [Network.LOAD_TQ]: yup.number().required(),
@@ -32,7 +32,7 @@ export const networkFormSchema = yup.object().shape({
 
 export const networkEmptyFormData = {
     [Network.CAPACITOR_NO_RECLOSING_DELAY]: 0,
-    [Network.DANGLING_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION]: 0,
+    [Network.BOUNDARY_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION]: 0,
     [Network.LINE_CURRENT_LIMIT_MAX_TIME_OPERATION]: 0,
     [Network.LOAD_TP]: 0,
     [Network.LOAD_TQ]: 0,
