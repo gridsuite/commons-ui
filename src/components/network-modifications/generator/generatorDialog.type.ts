@@ -13,7 +13,7 @@ import {
 import { ShortCircuitInfos } from '../common/shortCircuit/shortCircuitForm.type';
 import { Property } from '../common/properties/properties.type';
 import { ConnectablePositionFormInfos } from '../common/connectivity/connectivity.type';
-import { MeasurementInfo } from "../common";
+import { MeasurementInfo } from '../common/measurements/measurement.type';
 
 export type GeneratorDialogSchemaBaseForm = {
     [FieldConstants.EQUIPMENT_NAME]?: string;
