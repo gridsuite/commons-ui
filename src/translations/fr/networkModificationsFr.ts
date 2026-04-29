@@ -210,6 +210,39 @@ export const networkModificationsFr = {
     addNewAssignment: 'Modifier un autre champ',
     changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
     Or: 'ou',
+    NormalizedPercentage: 'Ce pourcentage doit être compris entre 0 et 100',
+    On: 'Activé',
+    Off: 'Désactivé',
+    FrequencyRegulation: 'Compensation',
+    Droop: 'Statisme',
+    activePowerControlTooltip:
+        'Clé de distribution de la puissance au nœud bilan : maxP/Statisme, statisme par défaut = 4 (valable pour le mode compensation proportionnel à la puissance maximale des groupes)',
+    NoModification: 'Pas de modification',
+    ReactiveLimitsKindMinMax: 'Par plage',
+    ReactiveLimitsKindCurve: 'Par diagramme',
+    MinimumReactivePower: 'Puissance réactive minimale',
+    MaximumReactivePower: 'Puissance réactive maximale',
+    ReactiveCapabilityCurveCreationErrorMissingPoints:
+        'Le tableau des limites de réactifs par diagramme doit comporter au moins quatre points.',
+    ReactiveCapabilityCurveCreationErrorPInvalid:
+        'Chaque valeur de puissance active doit être un nombre unique et valide.',
+    ReactiveCapabilityCurveCreationErrorPOutOfRange:
+        'Chaque valeur de puissance active doit être comprise entre les valeurs P min et P max.',
+    ReactiveCapabilityCurveCreationErrorQminPQmaxPIncoherence:
+        'Chaque valeur de puissance réactive minimale doit être inférieure ou égale à la puissance réactive maximale correspondante.',
+    ReactiveCapabilityCurveCreationErrorMissingNegativeP:
+        'Le tableau des limites de réactifs par diagramme doit comporter au moins une ligne avec une puissance active négative',
+    ReactiveCapabilityCurveCreationErrorMissingPositiveP:
+        'Le tableau des limites de réactifs par diagramme doit comporter au moins une ligne avec une puissance active positive',
+    P: 'P{labelSuffix}',
+    QminP: 'QminP{labelSuffix}',
+    QmaxP: 'QmaxP{labelSuffix}',
+    QminPmax: 'QminPmax',
+    QmaxPmax: 'QmaxPmax',
+    Pmin: 'Pmin',
+    QminPmin: 'QminPmin',
+    QmaxPmin: 'QmaxPmin',
+    Pmax: 'Pmax',
 
     // Tabs
     SubstationTab: 'Site',
