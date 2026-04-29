@@ -70,7 +70,7 @@ export const exportParamsFr = {
     'iidm.export.xml.extensions.busbarSectionPosition': 'Position des SJBs',
     'iidm.export.xml.extensions.branchStatus': 'Statut de consignation et de déclenchement (Version IIDM < 1.12)',
     'iidm.export.xml.extensions.cgmesControlAreas': 'Cgmes - zone géographique',
-    'iidm.export.xml.extensions.cgmesDanglingLineBoundaryNode': 'Code EIC des lignes frontières (ligne non mergée)',
+    'iidm.export.xml.extensions.cgmesBoundaryLineBoundaryNode': 'Code EIC des lignes frontières (ligne non mergée)',
     'iidm.export.xml.extensions.cgmesLineBoundaryNode': 'Code EIC des lignes frontières (ligne complète)',
     'iidm.export.xml.extensions.cgmesMetadataModels': 'Cgmes - Métadonnées des modèles',
     'iidm.export.xml.extensions.cgmesSshMetadata': 'Cgmes - ssh métadonnées',

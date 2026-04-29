@@ -25,5 +25,5 @@ export const equipmentTagFr = {
     'equipment_tag/busbarSection': 'SJB',
     'equipment_tag/bus': 'NOEUD',
     'equipment_tag/switch': 'SWITCH',
-    'equipment_tag/danglingLine': 'FRONTIERE',
+    'equipment_tag/boundaryLine': 'FRONTIERE',
 };
