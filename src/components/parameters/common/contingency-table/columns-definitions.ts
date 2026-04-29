@@ -4,44 +4,46 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Parameters, ColumnsDef, ID, NAME, DESCRIPTION, ACTIVATED } from '../parameter-table';
+import { FieldValues } from 'react-hook-form';
+import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
+import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
 import { ElementType } from '../../../../utils';
-import { CONTINGENCY_LISTS_INFOS, CONTINGENCY_LISTS } from '../constants';
 import yup from '../../../../utils/yupConfig';
-import { IdName, ContingencyListsInfos } from './types';
+import { ContingencyListsInfos, IdName } from './types';
+import { DndColumn, DndColumnType } from '../../../dnd-table-v2';
 
-export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: ColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
     {
         label: 'ContingencyLists',
         dataKey: CONTINGENCY_LISTS,
         initialValue: [],
         editable: true,
-        directoryItems: true,
+        type: DndColumnType.DIRECTORY_ITEMS,
+        equipmentTypes: [],
         elementType: ElementType.CONTINGENCY_LIST,
         titleId: 'ContingencyListsSelection',
+        shouldHandleOnChangeCell: true,
     },
     {
         label: 'description',
+        sxHeader: { textAlign: 'center' },
         dataKey: DESCRIPTION,
         initialValue: '',
         editable: true,
-        descriptionItems: true,
         width: '8rem',
+        type: DndColumnType.DESCRIPTIONS,
     },
     {
         label: 'Active',
+        sxHeader: { textAlign: 'center' },
         dataKey: ACTIVATED,
         initialValue: true,
-        checkboxItems: true,
         editable: true,
         width: '4rem',
+        type: DndColumnType.SWITCH,
+        shouldHandleOnChangeCell: true,
     },
 ];
-
-export const ParamContingencyLists: Parameters = {
-    columnsDef: COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS,
-    name: CONTINGENCY_LISTS_INFOS,
-};
 
 export const getContingencyListsInfosFormSchema = () => {
     return yup
@@ -78,4 +80,9 @@ export const toFormValuesContingencyListsInfos = (contingencyListsInfos: Conting
             [ACTIVATED]: contingencyListInfos[ACTIVATED],
         })),
     };
+};
+
+export const isValidContingencyRow = (row?: FieldValues) => {
+    const contingencyLists = row?.[CONTINGENCY_LISTS];
+    return row?.[ACTIVATED] === true && Array.isArray(contingencyLists) && contingencyLists.length > 0;
 };
