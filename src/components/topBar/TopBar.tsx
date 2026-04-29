@@ -77,6 +77,9 @@ const getStyles = (dense: boolean = false) => {
         userButton: (theme) => ({
             '& .MuiButton-startIcon': {
                 marginRight: '0px',
+                '& > :first-child': {
+                    fontSize: 'inherit',
+                },
             },
             '& .MuiButton-endIcon ': {
                 '& > :first-child': {
@@ -84,8 +87,13 @@ const getStyles = (dense: boolean = false) => {
                 },
             },
         }),
+        avatar: (theme) => ({
+            width: theme.spacing(dense ? 4.5 : 5),
+            height: theme.spacing(dense ? 4.5 : 5),
+        }),
         name: (theme) => ({
             color: theme.palette.text.primary,
+            fontSize: 'inherit', // to get button fontSize
         }),
         arrowIcon: (theme) => ({
             fontSize: theme.spacing(dense ? 4 : 5),
@@ -366,7 +374,7 @@ export function TopBar({
                             style={anchorElSettingsMenu ? { cursor: 'initial' } : { cursor: 'pointer' }}
                             data-testid="SettingsMenu"
                             startIcon={
-                                <Avatar>
+                                <Avatar sx={styles.avatar}>
                                     <Typography sx={styles.name}>
                                         {user.profile.name ? abbreviationFromUserName(user.profile.name) : '?'}
                                     </Typography>
