@@ -6,5 +6,6 @@
  */
 export { LeftPanelOpenIcon } from './LeftPanelOpenIcon';
 export { ArrowsOutputIcon } from './ArrowsOutputIcon';
+export { ArrowInputIcon } from './ArrowInputIcon';
 export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
 export { EditNoteIcon } from './EditNoteIcon';
