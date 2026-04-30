@@ -435,7 +435,6 @@ export function FlatParameters({
                     <ListItem sx={styles.paramListItem}>
                         <CustomTooltip
                             title={<FormattedMessage id={`${param.name}.desc`} defaultMessage={param.description} />}
-                            enterDelay={1200}
                             key={param.name}
                         >
                             <Typography sx={styles.paramName}>

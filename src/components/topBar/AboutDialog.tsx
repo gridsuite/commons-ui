@@ -205,7 +205,6 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
         >
             <CustomTooltip
                 TransitionComponent={Zoom}
-                enterDelay={2500}
                 enterNextDelay={350}
                 leaveDelay={200}
                 sx={moduleStyles.tooltip}
