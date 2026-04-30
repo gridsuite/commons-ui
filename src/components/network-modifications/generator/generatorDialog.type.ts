@@ -13,6 +13,7 @@ import {
 import { ShortCircuitInfos } from '../common/shortCircuit/shortCircuitForm.type';
 import { Property } from '../common/properties/properties.type';
 import { ConnectablePositionFormInfos } from '../common/connectivity/connectivity.type';
+import { MeasurementInfo } from '../common/measurements/measurement.type';
 
 export type GeneratorDialogSchemaBaseForm = {
     [FieldConstants.EQUIPMENT_NAME]?: string;
@@ -72,7 +73,12 @@ export type GeneratorCreationDialogSchemaForm = {
     equipmentId: string;
 } & GeneratorDialogSchemaBaseForm;
 
-export type GeneratorModificationDialogSchemaForm = Partial<GeneratorDialogSchemaBaseForm>;
+export type GeneratorModificationDialogSchemaForm = {
+    [FieldConstants.STATE_ESTIMATION]?: {
+        [FieldConstants.MEASUREMENT_P]?: MeasurementInfo;
+        [FieldConstants.MEASUREMENT_Q]?: MeasurementInfo;
+    };
+} & Partial<GeneratorDialogSchemaBaseForm>;
 
 export interface GeneratorFormInfos {
     id: string;
@@ -102,6 +108,8 @@ export interface GeneratorFormInfos {
     connectionName?: string | null;
     connectionPosition?: number | null;
     terminalConnected?: boolean | null;
+    measurementP: MeasurementInfo | undefined;
+    measurementQ: MeasurementInfo | undefined;
     properties: Record<string, string> | undefined;
 }
 
