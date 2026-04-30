@@ -387,7 +387,7 @@ export const parametersEn = {
     // Network tab
     DynamicSimulationNetworkCapacitorNoReclosingDelay: 'Time lag before reclosing in s (capacitor)',
     DynamicSimulationNetworkReactanceNoReclosingDelay: 'Time lag before reclosing in s (reactance)',
-    DynamicSimulationNetworkDanglingLineCurrentLimitMaxTimeOperation:
+    DynamicSimulationNetworkBoundaryLineCurrentLimitMaxTimeOperation:
         'Time threshold over which current limiter should not operate in s',
     DynamicSimulationNetworkLineCurrentLimitMaxTimeOperation: 'Line current limit Max Time Operation',
     DynamicSimulationNetworkLoadTp: 'Time constant for integration of active power setpoint change, in s',

@@ -23,7 +23,7 @@ export const equipmentShortEn = {
     'equipment_short/busbarSection': 'BBS',
     'equipment_short/bus': 'Bus',
     'equipment_short/switch': 'Switches',
-    'equipment_short/danglingLine': 'Dangling lines',
+    'equipment_short/boundaryLine': 'Boundary lines',
     'equipment_short/hvdcLineLcc': 'HVDC LCC',
     'equipment_short/hvdcLineVsc': 'HVDC VSC',
 };

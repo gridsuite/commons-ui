@@ -7,7 +7,7 @@
 
 import { bool, number, object, string } from 'yup';
 import { VoltageLevelFormInfos } from '../../voltageLevel/voltage-level.type';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER } from '../../../../utils';
+import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
 
 const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
     isEquipmentModification: boolean,
@@ -17,7 +17,7 @@ const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
         .nullable()
         .when({
             is: () => !isEquipmentModification,
-            then: (schema) => schema.required(),
+            then: (schema) => schema.required(YUP_REQUIRED),
         })
         .shape({
             [FieldConstants.ID]: string().when([], {
@@ -60,7 +60,7 @@ export const getConnectivityWithPositionSchema = (isEquipmentModification = fals
             .nullable()
             .when([], {
                 is: () => !isEquipmentModification,
-                then: (schema) => schema.required(),
+                then: (schema) => schema.required(YUP_REQUIRED),
             }),
         ...getConnectivityPropertiesValidationSchema(isEquipmentModification),
     });

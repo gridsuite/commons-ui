@@ -22,7 +22,7 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
     | EquipmentType.SHUNT_COMPENSATOR
     | EquipmentType.STATIC_VAR_COMPENSATOR
     | EquipmentType.HVDC_LINE
-    | EquipmentType.DANGLING_LINE,
+    | EquipmentType.BOUNDARY_LINE,
     ContingencyListEquipment
 > = {
     BUSBAR_SECTION: {
@@ -65,9 +65,9 @@ export const CONTINGENCY_LIST_EQUIPMENTS: Record<
         id: 'HVDC_LINE',
         label: 'HvdcLines',
     },
-    DANGLING_LINE: {
-        id: 'DANGLING_LINE',
-        label: 'DanglingLines',
+    BOUNDARY_LINE: {
+        id: 'BOUNDARY_LINE',
+        label: 'BoundaryLines',
     },
 };
 
