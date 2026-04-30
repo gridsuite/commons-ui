@@ -99,7 +99,7 @@ function getGlobalVersion(
 }
 
 const moduleTypeSort = {
-    app: 1,
+    apps: 1,
     server: 10,
     other: 20,
 };
@@ -171,7 +171,7 @@ const moduleStyles = {
 } as const satisfies MuiStyles;
 
 const ModuleTypesIcons = {
-    app: <WidgetsOutlined sx={moduleStyles.icons} fontSize="small" color="primary" />,
+    apps: <WidgetsOutlined sx={moduleStyles.icons} fontSize="small" color="primary" />,
     server: <DnsOutlined sx={moduleStyles.icons} fontSize="small" color="secondary" />,
     other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
 };
@@ -182,7 +182,7 @@ function insensitiveCaseCompare(str: string, obj: string) {
     });
 }
 function tooltipTypeLabel(type: string) {
-    if (insensitiveCaseCompare('app', type) === 0) {
+    if (insensitiveCaseCompare('apps', type) === 0) {
         return 'about-dialog/module-tooltip-app';
     }
     if (insensitiveCaseCompare('server', type) === 0) {
@@ -307,7 +307,7 @@ export function AboutDialog({
         if (open) {
             const currentApp: GridSuiteModule = {
                 name: `Grid${appName}`,
-                type: 'app',
+                type: 'apps',
                 version: appVersion,
                 gitTag: appGitTag,
                 // license: appLicense,
