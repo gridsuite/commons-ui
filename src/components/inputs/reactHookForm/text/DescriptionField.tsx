@@ -6,14 +6,14 @@
  */
 
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Box, Button } from '@mui/material';
-import { ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useFormContext } from 'react-hook-form';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ExpandingTextField } from './ExpandingTextField';
 import type { SxStyle } from '../../../../utils/styles';
 import { MAX_CHAR_DESCRIPTION } from '../../../../utils';
+import { AddButton } from '../../../addButton';
 
 export interface DescriptionFieldProps {
     expandingTextSx?: SxStyle;
@@ -45,35 +45,29 @@ export function DescriptionField({
         }
     }, [description]);
 
-    return (
-        <Box>
-            {!isDescriptionFieldVisible ? (
-                <Button startIcon={<AddIcon />} onClick={handleOpenDescription} data-testid="AddDescriptionButton">
-                    <FormattedMessage id="AddDescription" />
-                </Button>
-            ) : (
-                <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <ExpandingTextField
-                        name={FieldConstants.DESCRIPTION}
-                        label="descriptionProperty"
-                        minRows={rows}
-                        rows={rows}
-                        sx={expandingTextSx}
-                        maxCharactersNumber={maxCharactersNumber}
-                    />
-                    <Button
-                        sx={{
-                            alignSelf: 'flex-end',
-                            marginLeft: 1,
-                            padding: 1,
-                            marginBottom: 2,
-                        }}
-                        onClick={handleCloseDescription}
-                    >
-                        <DeleteIcon />
-                    </Button>
-                </Box>
-            )}
+    return !isDescriptionFieldVisible ? (
+        <AddButton onClick={handleOpenDescription} data-testid="AddDescriptionButton" label="AddDescription" />
+    ) : (
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+            <ExpandingTextField
+                name={FieldConstants.DESCRIPTION}
+                label="descriptionProperty"
+                minRows={rows}
+                rows={rows}
+                sx={expandingTextSx}
+                maxCharactersNumber={maxCharactersNumber}
+            />
+            <Button
+                sx={{
+                    alignSelf: 'flex-end',
+                    marginLeft: 1,
+                    padding: 1,
+                    marginBottom: 2,
+                }}
+                onClick={handleCloseDescription}
+            >
+                <DeleteIcon />
+            </Button>
         </Box>
     );
 }

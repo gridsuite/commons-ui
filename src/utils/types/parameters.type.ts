@@ -10,7 +10,7 @@ import { ComputingType } from '../../components/parameters/common/computing-type
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
 import type { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
-import { DynamicSimulationParametersFetchReturn } from './dynamic-simulation.type';
+import { DynamicSimulationParametersInfos } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfos } from './sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
 import { SAParameters } from '../../components/parameters/security-analysis/types';
@@ -47,7 +47,7 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
       : T extends ComputingType.LOAD_FLOW
         ? LoadFlowParametersInfos
         : T extends ComputingType.DYNAMIC_SIMULATION
-          ? DynamicSimulationParametersFetchReturn
+          ? DynamicSimulationParametersInfos
           : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
             ? DynamicSecurityAnalysisParametersFetchReturn
             : T extends ComputingType.DYNAMIC_MARGIN_CALCULATION

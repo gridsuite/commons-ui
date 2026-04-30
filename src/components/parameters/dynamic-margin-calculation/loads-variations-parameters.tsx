@@ -28,8 +28,8 @@ import {
 } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../inputs';
-import ParameterDndTableField from '../common/parameter-dnd-table-field';
-import { DndColumn, DndColumnType } from '../../dnd-table';
+import { ParameterTableField } from '../common/parameter-table-field';
+import { DndColumn, DndColumnType } from '../../dnd-table-v2';
 
 export const formSchema = yup.object().shape({
     [CALCULATION_TYPE]: yup.string().required(),
@@ -86,7 +86,7 @@ const params: (SpecificParameterInfos & { sx?: SxProps })[] = [
         ],
         sx: { width: '100%' },
     },
-    // LOADS_VARIATIONS displayed in a separated component, i.e., ParameterDndTableField
+    // LOADS_VARIATIONS displayed in a separated component, i.e., ParameterTableField
 ];
 
 const loadsVariationsColumnsDefinition: DndColumn[] = [
@@ -109,6 +109,7 @@ const loadsVariationsColumnsDefinition: DndColumn[] = [
     },
     {
         label: 'DynamicMarginCalculationLoadsActive',
+        sxHeader: { textAlign: 'center' },
         initialValue: true,
         dataKey: ACTIVE,
         editable: true,
@@ -119,7 +120,7 @@ const loadsVariationsColumnsDefinition: DndColumn[] = [
 
 export default function LoadsVariationsParameters({ path }: Readonly<{ path: string }>) {
     const inlt = useIntl();
-    const translatedColumnsDefinition = useMemo(() => {
+    const columnsDefinition = useMemo(() => {
         return loadsVariationsColumnsDefinition.map((colDef) => ({
             ...colDef,
             label: inlt.formatMessage({ id: colDef.label }),
@@ -133,11 +134,11 @@ export default function LoadsVariationsParameters({ path }: Readonly<{ path: str
                     <ParameterField key={param.name} id={path} name={param.name} type={param.type} {...otherParams} />
                 );
             })}
-            <ParameterDndTableField
+            <ParameterTableField
                 name={`${path}.${LOADS_VARIATIONS}`}
                 label="DynamicMarginCalculationLoadsVariations"
                 tooltipProps={{ title: 'DynamicMarginCalculationLoadsVariations' }}
-                columnsDefinition={translatedColumnsDefinition}
+                columnsDefinition={columnsDefinition}
                 tableHeight={270}
             />
         </Grid>

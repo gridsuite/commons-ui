@@ -38,7 +38,7 @@ export function updateDynamicMarginCalculationParameters(
     const url = `${getDynamicMarginCalculationUrl()}parameters/${parameterUuid}`;
     console.debug(url);
     return backendFetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',

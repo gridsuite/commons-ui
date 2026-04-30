@@ -69,11 +69,51 @@ export enum EquipmentType {
     HVDC_CONVERTER_STATION = 'HVDC_CONVERTER_STATION',
     VSC_CONVERTER_STATION = 'VSC_CONVERTER_STATION',
     LCC_CONVERTER_STATION = 'LCC_CONVERTER_STATION',
-    DANGLING_LINE = 'DANGLING_LINE',
+    BOUNDARY_LINE = 'BOUNDARY_LINE',
     TIE_LINE = 'TIE_LINE',
     DISCONNECTOR = 'DISCONNECTOR',
     BREAKER = 'BREAKER',
 }
+
+export const EQUIPMENTS_WITH_ONE_NOMINAL_VOLTAGE = [
+    EquipmentType.SUBSTATION,
+    EquipmentType.VOLTAGE_LEVEL,
+    EquipmentType.BATTERY,
+    EquipmentType.BUS,
+    EquipmentType.BUSBAR_SECTION,
+    EquipmentType.GENERATOR,
+    EquipmentType.SHUNT_COMPENSATOR,
+    EquipmentType.LOAD,
+    EquipmentType.STATIC_VAR_COMPENSATOR,
+    EquipmentType.LCC_CONVERTER_STATION,
+    EquipmentType.VSC_CONVERTER_STATION,
+];
+export const EQUIPMENTS_WITH_TWO_NOMINAL_VOLTAGES = [
+    EquipmentType.LINE,
+    EquipmentType.TIE_LINE,
+    EquipmentType.BOUNDARY_LINE,
+    EquipmentType.HVDC_LINE,
+    EquipmentType.TWO_WINDINGS_TRANSFORMER,
+];
+
+export const EQUIPMENTS_WITH_THREE_NOMINAL_VOLTAGES = [EquipmentType.THREE_WINDINGS_TRANSFORMER];
+
+export const EQUIPMENTS_WITH_ONE_SUBSTATION = [
+    EquipmentType.SUBSTATION,
+    EquipmentType.VOLTAGE_LEVEL,
+    EquipmentType.BATTERY,
+    EquipmentType.BUS,
+    EquipmentType.BUSBAR_SECTION,
+    EquipmentType.GENERATOR,
+    EquipmentType.TWO_WINDINGS_TRANSFORMER,
+    EquipmentType.THREE_WINDINGS_TRANSFORMER,
+    EquipmentType.SHUNT_COMPENSATOR,
+    EquipmentType.LOAD,
+    EquipmentType.STATIC_VAR_COMPENSATOR,
+    EquipmentType.VSC_CONVERTER_STATION,
+    EquipmentType.LCC_CONVERTER_STATION,
+];
+export const EQUIPMENTS_WITH_TWO_SUBSTATIONS = [EquipmentType.LINE, EquipmentType.HVDC_LINE];
 
 // TODO move into powsybl-network-viewer
 export enum HvdcType {
@@ -184,11 +224,11 @@ export const ALL_EQUIPMENTS: Partial<
         tagLabel: 'equipment_tag/svc',
         shortLabel: 'equipment_short/svc',
     },
-    [EquipmentType.DANGLING_LINE]: {
-        id: EquipmentType.DANGLING_LINE,
-        label: 'DanglingLines',
-        tagLabel: 'equipment_tag/danglingLine',
-        shortLabel: 'equipment_short/danglingLine',
+    [EquipmentType.BOUNDARY_LINE]: {
+        id: EquipmentType.BOUNDARY_LINE,
+        label: 'BoundaryLines',
+        tagLabel: 'equipment_tag/boundaryLine',
+        shortLabel: 'equipment_short/boundaryLine',
     },
     [EquipmentType.BUSBAR_SECTION]: {
         id: EquipmentType.BUSBAR_SECTION,
@@ -257,7 +297,7 @@ export const BASE_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     [EquipmentType.LOAD]: ALL_EQUIPMENTS[EquipmentType.LOAD],
     [EquipmentType.SHUNT_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.SHUNT_COMPENSATOR],
     [EquipmentType.STATIC_VAR_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.STATIC_VAR_COMPENSATOR],
-    [EquipmentType.DANGLING_LINE]: ALL_EQUIPMENTS[EquipmentType.DANGLING_LINE],
+    [EquipmentType.BOUNDARY_LINE]: ALL_EQUIPMENTS[EquipmentType.BOUNDARY_LINE],
 };
 
 export const SEARCH_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
@@ -289,6 +329,13 @@ export interface EquipmentInfos extends Identifiable {
     voltageLevelName1?: string;
     voltageLevelId2?: string;
     voltageLevelName2?: string;
+}
+
+// corresponding to VoltageLevel in gridstudy-app,
+// but must use another name to avoid conflict export with constant in file equipmentTypes.ts
+export interface VoltageLevelInfos extends Identifiable {
+    nominalV: number;
+    substationId?: string;
 }
 
 // TODO move into powsybl-network-viewer

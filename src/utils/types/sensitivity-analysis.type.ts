@@ -73,8 +73,8 @@ export interface SensitivityAnalysisParametersInfos {
 }
 
 export interface FactorsCount {
-    resultCount: number;
-    variableCount: number;
+    resultCount: number | null;
+    variableCount: number | null;
 }
 
 // result types

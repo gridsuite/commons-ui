@@ -61,7 +61,6 @@ export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = Ove
     itemFilter?: (val: ElementAttributes) => boolean;
     titleId?: string;
     hideErrorMessage?: boolean;
-    onRowChanged?: (a: boolean) => void;
     onChange?: (e: any, action?: ArrayAction, element?: any) => void;
     disable?: boolean;
     allowMultiSelect?: boolean;
@@ -80,7 +79,6 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     itemFilter, // Used to further filter the results displayed according to specific requirement
     titleId, // title of directory item selector dialogue
     hideErrorMessage,
-    onRowChanged,
     onChange,
     disable = false,
     allowMultiSelect = true,
@@ -137,14 +135,13 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                     });
                 } else {
                     append(otherElementAttributes);
-                    onRowChanged?.(true);
                     onChange?.(getValues(name), ArrayAction.ADD, otherElementAttributes);
                 }
             });
             setDirectoryItemSelectorOpen(false);
             setSelected([]);
         },
-        [append, getValues, snackError, name, onRowChanged, onChange, selected, remove]
+        [append, getValues, snackError, name, onChange, selected, remove]
     );
 
     const handleDeleteChip = useCallback(
@@ -153,10 +150,9 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
             const elemToRemove = getValues(name)[index];
             remove(index);
             const newElems = getValues(name); // must call getValues again to get the newly updated array
-            onRowChanged?.(true);
             onChange?.(newElems, ArrayAction.REMOVE, elemToRemove);
         },
-        [onRowChanged, remove, getValues, name, onChange]
+        [remove, getValues, name, onChange]
     );
 
     const openItemsSelector = useCallback(

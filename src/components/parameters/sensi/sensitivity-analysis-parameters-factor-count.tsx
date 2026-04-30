@@ -41,8 +41,16 @@ const renderLoadingState = () => {
     );
 };
 
+const renderDefaultFactorCount = (messageId: string) => {
+    return (
+        <Box sx={styles.textInitial}>
+            <FormattedMessage id={messageId} values={{ count: null, suffix: '' }} />
+        </Box>
+    );
+};
+
 interface SensitivityAnalysisParametersFactorCountProps {
-    count: number;
+    count: number | null;
     maxCount: number;
     messageId: string;
     isLoading: boolean;
@@ -52,6 +60,7 @@ export function SensitivityAnalysisParametersFactorCount(props: SensitivityAnaly
     const { count, maxCount, messageId, isLoading } = props;
 
     if (isLoading) return renderLoadingState();
+    if (count === null) return renderDefaultFactorCount(messageId);
 
     const isOverMillion = count > 999_999;
     const isOverLimit = count > maxCount;
