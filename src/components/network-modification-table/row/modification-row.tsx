@@ -7,10 +7,10 @@
 
 import React, { useCallback } from 'react';
 import { flexRender, Row } from '@tanstack/react-table';
-import { Box, TableCell, TableRow, Tooltip, useTheme } from '@mui/material';
+import { Box, TableCell, TableRow, useTheme } from '@mui/material';
 import { Draggable, DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { AUTO_EXTENSIBLE_COLUMNS, BASE_MODIFICATION_TABLE_COLUMNS } from '../columns-definition';
 import {
     COLUMNS_WITHOUT_BORDER,
@@ -39,6 +39,7 @@ export function ModificationRow({
 }: Readonly<ModificationRowProps>) {
     const isHighlighted = row.original.uuid === highlightedModificationUuid;
     const theme = useTheme();
+    const intl = useIntl();
     const isExpanded = row.getIsExpanded() && row.subRows.length > 0;
 
     const handleCellClickCallback = useCallback(
@@ -79,26 +80,22 @@ export function ModificationRow({
                             const cellWithoutBorders =
                                 (isExpanded || row.depth > 0) &&
                                 COLUMNS_WITHOUT_BORDER.has(cell.column.columnDef.id ?? '');
-                            // Tooltip for drag
                             if (isDragHandle) {
                                 return (
                                     <TableCell
                                         key={cell.id}
                                         sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
                                     >
-                                        <Tooltip title={<FormattedMessage id="moveModification" />} arrow>
-                                            <Box
-                                                sx={createCellContentWrapperSx(theme, cellWithoutBorders)}
-                                                {...provided.dragHandleProps}
-                                            >
-                                                {cellContent}
-                                            </Box>
-                                        </Tooltip>
+                                        <Box
+                                            sx={createCellContentWrapperSx(theme, cellWithoutBorders)}
+                                            {...provided.dragHandleProps}
+                                            aria-label={intl.formatMessage({ id: 'moveModification' })}
+                                        >
+                                            {cellContent}
+                                        </Box>
                                     </TableCell>
                                 );
                             }
-
-                            // Tooltip for checkbox
                             if (isCheckboxColumn) {
                                 return (
                                     <TableCell
@@ -106,26 +103,12 @@ export function ModificationRow({
                                         sx={createCellStyle(cell, AUTO_EXTENSIBLE_COLUMNS.includes(cell.column.id))}
                                         onClick={() => handleCellClickCallback(cell.column.id)}
                                     >
-                                        <Tooltip
-                                            title={
-                                                <FormattedMessage
-                                                    id={
-                                                        row.getIsSelected()
-                                                            ? 'deselectModification'
-                                                            : 'selectModification'
-                                                    }
-                                                />
-                                            }
-                                            arrow
-                                        >
-                                            <Box sx={createCellContentWrapperSx(theme, cellWithoutBorders)}>
-                                                {cellContent}
-                                            </Box>
-                                        </Tooltip>
+                                        <Box sx={createCellContentWrapperSx(theme, cellWithoutBorders)}>
+                                            {cellContent}
+                                        </Box>
                                     </TableCell>
                                 );
                             }
-
                             return (
                                 <TableCell
                                     key={cell.id}
