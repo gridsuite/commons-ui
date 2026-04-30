@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import { ExploreOffOutlined, ExploreOutlined } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { IntegerInput, useCustomFormContext } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
 import { ConnectablePositionFormInfos, ConnectivityNetworkProps } from './connectivity.type';
@@ -82,7 +83,7 @@ export function PositionForm({
                             disableRipple={!isNodeBuilt || !voltageLevelForPositionIcon}
                             edge="start"
                         >
-                            <Tooltip
+                            <CustomTooltip
                                 title={intl.formatMessage({
                                     id: getPositionIconTooltipMessageId,
                                 })}
@@ -92,7 +93,7 @@ export function PositionForm({
                                 ) : (
                                     <ExploreOffOutlined color="action" />
                                 )}
-                            </Tooltip>
+                            </CustomTooltip>
                         </IconButton>
                     </Grid>
                     {voltageLevelForPositionIcon && (
