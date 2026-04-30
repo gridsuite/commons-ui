@@ -7,7 +7,7 @@
 import { Dispatch } from 'react';
 import { type Location, type NavigateFunction } from 'react-router';
 import { jwtDecode } from 'jwt-decode';
-import { Log, User, UserManager } from 'oidc-client-ts';
+import { User, UserManager } from 'oidc-client-ts';
 import { UserManagerMock } from './userManagerMock';
 import {
     AuthenticationActions,
@@ -35,15 +35,6 @@ type CustomUserManager = UserManager & {
         maxExpiresIn?: number;
     };
 };
-
-declare global {
-    interface Window {
-        OIDCLog?: typeof Log;
-    }
-}
-
-// set as a global variable to allow log level configuration at runtime
-window.OIDCLog = Log;
 
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
