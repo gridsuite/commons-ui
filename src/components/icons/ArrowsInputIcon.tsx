@@ -8,6 +8,6 @@
 import ArrowInput from '@material-symbols/svg-400/outlined/arrows_input.svg?react';
 import { SvgIcon, type SvgIconProps } from '@mui/material';
 
-export function ArrowInputIcon(props: SvgIconProps) {
+export function ArrowsInputIcon(props: SvgIconProps) {
     return <SvgIcon component={ArrowInput} inheritViewBox {...props} />;
 }
