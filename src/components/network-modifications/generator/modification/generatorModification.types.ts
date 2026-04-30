@@ -45,4 +45,8 @@ export interface GeneratorModificationDto {
     regulatingTerminalId: AttributeModification<string> | null;
     regulatingTerminalType: AttributeModification<string> | null;
     regulatingTerminalVlId: AttributeModification<string> | null;
+    pMeasurementValue: AttributeModification<number> | null;
+    pMeasurementValidity: AttributeModification<boolean> | null;
+    qMeasurementValue: AttributeModification<number> | null;
+    qMeasurementValidity: AttributeModification<boolean> | null;
 }
