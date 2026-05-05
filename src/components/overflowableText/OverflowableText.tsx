@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Box, type BoxProps, styled, Tooltip } from '@mui/material';
+import { Box, type BoxProps, styled } from '@mui/material';
 import { Style } from 'node:util';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { mergeSx, MuiStyles, SxStyle } from '../../utils';
 
 const overflowStyle = {
@@ -101,7 +102,7 @@ export const OverflowableText = styled(
         const boxSx = mergeSx(isMultiLine ? multilineOverflowStyle(maxLineCount) : overflowStyle.overflow, sx);
 
         return (
-            <Tooltip
+            <CustomTooltip
                 title={text || ''}
                 disableHoverListener={!overflowed}
                 {
@@ -111,7 +112,7 @@ export const OverflowableText = styled(
                 <Box ref={element} className={className} sx={boxSx} {...props}>
                     {children || text}
                 </Box>
-            </Tooltip>
+            </CustomTooltip>
         );
     }
 )({});
