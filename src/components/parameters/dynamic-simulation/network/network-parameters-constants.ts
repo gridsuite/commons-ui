@@ -11,7 +11,7 @@ export enum Network {
     CAPACITOR_NO_RECLOSING_DELAY = 'capacitorNoReclosingDelay',
 
     // Line related
-    DANGLING_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION = 'danglingLineCurrentLimitMaxTimeOperation',
+    BOUNDARY_LINE_CURRENT_LIMIT_MAX_TIME_OPERATION = 'boundaryLineCurrentLimitMaxTimeOperation',
     LINE_CURRENT_LIMIT_MAX_TIME_OPERATION = 'lineCurrentLimitMaxTimeOperation',
 
     // Load related

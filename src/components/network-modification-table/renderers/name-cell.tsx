@@ -7,8 +7,9 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Box, IconButton, InputBase, Tooltip, useTheme } from '@mui/material';
+import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,
@@ -208,7 +209,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
                         </Box>
                     ) : (
                         /* Read mode */
-                        <Tooltip disableFocusListener disableTouchListener title={label}>
+                        <CustomTooltip disableFocusListener disableTouchListener title={label}>
                             <Box
                                 ref={isComposite ? labelRef : undefined}
                                 onClick={isComposite ? handleLabelClick : undefined}
@@ -228,7 +229,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
                             >
                                 {label}
                             </Box>
-                        </Tooltip>
+                        </CustomTooltip>
                     )}
                 </Box>
             </Box>

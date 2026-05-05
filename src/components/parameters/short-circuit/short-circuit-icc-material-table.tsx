@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme, Tooltip } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccMaterialIColumnsDef } from './columns-definition';
 import { ShortCircuitIccMaterialTableRow } from './short-circuit-icc-material-table-row';
 
@@ -42,11 +43,11 @@ export function ShortCircuitIccMaterialTable({
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
-                            <Tooltip key={column.dataKey} title={column.tooltip}>
+                            <CustomTooltip key={column.dataKey} title={column.tooltip}>
                                 <TableCell align="center" sx={{ width: column.width }}>
                                     {column.label}
                                 </TableCell>
-                            </Tooltip>
+                            </CustomTooltip>
                         ))}
                         <TableCell align="center" sx={{ visibility: 'hidden', width: '5%' }} />
                         {/* empty cell for alignment with delete button column in cluster table */}

@@ -22,7 +22,7 @@ import {
     Fade,
     Grid,
     Stack,
-    Tooltip,
+    Theme,
     tooltipClasses,
     Typography,
     useMediaQuery,
@@ -32,8 +32,9 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { LogoText } from './GridLogo';
-import type { MuiStyles } from '../../utils/styles';
+import { mergeSx, type MuiStyles } from '../../utils/styles';
 
 const styles = {
     general: {
@@ -98,7 +99,7 @@ function getGlobalVersion(
 }
 
 const moduleTypeSort = {
-    app: 1,
+    apps: 1,
     server: 10,
     other: 20,
 };
@@ -170,7 +171,7 @@ const moduleStyles = {
 } as const satisfies MuiStyles;
 
 const ModuleTypesIcons = {
-    app: <WidgetsOutlined sx={moduleStyles.icons} fontSize="small" color="primary" />,
+    apps: <WidgetsOutlined sx={moduleStyles.icons} fontSize="small" color="primary" />,
     server: <DnsOutlined sx={moduleStyles.icons} fontSize="small" color="secondary" />,
     other: <QuestionMark sx={moduleStyles.icons} fontSize="small" />,
 };
@@ -181,7 +182,7 @@ function insensitiveCaseCompare(str: string, obj: string) {
     });
 }
 function tooltipTypeLabel(type: string) {
-    if (insensitiveCaseCompare('app', type) === 0) {
+    if (insensitiveCaseCompare('apps', type) === 0) {
         return 'about-dialog/module-tooltip-app';
     }
     if (insensitiveCaseCompare('server', type) === 0) {
@@ -203,13 +204,10 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                 },
             }}
         >
-            <Tooltip
+            <CustomTooltip
                 TransitionComponent={Zoom}
-                enterDelay={2500}
                 enterNextDelay={350}
                 leaveDelay={200}
-                placement="bottom-start"
-                arrow
                 sx={moduleStyles.tooltip}
                 title={
                     <>
@@ -252,15 +250,16 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                     </Typography>
                     <Typography
                         variant="caption"
-                        color={(theme) => theme.palette.text.secondary}
+                        sx={mergeSx(moduleStyles.version, (theme: Theme) => ({
+                            color: theme.palette.text.secondary,
+                        }))}
                         display="inline"
                         noWrap
-                        sx={moduleStyles.version}
                     >
                         {gitTag || version || null}
                     </Typography>
                 </Stack>
-            </Tooltip>
+            </CustomTooltip>
         </Grid>
     );
 }
@@ -305,7 +304,7 @@ export function AboutDialog({
         if (open) {
             const currentApp: GridSuiteModule = {
                 name: `Grid${appName}`,
-                type: 'app',
+                type: 'apps',
                 version: appVersion,
                 gitTag: appGitTag,
                 // license: appLicense,
@@ -460,7 +459,9 @@ export function AboutDialog({
                                             ))}
                                         </>
                                     )) || (
-                                        <Typography color={(selectedTheme) => selectedTheme.palette.error.main}>
+                                        <Typography
+                                            sx={{ color: (selectedTheme: Theme) => selectedTheme.palette.error.main }}
+                                        >
                                             Error
                                         </Typography>
                                     )

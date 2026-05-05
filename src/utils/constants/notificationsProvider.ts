@@ -11,7 +11,9 @@ export enum NotificationsUrlKeys {
     STUDY = 'STUDY',
     DIRECTORY = 'DIRECTORY',
     DIRECTORY_DELETE_STUDY = 'DIRECTORY_DELETE_STUDY',
+    MONITOR = 'MONITOR',
 }
 export const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 export const PREFIX_STUDY_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/study-notification`;
 export const PREFIX_DIRECTORY_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/directory-notification`;
+export const PREFIX_MONITOR_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/monitor-notification`;

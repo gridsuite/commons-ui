@@ -23,7 +23,6 @@ import {
     Tabs,
     TextField,
     ThemeProvider,
-    Tooltip,
     Typography,
 } from '@mui/material';
 import { enUS, frFR } from '@mui/material/locale';
@@ -55,6 +54,7 @@ import {
     commonButtonFr,
     csvEn,
     csvFr,
+    CustomTooltip,
     descriptionEn,
     descriptionFr,
     elementSearchEn,
@@ -584,7 +584,7 @@ function AppContent({ language, onLanguageClick }) {
             id: 'ney',
             label: 'Neymar',
             labelSecondary: (
-                <Tooltip title="this is the Chip tooltip">
+                <CustomTooltip title="this is the Chip tooltip">
                     <Chip
                         onClick={(e) => {
                             e.stopPropagation();
@@ -593,7 +593,7 @@ function AppContent({ language, onLanguageClick }) {
                         size="small"
                         label="GOAT"
                     />
-                </Tooltip>
+                </CustomTooltip>
             ),
         },
         { id: 'lapulga', label: 'Lionel Messi' },
@@ -602,7 +602,7 @@ function AppContent({ language, onLanguageClick }) {
             id: 'john',
             label: 'Johannes Vennegoor of Hesselink is the football player with the longest name in history',
             labelSecondary: (
-                <Tooltip title="this is the Chip tooltip">
+                <CustomTooltip title="this is the Chip tooltip">
                     <Chip
                         onClick={(e) => {
                             e.stopPropagation();
@@ -611,7 +611,7 @@ function AppContent({ language, onLanguageClick }) {
                         size="small"
                         label="GOAT"
                     />
-                </Tooltip>
+                </CustomTooltip>
             ),
         },
     ]);

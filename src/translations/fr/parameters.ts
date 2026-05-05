@@ -407,7 +407,7 @@ export const parametersFr = {
         'Temporisation avant la possibilité de réenclencher le MCS en s (capacité)',
     DynamicSimulationNetworkReactanceNoReclosingDelay:
         'Temporisation avant la possibilité de réenclencher le MCS en s (réactance)',
-    DynamicSimulationNetworkDanglingLineCurrentLimitMaxTimeOperation:
+    DynamicSimulationNetworkBoundaryLineCurrentLimitMaxTimeOperation:
         'Seuil de temps au delà duquel les limiteurs de courant ne doivent pas agir en s',
     DynamicSimulationNetworkLineCurrentLimitMaxTimeOperation:
         'Seuil de temps au-delà duquel les limiteurs de courant ne doivent pas agir en s',

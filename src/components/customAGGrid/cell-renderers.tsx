@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Checkbox, Theme, Tooltip } from '@mui/material';
+import { Box, Checkbox, Theme } from '@mui/material';
 import { ReactNode, useRef, useState } from 'react';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomCellRendererProps } from 'ag-grid-react';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { isBlankOrEmpty, mergeSx, MuiStyles } from '../../utils';
 
 const styles = {
@@ -101,13 +102,13 @@ export function NumericCellRenderer({ value, fractionDigits }: Readonly<NumericC
     const cellValue = formatNumericCell(numericalValue, fractionDigits);
     return (
         <Box sx={mergeSx(styles.tableCell)}>
-            <Tooltip
+            <CustomTooltip
                 disableFocusListener
                 disableTouchListener
                 title={cellValue.tooltip ? cellValue.tooltip : cellValue.value?.toString()}
             >
                 <Box sx={styles.overflow}>{cellValue.value}</Box>
-            </Tooltip>
+            </CustomTooltip>
         </Box>
     );
 }
@@ -115,9 +116,9 @@ export function NumericCellRenderer({ value, fractionDigits }: Readonly<NumericC
 function BaseCellRenderer({ value, tooltip }: Readonly<BaseCellRendererProps>) {
     return (
         <Box sx={mergeSx(styles.tableCell)}>
-            <Tooltip disableFocusListener disableTouchListener title={tooltip || value || ''}>
+            <CustomTooltip disableFocusListener disableTouchListener title={tooltip || value || ''}>
                 <Box sx={styles.overflow}>{value}</Box>
-            </Tooltip>
+            </CustomTooltip>
         </Box>
     );
 }
@@ -137,7 +138,7 @@ export function DefaultCellRenderer(props: Readonly<CustomCellRendererProps>) {
 export function NetworkModificationNameCellRenderer({ value }: Readonly<CustomCellRendererProps>) {
     return (
         <Box sx={mergeSx(styles.tableCell)}>
-            <Tooltip
+            <CustomTooltip
                 disableFocusListener
                 disableTouchListener
                 title={value}
@@ -150,7 +151,7 @@ export function NetworkModificationNameCellRenderer({ value }: Readonly<CustomCe
                 }}
             >
                 <Box sx={styles.overflow}>{value}</Box>
-            </Tooltip>
+            </CustomTooltip>
         </Box>
     );
 }
@@ -227,7 +228,7 @@ export function MessageLogCellRenderer({
 
     return (
         <Box sx={mergeSx(styles.tableCell)}>
-            <Tooltip
+            <CustomTooltip
                 disableFocusListener
                 disableTouchListener
                 disableHoverListener
@@ -245,7 +246,7 @@ export function MessageLogCellRenderer({
                 >
                     {renderHighlightedText(param.value)}
                 </Box>
-            </Tooltip>
+            </CustomTooltip>
         </Box>
     );
 }
@@ -261,9 +262,9 @@ export function ContingencyCellRenderer({
 
     return (
         <Box sx={mergeSx(styles.tableCell)}>
-            <Tooltip title={<div style={{ whiteSpace: 'pre-line' }}>{tooltipValue}</div>}>
+            <CustomTooltip title={<div style={{ whiteSpace: 'pre-line' }}>{tooltipValue}</div>}>
                 <Box sx={styles.overflow}>{cellValue}</Box>
-            </Tooltip>
+            </CustomTooltip>
         </Box>
     );
 }
