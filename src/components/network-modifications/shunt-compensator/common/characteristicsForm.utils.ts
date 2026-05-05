@@ -109,20 +109,19 @@ export const getCharacteristicsFormData = ({
     sectionCount?: number | null;
     maximumSectionCount?: number | null;
 }) => ({
-    [FieldConstants.CHARACTERISTICS_CHOICE]: maxSusceptance
-        ? CHARACTERISTICS_CHOICES.SUSCEPTANCE.id
-        : CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
+    [FieldConstants.CHARACTERISTICS_CHOICE]:
+        maxSusceptance == null ? CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id : CHARACTERISTICS_CHOICES.SUSCEPTANCE.id,
     [FieldConstants.MAX_SUSCEPTANCE]: maxSusceptance,
     [FieldConstants.SHUNT_COMPENSATOR_TYPE]: shuntCompensatorType ?? null,
     [FieldConstants.MAX_Q_AT_NOMINAL_V]: maxQAtNominalV,
     [FieldConstants.SECTION_COUNT]: sectionCount ?? null,
     [FieldConstants.MAXIMUM_SECTION_COUNT]: maximumSectionCount ?? null,
     [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]:
-        maxQAtNominalV && sectionCount && maximumSectionCount
+        maxQAtNominalV != null && sectionCount != null && maximumSectionCount != null
             ? computeSwitchedOnValue(sectionCount, maximumSectionCount, maxQAtNominalV)
             : null,
     [FieldConstants.SWITCHED_ON_SUSCEPTANCE]:
-        maxSusceptance && sectionCount && maximumSectionCount
+        maxSusceptance != null && sectionCount != null && maximumSectionCount != null
             ? computeSwitchedOnValue(sectionCount, maximumSectionCount, maxSusceptance)
             : null,
 });

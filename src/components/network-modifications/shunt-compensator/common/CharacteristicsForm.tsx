@@ -86,7 +86,9 @@ export function CharacteristicsForm({ previousValues, isModification = false }: 
     const handleSwitchedOnValue = useCallback(
         (currentLinkedSwitchedOnValue: number, switchedOnFieldName: string) => {
             if (
-                ![currentSectionCount, currentMaximumSectionCount, currentLinkedSwitchedOnValue].includes(null) &&
+                [currentSectionCount, currentMaximumSectionCount, currentLinkedSwitchedOnValue].every(
+                    (v) => v !== null && v !== undefined
+                ) &&
                 currentMaximumSectionCount >= currentSectionCount
             ) {
                 setValue(
@@ -106,7 +108,7 @@ export function CharacteristicsForm({ previousValues, isModification = false }: 
         } else if (characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id) {
             handleSwitchedOnValue(currentMaxSusceptance, FieldConstants.SWITCHED_ON_SUSCEPTANCE);
         }
-    }, [characteristicsChoice, handleSwitchedOnValue, previousValues, currentMaxQAtNominalV, currentMaxSusceptance]);
+    }, [characteristicsChoice, handleSwitchedOnValue, currentMaxQAtNominalV, currentMaxSusceptance]);
 
     const maximumSectionCountField = (
         <IntegerInput
