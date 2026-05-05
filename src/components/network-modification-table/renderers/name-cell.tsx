@@ -8,8 +8,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Box, IconButton, Tooltip, useTheme } from '@mui/material';
+import { Box, IconButton, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,
@@ -84,7 +85,7 @@ export function NameCell({ row }: Readonly<NameCellProps>) {
                     </Box>
                 )}
                 <Box sx={createNameCellLabelBoxSx(row.getIsExpanded(), depth)}>
-                    <Tooltip disableFocusListener disableTouchListener title={label}>
+                    <CustomTooltip disableFocusListener disableTouchListener title={label}>
                         <Box
                             sx={mergeSx(
                                 networkModificationTableStyles.modificationLabel,
@@ -93,7 +94,7 @@ export function NameCell({ row }: Readonly<NameCellProps>) {
                         >
                             {label}
                         </Box>
-                    </Tooltip>
+                    </CustomTooltip>
                 </Box>
             </Box>
         </Box>

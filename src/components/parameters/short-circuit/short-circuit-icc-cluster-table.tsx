@@ -5,21 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    IconButton,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Theme,
-    Tooltip,
-} from '@mui/material';
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from '@mui/material';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useCallback } from 'react';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccClusterIColumnsDef } from './columns-definition';
 import { ShortCircuitIccClusterTableRow } from './short-circuit-icc-cluster-table-row';
 
@@ -71,20 +62,20 @@ export function ShortCircuitIccClusterTable({
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
-                            <Tooltip key={column.dataKey} title={column.tooltip}>
+                            <CustomTooltip key={column.dataKey} title={column.tooltip}>
                                 <TableCell align="center" sx={{ width: column.width }}>
                                     {column.label}
                                 </TableCell>
-                            </Tooltip>
+                            </CustomTooltip>
                         ))}
                         <TableCell align="center" sx={{ width: '5%' }}>
-                            <Tooltip title={<FormattedMessage id="AddRows" />}>
+                            <CustomTooltip title={<FormattedMessage id="AddRows" />}>
                                 <span>
                                     <IconButton size="small" disabled={false} onClick={handleAddRowsButton}>
                                         <AddCircleIcon fontSize="small" />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                         </TableCell>
                     </TableRow>
                 </TableHead>
