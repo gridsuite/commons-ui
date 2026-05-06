@@ -10,22 +10,7 @@ import { PropsWithChildren, useEffect, useMemo } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
-import { getUserToken } from '../../redux';
-
-// the delay before we consider the WS truly connected
-const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
-
-function isUrlDefined(tuple: [string, string | undefined]): tuple is [string, string] {
-    return tuple[1] !== undefined;
-}
-
-function appendToken(url: string, token: string | undefined): string {
-    if (!token) {
-        return url;
-    }
-    const sep = url.includes('?') ? '&' : '?';
-    return `${url}${sep}access_token=${encodeURIComponent(token)}`;
-}
+import { appendToken, DELAY_BEFORE_WEBSOCKET_CONNECTED, isUrlDefined } from './utils';
 
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
 export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
@@ -46,7 +31,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             .map(([urlKey, url]) => {
                 const rws = new ReconnectingWebSocket(
                     () => {
-                        return appendToken(url, getUserToken());
+                        return appendToken(url);
                     },
                     [],
                     {

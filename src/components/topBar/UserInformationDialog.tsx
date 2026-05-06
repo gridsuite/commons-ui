@@ -42,10 +42,13 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
     };
 
     useEffect(() => {
-        if (openDialog && userProfile?.sub) {
-            getUserDetails(userProfile.sub);
+        if (!openDialog || !userProfile?.sub) {
+            setUserDetails(undefined);
+            return;
         }
-    }, [openDialog, userProfile]);
+        setUserDetails(undefined);
+        getUserDetails(userProfile.sub);
+    }, [openDialog, userProfile?.sub]);
 
     const rolesString = userProfile?.profile ?? '';
     const rolesList = rolesString ? rolesString.split('|').map((role) => role.trim()) : [];
