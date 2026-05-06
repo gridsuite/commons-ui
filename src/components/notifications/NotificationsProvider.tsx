@@ -38,6 +38,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             .flatMap(([urlKey, url]) => {
                 const urlWithToken = appendToken(url);
                 if (!urlWithToken) {
+                    console.info(`Skipping ${urlKey} Notification WebSocket: no user token available`);
                     return [];
                 }
                 const rws = new ReconnectingWebSocket(() => urlWithToken, [], {
