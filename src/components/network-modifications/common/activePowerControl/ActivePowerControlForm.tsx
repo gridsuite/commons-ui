@@ -8,8 +8,9 @@
 import { useWatch } from 'react-hook-form';
 import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import { FieldConstants } from '../../../../utils';
 import { ActivePowerControlInfos } from './activePowerControlForm.type';
 import GridItem from '../../../grid/grid-item';
@@ -65,9 +66,9 @@ export function ActivePowerControlForm({
 
     const descriptionTooltip = useMemo(
         () => (
-            <Tooltip title={intl.formatMessage({ id: 'activePowerControlTooltip' })}>
+            <CustomTooltip title={intl.formatMessage({ id: 'activePowerControlTooltip' })}>
                 <InfoOutlined color="info" fontSize="medium" />
-            </Tooltip>
+            </CustomTooltip>
         ),
         [intl]
     );
