@@ -9,10 +9,10 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typograph
 import { FormattedMessage } from 'react-intl';
 import type { Profile } from 'oidc-client';
 import { Fragment, useEffect, useState } from 'react';
-import { CancelButton } from '../inputs';
-import { fetchUserDetails } from '../../services';
-import { UserDetail } from '../../utils';
-import type { MuiStyles } from '../../utils';
+import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
+import { fetchUserDetails } from '../../services/userAdmin';
+import { UserDetail } from '../../utils/types/types';
+import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
     DialogTitle: { fontSize: '1.5rem' },
