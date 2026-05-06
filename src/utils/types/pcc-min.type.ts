@@ -36,7 +36,7 @@ export function enrichPccMinParameters(parameters: PccMinParameters): Promise<Pc
             return ids
                 ? ids.map((id) => ({
                       filterId: id,
-                      filterName: elementNames?.[id] ?? null,
+                      filterName: elementNames?.[id] ?? undefined,
                   }))
                 : [];
         };

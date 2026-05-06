@@ -65,7 +65,7 @@ export function enrichSecurityAnalysisParameters(parameters: SAParameters): Prom
             return ids
                 ? ids.map((id) => ({
                       [ID]: id,
-                      [NAME]: elementNames?.[id] ?? null,
+                      [NAME]: elementNames?.[id] ?? undefined,
                   }))
                 : [];
         };

@@ -10,7 +10,7 @@ import { CONTINGENCY_LISTS } from '../constants';
 
 export interface IdName {
     [ID]: UUID;
-    [NAME]: string;
+    [NAME]?: string;
 }
 export interface ContingencyListsInfosEnriched {
     [CONTINGENCY_LISTS]: IdName[];
