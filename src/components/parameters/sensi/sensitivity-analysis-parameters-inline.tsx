@@ -11,6 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import {
     ElementType,
+    mapSensitivityAnalysisParameters,
     mergeSx,
     SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
@@ -162,7 +163,7 @@ export function SensitivityAnalysisParametersInline({
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
                                 parameterValues={() => sensitivityAnalysisMethods.formatNewParams(getValues())}
-                                parameterFormatter={(newParams) => newParams}
+                                parameterFormatter={(newParams) => mapSensitivityAnalysisParameters(newParams)}
                                 parameterType={ElementType.SENSITIVITY_PARAMETERS}
                             />
                         )}

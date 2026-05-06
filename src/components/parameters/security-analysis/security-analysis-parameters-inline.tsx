@@ -22,7 +22,7 @@ import { useSecurityAnalysisParametersForm } from './use-security-analysis-param
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../dialogs';
 import { snackWithFallback } from '../../../utils/error';
-import { SAParametersEnriched } from './types';
+import { mapSecurityAnalysisParameters, SAParametersEnriched } from './types';
 import { toFormValueSaParameters } from './columns-definitions';
 import { ContingencyCount } from '../common/contingency-table/types';
 
@@ -129,7 +129,7 @@ export function SecurityAnalysisParametersInline({
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
                                 parameterValues={() => securityAnalysisMethods.formatNewParams(getValues())}
-                                parameterFormatter={(newParams) => newParams}
+                                parameterFormatter={(newParams) => mapSecurityAnalysisParameters(newParams)}
                                 parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
                             />
                         )}
