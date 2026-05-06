@@ -100,7 +100,11 @@ export const getReactiveCapabilityCurveValidationSchema = (
     id = FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE,
     positiveAndNegativePExist = false
 ) => ({
-    [id]: array()
+    [id]: getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
+});
+
+export const getReactiveCapabilityCurveValidationSchemaArray = (positiveAndNegativePExist = false) =>
+    array()
         .nullable()
         .when([FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE], {
             is: 'CURVE',
@@ -133,8 +137,7 @@ export const getReactiveCapabilityCurveValidationSchema = (
                         checkAllPValuesBetweenMinMax
                     );
             },
-        }),
-});
+        });
 
 export function setSelectedReactiveLimits(
     id: string,

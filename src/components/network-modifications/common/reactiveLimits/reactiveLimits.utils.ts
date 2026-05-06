@@ -7,7 +7,7 @@
 
 import { number, object, string } from 'yup';
 import {
-    getReactiveCapabilityCurveValidationSchema,
+    getReactiveCapabilityCurveValidationSchemaArray,
     getRowEmptyFormData,
 } from './reactiveCapabilityCurve/reactiveCapability.utils';
 import { ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
@@ -31,24 +31,43 @@ export const getReactiveLimitsFormData = ({
     maximumReactivePower?: number | null;
     reactiveCapabilityCurvePoints?: ReactiveCapabilityCurvePoints[] | null;
 }) => ({
-    [id]: {
-        [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: reactiveCapabilityCurveChoice,
-        [FieldConstants.MINIMUM_REACTIVE_POWER]: minimumReactivePower ?? null,
-        [FieldConstants.MAXIMUM_REACTIVE_POWER]: maximumReactivePower ?? null,
-        [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: reactiveCapabilityCurvePoints ?? [
-            getRowEmptyFormData(),
-            getRowEmptyFormData(),
-        ],
-    },
+    [id]: getReactiveLimitsFormDataProps({
+        reactiveCapabilityCurveChoice,
+        minimumReactivePower,
+        maximumReactivePower,
+        reactiveCapabilityCurvePoints,
+    }),
+});
+
+export const getReactiveLimitsFormDataProps = ({
+    reactiveCapabilityCurveChoice,
+    minimumReactivePower,
+    maximumReactivePower,
+    reactiveCapabilityCurvePoints,
+}: {
+    reactiveCapabilityCurveChoice: string;
+    minimumReactivePower?: number | null;
+    maximumReactivePower?: number | null;
+    reactiveCapabilityCurvePoints?: ReactiveCapabilityCurvePoints[] | null;
+}) => ({
+    [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: reactiveCapabilityCurveChoice,
+    [FieldConstants.MINIMUM_REACTIVE_POWER]: minimumReactivePower ?? null,
+    [FieldConstants.MAXIMUM_REACTIVE_POWER]: maximumReactivePower ?? null,
+    [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: reactiveCapabilityCurvePoints ?? [
+        getRowEmptyFormData(),
+        getRowEmptyFormData(),
+    ],
 });
 
 export const getReactiveLimitsEmptyFormData = (id = FieldConstants.REACTIVE_LIMITS) => ({
-    [id]: {
-        [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: 'MINMAX',
-        [FieldConstants.MINIMUM_REACTIVE_POWER]: null,
-        [FieldConstants.MAXIMUM_REACTIVE_POWER]: null,
-        [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: [getRowEmptyFormData(), getRowEmptyFormData()],
-    },
+    [id]: getReactiveLimitsEmptyFormDataProps(),
+});
+
+export const getReactiveLimitsEmptyFormDataProps = () => ({
+    [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: 'MINMAX',
+    [FieldConstants.MINIMUM_REACTIVE_POWER]: null,
+    [FieldConstants.MAXIMUM_REACTIVE_POWER]: null,
+    [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: [getRowEmptyFormData(), getRowEmptyFormData()],
 });
 
 export const getReactiveLimitsValidationSchema = (
@@ -70,10 +89,8 @@ export const getReactiveLimitsValidationSchema = (
                     is: (minimumReactivePower: number) => !isEquipmentModification && minimumReactivePower != null,
                     then: (schema) => schema.required(YUP_REQUIRED),
                 }),
-            ...getReactiveCapabilityCurveValidationSchema(
-                FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE,
-                positiveAndNegativePExist
-            ),
+            [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]:
+                getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
         },
         [FieldConstants.MAXIMUM_REACTIVE_POWER, FieldConstants.MINIMUM_REACTIVE_POWER] as unknown as readonly [
             string,
