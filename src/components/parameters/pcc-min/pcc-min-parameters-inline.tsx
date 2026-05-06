@@ -17,7 +17,7 @@ import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
-import { ElementType, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
+import { ElementType, mapPccMinParameters, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { fromPccMinParametersFormToParamValuesEnriched, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
 
@@ -115,7 +115,7 @@ export function PccMinParametersInLine({
                                 onClose={() => setOpenCreateParameterDialog(false)}
                                 parameterValues={getValues}
                                 parameterFormatter={(params: Record<string, any>) =>
-                                    fromPccMinParametersFormToParamValuesEnriched(params)
+                                    mapPccMinParameters(fromPccMinParametersFormToParamValuesEnriched(params))
                                 }
                                 parameterType={ElementType.PCC_MIN_PARAMETERS}
                             />

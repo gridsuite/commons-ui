@@ -162,8 +162,12 @@ export function SensitivityAnalysisParametersInline({
                                 studyUuid={studyUuid}
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => sensitivityAnalysisMethods.formatNewParams(getValues())}
-                                parameterFormatter={(newParams) => mapSensitivityAnalysisParameters(newParams)}
+                                parameterValues={getValues}
+                                parameterFormatter={(newParams) =>
+                                    mapSensitivityAnalysisParameters(
+                                        sensitivityAnalysisMethods.formatNewParams(newParams)
+                                    )
+                                }
                                 parameterType={ElementType.SENSITIVITY_PARAMETERS}
                             />
                         )}

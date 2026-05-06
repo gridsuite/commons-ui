@@ -128,8 +128,10 @@ export function SecurityAnalysisParametersInline({
                                 studyUuid={studyUuid}
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => securityAnalysisMethods.formatNewParams(getValues())}
-                                parameterFormatter={(newParams) => mapSecurityAnalysisParameters(newParams)}
+                                parameterValues={getValues}
+                                parameterFormatter={(newParams) =>
+                                    mapSecurityAnalysisParameters(securityAnalysisMethods.formatNewParams(newParams))
+                                }
                                 parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
                             />
                         )}
