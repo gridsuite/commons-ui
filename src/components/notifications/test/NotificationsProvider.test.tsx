@@ -13,6 +13,10 @@ import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
 jest.mock('reconnecting-websocket');
 jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
+jest.mock('../../../services/utils', () => ({
+    ...jest.requireActual<typeof import('../../../services/utils')>('../../../services/utils'),
+    appendToken: (url: string) => `${url}?access_token=fake-token`,
+}));
 const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
 
 let container: Element;
