@@ -40,9 +40,10 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                 if (!urlWithToken) {
                     return [];
                 }
-                const rws = new ReconnectingWebSocket(urlWithToken, [], {
+                const rws = new ReconnectingWebSocket(() => urlWithToken, [], {
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });
+
                 rws.onmessage = broadcastMessage(urlKey);
 
                 rws.onclose = (event) => {
