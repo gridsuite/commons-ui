@@ -34,7 +34,6 @@ export function LoadDialogTabsContent({
             <Box hidden={tabIndex !== LoadDialogTab.CONNECTIVITY_TAB}>
                 <GridSection title="ConnectivityTab" />
                 <ConnectivityForm
-                    withPosition
                     isEquipmentModification={isModification}
                     previousValues={{
                         connectablePosition: loadToModify?.connectablePosition,

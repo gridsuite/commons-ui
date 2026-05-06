@@ -22,3 +22,4 @@ export * from './sensitivity-analysis.type';
 export * from './dynamic-margin-calculation.type';
 export * from './network-modification-types';
 export * from './pcc-min.type';
+export * from './network-modification-metadata';

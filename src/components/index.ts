@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+export * from './addButton';
 export * from './announcement';
 export * from './authentication';
 export * from './cardErrorBoundary';
@@ -21,6 +22,7 @@ export * from './inputs';
 export * from './multipleSelectionDialog';
 export * from './overflowableText';
 export * from './snackbarProvider';
+export * from './tooltip';
 export * from './topBar';
 export * from './treeViewFinder';
 export * from './notifications';
@@ -31,3 +33,4 @@ export * from './muiTable';
 export * from './resizablePanels';
 export * from './network-modifications';
 export * from './node';
+export * from './network-modification-table';

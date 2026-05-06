@@ -13,7 +13,7 @@ export const SVC = {
     label: 'StaticVarCompensators',
     type: 'STATIC_VAR_COMPENSATOR',
 };
-export const DanglingLine = { label: 'DanglingLines', type: 'DANGLING_LINE' };
+export const BoundaryLine = { label: 'BoundaryLines', type: 'BOUNDARY_LINE' };
 export const LCC = {
     label: 'LccConverterStations',
     type: 'LCC_CONVERTER_STATION',

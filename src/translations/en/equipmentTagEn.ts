@@ -22,7 +22,7 @@ export const equipmentTagEn = {
     'equipment_tag/hvdcStation': 'HVDC STATION',
     'equipment_tag/vscConverterStation': 'VSC CONVERTER STATION',
     'equipment_tag/lccConverterStation': 'LCC CONVERTER STATION',
-    'equipment_tag/danglingLine': 'DANGLING LINE',
+    'equipment_tag/boundaryLine': 'BOUNDARY LINE',
     'equipment_tag/busbarSection': 'BBS',
     'equipment_tag/bus': 'BUS',
     'equipment_tag/switch': 'SWITCH',
