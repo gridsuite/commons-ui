@@ -32,6 +32,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
     const [userDetails, setUserDetails] = useState<UserDetail | undefined>(undefined);
 
     const getUserDetails = (userName: string) => {
+        setUserDetails(undefined);
         fetchUserDetails(userName)
             .then((response: UserDetail) => {
                 setUserDetails(response);
@@ -46,7 +47,6 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
             setUserDetails(undefined);
             return;
         }
-        setUserDetails(undefined);
         getUserDetails(userProfile.sub);
     }, [openDialog, userProfile?.sub]);
 

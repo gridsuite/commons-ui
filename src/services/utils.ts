@@ -179,3 +179,12 @@ export const getRequestParamFromList = (paramName: string, params: string[] = []
 export function safeEncodeURIComponent(value: string | null | undefined): string {
     return value != null ? encodeURIComponent(value) : '';
 }
+
+export function appendToken(url: string): string | undefined {
+    const token = getUserToken();
+    if (!token) {
+        return undefined;
+    }
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}access_token=${encodeURIComponent(token)}`;
+}
