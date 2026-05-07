@@ -5,39 +5,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { IconButton } from '@mui/material';
-import { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { Grid } from '@mui/material';
+import { useCallback, useEffect, useRef } from 'react';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { FieldConstants } from '../../../../../../../utils';
 import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../../../voltageLevelCreation.types';
-import { TextInput } from '../../../../../../inputs';
-import { CreateSwitchesDialog } from './creation';
+import { EnumInput } from '../../../../../../inputs';
 import GridSection from '../../../../../../grid/grid-section';
+import { SWITCH_TYPE } from '../../../voltageLevelCreation.utils';
 
 export function SwitchesBetweenSections() {
-    const { getValues, setValue } = useFormContext();
-    const [openCreateSwitchesDialog, setOpenCreateSwitchesDialog] = useState(false);
-
+    const { setValue } = useFormContext();
+    const { fields: rows } = useFieldArray({ name: `${FieldConstants.SWITCH_KINDS}` });
     const watchSectionCount: number = useWatch({ name: FieldConstants.SECTION_COUNT });
     const watchSwitchesBetweenSections: string = useWatch({
         name: FieldConstants.SWITCHES_BETWEEN_SECTIONS,
     });
-
-    const addIconAdornment = useCallback((clickCallback: () => void): ReactElement => {
-        return (
-            <IconButton onClick={clickCallback}>
-                <ArrowDropDownIcon />
-            </IconButton>
-        );
-    }, []);
-
-    const handleClickOpenSwitchesPane = useCallback(() => {
-        if (watchSectionCount > 1) {
-            setOpenCreateSwitchesDialog(true);
-        }
-    }, [watchSectionCount]);
 
     const intl = useIntl();
     const setSwitchesKinds = useCallback(
@@ -52,13 +36,6 @@ export function SwitchesBetweenSections() {
             setValue(FieldConstants.SWITCH_KINDS, data[FieldConstants.SWITCH_KINDS]);
         },
         [intl, setValue]
-    );
-
-    const handleCreateSwitchesDialog = useCallback(
-        (data: CreateSwitchesFormData) => {
-            setSwitchesKinds(data);
-        },
-        [setSwitchesKinds]
     );
 
     const sectionCountRef = useRef<number>(watchSectionCount);
@@ -89,23 +66,22 @@ export function SwitchesBetweenSections() {
     return (
         <>
             <GridSection title="SwitchesBetweenSections" />
-            <TextInput
-                name={FieldConstants.SWITCHES_BETWEEN_SECTIONS}
-                label="SwitchesBetweenSections"
-                formProps={{
-                    multiline: true,
-                }}
-                customAdornment={addIconAdornment(handleClickOpenSwitchesPane)}
-            />
-            {openCreateSwitchesDialog && (
-                <CreateSwitchesDialog
-                    openCreateSwitchesDialog={openCreateSwitchesDialog}
-                    setOpenCreateSwitchesDialog={setOpenCreateSwitchesDialog}
-                    handleCreateSwitchesDialog={handleCreateSwitchesDialog}
-                    sectionCount={getValues(FieldConstants.SECTION_COUNT)}
-                    switchKinds={getValues(FieldConstants.SWITCH_KINDS)}
-                />
-            )}
+            <Grid container spacing={2} pt={1}>
+                {rows.map((value, index) => (
+                    <Grid item xs={4} key={value.id}>
+                        <EnumInput
+                            options={Object.values(SWITCH_TYPE)}
+                            name={`${FieldConstants.SWITCH_KINDS}.${index}.${FieldConstants.SWITCH_KIND}`}
+                            label="SwitchBetweenSectionsLabel"
+                            labelValues={{
+                                index1: String(index + 1),
+                                index2: String(index + 2),
+                            }}
+                            size="small"
+                        />
+                    </Grid>
+                ))}
+            </Grid>
         </>
     );
 }
