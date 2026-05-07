@@ -7,9 +7,10 @@
 import yup from '../../../../utils/yupConfig';
 import { MAPPING } from './mapping-parameters-constants';
 
-export const mappingFormSchema = yup.object().shape({
-    [MAPPING]: yup.string().required(),
-});
+export const getMappingFormSchema = () =>
+    yup.object().shape({
+        [MAPPING]: yup.string().required(),
+    });
 
 export const mappingEmptyFormData = {
     [MAPPING]: '',

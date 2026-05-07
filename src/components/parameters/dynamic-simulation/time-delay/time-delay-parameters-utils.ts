@@ -8,18 +8,19 @@ import yup from '../../../../utils/yupConfig';
 import { TimeDelay } from './time-delay-parameters-constants';
 import { isEmpty } from '../../../../utils/functions';
 
-export const timeDelayFormSchema = yup.object().shape({
-    [TimeDelay.START_TIME]: yup.number().required(),
-    [TimeDelay.STOP_TIME]: yup
-        .number()
-        .required()
-        .when([TimeDelay.START_TIME], ([startTime], schema) => {
-            if (!isEmpty(startTime)) {
-                return schema.min(startTime, 'DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime');
-            }
-            return schema;
-        }),
-});
+export const getTimeDelayFormSchema = () =>
+    yup.object().shape({
+        [TimeDelay.START_TIME]: yup.number().required(),
+        [TimeDelay.STOP_TIME]: yup
+            .number()
+            .required()
+            .when([TimeDelay.START_TIME], ([startTime], schema) => {
+                if (!isEmpty(startTime)) {
+                    return schema.min(startTime, 'DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime');
+                }
+                return schema;
+            }),
+    });
 
 export const timeDelayEmptyFormData = {
     [TimeDelay.START_TIME]: 0,

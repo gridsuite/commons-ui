@@ -395,22 +395,24 @@ export const isValidSensiParameterRow = (row: FieldValues) => {
 export const filterSensiParameterRows = (rows?: FieldValues[]) =>
     (rows ?? []).filter((row) => isValidSensiParameterRow(row));
 
-export const formSchema = yup
-    .object()
-    .shape({
-        [PROVIDER]: yup.string().required(),
-        [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: yup.number().required(),
-        [ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD]: yup.number().required(),
-        [FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD]: yup.number().required(),
-        ...getSensiInjectionsSetFormSchema(),
-        ...getSensiInjectionsFormSchema(),
-        ...getSensiHVDCsFormSchema(),
-        ...getSensiPSTsFormSchema(),
-        ...getSensiNodesFormSchema(),
-    })
-    .required();
-export type SensitivityAnalysisParametersFormSchema = yup.InferType<typeof formSchema>;
+export const getSensiFormSchema = () =>
+    yup
+        .object()
+        .shape({
+            [PROVIDER]: yup.string().required(),
+            [FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD]: yup.number().required(),
+            [ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD]: yup.number().required(),
+            [FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD]: yup.number().required(),
+            ...getSensiInjectionsSetFormSchema(),
+            ...getSensiInjectionsFormSchema(),
+            ...getSensiHVDCsFormSchema(),
+            ...getSensiPSTsFormSchema(),
+            ...getSensiNodesFormSchema(),
+        })
+        .required();
+
+export type SensitivityAnalysisParametersFormSchema = yup.InferType<ReturnType<typeof getSensiFormSchema>>;
 
 export const getFormSchema = (name: string | null) => {
-    return formSchema.concat(getNameElementEditorSchema(name));
+    return getSensiFormSchema().concat(getNameElementEditorSchema(name));
 };
