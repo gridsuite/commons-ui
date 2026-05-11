@@ -23,7 +23,6 @@ import {
     Grid,
     Stack,
     Theme,
-    Tooltip,
     tooltipClasses,
     Typography,
     useMediaQuery,
@@ -33,6 +32,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { LogoText } from './GridLogo';
 import { mergeSx, type MuiStyles } from '../../utils/styles';
 
@@ -204,13 +204,10 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                 },
             }}
         >
-            <Tooltip
+            <CustomTooltip
                 TransitionComponent={Zoom}
-                enterDelay={2500}
                 enterNextDelay={350}
                 leaveDelay={200}
-                placement="bottom-start"
-                arrow
                 sx={moduleStyles.tooltip}
                 title={
                     <>
@@ -262,7 +259,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                         {gitTag || version || null}
                     </Typography>
                 </Stack>
-            </Tooltip>
+            </CustomTooltip>
         </Grid>
     );
 }

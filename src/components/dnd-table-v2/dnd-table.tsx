@@ -20,11 +20,11 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Tooltip,
 } from '@mui/material';
 import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { DndColumn, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
@@ -330,7 +330,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                     ))}
                     {!disableAddingRows && !multiselect && (
                         <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
-                            <Tooltip
+                            <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'AddRows',
                                 })}
@@ -340,7 +340,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                         <AddCircleIcon />
                                     </IconButton>
                                 </span>
-                            </Tooltip>
+                            </CustomTooltip>
                         </TableCell>
                     )}
                 </TableRow>
