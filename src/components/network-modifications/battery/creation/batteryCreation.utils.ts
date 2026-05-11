@@ -65,7 +65,6 @@ export const batteryCreationEmptyFormData: DeepNullable<BatteryCreationFormData>
     reactiveLimits: getReactiveLimitsEmptyFormDataProps(),
     AdditionalProperties: [],
     ...getSetPointsEmptyFormData(),
-    ...getReactiveLimitsEmptyFormData(),
     ...getActivePowerControlEmptyFormData(),
     ...getShortCircuitEmptyFormData(),
 };
