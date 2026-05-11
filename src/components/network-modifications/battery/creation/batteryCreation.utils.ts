@@ -28,7 +28,6 @@ import { BatteryCreationDto } from './batteryCreation.types';
 import {
     getActivePowerControlEmptyFormData,
     getActivePowerControlSchema,
-    getReactiveLimitsEmptyFormData,
     getReactiveLimitsEmptyFormDataProps,
     getReactiveLimitsFormDataProps,
     getReactiveLimitsValidationSchema,
