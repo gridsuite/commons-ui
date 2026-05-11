@@ -226,6 +226,9 @@ export const networkModificationsFr = {
     ReactiveLimitsKindCurve: 'Par diagramme',
     MinimumReactivePower: 'Puissance réactive minimale',
     MaximumReactivePower: 'Puissance réactive maximale',
+    ReactiveLimitsMinMaxInvalid: 'La puissance réactive maximale doit être supérieure à la puissance réactive minimale',
+    MinReactivePowerRequired: 'La puissance réactive minimale est requise si la maximale est définie',
+    MaxReactivePowerRequired: 'La puissance réactive maximale est requise si la minimale est définie',
     ReactiveCapabilityCurveCreationErrorMissingPoints:
         'Le tableau des limites de réactifs par diagramme doit comporter au moins quatre points.',
     ReactiveCapabilityCurveCreationErrorPInvalid:

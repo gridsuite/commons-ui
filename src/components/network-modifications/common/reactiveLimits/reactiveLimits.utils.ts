@@ -78,7 +78,7 @@ export const getReactiveLimitsValidationSchema = (
         [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: string().nullable().required(YUP_REQUIRED),
         [FieldConstants.MINIMUM_REACTIVE_POWER]: number()
             .nullable()
-            .test('min-reactive-power-required', YUP_REQUIRED, function (value) {
+            .test('min-reactive-power-required', 'MinReactivePowerRequired', function (value) {
                 const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
                 if (
                     reactiveCapabilityCurveChoice === 'MINMAX' &&
@@ -89,10 +89,17 @@ export const getReactiveLimitsValidationSchema = (
                     return false;
                 }
                 return true;
+            })
+            .test('min-less-than-max', 'ReactiveLimitsMinMaxInvalid', function (value) {
+                const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
+                if (reactiveCapabilityCurveChoice === 'MINMAX' && value != null && maximumReactivePower != null) {
+                    return value <= maximumReactivePower;
+                }
+                return true;
             }),
         [FieldConstants.MAXIMUM_REACTIVE_POWER]: number()
             .nullable()
-            .test('max-reactive-power-required', YUP_REQUIRED, function (value) {
+            .test('max-reactive-power-required', 'MaxReactivePowerRequired', function (value) {
                 const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
                 if (
                     reactiveCapabilityCurveChoice === 'MINMAX' &&
@@ -101,6 +108,13 @@ export const getReactiveLimitsValidationSchema = (
                     value == null
                 ) {
                     return false;
+                }
+                return true;
+            })
+            .test('max-greater-than-min', 'ReactiveLimitsMinMaxInvalid', function (value) {
+                const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
+                if (reactiveCapabilityCurveChoice === 'MINMAX' && value != null && minimumReactivePower != null) {
+                    return value >= minimumReactivePower;
                 }
                 return true;
             }),

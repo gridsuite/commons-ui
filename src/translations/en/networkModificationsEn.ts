@@ -223,6 +223,9 @@ export const networkModificationsEn = {
     ReactiveLimitsKindCurve: 'By diagram',
     MinimumReactivePower: 'Minimum reactive power',
     MaximumReactivePower: 'Maximum reactive power',
+    ReactiveLimitsMinMaxInvalid: 'Maximum reactive power must be greater than minimum reactive power',
+    MinReactivePowerRequired: 'Minimum reactive power is required if maximum is defined',
+    MaxReactivePowerRequired: 'Maximum reactive power is required if minimum is defined',
     ReactiveCapabilityCurveCreationErrorMissingPoints:
         'The table of reactive capability curve must have at least four points.',
     ReactiveCapabilityCurveCreationErrorPInvalid: 'Each active power value must be a valid unique number.',
