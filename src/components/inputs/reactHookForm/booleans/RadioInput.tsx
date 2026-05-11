@@ -26,7 +26,7 @@ export interface RadioInputProps {
 export function RadioInput({ name, label, id, options, formProps }: Readonly<RadioInputProps>) {
     const {
         field: { onChange, value },
-    } = useController({ name });
+    } = useController({ name, defaultValue: '' });
 
     return (
         <FormControl>
