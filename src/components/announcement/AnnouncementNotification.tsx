@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
 import { useGlobalAnnouncement } from './useGlobalAnnouncement';
 import { AnnouncementBanner, type AnnouncementBannerProps } from './AnnouncementBanner';
 
