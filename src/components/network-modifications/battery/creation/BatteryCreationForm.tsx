@@ -21,8 +21,7 @@ import { FloatInput, TextInput } from '../../../inputs';
 import GridItem from '../../../grid/grid-item';
 import GridSection from '../../../grid/grid-section';
 
-export interface BatteryCreationFormProps extends ConnectivityNetworkProps {
-}
+export interface BatteryCreationFormProps extends ConnectivityNetworkProps {}
 
 export function BatteryCreationForm({
     voltageLevelOptions,
@@ -30,15 +29,11 @@ export function BatteryCreationForm({
     PositionDiagramPane,
 }: Readonly<BatteryCreationFormProps>) {
     const batteryIdField = (
-        <TextInput
-            name={FieldConstants.EQUIPMENT_ID}
-            label={'ID'}
-            formProps={{ autoFocus: true, ...filledTextField }}
-        />
+        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
     );
 
     const batteryNameField = (
-        <TextInput name={FieldConstants.EQUIPMENT_NAME} label={'Name'} formProps={filledTextField} />
+        <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
     );
 
     const connectivityForm = (
@@ -52,7 +47,7 @@ export function BatteryCreationForm({
     const maximumActivePowerField = (
         <FloatInput
             name={FieldConstants.MAXIMUM_ACTIVE_POWER}
-            label={'MaximumActivePowerText'}
+            label="MaximumActivePowerText"
             adornment={ActivePowerAdornment}
         />
     );
@@ -60,7 +55,7 @@ export function BatteryCreationForm({
     const minimumActivePowerField = (
         <FloatInput
             name={FieldConstants.MINIMUM_ACTIVE_POWER}
-            label={'MinimumActivePowerText'}
+            label="MinimumActivePowerText"
             adornment={ActivePowerAdornment}
         />
     );
@@ -101,7 +96,7 @@ export function BatteryCreationForm({
             <GridSection title="ShortCircuit" />
             <ShortCircuitForm />
 
-            <PropertiesForm networkElementType={'battery'} />
+            <PropertiesForm networkElementType="battery" />
         </>
     );
 }

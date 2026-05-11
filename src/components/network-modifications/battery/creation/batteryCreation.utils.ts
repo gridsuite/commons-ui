@@ -92,7 +92,7 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
             reactiveCapabilityCurveChoice: dto?.reactiveCapabilityCurve ? 'CURVE' : 'MINMAX',
             minimumReactivePower: dto?.minQ,
             maximumReactivePower: dto?.maxQ,
-            reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurve ? dto?.reactiveCapabilityCurvePoints : [{}, {}],
+            reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurve ? dto?.reactiveCapabilityCurvePoints : null,
         }),
         AdditionalProperties: getFilledPropertiesFromModification(dto.properties),
         ...getShortCircuitFormData({
@@ -103,8 +103,7 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
 };
 
 export const batteryCreationFormToDto = (form: BatteryCreationFormData): BatteryCreationDto => {
-    const reactiveLimits = form.reactiveLimits;
-    const isReactiveCapabilityCurveOn = reactiveLimits.reactiveCapabilityCurveChoice === 'CURVE';
+    const isReactiveCapabilityCurveOn = form.reactiveLimits.reactiveCapabilityCurveChoice === 'CURVE';
     return {
         type: ModificationType.BATTERY_CREATION,
         equipmentId: form.equipmentID,
@@ -119,10 +118,10 @@ export const batteryCreationFormToDto = (form: BatteryCreationFormData): Battery
         minP: form.minimumActivePower,
         maxP: form.maximumActivePower,
         reactiveCapabilityCurve: isReactiveCapabilityCurveOn,
-        minQ: isReactiveCapabilityCurveOn ? null : (reactiveLimits.minimumReactivePower ?? null),
-        maxQ: isReactiveCapabilityCurveOn ? null : (reactiveLimits.maximumReactivePower ?? null),
+        minQ: isReactiveCapabilityCurveOn ? null : (form.reactiveLimits.minimumReactivePower ?? null),
+        maxQ: isReactiveCapabilityCurveOn ? null : (form.reactiveLimits.maximumReactivePower ?? null),
         reactiveCapabilityCurvePoints: isReactiveCapabilityCurveOn
-            ? (reactiveLimits.reactiveCapabilityCurveTable ?? null)
+            ? (form.reactiveLimits.reactiveCapabilityCurveTable ?? null)
             : null,
         targetP: form.activePowerSetpoint ?? 0,
         targetQ: form.reactivePowerSetpoint ?? 0,

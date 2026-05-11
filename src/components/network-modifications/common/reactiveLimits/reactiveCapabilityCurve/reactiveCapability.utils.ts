@@ -105,11 +105,12 @@ export const getReactiveCapabilityCurveValidationSchema = (
 
 export const getReactiveCapabilityCurveValidationSchemaArray = (positiveAndNegativePExist = false) =>
     array()
+        .of(getCreationRowSchema())
         .nullable()
         .when([FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE], {
             is: 'CURVE',
             then: (schema) => {
-                let resultSchema = schema.of(getCreationRowSchema());
+                let resultSchema = schema;
                 if (positiveAndNegativePExist) {
                     resultSchema = resultSchema
                         .test(

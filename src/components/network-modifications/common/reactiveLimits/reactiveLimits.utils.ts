@@ -18,6 +18,26 @@ export const REACTIVE_LIMIT_TYPES = [
     { id: 'CURVE', label: 'ReactiveLimitsKindCurve' },
 ] as const;
 
+export const getReactiveLimitsFormDataProps = ({
+    reactiveCapabilityCurveChoice,
+    minimumReactivePower,
+    maximumReactivePower,
+    reactiveCapabilityCurvePoints,
+}: {
+    reactiveCapabilityCurveChoice: string;
+    minimumReactivePower?: number | null;
+    maximumReactivePower?: number | null;
+    reactiveCapabilityCurvePoints?: ReactiveCapabilityCurvePoints[] | null;
+}) => ({
+    [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: reactiveCapabilityCurveChoice,
+    [FieldConstants.MINIMUM_REACTIVE_POWER]: minimumReactivePower ?? null,
+    [FieldConstants.MAXIMUM_REACTIVE_POWER]: maximumReactivePower ?? null,
+    [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: reactiveCapabilityCurvePoints ?? [
+        getRowEmptyFormData(),
+        getRowEmptyFormData(),
+    ],
+});
+
 export const getReactiveLimitsFormData = ({
     id = FieldConstants.REACTIVE_LIMITS,
     reactiveCapabilityCurveChoice,
@@ -39,30 +59,6 @@ export const getReactiveLimitsFormData = ({
     }),
 });
 
-export const getReactiveLimitsFormDataProps = ({
-    reactiveCapabilityCurveChoice,
-    minimumReactivePower,
-    maximumReactivePower,
-    reactiveCapabilityCurvePoints,
-}: {
-    reactiveCapabilityCurveChoice: string;
-    minimumReactivePower?: number | null;
-    maximumReactivePower?: number | null;
-    reactiveCapabilityCurvePoints?: ReactiveCapabilityCurvePoints[] | null;
-}) => ({
-    [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: reactiveCapabilityCurveChoice,
-    [FieldConstants.MINIMUM_REACTIVE_POWER]: minimumReactivePower ?? null,
-    [FieldConstants.MAXIMUM_REACTIVE_POWER]: maximumReactivePower ?? null,
-    [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: reactiveCapabilityCurvePoints ?? [
-        getRowEmptyFormData(),
-        getRowEmptyFormData(),
-    ],
-});
-
-export const getReactiveLimitsEmptyFormData = (id = FieldConstants.REACTIVE_LIMITS) => ({
-    [id]: getReactiveLimitsEmptyFormDataProps(),
-});
-
 export const getReactiveLimitsEmptyFormDataProps = () => ({
     [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: 'MINMAX',
     [FieldConstants.MINIMUM_REACTIVE_POWER]: null,
@@ -70,33 +66,47 @@ export const getReactiveLimitsEmptyFormDataProps = () => ({
     [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]: [getRowEmptyFormData(), getRowEmptyFormData()],
 });
 
+export const getReactiveLimitsEmptyFormData = (id = FieldConstants.REACTIVE_LIMITS) => ({
+    [id]: getReactiveLimitsEmptyFormDataProps(),
+});
+
 export const getReactiveLimitsValidationSchema = (
     isEquipmentModification = false,
     positiveAndNegativePExist = false // if true, we check that Reactive Capability table have at least one row with negative P and one with positive one
 ) =>
-    object().shape(
-        {
-            [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: string().nullable().required(YUP_REQUIRED),
-            [FieldConstants.MINIMUM_REACTIVE_POWER]: number()
-                .nullable()
-                .when([FieldConstants.MAXIMUM_REACTIVE_POWER], {
-                    is: (maximumReactivePower: number) => !isEquipmentModification && maximumReactivePower != null,
-                    then: (schema) => schema.required(YUP_REQUIRED),
-                }),
-            [FieldConstants.MAXIMUM_REACTIVE_POWER]: number()
-                .nullable()
-                .when([FieldConstants.MINIMUM_REACTIVE_POWER], {
-                    is: (minimumReactivePower: number) => !isEquipmentModification && minimumReactivePower != null,
-                    then: (schema) => schema.required(YUP_REQUIRED),
-                }),
-            [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]:
-                getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
-        },
-        [FieldConstants.MAXIMUM_REACTIVE_POWER, FieldConstants.MINIMUM_REACTIVE_POWER] as unknown as readonly [
-            string,
-            string,
-        ][]
-    );
+    object().shape({
+        [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: string().nullable().required(YUP_REQUIRED),
+        [FieldConstants.MINIMUM_REACTIVE_POWER]: number()
+            .nullable()
+            .test('min-reactive-power-required', YUP_REQUIRED, function (value) {
+                const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
+                if (
+                    reactiveCapabilityCurveChoice === 'MINMAX' &&
+                    !isEquipmentModification &&
+                    maximumReactivePower != null &&
+                    value == null
+                ) {
+                    return false;
+                }
+                return true;
+            }),
+        [FieldConstants.MAXIMUM_REACTIVE_POWER]: number()
+            .nullable()
+            .test('max-reactive-power-required', YUP_REQUIRED, function (value) {
+                const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
+                if (
+                    reactiveCapabilityCurveChoice === 'MINMAX' &&
+                    !isEquipmentModification &&
+                    minimumReactivePower != null &&
+                    value == null
+                ) {
+                    return false;
+                }
+                return true;
+            }),
+        [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]:
+            getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
+    });
 
 export const getReactiveLimitsSchema = (
     isEquipmentModification = false,
