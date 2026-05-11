@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useCallback, useEffect, useRef } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
@@ -68,7 +68,7 @@ export function SwitchesBetweenSections() {
             <GridSection title="SwitchesBetweenSections" />
             <Grid container spacing={2} pt={1}>
                 {rows.map((value, index) => (
-                    <Grid item xs={4} key={value.id}>
+                    <Grid size={4} key={value.id}>
                         <EnumInput
                             options={Object.values(SWITCH_TYPE)}
                             name={`${FieldConstants.SWITCH_KINDS}.${index}.${FieldConstants.SWITCH_KIND}`}
