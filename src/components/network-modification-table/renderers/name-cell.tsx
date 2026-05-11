@@ -72,7 +72,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
 
     const [isEditing, setIsEditing] = useState(false);
     const [draftName, setDraftName] = useState('');
-    const [frozenWidthPx, setFrozenWidthPx] = useState<number | null>(null);
+    const [inputBaseWidthPx, setInputBaseWidthPx] = useState<number | null>(null);
     const labelRef = useRef<HTMLElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const isEditingRef = useRef(false);
@@ -80,7 +80,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
     const stopEditing = useCallback(() => {
         isEditingRef.current = false;
         setIsEditing(false);
-        setFrozenWidthPx(null);
+        setInputBaseWidthPx(null);
     }, []);
 
     // onBlur: only commits if editing wasn't already closed by Enter/Escape
@@ -103,13 +103,13 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
             setDraftName(compositeName);
             // Freeze input width at open time
             if (labelRef.current) {
-                const style = window.getComputedStyle(labelRef.current);
+                const style = globalThis.getComputedStyle(labelRef.current);
                 const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
                 const px =
                     compositeName.length >= MIN_CHAR_WIDTH
                         ? measureTextPx(compositeName, font) + 20
                         : measureTextPx('a'.repeat(MIN_CHAR_WIDTH), font) + 20;
-                setFrozenWidthPx(px);
+                setInputBaseWidthPx(px);
             }
 
             isEditingRef.current = true;
@@ -147,7 +147,19 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-
+    const compositeReadModeProps = isComposite
+        ? {
+              ref: labelRef,
+              onClick: handleLabelClick,
+              sx: {
+                  cursor: 'text',
+                  '&:hover': {
+                      textDecoration: 'underline dotted',
+                      textDecorationColor: theme.palette.text.secondary,
+                  },
+              },
+          }
+        : {};
     return (
         <Box
             sx={mergeSx(
@@ -156,6 +168,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
             )}
         >
             {renderDepthBox()}
+
             <Box sx={networkModificationTableStyles.nameCellInnerRow}>
                 {isComposite && (
                     <Box sx={networkModificationTableStyles.nameCellTogglerBox}>
@@ -180,12 +193,12 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
                     {/* Edit mode — composite only */}
                     {isComposite && isEditing ? (
                         <Box
-                            sx={{
+                            sx={mergeSx(networkModificationTableStyles.modificationLabel, {
                                 display: 'inline-flex',
-                                width: frozenWidthPx ? `${frozenWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
+                                width: inputBaseWidthPx ? `${inputBaseWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
                                 maxWidth: '100%',
                                 flexShrink: 0,
-                            }}
+                            })}
                         >
                             <InputBase
                                 inputRef={inputRef}
@@ -211,20 +224,11 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
                             <Box
-                                ref={isComposite ? labelRef : undefined}
-                                onClick={isComposite ? handleLabelClick : undefined}
+                                {...compositeReadModeProps}
                                 sx={mergeSx(
                                     networkModificationTableStyles.modificationLabel,
                                     createModificationNameCellStyle(row.original.activated),
-                                    isComposite
-                                        ? {
-                                              cursor: 'text',
-                                              '&:hover': {
-                                                  textDecoration: 'underline dotted',
-                                                  textDecorationColor: theme.palette.text.secondary,
-                                              },
-                                          }
-                                        : undefined
+                                    compositeReadModeProps.sx
                                 )}
                             >
                                 {label}
