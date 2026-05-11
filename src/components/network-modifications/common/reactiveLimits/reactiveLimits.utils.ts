@@ -78,19 +78,23 @@ export const getReactiveLimitsValidationSchema = (
         [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: string().nullable().required(YUP_REQUIRED),
         [FieldConstants.MINIMUM_REACTIVE_POWER]: number()
             .nullable()
-            .test('min-reactive-power-required', 'MinReactivePowerRequired', function (value) {
-                const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
-                if (
-                    reactiveCapabilityCurveChoice === 'MINMAX' &&
-                    !isEquipmentModification &&
-                    maximumReactivePower != null &&
-                    value == null
-                ) {
-                    return false;
+            .test(
+                'min-reactive-power-required',
+                'MinReactivePowerRequired',
+                function validateMinReactivePowerRequired(value) {
+                    const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
+                    if (
+                        reactiveCapabilityCurveChoice === 'MINMAX' &&
+                        !isEquipmentModification &&
+                        maximumReactivePower != null &&
+                        value == null
+                    ) {
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
-            })
-            .test('min-less-than-max', 'ReactiveLimitsMinMaxInvalid', function (value) {
+            )
+            .test('min-less-than-max', 'ReactiveLimitsMinMaxInvalid', function checkMinLessThanMax(value) {
                 const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
                 if (reactiveCapabilityCurveChoice === 'MINMAX' && value != null && maximumReactivePower != null) {
                     return value <= maximumReactivePower;
@@ -99,19 +103,23 @@ export const getReactiveLimitsValidationSchema = (
             }),
         [FieldConstants.MAXIMUM_REACTIVE_POWER]: number()
             .nullable()
-            .test('max-reactive-power-required', 'MaxReactivePowerRequired', function (value) {
-                const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
-                if (
-                    reactiveCapabilityCurveChoice === 'MINMAX' &&
-                    !isEquipmentModification &&
-                    minimumReactivePower != null &&
-                    value == null
-                ) {
-                    return false;
+            .test(
+                'max-reactive-power-required',
+                'MaxReactivePowerRequired',
+                function validateMaxReactivePowerRequired(value) {
+                    const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
+                    if (
+                        reactiveCapabilityCurveChoice === 'MINMAX' &&
+                        !isEquipmentModification &&
+                        minimumReactivePower != null &&
+                        value == null
+                    ) {
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
-            })
-            .test('max-greater-than-min', 'ReactiveLimitsMinMaxInvalid', function (value) {
+            )
+            .test('max-greater-than-min', 'ReactiveLimitsMinMaxInvalid', function checkMaxGreaterThanMin(value) {
                 const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
                 if (reactiveCapabilityCurveChoice === 'MINMAX' && value != null && minimumReactivePower != null) {
                     return value >= minimumReactivePower;

@@ -96,13 +96,6 @@ function ifOneFieldThenAllFields(values: ReactiveCapabilityCurve, context: TestC
     return errors.length === 0 ? true : new ValidationError(errors);
 }
 
-export const getReactiveCapabilityCurveValidationSchema = (
-    id = FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE,
-    positiveAndNegativePExist = false
-) => ({
-    [id]: getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
-});
-
 export const getReactiveCapabilityCurveValidationSchemaArray = (positiveAndNegativePExist = false) =>
     array()
         .of(getCreationRowSchema())
@@ -139,6 +132,13 @@ export const getReactiveCapabilityCurveValidationSchemaArray = (positiveAndNegat
                     );
             },
         });
+
+export const getReactiveCapabilityCurveValidationSchema = (
+    id = FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE,
+    positiveAndNegativePExist = false
+) => ({
+    [id]: getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
+});
 
 export function setSelectedReactiveLimits(
     id: string,
