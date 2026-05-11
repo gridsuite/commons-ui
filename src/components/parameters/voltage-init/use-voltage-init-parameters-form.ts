@@ -13,6 +13,11 @@ import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../inputs';
 import {
+    DEFAULT_GENERAL_APPLY_MODIFICATIONS,
+    DEFAULT_REACTIVE_SLACKS_THRESHOLD,
+    DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
+    DEFAULT_UPDATE_BUS_VOLTAGE,
+    GENERAL,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
@@ -20,7 +25,6 @@ import {
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     SHUNT_COMPENSATORS_SELECTION_TYPE,
-    VoltageInitTabValues as TabValues,
     TRANSFORMERS_SELECTION_TYPE,
     UPDATE_BUS_VOLTAGE,
     VARIABLE_Q_GENERATORS,
@@ -28,11 +32,7 @@ import {
     VARIABLE_TRANSFORMERS,
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
-    DEFAULT_GENERAL_APPLY_MODIFICATIONS,
-    DEFAULT_UPDATE_BUS_VOLTAGE,
-    DEFAULT_REACTIVE_SLACKS_THRESHOLD,
-    DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
-    GENERAL,
+    VoltageInitTabValues as TabValues,
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
@@ -44,7 +44,7 @@ import {
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
-import { SELECTED } from '../../dnd-table';
+import { SELECTED } from '../../dnd-table-v2';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
 

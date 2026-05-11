@@ -8,14 +8,18 @@
 import type { UUID } from 'node:crypto';
 import { EquipmentsSelectionType, VoltageInitParameters, VoltageInitStudyParameters } from './voltage-init.type';
 import {
+    DEFAULT_GENERAL_APPLY_MODIFICATIONS,
+    DEFAULT_REACTIVE_SLACKS_THRESHOLD,
+    DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
+    DEFAULT_UPDATE_BUS_VOLTAGE,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
+    PRIORITY,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     SHUNT_COMPENSATORS_SELECTION_TYPE,
-    VoltageInitTabValues as TabValues,
     TRANSFORMERS_SELECTION_TYPE,
     UPDATE_BUS_VOLTAGE,
     VARIABLE_Q_GENERATORS,
@@ -23,14 +27,10 @@ import {
     VARIABLE_TRANSFORMERS,
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
-    DEFAULT_GENERAL_APPLY_MODIFICATIONS,
-    DEFAULT_UPDATE_BUS_VOLTAGE,
-    DEFAULT_REACTIVE_SLACKS_THRESHOLD,
-    DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
-    PRIORITY,
+    VoltageInitTabValues as TabValues,
 } from './constants';
 import { NAME } from '../../inputs';
-import { SELECTED } from '../../dnd-table';
+import { SELECTED } from '../../dnd-table-v2';
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 
 export const fromVoltageInitParametersFormToParamValues = (
