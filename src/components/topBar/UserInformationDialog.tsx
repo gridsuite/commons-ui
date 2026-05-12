@@ -7,7 +7,7 @@
 
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import type { Profile } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';
@@ -25,7 +25,7 @@ const styles = {
 interface UserInformationDialogProps {
     openDialog: boolean;
     onClose: () => void;
-    userProfile: Profile | undefined;
+    userProfile: UserProfile | undefined;
 }
 
 function UserInformationDialog({ openDialog, userProfile, onClose }: UserInformationDialogProps) {

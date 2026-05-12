@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { Profile } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { useGlobalAnnouncement } from './useGlobalAnnouncement';
 import { AnnouncementBanner, type AnnouncementBannerProps } from './AnnouncementBanner';
 
 export type AnnouncementNotificationProps = {
-    userProfile: Profile | null;
+    userProfile: UserProfile | null;
     sx?: AnnouncementBannerProps['sx'];
 };
 

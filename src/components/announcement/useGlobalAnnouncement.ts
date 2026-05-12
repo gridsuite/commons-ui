@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { v4 } from 'uuid';
 import { useCallback, useEffect, useState } from 'react';
-import type { Profile } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { fetchCurrentAnnouncement } from '../../services/userAdmin';
 import { NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../notifications/hooks/useNotificationsListener';
@@ -20,7 +20,7 @@ export type AnnouncementProps = {
     severity: AnnouncementSeverity;
 };
 
-export function useGlobalAnnouncement(userProfile: Profile | null) {
+export function useGlobalAnnouncement(userProfile: UserProfile | null) {
     const [announcementInfos, setAnnouncementInfos] = useState<AnnouncementProps>();
 
     useEffect(() => {

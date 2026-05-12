@@ -8,7 +8,7 @@ import type { UUID } from 'node:crypto';
 import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { Alert, type AlertColor, type AlertProps, AlertTitle, Collapse, useTheme } from '@mui/material';
 import { Campaign as CampaignIcon } from '@mui/icons-material';
-import type { Profile } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { AnnouncementSeverity } from '../../utils/types';
 import type { MuiStyles } from '../../utils/styles';
@@ -33,7 +33,7 @@ const styles = {
 
 export type AnnouncementBannerProps = PropsWithChildren<{
     // message only visible if user logged
-    userProfile?: Profile | {};
+    userProfile?: UserProfile | {};
     /** only field used to detect if msg change */
     id?: UUID;
     duration?: number;
