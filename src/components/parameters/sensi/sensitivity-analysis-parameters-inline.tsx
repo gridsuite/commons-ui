@@ -11,8 +11,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import {
     ElementType,
+    mapSensitivityAnalysisParameters,
     mergeSx,
-    SensitivityAnalysisParametersInfos,
+    SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
 } from '../../../utils';
 import { ComputingType, CreateParameterDialog } from '../common';
@@ -77,7 +78,7 @@ export function SensitivityAnalysisParametersInline({
             if (newParams && newParams.length > 0) {
                 setOpenSelectParameterDialog(false);
                 fetchSensitivityAnalysisParameters(newParams[0].id)
-                    .then((parameters: SensitivityAnalysisParametersInfos) => {
+                    .then((parameters: SensitivityAnalysisParametersInfosEnriched) => {
                         console.info(`loading the following sensi parameters : ${parameters.uuid}`);
                         reset(sensitivityAnalysisMethods.fromSensitivityAnalysisParamsDataToFormValues(parameters), {
                             keepDefaultValues: true,
@@ -161,8 +162,12 @@ export function SensitivityAnalysisParametersInline({
                                 studyUuid={studyUuid}
                                 open={openCreateParameterDialog}
                                 onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => sensitivityAnalysisMethods.formatNewParams(getValues())}
-                                parameterFormatter={(newParams) => newParams}
+                                parameterValues={getValues}
+                                parameterFormatter={(newParams) =>
+                                    mapSensitivityAnalysisParameters(
+                                        sensitivityAnalysisMethods.formatNewParams(newParams)
+                                    )
+                                }
                                 parameterType={ElementType.SENSITIVITY_PARAMETERS}
                             />
                         )}
