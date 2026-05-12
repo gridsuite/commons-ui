@@ -238,6 +238,8 @@ export const networkModificationsEn = {
         'The reactive capability curve table must have at least one row with negative active power',
     ReactiveCapabilityCurveCreationErrorMissingPositiveP:
         'The reactive capability curve table must have at least one row with positive active power',
+    ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower:
+        'Active power value must be equal to 0 or between minimum and maximum active power values',
     P: 'P{labelSuffix}',
     QminP: 'QminP{labelSuffix}',
     QmaxP: 'QmaxP{labelSuffix}',

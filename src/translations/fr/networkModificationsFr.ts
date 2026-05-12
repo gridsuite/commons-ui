@@ -242,6 +242,8 @@ export const networkModificationsFr = {
         'Le tableau des limites de réactifs par diagramme doit comporter au moins une ligne avec une puissance active négative',
     ReactiveCapabilityCurveCreationErrorMissingPositiveP:
         'Le tableau des limites de réactifs par diagramme doit comporter au moins une ligne avec une puissance active positive',
+    ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower:
+        'La valeur de la puissance active doit être égale à 0 ou comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
     P: 'P{labelSuffix}',
     QminP: 'QminP{labelSuffix}',
     QmaxP: 'QmaxP{labelSuffix}',
