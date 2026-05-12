@@ -17,7 +17,7 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table-v2';
+import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { VoltageAdornment } from '../../../utils/constants/adornments';
 import { ParameterTableField } from '../common/parameter-table-field';
