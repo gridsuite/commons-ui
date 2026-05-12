@@ -12,8 +12,13 @@ export interface IdName {
     [ID]: UUID;
     [NAME]: string;
 }
-export interface ContingencyListsInfos {
+export interface ContingencyListsInfosEnriched {
     [CONTINGENCY_LISTS]: IdName[];
+    [DESCRIPTION]: string;
+    [ACTIVATED]: boolean;
+}
+export interface ContingencyListsInfos {
+    [CONTINGENCY_LISTS]: UUID[];
     [DESCRIPTION]: string;
     [ACTIVATED]: boolean;
 }
