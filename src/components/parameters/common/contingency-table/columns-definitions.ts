@@ -9,8 +9,8 @@ import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
 import { ElementType } from '../../../../utils';
 import yup from '../../../../utils/yupConfig';
-import { IdName, ContingencyListsInfosEnriched } from './types';
-import { DndColumn, DndColumnType } from '../../../dnd-table-v2';
+import { ContingencyListsInfosEnriched, IdName } from './types';
+import { DndColumn, DndColumnType } from '../../../dnd-table';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
     {
