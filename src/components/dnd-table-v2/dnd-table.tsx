@@ -38,7 +38,7 @@ const styles = {
         display: 'inline-flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        margin: 1,
+        marginLeft: 1,
         textTransform: 'none',
     },
 } as const satisfies MuiStyles;
