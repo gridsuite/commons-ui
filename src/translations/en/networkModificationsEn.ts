@@ -208,6 +208,7 @@ export const networkModificationsEn = {
     changeTypeConfirmation: 'The type will be changed. All fields values will be erased.',
     Or: 'or',
     CreateBattery: 'Create battery',
+    BatteryCreationError: 'Error while creating battery',
     Connectivity: 'Connectivity',
     ActiveLimits: 'Active limits',
     ReactiveLimits: 'Reactive limits',

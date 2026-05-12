@@ -211,6 +211,7 @@ export const networkModificationsFr = {
     changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
     Or: 'ou',
     CreateBattery: 'Créer une batterie',
+    BatteryCreationError: "Erreur lors de la création d'une batterie",
     Connectivity: 'Connectivité',
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
