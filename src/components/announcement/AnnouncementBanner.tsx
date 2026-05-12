@@ -8,7 +8,7 @@ import type { UUID } from 'node:crypto';
 import { type PropsWithChildren, type ReactNode, useCallback, useEffect, useState } from 'react';
 import { Alert, type AlertColor, type AlertProps, AlertTitle, Collapse, useTheme } from '@mui/material';
 import { Campaign as CampaignIcon } from '@mui/icons-material';
-import type { Profile } from 'oidc-client';
+import type { Profile } from 'oidc-client-ts';
 import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { AnnouncementSeverity } from '../../utils/types';
 import type { MuiStyles } from '../../utils/styles';

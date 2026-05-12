@@ -7,7 +7,7 @@
 
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import type { Profile } from 'oidc-client';
+import type { Profile } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
 import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';

@@ -11,6 +11,7 @@ import { IntlProvider } from 'react-intl';
 import { red } from '@mui/material/colors';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { expect, it } from '@jest/globals';
+import { User } from 'oidc-client-ts';
 import { TopBar } from '../TopBar';
 import { Metadata } from '../../..';
 
@@ -44,6 +45,22 @@ const theme = createTheme({
 });
 
 it('renders', () => {
+    const mockUser = new User({
+        profile: {
+            name: 'John Doe',
+            iss: 'issuer',
+            sub: 'sub',
+            aud: 'aud',
+            exp: 213443,
+            iat: 3214324,
+        },
+        id_token: 'id_token',
+        access_token: 'access_token',
+        token_type: 'Bearer',
+        scope: 'scope',
+        expires_at: 123343,
+        session_state: null,
+    });
     const { container } = render(
         <ThemeProvider theme={theme}>
             <IntlProvider locale="en" messages={topBarEn}>
@@ -55,14 +72,7 @@ it('renders', () => {
                     onDeveloperModeClick={() => {}}
                     onLogoutClick={() => {}}
                     onLogoClick={() => {}}
-                    userProfile={{
-                        name: 'John Doe',
-                        iss: 'issuer',
-                        sub: 'sub',
-                        aud: 'aud',
-                        exp: 213443,
-                        iat: 3214324,
-                    }}
+                    userProfile={mockUser.profile}
                     appsAndUrls={apps}
                     language={LANG_ENGLISH}
                     onLanguageClick={() => {}}
