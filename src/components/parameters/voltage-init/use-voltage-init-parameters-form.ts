@@ -44,7 +44,7 @@ import {
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
-import { SELECTED } from '../../dnd-table-v2';
+import { SELECTED } from '../../dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
 
