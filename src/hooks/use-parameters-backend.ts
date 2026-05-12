@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { UUID } from 'node:crypto';
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
 
 import { useSnackMessage } from './useSnackMessage';
 import { ComputingType, formatComputingTypeLabel } from '../components/parameters/common/computing-type';
