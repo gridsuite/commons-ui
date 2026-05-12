@@ -42,8 +42,26 @@ export const batteryCreationFormSchema = object()
     .shape({
         [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-        [FieldConstants.MAXIMUM_ACTIVE_POWER]: number().nullable().required(YUP_REQUIRED),
-        [FieldConstants.MINIMUM_ACTIVE_POWER]: number().nullable().required(YUP_REQUIRED),
+        [FieldConstants.MAXIMUM_ACTIVE_POWER]: number()
+            .nullable()
+            .required(YUP_REQUIRED)
+            .test('max-greater-than-min', 'ActiveLimitsMinMaxInvalid', function checkMaxGreaterThanMin(value) {
+                const min = this.parent[FieldConstants.MINIMUM_ACTIVE_POWER];
+                if (value != null && min != null) {
+                    return value >= min;
+                }
+                return true;
+            }),
+        [FieldConstants.MINIMUM_ACTIVE_POWER]: number()
+            .nullable()
+            .required(YUP_REQUIRED)
+            .test('min-less-than-max', 'ActiveLimitsMinMaxInvalid', function checkMinLessThanMax(value) {
+                const max = this.parent[FieldConstants.MAXIMUM_ACTIVE_POWER];
+                if (value != null && max != null) {
+                    return value <= max;
+                }
+                return true;
+            }),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(),
         ...getSetPointsSchema(),

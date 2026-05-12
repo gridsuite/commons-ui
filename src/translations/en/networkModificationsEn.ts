@@ -223,6 +223,7 @@ export const networkModificationsEn = {
     ReactiveLimitsKindCurve: 'By diagram',
     MinimumReactivePower: 'Minimum reactive power',
     MaximumReactivePower: 'Maximum reactive power',
+    ActiveLimitsMinMaxInvalid: 'Maximum active power must be greater than minimum active power',
     ReactiveLimitsMinMaxInvalid: 'Maximum reactive power must be greater than minimum reactive power',
     MinReactivePowerRequired: 'Minimum reactive power is required if maximum is defined',
     MaxReactivePowerRequired: 'Maximum reactive power is required if minimum is defined',
