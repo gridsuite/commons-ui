@@ -46,7 +46,7 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
             then: (schema) => {
                 return schema
                     .required(YUP_REQUIRED)
-                    .nonNullable('FieldIsRequired')
+                    .nonNullable(YUP_REQUIRED)
                     .test(
                         'activePowerSetPoint',
                         'ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower',
