@@ -96,7 +96,6 @@ export const networkModificationsFr = {
     ID: 'ID',
     Name: 'Nom',
     Country: 'Pays',
-    Connectivity: 'Connectivité',
     Characteristics: 'Caractéristiques',
     CreateVoltageLevel: 'Créer un poste',
     VoltageLevelCreationError: "Erreur lors de la création d'un poste",

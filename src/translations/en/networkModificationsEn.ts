@@ -92,7 +92,6 @@ export const networkModificationsEn = {
     ID: 'ID',
     Name: 'Name',
     Country: 'Country',
-    Connectivity: 'Connectivity',
     Characteristics: 'Characteristics',
     CreateVoltageLevel: 'Create voltage level',
     VoltageLevelCreationError: 'Error while creating voltage level',
@@ -148,8 +147,7 @@ export const networkModificationsEn = {
     ShuntCompensatorErrorQAtNominalVoltageLessThanZero:
         'Q at nominal voltage value should be greater than or equal to 0',
     MaximumSectionCountMustBeGreaterOrEqualToOne: 'Maximum section count must be greater than or equal to 1',
-    SectionCountMustBeBetweenZeroAndMaximumSectionCount:
-        'Section count must be between 0 and and Maximum section count',
+    SectionCountMustBeBetweenZeroAndMaximumSectionCount: 'Section count must be between 0 and Maximum section count',
     VOLTAGE_LEVEL: 'Voltage Level',
     BusBarBus: 'Bus bar section / bus',
     ConnectionName: 'Connection name',
