@@ -210,6 +210,11 @@ export const networkModificationsFr = {
     addNewAssignment: 'Modifier un autre champ',
     changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
     Or: 'ou',
+    CreateBattery: 'Créer une batterie',
+    BatteryCreationError: "Erreur lors de la création d'une batterie",
+    Connectivity: 'Connectivité',
+    ActiveLimits: 'Limites en actif',
+    ReactiveLimits: 'Limites en réactif',
     NormalizedPercentage: 'Ce pourcentage doit être compris entre 0 et 100',
     On: 'Activé',
     Off: 'Désactivé',
@@ -222,6 +227,10 @@ export const networkModificationsFr = {
     ReactiveLimitsKindCurve: 'Par diagramme',
     MinimumReactivePower: 'Puissance réactive minimale',
     MaximumReactivePower: 'Puissance réactive maximale',
+    ActiveLimitsMinMaxInvalid: 'La puissance active maximale doit être supérieure à la puissance active minimale',
+    ReactiveLimitsMinMaxInvalid: 'La puissance réactive maximale doit être supérieure à la puissance réactive minimale',
+    MinReactivePowerRequired: 'La puissance réactive minimale est requise si la maximale est définie',
+    MaxReactivePowerRequired: 'La puissance réactive maximale est requise si la minimale est définie',
     ReactiveCapabilityCurveCreationErrorMissingPoints:
         'Le tableau des limites de réactifs par diagramme doit comporter au moins quatre points.',
     ReactiveCapabilityCurveCreationErrorPInvalid:
@@ -234,6 +243,8 @@ export const networkModificationsFr = {
         'Le tableau des limites de réactifs par diagramme doit comporter au moins une ligne avec une puissance active négative',
     ReactiveCapabilityCurveCreationErrorMissingPositiveP:
         'Le tableau des limites de réactifs par diagramme doit comporter au moins une ligne avec une puissance active positive',
+    ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower:
+        'La valeur de la puissance active doit être égale à 0 ou comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
     P: 'P{labelSuffix}',
     QminP: 'QminP{labelSuffix}',
     QmaxP: 'QmaxP{labelSuffix}',
