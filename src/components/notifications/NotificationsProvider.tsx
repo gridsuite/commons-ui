@@ -10,13 +10,18 @@ import { PropsWithChildren, useEffect, useMemo } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
-import { appendToken } from '../../services';
+import { getUserToken } from '../../redux';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
 function isUrlDefined(tuple: [string, string | undefined]): tuple is [string, string] {
     return tuple[1] !== undefined;
+}
+
+function appendTokenToUrl(url: string, token: string): string {
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}access_token=${encodeURIComponent(token)}`;
 }
 
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
@@ -33,15 +38,16 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
     } = useListenerManager<ListenerOnReopen>(urls);
 
     useEffect(() => {
+        const token = getUserToken();
+        if (!token) {
+            console.info('Skipping Notification WebSockets: no user token available');
+            return undefined;
+        }
         const connections = Object.entries(urls)
             .filter(isUrlDefined)
-            .flatMap(([urlKey, url]) => {
-                const urlWithToken = appendToken(url);
-                if (!urlWithToken) {
-                    console.info(`Skipping ${urlKey} Notification WebSocket: no user token available`);
-                    return [];
-                }
-                const rws = new ReconnectingWebSocket(() => urlWithToken, [], {
+            .map(([urlKey, url]) => {
+                const urlWithToken = appendTokenToUrl(url, token);
+                const rws = new ReconnectingWebSocket(urlWithToken, [], {
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });
 
@@ -58,7 +64,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                     console.info(`${urlKey} Notification Websocket connected`);
                     broadcastOnReopen(urlKey)();
                 };
-                return [rws];
+                return rws;
             });
 
         return () => connections.forEach((c) => c.close());
