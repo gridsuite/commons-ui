@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import {
     ColumnDef,
@@ -20,12 +20,6 @@ import { DragDropContext, Droppable, DroppableProvided } from '@hello-pangea/dnd
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { UUID } from 'node:crypto';
 import { NetworkModificationEditorNameHeaderProps } from './renderers';
-import {
-    ExcludedNetworkModifications,
-    RootNetworkRowInfo,
-    ComposedModificationMetadata,
-    NetworkModificationMetadata,
-} from '../../utils';
 import {
     createHeaderCellStyle,
     MODIFICATION_ROW_HEIGHT,
@@ -42,6 +36,7 @@ import {
     mergeSubModificationsIntoTree,
 } from './utils';
 import { ModificationRow } from './row';
+import { ComposedModificationMetadata, NetworkModificationMetadata } from '../../utils';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -54,11 +49,6 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     highlightedModificationUuid: UUID | null;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
-    currentRootNetworkUuid?: UUID;
-    rootNetworks?: RootNetworkRowInfo[];
-    modificationsToExclude?: ExcludedNetworkModifications[];
-    setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
-    isDisabled?: boolean;
 }
 
 export function NetworkModificationsTable({
@@ -72,11 +62,6 @@ export function NetworkModificationsTable({
     highlightedModificationUuid,
     studyUuid = null,
     currentNodeId = undefined,
-    currentRootNetworkUuid,
-    rootNetworks,
-    modificationsToExclude,
-    setModificationsToExclude,
-    isDisabled = false,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
@@ -136,40 +121,26 @@ export function NetworkModificationsTable({
 
     const tableMeta = useMemo(
         () => ({
-            studyUuid,
-            currentNodeId,
-            currentRootNetworkUuid,
-            rootNetworks,
-            modificationsCount: modifications.length,
-            modificationsToExclude,
-            setModificationsToExclude,
             lastClickedRowId,
             onRowSelected,
             isRowDragDisabled,
+            modificationsCount: modifications.length,
             nameHeaderProps: {
                 isImpactedByNotification,
                 notificationMessageId,
                 isFetchingModifications,
                 pendingState,
             },
-            isDisabled,
         }),
         [
-            studyUuid,
-            currentNodeId,
-            currentRootNetworkUuid,
-            rootNetworks,
-            modifications.length,
-            modificationsToExclude,
-            setModificationsToExclude,
             lastClickedRowId,
             onRowSelected,
             isRowDragDisabled,
+            modifications.length,
             isImpactedByNotification,
             notificationMessageId,
             isFetchingModifications,
             pendingState,
-            isDisabled,
         ]
     );
 

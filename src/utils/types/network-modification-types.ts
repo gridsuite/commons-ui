@@ -20,10 +20,3 @@ export interface ExcludedNetworkModifications {
     rootNetworkUuid: UUID;
     modificationUuidsToExclude: UUID[];
 }
-
-export interface RootNetworkRowInfo {
-    rootNetworkUuid: UUID;
-    name: string;
-    tag: string;
-    isCreating: boolean;
-}
