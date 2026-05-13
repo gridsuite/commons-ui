@@ -207,6 +207,11 @@ export const networkModificationsEn = {
     addNewAssignment: 'Modify another field',
     changeTypeConfirmation: 'The type will be changed. All fields values will be erased.',
     Or: 'or',
+    CreateBattery: 'Create battery',
+    BatteryCreationError: 'Error while creating battery',
+    Connectivity: 'Connectivity',
+    ActiveLimits: 'Active limits',
+    ReactiveLimits: 'Reactive limits',
     NormalizedPercentage: 'This percentage must be between 0 and 100',
     On: 'On',
     Off: 'Off',
@@ -219,6 +224,10 @@ export const networkModificationsEn = {
     ReactiveLimitsKindCurve: 'By diagram',
     MinimumReactivePower: 'Minimum reactive power',
     MaximumReactivePower: 'Maximum reactive power',
+    ActiveLimitsMinMaxInvalid: 'Maximum active power must be greater than minimum active power',
+    ReactiveLimitsMinMaxInvalid: 'Maximum reactive power must be greater than minimum reactive power',
+    MinReactivePowerRequired: 'Minimum reactive power is required if maximum is defined',
+    MaxReactivePowerRequired: 'Maximum reactive power is required if minimum is defined',
     ReactiveCapabilityCurveCreationErrorMissingPoints:
         'The table of reactive capability curve must have at least four points.',
     ReactiveCapabilityCurveCreationErrorPInvalid: 'Each active power value must be a valid unique number.',
@@ -230,6 +239,8 @@ export const networkModificationsEn = {
         'The reactive capability curve table must have at least one row with negative active power',
     ReactiveCapabilityCurveCreationErrorMissingPositiveP:
         'The reactive capability curve table must have at least one row with positive active power',
+    ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower:
+        'Active power value must be equal to 0 or between minimum and maximum active power values',
     P: 'P{labelSuffix}',
     QminP: 'QminP{labelSuffix}',
     QmaxP: 'QmaxP{labelSuffix}',
