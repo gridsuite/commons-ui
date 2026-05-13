@@ -5,19 +5,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { RefObject } from 'react';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 import { SxProps, Theme } from '@mui/material';
+import type { UUID } from 'node:crypto';
 import { NameHeaderProps } from './components/network-modification-table/columns-definition';
+import { ExcludedNetworkModifications, RootNetworkRowInfo } from './utils';
 
 declare module '@tanstack/react-table' {
     // TableMeta = values shared by the whole table (same value across every cell).
     // Read at runtime via `table.options.meta` from any cell/header renderer.
     interface TableMeta<TData extends RowData> {
+        studyUuid?: UUID | null;
+        currentNodeId?: UUID;
+        currentRootNetworkUuid?: UUID;
+        rootNetworks?: RootNetworkRowInfo[];
+        modificationsCount?: number;
+        modificationsToExclude?: ExcludedNetworkModifications[];
+        setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
         lastClickedRowId: RefObject<string | null>;
         onRowSelected?: (selectedRows: TData[]) => void;
         isRowDragDisabled?: boolean;
-        modificationsCount?: number;
         nameHeaderProps?: NameHeaderProps;
+        isDisabled?: boolean;
     }
 
     // ColumnMeta = values that differ from one column to another.
