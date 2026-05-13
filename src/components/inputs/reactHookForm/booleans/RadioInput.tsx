@@ -35,7 +35,10 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
                     <FormattedMessage id={label} />
                 </FormLabel>
             )}
-            <RadioGroup row aria-labelledby={id ?? label} value={value} onChange={onChange} {...formProps}>
+            {/* `?? ''` keeps RadioGroup controlled from mount: MUI latches controlled/uncontrolled on the first render
+                based on `value !== undefined`, so an undefined-then-defined transition (e.g. after a late reset())
+                would otherwise be ignored, leaving no radio selected. */}
+            <RadioGroup row aria-labelledby={id ?? label} value={value ?? ''} onChange={onChange} {...formProps}>
                 {options.map((option) => (
                     <FormControlLabel
                         control={<Radio />}
