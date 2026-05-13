@@ -126,6 +126,7 @@ export const networkModificationsFr = {
     Disconnector: 'Sectionneur',
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Un nombre de barres doit être supérieur ou égal à 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Un nombre de sections doit être supérieur ou égal à 1',
+    SectionCountMustBeLessThanOrEqualToTwenty: 'Un nombre de sections doit être inférieur ou égal à 20',
     mustBeGreaterOrEqualToZero: 'Cette valeur doit être supérieure ou égale à 0',
     CreateCouplingDeviceIdenticalBusBar: 'Les SJB / Nœuds 1 et 2 doivent être différents',
     CreateSubstationInVoltageLevelIdenticalId: "L'ID du poste doit être différent de celui du site",

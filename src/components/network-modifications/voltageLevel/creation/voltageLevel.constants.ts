@@ -7,6 +7,8 @@
 
 import { FieldConstants } from '../../../../utils';
 
+export const MAX_SECTIONS_COUNT = 20;
+
 export enum VoltageLevelTab {
     SUBSTATION_TAB = 0,
     CHARACTERISTICS_TAB = 1,

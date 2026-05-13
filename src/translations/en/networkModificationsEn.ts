@@ -122,6 +122,7 @@ export const networkModificationsEn = {
     Disconnector: 'Disconnector',
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Number of busbars must be greater than or equal to 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Number of sections must be greater than or equal to 1',
+    SectionCountMustBeLessThanOrEqualToTwenty: 'Number of sections must be less than or equal to 20',
     mustBeGreaterOrEqualToZero: 'Must be greater than or equal to 0',
     CreateCouplingDeviceIdenticalBusBar: 'Bus bar section / bus 1 and 2 must be different',
     CreateSubstationInVoltageLevelIdenticalId: 'Voltage Level ID can not match Substation ID',

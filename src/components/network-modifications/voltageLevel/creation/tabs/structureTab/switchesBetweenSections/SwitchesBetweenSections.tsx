@@ -14,6 +14,7 @@ import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../../..
 import { EnumInput } from '../../../../../../inputs';
 import GridSection from '../../../../../../grid/grid-section';
 import { SWITCH_TYPE } from '../../../voltageLevelCreation.utils';
+import { MAX_SECTIONS_COUNT } from '../../../voltageLevel.constants';
 
 export function SwitchesBetweenSections() {
     const { setValue } = useFormContext();
@@ -49,7 +50,7 @@ export function SwitchesBetweenSections() {
         ) {
             const initialKindDisconnector: SwitchKindFormData = { switchKind: SwitchKind.DISCONNECTOR };
             let list = [];
-            if (watchSectionCount >= 1) {
+            if (watchSectionCount >= 1 && watchSectionCount <= MAX_SECTIONS_COUNT) {
                 list = new Array(watchSectionCount - 1).fill(initialKindDisconnector);
             }
             const data: CreateSwitchesFormData = { switchKinds: list };
@@ -59,7 +60,7 @@ export function SwitchesBetweenSections() {
         switchesBetweenSectionsRef.current = watchSwitchesBetweenSections;
     }, [watchSectionCount, watchSwitchesBetweenSections, setSwitchesKinds]);
 
-    if (Number.isNaN(watchSectionCount) || watchSectionCount <= 1) {
+    if (Number.isNaN(watchSectionCount) || watchSectionCount <= 1 || watchSectionCount > MAX_SECTIONS_COUNT) {
         return null;
     }
 
