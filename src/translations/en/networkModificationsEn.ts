@@ -207,6 +207,7 @@ export const networkModificationsEn = {
     addNewAssignment: 'Modify another field',
     changeTypeConfirmation: 'The type will be changed. All fields values will be erased.',
     Or: 'or',
+    FieldIsRequired: 'This field is required',
     CreateBattery: 'Create battery',
     BatteryCreationError: 'Error while creating battery',
     Connectivity: 'Connectivity',

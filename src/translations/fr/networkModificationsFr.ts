@@ -210,6 +210,7 @@ export const networkModificationsFr = {
     addNewAssignment: 'Modifier un autre champ',
     changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
     Or: 'ou',
+    FieldIsRequired: 'Ce champ doit être renseigné',
     CreateBattery: 'Créer une batterie',
     BatteryCreationError: "Erreur lors de la création d'une batterie",
     Connectivity: 'Connectivité',
