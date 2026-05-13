@@ -13,4 +13,5 @@ export * from './voltageLevel';
 export * from './load';
 export * from './by-filter';
 export * from './generator';
+export * from './battery';
 export * from './shunt-compensator';
