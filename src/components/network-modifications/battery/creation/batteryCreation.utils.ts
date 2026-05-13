@@ -12,6 +12,7 @@ import {
     ModificationType,
     sanitizeString,
     UNDEFINED_CONNECTION_DIRECTION,
+    YUP_NOT_TYPE_NUMBER,
     YUP_REQUIRED,
 } from '../../../../utils';
 import {
@@ -44,6 +45,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.MAXIMUM_ACTIVE_POWER]: number()
             .nullable()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .required(YUP_REQUIRED)
             .test('max-greater-than-min', 'ActiveLimitsMinMaxInvalid', function checkMaxGreaterThanMin(value) {
                 const min = this.parent[FieldConstants.MINIMUM_ACTIVE_POWER];
@@ -54,6 +56,7 @@ export const batteryCreationFormSchema = object()
             }),
         [FieldConstants.MINIMUM_ACTIVE_POWER]: number()
             .nullable()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .required(YUP_REQUIRED)
             .test('min-less-than-max', 'ActiveLimitsMinMaxInvalid', function checkMinLessThanMax(value) {
                 const max = this.parent[FieldConstants.MAXIMUM_ACTIVE_POWER];
