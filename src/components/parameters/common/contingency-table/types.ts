@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
-import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table/constants';
+import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field/constants';
 import { CONTINGENCY_LISTS } from '../constants';
 
 export interface IdName {

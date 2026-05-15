@@ -29,7 +29,7 @@ import {
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../inputs';
 import { ParameterTableField } from '../common/parameter-table-field';
-import { DndColumn, DndColumnType } from '../../dnd-table-v2';
+import { DndColumn, DndColumnType } from '../../dnd-table';
 
 export const formSchema = yup.object().shape({
     [CALCULATION_TYPE]: yup.string().required(),

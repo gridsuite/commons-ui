@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export { SwitchesBetweenSections } from './tabs';
+export { MAX_SECTIONS_COUNT } from './voltageLevel.constants';
 export * from './VoltageLevelCreationForm';
 export * from './voltageLevelCreation.utils';
 export * from './voltageLevelCreation.types';

@@ -4,11 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Box, IconButton, useTheme } from '@mui/material';
+import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
 import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
@@ -22,16 +21,31 @@ import { isCompositeModification } from '../utils';
 import { useModificationLabelComputer } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata } from '../../../utils';
 
-interface NameCellProps {
-    row: Row<ComposedModificationMetadata>;
+const MIN_CHAR_WIDTH = 30;
+
+function measureTextPx(text: string, font: string): number {
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (ctx) {
+        ctx.font = font;
+        return ctx.measureText(text).width;
+    }
+
+    return text.length * 8;
 }
 
-export function NameCell({ row }: Readonly<NameCellProps>) {
+interface NameCellProps {
+    row: Row<ComposedModificationMetadata>;
+    onEditNameCell?: (modification: ComposedModificationMetadata, newName: string) => void;
+}
+
+export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
 
     const { depth } = row;
+
+    const isComposite = isCompositeModification(row.original);
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -45,17 +59,107 @@ export function NameCell({ row }: Readonly<NameCellProps>) {
 
     const label = useMemo(() => getModificationLabel(row.original), [getModificationLabel, row.original]);
 
+    const compositeName = useMemo(() => {
+        if (!isComposite) {
+            return '';
+        }
+        try {
+            return (JSON.parse(row.original.messageValues)?.name as string) ?? '';
+        } catch {
+            return '';
+        }
+    }, [isComposite, row.original.messageValues]);
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [draftName, setDraftName] = useState('');
+    const [inputBaseWidthPx, setInputBaseWidthPx] = useState<number | null>(null);
+    const labelRef = useRef<HTMLElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const isEditingRef = useRef(false);
+
+    const stopEditing = useCallback(() => {
+        isEditingRef.current = false;
+        setIsEditing(false);
+        setInputBaseWidthPx(null);
+    }, []);
+
+    // onBlur: only commits if editing wasn't already closed by Enter/Escape
+    const handleBlur = useCallback(() => {
+        if (!isEditingRef.current) {
+            return;
+        }
+        const trimmed = draftName.trim();
+        if (trimmed !== '' && trimmed !== compositeName) {
+            onEditNameCell?.(row.original, trimmed);
+        }
+        stopEditing();
+    }, [compositeName, draftName, onEditNameCell, row.original, stopEditing]);
+
+    const handleLabelClick = useCallback(
+        (e: React.MouseEvent) => {
+            e.stopPropagation();
+
+            // Init draft with current saved name
+            setDraftName(compositeName);
+            // Freeze input width at open time
+            if (labelRef.current) {
+                const style = globalThis.getComputedStyle(labelRef.current);
+                const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+                const px =
+                    compositeName.length >= MIN_CHAR_WIDTH
+                        ? measureTextPx(compositeName, font) + 20
+                        : measureTextPx('a'.repeat(MIN_CHAR_WIDTH), font) + 20;
+                setInputBaseWidthPx(px);
+            }
+
+            isEditingRef.current = true;
+            setIsEditing(true);
+
+            // Focus + select after the input mounts (next tick)
+            requestAnimationFrame(() => {
+                inputRef.current?.focus();
+                inputRef.current?.select();
+            });
+        },
+        [compositeName]
+    );
+
+    const handleKeyDown = useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter') {
+                const trimmed = draftName.trim();
+                if (trimmed !== '' && trimmed !== compositeName) {
+                    onEditNameCell?.(row.original, trimmed);
+                }
+                stopEditing();
+                inputRef.current?.blur();
+            } else if (e.key === 'Escape') {
+                stopEditing();
+                inputRef.current?.blur();
+            }
+        },
+        [compositeName, draftName, onEditNameCell, row.original, stopEditing]
+    );
+
     const renderDepthBox = () => {
         const depthLevelCount = depth;
         return Array.from({ length: depthLevelCount }, (_, i) => (
-            <DepthBox
-                key={i}
-                firstLevel={i === 0}
-                displayAsFolder={isCompositeModification(row.original) && i === depthLevelCount - 1}
-            />
+            <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-
+    const compositeReadModeProps = isComposite
+        ? {
+              ref: labelRef,
+              onClick: handleLabelClick,
+              sx: {
+                  cursor: 'text',
+                  '&:hover': {
+                      textDecoration: 'underline dotted',
+                      textDecorationColor: theme.palette.text.secondary,
+                  },
+              },
+          }
+        : {};
     return (
         <Box
             sx={mergeSx(
@@ -64,8 +168,9 @@ export function NameCell({ row }: Readonly<NameCellProps>) {
             )}
         >
             {renderDepthBox()}
+
             <Box sx={networkModificationTableStyles.nameCellInnerRow}>
-                {isCompositeModification(row.original) && (
+                {isComposite && (
                     <Box sx={networkModificationTableStyles.nameCellTogglerBox}>
                         <IconButton
                             size="small"
@@ -85,16 +190,51 @@ export function NameCell({ row }: Readonly<NameCellProps>) {
                     </Box>
                 )}
                 <Box sx={createNameCellLabelBoxSx(row.getIsExpanded(), depth)}>
-                    <CustomTooltip disableFocusListener disableTouchListener title={label}>
+                    {/* Edit mode — composite only */}
+                    {isComposite && isEditing ? (
                         <Box
-                            sx={mergeSx(
-                                networkModificationTableStyles.modificationLabel,
-                                createModificationNameCellStyle(row.original.activated)
-                            )}
+                            sx={mergeSx(networkModificationTableStyles.modificationLabel, {
+                                display: 'inline-flex',
+                                width: inputBaseWidthPx ? `${inputBaseWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
+                                maxWidth: '100%',
+                                flexShrink: 0,
+                            })}
                         >
-                            {label}
+                            <InputBase
+                                inputRef={inputRef}
+                                value={draftName}
+                                onChange={(e) => setDraftName(e.target.value)}
+                                onBlur={handleBlur}
+                                onKeyDown={handleKeyDown}
+                                onMouseDown={(e) => e.stopPropagation()}
+                                sx={{
+                                    width: '100%',
+                                    fontSize: 'inherit',
+                                    fontFamily: 'inherit',
+                                    color: 'inherit',
+                                    '& .MuiInputBase-input': {
+                                        border: `1px solid ${theme.palette.primary.main}`,
+                                        borderRadius: `${theme.shape.borderRadius}px`,
+                                        backgroundColor: theme.palette.background.paper,
+                                    },
+                                }}
+                            />
                         </Box>
-                    </CustomTooltip>
+                    ) : (
+                        /* Read mode */
+                        <CustomTooltip disableFocusListener disableTouchListener title={label}>
+                            <Box
+                                {...compositeReadModeProps}
+                                sx={mergeSx(
+                                    networkModificationTableStyles.modificationLabel,
+                                    createModificationNameCellStyle(row.original.activated),
+                                    compositeReadModeProps.sx
+                                )}
+                            >
+                                {label}
+                            </Box>
+                        </CustomTooltip>
+                    )}
                 </Box>
             </Box>
         </Box>
