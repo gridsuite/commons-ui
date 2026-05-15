@@ -18,8 +18,8 @@ import {
 } from '../common';
 import yup from '../../../utils/yupConfig';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
-import { SAParametersEnriched } from './types';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
+import { SAParametersEnriched } from '../../../utils/types';
 
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
