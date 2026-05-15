@@ -4,8 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export { SwitchesBetweenSections } from './tabs';
-export { MAX_SECTIONS_COUNT } from './voltageLevel.constants';
-export * from './VoltageLevelCreationForm';
-export * from './voltageLevelCreation.utils';
-export * from './voltageLevelCreation.types';
+
+export * from './ShuntCompensatorCreationForm';
+export * from './shuntCompensatorCreation.types';
+export * from './shuntCompensatorCreation.utils';
