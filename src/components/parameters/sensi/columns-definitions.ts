@@ -36,7 +36,7 @@ export const SENSITIVITY_TYPES = [
 export const PSTS_EQUIPMENT_TYPES = [EquipmentType.TWO_WINDINGS_TRANSFORMER];
 
 export const MONITORED_VOLTAGE_LEVELS_EQUIPMENT_TYPES = [EquipmentType.VOLTAGE_LEVEL];
-export const INJECTIONS_EQUIPMENT_TYPES = [EquipmentType.GENERATOR, EquipmentType.LOAD];
+export const INJECTIONS_EQUIPMENT_TYPES = [EquipmentType.GENERATOR, EquipmentType.LOAD, EquipmentType.BATTERY];
 
 export const EQUIPMENTS_IN_VOLTAGE_REGULATION_TYPES = [
     EquipmentType.GENERATOR,
