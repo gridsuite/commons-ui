@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { fetchElementNames } from '../../services/directory';
+import { IdName } from '../../components/parameters/common/contingency-table/types';
 
 export enum DistributionType {
     PROPORTIONAL = 'PROPORTIONAL',
@@ -20,12 +20,7 @@ export enum SensitivityType {
     DELTA_A = 'DELTA_A',
 }
 
-interface EquipmentsContainer {
-    containerId: string;
-    containerName: string;
-}
-
-type EquipmentsInfos = EquipmentsContainer | UUID;
+type EquipmentsInfos = IdName | UUID;
 
 interface SensitivityParamsCommon<T extends EquipmentsInfos> {
     contingencies?: T[];
@@ -75,7 +70,7 @@ export interface SensitivityAnalysisParameters<T extends EquipmentsInfos> {
     sensitivityNodes?: SensitivityNodes<T>[];
 }
 
-export type SensitivityAnalysisParametersInfosEnriched = SensitivityAnalysisParameters<EquipmentsContainer>;
+export type SensitivityAnalysisParametersInfosEnriched = SensitivityAnalysisParameters<IdName>;
 export type SensitivityAnalysisParametersInfos = SensitivityAnalysisParameters<UUID>;
 
 export interface FactorsCount {
@@ -125,158 +120,50 @@ export type SensitivityResultFilterOptions = {
 export function mapSensitivityAnalysisParameters(
     parameters: SensitivityAnalysisParametersInfosEnriched
 ): SensitivityAnalysisParametersInfos {
-    const mapEquipmentsContainerToIds = (containers: EquipmentsContainer[] | undefined): UUID[] => {
-        return (containers ? containers.map((c) => c.containerId) : []) as UUID[];
+    const mapIdNamesToIds = (objects: IdName[] | undefined): UUID[] => {
+        return objects?.map((c) => c.id) ?? [];
     };
     return {
         ...parameters,
         sensitivityInjectionsSet: parameters.sensitivityInjectionsSet?.map((injectionsSet) => {
             return {
                 ...injectionsSet,
-                monitoredBranches: mapEquipmentsContainerToIds(injectionsSet.monitoredBranches),
-                injections: mapEquipmentsContainerToIds(injectionsSet.injections),
-                contingencies: mapEquipmentsContainerToIds(injectionsSet.contingencies),
+                monitoredBranches: mapIdNamesToIds(injectionsSet.monitoredBranches),
+                injections: mapIdNamesToIds(injectionsSet.injections),
+                contingencies: mapIdNamesToIds(injectionsSet.contingencies),
             };
         }),
         sensitivityInjection: parameters.sensitivityInjection?.map((injection) => {
             return {
                 ...injection,
-                monitoredBranches: mapEquipmentsContainerToIds(injection.monitoredBranches),
-                injections: mapEquipmentsContainerToIds(injection.injections),
-                contingencies: mapEquipmentsContainerToIds(injection.contingencies),
+                monitoredBranches: mapIdNamesToIds(injection.monitoredBranches),
+                injections: mapIdNamesToIds(injection.injections),
+                contingencies: mapIdNamesToIds(injection.contingencies),
             };
         }),
         sensitivityHVDC: parameters.sensitivityHVDC?.map((hvdc) => {
             return {
                 ...hvdc,
-                monitoredBranches: mapEquipmentsContainerToIds(hvdc.monitoredBranches),
-                hvdcs: mapEquipmentsContainerToIds(hvdc.hvdcs),
-                contingencies: mapEquipmentsContainerToIds(hvdc.contingencies),
+                monitoredBranches: mapIdNamesToIds(hvdc.monitoredBranches),
+                hvdcs: mapIdNamesToIds(hvdc.hvdcs),
+                contingencies: mapIdNamesToIds(hvdc.contingencies),
             };
         }),
         sensitivityPST: parameters.sensitivityPST?.map((pst) => {
             return {
                 ...pst,
-                monitoredBranches: mapEquipmentsContainerToIds(pst.monitoredBranches),
-                psts: mapEquipmentsContainerToIds(pst.psts),
-                contingencies: mapEquipmentsContainerToIds(pst.contingencies),
+                monitoredBranches: mapIdNamesToIds(pst.monitoredBranches),
+                psts: mapIdNamesToIds(pst.psts),
+                contingencies: mapIdNamesToIds(pst.contingencies),
             };
         }),
         sensitivityNodes: parameters.sensitivityNodes?.map((nodes) => {
             return {
                 ...nodes,
-                monitoredVoltageLevels: mapEquipmentsContainerToIds(nodes.monitoredVoltageLevels),
-                equipmentsInVoltageRegulation: mapEquipmentsContainerToIds(nodes.equipmentsInVoltageRegulation),
-                contingencies: mapEquipmentsContainerToIds(nodes.contingencies),
+                monitoredVoltageLevels: mapIdNamesToIds(nodes.monitoredVoltageLevels),
+                equipmentsInVoltageRegulation: mapIdNamesToIds(nodes.equipmentsInVoltageRegulation),
+                contingencies: mapIdNamesToIds(nodes.contingencies),
             };
         }),
     };
-}
-
-function getEquipmentsContainerIds(parameters: SensitivityAnalysisParametersInfos): Set<string> {
-    const allContainerIds = new Set<string>();
-
-    parameters.sensitivityInjection?.forEach((i) => {
-        i.monitoredBranches?.forEach((id) => allContainerIds.add(id));
-        i.injections?.forEach((id) => allContainerIds.add(id));
-        i.contingencies?.forEach((id) => allContainerIds.add(id));
-    });
-
-    parameters.sensitivityInjectionsSet?.forEach((is) => {
-        is.monitoredBranches?.forEach((id) => allContainerIds.add(id));
-        is.injections?.forEach((id) => allContainerIds.add(id));
-        is.contingencies?.forEach((id) => allContainerIds.add(id));
-    });
-
-    parameters.sensitivityHVDC?.forEach((hvdc) => {
-        hvdc.monitoredBranches?.forEach((id) => allContainerIds.add(id));
-        hvdc.hvdcs?.forEach((id) => allContainerIds.add(id));
-        hvdc.contingencies?.forEach((id) => allContainerIds.add(id));
-    });
-
-    parameters.sensitivityPST?.forEach((pst) => {
-        pst.monitoredBranches?.forEach((id) => allContainerIds.add(id));
-        pst.psts?.forEach((id) => allContainerIds.add(id));
-        pst.contingencies?.forEach((id) => allContainerIds.add(id));
-    });
-
-    parameters.sensitivityNodes?.forEach((n) => {
-        n.monitoredVoltageLevels?.forEach((id) => allContainerIds.add(id));
-        n.equipmentsInVoltageRegulation?.forEach((id) => allContainerIds.add(id));
-        n.contingencies?.forEach((id) => allContainerIds.add(id));
-    });
-
-    return allContainerIds;
-}
-
-export function enrichSensitivityAnalysisParameters(
-    parameters: SensitivityAnalysisParametersInfos
-): Promise<SensitivityAnalysisParametersInfosEnriched> {
-    const allElementIds = getEquipmentsContainerIds(parameters);
-
-    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
-
-    return elementNamesPromise.then((elementNames) => {
-        const mapIdsToEquipmentsContainer = (ids: UUID[] | undefined): EquipmentsContainer[] => {
-            return ids
-                ? ids.map((id) => ({
-                      containerId: id,
-                      containerName: elementNames?.[id] ?? null,
-                  }))
-                : [];
-        };
-        return {
-            ...parameters,
-            sensitivityInjectionsSet: parameters.sensitivityInjectionsSet
-                ? parameters.sensitivityInjectionsSet.map((is) => {
-                      return {
-                          ...is,
-                          monitoredBranches: mapIdsToEquipmentsContainer(is.monitoredBranches),
-                          injections: mapIdsToEquipmentsContainer(is.injections),
-                          contingencies: mapIdsToEquipmentsContainer(is.contingencies),
-                      };
-                  })
-                : [],
-            sensitivityInjection: parameters.sensitivityInjection
-                ? parameters.sensitivityInjection.map((i) => {
-                      return {
-                          ...i,
-                          monitoredBranches: mapIdsToEquipmentsContainer(i.monitoredBranches),
-                          injections: mapIdsToEquipmentsContainer(i.injections),
-                          contingencies: mapIdsToEquipmentsContainer(i.contingencies),
-                      };
-                  })
-                : [],
-            sensitivityHVDC: parameters.sensitivityHVDC
-                ? parameters.sensitivityHVDC.map((hvdc) => {
-                      return {
-                          ...hvdc,
-                          monitoredBranches: mapIdsToEquipmentsContainer(hvdc.monitoredBranches),
-                          hvdcs: mapIdsToEquipmentsContainer(hvdc.hvdcs),
-                          contingencies: mapIdsToEquipmentsContainer(hvdc.contingencies),
-                      };
-                  })
-                : [],
-            sensitivityPST: parameters.sensitivityPST
-                ? parameters.sensitivityPST.map((pst) => {
-                      return {
-                          ...pst,
-                          monitoredBranches: mapIdsToEquipmentsContainer(pst.monitoredBranches),
-                          psts: mapIdsToEquipmentsContainer(pst.psts),
-                          contingencies: mapIdsToEquipmentsContainer(pst.contingencies),
-                      };
-                  })
-                : [],
-            sensitivityNodes: parameters.sensitivityNodes
-                ? parameters.sensitivityNodes.map((n) => {
-                      return {
-                          ...n,
-                          monitoredVoltageLevels: mapIdsToEquipmentsContainer(n.monitoredVoltageLevels),
-                          equipmentsInVoltageRegulation: mapIdsToEquipmentsContainer(n.equipmentsInVoltageRegulation),
-                          contingencies: mapIdsToEquipmentsContainer(n.contingencies),
-                      };
-                  })
-                : [],
-        };
-    });
 }

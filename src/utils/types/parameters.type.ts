@@ -13,7 +13,7 @@ import type { ILimitReductionsByVoltageLevel } from '../../components/parameters
 import { DynamicSimulationParametersInfos } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfosEnriched } from './sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
-import { SAParametersEnriched } from '../../components/parameters/security-analysis/types';
+import { SAParametersEnriched } from './security-analysis.type';
 import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
 
 export enum ParameterType {

@@ -76,7 +76,7 @@ export function hasElementPermission(elementUuid: UUID, permission: PermissionTy
         });
 }
 
-export function fetchElementNames(elementUuids: Set<string>) {
+export function fetchElementNames(elementUuids: Set<string>): Promise<Record<string, string>> {
     console.info('fetch directory element names');
 
     const params = new URLSearchParams();
