@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid } from '@mui/material';
-import { useWatch } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import GridSection from '../../../../../grid/grid-section';
 import { IntegerInput } from '../../../../../inputs';
 import { FieldConstants } from '../../../../../../utils';
@@ -13,10 +14,16 @@ import { SwitchesBetweenSections } from './switchesBetweenSections';
 import { CouplingOmnibusForm } from './couplingOmnibus';
 
 export function StructureTab() {
+    const { trigger } = useFormContext();
     const watchBusBarCount = useWatch({ name: FieldConstants.BUS_BAR_COUNT });
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
 
+    useEffect(() => {
+        trigger(FieldConstants.SECTION_COUNT);
+    }, [watchSectionCount, trigger]);
+
     const displayOmnibus = watchBusBarCount > 1 || watchSectionCount > 1;
+
     return (
         <>
             <GridSection title="BusBarSections" />
