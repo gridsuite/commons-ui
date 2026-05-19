@@ -16,7 +16,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import { Battery, Generator, isInjection, Load } from '../../../utils/types/equipmentTypes';
+import { isInjection } from '../../../utils/types/equipmentTypes';
 import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
