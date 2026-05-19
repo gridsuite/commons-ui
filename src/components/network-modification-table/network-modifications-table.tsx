@@ -25,7 +25,7 @@ import {
     MODIFICATION_ROW_HEIGHT,
     networkModificationTableStyles,
 } from './network-modification-table-styles';
-import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
+import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
