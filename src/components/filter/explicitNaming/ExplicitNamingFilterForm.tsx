@@ -16,7 +16,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import { Battery, Generator, Load } from '../../../utils/types/equipmentTypes';
+import { Battery, Generator, isInjection, Load } from '../../../utils/types/equipmentTypes';
 import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
@@ -33,10 +33,6 @@ import { filterStyles } from '../HeaderFilterForm';
 import { snackWithFallback } from '../../../utils';
 import { useCustomFormContext } from '../../inputs';
 
-function isGeneratorBatteryOrLoad(equipmentType: string): boolean {
-    return equipmentType === Generator.type || equipmentType === Load.type || equipmentType === Battery.type;
-}
-
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
         .array()
@@ -50,7 +46,7 @@ export const explicitNamingFilterSchema = {
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .min(1, 'emptyFilterError')
         .when([FieldConstants.EQUIPMENT_TYPE], {
-            is: (equipmentType: string) => isGeneratorBatteryOrLoad(equipmentType),
+            is: (equipmentType: string) => isInjection(equipmentType),
             then: (innerSchema) =>
                 innerSchema
                     .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
@@ -119,7 +115,7 @@ export function ExplicitNamingFilterForm({
         }
     }, [snackError, watchEquipmentType]);
 
-    const forGeneratorBatteryOrLoad = isGeneratorBatteryOrLoad(watchEquipmentType);
+    const forGeneratorBatteryOrLoad = isInjection(watchEquipmentType);
 
     useEffect(() => {
         if (sourceFilterForExplicitNamingConversion) {
