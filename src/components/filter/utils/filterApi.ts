@@ -7,7 +7,7 @@
 
 import type { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import { Generator, Load } from '../../../utils/types/equipmentTypes';
+import { Battery, Generator, Load } from '../../../utils/types/equipmentTypes';
 import { exportExpertRules } from '../expert/expertFilterUtils';
 import { DISTRIBUTION_KEY, FilterType } from '../constants/FilterConstants';
 import { createFilter, saveFilter } from '../../../services/explore';
@@ -27,8 +27,9 @@ export const saveExplicitNamingFilter = (
 ) => {
     // we remove unnecessary fields from the table
     let cleanedTableValues;
-    const isGeneratorOrLoad = equipmentType === Generator.type || equipmentType === Load.type;
-    if (isGeneratorOrLoad) {
+    const isGeneratorBatteryOrLoad =
+        equipmentType === Generator.type || equipmentType === Load.type || equipmentType === Battery.type;
+    if (isGeneratorBatteryOrLoad) {
         cleanedTableValues = tableValues.map((row) => ({
             [FieldConstants.EQUIPMENT_ID]: row[FieldConstants.EQUIPMENT_ID],
             [DISTRIBUTION_KEY]: row[DISTRIBUTION_KEY],

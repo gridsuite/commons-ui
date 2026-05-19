@@ -16,7 +16,7 @@ import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
 import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
-import { Generator, Load } from '../../../utils/types/equipmentTypes';
+import { Battery, Generator, Load } from '../../../utils/types/equipmentTypes';
 import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
 import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
@@ -33,8 +33,8 @@ import { filterStyles } from '../HeaderFilterForm';
 import { snackWithFallback } from '../../../utils';
 import { useCustomFormContext } from '../../inputs';
 
-function isGeneratorOrLoad(equipmentType: string): boolean {
-    return equipmentType === Generator.type || equipmentType === Load.type;
+function isGeneratorBatteryOrLoad(equipmentType: string): boolean {
+    return equipmentType === Generator.type || equipmentType === Load.type || equipmentType === Battery.type;
 }
 
 export const explicitNamingFilterSchema = {
@@ -50,7 +50,7 @@ export const explicitNamingFilterSchema = {
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .min(1, 'emptyFilterError')
         .when([FieldConstants.EQUIPMENT_TYPE], {
-            is: (equipmentType: string) => isGeneratorOrLoad(equipmentType),
+            is: (equipmentType: string) => isGeneratorBatteryOrLoad(equipmentType),
             then: (innerSchema) =>
                 innerSchema
                     .test('noKeyWithoutId', 'distributionKeyWithMissingIdError', (array) => {
@@ -119,7 +119,7 @@ export function ExplicitNamingFilterForm({
         }
     }, [snackError, watchEquipmentType]);
 
-    const forGeneratorOrLoad = isGeneratorOrLoad(watchEquipmentType);
+    const forGeneratorBatteryOrLoad = isGeneratorBatteryOrLoad(watchEquipmentType);
 
     useEffect(() => {
         if (sourceFilterForExplicitNamingConversion) {
@@ -141,7 +141,7 @@ export function ExplicitNamingFilterForm({
                 valueParser: (params: ValueParserParams) => params.newValue?.trim() ?? null,
             },
         ];
-        if (forGeneratorOrLoad) {
+        if (forGeneratorBatteryOrLoad) {
             newColumnDefs.push({
                 headerName: intl.formatMessage({ id: DISTRIBUTION_KEY }),
                 field: DISTRIBUTION_KEY,
@@ -152,7 +152,7 @@ export function ExplicitNamingFilterForm({
             });
         }
         return newColumnDefs;
-    }, [intl, forGeneratorOrLoad]);
+    }, [intl, forGeneratorBatteryOrLoad]);
 
     const defaultColDef = useMemo(
         () => ({
@@ -163,11 +163,11 @@ export function ExplicitNamingFilterForm({
 
     const csvFileHeaders = useMemo(() => {
         const newCsvFileHeaders = [intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID })];
-        if (forGeneratorOrLoad) {
+        if (forGeneratorBatteryOrLoad) {
             newCsvFileHeaders.push(intl.formatMessage({ id: DISTRIBUTION_KEY }));
         }
         return newCsvFileHeaders;
-    }, [intl, forGeneratorOrLoad]);
+    }, [intl, forGeneratorBatteryOrLoad]);
 
     const getDataFromCsvFile = useCallback((csvData: any) => {
         if (csvData) {
