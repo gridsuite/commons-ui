@@ -112,12 +112,22 @@ export function SecurityAnalysisParametersInline({
                                 <LabelledButton
                                     callback={() => setOpenSelectParameterDialog(true)}
                                     label="settings.button.chooseSettings"
+                                    data-testid="ChooseSettingsSa"
                                 />
-                                <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
+                                <LabelledButton
+                                    callback={() => setOpenCreateParameterDialog(true)}
+                                    label="save"
+                                    data-testid="SaveSettingsSa"
+                                />
+                                <LabelledButton
+                                    callback={handleResetAllClick}
+                                    label="resetToDefault"
+                                    data-testid="ResetSettingsSa"
+                                />
                                 <SubmitButton
                                     onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
                                     variant="outlined"
+                                    data-testid="SubmitSettingsSa"
                                 >
                                     <FormattedMessage id="validate" />
                                 </SubmitButton>

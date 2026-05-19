@@ -52,6 +52,7 @@ function SecurityAnalysisFields({
                         position: 'end',
                         text: firstField.label,
                     }}
+                    dataTestId={firstField.name}
                 />
             </Grid>
             {!isSingleField && secondField && (
@@ -62,6 +63,7 @@ function SecurityAnalysisFields({
                             position: 'end',
                             text: secondField.label,
                         }}
+                        dataTestId={secondField.name}
                     />
                 </Grid>
             )}
