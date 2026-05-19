@@ -6,9 +6,9 @@
  */
 
 export interface ReactiveCapabilityCurvePoints {
-    p?: number | null;
-    maxQ?: number | null;
-    minQ?: number | null;
+    p: number | null;
+    maxQ: number | null;
+    minQ: number | null;
 }
 
 export interface MinMaxReactiveLimitsFormInfos {

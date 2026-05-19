@@ -5,8 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useIntl } from 'react-intl';
-import { Grid, IconButton, Tooltip } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../../../../../tooltip/CustomTooltip';
 import { CountrySelectionInput, TextInput } from '../../../../../inputs';
 import GridSection from '../../../../../grid/grid-section';
 import { FieldConstants } from '../../../../../../utils';
@@ -36,11 +37,11 @@ export function SubstationCreationSection({
                 </Grid>
                 {showDeleteButton && onDelete && (
                     <Grid item xs={1}>
-                        <Tooltip title={intl.formatMessage({ id: 'DeleteRows' })}>
+                        <CustomTooltip title={intl.formatMessage({ id: 'DeleteRows' })}>
                             <IconButton onClick={onDelete}>
                                 <DeleteIcon />
                             </IconButton>
-                        </Tooltip>
+                        </CustomTooltip>
                     </Grid>
                 )}
             </Grid>

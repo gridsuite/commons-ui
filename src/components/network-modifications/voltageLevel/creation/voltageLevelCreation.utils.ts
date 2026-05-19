@@ -13,6 +13,7 @@ import {
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import { FieldConstants, sanitizeString, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
+import { MAX_SECTIONS_COUNT } from './voltageLevel.constants';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { MODIFICATION_TYPES } from '../../../../utils/types/modificationType';
@@ -146,7 +147,11 @@ export const voltageLevelCreationFormSchema = object()
             .nullable()
             .when([FieldConstants.HIDE_BUS_BAR_SECTION], {
                 is: (hideBusBarSection: boolean) => !hideBusBarSection,
-                then: (schema) => schema.min(1, 'SectionCountMustBeGreaterThanOrEqualToOne').required(YUP_REQUIRED),
+                then: (schema) =>
+                    schema
+                        .min(1, 'SectionCountMustBeGreaterThanOrEqualToOne')
+                        .max(MAX_SECTIONS_COUNT, 'SectionCountMustBeLessThanOrEqualToTwenty')
+                        .required(YUP_REQUIRED),
             }),
         [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: string()
             .nullable()
