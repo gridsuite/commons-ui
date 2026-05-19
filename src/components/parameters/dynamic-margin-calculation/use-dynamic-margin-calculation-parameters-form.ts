@@ -8,10 +8,10 @@
 import { FieldValues } from 'react-hook-form';
 import yup from '../../../utils/yupConfig';
 import { DynamicMarginCalculationParametersInfos } from '../../../utils/types/dynamic-margin-calculation.type';
-import { emptyFormData as timeDelayEmptyFormData, formSchema as timeDelayFormSchema } from './time-delay-parameters';
+import { emptyFormData as timeDelayEmptyFormData, getTimeDelayFormSchema } from './time-delay-parameters';
 import {
     emptyFormData as loadsVariationsEmptyFormData,
-    formSchema as loadsVariationsFormSchema,
+    getLoadsVariationsFormSchema,
 } from './loads-variations-parameters';
 import { ID } from '../../../utils';
 import { PROVIDER } from '../common';
@@ -30,11 +30,12 @@ import {
 import { TabValues } from './dynamic-margin-calculation.type';
 import { UseComputationParametersFormReturn } from '../common/utils';
 
-const formSchema = yup.object().shape({
-    [PROVIDER]: yup.string().required(),
-    [TabValues.TAB_TIME_DELAY]: timeDelayFormSchema,
-    [TabValues.TAB_LOADS_VARIATIONS]: loadsVariationsFormSchema,
-});
+const getFormSchema = () =>
+    yup.object().shape({
+        [PROVIDER]: yup.string().required(),
+        [TabValues.TAB_TIME_DELAY]: getTimeDelayFormSchema(),
+        [TabValues.TAB_LOADS_VARIATIONS]: getLoadsVariationsFormSchema(),
+    });
 
 const emptyFormData = {
     [PROVIDER]: '',
@@ -87,7 +88,7 @@ export function useDynamicMarginCalculationParametersForm(
 ): UseComputationParametersFormReturn {
     return useParametersForm({
         ...props,
-        formSchema,
+        formSchema: getFormSchema(),
         emptyFormData,
         toFormValues,
     });

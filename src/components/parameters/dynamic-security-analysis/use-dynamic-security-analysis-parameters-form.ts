@@ -19,31 +19,34 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 import { TabValues } from './dynamic-security-analysis.type';
 import { useParametersForm } from '../common/hook/use-parameters-form';
 
-const scenarioFormSchema = yup
-    .object()
-    .shape({
-        [SCENARIO_DURATION]: yup.number().required(),
-    })
-    .required();
+const getScenarioFormSchema = () =>
+    yup
+        .object()
+        .shape({
+            [SCENARIO_DURATION]: yup.number().required(),
+        })
+        .required();
 
-const contingencyFormSchema = yup.object().shape({
-    [CONTINGENCIES_START_TIME]: yup.number().required(),
-    [CONTINGENCIES_LIST_INFOS]: yup
-        .array()
-        .of(
-            yup.object().shape({
-                [ID]: yup.string().required(),
-                [NAME]: yup.string().required(),
-            })
-        )
-        .required(),
-});
+const getContingencyFormSchema = () =>
+    yup.object().shape({
+        [CONTINGENCIES_START_TIME]: yup.number().required(),
+        [CONTINGENCIES_LIST_INFOS]: yup
+            .array()
+            .of(
+                yup.object().shape({
+                    [ID]: yup.string().required(),
+                    [NAME]: yup.string().required(),
+                })
+            )
+            .required(),
+    });
 
-export const formSchema = yup.object().shape({
-    [PROVIDER]: yup.string().required(),
-    [TabValues.SCENARIO]: scenarioFormSchema,
-    [TabValues.CONTINGENCY]: contingencyFormSchema,
-});
+const getFormSchema = () =>
+    yup.object().shape({
+        [PROVIDER]: yup.string().required(),
+        [TabValues.SCENARIO]: getScenarioFormSchema(),
+        [TabValues.CONTINGENCY]: getContingencyFormSchema(),
+    });
 
 const scenarioEmptyFormData = {
     [SCENARIO_DURATION]: 0,
@@ -91,7 +94,7 @@ export function useDynamicSecurityAnalysisParametersForm(
 ): UseComputationParametersFormReturn {
     return useParametersForm({
         ...props,
-        formSchema,
+        formSchema: getFormSchema(),
         emptyFormData,
         toFormValues,
     });

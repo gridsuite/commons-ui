@@ -7,17 +7,18 @@
 import yup from '../../../../utils/yupConfig';
 import { Curve } from './curve-parameters-constants';
 
-export const curveFormSchema = yup.object().shape({
-    [Curve.CURVES]: yup
-        .array()
-        .of(
-            yup.object().shape({
-                [Curve.EQUIPMENT_ID]: yup.string().required(),
-                [Curve.VARIABLE_ID]: yup.string().required(),
-            })
-        )
-        .nullable(),
-});
+export const getCurveFormSchema = () =>
+    yup.object().shape({
+        [Curve.CURVES]: yup
+            .array()
+            .of(
+                yup.object().shape({
+                    [Curve.EQUIPMENT_ID]: yup.string().required(),
+                    [Curve.VARIABLE_ID]: yup.string().required(),
+                })
+            )
+            .nullable(),
+    });
 
 export const curveEmptyFormData = {
     [Curve.CURVES]: [],

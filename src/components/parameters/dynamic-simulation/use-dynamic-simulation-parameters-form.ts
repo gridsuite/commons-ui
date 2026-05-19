@@ -10,11 +10,11 @@ import { DynamicSimulationParametersInfos, SolverInfos } from '../../../utils/ty
 import { TabValues } from './dynamic-simulation.type';
 import yup from '../../../utils/yupConfig';
 import { PROVIDER } from '../common/constants';
-import { timeDelayEmptyFormData, timeDelayFormSchema } from './time-delay/time-delay-parameters-utils';
-import { solverEmptyFormData, solverFormSchema } from './solver/solver-parameters-utils';
-import { mappingEmptyFormData, mappingFormSchema } from './mapping/mapping-parameters-utils';
-import { networkEmptyFormData, networkFormSchema } from './network/network-parameters-utils';
-import { curveEmptyFormData, curveFormSchema } from './curve/curve-parameters-utils';
+import { timeDelayEmptyFormData, getTimeDelayFormSchema } from './time-delay/time-delay-parameters-utils';
+import { solverEmptyFormData, getSolverFormSchema } from './solver/solver-parameters-utils';
+import { mappingEmptyFormData, getMappingFormSchema } from './mapping/mapping-parameters-utils';
+import { networkEmptyFormData, getNetworkFormSchema } from './network/network-parameters-utils';
+import { curveEmptyFormData, getCurveFormSchema } from './curve/curve-parameters-utils';
 import { ID } from '../../../utils';
 import { TimeDelay } from './time-delay';
 import { Solver } from './solver';
@@ -22,14 +22,15 @@ import { MAPPING } from './mapping';
 import { Curve } from './curve/curve-parameters-constants';
 import { useParametersForm } from '../common/hook/use-parameters-form';
 
-const formSchema = yup.object().shape({
-    [PROVIDER]: yup.string().required(),
-    [TabValues.TAB_TIME_DELAY]: timeDelayFormSchema,
-    [TabValues.TAB_SOLVER]: solverFormSchema,
-    [TabValues.TAB_MAPPING]: mappingFormSchema,
-    [TabValues.TAB_NETWORK]: networkFormSchema,
-    [TabValues.TAB_CURVE]: curveFormSchema,
-});
+const getFormSchema = () =>
+    yup.object().shape({
+        [PROVIDER]: yup.string().required(),
+        [TabValues.TAB_TIME_DELAY]: getTimeDelayFormSchema(),
+        [TabValues.TAB_SOLVER]: getSolverFormSchema(),
+        [TabValues.TAB_MAPPING]: getMappingFormSchema(),
+        [TabValues.TAB_NETWORK]: getNetworkFormSchema(),
+        [TabValues.TAB_CURVE]: getCurveFormSchema(),
+    });
 
 const emptyFormData = {
     [PROVIDER]: '',
@@ -99,7 +100,7 @@ export function useDynamicSimulationParametersForm(
 ): UseComputationParametersFormReturn {
     return useParametersForm({
         ...props,
-        formSchema,
+        formSchema: getFormSchema(),
         emptyFormData,
         toFormValues,
     });

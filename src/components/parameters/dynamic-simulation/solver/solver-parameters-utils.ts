@@ -10,27 +10,28 @@ import { Solver } from './solver-parameters-constants';
 import { getIdaFormSchema } from './ida-solver';
 import { getSimplifiedFormSchema } from './sim-solver';
 
-export const solverFormSchema = yup.object().shape({
-    [Solver.SOLVER]: yup.string().required(),
-    [Solver.SOLVERS]: yup.array().when([Solver.SOLVER], ([solver], schema) =>
-        schema.of(
-            yup.lazy((item) => {
-                const { type } = item;
+export const getSolverFormSchema = () =>
+    yup.object().shape({
+        [Solver.SOLVER]: yup.string().required(),
+        [Solver.SOLVERS]: yup.array().when([Solver.SOLVER], ([solver], schema) =>
+            schema.of(
+                yup.lazy((item) => {
+                    const { type } = item;
 
-                // ignore validation if not current selected solver
-                if (solver !== type) {
-                    return yup.object().default(undefined);
-                }
+                    // ignore validation if not current selected solver
+                    if (solver !== type) {
+                        return yup.object().default(undefined);
+                    }
 
-                // chose the right schema for each type of solver
-                if (type === SolverType.IDA) {
-                    return getIdaFormSchema();
-                }
-                return getSimplifiedFormSchema();
-            })
-        )
-    ),
-});
+                    // chose the right schema for each type of solver
+                    if (type === SolverType.IDA) {
+                        return getIdaFormSchema();
+                    }
+                    return getSimplifiedFormSchema();
+                })
+            )
+        ),
+    });
 
 export const solverEmptyFormData = {
     [Solver.SOLVER]: '',

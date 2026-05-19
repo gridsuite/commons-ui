@@ -31,27 +31,28 @@ import { NAME } from '../../inputs';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn, DndColumnType } from '../../dnd-table';
 
-export const formSchema = yup.object().shape({
-    [CALCULATION_TYPE]: yup.string().required(),
-    [ACCURACY]: yup.number().required(),
-    [LOAD_MODELS_RULE]: yup.string().required(),
-    [LOADS_VARIATIONS]: yup.array().of(
-        yup.object().shape({
-            [ID]: yup.string().nullable(), // not shown in form, used to identify a row
-            [LOAD_FILTERS]: yup
-                .array()
-                .of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().nullable().notRequired(),
-                    })
-                )
-                .min(1),
-            [VARIATION]: yup.number().min(0).required(),
-            [ACTIVE]: yup.boolean().nullable().notRequired(),
-        })
-    ),
-});
+export const getLoadsVariationsFormSchema = () =>
+    yup.object().shape({
+        [CALCULATION_TYPE]: yup.string().required(),
+        [ACCURACY]: yup.number().required(),
+        [LOAD_MODELS_RULE]: yup.string().required(),
+        [LOADS_VARIATIONS]: yup.array().of(
+            yup.object().shape({
+                [ID]: yup.string().nullable(), // not shown in form, used to identify a row
+                [LOAD_FILTERS]: yup
+                    .array()
+                    .of(
+                        yup.object().shape({
+                            [ID]: yup.string().required(),
+                            [NAME]: yup.string().nullable().notRequired(),
+                        })
+                    )
+                    .min(1),
+                [VARIATION]: yup.number().min(0).required(),
+                [ACTIVE]: yup.boolean().nullable().notRequired(),
+            })
+        ),
+    });
 
 export const emptyFormData = {
     [CALCULATION_TYPE]: '',
