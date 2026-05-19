@@ -289,7 +289,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                 const isElementDeleted =
                                     watchedElements?.[index]?.[DELETED] ??
                                     getValues(`${name}.${index}.${DELETED}`) ??
-                                    (item as FieldValues)?.[DELETED] ?? false;
+                                    (item as FieldValues)?.[DELETED] ??
+                                    false;
                                 const equipmentTypeShortLabel = getEquipmentTypeShortLabel(
                                     item?.specificMetadata?.equipmentType
                                 );

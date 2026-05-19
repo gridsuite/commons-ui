@@ -95,34 +95,23 @@ export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonl
 
         useEffect(() => {
             const checkSelectedFilters = async () => {
-                const genericFilters: { id: UUID; name: string, deleted?: boolean }[] = getValues(
+                const genericFilters: { id: UUID; name: string; deleted?: boolean }[] = getValues(
                     `${SPECIFIC_PARAMETERS}.${NODE_CLUSTER_FILTER_IDS}`
                 );
-                genericFilters.forEach(async (filter) => {
+                for (const filter of genericFilters) {
                     filter.deleted = false;
                     try {
                         await fetchDirectoryElementPath(filter.id);
                     } catch (responseError) {
                         const error = responseError as Error & { status: number };
                         if (error.status === 404) {
-                            filter.deleted = true
+                            filter.deleted = true;
                         }
                     }
-                });
+                }
             };
             checkSelectedFilters().catch((error) => console.error(error));
-        }, [setValue]);
-
-        /*useEffect(() => {
-            const checkSelectedFilters = async () => {
-                const genericFilters: { id: string; name: string }[] = getValues(
-                    `${SPECIFIC_PARAMETERS}.${NODE_CLUSTER_FILTER_IDS}`
-                );
-                console.log('test', genericFilters);
-                const results = await Promise.all(genericFilters.map(updateGenericFilter));
-            };
-            checkSelectedFilters().catch((error) => console.error(error));
-        }, [getValues]);*/
+        }, [setValue, getValues]);
 
         return (
             <TabPanel index={ShortCircuitParametersTabValues.STUDY_AREA} ref={ref} {...othersTabPanelProps}>
