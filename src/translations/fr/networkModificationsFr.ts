@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED } from '../../utils';
+import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED, YUP_NOT_TYPE_NUMBER, YUP_NOT_TYPE_DEFAULT } from '../../utils';
 
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
@@ -136,8 +136,9 @@ export const networkModificationsFr = {
     ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero: "Une limite d'ICC doit être supérieure ou égale à 0",
     ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
-    [YUP_REQUIRED]: 'Ce champ doit être renseigné',
-    YupNotTypeNumber: "Ce champ n'accepte que des valeurs numériques",
+    [YUP_REQUIRED]: 'Obligatoire',
+    [YUP_NOT_TYPE_NUMBER]: "Ce champ n'accepte que des valeurs numériques",
+    [YUP_NOT_TYPE_DEFAULT]: "La valeur du champ n'est pas au bon format",
     CreateLoad: 'Créer une consommation',
     loadType: 'Type',
     CreateShuntCompensator: 'Créer un moyen de compensation statique (Linéaire)',
