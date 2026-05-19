@@ -47,6 +47,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
+    selectionResetKey?: number;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
 }
@@ -60,6 +61,7 @@ export function NetworkModificationsTable({
     onRowSelected,
     columns,
     highlightedModificationUuid,
+    selectionResetKey,
     studyUuid = null,
     currentNodeId = undefined,
     isImpactedByNotification,
@@ -184,6 +186,10 @@ export function NetworkModificationsTable({
         studyUuid,
         currentNodeUuid: currentNodeId,
     });
+
+    useEffect(() => {
+        table.resetRowSelection();
+    }, [table, selectionResetKey]);
 
     useEffect(() => {
         table.resetRowSelection();
