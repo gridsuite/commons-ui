@@ -26,6 +26,7 @@ export interface PowerElectronicsMaterial {
 export type FilterPOJO = {
     id: UUID;
     name: string;
+    deleted?: boolean;
 };
 
 interface BasePowerElectronicsCluster {

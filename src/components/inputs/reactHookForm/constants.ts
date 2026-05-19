@@ -6,4 +6,5 @@
  */
 
 export const NAME = 'name';
+export const DELETED = 'deleted';
 export const DESCRIPTION = 'description';
