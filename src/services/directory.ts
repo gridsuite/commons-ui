@@ -7,7 +7,7 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
-import { ElementAttributes } from '../utils';
+import { ElementAttributes } from '../utils/types/types';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
@@ -74,4 +74,18 @@ export function hasElementPermission(elementUuid: UUID, permission: PermissionTy
             console.info(`${permission} permission denied for element or directory ${elementUuid}`);
             return false;
         });
+}
+
+export function fetchElementNames(elementUuids: Set<string>) {
+    console.info('fetch directory element names');
+
+    const params = new URLSearchParams();
+    elementUuids.forEach((id) => {
+        params.append('ids', id);
+    });
+
+    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/name?${params.toString()}`;
+    console.log(url);
+
+    return backendFetchJson(url);
 }

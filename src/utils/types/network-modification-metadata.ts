@@ -22,4 +22,5 @@ export interface NetworkModificationMetadata {
 export interface ComposedModificationMetadata extends NetworkModificationMetadata {
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
+    name?: string;
 }

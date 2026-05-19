@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import {
     ColumnDef,
@@ -25,7 +25,7 @@ import {
     MODIFICATION_ROW_HEIGHT,
     networkModificationTableStyles,
 } from './network-modification-table-styles';
-import { AUTO_EXTENSIBLE_COLUMNS, NameHeaderProps } from './columns-definition';
+import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
@@ -45,12 +45,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
     onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
-    createAllColumns: (
-        isRowDragDisabled: boolean,
-        modificationsCount: number,
-        nameHeaderProps: NameHeaderProps,
-        setModifications: React.Dispatch<SetStateAction<ComposedModificationMetadata[]>>
-    ) => ColumnDef<ComposedModificationMetadata>[];
+    columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
@@ -63,11 +58,14 @@ export function NetworkModificationsTable({
     onRowDragStart,
     onRowDragEnd,
     onRowSelected,
-    createAllColumns,
+    columns,
     highlightedModificationUuid,
     studyUuid = null,
     currentNodeId = undefined,
-    ...nameHeaderProps
+    isImpactedByNotification,
+    notificationMessageId,
+    isFetchingModifications,
+    pendingState,
 }: Readonly<NetworkModificationsTableProps>) {
     const theme = useTheme();
 
@@ -83,17 +81,6 @@ export function NetworkModificationsTable({
         modifications: composedModifications,
         onRowSelected,
     });
-
-    const columns = useMemo<ColumnDef<ComposedModificationMetadata>[]>(
-        () =>
-            createAllColumns(
-                isRowDragDisabled ?? false,
-                modifications.length,
-                nameHeaderProps,
-                setComposedModifications
-            ),
-        [createAllColumns, isRowDragDisabled, modifications.length, nameHeaderProps]
-    );
 
     useEffect(() => {
         setComposedModifications((prevMods) => {
@@ -132,6 +119,31 @@ export function NetworkModificationsTable({
         });
     }, []);
 
+    const tableMeta = useMemo(
+        () => ({
+            lastClickedRowId,
+            onRowSelected,
+            isRowDragDisabled,
+            modificationsCount: modifications.length,
+            nameHeaderProps: {
+                isImpactedByNotification,
+                notificationMessageId,
+                isFetchingModifications,
+                pendingState,
+            },
+        }),
+        [
+            lastClickedRowId,
+            onRowSelected,
+            isRowDragDisabled,
+            modifications.length,
+            isImpactedByNotification,
+            notificationMessageId,
+            isFetchingModifications,
+            pendingState,
+        ]
+    );
+
     const table = useReactTable<ComposedModificationMetadata>({
         data: composedModifications,
         columns,
@@ -146,7 +158,7 @@ export function NetworkModificationsTable({
         enableExpanding: true,
         onExpandedChange: handleExpandRow,
         onRowSelectionChange,
-        meta: { lastClickedRowId, onRowSelected },
+        meta: tableMeta,
     });
 
     const { rows, flatRows } = table.getRowModel();
