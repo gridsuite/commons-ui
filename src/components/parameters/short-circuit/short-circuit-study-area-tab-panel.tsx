@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { forwardRef } from 'react';
+import type { UUID } from 'node:crypto';
+import { forwardRef, useEffect } from 'react';
 import { Box, Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { useFormContext } from 'react-hook-form';
@@ -22,6 +23,7 @@ import {
     STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD,
 } from './constants';
 import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
+import { fetchDirectoryElementPath } from '../../../services';
 
 const equipmentTypes: string[] = [EquipmentType.VOLTAGE_LEVEL];
 
@@ -37,7 +39,7 @@ const styles = {
 
 export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonly<TabPanelProps>>(
     ({ ...othersTabPanelProps }, ref) => {
-        const { setValue } = useFormContext();
+        const { setValue, getValues } = useFormContext();
         const startedGeneratorsInCalculationClusterThreshold = (
             <FloatInput
                 name={`${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD}`}
@@ -90,6 +92,26 @@ export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonl
                 }}
             />
         );
+
+        useEffect(() => {
+            const checkSelectedFilters = async () => {
+                const genericFilters: { id: UUID; name: string; deleted?: boolean }[] = getValues(
+                    `${SPECIFIC_PARAMETERS}.${NODE_CLUSTER_FILTER_IDS}`
+                );
+                for (const filter of genericFilters) {
+                    filter.deleted = false;
+                    try {
+                        await fetchDirectoryElementPath(filter.id);
+                    } catch (responseError) {
+                        const error = responseError as Error & { status: number };
+                        if (error.status === 404) {
+                            filter.deleted = true;
+                        }
+                    }
+                }
+            };
+            checkSelectedFilters().catch((error) => console.error(error));
+        }, [setValue, getValues]);
 
         return (
             <TabPanel index={ShortCircuitParametersTabValues.STUDY_AREA} ref={ref} {...othersTabPanelProps}>

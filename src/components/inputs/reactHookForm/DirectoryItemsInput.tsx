@@ -20,9 +20,10 @@ import { type MuiStyles } from '../../../utils/styles';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';
 import { ArrayAction, ElementAttributes, getEquipmentTypeShortLabel, mergeSx } from '../../../utils';
-import { NAME } from './constants';
+import { DELETED, NAME } from './constants';
 import { OverflowableChip, OverflowableChipProps } from './OverflowableChip';
 import { FieldLabel, isFieldRequired } from './utils';
+import { chipsStyle } from './ChipStyles';
 
 const styles = {
     selectDirectoryElements: {
@@ -285,6 +286,11 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                     getValues(`${name}.${index}.${NAME}`) ??
                                     (item as FieldValues)?.[NAME];
 
+                                const isElementDeleted =
+                                    watchedElements?.[index]?.[DELETED] ??
+                                    getValues(`${name}.${index}.${DELETED}`) ??
+                                    (item as FieldValues)?.[DELETED] ??
+                                    false;
                                 const equipmentTypeShortLabel = getEquipmentTypeShortLabel(
                                     item?.specificMetadata?.equipmentType
                                 );
@@ -296,22 +302,17 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                         key={item.id}
                                         onDelete={(e) => handleDeleteChip(e, index)}
                                         onClick={(e) => handleClickChip(e, index)}
-                                        label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
+                                        label={
+                                            !isElementDeleted
+                                                ? elementName
+                                                : intl.formatMessage({ id: 'elementNotFound' })
+                                        }
                                         {...(equipmentTypeShortLabel && {
                                             helperText: intl.formatMessage({
                                                 id: equipmentTypeShortLabel,
                                             }),
                                         })}
-                                        sx={mergeSx(
-                                            !elementName
-                                                ? (theme) => ({
-                                                      backgroundColor: theme.palette.error.light,
-                                                      borderColor: theme.palette.error.main,
-                                                      color: theme.palette.error.contrastText,
-                                                  })
-                                                : undefined,
-                                            chipSx
-                                        )}
+                                        sx={mergeSx(isElementDeleted ? chipsStyle.chipNotFound : undefined, chipSx)}
                                         {...(otherChipProps as CP)}
                                     />
                                 );
