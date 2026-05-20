@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FunctionComponent, useCallback, useState } from 'react';
-import { Tooltip } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { useCallback, useState } from 'react';
+import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../dialogs/descriptionModificationDialog';
@@ -23,12 +22,8 @@ export interface DescriptionCellProps {
     isDisabled?: boolean;
 }
 
-export const DescriptionCell: FunctionComponent<DescriptionCellProps> = ({
-    data,
-    studyUuid,
-    currentNodeId,
-    isDisabled = false,
-}) => {
+export function DescriptionCell(props: DescriptionCellProps) {
+    const { data, studyUuid, currentNodeId, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
@@ -80,4 +75,4 @@ export const DescriptionCell: FunctionComponent<DescriptionCellProps> = ({
             </Tooltip>
         </>
     );
-};
+}

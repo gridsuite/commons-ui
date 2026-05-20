@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Switch, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
@@ -20,21 +20,17 @@ export interface SwitchCellProps {
     isDisabled?: boolean;
 }
 
-export const SwitchCell: FunctionComponent<SwitchCellProps> = ({
-    data,
-    studyUuid,
-    currentNodeId,
-    isDisabled = false,
-}) => {
+export function SwitchCell(props: SwitchCellProps) {
+    const { data, studyUuid, currentNodeId, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
     const modificationUuid = data?.uuid;
-    const [modificationActivated, setModificationActivated] = useState(data?.activated);
+    const [modificationActivated, setModificationActivated] = useState(!!data?.activated);
 
     // Re-sync the local checked state when the row data is refreshed (e.g. after a server notification).
     useEffect(() => {
-        setModificationActivated(data?.activated);
+        setModificationActivated(!!data?.activated);
     }, [data?.activated]);
 
     const toggleModificationActive = useCallback(
@@ -51,7 +47,7 @@ export const SwitchCell: FunctionComponent<SwitchCellProps> = ({
                 type: data?.type,
             })
                 .catch((error) => {
-                    setModificationActivated(data?.activated); // rollback
+                    setModificationActivated(!!data?.activated); // rollback
                     snackWithFallback(snackError, error, { headerId: 'networkModificationActivationError' });
                 })
                 .finally(() => {
@@ -71,10 +67,10 @@ export const SwitchCell: FunctionComponent<SwitchCellProps> = ({
                 <Switch
                     size="small"
                     disabled={isLoading || isDisabled}
-                    checked={modificationActivated}
+                    checked={Boolean(modificationActivated)}
                     onChange={toggleModificationActive}
                 />
             </span>
         </Tooltip>
     );
-};
+}

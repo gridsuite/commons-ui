@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useState, useCallback, useMemo, SetStateAction, FunctionComponent } from 'react';
+import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
 import { ActivableChip } from '../../inputs/ActivableChip';
 import { updateModificationStatusByRootNetwork } from '../../../services';
@@ -20,13 +20,13 @@ import {
 function getUpdatedExcludedModifications(
     prev: ExcludedNetworkModifications[],
     rootNetworkUuid: UUID,
-    modificationUuid: UUID,
-    updateStatus: (isExcluded: boolean) => void
-): ExcludedNetworkModifications[] {
+    modificationUuid: UUID
+): { nextExcluded: ExcludedNetworkModifications[]; newStatus: boolean } {
     const exists = prev.some((item) => item.rootNetworkUuid === rootNetworkUuid);
 
     if (exists) {
-        return prev.map((modif) => {
+        let newStatus = false;
+        const nextExcluded = prev.map((modif) => {
             if (modif.rootNetworkUuid !== rootNetworkUuid) {
                 return modif;
             }
@@ -37,23 +37,26 @@ function getUpdatedExcludedModifications(
                 : [...modif.modificationUuidsToExclude, modificationUuid];
 
             // If previously excluded, now it is activated (true), else deactivated (false)
-            updateStatus(isExcluded);
+            newStatus = isExcluded;
 
             return {
                 ...modif,
                 modificationUuidsToExclude: newModificationUuidsToExclude,
             };
         });
-    } else {
-        updateStatus(false);
-        return [
+
+        return { nextExcluded, newStatus };
+    }
+    return {
+        nextExcluded: [
             ...prev,
             {
                 rootNetworkUuid,
                 modificationUuidsToExclude: [modificationUuid],
             },
-        ];
-    }
+        ],
+        newStatus: false,
+    };
 }
 
 export interface RootNetworkChipCellProps {
@@ -66,15 +69,16 @@ export interface RootNetworkChipCellProps {
     isDisabled?: boolean;
 }
 
-export const RootNetworkChipCell: FunctionComponent<RootNetworkChipCellProps> = ({
-    data,
-    studyUuid,
-    currentNodeId,
-    rootNetwork,
-    modificationsToExclude,
-    setModificationsToExclude,
-    isDisabled = false,
-}) => {
+export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
+    const {
+        data,
+        studyUuid,
+        currentNodeId,
+        rootNetwork,
+        modificationsToExclude,
+        setModificationsToExclude,
+        isDisabled = false,
+    } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
     const modificationUuid = data?.uuid;
@@ -95,41 +99,51 @@ export const RootNetworkChipCell: FunctionComponent<RootNetworkChipCellProps> = 
         return !excludedSet.has(modificationUuid);
     }, [modificationUuid, modificationsToExclude, rootNetwork.rootNetworkUuid, rootNetwork.isCreating]);
 
-    const updateStatus = useCallback(
-        (newStatus: boolean) => {
-            if (!studyUuid || !modificationUuid || !currentNodeId) {
-                setIsLoading(false);
-                return;
-            }
-
-            updateModificationStatusByRootNetwork(
-                studyUuid,
-                currentNodeId,
-                rootNetwork.rootNetworkUuid,
-                modificationUuid,
-                newStatus
-            )
-                .catch((error) => {
-                    snackWithFallback(snackError, error, { headerId: 'modificationActivationByRootNetworkError' });
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
-        },
-        [studyUuid, currentNodeId, modificationUuid, rootNetwork.rootNetworkUuid, snackError]
-    );
-
     const handleModificationActivationByRootNetwork = useCallback(() => {
-        if (!modificationUuid) {
+        if (!modificationUuid || !studyUuid || !currentNodeId) {
             return;
         }
 
         setIsLoading(true);
 
-        setModificationsToExclude((prev) =>
-            getUpdatedExcludedModifications(prev, rootNetwork.rootNetworkUuid, modificationUuid, updateStatus)
+        // Capture previous state for rollback
+        const previousExcluded = modificationsToExclude;
+
+        // Compute next state (pure, no side effects)
+        const { nextExcluded, newStatus } = getUpdatedExcludedModifications(
+            previousExcluded,
+            rootNetwork.rootNetworkUuid,
+            modificationUuid
         );
-    }, [modificationUuid, rootNetwork.rootNetworkUuid, setModificationsToExclude, updateStatus]);
+
+        // Apply optimistic update
+        setModificationsToExclude(nextExcluded);
+
+        // Perform backend call
+        updateModificationStatusByRootNetwork(
+            studyUuid,
+            currentNodeId,
+            rootNetwork.rootNetworkUuid,
+            modificationUuid,
+            newStatus
+        )
+            .catch((error) => {
+                // Rollback on failure
+                setModificationsToExclude(previousExcluded);
+                snackWithFallback(snackError, error, { headerId: 'modificationActivationByRootNetworkError' });
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, [
+        modificationUuid,
+        studyUuid,
+        currentNodeId,
+        modificationsToExclude,
+        rootNetwork.rootNetworkUuid,
+        setModificationsToExclude,
+        snackError,
+    ]);
 
     return (
         <ActivableChip
@@ -140,4 +154,4 @@ export const RootNetworkChipCell: FunctionComponent<RootNetworkChipCellProps> = 
             onClick={handleModificationActivationByRootNetwork}
         />
     );
-};
+}
