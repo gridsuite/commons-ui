@@ -73,9 +73,7 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         }
     }, [isComposite, row.original.messageValues]);
 
-    // `compositeName` is the single source of truth for the modification name: updated
-    // optimistically on rename (see commitName) and re-synced from the server data —
-    // mirrors SwitchCell's local state.
+    // Single source of truth for the name: optimistic on rename, re-synced from the server.
     const [compositeName, setCompositeName] = useState(savedCompositeName);
     useEffect(() => {
         setCompositeName(savedCompositeName);
