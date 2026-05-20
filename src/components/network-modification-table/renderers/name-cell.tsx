@@ -61,6 +61,7 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         [computeLabel, intl]
     );
 
+    // Composite name as carried by the server data.
     const savedCompositeName = useMemo(() => {
         if (!isComposite) {
             return '';
@@ -72,23 +73,23 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         }
     }, [isComposite, row.original.messageValues]);
 
-    // Optimistic name: reflects a rename immediately, before the server notification
-    // refreshes row.original. Cleared (re-synced) once the saved name catches up.
-    const [optimisticName, setOptimisticName] = useState<string | null>(null);
+    // `compositeName` is the single source of truth for the modification name: updated
+    // optimistically on rename (see commitName) and re-synced from the server data —
+    // mirrors SwitchCell's local state.
+    const [compositeName, setCompositeName] = useState(savedCompositeName);
     useEffect(() => {
-        setOptimisticName(null);
+        setCompositeName(savedCompositeName);
     }, [savedCompositeName]);
 
-    const compositeName = optimisticName ?? savedCompositeName;
-
-    const label = useMemo(() => {
-        // While a rename is pending, derive the label from the optimistic name so the
-        // cell shows the new name right away, before the server refresh lands.
-        if (isComposite && optimisticName !== null) {
-            return getModificationLabel({ ...row.original, messageValues: JSON.stringify({ name: optimisticName }) });
-        }
-        return getModificationLabel(row.original);
-    }, [getModificationLabel, row.original, isComposite, optimisticName]);
+    // The displayed label is derived from that name for a composite, and straight from
+    // the server data for any other modification.
+    const label = useMemo(
+        () =>
+            isComposite
+                ? getModificationLabel({ ...row.original, messageValues: JSON.stringify({ name: compositeName }) })
+                : getModificationLabel(row.original),
+        [getModificationLabel, row.original, isComposite, compositeName]
+    );
 
     const [isEditing, setIsEditing] = useState(false);
     const [draftName, setDraftName] = useState('');
@@ -105,16 +106,18 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
 
     const commitName = useCallback(
         (newName: string) => {
-            setOptimisticName(newName);
+            // Optimistic update: adopt the new name immediately (the label derives from
+            // it); roll back to the server value if the request fails.
+            setCompositeName(newName);
             setModificationMetadata(studyUuid, currentNodeId, row.original.uuid, {
                 name: newName,
                 type: row.original.type,
             }).catch((error) => {
-                setOptimisticName(null); // rollback
+                setCompositeName(savedCompositeName); // rollback
                 snackWithFallback(snackError, error, { headerId: 'networkModificationRenamingError' });
             });
         },
-        [studyUuid, currentNodeId, row.original.uuid, row.original.type, snackError]
+        [studyUuid, currentNodeId, row.original.uuid, row.original.type, savedCompositeName, snackError]
     );
 
     // onBlur: only commits if editing wasn't already closed by Enter/Escape
