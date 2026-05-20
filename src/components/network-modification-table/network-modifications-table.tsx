@@ -85,10 +85,11 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
-    const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
-        modifications: composedModifications,
-        onRowSelected,
-    });
+    const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection, getAllDescendants } =
+        useModificationsSelection({
+            modifications: composedModifications,
+            onRowSelected,
+        });
 
     useEffect(() => {
         setComposedModifications((prevMods) => {
@@ -198,22 +199,7 @@ export function NetworkModificationsTable({
         if (!modificationUuidsToReset?.length) {
             return;
         }
-
-        const uuidsToReset = new Set<string>(modificationUuidsToReset);
-        const collectAllUuids = (mod: ComposedModificationMetadata) => {
-            uuidsToReset.add(mod.uuid);
-            mod.subModifications?.forEach(collectAllUuids);
-        };
-        const collectDescendants = (mods: ComposedModificationMetadata[]) => {
-            for (const mod of mods) {
-                if (uuidsToReset.has(mod.uuid)) {
-                    mod.subModifications?.forEach(collectAllUuids);
-                } else {
-                    collectDescendants(mod.subModifications ?? []);
-                }
-            }
-        };
-        collectDescendants(composedModificationsRef.current);
+        const uuidsToReset: Set<string> = getAllDescendants(modificationUuidsToReset);
 
         table.setRowSelection((prev) => {
             const next = { ...prev };

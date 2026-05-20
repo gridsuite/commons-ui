@@ -8,6 +8,7 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Row, RowSelectionState, Updater } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../../utils';
+import { UUID } from 'node:crypto';
 
 /**
  * Ensures all subrows of a composite are selected if the composite also is, otherwise deselected the composite
@@ -98,6 +99,7 @@ interface UseModificationsSelectionResult {
     onRowSelectionChange: (updater: Updater<RowSelectionState>) => void;
     lastClickedRowId: RefObject<string | null>;
     emitSelection: (flatRows: Row<ComposedModificationMetadata>[]) => void;
+    getAllDescendants: (uuids: UUID[]) => Set<string>;
 }
 
 export function useModificationsSelection({
@@ -124,11 +126,39 @@ export function useModificationsSelection({
         [onRowSelected]
     );
 
+    const getAllDescendants = useCallback(
+        (modificationUuidsToReset: UUID[]): Set<string> => {
+            const uuidsToReset = new Set<string>(modificationUuidsToReset);
+            const collectAllUuids = (mod: ComposedModificationMetadata) => {
+                uuidsToReset.add(mod.uuid);
+                mod.subModifications?.forEach(collectAllUuids);
+            };
+            const collectDescendants = (mods: ComposedModificationMetadata[]) => {
+                for (const mod of mods) {
+                    if (uuidsToReset.has(mod.uuid)) {
+                        mod.subModifications?.forEach(collectAllUuids);
+                    } else {
+                        collectDescendants(mod.subModifications ?? []);
+                    }
+                }
+            };
+            collectDescendants(modifications);
+            return uuidsToReset;
+        },
+        [modifications]
+    );
+
     // Used to propagate selection status from composite to sub modifications if they are loaded
     // after selecting the composite.
     useEffect(() => {
         setRowSelection((prev) => propagateSelectionToLoadedDescendants(prev, modifications));
     }, [modifications]);
 
-    return { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection };
+    return {
+        rowSelection,
+        onRowSelectionChange,
+        lastClickedRowId,
+        emitSelection,
+        getAllDescendants: getAllDescendants,
+    };
 }
