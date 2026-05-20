@@ -10,9 +10,9 @@ import type { RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import './stylesExpertFilter.css';
 import { useWatch } from 'react-hook-form';
-import * as yup from 'yup';
 import { v4 as uuid4 } from 'uuid';
 import { Box } from '@mui/material';
+import yup from '../../../utils/yupConfig';
 import { testQuery } from './expertFilterUtils';
 import {
     COMBINATOR_OPTIONS,
@@ -33,18 +33,6 @@ import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../utils';
 import { useCustomFormContext } from '../../inputs';
-
-yup.setLocale({
-    mixed: {
-        required: 'YupRequired',
-        notType: ({ type }) => {
-            if (type === 'number') {
-                return 'YupNotTypeNumber';
-            }
-            return 'YupNotTypeDefault';
-        },
-    },
-});
 
 function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)

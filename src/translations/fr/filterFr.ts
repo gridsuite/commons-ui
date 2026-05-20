@@ -39,7 +39,6 @@ export const filterFr = {
     AddFreePropCrit: 'Ajouter un filtrage par propriété',
     FreeProps: "Propriétés de l'ouvrage",
     SubstationFreeProps: "Propriétés du site de l'ouvrage",
-    YupRequired: 'Ce champ doit être renseigné',
     filterPropertiesNameUniquenessError: "Il n'est pas possible d'ajouter plusieurs filtres pour la même propriété",
     emptyFilterError: 'Le filtre doit contenir au moins un ouvrage',
     distributionKeyWithMissingIdError: 'ID manquant avec une clé de répartition définie',
