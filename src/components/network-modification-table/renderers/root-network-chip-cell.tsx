@@ -106,12 +106,9 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
 
         setIsLoading(true);
 
-        // Capture previous state for rollback
-        const previousExcluded = modificationsToExclude;
-
         // Compute next state (pure, no side effects)
         const { nextExcluded, newStatus } = getUpdatedExcludedModifications(
-            previousExcluded,
+            modificationsToExclude,
             rootNetwork.rootNetworkUuid,
             modificationUuid
         );
@@ -128,8 +125,12 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             newStatus
         )
             .catch((error) => {
-                // Rollback on failure
-                setModificationsToExclude(previousExcluded);
+                // Rollback on failure by toggling back
+                setModificationsToExclude(
+                    (prev) =>
+                        getUpdatedExcludedModifications(prev, rootNetwork.rootNetworkUuid, modificationUuid)
+                            .nextExcluded
+                );
                 snackWithFallback(snackError, error, { headerId: 'modificationActivationByRootNetworkError' });
             })
             .finally(() => {
