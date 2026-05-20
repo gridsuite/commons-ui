@@ -43,23 +43,27 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
-export function SecurityAnalysisParametersForm({
-    securityAnalysisMethods,
-    showContingencyCount,
-    fetchContingencyCount,
-    isBuiltCurrentNode,
-    renderTitleFields,
-    renderActions,
-    isDeveloperMode,
-}: Readonly<{
+export type SecurityAnalysisParametersFormProps = {
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
+    contingencyCountRefreshTrigger?: number;
     isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
-}>) {
+};
+
+export function SecurityAnalysisParametersForm({
+    securityAnalysisMethods,
+    showContingencyCount,
+    fetchContingencyCount,
+    contingencyCountRefreshTrigger,
+    isBuiltCurrentNode,
+    renderTitleFields,
+    renderActions,
+    isDeveloperMode,
+}: Readonly<SecurityAnalysisParametersFormProps>) {
     return (
         <CustomFormProvider
             validationSchema={securityAnalysisMethods.formSchema}
@@ -119,6 +123,7 @@ export function SecurityAnalysisParametersForm({
                                             name={CONTINGENCY_LISTS_INFOS}
                                             showContingencyCount={showContingencyCount}
                                             fetchContingencyCount={fetchContingencyCount}
+                                            contingencyCountRefreshTrigger={contingencyCountRefreshTrigger}
                                             isBuiltCurrentNode={isBuiltCurrentNode}
                                         />
                                         <Grid container paddingTop={4} paddingBottom={2}>
