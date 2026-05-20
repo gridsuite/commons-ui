@@ -47,7 +47,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
-    selectionResetKey?: number;
+    modificationUuidsToReset?: UUID[];
     studyUuid: UUID | null;
     currentNodeId?: UUID;
 }
@@ -61,7 +61,7 @@ export function NetworkModificationsTable({
     onRowSelected,
     columns,
     highlightedModificationUuid,
-    selectionResetKey,
+    modificationUuidsToReset,
     studyUuid = null,
     currentNodeId = undefined,
     isImpactedByNotification,
@@ -78,6 +78,12 @@ export function NetworkModificationsTable({
     const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
         formatToComposedModification(modifications)
     );
+    // composedModificationsRef is used to access composedModifications data from other useEffects
+    // without having to add composedModifications to their dependencies (so it doesn't trigger them)
+    const composedModificationsRef = useRef(composedModifications);
+    useEffect(() => {
+        composedModificationsRef.current = composedModifications;
+    }, [composedModifications]);
 
     const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
         modifications: composedModifications,
@@ -187,9 +193,42 @@ export function NetworkModificationsTable({
         currentNodeUuid: currentNodeId,
     });
 
+    // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications
     useEffect(() => {
-        table.resetRowSelection();
-    }, [table, selectionResetKey]);
+        if (!modificationUuidsToReset?.length) {
+            return;
+        }
+
+        const uuidsToReset = new Set<string>(modificationUuidsToReset);
+        const collectAllUuids = (mod: ComposedModificationMetadata) => {
+            uuidsToReset.add(mod.uuid);
+            mod.subModifications?.forEach(collectAllUuids);
+        };
+        const collectDescendants = (mods: ComposedModificationMetadata[]) => {
+            for (const mod of mods) {
+                if (uuidsToReset.has(mod.uuid)) {
+                    mod.subModifications?.forEach(collectAllUuids);
+                } else {
+                    collectDescendants(mod.subModifications ?? []);
+                }
+            }
+        };
+        collectDescendants(composedModificationsRef.current);
+
+        table.setRowSelection((prev) => {
+            const next = { ...prev };
+            uuidsToReset.forEach((uuid) => delete next[uuid]);
+            return next;
+        });
+        setExpanded((prev) => {
+            if (prev === true) {
+                return prev;
+            }
+            const next = { ...prev };
+            uuidsToReset.forEach((uuid) => delete next[uuid]);
+            return next;
+        });
+    }, [modificationUuidsToReset, table]);
 
     useEffect(() => {
         table.resetRowSelection();
