@@ -34,6 +34,9 @@ import { ComposedModificationMetadata } from '../../../utils';
  *
  * Dynamic values are routed via react-table's `meta`: table-wide via `table.options.meta`,
  * per-column via `column.columnDef.meta`.
+ *
+ *  TODO simplify
+ *
  */
 
 type CCtx = CellContext<ComposedModificationMetadata, unknown>;
