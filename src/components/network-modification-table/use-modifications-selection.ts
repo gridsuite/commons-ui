@@ -159,6 +159,6 @@ export function useModificationsSelection({
         onRowSelectionChange,
         lastClickedRowId,
         emitSelection,
-        getAllDescendants: getAllDescendants,
+        getAllDescendants,
     };
 }
