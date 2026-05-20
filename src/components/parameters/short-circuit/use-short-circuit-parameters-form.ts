@@ -303,7 +303,7 @@ export const useShortCircuitParametersForm = ({
                 console.error('Failed to load short-circuit form values', error);
                 snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
             });
-    }, [provider, params, reset, specificParamsDescription, toShortCircuitFormValues]);
+    }, [provider, params, reset, specificParamsDescription, toShortCircuitFormValues, snackError]);
 
     return {
         formMethods,

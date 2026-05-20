@@ -281,6 +281,16 @@ const formatElectronicsMaterialsParamString = (
     });
 };
 
+export async function checkFilterAndAddName(filters: string[]): Promise<{ id: string; name: string }[]> {
+    const filterIds = new Set(filters);
+    const elementNamesPromise = filterIds.size === 0 ? Promise.resolve(null) : fetchElementNames(filterIds);
+    const elementNames = await elementNamesPromise;
+    return filters.map((filter) => ({
+        [ID]: filter,
+        [NAME]: elementNames?.[filter] ?? null,
+    }));
+}
+
 const formatElectronicsClustersParamString = (
     defaultValues: PowerElectronicsCluster[],
     specificParamValue: string,
@@ -365,16 +375,3 @@ export const formatShortCircuitSpecificParameters = async (
     }
     return formatted;
 };
-
-export function checkFilterAndAddName(
-    filters: string[]
-): Promise<{ id: string; name: string }[]> {
-    const filterIds = new Set(filters);
-    const elementNamesPromise = filterIds.size === 0 ? Promise.resolve(null) : fetchElementNames(filterIds);
-    return elementNamesPromise.then((elementNames) => {
-        return filters.map((filter) => ({
-            [ID]: filter,
-            [NAME]: elementNames?.[filter] ?? null,
-        }));
-    });
-}
