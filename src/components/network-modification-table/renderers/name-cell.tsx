@@ -79,14 +79,14 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         setCompositeName(savedCompositeName);
     }, [savedCompositeName]);
 
-    // The displayed label is derived from that name for a composite, and straight from
-    // the server data for any other modification.
+    // While a rename is in flight, the label is derived from the optimistic name;
+    // otherwise it comes straight from the server data (no JSON round-trip).
     const label = useMemo(
         () =>
-            isComposite
+            isComposite && compositeName !== savedCompositeName
                 ? getModificationLabel({ ...row.original, messageValues: JSON.stringify({ name: compositeName }) })
                 : getModificationLabel(row.original),
-        [getModificationLabel, row.original, isComposite, compositeName]
+        [getModificationLabel, row.original, isComposite, compositeName, savedCompositeName]
     );
 
     const [isEditing, setIsEditing] = useState(false);
