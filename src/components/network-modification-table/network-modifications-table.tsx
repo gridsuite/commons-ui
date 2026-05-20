@@ -59,7 +59,6 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationsToExclude?: ExcludedNetworkModifications[];
     setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
     isDisabled?: boolean;
-    onEditNameCell?: (modification: ComposedModificationMetadata, newName: string) => void;
 }
 
 export function NetworkModificationsTable({
@@ -78,7 +77,6 @@ export function NetworkModificationsTable({
     modificationsToExclude,
     setModificationsToExclude,
     isDisabled = false,
-    onEditNameCell,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
@@ -155,7 +153,6 @@ export function NetworkModificationsTable({
                 pendingState,
             },
             isDisabled,
-            onEditNameCell,
         }),
         [
             studyUuid,
@@ -173,7 +170,6 @@ export function NetworkModificationsTable({
             isFetchingModifications,
             pendingState,
             isDisabled,
-            onEditNameCell,
         ]
     );
 

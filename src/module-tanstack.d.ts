@@ -9,7 +9,7 @@ import { Dispatch, RefObject, SetStateAction } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import { NameHeaderProps } from './components/network-modification-table/columns-definition';
-import { ComposedModificationMetadata, ExcludedNetworkModifications, RootNetworkRowInfo } from './utils';
+import { ExcludedNetworkModifications, RootNetworkRowInfo } from './utils';
 
 declare module '@tanstack/react-table' {
     // TableMeta = values shared by the whole table (same value across every cell).
@@ -27,7 +27,6 @@ declare module '@tanstack/react-table' {
         isRowDragDisabled?: boolean;
         nameHeaderProps?: NameHeaderProps;
         isDisabled?: boolean;
-        onEditNameCell?: (modification: ComposedModificationMetadata, newName: string) => void;
     }
 
     // ColumnMeta = values that differ from one column to another.

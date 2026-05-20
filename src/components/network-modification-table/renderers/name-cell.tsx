@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import type { UUID } from 'node:crypto';
 import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     createModificationNameCellStyle,
@@ -18,8 +19,9 @@ import {
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
 import { isCompositeModification } from '../utils';
-import { useModificationLabelComputer } from '../../../hooks';
-import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata } from '../../../utils';
+import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
+import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
+import { setModificationMetadata } from '../../../services';
 
 const MIN_CHAR_WIDTH = 30;
 
@@ -35,13 +37,15 @@ function measureTextPx(text: string, font: string): number {
 
 interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
-    onEditNameCell?: (modification: ComposedModificationMetadata, newName: string) => void;
+    studyUuid: UUID | null;
+    currentNodeId?: UUID;
 }
 
-export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
+export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellProps>) {
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
+    const { snackError } = useSnackMessage();
 
     const { depth } = row;
 
@@ -57,9 +61,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
         [computeLabel, intl]
     );
 
-    const label = useMemo(() => getModificationLabel(row.original), [getModificationLabel, row.original]);
-
-    const compositeName = useMemo(() => {
+    const savedCompositeName = useMemo(() => {
         if (!isComposite) {
             return '';
         }
@@ -69,6 +71,24 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
             return '';
         }
     }, [isComposite, row.original.messageValues]);
+
+    // Optimistic name: reflects a rename immediately, before the server notification
+    // refreshes row.original. Cleared (re-synced) once the saved name catches up.
+    const [optimisticName, setOptimisticName] = useState<string | null>(null);
+    useEffect(() => {
+        setOptimisticName(null);
+    }, [savedCompositeName]);
+
+    const compositeName = optimisticName ?? savedCompositeName;
+
+    const label = useMemo(() => {
+        // While a rename is pending, derive the label from the optimistic name so the
+        // cell shows the new name right away, before the server refresh lands.
+        if (isComposite && optimisticName !== null) {
+            return getModificationLabel({ ...row.original, messageValues: JSON.stringify({ name: optimisticName }) });
+        }
+        return getModificationLabel(row.original);
+    }, [getModificationLabel, row.original, isComposite, optimisticName]);
 
     const [isEditing, setIsEditing] = useState(false);
     const [draftName, setDraftName] = useState('');
@@ -83,6 +103,20 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
         setInputBaseWidthPx(null);
     }, []);
 
+    const commitName = useCallback(
+        (newName: string) => {
+            setOptimisticName(newName);
+            setModificationMetadata(studyUuid, currentNodeId, row.original.uuid, {
+                name: newName,
+                type: row.original.type,
+            }).catch((error) => {
+                setOptimisticName(null); // rollback
+                snackWithFallback(snackError, error, { headerId: 'networkModificationRenamingError' });
+            });
+        },
+        [studyUuid, currentNodeId, row.original.uuid, row.original.type, snackError]
+    );
+
     // onBlur: only commits if editing wasn't already closed by Enter/Escape
     const handleBlur = useCallback(() => {
         if (!isEditingRef.current) {
@@ -90,10 +124,10 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
         }
         const trimmed = draftName.trim();
         if (trimmed !== '' && trimmed !== compositeName) {
-            onEditNameCell?.(row.original, trimmed);
+            commitName(trimmed);
         }
         stopEditing();
-    }, [compositeName, draftName, onEditNameCell, row.original, stopEditing]);
+    }, [compositeName, draftName, commitName, stopEditing]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
@@ -129,7 +163,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
             if (e.key === 'Enter') {
                 const trimmed = draftName.trim();
                 if (trimmed !== '' && trimmed !== compositeName) {
-                    onEditNameCell?.(row.original, trimmed);
+                    commitName(trimmed);
                 }
                 stopEditing();
                 inputRef.current?.blur();
@@ -138,7 +172,7 @@ export function NameCell({ row, onEditNameCell }: Readonly<NameCellProps>) {
                 inputRef.current?.blur();
             }
         },
-        [compositeName, draftName, onEditNameCell, row.original, stopEditing]
+        [compositeName, draftName, commitName, stopEditing]
     );
 
     const renderDepthBox = () => {
