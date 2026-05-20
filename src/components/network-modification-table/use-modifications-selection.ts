@@ -7,8 +7,8 @@
 
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Row, RowSelectionState, Updater } from '@tanstack/react-table';
-import { ComposedModificationMetadata } from '../../utils';
 import { UUID } from 'node:crypto';
+import { ComposedModificationMetadata } from '../../utils';
 
 /**
  * Ensures all subrows of a composite are selected if the composite also is, otherwise deselected the composite
@@ -134,13 +134,13 @@ export function useModificationsSelection({
                 mod.subModifications?.forEach(collectAllUuids);
             };
             const collectDescendants = (mods: ComposedModificationMetadata[]) => {
-                for (const mod of mods) {
+                mods.forEach((mod) => {
                     if (uuidsToReset.has(mod.uuid)) {
                         mod.subModifications?.forEach(collectAllUuids);
                     } else {
                         collectDescendants(mod.subModifications ?? []);
                     }
-                }
+                });
             };
             collectDescendants(modifications);
             return uuidsToReset;

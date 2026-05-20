@@ -214,7 +214,7 @@ export function NetworkModificationsTable({
             uuidsToReset.forEach((uuid) => delete next[uuid]);
             return next;
         });
-    }, [modificationUuidsToReset, table]);
+    }, [modificationUuidsToReset, table, getAllDescendants]);
 
     useEffect(() => {
         table.resetRowSelection();
