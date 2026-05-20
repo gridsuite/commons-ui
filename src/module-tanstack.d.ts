@@ -9,7 +9,7 @@ import { Dispatch, RefObject, SetStateAction } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import { NameHeaderProps } from './components/network-modification-table/columns-definition';
-import { ExcludedNetworkModifications, RootNetworkRowInfo } from './utils';
+import { ComposedModificationMetadata, ExcludedNetworkModifications, RootNetworkRowInfo } from './utils';
 
 declare module '@tanstack/react-table' {
     // TableMeta = values shared by the whole table (same value across every cell).
@@ -36,5 +36,7 @@ declare module '@tanstack/react-table' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface ColumnMeta<TData extends RowData, TValue> {
         cellStyle?: SxProps<Theme>;
+        // Per-column edit callback
+        onChange?: (modification: ComposedModificationMetadata, newName: string) => Promise<unknown>;
     }
 }

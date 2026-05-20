@@ -62,9 +62,8 @@ export function NameHeaderRenderer({ table }: HCtx) {
     );
 }
 
-export function NameCellRenderer({ row, table }: CCtx) {
-    const { meta } = table.options;
-    return <NameCell row={row} studyUuid={meta?.studyUuid ?? null} currentNodeId={meta?.currentNodeId} />;
+export function NameCellRenderer({ row, column }: CCtx) {
+    return <NameCell row={row} onChange={column.columnDef.meta?.onChange} />;
 }
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {

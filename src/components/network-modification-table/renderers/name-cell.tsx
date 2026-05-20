@@ -9,7 +9,6 @@ import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
-import type { UUID } from 'node:crypto';
 import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     createModificationNameCellStyle,
@@ -21,7 +20,6 @@ import { DepthBox } from './depth-box';
 import { isCompositeModification } from '../utils';
 import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
-import { setModificationMetadata } from '../../../services';
 
 const MIN_CHAR_WIDTH = 30;
 
@@ -37,11 +35,10 @@ function measureTextPx(text: string, font: string): number {
 
 interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
+    onChange?: (modification: ComposedModificationMetadata, newName: string) => Promise<unknown>;
 }
 
-export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellProps>) {
+export function NameCell({ row, onChange }: Readonly<NameCellProps>) {
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
@@ -105,17 +102,15 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
     const updateName = useCallback(
         (newName: string) => {
             // Optimistic update: adopt the new name immediately (the label derives from
-            // it); roll back to the server value if the request fails.
+            // it); persistence is delegated to the consumer via onChange, and we
+            // roll back to the server value if it fails.
             setCompositeName(newName);
-            setModificationMetadata(studyUuid, currentNodeId, row.original.uuid, {
-                name: newName,
-                type: row.original.type,
-            }).catch((error) => {
+            Promise.resolve(onChange?.(row.original, newName)).catch((error) => {
                 setCompositeName(savedCompositeName); // rollback
                 snackWithFallback(snackError, error, { headerId: 'networkModificationRenamingError' });
             });
         },
-        [studyUuid, currentNodeId, row.original.uuid, row.original.type, savedCompositeName, snackError]
+        [onChange, row.original, savedCompositeName, snackError]
     );
 
     // onBlur: only commits if editing wasn't already closed by Enter/Escape
