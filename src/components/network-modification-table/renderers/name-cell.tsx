@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Row } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
-import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
 import type { UUID } from 'node:crypto';
 import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
@@ -79,14 +79,14 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         setCompositeName(savedCompositeName);
     }, [savedCompositeName]);
 
-    // While a rename is in flight, the label is derived from the optimistic name;
-    // otherwise it comes straight from the server data (no JSON round-trip).
+    // The displayed label is derived from that name for a composite, and straight from
+    // the server data for any other modification.
     const label = useMemo(
         () =>
-            isComposite && compositeName !== savedCompositeName
+            isComposite
                 ? getModificationLabel({ ...row.original, messageValues: JSON.stringify({ name: compositeName }) })
                 : getModificationLabel(row.original),
-        [getModificationLabel, row.original, isComposite, compositeName, savedCompositeName]
+        [getModificationLabel, row.original, isComposite, compositeName]
     );
 
     const [isEditing, setIsEditing] = useState(false);
@@ -102,7 +102,7 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         setInputBaseWidthPx(null);
     }, []);
 
-    const commitName = useCallback(
+    const updateName = useCallback(
         (newName: string) => {
             // Optimistic update: adopt the new name immediately (the label derives from
             // it); roll back to the server value if the request fails.
@@ -125,10 +125,10 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
         }
         const trimmed = draftName.trim();
         if (trimmed !== '' && trimmed !== compositeName) {
-            commitName(trimmed);
+            updateName(trimmed);
         }
         stopEditing();
-    }, [compositeName, draftName, commitName, stopEditing]);
+    }, [compositeName, draftName, updateName, stopEditing]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
@@ -164,7 +164,7 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
             if (e.key === 'Enter') {
                 const trimmed = draftName.trim();
                 if (trimmed !== '' && trimmed !== compositeName) {
-                    commitName(trimmed);
+                    updateName(trimmed);
                 }
                 stopEditing();
                 inputRef.current?.blur();
@@ -173,7 +173,7 @@ export function NameCell({ row, studyUuid, currentNodeId }: Readonly<NameCellPro
                 inputRef.current?.blur();
             }
         },
-        [compositeName, draftName, commitName, stopEditing]
+        [compositeName, draftName, updateName, stopEditing]
     );
 
     const renderDepthBox = () => {
