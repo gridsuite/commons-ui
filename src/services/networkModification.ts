@@ -8,7 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
-import { NetworkModificationMetadata } from '../utils';
+import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
 
@@ -136,7 +136,7 @@ export function setModificationMetadata(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
     modificationUuid: UUID | undefined,
-    metadata: Partial<NetworkModificationMetadata>
+    metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
 ): Promise<Response> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('uuids', String([modificationUuid]));

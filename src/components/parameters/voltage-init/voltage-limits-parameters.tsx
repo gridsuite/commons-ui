@@ -7,8 +7,9 @@
 
 import { useMemo } from 'react';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { Grid, Tooltip } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useIntl } from 'react-intl';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import {
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
@@ -16,7 +17,7 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table-v2';
+import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { VoltageAdornment } from '../../../utils/constants/adornments';
 import { ParameterTableField } from '../common/parameter-table-field';
@@ -25,15 +26,14 @@ export function VoltageLimitsParameters() {
     const intl = useIntl();
     const VoltageLevelFilterTooltip = useMemo(() => {
         return (
-            <Tooltip
+            <CustomTooltip
                 title={intl.formatMessage({
                     id: 'VoltageLevelFilterTooltip',
                 })}
-                placement="right-start"
                 sx={{ marginLeft: 1 }}
             >
                 <InfoIcon />
-            </Tooltip>
+            </CustomTooltip>
         );
     }, [intl]);
 

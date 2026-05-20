@@ -4,8 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     LimitReductionIColumnsDef,
     LIMIT_REDUCTIONS_FORM,
@@ -43,7 +44,7 @@ export function CustomVoltageLevelTable({
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
-                            <Tooltip title={column.tooltip}>
+                            <CustomTooltip title={column.tooltip}>
                                 <TableCell
                                     key={column.dataKey}
                                     sx={{
@@ -52,7 +53,7 @@ export function CustomVoltageLevelTable({
                                 >
                                     {column.label}
                                 </TableCell>
-                            </Tooltip>
+                            </CustomTooltip>
                         ))}
                     </TableRow>
                 </TableHead>

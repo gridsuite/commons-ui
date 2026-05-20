@@ -4,4 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export { CreateSwitchesDialog } from './CreateSwitchesDialog';
+
+export * from './shuntCompensator.types';
+export * from './shuntCompensator.utils';
+export * from './CharacteristicsForm';
+export * from './characteristicsForm.utils';

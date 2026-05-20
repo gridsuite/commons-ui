@@ -7,7 +7,7 @@
 import { array, number, ref, object, TestContext, ValidationError } from 'yup';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import { ReactiveCapabilityCurve, ReactiveCapabilityCurvePoints } from '../reactiveLimits.type';
-import { FieldConstants, toNumber, validateValueIsANumber } from '../../../../../utils';
+import { FieldConstants, toNumber, validateValueIsANumber, YUP_NOT_TYPE_NUMBER } from '../../../../../utils';
 import {
     GeneratorCreationDialogSchemaForm,
     GeneratorDialogSchemaBaseForm,
@@ -21,12 +21,13 @@ export const REMOVE = 'REMOVE';
 
 const getCreationRowSchema = () =>
     object().shape({
-        [FieldConstants.MAX_Q]: number().nullable().default(null),
+        [FieldConstants.MAX_Q]: number().nullable().typeError(YUP_NOT_TYPE_NUMBER).default(null),
         [FieldConstants.MIN_Q]: number()
             .nullable()
+            .typeError(YUP_NOT_TYPE_NUMBER)
             .default(null)
             .max(ref(FieldConstants.MAX_Q), 'ReactiveCapabilityCurveCreationErrorQminPQmaxPIncoherence'),
-        [FieldConstants.P]: number().nullable().default(null),
+        [FieldConstants.P]: number().nullable().typeError(YUP_NOT_TYPE_NUMBER).default(null),
     });
 
 export const getRowEmptyFormData = () => ({
@@ -96,16 +97,14 @@ function ifOneFieldThenAllFields(values: ReactiveCapabilityCurve, context: TestC
     return errors.length === 0 ? true : new ValidationError(errors);
 }
 
-export const getReactiveCapabilityCurveValidationSchema = (
-    id = FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE,
-    positiveAndNegativePExist = false
-) => ({
-    [id]: array()
+export const getReactiveCapabilityCurveValidationSchemaArray = (positiveAndNegativePExist = false) =>
+    array()
+        .of(getCreationRowSchema())
         .nullable()
         .when([FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE], {
             is: 'CURVE',
             then: (schema) => {
-                let resultSchema = schema.of(getCreationRowSchema());
+                let resultSchema = schema;
                 if (positiveAndNegativePExist) {
                     resultSchema = resultSchema
                         .test(
@@ -133,7 +132,13 @@ export const getReactiveCapabilityCurveValidationSchema = (
                         checkAllPValuesBetweenMinMax
                     );
             },
-        }),
+        });
+
+export const getReactiveCapabilityCurveValidationSchema = (
+    id = FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE,
+    positiveAndNegativePExist = false
+) => ({
+    [id]: getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
 });
 
 export function setSelectedReactiveLimits(
