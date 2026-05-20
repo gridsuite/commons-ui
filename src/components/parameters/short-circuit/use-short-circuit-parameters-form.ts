@@ -212,7 +212,7 @@ export const useShortCircuitParametersForm = ({
     );
 
     const toShortCircuitFormValues = useCallback(
-        (_params: ShortCircuitParametersInfos) => {
+        async (_params: ShortCircuitParametersInfos) => {
             if (!provider || !_params) {
                 return {};
             }
@@ -230,11 +230,11 @@ export const useShortCircuitParametersForm = ({
                     [SHORT_CIRCUIT_WITH_NEUTRAL_POSITION]: !_params.commonParameters.withNeutralPosition,
                 },
                 [SPECIFIC_PARAMETERS]: {
-                    ...formatShortCircuitSpecificParameters(
+                    ...(await formatShortCircuitSpecificParameters(
                         specificParametersDescriptionForProvider,
                         specificParamsListForCurrentProvider,
                         snackError
-                    ),
+                    )),
                 },
             };
         },
@@ -294,11 +294,15 @@ export const useShortCircuitParametersForm = ({
         if (!params || !provider || !specificParamsDescription) {
             return;
         }
-        reset(toShortCircuitFormValues(params));
-        // Now that we have params, provider and specific parameters description we can init
-        // form Schema and default values. this paramsLoaded State is used to determine
-        // if form is correctly initialized and that we are able to render form inputs
-        setParamsLoaded(true);
+        toShortCircuitFormValues(params)
+            .then((formValues) => {
+                reset(formValues);
+                setParamsLoaded(true);
+            })
+            .catch((error) => {
+                console.error('Failed to load short-circuit form values', error);
+                snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
+            });
     }, [provider, params, reset, specificParamsDescription, toShortCircuitFormValues]);
 
     return {

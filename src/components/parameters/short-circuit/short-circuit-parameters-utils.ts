@@ -36,6 +36,7 @@ import {
 } from '../common/utils';
 import { NAME } from '../../inputs';
 import { SnackInputs } from '../../../hooks';
+import { fetchElementNames } from '../../../services';
 
 export enum ShortCircuitParametersTabValues {
     GENERAL = 'General',
@@ -253,22 +254,13 @@ export const getShortCircuitSpecificParametersValues = (
         finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = JSON.stringify(
             powerElectronicsClustersParam.map((sParam) => {
                 const { filters, ...rest } = sParam;
-                const lightFilters = // keep only id and name in filters for backend
-                    filters?.map((filter) => ({
-                        filterId: filter[ID],
-                        filterName: filter.name,
-                    })) ?? [];
+                const lightFilters = filters?.map((filter) => filter[ID]) ?? []; // keep only id and name in filters for backend
                 return { ...rest, filters: lightFilters };
             })
         );
     }
     if (nodeClusterFilterIds) {
-        const lightFilters = nodeClusterFilterIds.map((filter) => {
-            return {
-                filterId: filter[ID],
-                filterName: filter.name,
-            };
-        });
+        const lightFilters = nodeClusterFilterIds.map((filter) => filter[ID]);
         finalSpecificParameters[NODE_CLUSTER_FILTER_IDS] = JSON.stringify(lightFilters);
     }
     return finalSpecificParameters;
@@ -296,23 +288,23 @@ const formatElectronicsClustersParamString = (
 ) => {
     const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
         parsePowerElectronicsClustersParamString(specificParamValue, snackError);
-    return electronicsClustersArrayInParams.map((cluster) => {
-        const { filters, ...rest } = cluster;
-        return {
-            ...rest,
-            filters: filters.map((filter) => ({
-                [ID]: filter.filterId,
-                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
-            })),
-        };
-    });
+    // here check filter existence and add name
+    return Promise.all(
+        electronicsClustersArrayInParams.map(async (cluster) => {
+            const { filters, ...rest } = cluster;
+            return {
+                ...rest,
+                filters: await checkFilterAndAddName(filters),
+            };
+        })
+    );
 };
 
-export const formatShortCircuitSpecificParameters = (
+export const formatShortCircuitSpecificParameters = async (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
     specificParamsList: SpecificParametersValues,
     snackError: (message: SnackInputs) => void
-): SpecificParametersValues => {
+): Promise<SpecificParametersValues> => {
     if (!specificParamsList) {
         return getDefaultShortCircuitSpecificParamsValues(specificParametersDescriptionForProvider, snackError);
     }
@@ -346,7 +338,7 @@ export const formatShortCircuitSpecificParameters = (
     );
     if (powerElectronicsClustersParam) {
         if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
-            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = formatElectronicsClustersParamString(
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = await formatElectronicsClustersParamString(
                 getDefaultShortCircuitSpecificParamsValues([powerElectronicsClustersParam], snackError)?.[
                     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
                 ],
@@ -363,10 +355,8 @@ export const formatShortCircuitSpecificParameters = (
     if (nodeClusterParam) {
         if (Object.hasOwn(specificParamsList, NODE_CLUSTER_FILTER_IDS)) {
             const filters = JSON.parse(specificParamsList[NODE_CLUSTER_FILTER_IDS]);
-            formatted[NODE_CLUSTER_FILTER_IDS] = filters.map((filter: { filterId: any; filterName: any }) => ({
-                [ID]: filter.filterId,
-                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
-            }));
+            // here check filter existence and add name
+            formatted[NODE_CLUSTER_FILTER_IDS] = await checkFilterAndAddName(filters);
         } else {
             formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[
                 NODE_CLUSTER_FILTER_IDS
@@ -375,3 +365,16 @@ export const formatShortCircuitSpecificParameters = (
     }
     return formatted;
 };
+
+export function checkFilterAndAddName(
+    filters: string[]
+): Promise<{ id: string; name: string }[]> {
+    const filterIds = new Set(filters);
+    const elementNamesPromise = filterIds.size === 0 ? Promise.resolve(null) : fetchElementNames(filterIds);
+    return elementNamesPromise.then((elementNames) => {
+        return filters.map((filter) => ({
+            [ID]: filter,
+            [NAME]: elementNames?.[filter] ?? null,
+        }));
+    });
+}
