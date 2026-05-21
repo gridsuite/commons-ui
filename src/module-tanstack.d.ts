@@ -8,7 +8,6 @@
 import { Dispatch, RefObject, SetStateAction } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import { NameHeaderProps } from './components/network-modification-table/columns-definition';
 import { ComposedModificationMetadata, ExcludedNetworkModifications, RootNetworkRowInfo } from './utils';
 
 declare module '@tanstack/react-table' {
@@ -25,7 +24,10 @@ declare module '@tanstack/react-table' {
         lastClickedRowId: RefObject<string | null>;
         onRowSelected?: (selectedRows: TData[]) => void;
         isRowDragDisabled?: boolean;
-        nameHeaderProps?: NameHeaderProps;
+        isImpactedByNotification?: () => boolean;
+        notificationMessageId?: string;
+        isFetchingModifications?: boolean;
+        pendingState?: boolean;
         isDisabled?: boolean;
     }
 

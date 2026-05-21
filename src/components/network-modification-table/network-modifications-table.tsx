@@ -146,12 +146,10 @@ export function NetworkModificationsTable({
             lastClickedRowId,
             onRowSelected,
             isRowDragDisabled,
-            nameHeaderProps: {
-                isImpactedByNotification,
-                notificationMessageId,
-                isFetchingModifications,
-                pendingState,
-            },
+            isImpactedByNotification,
+            notificationMessageId,
+            isFetchingModifications,
+            pendingState,
             isDisabled,
         }),
         [

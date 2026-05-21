@@ -47,12 +47,14 @@ export function SelectCellRenderer({ row, table }: CCtx) {
 
 export function NameHeaderRenderer({ table }: HCtx) {
     const { meta } = table.options;
-    const nameHeaderProps = meta?.nameHeaderProps;
-    if (!nameHeaderProps) {
-        return null;
-    }
     return (
-        <NetworkModificationEditorNameHeader modificationCount={meta?.modificationsCount ?? 0} {...nameHeaderProps} />
+        <NetworkModificationEditorNameHeader
+            modificationCount={meta?.modificationsCount ?? 0}
+            isImpactedByNotification={meta?.isImpactedByNotification ?? (() => false)}
+            notificationMessageId={meta?.notificationMessageId}
+            isFetchingModifications={meta?.isFetchingModifications ?? false}
+            pendingState={meta?.pendingState ?? false}
+        />
     );
 }
 
