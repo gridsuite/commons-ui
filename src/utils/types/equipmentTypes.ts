@@ -44,3 +44,7 @@ export const Substation = {
     label: 'Substations',
     type: 'SUBSTATION',
 };
+
+export function isInjection(equipmentType: string): boolean {
+    return equipmentType === Generator.type || equipmentType === Load.type || equipmentType === Battery.type;
+}
