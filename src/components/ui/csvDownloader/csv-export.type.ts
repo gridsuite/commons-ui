@@ -6,7 +6,7 @@
  */
 
 import { ColDef, CsvExportParams } from 'ag-grid-community';
-import { GsLangUser } from '../../utils';
+import { GsLangUser } from '../../../utils';
 
 export type CsvDownloadProps = {
     columns: ColDef[];

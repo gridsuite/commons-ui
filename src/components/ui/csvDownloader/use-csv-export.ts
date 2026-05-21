@@ -9,8 +9,8 @@ import { useCallback } from 'react';
 import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
 import { useIntl } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
-import { LANG_FRENCH } from '../../utils';
-import { fetchStudyMetadata } from '../../services';
+import { LANG_FRENCH } from '../../../utils';
+import { fetchStudyMetadata } from '../../../services';
 
 const NA_VALUE = 'N/A';
 

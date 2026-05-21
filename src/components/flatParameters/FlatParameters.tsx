@@ -23,7 +23,7 @@ import {
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
-import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
+import { MultipleSelectionDialog } from '../ui/dialogs/multipleSelectionDialog/MultipleSelectionDialog';
 import type { MuiStyles } from '../../utils/styles';
 
 const styles = {
