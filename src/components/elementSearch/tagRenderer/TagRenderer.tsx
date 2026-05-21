@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import clsx from 'clsx';
-import { OverflowableText } from '../../overflowableText';
+import { OverflowableText } from '../../ui/overflowableText';
 import { EquipmentInfos, EquipmentType } from '../../../utils/types/equipmentType';
 import { mergeSx, type SxStyle } from '../../../utils/styles';
 

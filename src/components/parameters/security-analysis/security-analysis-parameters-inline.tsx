@@ -14,13 +14,13 @@ import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../
 import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { parametersStyles } from '../parameters-style';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchSecurityAnalysisParameters } from '../../../services/security-analysis';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
-import { PopupConfirmationDialog } from '../../dialogs';
+import { PopupConfirmationDialog } from '../../ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from './types';
 import { toFormValueSaParameters } from './columns-definitions';

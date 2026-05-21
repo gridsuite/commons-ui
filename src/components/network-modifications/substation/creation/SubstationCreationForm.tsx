@@ -6,8 +6,8 @@
  */
 
 import { Grid } from '@mui/material';
-import { TextInput } from '../../../inputs';
-import { CountrySelectionInput } from '../../../inputs/reactHookForm/CountrySelectionInput';
+import { TextInput } from '../../../ui';
+import { CountrySelectionInput } from '../../../ui/reactHookForm/CountrySelectionInput';
 import { FieldConstants } from '../../../../utils';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';
 import { filledTextField } from '../../common';

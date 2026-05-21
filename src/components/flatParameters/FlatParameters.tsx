@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import { Tune as TuneIcon } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
+import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
 import { MultipleSelectionDialog } from '../multipleSelectionDialog/MultipleSelectionDialog';
 import type { MuiStyles } from '../../utils/styles';
 

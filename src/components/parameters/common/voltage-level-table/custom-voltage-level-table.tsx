@@ -6,7 +6,7 @@
  */
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 import {
     LimitReductionIColumnsDef,
     LIMIT_REDUCTIONS_FORM,

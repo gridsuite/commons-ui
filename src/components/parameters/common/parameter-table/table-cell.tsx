@@ -6,14 +6,7 @@
  */
 
 import { TableCell } from '@mui/material';
-import {
-    DescriptionInput,
-    DirectoryItemsInput,
-    FloatInput,
-    MuiSelectInput,
-    SwitchInput,
-    TextInput,
-} from '../../../inputs';
+import { DescriptionInput, DirectoryItemsInput, FloatInput, MuiSelectInput, SwitchInput, TextInput } from '../../../ui';
 
 function EditableTableCell(arrayFormName: string, rowIndex: number, column: any, onRowChanged: () => void) {
     return (

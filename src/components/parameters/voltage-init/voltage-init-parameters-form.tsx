@@ -9,7 +9,7 @@ import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
-import { CustomFormProvider } from '../../inputs';
+import { CustomFormProvider } from '../../ui';
 import { TabPanel } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
 import { VoltageInitTabValues as TabValues } from './constants';
