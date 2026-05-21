@@ -21,22 +21,13 @@ import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../
 import { ComposedModificationMetadata } from '../../../utils';
 
 /**
- * Cell/header renderers must keep a stable reference across renders: react-table calls
- * `flexRender(columnDef.cell, ctx)`, and when a renderer function is used as a component,
- * a new function reference is treated as a different component type — which can
- * unmount/remount the cell and reset its local state.
- *
- * But what matters is the *scope* the renderer is defined in, not whether it is inline or named.
- * An inline arrow inside a module-scope constant (e.g. `BASE_COLUMNS`) is created once and is
- * just as stable as a named component. The renderers below are hoisted because they are reused
- * by `createRootNetworksColumns`, which is a factory called inside a hook — defining them inline
- * there would produce a fresh reference on every call.
+ * Cell/header renderers must keep a stable reference across renders to avoid
+ * unmounting/remounting cells and resetting local states. The renderers below are
+ * hoisted because they're reused by `createBaseColumns` and `createRootNetworksColumns`,
+ * factories called inside a hook — defining them inline there would produce fresh references.
  *
  * Dynamic values are routed via react-table's `meta`: table-wide via `table.options.meta`,
  * per-column via `column.columnDef.meta`.
- *
- *  TODO simplify
- *
  */
 
 type CCtx = CellContext<ComposedModificationMetadata, unknown>;
