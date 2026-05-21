@@ -64,6 +64,28 @@ export function updateModification({ modificationUuid, body }: { modificationUui
     });
 }
 
+/**
+ * Update only the metadata (e.g. the name) of network modifications, directly on the network-modification-server.
+ * Fields left out of `metadata` are not modified.
+ */
+export function updateNetworkModificationsMetadata(
+    modificationUuids: UUID[],
+    metadata: Partial<ComposedModificationMetadata>
+) {
+    const urlSearchParams = new URLSearchParams();
+    modificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
+    const url = `${getUrl()}?${urlSearchParams.toString()}`;
+    console.debug(url);
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
+    });
+}
+
 export function getNetworkModificationsFromComposite(
     compositeModificationUuids: string[],
     onlyMetadata: boolean = true
