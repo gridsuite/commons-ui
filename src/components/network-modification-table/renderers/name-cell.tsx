@@ -35,7 +35,7 @@ function measureTextPx(text: string, font: string): number {
 
 interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
-    onChange?: (modification: ComposedModificationMetadata, newName: string) => Promise<unknown>;
+    onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
 }
 
 export function NameCell({ row, onChange }: Readonly<NameCellProps>) {
