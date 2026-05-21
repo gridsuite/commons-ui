@@ -7,7 +7,7 @@
 
 import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
-import { ActivableChip } from '../../inputs/ActivableChip';
+import { ActivableChip } from '../../inputs';
 import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
@@ -60,7 +60,7 @@ function getUpdatedExcludedModifications(
 }
 
 export interface RootNetworkChipCellProps {
-    data?: ComposedModificationMetadata;
+    data: ComposedModificationMetadata;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     rootNetwork: RootNetworkRowInfo;
@@ -81,12 +81,9 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
-    const modificationUuid = data?.uuid;
+    const modificationUuid = data.uuid;
 
     const isModificationActivated = useMemo(() => {
-        if (!modificationUuid) {
-            return false;
-        }
         if (rootNetwork.isCreating) {
             return true;
         }
@@ -100,7 +97,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     }, [modificationUuid, modificationsToExclude, rootNetwork.rootNetworkUuid, rootNetwork.isCreating]);
 
     const handleModificationActivationByRootNetwork = useCallback(() => {
-        if (!modificationUuid || !studyUuid || !currentNodeId) {
+        if (!studyUuid || !currentNodeId) {
             return;
         }
 

@@ -25,13 +25,13 @@ export function SwitchCell(props: SwitchCellProps) {
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const modificationUuid = data?.uuid;
-    const [modificationActivated, setModificationActivated] = useState(!!data?.activated);
+    const modificationUuid = data.uuid;
+    const [modificationActivated, setModificationActivated] = useState(data.activated);
 
     // Re-sync the local checked state when the row data is refreshed (e.g. after a server notification).
     useEffect(() => {
-        setModificationActivated(!!data?.activated);
-    }, [data?.activated]);
+        setModificationActivated(data.activated);
+    }, [data.activated]);
 
     const toggleModificationActive = useCallback(
         (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -44,17 +44,17 @@ export function SwitchCell(props: SwitchCellProps) {
 
             setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
                 activated: checked,
-                type: data?.type,
+                type: data.type,
             })
                 .catch((error) => {
-                    setModificationActivated(!!data?.activated); // rollback
+                    setModificationActivated(data.activated); // rollback
                     snackWithFallback(snackError, error, { headerId: 'networkModificationActivationError' });
                 })
                 .finally(() => {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, studyUuid, currentNodeId, data?.type, data?.activated, snackError]
+        [modificationUuid, studyUuid, currentNodeId, data.type, data.activated, snackError]
     );
 
     return (
@@ -67,7 +67,7 @@ export function SwitchCell(props: SwitchCellProps) {
                 <Switch
                     size="small"
                     disabled={isLoading || isDisabled}
-                    checked={Boolean(modificationActivated)}
+                    checked={modificationActivated}
                     onChange={toggleModificationActive}
                 />
             </span>

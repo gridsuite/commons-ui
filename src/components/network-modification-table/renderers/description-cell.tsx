@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
-import { DescriptionModificationDialog } from '../../dialogs/descriptionModificationDialog';
+import { DescriptionModificationDialog } from '../../dialogs';
 import { EditNoteIcon } from '../../icons';
 import { setModificationMetadata } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
@@ -27,8 +27,8 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
-    const modificationUuid = data?.uuid;
-    const description = data?.description;
+    const modificationUuid = data.uuid;
+    const { description } = data;
     const empty = !description;
 
     const updateModification = useCallback(
@@ -36,12 +36,12 @@ export function DescriptionCell(props: DescriptionCellProps) {
             setIsLoading(true);
             return setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
-                type: data?.type,
+                type: data.type,
             }).finally(() => {
                 setIsLoading(false);
             });
         },
-        [studyUuid, currentNodeId, modificationUuid, data?.type]
+        [studyUuid, currentNodeId, modificationUuid, data.type]
     );
 
     const handleDescDialogClose = useCallback(() => {
