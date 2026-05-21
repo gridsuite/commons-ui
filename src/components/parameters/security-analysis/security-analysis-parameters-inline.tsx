@@ -50,9 +50,9 @@ export function SecurityAnalysisParametersInline({
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     // to force re-fetch contingency count in ContingencyTable
-    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
+    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState<number | undefined>(undefined);
     const triggerContingencyCountRefresh = useCallback(
-        (value?: number) => setContingencyCountRefreshTrigger((prev) => value ?? prev + 1),
+        (value?: number) => setContingencyCountRefreshTrigger((prev) => value ?? (prev ?? 0) + 1),
         []
     );
 
