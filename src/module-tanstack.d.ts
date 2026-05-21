@@ -37,6 +37,6 @@ declare module '@tanstack/react-table' {
     interface ColumnMeta<TData extends RowData, TValue> {
         cellStyle?: SxProps<Theme>;
         // Per-column edit callback
-        onChange?: (modification: ComposedModificationMetadata, newName: string) => Promise<unknown>;
+        onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
     }
 }
