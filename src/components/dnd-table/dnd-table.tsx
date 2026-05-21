@@ -148,7 +148,7 @@ function EditableTableCell({
                 <TableTextInput
                     {...props}
                     name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
-                    showErrorMsg={column.showErrorMsg}
+                    hideErrorMessage={column.hideErrorMessage}
                 />
             )}
             {column.type === DndColumnType.AUTOCOMPLETE && (

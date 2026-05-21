@@ -39,11 +39,11 @@ export interface ColumnBase {
     // to force to propagate a change event to the parent component via callback
     // for example, refresh contingency count against a change of selected contingency
     shouldHandleOnChangeCell?: boolean;
+    hideErrorMessage?: boolean;
 }
 
 export interface ColumnText extends ColumnBase {
     type: DndColumnType.TEXT;
-    showErrorMsg?: boolean;
 }
 
 export interface ColumnNumeric extends ColumnBase {

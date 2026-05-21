@@ -30,6 +30,7 @@ export interface ColumnBase {
     editable?: boolean;
     type: DndColumnType;
     initialValue?: any; // should conform to the type field
+    hideErrorMessage?: boolean;
 }
 
 export interface ColumnText extends ColumnBase {

@@ -10,6 +10,7 @@ import { useController, useFormContext } from 'react-hook-form';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { validateValueIsANumber } from '../../../../utils';
+import { genHelperError } from '../utils';
 
 export interface TableNumericalInputProps extends StandardTextFieldProps {
     name: string;
@@ -18,6 +19,7 @@ export interface TableNumericalInputProps extends StandardTextFieldProps {
     valueModified: boolean;
     adornment?: { text: string };
     isClearable?: boolean;
+    hideErrorMessage?: boolean;
 }
 
 export function TableNumericalInput({
@@ -28,6 +30,7 @@ export function TableNumericalInput({
     valueModified,
     adornment,
     isClearable = true,
+    hideErrorMessage,
     ...props
 }: Readonly<TableNumericalInputProps>) {
     const { trigger } = useFormContext();
@@ -125,6 +128,7 @@ export function TableNumericalInput({
                     ...inputProps,
                 },
             }}
+            {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...props}
         />
     );
