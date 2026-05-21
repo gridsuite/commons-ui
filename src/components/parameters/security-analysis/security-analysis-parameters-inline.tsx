@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
+import { ComputingType, ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { SubmitButton } from '../../inputs';
@@ -50,11 +50,7 @@ export function SecurityAnalysisParametersInline({
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     // to force re-fetch contingency count in ContingencyTable
-    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
-    const triggerContingencyCountRefresh = useCallback(
-        (value?: number) => setContingencyCountRefreshTrigger((prev) => value ?? prev + 1),
-        []
-    );
+    const contingencyTableApiRef = useRef<ContingencyTableApi>(null);
 
     const { snackError } = useSnackMessage();
 
@@ -62,9 +58,9 @@ export function SecurityAnalysisParametersInline({
 
     const executeResetAction = useCallback(() => {
         resetParameters();
-        triggerContingencyCountRefresh(0); // 0 is the reset signal
+        contingencyTableApiRef.current?.resetSimulatedContingencyCount();
         setOpenResetConfirmation(false);
-    }, [resetParameters, triggerContingencyCountRefresh]);
+    }, [resetParameters]);
 
     const handleResetAllClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -84,7 +80,7 @@ export function SecurityAnalysisParametersInline({
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,
                         });
-                        triggerContingencyCountRefresh();
+                        contingencyTableApiRef.current?.triggerContingencyCountRefresh();
                     })
                     .catch((error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
@@ -92,7 +88,7 @@ export function SecurityAnalysisParametersInline({
             }
             setOpenSelectParameterDialog(false);
         },
-        [reset, snackError, triggerContingencyCountRefresh]
+        [reset, snackError]
     );
 
     useEffect(() => {
@@ -104,7 +100,7 @@ export function SecurityAnalysisParametersInline({
             securityAnalysisMethods={securityAnalysisMethods}
             showContingencyCount
             fetchContingencyCount={fetchContingencyCount}
-            contingencyCountRefreshTrigger={contingencyCountRefreshTrigger}
+            contingencyTableApiRef={contingencyTableApiRef}
             isBuiltCurrentNode={isBuiltCurrentNode}
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {

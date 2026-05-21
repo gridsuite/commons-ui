@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Alert, CircularProgress, Grid } from '@mui/material';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
@@ -22,56 +22,51 @@ const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
 } satisfies MuiStyles;
 
+export type ContingencyTableApi = {
+    resetSimulatedContingencyCount: () => void;
+    triggerContingencyCountRefresh: () => void;
+};
+
 export type ContingencyTableProps = {
     name: string;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyLists: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     isBuiltCurrentNode?: boolean; // necessary if we want to show the contingency count
-    contingencyCountRefreshTrigger?: number; // optional: increase this from outside to force a count refresh
 };
 
-export function ContingencyTable({
-    name,
-    showContingencyCount = false,
-    fetchContingencyCount,
-    isBuiltCurrentNode,
-    contingencyCountRefreshTrigger: externalContingencyCountRefreshTrigger,
-}: Readonly<ContingencyTableProps>) {
+function ContingencyTableWithApiRef(
+    { name, showContingencyCount = false, fetchContingencyCount, isBuiltCurrentNode }: Readonly<ContingencyTableProps>,
+    apiRef: ForwardedRef<ContingencyTableApi>
+) {
     const intl = useIntl();
-    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
+    const { snackError } = useSnackMessage();
+    const { getValues } = useFormContext();
     const [isLoading, setIsLoading] = useState(false);
 
+    // states to store and control the simulated contingency count
+    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
     const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
-    const prevTriggersRef = useRef({
-        internalTrigger: contingencyCountRefreshTrigger,
-        externalTrigger: externalContingencyCountRefreshTrigger,
-    });
 
-    const { snackError } = useSnackMessage();
+    // expose an API to trigger a refresh of the contingency count from outside the component
+    useImperativeHandle(
+        apiRef,
+        () => ({
+            resetSimulatedContingencyCount: () => {
+                setSimulatedContingencyCount(null);
+            },
+            triggerContingencyCountRefresh: () => {
+                setContingencyCountRefreshTrigger((prev) => prev + 1);
+            },
+        }),
+        []
+    );
 
-    const { getValues } = useFormContext();
-
+    // callback which allows triggering a refresh of the contingency count from a child component
     const handleOnChange = useCallback(() => {
         setContingencyCountRefreshTrigger((prevValue) => prevValue + 1);
     }, []);
 
-    const columnsDefinition = useMemo(() => {
-        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map(
-            (colDef) =>
-                ({
-                    ...colDef,
-                    label: intl.formatMessage({ id: colDef.label }),
-                }) satisfies DndColumn
-        );
-    }, [intl]);
-
     useEffect(() => {
-        const prevTriggers = prevTriggersRef.current;
-        prevTriggersRef.current = {
-            internalTrigger: contingencyCountRefreshTrigger,
-            externalTrigger: externalContingencyCountRefreshTrigger,
-        };
-
         if (!showContingencyCount || !isBuiltCurrentNode) {
             setIsLoading(false);
             setSimulatedContingencyCount(null);
@@ -87,11 +82,7 @@ export function ContingencyTable({
                 (contingencyList) =>
                     !contingencyList[ACTIVATED] || (contingencyList[CONTINGENCY_LISTS]?.length ?? 0) === 0
             );
-        if (
-            hasNoContingencies ||
-            (externalContingencyCountRefreshTrigger === 0 /* reset signal */ &&
-                prevTriggers.internalTrigger === contingencyCountRefreshTrigger)
-        ) {
+        if (hasNoContingencies) {
             setIsLoading(false);
             setSimulatedContingencyCount(null);
             // return a no-op cleanup function to ignore eslint consistent-return
@@ -140,7 +131,6 @@ export function ContingencyTable({
         isBuiltCurrentNode,
         name,
         contingencyCountRefreshTrigger,
-        externalContingencyCountRefreshTrigger,
     ]);
 
     const renderContingencyCount = () => {
@@ -174,6 +164,16 @@ export function ContingencyTable({
         );
     };
 
+    const columnsDefinition = useMemo(() => {
+        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map(
+            (colDef) =>
+                ({
+                    ...colDef,
+                    label: intl.formatMessage({ id: colDef.label }),
+                }) satisfies DndColumn
+        );
+    }, [intl]);
+
     return (
         <Grid container direction="column">
             <ParameterTableField
@@ -187,3 +187,5 @@ export function ContingencyTable({
         </Grid>
     );
 }
+
+export const ContingencyTable = forwardRef(ContingencyTableWithApiRef);

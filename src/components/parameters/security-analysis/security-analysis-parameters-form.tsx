@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode } from 'react';
+import { ForwardedRef, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
-import { CONTINGENCY_LISTS_INFOS, LineSeparator, PARAM_SA_PROVIDER } from '../common';
+import { CONTINGENCY_LISTS_INFOS, ContingencyTableApi, LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
@@ -47,7 +47,7 @@ export type SecurityAnalysisParametersFormProps = {
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
-    contingencyCountRefreshTrigger?: number;
+    contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
@@ -58,7 +58,7 @@ export function SecurityAnalysisParametersForm({
     securityAnalysisMethods,
     showContingencyCount,
     fetchContingencyCount,
-    contingencyCountRefreshTrigger,
+    contingencyTableApiRef,
     isBuiltCurrentNode,
     renderTitleFields,
     renderActions,
@@ -123,8 +123,8 @@ export function SecurityAnalysisParametersForm({
                                             name={CONTINGENCY_LISTS_INFOS}
                                             showContingencyCount={showContingencyCount}
                                             fetchContingencyCount={fetchContingencyCount}
-                                            contingencyCountRefreshTrigger={contingencyCountRefreshTrigger}
                                             isBuiltCurrentNode={isBuiltCurrentNode}
+                                            ref={contingencyTableApiRef}
                                         />
                                         <Grid container paddingTop={4} paddingBottom={2}>
                                             <LineSeparator />
