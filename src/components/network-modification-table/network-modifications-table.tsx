@@ -136,21 +136,29 @@ export function NetworkModificationsTable({
 
     const tableMeta = useMemo(
         () => ({
-            studyUuid,
-            currentNodeId,
-            currentRootNetworkUuid,
-            rootNetworks,
-            modificationsCount: modifications.length,
-            modificationsToExclude,
-            setModificationsToExclude,
-            lastClickedRowId,
-            onRowSelected,
-            isRowDragDisabled,
-            isImpactedByNotification,
-            notificationMessageId,
-            isFetchingModifications,
-            pendingState,
-            isDisabled,
+            context: {
+                studyUuid,
+                currentNodeId,
+                currentRootNetworkUuid,
+                rootNetworks,
+            },
+            modifications: {
+                count: modifications.length,
+                toExclude: modificationsToExclude,
+                setToExclude: setModificationsToExclude,
+            },
+            interaction: {
+                lastClickedRowId,
+                onRowSelected,
+                isRowDragDisabled,
+            },
+            status: {
+                isImpactedByNotification,
+                notificationMessageId,
+                isFetchingModifications,
+                pendingState,
+                isDisabled,
+            },
         }),
         [
             studyUuid,

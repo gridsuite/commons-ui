@@ -34,7 +34,7 @@ type CCtx = CellContext<ComposedModificationMetadata, unknown>;
 type HCtx = HeaderContext<ComposedModificationMetadata, unknown>;
 
 export function DragHandleRenderer({ table }: CCtx) {
-    return <DragHandleCell isRowDragDisabled={table.options.meta?.isRowDragDisabled ?? false} />;
+    return <DragHandleCell isRowDragDisabled={table.options.meta?.interaction.isRowDragDisabled ?? false} />;
 }
 
 export function SelectHeaderRenderer({ table }: HCtx) {
@@ -49,11 +49,11 @@ export function NameHeaderRenderer({ table }: HCtx) {
     const { meta } = table.options;
     return (
         <NetworkModificationEditorNameHeader
-            modificationCount={meta?.modificationsCount ?? 0}
-            isImpactedByNotification={meta?.isImpactedByNotification ?? (() => false)}
-            notificationMessageId={meta?.notificationMessageId}
-            isFetchingModifications={meta?.isFetchingModifications ?? false}
-            pendingState={meta?.pendingState ?? false}
+            modificationCount={meta?.modifications.count ?? 0}
+            isImpactedByNotification={meta?.status.isImpactedByNotification ?? (() => false)}
+            notificationMessageId={meta?.status.notificationMessageId}
+            isFetchingModifications={meta?.status.isFetchingModifications ?? false}
+            pendingState={meta?.status.pendingState ?? false}
         />
     );
 }
@@ -67,9 +67,9 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
     return (
         <DescriptionCell
             data={row.original}
-            studyUuid={meta?.studyUuid ?? null}
-            currentNodeId={meta?.currentNodeId}
-            isDisabled={meta?.isDisabled}
+            studyUuid={meta?.context.studyUuid ?? null}
+            currentNodeId={meta?.context.currentNodeId}
+            isDisabled={meta?.status.isDisabled}
         />
     );
 }
@@ -79,9 +79,9 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
     return (
         <SwitchCell
             data={row.original}
-            studyUuid={meta?.studyUuid ?? null}
-            currentNodeId={meta?.currentNodeId}
-            isDisabled={meta?.isDisabled}
+            studyUuid={meta?.context.studyUuid ?? null}
+            currentNodeId={meta?.context.currentNodeId}
+            isDisabled={meta?.status.isDisabled}
         />
     );
 }
@@ -89,12 +89,13 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
 export function RootNetworkHeaderRenderer({ column, table }: HCtx) {
     const { meta } = table.options;
     // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
-    const isCurrentRootNetwork = !!meta?.currentRootNetworkUuid && column.id === meta.currentRootNetworkUuid;
-    if (!isCurrentRootNetwork || (meta?.modificationsCount ?? 0) < 1) {
+    const isCurrentRootNetwork =
+        !!meta?.context.currentRootNetworkUuid && column.id === meta.context.currentRootNetworkUuid;
+    if (!isCurrentRootNetwork || (meta?.modifications.count ?? 0) < 1) {
         return null;
     }
-    const currentRootNetworkTag = meta?.rootNetworks?.find(
-        (r) => r.rootNetworkUuid === meta.currentRootNetworkUuid
+    const currentRootNetworkTag = meta?.context.rootNetworks?.find(
+        (r) => r.rootNetworkUuid === meta.context.currentRootNetworkUuid
     )?.tag;
     return (
         <Box sx={networkModificationTableStyles.rootNetworkHeader}>
@@ -110,20 +111,20 @@ export function RootNetworkHeaderRenderer({ column, table }: HCtx) {
 export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
     const { meta } = table.options;
     // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
-    const rootNetwork = meta?.rootNetworks?.find((r) => r.rootNetworkUuid === column.id);
-    if (!rootNetwork || !meta?.modificationsToExclude || !meta.setModificationsToExclude) {
+    const rootNetwork = meta?.context.rootNetworks?.find((r) => r.rootNetworkUuid === column.id);
+    if (!rootNetwork || !meta?.modifications.toExclude || !meta.modifications.setToExclude) {
         return null;
     }
     return (
         <Box sx={createRootNetworkChipCellSx(row.original.activated)}>
             <RootNetworkChipCell
                 data={row.original}
-                studyUuid={meta?.studyUuid ?? null}
-                currentNodeId={meta?.currentNodeId}
+                studyUuid={meta?.context.studyUuid ?? null}
+                currentNodeId={meta?.context.currentNodeId}
                 rootNetwork={rootNetwork}
-                modificationsToExclude={meta.modificationsToExclude}
-                setModificationsToExclude={meta.setModificationsToExclude}
-                isDisabled={meta?.isDisabled}
+                modificationsToExclude={meta.modifications.toExclude}
+                setModificationsToExclude={meta.modifications.setToExclude}
+                isDisabled={meta?.status.isDisabled}
             />
         </Box>
     );
