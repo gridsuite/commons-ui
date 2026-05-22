@@ -35,7 +35,7 @@ export function SelectCell({ row, table }: Readonly<SelectCellRendererProps>) {
         (event: React.MouseEvent<HTMLButtonElement>) => {
             const rows = table.getRowModel().flatRows;
             const currentIndex = rows.indexOf(row);
-            const anchorRowId = meta?.lastClickedRowId.current;
+            const anchorRowId = meta?.interaction.lastClickedRowId.current;
             const anchorIndex =
                 anchorRowId == null ? null : rows.findIndex((candidate) => candidate.id === anchorRowId);
             const targetSelected = !isSelected;
@@ -49,7 +49,7 @@ export function SelectCell({ row, table }: Readonly<SelectCellRendererProps>) {
             }
 
             if (meta) {
-                meta.lastClickedRowId.current = row.id;
+                meta.interaction.lastClickedRowId.current = row.id;
             }
         },
         [table, row, meta, isSelected]
