@@ -7,7 +7,7 @@
 
 import { Alert, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { RadioInput } from '../../inputs';
+import { RadioInput } from '../../ui';
 import {
     GENERATORS_SELECTION_TYPE,
     SHUNT_COMPENSATORS_SELECTION_TYPE,

@@ -32,7 +32,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import { Apps, DnsOutlined, ExpandMore, Gavel, QuestionMark, Refresh, WidgetsOutlined } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
-import { CustomTooltip } from '../tooltip/CustomTooltip';
+import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
 import { LogoText } from './GridLogo';
 import { mergeSx, type MuiStyles } from '../../utils/styles';
 

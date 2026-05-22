@@ -7,9 +7,9 @@
 
 import { Box, Grid } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
-import { ExpandableInput, SelectWithConfirmationInput } from '../../../inputs';
+import { ExpandableInput, SelectWithConfirmationInput } from '../../../ui';
 import { FieldConstants, mergeSx } from '../../../../utils';
-import { unscrollableDialogStyles } from '../../../dialogs';
+import { unscrollableDialogStyles } from '../../../ui/dialogs';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
 import GridItem from '../../../grid/grid-item';
 import AssignmentForm from './assignment/assignment-form';

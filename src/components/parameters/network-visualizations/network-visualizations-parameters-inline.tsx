@@ -12,7 +12,7 @@ import type { UUID } from 'node:crypto';
 import type { User } from 'oidc-client-ts';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { ElementType } from '../../../utils';
 import { LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';

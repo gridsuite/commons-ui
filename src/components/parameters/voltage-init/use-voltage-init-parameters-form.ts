@@ -11,7 +11,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
-import { DESCRIPTION, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../ui';
 import {
     DEFAULT_GENERAL_APPLY_MODIFICATIONS,
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,

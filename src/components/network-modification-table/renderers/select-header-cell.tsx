@@ -21,8 +21,8 @@ export function SelectHeaderCell({ table }: Readonly<SelectHeaderCellProps>) {
             const nextSelectedRows = table.getIsAllRowsSelected()
                 ? []
                 : table.getCoreRowModel().rows.map((r) => r.original);
-            meta.onRowSelected?.(nextSelectedRows);
-            meta.lastClickedRowId.current = null;
+            meta.interaction.onRowSelected?.(nextSelectedRows);
+            meta.interaction.lastClickedRowId.current = null;
         }
         table.toggleAllRowsSelected();
     }, [table]);

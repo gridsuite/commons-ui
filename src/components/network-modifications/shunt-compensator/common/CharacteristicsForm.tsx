@@ -10,7 +10,7 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldConstants, ReactivePowerAdornment, SusceptanceAdornment } from '../../../../utils';
-import { FloatInput, IntegerInput, RadioInput, SelectInput } from '../../../inputs';
+import { FloatInput, IntegerInput, RadioInput, SelectInput } from '../../../ui';
 import { ShuntCompensatorFormInfos } from './shuntCompensator.types';
 import { CHARACTERISTICS_CHOICES, SHUNT_COMPENSATOR_TYPES } from './shuntCompensator.utils';
 
