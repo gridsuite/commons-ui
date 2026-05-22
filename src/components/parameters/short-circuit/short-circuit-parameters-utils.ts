@@ -281,7 +281,7 @@ const formatElectronicsMaterialsParamString = (
     });
 };
 
-export async function checkFilterAndAddName(filters: string[]): Promise<{ id: string; name: string }[]> {
+export async function checkFilterAndAddName(filters: string[]): Promise<{ id: string; name: string | null }[]> {
     const filterIds = new Set(filters);
     const elementNamesPromise = filterIds.size === 0 ? Promise.resolve(null) : fetchElementNames(filterIds);
     const elementNames = await elementNamesPromise;
@@ -306,7 +306,7 @@ const formatElectronicsClustersParamString = (
             const { filters, ...rest } = cluster;
             return {
                 ...rest,
-                filters: filters.map((filterId) => filterMap.get(filterId)),
+                filters: filters.map((filterId) => filterMap.get(filterId)!),
             };
         });
     });
