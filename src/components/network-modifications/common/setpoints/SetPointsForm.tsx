@@ -8,7 +8,7 @@
 import { Grid } from '@mui/material';
 import GridSection from '../../../grid/grid-section';
 import { ActivePowerAdornment, FieldConstants, ReactivePowerAdornment } from '../../../../utils';
-import { FloatInput } from '../../../ui';
+import { FloatInput } from '../../../inputs';
 
 interface SetPointsFormProps {
     previousValues?: { activePower?: number | null; reactivePower?: number | null };

@@ -27,7 +27,7 @@ import {
     SpecificParameterInfos,
 } from '../../../utils';
 import ParameterField from '../common/parameter-field';
-import { NAME } from '../../ui';
+import { NAME } from '../../inputs';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn, DndColumnType } from '../../dnd-table';
 

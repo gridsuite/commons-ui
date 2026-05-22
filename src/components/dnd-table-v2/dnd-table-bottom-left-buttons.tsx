@@ -8,7 +8,7 @@
 import { Grid, IconButton } from '@mui/material';
 import { Replay as ReplayIcon, Upload as UploadIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
-import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 
 interface DndTableBottomLeftButtonsProps {
     handleUploadButton: () => void;

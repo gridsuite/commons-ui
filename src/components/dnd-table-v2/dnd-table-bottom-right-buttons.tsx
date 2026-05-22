@@ -14,7 +14,7 @@ import {
 } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { SELECTED } from './dnd-table.type';
 
 export interface DndTableBottomRightButtonsProps {

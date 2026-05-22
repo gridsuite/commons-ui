@@ -7,14 +7,14 @@
 
 import { TableCell } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import {
     LimitReductionIColumnsDef,
     LIMIT_REDUCTIONS_FORM,
     VOLTAGE_LEVELS_FORM,
     ILimitReductionsByVoltageLevel,
 } from './columns-definitions';
-import { FloatInput, RawReadOnlyInput } from '../../../ui';
+import { FloatInput, RawReadOnlyInput } from '../../../inputs';
 
 export function LimitReductionTableCell({
     rowIndex,

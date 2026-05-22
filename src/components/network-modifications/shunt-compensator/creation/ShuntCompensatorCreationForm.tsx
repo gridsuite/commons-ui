@@ -6,7 +6,7 @@
  */
 
 import { Grid } from '@mui/material';
-import { TextInput } from '../../../ui';
+import { TextInput } from '../../../inputs';
 import GridSection from '../../../grid/grid-section';
 import { ConnectivityForm } from '../../common/connectivity/ConnectivityForm';
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';

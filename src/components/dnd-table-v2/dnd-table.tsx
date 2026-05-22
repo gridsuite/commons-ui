@@ -24,12 +24,12 @@ import {
 import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
 import { AddCircle as AddCircleIcon } from '@mui/icons-material';
-import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { DndColumn, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
 import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
-import { ErrorInput, FieldErrorAlert } from '../ui';
+import { ErrorInput, FieldErrorAlert } from '../inputs';
 import { mergeSx, MuiStyles } from '../../utils/styles';
 import { DndTableRow } from './dnd-table-row';
 

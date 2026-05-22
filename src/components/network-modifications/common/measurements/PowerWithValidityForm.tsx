@@ -9,8 +9,8 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Grid } from '@mui/material';
 import { MeasurementProps } from './measurement.type';
-import { CheckboxNullableInput } from '../../../ui/reactHookForm/CheckboxNullableInput';
-import { FloatInput } from '../../../ui';
+import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
+import { FloatInput } from '../../../inputs';
 import {
     ActivePowerAdornment,
     convertInputValue,

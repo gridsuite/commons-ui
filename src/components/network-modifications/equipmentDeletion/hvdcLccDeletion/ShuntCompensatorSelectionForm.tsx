@@ -6,7 +6,7 @@
  */
 import { Grid } from '@mui/material';
 import { FieldConstants } from '../../../../utils';
-import { CheckboxInput, ReadOnlyInput } from '../../../ui';
+import { CheckboxInput, ReadOnlyInput } from '../../../inputs';
 import GridSection from '../../../grid/grid-section';
 
 interface ShuntCompensatorSelectionFormProps {

@@ -20,7 +20,7 @@ import {
     snackWithFallback,
 } from '../../../utils';
 import { filledTextField } from '../common';
-import { AutocompleteInput } from '../../ui';
+import { AutocompleteInput } from '../../inputs';
 import { useSnackMessage } from '../../../hooks';
 import { HvdcLccDeletionSpecificForm } from './hvdcLccDeletion/HvdcLccDeletionSpecificForm';
 import { useGetLabelEquipmentTypes } from '../../../hooks/useGetLabelEquipmentTypes';

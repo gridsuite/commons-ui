@@ -6,8 +6,8 @@
  */
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
-import { FloatInput } from '../../../ui';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
+import { FloatInput } from '../../../inputs';
 
 export interface ParameterFloatProps {
     name: string;

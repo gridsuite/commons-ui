@@ -17,7 +17,7 @@ import {
     ShortCircuitForm,
 } from '../../common';
 import { ActivePowerAdornment, FieldConstants } from '../../../../utils';
-import { FloatInput, TextInput } from '../../../ui';
+import { FloatInput, TextInput } from '../../../inputs';
 import GridItem from '../../../grid/grid-item';
 import GridSection from '../../../grid/grid-section';
 

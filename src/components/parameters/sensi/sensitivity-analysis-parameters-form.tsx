@@ -9,7 +9,7 @@ import { Box, Grid, LinearProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
-import { CustomFormProvider, MuiSelectInput } from '../../ui';
+import { CustomFormProvider, MuiSelectInput } from '../../inputs';
 import { LineSeparator, PROVIDER } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-parameters-fields';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';

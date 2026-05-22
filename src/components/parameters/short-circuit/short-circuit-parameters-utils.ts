@@ -34,7 +34,7 @@ import {
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
 } from '../common/utils';
-import { NAME } from '../../ui';
+import { NAME } from '../../inputs';
 import { SnackInputs } from '../../../hooks';
 
 export enum ShortCircuitParametersTabValues {

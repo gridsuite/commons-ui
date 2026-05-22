@@ -16,9 +16,9 @@ import { ComputingType, CreateParameterDialog, LabelledButton } from '../common'
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { parametersStyles } from '../parameters-style';
-import { CustomFormProvider, SubmitButton } from '../../ui';
+import { CustomFormProvider, SubmitButton } from '../../inputs';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
-import { PopupConfirmationDialog } from '../../ui/dialogs';
+import { PopupConfirmationDialog } from '../../dialogs';
 import {
     toFormValues,
     toParamsInfos,

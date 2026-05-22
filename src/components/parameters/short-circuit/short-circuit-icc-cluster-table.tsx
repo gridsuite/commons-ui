@@ -10,7 +10,7 @@ import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useFieldArray } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useCallback } from 'react';
-import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccClusterIColumnsDef } from './columns-definition';
 import { ShortCircuitIccClusterTableRow } from './short-circuit-icc-cluster-table-row';
 

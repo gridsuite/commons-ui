@@ -11,7 +11,7 @@ import { HeaderFilterForm } from './HeaderFilterForm';
 import { ExplicitNamingFilterForm } from './explicitNaming/ExplicitNamingFilterForm';
 import { ExpertFilterForm } from './expert/ExpertFilterForm';
 import { FilterType } from './constants/FilterConstants';
-import { unscrollableDialogStyles } from '../ui/dialogs';
+import { unscrollableDialogStyles } from '../dialogs';
 
 export interface FilterFormProps {
     creation?: boolean;

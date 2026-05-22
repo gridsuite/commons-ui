@@ -22,7 +22,7 @@ import {
 } from './constants';
 import { LineSeparator } from '../common';
 import { parametersStyles } from '../parameters-style';
-import { MuiSelectInput, SwitchInput } from '../../ui';
+import { MuiSelectInput, SwitchInput } from '../../inputs';
 import { fetchStudyMetadata } from '../../../services';
 import { snackWithFallback } from '../../../utils';
 import { useSnackMessage } from '../../../hooks';

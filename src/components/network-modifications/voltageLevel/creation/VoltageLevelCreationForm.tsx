@@ -8,7 +8,7 @@
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
-import { TextInput } from '../../../ui';
+import { TextInput } from '../../../inputs';
 import { FieldConstants } from '../../../../utils';
 import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';

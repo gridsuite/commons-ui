@@ -18,12 +18,12 @@ import {
     useDynamicSecurityAnalysisParametersForm,
 } from './use-dynamic-security-analysis-parameters-form';
 import { LabelledButton } from '../common/parameters';
-import { SubmitButton } from '../../ui/reactHookForm/utils/SubmitButton';
-import { PopupConfirmationDialog } from '../../ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
+import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
+import { PopupConfirmationDialog } from '../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
 import { parametersStyles } from '../parameters-style';
 import { CreateParameterDialog } from '../common';
 import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
-import { CustomFormProvider } from '../../ui';
+import { CustomFormProvider } from '../../inputs';
 
 type DynamicSecurityAnalysisInlineProps = {
     studyUuid: UUID | null;

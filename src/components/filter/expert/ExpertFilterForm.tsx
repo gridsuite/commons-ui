@@ -24,15 +24,15 @@ import {
 } from './expertFilterConstants';
 
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
-import { InputWithPopupConfirmation } from '../../ui/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import { SelectInput } from '../../ui/reactHookForm/selectInputs/SelectInput';
-import { CustomReactQueryBuilder } from '../../ui/reactQueryBuilder/CustomReactQueryBuilder';
-import { unscrollableDialogStyles } from '../../ui/dialogs';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
+import { CustomReactQueryBuilder } from '../../inputs/reactQueryBuilder/CustomReactQueryBuilder';
+import { unscrollableDialogStyles } from '../../dialogs';
 import { FieldType } from '../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../hooks/useFormatLabelWithUnit';
 import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../utils';
-import { useCustomFormContext } from '../../ui';
+import { useCustomFormContext } from '../../inputs';
 
 function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)

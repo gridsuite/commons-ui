@@ -14,24 +14,24 @@ import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import yup from '../../../utils/yupConfig';
-import { CustomAgGridTable } from '../../ui/reactHookForm/agGridTable/CustomAgGridTable';
-import { SelectInput } from '../../ui/reactHookForm/selectInputs/SelectInput';
+import { CustomAgGridTable } from '../../inputs/reactHookForm/agGridTable/CustomAgGridTable';
+import { SelectInput } from '../../inputs/reactHookForm/selectInputs/SelectInput';
 import { isInjection } from '../../../utils/types/equipmentTypes';
-import { NumericEditor } from '../../ui/reactHookForm/agGridTable/cellEditors/numericEditor';
-import { InputWithPopupConfirmation } from '../../ui/reactHookForm/selectInputs/InputWithPopupConfirmation';
-import { toFloatOrNullValue } from '../../ui/reactHookForm/utils/functions';
+import { NumericEditor } from '../../inputs/reactHookForm/agGridTable/cellEditors/numericEditor';
+import { InputWithPopupConfirmation } from '../../inputs/reactHookForm/selectInputs/InputWithPopupConfirmation';
+import { toFloatOrNullValue } from '../../inputs/reactHookForm/utils/functions';
 import { DISTRIBUTION_KEY } from '../constants/FilterConstants';
 import { FILTER_EQUIPMENTS } from '../utils/filterFormUtils';
 import { useSnackMessage } from '../../../hooks/useSnackMessage';
 import { ElementType } from '../../../utils/types/elementType';
-import { ModifyElementSelection } from '../../ui/dialogs/modifyElementSelection/ModifyElementSelection';
+import { ModifyElementSelection } from '../../dialogs/modifyElementSelection/ModifyElementSelection';
 import { exportFilter } from '../../../services/study';
 import { EquipmentType } from '../../../utils/types/equipmentType';
-import { unscrollableDialogStyles } from '../../ui/dialogs';
+import { unscrollableDialogStyles } from '../../dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { filterStyles } from '../HeaderFilterForm';
 import { snackWithFallback } from '../../../utils';
-import { useCustomFormContext } from '../../ui';
+import { useCustomFormContext } from '../../inputs';
 
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup

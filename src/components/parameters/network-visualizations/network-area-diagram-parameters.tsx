@@ -13,7 +13,7 @@ import {
     PARAM_NAD_POSITIONS_GENERATION_MODE,
 } from './constants';
 import { parametersStyles } from '../parameters-style';
-import { MuiSelectInput } from '../../ui';
+import { MuiSelectInput } from '../../inputs';
 
 export function NetworkAreaDiagramParameters() {
     return (

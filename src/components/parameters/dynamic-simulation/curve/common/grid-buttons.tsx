@@ -8,7 +8,7 @@ import { Grid, IconButton } from '@mui/material';
 import { AddCircle, Delete } from '@mui/icons-material';
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { CustomTooltip } from '../../../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
 
 interface GridButtonsProps {
     onAddButton: () => void;

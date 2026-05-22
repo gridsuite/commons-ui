@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { IconButton, TableCell, TableRow, TableRowProps } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import { CustomTooltip } from '../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 
 type DeletableTableRowProps = TableRowProps & {
     onClick: () => void;

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { TableCell } from '@mui/material';
-import { FloatInput, RawReadOnlyInput, SwitchInput } from '../../ui';
+import { FloatInput, RawReadOnlyInput, SwitchInput } from '../../inputs';
 import {
     IccMaterialIColumnsDef,
     SHORT_CIRCUIT_ICC_MATERIAL_ACTIVE,

@@ -8,9 +8,9 @@
 import { Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import GridSection from '../../../grid/grid-section';
-import { TextInput } from '../../../ui';
-import { AutocompleteInput } from '../../../ui/reactHookForm/autocompleteInputs/AutocompleteInput';
-import { FloatInput } from '../../../ui/reactHookForm/numbers/FloatInput';
+import { TextInput } from '../../../inputs';
+import { AutocompleteInput } from '../../../inputs/reactHookForm/autocompleteInputs/AutocompleteInput';
+import { FloatInput } from '../../../inputs/reactHookForm/numbers/FloatInput';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';
 import { filledTextField } from '../../common';

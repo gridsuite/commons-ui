@@ -9,7 +9,7 @@ import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useWatch } from 'react-hook-form';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { IccClusterIColumnsDef, SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE } from './columns-definition';
 import { ShortCircuitIccClusterTableCell } from './short-circuit-icc-cluster-table-cell';
 

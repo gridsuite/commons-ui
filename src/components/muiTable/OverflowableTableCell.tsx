@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { TableCell } from '@mui/material';
-import { OverflowableText, OverflowableTextProps } from '../ui/overflowableText';
+import { OverflowableText, OverflowableTextProps } from '../overflowableText';
 
 export function OverflowableTableCell(overflowableTextProps: Readonly<OverflowableTextProps>) {
     return (

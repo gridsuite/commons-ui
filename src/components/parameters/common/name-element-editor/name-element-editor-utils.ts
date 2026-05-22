@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import yup from '../../../../utils/yupConfig';
-import { DESCRIPTION, NAME } from '../../../ui';
+import { DESCRIPTION, NAME } from '../../../inputs';
 
 export function getNameElementEditorEmptyFormData(
     initialElementName: string | null,

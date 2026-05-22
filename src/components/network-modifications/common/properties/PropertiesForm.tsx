@@ -10,7 +10,7 @@ import { fetchPredefinedProperties, initializedProperty } from './propertyUtils'
 import { PropertyForm } from './PropertyForm';
 import GridSection from '../../../grid/grid-section';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
-import { ExpandableInput } from '../../../ui';
+import { ExpandableInput } from '../../../inputs';
 
 type PropertiesFormProps = {
     id?: string;

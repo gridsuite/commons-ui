@@ -6,7 +6,7 @@
  */
 import { PropsWithChildren, ReactNode } from 'react';
 import { Grid, GridProps } from '@mui/material';
-import { CustomTooltip } from '../ui/tooltip';
+import { CustomTooltip } from '../tooltip';
 
 export interface GridItemProps extends PropsWithChildren {
     size?: GridProps['xs'];

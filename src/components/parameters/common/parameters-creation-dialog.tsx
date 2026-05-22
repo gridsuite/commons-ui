@@ -9,7 +9,7 @@ import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { useCallback } from 'react';
 import { useSnackMessage } from '../../../hooks';
-import { ElementSaveDialog, IElementCreationDialog, IElementUpdateDialog } from '../../ui/dialogs';
+import { ElementSaveDialog, IElementCreationDialog, IElementUpdateDialog } from '../../dialogs';
 import { createParameter, updateParameter } from '../../../services';
 import { ElementType } from '../../../utils';
 import { snackWithFallback } from '../../../utils/error';

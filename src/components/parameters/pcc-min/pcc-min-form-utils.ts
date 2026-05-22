@@ -6,7 +6,7 @@
  */
 
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
-import { NAME } from '../../ui';
+import { NAME } from '../../inputs';
 import { PccMinParameters, PccMinParametersEnriched } from '../../../utils';
 
 export const fromPccMinParametersFormToParamValuesEnriched = (

@@ -7,7 +7,7 @@
 
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
-import { CustomFormProvider } from '../../ui';
+import { CustomFormProvider } from '../../inputs';
 import { ParameterLineDirectoryItemsInput } from '../common';
 import type { MuiStyles } from '../../../utils/styles';
 import { ElementType, EquipmentType } from '../../../utils';

@@ -9,7 +9,7 @@ import { TableCell, TableRow, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../tooltip/CustomTooltip';
 import EditableTableCell from './table-cell';
 import { ColumnsDef } from './types';
 

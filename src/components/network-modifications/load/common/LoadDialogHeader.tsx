@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { LoadFormInfos } from './load.types';
 import { filledTextField } from '../../common';
-import { SelectInput, TextInput } from '../../../ui';
+import { SelectInput, TextInput } from '../../../inputs';
 import { FieldConstants, getLoadTypeLabel, LOAD_TYPES } from '../../../../utils';
 
 export interface LoadDialogHeaderProps {

@@ -19,7 +19,7 @@ import {
     SelectInput,
     SwitchInput,
     TextInput,
-} from '../../../../ui';
+} from '../../../../inputs';
 import { DataType } from './assignment.type';
 import GridItem from '../../../../grid/grid-item';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment-constants';

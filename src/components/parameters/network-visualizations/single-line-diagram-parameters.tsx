@@ -21,7 +21,7 @@ import {
     PARAM_DIAGONAL_LABEL,
     PARAM_CENTER_LABEL,
 } from './constants';
-import { MuiSelectInput, SwitchInput } from '../../ui';
+import { MuiSelectInput, SwitchInput } from '../../inputs';
 import { parametersStyles } from '../parameters-style';
 
 export interface SingleLineDiagramParametersProps {

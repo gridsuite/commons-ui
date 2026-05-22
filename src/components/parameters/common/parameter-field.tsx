@@ -7,7 +7,7 @@
 
 import { Chip, Grid, SxProps, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
 import { ParameterType } from '../../../utils/types/parameters.type';
 import {
@@ -19,7 +19,7 @@ import {
     MultipleAutocompleteInput,
     SwitchInput,
     TextInput,
-} from '../../ui';
+} from '../../inputs';
 import { LineSeparator } from '../common';
 
 interface ParameterFieldProps {
