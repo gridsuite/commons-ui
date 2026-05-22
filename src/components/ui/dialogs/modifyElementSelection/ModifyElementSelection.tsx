@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { FolderOutlined } from '@mui/icons-material';
-import { TreeViewFinderNodeProps } from '../../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../../composite/treeViewFinder';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { DirectoryItemSelector } from '../../../directoryItemSelector/DirectoryItemSelector';
 import { ElementType } from '../../../../utils/types/elementType';

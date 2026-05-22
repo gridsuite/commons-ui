@@ -15,7 +15,7 @@ import {
     ElementAttributes,
     snackWithFallback,
 } from '../../utils';
-import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder';
+import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../composite/treeViewFinder';
 import { useSnackMessage } from '../../hooks';
 import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
 import {

@@ -18,7 +18,7 @@ import { PccMinParametersForm } from './pcc-min-parameters-form';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { ElementType, mapPccMinParameters, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { fromPccMinParametersFormToParamValuesEnriched, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
 
 export function PccMinParametersInLine({

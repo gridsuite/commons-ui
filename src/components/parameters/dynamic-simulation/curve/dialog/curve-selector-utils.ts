@@ -13,9 +13,9 @@ import {
     EquipmentType,
 } from '../../../../../utils/types/equipmentType';
 import { FieldType } from '../../../../../utils/types/fieldType';
-import { CombinatorType, DataType, OperatorType } from '../../../../filter/expert/expertFilter.type';
-import { ExpertFilter } from '../../../../filter/filter.type';
-import { FilterType } from '../../../../filter/constants/FilterConstants';
+import { CombinatorType, DataType, OperatorType } from '../../../../composite/filter/expert/expertFilter.type';
+import { ExpertFilter } from '../../../../composite/filter/filter.type';
+import { FilterType } from '../../../../composite/filter/constants/FilterConstants';
 
 export const CURVE_EQUIPMENT_TYPES = [
     EquipmentType.GENERATOR,

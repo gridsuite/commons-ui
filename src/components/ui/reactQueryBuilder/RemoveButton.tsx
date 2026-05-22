@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 
-import { recursiveRemove } from '../../filter/expert/expertFilterUtils';
+import { recursiveRemove } from '../../composite/filter/expert/expertFilterUtils';
 
 const EXPERT_FILTER_QUERY = 'rules';
 

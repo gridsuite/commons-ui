@@ -8,7 +8,7 @@ import { ValueEditorProps } from 'react-querybuilder';
 import { Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { RuleValueEditor } from './RuleValueEditor';
-import { CompositeField, CompositeGroup, CompositeRule } from '../../../filter/expert/expertFilter.type';
+import { CompositeField, CompositeGroup, CompositeRule } from '../../../composite/filter/expert/expertFilter.type';
 import type { MuiStyles } from '../../../../utils';
 
 const styles = {

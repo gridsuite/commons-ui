@@ -17,10 +17,10 @@ import { GridSearch } from './common/grid-search';
 import { Curve } from './curve-parameters-constants';
 import { fetchDynamicSimulationModels } from '../../../../services';
 import { VoltageLevelInfos } from '../../../../utils/types/equipmentType';
-import { ExpertFilter, IdentifiableAttributes } from '../../../filter';
+import { ExpertFilter, IdentifiableAttributes } from '../../../composite/filter';
 import { Curve as CurveType } from './common/curve.type';
 import { type MuiStyles } from '../../../../utils/styles';
-import { CustomAGGrid } from '../../../customAGGrid';
+import { CustomAGGrid } from '../../../composite/customAGGrid';
 import { isEmpty } from '../../../../utils/functions';
 
 const styles = {

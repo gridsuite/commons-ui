@@ -25,7 +25,7 @@ import {
     fetchSensitivityAnalysisParameters,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../ui/dialogs';

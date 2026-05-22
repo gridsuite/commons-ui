@@ -15,7 +15,7 @@ import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
 import { useCustomFormContext } from './provider';
 import { ErrorInput, MidFormError } from './errorManagement';
 import { useSnackMessage } from '../../../hooks';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { type MuiStyles } from '../../../utils/styles';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { fetchDirectoryElementPath } from '../../../services';

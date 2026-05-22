@@ -6,7 +6,7 @@
  */
 import { useEffect } from 'react';
 import { ValueEditorProps } from 'react-querybuilder';
-import { OPERATOR_OPTIONS } from '../../../filter/expert/expertFilterConstants';
+import { OPERATOR_OPTIONS } from '../../../composite/filter/expert/expertFilterConstants';
 
 /**
  * Hook that convert a value of RQB from any to any[] and vice versa when the operator changes

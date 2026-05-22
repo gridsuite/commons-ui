@@ -14,7 +14,7 @@ import { UseParametersBackendReturnProps } from '../../../utils/types/parameters
 import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
 
 import { useSnackMessage } from '../../../hooks';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, SubmitButton } from '../../ui';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
@@ -26,7 +26,7 @@ import {
 } from './use-dynamic-simulation-parameters-form';
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
 import { fetchDynamicSimulationParameters } from '../../../services/dynamic-simulation';
-import { ExpertFilter, IdentifiableAttributes } from '../../filter';
+import { ExpertFilter, IdentifiableAttributes } from '../../composite/filter';
 import useDefaultParams from './hook/use-default-params';
 
 type DynamicSimulationInlineProps = {

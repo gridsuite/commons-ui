@@ -12,7 +12,7 @@ import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yup from '../../../../utils/yupConfig';
-import { TreeViewFinderNodeProps } from '../../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../../composite/treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../../ui/reactHookForm';
 import { DirectoryItemSelector } from '../../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';

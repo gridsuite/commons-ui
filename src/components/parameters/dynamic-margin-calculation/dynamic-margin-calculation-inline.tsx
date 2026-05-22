@@ -25,7 +25,7 @@ import { PopupConfirmationDialog } from '../../ui/dialogs/popupConfirmationDialo
 import { parametersStyles } from '../parameters-style';
 import { CreateParameterDialog } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
 import { useSnackMessage } from '../../../hooks';
 import { CustomFormProvider } from '../../ui';

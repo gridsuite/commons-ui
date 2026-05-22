@@ -10,7 +10,7 @@ import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import type { User } from 'oidc-client-ts';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../ui';
 import { ElementType } from '../../../utils';

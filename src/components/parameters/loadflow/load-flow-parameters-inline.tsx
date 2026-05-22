@@ -13,7 +13,7 @@ import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { parametersStyles } from '../parameters-style';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../ui';
 import { LabelledButton } from '../common/parameters';

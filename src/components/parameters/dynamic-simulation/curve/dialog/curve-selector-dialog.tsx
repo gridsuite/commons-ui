@@ -24,7 +24,7 @@ import CurveSelector, { CurveSelectorApi } from './curve-selector';
 import { mergeSx } from '../../../../../utils/styles';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
 import { VoltageLevelInfos } from '../../../../../utils/types/equipmentType';
-import { ExpertFilter, IdentifiableAttributes } from '../../../../filter';
+import { ExpertFilter, IdentifiableAttributes } from '../../../../composite/filter';
 import { Curve } from '../common/curve.type';
 import { parametersStyles } from '../../../parameters-style';
 

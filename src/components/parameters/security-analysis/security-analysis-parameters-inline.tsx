@@ -13,7 +13,7 @@ import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
 import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
 import { SubmitButton } from '../../ui';
 import { parametersStyles } from '../parameters-style';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
