@@ -7,7 +7,7 @@
 
 import { Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import GridSection from '../../../grid/grid-section';
+import GridSection from '../../../composite/grid/grid-section';
 import { TextInput } from '../../../ui';
 import { AutocompleteInput } from '../../../ui/reactHookForm/autocompleteInputs/AutocompleteInput';
 import { FloatInput } from '../../../ui/reactHookForm/numbers/FloatInput';

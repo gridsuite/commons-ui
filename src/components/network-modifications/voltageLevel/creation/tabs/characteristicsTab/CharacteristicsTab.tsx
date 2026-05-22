@@ -6,7 +6,7 @@
  */
 import { useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
-import GridSection from '../../../../../grid/grid-section';
+import GridSection from '../../../../../composite/grid/grid-section';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../../../utils';
 import { FloatInput } from '../../../../../ui';
 
