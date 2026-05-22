@@ -254,7 +254,7 @@ export const getShortCircuitSpecificParametersValues = (
         finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = JSON.stringify(
             powerElectronicsClustersParam.map((sParam) => {
                 const { filters, ...rest } = sParam;
-                const lightFilters = filters?.map((filter) => filter[ID]) ?? []; // keep only id and name in filters for backend
+                const lightFilters = filters?.map((filter) => filter[ID]) ?? []; // keep only id in filters for backend
                 return { ...rest, filters: lightFilters };
             })
         );
