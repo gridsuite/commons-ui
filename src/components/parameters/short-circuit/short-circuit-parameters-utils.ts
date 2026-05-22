@@ -299,15 +299,17 @@ const formatElectronicsClustersParamString = (
     const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
         parsePowerElectronicsClustersParamString(specificParamValue, snackError);
     // here check filter existence and add name
-    return Promise.all(
-        electronicsClustersArrayInParams.map(async (cluster) => {
+    const filterList: string[] = electronicsClustersArrayInParams.flatMap((cluster) => cluster.filters);
+    return checkFilterAndAddName(filterList).then((fullFilter) => {
+        const filterMap = new Map(fullFilter.map((filter) => [filter[ID], filter]));
+        return electronicsClustersArrayInParams.map((cluster) => {
             const { filters, ...rest } = cluster;
             return {
                 ...rest,
-                filters: await checkFilterAndAddName(filters),
+                filters: filters.map((filterId) => filterMap.get(filterId)),
             };
-        })
-    );
+        });
+    });
 };
 
 export const formatShortCircuitSpecificParameters = async (
