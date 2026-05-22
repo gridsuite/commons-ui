@@ -35,7 +35,6 @@ export interface ColumnBase {
 
 export interface ColumnText extends ColumnBase {
     type: DndColumnType.TEXT;
-    showErrorMsg?: boolean;
 }
 
 export interface ColumnNumeric extends ColumnBase {

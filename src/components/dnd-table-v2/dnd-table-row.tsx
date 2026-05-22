@@ -109,7 +109,9 @@ function EditableTableCell({
                     onChange={(value) => column.shouldHandleOnChangeCell && onChangeCell?.(value)}
                 />
             )}
-            {column.type === DndColumnType.CHIP_ITEMS && <ChipItemsInput name={name} hideErrorMessage />}
+            {column.type === DndColumnType.CHIP_ITEMS && (
+                <ChipItemsInput name={name} hideErrorMessage={column.hideErrorMessage} />
+            )}
             {column.type === DndColumnType.SWITCH && (
                 <SwitchInput
                     name={name}
