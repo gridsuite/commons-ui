@@ -10,7 +10,7 @@ import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
 import { ElementType } from '../../../../utils';
 import yup from '../../../../utils/yupConfig';
 import { ContingencyListsInfosEnriched, IdName } from './types';
-import { DndColumn, DndColumnType } from '../../../dnd-table';
+import { DndColumn, DndColumnType } from '../../../composite/dnd-table';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
     {

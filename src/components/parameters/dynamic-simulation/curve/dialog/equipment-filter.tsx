@@ -15,11 +15,11 @@ import { EquipmentType, VoltageLevelInfos } from '../../../../../utils/types/equ
 import { useLocalizedCountries } from '../../../../../hooks/useLocalizedCountries';
 import { GsLang } from '../../../../../utils/langs';
 import { CheckboxAutocomplete } from '../../../../ui/inputs/checkbox-autocomplete';
-import { CustomAGGrid } from '../../../../customAGGrid';
+import { CustomAGGrid } from '../../../../composite/customAGGrid';
 import { useSnackMessage } from '../../../../../hooks/useSnackMessage';
 import { snackWithFallback } from '../../../../../utils/error';
 import { MuiStyles } from '../../../../../utils/styles';
-import { ExpertFilter, IdentifiableAttributes } from '../../../../filter';
+import { ExpertFilter, IdentifiableAttributes } from '../../../../composite/filter';
 
 export type EquipmentFilterApi = {
     getSelectedEquipments: () => IdentifiableAttributes[];

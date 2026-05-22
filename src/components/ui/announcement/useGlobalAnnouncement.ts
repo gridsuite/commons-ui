@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { v4 } from 'uuid';
 import { useCallback, useEffect, useState } from 'react';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { fetchCurrentAnnouncement } from '../../../services/userAdmin';
 import { NotificationsUrlKeys } from '../../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../../notifications/hooks/useNotificationsListener';
@@ -20,11 +20,11 @@ export type AnnouncementProps = {
     severity: AnnouncementSeverity;
 };
 
-export function useGlobalAnnouncement(user: User | null) {
+export function useGlobalAnnouncement(userProfile: UserProfile | null) {
     const [announcementInfos, setAnnouncementInfos] = useState<AnnouncementProps>();
 
     useEffect(() => {
-        if (user) {
+        if (userProfile) {
             fetchCurrentAnnouncement()
                 .then((announcementDto) => {
                     if (announcementDto) {
@@ -43,7 +43,7 @@ export function useGlobalAnnouncement(user: User | null) {
         } else {
             setAnnouncementInfos(undefined); // user disconnected
         }
-    }, [user]);
+    }, [userProfile]);
 
     const handleAnnouncementMessage = useCallback((event: MessageEvent) => {
         const eventData = JSON.parse(event.data);
