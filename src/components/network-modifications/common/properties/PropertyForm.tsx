@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
-import { AutocompleteInput, TextInput } from '../../../inputs';
+import { AutocompleteInput, TextInput } from '../../../ui';
 import { italicFontTextField } from '../form.utils';
 
 type PropertyFormProps = {

@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { Box } from '@mui/material';
 import { ALL_EQUIPMENTS, EquipmentInfos } from '../../../utils/types/equipmentType';
 import { TagRenderer } from '../tagRenderer/TagRenderer';
-import { OverflowableText } from '../../overflowableText';
+import { OverflowableText } from '../../ui/overflowableText';
 import { mergeSx, type SxStyle } from '../../../utils/styles';
 
 export interface EquipmentItemProps {

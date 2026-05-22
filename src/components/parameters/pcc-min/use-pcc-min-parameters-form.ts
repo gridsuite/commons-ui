@@ -18,7 +18,7 @@ import {
     fromStudyPccMinParamsDataToFormValues,
 } from './pcc-min-form-utils';
 import { useSnackMessage } from '../../../hooks';
-import { DESCRIPTION, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../ui';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { updateParameter } from '../../../services';

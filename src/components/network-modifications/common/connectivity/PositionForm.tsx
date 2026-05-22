@@ -9,8 +9,8 @@ import { ExploreOffOutlined, ExploreOutlined } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
-import { IntegerInput, useCustomFormContext } from '../../../inputs';
+import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
+import { IntegerInput, useCustomFormContext } from '../../../ui';
 import { FieldConstants } from '../../../../utils';
 import { ConnectablePositionFormInfos, ConnectivityNetworkProps } from './connectivity.type';
 

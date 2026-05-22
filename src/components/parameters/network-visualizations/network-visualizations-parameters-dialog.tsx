@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { CustomMuiDialog } from '../../dialogs';
+import { CustomMuiDialog } from '../../ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
