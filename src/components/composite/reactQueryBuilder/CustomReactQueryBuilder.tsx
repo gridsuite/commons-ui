@@ -26,10 +26,10 @@ import { AddButton } from './AddButton';
 import { ValueEditor } from './ValueEditor';
 import { ValueSelector } from './ValueSelector';
 
-import { COMBINATOR_OPTIONS } from '../../composite/filter/expert/expertFilterConstants';
-import { ErrorInput } from '../reactHookForm/errorManagement/ErrorInput';
-import { FieldErrorAlert } from '../reactHookForm/errorManagement/FieldErrorAlert';
-import { countRules, getOperators, queryValidator } from '../../composite/filter/expert/expertFilterUtils';
+import { COMBINATOR_OPTIONS } from '../filter/expert/expertFilterConstants';
+import { ErrorInput } from '../../ui/reactHookForm/errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../../ui/reactHookForm/errorManagement/FieldErrorAlert';
+import { countRules, getOperators, queryValidator } from '../filter/expert/expertFilterUtils';
 import { RemoveButton } from './RemoveButton';
 import { FieldSelector } from './FieldSelector';
 import { OperatorSelector } from './OperatorSelector';

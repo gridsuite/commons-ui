@@ -27,7 +27,7 @@ import {
 } from '@mui/icons-material';
 import type { UUID } from 'node:crypto';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../../utils/styles';
-import { CancelButton } from '../../ui/reactHookForm/utils/CancelButton';
+import { CancelButton } from '../reactHookForm/utils/CancelButton';
 import { ElementAttributes, ElementType } from '../../../utils';
 import { doesNodeHasChildren } from './TreeViewUtils';
 

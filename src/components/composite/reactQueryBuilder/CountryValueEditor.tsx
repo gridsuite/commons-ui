@@ -8,7 +8,7 @@
 import { ValueEditorProps } from 'react-querybuilder';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useLocalizedCountries } from '../../../hooks/useLocalizedCountries';
-import { useCustomFormContext } from '../reactHookForm/provider/useCustomFormContext';
+import { useCustomFormContext } from '../../ui/reactHookForm/provider/useCustomFormContext';
 import { fetchFavoriteAndDefaultCountries } from '../../../services';
 import { AutocompleteWithFavorites } from './AutocompleteWithFavorites';
 import { useConvertValue } from './hooks/useConvertValue';

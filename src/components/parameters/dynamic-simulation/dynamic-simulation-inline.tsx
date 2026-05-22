@@ -14,10 +14,10 @@ import { UseParametersBackendReturnProps } from '../../../utils/types/parameters
 import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
 
 import { useSnackMessage } from '../../../hooks';
-import { TreeViewFinderNodeProps } from '../../composite/treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../ui/treeViewFinder';
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, SubmitButton } from '../../ui';
-import { DirectoryItemSelector } from '../../directoryItemSelector';
+import { DirectoryItemSelector } from '../../ui/directoryItemSelector';
 import { PopupConfirmationDialog } from '../../ui/dialogs';
 import {
     toFormValues,

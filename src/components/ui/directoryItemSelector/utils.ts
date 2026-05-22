@@ -6,8 +6,8 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { COMMON_APP_NAME, ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../utils';
-import { fetchDirectoryElementPath, updateConfigParameter } from '../../services';
+import { COMMON_APP_NAME, ElementAttributes, ElementType, LAST_SELECTED_DIRECTORY } from '../../../utils';
+import { fetchDirectoryElementPath, updateConfigParameter } from '../../../services';
 
 /**
  * Gets the last selected directory ID from localStorage with proper null handling

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { LANG_ENGLISH, LANG_FRENCH } from '../../utils/langs';
-import { AgGridLocales } from '../../components/composite/customAGGrid/customAggrid';
+import { AgGridLocales } from '../../components/ui/customAGGrid/customAggrid';
 
 // At the moment, only the French locale is needed
 export const AGGRID_LOCALES = {

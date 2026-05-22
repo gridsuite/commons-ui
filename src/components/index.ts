@@ -6,7 +6,6 @@
  */
 export * from './authentication';
 export * from './cardErrorBoundary';
-export * from './directoryItemSelector/DirectoryItemSelector';
 export * from './flatParameters';
 export * from './topBar';
 export * from './notifications';

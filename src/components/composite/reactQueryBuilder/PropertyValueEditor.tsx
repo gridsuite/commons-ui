@@ -10,7 +10,7 @@ import { Autocomplete, FormControl, Grid, MenuItem, Select, type SelectChangeEve
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';
-import { OPERATOR_OPTIONS } from '../../composite/filter/expert/expertFilterConstants';
+import { OPERATOR_OPTIONS } from '../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';

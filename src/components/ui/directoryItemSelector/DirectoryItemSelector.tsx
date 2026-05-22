@@ -7,17 +7,17 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import type { MuiStyles } from '../../utils';
+import type { MuiStyles } from '../../../utils';
 import {
     getFileIcon,
     ElementType,
     arraysContainIdenticalStrings,
     ElementAttributes,
     snackWithFallback,
-} from '../../utils';
-import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../composite/treeViewFinder';
-import { useSnackMessage } from '../../hooks';
-import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../services';
+} from '../../../utils';
+import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder';
+import { useSnackMessage } from '../../../hooks';
+import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../../services';
 import {
     fetchChildrenForExpandedNodes,
     getExpansionPathsForSelected,

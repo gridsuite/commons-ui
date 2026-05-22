@@ -11,7 +11,7 @@ import { Box, useTheme } from '@mui/material';
 import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { CustomAGGrid, type CustomAGGridProps } from '../../../composite/customAGGrid';
+import { CustomAGGrid, type CustomAGGridProps } from '../../customAGGrid';
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
