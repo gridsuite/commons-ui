@@ -9,10 +9,10 @@ import { TableCell } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 import {
-    LimitReductionIColumnsDef,
-    LIMIT_REDUCTIONS_FORM,
-    VOLTAGE_LEVELS_FORM,
     ILimitReductionsByVoltageLevel,
+    LIMIT_REDUCTIONS_FORM,
+    LimitReductionIColumnsDef,
+    VOLTAGE_LEVELS_FORM,
 } from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../ui';
 
@@ -46,7 +46,10 @@ export function LimitReductionTableCell({
             {column.dataKey === VOLTAGE_LEVELS_FORM ? (
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             ) : (
-                <FloatInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
+                <FloatInput
+                    name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`}
+                    dataTestId={`${column.dataKey}-${rowIndex}`}
+                />
             )}
         </TableCell>
     );

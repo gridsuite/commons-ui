@@ -51,6 +51,7 @@ export function SecurityAnalysisParametersSelector({
                             <Tab
                                 key={tab.label}
                                 label={<FormattedMessage id={tab.label} />}
+                                data-testid={tab.dataTestId}
                                 value={index}
                                 sx={{
                                     fontSize: 17,
