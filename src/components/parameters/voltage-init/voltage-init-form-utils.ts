@@ -29,7 +29,7 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
     VoltageInitTabValues as TabValues,
 } from './constants';
-import { NAME } from '../../inputs';
+import { NAME } from '../../ui';
 import { SELECTED } from '../../dnd-table';
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 

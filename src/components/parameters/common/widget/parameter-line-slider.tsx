@@ -9,7 +9,7 @@ import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { Mark } from '@mui/material/Slider/useSlider.types'; // eslint-disable-line no-restricted-imports
 import { parametersStyles } from '../../parameters-style';
-import { SliderInput } from '../../../inputs';
+import { SliderInput } from '../../../ui';
 import type { MuiStyles } from '../../../../utils/styles';
 
 export function sanitizePercentageValue(value: number) {

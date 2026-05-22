@@ -8,7 +8,7 @@ import { useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import GridSection from '../../../../../grid/grid-section';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../../../utils';
-import { FloatInput } from '../../../../../inputs';
+import { FloatInput } from '../../../../../ui';
 
 export function CharacteristicsTab() {
     const watchHideNominalVoltage = useWatch({ name: FieldConstants.HIDE_NOMINAL_VOLTAGE });

@@ -11,7 +11,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
-import { DESCRIPTION, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../ui';
 import {
     InitialVoltage,
     NODE_CLUSTER_FILTER_IDS,

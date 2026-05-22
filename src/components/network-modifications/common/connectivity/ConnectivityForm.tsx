@@ -9,8 +9,8 @@ import { Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { CONNECTION_DIRECTIONS, FieldConstants, getConnectionDirectionLabel } from '../../../../utils';
-import { SelectInput, SwitchInput, TextInput } from '../../../inputs';
-import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
+import { SelectInput, SwitchInput, TextInput } from '../../../ui';
+import { CheckboxNullableInput } from '../../../ui/reactHookForm/CheckboxNullableInput';
 import { PositionForm } from './PositionForm';
 import {
     VoltageLevelConnectivityForm,

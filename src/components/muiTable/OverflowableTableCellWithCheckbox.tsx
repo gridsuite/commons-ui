@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Checkbox, TableCell } from '@mui/material';
-import { OverflowableText, OverflowableTextProps } from '../overflowableText';
+import { OverflowableText, OverflowableTextProps } from '../ui/overflowableText';
 
 export interface OverflowableTableCellProps extends OverflowableTextProps {
     checked: boolean;

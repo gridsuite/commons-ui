@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useRef } from 'react';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 import { DndTable, DndTableProps, getDefaultRowData } from '../../../dnd-table';
 
 export type ParameterDndTableFieldProps = {

@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { CustomMuiDialog } from '../../dialogs';
+import { CustomMuiDialog } from '../../ui/dialogs';
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,

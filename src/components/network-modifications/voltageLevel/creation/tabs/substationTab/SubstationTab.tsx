@@ -10,9 +10,9 @@ import { Grid } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { FieldConstants } from '../../../../../../utils';
 import { fetchDefaultCountry } from '../../../../../../services';
-import { AutocompleteInput, TextInput } from '../../../../../inputs';
+import { AutocompleteInput, TextInput } from '../../../../../ui';
 import { SubstationCreationSection, SubstationCreationSectionProps } from './SubstationCreationSection';
-import { AddButton } from '../../../../../addButton';
+import { AddButton } from '../../../../../ui/addButton';
 
 export interface SubstationTabContentProps extends Pick<SubstationCreationSectionProps, 'showDeleteButton'> {
     substationOptions?: string[];

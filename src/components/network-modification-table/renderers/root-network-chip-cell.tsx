@@ -7,7 +7,7 @@
 
 import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
-import { ActivableChip } from '../../inputs';
+import { ActivableChip } from '../../ui/inputs';
 import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
