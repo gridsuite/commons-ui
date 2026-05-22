@@ -14,7 +14,7 @@ import { AGGRID_LOCALES } from '../../../../../translations/not-intl/aggrid-loca
 import { EquipmentType, VoltageLevelInfos } from '../../../../../utils/types/equipmentType';
 import { useLocalizedCountries } from '../../../../../hooks/useLocalizedCountries';
 import { GsLang } from '../../../../../utils/langs';
-import { CheckboxAutocomplete } from '../../../../inputs/checkbox-autocomplete';
+import { CheckboxAutocomplete } from '../../../../ui/inputs/checkbox-autocomplete';
 import { CustomAGGrid } from '../../../../customAGGrid';
 import { useSnackMessage } from '../../../../../hooks/useSnackMessage';
 import { snackWithFallback } from '../../../../../utils/error';

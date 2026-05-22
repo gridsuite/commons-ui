@@ -7,7 +7,7 @@
 import { Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { AutocompleteInput, DirectoryItemsInput } from '../../../inputs';
+import { AutocompleteInput, DirectoryItemsInput } from '../../../ui';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
 import { ElementType, FieldConstants, richTypeEquals } from '../../../../utils';
 import { EQUIPMENT_TYPE_ORDER } from './byFilterDeletion.utils';

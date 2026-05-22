@@ -29,7 +29,7 @@ import {
 import { VoltageTable } from './short-circuit-voltage-table';
 import GridItem from '../../grid/grid-item';
 import GridSection from '../../grid/grid-section';
-import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../inputs';
+import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../ui';
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS, TabPanel } from '../common';
 import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';

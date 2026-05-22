@@ -15,7 +15,7 @@ import { UseParametersBackendReturnProps } from '../../../utils/types/parameters
 import { ComputingType } from '../common/computing-type';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { LabelledButton } from '../common/parameters';
 import { ElementType, GsLang, mergeSx } from '../../../utils';
 import { LineSeparator } from '../common';
@@ -24,7 +24,7 @@ import { fetchLoadFlowParameters } from '../../../services/loadflow';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
-import { PopupConfirmationDialog } from '../../dialogs';
+import { PopupConfirmationDialog } from '../../ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
 
 export function LoadFlowParametersInline({

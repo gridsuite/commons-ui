@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import { ComputingType, LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
@@ -21,7 +21,7 @@ import { fetchShortCircuitParameters } from '../../../services/short-circuit-ana
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 import { snackWithFallback } from '../../../utils/error';
-import { PopupConfirmationDialog } from '../../dialogs';
+import { PopupConfirmationDialog } from '../../ui/dialogs';
 
 export function ShortCircuitParametersInLine({
     studyUuid,

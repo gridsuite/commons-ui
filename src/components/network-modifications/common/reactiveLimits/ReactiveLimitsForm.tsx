@@ -10,7 +10,7 @@ import { Grid } from '@mui/material';
 import { ReactiveCapabilityCurveTableForm } from './reactiveCapabilityCurve/ReactiveCapabilityCurveTableForm';
 import { MinMaxReactiveLimitsFormInfos, ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
 import { FieldConstants, ReactivePowerAdornment } from '../../../../utils';
-import { FloatInput, RadioInput } from '../../../inputs';
+import { FloatInput, RadioInput } from '../../../ui';
 import GridItem from '../../../grid/grid-item';
 import { REACTIVE_LIMIT_TYPES } from './reactiveLimits.utils';
 

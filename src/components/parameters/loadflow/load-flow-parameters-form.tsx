@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
-import { CustomFormProvider } from '../../inputs';
+import { CustomFormProvider } from '../../ui';
 import type { GsLang } from '../../../utils/langs';
 import type { MuiStyles } from '../../../utils/styles';
 

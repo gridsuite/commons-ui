@@ -9,7 +9,7 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typograph
 import { FormattedMessage } from 'react-intl';
 import type { User } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
-import { CancelButton } from '../inputs/reactHookForm/utils/CancelButton';
+import { CancelButton } from '../ui/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
 import type { MuiStyles } from '../../utils/styles';

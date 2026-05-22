@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { CustomMuiDialog } from '../../dialogs';
+import { CustomMuiDialog } from '../../ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
