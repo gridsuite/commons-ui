@@ -11,7 +11,7 @@ import { ExpandableInput, SelectWithConfirmationInput } from '../../../ui';
 import { FieldConstants, mergeSx } from '../../../../utils';
 import { unscrollableDialogStyles } from '../../../ui/dialogs';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
-import GridItem from '../../../grid/grid-item';
+import GridItem from '../../../composite/grid/grid-item';
 import AssignmentForm from './assignment/assignment-form';
 import { getAssignmentInitialValue } from './assignment/assignment-utils';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment/assignment-constants';
