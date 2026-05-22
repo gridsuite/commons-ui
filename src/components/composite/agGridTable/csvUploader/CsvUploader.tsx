@@ -20,8 +20,8 @@ import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import CsvDownloader from 'react-csv-downloader';
 import { useWatch } from 'react-hook-form';
-import { FieldConstants, GsLang, LANG_FRENCH } from '../../../../../utils';
-import { CancelButton } from '../../utils';
+import { FieldConstants, GsLang, LANG_FRENCH } from '../../../../utils';
+import { CancelButton } from '../../../ui/reactHookForm/utils';
 
 export interface CsvUploaderProps {
     name: string;

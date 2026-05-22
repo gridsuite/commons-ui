@@ -20,7 +20,7 @@ import { VoltageLevelInfos } from '../../../../utils/types/equipmentType';
 import { ExpertFilter, IdentifiableAttributes } from '../../../composite/filter';
 import { Curve as CurveType } from './common/curve.type';
 import { type MuiStyles } from '../../../../utils/styles';
-import { CustomAGGrid } from '../../../ui/customAGGrid';
+import { CustomAGGrid } from '../../../composite/customAGGrid';
 import { isEmpty } from '../../../../utils/functions';
 
 const styles = {

@@ -15,9 +15,9 @@ import {
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn } from 'react-hook-form';
-import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
-import { ErrorInput } from '../errorManagement/ErrorInput';
-import { FieldErrorAlert } from '../errorManagement/FieldErrorAlert';
+import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
+import { ErrorInput } from '../../ui/reactHookForm/errorManagement/ErrorInput';
+import { FieldErrorAlert } from '../../ui/reactHookForm/errorManagement/FieldErrorAlert';
 import { CsvUploader } from './csvUploader/CsvUploader';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
