@@ -48,6 +48,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             .map(([urlKey, url]) => {
                 const urlWithToken = appendTokenToUrl(url, token);
                 const rws = new ReconnectingWebSocket(urlWithToken, [], {
+                    // this option set the minimum duration being connected before reset the retry count to 0
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });
 
