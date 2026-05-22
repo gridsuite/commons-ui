@@ -8,7 +8,7 @@ import { ForwardedRef, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { UUID } from 'node:crypto';
-import { CustomFormProvider, MuiSelectInput } from '../../inputs';
+import { CustomFormProvider, MuiSelectInput } from '../../ui';
 import { parametersStyles } from '../parameters-style';
 import { CONTINGENCY_LISTS_INFOS, ContingencyTableApi, LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';

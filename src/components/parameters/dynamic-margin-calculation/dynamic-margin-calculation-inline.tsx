@@ -20,15 +20,15 @@ import {
     useDynamicMarginCalculationParametersForm,
 } from './use-dynamic-margin-calculation-parameters-form';
 import { LabelledButton } from '../common/parameters';
-import { SubmitButton } from '../../inputs/reactHookForm/utils/SubmitButton';
-import { PopupConfirmationDialog } from '../../dialogs/popupConfirmationDialog/PopupConfirmationDialog';
+import { SubmitButton } from '../../ui/reactHookForm/utils/SubmitButton';
+import { PopupConfirmationDialog } from '../../ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
 import { parametersStyles } from '../parameters-style';
 import { CreateParameterDialog } from '../common';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
 import { useSnackMessage } from '../../../hooks';
-import { CustomFormProvider } from '../../inputs';
+import { CustomFormProvider } from '../../ui';
 
 type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
