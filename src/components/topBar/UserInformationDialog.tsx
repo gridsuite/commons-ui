@@ -7,7 +7,7 @@
 
 import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
 import { CancelButton } from '../ui/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';
@@ -25,13 +25,14 @@ const styles = {
 interface UserInformationDialogProps {
     openDialog: boolean;
     onClose: () => void;
-    user: User | undefined;
+    userProfile: UserProfile | undefined;
 }
 
-function UserInformationDialog({ openDialog, user, onClose }: UserInformationDialogProps) {
+function UserInformationDialog({ openDialog, userProfile, onClose }: UserInformationDialogProps) {
     const [userDetails, setUserDetails] = useState<UserDetail | undefined>(undefined);
 
     const getUserDetails = (userName: string) => {
+        setUserDetails(undefined);
         fetchUserDetails(userName)
             .then((response: UserDetail) => {
                 setUserDetails(response);
@@ -42,16 +43,18 @@ function UserInformationDialog({ openDialog, user, onClose }: UserInformationDia
     };
 
     useEffect(() => {
-        if (openDialog && user?.profile.sub) {
-            getUserDetails(user?.profile.sub);
+        if (!openDialog || !userProfile?.sub) {
+            setUserDetails(undefined);
+            return;
         }
-    }, [openDialog, user]);
+        getUserDetails(userProfile.sub);
+    }, [openDialog, userProfile?.sub]);
 
-    const rolesString = user?.profile?.profile ?? '';
+    const rolesString = userProfile?.profile ?? '';
     const rolesList = rolesString ? rolesString.split('|').map((role) => role.trim()) : [];
 
     return (
-        <Dialog open={openDialog && !!user && !!userDetails} onClose={onClose}>
+        <Dialog open={openDialog && !!userProfile && !!userDetails} onClose={onClose}>
             <DialogTitle fontWeight="bold" sx={styles.DialogTitle}>
                 <FormattedMessage id="user-information-dialog/title" />
             </DialogTitle>

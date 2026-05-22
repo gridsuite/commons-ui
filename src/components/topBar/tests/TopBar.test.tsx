@@ -72,7 +72,7 @@ it('renders', () => {
                     onDeveloperModeClick={() => {}}
                     onLogoutClick={() => {}}
                     onLogoClick={() => {}}
-                    user={mockUser}
+                    userProfile={mockUser.profile}
                     appsAndUrls={apps}
                     language={LANG_ENGLISH}
                     onLanguageClick={() => {}}

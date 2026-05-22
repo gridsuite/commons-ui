@@ -13,7 +13,7 @@ import { InfoOutlined } from '@mui/icons-material';
 import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 import { FieldConstants } from '../../../../utils';
 import { ActivePowerControlInfos } from './activePowerControlForm.type';
-import GridItem from '../../../grid/grid-item';
+import GridItem from '../../../composite/grid/grid-item';
 import { CheckboxNullableInput, FloatInput, SwitchInput } from '../../../ui';
 
 export interface ActivePowerControlFormProps {
