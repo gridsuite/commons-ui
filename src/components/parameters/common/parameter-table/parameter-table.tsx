@@ -9,7 +9,7 @@ import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { useCallback, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useFormContext } from 'react-hook-form';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 import { TableRowComponent } from './table-row';
 import { MAX_ROWS_NUMBER } from './constants';
 import { ColumnsDef } from './types';

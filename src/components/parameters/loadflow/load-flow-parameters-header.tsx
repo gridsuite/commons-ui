@@ -10,7 +10,7 @@ import { Box, Grid, Tabs, Tab } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TabValues } from './load-flow-parameters-utils';
 import { getTabStyle, parametersStyles } from '../parameters-style';
-import { MuiSelectInput } from '../../inputs';
+import { MuiSelectInput } from '../../ui';
 import { PROVIDER, LineSeparator } from '../common';
 
 function LoadFlowParametersHeader({

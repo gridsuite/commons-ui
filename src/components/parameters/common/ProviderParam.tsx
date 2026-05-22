@@ -8,7 +8,7 @@ import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { LineSeparator } from './line-separator';
 import { parametersStyles } from '../parameters-style';
-import { MuiSelectInput } from '../../inputs';
+import { MuiSelectInput } from '../../ui';
 import { PROVIDER } from './constants';
 import type { MuiStyles } from '../../../utils/styles';
 

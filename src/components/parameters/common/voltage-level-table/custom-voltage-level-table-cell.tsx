@@ -7,7 +7,7 @@
 import { TableCell } from '@mui/material';
 import { LimitReductionIColumnsDef } from '../limitreductions/columns-definitions';
 import { VOLTAGE_LEVEL } from '../constants';
-import { FloatInput, RawReadOnlyInput } from '../../../inputs';
+import { FloatInput, RawReadOnlyInput } from '../../../ui';
 
 export function CustomVoltageLevelTableCell({
     formName,
