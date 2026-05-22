@@ -7,7 +7,7 @@
 import { Grid } from '@mui/material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
-import { AutocompleteInput, useCustomFormContext } from '../../../inputs';
+import { AutocompleteInput, useCustomFormContext } from '../../../ui';
 import { areIdsEqual, FieldConstants, getObjectId, Option } from '../../../../utils';
 import { getConnectivityBusBarSectionData, getConnectivityVoltageLevelData } from './connectivityForm.utils';
 import { ConnectivityNetworkProps } from './connectivity.type';

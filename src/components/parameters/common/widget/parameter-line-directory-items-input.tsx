@@ -8,7 +8,7 @@
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../../parameters-style';
-import { DirectoryItemsInput } from '../../../inputs';
+import { DirectoryItemsInput } from '../../../ui';
 
 type DirectoryItemsInputLineProps = {
     label: string;

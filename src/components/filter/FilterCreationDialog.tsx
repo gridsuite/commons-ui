@@ -11,7 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { UUID } from 'node:crypto';
 import { saveExpertFilter, saveExplicitNamingFilter } from './utils/filterApi';
 import { useSnackMessage } from '../../hooks/useSnackMessage';
-import { CustomMuiDialog } from '../dialogs/customMuiDialog/CustomMuiDialog';
+import { CustomMuiDialog } from '../ui/dialogs/customMuiDialog/CustomMuiDialog';
 import {
     explicitNamingFilterSchema,
     getExplicitNamingFilterEmptyFormData,

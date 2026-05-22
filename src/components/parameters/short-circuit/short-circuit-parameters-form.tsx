@@ -7,7 +7,7 @@
 
 import { Box, Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
-import { CustomFormProvider } from '../../inputs';
+import { CustomFormProvider } from '../../ui';
 import { parametersStyles } from '../parameters-style';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import { MuiStyles } from '../../../utils';

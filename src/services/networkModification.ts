@@ -8,7 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
-import { NetworkModificationMetadata } from '../utils';
+import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
 const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
 
@@ -61,6 +61,28 @@ export function updateModification({ modificationUuid, body }: { modificationUui
             'Content-Type': 'application/json',
         },
         body,
+    });
+}
+
+/**
+ * Update only the metadata (e.g. the name) of network modifications, directly on the network-modification-server.
+ * Fields left out of `metadata` are not modified.
+ */
+export function updateNetworkModificationsMetadata(
+    modificationUuids: UUID[],
+    metadata: Partial<ComposedModificationMetadata>
+) {
+    const urlSearchParams = new URLSearchParams();
+    modificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
+    const url = `${getUrl()}?${urlSearchParams.toString()}`;
+    console.debug(url);
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
     });
 }
 
@@ -121,4 +143,50 @@ export function changeNetworkModificationOrder(
     const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${itemUuid}?${beforeParam}`;
     console.debug(url);
     return backendFetch(url, { method: 'put' });
+}
+
+const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
+    studyUuid: string | null | undefined,
+    nodeUuid: string | null | undefined,
+    rootNetworkUuid: string | undefined | null
+) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+        rootNetworkUuid
+    )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
+
+export function setModificationMetadata(
+    studyUuid: UUID | null,
+    nodeUuid: UUID | undefined,
+    modificationUuid: UUID | undefined,
+    metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+): Promise<Response> {
+    if (!modificationUuid) {
+        return Promise.reject(new Error('modificationUuid is required'));
+    }
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('uuids', String([modificationUuid]));
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications?${urlSearchParams.toString()}`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
+    });
+}
+
+export function updateModificationStatusByRootNetwork(
+    studyUuid: UUID,
+    nodeUuid: UUID,
+    rootNetworkUuid: UUID,
+    modificationUuid: UUID,
+    activated: boolean
+) {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('activated', String(activated));
+    urlSearchParams.append('uuids', String([modificationUuid]));
+    const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, rootNetworkUuid)}/network-modifications?${urlSearchParams.toString()}`;
+    console.debug(url);
+    return backendFetch(url, { method: 'PUT' });
 }

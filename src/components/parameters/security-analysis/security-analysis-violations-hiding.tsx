@@ -8,9 +8,9 @@
 import { Grid, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
-import { FloatInput } from '../../inputs';
+import { FloatInput } from '../../ui';
 import {
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,

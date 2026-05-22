@@ -10,7 +10,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { User } from 'oidc-client-ts';
 import { UseNetworkVisualizationParametersFormReturn } from './use-network-visualizations-parameters-form';
-import { CustomFormProvider } from '../../inputs';
+import { CustomFormProvider } from '../../ui';
 import { NetworkVisualizationTabValues as TabValues } from './constants';
 import { MapParameters } from './map-parameters';
 import { SingleLineDiagramParameters } from './single-line-diagram-parameters';

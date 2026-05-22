@@ -34,7 +34,7 @@ import {
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
 } from '../common/utils';
-import { NAME } from '../../inputs';
+import { NAME } from '../../ui';
 import { SnackInputs } from '../../../hooks';
 import { fetchElementNames } from '../../../services';
 

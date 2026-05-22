@@ -8,7 +8,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useState } from 'react';
-import { CancelButton } from '../inputs';
+import { CancelButton } from '../ui';
 
 interface DndTableAddRowsDialogProps {
     open: boolean;
