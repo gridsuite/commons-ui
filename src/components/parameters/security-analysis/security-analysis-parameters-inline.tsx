@@ -49,14 +49,22 @@ export function SecurityAnalysisParametersInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
+    // to force re-fetch contingency count in ContingencyTable
+    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState<number | undefined>(undefined);
+    const triggerContingencyCountRefresh = useCallback(
+        (value?: number) => setContingencyCountRefreshTrigger((prev) => value ?? (prev ?? 0) + 1),
+        []
+    );
+
     const { snackError } = useSnackMessage();
 
     const { handleSubmit, formState, reset, getValues } = securityAnalysisMethods.formMethods;
 
     const executeResetAction = useCallback(() => {
         resetParameters();
+        triggerContingencyCountRefresh(0); // 0 is the reset signal
         setOpenResetConfirmation(false);
-    }, [resetParameters]);
+    }, [resetParameters, triggerContingencyCountRefresh]);
 
     const handleResetAllClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -76,6 +84,7 @@ export function SecurityAnalysisParametersInline({
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,
                         });
+                        triggerContingencyCountRefresh();
                     })
                     .catch((error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
@@ -83,7 +92,7 @@ export function SecurityAnalysisParametersInline({
             }
             setOpenSelectParameterDialog(false);
         },
-        [reset, snackError]
+        [reset, snackError, triggerContingencyCountRefresh]
     );
 
     useEffect(() => {
@@ -95,6 +104,7 @@ export function SecurityAnalysisParametersInline({
             securityAnalysisMethods={securityAnalysisMethods}
             showContingencyCount
             fetchContingencyCount={fetchContingencyCount}
+            contingencyCountRefreshTrigger={contingencyCountRefreshTrigger}
             isBuiltCurrentNode={isBuiltCurrentNode}
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {
