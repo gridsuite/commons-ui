@@ -7,9 +7,9 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
-import { NetworkVisualizationParameters } from '../components/parameters/network-visualizations/network-visualizations.types';
-import { type ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
-import { VoltageInitStudyParameters } from '../components/parameters/voltage-init/voltage-init.type';
+import { NetworkVisualizationParameters } from '../components/features/parameters/network-visualizations/network-visualizations.types';
+import { type ShortCircuitParametersInfos } from '../components/features/parameters/short-circuit/short-circuit-parameters.type';
+import { VoltageInitStudyParameters } from '../components/features/parameters/voltage-init/voltage-init.type';
 
 const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 

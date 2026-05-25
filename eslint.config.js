@@ -132,6 +132,18 @@ const projectConfig = [
                     optionalDependencies: false,
                 },
             ],
+            'import-x/no-restricted-paths': [
+                'error',
+                {
+                    zones: [
+                        // ui must not import from composite or features
+                        { target: './src/components/ui', from: './src/components/composite' },
+                        { target: './src/components/ui', from: './src/components/features' },
+                        // composite must not import from features
+                        { target: './src/components/composite', from: './src/components/features' },
+                    ],
+                },
+            ],
 
             // MUI deep imports restriction
             'no-restricted-imports': [

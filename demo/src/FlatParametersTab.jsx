@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import RightResizableBox from './right-resizable-box';
-import { FlatParameters } from '../../src/components/flatParameters/FlatParameters';
+import { FlatParameters } from '../../src/components/features/flatParameters/FlatParameters';
 
 const EXAMPLE_PARAMETERS = [
     {

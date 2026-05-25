@@ -11,8 +11,8 @@ import { UUID } from 'node:crypto';
 import type { User } from 'oidc-client-ts';
 
 import { useSnackMessage } from './useSnackMessage';
-import { ComputingType, formatComputingTypeLabel } from '../components/parameters/common/computing-type';
-import type { ILimitReductionsByVoltageLevel } from '../components/parameters/common/limitreductions/columns-definitions';
+import { ComputingType, formatComputingTypeLabel } from '../components/features/parameters/common/computing-type';
+import type { ILimitReductionsByVoltageLevel } from '../components/features/parameters/common/limitreductions/columns-definitions';
 import type {
     BackendFunctions,
     ParametersInfos,
