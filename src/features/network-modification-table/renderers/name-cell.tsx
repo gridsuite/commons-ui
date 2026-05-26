@@ -157,14 +157,14 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         if (isComposite && modificationToEditLabel === row.original.uuid) {
             beginEditingName(intl.formatMessage({ id: 'CompositeModification' }));
         }
-    }, [modificationToEditLabel, intl]);
+    }, [modificationToEditLabel, intl, isComposite, row.original.uuid, beginEditingName]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
             beginEditingName(compositeName);
         },
-        [compositeName]
+        [beginEditingName, compositeName]
     );
 
     const handleKeyDown = useCallback(
