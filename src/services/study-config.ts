@@ -6,7 +6,7 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetchJson } from './utils';
-import { NetworkVisualizationParameters } from '../components/features/parameters/network-visualizations/network-visualizations.types';
+import { NetworkVisualizationParameters } from '../features/parameters/network-visualizations/network-visualizations.types';
 
 const PREFIX_STUDY_CONFIG_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study-config`;
 

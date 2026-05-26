@@ -13,7 +13,7 @@ import {
     mapSecurityAnalysisParameters,
     SAParameters,
     SAParametersEnriched,
-} from '../components/features/parameters/security-analysis/types';
+} from '../features/parameters/security-analysis/types';
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
 

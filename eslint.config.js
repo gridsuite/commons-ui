@@ -138,9 +138,9 @@ const projectConfig = [
                     zones: [
                         // ui must not import from composite or features
                         { target: './src/components/ui', from: './src/components/composite' },
-                        { target: './src/components/ui', from: './src/components/features' },
+                        { target: './src/components/ui', from: './src/features' },
                         // composite must not import from features
-                        { target: './src/components/composite', from: './src/components/features' },
+                        { target: './src/components/composite', from: './src/features' },
                     ],
                 },
             ],
