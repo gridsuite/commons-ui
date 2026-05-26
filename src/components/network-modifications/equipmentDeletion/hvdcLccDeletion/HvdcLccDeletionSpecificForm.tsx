@@ -8,7 +8,7 @@
 import { Grid } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
 import { FieldConstants } from '../../../../utils';
-import GridSection from '../../../grid/grid-section';
+import GridSection from '../../../composite/grid/grid-section';
 import { ShuntCompensatorSelectionForm } from './ShuntCompensatorSelectionForm';
 
 export function HvdcLccDeletionSpecificForm() {

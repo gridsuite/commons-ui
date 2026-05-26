@@ -30,7 +30,7 @@ import {
     VoltageInitTabValues as TabValues,
 } from './constants';
 import { NAME } from '../../ui';
-import { SELECTED } from '../../dnd-table';
+import { SELECTED } from '../../composite/dnd-table';
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 
 export const fromVoltageInitParametersFormToParamValues = (

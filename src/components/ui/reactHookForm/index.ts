@@ -10,7 +10,6 @@ export * from './OverflowableChipWithHelperText';
 export * from './chip-items-input';
 export * from './DirectoryItemsInput';
 export * from './RawReadOnlyInput';
-export * from './agGridTable';
 export * from './autocompleteInputs';
 export * from './booleans';
 export * from './errorManagement';
