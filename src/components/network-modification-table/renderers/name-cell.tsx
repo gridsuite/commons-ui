@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Row } from '@tanstack/react-table';
+import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
-import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../ui';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,
@@ -35,10 +35,11 @@ function measureTextPx(text: string, font: string): number {
 
 interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
+    table: Table<ComposedModificationMetadata>;
     onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
 }
 
-export function NameCell({ row, onChange }: Readonly<NameCellProps>) {
+export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
@@ -47,6 +48,8 @@ export function NameCell({ row, onChange }: Readonly<NameCellProps>) {
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
+
+    const modificationToEditLabel = table.options.meta?.interaction.modificationToEditLabel;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -125,31 +128,40 @@ export function NameCell({ row, onChange }: Readonly<NameCellProps>) {
         stopEditing();
     }, [compositeName, draftName, updateName, stopEditing]);
 
+    const beginEditingName = useCallback((originalName: string) => {
+        // Init draft with current saved name
+        setDraftName(originalName);
+        // Freeze input width at open time
+        if (labelRef.current) {
+            const style = globalThis.getComputedStyle(labelRef.current);
+            const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+            const px =
+                originalName.length >= MIN_CHAR_WIDTH
+                    ? measureTextPx(originalName, font) + 20
+                    : measureTextPx('a'.repeat(MIN_CHAR_WIDTH), font) + 20;
+            setInputBaseWidthPx(px);
+        }
+
+        isEditingRef.current = true;
+        setIsEditing(true);
+
+        // Focus + select after the input mounts (next tick)
+        requestAnimationFrame(() => {
+            inputRef.current?.focus();
+            inputRef.current?.select();
+        });
+    }, []);
+
+    useEffect(() => {
+        if (isComposite && modificationToEditLabel === row.original.uuid) {
+            beginEditingName('autre nom');
+        }
+    }, [modificationToEditLabel]);
+
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
             e.stopPropagation();
-
-            // Init draft with current saved name
-            setDraftName(compositeName);
-            // Freeze input width at open time
-            if (labelRef.current) {
-                const style = globalThis.getComputedStyle(labelRef.current);
-                const font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-                const px =
-                    compositeName.length >= MIN_CHAR_WIDTH
-                        ? measureTextPx(compositeName, font) + 20
-                        : measureTextPx('a'.repeat(MIN_CHAR_WIDTH), font) + 20;
-                setInputBaseWidthPx(px);
-            }
-
-            isEditingRef.current = true;
-            setIsEditing(true);
-
-            // Focus + select after the input mounts (next tick)
-            requestAnimationFrame(() => {
-                inputRef.current?.focus();
-                inputRef.current?.select();
-            });
+            beginEditingName(compositeName);
         },
         [compositeName]
     );
