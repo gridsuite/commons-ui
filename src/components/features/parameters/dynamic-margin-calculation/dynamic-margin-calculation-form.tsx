@@ -6,7 +6,7 @@
  */
 
 import { ReactNode } from 'react';
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FieldErrors } from 'react-hook-form';
 import { mergeSx } from '../../../../utils';
@@ -61,7 +61,7 @@ export function DynamicMarginCalculationForm({
                     </Grid>
                     <Grid
                         container
-                        xs
+                        size="grow"
                         key="dmcParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
                             paddingTop: 0,

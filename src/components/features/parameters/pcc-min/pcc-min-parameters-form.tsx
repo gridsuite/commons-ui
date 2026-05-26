@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../ui';
 import { ParameterLineDirectoryItemsInput } from '../common';
@@ -56,8 +56,8 @@ export function PccMinParametersForm({
                     position: 'relative',
                 }}
             >
-                <Grid item container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
-                    <Grid item container direction="column">
+                <Grid container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
+                    <Grid container direction="column">
                         {renderTitleFields?.()}
                     </Grid>
                     {paramsLoading ? (
@@ -69,7 +69,7 @@ export function PccMinParametersForm({
                                 width: '100%',
                             }}
                         >
-                            <Grid item container direction="column">
+                            <Grid container direction="column">
                                 <ParameterLineDirectoryItemsInput
                                     name={FILTERS}
                                     equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
@@ -84,7 +84,6 @@ export function PccMinParametersForm({
                 </Grid>
                 {renderActions && (
                     <Grid
-                        item
                         container
                         direction="column"
                         sx={{

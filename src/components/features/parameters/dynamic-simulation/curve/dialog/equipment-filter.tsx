@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid, MenuItem, Select, type SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Grid2 as Grid, MenuItem, Select, type SelectChangeEvent, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
@@ -213,13 +213,13 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
         return (
             <>
                 {/* Equipment type */}
-                <Grid item container sx={styles.criteria}>
-                    <Grid item xs={4}>
+                <Grid container sx={styles.criteria}>
+                    <Grid size={4}>
                         <Typography>
                             <FormattedMessage id="DynamicSimulationCurveEquipmentType" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid size={8}>
                         <Select
                             labelId="DynamicSimulationCurveEquipmentType"
                             value={equipmentType}
@@ -236,13 +236,13 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Post */}
-                <Grid item container sx={styles.criteria}>
-                    <Grid item xs={4}>
+                <Grid container sx={styles.criteria}>
+                    <Grid size={4}>
                         <Typography>
                             <FormattedMessage id="DynamicSimulationCurvePost" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid size={8}>
                         <CheckboxAutocomplete
                             id="voltage-level"
                             virtualize
@@ -255,13 +255,13 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Country */}
-                <Grid item container sx={styles.criteria}>
-                    <Grid item xs={4}>
+                <Grid container sx={styles.criteria}>
+                    <Grid size={4}>
                         <Typography>
                             <FormattedMessage id="DynamicSimulationCurveCountry" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid size={8}>
                         <CheckboxAutocomplete
                             id="country"
                             options={countries}
@@ -272,13 +272,13 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Tension */}
-                <Grid item container sx={styles.criteria}>
-                    <Grid item xs={4}>
+                <Grid container sx={styles.criteria}>
+                    <Grid size={4}>
                         <Typography>
                             <FormattedMessage id="DynamicSimulationCurveTension" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={8}>
+                    <Grid size={8}>
                         <CheckboxAutocomplete
                             id="nominal-voltage"
                             options={nominalVoltages}
@@ -289,14 +289,14 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Equipments */}
-                <Grid item container sx={styles.equipment} direction="column">
-                    <Grid item>
+                <Grid container sx={styles.equipment} direction="column">
+                    <Grid>
                         <Typography sx={styles.equipmentTitle} variant="subtitle1">
                             <FormattedMessage id="DynamicSimulationCurveEquipment" />
                             {` (${selectedRowsLength} / ${equipmentRowData?.length ?? 0})`}
                         </Typography>
                     </Grid>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <Box sx={styles.grid}>
                             <CustomAGGrid
                                 ref={equipmentsRef}

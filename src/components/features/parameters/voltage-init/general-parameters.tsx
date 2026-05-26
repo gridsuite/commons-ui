@@ -7,7 +7,7 @@
 import { useFormContext, useWatch } from 'react-hook-form';
 import { ChangeEvent, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Grid, Alert } from '@mui/material';
+import { Box, Grid2 as Grid, Alert } from '@mui/material';
 import {
     GENERAL,
     GENERAL_APPLY_MODIFICATIONS,

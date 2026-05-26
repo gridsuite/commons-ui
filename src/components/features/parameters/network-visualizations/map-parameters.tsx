@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useEffect, useState } from 'react';
 import {
@@ -50,10 +50,10 @@ export function MapParameters() {
 
     const lineSwitch = (name: string, label: string) => (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item container xs={4} sx={parametersStyles.controlItem}>
+            <Grid container size={4} sx={parametersStyles.controlItem}>
                 <SwitchInput name={`${TabValues.MAP}.${name}`} />
             </Grid>
         </>
@@ -61,10 +61,10 @@ export function MapParameters() {
 
     const lineFlow = (name: string, label: string, options: { id: LineFlowMode; label: string }[]) => (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item xs={4} sx={parametersStyles.controlItem}>
+            <Grid size={4} sx={parametersStyles.controlItem}>
                 <MuiSelectInput
                     fullWidth
                     name={`${TabValues.MAP}.${name}`}
@@ -77,10 +77,10 @@ export function MapParameters() {
 
     const mapBaseMap = (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={MAP_BASE_MAP} />
             </Grid>
-            <Grid item xs={4} sx={parametersStyles.controlItem}>
+            <Grid size={4} sx={parametersStyles.controlItem}>
                 <MuiSelectInput
                     fullWidth
                     name={`${TabValues.MAP}.${PARAM_MAP_BASEMAP}`}

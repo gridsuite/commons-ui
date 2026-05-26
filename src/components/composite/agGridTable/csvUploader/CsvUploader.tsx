@@ -13,7 +13,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid,
+    Grid2 as Grid,
 } from '@mui/material';
 import { RECORD_SEP, UNIT_SEP, useCSVReader } from 'react-papaparse';
 import React, { useMemo, useState } from 'react';
@@ -178,8 +178,8 @@ export function CsvUploader({
                 <DialogContent>
                     <div>
                         <Grid container spacing={2}>
-                            <Grid container item>
-                                <Grid item xs={6}>
+                            <Grid container>
+                                <Grid size={6}>
                                     <CsvDownloader
                                         datas={data}
                                         filename={fileName}
@@ -191,7 +191,7 @@ export function CsvUploader({
                                     </CsvDownloader>
                                 </Grid>
                             </Grid>
-                            <Grid container item spacing={3}>
+                            <Grid container spacing={3}>
                                 <CSVReader
                                     onUploadAccepted={(results: any) => {
                                         setImportedData([...results.data]);
@@ -204,7 +204,7 @@ export function CsvUploader({
                                     }}
                                 >
                                     {({ getRootProps, acceptedFile }: any) => (
-                                        <Grid item>
+                                        <Grid>
                                             <Button {...getRootProps()} variant="contained">
                                                 <FormattedMessage id="UploadCSV" />
                                             </Button>

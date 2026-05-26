@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { ParameterType, SpecificParameterInfos } from '../../../../../utils/types/parameters.type';
 import { MappingInfos } from '../../../../../utils/types/dynamic-simulation.type';

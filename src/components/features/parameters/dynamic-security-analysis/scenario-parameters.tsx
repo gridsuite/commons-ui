@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { SCENARIO_DURATION } from './constants';
 import { ParameterType, SpecificParameterInfos } from '../../../../utils';
 import ParameterField from '../common/parameter-field';

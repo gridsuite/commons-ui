@@ -6,7 +6,7 @@
  */
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../../ui';
 import { parametersStyles } from '../parameters-style';
@@ -65,7 +65,7 @@ export function SecurityAnalysisParametersForm({
             validationSchema={securityAnalysisMethods.formSchema}
             {...securityAnalysisMethods.formMethods}
         >
-            <Grid item sx={{ height: '100%' }}>
+            <Grid sx={{ height: '100%' }}>
                 <Box
                     sx={{
                         height: '100%',
@@ -89,10 +89,10 @@ export function SecurityAnalysisParametersForm({
                                     }}
                                     justifyContent="space-between"
                                 >
-                                    <Grid item xs="auto" sx={parametersStyles.parameterName}>
+                                    <Grid size="auto" sx={parametersStyles.parameterName}>
                                         <FormattedMessage id="Provider" />
                                     </Grid>
-                                    <Grid item xs="auto" sx={parametersStyles.controlItem}>
+                                    <Grid size="auto" sx={parametersStyles.controlItem}>
                                         <MuiSelectInput
                                             name={PARAM_SA_PROVIDER}
                                             size="small"

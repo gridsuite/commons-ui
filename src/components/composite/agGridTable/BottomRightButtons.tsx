@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid, IconButton, styled } from '@mui/material';
+import { Box, Grid2 as Grid, IconButton, styled } from '@mui/material';
 import {
     ArrowCircleDown,
     ArrowCircleUp,
@@ -57,7 +57,7 @@ export function BottomRightButtons({
     return (
         <>
             <Grid container paddingTop={1} paddingLeft={2}>
-                <Grid item xs={1}>
+                <Grid size={1}>
                     {csvProps && (
                         <InnerColoredButton onClick={() => setUploaderOpen(true)}>
                             <CustomTooltip
@@ -70,7 +70,7 @@ export function BottomRightButtons({
                         </InnerColoredButton>
                     )}
                 </Grid>
-                <Grid item xs={11} sx={{ display: 'flex', justifyContent: 'right' }}>
+                <Grid size={11} sx={{ display: 'flex', justifyContent: 'right' }}>
                     <InnerColoredButton key="addButton" onClick={handleAddRow}>
                         <AddIcon />
                     </InnerColoredButton>

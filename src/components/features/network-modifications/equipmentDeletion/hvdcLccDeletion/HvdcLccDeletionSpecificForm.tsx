@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useFieldArray } from 'react-hook-form';
 import { FieldConstants } from '../../../../../utils';
 import GridSection from '../../../../composite/grid/grid-section';
@@ -23,14 +23,14 @@ export function HvdcLccDeletionSpecificForm() {
         <>
             <GridSection title="LCCConverterStationShuntCompensators" />
             <Grid container spacing={2}>
-                <Grid item xs>
+                <Grid size="grow">
                     <ShuntCompensatorSelectionForm
                         title="Side1"
                         arrayFormName={`${FieldConstants.DELETION_SPECIFIC_DATA}.${FieldConstants.SHUNT_COMPENSATOR_SIDE_1}`}
                         mcsRows={mcsRows1}
                     />
                 </Grid>
-                <Grid item xs>
+                <Grid size="grow">
                     <ShuntCompensatorSelectionForm
                         title="Side2"
                         arrayFormName={`${FieldConstants.DELETION_SPECIFIC_DATA}.${FieldConstants.SHUNT_COMPENSATOR_SIDE_2}`}

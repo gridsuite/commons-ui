@@ -12,7 +12,7 @@ import {
     Box,
     Checkbox,
     CheckboxProps,
-    Grid,
+    Grid2 as Grid,
     type SxProps,
     Table,
     TableBody,
@@ -484,8 +484,8 @@ export function DndTable(props: Readonly<DndTableProps>) {
     }
 
     return (
-        <Grid item container spacing={1}>
-            <Grid item container>
+        <Grid container spacing={1}>
+            <Grid container>
                 <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
                         {(provided) => (
@@ -507,7 +507,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                 </DragDropContext>
                 <ErrorInput name={arrayFormName} InputField={FieldErrorAlert} />
             </Grid>
-            <Grid container item>
+            <Grid container>
                 {handleResetButton && handleUploadButton && resetButtonMessageId && uploadButtonMessageId ? (
                     <DndTableBottomLeftButtons
                         withResetButton={withResetButton}

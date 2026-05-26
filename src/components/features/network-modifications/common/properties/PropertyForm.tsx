@@ -7,7 +7,7 @@
 import { useMemo } from 'react';
 
 import { useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FieldConstants, PredefinedProperties } from '../../../../../utils';
 import { AutocompleteInput, TextInput } from '../../../../ui';
 import { italicFontTextField } from '../form.utils';
@@ -43,7 +43,7 @@ export function PropertyForm({ name, index, predefinedProperties }: PropertyForm
     return (
         <>
             {watchPropertyDeletionMark || (watchPropertyAdded === false && watchPropertyPreviousValue) ? (
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <TextInput
                         name={`${name}.${index}.${FieldConstants.NAME}`}
                         label="PropertyName"
@@ -51,7 +51,7 @@ export function PropertyForm({ name, index, predefinedProperties }: PropertyForm
                     />
                 </Grid>
             ) : (
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <AutocompleteInput
                         name={`${name}.${index}.${FieldConstants.NAME}`}
                         options={predefinedNames}
@@ -62,7 +62,7 @@ export function PropertyForm({ name, index, predefinedProperties }: PropertyForm
                 </Grid>
             )}
             {watchPropertyDeletionMark ? (
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <TextInput
                         name={`${name}.${index}.${FieldConstants.VALUE}`}
                         label="PropertyValue"
@@ -71,7 +71,7 @@ export function PropertyForm({ name, index, predefinedProperties }: PropertyForm
                     />
                 </Grid>
             ) : (
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <AutocompleteInput
                         name={`${name}.${index}.${FieldConstants.VALUE}`}
                         options={predefinedValues}

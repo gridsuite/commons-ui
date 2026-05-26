@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../ui';
 import { parametersStyles } from '../parameters-style';
@@ -37,7 +37,7 @@ export function ShortCircuitParametersForm({
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
             <Box sx={styles.shortCircuitParameters}>
-                <Grid item container direction="column">
+                <Grid container direction="column">
                     {renderTitleFields?.()}
                 </Grid>
                 {paramsLoaded ? (
@@ -48,7 +48,6 @@ export function ShortCircuitParametersForm({
                     <LinearProgress />
                 )}
                 <Grid
-                    item
                     container
                     direction="column"
                     sx={{

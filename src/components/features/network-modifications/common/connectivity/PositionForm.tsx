@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { ExploreOffOutlined, ExploreOutlined } from '@mui/icons-material';
 import { useCallback, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
@@ -63,7 +63,7 @@ export function PositionForm({
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs>
+            <Grid size="grow">
                 <IntegerInput
                     name={`${id}.${FieldConstants.CONNECTION_POSITION}`}
                     label="ConnectionPosition"
@@ -77,7 +77,7 @@ export function PositionForm({
             </Grid>
             {PositionDiagramPane && (
                 <>
-                    <Grid item xs={1}>
+                    <Grid size={1}>
                         <IconButton
                             {...(isNodeBuilt && voltageLevelForPositionIcon && { onClick: handleClickOpenDiagramPane })}
                             disableRipple={!isNodeBuilt || !voltageLevelForPositionIcon}

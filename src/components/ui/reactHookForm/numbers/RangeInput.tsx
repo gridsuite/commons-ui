@@ -8,7 +8,7 @@ import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
 import { type ObjectSchema } from 'yup';
-import { FormControl, Grid, InputLabel } from '@mui/material';
+import { FormControl, Grid2 as Grid, InputLabel } from '@mui/material';
 import { FloatInput } from './FloatInput';
 import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
@@ -80,14 +80,14 @@ export function RangeInput({ name, label }: RangeInputProps) {
                 <FormattedMessage id={label} />
             </InputLabel>
             <Grid container spacing={0}>
-                <Grid item style={isOperationTypeRange ? { flex: 'min-content' } : {}}>
+                <Grid style={isOperationTypeRange ? { flex: 'min-content' } : {}}>
                     <MuiSelectInput
                         name={`${name}.${FieldConstants.OPERATION_TYPE}`}
                         options={Object.values(RangeType)}
                         fullWidth
                     />
                 </Grid>
-                <Grid item>
+                <Grid>
                     <FloatInput
                         label=""
                         name={`${name}.${FieldConstants.VALUE_1}`}
@@ -99,7 +99,7 @@ export function RangeInput({ name, label }: RangeInputProps) {
                     />
                 </Grid>
                 {isOperationTypeRange && (
-                    <Grid item>
+                    <Grid>
                         <FloatInput
                             name={`${name}.${FieldConstants.VALUE_2}`}
                             clearable={false}

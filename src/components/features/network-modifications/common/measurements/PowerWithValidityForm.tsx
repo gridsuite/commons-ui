@@ -7,7 +7,7 @@
 
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { MeasurementProps } from './measurement.type';
 import { CheckboxNullableInput } from '../../../../ui/reactHookForm/CheckboxNullableInput';
 import { FloatInput } from '../../../../ui';
@@ -33,7 +33,7 @@ export function PowerWithValidityForm({ id, field, measurement }: Readonly<Measu
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <FloatInput
                     name={`${id}.${FieldConstants.VALUE}`}
                     label={field === FieldType.ACTIVE_POWER ? 'ActivePowerText' : 'ReactivePowerText'}
@@ -42,7 +42,7 @@ export function PowerWithValidityForm({ id, field, measurement }: Readonly<Measu
                     clearable
                 />
             </Grid>
-            <Grid item>
+            <Grid>
                 <CheckboxNullableInput
                     name={`${id}.${FieldConstants.VALIDITY}`}
                     label="ValidMeasurement"

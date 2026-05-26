@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Typography } from '@mui/material';
+import { Grid2 as Grid, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
@@ -37,13 +37,12 @@ function SecurityAnalysisFields({
     const intl = useIntl();
     return (
         <Grid sx={isSingleField ? parametersStyles.singleItem : parametersStyles.multipleItems}>
-            <Grid item xs={4} sx={parametersStyles.parameterName}>
+            <Grid size={4} sx={parametersStyles.parameterName}>
                 <Typography>{intl.formatMessage({ id: label })}</Typography>
             </Grid>
             <Grid
-                item
                 container
-                xs={isSingleField ? 8 : 4}
+                size={isSingleField ? 8 : 4}
                 sx={isSingleField ? parametersStyles.singleTextField : parametersStyles.firstTextField}
             >
                 <FloatInput
@@ -55,7 +54,7 @@ function SecurityAnalysisFields({
                 />
             </Grid>
             {!isSingleField && secondField && (
-                <Grid item container xs={4} sx={parametersStyles.secondTextField}>
+                <Grid container size={4} sx={parametersStyles.secondTextField}>
                     <FloatInput
                         name={secondField.name}
                         adornment={{
@@ -115,7 +114,7 @@ export function ViolationsHidingParameters() {
     return (
         <>
             <Grid container spacing={1} paddingBottom={1}>
-                <Grid item xs={8} sx={parametersStyles.text}>
+                <Grid size={8} sx={parametersStyles.text}>
                     <Typography>
                         {intl.formatMessage({
                             id: 'securityAnalysis.violationsHiding',
@@ -132,7 +131,7 @@ export function ViolationsHidingParameters() {
 
             {fieldsToShow?.map((item) => {
                 return (
-                    <Grid item key={item.label}>
+                    <Grid key={item.label}>
                         <SecurityAnalysisFields {...item} />
                     </Grid>
                 );

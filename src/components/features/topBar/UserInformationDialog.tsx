@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Typography } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid2 as Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
@@ -61,12 +61,12 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
 
             <DialogContent>
                 <Grid container spacing={2} sx={styles.DialogContent}>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <Typography fontWeight="bold">
                             <FormattedMessage id="user-information-dialog/role" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         {rolesList.length > 0 ? (
                             <Typography>
                                 {rolesList.map((role, index) => (
@@ -86,12 +86,12 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         )}
                     </Grid>
 
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <Typography fontWeight="bold">
                             <FormattedMessage id="user-information-dialog/profile" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         {userDetails?.profileName === null ? (
                             <FormattedMessage id="user-information-dialog/no-profile" />
                         ) : (
@@ -105,12 +105,12 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         <FormattedMessage id="user-information-dialog/quotas" />
                     </Typography>
                     <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-cases-or-studies" />
                             </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                             <Typography>
                                 {userDetails?.maxAllowedCases}
                                 <Box component="span" sx={styles.usedTopography}>
@@ -120,12 +120,12 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-builds-per-study" />
                             </Typography>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedBuilds}</Typography>
                         </Grid>
                     </Grid>

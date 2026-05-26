@@ -6,7 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid2 as Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';
@@ -50,7 +50,7 @@ function ShortCircuitParametersContent({ shortCircuitMethods }: Readonly<ShortCi
 
     return (
         <>
-            <Grid item sx={{ width: '100%' }}>
+            <Grid sx={{ width: '100%' }}>
                 <Tabs value={selectedTab} onChange={handleTabChange}>
                     <Tab
                         label={<FormattedMessage id={ShortCircuitParametersTabValues.GENERAL} />}
@@ -75,7 +75,7 @@ function ShortCircuitParametersContent({ shortCircuitMethods }: Readonly<ShortCi
             </Grid>
             <Box sx={styles.wrapper}>
                 <Grid container sx={styles.container}>
-                    <Grid item sx={styles.maxWidth}>
+                    <Grid sx={styles.maxWidth}>
                         <ShortCircuitGeneralTabPanel resetAll={resetAll} value={selectedTab} />
                         {isThereSpecificParameters && (
                             <>

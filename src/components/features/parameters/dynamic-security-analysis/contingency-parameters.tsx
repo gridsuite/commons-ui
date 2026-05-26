@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { ParameterLineDirectoryItemsInput } from '../common';
 import { ElementType, ParameterType, SpecificParameterInfos } from '../../../../utils';
 import { CONTINGENCIES_LIST_INFOS, CONTINGENCIES_START_TIME } from './constants';

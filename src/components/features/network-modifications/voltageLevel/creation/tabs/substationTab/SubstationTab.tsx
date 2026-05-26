@@ -6,7 +6,7 @@
  */
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { FieldConstants } from '../../../../../../../utils';
 import { fetchDefaultCountry } from '../../../../../../../services';
@@ -49,7 +49,7 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
         <SubstationCreationSection showDeleteButton={showDeleteButton} onDelete={handleDeleteSubstationCreation} />
     ) : (
         <Grid container spacing={2} pt={2}>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 {substationOptions ? (
                     <AutocompleteInput
                         name={FieldConstants.SUBSTATION_ID}
@@ -65,10 +65,10 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
                     <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" />
                 )}
             </Grid>
-            <Grid item mt={0.75}>
+            <Grid mt={0.75}>
                 <FormattedMessage id="Or" />
             </Grid>
-            <Grid item>
+            <Grid>
                 <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />
             </Grid>
         </Grid>

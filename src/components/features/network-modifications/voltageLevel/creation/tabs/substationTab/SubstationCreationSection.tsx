@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useIntl } from 'react-intl';
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import { CustomTooltip } from '../../../../../../ui/tooltip/CustomTooltip';
 import { CountrySelectionInput, TextInput } from '../../../../../../ui';
@@ -26,17 +26,17 @@ export function SubstationCreationSection({
         <>
             <GridSection title="CreateSubstation" />
             <Grid container spacing={2}>
-                <Grid item xs>
+                <Grid size="grow">
                     <TextInput name={FieldConstants.SUBSTATION_CREATION_ID} label="SubstationId" />
                 </Grid>
-                <Grid item xs>
+                <Grid size="grow">
                     <TextInput name={FieldConstants.SUBSTATION_NAME} label="substationName" />
                 </Grid>
-                <Grid item xs>
+                <Grid size="grow">
                     <CountrySelectionInput name={FieldConstants.COUNTRY} label="Country" size="small" />
                 </Grid>
                 {showDeleteButton && onDelete && (
-                    <Grid item xs={1}>
+                    <Grid size={1}>
                         <CustomTooltip title={intl.formatMessage({ id: 'DeleteRows' })}>
                             <IconButton onClick={onDelete}>
                                 <DeleteIcon />

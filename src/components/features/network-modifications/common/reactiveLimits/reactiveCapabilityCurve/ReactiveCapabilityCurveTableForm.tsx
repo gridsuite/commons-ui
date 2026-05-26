@@ -7,7 +7,7 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { INSERT, REMOVE } from './reactiveCapability.utils';
@@ -68,13 +68,13 @@ export function ReactiveCapabilityCurveTableForm({
     }, [insertRow, rows]);
 
     return (
-        <Grid item container spacing={2}>
+        <Grid container spacing={2}>
             <Grid container>
                 <ErrorInput name={id} InputField={MidFormError} />
             </Grid>
 
             {tableHeadersIds.map((header) => (
-                <Grid key={header} item xs={3}>
+                <Grid key={header} size={3}>
                     <FormattedMessage id={header} />
                 </Grid>
             ))}
@@ -89,9 +89,9 @@ export function ReactiveCapabilityCurveTableForm({
                     labelSuffix = index - 1;
                 }
                 return (
-                    <Grid key={value.id} container spacing={3} item>
+                    <Grid key={value.id} container spacing={3}>
                         <ReactiveCapabilityCurveRowForm id={id} index={index} labelSuffix={labelSuffix} />
-                        <Grid item xs={1}>
+                        <Grid size={1}>
                             <IconButton
                                 key={value.id}
                                 onClick={() => handleRemoveRow(index)}
@@ -101,7 +101,7 @@ export function ReactiveCapabilityCurveTableForm({
                             </IconButton>
                         </Grid>
                         {index === displayedValues.length - 1 && (
-                            <Grid item xs={1}>
+                            <Grid size={1}>
                                 <IconButton
                                     key={value.id}
                                     onClick={() => handleInsertRow()}

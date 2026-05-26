@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ValueEditorProps } from 'react-querybuilder';
-import { Grid, MenuItem, Select, Typography } from '@mui/material';
+import { Grid2 as Grid, MenuItem, Select, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CompositeRule, OperatorOption } from '../../filter/expert/expertFilter.type';
 import type { MuiStyles } from '../../../../utils/styles';
@@ -54,10 +54,10 @@ export function RuleValueEditor(props: RuleValueEditorProps) {
 
     return (
         <Grid container paddingTop={1}>
-            <Grid container item xs={4} sx={styles.gridItem}>
+            <Grid container size={4} sx={styles.gridItem}>
                 <Typography>{intl.formatMessage({ id: fieldData.label })}</Typography>
             </Grid>
-            <Grid container item xs={2.5} sx={styles.gridItem} paddingLeft={1}>
+            <Grid container size={2.5} sx={styles.gridItem} paddingLeft={1}>
                 <Select
                     value={operator}
                     size="small"
@@ -73,7 +73,7 @@ export function RuleValueEditor(props: RuleValueEditorProps) {
                     ))}
                 </Select>
             </Grid>
-            <Grid container item xs={5.5} sx={styles.gridItem} paddingLeft={1}>
+            <Grid container size={5.5} sx={styles.gridItem} paddingLeft={1}>
                 <ValueEditorControlElement
                     {...props}
                     operator={operator}
