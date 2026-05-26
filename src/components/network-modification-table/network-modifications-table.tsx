@@ -52,8 +52,8 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
-    modificationUuidsToReset?: UUID[];
-    modificationToEditLabel: UUID | null;
+    modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
+    modificationToEditLabel: UUID | null; // the editing of this modification is triggered
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     currentRootNetworkUuid?: UUID;

@@ -83,6 +83,7 @@ export const networkModificationsFr = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Ajout de section / tronçon dans le poste {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Déplacements de départs dans le poste {computedLabel}',
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
+    CompositeModification: 'Modification composite',
     CreateSubstation: 'Créer un site',
     DeleteEquipmentByFilter: 'Supprimer des ouvrages par filtre',
     ModifyByAssignment: 'Modification par filtre',

@@ -152,11 +152,12 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         });
     }, []);
 
+    // triggers composite name editing from outside the component
     useEffect(() => {
         if (isComposite && modificationToEditLabel === row.original.uuid) {
-            beginEditingName('autre nom');
+            beginEditingName(intl.formatMessage({ id: 'CompositeModification' }));
         }
-    }, [modificationToEditLabel]);
+    }, [modificationToEditLabel, intl]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
