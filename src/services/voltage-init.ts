@@ -6,7 +6,7 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetchJson } from './utils';
-import { VoltageInitParameters } from '../components/parameters/voltage-init/voltage-init.type';
+import { VoltageInitParameters } from '../features/parameters/voltage-init/voltage-init.type';
 
 export function getVoltageInitUrl() {
     return `${import.meta.env.VITE_API_GATEWAY}/voltage-init/v1/`;
