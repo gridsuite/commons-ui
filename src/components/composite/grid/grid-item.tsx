@@ -1,0 +1,30 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import { PropsWithChildren, ReactNode } from 'react';
+import { Grid, GridProps } from '@mui/material';
+import { CustomTooltip } from '../../ui/tooltip';
+
+export interface GridItemProps extends PropsWithChildren {
+    size?: GridProps['xs'];
+    alignItem?: string;
+    tooltip?: ReactNode;
+}
+
+export default function GridItem({ children, size = 6, alignItem = 'flex-start', tooltip }: Readonly<GridItemProps>) {
+    return (
+        <Grid item xs={size} alignItems={alignItem}>
+            {children &&
+                (tooltip ? (
+                    <CustomTooltip title={tooltip}>
+                        <div>{children}</div>
+                    </CustomTooltip>
+                ) : (
+                    children
+                ))}
+        </Grid>
+    );
+}

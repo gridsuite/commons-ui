@@ -16,7 +16,7 @@ import {
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { ElementType } from '../../../utils';
-import { CustomMuiDialog } from '../../dialogs';
+import { CustomMuiDialog } from '../../ui/dialogs';
 
 export function SecurityAnalysisParametersDialog({
     id,

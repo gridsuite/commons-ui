@@ -10,9 +10,9 @@ import { FormattedMessage } from 'react-intl';
 import { TabPanelProps } from '@mui/lab';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
 import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
-import { FieldLabel, SwitchInput } from '../../inputs';
-import GridSection from '../../grid/grid-section';
-import GridItem from '../../grid/grid-item';
+import { FieldLabel, SwitchInput } from '../../ui';
+import GridSection from '../../composite/grid/grid-section';
+import GridItem from '../../composite/grid/grid-item';
 import {
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,

@@ -9,10 +9,10 @@ import { Box, Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { useFormContext } from 'react-hook-form';
 import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
-import { DirectoryItemsInput, FieldLabel, FloatInput, OverflowableChipWithHelperText, RadioInput } from '../../inputs';
+import { DirectoryItemsInput, FieldLabel, FloatInput, OverflowableChipWithHelperText, RadioInput } from '../../ui';
 import { ActivePowerAdornment, ElementType, EquipmentType } from '../../../utils';
-import GridSection from '../../grid/grid-section';
-import GridItem from '../../grid/grid-item';
+import GridSection from '../../composite/grid/grid-section';
+import GridItem from '../../composite/grid/grid-item';
 import {
     NODE_CLUSTER_FILTER_IDS,
     onlyStartedGeneratorsOptions,

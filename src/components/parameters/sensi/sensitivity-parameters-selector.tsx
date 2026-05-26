@@ -32,7 +32,7 @@ import { FactorsCount, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { BuildStatus, BuildStatusChip } from '../../node';
 import { ParameterTableField } from '../common/parameter-table-field';
-import { DndColumn } from '../../dnd-table';
+import { DndColumn } from '../../composite/dnd-table';
 
 const styles = {
     circularProgress: (theme) => ({

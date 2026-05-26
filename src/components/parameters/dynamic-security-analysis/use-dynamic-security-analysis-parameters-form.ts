@@ -13,7 +13,7 @@ import {
     ID,
 } from '../../../utils';
 import { PROVIDER } from '../common';
-import { NAME } from '../../inputs';
+import { NAME } from '../../ui';
 import { CONTINGENCIES_LIST_INFOS, CONTINGENCIES_START_TIME, SCENARIO_DURATION } from './constants';
 import { UseComputationParametersFormReturn } from '../common/utils';
 import { TabValues } from './dynamic-security-analysis.type';

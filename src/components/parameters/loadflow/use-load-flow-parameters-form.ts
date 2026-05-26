@@ -32,7 +32,7 @@ import {
 } from '../common/limitreductions/columns-definitions';
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import yup from '../../../utils/yupConfig';
-import { DESCRIPTION, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../ui';
 import { updateParameter } from '../../../services';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';

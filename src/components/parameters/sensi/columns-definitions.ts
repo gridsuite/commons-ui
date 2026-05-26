@@ -18,7 +18,7 @@ import {
 import { ElementType, EquipmentType } from '../../../utils';
 import { CONTINGENCIES } from '../common';
 import { ACTIVATED } from '../common/parameter-table-field';
-import { DndColumn, DndColumnType } from '../../dnd-table';
+import { DndColumn, DndColumnType } from '../../composite/dnd-table';
 
 export const MONITORED_BRANCHES_EQUIPMENT_TYPES = [EquipmentType.LINE, EquipmentType.TWO_WINDINGS_TRANSFORMER];
 export const INJECTION_DISTRIBUTION_TYPES = [
@@ -36,7 +36,7 @@ export const SENSITIVITY_TYPES = [
 export const PSTS_EQUIPMENT_TYPES = [EquipmentType.TWO_WINDINGS_TRANSFORMER];
 
 export const MONITORED_VOLTAGE_LEVELS_EQUIPMENT_TYPES = [EquipmentType.VOLTAGE_LEVEL];
-export const INJECTIONS_EQUIPMENT_TYPES = [EquipmentType.GENERATOR, EquipmentType.LOAD];
+export const INJECTIONS_EQUIPMENT_TYPES = [EquipmentType.GENERATOR, EquipmentType.LOAD, EquipmentType.BATTERY];
 
 export const EQUIPMENTS_IN_VOLTAGE_REGULATION_TYPES = [
     EquipmentType.GENERATOR,

@@ -11,7 +11,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react
 import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
 import yup from '../../../utils/yupConfig';
-import { DESCRIPTION, NAME } from '../../inputs';
+import { DESCRIPTION, NAME } from '../../ui';
 import {
     DEFAULT_GENERAL_APPLY_MODIFICATIONS,
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,
@@ -44,7 +44,7 @@ import {
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
-import { SELECTED } from '../../dnd-table';
+import { SELECTED } from '../../composite/dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
 

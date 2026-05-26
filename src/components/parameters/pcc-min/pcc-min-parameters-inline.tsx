@@ -10,15 +10,15 @@ import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { CreateParameterDialog, LabelledButton } from '../common';
-import { PopupConfirmationDialog } from '../../dialogs';
+import { PopupConfirmationDialog } from '../../ui/dialogs';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
-import { DirectoryItemSelector } from '../../directoryItemSelector';
+import { DirectoryItemSelector } from '../../ui/directoryItemSelector';
 import { ElementType, mapPccMinParameters, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../ui/treeViewFinder';
 import { fromPccMinParametersFormToParamValuesEnriched, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
 
 export function PccMinParametersInLine({

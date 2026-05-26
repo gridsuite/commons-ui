@@ -17,9 +17,9 @@ import {
     ShortCircuitForm,
 } from '../../common';
 import { ActivePowerAdornment, FieldConstants } from '../../../../utils';
-import { FloatInput, TextInput } from '../../../inputs';
-import GridItem from '../../../grid/grid-item';
-import GridSection from '../../../grid/grid-section';
+import { FloatInput, TextInput } from '../../../ui';
+import GridItem from '../../../composite/grid/grid-item';
+import GridSection from '../../../composite/grid/grid-section';
 
 export interface BatteryCreationFormProps extends ConnectivityNetworkProps {}
 
