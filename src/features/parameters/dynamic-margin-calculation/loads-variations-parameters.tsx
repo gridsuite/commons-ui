@@ -105,7 +105,7 @@ const loadsVariationsColumnsDefinition: DndColumn[] = [
         dataKey: VARIATION,
         editable: true,
         type: DndColumnType.NUMERIC,
-        textAlign: 'right',
+        textAlign: 'left',
     },
     {
         label: 'DynamicMarginCalculationLoadsActive',
