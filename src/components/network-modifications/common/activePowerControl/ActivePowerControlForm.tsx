@@ -10,11 +10,11 @@ import { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Box } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
-import { CustomTooltip } from '../../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 import { FieldConstants } from '../../../../utils';
 import { ActivePowerControlInfos } from './activePowerControlForm.type';
-import GridItem from '../../../grid/grid-item';
-import { CheckboxNullableInput, FloatInput, SwitchInput } from '../../../inputs';
+import GridItem from '../../../composite/grid/grid-item';
+import { CheckboxNullableInput, FloatInput, SwitchInput } from '../../../ui';
 
 export interface ActivePowerControlFormProps {
     isEquipmentModification?: boolean;

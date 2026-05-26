@@ -6,9 +6,9 @@
  */
 import { Grid } from '@mui/material';
 import { ShortCircuitInfos } from './shortCircuitForm.type';
-import { FloatInput } from '../../../inputs';
+import { FloatInput } from '../../../ui';
 import { FieldConstants, OhmAdornment } from '../../../../utils';
-import GridItem from '../../../grid/grid-item';
+import GridItem from '../../../composite/grid/grid-item';
 
 export interface ShortCircuitFormProps {
     previousValues?: ShortCircuitInfos;

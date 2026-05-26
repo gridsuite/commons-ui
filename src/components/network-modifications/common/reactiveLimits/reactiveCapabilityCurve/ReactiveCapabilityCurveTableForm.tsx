@@ -14,7 +14,7 @@ import { INSERT, REMOVE } from './reactiveCapability.utils';
 import { ReactiveCapabilityCurvePoints } from '../reactiveLimits.type';
 import { ReactiveCapabilityCurveRowForm } from './ReactiveCapabilityCurveRowForm';
 import { FieldConstants } from '../../../../../utils';
-import { ErrorInput, MidFormError } from '../../../../inputs';
+import { ErrorInput, MidFormError } from '../../../../ui';
 
 const MIN_LENGTH = 2;
 interface ReactiveCapabilityCurveTableFormProps {

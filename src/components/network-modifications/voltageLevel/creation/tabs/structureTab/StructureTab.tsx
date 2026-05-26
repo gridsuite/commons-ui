@@ -7,8 +7,8 @@
 import { Grid } from '@mui/material';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import GridSection from '../../../../../grid/grid-section';
-import { IntegerInput } from '../../../../../inputs';
+import GridSection from '../../../../../composite/grid/grid-section';
+import { IntegerInput } from '../../../../../ui';
 import { FieldConstants } from '../../../../../../utils';
 import { SwitchesBetweenSections } from './switchesBetweenSections';
 import { CouplingOmnibusForm } from './couplingOmnibus';

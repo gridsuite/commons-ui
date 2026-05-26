@@ -14,7 +14,7 @@ import { EquipmentType, VoltageLevelInfos } from '../../../../../utils/types/equ
 
 import { ModelVariable } from '../common/curve.type';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
-import { ExpertFilter, IdentifiableAttributes } from '../../../../filter/filter.type';
+import { ExpertFilter, IdentifiableAttributes } from '../../../../composite/filter/filter.type';
 import { type MuiStyles } from '../../../../../utils/styles';
 
 const styles = {

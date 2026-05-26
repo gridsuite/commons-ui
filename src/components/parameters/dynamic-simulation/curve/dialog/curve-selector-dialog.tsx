@@ -18,13 +18,13 @@ import {
 import { useCallback, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { ArrowCircleLeft, ArrowCircleRight } from '@mui/icons-material';
-import { CustomTooltip } from '../../../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../../ui/tooltip/CustomTooltip';
 import CurvePreview, { CurvePreviewApi } from './curve-preview';
 import CurveSelector, { CurveSelectorApi } from './curve-selector';
 import { mergeSx } from '../../../../../utils/styles';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
 import { VoltageLevelInfos } from '../../../../../utils/types/equipmentType';
-import { ExpertFilter, IdentifiableAttributes } from '../../../../filter';
+import { ExpertFilter, IdentifiableAttributes } from '../../../../composite/filter';
 import { Curve } from '../common/curve.type';
 import { parametersStyles } from '../../../parameters-style';
 

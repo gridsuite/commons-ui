@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { Info as InfoIcon } from '@mui/icons-material';
 import { Grid } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { CustomTooltip } from '../../tooltip/CustomTooltip';
+import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
 import {
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
@@ -17,7 +17,7 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
 } from './constants';
 import { ElementType, EquipmentType } from '../../../utils';
-import { DndColumn, DndColumnType, SELECTED } from '../../dnd-table';
+import { DndColumn, DndColumnType, SELECTED } from '../../composite/dnd-table';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { VoltageAdornment } from '../../../utils/constants/adornments';
 import { ParameterTableField } from '../common/parameter-table-field';

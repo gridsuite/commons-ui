@@ -11,8 +11,8 @@ import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { FieldConstants } from '../../../../../../../utils';
 import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../../../voltageLevelCreation.types';
-import { EnumInput } from '../../../../../../inputs';
-import GridSection from '../../../../../../grid/grid-section';
+import { EnumInput } from '../../../../../../ui';
+import GridSection from '../../../../../../composite/grid/grid-section';
 import { SWITCH_TYPE } from '../../../voltageLevelCreation.utils';
 import { MAX_SECTIONS_COUNT } from '../../../voltageLevel.constants';
 

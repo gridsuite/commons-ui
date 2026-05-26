@@ -18,7 +18,7 @@ import {
 import { ElementType, EquipmentType } from '../../../utils';
 import { CONTINGENCIES } from '../common';
 import { ACTIVATED } from '../common/parameter-table-field';
-import { DndColumn, DndColumnType } from '../../dnd-table';
+import { DndColumn, DndColumnType } from '../../composite/dnd-table';
 
 export const MONITORED_BRANCHES_EQUIPMENT_TYPES = [EquipmentType.LINE, EquipmentType.TWO_WINDINGS_TRANSFORMER];
 export const INJECTION_DISTRIBUTION_TYPES = [

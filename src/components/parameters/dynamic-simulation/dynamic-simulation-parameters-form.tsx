@@ -20,7 +20,7 @@ import { SolverParameters } from './solver';
 import { MAPPING, MappingParameters } from './mapping';
 import { NetworkParameters } from './network';
 import CurveParameters from './curve/curve-parameters';
-import { ExpertFilter, IdentifiableAttributes } from '../../filter';
+import { ExpertFilter, IdentifiableAttributes } from '../../composite/filter';
 import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSimulationFormProps = {

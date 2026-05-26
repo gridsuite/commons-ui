@@ -8,9 +8,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { fetchPredefinedProperties, initializedProperty } from './propertyUtils';
 import { PropertyForm } from './PropertyForm';
-import GridSection from '../../../grid/grid-section';
+import GridSection from '../../../composite/grid/grid-section';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
-import { ExpandableInput } from '../../../inputs';
+import { ExpandableInput } from '../../../ui';
 
 type PropertiesFormProps = {
     id?: string;

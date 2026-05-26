@@ -18,17 +18,17 @@ import {
 } from '../../../utils';
 import { ComputingType, CreateParameterDialog } from '../common';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { parametersStyles } from '../parameters-style';
-import { DirectoryItemSelector } from '../../directoryItemSelector';
+import { DirectoryItemSelector } from '../../ui/directoryItemSelector';
 import {
     fetchSensitivityAnalysisParameters,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../ui/treeViewFinder';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
-import { PopupConfirmationDialog } from '../../dialogs';
+import { PopupConfirmationDialog } from '../../ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
 import { BuildStatus } from '../../node/constant';
 

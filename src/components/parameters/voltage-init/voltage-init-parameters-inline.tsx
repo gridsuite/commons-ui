@@ -9,13 +9,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
-import { TreeViewFinderNodeProps } from '../../treeViewFinder';
+import { TreeViewFinderNodeProps } from '../../ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../inputs';
+import { SubmitButton } from '../../ui';
 import { ElementType } from '../../../utils';
 import { CreateParameterDialog, LabelledButton } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
-import { DirectoryItemSelector } from '../../directoryItemSelector';
+import { DirectoryItemSelector } from '../../ui/directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
 import { VoltageInitStudyParameters } from './voltage-init.type';
 import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
@@ -24,7 +24,7 @@ import {
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
 import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
-import { PopupConfirmationDialog } from '../../dialogs';
+import { PopupConfirmationDialog } from '../../ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
 
 export function VoltageInitParametersInLine({

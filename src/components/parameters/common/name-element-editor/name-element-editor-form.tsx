@@ -7,10 +7,10 @@
 
 import type { UUID } from 'node:crypto';
 import { Grid } from '@mui/material';
-import { DescriptionField } from '../../../inputs/reactHookForm/text/DescriptionField';
-import { UniqueNameInput } from '../../../inputs/reactHookForm/text/UniqueNameInput';
+import { DescriptionField } from '../../../ui/reactHookForm/text/DescriptionField';
+import { UniqueNameInput } from '../../../ui/reactHookForm/text/UniqueNameInput';
 import { ElementType, FieldConstants } from '../../../../utils';
-import { filterStyles } from '../../../filter/HeaderFilterForm';
+import { filterStyles } from '../../../composite/filter/HeaderFilterForm';
 
 export interface NameElementEditorFormProps {
     initialElementName: string;

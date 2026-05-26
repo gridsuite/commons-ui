@@ -12,7 +12,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { AGGRID_LOCALES } from '../../../../../translations/not-intl/aggrid-locales';
 import { Curve } from '../common/curve.type';
 import { type MuiStyles } from '../../../../../utils/styles';
-import { CustomAGGrid } from '../../../../customAGGrid';
+import { CustomAGGrid } from '../../../../composite/customAGGrid';
 
 const styles = {
     grid: {
