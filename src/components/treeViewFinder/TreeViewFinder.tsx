@@ -531,7 +531,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         );
     }
 
-    /* ── Dialog mode (original behaviour) ── */
+    /* ── Dialog mode ── */
     return (
         <Dialog
             open={open}
