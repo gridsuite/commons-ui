@@ -8,8 +8,8 @@
 import { useFieldArray } from 'react-hook-form';
 import { Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { CheckboxNullableInput } from '../../../inputs/reactHookForm/CheckboxNullableInput';
-import { FloatInput } from '../../../inputs';
+import { CheckboxNullableInput } from '../../../ui/reactHookForm/CheckboxNullableInput';
+import { FloatInput } from '../../../ui';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 
 const BUSBAR_SECTION_V_MEASUREMENTS = 'busbarSectionVMeasurements';

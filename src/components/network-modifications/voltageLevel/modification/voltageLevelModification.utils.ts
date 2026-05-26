@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { boolean, InferType, number, object, ref, string } from 'yup';
+import { array, boolean, InferType, number, object, ref, string } from 'yup';
 import {
     getPropertiesFromModification,
     modificationPropertiesSchema,
@@ -113,3 +113,49 @@ export const voltageLevelModificationDtoToForm = (
         convertInputValue(FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, voltageLevelDto.ipMax?.value) ?? null,
     ...getPropertiesFromModification(voltageLevelDto.properties, includePreviousValues),
 });
+
+const bbsMeasurementItemSchema = object().shape({
+    busbarSectionId: string().required(),
+    value: number().nullable(),
+    validity: boolean().nullable(),
+});
+
+export const voltageLevelModificationWithMeasurementsFormSchema = voltageLevelModificationFormSchema.concat(
+    object().shape({
+        busbarSectionVMeasurements: array().of(bbsMeasurementItemSchema).nullable(),
+    })
+);
+
+export type VoltageLevelModificationWithMeasurementsFormData = InferType<
+    typeof voltageLevelModificationWithMeasurementsFormSchema
+>;
+
+export const voltageLevelModificationWithMeasurementsDtoToForm = (
+    dto: VoltageLevelModificationDto,
+    includePreviousValues = true
+): VoltageLevelModificationWithMeasurementsFormData => ({
+    ...voltageLevelModificationDtoToForm(dto, includePreviousValues),
+    busbarSectionVMeasurements:
+        dto.busbarSectionVMeasurements?.map((m) => ({
+            busbarSectionId: m.busbarSectionId,
+            value: m.vMeasurementValue?.value ?? null,
+            validity: m.vMeasurementValidity?.value ?? null,
+        })) ?? [],
+});
+
+export const voltageLevelModificationWithMeasurementsFormToDto = (
+    formData: VoltageLevelModificationWithMeasurementsFormData
+): VoltageLevelModificationDto => {
+    const measurements = formData.busbarSectionVMeasurements;
+    return {
+        ...voltageLevelModificationFormToDto(formData),
+        busbarSectionVMeasurements:
+            measurements && measurements.length > 0
+                ? measurements.map((item) => ({
+                      busbarSectionId: item.busbarSectionId,
+                      vMeasurementValue: toModificationOperation(item.value ?? null),
+                      vMeasurementValidity: toModificationOperation(item.validity ?? null),
+                  }))
+                : null,
+    };
+};
