@@ -7,7 +7,7 @@
 
 import { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
-import { ShortCircuitParametersInfos } from '../components/parameters/short-circuit/short-circuit-parameters.type';
+import { ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
 
 const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
 
