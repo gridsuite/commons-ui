@@ -7,7 +7,6 @@
 
 export * from './authentication';
 export * from './cardErrorBoundary';
-export * from './flatParameters';
 export * from './notifications';
 export * from './topBar';
 export * from './parameters';
