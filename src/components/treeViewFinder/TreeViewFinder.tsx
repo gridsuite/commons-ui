@@ -346,7 +346,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             setSelected(newSelected);
         }
 
-        // 🔥 IMPORTANT: inline mode emits live selection
+        // inline mode emits live selection
         if (inline && props?.onClose) {
             const nodes = newSelected
                 .map((id) => {
