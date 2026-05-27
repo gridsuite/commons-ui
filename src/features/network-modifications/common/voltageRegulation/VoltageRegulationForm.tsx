@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FloatInput, SelectInput } from '../../../../components/ui';
+import GridItem from '../../../../components/composite/grid/grid-item';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { PercentageAdornment, VoltageAdornment } from '../../../../utils/constants/adornments';
 import { RegulatingTerminalForm } from '../regulatingTerminal';
@@ -70,8 +71,8 @@ export function VoltageRegulationForm({
         : (previousValues?.qPercent ?? undefined);
 
     return (
-        <Grid container spacing={1}>
-            <Grid size={4}>
+        <>
+            <GridItem size={4}>
                 <FloatInput
                     name={FieldConstants.VOLTAGE_SET_POINT}
                     label="VoltageText"
@@ -79,8 +80,8 @@ export function VoltageRegulationForm({
                     previousValue={previousValues?.voltageSetPoint ?? undefined}
                     clearable
                 />
-            </Grid>
-            <Grid size={4}>
+            </GridItem>
+            <GridItem size={4}>
                 <SelectInput
                     options={Object.values(REGULATION_TYPES)}
                     name={FieldConstants.VOLTAGE_REGULATION_TYPE}
@@ -88,14 +89,16 @@ export function VoltageRegulationForm({
                     size="small"
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
                 />
-            </Grid>
-            <Grid size={4} />
+            </GridItem>
+            <Box sx={{ width: '100%' }} />
+            <Grid item xs={4} justifySelf="end" />
+            <Box sx={{ width: '100%' }} />
             {isDistantRegulation && (
                 <>
-                    <Grid size={4} sx={{ alignSelf: 'center', textAlign: 'end' }}>
+                    <Grid item xs={4} justifySelf="end">
                         <FormattedMessage id="RegulatingTerminalGenerator" />
                     </Grid>
-                    <Grid size={8}>
+                    <GridItem size={8}>
                         <RegulatingTerminalForm
                             id=""
                             voltageLevelOptions={voltageLevelOptions}
@@ -104,9 +107,9 @@ export function VoltageRegulationForm({
                             regulatingTerminalVlId={previousValues?.regulatingTerminalVlId ?? undefined}
                             equipmentSectionType={previousEquipmentSectionType}
                         />
-                    </Grid>
-                    <Grid size={4} />
-                    <Grid size={4}>
+                    </GridItem>
+                    <Grid item xs={4} justifySelf="end" />
+                    <GridItem size={4}>
                         <FloatInput
                             name={FieldConstants.Q_PERCENT}
                             label="QPercentText"
@@ -114,10 +117,9 @@ export function VoltageRegulationForm({
                             previousValue={previousQPercent}
                             clearable
                         />
-                    </Grid>
-                    <Grid size={4} />
+                    </GridItem>
                 </>
             )}
-        </Grid>
+        </>
     );
 }
