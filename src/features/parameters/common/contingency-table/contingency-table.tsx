@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Alert, CircularProgress, Grid } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
@@ -187,3 +187,5 @@ function ContingencyTableWithApiRef(
         </Grid>
     );
 }
+
+export const ContingencyTable = forwardRef(ContingencyTableWithApiRef);
