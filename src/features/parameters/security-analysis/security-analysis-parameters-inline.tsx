@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
+import { ComputingType, ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { SubmitButton } from '../../../components/ui';
@@ -49,12 +49,16 @@ export function SecurityAnalysisParametersInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
+    // to force re-fetch contingency count in ContingencyTable
+    const contingencyTableApiRef = useRef<ContingencyTableApi>(null);
+
     const { snackError } = useSnackMessage();
 
     const { handleSubmit, formState, reset, getValues } = securityAnalysisMethods.formMethods;
 
     const executeResetAction = useCallback(() => {
         resetParameters();
+        contingencyTableApiRef.current?.resetSimulatedContingencyCount();
         setOpenResetConfirmation(false);
     }, [resetParameters]);
 
@@ -76,6 +80,7 @@ export function SecurityAnalysisParametersInline({
                         reset(toFormValueSaParameters(parameters), {
                             keepDefaultValues: true,
                         });
+                        contingencyTableApiRef.current?.triggerContingencyCountRefresh();
                     })
                     .catch((error) => {
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
@@ -95,6 +100,7 @@ export function SecurityAnalysisParametersInline({
             securityAnalysisMethods={securityAnalysisMethods}
             showContingencyCount
             fetchContingencyCount={fetchContingencyCount}
+            contingencyTableApiRef={contingencyTableApiRef}
             isBuiltCurrentNode={isBuiltCurrentNode}
             isDeveloperMode={isDeveloperMode}
             renderActions={() => {

@@ -4,12 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress, Grid2 as Grid } from '@mui/material';
+import { Alert, CircularProgress, Grid } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { ID, ACTIVATED, ParameterTableField } from '../parameter-table-field';
+import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
 import { ContingencyCount, ContingencyListsInfosEnriched } from './types';
 import { useSnackMessage } from '../../../../hooks';
@@ -22,38 +22,49 @@ const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
 } satisfies MuiStyles;
 
-export function ContingencyTable({
-    name,
-    showContingencyCount = false,
-    fetchContingencyCount,
-    isBuiltCurrentNode,
-}: Readonly<{
+export type ContingencyTableApi = {
+    resetSimulatedContingencyCount: () => void;
+    triggerContingencyCountRefresh: () => void;
+};
+
+export type ContingencyTableProps = {
     name: string;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyLists: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     isBuiltCurrentNode?: boolean; // necessary if we want to show the contingency count
-}>) {
+};
+
+function ContingencyTableWithApiRef(
+    { name, showContingencyCount = false, fetchContingencyCount, isBuiltCurrentNode }: Readonly<ContingencyTableProps>,
+    apiRef: ForwardedRef<ContingencyTableApi>
+) {
     const intl = useIntl();
-    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
     const { snackError } = useSnackMessage();
-
     const { getValues } = useFormContext();
+    const [isLoading, setIsLoading] = useState(false);
 
+    // states to store and control the simulated contingency count
+    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
+    const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
+
+    // expose an API to trigger a refresh of the contingency count from outside the component
+    useImperativeHandle(
+        apiRef,
+        () => ({
+            resetSimulatedContingencyCount: () => {
+                setSimulatedContingencyCount(null);
+            },
+            triggerContingencyCountRefresh: () => {
+                setContingencyCountRefreshTrigger((prev) => prev + 1);
+            },
+        }),
+        []
+    );
+
+    // callback which allows triggering a refresh of the contingency count from a child component
     const handleOnChange = useCallback(() => {
         setContingencyCountRefreshTrigger((prevValue) => prevValue + 1);
     }, []);
-
-    const columnsDefinition = useMemo(() => {
-        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map(
-            (colDef) =>
-                ({
-                    ...colDef,
-                    label: intl.formatMessage({ id: colDef.label }),
-                }) satisfies DndColumn
-        );
-    }, [intl]);
 
     useEffect(() => {
         if (!showContingencyCount || !isBuiltCurrentNode) {
@@ -152,6 +163,16 @@ export function ContingencyTable({
             </Alert>
         );
     };
+
+    const columnsDefinition = useMemo(() => {
+        return COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS.map(
+            (colDef) =>
+                ({
+                    ...colDef,
+                    label: intl.formatMessage({ id: colDef.label }),
+                }) satisfies DndColumn
+        );
+    }, [intl]);
 
     return (
         <Grid container direction="column">

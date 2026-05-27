@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode } from 'react';
+import { ForwardedRef, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Grid2 as Grid, LinearProgress } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { CustomFormProvider, MuiSelectInput } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';
-import { CONTINGENCY_LISTS_INFOS, LineSeparator, PARAM_SA_PROVIDER } from '../common';
+import { CONTINGENCY_LISTS_INFOS, ContingencyTableApi, LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { mergeSx, type MuiStyles } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
@@ -43,23 +43,27 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
-export function SecurityAnalysisParametersForm({
-    securityAnalysisMethods,
-    showContingencyCount,
-    fetchContingencyCount,
-    isBuiltCurrentNode,
-    renderTitleFields,
-    renderActions,
-    isDeveloperMode,
-}: Readonly<{
+export type SecurityAnalysisParametersFormProps = {
     securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
+    contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
     isDeveloperMode: boolean;
-}>) {
+};
+
+export function SecurityAnalysisParametersForm({
+    securityAnalysisMethods,
+    showContingencyCount,
+    fetchContingencyCount,
+    contingencyTableApiRef,
+    isBuiltCurrentNode,
+    renderTitleFields,
+    renderActions,
+    isDeveloperMode,
+}: Readonly<SecurityAnalysisParametersFormProps>) {
     return (
         <CustomFormProvider
             validationSchema={securityAnalysisMethods.formSchema}
@@ -120,6 +124,7 @@ export function SecurityAnalysisParametersForm({
                                             showContingencyCount={showContingencyCount}
                                             fetchContingencyCount={fetchContingencyCount}
                                             isBuiltCurrentNode={isBuiltCurrentNode}
+                                            ref={contingencyTableApiRef}
                                         />
                                         <Grid container paddingTop={4} paddingBottom={2}>
                                             <LineSeparator />
