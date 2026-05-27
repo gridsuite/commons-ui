@@ -2,6 +2,40 @@
 
 Library for sharing GridSuite apps commons components
 
+### Organisation des composants front
+
+Les composants sont organisés comme suit :
+
+- `src/components/ui`  
+  - Composants UI simples, génériques et fortement réutilisables.  
+  - Exemples : `checkBoxList`, `inputs`, `dialogs`, `icons`, `overflowableText`.
+
+- `src/components/composite`  
+  - Composants réutilisables plus riches, composés de plusieurs composants UI.  
+  - Exemples : `elementSearch`, `treeViewFinder`, `muiTable`, `dnd-table`.
+
+- `src/features`  
+  - Composants orientés métier / cas d’usage applicatif.  
+  - Exemples : `parameters`, `network-modifications`, `flatParameters`.
+
+#### Règles pour ajouter de nouveaux composants
+
+- Ajouter un composant dans `src/components/ui` s’il est :
+  - purement UI,
+  - générique,
+  - facilement réutilisable dans différents contextes.
+
+- Ajouter un composant dans `src/components/composite` s’il :
+  - combine plusieurs composants UI,
+  - reste indépendant de la logique métier.
+
+- Ajouter un composant dans `src/features` s’il :
+  - est lié à un cas d’usage métier ou une feature spécifique,
+  - dépend de la logique applicative.
+
+En cas de doute sur l’emplacement d’un nouveau composant, discuter avec l’équipe avant de le créer.
+
+
 #### For developers
 
 The commons-ui library have a demo app in which you can call your components to test them.
