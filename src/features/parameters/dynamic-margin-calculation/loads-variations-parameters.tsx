@@ -47,7 +47,7 @@ export const formSchema = yup.object().shape({
                     })
                 )
                 .min(1),
-            [VARIATION]: yup.number().min(0).required(),
+            [VARIATION]: yup.number().min(0, 'mustBeGreaterOrEqualToZero').required(),
             [ACTIVE]: yup.boolean().nullable().notRequired(),
         })
     ),

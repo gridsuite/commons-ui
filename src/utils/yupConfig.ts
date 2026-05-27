@@ -10,6 +10,8 @@ import * as yup from 'yup';
 yup.setLocale({
     mixed: {
         required: 'YupRequired',
+        notNull: 'YupNotNull',
+        default: 'YupDefault',
         notType: ({ type }) => {
             if (type === 'number') {
                 return 'YupNotTypeNumber';

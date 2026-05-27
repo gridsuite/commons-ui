@@ -138,14 +138,14 @@ export const useVoltageInitParametersForm = ({
                             .min(1, 'FilterInputMinError'),
                         [LOW_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0)
+                            .min(0, 'mustBeGreaterOrEqualToZero')
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[HIGH_VOLTAGE_LIMIT]);
                             }),
                         [HIGH_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0)
+                            .min(0, 'mustBeGreaterOrEqualToZero')
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);
