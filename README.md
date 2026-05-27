@@ -2,38 +2,40 @@
 
 Library for sharing GridSuite apps commons components
 
-### Organisation des composants front
+### Frontend components organization
 
-Les composants sont organisés comme suit :
+Components are organized as follows:
 
 - `src/components/ui`  
-  - Composants UI simples, génériques et fortement réutilisables.  
-  - Exemples : `checkBoxList`, `inputs`, `dialogs`, `icons`, `overflowableText`.
+  - Simple, generic, low-level UI components.
+  - Highly reusable and not tied to any business logic.
 
 - `src/components/composite`  
-  - Composants réutilisables plus riches, composés de plusieurs composants UI.  
-  - Exemples : `elementSearch`, `treeViewFinder`, `muiTable`, `dnd-table`.
+  - Richer, higher-level reusable components.
+  - Composed of multiple UI components, but still independent from business logic.
 
 - `src/features`  
-  - Composants orientés métier / cas d’usage applicatif.  
-  - Exemples : `parameters`, `network-modifications`, `flatParameters`.
+  - Feature- or domain-oriented components.
+  - Tied to specific application use cases and business logic.
 
-#### Règles pour ajouter de nouveaux composants
+#### Guidelines for adding new components
 
-- Ajouter un composant dans `src/components/ui` s’il est :
-  - purement UI,
-  - générique,
-  - facilement réutilisable dans différents contextes.
+- Add a component to `src/components/ui` if it:
+  - is purely presentational / UI,
+  - is generic,
+  - can be reused in different contexts without business-specific logic.
 
-- Ajouter un composant dans `src/components/composite` s’il :
-  - combine plusieurs composants UI,
-  - reste indépendant de la logique métier.
+- Add a component to `src/components/composite` if it:
+  - combines several UI components,
+  - encapsulates reusable behavior or layouts,
+  - remains independent from domain/business rules.
 
-- Ajouter un composant dans `src/features` s’il :
-  - est lié à un cas d’usage métier ou une feature spécifique,
-  - dépend de la logique applicative.
+- Add a component to `src/features` if it:
+  - is linked to a specific feature or business use case,
+  - depends on application or domain logic,
+  - handles data flows, side effects, or feature-specific state.
 
-En cas de doute sur l’emplacement d’un nouveau composant, discuter avec l’équipe avant de le créer.
+When in doubt about where a new component should live, discuss it with the team before creating it.
 
 
 #### For developers
