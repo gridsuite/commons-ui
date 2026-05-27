@@ -10,6 +10,7 @@ import {
     YUP_NOT_NULL,
     YUP_NOT_TYPE_DEFAULT,
     YUP_NOT_TYPE_NUMBER,
+    YUP_POSITIVE,
     YUP_REQUIRED,
 } from '../../utils';
 
@@ -145,7 +146,8 @@ export const networkModificationsFr = {
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
     [YUP_REQUIRED]: 'Obligatoire',
     [YUP_NOT_NULL]: 'Ne peut pas être vide',
-    [YUP_DEFAULT]: 'Ce champ est invalid',
+    [YUP_DEFAULT]: 'Ce champ est invalide',
+    [YUP_POSITIVE]: 'Doit être un nombre positif',
     [YUP_NOT_TYPE_NUMBER]: "Ce champ n'accepte que des valeurs numériques",
     [YUP_NOT_TYPE_DEFAULT]: "La valeur du champ n'est pas au bon format",
     CreateLoad: 'Créer une consommation',

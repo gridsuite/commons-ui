@@ -19,6 +19,9 @@ yup.setLocale({
             return 'YupNotTypeDefault';
         },
     },
+    number: {
+        positive: 'YupPositive',
+    },
 });
 
 export default yup;
