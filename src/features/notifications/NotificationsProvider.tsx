@@ -6,11 +6,11 @@
  */
 // @author Quentin CAPY
 
-import { PropsWithChildren, useEffect, useMemo } from 'react';
+import { PropsWithChildren, useEffect, useMemo, useSyncExternalStore } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
-import { getUserToken } from '../../redux';
+import { getUser, getUserToken, subscribeToUserState } from '../../redux';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
@@ -37,9 +37,10 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         removeListener: removeListenerOnReopen,
     } = useListenerManager<ListenerOnReopen>(urls);
 
+    const isAuthenticated = useSyncExternalStore(subscribeToUserState, () => getUser() !== null);
     useEffect(() => {
         const token = getUserToken();
-        if (!token) {
+        if (!isAuthenticated || !token) {
             console.info('Skipping Notification WebSockets: no user token available');
             return undefined;
         }
@@ -69,7 +70,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             });
 
         return () => connections.forEach((c) => c.close());
-    }, [broadcastMessage, broadcastOnReopen, urls]);
+    }, [broadcastMessage, broadcastOnReopen, urls, isAuthenticated]);
 
     const contextValue = useMemo(
         () => ({
