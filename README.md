@@ -2,7 +2,7 @@
 
 Library for sharing GridSuite apps commons components
 
-### Frontend components organization
+#### Frontend components organization
 
 Components are organized as follows:
 
@@ -17,26 +17,6 @@ Components are organized as follows:
 - `src/features`  
   - Feature- or domain-oriented components.
   - Tied to specific application use cases and business logic.
-
-#### Guidelines for adding new components
-
-- Add a component to `src/components/ui` if it:
-  - is purely presentational / UI,
-  - is generic,
-  - can be reused in different contexts without business-specific logic.
-
-- Add a component to `src/components/composite` if it:
-  - combines several UI components,
-  - encapsulates reusable behavior or layouts,
-  - remains independent from domain/business rules.
-
-- Add a component to `src/features` if it:
-  - is linked to a specific feature or business use case,
-  - depends on application or domain logic,
-  - handles data flows, side effects, or feature-specific state.
-
-When in doubt about where a new component should live, discuss it with the team before creating it.
-
 
 #### For developers
 
