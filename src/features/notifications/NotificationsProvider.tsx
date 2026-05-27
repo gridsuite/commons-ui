@@ -47,8 +47,8 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         const connections = Object.entries(urls)
             .filter(isUrlDefined)
             .map(([urlKey, url]) => {
-                const urlWithToken = appendTokenToUrl(url, token);
-                const rws = new ReconnectingWebSocket(urlWithToken, [], {
+                // so reconnects always use the freshest token instead of a stale one baked in the URL
+                const rws = new ReconnectingWebSocket(() => appendTokenToUrl(url, getUserToken() ?? ''), [], {
                     // this option set the minimum duration being connected before reset the retry count to 0
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });
