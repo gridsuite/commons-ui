@@ -104,6 +104,12 @@ export interface TreeViewFinderProps {
 
     // dialog props
     contentText?: string;
+    /**
+     * When `inline` is true the component renders directly in the page
+     * (no Dialog wrapper). `open` is ignored in inline mode.
+     * When `inline` is false or omitted the classic Dialog behaviour is used.
+     */
+    inline?: boolean;
     open: ModalProps['open'];
     onClose: (nodes: TreeViewFinderNodeProps[]) => void;
     validationButtonText?: string;
@@ -126,7 +132,8 @@ export interface TreeViewFinderProps {
  * @param {Object}          classes - Deprecated, use sx or styled instead. - Otherwise, CSS classes, please use withStyles API from MaterialUI
  * @param {String}          [title] - Title of the Dialog
  * @param {String}          [contentText] - Content text of the Dialog
- * @param {Boolean}         open - dialog state boolean handler (Controlled)
+ * @param {Boolean}         [inline=false] - When true renders inline (no Dialog wrapper); `open` is ignored
+ * @param {Boolean}         open - dialog state boolean handler (Controlled) — ignored when inline=true
  * @param {EventListener}   onClose - onClose callback to call when closing dialog
  * @param {Object[]}        data - data to feed the component (Controlled).
  * @param {String}          data[].id - Uuid of the object in Tree
@@ -151,6 +158,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         classes = {},
         title,
         contentText,
+        inline = false,
         open,
         data,
         defaultExpanded,
@@ -325,15 +333,36 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     /* User Interaction management */
     const handleNodeSelect = (_e: React.SyntheticEvent | null, values: string | string[] | null) => {
         // Default management
+        let newSelected: string[] = [];
         if (multiSelect && Array.isArray(values)) {
-            setSelected(values.filter((itemId) => isSelectable(mapPrintedNodes[itemId])));
+            newSelected = values.filter((itemId) => isSelectable(mapPrintedNodes[itemId]));
+            setSelected(newSelected);
         } else if (typeof values === 'string') {
-            // Toggle selection to allow unselection
             if (selected?.includes(values)) {
-                setSelected([]);
+                newSelected = [];
             } else {
-                setSelected(isSelectable(mapPrintedNodes[values]) ? [values] : []);
+                newSelected = isSelectable(mapPrintedNodes[values]) ? [values] : [];
             }
+            setSelected(newSelected);
+        }
+
+        // inline mode emits live selection
+        if (inline && props?.onClose) {
+            const nodes = newSelected
+                .map((id) => {
+                    const node = mapPrintedNodes[id];
+                    if (!node) return null;
+
+                    const parents = findParents(id, data ?? []);
+
+                    return {
+                        ...node,
+                        parents: parents ?? [],
+                    };
+                })
+                .filter(Boolean) as TreeViewFinderNodeProps[];
+
+            props?.onClose(nodes);
         }
     };
 
@@ -448,6 +477,61 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         };
     };
 
+    /** Shared body: title, content text, tree, and action buttons */
+    const renderTitle = () => title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect });
+
+    const renderContentText = () =>
+        contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect });
+
+    const renderTreeView = () => (
+        <SimpleTreeView
+            expandedItems={expanded}
+            onExpandedItemsChange={handleNodeToggle}
+            onSelectedItemsChange={handleNodeSelect}
+            // Uncontrolled props
+            {...getTreeViewSelectionProps()}
+        >
+            {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
+        </SimpleTreeView>
+    );
+
+    const handleCancel = () => {
+        onClose?.([]);
+        setSelected([]);
+        setAutoScrollAllowed(true);
+    };
+
+    const handleValidate = () => {
+        onClose?.(computeSelectedNodes());
+        setSelected([]);
+        setAutoScrollAllowed(true);
+    };
+
+    const renderActions = () => (
+        <>
+            <CancelButton style={{ float: 'left', margin: '5px' }} onClick={handleCancel} {...cancelButtonProps} />
+            <Button
+                variant="outlined"
+                style={{ float: 'left', margin: '5px' }}
+                onClick={handleValidate}
+                disabled={isValidationDisabled()}
+                data-testid="SubmitButton"
+            >
+                {getValidationButtonText()}
+            </Button>
+        </>
+    );
+
+    /* ── Inline mode ── */
+    if (inline) {
+        return (
+            <div className={className} data-testid="InlineTreeViewFinder">
+                {renderTreeView()}
+            </div>
+        );
+    }
+
+    /* ── Dialog mode ── */
     return (
         <Dialog
             open={open}
@@ -466,47 +550,13 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             data-testid="Dialog"
         >
             <DialogTitle id="TreeViewFindertitle" data-testid="DialogTitle">
-                {title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect })}
+                {renderTitle()}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
-                </DialogContentText>
-
-                <SimpleTreeView
-                    expandedItems={expanded}
-                    onExpandedItemsChange={handleNodeToggle}
-                    onSelectedItemsChange={handleNodeSelect}
-                    // Uncontrolled props
-                    {...getTreeViewSelectionProps()}
-                >
-                    {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
-                </SimpleTreeView>
+                <DialogContentText>{renderContentText()}</DialogContentText>
+                {renderTreeView()}
             </DialogContent>
-            <DialogActions>
-                <CancelButton
-                    style={{ float: 'left', margin: '5px' }}
-                    onClick={() => {
-                        onClose?.([]);
-                        setSelected([]);
-                        setAutoScrollAllowed(true);
-                    }}
-                    {...cancelButtonProps}
-                />
-                <Button
-                    variant="outlined"
-                    style={{ float: 'left', margin: '5px' }}
-                    onClick={() => {
-                        onClose?.(computeSelectedNodes());
-                        setSelected([]);
-                        setAutoScrollAllowed(true);
-                    }}
-                    disabled={isValidationDisabled()}
-                    data-testid="SubmitButton"
-                >
-                    {getValidationButtonText()}
-                </Button>
-            </DialogActions>
+            <DialogActions>{renderActions()}</DialogActions>
         </Dialog>
     );
 }
