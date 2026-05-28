@@ -178,6 +178,8 @@ export const useModificationsDragAndDrop = ({
 
             const isDraggingDown = destination.index > source.index;
             const droppingIntoExpandedComposite = isDraggingDown && targetRow.getIsExpanded();
+            const isSubRowInvolved = sourceRow.depth > 0 || targetRow.depth > 0;
+
             const targetCompositeUuid: UUID | null = getTargetCompositeUuid(droppingIntoExpandedComposite, targetRow);
             const sourceContainerId = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
             const targetContainerId = targetCompositeUuid;
@@ -189,12 +191,10 @@ export const useModificationsDragAndDrop = ({
                 return;
             }
 
-            // Optimistic update of the flat modifications list
             const previousModifications = [...composedModifications];
-            const updatedModifications = [...composedModifications];
 
             let beforeUuid: UUID | null;
-            if (targetCompositeUuid !== null) {
+            if (droppingIntoExpandedComposite || isSubRowInvolved) {
                 const targetSiblings = getTargetSiblings(targetCompositeUuid, rows);
                 if (droppingIntoExpandedComposite) {
                     // Landing on an expanded composite header: enter it at first position
@@ -206,13 +206,16 @@ export const useModificationsDragAndDrop = ({
                     const beforeSiblingIndex = isDraggingDown ? landingIndexInSiblings + 1 : landingIndexInSiblings;
                     beforeUuid = targetSiblings[beforeSiblingIndex]?.original.uuid ?? null;
                 }
+                setComposedModifications((prev) =>
+                    moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
+                );
             } else {
-                beforeUuid = updatedModifications[newPosition]?.uuid ?? null;
+                const updatedModifications = [...composedModifications];
+                const [movedItem] = updatedModifications.splice(oldPosition, 1);
+                updatedModifications.splice(newPosition, 0, movedItem);
+                beforeUuid = updatedModifications[newPosition + 1]?.uuid ?? null;
+                setComposedModifications(updatedModifications);
             }
-
-            setComposedModifications((prev) =>
-                moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
-            );
 
             moveModification(
                 studyUuid,
