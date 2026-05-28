@@ -272,18 +272,30 @@ export const getSensiInjectionsSetformatNewParams = (newParams: SensitivityAnaly
 export const getSensiNodesFormSchema = () => ({
     [PARAMETER_SENSI_NODES]: yup.array().of(
         yup.object().shape({
-            [SUPERVISED_VOLTAGE_LEVELS]: yup.array().of(
-                yup.object().shape({
-                    [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
-                })
-            ),
-            [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup.array().of(
-                yup.object().shape({
-                    [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
-                })
-            ),
+            [SUPERVISED_VOLTAGE_LEVELS]: yup
+                .array()
+                .of(
+                    yup.object().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+                )
+                .when([ACTIVATED], {
+                    is: (activated: boolean) => activated,
+                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                }),
+            [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup
+                .array()
+                .of(
+                    yup.object().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+                )
+                .when([ACTIVATED], {
+                    is: (activated: boolean) => activated,
+                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                }),
             ...getContingenciesSchema(),
         })
     ),
