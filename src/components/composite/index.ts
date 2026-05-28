@@ -7,6 +7,7 @@
 
 export * from './dnd-table';
 export * from './elementSearch';
+export * from './flatParameters';
 export * from './filter';
 export * from './grid';
 export * from './muiTable';

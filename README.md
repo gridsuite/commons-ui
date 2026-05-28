@@ -2,6 +2,22 @@
 
 Library for sharing GridSuite apps commons components
 
+#### Frontend components organization
+
+Components are organized as follows:
+
+- `src/components/ui`  
+  - Simple, generic, low-level UI components.
+  - Highly reusable and not tied to any business logic.
+
+- `src/components/composite`  
+  - Richer, higher-level reusable components.
+  - Composed of multiple UI components, but still independent from business logic.
+
+- `src/features`  
+  - Feature- or domain-oriented components.
+  - Tied to specific application use cases and business logic.
+
 #### For developers
 
 The commons-ui library have a demo app in which you can call your components to test them.
