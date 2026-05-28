@@ -102,11 +102,10 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
-    const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection, getAllDescendants } =
-        useModificationsSelection({
-            modifications: composedModifications,
-            onRowSelected,
-        });
+    const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
+        modifications: composedModifications,
+        onRowSelected,
+    });
 
     useEffect(() => {
         setComposedModifications((prevMods) => {
@@ -238,7 +237,22 @@ export function NetworkModificationsTable({
         if (!modificationUuidsToReset?.length) {
             return;
         }
-        const uuidsToReset: Set<string> = getAllDescendants(modificationUuidsToReset);
+        // fetch all the descendants of the modificationUuidsToReset :
+        const uuidsToReset = new Set<string>(modificationUuidsToReset);
+        const collectAll = (mod: ComposedModificationMetadata) => {
+            uuidsToReset.add(mod.uuid);
+            mod.subModifications?.forEach(collectAll);
+        };
+        const collectDescendants = (mods: ComposedModificationMetadata[]) => {
+            mods.forEach((mod) => {
+                if (uuidsToReset.has(mod.uuid)) {
+                    mod.subModifications?.forEach(collectAll);
+                } else {
+                    collectDescendants(mod.subModifications ?? []);
+                }
+            });
+        };
+        collectDescendants(composedModificationsRef.current);
 
         table.setRowSelection((prev) => {
             const next = { ...prev };
@@ -253,7 +267,7 @@ export function NetworkModificationsTable({
             uuidsToReset.forEach((uuid) => delete next[uuid]);
             return next;
         });
-    }, [modificationUuidsToReset, table, getAllDescendants]);
+    }, [modificationUuidsToReset, table]);
 
     useEffect(() => {
         table.resetRowSelection();
