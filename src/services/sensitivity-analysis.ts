@@ -14,7 +14,7 @@ import {
 } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 import { fetchElementNames } from './directory';
-import { IdName } from '../components/parameters/common/contingency-table/types';
+import { IdName } from '../features/parameters/common/contingency-table/types';
 
 const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
 const PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis`;

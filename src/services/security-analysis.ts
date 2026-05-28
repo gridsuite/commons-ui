@@ -10,8 +10,8 @@ import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils'
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 import { mapSecurityAnalysisParameters, SAParameters, SAParametersEnriched } from '../utils/types';
 import { fetchElementNames } from './directory';
-import { IdName } from '../components/parameters/common/contingency-table/types';
-import { ID, NAME } from '../components/parameters/common/parameter-table/constants';
+import { IdName } from '../features/parameters/common/contingency-table/types';
+import { ID, NAME } from '../features/parameters/common/parameter-table/constants';
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
 

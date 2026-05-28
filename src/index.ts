@@ -6,6 +6,7 @@
  */
 export { default as svg } from './_mocks_/svg';
 export * from './components';
+export * from './features';
 export * from './hooks';
 export * from './redux';
 export * from './services';

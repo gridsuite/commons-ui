@@ -9,8 +9,8 @@ import type { UUID } from 'node:crypto';
 import {
     ContingencyListsInfos,
     ContingencyListsInfosEnriched,
-} from '../../components/parameters/common/contingency-table/types';
-import { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
+} from '../../features/parameters/common/contingency-table/types';
+import { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
 
 export type SAParameters = {
     uuid?: UUID;

@@ -6,13 +6,13 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { ComputingType } from '../../components/parameters/common/computing-type';
+import { ComputingType } from '../../features/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
-import type { ILimitReductionsByVoltageLevel } from '../../components/parameters/common/limitreductions/columns-definitions';
+import type { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
 import { DynamicSimulationParametersInfos } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfosEnriched } from './sensitivity-analysis.type';
-import { type ShortCircuitParametersInfos } from '../../components/parameters/short-circuit/short-circuit-parameters.type';
+import { type ShortCircuitParametersInfos } from '../../features/parameters/short-circuit/short-circuit-parameters.type';
 import { SAParametersEnriched } from './security-analysis.type';
 import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
 
