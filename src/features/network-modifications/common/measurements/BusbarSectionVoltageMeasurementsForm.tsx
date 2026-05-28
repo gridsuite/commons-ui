@@ -8,15 +8,15 @@
 import { useFieldArray } from 'react-hook-form';
 import { Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { CheckboxNullableInput } from '../../../ui/reactHookForm/CheckboxNullableInput';
-import { FloatInput } from '../../../ui';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
+import { MeasurementInfo } from './measurement.type';
+import {CheckboxNullableInput, FloatInput} from "../../../../components";
 
 const BUSBAR_SECTION_V_MEASUREMENTS = 'busbarSectionVMeasurements';
 
 export interface BusbarSectionVMeasurementInfo {
     id: string;
-    measurementV?: { value?: number | null; validity?: boolean | null } | null;
+    measurementV?: MeasurementInfo | null;
 }
 
 interface BusbarSectionVoltageMeasurementsFormProps {

@@ -6,23 +6,19 @@
  */
 
 import { useState } from 'react';
-import { Grid, TextField } from '@mui/material';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs, TextField } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
-import GridSection from '../../../../components/composite/grid/grid-section';
-import { TextInput } from '../../../../components/ui';
-import { AutocompleteInput } from '../../../../components/ui/reactHookForm/autocompleteInputs/AutocompleteInput';
-import { FloatInput } from '../../../../components/ui/reactHookForm/numbers/FloatInput';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
-import { PropertiesForm } from '../../common/properties/PropertiesForm';
-import { filledTextField } from '../../common';
+import { filledTextField, PropertiesForm } from '../../common';
 import { VoltageLevelDto } from './voltageLevelModification.types';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 import {
     BusbarSectionVMeasurementInfo,
     BusbarSectionVoltageMeasurementsForm,
 } from '../../common/measurements/BusbarSectionVoltageMeasurementsForm';
+import { AutocompleteInput, FloatInput, TextInput } from '../../../../components';
+import GridSection from '../../../../components/composite/grid/grid-section';
 
 enum VoltageLevelModificationTab {
     CHARACTERISTICS_TAB = 0,
