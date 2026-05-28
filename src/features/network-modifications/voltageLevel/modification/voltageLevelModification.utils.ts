@@ -116,19 +116,25 @@ export const voltageLevelModificationDtoToForm = (
 
 const bbsMeasurementItemSchema = object().shape({
     busbarSectionId: string().required(),
-    value: number().nullable(),
-    validity: boolean().nullable(),
+    value: number().nullable().defined(),
+    validity: boolean().nullable().defined(),
 });
 
 export const voltageLevelModificationWithMeasurementsFormSchema = voltageLevelModificationFormSchema.concat(
     object().shape({
-        busbarSectionVMeasurements: array().of(bbsMeasurementItemSchema).nullable(),
+        busbarSectionVMeasurements: array().of(bbsMeasurementItemSchema).nullable().defined(),
     })
 );
 
-export type VoltageLevelModificationWithMeasurementsFormData = InferType<
-    typeof voltageLevelModificationWithMeasurementsFormSchema
->;
+export type BbsMeasurementItem = {
+    busbarSectionId: string;
+    value: number | null;
+    validity: boolean | null;
+};
+
+export type VoltageLevelModificationWithMeasurementsFormData = VoltageLevelModificationFormData & {
+    busbarSectionVMeasurements: BbsMeasurementItem[] | null;
+};
 
 export const voltageLevelModificationWithMeasurementsDtoToForm = (
     dto: VoltageLevelModificationDto,
