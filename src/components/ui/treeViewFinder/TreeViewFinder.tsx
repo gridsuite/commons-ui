@@ -104,12 +104,6 @@ export interface TreeViewFinderProps {
 
     // dialog props
     contentText?: string;
-    /**
-     * When `inline` is true the component renders directly in the page
-     * (no Dialog wrapper). `open` is ignored in inline mode.
-     * When `inline` is false or omitted the classic Dialog behaviour is used.
-     */
-    inline?: boolean;
     open: ModalProps['open'];
     onClose: (nodes: TreeViewFinderNodeProps[]) => void;
     validationButtonText?: string;
@@ -121,44 +115,47 @@ export interface TreeViewFinderProps {
     data?: TreeViewFinderNodeProps[];
     onTreeBrowse?: (itemId: string) => void;
     sortMethod?: (a: TreeViewFinderNodeProps, b: TreeViewFinderNodeProps) => number;
+
+    inline?: boolean;
+    onSelectionChange?: (nodes: TreeViewFinderNodeProps[]) => void;
+    /**
+     * TreeViewFinder documentation :
+     * Component to choose elements in a flat list or a Tree data structure
+     * It is flexible and allow controlled props to let Parent component manage
+     * data.
+     *
+     * @param {Object}          classes - Deprecated, use sx or styled instead. - Otherwise, CSS classes, please use withStyles API from MaterialUI
+     * @param {String}          [title] - Title of the Dialog
+     * @param {String}          [contentText] - Content text of the Dialog
+     * @param {Boolean}         open - dialog state boolean handler (Controlled)
+     * @param {EventListener}   onClose - onClose callback to call when closing dialog
+     * @param {Object[]}        data - data to feed the component (Controlled).
+     * @param {String}          data[].id - Uuid of the object in Tree
+     * @param {String}          data[].parentId - Uuid of the parent node in Tree
+     * @param {String}          data[].name - name of the node to print in Tree
+     * @param {String}          data[].icon - JSX of an icon to display next a node
+     * @param {String}          data[].childrenCount - number of children
+     * @param {Object[]}        [data[].children] - array of children nodes, if undefined, the node is a leaf.
+     * @callback                onTreeBrowse - callback to update data prop when walk into Tree
+     * @param {Array}           [defaultSelected=[]] - selected items at mount (Uncontrolled)
+     * @param {Array}           [defaultExpanded=[]] - ids of the expanded items at mount (Uncontrolled)
+     * @param {String}          [validationButtonText=default text] - Customized Validation Button text (default: Add N Elements)
+     * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
+     * @param {Boolean}         [multiSelect=false] - Allow/Forbid multiselection on Tree
+     * @param {Object}          [cancelButtonProps] - The cancel button props
+     * @param {Object}          [selected] - ids of selected items
+     * @param {Array}           [expanded] - ids of the expanded items
+     * @param {Boolean}         [inline=false] - When true, renders only the tree content without the Dialog wrapper. Action buttons are hidden in inline mode.
+     * @callback                onSelectionChange - Called whenever the selection changes in inline mode with the currently selected selectable nodes.
+     */
 }
 
-/**
- * TreeViewFinder documentation :
- * Component to choose elements in a flat list or a Tree data structure
- * It is flexible and allow controlled props to let Parent component manage
- * data.
- *
- * @param {Object}          classes - Deprecated, use sx or styled instead. - Otherwise, CSS classes, please use withStyles API from MaterialUI
- * @param {String}          [title] - Title of the Dialog
- * @param {String}          [contentText] - Content text of the Dialog
- * @param {Boolean}         [inline=false] - When true renders inline (no Dialog wrapper); `open` is ignored
- * @param {Boolean}         open - dialog state boolean handler (Controlled) — ignored when inline=true
- * @param {EventListener}   onClose - onClose callback to call when closing dialog
- * @param {Object[]}        data - data to feed the component (Controlled).
- * @param {String}          data[].id - Uuid of the object in Tree
- * @param {String}          data[].parentId - Uuid of the parent node in Tree
- * @param {String}          data[].name - name of the node to print in Tree
- * @param {String}          data[].icon - JSX of an icon to display next a node
- * @param {String}          data[].childrenCount - number of children
- * @param {Object[]}        [data[].children] - array of children nodes, if undefined, the node is a leaf.
- * @callback                onTreeBrowse - callback to update data prop when walk into Tree
- * @param {Array}           [defaultSelected=[]] - selected items at mount (Uncontrolled)
- * @param {Array}           [defaultExpanded=[]] - ids of the expanded items at mount (Uncontrolled)
- * @param {String}          [validationButtonText=default text] - Customized Validation Button text (default: Add N Elements)
- * @param {Boolean}         [onlyLeaves=true] - Allow/Forbid selection only on leaves
- * @param {Boolean}         [multiSelect=false] - Allow/Forbid multiselection on Tree
- * @param {Object}          [cancelButtonProps] - The cancel button props
- * @param {Object}          [selected] - ids of selected items
- * @param {Array}           [expanded] - ids of the expanded items
- */
 function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     const intl = useIntl();
     const {
         classes = {},
         title,
         contentText,
-        inline = false,
         open,
         data,
         defaultExpanded,
@@ -173,6 +170,8 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         cancelButtonProps,
         selected: selectedProp,
         expanded: expandedProp,
+        inline = false,
+        onSelectionChange,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState<TreeViewFinderNodeMapProps>({});
@@ -336,33 +335,20 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         let newSelected: string[] = [];
         if (multiSelect && Array.isArray(values)) {
             newSelected = values.filter((itemId) => isSelectable(mapPrintedNodes[itemId]));
-            setSelected(newSelected);
         } else if (typeof values === 'string') {
+            // Toggle selection to allow unselection
             if (selected?.includes(values)) {
                 newSelected = [];
             } else {
                 newSelected = isSelectable(mapPrintedNodes[values]) ? [values] : [];
             }
-            setSelected(newSelected);
         }
-
-        // inline mode emits live selection
-        if (inline && props?.onClose) {
+        setSelected(newSelected);
+        if (inline && onSelectionChange) {
             const nodes = newSelected
-                .map((id) => {
-                    const node = mapPrintedNodes[id];
-                    if (!node) return null;
-
-                    const parents = findParents(id, data ?? []);
-
-                    return {
-                        ...node,
-                        parents: parents ?? [],
-                    };
-                })
+                .map((itemId) => mapPrintedNodes[itemId])
                 .filter(Boolean) as TreeViewFinderNodeProps[];
-
-            props?.onClose(nodes);
+            onSelectionChange(nodes);
         }
     };
 
@@ -477,18 +463,11 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         };
     };
 
-    /** Shared body: title, content text, tree, and action buttons */
-    const renderTitle = () => title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect });
-
-    const renderContentText = () =>
-        contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect });
-
-    const renderTreeView = () => (
+    const renderTreeView = (
         <SimpleTreeView
             expandedItems={expanded}
             onExpandedItemsChange={handleNodeToggle}
             onSelectedItemsChange={handleNodeSelect}
-            // Uncontrolled props
             {...getTreeViewSelectionProps()}
         >
             {data && Array.isArray(data) ? data.sort(sortMethod).map((child) => renderTree(child)) : null}
@@ -507,7 +486,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         setAutoScrollAllowed(true);
     };
 
-    const renderActions = () => (
+    const actionButtons = (
         <>
             <CancelButton style={{ float: 'left', margin: '5px' }} onClick={handleCancel} {...cancelButtonProps} />
             <Button
@@ -526,12 +505,12 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     if (inline) {
         return (
             <div className={className} data-testid="InlineTreeViewFinder">
-                {renderTreeView()}
+                {renderTreeView}
             </div>
         );
     }
 
-    /* ── Dialog mode ── */
+    /* ── Dialog mode (default) ── */
     return (
         <Dialog
             open={open}
@@ -550,17 +529,18 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             data-testid="Dialog"
         >
             <DialogTitle id="TreeViewFindertitle" data-testid="DialogTitle">
-                {renderTitle()}
+                {title ?? intl.formatMessage({ id: 'treeview_finder/finderTitle' }, { multiSelect })}
             </DialogTitle>
             <DialogContent>
-                <DialogContentText>{renderContentText()}</DialogContentText>
-                {renderTreeView()}
+                <DialogContentText>
+                    {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
+                </DialogContentText>
+                {renderTreeView}
             </DialogContent>
-            <DialogActions>{renderActions()}</DialogActions>
+            <DialogActions>{actionButtons}</DialogActions>
         </Dialog>
     );
 }
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
-
 export const TreeViewFinder = styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);
