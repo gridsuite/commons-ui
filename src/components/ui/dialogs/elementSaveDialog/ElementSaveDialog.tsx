@@ -8,7 +8,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Grid2 as Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import yup from '../../../../utils/yupConfig';
@@ -291,8 +291,8 @@ export function ElementSaveDialog({
     const renderChooser = () => {
         if (isCreateMode) {
             return (
-                <Grid container item>
-                    <Grid item>
+                <Grid container>
+                    <Grid>
                         <Button onClick={handleChangeFolder} variant="contained" size="small">
                             <FormattedMessage id="showSelectDirectoryDialog" />
                         </Button>
@@ -306,8 +306,8 @@ export function ElementSaveDialog({
             );
         }
         return (
-            <Grid container item>
-                <Grid item>
+            <Grid container>
+                <Grid>
                     <Button onClick={handleChangeFolder} variant="contained" size="small">
                         <FormattedMessage id="showSelectDirectoryItemDialog" />
                     </Button>
@@ -330,7 +330,7 @@ export function ElementSaveDialog({
         >
             <Grid container spacing={2} marginTop="auto" direction="column">
                 {!createOnlyMode && (
-                    <Grid item>
+                    <Grid>
                         <RadioInput
                             name={FieldConstants.OPERATION_TYPE}
                             options={[
@@ -347,7 +347,7 @@ export function ElementSaveDialog({
                         />
                     </Grid>
                 )}
-                <Grid item>
+                <Grid>
                     <UniqueNameInput
                         name={FieldConstants.NAME}
                         label="name"
@@ -357,7 +357,7 @@ export function ElementSaveDialog({
                         autoFocus
                     />
                 </Grid>
-                <Grid item>
+                <Grid>
                     <DescriptionField />
                 </Grid>
                 {renderChooser()}

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../../components/ui/tooltip/CustomTooltip';
 import { FloatInput } from '../../../../components/ui';
@@ -29,11 +29,11 @@ export function ParameterFloat({
     inputSize,
 }: Readonly<ParameterFloatProps>) {
     const content = (
-        <Grid item container direction="row" spacing={1} paddingTop={3}>
-            <Grid item xs={labelSize} sx={style}>
+        <Grid container direction="row" spacing={1} paddingTop={3}>
+            <Grid size={labelSize} sx={style}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item xs={inputSize}>
+            <Grid size={inputSize}>
                 <FloatInput name={name} adornment={adornment} />
             </Grid>
         </Grid>

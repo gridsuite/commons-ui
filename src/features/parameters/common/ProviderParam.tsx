@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { LineSeparator } from './line-separator';
 import { parametersStyles } from '../parameters-style';
@@ -27,10 +27,10 @@ export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
     return (
         <>
             <Grid container sx={styles.providerParam} paddingRight={1}>
-                <Grid item xs sx={parametersStyles.parameterName}>
+                <Grid size="grow" sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid item container xs={2} sx={parametersStyles.controlItem}>
+                <Grid container size={2} sx={parametersStyles.controlItem}>
                     <MuiSelectInput name={PROVIDER} size="small" fullWidth options={options} />
                 </Grid>
             </Grid>

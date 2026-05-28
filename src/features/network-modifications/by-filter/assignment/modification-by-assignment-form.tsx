@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { ExpandableInput, SelectWithConfirmationInput } from '../../../../components/ui';
 import { FieldConstants, mergeSx } from '../../../../utils';

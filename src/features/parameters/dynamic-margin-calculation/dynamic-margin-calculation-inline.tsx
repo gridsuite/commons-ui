@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
@@ -104,7 +104,7 @@ export function DynamicMarginCalculationInline({
     const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
         return (
             <>
-                <Grid container item>
+                <Grid container>
                     <Grid
                         sx={mergeSx(parametersStyles.controlParametersItem, {
                             paddingTop: 1,

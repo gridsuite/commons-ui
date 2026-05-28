@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, TextField } from '@mui/material';
+import { Grid2 as Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import GridSection from '../../../../components/composite/grid/grid-section';
 import { TextInput } from '../../../../components/ui';
@@ -26,9 +26,9 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
 
     return (
         <Grid container direction="column" spacing={2}>
-            <Grid item>
+            <Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <TextField
                             size="small"
                             fullWidth
@@ -41,7 +41,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                             {...filledTextField}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <TextInput
                             name={FieldConstants.EQUIPMENT_NAME}
                             label="Name"
@@ -51,7 +51,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                         />
                     </Grid>
                     {!watchHideSubstationField && (
-                        <Grid item xs={4}>
+                        <Grid size={4}>
                             <AutocompleteInput
                                 allowNewValue
                                 forcePopupIcon
@@ -71,10 +71,10 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                     )}
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <GridSection title="VoltageText" />
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <FloatInput
                             name={FieldConstants.NOMINAL_V}
                             label="NominalVoltage"
@@ -83,7 +83,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                             previousValue={voltageLevelToModify?.nominalV}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <FloatInput
                             name={FieldConstants.LOW_VOLTAGE_LIMIT}
                             label="LowVoltageLimit"
@@ -92,7 +92,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                             previousValue={voltageLevelToModify?.lowVoltageLimit ?? undefined}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <FloatInput
                             name={FieldConstants.HIGH_VOLTAGE_LIMIT}
                             label="HighVoltageLimit"
@@ -104,7 +104,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                 </Grid>
                 <GridSection title="ShortCircuit" />
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <FloatInput
                             name={FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT}
                             label="LowShortCircuitCurrentLimit"
@@ -113,7 +113,7 @@ export function VoltageLevelModificationForm({ voltageLevelToModify }: Readonly<
                             previousValue={voltageLevelToModify?.identifiableShortCircuit?.ipMin ?? undefined}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <FloatInput
                             name={FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT}
                             label="HighShortCircuitCurrentLimit"

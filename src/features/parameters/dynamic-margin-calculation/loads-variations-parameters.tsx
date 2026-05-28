@@ -6,7 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid, SxProps } from '@mui/material';
+import { Grid2 as Grid, SxProps } from '@mui/material';
 import yup from '../../../utils/yupConfig';
 import {
     ACCURACY,

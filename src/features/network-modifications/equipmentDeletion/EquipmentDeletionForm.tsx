@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
@@ -145,9 +145,9 @@ export function EquipmentDeletionForm({
 
     return (
         <Grid container direction="column">
-            <Grid item>
+            <Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <AutocompleteInput
                             isOptionEqualToValue={richTypeEquals}
                             name={FieldConstants.TYPE}
@@ -160,7 +160,7 @@ export function EquipmentDeletionForm({
                             formProps={filledTextField}
                         />
                     </Grid>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <AutocompleteInput
                             isOptionEqualToValue={areIdsEqual}
                             allowNewValue
@@ -179,7 +179,7 @@ export function EquipmentDeletionForm({
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 {watchSpecificData?.specificType === FieldConstants.HVDC_LINE_LCC_DELETION_SPECIFIC_TYPE && (
                     <HvdcLccDeletionSpecificForm />
                 )}

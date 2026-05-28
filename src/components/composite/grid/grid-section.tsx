@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { SxStyle } from '../../../utils/styles';
 
@@ -18,7 +18,7 @@ export interface GridSectionProps {
 export default function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
     return (
         <Grid container spacing={2}>
-            <Grid item xs={size}>
+            <Grid size={size}>
                 <Box sx={customStyle} component={`h${heading}`}>
                     <FormattedMessage id={title} />
                 </Box>

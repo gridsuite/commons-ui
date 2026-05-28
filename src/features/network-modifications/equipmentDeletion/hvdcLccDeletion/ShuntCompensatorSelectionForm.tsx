@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FieldConstants } from '../../../../utils';
 import { CheckboxInput, ReadOnlyInput } from '../../../../components/ui';
 import GridSection from '../../../../components/composite/grid/grid-section';
@@ -25,12 +25,12 @@ export function ShuntCompensatorSelectionForm({
             <GridSection title={title} heading={4} />
             {mcsRows.map((field, index) => (
                 <Grid container spacing={1} alignItems="center" key={field.id}>
-                    <Grid item xs={1}>
+                    <Grid size={1}>
                         <CheckboxInput
                             name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}
                         />
                     </Grid>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <ReadOnlyInput name={`${arrayFormName}[${index}].${FieldConstants.ID}`} />
                     </Grid>
                 </Grid>

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, Typography } from '@mui/material';
+import { Grid2 as Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { getReferencedEquipmentTypeForModel } from './curve-selector-utils';
@@ -70,9 +70,8 @@ const CurveSelector = forwardRef<CurveSelectorApi, Readonly<CurveSelectorProps>>
         return (
             <>
                 <Grid
-                    item
                     container
-                    xs={6}
+                    size={6}
                     direction="column"
                     alignItems="flex-start"
                     justifyContent="flex-start"
@@ -91,9 +90,8 @@ const CurveSelector = forwardRef<CurveSelectorApi, Readonly<CurveSelectorProps>>
                     />
                 </Grid>
                 <Grid
-                    item
                     container
-                    xs={6}
+                    size={6}
                     direction="column"
                     alignItems="flex-start"
                     justifyContent="flex-start"

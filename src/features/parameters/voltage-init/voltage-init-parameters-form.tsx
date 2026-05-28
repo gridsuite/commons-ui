@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
@@ -61,8 +61,8 @@ export function VoltageInitParametersForm({
                     position: 'relative',
                 }}
             >
-                <Grid item container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
-                    <Grid item container direction="column">
+                <Grid container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
+                    <Grid container direction="column">
                         {renderTitleFields?.()}
                     </Grid>
                     {paramsLoading ? (
@@ -114,7 +114,6 @@ export function VoltageInitParametersForm({
                 </Grid>
                 {renderActions && (
                     <Grid
-                        item
                         container
                         direction="column"
                         sx={{
