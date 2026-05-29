@@ -6,7 +6,7 @@
  */
 
 import { FieldValues } from 'react-hook-form';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import {
     DynamicSecurityAnalysisParametersFetchReturn,
     DynamicSecurityAnalysisParametersInfos,

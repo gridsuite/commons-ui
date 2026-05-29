@@ -8,9 +8,8 @@
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import {
     fromPccMinParametersFormToParamValues,
     fromPccMinParametersFormToParamValuesEnriched,
@@ -27,7 +26,7 @@ import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '.
 
 export interface UsePccMinParametersFormReturn {
     formMethods: UseFormReturn;
-    formSchema: ObjectSchema<any>;
+    formSchema: yup.ObjectSchema<any>;
     paramsLoading: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;

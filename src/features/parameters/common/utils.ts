@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ObjectSchema } from 'yup';
 import { UseFormReturn } from 'react-hook-form';
+import * as yup from 'yup';
 import {
     ParameterType,
     SpecificParameterInfos,
@@ -13,7 +13,6 @@ import {
     SpecificParametersValues,
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
-import yup from '../../../utils/yupConfig';
 
 export const getSpecificParametersFormSchema = (specificParameters: SpecificParameterInfos[] | undefined) => {
     const shape: { [key: string]: yup.AnySchema } = {};
@@ -116,7 +115,7 @@ export const setSpecificParameters = (
 
 export type UseComputationParametersFormReturn = {
     formMethods: UseFormReturn;
-    formSchema: ObjectSchema<any>;
+    formSchema: yup.ObjectSchema<any>;
     paramsLoaded: boolean;
     formattedProviders: { id: string; label: string }[];
 };

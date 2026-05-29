@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import * as yup from 'yup';
 import { Network } from './network-parameters-constants';
-import yup from '../../../../utils/yupConfig';
 
 export const networkFormSchema = yup.object().shape({
     [Network.CAPACITOR_NO_RECLOSING_DELAY]: yup.number().required(),
