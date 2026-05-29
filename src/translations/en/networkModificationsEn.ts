@@ -160,6 +160,12 @@ export const networkModificationsEn = {
     Setpoints: 'Setpoints',
     ActivePowerText: 'Active power',
     ReactivePowerText: 'Reactive power',
+    RegulationTypeText: 'Regulation type',
+    QPercentText: 'Reactive percentage',
+    RegulatingTerminalGenerator: 'Regulated terminal',
+    Equipment: 'Equipment',
+    Local: 'Local',
+    Distant: 'Remote',
     DisplayTakenPositions: 'Display taken positions',
     NodeNotBuildPositionMessage: 'Build the node to display taken positions',
     NoVoltageLevelPositionMessage: 'Select a voltage level to display taken positions',
@@ -266,6 +272,8 @@ export const networkModificationsEn = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
+
+    NoBusbarSectionFound: 'No busbar section found for this voltage level',
 
     // Tabs
     SubstationTab: 'Substation',

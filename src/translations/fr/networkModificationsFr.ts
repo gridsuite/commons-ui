@@ -163,6 +163,12 @@ export const networkModificationsFr = {
     Setpoints: 'Consignes',
     ActivePowerText: 'Puissance active',
     ReactivePowerText: 'Puissance réactive',
+    RegulationTypeText: 'Type de réglage',
+    QPercentText: 'Cœfficient de participation',
+    RegulatingTerminalGenerator: 'Terminal distant réglé',
+    Equipment: 'Ouvrage',
+    Local: 'Local',
+    Distant: 'Distant',
     DisplayTakenPositions: 'Afficher les positions prises',
     NodeNotBuildPositionMessage: 'Veuillez réaliser le nœud pour afficher les positions prises',
     NoVoltageLevelPositionMessage: 'Veuillez choisir un poste pour afficher les positions prises',
@@ -270,6 +276,8 @@ export const networkModificationsFr = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
+
+    NoBusbarSectionFound: 'Aucun jeu de barres trouvé pour ce poste',
 
     // Tabs
     SubstationTab: 'Site',

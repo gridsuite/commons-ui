@@ -7,9 +7,9 @@
 
 import { Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
+import * as yup from 'yup';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
 import { DescriptionField, UniqueNameInput } from '../../ui';
-import yup from '../../../utils/yupConfig';
 import type { MuiStyles } from '../../../utils/styles';
 
 export const filterStyles = {
