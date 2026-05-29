@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { bool, number } from 'yup';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants } from '../../../../utils';
 
 export const getActivePowerControlEmptyFormData = (isEquipmentModification = false) => ({
     [FieldConstants.FREQUENCY_REGULATION]: isEquipmentModification ? null : false,
@@ -17,15 +17,14 @@ export const getActivePowerControlSchema = (isEquipmentModification = false) => 
         .nullable()
         .when([], {
             is: () => !isEquipmentModification,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
     [FieldConstants.DROOP]: number()
         .nullable()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .min(0, 'NormalizedPercentage')
         .max(100, 'NormalizedPercentage')
         .when([FieldConstants.FREQUENCY_REGULATION], {
             is: (frequencyRegulation: boolean) => !isEquipmentModification && frequencyRegulation,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
 });

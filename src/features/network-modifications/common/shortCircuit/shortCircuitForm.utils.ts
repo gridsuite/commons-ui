@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { number } from 'yup';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants } from '../../../../utils';
 
 export const getShortCircuitEmptyFormData = () => {
     return {
@@ -16,13 +16,12 @@ export const getShortCircuitEmptyFormData = () => {
 
 export const getShortCircuitFormSchema = (isEquipmentModification = false) => {
     return {
-        [FieldConstants.TRANSFORMER_REACTANCE]: number().nullable().typeError(YUP_NOT_TYPE_NUMBER),
+        [FieldConstants.TRANSFORMER_REACTANCE]: number().nullable(),
         [FieldConstants.TRANSIENT_REACTANCE]: number()
             .nullable()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .when([FieldConstants.TRANSFORMER_REACTANCE], {
                 is: (transformerReactance: number) => isEquipmentModification && transformerReactance != null,
-                then: (schema) => schema.required(YUP_REQUIRED),
+                then: (schema) => schema.required(),
             }),
     };
 };
