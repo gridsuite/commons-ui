@@ -27,7 +27,7 @@ export const EQUIPMENT_TYPE_ORDER = [
 export const byFilterDeletionFormSchema = yup
     .object()
     .shape({
-        [FieldConstants.TYPE]: yup.mixed<EquipmentType>().oneOf(EQUIPMENT_TYPE_ORDER).required(YUP_REQUIRED),
+        [FieldConstants.TYPE]: yup.mixed<EquipmentType>().oneOf(EQUIPMENT_TYPE_ORDER).required(),
         [FieldConstants.FILTERS]: yup
             .array()
             .of(

@@ -50,7 +50,7 @@ function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_
             schema = yup.number();
     }
 
-    return schema.required(YUP_REQUIRED);
+    return schema.required();
 }
 
 export const getAssignmentInitialValue = () => ({
@@ -75,13 +75,13 @@ export function getAssignmentsSchema(emptyValueStr: string) {
                     )
                     .required()
                     .min(1, YUP_REQUIRED),
-                [FieldConstants.EDITED_FIELD]: yup.string().required(YUP_REQUIRED),
+                [FieldConstants.EDITED_FIELD]: yup.string().required(),
                 [FieldConstants.PROPERTY_NAME]: yup
                     .string()
                     .when([FieldConstants.EDITED_FIELD], ([editedField], schema) => {
                         const dataType = getDataType(editedField);
                         if (dataType === DataType.PROPERTY) {
-                            return schema.required(YUP_REQUIRED);
+                            return schema.required();
                         }
                         return schema.nullable();
                     }),
@@ -92,7 +92,7 @@ export function getAssignmentsSchema(emptyValueStr: string) {
                         const unsettable = getUnsettable(editedField);
                         return getValueSchema(emptyValueStr, dataType, unsettable);
                     })
-                    .required(YUP_REQUIRED),
+                    .required(),
             })
         )
         .required();

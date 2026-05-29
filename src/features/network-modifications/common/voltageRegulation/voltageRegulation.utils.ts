@@ -6,7 +6,7 @@
  */
 
 import { bool, number, object, string } from 'yup';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants } from '../../../../utils';
 import { getRegulatingTerminalEmptyFormData } from '../regulatingTerminal';
 
 export const REGULATION_TYPES = {
@@ -27,23 +27,18 @@ export const getVoltageRegulationSchema = (isEquipmentModification = false) => (
         .nullable()
         .when([], {
             is: () => !isEquipmentModification,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
     [FieldConstants.VOLTAGE_REGULATION_TYPE]: string().nullable(),
 
     [FieldConstants.VOLTAGE_SET_POINT]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .nullable()
         .min(0, 'mustBeGreaterOrEqualToZero')
         .when([FieldConstants.VOLTAGE_REGULATION], {
             is: (value: string) => !isEquipmentModification && value,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
-    [FieldConstants.Q_PERCENT]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
-        .nullable()
-        .max(100, 'NormalizedPercentage')
-        .min(0, 'NormalizedPercentage'),
+    [FieldConstants.Q_PERCENT]: number().nullable().max(100, 'NormalizedPercentage').min(0, 'NormalizedPercentage'),
     [FieldConstants.VOLTAGE_LEVEL]: object()
         .nullable()
         .shape({
@@ -56,7 +51,7 @@ export const getVoltageRegulationSchema = (isEquipmentModification = false) => (
         .when([FieldConstants.VOLTAGE_REGULATION, FieldConstants.VOLTAGE_REGULATION_TYPE], {
             is: (voltageRegulation: number, voltageRegulationType: string) =>
                 !isEquipmentModification && voltageRegulation && voltageRegulationType === REGULATION_TYPES.DISTANT.id,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
     [FieldConstants.EQUIPMENT]: object()
         .nullable()
@@ -68,6 +63,6 @@ export const getVoltageRegulationSchema = (isEquipmentModification = false) => (
         .when([FieldConstants.VOLTAGE_REGULATION, FieldConstants.VOLTAGE_REGULATION_TYPE], {
             is: (voltageRegulation: number, voltageRegulationType: string) =>
                 !isEquipmentModification && voltageRegulation && voltageRegulationType === REGULATION_TYPES.DISTANT.id,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
 });
