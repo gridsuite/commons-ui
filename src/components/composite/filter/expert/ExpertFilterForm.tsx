@@ -12,7 +12,7 @@ import './stylesExpertFilter.css';
 import { useWatch } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 import { Box } from '@mui/material';
-import yup from '../../../../utils/yupConfig';
+import * as yup from 'yup';
 import { testQuery } from './expertFilterUtils';
 import {
     COMBINATOR_OPTIONS,

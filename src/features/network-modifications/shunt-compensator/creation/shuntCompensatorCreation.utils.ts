@@ -12,7 +12,6 @@ import {
     ModificationType,
     sanitizeString,
     UNDEFINED_CONNECTION_DIRECTION,
-    YUP_REQUIRED,
 } from '../../../../utils';
 import {
     creationPropertiesSchema,
@@ -32,13 +31,13 @@ import { ShuntCompensatorCreationDto } from './shuntCompensatorCreation.types';
 
 export const shuntCompensatorCreationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
         ...getCharacteristicsFormValidationSchema(false),
     })
     .concat(creationPropertiesSchema)
-    .required(YUP_REQUIRED);
+    .required();
 
 export type ShuntCompensatorCreationFormData = InferType<typeof shuntCompensatorCreationFormSchema>;
 
