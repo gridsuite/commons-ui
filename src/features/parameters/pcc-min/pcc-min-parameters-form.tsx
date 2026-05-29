@@ -75,7 +75,7 @@ export function PccMinParametersForm({
                                     equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
                                     elementType={ElementType.FILTER}
                                     label="pccMinParamFilter"
-                                    hideErrorMessage
+                                    hideErrorMessage={false}
                                     allowMultiSelect={false}
                                 />
                             </Grid>

@@ -61,12 +61,15 @@ export const UsePccMinParametersForm = ({
     const formSchema = useMemo(() => {
         return yup
             .object({
-                [FILTERS]: yup.array().of(
-                    yup.object().shape({
-                        [ID]: yup.string().required(),
-                        [NAME]: yup.string().required(),
-                    })
-                ),
+                [FILTERS]: yup
+                    .array()
+                    .of(
+                        yup.object().shape({
+                            [ID]: yup.string().required(),
+                            [NAME]: yup.string().required(),
+                        })
+                    )
+                    .min(1, 'FilterInputMinError'),
             })
             .concat(getNameElementEditorSchema(name));
     }, [name]);
