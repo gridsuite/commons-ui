@@ -5,36 +5,25 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { boolean, InferType, number, object, ref, string } from 'yup';
+import { array, boolean, InferType, number, object, ref, string } from 'yup';
 import {
     getPropertiesFromModification,
     modificationPropertiesSchema,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
-import {
-    FieldConstants,
-    ModificationType,
-    sanitizeString,
-    toModificationOperation,
-    YUP_NOT_TYPE_NUMBER,
-    YUP_REQUIRED,
-} from '../../../../utils';
+import { FieldConstants, ModificationType, sanitizeString, toModificationOperation } from '../../../../utils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { VoltageLevelModificationDto } from './voltageLevelModification.types';
 
 export const voltageLevelModificationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-        [FieldConstants.HIDE_SUBSTATION_FIELD]: boolean().required(YUP_REQUIRED),
+        [FieldConstants.HIDE_SUBSTATION_FIELD]: boolean().required(),
         [FieldConstants.SUBSTATION_ID]: string().nullable(),
-        [FieldConstants.NOMINAL_V]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
-            .nullable()
-            .min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.NOMINAL_V]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'mustBeGreaterOrEqualToZero')
             .when([FieldConstants.HIGH_VOLTAGE_LIMIT], {
@@ -42,12 +31,8 @@ export const voltageLevelModificationFormSchema = object()
                 then: (schema) =>
                     schema.max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
             }),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
-            .nullable()
-            .min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
             .when([FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT], {
@@ -59,7 +44,6 @@ export const voltageLevelModificationFormSchema = object()
                     ),
             }),
         [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .nullable()
             .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero'),
     })
@@ -113,3 +97,55 @@ export const voltageLevelModificationDtoToForm = (
         convertInputValue(FieldType.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT, voltageLevelDto.ipMax?.value) ?? null,
     ...getPropertiesFromModification(voltageLevelDto.properties, includePreviousValues),
 });
+
+const bbsMeasurementItemSchema = object().shape({
+    busbarSectionId: string().required(),
+    value: number().nullable().defined(),
+    validity: boolean().nullable().defined(),
+});
+
+export const voltageLevelModificationWithMeasurementsFormSchema = voltageLevelModificationFormSchema.concat(
+    object().shape({
+        busbarSectionVMeasurements: array().of(bbsMeasurementItemSchema).nullable().defined(),
+    })
+);
+
+export type BbsMeasurementItem = {
+    busbarSectionId: string;
+    value: number | null;
+    validity: boolean | null;
+};
+
+export type VoltageLevelModificationWithMeasurementsFormData = VoltageLevelModificationFormData & {
+    busbarSectionVMeasurements: BbsMeasurementItem[] | null;
+};
+
+export const voltageLevelModificationWithMeasurementsDtoToForm = (
+    dto: VoltageLevelModificationDto,
+    includePreviousValues = true
+): VoltageLevelModificationWithMeasurementsFormData => ({
+    ...voltageLevelModificationDtoToForm(dto, includePreviousValues),
+    busbarSectionVMeasurements:
+        dto.busbarSectionVMeasurements?.map((m) => ({
+            busbarSectionId: m.busbarSectionId,
+            value: m.vMeasurementValue?.value ?? null,
+            validity: m.vMeasurementValidity?.value ?? null,
+        })) ?? [],
+});
+
+export const voltageLevelModificationWithMeasurementsFormToDto = (
+    formData: VoltageLevelModificationWithMeasurementsFormData
+): VoltageLevelModificationDto => {
+    const measurements = formData.busbarSectionVMeasurements;
+    return {
+        ...voltageLevelModificationFormToDto(formData),
+        busbarSectionVMeasurements:
+            measurements && measurements.length > 0
+                ? measurements.map((item) => ({
+                      busbarSectionId: item.busbarSectionId,
+                      vMeasurementValue: toModificationOperation(item.value ?? null),
+                      vMeasurementValidity: toModificationOperation(item.validity ?? null),
+                  }))
+                : null,
+    };
+};

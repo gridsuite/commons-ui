@@ -8,10 +8,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 import { useSnackMessage } from '../../../../hooks/useSnackMessage';
 import { FetchStatus } from '../../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import yup from '../../../../utils/yupConfig';
 import { CustomMuiDialog } from '../../../ui/dialogs/customMuiDialog/CustomMuiDialog';
 import { FilterType } from '../constants/FilterConstants';
 import { NO_ITEM_SELECTION_FOR_COPY } from '../../../../utils/directory-utils';

@@ -13,3 +13,5 @@ export * from './connectivity';
 export * from './activePowerControl';
 export * from './shortCircuit';
 export * from './reactiveLimits';
+export * from './regulatingTerminal';
+export * from './voltageRegulation';

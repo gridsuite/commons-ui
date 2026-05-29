@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Schema } from 'yup';
-import { FieldConstants, YUP_REQUIRED, yupConfig as yup } from '../../../../../utils';
+import * as yup from 'yup';
+import { FieldConstants, YUP_REQUIRED } from '../../../../../utils';
 import { Assignment, DataType, FieldOptionType, FieldValue } from './assignment.type';
 import { FIELD_OPTIONS } from './assignment-constants';
 
@@ -24,7 +24,7 @@ export const getUnsettable = (fieldName?: string | null) => {
 };
 
 function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_none?: boolean) {
-    let schema: Schema;
+    let schema: yup.Schema;
     switch (dataType) {
         case DataType.DOUBLE:
             schema = settable_to_none
@@ -50,7 +50,7 @@ function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_
             schema = yup.number();
     }
 
-    return schema.required(YUP_REQUIRED);
+    return schema.required();
 }
 
 export const getAssignmentInitialValue = () => ({
@@ -75,13 +75,13 @@ export function getAssignmentsSchema(emptyValueStr: string) {
                     )
                     .required()
                     .min(1, YUP_REQUIRED),
-                [FieldConstants.EDITED_FIELD]: yup.string().required(YUP_REQUIRED),
+                [FieldConstants.EDITED_FIELD]: yup.string().required(),
                 [FieldConstants.PROPERTY_NAME]: yup
                     .string()
                     .when([FieldConstants.EDITED_FIELD], ([editedField], schema) => {
                         const dataType = getDataType(editedField);
                         if (dataType === DataType.PROPERTY) {
-                            return schema.required(YUP_REQUIRED);
+                            return schema.required();
                         }
                         return schema.nullable();
                     }),
@@ -92,7 +92,7 @@ export function getAssignmentsSchema(emptyValueStr: string) {
                         const unsettable = getUnsettable(editedField);
                         return getValueSchema(emptyValueStr, dataType, unsettable);
                     })
-                    .required(YUP_REQUIRED),
+                    .required(),
             })
         )
         .required();

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { InferType, mixed } from 'yup';
+import * as yup from 'yup';
 import {
     convertInputValue,
     convertOutputValue,
@@ -13,7 +13,6 @@ import {
     FieldConstants,
     FieldType,
     ModificationType,
-    yupConfig as yup,
 } from '../../../../utils';
 import {
     EMPTY_FIELD_VALUE,
@@ -29,12 +28,12 @@ import { DataType } from './assignment/assignment.type';
 export const modificationByAssignmentFormSchema = yup
     .object()
     .shape({
-        [FieldConstants.EQUIPMENT_TYPE]: mixed<EquipmentType>().oneOf(Object.values(EquipmentType)).required(),
+        [FieldConstants.EQUIPMENT_TYPE]: yup.mixed<EquipmentType>().oneOf(Object.values(EquipmentType)).required(),
         [FieldConstants.ASSIGNMENTS]: getAssignmentsSchema(EMPTY_FIELD_VALUE),
     })
     .required();
 
-export type ModificationByAssignmentFormData = InferType<typeof modificationByAssignmentFormSchema>;
+export type ModificationByAssignmentFormData = yup.InferType<typeof modificationByAssignmentFormSchema>;
 
 export const emptyModificationByAssignmentFormData: DeepNullable<ModificationByAssignmentFormData> = {
     [FieldConstants.EQUIPMENT_TYPE]: null,
