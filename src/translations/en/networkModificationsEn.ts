@@ -231,6 +231,8 @@ export const networkModificationsEn = {
     Or: 'or',
     CreateBattery: 'Create battery',
     BatteryCreationError: 'Error while creating battery',
+    ModifyBattery: 'Modify battery',
+    BatteryModificationError: 'Error while modifying battery',
     Connectivity: 'Connectivity',
     ActiveLimits: 'Active limits',
     ReactiveLimits: 'Reactive limits',
@@ -239,6 +241,9 @@ export const networkModificationsEn = {
     Off: 'Off',
     FrequencyRegulation: 'Active power regulation',
     Droop: 'Droop',
+    Limits: 'Limits',
+    MinActivePowerMustBeLessOrEqualToMaxActivePower:
+        'Minimum active power value must be less than or equal to maximum active power value',
     activePowerControlTooltip:
         'Slack bus active power repartition key: maxP/droop, default droop = 4 (used if balanceType is PROPORTIONAL_TO_GENERATION_P_MAX)',
     NoModification: 'No modification',
@@ -279,6 +284,8 @@ export const networkModificationsEn = {
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
     CharacteristicsTab: 'Characteristics',
+    SetpointsAndLimitsTab: 'Setpoints & Limits',
+    SpecificTab: 'Specific',
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Additional information',
     StateEstimationTab: 'State estimation',
