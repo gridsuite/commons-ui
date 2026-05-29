@@ -8,7 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils/types/types';
-import { NewFilterType } from '../components/filter/filter.type';
+import { NewFilterType } from '../components/composite/filter/filter.type';
 import { ElementType } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;

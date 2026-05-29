@@ -39,7 +39,6 @@ export const filterEn = {
     AddFreePropCrit: 'Add a filtering by property',
     FreeProps: 'Equipment properties',
     SubstationFreeProps: 'Equipment substation properties',
-    YupRequired: 'This field is required',
     filterPropertiesNameUniquenessError: 'It is not possible to add multiple filters for the same property',
     emptyFilterError: 'Filter should contain at least one equipment',
     distributionKeyWithMissingIdError: 'Missing ID with defined distribution key',
