@@ -6,7 +6,7 @@
  */
 
 import { Grid } from '@mui/material';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import {
     LOAD_INCREASE_START_TIME,
     LOAD_INCREASE_STOP_TIME,

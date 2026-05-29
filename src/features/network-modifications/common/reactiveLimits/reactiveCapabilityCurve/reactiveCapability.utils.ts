@@ -7,7 +7,7 @@
 import { array, number, ref, object, TestContext, ValidationError } from 'yup';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import { ReactiveCapabilityCurve, ReactiveCapabilityCurvePoints } from '../reactiveLimits.type';
-import { FieldConstants, toNumber, validateValueIsANumber, YUP_NOT_TYPE_NUMBER } from '../../../../../utils';
+import { FieldConstants, toNumber, validateValueIsANumber } from '../../../../../utils';
 import {
     GeneratorCreationDialogSchemaForm,
     GeneratorDialogSchemaBaseForm,
@@ -21,13 +21,12 @@ export const REMOVE = 'REMOVE';
 
 const getCreationRowSchema = () =>
     object().shape({
-        [FieldConstants.MAX_Q]: number().nullable().typeError(YUP_NOT_TYPE_NUMBER).default(null),
+        [FieldConstants.MAX_Q]: number().nullable().default(null),
         [FieldConstants.MIN_Q]: number()
             .nullable()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .default(null)
             .max(ref(FieldConstants.MAX_Q), 'ReactiveCapabilityCurveCreationErrorQminPQmaxPIncoherence'),
-        [FieldConstants.P]: number().nullable().typeError(YUP_NOT_TYPE_NUMBER).default(null),
+        [FieldConstants.P]: number().nullable().default(null),
     });
 
 export const getRowEmptyFormData = () => ({

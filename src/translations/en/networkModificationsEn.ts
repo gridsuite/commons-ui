@@ -284,6 +284,8 @@ export const networkModificationsEn = {
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
 
+    NoBusbarSectionFound: 'No busbar section found for this voltage level',
+
     // Tabs
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',

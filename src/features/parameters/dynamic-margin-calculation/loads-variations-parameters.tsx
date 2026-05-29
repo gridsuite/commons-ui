@@ -7,7 +7,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Grid, SxProps } from '@mui/material';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import {
     ACCURACY,
     ACTIVE,

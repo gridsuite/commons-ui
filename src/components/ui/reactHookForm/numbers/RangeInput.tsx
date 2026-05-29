@@ -7,10 +7,9 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import { type ObjectSchema } from 'yup';
 import { FormControl, Grid, InputLabel } from '@mui/material';
+import * as yup from 'yup';
 import { FloatInput } from './FloatInput';
-import yup from '../../../../utils/yupConfig';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import type { MuiStyles } from '../../../../utils/styles';
@@ -61,7 +60,7 @@ export function getRangeInputSchema<TName extends string>(name: TName) {
         },
         [[FieldConstants.VALUE_1, FieldConstants.VALUE_2]]
     );
-    return { [name]: result } as Record<TName, ObjectSchema<RangeInputData>>;
+    return { [name]: result } as Record<TName, yup.ObjectSchema<RangeInputData>>;
 }
 
 interface RangeInputProps {
