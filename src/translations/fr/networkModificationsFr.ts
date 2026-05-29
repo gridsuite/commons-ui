@@ -278,6 +278,8 @@ export const networkModificationsFr = {
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
 
+    NoBusbarSectionFound: 'Aucun jeu de barres trouvé pour ce poste',
+
     // Tabs
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
