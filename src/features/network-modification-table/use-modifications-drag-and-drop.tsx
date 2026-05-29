@@ -184,13 +184,6 @@ export const useModificationsDragAndDrop = ({
             const sourceContainerId = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
             const targetContainerId = targetCompositeUuid;
 
-            const oldPosition = source.index;
-            const newPosition = destination.index;
-
-            if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition || !currentNodeUuid) {
-                return;
-            }
-
             const previousModifications = [...composedModifications];
 
             let beforeUuid: UUID | null;
@@ -210,6 +203,13 @@ export const useModificationsDragAndDrop = ({
                     moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
                 );
             } else {
+                const oldPosition = composedModifications.findIndex((m) => m.uuid === sourceRow.original.uuid);
+                const newPosition = composedModifications.findIndex((m) => m.uuid === targetRow.original.uuid);
+
+                if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition || !currentNodeUuid) {
+                    return;
+                }
+
                 const updatedModifications = [...composedModifications];
                 const [movedItem] = updatedModifications.splice(oldPosition, 1);
                 updatedModifications.splice(newPosition, 0, movedItem);

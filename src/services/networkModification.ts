@@ -111,7 +111,7 @@ export function moveModification(
     if (sourceContainerId) params.set('sourceContainerId', sourceContainerId);
     if (targetContainerId) params.set('targetContainerId', targetContainerId);
     if (beforeUuid) params.set('beforeUuid', beforeUuid);
-    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/modification/${modificationUuid}?${params.toString()}`;
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${modificationUuid}?${params.toString()}`;
     console.debug(url);
     return backendFetch(url, { method: 'put' });
 }
