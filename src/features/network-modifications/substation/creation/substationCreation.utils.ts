@@ -10,7 +10,7 @@ import {
     getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import { FieldConstants, ModificationType, sanitizeString, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants, ModificationType, sanitizeString } from '../../../../utils';
 import { SubstationCreationDto } from './substationCreation.types';
 
 export const substationCreationFormToDto = (substationForm: SubstationCreationFormData): SubstationCreationDto => {
@@ -34,12 +34,12 @@ export const substationCreationDtoToForm = (substationDto: SubstationCreationDto
 
 export const substationCreationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.COUNTRY]: string().nullable(),
     })
     .concat(creationPropertiesSchema)
-    .required(YUP_REQUIRED);
+    .required();
 
 export type SubstationCreationFormData = InferType<typeof substationCreationFormSchema>;
 
