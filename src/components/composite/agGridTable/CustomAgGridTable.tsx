@@ -6,11 +6,11 @@
  */
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { type FieldValues, useFieldArray, useFormContext, type UseFieldArrayReturn } from 'react-hook-form';
+import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
-import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
 
 const style = (customProps: any) => ({
@@ -118,7 +118,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
 
         const isLastSelected = Boolean(
             rowData?.length &&
-            gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+                gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
         );
 
         const noRowSelected = selectedRows.length === 0;
