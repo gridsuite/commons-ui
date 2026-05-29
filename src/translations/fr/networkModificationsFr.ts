@@ -235,7 +235,7 @@ export const networkModificationsFr = {
     CreateBattery: 'Créer une batterie',
     BatteryCreationError: "Erreur lors de la création d'une batterie",
     ModifyBattery: 'Modifier une batterie',
-    BatteryModificationError: "Erreur lors de la modification d'une batterie ",
+    BatteryModificationError: "Erreur lors de la modification d'une batterie",
     Connectivity: 'Connectivité',
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
@@ -246,11 +246,11 @@ export const networkModificationsFr = {
     Droop: 'Statisme',
     Limits: 'Limites',
     MinActivePowerMustBeLessOrEqualToMaxActivePower:
-        'Minimum active power value must be less than or equal to maximum active power value',
+        'La puissance active minimale doit être inférieure ou égale à la puissance active maximale',
     activePowerControlTooltip:
         'Clé de distribution de la puissance au nœud bilan : maxP/Statisme, statisme par défaut = 4 (valable pour le mode compensation proportionnel à la puissance maximale des groupes)',
     NoModification: 'Pas de modification',
-    ReactiveLimitsKindMinMax: 'Par plage',
+
     ReactiveLimitsKindCurve: 'Par diagramme',
     MinimumReactivePower: 'Puissance réactive minimale',
     MaximumReactivePower: 'Puissance réactive maximale',

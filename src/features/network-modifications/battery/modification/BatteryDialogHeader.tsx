@@ -6,7 +6,9 @@
  */
 
 import { Grid, TextField } from '@mui/material';
-import { FieldConstants, filledTextField, TextInput } from '@gridsuite/commons-ui';
+import { filledTextField } from '../../common';
+import { TextInput } from '../../../../components/ui';
+import { FieldConstants } from '../../../../utils';
 import { BatteryFormInfos } from '../batteryDialog.type';
 
 export interface BatteryDialogHeaderProps {
