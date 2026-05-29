@@ -254,11 +254,13 @@ export function NetworkModificationsTable({
         };
         collectDescendants(composedModificationsRef.current);
 
+        // unselect all uuidsToReset
         table.setRowSelection((prev) => {
             const next = { ...prev };
             uuidsToReset.forEach((uuid) => delete next[uuid]);
             return next;
         });
+        // unexpand all uuidsToReset
         setExpanded((prev) => {
             if (prev === true) {
                 return prev;

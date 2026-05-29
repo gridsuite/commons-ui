@@ -7,7 +7,6 @@
 
 import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Row, RowSelectionState, Updater } from '@tanstack/react-table';
-import { UUID } from 'node:crypto';
 import { ComposedModificationMetadata } from '../../utils';
 
 /**
