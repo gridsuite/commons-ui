@@ -118,34 +118,34 @@ export const batteryModificationDtoToForm = (
 };
 
 export const batteryModificationFormToDto = (form: BatteryModificationFormData): BatteryModificationDto => {
-    const isReactiveCapabilityCurveOn = form.reactiveLimits.reactiveCapabilityCurveChoice === 'CURVE';
+    const isReactiveCapabilityCurveOn = form.reactiveLimits?.reactiveCapabilityCurveChoice === 'CURVE';
     return {
         type: ModificationType.BATTERY_MODIFICATION,
         equipmentId: form.equipmentID,
         equipmentName: toModificationOperation(sanitizeString(form.equipmentName)),
-        maxP: toModificationOperation(form.maximumActivePower),
         minP: toModificationOperation(form.minimumActivePower),
+        maxP: toModificationOperation(form.maximumActivePower),
         targetP: toModificationOperation(form.activePowerSetpoint),
         targetQ: toModificationOperation(form.reactivePowerSetpoint),
         participate: toModificationOperation(form.frequencyRegulation),
-        droop: toModificationOperation(form.droop),
+        droop: toModificationOperation(form.droop) ?? null,
         reactiveCapabilityCurve: toModificationOperation(isReactiveCapabilityCurveOn),
-        minQ: toModificationOperation(isReactiveCapabilityCurveOn ? null : form.reactiveLimits.minimumReactivePower),
-        maxQ: toModificationOperation(isReactiveCapabilityCurveOn ? null : form.reactiveLimits.maximumReactivePower),
+        minQ: toModificationOperation(isReactiveCapabilityCurveOn ? null : form.reactiveLimits?.minimumReactivePower),
+        maxQ: toModificationOperation(isReactiveCapabilityCurveOn ? null : form.reactiveLimits?.maximumReactivePower),
         reactiveCapabilityCurvePoints: isReactiveCapabilityCurveOn
             ? (form.reactiveLimits.reactiveCapabilityCurveTable ?? null)
             : null,
-        voltageLevelId: toModificationOperation(form.connectivity.voltageLevel?.id),
-        busOrBusbarSectionId: toModificationOperation(form.connectivity.busOrBusbarSection?.id),
-        connectionDirection: toModificationOperation(form.connectivity.connectionDirection),
-        connectionName: toModificationOperation(sanitizeString(form.connectivity.connectionName)),
-        connectionPosition: toModificationOperation(form.connectivity.connectionPosition),
-        terminalConnected: toModificationOperation(form.connectivity.terminalConnected),
+        voltageLevelId: toModificationOperation(form.connectivity?.voltageLevel?.id),
+        busOrBusbarSectionId: toModificationOperation(form.connectivity?.busOrBusbarSection?.id),
+        connectionDirection: toModificationOperation(form.connectivity?.connectionDirection),
+        connectionName: toModificationOperation(sanitizeString(form.connectivity?.connectionName)),
+        connectionPosition: toModificationOperation(form.connectivity?.connectionPosition),
+        terminalConnected: toModificationOperation(form.connectivity?.terminalConnected),
         pMeasurementValue: toModificationOperation(form.stateEstimation?.measurementP?.value),
         pMeasurementValidity: toModificationOperation(form.stateEstimation?.measurementP?.validity),
         qMeasurementValue: toModificationOperation(form.stateEstimation?.measurementQ?.value),
         qMeasurementValidity: toModificationOperation(form.stateEstimation?.measurementQ?.validity),
-        properties: toModificationProperties(form),
+        properties: toModificationProperties(form) ?? null,
         directTransX: toModificationOperation(form.directTransX),
         stepUpTransformerX: toModificationOperation(form.transformerReactance),
     };
