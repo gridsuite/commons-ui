@@ -47,7 +47,7 @@ const getMonitoredBranchesSchema = () => {
             .required()
             .when([ACTIVATED], {
                 is: (activated: boolean) => activated,
-                then: (schema) => schema.min(1, 'FieldIsRequired'),
+                then: (schema) => schema.min(1, 'FilterInputMinError'),
             }),
     };
 };
@@ -92,7 +92,7 @@ export const getSensiHVDCsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
@@ -143,7 +143,7 @@ export const getSensiInjectionsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
@@ -193,7 +193,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             [DISTRIBUTION_TYPE]: yup
                 .mixed<DistributionType>()
@@ -282,7 +282,7 @@ export const getSensiNodesFormSchema = () => ({
                 )
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup
                 .array()
@@ -294,7 +294,7 @@ export const getSensiNodesFormSchema = () => ({
                 )
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
@@ -347,7 +347,7 @@ export const getSensiPSTsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
