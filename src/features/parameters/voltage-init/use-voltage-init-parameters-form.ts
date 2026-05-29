@@ -8,9 +8,8 @@
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     DEFAULT_GENERAL_APPLY_MODIFICATIONS,
@@ -50,7 +49,7 @@ import { snackWithFallback } from '../../../utils/error';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
-    formSchema: ObjectSchema<any>;
+    formSchema: yup.ObjectSchema<any>;
     selectedTab: TabValues;
     handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     paramsLoading: boolean;

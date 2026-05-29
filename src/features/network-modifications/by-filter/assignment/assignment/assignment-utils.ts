@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Schema } from 'yup';
-import { FieldConstants, YUP_REQUIRED, yupConfig as yup } from '../../../../../utils';
+import * as yup from 'yup';
+import { FieldConstants, YUP_REQUIRED } from '../../../../../utils';
 import { Assignment, DataType, FieldOptionType, FieldValue } from './assignment.type';
 import { FIELD_OPTIONS } from './assignment-constants';
 
@@ -24,7 +24,7 @@ export const getUnsettable = (fieldName?: string | null) => {
 };
 
 function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_none?: boolean) {
-    let schema: Schema;
+    let schema: yup.Schema;
     switch (dataType) {
         case DataType.DOUBLE:
             schema = settable_to_none

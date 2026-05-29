@@ -8,8 +8,8 @@
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
-import { ObjectSchema } from 'yup';
 import type { UUID } from 'node:crypto';
+import * as yup from 'yup';
 import {
     getCommonLoadFlowParametersFormSchema,
     mapLimitReductions,
@@ -31,7 +31,6 @@ import {
     LIMIT_REDUCTIONS_FORM,
 } from '../common/limitreductions/columns-definitions';
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
-import yup from '../../../utils/yupConfig';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { updateParameter } from '../../../services';
 import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
@@ -48,7 +47,7 @@ import { snackWithFallback } from '../../../utils/error';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
-    formSchema: ObjectSchema<any>;
+    formSchema: yup.ObjectSchema<any>;
     selectedTab: TabValues;
     handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     tabIndexesWithError: TabValues[];

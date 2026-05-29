@@ -5,15 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType } from 'yup';
-import {
-    FieldConstants,
-    EquipmentType,
-    YUP_REQUIRED,
-    yupConfig as yup,
-    ModificationType,
-    DeepNullable,
-} from '../../../../utils';
+import * as yup from 'yup';
+import { FieldConstants, EquipmentType, YUP_REQUIRED, ModificationType, DeepNullable } from '../../../../utils';
 import type { ByFilterDeletionDto } from './byFilterDeletion.types';
 
 export const EQUIPMENT_TYPE_ORDER = [
@@ -48,7 +41,7 @@ export const byFilterDeletionFormSchema = yup
     })
     .required();
 
-export type ByFilterDeletionFormData = InferType<typeof byFilterDeletionFormSchema>;
+export type ByFilterDeletionFormData = yup.InferType<typeof byFilterDeletionFormSchema>;
 
 export const byFilterDeletionDtoToForm = (dto: ByFilterDeletionDto): ByFilterDeletionFormData => ({
     [FieldConstants.TYPE]: dto.equipmentType,
