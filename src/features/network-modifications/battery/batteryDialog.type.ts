@@ -30,7 +30,7 @@ export interface BatteryFormInfos {
     busOrBusbarSectionId: string;
     connectionDirection: string | null;
     connectionName?: string | null;
-    connectionPosition: string | null;
+    connectionPosition?: number | null;
     terminalConnected?: boolean | null;
     measurementP: MeasurementInfo | undefined;
     measurementQ: MeasurementInfo | undefined;
