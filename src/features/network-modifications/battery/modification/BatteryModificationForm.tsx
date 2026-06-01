@@ -6,7 +6,7 @@
  */
 
 import { Grid } from '@mui/material';
-import { useTabsWithError } from '@gridsuite/commons-ui';
+import { useTabsWithError } from '../../../hooks';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';

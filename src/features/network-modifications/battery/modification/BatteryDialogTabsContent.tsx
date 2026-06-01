@@ -8,18 +8,16 @@
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import {
-    ActivePowerAdornment,
     ActivePowerControlForm,
     ConnectivityForm,
     ConnectivityNetworkProps,
-    FieldConstants,
-    FloatInput,
     PowerMeasurementsForm,
     PropertiesForm,
     ReactiveLimitsForm,
-    ReactivePowerAdornment,
     ShortCircuitForm,
-} from '@gridsuite/commons-ui';
+} from '../../common';
+import { FloatInput } from '../../../../components/ui';
+import { ActivePowerAdornment, FieldConstants, ReactivePowerAdornment } from '../../../../utils';
 import { BatteryDialogTab } from './batteryTabs.utils';
 import GridSection from '../../../../components/composite/grid/grid-section';
 import GridItem from '../../../../components/composite/grid/grid-item';
