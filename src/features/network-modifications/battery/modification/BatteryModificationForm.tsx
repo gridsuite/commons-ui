@@ -6,11 +6,13 @@
  */
 
 import { Grid } from '@mui/material';
+import { useWatch } from 'react-hook-form';
 import { useTabsWithError } from '@gridsuite/commons-ui';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';
 import { BATTERY_TAB_FIELDS, BatteryDialogTab } from './batteryTabs.utils';
+import { FieldConstants } from '../../../../utils';
 
 interface BatteryModificationFormProps
     extends BatteryDialogHeaderProps,
@@ -22,12 +24,12 @@ export function BatteryModificationForm({
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
-    equipmentId,
 }: Readonly<BatteryModificationFormProps>) {
     const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<BatteryDialogTab>(
         BATTERY_TAB_FIELDS,
         BatteryDialogTab.CONNECTIVITY_TAB
     );
+    const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
         <Grid container direction="column" spacing={2}>

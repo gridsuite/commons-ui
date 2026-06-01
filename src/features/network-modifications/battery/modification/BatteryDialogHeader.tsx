@@ -11,7 +11,7 @@ import { BatteryFormInfos } from '../batteryDialog.type';
 
 export interface BatteryDialogHeaderProps {
     batteryToModify?: BatteryFormInfos | null;
-    equipmentId: string;
+    equipmentId?: string;
 }
 
 export function BatteryDialogHeader({ batteryToModify, equipmentId }: Readonly<BatteryDialogHeaderProps>) {
@@ -22,7 +22,7 @@ export function BatteryDialogHeader({ batteryToModify, equipmentId }: Readonly<B
                     size="small"
                     fullWidth
                     label="ID"
-                    value={equipmentId}
+                    value={equipmentId ?? ''}
                     InputProps={{
                         readOnly: true,
                     }}
