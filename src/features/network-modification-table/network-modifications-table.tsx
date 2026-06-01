@@ -37,8 +37,10 @@ import { useModificationsSelection } from './use-modifications-selection';
 import {
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
+    findDepth,
     formatToComposedModification,
     isCompositeModification,
+    MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
 } from './utils';
 import { ModificationRow } from './row';
@@ -49,7 +51,10 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
-    onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
+    onSelectedRowsChange: (
+        selectedRows: ComposedModificationMetadata[],
+        isAssembleIntoCompositePossible: boolean
+    ) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
@@ -69,7 +74,7 @@ export function NetworkModificationsTable({
     isRowDragDisabled = false,
     onRowDragStart,
     onRowDragEnd,
-    onRowSelected,
+    onSelectedRowsChange,
     columns,
     highlightedModificationUuid,
     modificationToEditLabel,
@@ -102,9 +107,24 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
+    const mayModificationsBeAssembled = useCallback((rows: ComposedModificationMetadata[]): boolean => {
+        // the new assembled composite will be created where the first selected row is so :
+        // depth has to be < to first selected row depth + maxDepth of any selected row
+        if (rows.length === 0) return false;
+        const firstSelectedRowDepth = findDepth(composedModificationsRef.current, rows[0].uuid);
+        return rows.some((row) => firstSelectedRowDepth + (row.maxDepth ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
+    }, []);
+
+    const handleRowSelected = useCallback(
+        (selectedRows: ComposedModificationMetadata[]) => {
+            onSelectedRowsChange(selectedRows, mayModificationsBeAssembled(selectedRows));
+        },
+        [onSelectedRowsChange]
+    );
+
     const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
         modifications: composedModifications,
-        onRowSelected,
+        onRowSelected: handleRowSelected,
     });
 
     useEffect(() => {
@@ -159,7 +179,7 @@ export function NetworkModificationsTable({
             },
             interaction: {
                 lastClickedRowId,
-                onRowSelected,
+                onRowSelected: handleRowSelected,
                 isRowDragDisabled,
                 modificationToEditLabel,
             },
@@ -180,7 +200,7 @@ export function NetworkModificationsTable({
             modificationsToExclude,
             setModificationsToExclude,
             lastClickedRowId,
-            onRowSelected,
+            handleRowSelected,
             modificationToEditLabel,
             isRowDragDisabled,
             isImpactedByNotification,

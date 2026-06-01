@@ -130,10 +130,5 @@ export function useModificationsSelection({
         setRowSelection((prev) => propagateSelectionToLoadedDescendants(prev, modifications));
     }, [modifications]);
 
-    return {
-        rowSelection,
-        onRowSelectionChange,
-        lastClickedRowId,
-        emitSelection,
-    };
+    return { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection };
 }
