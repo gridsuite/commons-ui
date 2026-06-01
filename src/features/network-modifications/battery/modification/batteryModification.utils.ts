@@ -103,9 +103,7 @@ export const batteryModificationDtoToForm = (
             reactiveCapabilityCurveChoice: dto?.reactiveCapabilityCurve?.value ? 'CURVE' : 'MINMAX',
             minimumReactivePower: dto?.minQ?.value ?? null,
             maximumReactivePower: dto?.maxQ?.value ?? null,
-            reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurve?.value
-                ? dto?.reactiveCapabilityCurvePoints
-                : null,
+            reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurvePoints ?? null,
         }),
         stateEstimation: getInjectionActiveReactivePowerEditDataProperties(dto),
         ...getShortCircuitFormData({
