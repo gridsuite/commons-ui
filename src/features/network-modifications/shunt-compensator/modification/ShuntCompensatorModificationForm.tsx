@@ -40,7 +40,7 @@ export function ShuntCompensatorModificationForm({
                             fullWidth
                             label="ID"
                             value={equipmentId ?? ''}
-                            InputProps={{ readOnly: true }}
+                            slotProps={{ input: { readOnly: true } }}
                             disabled
                             {...filledTextField}
                         />
