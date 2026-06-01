@@ -11,7 +11,7 @@ import {
     clearLastSelectedDirectory,
     fetchDirectoryPathSafe,
     getLastSelectedDirectoryId,
-} from '../../../directoryItemSelector/utils';
+} from '../../directoryItemSelector/utils';
 
 /**
  * Generic directory initialization configuration

@@ -1,0 +1,114 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import * as yup from 'yup';
+
+export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
+export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
+export const IST_FORM = 'istForm';
+export const LIMIT_DURATION_FORM = 'limitReductionForm';
+
+export interface IVoltageLevel {
+    nominalV: number;
+    lowBound: number;
+    highBound: number;
+}
+
+export interface ILimitDuration {
+    lowBound: number;
+    lowClosed: boolean;
+    highBound: number;
+    highClosed: boolean;
+}
+
+export interface ITemporaryLimitReduction {
+    reduction: number;
+    limitDuration: ILimitDuration;
+}
+
+export interface ILimitReductionsByVoltageLevel {
+    voltageLevel: IVoltageLevel;
+    permanentLimitReduction: number;
+    temporaryLimitReductions: ITemporaryLimitReduction[];
+}
+
+export enum TabValues {
+    'General' = 0,
+    'LimitReductions' = 1,
+}
+
+export const TAB_INFO = [
+    { label: TabValues[TabValues.General], developerModeOnly: false },
+    { label: TabValues[TabValues.LimitReductions], developerModeOnly: false },
+];
+
+export interface LimitReductionIColumnsDef {
+    label: React.ReactNode;
+    dataKey: string;
+    tooltip: React.ReactNode;
+    width?: string;
+}
+
+export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: LimitReductionIColumnsDef[] = [
+    {
+        label: 'voltageRange',
+        dataKey: VOLTAGE_LEVELS_FORM,
+        tooltip: 'voltageRange',
+    },
+    {
+        label: 'IST',
+        dataKey: IST_FORM,
+        tooltip: 'IST',
+    },
+];
+
+/* TODO: a cleaner solution can be done by using yup.array()
+ Instead of creating a schema for each limit duration individually,
+ we can use yup.array() to define an array of limit durations directly. */
+const getLimitDurationsFormSchema = (nbLimits: number) => {
+    const limitDurationsFormSchema: Record<string, yup.NumberSchema> = {};
+    for (let i = 0; i < nbLimits; i++) {
+        limitDurationsFormSchema[LIMIT_DURATION_FORM + i] = yup
+            .number()
+            .min(0, 'RealPercentage')
+            .max(1, 'RealPercentage')
+            .nullable()
+            .required();
+    }
+    return limitDurationsFormSchema;
+};
+
+export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
+    return yup
+        .object()
+        .shape({
+            [LIMIT_REDUCTIONS_FORM]: yup.array().of(
+                yup.object().shape({
+                    [VOLTAGE_LEVELS_FORM]: yup.string(),
+                    [IST_FORM]: yup.number().min(0, 'RealPercentage').max(1, 'RealPercentage').nullable().required(),
+                    ...getLimitDurationsFormSchema(nbTemporaryLimits),
+                })
+            ),
+        })
+        .required();
+};
+
+const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
+    limits.reduce((acc: Record<string, number>, limit, index) => {
+        acc[LIMIT_DURATION_FORM + index] = limit.reduction;
+        return acc;
+    }, {});
+
+export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) =>
+    !limits
+        ? {}
+        : {
+              [LIMIT_REDUCTIONS_FORM]: limits.map((vlLimits) => ({
+                  [VOLTAGE_LEVELS_FORM]: `${vlLimits.voltageLevel.nominalV} kV`,
+                  [IST_FORM]: vlLimits.permanentLimitReduction,
+                  ...toFormValuesFromTemporaryLimits(vlLimits.temporaryLimitReductions),
+              })),
+          };
