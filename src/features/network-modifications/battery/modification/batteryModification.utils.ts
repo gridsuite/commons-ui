@@ -12,7 +12,6 @@ import {
     ModificationType,
     sanitizeString,
     toModificationOperation,
-    YUP_REQUIRED,
 } from '../../../../utils';
 import {
     getActivePowerControlEmptyFormData,
@@ -39,7 +38,7 @@ import { BatteryModificationDto } from './batteryModification.types';
 
 export const batteryModificationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.MAXIMUM_ACTIVE_POWER]: number().nullable(),
         [FieldConstants.MINIMUM_ACTIVE_POWER]: number()
@@ -60,7 +59,7 @@ export const batteryModificationFormSchema = object()
         ...getShortCircuitFormSchema(true),
     })
     .concat(modificationPropertiesSchema)
-    .required(YUP_REQUIRED);
+    .required();
 
 export type BatteryModificationFormData = InferType<typeof batteryModificationFormSchema>;
 
@@ -121,7 +120,7 @@ export const batteryModificationFormToDto = (form: BatteryModificationFormData):
     const isReactiveCapabilityCurveOn = form.reactiveLimits?.reactiveCapabilityCurveChoice === 'CURVE';
     return {
         type: ModificationType.BATTERY_MODIFICATION,
-        equipmentId: form.equipmentID,
+        equipmentId: form.equipmentID ?? '',
         equipmentName: toModificationOperation(sanitizeString(form.equipmentName)),
         minP: toModificationOperation(form.minimumActivePower),
         maxP: toModificationOperation(form.maximumActivePower),
