@@ -39,7 +39,7 @@ export interface FormPowerElectronicsCluster extends BasePowerElectronicsCluster
     filters: FilterPOJO[];
 }
 export interface PowerElectronicsCluster extends BasePowerElectronicsCluster {
-    filters: string[];
+    filters: UUID[];
 }
 
 export interface ShortCircuitParametersDto {
