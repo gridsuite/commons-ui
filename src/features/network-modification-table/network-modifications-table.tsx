@@ -254,6 +254,7 @@ export function NetworkModificationsTable({
         if (!modificationUuidsToReset?.length) {
             return;
         }
+        table.resetRowSelection();
         // fetch all the descendants of the modificationUuidsToReset :
         const uuidsToReset = new Set<string>(modificationUuidsToReset);
         const collectAll = (mod: ComposedModificationMetadata) => {
@@ -271,12 +272,6 @@ export function NetworkModificationsTable({
         };
         collectDescendants(composedModificationsRef.current);
 
-        // unselect all uuidsToReset
-        table.setRowSelection((prev) => {
-            const next = { ...prev };
-            uuidsToReset.forEach((uuid) => delete next[uuid]);
-            return next;
-        });
         // unexpand all uuidsToReset
         setExpanded((prev) => {
             if (prev === true) {
