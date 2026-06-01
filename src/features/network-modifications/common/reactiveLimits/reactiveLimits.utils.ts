@@ -11,7 +11,7 @@ import {
     getRowEmptyFormData,
 } from './reactiveCapabilityCurve/reactiveCapability.utils';
 import { ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants } from '../../../../utils';
 
 export const REACTIVE_LIMIT_TYPES = [
     { id: 'MINMAX', label: 'ReactiveLimitsKindMinMax' },
@@ -75,10 +75,9 @@ export const getReactiveLimitsValidationSchema = (
     positiveAndNegativePExist = false // if true, we check that Reactive Capability table have at least one row with negative P and one with positive one
 ) =>
     object().shape({
-        [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: string().nullable().required(YUP_REQUIRED),
+        [FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE]: string().nullable().required(),
         [FieldConstants.MINIMUM_REACTIVE_POWER]: number()
             .nullable()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .test(
                 'min-reactive-power-required',
                 'MinReactivePowerRequired',
@@ -104,7 +103,6 @@ export const getReactiveLimitsValidationSchema = (
             }),
         [FieldConstants.MAXIMUM_REACTIVE_POWER]: number()
             .nullable()
-            .typeError(YUP_NOT_TYPE_NUMBER)
             .test(
                 'max-reactive-power-required',
                 'MaxReactivePowerRequired',
