@@ -154,6 +154,10 @@ export const networkModificationsFr = {
     loadType: 'Type',
     CreateShuntCompensator: 'Créer un moyen de compensation statique (Linéaire)',
     ShuntCompensatorCreationError: "Erreur lors de la création d'un moyen de compensation",
+    ModifyShuntCompensator: 'Modifier un moyen de compensation statique (Linéaire)',
+    ShuntCompensatorModificationError: "Erreur lors de la modification d'un moyen de compensation",
+    ShuntCompensatorNonlinearError:
+        "La modification d'un moyen de compensation non linéaire n'est pas possible pour le moment",
     Reactor: 'Réactance',
     Capacitor: 'Condensateur',
     QatNominalVLabel: 'Q à Unom (Mvar)',
