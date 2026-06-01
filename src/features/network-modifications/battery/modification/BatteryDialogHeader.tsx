@@ -6,8 +6,10 @@
  */
 
 import { Grid, TextField } from '@mui/material';
-import { FieldConstants, filledTextField, TextInput } from '@gridsuite/commons-ui';
 import { BatteryFormInfos } from '../batteryDialog.type';
+import { filledTextField } from '../../common';
+import { TextInput } from '../../../../components';
+import { FieldConstants } from '../../../../utils';
 
 export interface BatteryDialogHeaderProps {
     batteryToModify?: BatteryFormInfos | null;

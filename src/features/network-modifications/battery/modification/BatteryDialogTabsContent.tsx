@@ -7,23 +7,22 @@
 
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import {
-    ActivePowerAdornment,
-    ActivePowerControlForm,
-    ConnectivityForm,
-    ConnectivityNetworkProps,
-    FieldConstants,
-    FloatInput,
-    PowerMeasurementsForm,
-    PropertiesForm,
-    ReactiveLimitsForm,
-    ReactivePowerAdornment,
-    ShortCircuitForm,
-} from '@gridsuite/commons-ui';
 import { BatteryDialogTab } from './batteryTabs.utils';
 import GridSection from '../../../../components/composite/grid/grid-section';
 import GridItem from '../../../../components/composite/grid/grid-item';
 import { BatteryFormInfos } from '../batteryDialog.type';
+import {
+    ActivePowerControlForm,
+    ConnectivityForm,
+    ConnectivityNetworkProps,
+    PowerMeasurementsForm,
+    PropertiesForm,
+    ReactiveLimitsForm,
+    ShortCircuitForm,
+} from '../../common';
+import { FloatInput } from '../../../../components';
+import { FieldConstants } from '../../../../utils/constants/fieldConstants';
+import { ActivePowerAdornment, ReactivePowerAdornment } from '../../../../utils';
 
 export interface BatteryDialogTabsContentProps extends ConnectivityNetworkProps {
     batteryToModify?: BatteryFormInfos | null;

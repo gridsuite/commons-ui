@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants } from '@gridsuite/commons-ui';
+import { FieldConstants } from '../../../../utils/constants';
 
 export enum BatteryDialogTab {
     CONNECTIVITY_TAB = 0,
