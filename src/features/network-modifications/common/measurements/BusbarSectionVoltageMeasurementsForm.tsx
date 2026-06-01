@@ -6,7 +6,7 @@
  */
 
 import { useFieldArray } from 'react-hook-form';
-import { Grid2 as Grid, Typography } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { MeasurementInfo } from './measurement.type';
