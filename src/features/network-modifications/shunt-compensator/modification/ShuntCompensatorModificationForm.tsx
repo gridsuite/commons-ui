@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, TextField } from '@mui/material';
+import { Grid2 as Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
 import GridSection from '../../../../components/composite/grid/grid-section';
@@ -32,9 +32,9 @@ export function ShuntCompensatorModificationForm({
 
     return (
         <Grid container direction="column" spacing={2}>
-            <Grid item>
+            <Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <TextField
                             size="small"
                             fullWidth
@@ -45,7 +45,7 @@ export function ShuntCompensatorModificationForm({
                             {...filledTextField}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <TextInput
                             name={FieldConstants.EQUIPMENT_NAME}
                             label="Name"
@@ -56,10 +56,10 @@ export function ShuntCompensatorModificationForm({
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <GridSection title="Connectivity" />
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <ConnectivityForm
                             isEquipmentModification
                             previousValues={shuntCompensatorToModify ?? undefined}
@@ -70,18 +70,18 @@ export function ShuntCompensatorModificationForm({
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <GridSection title="Characteristics" />
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <CharacteristicsForm previousValues={shuntCompensatorToModify ?? undefined} isModification />
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <GridSection title="MeasurementsSection" />
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <PowerMeasurementsForm
                             reactivePowerMeasurement={shuntCompensatorToModify?.measurementQ}
                             reactivePowerOnly
@@ -89,7 +89,7 @@ export function ShuntCompensatorModificationForm({
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <PropertiesForm networkElementType="shuntCompensator" isModification />
             </Grid>
         </Grid>
