@@ -7,12 +7,12 @@
 
 import { Grid } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { useTabsWithError } from '@gridsuite/commons-ui';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';
 import { BATTERY_TAB_FIELDS, BatteryDialogTab } from './batteryTabs.utils';
 import { FieldConstants } from '../../../../utils';
+import { useTabsWithError } from '../../hooks';
 
 interface BatteryModificationFormProps
     extends BatteryDialogHeaderProps,
