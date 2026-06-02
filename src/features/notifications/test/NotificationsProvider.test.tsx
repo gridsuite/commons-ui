@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client';
 import { act, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globals';
 import ReconnectingWebSocket from 'reconnecting-websocket';
+import type { User } from 'oidc-client-ts';
 import { NotificationsProvider } from '../NotificationsProvider';
 import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
@@ -16,6 +17,7 @@ jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 jest.mock('../../../redux', (): typeof import('../../../redux') => ({
     ...jest.requireActual<typeof import('../../../redux')>('../../../redux'),
     getUserToken: () => 'fake-token',
+    getUser: () => ({ profile: {} }) as User,
 }));
 const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
 

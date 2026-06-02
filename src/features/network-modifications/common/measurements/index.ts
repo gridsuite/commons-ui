@@ -12,3 +12,4 @@ export * from './branchActiveReactivePowerForm.utils';
 export * from './PowerWithValidityForm';
 export * from './PowerMeasurementsForm';
 export * from './BranchActiveReactivePowerMeasurementsForm';
+export * from './BusbarSectionVoltageMeasurementsForm';

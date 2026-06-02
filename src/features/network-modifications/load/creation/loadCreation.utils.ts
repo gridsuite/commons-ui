@@ -13,8 +13,6 @@ import {
     sanitizeString,
     UNDEFINED_CONNECTION_DIRECTION,
     UNDEFINED_LOAD_TYPE,
-    YUP_NOT_TYPE_NUMBER,
-    YUP_REQUIRED,
 } from '../../../../utils';
 import {
     getConnectivityFormDataProps,
@@ -30,21 +28,15 @@ import { LoadCreationDto } from './loadCreation.types';
 
 export const loadCreationFormSchema = object()
     .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(YUP_REQUIRED),
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.LOAD_TYPE]: string().nullable(),
-        [FieldConstants.ACTIVE_POWER_SET_POINT]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
-            .nullable()
-            .required(YUP_REQUIRED),
-        [FieldConstants.REACTIVE_POWER_SET_POINT]: number()
-            .typeError(YUP_NOT_TYPE_NUMBER)
-            .nullable()
-            .required(YUP_REQUIRED),
+        [FieldConstants.ACTIVE_POWER_SET_POINT]: number().nullable().required(),
+        [FieldConstants.REACTIVE_POWER_SET_POINT]: number().nullable().required(),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
     })
     .concat(creationPropertiesSchema)
-    .required(YUP_REQUIRED);
+    .required();
 
 export type LoadCreationFormData = InferType<typeof loadCreationFormSchema>;
 
