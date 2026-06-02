@@ -188,6 +188,7 @@ export const parametersFr = {
     VoltageLevelFilterTooltip:
         "Les saisies sont appliquées dans l'ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un poste est inclus dans plusieurs filtres)",
     FilterInputMinError: 'Vous devez sélectionner au moins un filtre',
+    UniqueFilterInputError: 'Vous devez sélectionner un filtre',
     EquipmentSelection: 'Sélection des ouvrages',
     ReactiveSlacksThreshold: "Seuil d'alerte sur les investissements réactifs",
     ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',

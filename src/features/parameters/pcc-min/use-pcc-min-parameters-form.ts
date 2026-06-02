@@ -69,7 +69,7 @@ export const UsePccMinParametersForm = ({
                             [NAME]: yup.string().required(),
                         })
                     )
-                    .min(1, 'FilterInputMinError'),
+                    .min(1, 'UniqueFilterInputError'),
             })
             .concat(getNameElementEditorSchema(name));
     }, [name]);
