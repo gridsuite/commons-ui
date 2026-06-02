@@ -49,7 +49,7 @@ export function BusbarSectionVoltageMeasurementsForm({
                 return (
                     <Grid key={field.id}>
                         <Grid container spacing={2} alignItems="center">
-                            <Grid>{bbsId}</Grid>
+                            <Grid size={3}>{bbsId}</Grid>
                             <Grid size={4}>
                                 <FloatInput
                                     name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${i}.${FieldConstants.VALUE}`}
