@@ -6,7 +6,7 @@
  */
 
 import { FieldValues } from 'react-hook-form';
-import yup from '../../../utils/yupConfig';
+import * as yup from 'yup';
 import { DynamicMarginCalculationParametersInfos } from '../../../utils/types/dynamic-margin-calculation.type';
 import { emptyFormData as timeDelayEmptyFormData, formSchema as timeDelayFormSchema } from './time-delay-parameters';
 import {

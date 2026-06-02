@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FieldValues } from 'react-hook-form';
+import * as yup from 'yup';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
 import { ElementType } from '../../../../utils';
-import yup from '../../../../utils/yupConfig';
 import { ContingencyListsInfosEnriched, IdName } from './types';
 import { DndColumn, DndColumnType } from '../../../../components/composite/dnd-table';
 
@@ -60,7 +60,7 @@ export const getContingencyListsInfosFormSchema = () => {
                             })
                         )
                         .required()
-                        .min(1, 'FieldIsRequired'),
+                        .min(1, 'ContingencyListInputMinError'),
                     [DESCRIPTION]: yup.string(),
                     [ACTIVATED]: yup.boolean().required(),
                 })

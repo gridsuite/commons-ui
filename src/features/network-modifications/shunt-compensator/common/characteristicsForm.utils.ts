@@ -6,73 +6,61 @@
  */
 
 import { number, ref, string } from 'yup';
-import { FieldConstants, YUP_NOT_TYPE_NUMBER, YUP_REQUIRED } from '../../../../utils';
+import { FieldConstants } from '../../../../utils';
 import { CHARACTERISTICS_CHOICES, computeSwitchedOnValue, SHUNT_COMPENSATOR_TYPES } from './shuntCompensator.utils';
 
 const getCharacteristicsCreateFormValidationSchema = () => ({
     [FieldConstants.MAX_Q_AT_NOMINAL_V]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .nullable()
         .default(null)
         .when([FieldConstants.CHARACTERISTICS_CHOICE], {
             is: (characteristicsChoice: string) => characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
-            then: (schema) =>
-                schema.min(0, 'ShuntCompensatorErrorQAtNominalVoltageLessThanZero').required(YUP_REQUIRED),
+            then: (schema) => schema.min(0, 'ShuntCompensatorErrorQAtNominalVoltageLessThanZero').required(),
         }),
     [FieldConstants.MAX_SUSCEPTANCE]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .nullable()
         .default(null)
         .when([FieldConstants.CHARACTERISTICS_CHOICE], {
             is: (characteristicsChoice: string) => characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id,
-            then: (schema) => schema.required(YUP_REQUIRED),
+            then: (schema) => schema.required(),
         }),
-    [FieldConstants.MAXIMUM_SECTION_COUNT]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
-        .required(YUP_REQUIRED)
-        .min(1, 'MaximumSectionCountMustBeGreaterOrEqualToOne'),
+    [FieldConstants.MAXIMUM_SECTION_COUNT]: number().required().min(1, 'MaximumSectionCountMustBeGreaterOrEqualToOne'),
     [FieldConstants.SECTION_COUNT]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
-        .required(YUP_REQUIRED)
+        .required()
         .min(0, 'SectionCountMustBeBetweenZeroAndMaximumSectionCount')
         .max(ref(FieldConstants.MAXIMUM_SECTION_COUNT), 'SectionCountMustBeBetweenZeroAndMaximumSectionCount'),
-    [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]: number().typeError(YUP_NOT_TYPE_NUMBER).notRequired(),
-    [FieldConstants.SWITCHED_ON_SUSCEPTANCE]: number().typeError(YUP_NOT_TYPE_NUMBER).notRequired(),
+    [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]: number().notRequired(),
+    [FieldConstants.SWITCHED_ON_SUSCEPTANCE]: number().notRequired(),
 });
 
 const getCharacteristicsModificationFormValidationSchema = () => ({
     [FieldConstants.MAX_Q_AT_NOMINAL_V]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .min(0, 'ShuntCompensatorErrorQAtNominalVoltageLessThanZero')
         .nullable()
         .default(null),
-    [FieldConstants.MAX_SUSCEPTANCE]: number().typeError(YUP_NOT_TYPE_NUMBER).nullable().default(null),
+    [FieldConstants.MAX_SUSCEPTANCE]: number().nullable().default(null),
     [FieldConstants.MAXIMUM_SECTION_COUNT]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .min(1, 'MaximumSectionCountMustBeGreaterOrEqualToOne')
         .nullable()
         .default(null),
     [FieldConstants.SECTION_COUNT]: number()
-        .typeError(YUP_NOT_TYPE_NUMBER)
         .min(0, 'SectionCountMustBeBetweenZeroAndMaximumSectionCount')
         .nullable()
         .default(null),
-    [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]: number().typeError(YUP_NOT_TYPE_NUMBER).nullable(),
-    [FieldConstants.SWITCHED_ON_SUSCEPTANCE]: number().typeError(YUP_NOT_TYPE_NUMBER).nullable(),
+    [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]: number().nullable(),
+    [FieldConstants.SWITCHED_ON_SUSCEPTANCE]: number().nullable(),
 });
 
 export const getCharacteristicsFormValidationSchema = (isModification: boolean) => {
     const baseSchema = {
-        [FieldConstants.CHARACTERISTICS_CHOICE]: string().required(YUP_REQUIRED),
+        [FieldConstants.CHARACTERISTICS_CHOICE]: string().required(),
         [FieldConstants.SHUNT_COMPENSATOR_TYPE]: string()
             .nullable()
             .default(null)
             .when([FieldConstants.CHARACTERISTICS_CHOICE], {
                 is: (choice: string) => choice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id && !isModification,
                 then: (schema) =>
-                    schema
-                        .oneOf([SHUNT_COMPENSATOR_TYPES.CAPACITOR.id, SHUNT_COMPENSATOR_TYPES.REACTOR.id])
-                        .required(YUP_REQUIRED),
+                    schema.oneOf([SHUNT_COMPENSATOR_TYPES.CAPACITOR.id, SHUNT_COMPENSATOR_TYPES.REACTOR.id]).required(),
             }),
     };
     const additionalSchema = isModification

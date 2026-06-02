@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
+import * as yup from 'yup';
 import {
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
@@ -16,7 +17,6 @@ import {
     getLimitReductionsFormSchema,
     toFormValuesLimitReductions,
 } from '../common';
-import yup from '../../../utils/yupConfig';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 import { SAParametersEnriched } from '../../../utils/types';

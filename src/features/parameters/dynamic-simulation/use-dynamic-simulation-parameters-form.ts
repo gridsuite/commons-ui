@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { FieldValues } from 'react-hook-form';
+import * as yup from 'yup';
 import { UseComputationParametersFormReturn } from '../common/utils';
 import { DynamicSimulationParametersInfos, SolverInfos } from '../../../utils/types/dynamic-simulation.type';
 import { TabValues } from './dynamic-simulation.type';
-import yup from '../../../utils/yupConfig';
 import { PROVIDER } from '../common/constants';
 import { timeDelayEmptyFormData, timeDelayFormSchema } from './time-delay/time-delay-parameters-utils';
 import { solverEmptyFormData, solverFormSchema } from './solver/solver-parameters-utils';

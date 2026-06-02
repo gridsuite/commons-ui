@@ -10,6 +10,12 @@ import { AttributeModification, ModificationType } from '../../../../utils';
 import { Property } from '../../common';
 import { SwitchKind } from '../creation/voltageLevelCreation.types';
 
+export interface BusbarSectionVMeasurementDto {
+    busbarSectionId: string;
+    vMeasurementValue?: AttributeModification<number> | null;
+    vMeasurementValidity?: AttributeModification<boolean> | null;
+}
+
 export interface IdentifiableShortCircuitDto {
     ipMin: number | null;
     ipMax: number | null;
@@ -42,4 +48,5 @@ export interface VoltageLevelModificationDto {
     ipMax?: AttributeModification<number> | null;
     properties?: Property[] | null;
     type?: ModificationType;
+    busbarSectionVMeasurements?: BusbarSectionVMeasurementDto[] | null;
 }

@@ -6,6 +6,7 @@
  */
 
 import { UseFormReturn } from 'react-hook-form';
+import * as yup from 'yup';
 import {
     COMMON_PARAMETERS,
     ILimitReductionsByVoltageLevel,
@@ -34,7 +35,6 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import yup from '../../../utils/yupConfig';
 
 export enum TabValues {
     GENERAL = 'General',

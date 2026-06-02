@@ -4,10 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import { FieldValues } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import yup from '../../../utils/yupConfig';
+import { FieldValues } from 'react-hook-form';
+import * as yup from 'yup';
 import {
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
     DISTRIBUTION_TYPE,
@@ -46,7 +45,7 @@ const getMonitoredBranchesSchema = () => {
             .required()
             .when([ACTIVATED], {
                 is: (activated: boolean) => activated,
-                then: (schema) => schema.min(1, 'FieldIsRequired'),
+                then: (schema) => schema.min(1, 'FilterInputMinError'),
             }),
     };
 };
@@ -91,7 +90,7 @@ export const getSensiHVDCsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
@@ -142,7 +141,7 @@ export const getSensiInjectionsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
@@ -192,7 +191,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             [DISTRIBUTION_TYPE]: yup
                 .mixed<DistributionType>()
@@ -238,18 +237,30 @@ export const getSensiInjectionsSetformatNewParams = (newParams: SensitivityAnaly
 export const getSensiNodesFormSchema = () => ({
     [PARAMETER_SENSI_NODES]: yup.array().of(
         yup.object().shape({
-            [SUPERVISED_VOLTAGE_LEVELS]: yup.array().of(
-                yup.object().shape({
-                    [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
-                })
-            ),
-            [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup.array().of(
-                yup.object().shape({
-                    [ID]: yup.string().required(),
-                    [NAME]: yup.string().required(),
-                })
-            ),
+            [SUPERVISED_VOLTAGE_LEVELS]: yup
+                .array()
+                .of(
+                    yup.object().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+                )
+                .when([ACTIVATED], {
+                    is: (activated: boolean) => activated,
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                }),
+            [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup
+                .array()
+                .of(
+                    yup.object().shape({
+                        [ID]: yup.string().required(),
+                        [NAME]: yup.string().required(),
+                    })
+                )
+                .when([ACTIVATED], {
+                    is: (activated: boolean) => activated,
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                }),
             ...getContingenciesSchema(),
         })
     ),
@@ -299,7 +310,7 @@ export const getSensiPSTsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FieldIsRequired'),
+                    then: (schema) => schema.min(1, 'FilterInputMinError'),
                 }),
             ...getContingenciesSchema(),
         })
