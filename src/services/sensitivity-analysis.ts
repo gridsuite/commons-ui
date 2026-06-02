@@ -85,7 +85,7 @@ export function enrichSensitivityAnalysisParameters(
     const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
 
     return elementNamesPromise.then((elementNames) => {
-        const mapIdsToEquipmentsContainer = (ids: UUID[] | undefined): IdName[] => {
+        const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
             return ids
                 ? ids.map((id) => ({
                       id,
@@ -99,9 +99,9 @@ export function enrichSensitivityAnalysisParameters(
                 ? parameters.sensitivityInjectionsSet.map((is) => {
                       return {
                           ...is,
-                          monitoredBranches: mapIdsToEquipmentsContainer(is.monitoredBranches),
-                          injections: mapIdsToEquipmentsContainer(is.injections),
-                          contingencies: mapIdsToEquipmentsContainer(is.contingencies),
+                          monitoredBranches: mapIdsToIdNames(is.monitoredBranches),
+                          injections: mapIdsToIdNames(is.injections),
+                          contingencies: mapIdsToIdNames(is.contingencies),
                       };
                   })
                 : [],
@@ -109,9 +109,9 @@ export function enrichSensitivityAnalysisParameters(
                 ? parameters.sensitivityInjection.map((i) => {
                       return {
                           ...i,
-                          monitoredBranches: mapIdsToEquipmentsContainer(i.monitoredBranches),
-                          injections: mapIdsToEquipmentsContainer(i.injections),
-                          contingencies: mapIdsToEquipmentsContainer(i.contingencies),
+                          monitoredBranches: mapIdsToIdNames(i.monitoredBranches),
+                          injections: mapIdsToIdNames(i.injections),
+                          contingencies: mapIdsToIdNames(i.contingencies),
                       };
                   })
                 : [],
@@ -119,9 +119,9 @@ export function enrichSensitivityAnalysisParameters(
                 ? parameters.sensitivityHVDC.map((hvdc) => {
                       return {
                           ...hvdc,
-                          monitoredBranches: mapIdsToEquipmentsContainer(hvdc.monitoredBranches),
-                          hvdcs: mapIdsToEquipmentsContainer(hvdc.hvdcs),
-                          contingencies: mapIdsToEquipmentsContainer(hvdc.contingencies),
+                          monitoredBranches: mapIdsToIdNames(hvdc.monitoredBranches),
+                          hvdcs: mapIdsToIdNames(hvdc.hvdcs),
+                          contingencies: mapIdsToIdNames(hvdc.contingencies),
                       };
                   })
                 : [],
@@ -129,9 +129,9 @@ export function enrichSensitivityAnalysisParameters(
                 ? parameters.sensitivityPST.map((pst) => {
                       return {
                           ...pst,
-                          monitoredBranches: mapIdsToEquipmentsContainer(pst.monitoredBranches),
-                          psts: mapIdsToEquipmentsContainer(pst.psts),
-                          contingencies: mapIdsToEquipmentsContainer(pst.contingencies),
+                          monitoredBranches: mapIdsToIdNames(pst.monitoredBranches),
+                          psts: mapIdsToIdNames(pst.psts),
+                          contingencies: mapIdsToIdNames(pst.contingencies),
                       };
                   })
                 : [],
@@ -139,9 +139,9 @@ export function enrichSensitivityAnalysisParameters(
                 ? parameters.sensitivityNodes.map((n) => {
                       return {
                           ...n,
-                          monitoredVoltageLevels: mapIdsToEquipmentsContainer(n.monitoredVoltageLevels),
-                          equipmentsInVoltageRegulation: mapIdsToEquipmentsContainer(n.equipmentsInVoltageRegulation),
-                          contingencies: mapIdsToEquipmentsContainer(n.contingencies),
+                          monitoredVoltageLevels: mapIdsToIdNames(n.monitoredVoltageLevels),
+                          equipmentsInVoltageRegulation: mapIdsToIdNames(n.equipmentsInVoltageRegulation),
+                          contingencies: mapIdsToIdNames(n.contingencies),
                       };
                   })
                 : [],
