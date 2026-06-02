@@ -60,7 +60,7 @@ export const getContingencyListsInfosFormSchema = () => {
                             })
                         )
                         .required()
-                        .min(1, 'FieldIsRequired'),
+                        .min(1, 'ContingencyListInputMinError'),
                     [DESCRIPTION]: yup.string(),
                     [ACTIVATED]: yup.boolean().required(),
                 })

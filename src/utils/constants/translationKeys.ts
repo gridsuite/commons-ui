@@ -6,6 +6,9 @@
  */
 
 export const YUP_REQUIRED = 'YupRequired';
+export const YUP_NOT_NULL = 'YupNotNull';
+export const YUP_DEFAULT = 'YupDefault';
+export const YUP_POSITIVE = 'YupPositive';
 export const YUP_NOT_TYPE_NUMBER = 'YupNotTypeNumber';
 export const YUP_NOT_TYPE_DEFAULT = 'YupNotTypeDefault';
 export const DUPLICATED_PROPS_ERROR = 'DuplicatedPropsError';

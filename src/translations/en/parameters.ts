@@ -182,6 +182,7 @@ export const parametersEn = {
     VoltageLevelFilterTooltip:
         'User entries are applied one after another starting at the top of the list. If a voltage level is included in more than one filter, an entry can therefore be replaced by a subsequent entry',
     FilterInputMinError: 'You must pick at least one filter',
+    ContingencyListInputMinError: 'You must pick at least one contingency list',
     EquipmentSelection: 'Equipment selection',
     ReactiveSlacksThreshold: 'Alert threshold on reactive slacks',
     ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'The threshold must be greater or equal to 0',

@@ -62,7 +62,10 @@ function EditableTableCell({
     ...props
 }: Readonly<EditableTableCellProps>) {
     return (
-        <TableCell key={column.dataKey} sx={mergeSx({ padding: 0.5, maxWidth: column.maxWidth }, width)}>
+        <TableCell
+            key={column.dataKey}
+            sx={mergeSx({ padding: 0.5, maxWidth: column.maxWidth, verticalAlign: 'top' }, width)}
+        >
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
@@ -74,10 +77,11 @@ function EditableTableCell({
                     style={{
                         textAlign: column?.textAlign,
                     }}
+                    hideErrorMessage={column.hideErrorMessage}
                 />
             )}
             {column.type === DndColumnType.TEXT && (
-                <TableTextInput {...props} name={name} showErrorMsg={column.showErrorMsg} />
+                <TableTextInput {...props} name={name} hideErrorMessage={column.hideErrorMessage} />
             )}
             {column.type === DndColumnType.AUTOCOMPLETE && (
                 <AutocompleteInput
@@ -99,13 +103,15 @@ function EditableTableCell({
                     equipmentTypes={column.equipmentTypes}
                     elementType={column.elementType}
                     titleId={column.titleId}
-                    hideErrorMessage
+                    hideErrorMessage={column.hideErrorMessage}
                     label={undefined}
                     // callback to propagate a change to parent via column config
                     onChange={(value) => column.shouldHandleOnChangeCell && onChangeCell?.(value)}
                 />
             )}
-            {column.type === DndColumnType.CHIP_ITEMS && <ChipItemsInput name={name} hideErrorMessage />}
+            {column.type === DndColumnType.CHIP_ITEMS && (
+                <ChipItemsInput name={name} hideErrorMessage={column.hideErrorMessage} />
+            )}
             {column.type === DndColumnType.SWITCH && (
                 <SwitchInput
                     name={name}

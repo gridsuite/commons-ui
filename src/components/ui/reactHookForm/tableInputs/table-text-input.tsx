@@ -7,21 +7,19 @@
 
 import { InputBaseComponentProps, TextField } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { useIntl } from 'react-intl';
+import { genHelperError } from '../utils';
 
 interface TableTextInputProps {
     name: string;
-    showErrorMsg?: boolean;
+    hideErrorMessage?: boolean;
     inputProps?: InputBaseComponentProps;
 }
 
-export function TableTextInput({ name, showErrorMsg, inputProps, ...props }: Readonly<TableTextInputProps>) {
+export function TableTextInput({ name, hideErrorMessage, inputProps, ...props }: Readonly<TableTextInputProps>) {
     const {
         field: { onChange, value, ref },
         fieldState: { error },
     } = useController({ name });
-
-    const intl = useIntl();
 
     const outputTransform = (str: string) => {
         return str?.trim() === '' ? '' : str;
@@ -36,7 +34,6 @@ export function TableTextInput({ name, showErrorMsg, inputProps, ...props }: Rea
             value={value}
             onChange={handleInputChange}
             error={!!error?.message}
-            helperText={showErrorMsg && (error?.message ? intl.formatMessage({ id: error.message }) : '')}
             size="small"
             fullWidth
             inputRef={ref}
@@ -49,6 +46,7 @@ export function TableTextInput({ name, showErrorMsg, inputProps, ...props }: Rea
                     ...inputProps,
                 },
             }}
+            {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...props}
         />
     );
