@@ -6,7 +6,7 @@
  */
 
 import { useFieldArray } from 'react-hook-form';
-import { Grid, Typography } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { MeasurementInfo } from './measurement.type';
@@ -30,12 +30,10 @@ export function BusbarSectionVoltageMeasurementsForm({
     const intl = useIntl();
 
     return (
-        <Grid container direction="column" spacing={1} sx={{ pt: 1 }}>
+        <Grid container direction="column" spacing={1}>
             {fields.length === 0 && (
-                <Grid item>
-                    <Typography variant="body2" color="text.secondary" sx={{ p: 1 }}>
-                        <FormattedMessage id="NoBusbarSectionFound" />
-                    </Typography>
+                <Grid>
+                    <FormattedMessage id="NoBusbarSectionFound" />
                 </Grid>
             )}
             {fields.map((field, i) => {
@@ -49,14 +47,10 @@ export function BusbarSectionVoltageMeasurementsForm({
                 }
 
                 return (
-                    <Grid item key={field.id}>
+                    <Grid key={field.id}>
                         <Grid container spacing={2} alignItems="center">
-                            <Grid item xs={3}>
-                                <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-                                    {bbsId}
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4}>
+                            <Grid size={3}>{bbsId}</Grid>
+                            <Grid size={4}>
                                 <FloatInput
                                     name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${i}.${FieldConstants.VALUE}`}
                                     label="VoltageText"
@@ -65,7 +59,7 @@ export function BusbarSectionVoltageMeasurementsForm({
                                     clearable
                                 />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid size={3}>
                                 <CheckboxNullableInput
                                     name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${i}.${FieldConstants.VALIDITY}`}
                                     label="ValidMeasurement"
