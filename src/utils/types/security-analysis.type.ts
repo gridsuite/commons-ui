@@ -5,12 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { UUID } from 'node:crypto';
-import {
-    ContingencyListsInfos,
-    ContingencyListsInfosEnriched,
-} from '../../features/parameters/common/contingency-table/types';
+import { UUID } from 'node:crypto';
 import { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
+import { IdName } from './types';
+
+export type ContingencyListsInfos = {
+    contingencyLists: UUID[];
+    description: string;
+    activated: boolean;
+};
+
+export type ContingencyListsInfosEnriched = Omit<ContingencyListsInfos, 'contingencyLists'> & {
+    contingencyLists: IdName[];
+};
 
 export type SAParameters = {
     uuid?: UUID;

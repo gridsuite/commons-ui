@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { IdName } from '../../features/parameters/common/contingency-table/types';
+import { IdName } from './types';
 
 export enum DistributionType {
     PROPORTIONAL = 'PROPORTIONAL',

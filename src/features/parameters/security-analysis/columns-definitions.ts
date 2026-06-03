@@ -6,20 +6,19 @@
  */
 import * as yup from 'yup';
 import {
+    getLimitReductionsFormSchema,
+    ILimitReductionsByVoltageLevel,
     PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
-    CONTINGENCY_LISTS_INFOS,
-    ILimitReductionsByVoltageLevel,
-    getLimitReductionsFormSchema,
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
-import { SAParametersEnriched } from '../../../utils/types';
+import { SAParametersEnriched } from '../../../utils';
 
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
@@ -64,13 +63,13 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
 };
 
 export const toFormValueSaParameters = (params: SAParametersEnriched) => ({
-    [PARAM_SA_PROVIDER]: params[PARAM_SA_PROVIDER],
-    ...toFormValuesContingencyListsInfos(params?.[CONTINGENCY_LISTS_INFOS] ?? []),
+    [PARAM_SA_PROVIDER]: params.provider,
+    ...toFormValuesContingencyListsInfos(params?.contingencyListsInfos ?? []),
     ...toFormValuesLimitReductions(params?.limitReductions),
     // SA specific form values
-    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] * 100,
-    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
-    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
-    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] * 100,
-    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params.flowProportionalThreshold * 100,
+    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.lowVoltageProportionalThreshold * 100,
+    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params.lowVoltageAbsoluteThreshold,
+    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.highVoltageProportionalThreshold * 100,
+    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params.highVoltageAbsoluteThreshold,
 });
