@@ -20,7 +20,7 @@ export const suppressNonNumericKeyboardEvent = (params: SuppressKeyboardEventPar
 
 // commit the value as a number, accepting "," as a decimal separator (null when empty/invalid)
 const toNumber = (text: string) => {
-    const result = parseFloat(text.replace(',', '.'));
+    const result = Number.parseFloat(text.replace(',', '.'));
     return Number.isNaN(result) ? null : result;
 };
 
@@ -46,7 +46,7 @@ export function NumericEditor({ value, onValueChange, eventKey }: CustomCellEdit
         if (eventKey === KeyCode.BACKSPACE) {
             return '';
         }
-        if (eventKey && eventKey.length === 1 && isCharNumeric(eventKey)) {
+        if (eventKey?.length === 1 && isCharNumeric(eventKey)) {
             return eventKey;
         }
         return value == null ? '' : String(value);
