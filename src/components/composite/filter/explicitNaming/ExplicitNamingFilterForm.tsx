@@ -266,6 +266,7 @@ export function ExplicitNamingFilterForm({
                         label="UploadCSV"
                         header={csvFileHeaders}
                         language={language ?? LANG_SYSTEM}
+                        disabled={!watchEquipmentType}
                         selectedFile={selectedFile}
                         onFileChange={setSelectedFile}
                         onFileError={setSelectedFileError}
