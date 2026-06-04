@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
 import { BottomRightButtons } from './BottomRightButtons';
-import { FieldConstants } from '../../../utils/constants/fieldConstants';
+import { FieldConstants } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
 
 const style = (customProps: any) => ({
@@ -71,176 +71,175 @@ const style = (customProps: any) => ({
     }),
 });
 
-export type CustomAgGridTableProps = Required<
+export type CustomAgGridTableProps = Required<Pick<CustomAGGridProps, 'columnDefs'>> &
     Pick<
         CustomAGGridProps,
-        | 'columnDefs'
         | 'defaultColDef'
         | 'pagination'
         | 'paginationPageSize'
         | 'alwaysShowVerticalScroll'
         | 'stopEditingWhenCellsLoseFocus'
-    >
-> &
-    Pick<CustomAGGridProps, 'rowSelection' | 'overrideLocales'> & {
+        | 'rowSelection'
+        | 'overrideLocales'
+        | 'loading'
+    > & {
         name: string;
         makeDefaultRowData: any;
         csvProps: unknown;
         cssProps: unknown;
     };
 
-export function CustomAgGridTable({
-    name,
-    makeDefaultRowData,
-    csvProps,
-    cssProps,
-    rowSelection,
-    ...props
-}: Readonly<CustomAgGridTableProps>) {
-    // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
-    const theme: any = useTheme();
-    const [gridApi, setGridApi] = useState<any>(null);
-    const [selectedRows, setSelectedRows] = useState([]);
-    const [newRowAdded, setNewRowAdded] = useState(false);
-    const [isSortApplied, setIsSortApplied] = useState(false);
+export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, string>, Readonly<CustomAgGridTableProps>>(
+    function CustomAgGridTable(
+        { name, makeDefaultRowData, csvProps, cssProps, rowSelection, stopEditingWhenCellsLoseFocus = true, ...props },
+        ref
+    ) {
+        // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
+        const theme: any = useTheme();
+        const [gridApi, setGridApi] = useState<any>(null);
+        const [selectedRows, setSelectedRows] = useState([]);
+        const [newRowAdded, setNewRowAdded] = useState(false);
+        const [isSortApplied, setIsSortApplied] = useState(false);
 
-    const { control, getValues, watch } = useFormContext();
-    const useFieldArrayOutput = useFieldArray({
-        control,
-        name,
-    });
-    const { append, remove, update, swap, move } = useFieldArrayOutput;
+        const { control, getValues, watch } = useFormContext();
+        const useFieldArrayOutput = useFieldArray({
+            control,
+            name,
+        });
+        const { append, remove, update, swap, move } = useFieldArrayOutput;
 
-    const rowData = watch(name);
+        useImperativeHandle(ref, () => useFieldArrayOutput, [useFieldArrayOutput]);
 
-    const isFirstSelected = Boolean(
-        rowData?.length && gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
-    );
+        const rowData = watch(name);
 
-    const isLastSelected = Boolean(
-        rowData?.length &&
-            gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
-    );
+        const isFirstSelected = Boolean(
+            rowData?.length && gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+        );
 
-    const noRowSelected = selectedRows.length === 0;
+        const isLastSelected = Boolean(
+            rowData?.length &&
+                gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+        );
 
-    const getIndex = useCallback(
-        (val: any) => {
-            return getValues(name).findIndex(
-                (row: any) => row[FieldConstants.AG_GRID_ROW_UUID] === val[FieldConstants.AG_GRID_ROW_UUID]
-            );
-        },
-        [getValues, name]
-    );
+        const noRowSelected = selectedRows.length === 0;
 
-    const handleMoveRowUp = () => {
-        selectedRows
-            .map((row) => getIndex(row))
-            .sort((n1, n2) => n1 - n2)
-            .forEach((idx) => {
-                swap(idx, idx - 1);
-            });
-    };
+        const getIndex = useCallback(
+            (val: any) => {
+                return getValues(name).findIndex(
+                    (row: any) => row[FieldConstants.AG_GRID_ROW_UUID] === val[FieldConstants.AG_GRID_ROW_UUID]
+                );
+            },
+            [getValues, name]
+        );
 
-    const handleMoveRowDown = () => {
-        selectedRows
-            .map((row) => getIndex(row))
-            .sort((n1, n2) => n1 - n2)
-            .reverse()
-            .forEach((idx) => {
-                swap(idx, idx + 1);
-            });
-    };
+        const handleMoveRowUp = () => {
+            selectedRows
+                .map((row) => getIndex(row))
+                .sort((n1, n2) => n1 - n2)
+                .forEach((idx) => {
+                    swap(idx, idx - 1);
+                });
+        };
 
-    const handleDeleteRows = () => {
-        if (selectedRows.length === rowData.length) {
-            remove();
-        } else {
-            selectedRows.forEach((val) => {
-                const idx = getIndex(val);
-                remove(idx);
-            });
-        }
-    };
+        const handleMoveRowDown = () => {
+            selectedRows
+                .map((row) => getIndex(row))
+                .sort((n1, n2) => n1 - n2)
+                .reverse()
+                .forEach((idx) => {
+                    swap(idx, idx + 1);
+                });
+        };
 
-    useEffect(() => {
-        if (gridApi) {
-            gridApi.api.refreshCells({
-                force: true,
-            });
-        }
-    }, [gridApi, rowData]);
-
-    const handleAddRow = () => {
-        append(makeDefaultRowData());
-        setNewRowAdded(true);
-    };
-
-    const onGridReady = (params: any) => {
-        setGridApi(params);
-    };
-
-    const onRowDataUpdated = () => {
-        setNewRowAdded(false);
-        if (gridApi?.api) {
-            // update due to new appended row, let's scroll
-            const lastIndex = rowData.length - 1;
-            gridApi.api.paginationGoToLastPage();
-            gridApi.api.ensureIndexVisible(lastIndex, 'bottom');
-        }
-    };
-
-    const onCellEditingStopped = useCallback(
-        (event: CellEditingStoppedEvent) => {
-            const rowIndex = getIndex(event.data);
-            if (rowIndex === -1) {
-                return;
+        const handleDeleteRows = () => {
+            if (selectedRows.length === rowData.length) {
+                remove();
+            } else {
+                selectedRows.forEach((val) => {
+                    const idx = getIndex(val);
+                    remove(idx);
+                });
             }
-            update(rowIndex, event.data);
-        },
-        [getIndex, update]
-    );
+        };
 
-    const onSortChanged = useCallback((event: SortChangedEvent) => {
-        const isAnycolumnhasSort = event.api.getColumnState().some((col: ColumnState) => col.sort);
-        setIsSortApplied(isAnycolumnhasSort);
-    }, []);
+        useEffect(() => {
+            if (gridApi) {
+                gridApi.api.refreshCells({
+                    force: true,
+                });
+            }
+        }, [gridApi, rowData]);
 
-    return (
-        <>
-            <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
-                <CustomAGGrid
-                    rowData={rowData}
-                    onGridReady={onGridReady}
-                    cacheOverflowSize={10}
-                    rowSelection={rowSelection ?? 'multiple'}
-                    rowDragEntireRow
-                    rowDragManaged
-                    onRowDragEnd={(e) => move(getIndex(e.node.data), e.overIndex)}
-                    detailRowAutoHeight
-                    onSelectionChanged={() => {
-                        setSelectedRows(gridApi.api.getSelectedRows());
-                    }}
-                    onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
-                    onCellEditingStopped={onCellEditingStopped}
-                    onSortChanged={onSortChanged}
-                    getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
-                    theme="legacy"
-                    {...props}
+        const handleAddRow = () => {
+            append(makeDefaultRowData());
+            setNewRowAdded(true);
+        };
+
+        const onGridReady = (params: any) => {
+            setGridApi(params);
+        };
+
+        const onRowDataUpdated = () => {
+            setNewRowAdded(false);
+            if (gridApi?.api) {
+                // update due to new appended row, let's scroll
+                const lastIndex = rowData.length - 1;
+                gridApi.api.paginationGoToLastPage();
+                gridApi.api.ensureIndexVisible(lastIndex, 'bottom');
+            }
+        };
+
+        const onCellEditingStopped = useCallback(
+            (event: CellEditingStoppedEvent) => {
+                const rowIndex = getIndex(event.data);
+                if (rowIndex === -1) {
+                    return;
+                }
+                update(rowIndex, event.data);
+            },
+            [getIndex, update]
+        );
+
+        const onSortChanged = useCallback((event: SortChangedEvent) => {
+            const isAnycolumnhasSort = event.api.getColumnState().some((col: ColumnState) => col.sort);
+            setIsSortApplied(isAnycolumnhasSort);
+        }, []);
+
+        return (
+            <>
+                <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
+                    <CustomAGGrid
+                        rowData={rowData}
+                        onGridReady={onGridReady}
+                        cacheOverflowSize={10}
+                        rowSelection={rowSelection ?? 'multiple'}
+                        onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
+                        detailRowAutoHeight
+                        onSelectionChanged={() => {
+                            setSelectedRows(gridApi.api.getSelectedRows());
+                        }}
+                        onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
+                        onCellEditingStopped={onCellEditingStopped}
+                        onSortChanged={onSortChanged}
+                        getRowId={(row) => row.data[FieldConstants.AG_GRID_ROW_UUID]}
+                        stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
+                        theme="legacy"
+                        {...props}
+                    />
+                </Box>
+                <BottomRightButtons
+                    name={name}
+                    handleAddRow={handleAddRow}
+                    handleDeleteRows={handleDeleteRows}
+                    handleMoveRowDown={handleMoveRowDown}
+                    handleMoveRowUp={handleMoveRowUp}
+                    disableUp={noRowSelected || isFirstSelected || isSortApplied}
+                    disableDown={noRowSelected || isLastSelected || isSortApplied}
+                    disableDelete={noRowSelected}
+                    csvProps={csvProps}
+                    useFieldArrayOutput={useFieldArrayOutput}
                 />
-            </Box>
-            <BottomRightButtons
-                name={name}
-                handleAddRow={handleAddRow}
-                handleDeleteRows={handleDeleteRows}
-                handleMoveRowDown={handleMoveRowDown}
-                handleMoveRowUp={handleMoveRowUp}
-                disableUp={noRowSelected || isFirstSelected || isSortApplied}
-                disableDown={noRowSelected || isLastSelected || isSortApplied}
-                disableDelete={noRowSelected}
-                csvProps={csvProps}
-                useFieldArrayOutput={useFieldArrayOutput}
-            />
-        </>
-    );
-}
+            </>
+        );
+    }
+);
