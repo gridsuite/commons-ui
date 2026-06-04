@@ -98,16 +98,16 @@ export function BottomTableButtons({
                 )}
                 {csvProps?.extraButtons && <Grid>{csvProps.extraButtons}</Grid>}
                 <Grid sx={{ marginLeft: 'auto' }}>
-                    <InnerColoredButton onClick={handleAddRow}>
+                    <InnerColoredButton onClick={handleAddRow} aria-label="Add row">
                         <AddIcon />
                     </InnerColoredButton>
-                    <InnerColoredButton onClick={handleDeleteRows} disabled={disableDelete}>
+                    <InnerColoredButton onClick={handleDeleteRows} disabled={disableDelete} aria-label="Delete selected rows">
                         <DeleteIcon />
                     </InnerColoredButton>
-                    <InnerColoredButton disabled={disableUp} onClick={handleMoveRowUp}>
+                    <InnerColoredButton disabled={disableUp} onClick={handleMoveRowUp} aria-label="Move selected rows up">
                         <ArrowCircleUp />
                     </InnerColoredButton>
-                    <InnerColoredButton disabled={disableDown} onClick={handleMoveRowDown}>
+                    <InnerColoredButton disabled={disableDown} onClick={handleMoveRowDown} aria-label="Move selected rows down">
                         <ArrowCircleDown />
                     </InnerColoredButton>
                 </Grid>
