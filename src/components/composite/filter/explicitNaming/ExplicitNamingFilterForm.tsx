@@ -249,7 +249,6 @@ export function ExplicitNamingFilterForm({
                         headerCheckbox: true,
                     }}
                     alwaysShowVerticalScroll
-                    stopEditingWhenCellsLoseFocus
                     csvProps={{
                         fileName: intl.formatMessage({
                             id: 'filterCsvFileName',
