@@ -64,7 +64,7 @@ export function RegulatingTerminalForm({
 
     useEffect(() => {
         if (!watchVoltageLevelId || !voltageLevelOptions.some((vlOption) => vlOption.id === watchVoltageLevelId)) {
-            setEquipmentsOptions([]);
+            setEquipmentsOptions((prev) => (prev.length === 0 ? prev : []));
         } else {
             fetchVoltageLevelEquipments(watchVoltageLevelId).then((equipments) => {
                 setEquipmentsOptions(
