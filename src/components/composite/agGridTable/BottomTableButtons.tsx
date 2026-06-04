@@ -101,13 +101,25 @@ export function BottomTableButtons({
                     <InnerColoredButton onClick={handleAddRow} aria-label="Add row">
                         <AddIcon />
                     </InnerColoredButton>
-                    <InnerColoredButton onClick={handleDeleteRows} disabled={disableDelete} aria-label="Delete selected rows">
+                    <InnerColoredButton
+                        onClick={handleDeleteRows}
+                        disabled={disableDelete}
+                        aria-label="Delete selected rows"
+                    >
                         <DeleteIcon />
                     </InnerColoredButton>
-                    <InnerColoredButton disabled={disableUp} onClick={handleMoveRowUp} aria-label="Move selected rows up">
+                    <InnerColoredButton
+                        disabled={disableUp}
+                        onClick={handleMoveRowUp}
+                        aria-label="Move selected rows up"
+                    >
                         <ArrowCircleUp />
                     </InnerColoredButton>
-                    <InnerColoredButton disabled={disableDown} onClick={handleMoveRowDown} aria-label="Move selected rows down">
+                    <InnerColoredButton
+                        disabled={disableDown}
+                        onClick={handleMoveRowDown}
+                        aria-label="Move selected rows down"
+                    >
                         <ArrowCircleDown />
                     </InnerColoredButton>
                 </Grid>
