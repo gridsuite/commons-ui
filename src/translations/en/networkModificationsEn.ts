@@ -291,7 +291,13 @@ export const networkModificationsEn = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
-
+    CreateGenerator: 'Create generator',
+    GeneratorCreationError: 'Error while creating generator',
+    VoltageRegulationText: 'Voltage regulation',
+    GenerationDispatch: 'Generation dispatch',
+    generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
+    PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
+        'Planned active power set point must be between minimum and maximum active power values',
     NoBusbarSectionFound: 'No busbar section found for this voltage level',
 
     // Tabs
