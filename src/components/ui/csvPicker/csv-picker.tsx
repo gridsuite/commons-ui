@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Grid2 as Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
 import { equalsArrayAnyOrder, LANG_FRENCH } from '../../../utils';
@@ -92,7 +92,7 @@ export function CsvPicker<TData = unknown>({
                 onUploadAccepted={handleUploadAccepted}
             >
                 {({ getRootProps, ProgressBar }: any) => (
-                    <Grid>
+                    <>
                         <span
                             style={{
                                 marginRight: '10px',
@@ -112,7 +112,7 @@ export function CsvPicker<TData = unknown>({
                                 }}
                             />
                         </Button>
-                    </Grid>
+                    </>
                 )}
             </CSVReader>
             {onAppend && onReplace && (
