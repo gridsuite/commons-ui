@@ -190,12 +190,9 @@ export function toReactiveCapabilityCurveChoiceForGeneratorCreation(
     form: GeneratorCreationFormData,
     dto?: GeneratorCreationDto
 ) {
-    console.log('DBG DBR func dto=', dto);
     let previousChoice: 'CURVE' | 'MINMAX' | undefined;
     if (dto) {
         previousChoice = dto.reactiveCapabilityCurve ? 'CURVE' : 'MINMAX';
-        console.log('DBG DBR func prev=', previousChoice);
-        console.log('DBG DBR func prev=', previousChoice);
     }
     return handleReactiveCapabilityCurveChoice(previousChoice, form);
 }
