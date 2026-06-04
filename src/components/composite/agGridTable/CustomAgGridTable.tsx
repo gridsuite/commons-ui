@@ -9,7 +9,8 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } fro
 import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
-import { BottomRightButtons } from './BottomRightButtons';
+import { BottomTableButtons } from './BottomTableButtons';
+import { type CsvProps, hasNonEmptyRows } from './agGridTable-utils';
 import { FieldConstants } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
 
@@ -17,27 +18,11 @@ const style = (customProps: any) => ({
     grid: (theme: any) => ({
         width: 'auto',
         height: '100%',
-        position: 'relative',
-
-        // - AG Grid colors override -
-        // It shouldn't be exactly like this, but I couldn't make it works otherwise
-        // https://www.ag-grid.com/react-data-grid/global-style-customisation/
-        '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
-        '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
-        '--ag-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-header-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-odd-row-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-modal-overlay-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-selected-row-background-color': 'transparent !important',
-        '--ag-range-selection-border-color': 'transparent !important',
 
         // overrides the default computed max height for ag grid default selector editor to make it more usable
         // can be removed if a custom selector editor is implemented
         '& .ag-select-list': {
             maxHeight: '300px !important',
-        },
-        '& .ag-root-wrapper-body': {
-            maxHeight: '500px',
         },
         '& .ag-cell': {
             boxShadow: 'none',
@@ -52,20 +37,23 @@ const style = (customProps: any) => ({
             border: 'none',
             boxShadow: 'none',
         },
-        '& .numeric-input': {
-            fontSize: 'calc(var(--ag-font-size) + 1px)',
-            paddingLeft: 'calc(var(--ag-cell-horizontal-padding) - 1px)',
-            width: '100%',
-            height: '100%',
-            border: 'inherit',
-            outline: 'inherit',
-            backgroundColor: theme.agGridBackground.color,
+        // Color the checkbox (checked & indeterminate) grey instead of AG Grid's default accent (blue).
+        '& .ag-checkbox-input-wrapper.ag-checked::after, & .ag-checkbox-input-wrapper.ag-indeterminate::after': {
+            color: `${theme.palette.text.secondary}`,
         },
         '& .Mui-focused .MuiOutlinedInput-root': {
             // borders moves row height
             outline: 'var(--ag-borders-input) var(--ag-input-focus-border-color)',
             outlineOffset: '-1px',
             backgroundColor: theme.agGridBackground.color,
+        },
+        // The selection column carries the row-drag handle on each row (see selectionColumnDef).
+        // Nudge the row checkbox slightly to the right, and align the header "select all" checkbox.
+        '& .ag-selection-checkbox': {
+            marginLeft: '6px',
+        },
+        '& .ag-header-select-all': {
+            marginLeft: '33px',
         },
         ...customProps,
     }),
@@ -85,8 +73,8 @@ export type CustomAgGridTableProps = Required<Pick<CustomAGGridProps, 'columnDef
     > & {
         name: string;
         makeDefaultRowData: any;
-        csvProps: unknown;
-        cssProps: unknown;
+        csvProps?: CsvProps;
+        cssProps?: unknown;
     };
 
 export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, string>, Readonly<CustomAgGridTableProps>>(
@@ -112,13 +100,15 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
 
         const rowData = watch(name);
 
+        const hasTableData = hasNonEmptyRows(rowData);
+
         const isFirstSelected = Boolean(
             rowData?.length && gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
         );
 
         const isLastSelected = Boolean(
             rowData?.length &&
-                gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+            gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
         );
 
         const noRowSelected = selectedRows.length === 0;
@@ -213,6 +203,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
                         rowSelection={rowSelection ?? 'multiple'}
+                        selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
                         onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
                         detailRowAutoHeight
                         onSelectionChanged={() => {
@@ -227,7 +218,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         {...props}
                     />
                 </Box>
-                <BottomRightButtons
+                <BottomTableButtons
                     name={name}
                     handleAddRow={handleAddRow}
                     handleDeleteRows={handleDeleteRows}
@@ -236,8 +227,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                     disableUp={noRowSelected || isFirstSelected || isSortApplied}
                     disableDown={noRowSelected || isLastSelected || isSortApplied}
                     disableDelete={noRowSelected}
-                    csvProps={csvProps}
-                    useFieldArrayOutput={useFieldArrayOutput}
+                    csvProps={csvProps && { ...csvProps, hasTableData }}
                 />
             </>
         );
