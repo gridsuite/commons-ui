@@ -159,7 +159,6 @@ export const generatorModificationFormToDto = (
 ): GeneratorModificationDto => {
     const isReactiveCapabilityCurveOn =
         toReactiveCapabilityCurveChoiceForGeneratorModification(form, equipment, dto) === 'CURVE';
-    console.log('DBG DBR sub', form, dto, isReactiveCapabilityCurveOn);
     return {
         type: ModificationType.GENERATOR_MODIFICATION,
         equipmentId: form.equipmentID,

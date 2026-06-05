@@ -208,15 +208,5 @@ export function toReactiveCapabilityCurveChoiceForGeneratorModification(
     const networkChoice = generatorToModify?.reactiveCapabilityCurvePoints ? 'CURVE' : 'MINMAX';
     const previousChoice = editDataChoice ?? networkChoice;
 
-    console.log(
-        'DBG DBR eqpt/dto/pre/net/formRL/ret',
-        generatorToModify,
-        dto,
-        previousChoice,
-        networkChoice,
-        form.reactiveLimits,
-        handleReactiveCapabilityCurveChoice(previousChoice, form.reactiveLimits)
-    );
-
     return handleReactiveCapabilityCurveChoice(previousChoice, form.reactiveLimits);
 }
