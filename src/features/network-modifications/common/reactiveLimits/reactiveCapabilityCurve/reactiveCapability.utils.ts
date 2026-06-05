@@ -9,11 +9,11 @@ import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import { ReactiveCapabilityCurve } from '../reactiveLimits.type';
 import { FieldConstants, toNumber, validateValueIsANumber } from '../../../../../utils';
 import type { GeneratorCreationFormData } from '../../../generator/creation/generatorCreation.utils';
-import { GeneratorCreationDto } from '../../../generator/creation/generatorCreation.types';
-import { GeneratorModificationDto } from '../../../generator/modification/generatorModification.types';
-import { ReactiveLimitsFormData } from '../reactiveLimits.utils';
-import { GeneratorModificationFormData } from '../../../generator/modification/generatorModification.utils';
-import { GeneratorFormInfos } from '../../../generator';
+import type { GeneratorCreationDto } from '../../../generator/creation/generatorCreation.types';
+import type { GeneratorModificationDto } from '../../../generator/modification/generatorModification.types';
+import type { ReactiveLimitsFormData } from '../reactiveLimits.utils';
+import type { GeneratorModificationFormData } from '../../../generator/modification/generatorModification.utils';
+import type { GeneratorFormInfos } from '../../../generator';
 
 export const INSERT = 'INSERT';
 export const REMOVE = 'REMOVE';
