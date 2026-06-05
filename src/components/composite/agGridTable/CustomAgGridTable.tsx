@@ -213,6 +213,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
                         rowSelection={rowSelection ?? 'multiple'}
+                        rowDragEntireRow
                         onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
                         detailRowAutoHeight
                         onSelectionChanged={() => {
