@@ -31,7 +31,7 @@ export function GeneratorDialogHeader({ generatorToModify, equipmentId }: Readon
         <TextField
             size="small"
             fullWidth
-            label={'ID'}
+            label="ID"
             value={equipmentId ?? ''}
             InputProps={{
                 readOnly: true,
@@ -44,20 +44,20 @@ export function GeneratorDialogHeader({ generatorToModify, equipmentId }: Readon
     const generatorNameField = (
         <TextInput
             name={FieldConstants.EQUIPMENT_NAME}
-            label={'Name'}
+            label="Name"
             formProps={filledTextField}
             previousValue={generatorToModify?.name}
-            clearable={true}
+            clearable
         />
     );
 
     const energySourceField = (
         <SelectInput
             name={FieldConstants.ENERGY_SOURCE}
-            label={'energySource'}
+            label="energySource"
             options={[...ENERGY_SOURCES]}
             fullWidth
-            size={'small'}
+            size="small"
             formProps={{ ...filledTextField }}
             previousValue={previousEnergySourceLabel}
         />

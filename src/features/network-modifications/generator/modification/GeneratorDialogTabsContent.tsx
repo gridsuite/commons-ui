@@ -6,9 +6,9 @@
  */
 
 import { Box, Grid } from '@mui/material';
-import { GeneratorDialogTab } from './generatorTabs.utils';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
+import { GeneratorDialogTab } from './generatorTabs.utils';
 import {
     ActivePowerControlForm,
     ConnectivityForm,
@@ -67,7 +67,7 @@ export function GeneratorDialogTabsContent({
         <Box>
             <CheckboxNullableInput
                 name={FieldConstants.VOLTAGE_REGULATION}
-                label={'VoltageRegulationText'}
+                label="VoltageRegulationText"
                 previousValue={previousRegulation() ?? undefined}
             />
         </Box>
@@ -84,74 +84,74 @@ export function GeneratorDialogTabsContent({
                 voltageSetPoint: generatorToModify?.targetV,
                 qPercent: generatorToModify?.coordinatedReactiveControl?.qPercent,
             }}
-            isEquipmentModification={true}
+            isEquipmentModification
         />
     );
 
     const maximumActivePowerField = (
         <FloatInput
             name={FieldConstants.MAXIMUM_ACTIVE_POWER}
-            label={'MaximumActivePowerText'}
+            label="MaximumActivePowerText"
             adornment={ActivePowerAdornment}
             previousValue={generatorToModify?.maxP}
-            clearable={true}
+            clearable
         />
     );
 
     const minimumActivePowerField = (
         <FloatInput
             name={FieldConstants.MINIMUM_ACTIVE_POWER}
-            label={'MinimumActivePowerText'}
+            label="MinimumActivePowerText"
             adornment={ActivePowerAdornment}
             previousValue={generatorToModify?.minP}
-            clearable={true}
+            clearable
         />
     );
 
     const ratedNominalPowerField = (
         <FloatInput
             name={FieldConstants.RATED_NOMINAL_POWER}
-            label={'RatedNominalPowerText'}
+            label="RatedNominalPowerText"
             adornment={MVAPowerAdornment}
             previousValue={generatorToModify?.ratedS}
-            clearable={true}
+            clearable
         />
     );
 
     const plannedActivePowerSetPointField = (
         <FloatInput
             name={FieldConstants.PLANNED_ACTIVE_POWER_SET_POINT}
-            label={'PlannedActivePowerSetPointForm'}
+            label="PlannedActivePowerSetPointForm"
             adornment={ActivePowerAdornment}
             previousValue={generatorToModify?.generatorStartup?.plannedActivePowerSetPoint ?? undefined}
-            clearable={true}
+            clearable
         />
     );
 
     const marginalCostField = (
         <FloatInput
             name={FieldConstants.MARGINAL_COST}
-            label={'MarginalCost'}
+            label="MarginalCost"
             previousValue={generatorToModify?.generatorStartup?.marginalCost ?? undefined}
-            clearable={true}
+            clearable
         />
     );
 
     const plannedOutageRateField = (
         <FloatInput
             name={FieldConstants.PLANNED_OUTAGE_RATE}
-            label={'plannedOutageRate'}
+            label="plannedOutageRate"
             previousValue={generatorToModify?.generatorStartup?.plannedOutageRate ?? undefined}
-            clearable={true}
+            clearable
         />
     );
 
     const forcedOutageRateField = (
         <FloatInput
             name={FieldConstants.FORCED_OUTAGE_RATE}
-            label={'forcedOutageRate'}
+            label="forcedOutageRate"
             previousValue={generatorToModify?.generatorStartup?.forcedOutageRate ?? undefined}
-            clearable={true}
+            clearable
         />
     );
 
@@ -179,12 +179,12 @@ export function GeneratorDialogTabsContent({
                         activePower: generatorToModify?.targetP,
                         reactivePower: generatorToModify?.targetQ,
                     }}
-                    isModification={true}
+                    isModification
                 />
                 <Grid container spacing={2} paddingTop={2}>
                     <Box sx={{ width: '100%' }} />
                     <GridItem
-                        tooltip={watchVoltageRegulation === null ? <FormattedMessage id={'NoModification'} /> : ''}
+                        tooltip={watchVoltageRegulation === null ? <FormattedMessage id="NoModification" /> : ''}
                         size={4}
                     >
                         {voltageRegulationField}
@@ -245,7 +245,7 @@ export function GeneratorDialogTabsContent({
             </Box>
 
             <Box hidden={tabIndex !== GeneratorDialogTab.ADDITIONAL_INFORMATION_TAB}>
-                <PropertiesForm networkElementType={'generator'} isModification={true} />
+                <PropertiesForm networkElementType="generator" isModification />
             </Box>
         </>
     );

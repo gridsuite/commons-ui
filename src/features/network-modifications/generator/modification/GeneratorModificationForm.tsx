@@ -6,11 +6,11 @@
  */
 
 import { Grid } from '@mui/material';
+import { useWatch } from 'react-hook-form';
 import { GENERATOR_TAB_FIELDS, GeneratorDialogTab } from './generatorTabs.utils';
 import { GeneratorDialogHeader, GeneratorDialogHeaderProps } from './GeneratorDialogHeader';
 import { GeneratorDialogTabs } from './GeneratorDialogTabs';
 import { GeneratorDialogTabsContent, GeneratorDialogTabsContentProps } from './GeneratorDialogTabsContent';
-import { useWatch } from 'react-hook-form';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { useTabsWithError } from '../../hooks';
 
