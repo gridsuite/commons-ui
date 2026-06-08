@@ -27,7 +27,7 @@ import {
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
-import { DistributionType, SensitivityType } from '../../../utils';
+import { DistributionType, SensitivityType, YUP_REQUIRED } from '../../../utils';
 import { CONTINGENCIES, PROVIDER } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { NAME } from '../../../components/ui';
@@ -47,7 +47,7 @@ const getMonitoredBranchesSchema = () => {
             .required()
             .when([ACTIVATED], {
                 is: (activated: boolean) => activated,
-                then: (schema) => schema.min(1, 'FilterInputMinError'),
+                then: (schema) => schema.min(1, YUP_REQUIRED),
             }),
     };
 };
@@ -92,7 +92,7 @@ export const getSensiHVDCsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                    then: (schema) => schema.min(1, YUP_REQUIRED),
                 }),
             ...getContingenciesSchema(),
         })
@@ -143,7 +143,7 @@ export const getSensiInjectionsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                    then: (schema) => schema.min(1, YUP_REQUIRED),
                 }),
             ...getContingenciesSchema(),
         })
@@ -193,7 +193,7 @@ export const getSensiInjectionsSetFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                    then: (schema) => schema.min(1, YUP_REQUIRED),
                 }),
             [DISTRIBUTION_TYPE]: yup
                 .mixed<DistributionType>()
@@ -282,7 +282,7 @@ export const getSensiNodesFormSchema = () => ({
                 )
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                    then: (schema) => schema.min(1, YUP_REQUIRED),
                 }),
             [EQUIPMENTS_IN_VOLTAGE_REGULATION]: yup
                 .array()
@@ -294,7 +294,7 @@ export const getSensiNodesFormSchema = () => ({
                 )
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                    then: (schema) => schema.min(1, YUP_REQUIRED),
                 }),
             ...getContingenciesSchema(),
         })
@@ -347,7 +347,7 @@ export const getSensiPSTsFormSchema = () => ({
                 .required()
                 .when([ACTIVATED], {
                     is: (activated: boolean) => activated,
-                    then: (schema) => schema.min(1, 'FilterInputMinError'),
+                    then: (schema) => schema.min(1, YUP_REQUIRED),
                 }),
             ...getContingenciesSchema(),
         })
