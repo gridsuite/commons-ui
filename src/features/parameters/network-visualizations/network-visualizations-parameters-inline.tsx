@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../../components/ui';
@@ -26,12 +26,12 @@ import { snackWithFallback } from '../../../utils/error';
 export function NetworkVisualizationParametersInline({
     studyUuid,
     setHaveDirtyFields,
-    user,
+    userProfile,
     parameters,
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    user: User | null;
+    userProfile: UserProfile | null;
     parameters: NetworkVisualizationParameters | null;
 }>) {
     const networkVisuMethods = useNetworkVisualizationParametersForm({
@@ -74,7 +74,7 @@ export function NetworkVisualizationParametersInline({
 
     return (
         <NetworkVisualizationParametersForm
-            user={user}
+            userProfile={userProfile}
             networkVisuMethods={networkVisuMethods}
             renderActions={() => {
                 return (
