@@ -73,8 +73,8 @@ export const toFormValuesContingencyListsInfos = (contingencyListsInfos: Conting
         [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map(
             (contingencyListInfos: ContingencyListsInfosEnriched) => ({
                 [CONTINGENCY_LISTS]: contingencyListInfos.contingencyLists?.map((c: IdName) => ({
-                    [NAME]: c[NAME],
                     [ID]: c[ID],
+                    [NAME]: c[NAME],
                 })),
                 [DESCRIPTION]: contingencyListInfos.description,
                 [ACTIVATED]: contingencyListInfos.activated,
