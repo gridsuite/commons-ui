@@ -8,8 +8,8 @@ import { FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
-import { ContingencyListsInfosEnriched, ElementType, IdName } from '../../../../utils';
-import { DndColumn, DndColumnType } from '../../../../components/composite/dnd-table-v2';
+import { ContingencyListsInfosEnriched, ElementType, IdName, YUP_REQUIRED } from '../../../../utils';
+import { DndColumn, DndColumnType } from '../../../../components/composite/dnd-table';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
     {
@@ -59,7 +59,7 @@ export const getContingencyListsInfosFormSchema = () => {
                             })
                         )
                         .required()
-                        .min(1, 'ContingencyListInputMinError'),
+                        .min(1, YUP_REQUIRED),
                     [DESCRIPTION]: yup.string(),
                     [ACTIVATED]: yup.boolean().required(),
                 })
