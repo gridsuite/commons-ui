@@ -16,7 +16,6 @@ import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
-        width: 'auto',
         height: '100%',
 
         // overrides the default computed max height for ag grid default selector editor to make it more usable

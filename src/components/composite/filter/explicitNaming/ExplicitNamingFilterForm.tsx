@@ -29,7 +29,6 @@ import { ModifyElementSelection } from '../../../ui/dialogs/modifyElementSelecti
 import { exportFilter } from '../../../../services/study';
 import { EquipmentType } from '../../../../utils/types/equipmentType';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
-import { filterStyles } from '../HeaderFilterForm';
 import { LANG_SYSTEM, snackWithFallback } from '../../../../utils';
 import { CsvPicker, useCustomFormContext } from '../../../ui';
 
@@ -235,7 +234,7 @@ export function ExplicitNamingFilterForm({
             padding={1} // because of unscrollableHeader in parent component
             sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
         >
-            <Grid container size={12} spacing={2} justifyContent="space-between" alignItems="center">
+            <Grid container justifyContent="space-between" alignItems="center">
                 <Grid>
                     <InputWithPopupConfirmation
                         Input={SelectInput}
@@ -247,7 +246,7 @@ export function ExplicitNamingFilterForm({
                         resetOnConfirmation={handleResetOnConfirmation}
                         message="changeTypeMessage"
                         validateButtonLabel="button.changeType"
-                        sx={filterStyles.textField}
+                        sx={{ width: 400, maxWidth: '100%' }}
                         data-testid="EquipmentTypeSelector"
                     />
                     {sourceFilterForExplicitNamingConversion && (
@@ -277,12 +276,12 @@ export function ExplicitNamingFilterForm({
                 </Grid>
             </Grid>
             {selectedFileError && (
-                <Grid size={12}>
+                <Grid>
                     <Alert severity="error">{selectedFileError}</Alert>
                 </Grid>
             )}
             {watchEquipmentType && (
-                <Grid size={12} sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+                <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
                     <CustomAgGridTable
                         ref={tableRef}
                         name={FILTER_EQUIPMENTS_ATTRIBUTES}
