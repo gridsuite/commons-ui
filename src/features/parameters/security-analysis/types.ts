@@ -18,7 +18,7 @@ import {
 import { ContingencyListsInfos, ContingencyListsInfosEnriched, IdName } from '../common/contingency-table/types';
 import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
 import { fetchElementNames } from '../../../services/directory';
-import { ID, NAME } from '../common/parameter-table/constants';
+import { ID, NAME } from '../common/parameter-table-field/constants';
 
 export type SAParameters = {
     uuid?: UUID;
