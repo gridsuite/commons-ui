@@ -39,7 +39,6 @@ import {
     findAllLoadedCompositeModifications,
     formatToComposedModification,
     isCompositeModification,
-    mergeSubModificationsIntoTree,
 } from './utils';
 import { ModificationRow } from './row';
 
@@ -59,6 +58,20 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationsToExclude?: ExcludedNetworkModifications[];
     setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
     isDisabled?: boolean;
+}
+
+/**
+ * Collects every uuid present anywhere in a tree (root + all nested levels).
+ */
+function collectAllUuidsInTree(mods: ComposedModificationMetadata[]): Set<string> {
+    const uuids = new Set<string>();
+    const visit = (nodes: ComposedModificationMetadata[]) =>
+        nodes.forEach((m) => {
+            uuids.add(m.uuid);
+            visit(m.subModifications);
+        });
+    visit(mods);
+    return uuids;
 }
 
 export function NetworkModificationsTable({
@@ -88,6 +101,13 @@ export function NetworkModificationsTable({
 
     const [expanded, setExpanded] = useState<ExpandedState>({});
 
+    // Keep a ref so the modifications useEffect can read current expanded state
+    // without being added as a dependency (which would cause infinite loops).
+    const expandedRef = useRef<ExpandedState>(expanded);
+    useEffect(() => {
+        expandedRef.current = expanded;
+    }, [expanded]);
+
     const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
         formatToComposedModification(modifications)
     );
@@ -99,23 +119,77 @@ export function NetworkModificationsTable({
 
     useEffect(() => {
         setComposedModifications((prevMods) => {
-            // Rebuild from the new modifications prop, carrying over already-fetched subModifications
-            // to avoid a visual flash of empty children while re-fetches are in flight.
-            const nextMods = mergeSubModificationsIntoTree(formatToComposedModification(modifications), prevMods);
+            const currentExpanded = expandedRef.current;
+            const expandedRecord = currentExpanded === true ? {} : currentExpanded;
 
+            // The new top-level uuids from the server. Any modification appearing here has a
+            // definitive, authoritative position: at the root level. It must NOT simultaneously
+            // appear inside a composite's stale children — that causes duplicate React keys.
+            const newTopLevelUuids = new Set(modifications.map((m) => m.uuid));
+
+            // Build the set of uuids currently expanded by the user.
+            const expandedUuids = new Set(
+                Object.entries(expandedRecord)
+                    .filter(([, v]) => v)
+                    .map(([uuid]) => uuid)
+            );
+
+            // Build the fresh top-level list. For expanded composites, carry over their current
+            // children MINUS any item that now lives at the top level (moved out via cut/paste).
+            // This prevents a modification appearing in two places at once (duplicate key crash)
+            // while still keeping the composite visually open during the re-fetch.
+            const freshTopLevel = formatToComposedModification(modifications).map((nextMod) => {
+                if (expandedUuids.has(nextMod.uuid)) {
+                    const prevMod = prevMods.find((m) => m.uuid === nextMod.uuid);
+                    if (prevMod && prevMod.subModifications.length > 0) {
+                        // Filter out any stale child whose uuid now appears at root level
+                        // (it was moved out) or whose uuid appears elsewhere in the new
+                        // top-level tree (safety net against any structural move).
+                        const safeChildren = prevMod.subModifications.filter(
+                            (child) => !newTopLevelUuids.has(child.uuid)
+                        );
+                        return { ...nextMod, subModifications: safeChildren };
+                    }
+                }
+                return nextMod;
+            });
+
+            // Discover which composites previously had loaded children so we know which ones to
+            // re-fetch. We use prevMods as the source of truth (freshTopLevel children may be
+            // partially filtered above, so it is not reliable for this check).
             // Re-fetch for any composite that already has loaded sub-modifications, regardless of
             // whether it is currently expanded to avoid stale state
-            const loadedComposite: ComposedModificationMetadata[] = [];
-            findAllLoadedCompositeModifications(nextMods, loadedComposite);
-            fetchSubModificationsForExpandedRows(
-                loadedComposite.map((mod) => mod.uuid),
-                nextMods,
-                setComposedModifications,
-                true
-            );
-            return nextMods;
+            const loadedComposites: ComposedModificationMetadata[] = [];
+            findAllLoadedCompositeModifications(prevMods, loadedComposites);
+
+            if (loadedComposites.length > 0) {
+                // force=true: always re-fetch to get authoritative server state, correcting any
+                // stale children that were temporarily preserved above.
+                fetchSubModificationsForExpandedRows(
+                    loadedComposites.map((mod) => mod.uuid),
+                    freshTopLevel,
+                    setComposedModifications,
+                    true
+                );
+            }
+
+            return freshTopLevel;
         });
     }, [modifications]);
+
+    // Prune expanded state: remove entries for composites that no longer exist in the tree.
+    // This prevents ghost expand state after a composite is deleted or moved away entirely.
+    useEffect(() => {
+        setExpanded((prev) => {
+            if (prev === true) {
+                return prev;
+            }
+            const allUuids = collectAllUuidsInTree(composedModifications);
+            const pruned = Object.fromEntries(Object.entries(prev).filter(([uuid]) => allUuids.has(uuid)));
+            // Return the same reference if nothing changed to avoid a spurious re-render.
+            return Object.keys(pruned).length === Object.keys(prev).length ? prev : pruned;
+        });
+    }, [composedModifications]);
 
     const handleExpandRow = useCallback((updater: Updater<ExpandedState>) => {
         setExpanded((prevExpanded: ExpandedState) => {

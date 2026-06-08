@@ -226,9 +226,9 @@ export function fetchSubModificationsForExpandedRows(
     getNetworkModificationsFromComposite(uuidsToFetch).then((subModsByUuid) => {
         setMods((prev) =>
             Object.entries(subModsByUuid).reduce((tree, [uuid, subMods]) => {
-                const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed));
                 // Preserve already-loaded children of any nested composites within the new sub-list
                 const existingMod = findModificationInTree(uuid, tree);
+                const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed));
                 const mergedSubs = mergeSubModificationsIntoTree(
                     liveModifications,
                     existingMod?.subModifications ?? []
