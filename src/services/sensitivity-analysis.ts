@@ -82,7 +82,8 @@ export function enrichSensitivityAnalysisParameters(
 ): Promise<SensitivityAnalysisParametersInfosEnriched> {
     const allElementIds = collectAllElementIds(parameters);
 
-    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+    const elementNamesPromise =
+        allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds).catch(() => null);
 
     return elementNamesPromise.then((elementNames) => {
         const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
