@@ -11,8 +11,6 @@ export type Nullable<T> = { [K in keyof T]: T[K] | null };
 export type DeepNullable<T> = {
     [K in keyof T]: DeepNullable<T[K]> | null;
 };
-export type DeepOptional<T> =
-    T extends Array<infer U> ? Array<DeepOptional<U>> : T extends object ? { [K in keyof T]?: DeepOptional<T[K]> } : T;
 
 export function notUndefined<T>(value: T | undefined): value is T {
     return value !== undefined;
