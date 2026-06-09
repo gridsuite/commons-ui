@@ -92,6 +92,7 @@ export const networkModificationsFr = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Ajout de section / tronçon dans le poste {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Déplacements de départs dans le poste {computedLabel}',
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
+    CompositeModification: 'Modification composite',
     CreateSubstation: 'Créer un site',
     DeleteEquipmentByFilter: 'Supprimer des ouvrages par filtre',
     ModifyByAssignment: 'Modification par filtre',
@@ -297,7 +298,13 @@ export const networkModificationsFr = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
-
+    CreateGenerator: 'Créer un groupe',
+    GeneratorCreationError: "Erreur lors de la création d'un groupe",
+    VoltageRegulationText: 'Réglage de tension',
+    GenerationDispatch: 'Démarrage de groupes',
+    generatorMinimumActivePowerMaxValueError: 'La puissance active min doit être inférieure à la puissance active max',
+    PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
+        'La valeur de la puissance imposée doit être comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
     NoBusbarSectionFound: 'Aucun jeu de barres trouvé pour ce poste',
 
     // Tabs

@@ -37,8 +37,10 @@ import { useModificationsSelection } from './use-modifications-selection';
 import {
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
+    findDepth,
     formatToComposedModification,
     isCompositeModification,
+    MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
 } from './utils';
 import { ModificationRow } from './row';
@@ -49,9 +51,11 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
-    onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
+    onSelectedRowsChange: (selectedRows: ComposedModificationMetadata[], isAssemblyDepthExceeded: boolean) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
+    modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
+    modificationToEditLabel: UUID | null; // the editing of this modification is triggered
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     currentRootNetworkUuid?: UUID;
@@ -67,9 +71,11 @@ export function NetworkModificationsTable({
     isRowDragDisabled = false,
     onRowDragStart,
     onRowDragEnd,
-    onRowSelected,
+    onSelectedRowsChange,
     columns,
     highlightedModificationUuid,
+    modificationToEditLabel,
+    modificationUuidsToReset,
     studyUuid = null,
     currentNodeId = undefined,
     currentRootNetworkUuid,
@@ -91,10 +97,31 @@ export function NetworkModificationsTable({
     const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
         formatToComposedModification(modifications)
     );
+    // composedModificationsRef is used to access composedModifications data from other useEffects
+    // without having to add composedModifications to their dependencies (so it doesn't trigger them)
+    const composedModificationsRef = useRef(composedModifications);
+    useEffect(() => {
+        composedModificationsRef.current = composedModifications;
+    }, [composedModifications]);
+
+    const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
+        // the new assembled composite will be created where the first selected row is so :
+        // depth has to be < to first selected row depth + maxDepth of any selected row
+        if (rows.length === 0) return false;
+        const firstSelectedRowDepth = findDepth(composedModificationsRef.current, rows[0].uuid);
+        return rows.some((row) => firstSelectedRowDepth + (row.maxDepth ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
+    }, []);
+
+    const handleRowSelected = useCallback(
+        (selectedRows: ComposedModificationMetadata[]) => {
+            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows));
+        },
+        [onSelectedRowsChange, isAssemblyDepthExceeded]
+    );
 
     const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
         modifications: composedModifications,
-        onRowSelected,
+        onRowSelected: handleRowSelected,
     });
 
     useEffect(() => {
@@ -149,8 +176,9 @@ export function NetworkModificationsTable({
             },
             interaction: {
                 lastClickedRowId,
-                onRowSelected,
+                onRowSelected: handleRowSelected,
                 isRowDragDisabled,
+                modificationToEditLabel,
             },
             status: {
                 isImpactedByNotification,
@@ -169,7 +197,8 @@ export function NetworkModificationsTable({
             modificationsToExclude,
             setModificationsToExclude,
             lastClickedRowId,
-            onRowSelected,
+            handleRowSelected,
+            modificationToEditLabel,
             isRowDragDisabled,
             isImpactedByNotification,
             notificationMessageId,
@@ -219,6 +248,40 @@ export function NetworkModificationsTable({
         studyUuid,
         currentNodeUuid: currentNodeId,
     });
+
+    // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications
+    useEffect(() => {
+        if (!modificationUuidsToReset?.length) {
+            return;
+        }
+        table.resetRowSelection();
+        // fetch all the descendants of the modificationUuidsToReset :
+        const uuidsToReset = new Set<string>(modificationUuidsToReset);
+        const collectAll = (mod: ComposedModificationMetadata) => {
+            uuidsToReset.add(mod.uuid);
+            mod.subModifications?.forEach(collectAll);
+        };
+        const collectDescendants = (mods: ComposedModificationMetadata[]) => {
+            mods.forEach((mod) => {
+                if (uuidsToReset.has(mod.uuid)) {
+                    mod.subModifications?.forEach(collectAll);
+                } else {
+                    collectDescendants(mod.subModifications ?? []);
+                }
+            });
+        };
+        collectDescendants(composedModificationsRef.current);
+
+        // unexpand all uuidsToReset
+        setExpanded((prev) => {
+            if (prev === true) {
+                return prev;
+            }
+            const next = { ...prev };
+            uuidsToReset.forEach((uuid) => delete next[uuid]);
+            return next;
+        });
+    }, [modificationUuidsToReset, table]);
 
     useEffect(() => {
         table.resetRowSelection();
