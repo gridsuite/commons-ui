@@ -8,12 +8,9 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
-import {
-    enrichSecurityAnalysisParameters,
-    mapSecurityAnalysisParameters,
-    SAParameters,
-    SAParametersEnriched,
-} from '../features/parameters/security-analysis/types';
+import { IdName, mapSecurityAnalysisParameters, SAParameters, SAParametersEnriched } from '../utils';
+import { fetchElementNames } from './directory';
+import { ID, NAME } from '../features/parameters/common/parameter-table/constants';
 
 const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
 
@@ -29,6 +26,41 @@ export function fetchSecurityAnalysisProviders() {
     const url = `${getSecurityAnalysisUrl()}providers`;
     console.debug(url);
     return backendFetchJson(url);
+}
+
+function collectElementIds(params: SAParameters): Set<string> {
+    const allElementIds = params.contingencyListsInfos
+        ? params.contingencyListsInfos.flatMap((cli) => cli.contingencyLists ?? [])
+        : [];
+    return new Set(allElementIds);
+}
+
+export function enrichSecurityAnalysisParameters(parameters: SAParameters): Promise<SAParametersEnriched> {
+    const allElementIds = collectElementIds(parameters);
+
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+
+    return elementNamesPromise.then((elementNames) => {
+        const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
+            return ids
+                ? ids.map((id) => ({
+                      [ID]: id,
+                      [NAME]: elementNames?.[id] ?? undefined,
+                  }))
+                : [];
+        };
+        return {
+            ...parameters,
+            contingencyListsInfos: parameters.contingencyListsInfos
+                ? parameters.contingencyListsInfos.map((cli) => {
+                      return {
+                          ...cli,
+                          contingencyLists: mapIdsToIdNames(cli.contingencyLists),
+                      };
+                  })
+                : [],
+        };
+    });
 }
 
 export function fetchSecurityAnalysisParameters(parameterUuid: string): Promise<SAParametersEnriched> {
