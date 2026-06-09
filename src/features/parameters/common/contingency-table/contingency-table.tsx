@@ -11,11 +11,11 @@ import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
-import { ContingencyCount, ContingencyListsInfosEnriched } from './types';
+import { ContingencyCount } from './types';
 import { useSnackMessage } from '../../../../hooks';
 import { CONTINGENCY_LISTS } from '../constants';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
-import { MuiStyles, snackWithFallback } from '../../../../utils';
+import { MuiStyles, snackWithFallback, ContingencyListsInfosEnriched } from '../../../../utils';
 import { DndColumn } from '../../../../components/composite/dnd-table';
 
 const styles = {
