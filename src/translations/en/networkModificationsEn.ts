@@ -4,7 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED, YUP_NOT_TYPE_NUMBER, YUP_NOT_TYPE_DEFAULT } from '../../utils';
+import {
+    DUPLICATED_PROPS_ERROR,
+    YUP_DEFAULT,
+    YUP_NOT_NULL,
+    YUP_NOT_TYPE_DEFAULT,
+    YUP_NOT_TYPE_NUMBER,
+    YUP_POSITIVE,
+    YUP_REQUIRED,
+} from '../../utils';
 
 export const networkModificationsEn = {
     'network_modifications.modificationsCount':
@@ -135,6 +143,9 @@ export const networkModificationsEn = {
     ShortCircuitCurrentLimitMinMaxError: 'Low short-circuit current limit must be less than or equal to high limit',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
     [YUP_REQUIRED]: 'Required',
+    [YUP_NOT_NULL]: 'Cannot be empty',
+    [YUP_DEFAULT]: 'This field is invalid',
+    [YUP_POSITIVE]: 'Must be a positive number',
     [YUP_NOT_TYPE_NUMBER]: 'This field only accepts numeric values',
     [YUP_NOT_TYPE_DEFAULT]: 'Field value format is incorrect',
     CreateLoad: 'Create load',
@@ -235,6 +246,8 @@ export const networkModificationsEn = {
     Or: 'or',
     CreateBattery: 'Create battery',
     BatteryCreationError: 'Error while creating battery',
+    ModifyBattery: 'Modify battery',
+    BatteryModificationError: 'Error while modifying battery',
     Connectivity: 'Connectivity',
     ActiveLimits: 'Active limits',
     ReactiveLimits: 'Reactive limits',
@@ -243,6 +256,9 @@ export const networkModificationsEn = {
     Off: 'Off',
     FrequencyRegulation: 'Active power regulation',
     Droop: 'Droop',
+    Limits: 'Limits',
+    MinActivePowerMustBeLessOrEqualToMaxActivePower:
+        'Minimum active power value must be less than or equal to maximum active power value',
     activePowerControlTooltip:
         'Slack bus active power repartition key: maxP/droop, default droop = 4 (used if balanceType is PROPORTIONAL_TO_GENERATION_P_MAX)',
     NoModification: 'No modification',
@@ -283,6 +299,8 @@ export const networkModificationsEn = {
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
     CharacteristicsTab: 'Characteristics',
+    SetpointsAndLimitsTab: 'Setpoints & Limits',
+    SpecificTab: 'Specific',
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Additional information',
     StateEstimationTab: 'State estimation',

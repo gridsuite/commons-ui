@@ -4,7 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED, YUP_NOT_TYPE_NUMBER, YUP_NOT_TYPE_DEFAULT } from '../../utils';
+import {
+    DUPLICATED_PROPS_ERROR,
+    YUP_DEFAULT,
+    YUP_NOT_NULL,
+    YUP_NOT_TYPE_DEFAULT,
+    YUP_NOT_TYPE_NUMBER,
+    YUP_POSITIVE,
+    YUP_REQUIRED,
+} from '../../utils';
 
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
@@ -138,6 +146,9 @@ export const networkModificationsFr = {
     ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
     [YUP_REQUIRED]: 'Obligatoire',
+    [YUP_NOT_NULL]: 'Ne peut pas être vide',
+    [YUP_DEFAULT]: 'Ce champ est invalide',
+    [YUP_POSITIVE]: 'Doit être un nombre positif',
     [YUP_NOT_TYPE_NUMBER]: "Ce champ n'accepte que des valeurs numériques",
     [YUP_NOT_TYPE_DEFAULT]: "La valeur du champ n'est pas au bon format",
     CreateLoad: 'Créer une consommation',
@@ -239,6 +250,8 @@ export const networkModificationsFr = {
     Or: 'ou',
     CreateBattery: 'Créer une batterie',
     BatteryCreationError: "Erreur lors de la création d'une batterie",
+    ModifyBattery: 'Modifier une batterie',
+    BatteryModificationError: "Erreur lors de la modification d'une batterie",
     Connectivity: 'Connectivité',
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
@@ -247,6 +260,9 @@ export const networkModificationsFr = {
     Off: 'Désactivé',
     FrequencyRegulation: 'Compensation',
     Droop: 'Statisme',
+    Limits: 'Limites',
+    MinActivePowerMustBeLessOrEqualToMaxActivePower:
+        'La valeur de la puissance active min doit être inférieure ou égale à la valeur de la puissance active max',
     activePowerControlTooltip:
         'Clé de distribution de la puissance au nœud bilan : maxP/Statisme, statisme par défaut = 4 (valable pour le mode compensation proportionnel à la puissance maximale des groupes)',
     NoModification: 'Pas de modification',
@@ -288,6 +304,8 @@ export const networkModificationsFr = {
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
     CharacteristicsTab: 'Caractéristiques',
+    SetpointsAndLimitsTab: 'Consignes & Limites',
+    SpecificTab: 'Spécifique',
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Compléments',
     StateEstimationTab: "Estimation d'état",
