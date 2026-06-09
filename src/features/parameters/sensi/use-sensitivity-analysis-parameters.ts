@@ -31,8 +31,6 @@ import {
 } from './utils';
 import {
     ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD,
-    CONTAINER_ID,
-    CONTAINER_NAME,
     DEFAULT_FACTOR_COUNT,
     DISTRIBUTION_TYPE,
     EQUIPMENTS_IN_VOLTAGE_REGULATION,
@@ -292,23 +290,23 @@ export const useSensitivityAnalysisParametersForm = ({
                             [MONITORED_BRANCHES]:
                                 sensiInjectionsSet[MONITORED_BRANCHES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!, // schema name is required but dto fetched may not exist
                                     };
                                 }) ?? [],
                             [INJECTIONS]:
                                 sensiInjectionsSet[INJECTIONS]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [DISTRIBUTION_TYPE]: sensiInjectionsSet[DISTRIBUTION_TYPE],
                             [CONTINGENCIES]:
                                 sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
@@ -321,22 +319,22 @@ export const useSensitivityAnalysisParametersForm = ({
                             [MONITORED_BRANCHES]:
                                 sensiInjections[MONITORED_BRANCHES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [INJECTIONS]:
                                 sensiInjections[INJECTIONS]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [CONTINGENCIES]:
                                 sensiInjections[CONTINGENCIES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjections[ACTIVATED] ?? false,
@@ -348,23 +346,23 @@ export const useSensitivityAnalysisParametersForm = ({
                             [MONITORED_BRANCHES]:
                                 sensiInjectionsSet[MONITORED_BRANCHES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [HVDC_LINES]:
                                 sensiInjectionsSet[HVDC_LINES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [SENSITIVITY_TYPE]: sensiInjectionsSet[SENSITIVITY_TYPE],
                             [CONTINGENCIES]:
                                 sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
@@ -376,23 +374,23 @@ export const useSensitivityAnalysisParametersForm = ({
                             [MONITORED_BRANCHES]:
                                 sensiInjectionsSet[MONITORED_BRANCHES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [PSTS]:
                                 sensiInjectionsSet[PSTS]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [SENSITIVITY_TYPE]: sensiInjectionsSet[SENSITIVITY_TYPE],
                             [CONTINGENCIES]:
                                 sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
@@ -404,22 +402,22 @@ export const useSensitivityAnalysisParametersForm = ({
                             [SUPERVISED_VOLTAGE_LEVELS]:
                                 sensiInjectionsSet[SUPERVISED_VOLTAGE_LEVELS]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [EQUIPMENTS_IN_VOLTAGE_REGULATION]:
                                 sensiInjectionsSet[EQUIPMENTS_IN_VOLTAGE_REGULATION]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [CONTINGENCIES]:
                                 sensiInjectionsSet[CONTINGENCIES]?.map((sensiInjection) => {
                                     return {
-                                        [FieldConstants.ID]: sensiInjection[CONTAINER_ID],
-                                        [FieldConstants.NAME]: sensiInjection[CONTAINER_NAME],
+                                        [FieldConstants.ID]: sensiInjection.id,
+                                        [FieldConstants.NAME]: sensiInjection.name!,
                                     };
                                 }) ?? [],
                             [ACTIVATED]: sensiInjectionsSet[ACTIVATED] ?? false,
