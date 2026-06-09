@@ -67,6 +67,14 @@ const style = (customProps: any) => ({
             outlineOffset: '-1px',
             backgroundColor: theme.agGridBackground.color,
         },
+        // The selection column carries the row-drag handle on each row (see selectionColumnDef).
+        // Nudge the row checkbox slightly to the right, and align the header "select all" checkbox.
+        '& .ag-selection-checkbox': {
+            marginLeft: '6px',
+        },
+        '& .ag-header-select-all': {
+            marginLeft: '33px',
+        },
         ...customProps,
     }),
 });
@@ -213,6 +221,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
                         rowSelection={rowSelection ?? 'multiple'}
+                        selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
                         onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
                         detailRowAutoHeight
                         onSelectionChanged={() => {
