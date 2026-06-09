@@ -200,6 +200,8 @@ export const networkModificationsEn = {
     MaximumActivePowerText: 'Maximum active power',
     ActivePowerSetPointText: 'Active power setpoint',
     ReactivePowerSetPointText: 'Reactive power setpoint',
+    ReactivePowerMeasurementValue: 'Reactive power TM value',
+    ReactivePowerMeasurementValidity: 'Reactive power TM validity',
     GeneratorTargetV: 'Target V',
     PlannedActivePowerSetPointForm: 'Planning active power set point',
     MarginalCost: 'Generation dispatch cost',
