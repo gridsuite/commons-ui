@@ -297,7 +297,13 @@ export const networkModificationsFr = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
-
+    CreateGenerator: 'Créer un groupe',
+    GeneratorCreationError: "Erreur lors de la création d'un groupe",
+    VoltageRegulationText: 'Réglage de tension',
+    GenerationDispatch: 'Démarrage de groupes',
+    generatorMinimumActivePowerMaxValueError: 'La puissance active min doit être inférieure à la puissance active max',
+    PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
+        'La valeur de la puissance imposée doit être comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
     NoBusbarSectionFound: 'Aucun jeu de barres trouvé pour ce poste',
 
     // Tabs
