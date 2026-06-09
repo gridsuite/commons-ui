@@ -87,6 +87,7 @@ export const networkModificationsEn = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Adding busbar section to voltage level {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
     ModificationReadError: 'An error occurred while fetching the modification',
+    CompositeModification: 'Composite modification',
     CreateSubstation: 'Create substation',
     DeleteEquipmentByFilter: 'Delete equipment by filter',
     ModifyByAssignment: 'Modify by filter',

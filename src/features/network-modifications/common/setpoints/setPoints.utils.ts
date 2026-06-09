@@ -45,7 +45,6 @@ export const getActivePowerSetPointSchema = (isEquipmentModification = false) =>
             then: (schema) => {
                 return schema
                     .required()
-                    .nonNullable() // TODO: Check whether `nonNullable` is still needed when using `required`.
                     .test(
                         'activePowerSetPoint',
                         'ActivePowerMustBeZeroOrBetweenMinAndMaxActivePower',

@@ -64,6 +64,8 @@ export function RegulatingTerminalForm({
 
     useEffect(() => {
         if (!watchVoltageLevelId || !voltageLevelOptions.some((vlOption) => vlOption.id === watchVoltageLevelId)) {
+            // React performance optimization: use updater function to keep the same reference (prev) when possible, rather than "setEquipmentsOptions([])",
+            // to avoid unnecessary re-renders.
             setEquipmentsOptions((prev) => (prev.length === 0 ? prev : []));
         } else {
             fetchVoltageLevelEquipments(watchVoltageLevelId).then((equipments) => {
