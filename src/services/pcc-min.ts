@@ -7,14 +7,41 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { getStudyUrl } from './security-analysis';
-import { PccMinParameters, PccMinParametersEnriched } from '../utils';
-import { enrichPccMinParameters, mapPccMinParameters } from '../utils/types/pcc-min.type';
+import { FilterIdentifier, FILTERS, PccMinParameters, PccMinParametersEnriched } from '../utils';
+import { mapPccMinParameters } from '../utils/types/pcc-min.type';
+import { fetchElementNames } from './directory';
 
 const PREFIX_PCC_MIN_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/pcc-min`;
 
 function getPccMinUrl() {
     return `${PREFIX_PCC_MIN_SERVER_QUERIES}/v1/`;
 }
+
+function collectAllElementIds(params: PccMinParameters): Set<string> {
+    return new Set(params[FILTERS]);
+}
+
+export function enrichPccMinParameters(parameters: PccMinParameters): Promise<PccMinParametersEnriched> {
+    const allElementIds = collectAllElementIds(parameters);
+
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+
+    return elementNamesPromise.then((elementNames) => {
+        const mapIdsToFilterIdentifiers = (ids: UUID[] | undefined): FilterIdentifier[] => {
+            return ids
+                ? ids.map((id) => ({
+                      filterId: id,
+                      filterName: elementNames?.[id] ?? undefined,
+                  }))
+                : [];
+        };
+        return {
+            ...parameters,
+            [FILTERS]: mapIdsToFilterIdentifiers(parameters[FILTERS]),
+        };
+    });
+}
+
 export function getPccMinStudyParameters(studyUuid: UUID): Promise<PccMinParametersEnriched | null> {
     console.info('get pcc min study parameters');
     const url = `${getStudyUrl(studyUuid)}/pcc-min/parameters`;

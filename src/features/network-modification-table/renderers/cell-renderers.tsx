@@ -58,8 +58,8 @@ export function NameHeaderRenderer({ table }: HCtx) {
     );
 }
 
-export function NameCellRenderer({ row, column }: CCtx) {
-    return <NameCell row={row} onChange={column.columnDef.meta?.onChange} />;
+export function NameCellRenderer({ row, table, column }: CCtx) {
+    return <NameCell row={row} table={table} onChange={column.columnDef.meta?.onChange} />;
 }
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
