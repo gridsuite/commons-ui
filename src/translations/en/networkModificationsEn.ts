@@ -301,6 +301,8 @@ export const networkModificationsEn = {
     generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'Planned active power set point must be between minimum and maximum active power values',
+    ModifyGenerator: 'Modify generator',
+    GeneratorModificationError: 'Error while modifying generator',
     NoBusbarSectionFound: 'No busbar section found for this voltage level',
 
     // Tabs
