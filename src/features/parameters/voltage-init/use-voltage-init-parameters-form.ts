@@ -35,7 +35,7 @@ import {
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType, isBlankOrEmpty } from '../../../utils';
+import { ElementType, isBlankOrEmpty, YUP_REQUIRED } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
@@ -118,7 +118,7 @@ export const useVoltageInitParametersForm = ({
                                     [NAME]: yup.string().required(),
                                 })
                             )
-                            .min(1, 'FilterInputMinError'),
+                            .min(1, YUP_REQUIRED),
                         [LOW_VOLTAGE_LIMIT]: yup.number().nullable(),
                         [HIGH_VOLTAGE_LIMIT]: yup.number().nullable(),
                     })
@@ -134,17 +134,17 @@ export const useVoltageInitParametersForm = ({
                                     [NAME]: yup.string().required(),
                                 })
                             )
-                            .min(1, 'FilterInputMinError'),
+                            .min(1, YUP_REQUIRED),
                         [LOW_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0)
+                            .min(0, 'mustBeGreaterOrEqualToZero')
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[HIGH_VOLTAGE_LIMIT]);
                             }),
                         [HIGH_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0)
+                            .min(0, 'mustBeGreaterOrEqualToZero')
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);

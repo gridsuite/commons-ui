@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { fetchElementNames } from '../../services/directory';
 import { FilterIdentifier, FILTERS } from '../constants';
 
 export type PccMinParametersEnriched = {
@@ -20,29 +19,4 @@ export function mapPccMinParameters(parametersInfos: PccMinParametersEnriched): 
         ...parametersInfos,
         [FILTERS]: parametersInfos.filters?.map((filter) => filter.filterId),
     };
-}
-
-function getFilterIdentifierIds(params: PccMinParameters): Set<string> {
-    return new Set(params[FILTERS]);
-}
-
-export function enrichPccMinParameters(parameters: PccMinParameters): Promise<PccMinParametersEnriched> {
-    const allElementIds = getFilterIdentifierIds(parameters);
-
-    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
-
-    return elementNamesPromise.then((elementNames) => {
-        const mapIdsToFilterIdentifiers = (ids: UUID[] | undefined): FilterIdentifier[] => {
-            return ids
-                ? ids.map((id) => ({
-                      filterId: id,
-                      filterName: elementNames?.[id] ?? null,
-                  }))
-                : [];
-        };
-        return {
-            ...parameters,
-            [FILTERS]: mapIdsToFilterIdentifiers(parameters[FILTERS]),
-        };
-    });
 }

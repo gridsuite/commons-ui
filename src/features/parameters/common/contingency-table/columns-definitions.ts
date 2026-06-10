@@ -8,8 +8,7 @@ import { FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { CONTINGENCY_LISTS, CONTINGENCY_LISTS_INFOS } from '../constants';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../parameter-table-field';
-import { ElementType } from '../../../../utils';
-import { ContingencyListsInfosEnriched, IdName } from './types';
+import { ContingencyListsInfosEnriched, ElementType, IdName, YUP_REQUIRED } from '../../../../utils';
 import { DndColumn, DndColumnType } from '../../../../components/composite/dnd-table';
 
 export const COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS: DndColumn[] = [
@@ -60,7 +59,7 @@ export const getContingencyListsInfosFormSchema = () => {
                             })
                         )
                         .required()
-                        .min(1, 'FieldIsRequired'),
+                        .min(1, YUP_REQUIRED),
                     [DESCRIPTION]: yup.string(),
                     [ACTIVATED]: yup.boolean().required(),
                 })
@@ -73,12 +72,12 @@ export const toFormValuesContingencyListsInfos = (contingencyListsInfos: Conting
     return {
         [CONTINGENCY_LISTS_INFOS]: contingencyListsInfos?.map(
             (contingencyListInfos: ContingencyListsInfosEnriched) => ({
-                [CONTINGENCY_LISTS]: contingencyListInfos[CONTINGENCY_LISTS]?.map((c: IdName) => ({
-                    [NAME]: c[NAME],
+                [CONTINGENCY_LISTS]: contingencyListInfos.contingencyLists?.map((c: IdName) => ({
                     [ID]: c[ID],
+                    [NAME]: c[NAME],
                 })),
-                [DESCRIPTION]: contingencyListInfos[DESCRIPTION],
-                [ACTIVATED]: contingencyListInfos[ACTIVATED],
+                [DESCRIPTION]: contingencyListInfos.description,
+                [ACTIVATED]: contingencyListInfos.activated,
             })
         ),
     };

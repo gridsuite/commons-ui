@@ -20,7 +20,13 @@ import {
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
-import { ID, snackWithFallback, type SpecificParameterInfos, type SpecificParametersValues } from '../../../utils';
+import {
+    ID,
+    snackWithFallback,
+    type SpecificParameterInfos,
+    type SpecificParametersValues,
+    YUP_REQUIRED,
+} from '../../../utils';
 
 import {
     FilterPOJO,
@@ -130,7 +136,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
                           .nullable()
                           .when('active', {
                               is: true,
-                              then: (s) => s.required().min(1, 'FilterInputMinError'),
+                              then: (s) => s.required().min(1, YUP_REQUIRED),
                               otherwise: (s) => s.notRequired().nullable(),
                           }),
                       type: requiredWhenActive(yup.string().oneOf(['GENERATOR', 'HVDC']).nullable()),

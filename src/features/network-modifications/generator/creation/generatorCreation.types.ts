@@ -10,12 +10,11 @@ import { ModificationType } from '../../../../utils';
 
 export interface GeneratorCreationDto {
     type: ModificationType;
-    uuid?: string;
     equipmentId: string;
     equipmentName: string | null;
     energySource: string | null;
-    minP: number | null;
-    maxP: number | null;
+    minP: number;
+    maxP: number;
     ratedS: number | null;
     targetP: number | null;
     targetQ: number | null;

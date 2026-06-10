@@ -8,7 +8,7 @@
 import { Chip, FormControl, TextField } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useController, useFieldArray } from 'react-hook-form';
-import type { SxStyle, MuiStyles } from '../../../utils/styles';
+import type { MuiStyles, SxStyle } from '../../../utils/styles';
 import { useSnackMessage } from '../../../hooks';
 import { useCustomFormContext } from './provider';
 import { FieldLabel, isFieldRequired } from './utils';
@@ -40,7 +40,7 @@ const styles = {
 interface ChipItemsInputProps {
     label?: string;
     name: string;
-    hideErrorMessage: boolean;
+    hideErrorMessage?: boolean;
 }
 
 export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipItemsInputProps>) {

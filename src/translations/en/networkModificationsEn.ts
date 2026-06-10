@@ -4,7 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DUPLICATED_PROPS_ERROR, YUP_REQUIRED, YUP_NOT_TYPE_NUMBER, YUP_NOT_TYPE_DEFAULT } from '../../utils';
+import {
+    DUPLICATED_PROPS_ERROR,
+    YUP_DEFAULT,
+    YUP_NOT_NULL,
+    YUP_NOT_TYPE_DEFAULT,
+    YUP_NOT_TYPE_NUMBER,
+    YUP_POSITIVE,
+    YUP_REQUIRED,
+} from '../../utils';
 
 export const networkModificationsEn = {
     'network_modifications.modificationsCount':
@@ -79,6 +87,7 @@ export const networkModificationsEn = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Adding busbar section to voltage level {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
     ModificationReadError: 'An error occurred while fetching the modification',
+    CompositeModification: 'Composite modification',
     CreateSubstation: 'Create substation',
     DeleteEquipmentByFilter: 'Delete equipment by filter',
     ModifyByAssignment: 'Modify by filter',
@@ -134,12 +143,18 @@ export const networkModificationsEn = {
     ShortCircuitCurrentLimitMinMaxError: 'Low short-circuit current limit must be less than or equal to high limit',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
     [YUP_REQUIRED]: 'Required',
+    [YUP_NOT_NULL]: 'Cannot be empty',
+    [YUP_DEFAULT]: 'This field is invalid',
+    [YUP_POSITIVE]: 'Must be a positive number',
     [YUP_NOT_TYPE_NUMBER]: 'This field only accepts numeric values',
     [YUP_NOT_TYPE_DEFAULT]: 'Field value format is incorrect',
     CreateLoad: 'Create load',
     loadType: 'Type',
     CreateShuntCompensator: 'Create shunt compensator (Linear)',
     ShuntCompensatorCreationError: 'Error while creating shunt compensator',
+    ModifyShuntCompensator: 'Modify shunt compensator (Linear)',
+    ShuntCompensatorModificationError: 'Error while modifying shunt compensator',
+    ShuntCompensatorNonlinearError: 'It is currently not possible to modify non-linear shunt compensator',
     Reactor: 'Reactor',
     Capacitor: 'Capacitor',
     QatNominalVLabel: 'Q at nominal voltage (Mvar)',
@@ -231,6 +246,8 @@ export const networkModificationsEn = {
     Or: 'or',
     CreateBattery: 'Create battery',
     BatteryCreationError: 'Error while creating battery',
+    ModifyBattery: 'Modify battery',
+    BatteryModificationError: 'Error while modifying battery',
     Connectivity: 'Connectivity',
     ActiveLimits: 'Active limits',
     ReactiveLimits: 'Reactive limits',
@@ -239,6 +256,9 @@ export const networkModificationsEn = {
     Off: 'Off',
     FrequencyRegulation: 'Active power regulation',
     Droop: 'Droop',
+    Limits: 'Limits',
+    MinActivePowerMustBeLessOrEqualToMaxActivePower:
+        'Minimum active power value must be less than or equal to maximum active power value',
     activePowerControlTooltip:
         'Slack bus active power repartition key: maxP/droop, default droop = 4 (used if balanceType is PROPORTIONAL_TO_GENERATION_P_MAX)',
     NoModification: 'No modification',
@@ -272,13 +292,21 @@ export const networkModificationsEn = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
-
+    CreateGenerator: 'Create generator',
+    GeneratorCreationError: 'Error while creating generator',
+    VoltageRegulationText: 'Voltage regulation',
+    GenerationDispatch: 'Generation dispatch',
+    generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
+    PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
+        'Planned active power set point must be between minimum and maximum active power values',
     NoBusbarSectionFound: 'No busbar section found for this voltage level',
 
     // Tabs
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
     CharacteristicsTab: 'Characteristics',
+    SetpointsAndLimitsTab: 'Setpoints & Limits',
+    SpecificTab: 'Specific',
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Additional information',
     StateEstimationTab: 'State estimation',
