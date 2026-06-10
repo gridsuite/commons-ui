@@ -53,7 +53,6 @@ export function CsvPicker<TData = unknown>({
 
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
-            onFileChange(acceptedFile);
             if (results.data.length === 0) {
                 onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }));
             } else if (!equalsArrayAnyOrder(header, Object.keys(results.data[0] as Record<string, unknown>))) {
@@ -64,6 +63,9 @@ export function CsvPicker<TData = unknown>({
             } else if (maxLineNumber && results.data.length > maxLineNumber) {
                 onFileError(intl.formatMessage({ id: 'tooManyLinesInCsvFile' }, { value: maxLineNumber }));
             } else {
+                // Only reflect the file once it is valid: on error the previously selected file name
+                // (and the table data) is kept unchanged.
+                onFileChange(acceptedFile);
                 onFileError(undefined);
                 if (onAppend && onReplace) {
                     if (hasExistingData?.()) {
