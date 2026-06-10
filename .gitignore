@@ -6,6 +6,7 @@ node_modules/
 
 # production
 /dist/
+/storybook-static/
 *.tgz
 
 # JetBrains IDE
