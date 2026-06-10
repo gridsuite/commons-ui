@@ -91,7 +91,7 @@ export function VoltageInitParametersInLine({
     }, []);
 
     useEffect(() => {
-        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+        setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
     const handleOpenSaveDialog = useCallback(() => {
