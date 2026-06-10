@@ -25,6 +25,7 @@ import {
     LoadModelsRule,
     ParameterType,
     SpecificParameterInfos,
+    YUP_REQUIRED,
 } from '../../../utils';
 import ParameterField from '../common/parameter-field';
 import { NAME } from '../../../components/ui';
@@ -46,8 +47,8 @@ export const formSchema = yup.object().shape({
                         [NAME]: yup.string().nullable().notRequired(),
                     })
                 )
-                .min(1),
-            [VARIATION]: yup.number().min(0).required(),
+                .min(1, YUP_REQUIRED),
+            [VARIATION]: yup.number().min(0, 'mustBeGreaterOrEqualToZero').required(),
             [ACTIVE]: yup.boolean().nullable().notRequired(),
         })
     ),

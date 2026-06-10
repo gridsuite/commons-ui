@@ -67,7 +67,7 @@ export function PccMinParametersInLine({
     }, []);
 
     useEffect(() => {
-        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+        setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
     const handleLoadParameters = useCallback(

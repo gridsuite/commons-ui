@@ -121,6 +121,20 @@ export enum HvdcType {
     VSC = 'VSC',
 }
 
+// Relevant EnergySource Powsybl enum values
+export const ENERGY_SOURCES = [
+    { id: 'HYDRO', label: 'Hydro' },
+    { id: 'NUCLEAR', label: 'Nuclear' },
+    { id: 'WIND', label: 'Wind' },
+    { id: 'THERMAL', label: 'Thermal' },
+    { id: 'SOLAR', label: 'Solar' },
+    { id: 'OTHER', label: 'Other' },
+] as const;
+
+export function getEnergySourceLabel(energySourceId?: string) {
+    return ENERGY_SOURCES.find(({ id }) => id === energySourceId)?.label;
+}
+
 // Relevant LoadType Powsybl enum values
 export const LOAD_TYPES = [
     { id: 'AUXILIARY', label: 'Auxiliary' },
