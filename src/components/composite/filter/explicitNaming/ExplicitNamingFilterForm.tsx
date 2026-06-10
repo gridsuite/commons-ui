@@ -129,7 +129,6 @@ export function ExplicitNamingFilterForm({
                 headerName: intl.formatMessage({
                     id: FieldConstants.EQUIPMENT_ID,
                 }),
-                rowDrag: true,
                 field: FieldConstants.EQUIPMENT_ID,
                 editable: true,
                 singleClickEdit: true,
@@ -249,7 +248,6 @@ export function ExplicitNamingFilterForm({
                         headerCheckbox: true,
                     }}
                     alwaysShowVerticalScroll
-                    stopEditingWhenCellsLoseFocus
                     csvProps={{
                         fileName: intl.formatMessage({
                             id: 'filterCsvFileName',

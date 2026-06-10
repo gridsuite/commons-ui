@@ -6,6 +6,7 @@
  */
 
 import { UUID } from 'node:crypto';
+import { IdName } from './types';
 
 export type DynamicSecurityAnalysisParametersInfos = {
     provider?: string;
@@ -14,9 +15,9 @@ export type DynamicSecurityAnalysisParametersInfos = {
     contingencyListIds?: UUID[];
 };
 
-export type DynamicSecurityAnalysisParametersFetchReturn = Exclude<
+export type DynamicSecurityAnalysisParametersFetchReturn = Omit<
     DynamicSecurityAnalysisParametersInfos,
     'contingencyListIds'
 > & {
-    contingencyListInfos?: { id: string; name: string }[];
+    contingencyListInfos?: IdName[];
 };

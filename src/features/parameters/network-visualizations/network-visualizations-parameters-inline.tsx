@@ -69,7 +69,7 @@ export function NetworkVisualizationParametersInline({
     );
 
     useEffect(() => {
-        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+        setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
     return (
