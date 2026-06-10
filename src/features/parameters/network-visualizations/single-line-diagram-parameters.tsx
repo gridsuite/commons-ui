@@ -20,6 +20,8 @@ import {
     NetworkVisualizationTabValues as TabValues,
     PARAM_DIAGONAL_LABEL,
     PARAM_CENTER_LABEL,
+    PARAM_STATE_ESTIMATION,
+    STATE_ESTIMATION,
 } from './constants';
 import { MuiSelectInput, SwitchInput } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';
@@ -98,6 +100,8 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
             {substationLineDropDown}
             <LineSeparator />
             {componentLineDropDown}
+            <LineSeparator />
+            {labelPosition(PARAM_STATE_ESTIMATION, STATE_ESTIMATION)}
         </Grid>
     );
 }
