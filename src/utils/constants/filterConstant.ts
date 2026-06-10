@@ -13,5 +13,5 @@ export const ID = 'id';
 
 export type FilterIdentifier = {
     [FILTER_ID]: UUID;
-    [FILTER_NAME]: string;
+    [FILTER_NAME]?: string;
 };
