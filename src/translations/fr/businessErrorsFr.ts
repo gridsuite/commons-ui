@@ -67,7 +67,7 @@ export const businessErrorsFr = {
     'securityAnalysis.contingencyListConfigEmpty': 'La configuration ne contient aucun aléas.',
     'securityAnalysis.missingContingencyList':
         "La configuration contient une ou des listes d'aléas qui ont été supprimées.",
-    'dynamicMapping.mappingNameNotProvided': 'Nom du mapping non fourni',
+    'dynamicMapping.mappingNotProvided': 'Mapping non fourni',
     'dynamicSecurityAnalysis.providerNotFound': "Simulateur d'analyse de sécurité dynamique non trouvé.",
     'dynamicSecurityAnalysis.contingenciesNotFound': 'Aucun aléa fourni.',
     'dynamicSecurityAnalysis.contingencyListEmpty': "La liste d'aléas fournie ne doit pas être nulle ou vide.",
