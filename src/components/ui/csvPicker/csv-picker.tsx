@@ -54,14 +54,19 @@ export function CsvPicker<TData = unknown>({
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
             if (results.data.length === 0) {
-                onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }));
+                onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }, { filename: acceptedFile.name }));
             } else if (!equalsArrayAnyOrder(header, Object.keys(results.data[0] as Record<string, unknown>))) {
                 console.warn('Wrong CSV headers');
                 console.warn('Expected:', header);
                 console.warn('Actual:', Object.keys(results.data[0] as Record<string, unknown>));
-                onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }));
+                onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }, { filename: acceptedFile.name }));
             } else if (maxLineNumber && results.data.length > maxLineNumber) {
-                onFileError(intl.formatMessage({ id: 'tooManyLinesInCsvFile' }, { value: maxLineNumber }));
+                onFileError(
+                    intl.formatMessage(
+                        { id: 'tooManyLinesInCsvFile' },
+                        { value: maxLineNumber, filename: acceptedFile.name }
+                    )
+                );
             } else {
                 // Only reflect the file once it is valid: on error the previously selected file name
                 // (and the table data) is kept unchanged.
