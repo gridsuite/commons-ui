@@ -9,7 +9,7 @@ import { ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
+import { ContingencyListsInfosEnriched, ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
     CONTINGENCY_LISTS,
@@ -30,10 +30,9 @@ import { getNameElementEditorEmptyFormData } from '../common/name-element-editor
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
-import { mapSecurityAnalysisParameters, SAParametersEnriched } from './types';
+import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
-import { ContingencyListsInfosEnriched } from '../common/contingency-table/types';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;

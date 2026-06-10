@@ -69,10 +69,7 @@ export type GeneratorDialogSchemaBaseForm = {
     [FieldConstants.ADDITIONAL_PROPERTIES]?: Property[];
 };
 
-export type GeneratorCreationDialogSchemaForm = {
-    equipmentId: string;
-} & GeneratorDialogSchemaBaseForm;
-
+// TODO: to be removed when Modification will be moved in commons-ui (the Form type has to be infered)
 export type GeneratorModificationDialogSchemaForm = {
     [FieldConstants.STATE_ESTIMATION]?: {
         [FieldConstants.MEASUREMENT_P]?: MeasurementInfo;
