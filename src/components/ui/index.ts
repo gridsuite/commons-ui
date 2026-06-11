@@ -18,3 +18,4 @@ export * from './resizablePanels';
 export * from './csvDownloader';
 export * from './treeViewFinder';
 export * from './directoryItemSelector';
+export * from './tablepagination';
