@@ -7,13 +7,14 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
 import {
-    enrichSensitivityAnalysisParameters,
     FactorsCount,
+    IdName,
     mapSensitivityAnalysisParameters,
     SensitivityAnalysisParametersInfos,
     SensitivityAnalysisParametersInfosEnriched,
 } from '../utils';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { fetchElementNames } from './directory';
 
 const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
 const PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis`;
@@ -38,6 +39,114 @@ export function fetchSensitivityAnalysisProviders(): Promise<string[]> {
     const url = `${getSensiUrl()}providers`;
     console.debug(url);
     return backendFetchJson(url);
+}
+
+function collectAllElementIds(parameters: SensitivityAnalysisParametersInfos): Set<string> {
+    const allElementIds = new Set<string>();
+
+    parameters.sensitivityInjection?.forEach((i) => {
+        i.monitoredBranches?.forEach((id) => allElementIds.add(id));
+        i.injections?.forEach((id) => allElementIds.add(id));
+        i.contingencies?.forEach((id) => allElementIds.add(id));
+    });
+
+    parameters.sensitivityInjectionsSet?.forEach((is) => {
+        is.monitoredBranches?.forEach((id) => allElementIds.add(id));
+        is.injections?.forEach((id) => allElementIds.add(id));
+        is.contingencies?.forEach((id) => allElementIds.add(id));
+    });
+
+    parameters.sensitivityHVDC?.forEach((hvdc) => {
+        hvdc.monitoredBranches?.forEach((id) => allElementIds.add(id));
+        hvdc.hvdcs?.forEach((id) => allElementIds.add(id));
+        hvdc.contingencies?.forEach((id) => allElementIds.add(id));
+    });
+
+    parameters.sensitivityPST?.forEach((pst) => {
+        pst.monitoredBranches?.forEach((id) => allElementIds.add(id));
+        pst.psts?.forEach((id) => allElementIds.add(id));
+        pst.contingencies?.forEach((id) => allElementIds.add(id));
+    });
+
+    parameters.sensitivityNodes?.forEach((n) => {
+        n.monitoredVoltageLevels?.forEach((id) => allElementIds.add(id));
+        n.equipmentsInVoltageRegulation?.forEach((id) => allElementIds.add(id));
+        n.contingencies?.forEach((id) => allElementIds.add(id));
+    });
+
+    return allElementIds;
+}
+
+export function enrichSensitivityAnalysisParameters(
+    parameters: SensitivityAnalysisParametersInfos
+): Promise<SensitivityAnalysisParametersInfosEnriched> {
+    const allElementIds = collectAllElementIds(parameters);
+
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+
+    return elementNamesPromise.then((elementNames) => {
+        const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
+            return ids
+                ? ids.map((id) => ({
+                      id,
+                      name: elementNames?.[id] ?? undefined,
+                  }))
+                : [];
+        };
+        return {
+            ...parameters,
+            sensitivityInjectionsSet: parameters.sensitivityInjectionsSet
+                ? parameters.sensitivityInjectionsSet.map((is) => {
+                      return {
+                          ...is,
+                          monitoredBranches: mapIdsToIdNames(is.monitoredBranches),
+                          injections: mapIdsToIdNames(is.injections),
+                          contingencies: mapIdsToIdNames(is.contingencies),
+                      };
+                  })
+                : [],
+            sensitivityInjection: parameters.sensitivityInjection
+                ? parameters.sensitivityInjection.map((i) => {
+                      return {
+                          ...i,
+                          monitoredBranches: mapIdsToIdNames(i.monitoredBranches),
+                          injections: mapIdsToIdNames(i.injections),
+                          contingencies: mapIdsToIdNames(i.contingencies),
+                      };
+                  })
+                : [],
+            sensitivityHVDC: parameters.sensitivityHVDC
+                ? parameters.sensitivityHVDC.map((hvdc) => {
+                      return {
+                          ...hvdc,
+                          monitoredBranches: mapIdsToIdNames(hvdc.monitoredBranches),
+                          hvdcs: mapIdsToIdNames(hvdc.hvdcs),
+                          contingencies: mapIdsToIdNames(hvdc.contingencies),
+                      };
+                  })
+                : [],
+            sensitivityPST: parameters.sensitivityPST
+                ? parameters.sensitivityPST.map((pst) => {
+                      return {
+                          ...pst,
+                          monitoredBranches: mapIdsToIdNames(pst.monitoredBranches),
+                          psts: mapIdsToIdNames(pst.psts),
+                          contingencies: mapIdsToIdNames(pst.contingencies),
+                      };
+                  })
+                : [],
+            sensitivityNodes: parameters.sensitivityNodes
+                ? parameters.sensitivityNodes.map((n) => {
+                      return {
+                          ...n,
+                          monitoredVoltageLevels: mapIdsToIdNames(n.monitoredVoltageLevels),
+                          equipmentsInVoltageRegulation: mapIdsToIdNames(n.equipmentsInVoltageRegulation),
+                          contingencies: mapIdsToIdNames(n.contingencies),
+                      };
+                  })
+                : [],
+        };
+    });
 }
 
 export function getSensitivityAnalysisParameters(studyUuid: UUID): Promise<SensitivityAnalysisParametersInfosEnriched> {

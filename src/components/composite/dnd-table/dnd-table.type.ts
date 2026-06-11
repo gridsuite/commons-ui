@@ -6,7 +6,10 @@
  */
 
 import { JSX, ReactNode } from 'react';
-import { ElementType, EquipmentType } from '../../../utils';
+import { SxProps, Theme } from '@mui/material';
+import { ElementType } from '../../../utils/types/elementType';
+import { EquipmentType } from '../../../utils/types/equipmentType';
+import { Option } from '../../../utils/types/types';
 
 export const SELECTED = 'selected';
 export const MAX_ROWS_NUMBER = 100;
@@ -15,9 +18,11 @@ export enum DndColumnType {
     TEXT = 'TEXT',
     NUMERIC = 'NUMERIC',
     AUTOCOMPLETE = 'AUTOCOMPLETE',
+    SELECT = 'SELECT',
     CHIP_ITEMS = 'CHIP_ITEMS',
     DIRECTORY_ITEMS = 'DIRECTORY_ITEMS',
     SWITCH = 'SWITCH',
+    DESCRIPTIONS = 'DESCRIPTIONS',
     CUSTOM = 'CUSTOM',
 }
 
@@ -26,15 +31,19 @@ export interface ColumnBase {
     maxWidth?: number | string;
     width?: number | string;
     label?: string;
+    sxHeader?: SxProps<Theme>;
     extra?: JSX.Element;
     editable?: boolean;
     type: DndColumnType;
     initialValue?: any; // should conform to the type field
+    // to force to propagate a change event to the parent component via callback
+    // for example, refresh contingency count against a change of selected contingency
+    shouldHandleOnChangeCell?: boolean;
+    hideErrorMessage?: boolean;
 }
 
 export interface ColumnText extends ColumnBase {
     type: DndColumnType.TEXT;
-    showErrorMsg?: boolean;
 }
 
 export interface ColumnNumeric extends ColumnBase {
@@ -46,7 +55,12 @@ export interface ColumnNumeric extends ColumnBase {
 
 export interface ColumnAutocomplete extends ColumnBase {
     type: DndColumnType.AUTOCOMPLETE;
-    options: string[];
+    options: Option[];
+}
+
+export interface ColumnSelect extends ColumnBase {
+    type: DndColumnType.SELECT;
+    options: Option[];
 }
 
 export interface ColumnDirectoryItem extends ColumnBase {
@@ -64,6 +78,10 @@ export interface ColumnSwitchItem extends ColumnBase {
     type: DndColumnType.SWITCH;
 }
 
+export interface ColumnDescriptions extends ColumnBase {
+    type: DndColumnType.DESCRIPTIONS;
+}
+
 export interface ColumnCustom extends ColumnBase {
     type: DndColumnType.CUSTOM;
     component: (rowIndex: number) => ReactNode;
@@ -72,8 +90,10 @@ export interface ColumnCustom extends ColumnBase {
 export type DndColumn =
     | ColumnNumeric
     | ColumnAutocomplete
+    | ColumnSelect
     | ColumnText
     | ColumnDirectoryItem
     | ColumnChipsItem
     | ColumnSwitchItem
+    | ColumnDescriptions
     | ColumnCustom;

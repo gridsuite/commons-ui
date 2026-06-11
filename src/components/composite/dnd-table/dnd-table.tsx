@@ -13,43 +13,32 @@ import {
     Checkbox,
     CheckboxProps,
     Grid,
-    type SxProps,
+    IconButton,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    type Theme,
 } from '@mui/material';
-import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { DragDropContext, Draggable, DragStart, Droppable, DroppableProvided, DropResult } from '@hello-pangea/dnd';
 import { useIntl } from 'react-intl';
+import { AddCircle as AddCircleIcon } from '@mui/icons-material';
 import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
-import { ColumnBase, DndColumn, DndColumnType, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
+import { DndColumn, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
 import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
-import {
-    AutocompleteInput,
-    CheckboxInput,
-    DirectoryItemsInput,
-    ErrorInput,
-    FieldErrorAlert,
-    RawReadOnlyInput,
-    SwitchInput,
-    TableNumericalInput,
-    TableTextInput,
-} from '../../ui';
-import { ChipItemsInput } from '../../ui/reactHookForm/chip-items-input';
-import { mergeSx, type MuiStyles } from '../../../utils/styles';
+import { ErrorInput, FieldErrorAlert } from '../../ui';
+import { mergeSx, MuiStyles } from '../../../utils/styles';
+import { DndTableRow } from './dnd-table-row';
 
 const styles = {
     columnsStyle: {
         display: 'inline-flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        margin: 1,
+        marginLeft: 1,
         textTransform: 'none',
     },
 } as const satisfies MuiStyles;
@@ -95,96 +84,8 @@ function MultiCheckbox({
     );
 }
 
-interface DefaultTableCellProps {
-    arrayFormName: string;
-    rowIndex: number;
-    column: ColumnBase;
-    width?: SxProps<Theme>;
-}
-
-function DefaultTableCell({ arrayFormName, rowIndex, column, width, ...props }: Readonly<DefaultTableCellProps>) {
-    return (
-        <TableCell key={column.dataKey} sx={mergeSx({ padding: 1 }, width)}>
-            <RawReadOnlyInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} {...props} />
-        </TableCell>
-    );
-}
-
-interface EditableTableCellProps {
-    arrayFormName: string;
-    rowIndex: number;
-    column: DndColumn;
-    width?: SxProps<Theme>;
-    previousValue?: number;
-    valueModified: boolean;
-    disabled?: boolean;
-}
-
-function EditableTableCell({
-    arrayFormName,
-    rowIndex,
-    column,
-    width,
-    previousValue,
-    valueModified,
-    ...props
-}: Readonly<EditableTableCellProps>) {
-    return (
-        <TableCell key={column.dataKey} sx={mergeSx({ padding: 0.5, maxWidth: column.maxWidth }, width)}>
-            {column.type === DndColumnType.NUMERIC && (
-                <TableNumericalInput
-                    {...props}
-                    name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
-                    previousValue={previousValue}
-                    valueModified={valueModified}
-                    adornment={column?.adornment}
-                    isClearable={column?.clearable}
-                    style={{
-                        textAlign: column?.textAlign,
-                    }}
-                />
-            )}
-            {column.type === DndColumnType.TEXT && (
-                <TableTextInput
-                    {...props}
-                    name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
-                    showErrorMsg={column.showErrorMsg}
-                />
-            )}
-            {column.type === DndColumnType.AUTOCOMPLETE && (
-                <AutocompleteInput
-                    forcePopupIcon
-                    freeSolo
-                    name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
-                    options={column.options}
-                    inputTransform={(value) => value ?? ''}
-                    outputTransform={(value) => value}
-                    size="small"
-                />
-            )}
-            {column.type === DndColumnType.DIRECTORY_ITEMS && (
-                <DirectoryItemsInput
-                    name={`${arrayFormName}[${rowIndex}].${column.dataKey}`}
-                    equipmentTypes={column.equipmentTypes}
-                    elementType={column.elementType}
-                    titleId={column.titleId}
-                    hideErrorMessage
-                    label={undefined}
-                />
-            )}
-            {column.type === DndColumnType.CHIP_ITEMS && (
-                <ChipItemsInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} hideErrorMessage />
-            )}
-            {column.type === DndColumnType.SWITCH && (
-                <SwitchInput name={`${arrayFormName}[${rowIndex}].${column.dataKey}`} />
-            )}
-            {column.type === DndColumnType.CUSTOM && column.component(rowIndex)}
-        </TableCell>
-    );
-}
-
 export interface DndTableProps {
-    arrayFormName: string;
+    name: string;
     useFieldArrayOutput: UseFieldArrayReturn;
     columnsDefinition: DndColumn[];
     tableHeight?: number;
@@ -196,14 +97,9 @@ export interface DndTableProps {
     withResetButton?: boolean;
     withAddRowsDialog?: boolean;
     previousValues?: any[];
-    disableTableCell?: (rowIndex: number, column: any, arrayFormName: string, temporaryLimits?: any[]) => boolean;
-    getPreviousValue?: (
-        rowIndex: number,
-        column: any,
-        arrayFormName: string,
-        temporaryLimits?: any[]
-    ) => number | undefined;
-    isValueModified?: (index: number, arrayFormName: string) => boolean;
+    disableTableCell?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => boolean;
+    getPreviousValue?: (rowIndex: number, column: any, tableName: string, previousValues?: any[]) => number | undefined;
+    isValueModified?: (index: number, tableName: string) => boolean;
     disableAddingRows?: boolean;
     showMoveArrow?: boolean;
     disableDragAndDrop?: boolean;
@@ -212,11 +108,15 @@ export interface DndTableProps {
     handleResetButton?: () => void;
     resetButtonMessageId?: string;
     maxRows?: number;
+    disabledDeletion?: boolean;
+    multiselect?: boolean;
+    onChange?: (changedRow: any) => void;
+    onDelete?: (removedRows: any[]) => void;
 }
 
 export function DndTable(props: Readonly<DndTableProps>) {
     const {
-        arrayFormName,
+        name,
         useFieldArrayOutput,
         columnsDefinition,
         tableHeight,
@@ -237,6 +137,10 @@ export function DndTable(props: Readonly<DndTableProps>) {
         handleResetButton = undefined,
         resetButtonMessageId = undefined,
         maxRows = MAX_ROWS_NUMBER,
+        disabledDeletion,
+        multiselect,
+        onChange,
+        onDelete,
     } = props;
     const intl = useIntl();
 
@@ -252,30 +156,10 @@ export function DndTable(props: Readonly<DndTableProps>) {
 
     const [openAddRowsDialog, setOpenAddRowsDialog] = useState(false);
 
-    function renderTableCell(rowId: string, rowIndex: number, column: DndColumn, width?: SxProps<Theme>) {
-        const CustomTableCell = column.editable ? EditableTableCell : DefaultTableCell;
-        return (
-            <CustomTableCell
-                key={rowId + column.dataKey}
-                arrayFormName={arrayFormName}
-                rowIndex={rowIndex}
-                column={column}
-                disabled={
-                    disableTableCell ? disableTableCell(rowIndex, column, arrayFormName, previousValues) : disabled
-                }
-                previousValue={
-                    getPreviousValue ? getPreviousValue(rowIndex, column, arrayFormName, previousValues) : undefined
-                }
-                valueModified={isValueModified ? isValueModified(rowIndex, arrayFormName) : false}
-                width={width}
-            />
-        );
-    }
-
     const addNewRows = (numberOfRows: number) => {
         // checking if not exceeding the max allowed
         if (currentRows.length + numberOfRows > maxRows) {
-            setError(arrayFormName, {
+            setError(name, {
                 type: 'custom',
                 message: intl.formatMessage(
                     {
@@ -288,14 +172,16 @@ export function DndTable(props: Readonly<DndTableProps>) {
             });
             return;
         }
-        clearErrors(arrayFormName);
+        clearErrors(name);
 
         const rowsToAdd = createRows?.(numberOfRows).map((row) => {
             return { ...row, [SELECTED]: false };
         });
 
         // note: an id prop is automatically added in each row
-        append(rowsToAdd);
+        if (rowsToAdd) {
+            append(rowsToAdd);
+        }
     };
 
     const handleAddRowsButton = () => {
@@ -316,7 +202,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     };
 
     const deleteSelectedRows = () => {
-        const currentRowsValues = getValues(arrayFormName);
+        const currentRowsValues = getValues(name);
 
         const rowsToDelete = [];
         for (let i = 0; i < currentRowsValues.length; i++) {
@@ -325,23 +211,34 @@ export function DndTable(props: Readonly<DndTableProps>) {
             }
         }
 
+        const removedRows = rowsToDelete.map((index) => currentRowsValues[index]);
         remove(rowsToDelete);
+        onDelete?.(removedRows);
     };
+
+    const handleDeleteRow = useCallback(
+        (index: number) => {
+            const removedRow = getValues(name)[index];
+            remove(index);
+            onDelete?.([removedRow]);
+        },
+        [onDelete, getValues, name, remove]
+    );
 
     const selectAllRows = () => {
         for (let i = 0; i < currentRows.length; i++) {
-            setValue(`${arrayFormName}[${i}].${SELECTED}`, true);
+            setValue(`${name}[${i}].${SELECTED}`, true);
         }
     };
 
     const unselectAllRows = () => {
         for (let i = 0; i < currentRows.length; i++) {
-            setValue(`${arrayFormName}[${i}].${SELECTED}`, false);
+            setValue(`${name}[${i}].${SELECTED}`, false);
         }
     };
 
     const moveUpSelectedRows = () => {
-        const currentRowsValues = getValues(arrayFormName);
+        const currentRowsValues = getValues(name);
 
         if (currentRowsValues[0][SELECTED]) {
             // we can't move up more the rows, so we stop
@@ -356,7 +253,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     };
 
     const moveDownSelectedRows = () => {
-        const currentRowsValues = getValues(arrayFormName);
+        const currentRowsValues = getValues(name);
         if (currentRowsValues[currentRowsValues.length - 1][SELECTED]) {
             // we can't move down more the rows, so we stop
             return;
@@ -370,18 +267,19 @@ export function DndTable(props: Readonly<DndTableProps>) {
 
     // Stores captured cell widths for the row being dragged, so the
     // portalled row keeps the original column layout.
-    const dragCellWidthsRef = useRef<number[]>([]);
+    const snapshotCellWidthsRef = useRef<number[]>([]);
     const cellIdxRef = useRef(0);
 
     const onBeforeDragStart = useCallback((start: DragStart) => {
+        // take a photo on cell widths of the being dragged row
         const row = document.querySelector<HTMLTableRowElement>(`[data-rfd-draggable-id="${start.draggableId}"]`);
         if (row) {
-            dragCellWidthsRef.current = Array.from(row.cells, (cell) => cell.offsetWidth);
+            snapshotCellWidthsRef.current = Array.from(row.cells, (cell) => cell.offsetWidth);
         }
     }, []);
 
-    const nextLockedWidthSx = useCallback((isDragging: boolean) => {
-        const cellWidths = dragCellWidthsRef.current;
+    const nextSnapshotCellWidthSx = useCallback((isDragging: boolean) => {
+        const cellWidths = snapshotCellWidthsRef.current;
         const cellIdx = cellIdxRef.current;
         if (!isDragging || cellWidths[cellIdx] == null) {
             return undefined;
@@ -391,7 +289,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
     }, []);
 
     const onDragEnd = (result: DropResult) => {
-        dragCellWidthsRef.current = [];
+        snapshotCellWidthsRef.current = [];
         // dropped outside the list
         if (!result.destination) {
             return;
@@ -406,27 +304,56 @@ export function DndTable(props: Readonly<DndTableProps>) {
                     {!disableDragAndDrop && (
                         <TableCell sx={{ width: '3%' }}>{/* empty cell for the drag and drop column */}</TableCell>
                     )}
-                    <TableCell sx={{ width: '5%', textAlign: 'center' }}>
-                        <MultiCheckbox
-                            arrayFormName={arrayFormName}
-                            handleClickCheck={selectAllRows}
-                            handleClickUncheck={unselectAllRows}
-                            disabled={disabled || currentRows.length === 0}
-                        />
-                    </TableCell>
+                    {multiselect && (
+                        <TableCell sx={{ width: '5%', textAlign: 'center' }}>
+                            <MultiCheckbox
+                                arrayFormName={name}
+                                handleClickCheck={selectAllRows}
+                                handleClickUncheck={unselectAllRows}
+                                disabled={disabled || currentRows.length === 0}
+                            />
+                        </TableCell>
+                    )}
                     {columnsDefinition.map((column) => (
-                        <TableCell key={column.dataKey} sx={{ width: column.width, maxWidth: column.maxWidth }}>
+                        <TableCell
+                            key={column.dataKey}
+                            sx={mergeSx(
+                                { width: column.width, maxWidth: column.maxWidth, textAlign: 'left' },
+                                column.sxHeader
+                            )}
+                        >
                             <Box sx={styles.columnsStyle}>
                                 {column.label}
                                 {column.extra}
                             </Box>
                         </TableCell>
                     ))}
+                    {!disableAddingRows && !multiselect && (
+                        <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
+                            <CustomTooltip
+                                title={intl.formatMessage({
+                                    id: 'AddRows',
+                                })}
+                            >
+                                <span>
+                                    <IconButton disabled={disabled} onClick={handleAddRowsButton}>
+                                        <AddCircleIcon />
+                                    </IconButton>
+                                </span>
+                            </CustomTooltip>
+                        </TableCell>
+                    )}
                 </TableRow>
             </TableHead>
         );
     }
 
+    const handleChangeRow = useCallback(
+        (index: number) => {
+            onChange?.(getValues(name)[index]);
+        },
+        [getValues, name, onChange]
+    );
     function renderTableBody(providedDroppable: DroppableProvided) {
         return (
             <TableBody>
@@ -440,36 +367,25 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         {(provided, snapshot) => {
                             cellIdxRef.current = 0;
                             const tableRow = (
-                                <TableRow ref={provided.innerRef} {...provided.draggableProps}>
-                                    {!disableDragAndDrop && (
-                                        <CustomTooltip
-                                            title={intl.formatMessage({
-                                                id: 'DragAndDrop',
-                                            })}
-                                        >
-                                            <TableCell
-                                                sx={mergeSx(
-                                                    { textAlign: 'center' },
-                                                    nextLockedWidthSx(snapshot.isDragging)
-                                                )}
-                                                {...(disabled ? {} : { ...provided.dragHandleProps })}
-                                            >
-                                                <DragIndicatorIcon />
-                                            </TableCell>
-                                        </CustomTooltip>
-                                    )}
-                                    <TableCell
-                                        sx={mergeSx({ textAlign: 'center' }, nextLockedWidthSx(snapshot.isDragging))}
-                                    >
-                                        <CheckboxInput
-                                            name={`${arrayFormName}[${index}].${SELECTED}`}
-                                            formProps={{ disabled }}
-                                        />
-                                    </TableCell>
-                                    {columnsDefinition.map((column) =>
-                                        renderTableCell(row.id, index, column, nextLockedWidthSx(snapshot.isDragging))
-                                    )}
-                                </TableRow>
+                                <DndTableRow
+                                    provided={provided}
+                                    snapshot={snapshot}
+                                    rowId={row.id}
+                                    tableName={name}
+                                    columnsDefinition={columnsDefinition}
+                                    index={index}
+                                    disableDragAndDrop={disableDragAndDrop}
+                                    disabled={disabled}
+                                    previousValues={previousValues}
+                                    disableTableCell={disableTableCell}
+                                    getPreviousValue={getPreviousValue}
+                                    isValueModified={isValueModified}
+                                    disabledDeletion={disabledDeletion}
+                                    onChangeRow={handleChangeRow}
+                                    onDeleteRow={handleDeleteRow}
+                                    multiselect={multiselect}
+                                    nextSnapshotCellWidthSx={nextSnapshotCellWidthSx}
+                                />
                             );
                             // Portal the dragging row to document.body to avoid CSS transform
                             // ancestors (e.g. react-rnd panels) from breaking position:fixed
@@ -505,7 +421,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         )}
                     </Droppable>
                 </DragDropContext>
-                <ErrorInput name={arrayFormName} InputField={FieldErrorAlert} />
+                <ErrorInput name={name} InputField={FieldErrorAlert} />
             </Grid>
             <Grid container item>
                 {handleResetButton && handleUploadButton && resetButtonMessageId && uploadButtonMessageId ? (
@@ -519,16 +435,18 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         resetButtonMessageId={resetButtonMessageId}
                     />
                 ) : null}
-                <DndTableBottomRightButtons
-                    arrayFormName={arrayFormName}
-                    handleAddButton={handleAddRowsButton}
-                    handleDeleteButton={deleteSelectedRows}
-                    handleMoveUpButton={moveUpSelectedRows}
-                    handleMoveDownButton={moveDownSelectedRows}
-                    disableAddingRows={disableAddingRows}
-                    showMoveArrow={showMoveArrow}
-                    disabled={disabled}
-                />
+                {multiselect && (
+                    <DndTableBottomRightButtons
+                        arrayFormName={name}
+                        handleAddButton={handleAddRowsButton}
+                        handleDeleteButton={deleteSelectedRows}
+                        handleMoveUpButton={moveUpSelectedRows}
+                        handleMoveDownButton={moveDownSelectedRows}
+                        disableAddingRows={disableAddingRows}
+                        showMoveArrow={showMoveArrow}
+                        disabled={disabled}
+                    />
+                )}
             </Grid>
             <DndTableAddRowsDialog
                 open={openAddRowsDialog}
