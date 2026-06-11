@@ -328,7 +328,7 @@ export const formatShortCircuitSpecificParameters = (
     const nodeClusterParam = specificParametersDescriptionForProvider.find((p) => p.name === NODE_CLUSTER);
     if (nodeClusterParam) {
         if (Object.hasOwn(specificParamsList, NODE_CLUSTER_FILTER_IDS)) {
-            // SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS is parsed when getting shortcircuit parameters
+            // NODE_CLUSTER_FILTER_IDS is parsed when getting shortcircuit parameters
             formatted[NODE_CLUSTER_FILTER_IDS] = specificParamsList[NODE_CLUSTER_FILTER_IDS]
                 ? specificParamsList[NODE_CLUSTER_FILTER_IDS]
                 : [];
