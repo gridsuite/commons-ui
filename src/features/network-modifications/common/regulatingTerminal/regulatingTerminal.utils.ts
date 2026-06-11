@@ -47,7 +47,7 @@ export const getRegulatingTerminalEquipmentData = ({
 }: {
     equipmentId?: string | null;
     equipmentName?: string | null;
-    equipmentType?: string | null;
+    equipmentType?: string;
 }) => {
     if (!equipmentId) {
         return null;
@@ -77,7 +77,7 @@ export const getRegulatingTerminalFormData = ({
     voltageLevelTopologyKind?: string;
     equipmentId?: string | null;
     equipmentName?: string | null;
-    equipmentType?: string | null;
+    equipmentType?: string;
 }) => ({
     [FieldConstants.VOLTAGE_LEVEL]: getRegulatingTerminalVoltageLevelData({
         voltageLevelId,

@@ -22,6 +22,20 @@ export function isCompositeModification(modification: ComposedModificationMetada
     return modification?.messageType === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
+// returns the depth of the modification with the given uuid in the given mods tree
+export function findDepth(mods: ComposedModificationMetadata[], uuid: UUID, currentDepth = 0): number {
+    // I think that array iteration is much less readable in this case :
+    // eslint-disable-next-line no-restricted-syntax
+    for (const mod of mods) {
+        if (mod.uuid === uuid) return currentDepth;
+        if (mod.subModifications?.length) {
+            const found = findDepth(mod.subModifications, uuid, currentDepth + 1);
+            if (found >= 0) return found;
+        }
+    }
+    return -1;
+}
+
 /**
  *
  * @param modifications source where the composite modifications are looked for
