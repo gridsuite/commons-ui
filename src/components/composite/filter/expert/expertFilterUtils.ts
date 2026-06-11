@@ -445,18 +445,23 @@ export const queryValidator: QueryValidator = (query) => {
                 valid: false,
                 reasons: [RULES.EMPTY_RULE],
             };
-        } else if (
-            rule.id &&
-            dataType === DataType.PROPERTY &&
-            (isBlankOrEmpty(rule.value?.propertyName) ||
-                isBlankOrEmpty(rule.value?.propertyOperator) ||
-                isBlankOrEmpty(rule.value?.propertyValues) ||
-                !rule.value?.propertyValues?.length)
-        ) {
-            result[rule.id] = {
-                valid: false,
-                reasons: [RULES.EMPTY_RULE],
-            };
+        } else if (rule.id && dataType === DataType.PROPERTY) {
+            if (isBlankOrEmpty(rule.value?.propertyName) || isBlankOrEmpty(rule.value?.propertyOperator)) {
+                result[rule.id] = {
+                    valid: false,
+                    reasons: [RULES.EMPTY_RULE],
+                };
+            } else if (rule.value?.propertyOperator === 'EXISTS' || rule.value?.propertyOperator === 'NOT_EXISTS') {
+                result[rule.id] = {
+                    valid: true,
+                    reasons: undefined,
+                };
+            } else if (isBlankOrEmpty(rule.value?.propertyValues) || !rule.value?.propertyValues?.length) {
+                result[rule.id] = {
+                    valid: false,
+                    reasons: [RULES.EMPTY_RULE],
+                };
+            }
         } else if (rule.id && dataType === DataType.COMBINATOR) {
             // based on FIELDS_OPTIONS configuration and composite group, validate for each children composite rule in a composite group
             const childrenFields = Object.keys(getFieldData(rule.field).children ?? {});
