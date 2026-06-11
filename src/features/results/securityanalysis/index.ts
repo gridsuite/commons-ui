@@ -29,5 +29,6 @@ export type {
     ContingencyItem,
     Contingency,
     ConnectivityResult,
+    PreContingencyResult,
 } from './security-analysis.type';
 export { NmkType } from './security-analysis.type';
