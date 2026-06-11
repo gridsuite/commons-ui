@@ -54,7 +54,7 @@ export type ElementSaveDialogProps = {
     onSave: (data: IElementCreationDialog) => void;
     OnUpdate?: (data: IElementUpdateDialog) => void;
     prefixIdForGeneratedName?: string;
-    defaultName: string | null;
+    defaultName?: string | null;
     initialOperation?: OperationType;
     selectorTitleId?: string;
     createLabelId?: string;
