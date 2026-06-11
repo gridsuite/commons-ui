@@ -6,14 +6,24 @@
  */
 
 import { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson } from './utils';
-import { ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
+import {
+    type PowerElectronicsCluster,
+    ShortCircuitParametersInfos,
+} from '../features/parameters/short-circuit/short-circuit-parameters.type';
+import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { fetchElementNames } from './directory';
 
 const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
+const NODE_CLUSTER_FILTER_IDS = 'nodeClusterFilterIds';
+const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
 
 function getShortCircuitUrl() {
     return `${PREFIX_SHORT_CIRCUIT_SERVER_QUERIES}/v1/`;
 }
+
+const getStudyUrl = (studyUuid: UUID | null) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
 export function getShortCircuitSpecificParametersDescription() {
     console.info('get short circuit specific parameters description');
@@ -22,10 +32,93 @@ export function getShortCircuitSpecificParametersDescription() {
     return backendFetchJson(getShortCircuitSpecificParametersUrl);
 }
 
+function parseNodeClusters(parameters: ShortCircuitParametersInfos): Map<string, Set<string>> {
+    const filterIdsFromNodeCluster = new Map<string, Set<string>>();
+    Object.entries(parameters.specificParametersPerProvider).forEach(([provider, specificParamValue]) => {
+        if (Object.hasOwn(specificParamValue, NODE_CLUSTER_FILTER_IDS)) {
+            const filters = JSON.parse(specificParamValue[NODE_CLUSTER_FILTER_IDS]);
+            filterIdsFromNodeCluster.set(provider, filters);
+        }
+    });
+    return filterIdsFromNodeCluster;
+}
+
+const parsePowerElectronicsMaterialsParamString = (
+    parameters: ShortCircuitParametersInfos
+): Map<string, (PowerElectronicsCluster & { active: boolean })[]> => {
+    // Attempt to parse the string into an array of PowerElectronicsMaterial objects
+    const powerElectronicsMaterialPerProvider = new Map<string, (PowerElectronicsCluster & { active: boolean })[]>();
+    Object.entries(parameters.specificParametersPerProvider).forEach(([provider, specificParamValue]) => {
+        if (Object.hasOwn(specificParamValue, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
+            const powerElectronicsMaterial = JSON.parse(specificParamValue[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]);
+            powerElectronicsMaterialPerProvider.set(provider, powerElectronicsMaterial);
+        }
+    });
+    return powerElectronicsMaterialPerProvider;
+};
+
+export function enrichShortCircuitParameters(
+    parameters: ShortCircuitParametersInfos
+): Promise<ShortCircuitParametersInfos> {
+    const allElementIds = new Set<string>();
+    const nodeClusterParameters = parseNodeClusters(parameters);
+    nodeClusterParameters.forEach((nodeClusterFilter) =>
+        nodeClusterFilter.forEach((filter: string) => allElementIds.add(filter))
+    );
+    const parsePowerElectronicsMaterialsParameters = parsePowerElectronicsMaterialsParamString(parameters);
+    parsePowerElectronicsMaterialsParameters.forEach((powerElectronicsMaterialList) => {
+        powerElectronicsMaterialList.forEach((powerElectronicsMaterials) =>
+            powerElectronicsMaterials.filters.forEach((filter) => allElementIds.add(filter)));
+    });
+
+    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+    return elementNamesPromise.then((elementNames) => {
+        if (parameters.specificParametersPerProvider) {
+            Object.entries(parameters.specificParametersPerProvider).forEach(([provider, specificParamValue]) => {
+                if (Object.hasOwn(specificParamValue, NODE_CLUSTER_FILTER_IDS)) {
+                    const newNodeClusterFilterIds: any[] = [];
+                    nodeClusterParameters.get(provider)?.forEach((filter) => {
+                        newNodeClusterFilterIds.push({
+                            ['id']: filter,
+                            ['name']: elementNames?.[filter] ?? undefined,
+                        });
+                    });
+                    parameters.specificParametersPerProvider[provider][NODE_CLUSTER_FILTER_IDS] = newNodeClusterFilterIds;
+                }
+                if (Object.hasOwn(specificParamValue, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
+                    const newPowerElectronicsMaterials: any[] = [];
+                    parsePowerElectronicsMaterialsParameters.get(provider)?.forEach((powerElectronicsMaterials) => {
+                        const newFilters = powerElectronicsMaterials.filters.map((filter) => ({
+                            ['id']: filter,
+                            ['name']: elementNames?.[filter] ?? undefined,
+                        }));
+                        newPowerElectronicsMaterials.push({
+                            ...powerElectronicsMaterials,
+                            filters: newFilters,
+                        });
+                    });
+                    parameters.specificParametersPerProvider[provider][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] =
+                        newPowerElectronicsMaterials;
+                }
+            });
+        }
+        return parameters;
+    });
+}
+
 export function fetchShortCircuitParameters(parameterUuid: string): Promise<ShortCircuitParametersInfos> {
     console.info('get short circuit analysis parameters');
     const url = `${getShortCircuitUrl()}parameters/${encodeURIComponent(parameterUuid)}`;
-    return backendFetchJson(url);
+    const parametersPromise: Promise<ShortCircuitParametersInfos> = backendFetchJson(url);
+    return parametersPromise.then((parameters) => enrichShortCircuitParameters(parameters));
+}
+
+export function getShortCircuitParameters(studyUuid: UUID): Promise<ShortCircuitParametersInfos> {
+    console.info('get short circuit parameters');
+    const getScParams = getStudyUrl(studyUuid) + '/short-circuit-analysis/parameters';
+    console.debug(getScParams);
+    const parametersPromise: Promise<ShortCircuitParametersInfos> = backendFetchJson(getScParams);
+    return parametersPromise.then((parameters) => enrichShortCircuitParameters(parameters));
 }
 
 export function updateShortCircuitParameters(parameterUuid: UUID, newParams: any) {
