@@ -24,8 +24,7 @@ import {
     PAGE_OPTIONS,
 } from './security-analysis-result-utils';
 import { SecurityAnalysisTable } from './security-analysis-table';
-
-import CustomTablePagination from './custom-table-pagination';
+import { CustomTablePagination } from '../../components';
 import { MuiStyles } from '../../utils';
 
 const styles = {

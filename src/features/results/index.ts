@@ -1,6 +1,5 @@
 export { SecurityAnalysisResultNmk } from './security-analysis-result-nmk';
 export { SecurityAnalysisTable } from './security-analysis-table';
-export { default as CustomTablePagination } from './custom-table-pagination';
 export {
     flattenNmKResultsContingencies,
     flattenNmKResultsConstraints,
