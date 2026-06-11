@@ -116,7 +116,7 @@ export function SensitivityAnalysisParametersInline({
     }, []);
 
     useEffect(() => {
-        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+        setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
     return (

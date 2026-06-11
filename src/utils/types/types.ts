@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import type { UUID } from 'node:crypto';
+import { UUID } from 'node:crypto';
 import { MessageDescriptor, PrimitiveType } from 'react-intl';
 import { ElementType } from './elementType';
 
@@ -97,3 +97,11 @@ export type ItemSelectionForCopy = {
     parentDirectoryUuid: UUID | null;
     specificTypeItem: string | null;
 };
+
+/**
+ * A directory element uuid but enriched with the corresponding name.
+ */
+export interface IdName {
+    id: UUID;
+    name?: string;
+}

@@ -103,7 +103,10 @@ export const voltageLevelCreationFormSchema = object()
             }),
         [FieldConstants.SUBSTATION_NAME]: string().nullable(),
         [FieldConstants.COUNTRY]: string().nullable(),
-        [FieldConstants.SUBSTATION_CREATION]: creationPropertiesSchema,
+        [FieldConstants.SUBSTATION_CREATION]: object().when([FieldConstants.ADD_SUBSTATION_CREATION], {
+            is: (addSubstationCreation: boolean) => addSubstationCreation,
+            then: () => creationPropertiesSchema,
+        }),
         [FieldConstants.HIDE_NOMINAL_VOLTAGE]: boolean().required(),
         [FieldConstants.NOMINAL_V]: number()
             .nullable()
