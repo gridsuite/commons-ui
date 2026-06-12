@@ -20,7 +20,6 @@ export function TextValueEditor(props: ValueEditorProps) {
 
     const { value, handleOnChange, title } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
-    const customFilterOptions = useCustomFilterOptions();
     const intl = useIntl();
 
     if (!Array.isArray(value)) {
@@ -43,7 +42,7 @@ export function TextValueEditor(props: ValueEditorProps) {
             )}
             size="small"
             title={title}
-            filterOptions={customFilterOptions}
+            filterOptions={useCustomFilterOptions}
         />
     );
 }

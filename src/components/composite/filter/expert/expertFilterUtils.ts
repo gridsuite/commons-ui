@@ -451,7 +451,10 @@ export const queryValidator: QueryValidator = (query) => {
                     valid: false,
                     reasons: [RULES.EMPTY_RULE],
                 };
-            } else if (rule.value?.propertyOperator === 'EXISTS' || rule.value?.propertyOperator === 'NOT_EXISTS') {
+            } else if (
+                rule.value?.propertyOperator === OPERATOR_OPTIONS.EXISTS.name ||
+                rule.value?.propertyOperator === OPERATOR_OPTIONS.NOT_EXISTS.name
+            ) {
                 result[rule.id] = {
                     valid: true,
                     reasons: undefined,

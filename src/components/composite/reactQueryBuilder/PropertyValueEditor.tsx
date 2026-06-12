@@ -32,7 +32,6 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     const { equipmentType, valueEditorProps } = props;
     const valid = useValid(valueEditorProps);
     const intl = useIntl();
-    const customFilterOptions = useCustomFilterOptions();
 
     const { propertyName, propertyOperator, propertyValues } = valueEditorProps?.value ?? {};
 
@@ -85,7 +84,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
-                    filterOptions={customFilterOptions}
+                    filterOptions={useCustomFilterOptions}
                 />
             </Grid>
             <Grid item xs="auto">
@@ -130,7 +129,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                                 onChange(FieldConstants.PROPERTY_VALUES, value);
                             }}
                             size="small"
-                            filterOptions={customFilterOptions}
+                            filterOptions={useCustomFilterOptions}
                         />
                     </Grid>
                 )}
