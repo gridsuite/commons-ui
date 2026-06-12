@@ -11,6 +11,7 @@ import { Button } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
 import { equalsArrayAnyOrder, getCsvDelimiter } from '../../../utils';
+import { hasNonEmptyRows } from '../../composite/agGridTable/agGridTable-utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
 
 type CsvPickerCallbacks<TData> =
@@ -35,7 +36,7 @@ export type CsvPickerProps<TData = unknown> = {
     selectedFile?: File;
     onFileChange: (file: File | undefined) => void;
     onFileError: (error: string | undefined) => void;
-    hasExistingData?: () => boolean;
+    getTableData?: () => unknown[];
 } & CsvPickerCallbacks<TData>;
 
 export function CsvPicker<TData = unknown>({
@@ -51,7 +52,7 @@ export function CsvPicker<TData = unknown>({
     onComplete,
     onAppend,
     onReplace,
-    hasExistingData,
+    getTableData,
 }: CsvPickerProps<TData>) {
     const intl = useIntl();
     const { CSVReader } = useCSVReader();
@@ -79,7 +80,7 @@ export function CsvPicker<TData = unknown>({
             } else {
                 onFileError(undefined);
                 if (onAppend && onReplace) {
-                    if (hasExistingData?.()) {
+                    if (hasNonEmptyRows(getTableData?.())) {
                         setPendingImport({ results, file: acceptedFile });
                     } else {
                         onReplace(results, acceptedFile);
@@ -91,7 +92,7 @@ export function CsvPicker<TData = unknown>({
                 }
             }
         },
-        [header, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, hasExistingData]
+        [header, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, getTableData]
     );
 
     return (
@@ -118,6 +119,7 @@ export function CsvPicker<TData = unknown>({
                         </span>
                         <Button {...getRootProps()} variant="outlined" disabled={disabled}>
                             <FormattedMessage id={label} />
+                            {/* this bar is bugged, if you click somewhere while loading it will reset (the confirmation dialog prevent this reset and fix the problem) */}
                             <ProgressBar
                                 style={{
                                     position: 'absolute',

@@ -15,7 +15,6 @@ import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { CustomAgGridTable } from '../../agGridTable/CustomAgGridTable';
-import { hasNonEmptyRows } from '../../agGridTable/agGridTable-utils';
 import { SelectInput } from '../../../ui/reactHookForm/selectInputs/SelectInput';
 import { isInjection } from '../../../../utils/types/equipmentTypes';
 import { NumericEditor, suppressNonNumericKeyboardEvent } from '../../agGridTable/cellEditors/numericEditor';
@@ -181,8 +180,6 @@ export function ExplicitNamingFilterForm({
         setFileErrorMessage(undefined);
     }, [watchEquipmentType]);
 
-    const hasExistingData = useCallback(() => hasNonEmptyRows(getValues(FILTER_EQUIPMENTS_ATTRIBUTES)), [getValues]);
-
     const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
 
     const getTableData = useCallback(() => {
@@ -269,7 +266,7 @@ export function ExplicitNamingFilterForm({
                         selectedFile={selectedFile}
                         onFileChange={setSelectedFile}
                         onFileError={setFileErrorMessage}
-                        hasExistingData={hasExistingData}
+                        getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
                         onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
                         onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
                     />
