@@ -38,6 +38,7 @@ export const networkModificationsFr = {
     'network_modifications.LINE_CREATION': 'Création de la ligne {computedLabel}',
     'network_modifications.LINE_MODIFICATION': 'Modification de la ligne {computedLabel}',
     'network_modifications.COMPOSITE_MODIFICATION': '{computedLabel}',
+    'network_modifications.MODIFICATION_REFERENCE': '{computedLabel}',
     'network_modifications.TWO_WINDINGS_TRANSFORMER_CREATION':
         'Création du transformateur à 2 enroulements {computedLabel}',
     'network_modifications.TWO_WINDINGS_TRANSFORMER_MODIFICATION':
