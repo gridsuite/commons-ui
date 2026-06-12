@@ -6,12 +6,13 @@
  */
 
 export const csvFr = {
-    ImportCSV: 'Import CSV',
-    noDataInCsvFile: 'Aucune donnée trouvée dans ce fichier',
+    noDataInCsvFile: 'Aucune donnée trouvée dans le fichier "{filename}"',
     wrongCsvHeadersError:
-        'Les en-têtes du fichier CSV sont incorrects. Utilisez le bouton Générer le modèle CSV pour obtenir le format CSV pris en charge',
+        'Les en-têtes du fichier "{filename}" sont incorrects. Utilisez le bouton Générer le modèle CSV pour obtenir le format CSV pris en charge',
     keepCSVDataMessage: 'Voulez-vous remplacer la liste existante ou y ajouter les nouvelles données ?',
     GenerateCSV: 'Générer le modèle CSV',
-    UploadCSV: 'Télécharger le CSV',
+    DownloadCSV: 'Télécharger en CSV',
+    UploadCSV: 'Charger un CSV',
     uploadMessage: ' Aucun fichier sélectionné',
+    tooManyLinesInCsvFile: 'Le nombre de lignes dans le fichier "{filename}" ne doit pas dépasser {value}',
 };
