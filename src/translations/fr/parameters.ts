@@ -187,6 +187,7 @@ export const parametersFr = {
     HighVoltageLimitAdjustment: 'Modification limite haute',
     VoltageLevelFilterTooltip:
         "Les saisies sont appliquées dans l'ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un poste est inclus dans plusieurs filtres)",
+    UniqueFilterInputError: 'Vous devez sélectionner un filtre',
     EquipmentSelection: 'Sélection des ouvrages',
     ReactiveSlacksThreshold: "Seuil d'alerte sur les investissements réactifs",
     ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
