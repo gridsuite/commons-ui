@@ -39,7 +39,7 @@ export const CENTER_LABEL = 'centerLabel';
 export const SUBSTATION_LAYOUT = 'SubstationLayout';
 export const COMPONENT_LIBRARY = 'ComponentLibrary';
 export const NAD_POSITIONS_GENERATION_MODE_LABEL = 'nadPositionsGenerationModeLabel';
-export const STATE_ESTIMATION = 'StateEstimation';
+export const CUSTOM_REAL_TIME_STATE_ESTIMATION = 'CustomRealTimeStateEstimation';
 
 export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {

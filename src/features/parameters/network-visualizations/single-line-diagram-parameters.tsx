@@ -21,7 +21,7 @@ import {
     PARAM_DIAGONAL_LABEL,
     PARAM_CENTER_LABEL,
     PARAM_STATE_ESTIMATION,
-    STATE_ESTIMATION,
+    CUSTOM_REAL_TIME_STATE_ESTIMATION,
 } from './constants';
 import { MuiSelectInput, SwitchInput } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';
@@ -101,7 +101,7 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
             <LineSeparator />
             {componentLineDropDown}
             <LineSeparator />
-            {labelPosition(PARAM_STATE_ESTIMATION, STATE_ESTIMATION)}
+            {labelPosition(PARAM_STATE_ESTIMATION, CUSTOM_REAL_TIME_STATE_ESTIMATION)}
         </Grid>
     );
 }
