@@ -31,7 +31,7 @@ import {
 import {
     FilterPOJO,
     FormPowerElectronicsCluster,
-    type PowerElectronicsCluster,
+    PowerElectronicsCluster,
     type PowerElectronicsMaterial,
 } from './short-circuit-parameters.type';
 import {
@@ -273,6 +273,40 @@ const formatElectronicsMaterialsParamString = (
     });
 };
 
+
+const parsePowerElectronicsClustersParamString = (
+    paramString: string,
+    snackError: (message: SnackInputs) => void
+): (PowerElectronicsCluster & { active: boolean })[] => {
+    // Attempt to parse the string into an array of PowerElectronicsCluster objects
+    try {
+        return JSON.parse(paramString);
+    } catch (error) {
+        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsClustersParamParsingError' });
+        return [];
+    }
+};
+
+const formatElectronicsClustersParamString = (
+    defaultValues: PowerElectronicsCluster[],
+    specificParamValue: string,
+    snackError: (message: SnackInputs) => void
+) => {
+    const electronicsClustersArrayInParams: (PowerElectronicsCluster & { active: boolean })[] =
+        parsePowerElectronicsClustersParamString(specificParamValue, snackError);
+    return electronicsClustersArrayInParams.map((cluster) => {
+        const { filters, ...rest } = cluster;
+        return {
+            ...rest,
+            filters: filters.map((filter) => ({
+                [ID]: filter.id,
+                [NAME]: filter.name, // from back to front -> {id: uuid, name: string}
+            })),
+        };
+    });
+};
+
+
 export const formatShortCircuitSpecificParameters = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
     specificParamsList: SpecificParametersValues,
@@ -311,14 +345,13 @@ export const formatShortCircuitSpecificParameters = (
     );
     if (powerElectronicsClustersParam) {
         if (Object.hasOwn(specificParamsList, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
-            // SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS is parsed when getting shortcircuit parameters
-            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = specificParamsList[
-                SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
-            ]
-                ? specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]
-                : getDefaultShortCircuitSpecificParamsValues([powerElectronicsClustersParam], snackError)?.[
-                      SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
-                  ];
+            formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = formatElectronicsClustersParamString(
+                getDefaultShortCircuitSpecificParamsValues([powerElectronicsClustersParam], snackError)?.[
+                    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS
+                ],
+                specificParamsList[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] as string,
+                snackError
+            );
         } else {
             formatted[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = getDefaultSpecificParamsValues([
                 powerElectronicsClustersParam,
@@ -329,9 +362,11 @@ export const formatShortCircuitSpecificParameters = (
     if (nodeClusterParam) {
         if (Object.hasOwn(specificParamsList, NODE_CLUSTER_FILTER_IDS)) {
             // NODE_CLUSTER_FILTER_IDS is parsed when getting shortcircuit parameters
-            formatted[NODE_CLUSTER_FILTER_IDS] = specificParamsList[NODE_CLUSTER_FILTER_IDS]
-                ? specificParamsList[NODE_CLUSTER_FILTER_IDS]
-                : [];
+            const filters = JSON.parse(specificParamsList[NODE_CLUSTER_FILTER_IDS]);
+            formatted[NODE_CLUSTER_FILTER_IDS] = filters.map((filter: { id: any; name: any }) => ({
+                [ID]: filter.id,
+                [NAME]: filter.name, // from back to front -> {id: uuid, name: string}
+            }));
         } else {
             formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[
                 NODE_CLUSTER_FILTER_IDS

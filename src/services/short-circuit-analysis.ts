@@ -13,6 +13,8 @@ import {
 } from '../features/parameters/short-circuit/short-circuit-parameters.type';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 import { fetchElementNames } from './directory';
+import { ID } from '../utils';
+import { NAME } from '../components';
 
 const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
 const NODE_CLUSTER_FILTER_IDS = 'nodeClusterFilterIds';
@@ -79,18 +81,19 @@ export function enrichShortCircuitParameters(
                     const newNodeClusterFilterIds: any[] = [];
                     nodeClusterParameters.get(provider)?.forEach((filter) => {
                         newNodeClusterFilterIds.push({
-                            ['id']: filter,
-                            ['name']: elementNames?.[filter] ?? undefined,
+                            [ID]: filter,
+                            [NAME]: elementNames?.[filter] ?? undefined,
                         });
                     });
-                    parameters.specificParametersPerProvider[provider][NODE_CLUSTER_FILTER_IDS] = newNodeClusterFilterIds;
+                    parameters.specificParametersPerProvider[provider][NODE_CLUSTER_FILTER_IDS] =
+                        JSON.stringify(newNodeClusterFilterIds);
                 }
                 if (Object.hasOwn(specificParamValue, SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS)) {
                     const newPowerElectronicsMaterials: any[] = [];
                     parsePowerElectronicsMaterialsParameters.get(provider)?.forEach((powerElectronicsMaterials) => {
                         const newFilters = powerElectronicsMaterials.filters.map((filter) => ({
-                            ['id']: filter,
-                            ['name']: elementNames?.[filter] ?? undefined,
+                            [ID]: filter,
+                            [NAME]: elementNames?.[filter] ?? undefined,
                         }));
                         newPowerElectronicsMaterials.push({
                             ...powerElectronicsMaterials,
@@ -98,7 +101,7 @@ export function enrichShortCircuitParameters(
                         });
                     });
                     parameters.specificParametersPerProvider[provider][SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] =
-                        newPowerElectronicsMaterials;
+                        JSON.stringify(newPowerElectronicsMaterials);
                 }
             });
         }
@@ -125,6 +128,7 @@ export function updateShortCircuitParameters(parameterUuid: UUID, newParams: any
     console.info('set short circuit parameters');
     const setShortCircuitParametersUrl = `${getShortCircuitUrl()}parameters/${parameterUuid}`;
     console.debug(setShortCircuitParametersUrl);
+    console.log('updateShortCircuitParameters', newParams);
     return backendFetch(setShortCircuitParametersUrl, {
         method: 'PUT',
         headers: {
