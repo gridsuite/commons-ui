@@ -14,7 +14,7 @@ import { OPERATOR_OPTIONS } from '../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
-import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
+import { createCustomFilterOptions } from './utils';
 
 const PROPERTY_VALUE_OPERATORS = [
     OPERATOR_OPTIONS.IN,
@@ -84,7 +84,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
-                    filterOptions={useCustomFilterOptions}
+                    filterOptions={createCustomFilterOptions}
                 />
             </Grid>
             <Grid item xs="auto">
@@ -129,7 +129,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                                 onChange(FieldConstants.PROPERTY_VALUES, value);
                             }}
                             size="small"
-                            filterOptions={useCustomFilterOptions}
+                            filterOptions={createCustomFilterOptions}
                         />
                     </Grid>
                 )}

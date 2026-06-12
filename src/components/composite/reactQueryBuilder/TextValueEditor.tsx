@@ -11,7 +11,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useConvertValue } from './hooks/useConvertValue';
 import { useValid } from './hooks/useValid';
-import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
+import { createCustomFilterOptions } from './utils';
 
 export function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
@@ -42,7 +42,7 @@ export function TextValueEditor(props: ValueEditorProps) {
             )}
             size="small"
             title={title}
-            filterOptions={useCustomFilterOptions}
+            filterOptions={createCustomFilterOptions}
         />
     );
 }

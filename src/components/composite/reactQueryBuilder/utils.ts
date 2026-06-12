@@ -1,16 +1,15 @@
 /**
- * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import { createFilterOptions, FilterOptionsState } from '@mui/material';
 
 /**
  * function used to add custom filterOptions, use only when freeSolo = true
  */
-export function useCustomFilterOptions(options: string[], params: FilterOptionsState<string>) {
+export function createCustomFilterOptions(options: string[], params: FilterOptionsState<string>) {
     const filter = createFilterOptions<string>();
     const filteredOptions = filter(options, params);
     const { inputValue } = params;
