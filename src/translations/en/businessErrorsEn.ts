@@ -66,7 +66,7 @@ export const businessErrorsEn = {
     'securityAnalysis.contingencyListConfigEmpty': 'The configuration does not contain any contingency.',
     'securityAnalysis.missingContingencyList':
         'The configuration contains one or more contingency lists that have been deleted.',
-    'dynamicMapping.mappingNameNotProvided': 'Mapping name not provided',
+    'dynamicMapping.mappingNotProvided': 'Mapping not provided',
     'dynamicSecurityAnalysis.providerNotFound': 'Dynamic security analysis provider not found.',
     'dynamicSecurityAnalysis.contingenciesNotFound': 'No contingencies provided.',
     'dynamicSecurityAnalysis.contingencyListEmpty': 'Contingency list parameter must not be null or empty.',

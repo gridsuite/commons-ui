@@ -21,7 +21,7 @@ import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelec
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import {
     toFormValues,
-    toParamsInfos,
+    toParamsEnriched,
     useDynamicSimulationParametersForm,
 } from './use-dynamic-simulation-parameters-form';
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
@@ -83,7 +83,7 @@ export function DynamicSimulationInline({
     const onSubmit = useCallback(
         (formData: FieldValues) => {
             // update params after convert form representation to dto representation
-            updateParameters(toParamsInfos(formData, getDefaultParams()));
+            updateParameters(toParamsEnriched(formData, getDefaultParams()));
         },
         [updateParameters, getDefaultParams]
     );
@@ -142,7 +142,7 @@ export function DynamicSimulationInline({
                         open={openCreateParameterDialog}
                         onClose={() => setOpenCreateParameterDialog(false)}
                         parameterValues={getValues}
-                        parameterFormatter={(formData) => toParamsInfos(formData, getDefaultParams())}
+                        parameterFormatter={(formData) => toParamsEnriched(formData, getDefaultParams())}
                         parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
                     />
                 )}

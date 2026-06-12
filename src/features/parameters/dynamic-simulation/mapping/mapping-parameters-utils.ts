@@ -6,11 +6,18 @@
  */
 import * as yup from 'yup';
 import { MAPPING } from './mapping-parameters-constants';
+import { ID, NAME } from '../../common/parameter-table-field';
 
 export const mappingFormSchema = yup.object().shape({
-    [MAPPING]: yup.string().required(),
+    [MAPPING]: yup
+        .object()
+        .shape({
+            [ID]: yup.string().required(),
+            [NAME]: yup.string().required(),
+        })
+        .required(),
 });
 
 export const mappingEmptyFormData = {
-    [MAPPING]: '',
+    [MAPPING]: null,
 };
