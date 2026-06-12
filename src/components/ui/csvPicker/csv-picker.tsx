@@ -10,10 +10,22 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
-import { equalsArrayAnyOrder, LANG_FRENCH } from '../../../utils';
+import { equalsArrayAnyOrder, getCsvDelimiter } from '../../../utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
 
-export interface CsvPickerProps<TData = unknown> {
+type CsvPickerCallbacks<TData> =
+    | {
+          onComplete: (results: ParseResult<TData>, file: File) => void;
+          onAppend?: never;
+          onReplace?: never;
+      }
+    | {
+          onComplete?: never;
+          onAppend: (results: ParseResult<TData>, file: File) => void;
+          onReplace: (results: ParseResult<TData>, file: File) => void;
+      };
+
+export type CsvPickerProps<TData = unknown> = {
     label: string;
     header: string[];
     maxLineNumber?: number;
@@ -23,11 +35,8 @@ export interface CsvPickerProps<TData = unknown> {
     selectedFile?: File;
     onFileChange: (file: File | undefined) => void;
     onFileError: (error: string | undefined) => void;
-    onComplete?: (results: ParseResult<TData>, file: File) => void;
-    onAppend?: (results: ParseResult<TData>, file: File) => void;
-    onReplace?: (results: ParseResult<TData>, file: File) => void;
     hasExistingData?: () => boolean;
-}
+} & CsvPickerCallbacks<TData>;
 
 export function CsvPicker<TData = unknown>({
     label,
@@ -68,18 +77,17 @@ export function CsvPicker<TData = unknown>({
                     )
                 );
             } else {
-                // Only reflect the file once it is valid: on error the previously selected file name
-                // (and the table data) is kept unchanged.
-                onFileChange(acceptedFile);
                 onFileError(undefined);
                 if (onAppend && onReplace) {
                     if (hasExistingData?.()) {
                         setPendingImport({ results, file: acceptedFile });
                     } else {
                         onReplace(results, acceptedFile);
+                        onFileChange(acceptedFile);
                     }
                 } else {
                     onComplete?.(results, acceptedFile);
+                    onFileChange(acceptedFile);
                 }
             }
         },
@@ -93,7 +101,7 @@ export function CsvPicker<TData = unknown>({
                     header: true,
                     skipEmptyLines: true,
                     comments: '#',
-                    delimiter: language === LANG_FRENCH ? ';' : ',',
+                    delimiter: getCsvDelimiter(language),
                     ...parseConfig,
                 }}
                 onUploadAccepted={handleUploadAccepted}
@@ -125,8 +133,14 @@ export function CsvPicker<TData = unknown>({
             {onAppend && onReplace && (
                 <CsvPickerConfirmationDialog
                     pendingImport={pendingImport}
-                    onReplace={onReplace}
-                    onAppend={onAppend}
+                    onReplace={(r, f) => {
+                        onReplace(r, f);
+                        onFileChange(f);
+                    }}
+                    onAppend={(r, f) => {
+                        onAppend(r, f);
+                        onFileChange(f);
+                    }}
                     onClose={() => setPendingImport(null)}
                 />
             )}

@@ -107,7 +107,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
 
         const isLastSelected = Boolean(
             rowData?.length &&
-                gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
+            gridApi?.api.getRowNode(rowData[rowData.length - 1][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
         );
 
         const noRowSelected = selectedRows.length === 0;
@@ -201,7 +201,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         rowData={rowData}
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
-                        rowSelection={rowSelection ?? 'multiple'}
+                        rowSelection={rowSelection ?? { mode: 'multiRow' }}
                         selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
                         onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
                         detailRowAutoHeight
