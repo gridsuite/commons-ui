@@ -11,6 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { MeasurementInfo } from './measurement.type';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
+import type { BbsMeasurementItem } from '../../voltageLevel/modification/voltageLevelModification.utils';
 
 const BUSBAR_SECTION_V_MEASUREMENTS = 'busbarSectionVMeasurements';
 
@@ -26,8 +27,15 @@ interface BusbarSectionVoltageMeasurementsFormProps {
 export function BusbarSectionVoltageMeasurementsForm({
     busbarSections,
 }: Readonly<BusbarSectionVoltageMeasurementsFormProps>) {
-    const { fields } = useFieldArray({ name: BUSBAR_SECTION_V_MEASUREMENTS });
+    const { fields } = useFieldArray<Record<typeof BUSBAR_SECTION_V_MEASUREMENTS, BbsMeasurementItem[]>>({
+        name: BUSBAR_SECTION_V_MEASUREMENTS,
+    });
     const intl = useIntl();
+
+    // Keep busbar sections sorted
+    const sortedFields = fields
+        .map((field, i) => ({ ...field, originalIndex: i }))
+        .sort((a, b) => a.busbarSectionId.localeCompare(b.busbarSectionId));
 
     return (
         <Grid container direction="column" spacing={1}>
@@ -36,8 +44,8 @@ export function BusbarSectionVoltageMeasurementsForm({
                     <FormattedMessage id="NoBusbarSectionFound" />
                 </Grid>
             )}
-            {fields.map((field, i) => {
-                const bbsId = (field as any).busbarSectionId as string;
+            {sortedFields.map((field) => {
+                const { busbarSectionId: bbsId, originalIndex } = field;
                 const networkBbs = busbarSections.find((b) => b.id === bbsId);
                 const previousValue = networkBbs?.measurementV?.value ?? undefined;
                 const validity = networkBbs?.measurementV?.validity;
@@ -52,7 +60,7 @@ export function BusbarSectionVoltageMeasurementsForm({
                             <Grid size={3}>{bbsId}</Grid>
                             <Grid size={4}>
                                 <FloatInput
-                                    name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${i}.${FieldConstants.VALUE}`}
+                                    name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${originalIndex}.${FieldConstants.VALUE}`}
                                     label="VoltageText"
                                     adornment={VoltageAdornment}
                                     previousValue={previousValue}
@@ -61,7 +69,7 @@ export function BusbarSectionVoltageMeasurementsForm({
                             </Grid>
                             <Grid size={3}>
                                 <CheckboxNullableInput
-                                    name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${i}.${FieldConstants.VALIDITY}`}
+                                    name={`${BUSBAR_SECTION_V_MEASUREMENTS}.${originalIndex}.${FieldConstants.VALIDITY}`}
                                     label="ValidMeasurement"
                                     previousValue={previousValidity}
                                 />
