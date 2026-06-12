@@ -6,3 +6,9 @@
  */
 
 export * from './generatorModification.types';
+export * from './generatorModification.utils';
+export * from './generatorTabs.utils';
+export * from './GeneratorDialogHeader';
+export * from './GeneratorDialogTabs';
+export * from './GeneratorDialogTabsContent';
+export * from './GeneratorModificationForm';
