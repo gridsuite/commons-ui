@@ -13,12 +13,12 @@ import {
 } from '../features/parameters/short-circuit/short-circuit-parameters.type';
 import { PREFIX_STUDY_QUERIES } from './loadflow';
 import { fetchElementNames } from './directory';
-import { ID } from '../utils';
-import { NAME } from '../components';
 
 const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
 const NODE_CLUSTER_FILTER_IDS = 'nodeClusterFilterIds';
 const SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS = 'powerElectronicsClusters';
+const ID = 'id';
+const NAME = 'name';
 
 function getShortCircuitUrl() {
     return `${PREFIX_SHORT_CIRCUIT_SERVER_QUERIES}/v1/`;
@@ -70,7 +70,8 @@ export function enrichShortCircuitParameters(
     const parsePowerElectronicsMaterialsParameters = parsePowerElectronicsMaterialsParamString(parameters);
     parsePowerElectronicsMaterialsParameters.forEach((powerElectronicsMaterialList) => {
         powerElectronicsMaterialList.forEach((powerElectronicsMaterials) =>
-            powerElectronicsMaterials.filters.forEach((filter) => allElementIds.add(filter)));
+            powerElectronicsMaterials.filters.forEach((filter) => allElementIds.add(filter))
+        );
     });
 
     const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);

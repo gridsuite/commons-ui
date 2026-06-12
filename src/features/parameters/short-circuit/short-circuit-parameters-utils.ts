@@ -273,7 +273,6 @@ const formatElectronicsMaterialsParamString = (
     });
 };
 
-
 const parsePowerElectronicsClustersParamString = (
     paramString: string,
     snackError: (message: SnackInputs) => void
@@ -305,7 +304,6 @@ const formatElectronicsClustersParamString = (
         };
     });
 };
-
 
 export const formatShortCircuitSpecificParameters = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
