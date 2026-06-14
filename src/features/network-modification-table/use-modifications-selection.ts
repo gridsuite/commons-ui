@@ -149,14 +149,6 @@ export function useModificationsSelection({
         [onRowSelected]
     );
 
-    // Runs whenever the composed modifications tree changes (e.g. after a server refetch
-    // triggered by a move, delete, paste, or restore).
-    //
-    // Two things happen in order:
-    //   1. Propagate selection down to any newly-loaded descendants of already-selected composites.
-    //   2. Prune uuids that are no longer present anywhere in the tree (e.g. B2 was cut out of
-    //      composite B and pasted at root level — B2 now lives at root, the old child entry is
-    //      gone and must be removed so the parent component receives an accurate selection list).
     useEffect(() => {
         setRowSelection((prev) => {
             const propagated = propagateSelectionToLoadedDescendants(prev, modifications);

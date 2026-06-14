@@ -36,6 +36,18 @@ export function findDepth(mods: ComposedModificationMetadata[], uuid: UUID, curr
     return -1;
 }
 
+export function removeUuidsFromTree(
+    mods: ComposedModificationMetadata[],
+    uuidsToRemove: Set<string>
+): ComposedModificationMetadata[] {
+    return mods
+        .filter((m) => !uuidsToRemove.has(m.uuid))
+        .map((m) =>
+            m.subModifications.length > 0
+                ? { ...m, subModifications: removeUuidsFromTree(m.subModifications, uuidsToRemove) }
+                : m
+        );
+}
 /**
  *
  * @param modifications source where the composite modifications are looked for
@@ -240,9 +252,9 @@ export function fetchSubModificationsForExpandedRows(
     getNetworkModificationsFromComposite(uuidsToFetch).then((subModsByUuid) => {
         setMods((prev) =>
             Object.entries(subModsByUuid).reduce((tree, [uuid, subMods]) => {
+                const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed));
                 // Preserve already-loaded children of any nested composites within the new sub-list
                 const existingMod = findModificationInTree(uuid, tree);
-                const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed));
                 const mergedSubs = mergeSubModificationsIntoTree(
                     liveModifications,
                     existingMod?.subModifications ?? []
