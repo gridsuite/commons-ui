@@ -5,39 +5,17 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
 import { CustomFormProvider } from '../../../components/ui';
-import { TabPanel } from '../common';
+import { ParameterLayout, TabPanel } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
 import { VoltageInitTabValues as TabValues } from './constants';
 import { GeneralParameters } from './general-parameters';
 import { EquipmentSelectionParameters } from './equipment-selection-parameters';
 import { VoltageLimitsParameters } from './voltage-limits-parameters';
-import type { MuiStyles } from '../../../utils/styles';
-
-export const styles = {
-    gridWithActions: (theme) => ({
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(1),
-        flexGrow: 1,
-        maxHeight: '85%',
-    }),
-    gridWithoutActions: (theme) => ({
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(1),
-        flexGrow: 1,
-        maxHeight: '100%',
-    }),
-} as const satisfies MuiStyles;
 
 interface VoltageInitParametersFormProps {
     voltageInitMethods: UseVoltageInitParametersFormReturn;
@@ -55,25 +33,11 @@ export function VoltageInitParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <Box
-                sx={{
-                    height: '100%',
-                    position: 'relative',
-                }}
-            >
-                <Grid item container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
-                    <Grid item container direction="column">
+            <ParameterLayout
+                header={
+                    <>
                         {renderTitleFields?.()}
-                    </Grid>
-                    {paramsLoading ? (
-                        <LinearProgress />
-                    ) : (
-                        <Box
-                            sx={{
-                                height: '100%',
-                                width: '100%',
-                            }}
-                        >
+                        {!paramsLoading && (
                             <Tabs
                                 value={selectedTab}
                                 variant="scrollable"
@@ -98,34 +62,24 @@ export function VoltageInitParametersForm({
                                     sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION)}
                                 />
                             </Tabs>
-                            <Grid container>
-                                <TabPanel value={selectedTab} index={TabValues.GENERAL}>
-                                    <GeneralParameters withApplyModifications={renderActions != null} />
-                                </TabPanel>
-                                <TabPanel value={selectedTab} index={TabValues.VOLTAGE_LIMITS}>
-                                    <VoltageLimitsParameters />
-                                </TabPanel>
-                                <TabPanel value={selectedTab} index={TabValues.EQUIPMENTS_SELECTION}>
-                                    <EquipmentSelectionParameters />
-                                </TabPanel>
-                            </Grid>
-                        </Box>
-                    )}
+                        )}
+                    </>
+                }
+                isLoading={paramsLoading}
+                footer={renderActions?.()}
+            >
+                <Grid container>
+                    <TabPanel value={selectedTab} index={TabValues.GENERAL}>
+                        <GeneralParameters withApplyModifications={renderActions != null} />
+                    </TabPanel>
+                    <TabPanel value={selectedTab} index={TabValues.VOLTAGE_LIMITS}>
+                        <VoltageLimitsParameters />
+                    </TabPanel>
+                    <TabPanel value={selectedTab} index={TabValues.EQUIPMENTS_SELECTION}>
+                        <EquipmentSelectionParameters />
+                    </TabPanel>
                 </Grid>
-                {renderActions && (
-                    <Grid
-                        item
-                        container
-                        direction="column"
-                        sx={{
-                            position: 'fixed',
-                            bottom: '15px',
-                        }}
-                    >
-                        {renderActions()}
-                    </Grid>
-                )}
-            </Box>
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

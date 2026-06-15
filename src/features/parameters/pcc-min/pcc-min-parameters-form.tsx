@@ -5,10 +5,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLineDirectoryItemsInput } from '../common';
+import { ParameterLineDirectoryItemsInput } from "../common/widget/parameter-line-directory-items-input.js";
+import { ParameterLayout } from '../common';
 import type { MuiStyles } from '../../../utils/styles';
 import { ElementType, EquipmentType } from '../../../utils';
 import { UsePccMinParametersFormReturn } from './use-pcc-min-parameters-form';
@@ -22,7 +23,6 @@ export const styles = {
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(1),
         flexGrow: 1,
-        maxHeight: '85%',
     }),
     gridWithoutActions: (theme) => ({
         overflowY: 'auto',
@@ -50,52 +50,18 @@ export function PccMinParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <Box
-                sx={{
-                    height: '100%',
-                    position: 'relative',
-                }}
-            >
-                <Grid item container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
-                    <Grid item container direction="column">
-                        {renderTitleFields?.()}
-                    </Grid>
-                    {paramsLoading ? (
-                        <LinearProgress />
-                    ) : (
-                        <Box
-                            sx={{
-                                height: '100%',
-                                width: '100%',
-                            }}
-                        >
-                            <Grid item container direction="column">
-                                <ParameterLineDirectoryItemsInput
-                                    name={FILTERS}
-                                    equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
-                                    elementType={ElementType.FILTER}
-                                    label="pccMinParamFilter"
-                                    hideErrorMessage
-                                    allowMultiSelect={false}
-                                />
-                            </Grid>
-                        </Box>
-                    )}
+            <ParameterLayout header={renderTitleFields?.()} footer={renderActions?.()} isLoading={paramsLoading}>
+                <Grid item container direction="column">
+                    <ParameterLineDirectoryItemsInput
+                        name={FILTERS}
+                        equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
+                        elementType={ElementType.FILTER}
+                        label="pccMinParamFilter"
+                        hideErrorMessage
+                        allowMultiSelect={false}
+                    />
                 </Grid>
-                {renderActions && (
-                    <Grid
-                        item
-                        container
-                        direction="column"
-                        sx={{
-                            position: 'fixed',
-                            bottom: '15px',
-                        }}
-                    >
-                        {renderActions()}
-                    </Grid>
-                )}
-            </Box>
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

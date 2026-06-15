@@ -5,22 +5,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../components/ui';
-import { parametersStyles } from '../parameters-style';
+import { ParameterLayout } from '../common';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
-import { MuiStyles } from '../../../utils';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
-
-const styles = {
-    shortCircuitParameters: {
-        height: '100%',
-        display: 'flex',
-        position: 'relative',
-        flexDirection: 'column',
-    },
-} as const satisfies MuiStyles;
 
 interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
@@ -36,29 +25,9 @@ export function ShortCircuitParametersForm({
     const { formMethods, formSchema, paramsLoaded } = shortCircuitMethods;
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <Box sx={styles.shortCircuitParameters}>
-                <Grid item container direction="column">
-                    {renderTitleFields?.()}
-                </Grid>
-                {paramsLoaded ? (
-                    <Grid sx={parametersStyles.scrollableGrid}>
-                        <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
-                    </Grid>
-                ) : (
-                    <LinearProgress />
-                )}
-                <Grid
-                    item
-                    container
-                    direction="column"
-                    sx={{
-                        position: 'absolute',
-                        bottom: '15px',
-                    }}
-                >
-                    {renderActions?.()}
-                </Grid>
-            </Box>
+            <ParameterLayout header={renderTitleFields?.()} footer={renderActions?.()} isLoading={!paramsLoaded}>
+                <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

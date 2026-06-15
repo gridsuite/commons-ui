@@ -5,12 +5,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import { ReactNode } from 'react';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
 import { CustomFormProvider } from '../../../components/ui';
+import { ParameterLayout } from '../common';
 import type { GsLang } from '../../../utils/langs';
 import type { MuiStyles } from '../../../utils/styles';
 
@@ -27,7 +28,7 @@ const styles = {
         display: 'flex',
         position: 'relative',
         flexDirection: 'column',
-        maxHeight: 'calc(100% - 5vh)',
+        maxHeight: '100%',
     },
     loadflowParameters: {
         flexGrow: 1,
@@ -69,31 +70,34 @@ export function LoadFlowParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>
-            <Box sx={styles.form}>
-                {renderTitleFields?.()}
-                {paramsLoaded ? (
-                    <Box sx={styles.loadflowParameters}>
-                        <LoadFlowParametersHeader
-                            selectedTab={selectedTab}
-                            handleTabChange={handleTabChange}
-                            tabIndexesWithError={tabIndexesWithError}
-                            formattedProviders={formattedProviders}
-                        />
-                        <Grid container sx={styles.content}>
-                            <LoadFlowParametersContent
+            <ParameterLayout
+                header={
+                    <>
+                        {renderTitleFields?.()}
+                        {paramsLoaded && (
+                            <LoadFlowParametersHeader
                                 selectedTab={selectedTab}
-                                currentProvider={watchProvider ?? ''}
-                                specificParameters={specificParametersDescriptionForProvider}
-                                params={params}
-                                defaultLimitReductions={defaultLimitReductions}
+                                handleTabChange={handleTabChange}
+                                tabIndexesWithError={tabIndexesWithError}
+                                formattedProviders={formattedProviders}
                             />
-                        </Grid>
-                    </Box>
-                ) : (
-                    <LinearProgress />
-                )}
-                {renderActions && <Box sx={styles.actions}>{renderActions()}</Box>}
-            </Box>
+                        )}
+                    </>
+                }
+                isLoading={!paramsLoaded}
+                footer={renderActions?.()}
+                contentSx={{ paddingLeft: 1 }}
+            >
+                <Grid container sx={styles.content}>
+                    <LoadFlowParametersContent
+                        selectedTab={selectedTab}
+                        currentProvider={watchProvider ?? ''}
+                        specificParameters={specificParametersDescriptionForProvider}
+                        params={params}
+                        defaultLimitReductions={defaultLimitReductions}
+                    />
+                </Grid>
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }
