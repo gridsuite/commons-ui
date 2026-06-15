@@ -36,21 +36,21 @@ export function UpdateSaProcessConfig({ directory, processConfigName }: Readonly
             <Box component="h3">
                 <FormattedMessage id="process_config/modifications" />
             </Box>
-            <UpdateProcessConfigModifications />
+            <UpdateProcessConfigModifications name={FieldConstants.MODIFICATIONS} />
             <Box component="h3">
                 <FormattedMessage id="process_config/providersParameters" />
             </Box>
             <ParameterLineDirectoryItemsInput
                 label="process_config/loadflow"
                 elementType={ElementType.LOADFLOW_PARAMETERS}
-                name="loadflowParameters"
+                name={FieldConstants.LOADFLOW_PARAMETERS}
                 allowMultiSelect={false}
                 hideErrorMessage={false}
             />
             <ParameterLineDirectoryItemsInput
                 label="process_config/securityAnalysis"
                 elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
-                name="securityAnalysisParameters"
+                name={FieldConstants.SECURITY_ANALYSIS_PARAMETERS}
                 allowMultiSelect={false}
                 hideErrorMessage={false}
             />

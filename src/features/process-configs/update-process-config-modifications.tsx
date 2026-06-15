@@ -4,21 +4,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { DirectoryItemsInput, DndColumn, DndColumnType, DndTable, ElementType } from '@gridsuite/commons-ui';
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { DirectoryItemsInput } from '../../components/ui';
+import { ElementType } from '../../utils';
+import { DndColumn, DndColumnType, DndTable } from '../../components/composite';
 
-export function UpdateProcessConfigModifications() {
+export function UpdateProcessConfigModifications({ name }: { name: string }) {
     const intl = useIntl();
     const useFieldArrayModifications = useFieldArray({
-        name: `modifications`,
+        name: name,
     });
 
     const modificationSelector = useCallback(
         (rowIndex: number) => (
             <DirectoryItemsInput
-                name={`modifications[${rowIndex}].modification`}
+                name={`${name}[${rowIndex}].modification`}
                 allowMultiSelect={false}
                 elementType={ElementType.MODIFICATION}
                 titleId="modifications"
@@ -31,7 +33,7 @@ export function UpdateProcessConfigModifications() {
     const columnsDefinition = useMemo<DndColumn[]>(() => {
         return [
             {
-                dataKey: 'modification',
+                dataKey: name,
                 type: DndColumnType.CUSTOM, // ColumnDirectoryItem does not allow allowMultiSelect to false
                 editable: true,
                 label: intl.formatMessage({ id: 'process_config/modifications' }),
@@ -44,7 +46,7 @@ export function UpdateProcessConfigModifications() {
 
     return (
         <DndTable
-            name="modifications"
+            name={name}
             useFieldArrayOutput={useFieldArrayModifications}
             createRows={createModification}
             columnsDefinition={columnsDefinition}

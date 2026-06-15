@@ -12,7 +12,7 @@ import {
     SecurityAnalysisProcessConfigBackend,
 } from '../process-configs.type';
 import { fetchElementNames } from '../../../services';
-import { YUP_REQUIRED } from '../../../utils/constants';
+import { FieldConstants, YUP_REQUIRED } from '../../../utils/constants';
 
 export function getSAProcessConfigFormDataFromFetchedElement(
     processConfig: SecurityAnalysisProcessConfig,
@@ -42,9 +42,9 @@ export function getSAProcessConfigBackendFromFormData(
 }
 
 export const updateSAProcessConfigFormSchema = yup.object().shape({
-    name: yup.string().required(),
-    description: yup.string(),
-    modifications: yup
+    [FieldConstants.NAME]: yup.string().required(),
+    [FieldConstants.DESCRIPTION]: yup.string(),
+    [FieldConstants.MODIFICATIONS]: yup
         .array()
         .required()
         .of(
@@ -64,12 +64,12 @@ export const updateSAProcessConfigFormSchema = yup.object().shape({
                     .length(1, YUP_REQUIRED),
             })
         ),
-    loadflowParameters: yup
+    [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
         .length(1, YUP_REQUIRED),
-    securityAnalysisParameters: yup
+    [FieldConstants.SECURITY_ANALYSIS_PARAMETERS]: yup
         .array()
         .required()
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
