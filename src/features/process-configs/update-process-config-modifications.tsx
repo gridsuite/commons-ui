@@ -7,14 +7,13 @@
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { DirectoryItemsInput } from '../../components/ui';
+import { DirectoryItemsInput, DndColumn, DndColumnType, DndTable } from '../../components';
 import { ElementType } from '../../utils';
-import { DndColumn, DndColumnType, DndTable } from '../../components/composite';
 
 export function UpdateProcessConfigModifications({ name }: { name: string }) {
     const intl = useIntl();
     const useFieldArrayModifications = useFieldArray({
-        name: name,
+        name,
     });
 
     const modificationSelector = useCallback(
@@ -27,7 +26,7 @@ export function UpdateProcessConfigModifications({ name }: { name: string }) {
                 label={undefined}
             />
         ),
-        []
+        [name]
     );
 
     const columnsDefinition = useMemo<DndColumn[]>(() => {
@@ -40,7 +39,7 @@ export function UpdateProcessConfigModifications({ name }: { name: string }) {
                 component: modificationSelector,
             },
         ];
-    }, [modificationSelector, intl]);
+    }, [modificationSelector, name, intl]);
 
     const createModification = () => [{ modification: [] }];
 
