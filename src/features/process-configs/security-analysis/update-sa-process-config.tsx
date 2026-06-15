@@ -5,17 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Box, Grid2 } from '@mui/material';
-import {
-    DescriptionField,
-    DirectoryItemsInput,
-    ElementType,
-    FieldConstants,
-    ParameterLineDirectoryItemsInput,
-    UniqueNameInput,
-} from '@gridsuite/commons-ui';
 import { UUID } from 'node:crypto';
 import { FormattedMessage } from 'react-intl';
 import { UpdateProcessConfigModifications } from '../update-process-config-modifications';
+import { DescriptionField, UniqueNameInput } from '../../../components/ui';
+import { FieldConstants, ElementType } from '../../../utils';
+import { ParameterLineDirectoryItemsInput } from '../../parameters';
 
 interface UpdateSaProcessConfigProps {
     directory?: UUID;

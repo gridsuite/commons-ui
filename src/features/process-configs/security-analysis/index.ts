@@ -6,4 +6,4 @@
  */
 
 export * from './update-sa-process-config-dialog';
-export * from './update-sa-process-configs-utils'
+export * from './update-sa-process-configs-utils';
