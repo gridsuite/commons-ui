@@ -104,6 +104,16 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
+    // refs are kept for the "event" props to prevent retriggering the associated useEffects
+    const modificationToEditLabelRef = useRef(modificationToEditLabel);
+    useEffect(() => {
+        modificationToEditLabelRef.current = modificationToEditLabel;
+    }, [modificationToEditLabel]);
+    const highlightedModificationUuidRef = useRef(highlightedModificationUuid);
+    useEffect(() => {
+        highlightedModificationUuidRef.current = highlightedModificationUuid;
+    }, [highlightedModificationUuid]);
+
     const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
         // the new assembled composite will be created where the first selected row is so :
         // depth has to be < to first selected row depth + maxDepth of any selected row
@@ -178,7 +188,7 @@ export function NetworkModificationsTable({
                 lastClickedRowId,
                 onRowSelected: handleRowSelected,
                 isRowDragDisabled,
-                modificationToEditLabel,
+                modificationToEditLabel: modificationToEditLabelRef,
             },
             status: {
                 isImpactedByNotification,
@@ -290,13 +300,14 @@ export function NetworkModificationsTable({
     }, [lastClickedRowId, table, currentNodeId]);
 
     useEffect(() => {
-        if (highlightedModificationUuid && containerRef.current) {
-            const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuid);
+        if (highlightedModificationUuidRef.current && containerRef.current) {
+            const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuidRef.current);
             if (rowIndex !== -1) {
-                virtualizer.scrollToIndex(rowIndex, { align: 'start', behavior: 'auto' });
+                virtualizer.scrollToIndex(rowIndex, { align: 'center', behavior: 'auto' });
+                highlightedModificationUuidRef.current = null;
             }
         }
-    }, [highlightedModificationUuid, rows, virtualizer]);
+    }, [highlightedModificationUuidRef, rows, virtualizer]);
 
     return (
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={onRowDragStart} onDragUpdate={handleDragUpdate}>
