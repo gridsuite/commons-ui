@@ -59,6 +59,17 @@ export const FIELD_OPTIONS: Record<string, FieldOptionType> = {
         unit: MEGA_VAR,
         dataType: DataType.DOUBLE,
     },
+    REACTIVE_POWER_MEASUREMENT_VALUE: {
+        id: FieldType.REACTIVE_POWER_MEASUREMENT_VALUE,
+        label: 'ReactivePowerMeasurementValue',
+        unit: MEGA_VAR,
+        dataType: DataType.DOUBLE,
+    },
+    REACTIVE_POWER_MEASUREMENT_VALIDITY: {
+        id: FieldType.REACTIVE_POWER_MEASUREMENT_VALIDITY,
+        label: 'ReactivePowerMeasurementValidity',
+        dataType: DataType.BOOLEAN,
+    },
     VOLTAGE_SET_POINT: {
         id: FieldType.VOLTAGE_SET_POINT,
         label: 'GeneratorTargetV',
@@ -410,7 +421,11 @@ export const EQUIPMENTS_FIELDS = {
         FIELD_OPTIONS.MAX_SUSCEPTANCE,
         FIELD_OPTIONS.MAX_Q_AT_NOMINAL_V,
     ],
-    [EquipmentType.STATIC_VAR_COMPENSATOR]: [FIELD_OPTIONS.PROPERTY],
+    [EquipmentType.STATIC_VAR_COMPENSATOR]: [
+        FIELD_OPTIONS.PROPERTY,
+        FIELD_OPTIONS.REACTIVE_POWER_MEASUREMENT_VALUE,
+        FIELD_OPTIONS.REACTIVE_POWER_MEASUREMENT_VALIDITY,
+    ],
     [EquipmentType.HVDC_LINE]: [FIELD_OPTIONS.PROPERTY],
 } as const;
 
