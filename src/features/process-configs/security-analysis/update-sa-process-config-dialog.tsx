@@ -28,7 +28,7 @@ interface UpdateSAProcessConfigDialogProps {
     processConfigId: UUID;
     name: string;
     description: string | null;
-    directory?: UUID;
+    directory: UUID;
     fetchSAProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend>;
     updateSAProcessConfig: (
         processConfigUuid: UUID,

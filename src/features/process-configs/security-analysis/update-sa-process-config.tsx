@@ -4,35 +4,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid2 } from '@mui/material';
+import { Box } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { FormattedMessage } from 'react-intl';
 import { UpdateProcessConfigModifications } from '../update-process-config-modifications';
-import { DescriptionField, UniqueNameInput } from '../../../components/ui';
 import { FieldConstants, ElementType } from '../../../utils';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
+import { NameElementEditorForm } from '../../parameters/common/name-element-editor';
 
 interface UpdateSaProcessConfigProps {
-    directory?: UUID;
+    directory: UUID;
     processConfigName: string;
 }
 
 export function UpdateSaProcessConfig({ directory, processConfigName }: Readonly<UpdateSaProcessConfigProps>) {
     return (
-        <Grid2 container spacing={2}>
-            <Grid2 size={12}>
-                <UniqueNameInput
-                    name={FieldConstants.NAME}
-                    label="name"
-                    elementType={ElementType.PROCESS_CONFIG}
-                    currentName={processConfigName}
-                    activeDirectory={directory}
-                    autoFocus
-                />
-            </Grid2>
-            <Grid2 size={12}>
-                <DescriptionField />
-            </Grid2>
+        <>
+            <NameElementEditorForm
+                activeDirectory={directory}
+                elementType={ElementType.PROCESS_CONFIG}
+                initialElementName={processConfigName}
+            />
             <Box component="h3">
                 <FormattedMessage id="process_config/modifications" />
             </Box>
@@ -54,6 +46,6 @@ export function UpdateSaProcessConfig({ directory, processConfigName }: Readonly
                 allowMultiSelect={false}
                 hideErrorMessage={false}
             />
-        </Grid2>
+        </>
     );
 }
