@@ -201,6 +201,8 @@ export const networkModificationsEn = {
     MaximumActivePowerText: 'Maximum active power',
     ActivePowerSetPointText: 'Active power setpoint',
     ReactivePowerSetPointText: 'Reactive power setpoint',
+    ReactivePowerMeasurementValue: 'Reactive power measurement value',
+    ReactivePowerMeasurementValidity: 'Reactive power measurement validity',
     GeneratorTargetV: 'Target V',
     PlannedActivePowerSetPointForm: 'Planning active power set point',
     MarginalCost: 'Generation dispatch cost',
@@ -299,6 +301,8 @@ export const networkModificationsEn = {
     generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'Planned active power set point must be between minimum and maximum active power values',
+    ModifyGenerator: 'Modify generator',
+    GeneratorModificationError: 'Error while modifying generator',
     NoBusbarSectionFound: 'No busbar section found for this voltage level',
 
     // Tabs
