@@ -105,3 +105,7 @@ export async function toSAProcessConfig(persistedProcessConfig: PersistedProcess
         },
     } satisfies SecurityAnalysisProcessConfig;
 }
+
+export function isProcessType(type: string): type is ProcessType {
+    return Object.values(ProcessType).includes(type as ProcessType);
+}

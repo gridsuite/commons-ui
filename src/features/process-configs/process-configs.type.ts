@@ -12,10 +12,6 @@ export enum ProcessType {
 }
 
 // Backend types
-export function isProcessType(type: string): type is ProcessType {
-    return Object.values(ProcessType).includes(type as ProcessType);
-}
-
 export interface ProcessConfigBaseBackend {
     processType: ProcessType;
     modificationUuids: string[];
