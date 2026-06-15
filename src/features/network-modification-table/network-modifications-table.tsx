@@ -208,7 +208,7 @@ export function NetworkModificationsTable({
             setModificationsToExclude,
             lastClickedRowId,
             handleRowSelected,
-            modificationToEditLabel,
+            modificationToEditLabelRef,
             isRowDragDisabled,
             isImpactedByNotification,
             notificationMessageId,
