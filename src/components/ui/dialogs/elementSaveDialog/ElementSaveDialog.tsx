@@ -54,6 +54,7 @@ export type ElementSaveDialogProps = {
     onSave: (data: IElementCreationDialog) => void;
     OnUpdate?: (data: IElementUpdateDialog) => void;
     prefixIdForGeneratedName?: string;
+    defaultName?: string | null;
     initialOperation?: OperationType;
     selectorTitleId?: string;
     createLabelId?: string;
@@ -114,6 +115,7 @@ export function ElementSaveDialog({
     type,
     titleId,
     prefixIdForGeneratedName,
+    defaultName,
     studyUuid,
     initDirectory,
     initialOperation = OperationType.CREATE,
@@ -197,21 +199,13 @@ export function ElementSaveDialog({
 
     // Set prefixed name for creation if provided
     useEffect(() => {
-        if (isCreateMode && prefixIdForGeneratedName) {
-            const getCurrentDateTime = () => new Date().toISOString();
-            const formattedMessage = intl.formatMessage({
-                id: prefixIdForGeneratedName,
-            });
-            const dateTime = getCurrentDateTime();
-            reset(
-                {
-                    ...emptyFormData,
-                    [FieldConstants.NAME]: `${formattedMessage}-${dateTime}`,
-                },
-                { keepDefaultValues: true }
-            );
+        if (!isCreateMode) {
+            return;
         }
-    }, [prefixIdForGeneratedName, intl, reset, isCreateMode]);
+        const name =
+            defaultName ?? `${intl.formatMessage({ id: prefixIdForGeneratedName })}-${new Date().toISOString()}`;
+        reset({ ...emptyFormData, [FieldConstants.NAME]: name }, { keepDefaultValues: true });
+    }, [prefixIdForGeneratedName, intl, reset, isCreateMode, defaultName]);
 
     // Destination folder initialization for create mode
     useEffect(() => {
