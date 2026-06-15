@@ -12,6 +12,7 @@ import {
     SecurityAnalysisProcessConfigBackend,
 } from '../process-configs.type';
 import { fetchElementNames } from '../../../services';
+import { YUP_REQUIRED } from '../../../utils/constants';
 
 export function getSAProcessConfigFormDataFromFetchedElement(
     processConfig: SecurityAnalysisProcessConfig,
@@ -60,19 +61,19 @@ export const updateSAProcessConfigFormSchema = yup.object().shape({
                             })
                             .required()
                     )
-                    .length(1, 'atLeastOneItemError'),
+                    .length(1, YUP_REQUIRED),
             })
         ),
     loadflowParameters: yup
         .array()
         .required()
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
-        .length(1, 'atLeastOneItemError'),
+        .length(1, YUP_REQUIRED),
     securityAnalysisParameters: yup
         .array()
         .required()
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
-        .length(1, 'atLeastOneItemError'),
+        .length(1, YUP_REQUIRED),
 });
 
 export type UpdateSAProcessConfigFormData = yup.InferType<typeof updateSAProcessConfigFormSchema>;

@@ -39,37 +39,26 @@ export function UpdateSaProcessConfig({ directory, processConfigName }: Readonly
                 <DescriptionField />
             </Grid2>
             <Box component="h3">
-                <FormattedMessage id="modifications" />
+                <FormattedMessage id="process_config/modifications" />
             </Box>
             <UpdateProcessConfigModifications />
             <Box component="h3">
-                <FormattedMessage id="providersParameters" />
+                <FormattedMessage id="process_config/providersParameters" />
             </Box>
             <ParameterLineDirectoryItemsInput
-                label="loadflow"
+                label="process_config/loadflow"
                 elementType={ElementType.LOADFLOW_PARAMETERS}
                 name="loadflowParameters"
                 allowMultiSelect={false}
                 hideErrorMessage={false}
             />
-            <Grid2 size={12}>
-                <DirectoryItemsInput
-                    titleId="loadflow"
-                    elementType={ElementType.LOADFLOW_PARAMETERS}
-                    label="loadflow"
-                    name="loadflowParameters"
-                    allowMultiSelect={false}
-                />
-            </Grid2>
-            <Grid2 size={12}>
-                <DirectoryItemsInput
-                    titleId="securityAnalysis"
-                    elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
-                    label="securityAnalysis"
-                    name="securityAnalysisParameters"
-                    allowMultiSelect={false}
-                />
-            </Grid2>
+            <ParameterLineDirectoryItemsInput
+                label="process_config/securityAnalysis"
+                elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
+                name="securityAnalysisParameters"
+                allowMultiSelect={false}
+                hideErrorMessage={false}
+            />
         </Grid2>
     );
 }

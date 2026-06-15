@@ -34,7 +34,7 @@ export function UpdateProcessConfigModifications() {
                 dataKey: 'modification',
                 type: DndColumnType.CUSTOM, // ColumnDirectoryItem does not allow allowMultiSelect to false
                 editable: true,
-                label: intl.formatMessage({ id: 'modifications' }),
+                label: intl.formatMessage({ id: 'process_config/modifications' }),
                 component: modificationSelector,
             },
         ];

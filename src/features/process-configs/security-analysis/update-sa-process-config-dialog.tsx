@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { CustomMuiDialog, FieldConstants } from '@gridsuite/commons-ui';
 import { useCallback, useEffect, useState } from 'react';
 import { UUID } from 'node:crypto';
 import { useForm } from 'react-hook-form';
@@ -20,6 +19,8 @@ import {
     toSAProcessConfig,
 } from './update-sa-process-configs-utils';
 import { PersistedProcessConfigBackend, SecurityAnalysisProcessConfigBackend } from '../process-configs.type';
+import { CustomMuiDialog } from '../../../components';
+import { FieldConstants } from '../../../utils';
 
 interface UpdateSAProcessConfigDialogProps {
     open: boolean;
@@ -68,7 +69,7 @@ export function UpdateSAProcessConfigDialog({
     } = methods;
 
     const fetchSAProcessConfigData = useCallback(async () => {
-        const persistedProcessConfig = await fetchSAProcessConfig(processConfigId)
+        const persistedProcessConfig = await fetchSAProcessConfig(processConfigId);
         if (persistedProcessConfig) {
             const processConfigData = await toSAProcessConfig(persistedProcessConfig);
             const formData: UpdateSAProcessConfigFormData = getSAProcessConfigFormDataFromFetchedElement(
@@ -78,7 +79,7 @@ export function UpdateSAProcessConfigDialog({
             );
             reset({ ...formData });
         }
-    }, [description, fetchSAProcessConfig, name, processConfigId, reset])
+    }, [description, fetchSAProcessConfig, name, processConfigId, reset]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -100,9 +101,10 @@ export function UpdateSAProcessConfigDialog({
     const nameError = errors[FieldConstants.NAME];
     const isValidating = errors.root?.isValidating;
 
+    console.log('error', errors);
     return (
         <CustomMuiDialog
-            titleId="editSAProcessConfig"
+            titleId="process_config/editSAProcessConfigTitle"
             formContext={{
                 ...methods,
                 validationSchema: updateSAProcessConfigFormSchema,
