@@ -9,9 +9,8 @@ import { useFieldArray } from 'react-hook-form';
 import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
-import { MeasurementInfo } from './measurement.type';
+import { BbsMeasurementItem, MeasurementInfo } from './measurement.type';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
-import type { BbsMeasurementItem } from '../../voltageLevel/modification/voltageLevelModification.utils';
 
 const BUSBAR_SECTION_V_MEASUREMENTS = 'busbarSectionVMeasurements';
 
@@ -32,7 +31,6 @@ export function BusbarSectionVoltageMeasurementsForm({
     });
     const intl = useIntl();
 
-    // Keep busbar sections sorted
     const sortedFields = fields
         .map((field, i) => ({ ...field, originalIndex: i }))
         .sort((a, b) => a.busbarSectionId.localeCompare(b.busbarSectionId));
