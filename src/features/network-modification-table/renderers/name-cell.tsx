@@ -40,6 +40,7 @@ interface NameCellProps {
 }
 
 export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
+    const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
@@ -154,13 +155,14 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
 
     // triggers composite name editing from outside the component
     useEffect(() => {
-        if (isComposite && table.options.meta?.interaction.modificationToEditLabel.current === row.original.uuid) {
+        const modificationToEditLabel = meta?.interaction.lastClickedRowId.current;
+        if (isComposite && modificationToEditLabel === row.original.uuid) {
             beginEditingName(defaultCompositeName);
-            if (table.options.meta) {
-                table.options.meta.interaction.modificationToEditLabel.current = null;
+            if (meta) {
+                meta.interaction.modificationToEditLabel.current = null;
             }
         }
-    }, [table.options.meta, defaultCompositeName, isComposite, row.original.uuid, beginEditingName]);
+    }, [meta, defaultCompositeName, isComposite, row.original.uuid, beginEditingName]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
