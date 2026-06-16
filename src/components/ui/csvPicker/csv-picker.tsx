@@ -10,8 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
-import { equalsArrayAnyOrder, getCsvDelimiter } from '../../../utils';
-import { hasNonEmptyRows } from '../../composite/agGridTable/agGridTable-utils';
+import { equalsArrayAnyOrder, getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
 
 type CsvPickerCallbacks<TData> =
