@@ -87,6 +87,7 @@ export const networkModificationsEn = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Adding busbar section to voltage level {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
     ModificationReadError: 'An error occurred while fetching the modification',
+    CompositeModification: 'Composite modification',
     CreateSubstation: 'Create substation',
     DeleteEquipmentByFilter: 'Delete equipment by filter',
     ModifyByAssignment: 'Modify by filter',
@@ -200,6 +201,8 @@ export const networkModificationsEn = {
     MaximumActivePowerText: 'Maximum active power',
     ActivePowerSetPointText: 'Active power setpoint',
     ReactivePowerSetPointText: 'Reactive power setpoint',
+    ReactivePowerMeasurementValue: 'Reactive power measurement value',
+    ReactivePowerMeasurementValidity: 'Reactive power measurement validity',
     GeneratorTargetV: 'Target V',
     PlannedActivePowerSetPointForm: 'Planning active power set point',
     MarginalCost: 'Generation dispatch cost',
@@ -291,7 +294,15 @@ export const networkModificationsEn = {
     QminPmin: 'QminPmin',
     QmaxPmin: 'QmaxPmin',
     Pmax: 'Pmax',
-
+    CreateGenerator: 'Create generator',
+    GeneratorCreationError: 'Error while creating generator',
+    VoltageRegulationText: 'Voltage regulation',
+    GenerationDispatch: 'Generation dispatch',
+    generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
+    PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
+        'Planned active power set point must be between minimum and maximum active power values',
+    ModifyGenerator: 'Modify generator',
+    GeneratorModificationError: 'Error while modifying generator',
     NoBusbarSectionFound: 'No busbar section found for this voltage level',
 
     // Tabs

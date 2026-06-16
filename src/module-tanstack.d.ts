@@ -29,6 +29,7 @@ declare module '@tanstack/react-table' {
             lastClickedRowId: RefObject<string | null>;
             onRowSelected?: (selectedRows: TData[]) => void;
             isRowDragDisabled?: boolean;
+            modificationToEditLabel?: UUID | null;
         };
         status: {
             isImpactedByNotification?: () => boolean;
