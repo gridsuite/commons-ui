@@ -57,7 +57,7 @@ export function NumericEditor({ value, onValueChange, eventKey }: CustomCellEdit
         // onValueChange, and a character that triggered editing (eventKey) does not fire the
         // input's onChange — without this the typed character would be lost on immediate commit.
         onValueChange(toNumber(text));
-        refInput.current?.focus();
+        refInput.current?.select();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
