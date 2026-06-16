@@ -50,7 +50,7 @@ export function UpdateSAProcessConfigDialog({
 }: Readonly<UpdateSAProcessConfigDialogProps>) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const emptyFormData = {
+    const emptyFormData: UpdateSAProcessConfigFormData = {
         name,
         description: description ?? '',
         modifications: [],
@@ -72,7 +72,7 @@ export function UpdateSAProcessConfigDialog({
         const persistedProcessConfig = await fetchSAProcessConfig(processConfigId);
         if (persistedProcessConfig) {
             const processConfigData = await toSAProcessConfig(persistedProcessConfig);
-            const formData: UpdateSAProcessConfigFormData = getSAProcessConfigFormDataFromFetchedElement(
+            const formData = getSAProcessConfigFormDataFromFetchedElement(
                 processConfigData,
                 name,
                 description
@@ -101,7 +101,6 @@ export function UpdateSAProcessConfigDialog({
     const nameError = errors[FieldConstants.NAME];
     const isValidating = errors.root?.isValidating;
 
-    console.log('error', errors);
     return (
         <CustomMuiDialog
             titleId="process_config/editSAProcessConfigTitle"

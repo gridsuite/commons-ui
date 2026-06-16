@@ -6,7 +6,7 @@
  */
 
 export const processConfigFr = {
-    'process_config/editSAProcessConfigTitle': "Edition d'une configuration d'analyse de sécurité sous aléas",
+    'process_config/editSAProcessConfigTitle': "Édition d'une configuration d'analyse de sécurité sous aléas",
     'process_config/modifications': 'Modifications',
     'process_config/providersParameters': 'Paramètres des simulateurs',
     'process_config/loadflow': 'Calcul de répartition',

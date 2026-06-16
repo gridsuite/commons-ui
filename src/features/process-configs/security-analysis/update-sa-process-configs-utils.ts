@@ -12,7 +12,8 @@ import {
     SecurityAnalysisProcessConfigBackend,
 } from '../process-configs.type';
 import { fetchElementNames } from '../../../services';
-import { FieldConstants, YUP_REQUIRED } from '../../../utils/constants';
+import { FieldConstants, YUP_REQUIRED } from '../../../utils';
+import { UUID } from 'node:crypto';
 
 export function getSAProcessConfigFormDataFromFetchedElement(
     processConfig: SecurityAnalysisProcessConfig,
@@ -35,9 +36,9 @@ export function getSAProcessConfigBackendFromFormData(
 ): SecurityAnalysisProcessConfigBackend {
     return {
         processType: ProcessType.SECURITY_ANALYSIS,
-        loadflowParametersUuid: formData.loadflowParameters[0].id,
-        securityAnalysisParametersUuid: formData.securityAnalysisParameters[0].id,
-        modificationUuids: formData.modifications.map((modification) => modification.modification[0].id),
+        loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
+        securityAnalysisParametersUuid: formData.securityAnalysisParameters[0].id as UUID,
+        modificationUuids: formData.modifications.map((modification) => modification.modification[0].id as UUID),
     };
 }
 

@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
+import { IdName } from '../../utils';
 
 export enum ProcessType {
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
@@ -14,13 +15,13 @@ export enum ProcessType {
 // Backend types
 export interface ProcessConfigBaseBackend {
     processType: ProcessType;
-    modificationUuids: string[];
+    modificationUuids: UUID[];
 }
 
 export interface SecurityAnalysisProcessConfigBackend extends ProcessConfigBaseBackend {
     processType: ProcessType.SECURITY_ANALYSIS;
-    securityAnalysisParametersUuid: string;
-    loadflowParametersUuid: string;
+    securityAnalysisParametersUuid: UUID;
+    loadflowParametersUuid: UUID;
 }
 
 export type ProcessConfigBackend = SecurityAnalysisProcessConfigBackend; // will be union between all ProcessConfig types
@@ -31,19 +32,14 @@ export type PersistedProcessConfigBackend = {
 };
 
 // Form types
-export interface NamedElement {
-    id: string;
-    name: string;
-}
-
 export type SecurityAnalysisProcessConfig = Omit<
     SecurityAnalysisProcessConfigBackend,
     'securityAnalysisParametersUuid' | 'loadflowParametersUuid' | 'modificationUuids'
 > & {
-    modifications: (NamedElement & {
+    modifications: (IdName & {
         enabled: boolean;
         description?: string;
     })[];
-    loadflowParameters: NamedElement;
-    securityAnalysisParameters: NamedElement;
+    loadflowParameters: IdName;
+    securityAnalysisParameters: IdName;
 };
