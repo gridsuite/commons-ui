@@ -19,5 +19,9 @@ declare module '@mui/material/styles' {
                 background: string;
             };
         };
+        searchedText: {
+            highlightColor: string;
+            currentHighlightColor: string;
+        };
     }
 }
