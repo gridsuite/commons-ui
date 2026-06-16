@@ -206,6 +206,8 @@ export const networkModificationsFr = {
     MaximumActivePowerText: 'Puissance active max',
     ActivePowerSetPointText: 'Consigne de puissance active',
     ReactivePowerSetPointText: 'Consigne de puissance réactive',
+    ReactivePowerMeasurementValue: 'Valeur TM puissance réactive',
+    ReactivePowerMeasurementValidity: 'Validité TM puissance réactive',
     GeneratorTargetV: 'Consigne tension',
     PlannedActivePowerSetPointForm: 'Puissance imposée',
     MarginalCost: 'Coût de démarrage',
