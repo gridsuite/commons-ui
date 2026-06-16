@@ -160,13 +160,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
                 table.options.meta.interaction.modificationToEditLabel.current = null;
             }
         }
-    }, [
-        table.options.meta?.interaction.modificationToEditLabel.current,
-        defaultCompositeName,
-        isComposite,
-        row.original.uuid,
-        beginEditingName,
-    ]);
+    }, [table.options.meta, defaultCompositeName, isComposite, row.original.uuid, beginEditingName]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
