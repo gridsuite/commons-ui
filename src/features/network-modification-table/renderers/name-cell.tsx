@@ -155,8 +155,8 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
 
     // triggers composite name editing from outside the component
     useEffect(() => {
-        const modificationToEditLabel = meta?.interaction.lastClickedRowId.current;
-        if (isComposite && modificationToEditLabel === row.original.uuid) {
+        const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
+        if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
             beginEditingName(defaultCompositeName);
             if (meta) {
                 meta.interaction.modificationToEditLabel.current = null;
