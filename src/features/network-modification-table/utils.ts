@@ -36,6 +36,18 @@ export function findDepth(mods: ComposedModificationMetadata[], uuid: UUID, curr
     return -1;
 }
 
+export function removeUuidsFromTree(
+    mods: ComposedModificationMetadata[],
+    uuidsToRemove: Set<string>
+): ComposedModificationMetadata[] {
+    return mods
+        .filter((m) => !uuidsToRemove.has(m.uuid))
+        .map((m) =>
+            m.subModifications.length > 0
+                ? { ...m, subModifications: removeUuidsFromTree(m.subModifications, uuidsToRemove) }
+                : m
+        );
+}
 /**
  *
  * @param modifications source where the composite modifications are looked for
