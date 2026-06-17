@@ -31,3 +31,15 @@ export function equalsArray<T>(a: T[] | null, b: T[]) {
     }
     return true;
 }
+
+export function equalsArrayAnyOrder<T>(a: T[] | null, b: T[] | null) {
+    if (a === b) {
+        return true;
+    }
+    if (!a || !b || a.length !== b.length) {
+        return false;
+    }
+    const sortedA = [...a].sort();
+    const sortedB = [...b].sort();
+    return sortedA.every((value, index) => value === sortedB[index]);
+}
