@@ -16,5 +16,6 @@ export * from './icons';
 export * from './menus';
 export * from './resizablePanels';
 export * from './csvDownloader';
+export * from './csvPicker';
 export * from './treeViewFinder';
 export * from './directoryItemSelector';
