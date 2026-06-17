@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ColDef, GridReadyEvent } from 'ag-grid-community';
+import {ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReactProps } from 'ag-grid-react';
 import { TablePaginationProps } from '@mui/material';
 import { RunningStatus, RunningStatusMessage } from '../../../utils/running-status';
@@ -46,12 +46,6 @@ export interface ContingencyItem {
 
 export interface Contingency {
     contingency?: ContingencyItem;
-    limitViolation?: LimitViolation;
-}
-
-export interface PreContingencyResult {
-    subjectId?: string;
-    status: string;
     limitViolation?: LimitViolation;
 }
 
@@ -133,12 +127,12 @@ export interface SecurityAnalysisNTableRow {
 
 export interface SecurityAnalysisTableProps {
     rowData: SecurityAnalysisNTableRow[] | SecurityAnalysisNmkTableRow[] | undefined;
-    columnDefs: ColDef[];
+    columnDefs: ColDef<any>[];
     isLoadingResult?: boolean;
     computationSubType?: string;
     overlayNoRowsTemplate?: string;
     agGridProps?: AgGridReactProps;
-    onGridReady?: (params: GridReadyEvent) => void;
+    onGridReady?: (params: GridReadyEvent<any, any>) => void;
 }
 
 export interface SecurityAnalysisResultNmkProps {
@@ -146,7 +140,7 @@ export interface SecurityAnalysisResultNmkProps {
     columnDefs: ColDef<any>[];
     isLoadingResult: boolean;
     nmkType: NmkType;
-    onGridReady: (params: GridReadyEvent) => void;
+    onGridReady: (params: GridReadyEvent<any, any>) => void;
     resultStatusMessages: RunningStatusMessage;
     securityAnalysisStatus: RunningStatus;
     paginationProps: TablePaginationProps;

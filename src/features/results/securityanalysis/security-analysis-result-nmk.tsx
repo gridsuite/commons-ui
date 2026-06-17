@@ -18,7 +18,7 @@ import {
 } from './security-analysis.type';
 import { SecurityAnalysisTable } from './security-analysis-table';
 import { CustomTablePagination } from '../../../components';
-import { MuiStyles } from '../../../utils';
+import {getRows, MuiStyles} from '../../../utils';
 import {
     flattenNmKResultsConstraints,
     flattenNmKResultsContingencies,
@@ -63,6 +63,7 @@ export function SecurityAnalysisResultNmk({
                 return undefined;
         }
     }, [nmkType, intl, content]);
+    const rowsToShow = getRows(rows, securityAnalysisStatus);
 
     const getRowStyle = useCallback(
         (params: RowClassParams) => {
@@ -99,7 +100,7 @@ export function SecurityAnalysisResultNmk({
         <Box sx={styles.container}>
             <Box sx={{ flexGrow: 1 }}>
                 <SecurityAnalysisTable
-                    rowData={rows}
+                    rowData={rowsToShow}
                     columnDefs={columnDefs}
                     overlayNoRowsTemplate={overlayNoRowsTemplate}
                     agGridProps={agGridProps}

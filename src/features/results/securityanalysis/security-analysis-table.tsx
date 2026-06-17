@@ -8,6 +8,7 @@
 import { useMemo } from 'react';
 import { SecurityAnalysisTableProps } from './security-analysis.type';
 import { CustomAGGrid, DefaultCellRenderer } from '../../../components';
+import { AGGRID_LOCALES } from '../../../translations/not-intl/aggrid-locales';
 
 export function SecurityAnalysisTable({
     rowData,
@@ -43,6 +44,7 @@ export function SecurityAnalysisTable({
                 }
             }}
             overlayNoRowsTemplate={overlayNoRowsTemplate}
+            overrideLocales={AGGRID_LOCALES}
             {...agGridProps}
         />
     );
