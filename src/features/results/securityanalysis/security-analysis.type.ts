@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {ColDef, GridReadyEvent } from 'ag-grid-community';
+import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReactProps } from 'ag-grid-react';
 import { TablePaginationProps } from '@mui/material';
 import { RunningStatus, RunningStatusMessage } from '../../../utils/running-status';
@@ -127,20 +127,20 @@ export interface SecurityAnalysisNTableRow {
 
 export interface SecurityAnalysisTableProps {
     rowData: SecurityAnalysisNTableRow[] | SecurityAnalysisNmkTableRow[] | undefined;
-    columnDefs: ColDef<any>[];
+    columnDefs: ColDef[];
     isLoadingResult?: boolean;
     computationSubType?: string;
     overlayNoRowsTemplate?: string;
     agGridProps?: AgGridReactProps;
-    onGridReady?: (params: GridReadyEvent<any, any>) => void;
+    onGridReady?: (params: GridReadyEvent) => void;
 }
 
 export interface SecurityAnalysisResultNmkProps {
     result?: SecurityAnalysisNmkResult;
-    columnDefs: ColDef<any>[];
+    columnDefs: ColDef[];
     isLoadingResult: boolean;
     nmkType: NmkType;
-    onGridReady: (params: GridReadyEvent<any, any>) => void;
+    onGridReady: (params: GridReadyEvent) => void;
     resultStatusMessages: RunningStatusMessage;
     securityAnalysisStatus: RunningStatus;
     paginationProps: TablePaginationProps;
