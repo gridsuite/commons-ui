@@ -10,3 +10,7 @@ export const LANG_ENGLISH = 'en';
 export const LANG_FRENCH = 'fr';
 export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
 export type GsLang = GsLangUser | typeof LANG_SYSTEM;
+
+export function getCsvDelimiter(language: string | undefined): ';' | ',' {
+    return language === LANG_FRENCH ? ';' : ',';
+}
