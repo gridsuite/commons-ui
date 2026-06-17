@@ -62,7 +62,7 @@ export const importParamsFr = {
     'iidm.import.cgmes.post-processors.PhaseAngleClock': 'PhaseAngleClock',
     'iidm.import.cgmes.import-node-breaker-as-bus-breaker': 'Importer un Node breaker comme un bus breaker',
     'iidm.import.cgmes.import-node-breaker-as-bus-breaker.desc':
-        'Import un réseau node breaker en tant que bus breaker',
+        'Importer un réseau node breaker en tant que bus breaker',
     'iidm.import.cgmes.disconnect-boundary-line-if-boundary-side-is-disconnected':
         'Déconnexion automatique des lignes frontières',
     'iidm.import.cgmes.disconnect-boundary-line-if-boundary-side-is-disconnected.desc':
@@ -80,9 +80,9 @@ export const importParamsFr = {
     'iidm.import.cgmes.silence-frequent-issues-warnings': 'Ne pas remonter les avertissements les plus fréquents',
     'iidm.import.cgmes.silence-frequent-issues-warnings.desc': 'Ne pas remonter les avertissements les plus fréquents',
     'iidm.import.cgmes.missing-permanent-limit-percentage':
-        'Pourcentage de la limite temporaire pour la limite permanente',
+        'Pourcentage appliqué à la limite temporaire pour créer la permanente',
     'iidm.import.cgmes.missing-permanent-limit-percentage.desc':
-        'Si la limite permanente est absente, ajoute une limite permanente de x pourcentage de la temporaire',
+        'Si la limite permanente est absente, ajoute une limite permanente de x pourcentage de la temporaire (Version IIDM < 1.12)',
 
     // UCTE
     'ucte.import.combine-phase-angle-regulation': 'Combiner les lois de réglage et de déphasage',
@@ -98,9 +98,9 @@ export const importParamsFr = {
     'iidm.import.xml.throw-exception-if-extension-not-found.desc':
         "Lever une erreur si on essaie d'importer une extension inconnue",
     'iidm.import.xml.missing-permanent-limit-percentage':
-        'Pourcentage de la limite temporaire pour la limite permanente',
+        'Pourcentage appliqué à la limite temporaire pour créer la permanente',
     'iidm.import.xml.missing-permanent-limit-percentage.desc':
-        'Si la limite permanente est absente, ajoute une limite permanente de x pourcentage de la temporaire',
+        'Si la limite permanente est absente, ajoute une limite permanente de x pourcentage de la temporaire (Version IIDM < 1.12)',
     'iidm.import.minimal-validation-level': "Niveau de validation de l'import",
     'iidm.import.minimal-validation-level.desc':
         "Permet de changer le niveau de validation de l'import du réseau, les valeurs possibles sont : 'EQUIPMENT' et 'STEADY_STATE_HYPOTHESIS'",

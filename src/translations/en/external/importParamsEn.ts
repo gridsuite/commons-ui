@@ -74,7 +74,7 @@ export const importParamsEn = {
     'iidm.import.cgmes.remove-properties-and-aliases-after-import': 'Remove properties and aliases after import',
     'iidm.import.cgmes.use-detailed-dc-model': 'Use detailed DC model',
     'iidm.import.cgmes.silence-frequent-issues-warnings': 'Silent frequent issues warnings',
-    'iidm.import.cgmes.missing-permanent-limit-percentage': 'Create missing permanent limit with temporary one',
+    'iidm.import.cgmes.missing-permanent-limit-percentage': 'Create missing permanent limit from temporary one',
 
     // UCTE
     'ucte.import.combine-phase-angle-regulation': 'Combine phase and angle regulation',
@@ -88,7 +88,7 @@ export const importParamsEn = {
     // import parameters
     'iidm.import.xml.throw-exception-if-extension-not-found': 'Throw exception if extension not found',
     'iidm.import.xml.throw-exception-if-extension-not-found.desc': 'Throw exception if extension not found',
-    'iidm.import.xml.missing-permanent-limit-percentage': 'Create missing permanent limit with temporary one',
+    'iidm.import.xml.missing-permanent-limit-percentage': 'Create missing permanent limit from temporary one',
     'iidm.import.minimal-validation-level': 'Minimal validation level',
     'iidm.import.xml.with-automation-systems': 'With automation systems',
 

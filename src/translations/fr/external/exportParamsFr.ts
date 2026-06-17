@@ -37,8 +37,8 @@ export const exportParamsFr = {
         'Identifiant du fichier TP décrivant la topologie des terminaux frontières',
     'iidm.export.cgmes.modeling-authority-set': 'Définition du ModelingAuthority',
     'iidm.export.cgmes.modeling-authority-set.desc': 'Définition du ModelingAuthority',
-    'iidm.export.cgmes.model-description': 'Description du Model',
-    'iidm.export.cgmes.model-description.desc': 'Description du Model',
+    'iidm.export.cgmes.model-description': 'Description du modèle',
+    'iidm.export.cgmes.model-description.desc': 'Description du Mmodèle',
     'iidm.export.cgmes.export-transformers-with-highest-voltage-at-end1':
         'Exporter les tranformateurs avec le plus haut niveau de tension à la fin',
     'iidm.export.cgmes.export-transformers-with-highest-voltage-at-end1.desc':
@@ -46,11 +46,11 @@ export const exportParamsFr = {
     'iidm.export.cgmes.sourcing-actor': 'Nom du créateur du réseau',
     'iidm.export.cgmes.sourcing-actor.desc': 'Ajoute le nom du créateur du réseau',
     'iidm.export.cgmes.export-load-flow-status': 'Export du statut du loadflow',
-    'iidm.export.cgmes.export-load-flow-status.desc': 'Exporter du statut du loadflow',
-    'iidm.export.cgmes.max-p-mismatch-converged': 'Ecart maximum de puissance active tolérable sur chaque bus',
+    'iidm.export.cgmes.export-load-flow-status.desc': 'Exporter le statut du loadflow',
+    'iidm.export.cgmes.max-p-mismatch-converged': 'Écart maximum de puissance active tolérable sur chaque bus',
     'iidm.export.cgmes.max-p-mismatch-converged.desc':
         "L'écart maximum de puissance active tolérable sur chaque bus pour considérer que la loi de kirchhoff est respectée",
-    'iidm.export.cgmes.max-q-mismatch-converged': 'Ecart maximum de puissance réactive tolérable sur chaque bus',
+    'iidm.export.cgmes.max-q-mismatch-converged': 'Écart maximum de puissance réactive tolérable sur chaque bus',
     'iidm.export.cgmes.max-q-mismatch-converged.desc':
         "L'écart maximum de puissance réactive tolérable sur chaque bus pour considérer que la loi de kirchhoff est respectée",
     'iidm.export.cgmes.export-sv-injections-for-slacks': 'Exporter les injections sv pour les noeuds bilans',
