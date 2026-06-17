@@ -18,7 +18,7 @@ import {
 } from './security-analysis.type';
 import { SecurityAnalysisTable } from './security-analysis-table';
 import { CustomTablePagination } from '../../../components';
-import {getRows, MuiStyles} from '../../../utils';
+import { getRows, MuiStyles } from '../../../utils';
 import {
     flattenNmKResultsConstraints,
     flattenNmKResultsContingencies,
