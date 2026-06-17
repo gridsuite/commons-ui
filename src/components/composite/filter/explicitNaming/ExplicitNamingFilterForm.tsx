@@ -15,7 +15,6 @@ import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { CustomAgGridTable } from '../../agGridTable/CustomAgGridTable';
-import { hasNonEmptyRows } from '../../agGridTable/agGridTable-utils';
 import { SelectInput } from '../../../ui/reactHookForm/selectInputs/SelectInput';
 import { isInjection } from '../../../../utils/types/equipmentTypes';
 import { NumericEditor, suppressNonNumericKeyboardEvent } from '../../agGridTable/cellEditors/numericEditor';
@@ -173,15 +172,13 @@ export function ExplicitNamingFilterForm({
     );
 
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
-    const [selectedFileError, setSelectedFileError] = useState<string | undefined>();
+    const [fileErrorMessage, setFileErrorMessage] = useState<string | undefined>();
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
 
     useEffect(() => {
         setSelectedFile(undefined);
-        setSelectedFileError(undefined);
+        setFileErrorMessage(undefined);
     }, [watchEquipmentType]);
-
-    const hasExistingData = useCallback(() => hasNonEmptyRows(getValues(FILTER_EQUIPMENTS_ATTRIBUTES)), [getValues]);
 
     const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
 
@@ -268,16 +265,16 @@ export function ExplicitNamingFilterForm({
                         disabled={!watchEquipmentType}
                         selectedFile={selectedFile}
                         onFileChange={setSelectedFile}
-                        onFileError={setSelectedFileError}
-                        hasExistingData={hasExistingData}
+                        onFileError={setFileErrorMessage}
+                        getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
                         onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
                         onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
                     />
                 </Grid>
             </Grid>
-            {selectedFileError && (
+            {fileErrorMessage && (
                 <Grid>
-                    <Alert severity="error">{selectedFileError}</Alert>
+                    <Alert severity="error">{fileErrorMessage}</Alert>
                 </Grid>
             )}
             {watchEquipmentType && (

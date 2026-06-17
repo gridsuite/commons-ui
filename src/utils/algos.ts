@@ -32,7 +32,7 @@ export function equalsArray<T>(a: T[] | null, b: T[]) {
     return true;
 }
 
-export function equalsArrayAnyOrder<T>(a: T[] | null, b: T[]) {
+export function equalsArrayAnyOrder<T>(a: T[] | null, b: T[] | null) {
     if (a === b) {
         return true;
     }

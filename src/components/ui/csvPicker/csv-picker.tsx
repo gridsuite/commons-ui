@@ -10,10 +10,22 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
-import { equalsArrayAnyOrder, LANG_FRENCH } from '../../../utils';
+import { equalsArrayAnyOrder, getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
 
-export interface CsvPickerProps<TData = unknown> {
+type CsvPickerCallbacks<TData> =
+    | {
+          onComplete: (results: ParseResult<TData>, file: File) => void;
+          onAppend?: never;
+          onReplace?: never;
+      }
+    | {
+          onComplete?: never;
+          onAppend: (results: ParseResult<TData>, file: File) => void;
+          onReplace: (results: ParseResult<TData>, file: File) => void;
+      };
+
+export type CsvPickerProps<TData = unknown> = {
     label: string;
     header: string[];
     maxLineNumber?: number;
@@ -23,11 +35,8 @@ export interface CsvPickerProps<TData = unknown> {
     selectedFile?: File;
     onFileChange: (file: File | undefined) => void;
     onFileError: (error: string | undefined) => void;
-    onComplete?: (results: ParseResult<TData>, file: File) => void;
-    onAppend?: (results: ParseResult<TData>, file: File) => void;
-    onReplace?: (results: ParseResult<TData>, file: File) => void;
-    hasExistingData?: () => boolean;
-}
+    getTableData?: () => unknown[];
+} & CsvPickerCallbacks<TData>;
 
 export function CsvPicker<TData = unknown>({
     label,
@@ -42,7 +51,7 @@ export function CsvPicker<TData = unknown>({
     onComplete,
     onAppend,
     onReplace,
-    hasExistingData,
+    getTableData,
 }: CsvPickerProps<TData>) {
     const intl = useIntl();
     const { CSVReader } = useCSVReader();
@@ -54,31 +63,35 @@ export function CsvPicker<TData = unknown>({
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
             if (results.data.length === 0) {
-                onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }));
+                onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }, { filename: acceptedFile.name }));
             } else if (!equalsArrayAnyOrder(header, Object.keys(results.data[0] as Record<string, unknown>))) {
                 console.warn('Wrong CSV headers');
                 console.warn('Expected:', header);
                 console.warn('Actual:', Object.keys(results.data[0] as Record<string, unknown>));
-                onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }));
+                onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }, { filename: acceptedFile.name }));
             } else if (maxLineNumber && results.data.length > maxLineNumber) {
-                onFileError(intl.formatMessage({ id: 'tooManyLinesInCsvFile' }, { value: maxLineNumber }));
+                onFileError(
+                    intl.formatMessage(
+                        { id: 'tooManyLinesInCsvFile' },
+                        { value: maxLineNumber, filename: acceptedFile.name }
+                    )
+                );
             } else {
-                // Only reflect the file once it is valid: on error the previously selected file name
-                // (and the table data) is kept unchanged.
-                onFileChange(acceptedFile);
                 onFileError(undefined);
                 if (onAppend && onReplace) {
-                    if (hasExistingData?.()) {
+                    if (hasNonEmptyRows(getTableData?.())) {
                         setPendingImport({ results, file: acceptedFile });
                     } else {
                         onReplace(results, acceptedFile);
+                        onFileChange(acceptedFile);
                     }
                 } else {
                     onComplete?.(results, acceptedFile);
+                    onFileChange(acceptedFile);
                 }
             }
         },
-        [header, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, hasExistingData]
+        [header, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, getTableData]
     );
 
     return (
@@ -88,7 +101,7 @@ export function CsvPicker<TData = unknown>({
                     header: true,
                     skipEmptyLines: true,
                     comments: '#',
-                    delimiter: language === LANG_FRENCH ? ';' : ',',
+                    delimiter: getCsvDelimiter(language),
                     ...parseConfig,
                 }}
                 onUploadAccepted={handleUploadAccepted}
@@ -105,6 +118,7 @@ export function CsvPicker<TData = unknown>({
                         </span>
                         <Button {...getRootProps()} variant="outlined" disabled={disabled}>
                             <FormattedMessage id={label} />
+                            {/* this bar is bugged, if you click somewhere while loading it will reset (the confirmation dialog prevent this reset and fix the problem) */}
                             <ProgressBar
                                 style={{
                                     position: 'absolute',
@@ -120,8 +134,14 @@ export function CsvPicker<TData = unknown>({
             {onAppend && onReplace && (
                 <CsvPickerConfirmationDialog
                     pendingImport={pendingImport}
-                    onReplace={onReplace}
-                    onAppend={onAppend}
+                    onReplace={(r, f) => {
+                        onReplace(r, f);
+                        onFileChange(f);
+                    }}
+                    onAppend={(r, f) => {
+                        onAppend(r, f);
+                        onFileChange(f);
+                    }}
                     onClose={() => setPendingImport(null)}
                 />
             )}

@@ -14,9 +14,14 @@ import { OPERATOR_OPTIONS } from '../filter/expert/expertFilterConstants';
 import { FieldConstants } from '../../../utils/constants/fieldConstants';
 import { usePredefinedProperties } from '../../../hooks/usePredefinedProperties';
 import { EquipmentType } from '../../../utils';
-import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
+import { createCustomFilterOptions } from './utils';
 
-const PROPERTY_VALUE_OPERATORS = [OPERATOR_OPTIONS.IN, OPERATOR_OPTIONS.NOT_IN];
+const PROPERTY_VALUE_OPERATORS = [
+    OPERATOR_OPTIONS.IN,
+    OPERATOR_OPTIONS.NOT_IN,
+    OPERATOR_OPTIONS.EXISTS,
+    OPERATOR_OPTIONS.NOT_EXISTS,
+];
 
 interface ExpertFilterPropertyProps {
     equipmentType: EquipmentType;
@@ -79,7 +84,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                         onChange(FieldConstants.PROPERTY_NAME, value);
                     }}
                     size="small"
-                    filterOptions={useCustomFilterOptions()}
+                    filterOptions={createCustomFilterOptions}
                 />
             </Grid>
             <Grid item xs="auto">
@@ -101,28 +106,33 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     </Select>
                 </FormControl>
             </Grid>
-            <Grid item xs>
-                <Autocomplete
-                    value={propertyValues ?? []}
-                    options={predefinedValues ?? []}
-                    title={valueEditorProps?.title}
-                    multiple
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            error={!valid}
-                            placeholder={propertyValues?.length > 0 ? '' : intl.formatMessage({ id: 'valuesList' })}
+            {valueEditorProps?.value?.propertyOperator !== OPERATOR_OPTIONS.EXISTS.customName &&
+                valueEditorProps?.value?.propertyOperator !== OPERATOR_OPTIONS.NOT_EXISTS.customName && (
+                    <Grid item xs>
+                        <Autocomplete
+                            value={propertyValues ?? []}
+                            options={predefinedValues ?? []}
+                            title={valueEditorProps?.title}
+                            multiple
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    error={!valid}
+                                    placeholder={
+                                        propertyValues?.length > 0 ? '' : intl.formatMessage({ id: 'valuesList' })
+                                    }
+                                />
+                            )}
+                            freeSolo
+                            autoSelect
+                            onChange={(event, value) => {
+                                onChange(FieldConstants.PROPERTY_VALUES, value);
+                            }}
+                            size="small"
+                            filterOptions={createCustomFilterOptions}
                         />
-                    )}
-                    freeSolo
-                    autoSelect
-                    onChange={(event, value) => {
-                        onChange(FieldConstants.PROPERTY_VALUES, value);
-                    }}
-                    size="small"
-                    filterOptions={useCustomFilterOptions()}
-                />
-            </Grid>
+                    </Grid>
+                )}
         </Grid>
     );
 }

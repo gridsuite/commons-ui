@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { useCSVDownloader } from 'react-papaparse';
 import { ErrorInput } from '../../ui/reactHookForm/errorManagement/ErrorInput';
 import { FieldErrorAlert } from '../../ui/reactHookForm/errorManagement/FieldErrorAlert';
-import { LANG_FRENCH } from '../../../utils';
+import { getCsvDelimiter } from '../../../utils';
 import type { CsvProps } from './agGridTable-utils';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
@@ -80,7 +80,7 @@ export function BottomTableButtons({
                         <CsvDownloadButton
                             data={csvProps.getTemplateData}
                             fileName={csvProps.fileName}
-                            delimiter={csvProps.language === LANG_FRENCH ? ';' : ','}
+                            delimiter={getCsvDelimiter(csvProps.language)}
                             labelId="GenerateCSV"
                         />
                     </Grid>
@@ -90,7 +90,7 @@ export function BottomTableButtons({
                         <CsvDownloadButton
                             data={csvProps.getTableData}
                             fileName={csvProps.fileName}
-                            delimiter={csvProps.language === LANG_FRENCH ? ';' : ','}
+                            delimiter={getCsvDelimiter(csvProps.language)}
                             labelId="DownloadCSV"
                             disabled={!csvProps.hasTableData}
                         />
