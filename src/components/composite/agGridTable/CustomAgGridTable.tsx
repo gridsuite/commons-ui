@@ -8,10 +8,10 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
-import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
+import type { CellEditingStoppedEvent, ColumnState, RowDataUpdatedEvent, SortChangedEvent } from 'ag-grid-community';
 import { BottomTableButtons } from './BottomTableButtons';
-import { type CsvProps, hasNonEmptyRows } from './agGridTable-utils';
-import { FieldConstants } from '../../../utils';
+import { type CsvProps } from './agGridTable-utils';
+import { FieldConstants, hasNonEmptyRows } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
 
 const style = (customProps: any) => ({
@@ -84,7 +84,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
         // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
         const theme: any = useTheme();
         const [gridApi, setGridApi] = useState<any>(null);
-        const [selectedRows, setSelectedRows] = useState([]);
+        const [selectedRows, setSelectedRows] = useState<FieldValues[]>([]);
         const [newRowAdded, setNewRowAdded] = useState(false);
         const [isSortApplied, setIsSortApplied] = useState(false);
 
@@ -168,14 +168,12 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
             setGridApi(params);
         };
 
-        const onRowDataUpdated = () => {
+        const onRowDataUpdated = (event: RowDataUpdatedEvent) => {
             setNewRowAdded(false);
-            if (gridApi?.api) {
-                // update due to new appended row, let's scroll
-                const lastIndex = rowData.length - 1;
-                gridApi.api.paginationGoToLastPage();
-                gridApi.api.ensureIndexVisible(lastIndex, 'bottom');
-            }
+            // update due to new appended row, let's scroll
+            const lastIndex = rowData.length - 1;
+            event.api.paginationGoToLastPage();
+            event.api.ensureIndexVisible(lastIndex, 'bottom');
         };
 
         const onCellEditingStopped = useCallback(
@@ -201,12 +199,12 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         rowData={rowData}
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
-                        rowSelection={rowSelection ?? 'multiple'}
+                        rowSelection={rowSelection ?? { mode: 'multiRow' }}
                         selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
-                        onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
+                        onRowDragMove={(event) => move(getIndex(event.node.data), event.overIndex)}
                         detailRowAutoHeight
-                        onSelectionChanged={() => {
-                            setSelectedRows(gridApi.api.getSelectedRows());
+                        onSelectionChanged={(event) => {
+                            setSelectedRows(event.api.getSelectedRows());
                         }}
                         onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
                         onCellEditingStopped={onCellEditingStopped}

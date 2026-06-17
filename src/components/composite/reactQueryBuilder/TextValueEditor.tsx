@@ -11,7 +11,7 @@ import { Autocomplete, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useConvertValue } from './hooks/useConvertValue';
 import { useValid } from './hooks/useValid';
-import { useCustomFilterOptions } from '../../../hooks/useCustomFilterOptions';
+import { createCustomFilterOptions } from './utils';
 
 export function TextValueEditor(props: ValueEditorProps) {
     useConvertValue(props);
@@ -20,7 +20,6 @@ export function TextValueEditor(props: ValueEditorProps) {
 
     const { value, handleOnChange, title } = props;
     // The displayed component totally depends on the value type and not the operator. This way, we have smoother transition.
-    const customFilterOptions = useCustomFilterOptions();
     const intl = useIntl();
 
     if (!Array.isArray(value)) {
@@ -43,7 +42,7 @@ export function TextValueEditor(props: ValueEditorProps) {
             )}
             size="small"
             title={title}
-            filterOptions={customFilterOptions}
+            filterOptions={createCustomFilterOptions}
         />
     );
 }

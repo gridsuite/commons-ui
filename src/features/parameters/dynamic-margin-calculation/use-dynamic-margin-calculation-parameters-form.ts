@@ -56,7 +56,7 @@ export const toFormValues = (_params: DynamicMarginCalculationParametersInfos): 
         [CALCULATION_TYPE]: _params.calculationType,
         [ACCURACY]: _params.accuracy,
         [LOAD_MODELS_RULE]: _params.loadModelsRule,
-        [LOADS_VARIATIONS]: _params.loadsVariations,
+        [LOADS_VARIATIONS]: _params.loadsVariations ?? [],
     },
 });
 
