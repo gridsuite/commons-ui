@@ -91,6 +91,7 @@ export const parametersEn = {
     HorizontalSubstationLayout: 'Horizontal',
     VerticalSubstationLayout: 'Vertical',
     ComponentLibrary: 'Component library selection',
+    CustomRealTimeStateEstimation: 'State estimation',
     nadPositionsGenerationModeLabel: 'Initialization of the positions',
     NadGeoPositionsModeLabel: 'Geographical',
     NadAutoPositionsModeLabel: 'Automatic',

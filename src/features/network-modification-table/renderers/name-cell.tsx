@@ -9,7 +9,7 @@ import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
-import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
+import { CustomTooltip } from '../../../components';
 import {
     createModificationNameCellStyle,
     createNameCellLabelBoxSx,
@@ -40,6 +40,7 @@ interface NameCellProps {
 }
 
 export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
+    const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
     const { computeLabel } = useModificationLabelComputer();
@@ -48,8 +49,6 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
-
-    const modificationToEditLabel = table.options.meta?.interaction.modificationToEditLabel;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -152,12 +151,18 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         });
     }, []);
 
+    const defaultCompositeName: string = useMemo(() => intl.formatMessage({ id: 'CompositeModification' }), [intl]);
+
     // triggers composite name editing from outside the component
     useEffect(() => {
-        if (isComposite && modificationToEditLabel === row.original.uuid) {
-            beginEditingName(intl.formatMessage({ id: 'CompositeModification' }));
+        const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
+        if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
+            beginEditingName(defaultCompositeName);
+            if (meta) {
+                meta.interaction.modificationToEditLabel.current = null;
+            }
         }
-    }, [modificationToEditLabel, intl, isComposite, row.original.uuid, beginEditingName]);
+    }, [meta, defaultCompositeName, isComposite, row.original.uuid, beginEditingName]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
