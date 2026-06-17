@@ -4,13 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { AttributeModification } from '../../../../utils';
-import { Property } from '../../common/properties';
-import { ReactiveCapabilityCurvePoints } from '../../common/reactiveLimits/reactiveLimits.type';
+import { AttributeModification, ModificationType } from '../../../../utils';
+import { Property, ReactiveCapabilityCurvePoints } from '../../common';
 
 export interface GeneratorModificationDto {
-    type: string;
-    uuid: string | null;
+    type: ModificationType;
     equipmentId: string;
     equipmentName: AttributeModification<string> | null;
     energySource?: AttributeModification<string> | null;

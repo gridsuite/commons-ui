@@ -5,9 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const MAX_ROWS_NUMBER = 100;
-
-export const NAME = 'name';
-export const ID = 'id';
-export const ACTIVATED = 'activated';
-export const DESCRIPTION = 'description';
+export * from './ShuntCompensatorModificationForm';
+export * from './shuntCompensatorModification.types';
+export * from './shuntCompensatorModification.utils';

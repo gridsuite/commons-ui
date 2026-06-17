@@ -6,3 +6,5 @@
  */
 
 export * from './creation';
+export * from './modification';
+export * from './batteryDialog.type';

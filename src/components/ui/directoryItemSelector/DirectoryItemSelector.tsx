@@ -162,6 +162,7 @@ export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
     equipmentTypes?: string[];
     itemFilter?: (val: ElementAttributes) => boolean;
     expanded?: UUID[];
+    inline?: boolean;
     selected?: UUID[];
 }
 
@@ -178,6 +179,7 @@ function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNo
 
 export function DirectoryItemSelector({
     open,
+    inline,
     types,
     equipmentTypes,
     itemFilter,
@@ -413,6 +415,7 @@ export function DirectoryItemSelector({
             sortMethod={sortHandlingDirectories}
             multiSelect // defaulted to true
             open={open}
+            inline={inline}
             expanded={autoExpandedNodes}
             onlyLeaves // defaulted to true
             selected={selected}

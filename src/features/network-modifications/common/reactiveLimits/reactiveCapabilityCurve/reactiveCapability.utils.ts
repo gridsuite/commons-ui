@@ -6,15 +6,14 @@
  */
 import { array, number, ref, object, TestContext, ValidationError } from 'yup';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
-import { ReactiveCapabilityCurve, ReactiveCapabilityCurvePoints } from '../reactiveLimits.type';
+import { ReactiveCapabilityCurve } from '../reactiveLimits.type';
 import { FieldConstants, toNumber, validateValueIsANumber } from '../../../../../utils';
-import {
-    GeneratorCreationDialogSchemaForm,
-    GeneratorDialogSchemaBaseForm,
-    GeneratorModificationDialogSchemaForm,
-} from '../../../generator/generatorDialog.type';
-import { GeneratorCreationDto } from '../../../generator/creation/generatorCreation.types';
-import { GeneratorModificationDto } from '../../../generator/modification/generatorModification.types';
+import type { GeneratorCreationFormData } from '../../../generator/creation/generatorCreation.utils';
+import type { GeneratorCreationDto } from '../../../generator/creation/generatorCreation.types';
+import type { GeneratorModificationDto } from '../../../generator/modification/generatorModification.types';
+import type { ReactiveLimitsFormData } from '../reactiveLimits.utils';
+import type { GeneratorModificationFormData } from '../../../generator/modification/generatorModification.utils';
+import type { GeneratorFormInfos } from '../../../generator';
 
 export const INSERT = 'INSERT';
 export const REMOVE = 'REMOVE';
@@ -157,10 +156,10 @@ export function setCurrentReactiveCapabilityCurveTable(
 }
 
 function handleReactiveCapabilityCurveChoice(
-    currentChoice: string | null | undefined,
     previousChoice: string | null | undefined,
-    currentReactiveLimits: GeneratorDialogSchemaBaseForm[typeof FieldConstants.REACTIVE_LIMITS] | null | undefined
+    currentReactiveLimits: ReactiveLimitsFormData
 ) {
+    const currentChoice = currentReactiveLimits?.[FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE];
     if (currentChoice === 'MINMAX') {
         const hasAnyValue =
             currentReactiveLimits?.[FieldConstants.MAXIMUM_REACTIVE_POWER] ||
@@ -186,30 +185,28 @@ function handleReactiveCapabilityCurveChoice(
 
 // In case the user has changed the choice of the reactive capability curve, but not the values, we keep the original choice
 export function toReactiveCapabilityCurveChoiceForGeneratorCreation(
-    currentReactiveLimits: GeneratorCreationDialogSchemaForm[typeof FieldConstants.REACTIVE_LIMITS],
-    editData: GeneratorCreationDto | null | undefined
+    form: GeneratorCreationFormData,
+    dto?: GeneratorCreationDto
 ) {
-    const currentChoice = currentReactiveLimits?.[FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE];
     let previousChoice: 'CURVE' | 'MINMAX' | undefined;
-    if (editData) {
-        previousChoice = editData.reactiveCapabilityCurve ? 'CURVE' : 'MINMAX';
+    if (dto) {
+        previousChoice = dto.reactiveCapabilityCurve ? 'CURVE' : 'MINMAX';
     }
-    return handleReactiveCapabilityCurveChoice(currentChoice, previousChoice, currentReactiveLimits);
+    return handleReactiveCapabilityCurveChoice(previousChoice, form.reactiveLimits);
 }
 
-// In case the user has changed the choice of the reactive capability curve, but not the values, we keep the original choice
+// In case the user has changed the choice of the reactive capability curve, but not the values, we keep the original choice, or the network equipement value
 export function toReactiveCapabilityCurveChoiceForGeneratorModification(
-    currentReactiveLimits: GeneratorModificationDialogSchemaForm[typeof FieldConstants.REACTIVE_LIMITS],
-    editData: GeneratorModificationDto | null | undefined,
-    networkPoints: ReactiveCapabilityCurvePoints[] | null | undefined
+    form: GeneratorModificationFormData,
+    generatorToModify: GeneratorFormInfos | undefined,
+    dto?: GeneratorModificationDto
 ) {
-    const currentChoice = currentReactiveLimits?.[FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE];
     let editDataChoice;
-    if (editData) {
-        editDataChoice = editData.reactiveCapabilityCurve?.value === true ? 'CURVE' : 'MINMAX';
+    if (dto) {
+        editDataChoice = dto.reactiveCapabilityCurve?.value === true ? 'CURVE' : 'MINMAX';
     }
-    const networkChoice = networkPoints ? 'CURVE' : 'MINMAX';
+    const networkChoice = generatorToModify?.reactiveCapabilityCurvePoints ? 'CURVE' : 'MINMAX';
     const previousChoice = editDataChoice ?? networkChoice;
 
-    return handleReactiveCapabilityCurveChoice(currentChoice, previousChoice, currentReactiveLimits);
+    return handleReactiveCapabilityCurveChoice(previousChoice, form.reactiveLimits);
 }
