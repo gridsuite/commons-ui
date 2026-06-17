@@ -18,7 +18,7 @@ export function MappingParameters({ path }: Readonly<MappingParametersProps>) {
         <Grid container>
             <ParameterLineDirectoryItemsInput
                 name={`${path}.${MAPPING}`}
-                elementType={ElementType.DYNAMIC_SIMULATION_MAPPING}
+                elementType={ElementType.DYNAMIC_MAPPING}
                 label="DynamicSimulationMapping"
                 hideErrorMessage
             />

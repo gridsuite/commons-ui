@@ -5,19 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { backendFetchJson } from './utils';
-import { DynamicSimulationModelInfos, IdName } from '../utils';
+import { DynamicSimulationModelInfos } from '../utils';
 
 const PREFIX_DYNAMIC_MAPPING_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-mapping`;
 
 function getDynamicMappingUrl() {
     return `${PREFIX_DYNAMIC_MAPPING_SERVER_QUERIES}/`;
-}
-
-export function getDynamicMappings(): Promise<IdName[]> {
-    console.info(`Fetching dynamic mappings ...`);
-    const url = `${getDynamicMappingUrl()}mappings/`;
-    console.debug(url);
-    return backendFetchJson(url);
 }
 
 export function fetchDynamicSimulationModels(mapping: string): Promise<DynamicSimulationModelInfos[]> {

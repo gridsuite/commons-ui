@@ -9,7 +9,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { Grid } from '@mui/material';
-import { ElementType, mergeSx, snackWithFallback, VoltageLevelInfos } from '../../../utils';
+import {
+    ElementType,
+    mapDynamicSimulationParameters,
+    mergeSx,
+    snackWithFallback,
+    VoltageLevelInfos,
+} from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
 
@@ -142,7 +148,9 @@ export function DynamicSimulationInline({
                         open={openCreateParameterDialog}
                         onClose={() => setOpenCreateParameterDialog(false)}
                         parameterValues={getValues}
-                        parameterFormatter={(formData) => toParamsEnriched(formData, getDefaultParams())}
+                        parameterFormatter={(formData) =>
+                            mapDynamicSimulationParameters(toParamsEnriched(formData, getDefaultParams()))
+                        }
                         parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
                     />
                 )}
