@@ -119,7 +119,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                                 </Box>
                             </Typography>
                         </Grid>
-
+                    </Grid>
+                    <Typography fontWeight="bold" sx={styles.quotasTopography}>
+                        <FormattedMessage id="user-information-dialog/quotas-per-study" />
+                    </Typography>
+                    <Grid container spacing={2}>
                         <Grid item xs={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-builds-per-study" />
@@ -127,6 +131,94 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid item xs={6}>
                             <Typography>{userDetails?.maxAllowedBuilds}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-loadflow-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedLoadflow}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-security-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedSecurity}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-sensitivity-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedSensitivity}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-shortCircuit-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedShortCircuit}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-voltageInit-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedVoltageInit}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-pccMin-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedPccMin}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-stateEstimation-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedStateEstimation}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedBalanceAdjustement}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedDynamicSimulation}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicSecurity-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedDynamicSecurity}</Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicMargin-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Typography>{userDetails?.maxAllowedDynamicMargin}</Typography>
                         </Grid>
                     </Grid>
                 </Box>
