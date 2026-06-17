@@ -345,10 +345,21 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         }
         setSelected(newSelected);
         if (inline && onSelectionChange) {
-            const nodes = newSelected
-                .map((itemId) => mapPrintedNodes[itemId])
-                .filter(Boolean) as TreeViewFinderNodeProps[];
-            onSelectionChange(nodes);
+            // Emits nodes in tree display order
+            const selectedSet = new Set(newSelected);
+            const orderedNodes: TreeViewFinderNodeProps[] = [];
+            const collectInTreeOrder = (nodes: TreeViewFinderNodeProps[] | undefined) => {
+                [...(nodes ?? [])].sort(sortMethod).forEach((node) => {
+                    if (selectedSet.has(node.id)) {
+                        orderedNodes.push(node);
+                    }
+                    if (node.children) {
+                        collectInTreeOrder(node.children);
+                    }
+                });
+            };
+            collectInTreeOrder(data);
+            onSelectionChange(orderedNodes);
         }
     };
 
