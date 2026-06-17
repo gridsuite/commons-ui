@@ -199,7 +199,7 @@ export function ElementSaveDialog({
 
     // Set prefixed name for creation if provided
     useEffect(() => {
-        if (!isCreateMode) {
+        if (!isCreateMode || (!defaultName && !prefixIdForGeneratedName)) {
             return;
         }
         const name =

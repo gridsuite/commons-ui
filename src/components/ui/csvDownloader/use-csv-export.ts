@@ -9,7 +9,7 @@ import { useCallback } from 'react';
 import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
 import { useIntl } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
-import { LANG_FRENCH } from '../../../utils';
+import { getCsvDelimiter, LANG_FRENCH } from '../../../utils';
 import { fetchStudyMetadata } from '../../../services';
 
 const NA_VALUE = 'N/A';
@@ -56,7 +56,7 @@ export const useCsvExport = () => {
             };
 
             const prefix = props.tableNamePrefix ?? '';
-            const defaultSeparator = props.language === LANG_FRENCH ? ';' : ',';
+            const defaultSeparator = getCsvDelimiter(props.language);
             const columnSeparatorValue = props.isCopyCsv
                 ? ((await fetchCsvSeparator()) ?? defaultSeparator)
                 : defaultSeparator;
