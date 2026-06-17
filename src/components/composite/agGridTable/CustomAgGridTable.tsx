@@ -30,9 +30,8 @@ const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEnd
 
     const overNodeTop = overNode.rowTop ?? 0;
     const overNodeHeight = overNode.rowHeight ?? 0;
-    // yRatio is 0 if the mouse is in the center of the row, less than -0.5 if above, greater than 0.5 if below
-    const yRatio = (y - overNodeTop - overNodeHeight / 2) / overNodeHeight;
-    return yRatio < 0 ? 'above' : 'below';
+    const overNodeMiddle = overNodeTop + overNodeHeight / 2;
+    return y < overNodeMiddle ? 'above' : 'below';
 };
 
 const style = (customProps: any) => ({
