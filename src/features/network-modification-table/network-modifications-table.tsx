@@ -42,6 +42,7 @@ import {
     isCompositeModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
+    removeUuidsFromTree,
 } from './utils';
 import { ModificationRow } from './row';
 
@@ -104,6 +105,16 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
+    // refs are kept for the "event" props to prevent retriggering the associated useEffects
+    const modificationToEditLabelRef = useRef(modificationToEditLabel);
+    useEffect(() => {
+        modificationToEditLabelRef.current = modificationToEditLabel;
+    }, [modificationToEditLabel]);
+    const highlightedModificationUuidRef = useRef(highlightedModificationUuid);
+    useEffect(() => {
+        highlightedModificationUuidRef.current = highlightedModificationUuid;
+    }, [highlightedModificationUuid]);
+
     const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
         // the new assembled composite will be created where the first selected row is so :
         // depth has to be < to first selected row depth + maxDepth of any selected row
@@ -125,23 +136,35 @@ export function NetworkModificationsTable({
     });
 
     useEffect(() => {
-        setComposedModifications((prevMods) => {
-            // Rebuild from the new modifications prop, carrying over already-fetched subModifications
-            // to avoid a visual flash of empty children while re-fetches are in flight.
-            const nextMods = mergeSubModificationsIntoTree(formatToComposedModification(modifications), prevMods);
+        const prevMods = composedModificationsRef.current;
+        // Uuids now at the top level have an authoritative position there. Any stale
+        // carried-over child with the same uuid (cut out of a composite, pasted at root)
+        // must be stripped, otherwise it renders twice → duplicate row ids / React keys.
+        const newTopLevelUuids = new Set(modifications.map((m) => m.uuid));
 
-            // Re-fetch for any composite that already has loaded sub-modifications, regardless of
-            // whether it is currently expanded to avoid stale state
-            const loadedComposite: ComposedModificationMetadata[] = [];
-            findAllLoadedCompositeModifications(nextMods, loadedComposite);
+        // Carry over already-fetched children (avoids an empty flash during the re-fetch),
+        // then deep-filter out any uuid that moved to the top level.
+        const nextMods = mergeSubModificationsIntoTree(formatToComposedModification(modifications), prevMods).map(
+            (mod) =>
+                mod.subModifications.length > 0
+                    ? { ...mod, subModifications: removeUuidsFromTree(mod.subModifications, newTopLevelUuids) }
+                    : mod
+        );
+        setComposedModifications(nextMods);
+
+        // Re-fetch authoritative children for every composite that already had loaded children,
+        // correcting anything stale that was temporarily preserved above.
+        // Source of truth: prevMods — nextMods children may have been filtered just above.
+        const loadedComposites: ComposedModificationMetadata[] = [];
+        findAllLoadedCompositeModifications(prevMods, loadedComposites);
+        if (loadedComposites.length > 0) {
             fetchSubModificationsForExpandedRows(
-                loadedComposite.map((mod) => mod.uuid),
+                loadedComposites.map((m) => m.uuid),
                 nextMods,
                 setComposedModifications,
                 true
             );
-            return nextMods;
-        });
+        }
     }, [modifications]);
 
     const handleExpandRow = useCallback((updater: Updater<ExpandedState>) => {
@@ -178,7 +201,7 @@ export function NetworkModificationsTable({
                 lastClickedRowId,
                 onRowSelected: handleRowSelected,
                 isRowDragDisabled,
-                modificationToEditLabel,
+                modificationToEditLabel: modificationToEditLabelRef,
             },
             status: {
                 isImpactedByNotification,
@@ -198,7 +221,7 @@ export function NetworkModificationsTable({
             setModificationsToExclude,
             lastClickedRowId,
             handleRowSelected,
-            modificationToEditLabel,
+            modificationToEditLabelRef,
             isRowDragDisabled,
             isImpactedByNotification,
             notificationMessageId,
@@ -290,13 +313,14 @@ export function NetworkModificationsTable({
     }, [lastClickedRowId, table, currentNodeId]);
 
     useEffect(() => {
-        if (highlightedModificationUuid && containerRef.current) {
-            const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuid);
+        if (highlightedModificationUuidRef.current && containerRef.current) {
+            const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuidRef.current);
             if (rowIndex !== -1) {
-                virtualizer.scrollToIndex(rowIndex, { align: 'start', behavior: 'auto' });
+                virtualizer.scrollToIndex(rowIndex, { align: 'center', behavior: 'auto' });
+                highlightedModificationUuidRef.current = null;
             }
         }
-    }, [highlightedModificationUuid, rows, virtualizer]);
+    }, [highlightedModificationUuidRef, rows, virtualizer]);
 
     return (
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={onRowDragStart} onDragUpdate={handleDragUpdate}>
