@@ -205,6 +205,8 @@ export const networkModificationsFr = {
     MaximumActivePowerText: 'Puissance active max',
     ActivePowerSetPointText: 'Consigne de puissance active',
     ReactivePowerSetPointText: 'Consigne de puissance réactive',
+    ReactivePowerMeasurementValue: 'Valeur TM puissance réactive',
+    ReactivePowerMeasurementValidity: 'Validité TM puissance réactive',
     GeneratorTargetV: 'Consigne tension',
     PlannedActivePowerSetPointForm: 'Puissance imposée',
     MarginalCost: 'Coût de démarrage',
@@ -304,6 +306,8 @@ export const networkModificationsFr = {
     generatorMinimumActivePowerMaxValueError: 'La puissance active min doit être inférieure à la puissance active max',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'La valeur de la puissance imposée doit être comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
+    ModifyGenerator: 'Modifier un groupe',
+    GeneratorModificationError: "Erreur lors de la modification d'un générateur ",
     NoBusbarSectionFound: 'Aucun jeu de barres trouvé pour ce poste',
 
     // Tabs

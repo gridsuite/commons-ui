@@ -8,6 +8,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, Card, CardContent, Grid, Tab, Tabs } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
+
 import {
     COLUMNS_DEFINITIONS_HVDCS,
     COLUMNS_DEFINITIONS_INJECTIONS,
@@ -92,6 +94,9 @@ function SensitivityParametersSelector({
     globalBuildStatus,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
+    const {
+        formState: { errors, dirtyFields },
+    } = useFormContext();
 
     const [tabValue, setTabValue] = useState(SensiTabValues.SensitivityBranches);
     const [subTabValue, setSubTabValue] = useState(SensiBranchesTabValues.SensiInjectionsSet);
@@ -101,6 +106,33 @@ function SensitivityParametersSelector({
     const handleSubTabChange = useCallback((event: React.SyntheticEvent<Element, Event>, newValue: number) => {
         setSubTabValue(newValue);
     }, []);
+
+    const hasDirtyFields = Object.keys(dirtyFields).length > 0;
+
+    const subTabHasError = useMemo<Record<number, boolean>>(
+        () => ({
+            [SensiBranchesTabValues.SensiInjectionsSet]:
+                hasDirtyFields &&
+                !!dirtyFields[PARAMETER_SENSI_INJECTIONS_SET] &&
+                !!errors[PARAMETER_SENSI_INJECTIONS_SET],
+            [SensiBranchesTabValues.SensiInjection]:
+                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_INJECTION] && !!errors[PARAMETER_SENSI_INJECTION],
+            [SensiBranchesTabValues.SensiHVDC]:
+                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_HVDC] && !!errors[PARAMETER_SENSI_HVDC],
+            [SensiBranchesTabValues.SensiPST]:
+                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_PST] && !!errors[PARAMETER_SENSI_PST],
+        }),
+        [errors, dirtyFields, hasDirtyFields]
+    );
+
+    const tabHasError = useMemo<Record<number, boolean>>(
+        () => ({
+            [SensiTabValues.SensitivityBranches]: Object.values(subTabHasError).some(Boolean),
+            [SensiTabValues.SensitivityNodes]:
+                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_NODES] && !!errors[PARAMETER_SENSI_NODES],
+        }),
+        [subTabHasError, errors, dirtyFields, hasDirtyFields]
+    );
 
     const tabInfo: TabInfo[] = [
         {
@@ -172,6 +204,11 @@ function SensitivityParametersSelector({
                                 fontSize: 17,
                                 fontWeight: 'bold',
                                 textTransform: 'capitalize',
+                                ...(tabHasError[index] &&
+                                    index !== tabValue && {
+                                        color: 'error.main',
+                                        '&.Mui-selected': { color: 'error.main' },
+                                    }),
                             }}
                         />
                     ))}
@@ -235,6 +272,11 @@ function SensitivityParametersSelector({
                                         sx={{
                                             fontWeight: 'bold',
                                             textTransform: 'capitalize',
+                                            ...(subTabHasError[subIndex] &&
+                                                subIndex !== subTabValue && {
+                                                    color: 'error.main',
+                                                    '&.Mui-selected': { color: 'error.main' },
+                                                }),
                                         }}
                                         label={<FormattedMessage id={subTab.label} />}
                                     />

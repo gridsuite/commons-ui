@@ -90,7 +90,7 @@ export function ShortCircuitParametersInLine({
     }, []);
 
     useEffect(() => {
-        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+        setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
     return (

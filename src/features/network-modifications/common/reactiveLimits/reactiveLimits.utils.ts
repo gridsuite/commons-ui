@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { number, object, string } from 'yup';
+import { InferType, number, object, string } from 'yup';
 import {
     getReactiveCapabilityCurveValidationSchemaArray,
     getRowEmptyFormData,
@@ -129,6 +129,8 @@ export const getReactiveLimitsValidationSchema = (
         [FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE]:
             getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
     });
+
+export type ReactiveLimitsFormData = InferType<ReturnType<typeof getReactiveLimitsValidationSchema>>;
 
 export const getReactiveLimitsSchema = (
     isEquipmentModification = false,

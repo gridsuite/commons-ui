@@ -14,6 +14,7 @@ interface PowerMeasurementsFormProps {
     side?: 1 | 2;
     activePowerMeasurement?: MeasurementInfo;
     reactivePowerMeasurement?: MeasurementInfo;
+    idPrefix?: string;
     reactivePowerOnly?: boolean;
 }
 
@@ -21,6 +22,7 @@ export function PowerMeasurementsForm({
     side,
     activePowerMeasurement,
     reactivePowerMeasurement,
+    idPrefix = '',
     reactivePowerOnly = false,
 }: Readonly<PowerMeasurementsFormProps>) {
     const getActiveMeasurementType = (whichSide: number | null | undefined) => {
@@ -37,8 +39,13 @@ export function PowerMeasurementsForm({
         return whichSide === 1 ? FieldConstants.MEASUREMENT_Q1 : FieldConstants.MEASUREMENT_Q2;
     };
 
-    const activePowerId = `${FieldConstants.STATE_ESTIMATION}.${getActiveMeasurementType(side)}`;
-    const reactivePowerId = `${FieldConstants.STATE_ESTIMATION}.${getReactiveMeasurementType(side)}`;
+    let activePowerId = `${FieldConstants.STATE_ESTIMATION}.${getActiveMeasurementType(side)}`;
+    let reactivePowerId = `${FieldConstants.STATE_ESTIMATION}.${getReactiveMeasurementType(side)}`;
+
+    if (idPrefix) {
+        activePowerId = `${idPrefix}.${activePowerId}`;
+        reactivePowerId = `${idPrefix}.${reactivePowerId}`;
+    }
 
     return (
         <Grid container direction="column" spacing={2}>
