@@ -71,7 +71,7 @@ export function LoadFlowParametersForm({
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>
             <ParameterLayout
-                title={'LoadFlow'}
+                title="LoadFlow"
                 header={
                     <>
                         {renderTitleFields?.()}

@@ -67,7 +67,7 @@ export function SensitivityAnalysisParametersInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { reset, handleSubmit, formState, getValues } = sensitivityAnalysisMethods.formMethods;
+    const { reset, formState, getValues } = sensitivityAnalysisMethods.formMethods;
 
     const handleSensibilityParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {

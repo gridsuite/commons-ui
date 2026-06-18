@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';

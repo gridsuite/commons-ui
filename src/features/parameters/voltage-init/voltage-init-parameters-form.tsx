@@ -34,7 +34,7 @@ export function VoltageInitParametersForm({
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
             <ParameterLayout
-                title={'VoltageInit'}
+                title="VoltageInit"
                 header={
                     <>
                         {renderTitleFields?.()}

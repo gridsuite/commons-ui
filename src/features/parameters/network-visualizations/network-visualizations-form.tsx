@@ -52,7 +52,12 @@ export function NetworkVisualizationParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout title={'NetworkVisualizations'} header={renderTitleFields?.()} actions={actions} isLoading={paramsLoading}>
+            <ParameterLayout
+                title="NetworkVisualizations"
+                header={renderTitleFields?.()}
+                actions={actions}
+                isLoading={paramsLoading}
+            >
                 <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                     <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
                     <Tab label={<FormattedMessage id="SingleLineDiagram" />} value={TabValues.SINGLE_LINE_DIAGRAM} />

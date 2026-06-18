@@ -41,7 +41,7 @@ export function DynamicSecurityAnalysisParametersForm({
 
     return (
         <ParameterLayout
-            title={'DynamicSecurityAnalysis'}
+            title="DynamicSecurityAnalysis"
             header={
                 <>
                     {renderTitleFields?.()}

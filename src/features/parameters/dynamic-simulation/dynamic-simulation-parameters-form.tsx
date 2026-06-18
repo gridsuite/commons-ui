@@ -53,7 +53,7 @@ export function DynamicSimulationForm({
 
     return (
         <ParameterLayout
-            title={'DynamicSimulation'}
+            title="DynamicSimulation"
             header={
                 <>
                     {renderTitleFields?.()}

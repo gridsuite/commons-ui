@@ -25,7 +25,12 @@ export function ShortCircuitParametersForm({
     const { formMethods, formSchema, paramsLoaded } = shortCircuitMethods;
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout title={'ShortCircuit'} header={renderTitleFields?.()} actions={actions} isLoading={!paramsLoaded}>
+            <ParameterLayout
+                title="ShortCircuit"
+                header={renderTitleFields?.()}
+                actions={actions}
+                isLoading={!paramsLoaded}
+            >
                 <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
             </ParameterLayout>
         </CustomFormProvider>

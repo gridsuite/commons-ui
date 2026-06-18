@@ -50,7 +50,7 @@ export function PccMinParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout title={'PccMin'} header={renderTitleFields?.()} actions={actions} isLoading={paramsLoading}>
+            <ParameterLayout title="PccMin" header={renderTitleFields?.()} actions={actions} isLoading={paramsLoading}>
                 <Grid item container direction="column">
                     <ParameterLineDirectoryItemsInput
                         name={FILTERS}

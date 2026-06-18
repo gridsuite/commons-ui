@@ -37,7 +37,7 @@ export function SensitivityAnalysisParametersForm({
             {...sensitivityAnalysisMethods.formMethods}
         >
             <ParameterLayout
-                title={'SensitivityAnalysis'}
+                title="SensitivityAnalysis"
                 header={renderTitleFields?.()}
                 isLoading={!sensitivityAnalysisMethods.paramsFormInitialized}
                 actions={{

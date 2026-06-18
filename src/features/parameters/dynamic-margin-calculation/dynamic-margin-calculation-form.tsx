@@ -42,7 +42,7 @@ export function DynamicMarginCalculationForm({
     });
     return (
         <ParameterLayout
-            title={'DynamicMarginCalculation'}
+            title="DynamicMarginCalculation"
             header={
                 <>
                     {renderTitleFields?.()}

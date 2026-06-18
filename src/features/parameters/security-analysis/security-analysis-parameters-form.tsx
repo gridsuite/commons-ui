@@ -16,7 +16,7 @@ import {
     LineSeparator,
     PARAM_SA_PROVIDER,
     ParameterLayout,
-    ParameterActions
+    ParameterActions,
 } from '../common';
 import { mergeSx } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
@@ -51,7 +51,7 @@ export function SecurityAnalysisParametersForm({
             {...securityAnalysisMethods.formMethods}
         >
             <ParameterLayout
-                title={'SecurityAnalysis'}
+                title="SecurityAnalysis"
                 header={renderTitleFields?.()}
                 isLoading={!securityAnalysisMethods.paramsFormInitialized}
                 actions={actions}

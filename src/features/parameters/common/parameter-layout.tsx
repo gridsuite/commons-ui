@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Divider, Grid, LinearProgress, Stack, ButtonGroup, Button } from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import UploadIcon from '@mui/icons-material/Upload';
-import { createContext, useContext, ReactNode } from 'react';
+import { Box, Grid, LinearProgress, Stack, ButtonGroup } from '@mui/material';
+import { RestartAlt, Upload } from '@mui/icons-material';
+import { createContext, useContext, ReactNode, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { LabelledButton, SubmitButton } from '@gridsuite/commons-ui';
+import { LabelledButton } from './parameters';
+import { SubmitButton } from '../../../components/ui';
 
 // Context for XS Screen
 interface ParameterLayoutContextValue {
@@ -21,12 +21,15 @@ const ParameterLayoutContext = createContext<ParameterLayoutContextValue>({ isXs
 
 export const useParameterLayoutContext = () => useContext(ParameterLayoutContext);
 
-export function ParameterLayoutProvider({ isXsScreen, children }: { isXsScreen: boolean; children: ReactNode }) {
-    return (
-        <ParameterLayoutContext.Provider value={{ isXsScreen }}>
-            {children}
-        </ParameterLayoutContext.Provider>
-    );
+export function ParameterLayoutProvider({
+    isXsScreen,
+    children,
+}: Readonly<{
+    isXsScreen: boolean;
+    children: ReactNode;
+}>) {
+    const isXsScreenMemo = useMemo(() => ({ isXsScreen }), [isXsScreen]);
+    return <ParameterLayoutContext.Provider value={isXsScreenMemo}>{children}</ParameterLayoutContext.Provider>;
 }
 
 export interface ParameterActions {
@@ -69,23 +72,23 @@ const styles = {
 } as const;
 
 export function ParameterLayout({
-                                    children,
-                                    title,
-                                    header,
-                                    isLoading,
-                                    contentSx,
-                                    actions,
-                                }: Readonly<ParameterLayoutProps>) {
+    children,
+    title,
+    header,
+    isLoading,
+    contentSx,
+    actions,
+}: Readonly<ParameterLayoutProps>) {
     const { preFillOnClick, resetOnClick, saveOnClick, validateOnClick } = actions ?? {};
 
     const { isXsScreen } = useParameterLayoutContext();
 
     return (
         <Stack sx={styles.stack}>
-            <Box sx={{paddingBottom: 2}}>
+            <Box sx={{ paddingBottom: 2 }}>
                 <Grid container justifyContent="space-between" sx={{ alignItems: 'center' }}>
                     <Grid item xs={4}>
-                        { title && !isXsScreen && <FormattedMessage id={title} />}
+                        {title && !isXsScreen && <FormattedMessage id={title} />}
                     </Grid>
                     <Grid item xs="auto">
                         <ButtonGroup>
@@ -94,7 +97,7 @@ export function ParameterLayout({
                                     callback={preFillOnClick}
                                     label="button.prefill"
                                     data-testid="PrefillButton"
-                                    startIcon={<UploadIcon />}
+                                    startIcon={<Upload />}
                                 />
                             )}
                             {resetOnClick && (
@@ -102,7 +105,7 @@ export function ParameterLayout({
                                     callback={resetOnClick}
                                     label="button.reset"
                                     data-testid="ResetButton"
-                                    startIcon={<RestartAltIcon />}
+                                    startIcon={<RestartAlt />}
                                 />
                             )}
                         </ButtonGroup>
