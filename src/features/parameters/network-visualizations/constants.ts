@@ -23,6 +23,7 @@ export const PARAM_COMPONENT_LIBRARY = 'componentLibrary';
 export const PARAM_DIAGONAL_LABEL = 'diagonalLabel';
 export const PARAM_SUBSTATION_LAYOUT = 'substationLayout';
 export const PARAM_NAD_POSITIONS_GENERATION_MODE = 'nadPositionsGenerationMode';
+export const PARAM_STATE_ESTIMATION = 'stateEstimation';
 
 export enum NetworkVisualizationTabValues {
     MAP = 'mapParameters',
@@ -38,6 +39,7 @@ export const CENTER_LABEL = 'centerLabel';
 export const SUBSTATION_LAYOUT = 'SubstationLayout';
 export const COMPONENT_LIBRARY = 'ComponentLibrary';
 export const NAD_POSITIONS_GENERATION_MODE_LABEL = 'nadPositionsGenerationModeLabel';
+export const CUSTOM_REAL_TIME_STATE_ESTIMATION = 'CustomRealTimeStateEstimation';
 
 export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {

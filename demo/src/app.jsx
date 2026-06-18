@@ -106,6 +106,8 @@ import {
     TreeViewFinder,
     treeviewFinderEn,
     treeviewFinderFr,
+    processConfigEn,
+    processConfigFr,
     useSnackMessage,
     LeftPanelOpenIcon,
     EditNoteIcon,
@@ -132,6 +134,7 @@ const messages = {
         ...networkModificationsEn,
         ...inputsEn,
         ...parametersEn,
+        ...processConfigEn,
         ...translations.en,
     },
     fr: {
@@ -154,6 +157,7 @@ const messages = {
         ...multipleSelectionDialogFr,
         ...inputsFr,
         ...parametersFr,
+        ...processConfigFr,
         ...translations.fr,
     },
 };

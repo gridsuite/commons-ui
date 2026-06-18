@@ -88,6 +88,31 @@ function propagateSelectionToLoadedDescendants(
     return mutated ? next : selection;
 }
 
+/**
+ * Collects every uuid present anywhere in the tree (root + all nested levels).
+ */
+function collectAllUuids(mods: ComposedModificationMetadata[]): Set<string> {
+    const uuids = new Set<string>();
+    const visit = (nodes: ComposedModificationMetadata[]) =>
+        nodes.forEach((m) => {
+            uuids.add(m.uuid);
+            visit(m.subModifications);
+        });
+    visit(mods);
+    return uuids;
+}
+
+/**
+ * Removes selection entries whose uuid is no longer present anywhere in the tree.
+ * This keeps the selection in sync after a move (cut/paste), delete, or restore
+ * operation that changes which modifications exist in the current node.
+ * Returns the same reference when nothing changed to avoid unnecessary re-renders.
+ */
+function pruneStaleSelection(selection: RowSelectionState, allUuids: Set<string>): RowSelectionState {
+    const pruned = Object.fromEntries(Object.entries(selection).filter(([uuid]) => allUuids.has(uuid)));
+    return Object.keys(pruned).length === Object.keys(selection).length ? selection : pruned;
+}
+
 interface UseModificationsSelectionParams {
     modifications: ComposedModificationMetadata[];
     onRowSelected: (selectedRows: ComposedModificationMetadata[]) => void;
@@ -124,10 +149,12 @@ export function useModificationsSelection({
         [onRowSelected]
     );
 
-    // Used to propagate selection status from composite to sub modifications if they are loaded
-    // after selecting the composite.
     useEffect(() => {
-        setRowSelection((prev) => propagateSelectionToLoadedDescendants(prev, modifications));
+        setRowSelection((prev) => {
+            const propagated = propagateSelectionToLoadedDescendants(prev, modifications);
+            const allUuids = collectAllUuids(modifications);
+            return pruneStaleSelection(propagated, allUuids);
+        });
     }, [modifications]);
 
     return { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection };

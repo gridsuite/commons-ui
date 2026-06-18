@@ -5,6 +5,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { FieldConstants } from './constants/fieldConstants';
+import { RunningStatus } from './running-status';
+
+/**
+ * Returns true when the given form rows contain at least one cell with a
+ * non-empty value (excluding the AG_GRID_ROW_UUID identifier column).
+ */
+export const hasNonEmptyRows = (rows: unknown): boolean =>
+    Array.isArray(rows) &&
+    rows.some(
+        (row: any) =>
+            row &&
+            Object.keys(row)
+                .filter((key) => key !== FieldConstants.AG_GRID_ROW_UUID)
+                .some((key) => row[key] !== undefined && row[key] !== null && String(row[key]).trim().length > 0)
+    );
+
 /**
  * function to generate a key
  * @returns {number} key
@@ -49,3 +66,7 @@ export function isEmpty(value: any): boolean {
 }
 
 export const isObjectEmpty = (object: object) => object && Object.keys(object).length === 0;
+
+export function getRows(rows: any[] | undefined, status: string): any[] {
+    return status === RunningStatus.SUCCEED && rows ? rows : [];
+}
