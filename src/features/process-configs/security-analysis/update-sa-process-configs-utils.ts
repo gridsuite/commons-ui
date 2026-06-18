@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
+import { UUID } from 'node:crypto';
 import {
     PersistedProcessConfigBackend,
     ProcessType,
@@ -13,7 +14,6 @@ import {
 } from '../process-configs.type';
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-import { UUID } from 'node:crypto';
 
 export function getSAProcessConfigFormDataFromFetchedElement(
     processConfig: SecurityAnalysisProcessConfig,

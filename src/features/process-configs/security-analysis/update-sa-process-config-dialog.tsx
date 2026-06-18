@@ -72,11 +72,7 @@ export function UpdateSAProcessConfigDialog({
         const persistedProcessConfig = await fetchSAProcessConfig(processConfigId);
         if (persistedProcessConfig) {
             const processConfigData = await toSAProcessConfig(persistedProcessConfig);
-            const formData = getSAProcessConfigFormDataFromFetchedElement(
-                processConfigData,
-                name,
-                description
-            );
+            const formData = getSAProcessConfigFormDataFromFetchedElement(processConfigData, name, description);
             reset({ ...formData });
         }
     }, [description, fetchSAProcessConfig, name, processConfigId, reset]);
