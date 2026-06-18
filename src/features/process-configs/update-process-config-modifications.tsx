@@ -10,7 +10,7 @@ import { useIntl } from 'react-intl';
 import { DirectoryItemsInput, DndColumn, DndColumnType, DndTable } from '../../components';
 import { ElementType } from '../../utils';
 
-export function UpdateProcessConfigModifications({ name }: { name: string }) {
+export function UpdateProcessConfigModifications({ name }: Readonly<{ name: string }>) {
     const intl = useIntl();
     const useFieldArrayModifications = useFieldArray({
         name,
