@@ -8,9 +8,9 @@
 import { ReactNode } from 'react';
 import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { FieldErrors } from 'react-hook-form';
+import { FieldValues } from 'react-hook-form';
 import { mergeSx } from '../../../utils';
-import { ProviderParam, ParameterLayout } from '../common';
+import { ProviderParam, ParameterLayout, ParameterActions } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
@@ -22,16 +22,19 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicMarginCalculationFormProps = {
     dynamicMarginCalculationMethods: UseComputationParametersFormReturn;
+    onSubmit: (formData: FieldValues) => void;
     renderTitleFields?: () => ReactNode;
-    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
+    actions?: ParameterActions;
 };
 
 export function DynamicMarginCalculationForm({
     dynamicMarginCalculationMethods,
+    onSubmit,
     renderTitleFields,
-    renderActions,
+    actions,
 }: Readonly<DynamicMarginCalculationFormProps>) {
-    const { paramsLoaded, formattedProviders } = dynamicMarginCalculationMethods;
+    const { paramsLoaded, formattedProviders, formMethods } = dynamicMarginCalculationMethods;
+    const { handleSubmit } = formMethods;
 
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
         defaultTab: Object.values(TabValues)[0],
@@ -39,6 +42,7 @@ export function DynamicMarginCalculationForm({
     });
     return (
         <ParameterLayout
+            title={'DynamicMarginCalculation'}
             header={
                 <>
                     {renderTitleFields?.()}
@@ -67,7 +71,10 @@ export function DynamicMarginCalculationForm({
                 </>
             }
             isLoading={!paramsLoaded}
-            footer={renderActions?.(onError)}
+            actions={{
+                ...actions,
+                validateOnClick: handleSubmit(onSubmit, onError),
+            }}
             contentSx={{ paddingLeft: 1 }}
         >
             <Grid

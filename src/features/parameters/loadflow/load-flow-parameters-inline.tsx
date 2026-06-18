@@ -6,19 +6,14 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
-import { parametersStyles } from '../parameters-style';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../../components/ui';
-import { LabelledButton } from '../common/parameters';
-import { ElementType, GsLang, mergeSx } from '../../../utils';
-import { LineSeparator } from '../common';
+import { ElementType, GsLang } from '../../../utils';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { fetchLoadFlowParameters } from '../../../services/loadflow';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
@@ -93,43 +88,13 @@ export function LoadFlowParametersInline({
             <LoadFlowParametersForm
                 loadflowMethods={loadflowMethods}
                 language={language}
-                renderActions={() => {
-                    return (
-                        <Box>
-                            <LineSeparator />
-                            <Grid
-                                container
-                                item
-                                sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
-                                    paddingBottom: 0,
-                                })}
-                            >
-                                <LabelledButton
-                                    callback={() => setOpenSelectParameterDialog(true)}
-                                    label="settings.button.chooseSettings"
-                                    data-testid="LfChooseParametersButton"
-                                />
-                                <LabelledButton
-                                    callback={() => setOpenCreateParameterDialog(true)}
-                                    label="save"
-                                    data-testid="LfSaveButton"
-                                />
-                                <LabelledButton
-                                    callback={handleResetAllClick}
-                                    label="resetToDefault"
-                                    data-testid="LfResetToDefaultButton"
-                                />
-                                <SubmitButton
-                                    onClick={handleSubmit(
-                                        loadflowMethods.onSaveInline,
-                                        loadflowMethods.onValidationError
-                                    )}
-                                    variant="outlined"
-                                    data-testid="LfValidateButton"
-                                >
-                                    <FormattedMessage id="validate" />
-                                </SubmitButton>
-                            </Grid>
+                actions={{
+                    preFillOnClick: () => setOpenSelectParameterDialog(true),
+                    saveOnClick: () => setOpenCreateParameterDialog(true),
+                    resetOnClick: handleResetAllClick,
+                    validateOnClick: handleSubmit(loadflowMethods.onSaveInline, loadflowMethods.onValidationError),
+                    extra: (
+                        <>
                             {openCreateParameterDialog && (
                                 <CreateParameterDialog
                                     studyUuid={studyUuid}
@@ -167,8 +132,8 @@ export function LoadFlowParametersInline({
                                     handlePopupConfirmation={executeResetAction}
                                 />
                             )}
-                        </Box>
-                    );
+                        </>
+                    ),
                 }}
             />
         </LoadFlowProvider>

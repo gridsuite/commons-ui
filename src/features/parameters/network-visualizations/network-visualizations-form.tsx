@@ -15,7 +15,7 @@ import { NetworkVisualizationTabValues as TabValues } from './constants';
 import { MapParameters } from './map-parameters';
 import { SingleLineDiagramParameters } from './single-line-diagram-parameters';
 import { NetworkAreaDiagramParameters } from './network-area-diagram-parameters';
-import { ParameterLayout, TabPanel } from '../common';
+import { ParameterLayout, TabPanel, ParameterActions } from '../common';
 import { getAvailableComponentLibraries } from '../../../services';
 
 const useGetAvailableComponentLibraries = (user: User | null) => {
@@ -37,14 +37,14 @@ const useGetAvailableComponentLibraries = (user: User | null) => {
 interface NetworkVisualizationParametersFormProps {
     networkVisuMethods: UseNetworkVisualizationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
     user: User | null;
 }
 
 export function NetworkVisualizationParametersForm({
     networkVisuMethods,
     renderTitleFields,
-    renderActions,
+    actions,
     user,
 }: Readonly<NetworkVisualizationParametersFormProps>) {
     const componentLibraries = useGetAvailableComponentLibraries(user);
@@ -52,7 +52,7 @@ export function NetworkVisualizationParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout header={renderTitleFields?.()} footer={renderActions?.()} isLoading={paramsLoading}>
+            <ParameterLayout title={'NetworkVisualizations'} header={renderTitleFields?.()} actions={actions} isLoading={paramsLoading}>
                 <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                     <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
                     <Tab label={<FormattedMessage id="SingleLineDiagram" />} value={TabValues.SINGLE_LINE_DIAGRAM} />

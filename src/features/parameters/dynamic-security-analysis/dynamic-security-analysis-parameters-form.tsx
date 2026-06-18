@@ -9,10 +9,9 @@ import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ReactNode } from 'react';
 
-import { FieldErrors } from 'react-hook-form';
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { ParameterLayout, ProviderParam, TabPanel } from '../common';
+import { ProviderParam, TabPanel, ParameterLayout, ParameterActions } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { mergeSx } from '../../../utils';
@@ -22,15 +21,18 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 type DynamicSecurityAnalysisParametersFormProps = {
     dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
+    actions?: ParameterActions;
+    onSubmit: (formData: any) => void;
 };
 
 export function DynamicSecurityAnalysisParametersForm({
     dynamicSecurityAnalysisMethods,
     renderTitleFields,
-    renderActions,
+    actions,
+    onSubmit,
 }: Readonly<DynamicSecurityAnalysisParametersFormProps>) {
-    const { paramsLoaded, formattedProviders } = dynamicSecurityAnalysisMethods;
+    const { paramsLoaded, formattedProviders, formMethods } = dynamicSecurityAnalysisMethods;
+    const { handleSubmit } = formMethods;
 
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
         defaultTab: TabValues.SCENARIO,
@@ -39,6 +41,7 @@ export function DynamicSecurityAnalysisParametersForm({
 
     return (
         <ParameterLayout
+            title={'DynamicSecurityAnalysis'}
             header={
                 <>
                     {renderTitleFields?.()}
@@ -67,7 +70,10 @@ export function DynamicSecurityAnalysisParametersForm({
                 </>
             }
             isLoading={!paramsLoaded}
-            footer={renderActions?.(onError)}
+            actions={{
+                ...actions,
+                validateOnClick: handleSubmit(onSubmit, onError),
+            }}
             contentSx={{ paddingLeft: 1 }}
         >
             <Grid

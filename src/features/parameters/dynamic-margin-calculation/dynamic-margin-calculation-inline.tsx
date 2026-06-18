@@ -6,24 +6,20 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { FieldErrors, FieldValues } from 'react-hook-form';
+import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
+import { ElementType, snackWithFallback } from '../../../utils';
 import { DynamicMarginCalculationForm } from './dynamic-margin-calculation-form';
 import {
     toFormValues,
     toParamsInfos,
     useDynamicMarginCalculationParametersForm,
 } from './use-dynamic-margin-calculation-parameters-form';
-import { LabelledButton } from '../common/parameters';
-import { SubmitButton } from '../../../components/ui/reactHookForm/utils/SubmitButton';
+import { ParameterActions, CreateParameterDialog } from '../common';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
-import { parametersStyles } from '../parameters-style';
-import { CreateParameterDialog } from '../common';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
@@ -55,7 +51,7 @@ export function DynamicMarginCalculationInline({
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     const { formSchema, formMethods } = dynamicMarginCalculationMethods;
-    const { reset, handleSubmit, getValues, formState } = formMethods;
+    const { reset, getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -101,29 +97,12 @@ export function DynamicMarginCalculationInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
-        return (
+    const actions: ParameterActions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetClick,
+        extra: (
             <>
-                <Grid container item>
-                    <Grid
-                        sx={mergeSx(parametersStyles.controlParametersItem, {
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            paddingLeft: 0,
-                        })}
-                    >
-                        <LabelledButton
-                            disabled
-                            callback={() => setOpenSelectParameterDialog(true)}
-                            label="settings.button.chooseSettings"
-                        />
-                        <LabelledButton disabled callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                        <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
-                            <FormattedMessage id="validate" />
-                        </SubmitButton>
-                    </Grid>
-                </Grid>
                 {openCreateParameterDialog && (
                     <CreateParameterDialog
                         studyUuid={studyUuid}
@@ -160,13 +139,15 @@ export function DynamicMarginCalculationInline({
                     />
                 )}
             </>
-        );
+        ),
     };
+
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             <DynamicMarginCalculationForm
                 dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
-                renderActions={renderActions}
+                onSubmit={onSubmit}
+                actions={actions}
             />
         </CustomFormProvider>
     );

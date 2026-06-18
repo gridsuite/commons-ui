@@ -6,15 +6,12 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import type { User } from 'oidc-client-ts';
-import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../../components/ui';
+import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { ElementType } from '../../../utils';
-import { LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
@@ -72,50 +69,39 @@ export function NetworkVisualizationParametersInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    return (
-        <NetworkVisualizationParametersForm
-            user={user}
-            networkVisuMethods={networkVisuMethods}
-            renderActions={() => {
-                return (
-                    <Box>
-                        <Grid container item>
-                            <LabelledButton
-                                callback={() => setOpenSelectParameterDialog(true)}
-                                label="settings.button.chooseSettings"
-                            />
-                            <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <SubmitButton onClick={handleSubmit(networkVisuMethods.onSaveInline)} variant="outlined">
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
-                        </Grid>
-                        {openCreateParameterDialog && (
-                            <CreateParameterDialog
-                                studyUuid={studyUuid}
-                                open={openCreateParameterDialog}
-                                onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => getValues()}
-                                parameterFormatter={(newParams) => newParams}
-                                parameterType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
-                            />
-                        )}
-                        {openSelectParameterDialog && (
-                            <DirectoryItemSelector
-                                open={openSelectParameterDialog}
-                                onClose={handleLoadParameters}
-                                types={[ElementType.NETWORK_VISUALIZATIONS_PARAMETERS]}
-                                title={intl.formatMessage({
-                                    id: 'showSelectParameterDialog',
-                                })}
-                                multiSelect={false}
-                                validationButtonText={intl.formatMessage({
-                                    id: 'validate',
-                                })}
-                            />
-                        )}
-                    </Box>
-                );
-            }}
-        />
-    );
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        validateOnClick: handleSubmit(networkVisuMethods.onSaveInline),
+        extra: (
+            <>
+                {openCreateParameterDialog && (
+                    <CreateParameterDialog
+                        studyUuid={studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={() => getValues()}
+                        parameterFormatter={(newParams) => newParams}
+                        parameterType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
+                    />
+                )}
+                {openSelectParameterDialog && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={handleLoadParameters}
+                        types={[ElementType.NETWORK_VISUALIZATIONS_PARAMETERS]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
+            </>
+        ),
+    };
+
+    return <NetworkVisualizationParametersForm user={user} networkVisuMethods={networkVisuMethods} actions={actions} />;
 }

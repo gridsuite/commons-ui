@@ -6,16 +6,13 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../../components/ui';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, LabelledButton } from '../common';
+import { ComputingType, CreateParameterDialog } from '../common';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
-import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
@@ -93,66 +90,50 @@ export function ShortCircuitParametersInLine({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    return (
-        <ShortCircuitParametersForm
-            shortCircuitMethods={shortCircuitMethods}
-            renderActions={() => {
-                return (
-                    <Box>
-                        <Grid container item>
-                            <LabelledButton
-                                callback={() => setOpenSelectParameterDialog(true)}
-                                label="settings.button.chooseSettings"
-                            />
-                            <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                            <SubmitButton
-                                onClick={handleSubmit(
-                                    shortCircuitMethods.onSaveInline,
-                                    shortCircuitMethods.onValidationError
-                                )}
-                                variant="outlined"
-                            >
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
-                        </Grid>
-                        {openCreateParameterDialog && (
-                            <CreateParameterDialog
-                                studyUuid={studyUuid}
-                                open={openCreateParameterDialog}
-                                onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={() => shortCircuitMethods.formatNewParams(getValues())}
-                                parameterFormatter={(newParams) => newParams}
-                                parameterType={ElementType.SHORT_CIRCUIT_PARAMETERS}
-                            />
-                        )}
-                        {openSelectParameterDialog && (
-                            <DirectoryItemSelector
-                                open={openSelectParameterDialog}
-                                onClose={handleLoadParameters}
-                                types={[ElementType.SHORT_CIRCUIT_PARAMETERS]}
-                                title={intl.formatMessage({
-                                    id: 'showSelectParameterDialog',
-                                })}
-                                multiSelect={false}
-                                validationButtonText={intl.formatMessage({
-                                    id: 'validate',
-                                })}
-                            />
-                        )}
-                        {/* Reset Confirmation Dialog */}
-                        {openResetConfirmation && (
-                            <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
-                                validateButtonLabel="validate"
-                                openConfirmationPopup={openResetConfirmation}
-                                setOpenConfirmationPopup={handleCancelReset}
-                                handlePopupConfirmation={executeResetAction}
-                            />
-                        )}
-                    </Box>
-                );
-            }}
-        />
-    );
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetAllClick,
+        validateOnClick: handleSubmit(shortCircuitMethods.onSaveInline, shortCircuitMethods.onValidationError),
+        extra: (
+            <>
+                {openCreateParameterDialog && (
+                    <CreateParameterDialog
+                        studyUuid={studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={() => shortCircuitMethods.formatNewParams(getValues())}
+                        parameterFormatter={(newParams) => newParams}
+                        parameterType={ElementType.SHORT_CIRCUIT_PARAMETERS}
+                    />
+                )}
+                {openSelectParameterDialog && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={handleLoadParameters}
+                        types={[ElementType.SHORT_CIRCUIT_PARAMETERS]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
+                {/* Reset Confirmation Dialog */}
+                {openResetConfirmation && (
+                    <PopupConfirmationDialog
+                        message="resetParamsConfirmation"
+                        validateButtonLabel="validate"
+                        openConfirmationPopup={openResetConfirmation}
+                        setOpenConfirmationPopup={handleCancelReset}
+                        handlePopupConfirmation={executeResetAction}
+                    />
+                )}
+            </>
+        ),
+    };
+
+    return <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} actions={actions} />;
 }

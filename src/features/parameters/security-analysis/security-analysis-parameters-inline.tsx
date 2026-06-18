@@ -6,16 +6,13 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
-import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
+import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
+import { ComputingType, ContingencyTableApi, CreateParameterDialog } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
-import { SubmitButton } from '../../../components/ui';
-import { parametersStyles } from '../parameters-style';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { fetchSecurityAnalysisParameters } from '../../../services/security-analysis';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
@@ -95,6 +92,55 @@ export function SecurityAnalysisParametersInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetAllClick,
+        validateOnClick: handleSubmit(securityAnalysisMethods.onSaveInline),
+        extra: (
+            <>
+                {openCreateParameterDialog && (
+                    <CreateParameterDialog
+                        studyUuid={studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={getValues}
+                        parameterFormatter={(newParams) =>
+                            mapSecurityAnalysisParameters(securityAnalysisMethods.formatNewParams(newParams))
+                        }
+                        parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
+                    />
+                )}
+                {openSelectParameterDialog && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={handleLoadParameter}
+                        types={[ElementType.SECURITY_ANALYSIS_PARAMETERS]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        onlyLeaves
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
+
+                {/* Reset Confirmation Dialog */}
+                {openResetConfirmation && (
+                    <PopupConfirmationDialog
+                        message="resetParamsConfirmation"
+                        validateButtonLabel="validate"
+                        openConfirmationPopup={openResetConfirmation}
+                        setOpenConfirmationPopup={handleCancelReset}
+                        handlePopupConfirmation={executeResetAction}
+                    />
+                )}
+            </>
+        ),
+    };
+
     return (
         <SecurityAnalysisParametersForm
             securityAnalysisMethods={securityAnalysisMethods}
@@ -103,73 +149,7 @@ export function SecurityAnalysisParametersInline({
             contingencyTableApiRef={contingencyTableApiRef}
             isBuiltCurrentNode={isBuiltCurrentNode}
             isDeveloperMode={isDeveloperMode}
-            renderActions={() => {
-                return (
-                    <>
-                        <Box sx={{ flexGrow: 0 }}>
-                            <LineSeparator />
-                            <Grid
-                                container
-                                item
-                                sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
-                                    paddingBottom: 0,
-                                })}
-                            >
-                                <LabelledButton
-                                    callback={() => setOpenSelectParameterDialog(true)}
-                                    label="settings.button.chooseSettings"
-                                />
-                                <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                                <LabelledButton callback={handleResetAllClick} label="resetToDefault" />
-                                <SubmitButton
-                                    onClick={handleSubmit(securityAnalysisMethods.onSaveInline)}
-                                    variant="outlined"
-                                >
-                                    <FormattedMessage id="validate" />
-                                </SubmitButton>
-                            </Grid>
-                        </Box>
-                        {openCreateParameterDialog && (
-                            <CreateParameterDialog
-                                studyUuid={studyUuid}
-                                open={openCreateParameterDialog}
-                                onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={getValues}
-                                parameterFormatter={(newParams) =>
-                                    mapSecurityAnalysisParameters(securityAnalysisMethods.formatNewParams(newParams))
-                                }
-                                parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
-                            />
-                        )}
-                        {openSelectParameterDialog && (
-                            <DirectoryItemSelector
-                                open={openSelectParameterDialog}
-                                onClose={handleLoadParameter}
-                                types={[ElementType.SECURITY_ANALYSIS_PARAMETERS]}
-                                title={intl.formatMessage({
-                                    id: 'showSelectParameterDialog',
-                                })}
-                                onlyLeaves
-                                multiSelect={false}
-                                validationButtonText={intl.formatMessage({
-                                    id: 'validate',
-                                })}
-                            />
-                        )}
-
-                        {/* Reset Confirmation Dialog */}
-                        {openResetConfirmation && (
-                            <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
-                                validateButtonLabel="validate"
-                                openConfirmationPopup={openResetConfirmation}
-                                setOpenConfirmationPopup={handleCancelReset}
-                                handlePopupConfirmation={executeResetAction}
-                            />
-                        )}
-                    </>
-                );
-            }}
+            actions={actions}
         />
     );
 }

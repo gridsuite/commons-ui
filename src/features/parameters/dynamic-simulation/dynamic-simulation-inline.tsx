@@ -5,18 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { FieldErrors, FieldValues } from 'react-hook-form';
-import { Grid } from '@mui/material';
-import { ElementType, mergeSx, snackWithFallback, VoltageLevelInfos } from '../../../utils';
+import { FieldValues } from 'react-hook-form';
+import { ElementType, snackWithFallback, VoltageLevelInfos } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
-
+import { ComputingType, CreateParameterDialog } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
-import { parametersStyles } from '../parameters-style';
-import { CustomFormProvider, SubmitButton } from '../../../components/ui';
+import { CustomFormProvider } from '../../../components/ui';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import {
@@ -66,7 +63,7 @@ export function DynamicSimulationInline({
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     const { formSchema, formMethods } = dynamicSimulationMethods;
-    const { reset, handleSubmit, getValues, formState } = formMethods;
+    const { reset, getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -113,29 +110,12 @@ export function DynamicSimulationInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
-        return (
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetClick,
+        extra: (
             <>
-                <Grid container item>
-                    <Grid
-                        sx={mergeSx(parametersStyles.controlParametersItem, {
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            paddingLeft: 0,
-                        })}
-                    >
-                        <LabelledButton
-                            disabled
-                            callback={() => setOpenSelectParameterDialog(true)}
-                            label="settings.button.chooseSettings"
-                        />
-                        <LabelledButton disabled callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                        <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
-                            <FormattedMessage id="validate" />
-                        </SubmitButton>
-                    </Grid>
-                </Grid>
                 {openCreateParameterDialog && (
                     <CreateParameterDialog
                         studyUuid={studyUuid}
@@ -172,13 +152,15 @@ export function DynamicSimulationInline({
                     />
                 )}
             </>
-        );
+        ),
     };
+
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             <DynamicSimulationForm
                 dynamicSimulationMethods={dynamicSimulationMethods}
-                renderActions={renderActions}
+                onSubmit={onSubmit}
+                actions={actions}
                 voltageLevelsFetcher={voltageLevelsFetcher}
                 countriesFetcher={countriesFetcher}
                 evaluateFilterFetcher={evaluateFilterFetcher}

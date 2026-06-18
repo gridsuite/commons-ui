@@ -6,21 +6,16 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
-import { FieldErrors, FieldValues } from 'react-hook-form';
+import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx } from '../../../utils';
+import { ElementType } from '../../../utils';
 import {
     toParamsInfos,
     useDynamicSecurityAnalysisParametersForm,
 } from './use-dynamic-security-analysis-parameters-form';
-import { LabelledButton } from '../common/parameters';
-import { SubmitButton } from '../../../components/ui/reactHookForm/utils/SubmitButton';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
-import { parametersStyles } from '../parameters-style';
 import { CreateParameterDialog } from '../common';
 import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
 import { CustomFormProvider } from '../../../components/ui';
@@ -47,7 +42,7 @@ export function DynamicSecurityAnalysisInline({
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     const { formSchema, formMethods } = dynamicSecurityAnalysisMethods;
-    const { handleSubmit, getValues, formState } = formMethods;
+    const { getValues, formState } = formMethods;
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -73,23 +68,11 @@ export function DynamicSecurityAnalysisInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
-        return (
+    const actions = {
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetClick,
+        extra: (
             <>
-                <Grid container item>
-                    <Grid
-                        sx={mergeSx(parametersStyles.controlParametersItem, {
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            paddingLeft: 0,
-                        })}
-                    >
-                        <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
-                            <FormattedMessage id="validate" />
-                        </SubmitButton>
-                    </Grid>
-                </Grid>
                 {openCreateParameterDialog && (
                     <CreateParameterDialog
                         studyUuid={studyUuid}
@@ -111,13 +94,15 @@ export function DynamicSecurityAnalysisInline({
                     />
                 )}
             </>
-        );
+        ),
     };
+
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods}>
             <DynamicSecurityAnalysisParametersForm
                 dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
-                renderActions={renderActions}
+                onSubmit={onSubmit}
+                actions={actions}
             />
         </CustomFormProvider>
     );

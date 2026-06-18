@@ -6,12 +6,10 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../../components/ui';
-import { CreateParameterDialog, LabelledButton } from '../common';
+import { CreateParameterDialog } from '../common';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
@@ -90,64 +88,53 @@ export function PccMinParametersInLine({
         [reset, snackError]
     );
 
-    return (
-        <PccMinParametersForm
-            pccMinMethods={pccMinMethods}
-            renderActions={() => {
-                return (
-                    <Box>
-                        <Grid container item>
-                            <LabelledButton
-                                callback={() => setOpenSelectParameterDialog(true)}
-                                label="settings.button.chooseSettings"
-                            />
-                            <LabelledButton callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                            <LabelledButton callback={handleResetClick} label="resetToDefault" />
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetClick,
+        validateOnClick: handleSubmit(pccMinMethods.onSaveInline),
+        extra: (
+            <>
+                {openCreateParameterDialog && (
+                    <CreateParameterDialog
+                        studyUuid={studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={getValues}
+                        parameterFormatter={(params: Record<string, any>) =>
+                            mapPccMinParameters(fromPccMinParametersFormToParamValuesEnriched(params))
+                        }
+                        parameterType={ElementType.PCC_MIN_PARAMETERS}
+                    />
+                )}
+                {openSelectParameterDialog && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={handleLoadParameters}
+                        types={[ElementType.PCC_MIN_PARAMETERS]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
 
-                            <SubmitButton onClick={handleSubmit(pccMinMethods.onSaveInline)} variant="outlined">
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
-                        </Grid>
-                        {openCreateParameterDialog && (
-                            <CreateParameterDialog
-                                studyUuid={studyUuid}
-                                open={openCreateParameterDialog}
-                                onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={getValues}
-                                parameterFormatter={(params: Record<string, any>) =>
-                                    mapPccMinParameters(fromPccMinParametersFormToParamValuesEnriched(params))
-                                }
-                                parameterType={ElementType.PCC_MIN_PARAMETERS}
-                            />
-                        )}
-                        {openSelectParameterDialog && (
-                            <DirectoryItemSelector
-                                open={openSelectParameterDialog}
-                                onClose={handleLoadParameters}
-                                types={[ElementType.PCC_MIN_PARAMETERS]}
-                                title={intl.formatMessage({
-                                    id: 'showSelectParameterDialog',
-                                })}
-                                multiSelect={false}
-                                validationButtonText={intl.formatMessage({
-                                    id: 'validate',
-                                })}
-                            />
-                        )}
+                {/* Reset Confirmation Dialog */}
+                {openResetConfirmation && (
+                    <PopupConfirmationDialog
+                        message="resetParamsConfirmation"
+                        validateButtonLabel="validate"
+                        openConfirmationPopup={openResetConfirmation}
+                        setOpenConfirmationPopup={handleCancelReset}
+                        handlePopupConfirmation={resetPccMinParameters}
+                    />
+                )}
+            </>
+        ),
+    };
 
-                        {/* Reset Confirmation Dialog */}
-                        {openResetConfirmation && (
-                            <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
-                                validateButtonLabel="validate"
-                                openConfirmationPopup={openResetConfirmation}
-                                setOpenConfirmationPopup={handleCancelReset}
-                                handlePopupConfirmation={resetPccMinParameters}
-                            />
-                        )}
-                    </Box>
-                );
-            }}
-        />
-    );
+    return <PccMinParametersForm pccMinMethods={pccMinMethods} actions={actions} />;
 }

@@ -11,7 +11,7 @@ import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
 import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLayout } from '../common';
+import { ParameterLayout, ParameterActions } from '../common';
 import type { GsLang } from '../../../utils/langs';
 import type { MuiStyles } from '../../../utils/styles';
 
@@ -19,7 +19,7 @@ interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
     language: GsLang;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
 }
 
 const styles = {
@@ -52,7 +52,7 @@ export function LoadFlowParametersForm({
     loadflowMethods,
     language,
     renderTitleFields,
-    renderActions,
+    actions,
 }: Readonly<LoadFlowParametersFormProps>) {
     const {
         formMethods,
@@ -71,6 +71,7 @@ export function LoadFlowParametersForm({
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>
             <ParameterLayout
+                title={'LoadFlow'}
                 header={
                     <>
                         {renderTitleFields?.()}
@@ -85,7 +86,7 @@ export function LoadFlowParametersForm({
                     </>
                 }
                 isLoading={!paramsLoaded}
-                footer={renderActions?.()}
+                actions={actions}
                 contentSx={{ paddingLeft: 1 }}
             >
                 <Grid container sx={styles.content}>

@@ -7,25 +7,25 @@
 
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLayout } from '../common';
+import { ParameterLayout, ParameterActions } from '../common';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
 
 interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
 }
 
 export function ShortCircuitParametersForm({
     shortCircuitMethods,
     renderTitleFields,
-    renderActions,
+    actions,
 }: Readonly<ShortCircuitParametersFormProps>) {
     const { formMethods, formSchema, paramsLoaded } = shortCircuitMethods;
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout header={renderTitleFields?.()} footer={renderActions?.()} isLoading={!paramsLoaded}>
+            <ParameterLayout title={'ShortCircuit'} header={renderTitleFields?.()} actions={actions} isLoading={!paramsLoaded}>
                 <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
             </ParameterLayout>
         </CustomFormProvider>

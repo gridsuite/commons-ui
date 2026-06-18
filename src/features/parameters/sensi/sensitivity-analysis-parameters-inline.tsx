@@ -5,21 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Button, DialogActions, Grid } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import {
     ElementType,
     mapSensitivityAnalysisParameters,
-    mergeSx,
     SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
 } from '../../../utils';
 import { ComputingType, CreateParameterDialog } from '../common';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../../components/ui';
-import { parametersStyles } from '../parameters-style';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import {
     fetchSensitivityAnalysisParameters,
@@ -119,87 +115,65 @@ export function SensitivityAnalysisParametersInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: () => setOpenCreateParameterDialog(true),
+        resetOnClick: handleResetClick,
+        validateDisabled:
+            sensitivityAnalysisMethods.isLoading ||
+            sensitivityAnalysisMethods.isMaxResultsReached ||
+            sensitivityAnalysisMethods.isMaxVariablesReached,
+        extra: (
+            <>
+                {openCreateParameterDialog && (
+                    <CreateParameterDialog
+                        studyUuid={studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={getValues}
+                        parameterFormatter={(newParams) =>
+                            mapSensitivityAnalysisParameters(sensitivityAnalysisMethods.formatNewParams(newParams))
+                        }
+                        parameterType={ElementType.SENSITIVITY_PARAMETERS}
+                    />
+                )}
+                {openSelectParameterDialog && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={handleSensibilityParameter}
+                        types={[ElementType.SENSITIVITY_PARAMETERS]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        onlyLeaves
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
+
+                {/* Reset Confirmation Dialog */}
+                {openResetConfirmation && (
+                    <PopupConfirmationDialog
+                        message="resetParamsConfirmation"
+                        validateButtonLabel="validate"
+                        openConfirmationPopup={openResetConfirmation}
+                        setOpenConfirmationPopup={handleCancelReset}
+                        handlePopupConfirmation={clear}
+                    />
+                )}
+            </>
+        ),
+    };
+
     return (
         <SensitivityAnalysisParametersForm
             sensitivityAnalysisMethods={sensitivityAnalysisMethods}
             isDeveloperMode={isDeveloperMode}
             isRootNode={isRootNode}
             globalBuildStatus={globalBuildStatus}
-            renderActions={() => {
-                return (
-                    <>
-                        <Grid item container>
-                            <DialogActions
-                                sx={mergeSx(parametersStyles.controlParametersItem, {
-                                    paddingLeft: 0,
-                                    paddingBottom: 2,
-                                })}
-                            >
-                                <Button onClick={() => setOpenSelectParameterDialog(true)}>
-                                    <FormattedMessage id="settings.button.chooseSettings" />
-                                </Button>
-                                <Button onClick={() => setOpenCreateParameterDialog(true)}>
-                                    <FormattedMessage id="save" />
-                                </Button>
-                                <Button onClick={handleResetClick}>
-                                    <FormattedMessage id="resetToDefault" />
-                                </Button>
-                                <SubmitButton
-                                    onClick={handleSubmit(sensitivityAnalysisMethods.onSaveInline)}
-                                    variant="outlined"
-                                    disabled={
-                                        sensitivityAnalysisMethods.isLoading ||
-                                        sensitivityAnalysisMethods.isMaxResultsReached ||
-                                        sensitivityAnalysisMethods.isMaxVariablesReached
-                                    }
-                                >
-                                    <FormattedMessage id="validate" />
-                                </SubmitButton>
-                            </DialogActions>
-                        </Grid>
-                        {openCreateParameterDialog && (
-                            <CreateParameterDialog
-                                studyUuid={studyUuid}
-                                open={openCreateParameterDialog}
-                                onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={getValues}
-                                parameterFormatter={(newParams) =>
-                                    mapSensitivityAnalysisParameters(
-                                        sensitivityAnalysisMethods.formatNewParams(newParams)
-                                    )
-                                }
-                                parameterType={ElementType.SENSITIVITY_PARAMETERS}
-                            />
-                        )}
-                        {openSelectParameterDialog && (
-                            <DirectoryItemSelector
-                                open={openSelectParameterDialog}
-                                onClose={handleSensibilityParameter}
-                                types={[ElementType.SENSITIVITY_PARAMETERS]}
-                                title={intl.formatMessage({
-                                    id: 'showSelectParameterDialog',
-                                })}
-                                onlyLeaves
-                                multiSelect={false}
-                                validationButtonText={intl.formatMessage({
-                                    id: 'validate',
-                                })}
-                            />
-                        )}
-
-                        {/* Reset Confirmation Dialog */}
-                        {openResetConfirmation && (
-                            <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
-                                validateButtonLabel="validate"
-                                openConfirmationPopup={openResetConfirmation}
-                                setOpenConfirmationPopup={handleCancelReset}
-                                handlePopupConfirmation={clear}
-                            />
-                        )}
-                    </>
-                );
-            }}
+            actions={actions}
         />
     );
 }

@@ -10,7 +10,7 @@ import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
 import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLayout, TabPanel } from '../common';
+import { ParameterLayout, TabPanel, ParameterActions } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
 import { VoltageInitTabValues as TabValues } from './constants';
 import { GeneralParameters } from './general-parameters';
@@ -20,13 +20,13 @@ import { VoltageLimitsParameters } from './voltage-limits-parameters';
 interface VoltageInitParametersFormProps {
     voltageInitMethods: UseVoltageInitParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
 }
 
 export function VoltageInitParametersForm({
     voltageInitMethods,
     renderTitleFields,
-    renderActions,
+    actions,
 }: Readonly<VoltageInitParametersFormProps>) {
     const { formMethods, formSchema, selectedTab, handleTabChange, paramsLoading, tabIndexesWithError } =
         voltageInitMethods;
@@ -34,6 +34,7 @@ export function VoltageInitParametersForm({
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
             <ParameterLayout
+                title={'VoltageInit'}
                 header={
                     <>
                         {renderTitleFields?.()}
@@ -66,11 +67,11 @@ export function VoltageInitParametersForm({
                     </>
                 }
                 isLoading={paramsLoading}
-                footer={renderActions?.()}
+                actions={actions}
             >
                 <Grid container>
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
-                        <GeneralParameters withApplyModifications={renderActions != null} />
+                        <GeneralParameters withApplyModifications={actions != null} />
                     </TabPanel>
                     <TabPanel value={selectedTab} index={TabValues.VOLTAGE_LIMITS}>
                         <VoltageLimitsParameters />

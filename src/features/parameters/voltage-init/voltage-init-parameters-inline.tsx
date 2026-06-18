@@ -6,14 +6,12 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { SubmitButton } from '../../../components/ui';
 import { ElementType } from '../../../utils';
-import { CreateParameterDialog, LabelledButton } from '../common';
+import { CreateParameterDialog } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
@@ -102,63 +100,53 @@ export function VoltageInitParametersInLine({
         });
     }, [trigger]);
 
-    return (
-        <VoltageInitParametersForm
-            voltageInitMethods={voltageInitMethods}
-            renderActions={() => {
-                return (
-                    <Box>
-                        <Grid container item>
-                            <LabelledButton
-                                callback={() => setOpenSelectParameterDialog(true)}
-                                label="settings.button.chooseSettings"
-                            />
-                            <LabelledButton callback={handleOpenSaveDialog} label="save" />
-                            <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                            <SubmitButton onClick={handleSubmit(voltageInitMethods.onSaveInline)} variant="outlined">
-                                <FormattedMessage id="validate" />
-                            </SubmitButton>
-                        </Grid>
-                        {openCreateParameterDialog && (
-                            <CreateParameterDialog
-                                studyUuid={studyUuid}
-                                open={openCreateParameterDialog}
-                                onClose={() => setOpenCreateParameterDialog(false)}
-                                parameterValues={getValues}
-                                parameterFormatter={(params: Record<string, any>) =>
-                                    fromVoltageInitParametersFormToParamValues(params).computationParameters
-                                }
-                                parameterType={ElementType.VOLTAGE_INIT_PARAMETERS}
-                            />
-                        )}
-                        {openSelectParameterDialog && (
-                            <DirectoryItemSelector
-                                open={openSelectParameterDialog}
-                                onClose={handleLoadParameters}
-                                types={[ElementType.VOLTAGE_INIT_PARAMETERS]}
-                                title={intl.formatMessage({
-                                    id: 'showSelectParameterDialog',
-                                })}
-                                multiSelect={false}
-                                validationButtonText={intl.formatMessage({
-                                    id: 'validate',
-                                })}
-                            />
-                        )}
+    const actions = {
+        preFillOnClick: () => setOpenSelectParameterDialog(true),
+        saveOnClick: handleOpenSaveDialog,
+        resetOnClick: handleResetClick,
+        validateOnClick: handleSubmit(voltageInitMethods.onSaveInline),
+        extra: (
+            <>
+                {openCreateParameterDialog && (
+                    <CreateParameterDialog
+                        studyUuid={studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={getValues}
+                        parameterFormatter={(params: Record<string, any>) =>
+                            fromVoltageInitParametersFormToParamValues(params).computationParameters
+                        }
+                        parameterType={ElementType.VOLTAGE_INIT_PARAMETERS}
+                    />
+                )}
+                {openSelectParameterDialog && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={handleLoadParameters}
+                        types={[ElementType.VOLTAGE_INIT_PARAMETERS]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
 
-                        {/* Reset Confirmation Dialog */}
-                        {openResetConfirmation && (
-                            <PopupConfirmationDialog
-                                message="resetParamsConfirmation"
-                                validateButtonLabel="validate"
-                                openConfirmationPopup={openResetConfirmation}
-                                setOpenConfirmationPopup={handleCancelReset}
-                                handlePopupConfirmation={resetVoltageInitParameters}
-                            />
-                        )}
-                    </Box>
-                );
-            }}
-        />
-    );
+                {/* Reset Confirmation Dialog */}
+                {openResetConfirmation && (
+                    <PopupConfirmationDialog
+                        message="resetParamsConfirmation"
+                        validateButtonLabel="validate"
+                        openConfirmationPopup={openResetConfirmation}
+                        setOpenConfirmationPopup={handleCancelReset}
+                        handlePopupConfirmation={resetVoltageInitParameters}
+                    />
+                )}
+            </>
+        ),
+    };
+
+    return <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} actions={actions} />;
 }

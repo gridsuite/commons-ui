@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
 import { CustomFormProvider, MuiSelectInput } from '../../../components/ui';
-import { LineSeparator, PROVIDER, ParameterLayout } from '../common';
+import { LineSeparator, PROVIDER, ParameterLayout, ParameterActions } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-parameters-fields';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { BuildStatus } from '../../node/constant';
@@ -18,27 +18,32 @@ import { BuildStatus } from '../../node/constant';
 export function SensitivityAnalysisParametersForm({
     sensitivityAnalysisMethods,
     renderTitleFields,
-    renderActions,
+    actions,
     isDeveloperMode,
     isRootNode,
     globalBuildStatus,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
     isDeveloperMode: boolean;
     isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
 }>) {
+    const { handleSubmit } = sensitivityAnalysisMethods.formMethods;
     return (
         <CustomFormProvider
             validationSchema={sensitivityAnalysisMethods.formSchema}
             {...sensitivityAnalysisMethods.formMethods}
         >
             <ParameterLayout
+                title={'SensitivityAnalysis'}
                 header={renderTitleFields?.()}
-                footer={renderActions?.()}
                 isLoading={!sensitivityAnalysisMethods.paramsFormInitialized}
+                actions={{
+                    ...actions,
+                    validateOnClick: handleSubmit(sensitivityAnalysisMethods.onSaveInline),
+                }}
                 contentSx={{ paddingLeft: 1 }}
             >
                 <Grid

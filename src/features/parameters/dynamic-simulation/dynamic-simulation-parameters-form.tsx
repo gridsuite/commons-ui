@@ -7,8 +7,7 @@
 import { ReactNode } from 'react';
 import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { FieldErrors } from 'react-hook-form';
-import { ProviderParam, TabPanel, ParameterLayout } from '../common';
+import { ProviderParam, TabPanel, ParameterLayout, ParameterActions } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 
 import { getTabStyle, parametersStyles } from '../parameters-style';
@@ -26,7 +25,8 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 type DynamicSimulationFormProps = {
     dynamicSimulationMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
+    actions?: ParameterActions;
+    onSubmit: (formData: any) => void;
     // fetchers for curve parameters
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;
@@ -36,13 +36,15 @@ type DynamicSimulationFormProps = {
 export function DynamicSimulationForm({
     dynamicSimulationMethods,
     renderTitleFields,
-    renderActions,
+    actions,
+    onSubmit,
     // fetchers for curve parameters
     voltageLevelsFetcher,
     countriesFetcher,
     evaluateFilterFetcher,
 }: Readonly<DynamicSimulationFormProps>) {
-    const { paramsLoaded, formattedProviders } = dynamicSimulationMethods;
+    const { paramsLoaded, formattedProviders, formMethods } = dynamicSimulationMethods;
+    const { handleSubmit } = formMethods;
 
     const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
@@ -51,6 +53,7 @@ export function DynamicSimulationForm({
 
     return (
         <ParameterLayout
+            title={'DynamicSimulation'}
             header={
                 <>
                     {renderTitleFields?.()}
@@ -94,7 +97,10 @@ export function DynamicSimulationForm({
                 </>
             }
             isLoading={!paramsLoaded}
-            footer={renderActions?.(onError)}
+            actions={{
+                ...actions,
+                validateOnClick: handleSubmit(onSubmit, onError),
+            }}
             contentSx={{ paddingLeft: 1 }}
         >
             <Grid

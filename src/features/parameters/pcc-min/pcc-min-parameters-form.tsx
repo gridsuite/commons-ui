@@ -8,8 +8,8 @@
 import { Grid } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLineDirectoryItemsInput } from "../common/widget/parameter-line-directory-items-input.js";
-import { ParameterLayout } from '../common';
+import { ParameterLineDirectoryItemsInput } from '../common/widget/parameter-line-directory-items-input.js';
+import { ParameterLayout, ParameterActions } from '../common';
 import type { MuiStyles } from '../../../utils/styles';
 import { ElementType, EquipmentType } from '../../../utils';
 import { UsePccMinParametersFormReturn } from './use-pcc-min-parameters-form';
@@ -38,19 +38,19 @@ export const styles = {
 interface PccMinParametersFormProps {
     pccMinMethods: UsePccMinParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
 }
 
 export function PccMinParametersForm({
     pccMinMethods,
     renderTitleFields,
-    renderActions,
+    actions,
 }: Readonly<PccMinParametersFormProps>) {
     const { formMethods, formSchema, paramsLoading } = pccMinMethods;
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout header={renderTitleFields?.()} footer={renderActions?.()} isLoading={paramsLoading}>
+            <ParameterLayout title={'PccMin'} header={renderTitleFields?.()} actions={actions} isLoading={paramsLoading}>
                 <Grid item container direction="column">
                     <ParameterLineDirectoryItemsInput
                         name={FILTERS}

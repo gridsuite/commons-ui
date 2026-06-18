@@ -16,6 +16,7 @@ import {
     LineSeparator,
     PARAM_SA_PROVIDER,
     ParameterLayout,
+    ParameterActions
 } from '../common';
 import { mergeSx } from '../../../utils/styles';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
@@ -30,7 +31,7 @@ export type SecurityAnalysisParametersFormProps = {
     contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
+    actions?: ParameterActions;
     isDeveloperMode: boolean;
 };
 
@@ -41,7 +42,7 @@ export function SecurityAnalysisParametersForm({
     contingencyTableApiRef,
     isBuiltCurrentNode,
     renderTitleFields,
-    renderActions,
+    actions,
     isDeveloperMode,
 }: Readonly<SecurityAnalysisParametersFormProps>) {
     return (
@@ -50,9 +51,10 @@ export function SecurityAnalysisParametersForm({
             {...securityAnalysisMethods.formMethods}
         >
             <ParameterLayout
+                title={'SecurityAnalysis'}
                 header={renderTitleFields?.()}
-                footer={renderActions?.()}
                 isLoading={!securityAnalysisMethods.paramsFormInitialized}
+                actions={actions}
                 contentSx={{ paddingLeft: 1 }}
             >
                 <Grid
