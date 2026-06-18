@@ -15,3 +15,4 @@ export * from './node';
 export * from './network-modification-table';
 export * from './announcement';
 export * from './results/securityanalysis';
+export * from './process-configs';
