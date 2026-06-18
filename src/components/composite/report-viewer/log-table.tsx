@@ -26,15 +26,25 @@ import { getDefaultSeverityFilter, REPORT_SEVERITY } from './report-severity';
 import { QuickSearch } from './QuickSearch';
 import {
     ComputingAndNetworkModificationType,
-    FilterConfig,
     Log,
     SelectedReportLog,
     SeverityLevel,
 } from './report.type';
 import { reportStyles } from './report.styles';
 import { useReportFetcherContext, useReportFilterContext } from './report-viewer-context';
-import { LANG_ENGLISH, LANG_FRENCH, MuiStyles, SxStyle } from '../../../utils';
+import {
+    FilterDataTypes,
+    FilterTextComparators,
+    LANG_ENGLISH,
+    LANG_FRENCH,
+    MuiStyles,
+    SxStyle,
+    TableType,
+} from '../../../utils';
 import { AgGridLocales, CustomAGGrid, MessageLogCellRenderer } from '../customAGGrid';
+import { CustomAggridComparatorFilter } from '../customAGGrid/custom-aggrid-comparator-filter';
+import { makeAgGridCustomHeaderColumn } from '../customAGGrid/custom-aggrid-header-utils';
+import { FilterConfig } from '../customAGGrid/custom-aggrid-types';
 
 const getColumnFilterValue = (array: FilterConfig[] | undefined, columnName: string): any =>
     array?.find((item) => item.column === columnName)?.value ?? null;
@@ -243,10 +253,10 @@ function LogTable({
     }, [filters, isGridReady, onFiltersChanged]);
 
     // ── Column definitions ─────────────────────────────────────────────────────
-    const COLUMNS_DEFINITIONS = useMemo<ColDef<Log>[]>(
+    const COLUMNS_DEFINITIONS = useMemo(
         () =>
             extraColumnDefs ?? [
-                {
+                makeAgGridCustomHeaderColumn({
                     headerName: intl.formatMessage({ id: 'report_viewer/severity' }),
                     width: SEVERITY_COLUMN_FIXED_WIDTH,
                     colId: 'severity',
@@ -255,24 +265,36 @@ function LogTable({
                         backgroundColor: params.data?.backgroundColor ?? theme.palette.background.default,
                         textAlign: 'center',
                     }),
-                },
-                {
+                }),
+                makeAgGridCustomHeaderColumn({
                     headerName: intl.formatMessage({ id: 'report_viewer/message' }),
                     colId: 'message',
                     field: 'message',
+                    context: {
+                        filterComponent: CustomAggridComparatorFilter,
+                        filterComponentParams: {
+                            filterParams: {
+                                type: TableType.Logs,
+                                tab: reportType,
+                                dataType: FilterDataTypes.TEXT,
+                                comparators: [FilterTextComparators.CONTAINS],
+                            },
+                        },
+                        forceDisplayFilterIcon: true,
+                    },
                     flex: 1,
                     cellRenderer: (param: ICellRendererParams<Log>) =>
                         MessageLogCellRenderer({
                             param,
-                            highlightColor: (theme as any).searchedText?.highlightColor,
-                            currentHighlightColor: (theme as any).searchedText?.currentHighlightColor,
+                            highlightColor: theme.searchedText.highlightColor,
+                            currentHighlightColor: theme.searchedText.currentHighlightColor,
                             searchTerm,
                             currentResultIndex,
                             searchResults,
                         }),
-                },
+                }),
             ],
-        [extraColumnDefs, intl, theme, searchTerm, currentResultIndex, searchResults]
+        [extraColumnDefs, intl, theme, searchTerm, currentResultIndex, searchResults, reportType]
     );
 
     // ── Row interactions ───────────────────────────────────────────────────────

@@ -81,12 +81,3 @@ export type LogsPaginationConfig = {
     page: number;
     rowsPerPage: number;
 };
-
-export type FilterConfig = {
-    column: string;
-    dataType?: string;
-    type?: string;
-    originalType?: string;
-    value: unknown;
-    tolerance?: number;
-};

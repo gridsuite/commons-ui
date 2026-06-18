@@ -55,6 +55,7 @@
         "clsx": "^2.1.1",
         "jwt-decode": "^4.0.0",
         "localized-countries": "^2.0.0",
+        "mathjs": "^14.7.0",
         "mui-nested-menu": "^4.0.1",
         "oidc-client-ts": "^3.5.0",
         "prop-types": "^15.8.1",

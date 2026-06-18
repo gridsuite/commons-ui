@@ -6,7 +6,8 @@
  */
 
 import { createContext, useContext } from 'react';
-import { FilterConfig, LogsPaginationConfig, MatchPosition, PagedLogs, ReportType } from './report.type';
+import { LogsPaginationConfig, MatchPosition, PagedLogs, ReportType } from './report.type';
+import { FilterConfig } from '../customAGGrid/custom-aggrid-types';
 
 export interface ReportFetcherContextValue {
     fetchLogs: (
