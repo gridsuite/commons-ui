@@ -8,6 +8,8 @@
 export const commonButtonFr = {
     cancel: 'Annuler',
     validate: 'Valider',
+    add: 'Ajouter',
+    replace: 'Remplacer',
     'button.prefill': 'Préremplir',
     'button.reset': 'Réinitialiser',
     'button.changeType': 'Modifier',

@@ -34,3 +34,4 @@ export * from './external/importParamsEn';
 export * from './componentsEn';
 export * from './parameters';
 export * from './use-unique-name-validation-en';
+export * from './processConfigEn';
