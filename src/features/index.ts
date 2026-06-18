@@ -14,3 +14,4 @@ export * from './network-modifications';
 export * from './node';
 export * from './network-modification-table';
 export * from './announcement';
+export * from './process-configs';
