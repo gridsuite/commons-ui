@@ -8,11 +8,31 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
-import type { CellEditingStoppedEvent, ColumnState, RowDataUpdatedEvent, SortChangedEvent } from 'ag-grid-community';
+import type {
+    CellEditingStoppedEvent,
+    ColumnState,
+    RowDataUpdatedEvent,
+    RowDragCancelEvent,
+    RowDragEndEvent,
+    RowDragLeaveEvent,
+    RowDragMoveEvent,
+    SortChangedEvent,
+} from 'ag-grid-community';
 import { BottomTableButtons } from './BottomTableButtons';
 import { type CsvProps } from './agGridTable-utils';
 import { FieldConstants, hasNonEmptyRows } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
+
+const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEndEvent) => {
+    if (!overNode) {
+        return null;
+    }
+
+    const overNodeTop = overNode.rowTop ?? 0;
+    const overNodeHeight = overNode.rowHeight ?? 0;
+    const overNodeMiddle = overNodeTop + overNodeHeight / 2;
+    return y < overNodeMiddle ? 'above' : 'below';
+};
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
@@ -192,6 +212,55 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
             setIsSortApplied(isAnycolumnhasSort);
         }, []);
 
+        // While dragging the row, the setRowDropPositionIndicator API method is called
+        // to display the projected row drop location using a horizontal line indicator.
+        // from https://www.ag-grid.com/react-data-grid/row-dragging-unmanaged/#example-events
+        const onRowDragMove = useCallback((event: RowDragMoveEvent) => {
+            const { api, overNode } = event;
+            const dropIndicatorPosition = getDropIndicatorPosition(event);
+
+            if (!overNode || !dropIndicatorPosition) {
+                api.setRowDropPositionIndicator(null);
+                return;
+            }
+
+            api.setRowDropPositionIndicator({
+                row: overNode,
+                dropIndicatorPosition,
+            });
+        }, []);
+
+        const onRowDragEnd = useCallback(
+            (event: RowDragEndEvent) => {
+                const { api, node, overNode } = event;
+                api.setRowDropPositionIndicator(null);
+
+                const dropIndicatorPosition = getDropIndicatorPosition(event);
+                if (!overNode || !dropIndicatorPosition) {
+                    return;
+                }
+
+                const rowIndex = getIndex(node.data);
+                const overIndex = getIndex(overNode.data);
+
+                if (rowIndex === -1 || overIndex === -1 || rowIndex === overIndex) {
+                    return;
+                }
+
+                const insertionIndex = dropIndicatorPosition === 'above' ? overIndex : overIndex + 1;
+                const targetIndex = rowIndex < insertionIndex ? insertionIndex - 1 : insertionIndex;
+
+                if (rowIndex !== targetIndex) {
+                    move(rowIndex, targetIndex);
+                }
+            },
+            [getIndex, move]
+        );
+
+        const clearRowDropPositionIndicator = useCallback(({ api }: RowDragLeaveEvent | RowDragCancelEvent) => {
+            api.setRowDropPositionIndicator(null);
+        }, []);
+
         return (
             <>
                 <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
@@ -201,7 +270,10 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         cacheOverflowSize={10}
                         rowSelection={rowSelection ?? { mode: 'multiRow' }}
                         selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
-                        onRowDragMove={(event) => move(getIndex(event.node.data), event.overIndex)}
+                        onRowDragMove={onRowDragMove}
+                        onRowDragEnd={onRowDragEnd}
+                        onRowDragLeave={clearRowDropPositionIndicator}
+                        onRowDragCancel={clearRowDropPositionIndicator}
                         detailRowAutoHeight
                         onSelectionChanged={(event) => {
                             setSelectedRows(event.api.getSelectedRows());
