@@ -314,6 +314,7 @@ export const networkModificationsFr = {
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
     CharacteristicsTab: 'Caractéristiques',
+    LimitsTab: 'LimitsFR TAB',
     SetpointsAndLimitsTab: 'Consignes & Limites',
     SpecificTab: 'Spécifique',
     StructureTab: 'Structure',

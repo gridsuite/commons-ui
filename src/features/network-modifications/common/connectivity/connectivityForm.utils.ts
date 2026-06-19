@@ -72,6 +72,12 @@ export const getConnectivityWithPositionValidationSchema = (
     [id]: getConnectivityWithPositionSchema(isEquipmentModification),
 });
 
+export const getBranchConnectivityWithPositionSchema = (isEquipmentModification = false) =>
+    object().shape({
+        [FieldConstants.CONNECTIVITY_1]: getConnectivityWithPositionSchema(isEquipmentModification),
+        [FieldConstants.CONNECTIVITY_2]: getConnectivityWithPositionSchema(isEquipmentModification),
+    });
+
 export const getCon1andCon2WithPositionValidationSchema = (
     isEquipmentModification = false,
     id = FieldConstants.CONNECTIVITY
@@ -101,6 +107,11 @@ export const getConnectivityWithPositionEmptyFormDataProps = (isEquipmentModific
     [FieldConstants.CONNECTION_DIRECTION]: null,
     [FieldConstants.CONNECTION_NAME]: '',
     [FieldConstants.CONNECTION_POSITION]: null,
+});
+
+export const getBranchConnectivityWithPositionEmptyFormDataProps = (isEquipmentModification = false) => ({
+    [FieldConstants.CONNECTIVITY_1]: getConnectivityWithPositionEmptyFormDataProps(isEquipmentModification),
+    [FieldConstants.CONNECTIVITY_2]: getConnectivityWithPositionEmptyFormDataProps(isEquipmentModification),
 });
 
 export const getConnectivityWithPositionEmptyFormData = (

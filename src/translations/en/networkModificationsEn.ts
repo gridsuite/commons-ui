@@ -309,6 +309,7 @@ export const networkModificationsEn = {
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
     CharacteristicsTab: 'Characteristics',
+    LimitsTab: 'LimitsEN TAB',
     SetpointsAndLimitsTab: 'Setpoints & Limits',
     SpecificTab: 'Specific',
     StructureTab: 'Structure',
