@@ -6,8 +6,6 @@
  */
 export type SeverityLevel = 'UNKNOWN' | 'TRACE' | 'DEBUG' | 'DETAIL' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
 
-export const NETWORK_MODIFICATION = 'NETWORK_MODIFICATION';
-
 export type ComputingAndNetworkModificationType = string;
 
 export type ReportSeverity = {

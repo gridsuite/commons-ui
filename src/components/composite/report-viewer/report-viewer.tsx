@@ -40,7 +40,7 @@ export type ReportViewerProps = {
     resetFilters?: boolean;
 };
 
-export default function ReportViewer({
+export function ReportViewer({
     report,
     reportType,
     severities = [],
