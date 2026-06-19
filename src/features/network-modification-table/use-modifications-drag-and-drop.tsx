@@ -124,8 +124,8 @@ export const useModificationsDragAndDrop = ({
                     )
                 );
             }
-            // TODO : this is temporary, until drag and drop is done for the shared modifications :
-            if (isSharedModification(sourceRow.original) || isSharedModification(targetRow.original)) return true;
+            // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
+            if (isSharedModification(sourceRow.original)) return true;
 
             return false;
         },
