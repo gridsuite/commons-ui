@@ -98,6 +98,7 @@ export const importParamsEn = {
     'iidm.import.xml.included.extensions.desc': 'Import with these extensions',
     'iidm.import.xml.included.extensions.activePowerControl': 'Active power control',
     'iidm.import.xml.included.extensions.baseVoltageMapping': 'Base voltage mapping',
+    'iidm.import.xml.included.extensions.batteryShortCircuit': 'Battery short circuit',
     'iidm.import.xml.included.extensions.branchObservability': 'Branch observability',
     'iidm.import.xml.included.extensions.busbarSectionPosition': 'Busbar section position',
     'iidm.import.xml.included.extensions.branchStatus': 'Branch status (IIDM version < 1.12)',
