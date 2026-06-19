@@ -46,7 +46,7 @@ export const topBarFr = {
     'user-information-dialog/number-of-cases-or-studies': 'Nombre situations ou études',
     'user-information-dialog/used': 'Utilisé',
     'user-information-dialog/number-of-builds-per-study': 'Nombre de réalisations',
-    'user-information-dialog/number-of-loadflow-per-study': 'Nombre de calculs de répartion',
+    'user-information-dialog/number-of-loadflow-per-study': 'Nombre de calculs de répartition',
     'user-information-dialog/number-of-security-per-study': "Nombre d'analyses de sécurité",
     'user-information-dialog/number-of-sensitivity-per-study': "Nombre d'analyses de sensibilité",
     'user-information-dialog/number-of-shortCircuit-per-study': 'Nombre de calculs de court-circuit',
