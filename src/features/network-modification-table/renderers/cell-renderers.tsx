@@ -19,6 +19,8 @@ import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../network-modification-table-styles';
 import { ComposedModificationMetadata } from '../../../utils';
+import { isSharedModification } from '../utils';
+import { ReferenceLinkCell } from './reference-link-cell';
 
 /**
  * Cell/header renderers must keep a stable reference across renders to avoid
@@ -74,6 +76,14 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
     );
 }
 
+export function ShareCellRenderer({ row, table }: CCtx) {
+    const { meta } = table.options;
+
+    // A shared-modification (reference) row shows a "copy link" action instead of the description note.
+    if (isSharedModification(row.original)) {
+        return <ReferenceLinkCell data={row.original} isDisabled={meta?.status.isDisabled} />;
+    }
+}
 export function SwitchCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
     return (
