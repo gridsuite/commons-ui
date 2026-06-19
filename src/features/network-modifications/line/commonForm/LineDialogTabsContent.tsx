@@ -18,12 +18,14 @@ import { LimitsPane } from '../../common/limits/LimitsPane';
 export interface LineDialogTabsContentProps extends ConnectivityNetworkProps {
     lineToModify?: BranchInfos | null;
     isModification?: boolean;
+    withConnectivity?: boolean;
     tabIndex: number;
 }
 
 export function LineDialogTabsContent({
     lineToModify,
     isModification = false,
+    withConnectivity = true,
     tabIndex,
     voltageLevelOptions = [],
     PositionDiagramPane,
@@ -31,11 +33,11 @@ export function LineDialogTabsContent({
 }: Readonly<LineDialogTabsContentProps>) {
     return (
         <>
-            {isModification && (
+            {withConnectivity && (
                 <Box hidden={tabIndex !== LineDialogTab.CONNECTIVITY_TAB}>
                     <GridSection title="ConnectivityTab" />
                     <BranchConnectivityForm
-                        isModification
+                        isModification={isModification}
                         previousValues={lineToModify}
                         voltageLevelOptions={voltageLevelOptions}
                         PositionDiagramPane={PositionDiagramPane}
@@ -44,15 +46,7 @@ export function LineDialogTabsContent({
                 </Box>
             )}
             <Box hidden={tabIndex !== LineDialogTab.CHARACTERISTICS_TAB} p={1}>
-                <LineCharacteristicsPane
-                    displayConnectivity={!isModification}
-                    lineToModify={lineToModify}
-                    clearableFields
-                    isModification={isModification}
-                    voltageLevelOptions={voltageLevelOptions}
-                    PositionDiagramPane={PositionDiagramPane}
-                    fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
-                />
+                <LineCharacteristicsPane lineToModify={lineToModify} isModification={isModification} />
             </Box>
             <Box hidden={tabIndex !== LineDialogTab.LIMITS_TAB} p={1}>
                 <LimitsPane equipmentToModify={lineToModify} clearableFields />

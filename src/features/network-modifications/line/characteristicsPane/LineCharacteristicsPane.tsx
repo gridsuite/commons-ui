@@ -10,8 +10,6 @@ import { FieldConstants, MicroSusceptanceAdornment, OhmAdornment } from '../../.
 import { FloatInput } from '../../../../components';
 import { convertInputValue, FieldType } from '../../../../utils';
 import { BranchInfos } from '../commonForm/line.types';
-import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
-import { ConnectivityForm } from '../../common/connectivity/ConnectivityForm';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';
 import GridSection from '../../../../components/composite/grid/grid-section';
 import GridItem from '../../../../components/composite/grid/grid-item';
@@ -23,31 +21,24 @@ const styles = {
     },
 };
 
-interface LineCharacteristicsPaneProps extends ConnectivityNetworkProps {
+interface LineCharacteristicsPaneProps {
     id?: string;
-    displayConnectivity: boolean;
     lineToModify?: BranchInfos | null;
-    clearableFields?: boolean;
     isModification?: boolean;
 }
 
 export function LineCharacteristicsPane({
     id = FieldConstants.CHARACTERISTICS,
-    displayConnectivity,
     lineToModify,
-    clearableFields = false,
     isModification = false,
-    voltageLevelOptions,
-    fetchBusesOrBusbarSections,
-    PositionDiagramPane,
-}: LineCharacteristicsPaneProps) {
+}: Readonly<LineCharacteristicsPaneProps>) {
     const seriesResistanceField = (
         <FloatInput
             name={`${id}.${FieldConstants.R}`}
             label="SeriesResistanceText"
             adornment={OhmAdornment}
             previousValue={lineToModify?.r}
-            clearable={clearableFields}
+            clearable={isModification}
         />
     );
 
@@ -57,7 +48,7 @@ export function LineCharacteristicsPane({
             label="SeriesReactanceText"
             adornment={OhmAdornment}
             previousValue={lineToModify?.x}
-            clearable={clearableFields}
+            clearable={isModification}
         />
     );
 
@@ -67,7 +58,7 @@ export function LineCharacteristicsPane({
             label="ShuntConductanceText"
             adornment={MicroSusceptanceAdornment}
             previousValue={convertInputValue(FieldType.G1, lineToModify?.g1)}
-            clearable={clearableFields}
+            clearable={isModification}
         />
     );
 
@@ -77,7 +68,7 @@ export function LineCharacteristicsPane({
             label="ShuntSusceptanceText"
             adornment={MicroSusceptanceAdornment}
             previousValue={convertInputValue(FieldType.B1, lineToModify?.b1)}
-            clearable={clearableFields}
+            clearable={isModification}
         />
     );
 
@@ -87,7 +78,7 @@ export function LineCharacteristicsPane({
             label="ShuntConductanceText"
             adornment={MicroSusceptanceAdornment}
             previousValue={convertInputValue(FieldType.G2, lineToModify?.g2)}
-            clearable={clearableFields}
+            clearable={isModification}
         />
     );
 
@@ -97,43 +88,12 @@ export function LineCharacteristicsPane({
             label="ShuntSusceptanceText"
             adornment={MicroSusceptanceAdornment}
             previousValue={convertInputValue(FieldType.B2, lineToModify?.b2)}
-            clearable={clearableFields}
-        />
-    );
-
-    const connectivity1Field = (
-        <ConnectivityForm
-            id={`${id}.${FieldConstants.CONNECTIVITY_1}`}
-            voltageLevelOptions={voltageLevelOptions}
-            PositionDiagramPane={PositionDiagramPane}
-            fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
-        />
-    );
-
-    const connectivity2Field = (
-        <ConnectivityForm
-            id={`${id}.${FieldConstants.CONNECTIVITY_2}`}
-            voltageLevelOptions={voltageLevelOptions}
-            PositionDiagramPane={PositionDiagramPane}
-            fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+            clearable={isModification}
         />
     );
 
     return (
         <>
-            {displayConnectivity && (
-                <>
-                    <GridSection title="Connectivity" customStyle={styles.h3} />
-                    <GridSection title="Side1" heading={4} />
-                    <Grid container spacing={2}>
-                        <GridItem size={12}>{connectivity1Field}</GridItem>
-                    </Grid>
-                    <GridSection title="Side2" heading={4} />
-                    <Grid container spacing={2}>
-                        <GridItem size={12}>{connectivity2Field}</GridItem>
-                    </Grid>
-                </>
-            )}
             <GridSection title="Characteristics" />
             <Grid container spacing={2}>
                 <GridItem size={4}>{seriesResistanceField}</GridItem>

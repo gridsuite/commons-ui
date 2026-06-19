@@ -6,12 +6,6 @@
  */
 
 import { object, number } from 'yup';
-import {
-    Connectivity,
-    getBranchConnectivityWithPositionSchema,
-    getConnectivityWithPositionEmptyFormData,
-    getConnectivityWithPositionValidationSchema,
-} from '../../common/connectivity';
 import { FieldConstants } from '../../../../utils';
 import { LineCharacteristics } from './lineCharacteristicsPane.types';
 
@@ -27,7 +21,7 @@ export const getLineCharacteristicsValidationSchemaProps = (isEquipmentModificat
         [FieldConstants.G2]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
     });
 
-const characteristicsValidationSchema = (id: string, displayConnectivity: boolean, modification: boolean) => ({
+const characteristicsValidationSchema = (id: string, modification: boolean) => ({
     [id]: object().shape({
         [FieldConstants.R]: modification
             ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
@@ -37,23 +31,17 @@ const characteristicsValidationSchema = (id: string, displayConnectivity: boolea
         [FieldConstants.G1]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
         [FieldConstants.B2]: number().nullable(),
         [FieldConstants.G2]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
-        ...(displayConnectivity &&
-            getConnectivityWithPositionValidationSchema(modification, FieldConstants.CONNECTIVITY_1)),
-        ...(displayConnectivity &&
-            getConnectivityWithPositionValidationSchema(modification, FieldConstants.CONNECTIVITY_2)),
-        //[FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false),
     }),
 });
 
 export const getCharacteristicsValidationSchema = (
     id: string,
-    displayConnectivity: boolean,
     modification: boolean = false
 ) => {
-    return characteristicsValidationSchema(id, displayConnectivity, modification);
+    return characteristicsValidationSchema(id, modification);
 };
 
-const characteristicsEmptyFormData = (id: string, displayConnectivity: boolean = true) => ({
+const characteristicsEmptyFormData = (id: string) => ({
     [id]: {
         [FieldConstants.R]: null,
         [FieldConstants.X]: null,
@@ -61,16 +49,13 @@ const characteristicsEmptyFormData = (id: string, displayConnectivity: boolean =
         [FieldConstants.G1]: null,
         [FieldConstants.B2]: null,
         [FieldConstants.G2]: null,
-        ...(displayConnectivity && getConnectivityWithPositionEmptyFormData(false, FieldConstants.CONNECTIVITY_1)),
-        ...(displayConnectivity && getConnectivityWithPositionEmptyFormData(false, FieldConstants.CONNECTIVITY_2)),
     },
 });
 
 export const getLineCharacteristicsEmptyFormData = (
-    id: string = FieldConstants.CHARACTERISTICS,
-    displayConnectivity: boolean = true
+    id: string = FieldConstants.CHARACTERISTICS
 ) => {
-    return characteristicsEmptyFormData(id, displayConnectivity);
+    return characteristicsEmptyFormData(id);
 };
 
 export const getLineCharacteristicsFormData = (
@@ -81,12 +66,7 @@ export const getLineCharacteristicsFormData = (
         b1 = null,
         g2 = null,
         b2 = null,
-        connectivity1 = null,
-        connectivity2 = null,
-    }: LineCharacteristics & {
-        connectivity1?: Connectivity | null;
-        connectivity2?: Connectivity | null;
-    },
+    }: LineCharacteristics,
     id = FieldConstants.CHARACTERISTICS
 ) => ({
     [id]: {
@@ -96,8 +76,6 @@ export const getLineCharacteristicsFormData = (
         [FieldConstants.B1]: b1,
         [FieldConstants.G2]: g2,
         [FieldConstants.B2]: b2,
-        [FieldConstants.CONNECTIVITY_1]: connectivity1,
-        [FieldConstants.CONNECTIVITY_2]: connectivity2,
     },
 });
 

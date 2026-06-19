@@ -160,10 +160,6 @@ const limitsValidationSchemaCreation = (id: string, isModification: boolean) => 
     return { [id]: getLimitsValidationSchemaProps(isModification) };
 };
 
-export type LimitsFormSchema = InferType<
-    ReturnType<typeof limitsValidationSchemaCreation>[typeof FieldConstants.LIMITS]
->;
-
 export const getLimitsValidationSchema = (id: string = FieldConstants.LIMITS, isModification: boolean = false) => {
     return limitsValidationSchemaCreation(id, isModification);
 };

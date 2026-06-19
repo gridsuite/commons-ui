@@ -83,7 +83,7 @@ export function OperationalLimitsGroupsTabs({
 
     useEffect(() => {
         // as long as there are limit sets, one should be selected
-        if (indexSelectedLimitSet === null && operationalLimitsGroups.length > 0) {
+        if (indexSelectedLimitSet === null && operationalLimitsGroups?.length) {
             setIndexSelectedLimitSet(0);
         }
     }, [indexSelectedLimitSet, setIndexSelectedLimitSet, operationalLimitsGroups]);
@@ -104,7 +104,7 @@ export function OperationalLimitsGroupsTabs({
                 onChange={handleTabChange}
                 sx={limitsStyles.tabs}
             >
-                {operationalLimitsGroups.map((opLg: OperationalLimitsGroupFormSchema, index: number) => (
+                {operationalLimitsGroups?.map((opLg: OperationalLimitsGroupFormSchema, index: number) => (
                     <Tab
                         onMouseEnter={() => setHoveredRowIndex(index)}
                         onContextMenu={(e) => handleOpenMenu(e, index)}

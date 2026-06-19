@@ -20,3 +20,4 @@ export * from './LimitsPropertiesStack';
 export * from './LimitsPropertiesSideStack';
 export * from './LimitsSidePane';
 export * from './LimitsPane';
+export * from './limitsPane.utils';
