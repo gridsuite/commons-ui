@@ -126,13 +126,11 @@ function LogTable({
     const intl = useIntl();
     const theme = useTheme<Theme>();
 
-    // ── Context reads (replaces Redux + useReportFetcher + useLogsPagination) ──
     const { fetchLogs, fetchLogMatches } = useReportFetcherContext();
     const { filters, onFiltersUpdate, pagination, onPaginationChange } = useReportFilterContext();
 
     const { page, rowsPerPage } = pagination;
 
-    // ── Local state ────────────────────────────────────────────────────────────
     const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(-1);
     const [rowData, setRowData] = useState<Log[] | null>(null);
     const [searchMatches, setSearchMatches] = useState<{ rowIndex: number; page: number }[]>([]);
@@ -156,8 +154,6 @@ function LogTable({
         },
     } as const satisfies AgGridLocales;
 
-    // ── Derived filter values ──────────────────────────────────────────────────
-    // Stable array reference to avoid unnecessary re-renders
     const severityFilterRef = useRef<string[]>([]);
     const severityFilter = useMemo(() => {
         const next = getColumnFilterValue(filters, 'severity') ?? [];
@@ -171,12 +167,10 @@ function LogTable({
 
     const messageFilter = useMemo(() => getColumnFilterValue(filters, 'message'), [filters]);
 
-    // ── Reset filtersInitialized when reportType or severities change ──────────
     useEffect(() => {
         setFiltersInitialized(false);
     }, [reportType, severities]);
 
-    // ── Search helpers ─────────────────────────────────────────────────────────
     const resetSearch = useCallback(() => {
         setSearchMatches([]);
         setSearchResults([]);
@@ -184,7 +178,6 @@ function LogTable({
         setSearchTerm('');
     }, []);
 
-    // ── Fetch logs ─────────────────────────────────────────────────────────────
     const refreshLogsOnSelectedReport = useCallback(() => {
         if (severityFilter.length === 0) {
             setRowData([]);
@@ -212,7 +205,6 @@ function LogTable({
         onPaginationChange,
     ]);
 
-    // ── Initialize severity filter chips when severities arrive ───────────────
     useEffect(() => {
         if (severities && severities.length > 0) {
             const severityNotAlreadyInFilter = severities.some((severity) => !severityFilter.includes(severity));
@@ -235,14 +227,12 @@ function LogTable({
         }
     }, [severities, resetFilters, filtersInitialized, severityFilter, onFiltersUpdate]);
 
-    // ── Refresh logs when selection or filters change ──────────────────────────
     useEffect(() => {
         if (selectedReport.id && selectedReport.type) {
             refreshLogsOnSelectedReport();
         }
     }, [refreshLogsOnSelectedReport, selectedReport]);
 
-    // ── Sync AG Grid filter model when filters state changes ───────────────────
     useEffect(() => {
         onFiltersChanged();
         const api = gridRef.current?.api;
@@ -252,7 +242,6 @@ function LogTable({
         applyFiltersToGrid(api, filters);
     }, [filters, isGridReady, onFiltersChanged]);
 
-    // ── Column definitions ─────────────────────────────────────────────────────
     const COLUMNS_DEFINITIONS = useMemo(
         () =>
             extraColumnDefs ?? [
@@ -297,7 +286,6 @@ function LogTable({
         [extraColumnDefs, intl, theme, searchTerm, currentResultIndex, searchResults, reportType]
     );
 
-    // ── Row interactions ───────────────────────────────────────────────────────
     const handleRowClick = useCallback(
         (row: CellClickedEvent<Log>) => {
             setSelectedRowIndex(row.rowIndex);
@@ -327,7 +315,6 @@ function LogTable({
         suppressMovable: true,
     };
 
-    // ── Search / highlight ────────────────────────────────────────────────────
     const highlightAndScrollToMatch = useCallback((index: number, matches: number[]) => {
         if (!gridRef.current || matches.length === 0) {
             return;
@@ -399,7 +386,6 @@ function LogTable({
         [searchResults, onPaginationChange, searchMatches, rowsPerPage, highlightAndScrollToMatch, currentResultIndex]
     );
 
-    // ── Severity chip click ───────────────────────────────────────────────────
     const handleChipClick = useCallback(
         (severity: string) => {
             const updatedFilter = severityFilter.includes(severity)
@@ -424,7 +410,6 @@ function LogTable({
         [onFiltersUpdate, severityFilter, messageFilter]
     );
 
-    // ── Pagination ─────────────────────────────────────────────────────────────
     const handleChangePage = useCallback(
         (_: unknown, newPage: number) => {
             onPaginationChange({ page: newPage, rowsPerPage });
@@ -441,14 +426,12 @@ function LogTable({
         [onPaginationChange]
     );
 
-    // Re-run search when selected node, filters or page size change
     useEffect(() => {
         handleSearch(searchTerm);
         // We don't want to trigger on searchTerm change — that is handled by QuickSearch
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [handleSearch]);
 
-    // ── Render ─────────────────────────────────────────────────────────────────
     return (
         <Box sx={reportStyles.mainContainer}>
             <Box sx={styles.toolContainer}>

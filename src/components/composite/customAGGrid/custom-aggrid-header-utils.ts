@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import CustomHeaderComponent from './custom-aggrid-header';
+import { CustomHeaderComponent } from './custom-aggrid-header';
 import { CustomAggridFilterParams, CustomColDef } from './custom-aggrid-types';
 
 export const makeAgGridCustomHeaderColumn = <F extends CustomAggridFilterParams = CustomAggridFilterParams>({

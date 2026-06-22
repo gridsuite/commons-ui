@@ -8,12 +8,8 @@ import { createContext, useContext } from 'react';
 import { GridApi } from 'ag-grid-community';
 import { FilterConfig, FilterParams, SortConfig, SortParams } from './custom-aggrid-types';
 
-// ─── Sort ─────────────────────────────────────────────────────────────────────
-
 export interface CustomAggridSortContextValue {
-    /** Returns the current SortConfig[] for the given sortParams, or undefined. */
     getSortConfig: (sortParams: SortParams | undefined) => SortConfig[] | undefined;
-    /** Persists / dispatches a new sort configuration. */
     setSortConfig: (sortParams: SortParams, updatedSortConfig: SortConfig[], api: GridApi | undefined) => void;
 }
 
@@ -27,15 +23,8 @@ export const useCustomAggridSortContext = (): CustomAggridSortContextValue => {
     return ctx;
 };
 
-// ─── Filter ───────────────────────────────────────────────────────────────────
-
 export interface CustomAggridFilterContextValue {
-    /** Returns the active FilterConfig[] for the given (type, tab). */
     getFilters: (params: Pick<FilterParams, 'type' | 'tab'>) => FilterConfig[];
-    /**
-     * Called when the user changes a filter value.
-     * The implementor is responsible for persisting / dispatching the change.
-     */
     updateFilter: (
         colId: string,
         filterParams: FilterParams,

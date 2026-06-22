@@ -39,7 +39,7 @@ interface CustomHeaderComponentProps<F extends CustomAggridFilterParams, T> exte
     isInvalid?: boolean;
 }
 
-function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
+export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
     column,
     displayName,
     sortParams,
@@ -123,5 +123,3 @@ function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
         </Grid>
     );
 }
-
-export default CustomHeaderComponent;
