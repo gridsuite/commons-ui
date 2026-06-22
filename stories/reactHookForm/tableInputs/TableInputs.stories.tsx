@@ -13,7 +13,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/TableInputs',
+    title: 'UI/Inputs/ReactHookForm/Table/TableInputs',
     component: TableTextInput,
     tags: ['autodocs'],
     decorators: [(Story) => <Form><Story /></Form>],

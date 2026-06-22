@@ -3,7 +3,7 @@ import { OverflowableChip } from '../../src/components/ui/reactHookForm/Overflow
 import { OverflowableChipWithHelperText } from '../../src';
 
 const meta = {
-    title: 'UI/ReactHookForm/OverflowableChip',
+    title: 'UI/Inputs/ReactHookForm/Selection/OverflowableChip',
     component: OverflowableChip,
     tags: ['autodocs'],
     args: { label: 'A compact chip label' },

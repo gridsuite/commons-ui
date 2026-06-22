@@ -22,7 +22,7 @@ function Form({
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/ExpandingTextField',
+    title: 'UI/Inputs/ReactHookForm/Text/ExpandingTextField',
     component: ExpandingTextField,
     tags: ['autodocs'],
     args: { name: 'description', label: 'Description' },

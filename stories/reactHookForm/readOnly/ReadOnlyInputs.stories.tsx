@@ -6,8 +6,6 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { CustomFormProvider } from '../../../src/components/ui/reactHookForm/provider/CustomFormProvider';
 import { ReadOnlyInput } from '../../../src/components/ui/reactHookForm/readOnly/ReadOnlyInput';
-import { ButtonReadOnlyInput } from '../../../src/components/ui/reactHookForm/readOnly/ButtonReadOnlyInput';
-import { RawReadOnlyInput } from '../../../src/components/ui/reactHookForm/RawReadOnlyInput';
 
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { string: 'Read only string', number: 225 } });
@@ -25,10 +23,16 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/ReadOnlyInputs',
+    title: 'UI/Inputs/ReactHookForm/Text/ReadOnlyInputs',
     component: ReadOnlyInput,
     tags: ['autodocs'],
-    decorators: [(Story) => <Form><Story /></Form>],
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof ReadOnlyInput>;
 
 export default meta;

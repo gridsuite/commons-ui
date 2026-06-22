@@ -24,7 +24,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/MultipleAutocompleteInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/MultipleAutocompleteInput',
     component: MultipleAutocompleteInput,
     tags: ['autodocs'],
     args: { name: 'cities', label: 'Cities', options: options },

@@ -3,7 +3,7 @@ import { ExportCsvButton } from '../../src/components/ui/csvDownloader/export-cs
 import { useState } from 'react';
 
 const meta = {
-    title: 'UI/Csv/ExportCsvButton',
+    title: 'UI/Buttons/ExportCsvButton',
     component: ExportCsvButton,
     tags: ['autodocs'],
     args: { onClick: () => undefined },

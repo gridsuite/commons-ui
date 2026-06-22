@@ -18,7 +18,7 @@ function Form({ children}: PropsWithChildren<{}>) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/RangeInput',
+    title: 'UI/Inputs/ReactHookForm/Number/RangeInput',
     component: RangeInput,
     tags: ['autodocs'],
     args: { name: 'limits', label: 'Limits' },

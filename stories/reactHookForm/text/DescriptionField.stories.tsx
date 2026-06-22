@@ -12,7 +12,7 @@ function Form({ children, description }: PropsWithChildren<{ description?: strin
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/DescriptionField',
+    title: 'UI/Inputs/ReactHookForm/Text/DescriptionField',
     component: DescriptionField,
     tags: ['autodocs'],
 } satisfies Meta<typeof DescriptionField>;

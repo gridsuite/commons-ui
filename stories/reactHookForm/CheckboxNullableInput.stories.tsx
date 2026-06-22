@@ -2,8 +2,7 @@ import type { PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { CustomFormProvider } from '../../src/components/ui/reactHookForm/provider/CustomFormProvider';
-import { CheckboxNullableInput } from '../../src/components/ui/reactHookForm/CheckboxNullableInput';
+import { CheckboxNullableInput, CustomFormProvider } from '../../src';
 
 function Form({ children, value }: PropsWithChildren<{ value: boolean | null }>) {
     const methods = useForm({ defaultValues: { state: value } });
@@ -11,7 +10,7 @@ function Form({ children, value }: PropsWithChildren<{ value: boolean | null }>)
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/CheckboxNullableInput',
+    title: 'UI/Inputs/ReactHookForm/Boolean/CheckboxNullableInput',
     component: CheckboxNullableInput,
     tags: ['autodocs'],
     args: { name: 'state', label: 'Nullable state' },

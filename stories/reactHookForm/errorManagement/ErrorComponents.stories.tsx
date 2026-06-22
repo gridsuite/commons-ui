@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MidFormError, FieldErrorAlert } from '../../../src';
 
 const meta = {
-    title: 'UI/ReactHookForm/ErrorComponents',
+    title: 'UI/Inputs/ReactHookForm/Text/ErrorComponents',
     component: FieldErrorAlert,
     tags: ['autodocs'],
     args: { message: 'The submitted value is invalid.' },

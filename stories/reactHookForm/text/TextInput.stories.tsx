@@ -12,11 +12,17 @@ function Form({ children, value = 'Paris' }: PropsWithChildren<{ value?: string 
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/TextInput',
+    title: 'UI/Inputs/ReactHookForm/Text/TextInput',
     component: TextInput,
     tags: ['autodocs'],
     args: { name: 'city', label: 'City' },
-    decorators: [(Story) => <Form><Story /></Form>],
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof TextInput>;
 
 export default meta;

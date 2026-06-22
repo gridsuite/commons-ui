@@ -2,8 +2,7 @@ import type { PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
-import { CancelButton } from '../../../src/components/ui/reactHookForm/utils/CancelButton';
-import { SubmitButton } from '../../../src/components/ui/reactHookForm/utils/SubmitButton';
+import { SubmitButton, CancelButton } from '../../../src';
 
 function Form({ children, dirty = false }: PropsWithChildren<{ dirty?: boolean }>) {
     const methods = useForm({ defaultValues: { name: '' } });
@@ -14,7 +13,7 @@ function Form({ children, dirty = false }: PropsWithChildren<{ dirty?: boolean }
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/FormButtons',
+    title: 'UI/Inputs/ReactHookForm/Buttons/FormButtons',
     component: SubmitButton,
     tags: ['autodocs'],
     decorators: [(Story) => <Form dirty><Story /></Form>],

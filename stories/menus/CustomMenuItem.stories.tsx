@@ -3,7 +3,7 @@ import { MenuList } from '@mui/material';
 import { CustomMenuItem } from '../../src';
 
 const meta = {
-    title: 'UI/Menus/CustomMenuItem',
+    title: 'UI/ContextMenu/CustomMenuItem',
     component: CustomMenuItem,
     tags: ['autodocs'],
     args: { children: 'Open study' },

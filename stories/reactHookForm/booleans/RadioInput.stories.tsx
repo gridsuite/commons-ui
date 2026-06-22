@@ -12,7 +12,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/RadioInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/RadioInput',
     component: RadioInput,
     tags: ['autodocs'],
     args: {

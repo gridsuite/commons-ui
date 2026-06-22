@@ -12,7 +12,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/BooleanInputs',
+    title: 'UI/Inputs/ReactHookForm/Boolean/BooleanInputs',
     component: BooleanInput,
     tags: ['autodocs'],
     argTypes: {

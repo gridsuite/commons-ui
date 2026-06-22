@@ -17,7 +17,7 @@ const data = [
 ];
 
 const meta = {
-    title: 'UI/TreeViewFinder',
+    title: 'UI/Lists/TreeViewFinder',
     component: TreeViewFinder,
     tags: ['autodocs'],
     args: { open: false, onClose: () => undefined, data, title: 'Select a study' },

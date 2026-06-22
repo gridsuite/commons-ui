@@ -12,7 +12,7 @@ function Form({ children, items }: PropsWithChildren<{ items: string[] }>) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/ChipItemsInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/ChipItemsInput',
     component: ChipItemsInput,
     tags: ['autodocs'],
     args: { name: 'tags', label: 'Tags' },

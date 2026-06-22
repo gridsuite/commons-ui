@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TextFieldWithAdornment } from '../../../src';
 
 const meta = {
-    title: 'UI/ReactHookForm/TextFieldWithAdornment',
+    title: 'UI/Inputs/ReactHookForm/Text/TextFieldWithAdornment',
     component: TextFieldWithAdornment,
     tags: ['autodocs'],
     args: { value: 225, label: 'Voltage', adornmentText: 'kV', adornmentPosition: 'end' },

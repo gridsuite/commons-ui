@@ -3,7 +3,7 @@ import { MenuList } from '@mui/material';
 import { CustomMenuItem, CustomNestedMenuItem } from '../../src';
 
 const meta = {
-    title: 'UI/Menus/CustomNestedMenuItem',
+    title: 'UI/ContextMenu/CustomNestedMenuItem',
     component: CustomNestedMenuItem,
     tags: ['autodocs'],
     decorators: [
@@ -17,7 +17,7 @@ const meta = {
         children: { control: false },
     },
     render: (args) => (
-        <CustomNestedMenuItem label={"SubMenu"} {...args}>
+        <CustomNestedMenuItem label={'SubMenu'} {...args}>
             <CustomMenuItem>CSV</CustomMenuItem>
             <CustomMenuItem>JSON</CustomMenuItem>
         </CustomNestedMenuItem>

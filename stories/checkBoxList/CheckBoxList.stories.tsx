@@ -10,7 +10,7 @@ const items: Item[] = [
 ];
 
 const meta = {
-    title: 'UI/CheckBoxList',
+    title: 'UI/Inputs/CheckBoxList',
     component: CheckBoxList<Item>,
     tags: ['autodocs'],
     args: {

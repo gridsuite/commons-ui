@@ -9,7 +9,7 @@ import { AddButton, AddButtonMode } from '../../src';
 import { fn } from 'storybook/test';
 
 const meta = {
-    title: 'UI/AddButton',
+    title: 'UI/Buttons/AddButton',
     component: AddButton,
     tags: ['autodocs'],
     args: { label: 'Button label', onClick: () => {}},

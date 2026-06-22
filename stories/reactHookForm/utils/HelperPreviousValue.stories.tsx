@@ -19,7 +19,7 @@ function Form({ children, value = 'Paris' }: PropsWithChildren<{ value?: string 
     );
 }
 const meta = {
-    title: 'UI/ReactHookForm/HelperPreviousValue',
+    title: 'UI/Inputs/ReactHookForm/Utils/HelperPreviousValue',
     component: HelperPreviousValue,
     tags: ['autodocs'],
     args: { previousValue: 220, adornmentText: 'kV' },
@@ -38,4 +38,3 @@ export const WithComponent: Story = {
         </Form>
     ),
 };
-

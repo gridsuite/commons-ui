@@ -19,7 +19,7 @@ function Form({ children }: PropsWithChildren<{ value?: string }>) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/SelectWithConfirmationInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/SelectWithConfirmationInput',
     component: SelectWithConfirmationInput,
     tags: ['autodocs'],
     args: { name: 'mode', label: 'Mode', options: ['AC', 'DC'], onValidate: () => undefined },

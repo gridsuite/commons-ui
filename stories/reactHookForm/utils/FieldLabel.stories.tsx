@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FieldLabel } from '../../../src/components/ui/reactHookForm/utils/FieldLabel';
 
 const meta = {
-    title: 'UI/ReactHookForm/FieldLabel',
+    title: 'UI/Inputs/ReactHookForm/Text/FieldLabel',
     component: FieldLabel,
     tags: ['autodocs'],
     args: { label: 'Voltage' },

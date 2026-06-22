@@ -24,11 +24,22 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/AutocompleteInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/AutocompleteInput',
     component: AutocompleteInput,
     tags: ['autodocs'],
-    args: { name: 'city', label: 'City', options, getOptionLabel: (option) => typeof option === 'string' ? option : option.label },
-    decorators: [(Story) => <Form><Story /></Form>],
+    args: {
+        name: 'city',
+        label: 'City',
+        options,
+        getOptionLabel: (option) => (typeof option === 'string' ? option : option.label),
+    },
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof AutocompleteInput>;
 
 export default meta;

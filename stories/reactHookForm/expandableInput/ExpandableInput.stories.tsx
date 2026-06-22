@@ -31,7 +31,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/ExpandableInput',
+    title: 'UI/Inputs/ReactHookForm/Table/ExpandableInput',
     component: ExpandableInput,
     tags: ['autodocs'],
     args: { name: 'rows', Field: Row, addButtonLabel: 'Add row', initialValue: { label: 'New row' } },

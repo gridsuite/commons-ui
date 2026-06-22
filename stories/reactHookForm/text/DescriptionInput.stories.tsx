@@ -21,7 +21,7 @@ function Form({ children, value }: PropsWithChildren<{ value?: string }>) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/DescriptionInput',
+    title: 'UI/Inputs/ReactHookForm/Text/DescriptionInput',
     component: DescriptionInput,
     tags: ['autodocs'],
     args: { name: 'description' },

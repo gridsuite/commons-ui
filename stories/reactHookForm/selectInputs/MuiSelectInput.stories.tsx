@@ -2,8 +2,7 @@ import type { PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { CustomFormProvider } from '../../../src/components/ui/reactHookForm/provider/CustomFormProvider';
-import { MuiSelectInput } from '../../../src/components/ui/reactHookForm/selectInputs/MuiSelectInput';
+import { MuiSelectInput, CustomFormProvider } from '../../../src';
 
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { priority: 'medium' } });
@@ -11,7 +10,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta: Meta = {
-    title: 'UI/ReactHookForm/MuiSelectInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/MuiSelectInput',
     component: MuiSelectInput,
     tags: ['autodocs'],
     args: { name: 'priority', options: ['low', 'medium', 'high'], fullWidth: true, size: 'small' },

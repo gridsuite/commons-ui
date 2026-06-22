@@ -12,7 +12,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/EnumInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/EnumInput',
     component: EnumInput,
     tags: ['autodocs'],
     args: {

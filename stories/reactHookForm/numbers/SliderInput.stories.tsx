@@ -15,7 +15,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/SliderInput',
+    title: 'UI/Inputs/ReactHookForm/Number/SliderInput',
     component: SliderInput,
     tags: ['autodocs'],
     args: { name: 'threshold', min: 0, max: 100, valueLabelDisplay: 'auto' },

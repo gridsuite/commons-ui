@@ -16,7 +16,7 @@ function Form({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/NumericalInputs',
+    title: 'UI/Inputs/ReactHookForm/Number/NumericalInputs',
     component: FloatInput,
     tags: ['autodocs'],
     decorators: [(Story) => <Form><Story /></Form>],

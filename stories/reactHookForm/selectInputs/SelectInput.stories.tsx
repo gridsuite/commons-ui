@@ -24,7 +24,7 @@ function Form({ children }: PropsWithChildren<{}>) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/SelectInput',
+    title: 'UI/Inputs/ReactHookForm/Selection/SelectInput',
     component: SelectInput,
     tags: ['autodocs'],
     args: { name: 'status', label: 'Status', options },

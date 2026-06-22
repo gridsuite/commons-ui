@@ -24,7 +24,7 @@ function CountriesForm({ children }: PropsWithChildren) {
 }
 
 const meta = {
-    title: 'UI/ReactHookForm/CountryInputs',
+    title: 'UI/Inputs/ReactHookForm/Selection/CountryInputs',
     component: CountriesInput,
     tags: ['autodocs'],
     args: { name: 'countries', label: 'Countries' },
