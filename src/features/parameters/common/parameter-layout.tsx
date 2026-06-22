@@ -101,7 +101,7 @@ export function ParameterLayout({
                                 />
                             )}
                             {resetOnClick && (
-                                <Tooltip title={<FormattedMessage id={'tooltip.reset'} />}>
+                                <Tooltip title={<FormattedMessage id="tooltip.reset" />}>
                                     <LabelledButton
                                         callback={resetOnClick}
                                         label="button.reset"

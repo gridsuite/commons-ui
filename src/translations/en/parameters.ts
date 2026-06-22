@@ -474,6 +474,6 @@ export const parametersEn = {
     NODE_NOT_BUILT: 'Node not built',
     ROOT_NODE: 'Root node',
 
-    //Tooltips
-    'tooltip.reset': 'Paramètre par défaut du profil utilisateur',
+    // Tooltips
+    'tooltip.reset': 'User default parameters',
 };
