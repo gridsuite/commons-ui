@@ -22,7 +22,7 @@ declare module '@mui/material/styles' {
         searchedText: {
             highlightColor: string;
             currentHighlightColor: string;
-	};
+        };
         selectedRow: {
             background: string;
         };

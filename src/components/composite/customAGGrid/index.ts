@@ -12,3 +12,4 @@ export * from './cell-renderers';
 export * from './custom-aggrid-context';
 export * from './use-custom-aggrid-sort';
 export * from './use-custom-aggrid-column-filter';
+export * from './custom-aggrid-types';
