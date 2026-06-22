@@ -6,7 +6,7 @@
  */
 import React, { useMemo } from 'react';
 import { Grid, IconButton, InputAdornment, TextField } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Clear as ClearIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { FilterDataTypes, mergeSx, MuiStyles } from '../../../utils';
 import { DisplayRounding } from './display-rounding';

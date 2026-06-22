@@ -139,4 +139,3 @@ export enum FilterNumberComparators {
     LESS_THAN_OR_EQUAL = 'lessThanOrEqual',
     GREATER_THAN_OR_EQUAL = 'greaterThanOrEqual',
 }
-

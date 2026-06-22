@@ -18,18 +18,10 @@ import {
     RowStyle,
     GridApi,
 } from 'ag-grid-community';
-// eslint-disable-next-line no-restricted-imports
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-// eslint-disable-next-line no-restricted-imports
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { VisibilityOff as VisibilityOffIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import { getDefaultSeverityFilter, REPORT_SEVERITY } from './report-severity';
 import { QuickSearch } from './QuickSearch';
-import {
-    ComputingAndNetworkModificationType,
-    Log,
-    SelectedReportLog,
-    SeverityLevel,
-} from './report.type';
+import { ComputingAndNetworkModificationType, Log, SelectedReportLog, SeverityLevel } from './report.type';
 import { reportStyles } from './report.styles';
 import { useReportFetcherContext, useReportFilterContext } from './report-viewer-context';
 import {

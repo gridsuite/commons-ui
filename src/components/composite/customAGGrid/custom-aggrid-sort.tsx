@@ -40,4 +40,4 @@ export function CustomAggridSort({ colId, sortParams }: CustomAggridSortProps) {
             </IconButton>
         )
     );
-};
+}

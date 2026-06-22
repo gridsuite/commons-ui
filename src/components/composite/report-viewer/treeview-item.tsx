@@ -8,10 +8,7 @@ import * as React from 'react';
 import { ReactNode, useCallback, useMemo } from 'react';
 import { Box, Stack, styled, Typography, useTheme } from '@mui/material';
 import { type RowComponentProps } from 'react-window';
-// eslint-disable-next-line no-restricted-imports
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-// eslint-disable-next-line no-restricted-imports
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { mergeSx, MuiStyles } from '../../../utils';
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

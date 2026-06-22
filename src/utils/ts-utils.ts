@@ -74,4 +74,4 @@ export const isNonEmptyStringOrArray = (value: unknown): value is string | unkno
         return true;
     }
     return Array.isArray(value) && value.length > 0;
-}
+};

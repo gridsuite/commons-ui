@@ -6,7 +6,7 @@
  */
 import React, { useRef, useState } from 'react';
 import { Badge, Grid, IconButton } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 import { MuiStyles } from '../../../utils';
 
 const styles = {
@@ -26,7 +26,7 @@ export interface DialogMenuProps {
     onClose: () => void;
 }
 
-export function CustomMenu<T,>({ Menu, menuParams }: CustomMenuProps<T>) {
+export function CustomMenu<T>({ Menu, menuParams }: CustomMenuProps<T>) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuButtonRef = useRef(null);
 
@@ -42,4 +42,4 @@ export function CustomMenu<T,>({ Menu, menuParams }: CustomMenuProps<T>) {
             <Menu open={menuOpen} onClose={() => setMenuOpen(false)} anchorEl={menuButtonRef.current} {...menuParams} />
         </>
     );
-};
+}

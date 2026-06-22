@@ -22,11 +22,7 @@ interface CustomAggridComparatorSelectorProps {
     options: string[];
 }
 
-export function CustomAggridComparatorSelector({
-    value,
-    onChange,
-    options,
-}: CustomAggridComparatorSelectorProps) {
+export function CustomAggridComparatorSelector({ value, onChange, options }: CustomAggridComparatorSelectorProps) {
     const intl = useIntl();
 
     return (

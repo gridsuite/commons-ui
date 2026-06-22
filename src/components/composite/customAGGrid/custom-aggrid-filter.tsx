@@ -105,4 +105,4 @@ export function CustomAggridFilter<F extends CustomAggridFilterParams>({
             </Popover>
         </>
     );
-};
+}

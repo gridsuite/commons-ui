@@ -6,8 +6,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ImperativePanelGroupHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
-// eslint-disable-next-line no-restricted-imports
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import LogTable from './log-table';
 import { mapReportsTree } from './report-tree.mapper';

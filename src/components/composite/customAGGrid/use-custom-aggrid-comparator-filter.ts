@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ChangeEvent, useMemo } from 'react';
-import { SelectChangeEvent } from '@mui/material/Select/SelectInput';
+import { SelectChangeEvent } from '@mui/material';
 import { useSnackMessage } from '../../../hooks';
 import { FilterDataTypes, FilterTextComparators } from '../../../utils';
 import { FilterParams } from './custom-aggrid-types';

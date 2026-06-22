@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { CustomAggridComparatorSelector } from './custom-aggrid-comparator-selector';
 import { FilterTextComparators } from '../../../utils';
 import CustomAggridTextFilter from './custom-aggrid-text-filter';
@@ -59,4 +59,4 @@ export function CustomAggridComparatorFilter({ colId, filterParams }: CustomAggr
             )}
         </Grid>
     );
-};
+}
