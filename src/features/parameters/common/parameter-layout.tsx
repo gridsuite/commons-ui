@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Stack, ButtonGroup } from '@mui/material';
+import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
 import { createContext, useContext, ReactNode, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -101,12 +101,14 @@ export function ParameterLayout({
                                 />
                             )}
                             {resetOnClick && (
-                                <LabelledButton
-                                    callback={resetOnClick}
-                                    label="button.reset"
-                                    data-testid="ResetButton"
-                                    startIcon={<RestartAlt />}
-                                />
+                                <Tooltip title={<FormattedMessage id={'tooltip.reset'} />}>
+                                    <LabelledButton
+                                        callback={resetOnClick}
+                                        label="button.reset"
+                                        data-testid="ResetButton"
+                                        startIcon={<RestartAlt />}
+                                    />
+                                </Tooltip>
                             )}
                         </ButtonGroup>
                     </Grid>
