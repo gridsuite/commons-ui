@@ -128,6 +128,8 @@ export function ExplicitNamingFilterForm({
                     id: FieldConstants.EQUIPMENT_ID,
                 }),
                 field: FieldConstants.EQUIPMENT_ID,
+                // force the data type instead of letting AG Grid infer it from the (CSV) cell values
+                cellDataType: 'text',
                 editable: true,
                 singleClickEdit: true,
                 flex: 1,
@@ -138,6 +140,8 @@ export function ExplicitNamingFilterForm({
             newColumnDefs.push({
                 headerName: intl.formatMessage({ id: DISTRIBUTION_KEY }),
                 field: DISTRIBUTION_KEY,
+                // force the data type instead of letting AG Grid infer it from the (CSV) cell values
+                cellDataType: 'number',
                 editable: true,
                 singleClickEdit: true,
                 cellEditor: NumericEditor,
