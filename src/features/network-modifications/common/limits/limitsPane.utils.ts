@@ -156,6 +156,8 @@ export const getLimitsValidationSchemaProps = (isEquipmentModification = false) 
         [FieldConstants.ENABLE_OLG_MODIFICATION]: boolean(),
     });
 
+export type LimitsSchemaType = InferType<ReturnType<typeof limitsValidationSchemaCreation>[typeof FieldConstants.LIMITS]>;
+
 const limitsValidationSchemaCreation = (id: string, isModification: boolean) => {
     return { [id]: getLimitsValidationSchemaProps(isModification) };
 };
