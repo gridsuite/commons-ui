@@ -189,7 +189,7 @@ export const handlePostSortRows =
         });
 
         agGridRows.forEach((row) => {
-            if (isContingency && !row.data.linkedElementId && !row.data[idField]) {
+            if (isContingency && row.data.linkedElementId == null && !row.data[idField]) {
                 mappedRows.get('contingencies')!.push(row);
             } else if (row.data[idField] == null) {
                 const group = mappedRows.get(row.data.linkedElementId);
