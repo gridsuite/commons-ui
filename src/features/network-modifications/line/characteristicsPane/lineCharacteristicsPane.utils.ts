@@ -34,10 +34,7 @@ const characteristicsValidationSchema = (id: string, modification: boolean) => (
     }),
 });
 
-export const getCharacteristicsValidationSchema = (
-    id: string,
-    modification: boolean = false
-) => {
+export const getCharacteristicsValidationSchema = (id: string, modification: boolean = false) => {
     return characteristicsValidationSchema(id, modification);
 };
 
@@ -52,35 +49,12 @@ const characteristicsEmptyFormData = (id: string) => ({
     },
 });
 
-export const getLineCharacteristicsEmptyFormData = (
-    id: string = FieldConstants.CHARACTERISTICS
-) => {
+export const getLineCharacteristicsEmptyFormData = (id: string = FieldConstants.CHARACTERISTICS) => {
     return characteristicsEmptyFormData(id);
 };
 
 export const getLineCharacteristicsFormData = (
-    {
-        r = null,
-        x = null,
-        g1 = null,
-        b1 = null,
-        g2 = null,
-        b2 = null,
-    }: LineCharacteristics,
-    id = FieldConstants.CHARACTERISTICS
-) => ({
-    [id]: {
-        [FieldConstants.R]: r,
-        [FieldConstants.X]: x,
-        [FieldConstants.G1]: g1,
-        [FieldConstants.B1]: b1,
-        [FieldConstants.G2]: g2,
-        [FieldConstants.B2]: b2,
-    },
-});
-
-export const getCharacteristicsWithOutConnectivityFormData = (
-    { r, x, g1, b1, g2, b2 }: LineCharacteristics,
+    { r = null, x = null, g1 = null, b1 = null, g2 = null, b2 = null }: LineCharacteristics,
     id = FieldConstants.CHARACTERISTICS
 ) => ({
     [id]: {

@@ -40,7 +40,7 @@ export function generateUniqueId(baseName: string, names: string[]): string {
     do {
         found = names.includes(baseName + suffix, 0);
         if (found) {
-            increment++;
+            increment += 1;
             suffix = `(${increment})`;
             finalId = baseName + suffix;
         }

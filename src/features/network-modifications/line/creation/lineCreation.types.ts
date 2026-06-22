@@ -8,6 +8,14 @@ import { ModificationType } from '../../../../utils';
 import { Property } from '../../common/properties/properties.type';
 import { OperationalLimitsGroupFormSchema } from '../../common/limits/operationalLimitsGroups.types';
 
+export interface LineSegmentInfos {
+    segmentTypeId: string; //used to fetch LineTypeInfo
+    segmentDistanceValue: number;
+    area: string | null;
+    temperature: string;
+    shapeFactor: number | null;
+}
+
 export interface LineCreationDto {
     type: ModificationType;
     uuid?: string | null;
@@ -35,5 +43,5 @@ export interface LineCreationDto {
     connectionPosition2?: number | null;
     connected2?: boolean | null;
     properties: Property[] | null;
-    // TODO DBR lineSegments?: LineSegmentInfos[];
+    lineSegments?: LineSegmentInfos[];
 }

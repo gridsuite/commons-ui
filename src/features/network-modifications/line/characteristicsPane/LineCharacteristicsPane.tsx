@@ -14,13 +14,6 @@ import { PropertiesForm } from '../../common/properties/PropertiesForm';
 import GridSection from '../../../../components/composite/grid/grid-section';
 import GridItem from '../../../../components/composite/grid/grid-item';
 
-const styles = {
-    h3: {
-        marginTop: 0,
-        marginBottom: 0,
-    },
-};
-
 interface LineCharacteristicsPaneProps {
     id?: string;
     lineToModify?: BranchInfos | null;

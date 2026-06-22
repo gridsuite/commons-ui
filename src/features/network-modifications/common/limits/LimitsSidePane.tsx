@@ -147,6 +147,7 @@ export function LimitsSidePane({
             if (column.dataKey === FieldConstants.TEMPORARY_LIMIT_DURATION) {
                 return temporaryLimit?.acceptableDuration ?? Number.MAX_VALUE;
             }
+            return undefined;
         },
         [findTemporaryLimit, shouldReturnPreviousValue]
     );

@@ -5,11 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { BarChart } from '@mui/x-charts';
+import { BarChart, AxisValueFormatterContext, BarSeriesType } from '@mui/x-charts';
 import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { AxisValueFormatterContext, BarSeriesType } from '@mui/x-charts/models';
 import { TemporaryLimitsData } from './limits.types';
 
 export interface LimitsGraphProps {
@@ -155,7 +154,7 @@ export function LimitsChart({ limitsGroupFormName, previousPermanentLimit }: Rea
                     previousSum = item.value;
                 }
                 if (item.value && item.value > maxValuePermanentLimit) {
-                    colorIndex++;
+                    colorIndex += 1;
                 }
 
                 const updatedSeries: BarSeriesType[] =
