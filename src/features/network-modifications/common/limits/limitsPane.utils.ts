@@ -29,7 +29,6 @@ import {
     TemporaryLimit,
     TemporaryLimitsData,
 } from './limits.types';
-import { LineModificationFormSchema } from '../../line/line-modification.types';
 import { creationPropertiesSchema } from '../properties';
 
 function hasDuplicateOperationalLimitsGroups(context: TestContext) {
@@ -339,11 +338,6 @@ export const convertToOperationalLimitsGroupFormSchema = (
     return updatedOpLG;
 };
 
-export const getOpLimitsGroupInfosFromBranchModification = (
-    formBranchModification: LineModificationFormSchema
-): OperationalLimitsGroupFormSchema[] => {
-    return formBranchModification?.limits?.operationalLimitsGroups ?? [];
-};
 export const addModificationTypeToTemporaryLimits = (
     formTemporaryLimits: TemporaryLimitFormSchema[]
 ): TemporaryLimit[] => {
