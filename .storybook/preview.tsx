@@ -4,8 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-import type { Preview } from '@storybook/react-vite';
+import React from 'react';
+import type { Preview, Decorator } from '@storybook/react';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { IntlProvider } from 'react-intl';
 
 // Import all English translations from the library
@@ -18,24 +19,54 @@ const messages = Object.values(enTranslations).reduce<Record<string, string>>((a
     return acc;
 }, {});
 
-const preview: Preview = {
-    decorators: [
-        (Story) => (
+/** Extended theme for Gridsuite-specific tokens used by BuildStatusChip and others */
+const buildNodeTheme = {
+    node: {
+        buildStatus: {
+            success: '#43a047',
+            warning: '#fb8c00',
+            error: '#e53935',
+            notBuilt: '#bdbdbd',
+        },
+    },
+};
+
+const lightTheme = createTheme({ palette: { mode: 'light' }, ...buildNodeTheme });
+const darkTheme = createTheme({ palette: { mode: 'dark' }, ...buildNodeTheme });
+
+const withMuiTheme: Decorator = (Story, context) => {
+    const theme = context.globals.theme === 'dark' ? darkTheme : lightTheme;
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
             <IntlProvider locale="en" messages={messages} defaultLocale="en">
-                <div style={{ width: 480 }}>
-                    <Story />
-                </div>
+                <Story />
             </IntlProvider>
-        ),
-    ],
-    parameters: {
-        controls: {
-            matchers: {
-                color: /(background|color)$/i,
-                date: /Date$/i,
+        </ThemeProvider>
+    );
+};
+
+const preview: Preview = {
+    globalTypes: {
+        theme: {
+            description: 'MUI color scheme',
+            toolbar: {
+                title: 'Theme',
+                icon: 'circlehollow',
+                items: [
+                    { value: 'light', icon: 'sun', title: 'Light' },
+                    { value: 'dark', icon: 'moon', title: 'Dark' },
+                ],
+                dynamicTitle: true,
             },
         },
-        layout: 'centered',
+    },
+    initialGlobals: {
+        theme: 'light',
+    },
+    decorators: [withMuiTheme],
+    parameters: {
+        layout: 'padded',
     },
 };
 

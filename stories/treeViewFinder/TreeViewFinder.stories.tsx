@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { UUID } from 'node:crypto';
-import { MultipleSelectionDialog, TreeViewFinder } from '../../src';
+import { TreeViewFinder } from '../../src';
 import { useState } from 'react';
 import { Button } from '@mui/material';
 
@@ -17,7 +17,7 @@ const data = [
 ];
 
 const meta = {
-    title: 'UI/Lists/TreeViewFinder',
+    title: 'UI/Navigation/TreeViewFinder',
     component: TreeViewFinder,
     tags: ['autodocs'],
     args: { open: false, onClose: () => undefined, data, title: 'Select a study' },

@@ -18,7 +18,7 @@ const content = (
 );
 
 const meta = {
-    title: 'UI/Lists/ExpandableGroup',
+    title: 'UI/Navigation/ExpandableGroup',
     component: ExpandableGroup,
     tags: ['autodocs'],
     args: {

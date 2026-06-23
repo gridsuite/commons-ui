@@ -35,6 +35,7 @@
         "start:open": "vite demo/ --config vite.config.ts --open",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
+        "build-demo": "vite build --config vite.demo.config.ts",
         "build": "vite build",
         "build:pack": "tsc && vite build && npm pack",
         "prepublishOnly": "npm run build",

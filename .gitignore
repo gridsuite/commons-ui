@@ -6,7 +6,6 @@ node_modules/
 
 # production
 /dist/
-/storybook-static/
 *.tgz
 
 # JetBrains IDE
@@ -29,3 +28,8 @@ node_modules/
 
 # GitHub Action: sonarqube-scan-action
 /.scannerwork/
+
+# Storybook
+/storybook-static/
+demo-dist/
+gh-pages/
