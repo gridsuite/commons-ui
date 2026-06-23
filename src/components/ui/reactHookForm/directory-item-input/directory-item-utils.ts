@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ElementType } from '@gridsuite/commons-ui';
 import * as yup from 'yup';
 import { DIRECTORY_ITEM_FULL_PATH, DIRECTORY_ITEM_ID } from '../constants';
+import { ElementType } from '../../../../utils';
 
 export function getAbsenceLabelKeyFromType(elementType: string) {
     switch (elementType) {

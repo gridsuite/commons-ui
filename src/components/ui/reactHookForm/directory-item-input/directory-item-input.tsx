@@ -8,12 +8,13 @@
 import { Box, Button, FormHelperText, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useMemo, useState } from 'react';
-import { DirectoryItemSelector, DirectoryItemSelectorProps, TreeViewFinderNodeProps } from '@gridsuite/commons-ui';
 import { useController } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { FolderOutlined } from '@mui/icons-material';
 import { DIRECTORY_ITEM_FULL_PATH, DIRECTORY_ITEM_ID } from '../constants';
 import { DirectoryItemSchema, getAbsenceLabelKeyFromType } from './directory-item-utils';
+import { DirectoryItemSelector, DirectoryItemSelectorProps } from '../../directoryItemSelector';
+import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 
 export interface DirectoryItemSelectorInputProps extends Omit<DirectoryItemSelectorProps, 'onClose' | 'open'> {
     name: string;
