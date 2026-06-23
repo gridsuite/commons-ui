@@ -19,3 +19,4 @@ export * from './csvDownloader';
 export * from './csvPicker';
 export * from './treeViewFinder';
 export * from './directoryItemSelector';
+export * from './tablepagination';

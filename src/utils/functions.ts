@@ -6,6 +6,7 @@
  */
 
 import { FieldConstants } from './constants/fieldConstants';
+import { RunningStatus } from './running-status';
 
 /**
  * Returns true when the given form rows contain at least one cell with a
@@ -65,3 +66,7 @@ export function isEmpty(value: any): boolean {
 }
 
 export const isObjectEmpty = (object: object) => object && Object.keys(object).length === 0;
+
+export function getRows(rows: any[] | undefined, status: string): any[] {
+    return status === RunningStatus.SUCCEED && rows ? rows : [];
+}

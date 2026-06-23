@@ -108,7 +108,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
         const [newRowAdded, setNewRowAdded] = useState(false);
         const [isSortApplied, setIsSortApplied] = useState(false);
 
-        const { control, getValues, watch } = useFormContext();
+        const { control, getValues, watch, clearErrors } = useFormContext();
         const useFieldArrayOutput = useFieldArray({
             control,
             name,
@@ -203,8 +203,12 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                     return;
                 }
                 update(rowIndex, event.data);
+                // Editing a cell clears any field-level error set on the table (e.g. a CSV import
+                // validation error), so the user can recover and submit after correcting a value.
+                // TODO remove when yup will be set up for tabular form
+                clearErrors(name);
             },
-            [getIndex, update]
+            [getIndex, update, clearErrors, name]
         );
 
         const onSortChanged = useCallback((event: SortChangedEvent) => {

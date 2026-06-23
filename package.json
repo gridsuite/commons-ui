@@ -1,6 +1,6 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.233.0",
+    "version": "0.236.0",
     "description": "common react components for gridsuite applications",
     "author": "gridsuite team",
     "homepage": "https://github.com/gridsuite",
@@ -31,6 +31,7 @@
     ],
     "scripts": {
         "start": "vite demo/ --config vite.config.ts",
+        "start:checks": "VITE_CHECKER_ENABLED=true vite demo/ --config vite.config.ts",
         "start:open": "vite demo/ --config vite.config.ts --open",
         "build": "vite build",
         "build:pack": "tsc && vite build && npm pack",
