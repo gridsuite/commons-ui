@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid2, Typography } from '@mui/material';
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid2 as Grid, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
@@ -60,13 +60,13 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
             </DialogTitle>
 
             <DialogContent>
-                <Grid2 container spacing={2} sx={styles.DialogContent}>
-                    <Grid2 size={{ xs: 6 }}>
+                <Grid container spacing={2} sx={styles.DialogContent}>
+                    <Grid size={6}>
                         <Typography fontWeight="bold">
                             <FormattedMessage id="user-information-dialog/role" />
                         </Typography>
-                    </Grid2>
-                    <Grid2 size={{ xs: 6 }}>
+                    </Grid>
+                    <Grid size={6}>
                         {rolesList.length > 0 ? (
                             <Typography>
                                 {rolesList.map((role, index) => (
@@ -84,33 +84,33 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                                 <FormattedMessage id="user-information-dialog/no-roles" />
                             </Typography>
                         )}
-                    </Grid2>
+                    </Grid>
 
-                    <Grid2 size={{ xs: 6 }}>
+                    <Grid size={6}>
                         <Typography fontWeight="bold">
                             <FormattedMessage id="user-information-dialog/profile" />
                         </Typography>
-                    </Grid2>
-                    <Grid2 size={{ xs: 6 }}>
+                    </Grid>
+                    <Grid size={6}>
                         {userDetails?.profileName === null ? (
                             <FormattedMessage id="user-information-dialog/no-profile" />
                         ) : (
                             <Typography>{userDetails?.profileName}</Typography>
                         )}
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                </Grid>
 
                 <Box mt={3} sx={styles.quotasBox}>
                     <Typography fontWeight="bold" sx={styles.quotasTopography}>
                         <FormattedMessage id="user-information-dialog/quotas" />
                     </Typography>
-                    <Grid2 container spacing={2}>
-                        <Grid2 size={{ xs: 6 }}>
+                    <Grid container spacing={2}>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-cases-or-studies" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>
                                 {userDetails?.maxAllowedCases}
                                 <Box component="span" sx={styles.usedTopography}>
@@ -118,109 +118,109 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                                     {` ${userDetails?.numberCasesUsed}`} )
                                 </Box>
                             </Typography>
-                        </Grid2>
-                    </Grid2>
+                        </Grid>
+                    </Grid>
                     <Typography fontWeight="bold" sx={styles.quotasTopography}>
                         <FormattedMessage id="user-information-dialog/quotas-per-study" />
                     </Typography>
-                    <Grid2 container spacing={2}>
-                        <Grid2 size={{ xs: 6 }}>
+                    <Grid container spacing={2}>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-builds-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedBuilds}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-loadflow-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedLoadflow}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-security-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedSecurity}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-sensitivity-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedSensitivity}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-shortCircuit-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedShortCircuit}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-voltageInit-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedVoltageInit}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-pccMin-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedPccMin}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-stateEstimation-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedStateEstimation}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedBalanceAdjustement}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedDynamicSimulation}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicSecurity-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedDynamicSecurity}</Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicMargin-per-study" />
                             </Typography>
-                        </Grid2>
-                        <Grid2 size={{ xs: 6 }}>
+                        </Grid>
+                        <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedDynamicMargin}</Typography>
-                        </Grid2>
-                    </Grid2>
+                        </Grid>
+                    </Grid>
                 </Box>
             </DialogContent>
 
