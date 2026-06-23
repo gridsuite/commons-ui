@@ -20,7 +20,6 @@ export function MappingParameters({ path }: Readonly<MappingParametersProps>) {
                 name={`${path}.${MAPPING}`}
                 elementType={ElementType.DYNAMIC_MAPPING}
                 label="DynamicSimulationMapping"
-                hideErrorMessage
             />
         </Grid>
     );

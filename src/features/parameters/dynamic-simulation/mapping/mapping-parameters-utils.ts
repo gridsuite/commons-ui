@@ -7,17 +7,23 @@
 import * as yup from 'yup';
 import { MAPPING } from './mapping-parameters-constants';
 import { ID, NAME } from '../../common/parameter-table-field';
+import { YUP_REQUIRED } from '../../../../utils';
 
 export const mappingFormSchema = yup.object().shape({
     [MAPPING]: yup
-        .object()
-        .shape({
-            [ID]: yup.string().required(),
-            [NAME]: yup.string().required(),
-        })
-        .required(),
+        .array()
+        .of(
+            yup
+                .object()
+                .shape({
+                    [ID]: yup.string().required(),
+                    [NAME]: yup.string().required(),
+                })
+                .required()
+        )
+        .min(1, YUP_REQUIRED),
 });
 
 export const mappingEmptyFormData = {
-    [MAPPING]: null,
+    [MAPPING]: [],
 };
