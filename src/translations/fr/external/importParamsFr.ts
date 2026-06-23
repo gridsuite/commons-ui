@@ -114,6 +114,7 @@ export const importParamsFr = {
     'iidm.import.xml.extensions.desc': 'Importer avec ces extensions',
     'iidm.import.xml.included.extensions.activePowerControl': 'Compensation',
     'iidm.import.xml.included.extensions.baseVoltageMapping': 'Tension nominale',
+    'iidm.import.xml.included.extensions.batteryShortCircuit': 'Données de court-circuit des batteries',
     'iidm.import.xml.included.extensions.branchObservability': 'Observabilité des quadripôles',
     'iidm.import.xml.included.extensions.busbarSectionPosition': 'Position des SJBs',
     'iidm.import.xml.included.extensions.branchStatus':
