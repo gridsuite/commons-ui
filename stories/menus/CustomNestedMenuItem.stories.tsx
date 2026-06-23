@@ -36,11 +36,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const SeveralLevels: Story = {
-    decorators: (Story) => (
-        <CustomNestedMenuItem label="SubMenu">
-            <Story />
-            <Story />
-        </CustomNestedMenuItem>
-    ),
+    decorators: [
+        (Story) => (
+            <CustomNestedMenuItem label="SubMenu">
+                <Story />
+                <Story />
+            </CustomNestedMenuItem>
+        ),
+    ],
 };
 export const Disabled: Story = { args: { disabled: true } };

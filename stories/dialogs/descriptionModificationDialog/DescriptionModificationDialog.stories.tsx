@@ -11,8 +11,7 @@ import { Button } from '@mui/material';
 import { SnackbarProvider, DescriptionModificationDialog, DescriptionModificationDialogProps } from '../../../src';
 
 function DescriptionModificationDialogsStory(args: DescriptionModificationDialogProps) {
-    const { open: defaultOpenValue } = args;
-    const [isOpen, setIsOpen] = useState(defaultOpenValue);
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <>
             <Button onClick={() => setIsOpen(true)}>Open dialog</Button>

@@ -24,8 +24,7 @@ const data = [
 ];
 
 function TreeViewFinderStory(args: TreeViewFinderProps) {
-    const { open: defaultOpenValue } = args;
-    const [isOpen, setIsOpen] = useState(defaultOpenValue);
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <>
             <Button onClick={() => setIsOpen(true)}>Open dialog</Button>

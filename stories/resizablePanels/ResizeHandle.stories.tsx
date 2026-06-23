@@ -53,5 +53,5 @@ https://react-resizable-panels.vercel.app/
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Vertical: Story = {};
-export const Horizontal: Story = { args: { rotated: true } };
+export const Horizontal: Story = {};
+export const Vertical: Story = { args: { rotated: true } };

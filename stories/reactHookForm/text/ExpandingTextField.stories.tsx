@@ -20,7 +20,7 @@ function Form({
         <CustomFormProvider
             {...methods}
             validationSchema={yup.object().shape({
-                description: yup.string().required(text),
+                description: yup.string().required(),
             })}
         >
             {children}

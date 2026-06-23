@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack } from '@mui/material';
 import { useForm, useFormContext } from 'react-hook-form';
@@ -55,7 +55,9 @@ export const Row: Story = {
 function TableTextInputWithErrorStory() {
     const methods = useFormContext();
     const { setError } = methods;
-    setError('label', { message: 'Input error' });
+    useEffect(() => {
+        setError('label', { message: 'Input error' });
+    }, [setError]);
     return (
         <Stack direction="row" spacing={1}>
             <TableTextInput name="label" />

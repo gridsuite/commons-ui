@@ -5,18 +5,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
     CheckboxAutocomplete,
     CheckboxAutocompleteProps,
-} from '../../../src/components/ui/inputs/checkbox-autocomplete/checkbox-autocomplete';
+} from '../../../src/components/ui/inputs/checkbox-autocomplete';
 
 const options = ['France', 'Germany', 'Italy', 'Spain', 'Sweden'];
 
 function CheckboxAutocompleteStory(args: CheckboxAutocompleteProps<string>) {
     const { value: defaultValue } = args;
     const [value, setValue] = useState(defaultValue);
+    useEffect(() => {
+        setValue(defaultValue);
+    }, [defaultValue]);
     return <CheckboxAutocomplete {...args} value={value} onChange={setValue} />;
 }
 

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SelectClearable, SelectClearableProps } from '../../src/components/ui/inputs/SelectClearable';
 
@@ -18,6 +18,9 @@ const options = [
 function SelectClearableStory(args: SelectClearableProps) {
     const { value: defaultValue } = args;
     const [value, setValue] = useState(defaultValue);
+    useEffect(() => {
+        setValue(defaultValue);
+    }, [defaultValue]);
     return <SelectClearable {...args} value={value} onChange={setValue} />;
 }
 

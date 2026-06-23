@@ -5,17 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SubmitButton, CancelButton } from '../../../src';
 
-function Form({ children, dirty = false }: PropsWithChildren<{ dirty?: boolean }>) {
+function Form({ children, shouldSetIsDirty = false }: PropsWithChildren<{ shouldSetIsDirty?: boolean }>) {
     const methods = useForm({ defaultValues: { name: '' } });
-    if (dirty && !methods.formState.isDirty) {
-        methods.setValue('name', 'Changed', { shouldDirty: true });
-    }
+    useEffect(() => {
+        if (shouldSetIsDirty && !methods.formState.isDirty) {
+            methods.setValue('name', 'Changed', { shouldDirty: true });
+        }
+    }, [methods, shouldSetIsDirty]);
     return <FormProvider {...methods}>{children}</FormProvider>;
 }
 
@@ -25,7 +27,7 @@ const meta = {
     tags: ['autodocs'],
     decorators: [
         (Story) => (
-            <Form dirty>
+            <Form shouldSetIsDirty>
                 <Story />
             </Form>
         ),

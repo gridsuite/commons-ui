@@ -11,8 +11,7 @@ import { Button } from '@mui/material';
 import { PopupConfirmationDialog, PopupConfirmationDialogProps } from '../../../src';
 
 function PopupConfirmationDialogStory(args: PopupConfirmationDialogProps) {
-    const { openConfirmationPopup } = args;
-    const [isOpen, setIsOpen] = useState(openConfirmationPopup);
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <>
             <Button onClick={() => setIsOpen(true)}>Open dialog</Button>

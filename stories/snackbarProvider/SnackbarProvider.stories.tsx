@@ -8,11 +8,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { ComponentProps } from 'react';
 import { SnackbarProvider } from '../../src';
 
 type SnackbarVariant = 'success' | 'error' | 'warning' | 'info';
 
-type SnackbarButtonArgs = React.ComponentProps<typeof SnackbarProvider> & {
+type SnackbarButtonArgs = ComponentProps<typeof SnackbarProvider> & {
     snackBarVariant: SnackbarVariant;
 };
 
