@@ -80,6 +80,7 @@ export const businessErrorsFr = {
     'sensitivityAnalysis.filtersOrContingenciesListsNotFound':
         "La configuration contient une ou des listes d'aléas ou filtres qui ont été supprimés.",
     'pccMin.missingFilter': 'La configuration contient un filtre qui a été supprimé.',
+    'pccMin.noProvidedFilter': 'La configuration ne contient pas de filtre.',
     'pccMin.voltageLevelsLimitExceeded':
         'Le résultat de l’évaluation du filtre donne {voltageLevelSize} postes, ce qui dépasse la limite de {voltageLevelsLimit}.',
     'diagram.invalidEquipmentType':

@@ -79,6 +79,7 @@ export const businessErrorsEn = {
     'sensitivityAnalysis.filtersOrContingenciesListsNotFound':
         'The configuration contains one or more contingencies lists or filters that have been deleted.',
     'pccMin.missingFilter': 'The configuration contains one filter that has been deleted.',
+    'pccMin.noProvidedFilter': 'The configuration contains no filter.',
     'pccMin.voltageLevelsLimitExceeded':
         'The result of filter evaluation gives {voltageLevelSize} voltage levels, which exceeds the limit {voltageLevelsLimit}.',
     'diagram.invalidEquipmentType':
