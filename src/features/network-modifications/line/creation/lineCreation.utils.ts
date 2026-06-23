@@ -42,6 +42,7 @@ import {
     getBranchActiveReactivePowerEmptyFormDataProperties,
     getBranchActiveReactivePowerValidationSchemaObject,
 } from '../../common/measurements';
+import { convertToLineSegmentInfos, convertToLineSegmentsFormData, LineSegmentsSchema } from '../lineTypesCatalog';
 
 export const lineCreationFormSchema = object()
     .shape({
@@ -51,6 +52,7 @@ export const lineCreationFormSchema = object()
         [FieldConstants.CHARACTERISTICS]: getLineCharacteristicsValidationSchemaProps(false),
         [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
         [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
+        [FieldConstants.LINE_SEGMENTS]: LineSegmentsSchema,
     })
     .concat(creationPropertiesSchema)
     .required();
@@ -64,6 +66,7 @@ export const lineCreationEmptyFormData: DeepNullable<LineCreationFormData> = {
     [FieldConstants.CHARACTERISTICS]: getLineCharacteristicsEmptyFormData(),
     [FieldConstants.LIMITS]: getLimitsEmptyFormDataProps(false),
     [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(),
+    [FieldConstants.LINE_SEGMENTS]: [],
     AdditionalProperties: [],
 };
 
@@ -108,6 +111,8 @@ export const lineCreationDtoToForm = (lineDto: LineCreationDto): LineCreationFor
             lineDto?.selectedOperationalLimitsGroupId2 ?? null
         ),
         stateEstimation: getBranchActiveReactivePowerEditDataProperties(lineDto),
+        // catalog
+        lineSegments: convertToLineSegmentsFormData(lineDto.lineSegments),
     };
 };
 
@@ -141,6 +146,7 @@ export const lineCreationFormToDto = (lineForm: LineCreationFormData): LineCreat
         operationalLimitsGroups: sanitizeLimitsGroups(lineForm.limits.operationalLimitsGroups ?? []),
         selectedOperationalLimitsGroupId1: lineForm.limits.selectedOperationalLimitsGroupId1 ?? null,
         selectedOperationalLimitsGroupId2: lineForm.limits.selectedOperationalLimitsGroupId2 ?? null,
-        // TODO DBR lineSegments
+        // catalog
+        lineSegments: convertToLineSegmentInfos(lineForm.lineSegments),
     };
 };

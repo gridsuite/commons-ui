@@ -9,7 +9,7 @@ import { Property } from '../../common/properties/properties.type';
 import { OperationalLimitsGroupFormSchema } from '../../common/limits/operationalLimitsGroups.types';
 
 export interface LineSegmentInfos {
-    segmentTypeId: string; //used to fetch LineTypeInfo
+    segmentTypeId: string; // used to fetch LineTypeInfo
     segmentDistanceValue: number;
     area: string | null;
     temperature: string;
