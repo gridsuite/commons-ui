@@ -44,7 +44,6 @@ export function SensitivityAnalysisParametersForm({
                     ...actions,
                     validateOnClick: handleSubmit(sensitivityAnalysisMethods.onSaveInline),
                 }}
-                contentSx={{ paddingLeft: 1 }}
             >
                 <Grid
                     container

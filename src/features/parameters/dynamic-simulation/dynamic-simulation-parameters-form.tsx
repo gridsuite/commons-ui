@@ -101,7 +101,6 @@ export function DynamicSimulationForm({
                 ...actions,
                 validateOnClick: handleSubmit(onSubmit, onError),
             }}
-            contentSx={{ paddingLeft: 1 }}
         >
             <Grid
                 container

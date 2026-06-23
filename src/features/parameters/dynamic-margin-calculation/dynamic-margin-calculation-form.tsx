@@ -75,7 +75,6 @@ export function DynamicMarginCalculationForm({
                 ...actions,
                 validateOnClick: handleSubmit(onSubmit, onError),
             }}
-            contentSx={{ paddingLeft: 1 }}
         >
             <Grid
                 container

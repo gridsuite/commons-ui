@@ -74,7 +74,6 @@ export function DynamicSecurityAnalysisParametersForm({
                 ...actions,
                 validateOnClick: handleSubmit(onSubmit, onError),
             }}
-            contentSx={{ paddingLeft: 1 }}
         >
             <Grid
                 container

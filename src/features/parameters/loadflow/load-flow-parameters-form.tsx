@@ -87,7 +87,6 @@ export function LoadFlowParametersForm({
                 }
                 isLoading={!paramsLoaded}
                 actions={actions}
-                contentSx={{ paddingLeft: 1 }}
             >
                 <Grid container sx={styles.content}>
                     <LoadFlowParametersContent

@@ -55,7 +55,6 @@ export function SecurityAnalysisParametersForm({
                 header={renderTitleFields?.()}
                 isLoading={!securityAnalysisMethods.paramsFormInitialized}
                 actions={actions}
-                contentSx={{ paddingLeft: 1 }}
             >
                 <Grid
                     container

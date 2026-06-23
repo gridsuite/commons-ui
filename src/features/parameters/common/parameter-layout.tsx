@@ -64,6 +64,7 @@ const styles = {
         overflowY: 'auto',
         overflowX: 'hidden',
         minHeight: 0, // Critical for flex-grow with overflow
+        paddingLeft: 1,
     },
     footer: {
         flexShrink: 0,
@@ -71,14 +72,7 @@ const styles = {
     },
 } as const;
 
-export function ParameterLayout({
-    children,
-    title,
-    header,
-    isLoading,
-    contentSx,
-    actions,
-}: Readonly<ParameterLayoutProps>) {
+export function ParameterLayout({ children, title, header, isLoading, actions }: Readonly<ParameterLayoutProps>) {
     const { preFillOnClick, resetOnClick, saveOnClick, validateOnClick } = actions ?? {};
 
     const { isXsScreen } = useParameterLayoutContext();
@@ -115,13 +109,11 @@ export function ParameterLayout({
                 </Grid>
             </Box>
             {header && <Box sx={styles.header}>{header}</Box>}
-            <Box sx={[styles.content, contentSx]}>{isLoading ? <LinearProgress /> : children}</Box>
+            <Box sx={[styles.content]}>{isLoading ? <LinearProgress /> : children}</Box>
             <Box sx={styles.footer}>
                 {saveOnClick && <LabelledButton label="save" data-testid="SaveButton" callback={saveOnClick} />}
                 {validateOnClick && (
-                    <SubmitButton variant="contained" data-testid="ValidateButton" onClick={validateOnClick}>
-                        <FormattedMessage id="validate" />
-                    </SubmitButton>
+                    <SubmitButton variant="contained" data-testid="ValidateButton" onClick={validateOnClick} />
                 )}
                 {actions?.extra}
             </Box>
