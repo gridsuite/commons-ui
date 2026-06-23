@@ -8,36 +8,40 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
-import type { CellEditingStoppedEvent, ColumnState, SortChangedEvent } from 'ag-grid-community';
-import { BottomRightButtons } from './BottomRightButtons';
-import { FieldConstants } from '../../../utils';
+import type {
+    CellEditingStoppedEvent,
+    ColumnState,
+    RowDataUpdatedEvent,
+    RowDragCancelEvent,
+    RowDragEndEvent,
+    RowDragLeaveEvent,
+    RowDragMoveEvent,
+    SortChangedEvent,
+} from 'ag-grid-community';
+import { BottomTableButtons } from './BottomTableButtons';
+import { type CsvProps } from './agGridTable-utils';
+import { FieldConstants, hasNonEmptyRows } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
+
+const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEndEvent) => {
+    if (!overNode) {
+        return null;
+    }
+
+    const overNodeTop = overNode.rowTop ?? 0;
+    const overNodeHeight = overNode.rowHeight ?? 0;
+    const overNodeMiddle = overNodeTop + overNodeHeight / 2;
+    return y < overNodeMiddle ? 'above' : 'below';
+};
 
 const style = (customProps: any) => ({
     grid: (theme: any) => ({
-        width: 'auto',
         height: '100%',
-        position: 'relative',
-
-        // - AG Grid colors override -
-        // It shouldn't be exactly like this, but I couldn't make it works otherwise
-        // https://www.ag-grid.com/react-data-grid/global-style-customisation/
-        '--ag-alpine-active-color': `${theme.palette.primary.main} !important`,
-        '--ag-checkbox-indeterminate-color': `${theme.palette.primary.main} !important`,
-        '--ag-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-header-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-odd-row-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-modal-overlay-background-color': `${theme.agGridBackground.color} !important`,
-        '--ag-selected-row-background-color': 'transparent !important',
-        '--ag-range-selection-border-color': 'transparent !important',
 
         // overrides the default computed max height for ag grid default selector editor to make it more usable
         // can be removed if a custom selector editor is implemented
         '& .ag-select-list': {
             maxHeight: '300px !important',
-        },
-        '& .ag-root-wrapper-body': {
-            maxHeight: '500px',
         },
         '& .ag-cell': {
             boxShadow: 'none',
@@ -52,14 +56,9 @@ const style = (customProps: any) => ({
             border: 'none',
             boxShadow: 'none',
         },
-        '& .numeric-input': {
-            fontSize: 'calc(var(--ag-font-size) + 1px)',
-            paddingLeft: 'calc(var(--ag-cell-horizontal-padding) - 1px)',
-            width: '100%',
-            height: '100%',
-            border: 'inherit',
-            outline: 'inherit',
-            backgroundColor: theme.agGridBackground.color,
+        // Color the checkbox (checked & indeterminate) grey instead of AG Grid's default accent (blue).
+        '& .ag-checkbox-input-wrapper.ag-checked::after, & .ag-checkbox-input-wrapper.ag-indeterminate::after': {
+            color: `${theme.palette.text.secondary}`,
         },
         '& .Mui-focused .MuiOutlinedInput-root': {
             // borders moves row height
@@ -93,8 +92,8 @@ export type CustomAgGridTableProps = Required<Pick<CustomAGGridProps, 'columnDef
     > & {
         name: string;
         makeDefaultRowData: any;
-        csvProps: unknown;
-        cssProps: unknown;
+        csvProps?: CsvProps;
+        cssProps?: unknown;
     };
 
 export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, string>, Readonly<CustomAgGridTableProps>>(
@@ -105,11 +104,11 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
         // FIXME: right type => Theme -->  not defined there ( gridStudy and gridExplore definition not the same )
         const theme: any = useTheme();
         const [gridApi, setGridApi] = useState<any>(null);
-        const [selectedRows, setSelectedRows] = useState([]);
+        const [selectedRows, setSelectedRows] = useState<FieldValues[]>([]);
         const [newRowAdded, setNewRowAdded] = useState(false);
         const [isSortApplied, setIsSortApplied] = useState(false);
 
-        const { control, getValues, watch } = useFormContext();
+        const { control, getValues, watch, clearErrors } = useFormContext();
         const useFieldArrayOutput = useFieldArray({
             control,
             name,
@@ -119,6 +118,8 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
         useImperativeHandle(ref, () => useFieldArrayOutput, [useFieldArrayOutput]);
 
         const rowData = watch(name);
+
+        const hasTableData = hasNonEmptyRows(rowData);
 
         const isFirstSelected = Boolean(
             rowData?.length && gridApi?.api.getRowNode(rowData[0][FieldConstants.AG_GRID_ROW_UUID])?.isSelected()
@@ -187,14 +188,12 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
             setGridApi(params);
         };
 
-        const onRowDataUpdated = () => {
+        const onRowDataUpdated = (event: RowDataUpdatedEvent) => {
             setNewRowAdded(false);
-            if (gridApi?.api) {
-                // update due to new appended row, let's scroll
-                const lastIndex = rowData.length - 1;
-                gridApi.api.paginationGoToLastPage();
-                gridApi.api.ensureIndexVisible(lastIndex, 'bottom');
-            }
+            // update due to new appended row, let's scroll
+            const lastIndex = rowData.length - 1;
+            event.api.paginationGoToLastPage();
+            event.api.ensureIndexVisible(lastIndex, 'bottom');
         };
 
         const onCellEditingStopped = useCallback(
@@ -204,13 +203,66 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                     return;
                 }
                 update(rowIndex, event.data);
+                // Editing a cell clears any field-level error set on the table (e.g. a CSV import
+                // validation error), so the user can recover and submit after correcting a value.
+                // TODO remove when yup will be set up for tabular form
+                clearErrors(name);
             },
-            [getIndex, update]
+            [getIndex, update, clearErrors, name]
         );
 
         const onSortChanged = useCallback((event: SortChangedEvent) => {
             const isAnycolumnhasSort = event.api.getColumnState().some((col: ColumnState) => col.sort);
             setIsSortApplied(isAnycolumnhasSort);
+        }, []);
+
+        // While dragging the row, the setRowDropPositionIndicator API method is called
+        // to display the projected row drop location using a horizontal line indicator.
+        // from https://www.ag-grid.com/react-data-grid/row-dragging-unmanaged/#example-events
+        const onRowDragMove = useCallback((event: RowDragMoveEvent) => {
+            const { api, overNode } = event;
+            const dropIndicatorPosition = getDropIndicatorPosition(event);
+
+            if (!overNode || !dropIndicatorPosition) {
+                api.setRowDropPositionIndicator(null);
+                return;
+            }
+
+            api.setRowDropPositionIndicator({
+                row: overNode,
+                dropIndicatorPosition,
+            });
+        }, []);
+
+        const onRowDragEnd = useCallback(
+            (event: RowDragEndEvent) => {
+                const { api, node, overNode } = event;
+                api.setRowDropPositionIndicator(null);
+
+                const dropIndicatorPosition = getDropIndicatorPosition(event);
+                if (!overNode || !dropIndicatorPosition) {
+                    return;
+                }
+
+                const rowIndex = getIndex(node.data);
+                const overIndex = getIndex(overNode.data);
+
+                if (rowIndex === -1 || overIndex === -1 || rowIndex === overIndex) {
+                    return;
+                }
+
+                const insertionIndex = dropIndicatorPosition === 'above' ? overIndex : overIndex + 1;
+                const targetIndex = rowIndex < insertionIndex ? insertionIndex - 1 : insertionIndex;
+
+                if (rowIndex !== targetIndex) {
+                    move(rowIndex, targetIndex);
+                }
+            },
+            [getIndex, move]
+        );
+
+        const clearRowDropPositionIndicator = useCallback(({ api }: RowDragLeaveEvent | RowDragCancelEvent) => {
+            api.setRowDropPositionIndicator(null);
         }, []);
 
         return (
@@ -220,12 +272,15 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         rowData={rowData}
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
-                        rowSelection={rowSelection ?? 'multiple'}
+                        rowSelection={rowSelection ?? { mode: 'multiRow' }}
                         selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
-                        onRowDragMove={(e) => move(getIndex(e.node.data), e.overIndex)}
+                        onRowDragMove={onRowDragMove}
+                        onRowDragEnd={onRowDragEnd}
+                        onRowDragLeave={clearRowDropPositionIndicator}
+                        onRowDragCancel={clearRowDropPositionIndicator}
                         detailRowAutoHeight
-                        onSelectionChanged={() => {
-                            setSelectedRows(gridApi.api.getSelectedRows());
+                        onSelectionChanged={(event) => {
+                            setSelectedRows(event.api.getSelectedRows());
                         }}
                         onRowDataUpdated={newRowAdded ? onRowDataUpdated : undefined}
                         onCellEditingStopped={onCellEditingStopped}
@@ -236,7 +291,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         {...props}
                     />
                 </Box>
-                <BottomRightButtons
+                <BottomTableButtons
                     name={name}
                     handleAddRow={handleAddRow}
                     handleDeleteRows={handleDeleteRows}
@@ -245,8 +300,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                     disableUp={noRowSelected || isFirstSelected || isSortApplied}
                     disableDown={noRowSelected || isLastSelected || isSortApplied}
                     disableDelete={noRowSelected}
-                    csvProps={csvProps}
-                    useFieldArrayOutput={useFieldArrayOutput}
+                    csvProps={csvProps && { ...csvProps, hasTableData }}
                 />
             </>
         );

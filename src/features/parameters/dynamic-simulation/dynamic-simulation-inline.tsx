@@ -110,7 +110,7 @@ export function DynamicSimulationInline({
     );
 
     useEffect(() => {
-        setHaveDirtyFields(!!Object.keys(formState.dirtyFields).length);
+        setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
     const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {

@@ -5,9 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const MAX_ROWS_NUMBER = 100;
+import type { ReactNode } from 'react';
 
-export const NAME = 'name';
-export const ID = 'id';
-export const ACTIVATED = 'activated';
-export const DESCRIPTION = 'description';
+export interface CsvProps {
+    fileName: string;
+    language?: string;
+    getTemplateData?: () => unknown[];
+    getTableData?: () => unknown[];
+    extraButtons?: ReactNode;
+    hasTableData?: boolean;
+}

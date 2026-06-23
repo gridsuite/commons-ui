@@ -6,12 +6,13 @@
  */
 
 export const csvEn = {
-    ImportCSV: 'Import CSV',
-    noDataInCsvFile: 'No data found in this file',
+    noDataInCsvFile: "No data found in file ''{filename}''",
     wrongCsvHeadersError:
-        'This CSV file has the wrong headers. Use Generate CSV template button to get supported CSV format',
+        "The file ''{filename}'' has the wrong headers. Use Generate CSV template button to get supported CSV format",
     keepCSVDataMessage: 'Do you want to replace or add the new data to the current list ?',
     GenerateCSV: 'Generate CSV template',
+    DownloadCSV: 'Download CSV',
     UploadCSV: 'Upload CSV',
     uploadMessage: ' No file selected',
+    tooManyLinesInCsvFile: "The number of lines in file ''{filename}'' must not exceed {value}",
 };

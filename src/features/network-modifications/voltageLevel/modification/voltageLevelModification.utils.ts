@@ -15,6 +15,7 @@ import { convertInputValue, convertOutputValue } from '../../../../utils/convers
 import { FieldConstants, ModificationType, sanitizeString, toModificationOperation } from '../../../../utils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { VoltageLevelModificationDto } from './voltageLevelModification.types';
+import { BbsMeasurementItem } from '../../common';
 
 export const voltageLevelModificationFormSchema = object()
     .shape({
@@ -109,12 +110,6 @@ export const voltageLevelModificationWithMeasurementsFormSchema = voltageLevelMo
         busbarSectionVMeasurements: array().of(bbsMeasurementItemSchema).nullable().defined(),
     })
 );
-
-export type BbsMeasurementItem = {
-    busbarSectionId: string;
-    value: number | null;
-    validity: boolean | null;
-};
 
 export type VoltageLevelModificationWithMeasurementsFormData = VoltageLevelModificationFormData & {
     busbarSectionVMeasurements: BbsMeasurementItem[] | null;
