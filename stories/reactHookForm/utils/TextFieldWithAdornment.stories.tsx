@@ -12,5 +12,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const EndAdornment: Story = {};
-export const StartAdornment: Story = { args: { value: 1200, label: 'Cost', adornmentText: '€', adornmentPosition: 'start' } };
+export const StartAdornment: Story = {
+    args: { value: 1200, label: 'Cost', adornmentText: '€', adornmentPosition: 'start' },
+};
 export const Clearable: Story = { args: { handleClearValue: () => undefined } };

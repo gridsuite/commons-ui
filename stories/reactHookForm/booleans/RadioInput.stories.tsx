@@ -6,9 +6,16 @@ import { RadioInput, CustomFormProvider } from '../../../src';
 
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { mode: 'automatic' } });
-    return <CustomFormProvider {...methods} validationSchema={yup.object().shape({
-        mode: yup.string().required(),
-    })}>{children}</CustomFormProvider>;
+    return (
+        <CustomFormProvider
+            {...methods}
+            validationSchema={yup.object().shape({
+                mode: yup.string().required(),
+            })}
+        >
+            {children}
+        </CustomFormProvider>
+    );
 }
 
 const meta = {
@@ -18,9 +25,18 @@ const meta = {
     args: {
         name: 'mode',
         label: 'Mode',
-        options: [{ id: 'automatic', label: 'Automatic' }, { id: 'manual', label: 'Manual' }],
+        options: [
+            { id: 'automatic', label: 'Automatic' },
+            { id: 'manual', label: 'Manual' },
+        ],
     },
-    decorators: [(Story) => <Form><Story /></Form>],
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof RadioInput>;
 
 export default meta;

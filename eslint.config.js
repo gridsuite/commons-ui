@@ -73,7 +73,7 @@ const prettierConfig = [
 const projectConfig = [
     {
         name: 'project/ignores',
-        ignores: ['dist', 'coverage', 'storybook-static'],
+        ignores: ['dist', 'demo-dist', 'coverage', 'storybook-static'],
     },
     // Settings
     {
@@ -127,6 +127,7 @@ const projectConfig = [
                         '**/jest.setup.ts',
                         '**/prettier.config.js',
                         '**/vite.config.ts',
+                        '**/vite.demo.config.ts',
                         '**/eslint.config.js',
                         '**/.storybook/**/*.{js,jsx,ts,tsx}',
                         '**/*.stories.{js,jsx,ts,tsx}',

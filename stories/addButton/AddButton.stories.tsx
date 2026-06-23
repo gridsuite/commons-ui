@@ -6,13 +6,12 @@
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AddButton, AddButtonMode } from '../../src';
-import { fn } from 'storybook/test';
 
 const meta = {
     title: 'UI/Buttons/AddButton',
     component: AddButton,
     tags: ['autodocs'],
-    args: { label: 'Button label', onClick: () => {}},
+    args: { label: 'Button label', onClick: () => {} },
     argTypes: {
         mode: {
             control: 'select',

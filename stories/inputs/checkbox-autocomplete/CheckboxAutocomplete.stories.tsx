@@ -1,18 +1,24 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CheckboxAutocomplete } from '../../../src/components/ui/inputs/checkbox-autocomplete/checkbox-autocomplete';
+import {
+    CheckboxAutocomplete,
+    CheckboxAutocompleteProps,
+} from '../../../src/components/ui/inputs/checkbox-autocomplete/checkbox-autocomplete';
 
 const options = ['France', 'Germany', 'Italy', 'Spain', 'Sweden'];
+
+function CheckboxAutocompleteStory(args: CheckboxAutocompleteProps<string>) {
+    const { value: defaultValue } = args;
+    const [value, setValue] = useState(defaultValue);
+    return <CheckboxAutocomplete {...args} value={value} onChange={setValue} />;
+}
 
 const meta = {
     title: 'UI/Inputs/CheckboxAutocomplete',
     component: CheckboxAutocomplete<string>,
     tags: ['autodocs'],
     args: { options, value: [], getOptionLabel: (option) => option, onChange: () => undefined },
-    render: (args) => {
-        const [value, setValue] = useState(args.value);
-        return <CheckboxAutocomplete {...args} value={value} onChange={setValue} />;
-    },
+    render: (args) => <CheckboxAutocompleteStory {...args} />,
 } satisfies Meta<typeof CheckboxAutocomplete<string>>;
 
 export default meta;

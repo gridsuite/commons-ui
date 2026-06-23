@@ -6,9 +6,16 @@ import { TextInput, CustomFormProvider } from '../../../src';
 
 function Form({ children, value = 'Paris' }: PropsWithChildren<{ value?: string }>) {
     const methods = useForm({ defaultValues: { city: value } });
-    return <CustomFormProvider {...methods} validationSchema={yup.object().shape({
-        city: yup.string().required(),
-    })}>{children}</CustomFormProvider>;
+    return (
+        <CustomFormProvider
+            {...methods}
+            validationSchema={yup.object().shape({
+                city: yup.string().required(),
+            })}
+        >
+            {children}
+        </CustomFormProvider>
+    );
 }
 
 const meta = {

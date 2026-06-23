@@ -1,11 +1,8 @@
 import type { PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { IconButton, Stack } from '@mui/material';
-import { ContentCopy } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { CustomFormProvider } from '../../../src/components/ui/reactHookForm/provider/CustomFormProvider';
-import { ReadOnlyInput } from '../../../src/components/ui/reactHookForm/readOnly/ReadOnlyInput';
+import { ReadOnlyInput, CustomFormProvider } from '../../../src';
 
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { string: 'Read only string', number: 225 } });

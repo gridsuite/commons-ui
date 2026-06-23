@@ -15,4 +15,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const LongLabel: Story = { args: { label: 'A very long equipment name that must be truncated in the chip' } };
 export const Deletable: Story = { args: { onDelete: () => undefined } };
-export const WithHelperText: Story = { render: (args) => <OverflowableChipWithHelperText helperText={"Helper text"} {...args}/>}
+export const WithHelperText: Story = {
+    render: (args) => <OverflowableChipWithHelperText helperText="Helper text" {...args} />,
+};

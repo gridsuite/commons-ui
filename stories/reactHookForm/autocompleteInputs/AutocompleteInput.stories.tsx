@@ -5,7 +5,11 @@ import * as yup from 'yup';
 import { CustomFormProvider } from '../../../src/components/ui/reactHookForm/provider/CustomFormProvider';
 import { AutocompleteInput } from '../../../src/components/ui/reactHookForm/autocompleteInputs/AutocompleteInput';
 
-const options = [{ id: 'paris', label: 'Paris' }, { id: 'lyon', label: 'Lyon' }, { id: 'nantes', label: 'Nantes' }];
+const options = [
+    { id: 'paris', label: 'Paris' },
+    { id: 'lyon', label: 'Lyon' },
+    { id: 'nantes', label: 'Nantes' },
+];
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { city: options[0] } });
     return (
@@ -15,7 +19,7 @@ function Form({ children }: PropsWithChildren) {
                 city: yup.object().required().shape({
                     id: yup.string().required(),
                     label: yup.string().required(),
-                })
+                }),
             })}
         >
             {children}

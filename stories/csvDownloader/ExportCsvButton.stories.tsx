@@ -1,21 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ExportCsvButton } from '../../src/components/ui/csvDownloader/export-csv-button';
 import { useState } from 'react';
+import { ExportButtonProps, ExportCsvButton } from '../../src/components/ui/csvDownloader/export-csv-button';
+
+function ExportCsvButtonStory(args: ExportButtonProps) {
+    const [isDownloadLoading, setIsDownloadLoading] = useState(false);
+    const [isDownloadSuccessful, setIsDownloadSuccessful] = useState(false);
+    const simulatedDownload = () => {
+        setIsDownloadLoading(true);
+        setTimeout(() => {
+            setIsDownloadLoading(false);
+            setIsDownloadSuccessful(true);
+        }, 1000);
+    };
+    return (
+        <ExportCsvButton
+            {...args}
+            onClick={simulatedDownload}
+            isDownloadLoading={isDownloadLoading}
+            isDownloadSuccessful={isDownloadSuccessful}
+        />
+    );
+}
 
 const meta = {
     title: 'UI/Buttons/ExportCsvButton',
     component: ExportCsvButton,
     tags: ['autodocs'],
     args: { onClick: () => undefined },
-    render: (args) => {
-        const [isDownloadLoading, setIsDownloadLoading] = useState(false);
-        const [isDownloadSuccessful, setIsDownloadSuccessful] = useState(false);
-        const simulatedDownload = () => {
-            setIsDownloadLoading(true);
-            setTimeout(() => {setIsDownloadLoading(false); setIsDownloadSuccessful(true)}, 1000);
-        }
-        return <ExportCsvButton {...args} onClick={simulatedDownload} isDownloadLoading={isDownloadLoading} isDownloadSuccessful={isDownloadSuccessful} />;
-    },
+    render: (args) => <ExportCsvButtonStory {...args} />,
 } satisfies Meta<typeof ExportCsvButton>;
 
 export default meta;

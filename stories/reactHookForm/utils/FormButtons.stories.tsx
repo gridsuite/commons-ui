@@ -16,14 +16,33 @@ const meta = {
     title: 'UI/Inputs/ReactHookForm/Buttons/FormButtons',
     component: SubmitButton,
     tags: ['autodocs'],
-    decorators: [(Story) => <Form dirty><Story /></Form>],
+    decorators: [
+        (Story) => (
+            <Form dirty>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof SubmitButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Submit: Story = { args: { variant: 'outlined' } };
-export const DisabledSubmit: Story = { decorators: [(Story) => <Form><Story /></Form>] };
+export const DisabledSubmit: Story = {
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
+};
 export const Actions: Story = {
-    render: () => <Stack direction="row" spacing={1}><CancelButton /><SubmitButton variant="outlined" /></Stack>,
+    render: () => (
+        <Stack direction="row" spacing={1}>
+            <CancelButton />
+            <SubmitButton variant="outlined" />
+        </Stack>
+    ),
 };

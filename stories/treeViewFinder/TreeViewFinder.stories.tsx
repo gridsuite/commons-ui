@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { UUID } from 'node:crypto';
-import { TreeViewFinder } from '../../src';
 import { useState } from 'react';
 import { Button } from '@mui/material';
+import { TreeViewFinder, TreeViewFinderProps } from '../../src';
 
 const data = [
     {
@@ -16,6 +16,17 @@ const data = [
     },
 ];
 
+function TreeViewFinderStory(args: TreeViewFinderProps) {
+    const { open: defaultOpenValue } = args;
+    const [isOpen, setIsOpen] = useState(defaultOpenValue);
+    return (
+        <>
+            <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
+            <TreeViewFinder {...args} onClose={() => setIsOpen(false)} open={isOpen} />
+        </>
+    );
+}
+
 const meta = {
     title: 'UI/Navigation/TreeViewFinder',
     component: TreeViewFinder,
@@ -27,26 +38,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Dialog: Story = {
-    render: (args) => {
-        const [isOpen, setIsOpen] = useState(args.open);
-        return (
-            <>
-                <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
-                <TreeViewFinder {...args} onClose={() => setIsOpen(false)} open={isOpen} />
-            </>
-        );
-    },
+    render: (args) => <TreeViewFinderStory {...args} />,
 };
 export const Inline: Story = { args: { inline: true, open: false, defaultExpanded: [data[0].id] } };
 export const MultiSelect: Story = {
-    render: (args) => {
-        const [isOpen, setIsOpen] = useState(args.open);
-        return (
-            <>
-                <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
-                <TreeViewFinder {...args} onClose={() => setIsOpen(false)} open={isOpen} />
-            </>
-        );
-    },
+    render: (args) => <TreeViewFinderStory {...args} />,
     args: { multiSelect: true, onlyLeaves: true, defaultExpanded: [data[0].id] },
 };

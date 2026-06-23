@@ -9,7 +9,6 @@ type SnackbarButtonArgs = React.ComponentProps<typeof SnackbarProvider> & {
     snackBarVariant: SnackbarVariant;
 };
 
-
 function SnackbarButton({ snackBarVariant }: { snackBarVariant?: SnackbarVariant }) {
     const { enqueueSnackbar } = useSnackbar();
 
@@ -26,7 +25,6 @@ function SnackbarButton({ snackBarVariant }: { snackBarVariant?: SnackbarVariant
         </Button>
     );
 }
-
 
 const meta = {
     title: 'UI/SnackbarProvider',

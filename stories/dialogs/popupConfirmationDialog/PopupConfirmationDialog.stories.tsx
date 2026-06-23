@@ -1,7 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PopupConfirmationDialog } from '../../../src';
 import { useState } from 'react';
 import { Button } from '@mui/material';
+import { PopupConfirmationDialog, PopupConfirmationDialogProps } from '../../../src';
+
+function PopupConfirmationDialogStory(args: PopupConfirmationDialogProps) {
+    const { openConfirmationPopup } = args;
+    const [isOpen, setIsOpen] = useState(openConfirmationPopup);
+    return (
+        <>
+            <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
+            <PopupConfirmationDialog {...args} setOpenConfirmationPopup={setIsOpen} openConfirmationPopup={isOpen} />
+        </>
+    );
+}
 
 const meta = {
     title: 'UI/Dialogs/PopupConfirmationDialog',
@@ -14,15 +25,7 @@ const meta = {
         setOpenConfirmationPopup: () => undefined,
         handlePopupConfirmation: () => undefined,
     },
-    render: (args) => {
-        const [isOpen, setIsOpen] = useState(args.openConfirmationPopup);
-        return (
-            <>
-                <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
-                <PopupConfirmationDialog {...args} setOpenConfirmationPopup={setIsOpen} openConfirmationPopup={isOpen} />
-            </>
-        );
-    },
+    render: (args) => <PopupConfirmationDialogStory {...args} />,
 } satisfies Meta<typeof PopupConfirmationDialog>;
 
 export default meta;

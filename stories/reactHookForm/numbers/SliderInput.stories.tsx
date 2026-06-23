@@ -19,12 +19,26 @@ const meta = {
     component: SliderInput,
     tags: ['autodocs'],
     args: { name: 'threshold', min: 0, max: 100, valueLabelDisplay: 'auto' },
-    decorators: [(Story) => <Form><Story /></Form>],
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof SliderInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-export const WithMarks: Story = { args: { marks: [{ value: 0, label: '0' }, { value: 50, label: '50' }, { value: 100, label: '100' }] } };
+export const WithMarks: Story = {
+    args: {
+        marks: [
+            { value: 0, label: '0' },
+            { value: 50, label: '50' },
+            { value: 100, label: '100' },
+        ],
+    },
+};
 export const Disabled: Story = { args: { disabled: true } };

@@ -8,7 +8,11 @@ import { CountrySelectionInput } from '../../src/components/ui/reactHookForm/Cou
 
 function CountryForm({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { country: 'FR' } });
-    return <CustomFormProvider {...methods} validationSchema={yup.object().shape({country: yup.string().required()})}>{children}</CustomFormProvider>;
+    return (
+        <CustomFormProvider {...methods} validationSchema={yup.object().shape({ country: yup.string().required() })}>
+            {children}
+        </CustomFormProvider>
+    );
 }
 
 function CountriesForm({ children }: PropsWithChildren) {
@@ -43,5 +47,9 @@ export const Multiple: Story = {
     ],
 };
 export const Single: Story = {
-    render: () => <CountryForm><CountrySelectionInput name="country" label="Country" /></CountryForm>,
+    render: () => (
+        <CountryForm>
+            <CountrySelectionInput name="country" label="Country" />
+        </CountryForm>
+    ),
 };

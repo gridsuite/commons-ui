@@ -33,7 +33,9 @@
         "jest.config.ts",
         "prettier.config.js",
         "vite.config.ts",
+        "vite.demo.config.ts",
         ".storybook/**/*.ts",
-        ".storybook/**/*.tsx"
+        ".storybook/**/*.tsx",
+        "stories"
     ]
 }

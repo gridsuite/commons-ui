@@ -1,10 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MultipleSelectionDialog } from '../../../src';
 import { useState } from 'react';
 import { Button } from '@mui/material';
+import { MultipleSelectionDialog, MultipleSelectionDialogProps } from '../../../src';
 
 type Item = { id: string; label: string };
-const items: Item[] = [{ id: 'a', label: 'Option A' }, { id: 'b', label: 'Option B' }, { id: 'c', label: 'Option C' }];
+const items: Item[] = [
+    { id: 'a', label: 'Option A' },
+    { id: 'b', label: 'Option B' },
+    { id: 'c', label: 'Option C' },
+];
+
+function MultipleSelectionDialogStory(args: MultipleSelectionDialogProps<Item>) {
+    const { open: defaultOpenValue } = args;
+    const [isOpen, setIsOpen] = useState(defaultOpenValue);
+    return (
+        <>
+            <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
+            <MultipleSelectionDialog {...args} handleClose={() => setIsOpen(false)} open={isOpen} />
+        </>
+    );
+}
 
 const meta = {
     title: 'UI/Dialogs/MultipleSelectionDialog',
@@ -20,15 +35,7 @@ const meta = {
         handleClose: () => undefined,
         handleValidate: () => undefined,
     },
-    render: (args) => {
-        const [isOpen, setIsOpen] = useState(args.open);
-        return (
-            <>
-                <Button onClick={() => setIsOpen(true)}>Open dialog</Button>
-                <MultipleSelectionDialog {...args} handleClose={() => setIsOpen(false)} open={isOpen} />
-            </>
-        );
-    },
+    render: (args) => <MultipleSelectionDialogStory {...args} />,
 } satisfies Meta<typeof MultipleSelectionDialog<Item>>;
 
 export default meta;

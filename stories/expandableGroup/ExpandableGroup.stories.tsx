@@ -7,8 +7,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Box, Stack, Typography } from '@mui/material';
-import { expect, userEvent, within } from 'storybook/test';
-import { ExpandableGroup } from '../../src/components/ui/expandableGroup/ExpandableGroup';
+import { ExpandableGroup } from '../../src/components/ui/expandableGroup';
 
 const content = (
     <Stack spacing={1}>
@@ -37,7 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const Nested: Story = {
-    render: (args) => {
+    render: () => {
         return (
             <ExpandableGroup renderHeader={<Typography fontWeight="bold">Parent group</Typography>}>
                 <Box sx={{ pl: 2 }}>
@@ -54,7 +53,7 @@ export const Nested: Story = {
                 </Box>
             </ExpandableGroup>
         );
-    }
+    },
 };
 
 export const CustomHeader: Story = {

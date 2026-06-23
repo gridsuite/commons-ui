@@ -17,7 +17,7 @@ const meta = {
         children: { control: false },
     },
     render: (args) => (
-        <CustomNestedMenuItem label={'SubMenu'} {...args}>
+        <CustomNestedMenuItem label="SubMenu" {...args}>
             <CustomMenuItem>CSV</CustomMenuItem>
             <CustomMenuItem>JSON</CustomMenuItem>
         </CustomNestedMenuItem>
@@ -30,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const SeveralLevels: Story = {
     decorators: (Story) => (
-        <CustomNestedMenuItem label={'SubMenu'}>
+        <CustomNestedMenuItem label="SubMenu">
             <Story />
             <Story />
         </CustomNestedMenuItem>

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { HelperPreviousValue } from '../../../src/components/ui/reactHookForm/utils/HelperPreviousValue';
-import { CustomFormProvider, TextInput } from '../../../src';
 import type { PropsWithChildren } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { CustomFormProvider, TextInput } from '../../../src';
+import { HelperPreviousValue } from '../../../src/components/ui/reactHookForm/utils/HelperPreviousValue';
 
 function Form({ children, value = 'Paris' }: PropsWithChildren<{ value?: string }>) {
     const methods = useForm({ defaultValues: { city: value } });
@@ -34,7 +34,7 @@ export const TextOnly: Story = { args: { disabledTooltip: true } };
 export const WithComponent: Story = {
     render: () => (
         <Form>
-            <TextInput name={'city'} previousValue="Londres" />
+            <TextInput name="city" previousValue="Londres" />
         </Form>
     ),
 };

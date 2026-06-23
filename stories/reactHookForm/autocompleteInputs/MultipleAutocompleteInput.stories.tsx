@@ -4,18 +4,14 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { MultipleAutocompleteInput, CustomFormProvider } from '../../../src';
 
-const options = [
-    "Paris", "Lyon", "Nantes"
-];
+const options = ['Paris', 'Lyon', 'Nantes'];
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { cities: [options[0], options[1]] } });
     return (
         <CustomFormProvider
             {...methods}
             validationSchema={yup.object().shape({
-                cities: yup.array().required().of(
-                    yup.string().required()
-                )
+                cities: yup.array().required().of(yup.string().required()),
             })}
         >
             {children}
@@ -27,10 +23,18 @@ const meta = {
     title: 'UI/Inputs/ReactHookForm/Selection/MultipleAutocompleteInput',
     component: MultipleAutocompleteInput,
     tags: ['autodocs'],
-    args: { name: 'cities', label: 'Cities', options: options },
+    args: { name: 'cities', label: 'Cities', options },
 } satisfies Meta<typeof MultipleAutocompleteInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const WithValues: Story = { decorators: [(Story) => <Form><Story /></Form>] };
+export const WithValues: Story = {
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
+};

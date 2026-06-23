@@ -6,7 +6,11 @@ import { MuiSelectInput, CustomFormProvider } from '../../../src';
 
 function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { priority: 'medium' } });
-    return <CustomFormProvider {...methods} validationSchema={yup.object() as any}>{children}</CustomFormProvider>;
+    return (
+        <CustomFormProvider {...methods} validationSchema={yup.object() as any}>
+            {children}
+        </CustomFormProvider>
+    );
 }
 
 const meta: Meta = {
@@ -14,7 +18,13 @@ const meta: Meta = {
     component: MuiSelectInput,
     tags: ['autodocs'],
     args: { name: 'priority', options: ['low', 'medium', 'high'], fullWidth: true, size: 'small' },
-    decorators: [(Story) => <Form><Story /></Form>],
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
 };
 
 export default meta;

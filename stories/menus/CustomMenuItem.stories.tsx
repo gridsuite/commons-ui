@@ -7,7 +7,13 @@ const meta = {
     component: CustomMenuItem,
     tags: ['autodocs'],
     args: { children: 'Open study' },
-    decorators: [(Story) => <MenuList><Story /></MenuList>],
+    decorators: [
+        (Story) => (
+            <MenuList>
+                <Story />
+            </MenuList>
+        ),
+    ],
 } satisfies Meta<typeof CustomMenuItem>;
 
 export default meta;

@@ -6,7 +6,14 @@ import { CheckboxNullableInput, CustomFormProvider } from '../../src';
 
 function Form({ children, value }: PropsWithChildren<{ value: boolean | null }>) {
     const methods = useForm({ defaultValues: { state: value } });
-    return <CustomFormProvider {...methods} validationSchema={yup.object().shape({state: yup.boolean().nullable().required()})}>{children}</CustomFormProvider>;
+    return (
+        <CustomFormProvider
+            {...methods}
+            validationSchema={yup.object().shape({ state: yup.boolean().nullable().required() })}
+        >
+            {children}
+        </CustomFormProvider>
+    );
 }
 
 const meta = {
@@ -19,6 +26,30 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Checked: Story = { decorators: [(Story) => <Form value><Story /></Form>] };
-export const Unchecked: Story = { decorators: [(Story) => <Form value={false}><Story /></Form>] };
-export const Indeterminate: Story = { decorators: [(Story) => <Form value={null}><Story /></Form>] };
+export const Checked: Story = {
+    decorators: [
+        (Story) => (
+            <Form value>
+                <Story />
+            </Form>
+        ),
+    ],
+};
+export const Unchecked: Story = {
+    decorators: [
+        (Story) => (
+            <Form value={false}>
+                <Story />
+            </Form>
+        ),
+    ],
+};
+export const Indeterminate: Story = {
+    decorators: [
+        (Story) => (
+            <Form value={null}>
+                <Story />
+            </Form>
+        ),
+    ],
+};

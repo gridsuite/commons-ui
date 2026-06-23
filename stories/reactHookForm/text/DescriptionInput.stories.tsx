@@ -30,5 +30,21 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Empty: Story = { decorators: [(Story) => <Form><Story /></Form>] };
-export const WithDescription: Story = { decorators: [(Story) => <Form value={'First line\nSecond line\nThird line\nFourth line'}><Story /></Form>] };
+export const Empty: Story = {
+    decorators: [
+        (Story) => (
+            <Form>
+                <Story />
+            </Form>
+        ),
+    ],
+};
+export const WithDescription: Story = {
+    decorators: [
+        (Story) => (
+            <Form value={'First line\nSecond line\nThird line\nFourth line'}>
+                <Story />
+            </Form>
+        ),
+    ],
+};

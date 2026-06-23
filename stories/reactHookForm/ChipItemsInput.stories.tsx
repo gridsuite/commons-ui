@@ -6,9 +6,16 @@ import { SnackbarProvider, ChipItemsInput, CustomFormProvider } from '../../src'
 
 function Form({ children, items }: PropsWithChildren<{ items: string[] }>) {
     const methods = useForm({ defaultValues: { tags: items } });
-    return <SnackbarProvider>
-        <CustomFormProvider {...methods} validationSchema={yup.object().shape({tags: yup.array().required().of(yup.string().required())})}>{children}</CustomFormProvider>
-    </SnackbarProvider>;
+    return (
+        <SnackbarProvider>
+            <CustomFormProvider
+                {...methods}
+                validationSchema={yup.object().shape({ tags: yup.array().required().of(yup.string().required()) })}
+            >
+                {children}
+            </CustomFormProvider>
+        </SnackbarProvider>
+    );
 }
 
 const meta = {
@@ -19,8 +26,8 @@ const meta = {
     argTypes: {
         name: {
             table: {
-                disable: true
-            }
+                disable: true,
+            },
         },
     },
 } satisfies Meta<typeof ChipItemsInput>;
@@ -28,5 +35,21 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Empty: Story = { decorators: [(Story) => <Form items={[]}><Story /></Form>] };
-export const WithItems: Story = { decorators: [(Story) => <Form items={['production', 'network', 'validated']}><Story /></Form>] };
+export const Empty: Story = {
+    decorators: [
+        (Story) => (
+            <Form items={[]}>
+                <Story />
+            </Form>
+        ),
+    ],
+};
+export const WithItems: Story = {
+    decorators: [
+        (Story) => (
+            <Form items={['production', 'network', 'validated']}>
+                <Story />
+            </Form>
+        ),
+    ],
+};
