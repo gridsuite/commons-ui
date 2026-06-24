@@ -99,7 +99,10 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         isEditingRef.current = false;
         setIsEditing(false);
         setInputBaseWidthPx(null);
-    }, []);
+        if (meta) {
+            meta.interaction.highlightedModificationUuid.current = null;
+        }
+    }, [meta]);
 
     const updateName = useCallback(
         (newName: string) => {

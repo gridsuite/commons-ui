@@ -202,6 +202,7 @@ export function NetworkModificationsTable({
                 onRowSelected: handleRowSelected,
                 isRowDragDisabled,
                 modificationToEditLabel: modificationToEditLabelRef,
+                highlightedModificationUuid: highlightedModificationUuidRef,
             },
             status: {
                 isImpactedByNotification,
@@ -221,6 +222,7 @@ export function NetworkModificationsTable({
             setModificationsToExclude,
             lastClickedRowId,
             handleRowSelected,
+            highlightedModificationUuidRef,
             modificationToEditLabelRef,
             isRowDragDisabled,
             isImpactedByNotification,
@@ -317,7 +319,6 @@ export function NetworkModificationsTable({
             const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuidRef.current);
             if (rowIndex !== -1) {
                 virtualizer.scrollToIndex(rowIndex, { align: 'center', behavior: 'auto' });
-                highlightedModificationUuidRef.current = null;
             }
         }
     }, [highlightedModificationUuidRef, rows, virtualizer]);
@@ -366,7 +367,7 @@ export function NetworkModificationsTable({
                                                 row={row}
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
-                                                highlightedModificationUuid={highlightedModificationUuid}
+                                                highlightedModificationUuid={highlightedModificationUuidRef.current}
                                             />
                                         );
                                     })}
