@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Button, FormHelperText, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, FormHelperText, Grid2 as Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useController } from 'react-hook-form';
@@ -57,13 +57,13 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
         <Box>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Grid container alignItems="center">
-                    <Grid item paddingTop={1}>
+                    <Grid paddingTop={1}>
                         <FolderOutlined />
                     </Grid>
-                    <Grid item paddingTop={1} paddingLeft={1}>
+                    <Grid paddingTop={1} paddingLeft={1}>
                         <Tooltip
                             title={nodeInfos?.[DIRECTORY_ITEM_FULL_PATH] ?? ''}
-                            componentsProps={{
+                            slotProps={{
                                 tooltip: {
                                     sx: {
                                         maxWidth: 'none', //  to override the background of text is auto cut
@@ -76,7 +76,7 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
                             </Typography>
                         </Tooltip>
                     </Grid>
-                    <Grid item paddingTop={1} paddingLeft={1}>
+                    <Grid paddingTop={1} paddingLeft={1}>
                         {error?.message && (
                             <FormHelperText error>{intl.formatMessage({ id: error?.message })}</FormHelperText>
                         )}
