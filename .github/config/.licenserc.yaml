@@ -20,5 +20,6 @@ header:
     - '**/*.yml'
     - '**/*.svg'
     - '**/*.properties'
+    - '.github'
 
   comment: on-failure
