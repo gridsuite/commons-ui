@@ -56,6 +56,12 @@ export const SegmentSchema = object()
 
 export type SegmentFormData = InferType<typeof SegmentSchema>;
 
+// TODO should be an infered type from schema (LineModification case)
+export interface SegmentsFormData {
+    [FieldConstants.LINE_SEGMENTS]: LineSegmentsFormData;
+    [FieldConstants.APPLY_SEGMENTS_LIMITS]?: boolean;
+}
+
 export const emptyLineSegment: SegmentFormData = {
     [FieldConstants.SEGMENT_DISTANCE_VALUE]: 0,
     [FieldConstants.SEGMENT_TYPE_VALUE]: '',
