@@ -48,10 +48,10 @@ export function LineDialogHeader({ lineToModify, isModification = false }: Reado
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs>
+            <Grid item xs={4}>
                 {lineIdField}
             </Grid>
-            <Grid item xs>
+            <Grid item xs={4}>
                 {lineNameField}
             </Grid>
         </Grid>
