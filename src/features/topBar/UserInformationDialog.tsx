@@ -18,7 +18,7 @@ const styles = {
     DialogTitle: { fontSize: '1.5rem' },
     DialogContent: { marginTop: '10px' },
     quotasBox: { marginTop: '60px' },
-    quotasTopography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
+    quotasTypography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
     usedTopography: { marginLeft: '15%' },
 } as const satisfies MuiStyles;
 
@@ -101,7 +101,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                 </Grid>
 
                 <Box mt={3} sx={styles.quotasBox}>
-                    <Typography fontWeight="bold" sx={styles.quotasTopography}>
+                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
                         <FormattedMessage id="user-information-dialog/quotas" />
                     </Typography>
                     <Grid container spacing={2}>
@@ -120,7 +120,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Typography fontWeight="bold" sx={styles.quotasTopography}>
+                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
                         <FormattedMessage id="user-information-dialog/quotas-per-study" />
                     </Typography>
                     <Grid container spacing={2}>
