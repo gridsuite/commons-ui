@@ -27,33 +27,34 @@ export const SegmentCurrentLimitsSchema = object().shape({
     [FieldConstants.TEMPORARY_LIMITS]: array().of(SegmentTemporaryLimitSchema).nullable(),
 });
 
+// used by LineCreation schema
+export const SegmentInfoSchema = object().shape({
+    [FieldConstants.SEGMENT_TYPE_ID]: string().required(),
+    [FieldConstants.SEGMENT_DISTANCE_VALUE]: number()
+        .required('SegmentDistanceMustBeGreaterThanZero')
+        .moreThan(0, 'SegmentDistanceMustBeGreaterThanZero'),
+    [FieldConstants.AREA]: string().nullable().default(null),
+    [FieldConstants.TEMPERATURE]: string().nullable().default(null),
+    [FieldConstants.SHAPE_FACTOR]: number().nullable().default(null),
+});
+export type SegmentInfoFormData = InferType<typeof SegmentInfoSchema>;
+export const LineSegmentsInfoSchema = array().of(SegmentInfoSchema);
+export type LineSegmentsFormData = InferType<typeof LineSegmentsInfoSchema>;
+
+// used by Catalog schema
 export const SegmentSchema = object()
     .shape({
-        [FieldConstants.SEGMENT_DISTANCE_VALUE]: number()
-            .required('SegmentDistanceMustBeGreaterThanZero')
-            .moreThan(0, 'SegmentDistanceMustBeGreaterThanZero'),
         [FieldConstants.SEGMENT_TYPE_VALUE]: string()
             .required()
             .test('empty-check', 'SegmentTypeMissing', (value) => (value ? value.length > 0 : false)),
-        [FieldConstants.SEGMENT_TYPE_ID]: string().required(),
-        [FieldConstants.AREA]: string().nullable().default(null),
-        [FieldConstants.TEMPERATURE]: string().nullable().default(null),
-        [FieldConstants.SHAPE_FACTOR]: number().nullable().default(null),
         [FieldConstants.SEGMENT_RESISTANCE]: number().required(),
         [FieldConstants.SEGMENT_REACTANCE]: number().required(),
         [FieldConstants.SEGMENT_SUSCEPTANCE]: number().required(),
         [FieldConstants.SEGMENT_CURRENT_LIMITS]: array().of(SegmentCurrentLimitsSchema),
-    });
-
-export const LineSegmentsSchema = array().of(SegmentSchema);
+    })
+    .concat(SegmentInfoSchema);
 
 export type SegmentFormData = InferType<typeof SegmentSchema>;
-export type LineSegmentsFormData = InferType<typeof LineSegmentsSchema>;
-
-/* export interface SegmentsFormData {
-    [FieldConstants.LINE_SEGMENTS]: LineSegmentsFormData;
-    [FieldConstants.APPLY_SEGMENTS_LIMITS]?: boolean;
-} */
 
 export const emptyLineSegment: SegmentFormData = {
     [FieldConstants.SEGMENT_DISTANCE_VALUE]: 0,
@@ -92,7 +93,8 @@ export function convertToLineSegmentsFormData(lineSegmentInfos: LineSegmentInfos
             [FieldConstants.SEGMENT_TYPE_ID]: info[FieldConstants.SEGMENT_TYPE_ID],
             [FieldConstants.SEGMENT_DISTANCE_VALUE]: info[FieldConstants.SEGMENT_DISTANCE_VALUE],
             [FieldConstants.AREA]: info[FieldConstants.AREA] ?? null,
-            [FieldConstants.TEMPERATURE]: info[FieldConstants.TEMPERATURE] === '' ? null : info[FieldConstants.TEMPERATURE],
+            [FieldConstants.TEMPERATURE]:
+                info[FieldConstants.TEMPERATURE] === '' ? null : info[FieldConstants.TEMPERATURE],
             [FieldConstants.SHAPE_FACTOR]: info[FieldConstants.SHAPE_FACTOR] ?? null,
         })) ?? []
     );

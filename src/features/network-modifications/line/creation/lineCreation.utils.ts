@@ -42,7 +42,11 @@ import {
     getBranchActiveReactivePowerEmptyFormDataProperties,
     getBranchActiveReactivePowerValidationSchemaObject,
 } from '../../common/measurements';
-import { convertToLineSegmentInfos, convertToLineSegmentsFormData, LineSegmentsSchema } from '../lineTypesCatalog';
+import {
+    convertToLineSegmentInfos,
+    convertToLineSegmentsFormData,
+    LineSegmentsInfoSchema,
+} from '../lineTypesCatalog';
 
 export const lineCreationFormSchema = object()
     .shape({
@@ -52,7 +56,7 @@ export const lineCreationFormSchema = object()
         [FieldConstants.CHARACTERISTICS]: getLineCharacteristicsValidationSchemaProps(false),
         [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
         [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
-        [FieldConstants.LINE_SEGMENTS]: LineSegmentsSchema,
+        [FieldConstants.LINE_SEGMENTS]: LineSegmentsInfoSchema,
     })
     .concat(creationPropertiesSchema)
     .required();
