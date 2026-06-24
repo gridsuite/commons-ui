@@ -56,7 +56,9 @@ export const toFormValues = (_params: DynamicSimulationParametersEnriched): Fiel
         [Solver.SOLVERS]: _params.solvers,
     },
     [TabValues.TAB_MAPPING]: {
-        [MAPPING]: [_params.mapping] /* array of one element to be compatible with model rhf of DirectoryItemsInput */,
+        [MAPPING]: _params.mapping
+            ? [_params.mapping]
+            : [] /* array of one element to be compatible with model rhf of DirectoryItemsInput */,
     },
     [TabValues.TAB_NETWORK]: {
         ..._params.network,
@@ -85,7 +87,7 @@ export const toParamsEnriched = (
         ],
         [] as SolverInfos[]
     ),
-    mapping: _formData[TabValues.TAB_MAPPING][MAPPING][0] /* array of one element */,
+    mapping: _formData[TabValues.TAB_MAPPING][MAPPING]?.[0] /* array of one element */,
     network: _formData[TabValues.TAB_NETWORK],
     curves: _formData[TabValues.TAB_CURVE][Curve.CURVES],
 });

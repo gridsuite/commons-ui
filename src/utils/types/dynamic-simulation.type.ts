@@ -103,11 +103,11 @@ export type DynamicSimulationParametersEnriched = Omit<DynamicSimulationParamete
 export function mapDynamicSimulationParameters(
     parameters: DynamicSimulationParametersEnriched
 ): DynamicSimulationParametersInfos {
+    const { mapping, ...rest } = parameters;
     const newParameters = {
-        ...parameters,
+        ...rest,
         mappingId: parameters.mapping?.id,
     };
-    delete newParameters.mapping;
     return newParameters;
 }
 

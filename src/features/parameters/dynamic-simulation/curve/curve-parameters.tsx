@@ -21,7 +21,6 @@ import { ExpertFilter, IdentifiableAttributes } from '../../../../components/com
 import { Curve as CurveType } from './common/curve.type';
 import { type MuiStyles } from '../../../../utils/styles';
 import { CustomAGGrid } from '../../../../components/composite/customAGGrid';
-import { isObjectEmpty } from '../../../../utils/functions';
 import { IdName } from '../../../../utils';
 
 const styles = {
@@ -157,8 +156,8 @@ function CurveParameters({
 
     // config fetchers based on the mapping and studyUuid
     const modelsFetcher = useCallback(() => {
-        const mapping = getValues(mappingPath)[0] as IdName; /* array of one element */
-        return isObjectEmpty(mapping) ? undefined : fetchDynamicSimulationModels(mapping);
+        const mapping = (getValues(mappingPath) as IdName[] | undefined)?.[0]; /* array of one element */
+        return mapping?.id ? fetchDynamicSimulationModels(mapping) : undefined;
     }, [getValues, mappingPath]);
 
     return (
