@@ -20,3 +20,9 @@ export interface MeasurementProps {
     field: FieldType;
     measurement?: MeasurementInfo;
 }
+
+export type BbsMeasurementItem = {
+    busbarSectionId: string;
+    value: number | null;
+    validity: boolean | null;
+};

@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useWatch } from 'react-hook-form';
-import { Box } from '@mui/material';
-import { ValueParserParams } from 'ag-grid-community';
+import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
+import { Alert, Grid2 as Grid } from '@mui/material';
+import { ColDef, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
@@ -17,7 +17,7 @@ import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { CustomAgGridTable } from '../../agGridTable/CustomAgGridTable';
 import { SelectInput } from '../../../ui/reactHookForm/selectInputs/SelectInput';
 import { isInjection } from '../../../../utils/types/equipmentTypes';
-import { NumericEditor } from '../../agGridTable/cellEditors/numericEditor';
+import { NumericEditor, suppressNonNumericKeyboardEvent } from '../../agGridTable/cellEditors/numericEditor';
 import { InputWithPopupConfirmation } from '../../../ui/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { toFloatOrNullValue } from '../../../ui/reactHookForm/utils/functions';
 import { DISTRIBUTION_KEY } from '../constants/FilterConstants';
@@ -27,11 +27,9 @@ import { ElementType } from '../../../../utils/types/elementType';
 import { ModifyElementSelection } from '../../../ui/dialogs/modifyElementSelection/ModifyElementSelection';
 import { exportFilter } from '../../../../services/study';
 import { EquipmentType } from '../../../../utils/types/equipmentType';
-import { unscrollableDialogStyles } from '../../../ui/dialogs';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
-import { filterStyles } from '../HeaderFilterForm';
-import { snackWithFallback } from '../../../../utils';
-import { useCustomFormContext } from '../../../ui';
+import { LANG_SYSTEM, snackWithFallback } from '../../../../utils';
+import { CsvPicker, useCustomFormContext } from '../../../ui';
 
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
@@ -124,12 +122,14 @@ export function ExplicitNamingFilterForm({
     }, [sourceFilterForExplicitNamingConversion, setValue]);
 
     const columnDefs = useMemo(() => {
-        const newColumnDefs: any[] = [
+        const newColumnDefs: ColDef[] = [
             {
                 headerName: intl.formatMessage({
                     id: FieldConstants.EQUIPMENT_ID,
                 }),
                 field: FieldConstants.EQUIPMENT_ID,
+                // force the data type instead of letting AG Grid infer it from the (CSV) cell values
+                cellDataType: 'text',
                 editable: true,
                 singleClickEdit: true,
                 flex: 1,
@@ -140,9 +140,12 @@ export function ExplicitNamingFilterForm({
             newColumnDefs.push({
                 headerName: intl.formatMessage({ id: DISTRIBUTION_KEY }),
                 field: DISTRIBUTION_KEY,
+                // force the data type instead of letting AG Grid infer it from the (CSV) cell values
+                cellDataType: 'number',
                 editable: true,
                 singleClickEdit: true,
                 cellEditor: NumericEditor,
+                suppressKeyboardEvent: suppressNonNumericKeyboardEvent,
                 flex: 1,
             });
         }
@@ -156,26 +159,44 @@ export function ExplicitNamingFilterForm({
         []
     );
 
-    const csvFileHeaders = useMemo(() => {
-        const newCsvFileHeaders = [intl.formatMessage({ id: FieldConstants.EQUIPMENT_ID })];
-        if (forGeneratorBatteryOrLoad) {
-            newCsvFileHeaders.push(intl.formatMessage({ id: DISTRIBUTION_KEY }));
-        }
-        return newCsvFileHeaders;
-    }, [intl, forGeneratorBatteryOrLoad]);
+    const csvFileHeaders = useMemo(() => columnDefs.map((c) => c.headerName as string), [columnDefs]);
 
-    const getDataFromCsvFile = useCallback((csvData: any) => {
-        if (csvData) {
-            return csvData.map((value: any) => {
-                return {
-                    [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
-                    [FieldConstants.EQUIPMENT_ID]: value[0]?.trim(),
-                    [DISTRIBUTION_KEY]: toFloatOrNullValue(value[1]?.trim()),
-                };
-            });
-        }
-        return [];
-    }, []);
+    const getDataFromCsvFile = useCallback(
+        (csvData: Record<string, string>[]) => {
+            const [equipmentIdHeader, distributionKeyHeader] = csvFileHeaders;
+            return csvData.map((row) => ({
+                [FieldConstants.AG_GRID_ROW_UUID]: uuid4(),
+                [FieldConstants.EQUIPMENT_ID]: row[equipmentIdHeader]?.trim() ?? null,
+                [DISTRIBUTION_KEY]: distributionKeyHeader
+                    ? toFloatOrNullValue(row[distributionKeyHeader]?.trim())
+                    : null,
+            }));
+        },
+        [csvFileHeaders]
+    );
+
+    const [selectedFile, setSelectedFile] = useState<File | undefined>();
+    const [fileErrorMessage, setFileErrorMessage] = useState<string | undefined>();
+    const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
+
+    useEffect(() => {
+        setSelectedFile(undefined);
+        setFileErrorMessage(undefined);
+    }, [watchEquipmentType]);
+
+    const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
+
+    const getTableData = useCallback(() => {
+        const rows = (getValues(FILTER_EQUIPMENTS_ATTRIBUTES) ?? []) as Record<string, any>[];
+        return [
+            csvFileHeaders,
+            ...rows.map((r) =>
+                forGeneratorBatteryOrLoad
+                    ? [r[FieldConstants.EQUIPMENT_ID] ?? '', r[DISTRIBUTION_KEY] ?? '']
+                    : [r[FieldConstants.EQUIPMENT_ID] ?? '']
+            ),
+        ];
+    }, [csvFileHeaders, forGeneratorBatteryOrLoad, getValues]);
 
     const openConfirmationPopup = () => {
         return getValues(FILTER_EQUIPMENTS_ATTRIBUTES).some(
@@ -207,63 +228,84 @@ export function ExplicitNamingFilterForm({
     };
 
     return (
-        <>
-            <Box sx={unscrollableDialogStyles.unscrollableHeader}>
-                <InputWithPopupConfirmation
-                    Input={SelectInput}
-                    name={FieldConstants.EQUIPMENT_TYPE}
-                    options={Object.values(FILTER_EQUIPMENTS)}
-                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
-                    label="equipmentType"
-                    shouldOpenPopup={openConfirmationPopup}
-                    resetOnConfirmation={handleResetOnConfirmation}
-                    message="changeTypeMessage"
-                    validateButtonLabel="button.changeType"
-                    sx={filterStyles.textField}
-                    data-testid="EquipmentTypeSelector"
-                />
-                {sourceFilterForExplicitNamingConversion && (
-                    <ModifyElementSelection
-                        elementType={ElementType.STUDY}
-                        onElementValidated={onStudySelected}
-                        dialogOpeningButtonLabel="selectStudyDialogButton"
-                        dialogTitleLabel="selectStudyDialogTitle"
-                        dialogMessageLabel="selectStudyText"
-                        noElementMessageLabel="noSelectedStudyText"
+        <Grid
+            container
+            direction="column"
+            spacing={2}
+            padding={1} // because of unscrollableHeader in parent component
+            sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
+        >
+            <Grid container justifyContent="space-between" alignItems="center">
+                <Grid>
+                    <InputWithPopupConfirmation
+                        Input={SelectInput}
+                        name={FieldConstants.EQUIPMENT_TYPE}
+                        options={Object.values(FILTER_EQUIPMENTS)}
+                        disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
+                        label="equipmentType"
+                        shouldOpenPopup={openConfirmationPopup}
+                        resetOnConfirmation={handleResetOnConfirmation}
+                        message="changeTypeMessage"
+                        validateButtonLabel="button.changeType"
+                        sx={{ width: 400, maxWidth: '100%' }}
+                        data-testid="EquipmentTypeSelector"
                     />
-                )}
-            </Box>
-            {watchEquipmentType && (
-                <CustomAgGridTable
-                    name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                    columnDefs={columnDefs}
-                    defaultColDef={defaultColDef}
-                    makeDefaultRowData={makeDefaultRowData}
-                    pagination
-                    paginationPageSize={100}
-                    rowSelection={{
-                        mode: 'multiRow',
-                        enableClickSelection: false,
-                        checkboxes: true,
-                        headerCheckbox: true,
-                    }}
-                    alwaysShowVerticalScroll
-                    csvProps={{
-                        fileName: intl.formatMessage({
-                            id: 'filterCsvFileName',
-                        }),
-                        fileHeaders: csvFileHeaders,
-                        getDataFromCsv: getDataFromCsvFile,
-                        language,
-                    }}
-                    cssProps={{
-                        padding: 1,
-                        '& .ag-root-wrapper-body': {
-                            maxHeight: 'unset',
-                        },
-                    }}
-                />
+                    {sourceFilterForExplicitNamingConversion && (
+                        <ModifyElementSelection
+                            elementType={ElementType.STUDY}
+                            onElementValidated={onStudySelected}
+                            dialogOpeningButtonLabel="selectStudyDialogButton"
+                            dialogTitleLabel="selectStudyDialogTitle"
+                            dialogMessageLabel="selectStudyText"
+                            noElementMessageLabel="noSelectedStudyText"
+                        />
+                    )}
+                </Grid>
+                <Grid>
+                    <CsvPicker<Record<string, string>>
+                        label="UploadCSV"
+                        header={csvFileHeaders}
+                        language={language ?? LANG_SYSTEM}
+                        disabled={!watchEquipmentType}
+                        selectedFile={selectedFile}
+                        onFileChange={setSelectedFile}
+                        onFileError={setFileErrorMessage}
+                        getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
+                        onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
+                        onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
+                    />
+                </Grid>
+            </Grid>
+            {fileErrorMessage && (
+                <Grid>
+                    <Alert severity="error">{fileErrorMessage}</Alert>
+                </Grid>
             )}
-        </>
+            {watchEquipmentType && (
+                <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+                    <CustomAgGridTable
+                        ref={tableRef}
+                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                        columnDefs={columnDefs}
+                        defaultColDef={defaultColDef}
+                        makeDefaultRowData={makeDefaultRowData}
+                        pagination
+                        rowSelection={{
+                            mode: 'multiRow',
+                            enableClickSelection: false,
+                            checkboxes: true,
+                            headerCheckbox: true,
+                        }}
+                        alwaysShowVerticalScroll
+                        csvProps={{
+                            fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
+                            language,
+                            getTemplateData,
+                            getTableData,
+                        }}
+                    />
+                </Grid>
+            )}
+        </Grid>
     );
 }
