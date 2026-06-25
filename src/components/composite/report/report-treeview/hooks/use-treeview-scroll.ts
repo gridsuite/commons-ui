@@ -6,7 +6,7 @@
  */
 import { RefObject, useEffect, useRef } from 'react';
 import { ListImperativeAPI } from 'react-window';
-import { ReportItem } from './treeview-item';
+import { ReportItem } from '../treeview-item';
 
 export const useTreeViewScroll = (
     highlightedReportId: string | undefined,

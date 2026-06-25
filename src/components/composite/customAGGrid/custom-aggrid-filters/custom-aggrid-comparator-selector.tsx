@@ -7,7 +7,7 @@
 import React from 'react';
 import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { MuiStyles } from '../../../utils';
+import { MuiStyles } from '../../../../utils';
 
 const styles = {
     input: {

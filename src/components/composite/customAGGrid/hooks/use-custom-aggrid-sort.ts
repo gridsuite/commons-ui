@@ -6,10 +6,10 @@
  */
 import { useCallback } from 'react';
 import { GridApi } from 'ag-grid-community';
-import { snackWithFallback } from '../../../utils';
-import { useSnackMessage } from '../../../hooks';
-import { SortParams, SortWay } from './custom-aggrid-types';
-import { useCustomAggridSortContext } from './custom-aggrid-context';
+import { snackWithFallback } from '../../../../utils';
+import { useSnackMessage } from '../../../../hooks';
+import { SortParams, SortWay } from '../custom-aggrid-types';
+import { useCustomAggridSortContext } from '../context/custom-aggrid-context';
 
 export const useCustomAggridSort = (colId: string, sortParams?: SortParams, api?: GridApi) => {
     const { getSortConfig, setSortConfig } = useCustomAggridSortContext();

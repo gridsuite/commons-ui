@@ -19,11 +19,11 @@ import {
     GridApi,
 } from 'ag-grid-community';
 import { VisibilityOff as VisibilityOffIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
-import { getDefaultSeverityFilter, REPORT_SEVERITY } from './report-severity';
-import { QuickSearch } from './QuickSearch';
-import { ComputingAndNetworkModificationType, Log, SelectedReportLog, SeverityLevel } from './report.type';
-import { reportStyles } from './report.styles';
-import { useReportFetcherContext, useReportFilterContext } from './report-viewer-context';
+import { getDefaultSeverityFilter, REPORT_SEVERITY } from '../../report-severity';
+import { QuickSearch } from '../../QuickSearch';
+import { ComputingAndNetworkModificationType, Log, SelectedReportLog, SeverityLevel } from '../../report.type';
+import { reportStyles } from '../../report.styles';
+import { useReportFetcherContext, useReportFilterContext } from '../context/report-viewer-context';
 import {
     FilterDataTypes,
     FilterTextComparators,
@@ -32,11 +32,11 @@ import {
     MuiStyles,
     SxStyle,
     TableType,
-} from '../../../utils';
-import { AgGridLocales, CustomAGGrid, MessageLogCellRenderer } from '../customAGGrid';
-import { CustomAggridComparatorFilter } from '../customAGGrid/custom-aggrid-comparator-filter';
-import { makeAgGridCustomHeaderColumn } from '../customAGGrid/custom-aggrid-header-utils';
-import { FilterConfig } from '../customAGGrid/custom-aggrid-types';
+} from '../../../../../utils';
+import { AgGridLocales, CustomAGGrid, MessageLogCellRenderer } from '../../../customAGGrid';
+import { CustomAggridComparatorFilter } from '../../../customAGGrid/custom-aggrid-filters/custom-aggrid-comparator-filter';
+import { makeAgGridCustomHeaderColumn } from '../../../customAGGrid/utils/custom-aggrid-header-utils';
+import { FilterConfig } from '../../../customAGGrid/custom-aggrid-types';
 
 const getColumnFilterValue = (array: FilterConfig[] | undefined, columnName: string): any =>
     array?.find((item) => item.column === columnName)?.value ?? null;

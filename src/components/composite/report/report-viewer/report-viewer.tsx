@@ -8,10 +8,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ImperativePanelGroupHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import LogTable from './log-table';
-import { mapReportsTree } from './report-tree.mapper';
-import { VirtualizedTreeview } from './virtualized-treeview';
-import { ReportItem } from './treeview-item';
+import LogTable from './log-table/log-table';
+import { mapReportsTree } from '../report-treeview/report-tree.mapper';
+import { VirtualizedTreeview } from '../report-treeview/virtualized-treeview';
+import { ReportItem } from '../report-treeview/treeview-item';
 import {
     ComputingAndNetworkModificationType,
     Log,
@@ -20,9 +20,9 @@ import {
     ReportType,
     SelectedReportLog,
     SeverityLevel,
-} from './report.type';
-import { GLOBAL_REPORT_NODE_LABEL } from './report.constant';
-import { MuiStyles } from '../../../utils';
+} from '../report.type';
+import { GLOBAL_REPORT_NODE_LABEL } from '../report.constant';
+import { MuiStyles } from '../../../../utils';
 
 const styles = {
     panelHandlerContainer: (theme: any) => ({

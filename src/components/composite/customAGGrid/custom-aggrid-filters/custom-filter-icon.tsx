@@ -7,7 +7,7 @@
 import React, { MouseEventHandler } from 'react';
 import { Badge, Grid, IconButton } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
-import { FilterTextComparators, isNonEmptyStringOrArray, MuiStyles } from '../../../utils';
+import { FilterTextComparators, isNonEmptyStringOrArray, MuiStyles } from '../../../../utils';
 
 const styles = {
     iconSize: { fontSize: '1rem' },

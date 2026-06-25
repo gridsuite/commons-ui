@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Report, ReportTree, ReportType } from './report.type';
-import { GLOBAL_REPORT_NODE_LABEL } from './report.constant';
-import { REPORT_SEVERITY } from './report-severity';
+import { Report, ReportTree, ReportType } from '../report.type';
+import { GLOBAL_REPORT_NODE_LABEL } from '../report.constant';
+import { REPORT_SEVERITY } from '../report-severity';
 
 export function mapReportsTree(report: Report, reportType?: ReportType): ReportTree {
     return {

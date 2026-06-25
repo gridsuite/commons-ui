@@ -14,8 +14,8 @@ import { CustomAggridSort } from './custom-aggrid-sort';
 import { CustomMenu, CustomMenuProps } from './custom-aggrid-menu';
 import { MuiStyles } from '../../../utils';
 import { CustomAggridFilterParams, SortParams } from './custom-aggrid-types';
-import { useCustomAggridSort } from './use-custom-aggrid-sort';
-import { CustomAggridFilter } from './custom-aggrid-filter';
+import { useCustomAggridSort } from './hooks/use-custom-aggrid-sort';
+import { CustomAggridFilter } from './custom-aggrid-filters/custom-aggrid-filter';
 
 const styles = {
     displayName: {

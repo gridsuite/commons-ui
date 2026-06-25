@@ -9,7 +9,7 @@ import { ReactNode, useCallback, useMemo } from 'react';
 import { Box, Stack, styled, Typography, useTheme } from '@mui/material';
 import { type RowComponentProps } from 'react-window';
 import { ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
-import { mergeSx, MuiStyles } from '../../../utils';
+import { mergeSx, MuiStyles } from '../../../../utils';
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 

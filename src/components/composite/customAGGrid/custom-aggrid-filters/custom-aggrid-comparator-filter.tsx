@@ -7,10 +7,10 @@
 import { Grid, IconButton } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { CustomAggridComparatorSelector } from './custom-aggrid-comparator-selector';
-import { FilterTextComparators } from '../../../utils';
-import CustomAggridTextFilter from './custom-aggrid-text-filter';
-import { CustomAggridFilterParams } from './custom-aggrid-types';
-import { useCustomAggridComparatorFilter } from './use-custom-aggrid-comparator-filter';
+import { FilterTextComparators } from '../../../../utils';
+import { CustomAggridTextFilter } from './custom-aggrid-text-filter';
+import { CustomAggridFilterParams } from '../custom-aggrid-types';
+import { useCustomAggridComparatorFilter } from './hooks';
 
 export function CustomAggridComparatorFilter({ colId, filterParams }: CustomAggridFilterParams) {
     const {

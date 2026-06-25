@@ -7,9 +7,9 @@
 import React, { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { useCustomAggridColumnFilter } from './use-custom-aggrid-column-filter';
-import { FilterTextComparators, isNonEmptyStringOrArray } from '../../../utils';
-import { CustomAggridFilterParams } from './custom-aggrid-types';
+import { useCustomAggridColumnFilter } from './hooks/use-custom-aggrid-column-filter';
+import { FilterTextComparators, isNonEmptyStringOrArray } from '../../../../utils';
+import { CustomAggridFilterParams } from '../custom-aggrid-types';
 
 export interface CustomAggridAutocompleteFilterParams extends CustomAggridFilterParams {
     getOptionLabel?: (value: string) => string; // Used for translation of enum values in the filter

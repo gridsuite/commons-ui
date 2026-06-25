@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { isNumber } from 'mathjs';
-import { countDecimalPlaces, countDecimalPlacesFromString } from '../../../utils/rounding';
-import { FilterDataTypes, FilterNumberComparators } from '../../../utils';
-import { FilterConfig, UndisplayedFilterNumberComparators } from './custom-aggrid-types';
+import { countDecimalPlaces, countDecimalPlacesFromString } from '../../../../../utils/rounding';
+import { FilterDataTypes, FilterNumberComparators } from '../../../../../utils';
+import { FilterConfig, UndisplayedFilterNumberComparators } from '../../custom-aggrid-types';
 
 /**
  * Compute the tolerance that should be applied when comparing filter values to database values

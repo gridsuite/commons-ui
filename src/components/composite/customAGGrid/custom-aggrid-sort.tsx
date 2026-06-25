@@ -9,7 +9,7 @@ import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 import React from 'react';
 import { MuiStyles } from '../../../utils';
 import { SortParams, SortWay } from './custom-aggrid-types';
-import { useCustomAggridSort } from './use-custom-aggrid-sort';
+import { useCustomAggridSort } from './hooks/use-custom-aggrid-sort';
 
 const styles = {
     iconSize: {

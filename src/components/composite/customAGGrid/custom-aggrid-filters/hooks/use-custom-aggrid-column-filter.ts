@@ -6,10 +6,10 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { debounce } from '@mui/material';
-import { FilterDataTypes, FilterTextComparators } from '../../../utils';
-import { FilterConfig, FilterData, FilterParams } from './custom-aggrid-types';
-import { useCustomAggridFilterContext } from './custom-aggrid-context';
-import { computeTolerance } from './filter-tolerance-utils';
+import { FilterDataTypes, FilterTextComparators } from '../../../../../utils';
+import { FilterConfig, FilterData, FilterParams } from '../../custom-aggrid-types';
+import { useCustomAggridFilterContext } from '../../context/custom-aggrid-context';
+import { computeTolerance } from '../utils/filter-tolerance-utils';
 
 const removeElementFromArrayWithFieldValue = (filtersArrayToRemoveFieldValueFrom: FilterConfig[], field: string) => {
     return filtersArrayToRemoveFieldValueFrom.filter((f) => f.column !== field);

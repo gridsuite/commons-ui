@@ -6,11 +6,11 @@
  */
 import { ChangeEvent, useMemo } from 'react';
 import { SelectChangeEvent } from '@mui/material';
-import { useSnackMessage } from '../../../hooks';
-import { FilterDataTypes, FilterTextComparators } from '../../../utils';
-import { FilterParams } from './custom-aggrid-types';
-import { countDecimalPlacesFromString } from '../../../utils/rounding';
-import { computeTolerance } from './filter-tolerance-utils';
+import { useSnackMessage } from '../../../../../hooks';
+import { FilterDataTypes, FilterTextComparators } from '../../../../../utils';
+import { FilterParams } from '../../custom-aggrid-types';
+import { countDecimalPlacesFromString } from '../../../../../utils/rounding';
+import { computeTolerance } from '../utils/filter-tolerance-utils';
 import { useCustomAggridColumnFilter } from './use-custom-aggrid-column-filter';
 
 export const useCustomAggridComparatorFilter = (colId: string, filterParams: FilterParams) => {

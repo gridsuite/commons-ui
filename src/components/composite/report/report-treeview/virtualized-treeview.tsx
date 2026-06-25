@@ -9,11 +9,11 @@ import { List, useListRef } from 'react-window';
 import { Label } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { ReportItem, TreeviewItem } from './treeview-item';
-import { ReportTree } from './report.type';
-import { useTreeViewScroll } from './use-treeview-scroll';
-import { QuickSearch } from './QuickSearch';
-import { reportStyles } from './report.styles';
-import { MuiStyles } from '../../../utils';
+import { ReportTree } from '../report.type';
+import { useTreeViewScroll } from './hooks/use-treeview-scroll';
+import { QuickSearch } from '../QuickSearch';
+import { reportStyles } from '../report.styles';
+import { MuiStyles } from '../../../../utils';
 
 const styles = {
     treeItem: {

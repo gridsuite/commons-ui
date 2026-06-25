@@ -6,7 +6,7 @@
  */
 import { createContext, useContext } from 'react';
 import { GridApi } from 'ag-grid-community';
-import { FilterConfig, FilterParams, SortConfig, SortParams } from './custom-aggrid-types';
+import { FilterConfig, FilterParams, SortConfig, SortParams } from '../custom-aggrid-types';
 
 export interface CustomAggridSortContextValue {
     getSortConfig: (sortParams: SortParams | undefined) => SortConfig[] | undefined;
