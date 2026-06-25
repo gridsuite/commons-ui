@@ -27,11 +27,11 @@ export function SecurityAnalysisParametersDialog({
     description,
     activeDirectory,
     language,
-    user,
+    userProfile,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
-        user,
+        userProfile,
         id,
         ComputingType.SECURITY_ANALYSIS,
         OptionalServicesStatus.Up,
