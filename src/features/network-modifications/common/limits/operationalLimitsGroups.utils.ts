@@ -27,7 +27,7 @@ export function generateEmptyOperationalLimitsGroup(name: string): OperationalLi
         [FieldConstants.LIMITS_PROPERTIES]: [],
         [FieldConstants.CURRENT_LIMITS]: {
             [FieldConstants.TEMPORARY_LIMITS]: generateEmptyTemporaryLimitArray(),
-            [FieldConstants.PERMANENT_LIMIT]: 0,
+            [FieldConstants.PERMANENT_LIMIT]: null as unknown as number,
         },
     };
 }
