@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { ElementType } from '../../../utils';
@@ -25,12 +25,12 @@ import { CustomFormProvider } from '../../../components/ui';
 export function NetworkVisualizationParametersInline({
     studyUuid,
     setHaveDirtyFields,
-    user,
+    userProfile,
     parameters,
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
-    user: User | null;
+    userProfile: UserProfile | null;
     parameters: NetworkVisualizationParameters | null;
 }>) {
     const networkVisuMethods = useNetworkVisualizationParametersForm({
@@ -116,7 +116,7 @@ export function NetworkVisualizationParametersInline({
                 isLoading={networkVisuMethods.paramsLoading}
                 actions={actions}
             >
-                <NetworkVisualizationParametersForm user={user} networkVisuMethods={networkVisuMethods} />
+                <NetworkVisualizationParametersForm userProfile={userProfile} networkVisuMethods={networkVisuMethods} />
             </ParameterLayout>
         </CustomFormProvider>
     );
