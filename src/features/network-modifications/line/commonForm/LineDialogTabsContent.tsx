@@ -24,6 +24,7 @@ export function LineDialogTabsContent({
     lineToModify,
     isModification = false,
     withConnectivity = true,
+    clearableFields = false,
     tabIndex,
     voltageLevelOptions = [],
     PositionDiagramPane,
@@ -47,7 +48,7 @@ export function LineDialogTabsContent({
                 <LineCharacteristicsPane lineToModify={lineToModify} isModification={isModification} />
             </Box>
             <Box hidden={tabIndex !== LineDialogTab.LIMITS_TAB} p={1}>
-                <LimitsPane equipmentToModify={lineToModify} clearableFields />
+                <LimitsPane equipmentToModify={lineToModify} clearableFields={clearableFields} />
             </Box>
             {isModification && (
                 <Box hidden={tabIndex !== LineDialogTab.STATE_ESTIMATION_TAB}>

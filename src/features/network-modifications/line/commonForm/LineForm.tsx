@@ -18,11 +18,12 @@ interface LineFormProps
 
 export function LineForm({
     lineToModify,
-    isModification,
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
+    isModification = false,
     withConnectivity = true,
+    clearableFields = false,
 }: Readonly<LineFormProps>) {
     const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<LineDialogTab>(
         LINE_TAB_FIELDS,
@@ -52,6 +53,7 @@ export function LineForm({
                     PositionDiagramPane={PositionDiagramPane}
                     isModification={isModification}
                     withConnectivity={withConnectivity}
+                    clearableFields={clearableFields}
                 />
             </Grid>
         </Grid>
