@@ -220,7 +220,7 @@ export function NetworkModificationsTable({
             setModificationsToExclude,
             lastClickedRowId,
             handleRowSelected,
-            highlightedModificationUuid,
+            onHighlightConsumed,
             modificationToEditLabelRef,
             isRowDragDisabled,
             isImpactedByNotification,
