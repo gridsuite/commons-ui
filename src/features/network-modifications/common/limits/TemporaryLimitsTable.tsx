@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useState } from 'react';
+import { useState, MouseEvent, useCallback } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { Box, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { AddCircle as AddCircleIcon, Delete as DeleteIcon } from '@mui/icons-material';
@@ -87,6 +87,27 @@ export function TemporaryLimitsTable({
     const { fields, append, remove } = useFieldArray({ name: arrayFormName });
     const [hoveredRowIndex, setHoveredRowIndex] = useState(-1);
 
+    const handleMouseEnter = useCallback((event: MouseEvent<HTMLTableRowElement>) => {
+        const { index } = event.currentTarget.dataset;
+        if (index !== undefined) {
+            setHoveredRowIndex(Number(index));
+        }
+    }, []);
+
+    const handleMouseLeave = useCallback(() => {
+        setHoveredRowIndex(-1);
+    }, []);
+
+    const handleRemove = useCallback(
+        (event: MouseEvent<HTMLButtonElement>) => {
+            const { index } = event.currentTarget.dataset;
+            if (index !== undefined) {
+                remove(Number(index));
+            }
+        },
+        [remove]
+    );
+
     function renderTableCell(rowId: string, rowIndex: number, column: ColumnText | ColumnNumeric) {
         const name = `${arrayFormName}[${rowIndex}].${column.dataKey}`;
         return (
@@ -103,13 +124,13 @@ export function TemporaryLimitsTable({
         );
     }
 
-    function handleAddRowButton() {
+    const handleAddRowButton = useCallback(() => {
         const rowsToAdd = createRow().map((row) => {
             return { ...row, [SELECTED]: false };
         });
 
         append(rowsToAdd);
-    }
+    }, [append, createRow]);
 
     function renderTableHead() {
         return (
@@ -135,10 +156,10 @@ export function TemporaryLimitsTable({
     }
 
     const renderTableRow = (rowId: string, index: number) => (
-        <TableRow onMouseEnter={() => setHoveredRowIndex(index)} onMouseLeave={() => setHoveredRowIndex(-1)}>
+        <TableRow key={rowId} data-index={index} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {columnsDefinition.map((column) => renderTableCell(rowId, index, column))}
             <TableCell key={`${rowId}delete`}>
-                <IconButton color="primary" disabled={disabled} onClick={() => remove(index)}>
+                <IconButton data-index={index} color="primary" disabled={disabled} onClick={handleRemove}>
                     <DeleteIcon visibility={index === hoveredRowIndex ? 'visible' : 'hidden'} />
                 </IconButton>
             </TableCell>

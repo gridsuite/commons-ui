@@ -108,7 +108,7 @@ export function OperationalLimitsGroupsTabs({
                     <Tab
                         onMouseEnter={() => setHoveredRowIndex(index)}
                         onContextMenu={(e) => handleOpenMenu(e, index)}
-                        key={opLg.id + index}
+                        key={opLg.id}
                         disableRipple
                         sx={limitsStyles.tabBackground}
                         label={

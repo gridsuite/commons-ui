@@ -318,7 +318,7 @@ export const convertToOperationalLimitsGroupFormSchema = (
 ): OperationalLimitsGroupFormSchema[] => {
     const updatedOpLG: OperationalLimitsGroupFormSchema[] = [];
 
-    for (const currentLimit of currentLimits) {
+    currentLimits.forEach((currentLimit) => {
         const equivalentFromNetMod = updatedOpLG.find(
             (opLG: OperationalLimitsGroupFormSchema) =>
                 currentLimit.id === opLG.name && currentLimit.applicability === opLG[FieldConstants.APPLICABILITY_FIELD]
@@ -335,7 +335,7 @@ export const convertToOperationalLimitsGroupFormSchema = (
                 },
             });
         }
-    }
+    });
 
     return updatedOpLG;
 };

@@ -183,7 +183,7 @@ export function LimitsChart({ limitsGroupFormName, previousPermanentLimit }: Rea
                     updatedSeries.push({
                         type: 'bar',
                         label: intl.formatMessage({ id: 'forbidden' }),
-                        data: [(updatedTicks?.[updatedTicks?.length - 1]?.position ?? 0.0) * 0.15],
+                        data: [(updatedTicks[updatedTicks.length - 1].position ?? 0.0) * 0.15],
                         color: colorForbidden,
                         stack: 'total',
                     });
