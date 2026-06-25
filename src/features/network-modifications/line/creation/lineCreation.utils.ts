@@ -38,15 +38,10 @@ import {
     sanitizeLimitsGroups,
 } from '../../common/limits/limitsPane.utils';
 import {
-    getBranchActiveReactivePowerEditDataProperties,
     getBranchActiveReactivePowerEmptyFormDataProperties,
     getBranchActiveReactivePowerValidationSchemaObject,
 } from '../../common/measurements';
-import {
-    convertToLineSegmentInfos,
-    convertToLineSegmentsFormData,
-    LineSegmentsInfoSchema,
-} from '../lineTypesCatalog';
+import { convertToLineSegmentInfos, convertToLineSegmentsFormData, LineSegmentsInfoSchema } from '../lineTypesCatalog';
 
 export const lineCreationFormSchema = object()
     .shape({
@@ -114,7 +109,7 @@ export const lineCreationDtoToForm = (lineDto: LineCreationDto): LineCreationFor
             lineDto?.selectedOperationalLimitsGroupId1 ?? null,
             lineDto?.selectedOperationalLimitsGroupId2 ?? null
         ),
-        stateEstimation: getBranchActiveReactivePowerEditDataProperties(lineDto),
+        stateEstimation: {},
         // catalog
         lineSegments: convertToLineSegmentsFormData(lineDto.lineSegments),
     };
