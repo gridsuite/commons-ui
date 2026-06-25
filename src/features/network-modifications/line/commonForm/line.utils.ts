@@ -7,6 +7,11 @@
 
 import { FieldConstants } from '../../../../utils';
 
+export interface LineDialogOptions {
+    isModification?: boolean;
+    withConnectivity?: boolean;
+}
+
 export const enum LineDialogTab {
     CONNECTIVITY_TAB = 0,
     CHARACTERISTICS_TAB = 1,

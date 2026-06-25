@@ -11,10 +11,10 @@ import { filledTextField } from '../../common';
 import { TextInput } from '../../../../components/ui';
 import { FieldConstants } from '../../../../utils';
 import { BranchInfos } from './line.types';
+import { LineDialogOptions } from './line.utils';
 
-export interface LineDialogHeaderProps {
+export interface LineDialogHeaderProps extends LineDialogOptions {
     lineToModify?: BranchInfos | null;
-    isModification?: boolean;
 }
 
 export function LineDialogHeader({ lineToModify, isModification = false }: Readonly<LineDialogHeaderProps>) {

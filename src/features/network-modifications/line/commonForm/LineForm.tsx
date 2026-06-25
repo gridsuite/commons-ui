@@ -13,7 +13,8 @@ import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogT
 import { useTabsWithError } from '../../hooks';
 
 interface LineFormProps
-    extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
+    extends LineDialogHeaderProps,
+        Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
 
 export function LineForm({
     lineToModify,
@@ -21,10 +22,11 @@ export function LineForm({
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
+    withConnectivity = true,
 }: Readonly<LineFormProps>) {
     const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<LineDialogTab>(
         LINE_TAB_FIELDS,
-        LineDialogTab.CONNECTIVITY_TAB
+        withConnectivity ? LineDialogTab.CONNECTIVITY_TAB : LineDialogTab.CHARACTERISTICS_TAB
     );
 
     return (
@@ -38,16 +40,18 @@ export function LineForm({
                     tabIndexesWithError={tabIndexesWithError}
                     setTabIndex={setTabIndex}
                     isModification={isModification}
+                    withConnectivity={withConnectivity}
                 />
             </Grid>
             <Grid item>
                 <LineDialogTabsContent
                     tabIndex={tabIndex}
                     lineToModify={lineToModify}
-                    isModification={isModification}
                     voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     PositionDiagramPane={PositionDiagramPane}
+                    isModification={isModification}
+                    withConnectivity={withConnectivity}
                 />
             </Grid>
         </Grid>

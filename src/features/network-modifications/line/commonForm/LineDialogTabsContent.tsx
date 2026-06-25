@@ -8,17 +8,15 @@
 import { Box } from '@mui/material';
 import GridSection from '../../../../components/composite/grid/grid-section';
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
-import { LineDialogTab } from './line.utils';
+import { LineDialogOptions, LineDialogTab } from './line.utils';
 import { BranchConnectivityForm } from '../../common/connectivity/BranchConnectivityForm';
 import { BranchActiveReactivePowerMeasurementsForm } from '../../common/measurements/BranchActiveReactivePowerMeasurementsForm';
 import { LineCharacteristicsPane } from '../characteristicsPane';
 import { BranchInfos } from './line.types';
 import { LimitsPane } from '../../common/limits/LimitsPane';
 
-export interface LineDialogTabsContentProps extends ConnectivityNetworkProps {
+export interface LineDialogTabsContentProps extends ConnectivityNetworkProps, LineDialogOptions {
     lineToModify?: BranchInfos | null;
-    isModification?: boolean;
-    withConnectivity?: boolean;
     tabIndex: number;
 }
 

@@ -8,14 +8,13 @@
 import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { LineDialogTab } from './line.utils';
+import { LineDialogOptions, LineDialogTab } from './line.utils';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 
-interface LineDialogTabsProps {
+interface LineDialogTabsProps extends LineDialogOptions {
     tabIndex: number;
     tabIndexesWithError: number[];
     setTabIndex: (newTabIndex: number) => void;
-    isModification?: boolean;
 }
 
 export function LineDialogTabs({
@@ -23,17 +22,18 @@ export function LineDialogTabs({
     tabIndexesWithError,
     setTabIndex,
     isModification = false,
+    withConnectivity = true,
 }: Readonly<LineDialogTabsProps>) {
     return (
         <Tabs
             value={tabIndex}
             variant="scrollable"
             onChange={(event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
-            TabIndicatorProps={{
-                sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+            slotProps={{
+                indicator: { sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex) },
             }}
         >
-            {!isModification && (
+            {withConnectivity && (
                 <Tab
                     value={LineDialogTab.CONNECTIVITY_TAB}
                     label={<FormattedMessage id="ConnectivityTab" />}
