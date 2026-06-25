@@ -95,7 +95,7 @@ export function OperationalLimitsGroupTabLabel({
                 <LimitsPropertiesStack name={limitsPropertiesName} />
             </Stack>
             {showIconButton && (
-                <IconButton size="small" onClick={(e) => handleOpenMenu(e, index)}>
+                <IconButton component="span" size="small" onClick={(e) => handleOpenMenu(e, index)}>
                     <MoreVertIcon fontSize="small" />
                 </IconButton>
             )}
