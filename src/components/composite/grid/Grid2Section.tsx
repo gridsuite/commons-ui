@@ -38,7 +38,7 @@ export function Grid2Section({
                 component={`h${heading}`}
             >
                 {isLiteralText ? title : <FormattedMessage id={title} />}
-                {tooltipEnabled && (
+                {tooltipEnabled && tooltipMessage && (
                     <Tooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: tooltipMessage })}>
                         <InfoOutlined color="info" fontSize="medium" />
                     </Tooltip>

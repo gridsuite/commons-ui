@@ -35,20 +35,24 @@ export function LineDialogTabs({
         >
             {!isModification && (
                 <Tab
+                    value={LineDialogTab.CONNECTIVITY_TAB}
                     label={<FormattedMessage id="ConnectivityTab" />}
                     sx={getTabStyle(tabIndexesWithError, LineDialogTab.CONNECTIVITY_TAB)}
                 />
             )}
             <Tab
+                value={LineDialogTab.CHARACTERISTICS_TAB}
                 label={<FormattedMessage id="CharacteristicsTab" />}
                 sx={getTabStyle(tabIndexesWithError, LineDialogTab.CHARACTERISTICS_TAB)}
             />
             <Tab
+                value={LineDialogTab.LIMITS_TAB}
                 label={<FormattedMessage id="LimitsTab" />}
                 sx={getTabStyle(tabIndexesWithError, LineDialogTab.LIMITS_TAB)}
             />
             {isModification && (
                 <Tab
+                    value={LineDialogTab.STATE_ESTIMATION_TAB}
                     label={<FormattedMessage id="StateEstimationTab" />}
                     sx={getTabStyle(tabIndexesWithError, LineDialogTab.STATE_ESTIMATION_TAB)}
                 />

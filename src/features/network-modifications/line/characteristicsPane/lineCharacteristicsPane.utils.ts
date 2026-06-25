@@ -38,19 +38,15 @@ export const getCharacteristicsValidationSchema = (id: string, modification: boo
     return characteristicsValidationSchema(id, modification);
 };
 
-const characteristicsEmptyFormData = (id: string) => ({
-    [id]: {
+export const getLineCharacteristicsEmptyFormData = () => {
+    return {
         [FieldConstants.R]: null,
         [FieldConstants.X]: null,
         [FieldConstants.B1]: null,
         [FieldConstants.G1]: null,
         [FieldConstants.B2]: null,
         [FieldConstants.G2]: null,
-    },
-});
-
-export const getLineCharacteristicsEmptyFormData = (id: string = FieldConstants.CHARACTERISTICS) => {
-    return characteristicsEmptyFormData(id);
+    };
 };
 
 export const getLineCharacteristicsFormData = (

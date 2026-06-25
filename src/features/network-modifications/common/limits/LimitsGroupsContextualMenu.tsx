@@ -9,7 +9,7 @@ import { FieldValues, UseFieldArrayAppend, UseFieldArrayRemove, useFormContext }
 import { Menu, MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import { ContentCopy, Delete } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
-import { useCallback } from 'react';
+import { useCallback, Dispatch, SetStateAction } from 'react';
 import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.types';
 import { APPLICABILITY, CurrentLimitsData } from './limits.types';
 import { FieldConstants } from '../../../../utils';
@@ -23,7 +23,7 @@ export interface ContextMenuCoordinates {
 export interface LimitsGroupsContextualMenuProps {
     parentFormName: string;
     indexSelectedLimitSet: number | null;
-    setIndexSelectedLimitSet: React.Dispatch<React.SetStateAction<number | null>>;
+    setIndexSelectedLimitSet: Dispatch<SetStateAction<number | null>>;
     handleCloseMenu: () => void;
     contextMenuCoordinates: ContextMenuCoordinates;
     selectedLimitsGroups1: string;

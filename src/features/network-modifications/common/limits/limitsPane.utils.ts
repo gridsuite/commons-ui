@@ -34,7 +34,7 @@ import { creationPropertiesSchema } from '../properties';
 function hasDuplicateOperationalLimitsGroups(context: TestContext) {
     const limitsGroup: OperationalLimitsGroupFormSchema = context.parent;
     const operationalLimitsGroups: OperationalLimitsGroupFormSchema[] =
-        context.from?.[1]?.value?.[FieldConstants.OPERATIONAL_LIMITS_GROUPS];
+        context.from?.[1]?.value?.[FieldConstants.OPERATIONAL_LIMITS_GROUPS] ?? [];
     const operationalLimitsGroupsWithPath: OperationalLimitsGroupFormSchemaWithPath[] = operationalLimitsGroups.map(
         (item, index) => {
             return {
@@ -128,7 +128,7 @@ const limitsGroupValidationSchema = object()
         [FieldConstants.APPLICABILITY_FIELD]: string().nonNullable().required(),
         [FieldConstants.OLG_IS_DUPLICATE]: boolean()
             .nullable()
-            .test('testDistincts', 'LimitSetApplicabilityError', hasDuplicate),
+            .test('testDistinct', 'LimitSetApplicabilityError', hasDuplicate),
         [FieldConstants.CURRENT_LIMITS]: object().shape(currentLimitsValidationSchema()),
         [FieldConstants.LIMITS_PROPERTIES]: array().of(limitsPropertyValidationSchema()),
     })

@@ -43,7 +43,7 @@ const formatTempo = (tempo: number | null) => {
 export function LimitsChart({ limitsGroupFormName, previousPermanentLimit }: Readonly<LimitsGraphProps>) {
     const currentLimits = useWatch({ name: `${limitsGroupFormName}` });
     const intl = useIntl();
-    const permanentLimit: number | null = currentLimits.permanentLimit ?? previousPermanentLimit ?? null;
+    const permanentLimit: number | null = currentLimits?.permanentLimit ?? previousPermanentLimit ?? null;
 
     const isIncoherent = useCallback(
         (maxValuePermanentLimit: number, item: TemporaryLimitsData, previousItem?: TemporaryLimitsData) => {
