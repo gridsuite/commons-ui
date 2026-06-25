@@ -37,6 +37,7 @@ export interface ParameterActions {
     resetOnClick?: React.MouseEventHandler<HTMLButtonElement>;
     saveOnClick?: React.MouseEventHandler<HTMLButtonElement>;
     validateOnClick?: React.MouseEventHandler<HTMLButtonElement>;
+    validateDisabled?: boolean;
     extra?: ReactNode;
 }
 
@@ -72,7 +73,7 @@ const styles = {
 } as const;
 
 export function ParameterLayout({ children, title, isLoading, actions }: Readonly<ParameterLayoutProps>) {
-    const { preFillOnClick, resetOnClick, saveOnClick, validateOnClick } = actions ?? {};
+    const { preFillOnClick, resetOnClick, saveOnClick, validateOnClick, validateDisabled } = actions ?? {};
 
     const { isXsScreen } = useParameterLayoutContext();
 
@@ -113,7 +114,12 @@ export function ParameterLayout({ children, title, isLoading, actions }: Readonl
             <Box sx={styles.footer}>
                 {saveOnClick && <LabelledButton label="save" data-testid="SaveButton" callback={saveOnClick} />}
                 {validateOnClick && (
-                    <SubmitButton variant="contained" data-testid="ValidateButton" onClick={validateOnClick} />
+                    <SubmitButton
+                        variant="contained"
+                        data-testid="ValidateButton"
+                        onClick={validateOnClick}
+                        disabled={validateDisabled}
+                    />
                 )}
                 {actions?.extra}
             </Box>
