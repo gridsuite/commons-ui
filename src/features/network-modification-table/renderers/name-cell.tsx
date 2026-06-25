@@ -100,7 +100,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         setIsEditing(false);
         setInputBaseWidthPx(null);
         if (meta) {
-            meta.interaction.endModificationHighlighting();
+            meta.interaction.onHighlightConsumed();
         }
     }, [meta]);
 

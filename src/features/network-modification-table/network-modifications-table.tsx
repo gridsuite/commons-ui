@@ -200,7 +200,7 @@ export function NetworkModificationsTable({
                 onRowSelected: handleRowSelected,
                 isRowDragDisabled,
                 modificationToEditLabel: modificationToEditLabelRef,
-                onHighlightConsumed: onHighlightConsumed,
+                onHighlightConsumed,
             },
             status: {
                 isImpactedByNotification,
