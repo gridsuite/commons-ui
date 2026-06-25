@@ -6,11 +6,9 @@
  */
 
 import { ReactNode } from 'react';
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { FieldValues } from 'react-hook-form';
-import { mergeSx } from '../../../utils';
-import { ProviderParam, ParameterLayout, ParameterActions } from '../common';
+import { ProviderParam, ParameterActions } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
@@ -22,70 +20,42 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicMarginCalculationFormProps = {
     dynamicMarginCalculationMethods: UseComputationParametersFormReturn;
-    onSubmit: (formData: FieldValues) => void;
     renderTitleFields?: () => ReactNode;
     actions?: ParameterActions;
 };
 
 export function DynamicMarginCalculationForm({
     dynamicMarginCalculationMethods,
-    onSubmit,
     renderTitleFields,
-    actions,
 }: Readonly<DynamicMarginCalculationFormProps>) {
-    const { paramsLoaded, formattedProviders, formMethods } = dynamicMarginCalculationMethods;
-    const { handleSubmit } = formMethods;
+    const { paramsLoaded, formattedProviders } = dynamicMarginCalculationMethods;
 
-    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
+    const { selectedTab, tabsWithError, onTabChange } = useTabs({
         defaultTab: Object.values(TabValues)[0],
         tabEnum: TabValues,
     });
+
+    if (!paramsLoaded) {
+        return <LinearProgress />;
+    }
+
     return (
-        <ParameterLayout
-            title="DynamicMarginCalculation"
-            header={
-                <>
-                    {renderTitleFields?.()}
-                    {paramsLoaded && (
-                        <>
-                            <ProviderParam options={formattedProviders} />
-                            <Tabs
-                                value={selectedTab}
-                                variant="scrollable"
-                                onChange={onTabChange}
-                                aria-label="parameters"
-                            >
-                                <Tab
-                                    label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
-                                    value={TabValues.TAB_TIME_DELAY}
-                                    sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
-                                    value={TabValues.TAB_LOADS_VARIATIONS}
-                                    sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
-                                />
-                            </Tabs>
-                        </>
-                    )}
-                </>
-            }
-            isLoading={!paramsLoaded}
-            actions={{
-                ...actions,
-                validateOnClick: handleSubmit(onSubmit, onError),
-            }}
-        >
-            <Grid
-                container
-                xs
-                key="dmcParameters"
-                sx={mergeSx(parametersStyles.scrollableGrid, {
-                    paddingTop: 0,
-                    width: '100%',
-                    maxHeight: '100%',
-                })}
-            >
+        <Grid container sx={parametersStyles.scrollableGrid}>
+            {renderTitleFields?.()}
+            <ProviderParam options={formattedProviders} />
+            <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                <Tab
+                    label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
+                    value={TabValues.TAB_TIME_DELAY}
+                    sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
+                />
+                <Tab
+                    label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
+                    value={TabValues.TAB_LOADS_VARIATIONS}
+                    sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
+                />
+            </Tabs>
+            <Grid container xs key="dmcParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
                 <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
                     <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
                 </TabPanel>
@@ -93,6 +63,6 @@ export function DynamicMarginCalculationForm({
                     <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
                 </TabPanel>
             </Grid>
-        </ParameterLayout>
+        </Grid>
     );
 }

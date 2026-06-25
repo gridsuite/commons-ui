@@ -19,6 +19,8 @@ import { useNetworkVisualizationParametersForm } from './use-network-visualizati
 import { getNetworkVisualizationsParameters } from '../../../services';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
 import { snackWithFallback } from '../../../utils/error';
+import { ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 
 export function NetworkVisualizationParametersInline({
     studyUuid,
@@ -103,5 +105,19 @@ export function NetworkVisualizationParametersInline({
         ),
     };
 
-    return <NetworkVisualizationParametersForm user={user} networkVisuMethods={networkVisuMethods} actions={actions} />;
+    return (
+        <CustomFormProvider
+            validationSchema={networkVisuMethods.formSchema}
+            {...networkVisuMethods.formMethods}
+            removeOptional
+        >
+            <ParameterLayout
+                title="NetworkVisualizations"
+                isLoading={networkVisuMethods.paramsLoading}
+                actions={actions}
+            >
+                <NetworkVisualizationParametersForm user={user} networkVisuMethods={networkVisuMethods} />
+            </ParameterLayout>
+        </CustomFormProvider>
+    );
 }

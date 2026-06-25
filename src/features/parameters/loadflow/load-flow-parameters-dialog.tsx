@@ -66,7 +66,6 @@ export function LoadFlowParametersEditionDialog({
             <LoadFlowProvider>
                 <LoadFlowParametersForm
                     loadflowMethods={loadflowMethods}
-                    language={language}
                     renderTitleFields={() => {
                         return (
                             <NameElementEditorForm

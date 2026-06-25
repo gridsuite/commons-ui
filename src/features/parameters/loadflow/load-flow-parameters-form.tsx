@@ -5,21 +5,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
-import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLayout, ParameterActions } from '../common';
-import type { GsLang } from '../../../utils/langs';
 import type { MuiStyles } from '../../../utils/styles';
 
 interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
-    language: GsLang;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
 }
 
 const styles = {
@@ -48,15 +43,8 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
-export function LoadFlowParametersForm({
-    loadflowMethods,
-    language,
-    renderTitleFields,
-    actions,
-}: Readonly<LoadFlowParametersFormProps>) {
+export function LoadFlowParametersForm({ loadflowMethods, renderTitleFields }: Readonly<LoadFlowParametersFormProps>) {
     const {
-        formMethods,
-        formSchema,
         selectedTab,
         handleTabChange,
         tabIndexesWithError,
@@ -68,36 +56,26 @@ export function LoadFlowParametersForm({
         paramsLoaded,
     } = loadflowMethods;
 
+    if (!paramsLoaded) {
+        return <LinearProgress />;
+    }
+
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional language={language}>
-            <ParameterLayout
-                title="LoadFlow"
-                header={
-                    <>
-                        {renderTitleFields?.()}
-                        {paramsLoaded && (
-                            <LoadFlowParametersHeader
-                                selectedTab={selectedTab}
-                                handleTabChange={handleTabChange}
-                                tabIndexesWithError={tabIndexesWithError}
-                                formattedProviders={formattedProviders}
-                            />
-                        )}
-                    </>
-                }
-                isLoading={!paramsLoaded}
-                actions={actions}
-            >
-                <Grid container sx={styles.content}>
-                    <LoadFlowParametersContent
-                        selectedTab={selectedTab}
-                        currentProvider={watchProvider ?? ''}
-                        specificParameters={specificParametersDescriptionForProvider}
-                        params={params}
-                        defaultLimitReductions={defaultLimitReductions}
-                    />
-                </Grid>
-            </ParameterLayout>
-        </CustomFormProvider>
+        <Grid container sx={styles.content}>
+            {renderTitleFields?.()}
+            <LoadFlowParametersHeader
+                selectedTab={selectedTab}
+                handleTabChange={handleTabChange}
+                tabIndexesWithError={tabIndexesWithError}
+                formattedProviders={formattedProviders}
+            />
+            <LoadFlowParametersContent
+                selectedTab={selectedTab}
+                currentProvider={watchProvider ?? ''}
+                specificParameters={specificParametersDescriptionForProvider}
+                params={params}
+                defaultLimitReductions={defaultLimitReductions}
+            />
+        </Grid>
     );
 }

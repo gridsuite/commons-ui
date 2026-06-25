@@ -16,9 +16,11 @@ import {
     useDynamicSecurityAnalysisParametersForm,
 } from './use-dynamic-security-analysis-parameters-form';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
-import { CreateParameterDialog } from '../common';
-import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
+import { CreateParameterDialog, ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
+import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
+import { useTabs } from '../common/hook/use-tabs';
+import { TabValues } from './dynamic-security-analysis.type';
 
 type DynamicSecurityAnalysisInlineProps = {
     studyUuid: UUID | null;
@@ -41,8 +43,13 @@ export function DynamicSecurityAnalysisInline({
     const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formSchema, formMethods } = dynamicSecurityAnalysisMethods;
-    const { getValues, formState } = formMethods;
+    const { formMethods } = dynamicSecurityAnalysisMethods;
+    const { getValues, formState, handleSubmit } = formMethods;
+
+    const { onError } = useTabs({
+        defaultTab: TabValues.SCENARIO,
+        tabEnum: TabValues,
+    });
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -71,6 +78,7 @@ export function DynamicSecurityAnalysisInline({
     const actions = {
         saveOnClick: () => setOpenCreateParameterDialog(true),
         resetOnClick: handleResetClick,
+        validateOnClick: handleSubmit(onSubmit, onError),
         extra: (
             <>
                 {openCreateParameterDialog && (
@@ -98,12 +106,16 @@ export function DynamicSecurityAnalysisInline({
     };
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
-            <DynamicSecurityAnalysisParametersForm
-                dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
-                onSubmit={onSubmit}
+        <CustomFormProvider validationSchema={dynamicSecurityAnalysisMethods.formSchema} {...formMethods}>
+            <ParameterLayout
+                title="DynamicSecurityAnalysis"
+                isLoading={!dynamicSecurityAnalysisMethods.paramsLoaded}
                 actions={actions}
-            />
+            >
+                <DynamicSecurityAnalysisParametersForm
+                    dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
+                />
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

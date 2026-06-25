@@ -5,12 +5,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { getTabIndicatorStyle, getTabStyle } from '../parameters-style';
-import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLayout, TabPanel, ParameterActions } from '../common';
+import { getTabIndicatorStyle, getTabStyle, parametersStyles } from '../parameters-style';
+import { TabPanel } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
 import { VoltageInitTabValues as TabValues } from './constants';
 import { GeneralParameters } from './general-parameters';
@@ -20,67 +19,58 @@ import { VoltageLimitsParameters } from './voltage-limits-parameters';
 interface VoltageInitParametersFormProps {
     voltageInitMethods: UseVoltageInitParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
+    showActionsButtons?: boolean;
 }
 
 export function VoltageInitParametersForm({
     voltageInitMethods,
     renderTitleFields,
-    actions,
+    showActionsButtons,
 }: Readonly<VoltageInitParametersFormProps>) {
-    const { formMethods, formSchema, selectedTab, handleTabChange, paramsLoading, tabIndexesWithError } =
-        voltageInitMethods;
+    const { selectedTab, handleTabChange, paramsLoading, tabIndexesWithError } = voltageInitMethods;
+
+    if (paramsLoading) {
+        return <LinearProgress />;
+    }
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout
-                title="VoltageInit"
-                header={
-                    <>
-                        {renderTitleFields?.()}
-                        {!paramsLoading && (
-                            <Tabs
-                                value={selectedTab}
-                                variant="scrollable"
-                                onChange={handleTabChange}
-                                TabIndicatorProps={{
-                                    sx: getTabIndicatorStyle(tabIndexesWithError, selectedTab),
-                                }}
-                            >
-                                <Tab
-                                    label={<FormattedMessage id="VoltageInitParametersGeneralTabLabel" />}
-                                    value={TabValues.GENERAL}
-                                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id="VoltageLimits" />}
-                                    value={TabValues.VOLTAGE_LIMITS}
-                                    sx={getTabStyle(tabIndexesWithError, TabValues.VOLTAGE_LIMITS)}
-                                />
-                                <Tab
-                                    label={<FormattedMessage id="EquipmentSelection" />}
-                                    value={TabValues.EQUIPMENTS_SELECTION}
-                                    sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION)}
-                                />
-                            </Tabs>
-                        )}
-                    </>
-                }
-                isLoading={paramsLoading}
-                actions={actions}
+        <Grid container sx={parametersStyles.scrollableGrid}>
+            {renderTitleFields?.()}
+            <Tabs
+                value={selectedTab}
+                variant="scrollable"
+                onChange={handleTabChange}
+                TabIndicatorProps={{
+                    sx: getTabIndicatorStyle(tabIndexesWithError, selectedTab),
+                }}
             >
-                <Grid container>
-                    <TabPanel value={selectedTab} index={TabValues.GENERAL}>
-                        <GeneralParameters withApplyModifications={actions != null} />
-                    </TabPanel>
-                    <TabPanel value={selectedTab} index={TabValues.VOLTAGE_LIMITS}>
-                        <VoltageLimitsParameters />
-                    </TabPanel>
-                    <TabPanel value={selectedTab} index={TabValues.EQUIPMENTS_SELECTION}>
-                        <EquipmentSelectionParameters />
-                    </TabPanel>
-                </Grid>
-            </ParameterLayout>
-        </CustomFormProvider>
+                <Tab
+                    label={<FormattedMessage id="VoltageInitParametersGeneralTabLabel" />}
+                    value={TabValues.GENERAL}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
+                />
+                <Tab
+                    label={<FormattedMessage id="VoltageLimits" />}
+                    value={TabValues.VOLTAGE_LIMITS}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.VOLTAGE_LIMITS)}
+                />
+                <Tab
+                    label={<FormattedMessage id="EquipmentSelection" />}
+                    value={TabValues.EQUIPMENTS_SELECTION}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION)}
+                />
+            </Tabs>
+            <Grid container>
+                <TabPanel value={selectedTab} index={TabValues.GENERAL}>
+                    <GeneralParameters withApplyModifications={!!showActionsButtons} />
+                </TabPanel>
+                <TabPanel value={selectedTab} index={TabValues.VOLTAGE_LIMITS}>
+                    <VoltageLimitsParameters />
+                </TabPanel>
+                <TabPanel value={selectedTab} index={TabValues.EQUIPMENTS_SELECTION}>
+                    <EquipmentSelectionParameters />
+                </TabPanel>
+            </Grid>
+        </Grid>
     );
 }

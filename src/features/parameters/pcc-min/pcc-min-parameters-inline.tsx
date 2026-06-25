@@ -9,7 +9,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../hooks';
-import { CreateParameterDialog } from '../common';
+import { CreateParameterDialog, ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
@@ -136,5 +137,11 @@ export function PccMinParametersInLine({
         ),
     };
 
-    return <PccMinParametersForm pccMinMethods={pccMinMethods} actions={actions} />;
+    return (
+        <CustomFormProvider validationSchema={pccMinMethods.formSchema} {...pccMinMethods.formMethods} removeOptional>
+            <ParameterLayout title="PccMin" actions={actions} isLoading={pccMinMethods.paramsLoading}>
+                <PccMinParametersForm pccMinMethods={pccMinMethods} />
+            </ParameterLayout>
+        </CustomFormProvider>
+    );
 }

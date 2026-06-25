@@ -10,10 +10,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { ElementType, snackWithFallback, VoltageLevelInfos } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType, CreateParameterDialog } from '../common';
+import { ComputingType, CreateParameterDialog, ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
+import { useTabs } from '../common/hook/use-tabs';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
-import { CustomFormProvider } from '../../../components/ui';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import {
@@ -21,6 +22,7 @@ import {
     toParamsInfos,
     useDynamicSimulationParametersForm,
 } from './use-dynamic-simulation-parameters-form';
+import { TabValues } from './dynamic-simulation.type';
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
 import { fetchDynamicSimulationParameters } from '../../../services/dynamic-simulation';
 import { ExpertFilter, IdentifiableAttributes } from '../../../components/composite/filter';
@@ -62,8 +64,13 @@ export function DynamicSimulationInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formSchema, formMethods } = dynamicSimulationMethods;
-    const { reset, getValues, formState } = formMethods;
+    const { formMethods } = dynamicSimulationMethods;
+    const { reset, getValues, formState, handleSubmit } = formMethods;
+
+    const { onError } = useTabs({
+        defaultTab: TabValues.TAB_TIME_DELAY,
+        tabEnum: TabValues,
+    });
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -114,6 +121,7 @@ export function DynamicSimulationInline({
         preFillOnClick: () => setOpenSelectParameterDialog(true),
         saveOnClick: () => setOpenCreateParameterDialog(true),
         resetOnClick: handleResetClick,
+        validateOnClick: handleSubmit(onSubmit, onError),
         extra: (
             <>
                 {openCreateParameterDialog && (
@@ -156,15 +164,19 @@ export function DynamicSimulationInline({
     };
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
-            <DynamicSimulationForm
-                dynamicSimulationMethods={dynamicSimulationMethods}
-                onSubmit={onSubmit}
+        <CustomFormProvider validationSchema={dynamicSimulationMethods.formSchema} {...formMethods}>
+            <ParameterLayout
+                title="DynamicSimulation"
+                isLoading={!dynamicSimulationMethods.paramsLoaded}
                 actions={actions}
-                voltageLevelsFetcher={voltageLevelsFetcher}
-                countriesFetcher={countriesFetcher}
-                evaluateFilterFetcher={evaluateFilterFetcher}
-            />
+            >
+                <DynamicSimulationForm
+                    dynamicSimulationMethods={dynamicSimulationMethods}
+                    voltageLevelsFetcher={voltageLevelsFetcher}
+                    countriesFetcher={countriesFetcher}
+                    evaluateFilterFetcher={evaluateFilterFetcher}
+                />
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

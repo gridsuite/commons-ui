@@ -5,34 +5,31 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
-import { CustomFormProvider } from '../../../components/ui';
-import { ParameterLayout, ParameterActions } from '../common';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
+import { parametersStyles } from '../parameters-style';
 
 interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
 }
 
 export function ShortCircuitParametersForm({
     shortCircuitMethods,
     renderTitleFields,
-    actions,
 }: Readonly<ShortCircuitParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoaded } = shortCircuitMethods;
+    const { paramsLoaded } = shortCircuitMethods;
+
+    if (!paramsLoaded) {
+        return <LinearProgress />;
+    }
+
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout
-                title="ShortCircuit"
-                header={renderTitleFields?.()}
-                actions={actions}
-                isLoading={!paramsLoaded}
-            >
-                <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
-            </ParameterLayout>
-        </CustomFormProvider>
+        <Grid container sx={parametersStyles.scrollableGrid}>
+            {renderTitleFields?.()}
+            <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
+        </Grid>
     );
 }

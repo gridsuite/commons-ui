@@ -5,15 +5,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { ReactNode } from 'react';
-import { CustomFormProvider } from '../../../components/ui';
 import { ParameterLineDirectoryItemsInput } from '../common/widget/parameter-line-directory-items-input.js';
-import { ParameterLayout, ParameterActions } from '../common';
 import type { MuiStyles } from '../../../utils/styles';
 import { ElementType, EquipmentType } from '../../../utils';
 import { UsePccMinParametersFormReturn } from './use-pcc-min-parameters-form';
 import { FILTERS } from '../../../utils/constants/filterConstant';
+import { parametersStyles } from '../parameters-style';
 
 export const styles = {
     gridWithActions: (theme) => ({
@@ -38,30 +37,28 @@ export const styles = {
 interface PccMinParametersFormProps {
     pccMinMethods: UsePccMinParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
 }
 
-export function PccMinParametersForm({
-    pccMinMethods,
-    renderTitleFields,
-    actions,
-}: Readonly<PccMinParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoading } = pccMinMethods;
+export function PccMinParametersForm({ pccMinMethods, renderTitleFields }: Readonly<PccMinParametersFormProps>) {
+    const { paramsLoading } = pccMinMethods;
+
+    if (paramsLoading) {
+        return <LinearProgress />;
+    }
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout title="PccMin" header={renderTitleFields?.()} actions={actions} isLoading={paramsLoading}>
-                <Grid item container direction="column">
-                    <ParameterLineDirectoryItemsInput
-                        name={FILTERS}
-                        equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
-                        elementType={ElementType.FILTER}
-                        label="pccMinParamFilter"
-                        hideErrorMessage={false}
-                        allowMultiSelect={false}
-                    />
-                </Grid>
-            </ParameterLayout>
-        </CustomFormProvider>
+        <Grid container sx={parametersStyles.scrollableGrid}>
+            {renderTitleFields?.()}
+            <Grid item container direction="column">
+                <ParameterLineDirectoryItemsInput
+                    name={FILTERS}
+                    equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
+                    elementType={ElementType.FILTER}
+                    label="pccMinParamFilter"
+                    hideErrorMessage={false}
+                    allowMultiSelect={false}
+                />
+            </Grid>
+        </Grid>
     );
 }

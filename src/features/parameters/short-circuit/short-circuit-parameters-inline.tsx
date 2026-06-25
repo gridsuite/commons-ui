@@ -11,7 +11,8 @@ import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, CreateParameterDialog } from '../common';
+import { ComputingType, CreateParameterDialog, ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { fetchShortCircuitParameters } from '../../../services/short-circuit-analysis';
@@ -135,5 +136,15 @@ export function ShortCircuitParametersInLine({
         ),
     };
 
-    return <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} actions={actions} />;
+    return (
+        <CustomFormProvider
+            validationSchema={shortCircuitMethods.formSchema}
+            {...shortCircuitMethods.formMethods}
+            removeOptional
+        >
+            <ParameterLayout title="ShortCircuit" isLoading={!shortCircuitMethods.paramsLoaded} actions={actions}>
+                <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} />
+            </ParameterLayout>
+        </CustomFormProvider>
+    );
 }

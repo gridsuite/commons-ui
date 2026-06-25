@@ -21,6 +21,8 @@ import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
+import { ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 
 export function LoadFlowParametersInline({
     studyUuid,
@@ -85,57 +87,66 @@ export function LoadFlowParametersInline({
 
     return (
         <LoadFlowProvider>
-            <LoadFlowParametersForm
-                loadflowMethods={loadflowMethods}
+            <CustomFormProvider
+                validationSchema={loadflowMethods.formSchema}
+                {...loadflowMethods.formMethods}
+                removeOptional
                 language={language}
-                actions={{
-                    preFillOnClick: () => setOpenSelectParameterDialog(true),
-                    saveOnClick: () => setOpenCreateParameterDialog(true),
-                    resetOnClick: handleResetAllClick,
-                    validateOnClick: handleSubmit(loadflowMethods.onSaveInline, loadflowMethods.onValidationError),
-                    extra: (
-                        <>
-                            {openCreateParameterDialog && (
-                                <CreateParameterDialog
-                                    studyUuid={studyUuid}
-                                    open={openCreateParameterDialog}
-                                    onClose={() => setOpenCreateParameterDialog(false)}
-                                    parameterValues={() => loadflowMethods.formatNewParams(getValues())}
-                                    parameterFormatter={(newParams) => newParams}
-                                    parameterType={ElementType.LOADFLOW_PARAMETERS}
-                                />
-                            )}
+            >
+                <ParameterLayout
+                    title="LoadFlow"
+                    isLoading={!loadflowMethods.paramsLoaded}
+                    actions={{
+                        preFillOnClick: () => setOpenSelectParameterDialog(true),
+                        saveOnClick: () => setOpenCreateParameterDialog(true),
+                        resetOnClick: handleResetAllClick,
+                        validateOnClick: handleSubmit(loadflowMethods.onSaveInline, loadflowMethods.onValidationError),
+                        extra: (
+                            <>
+                                {openCreateParameterDialog && (
+                                    <CreateParameterDialog
+                                        studyUuid={studyUuid}
+                                        open={openCreateParameterDialog}
+                                        onClose={() => setOpenCreateParameterDialog(false)}
+                                        parameterValues={() => loadflowMethods.formatNewParams(getValues())}
+                                        parameterFormatter={(newParams) => newParams}
+                                        parameterType={ElementType.LOADFLOW_PARAMETERS}
+                                    />
+                                )}
 
-                            {openSelectParameterDialog && (
-                                <DirectoryItemSelector
-                                    open={openSelectParameterDialog}
-                                    onClose={handleLoadParameter}
-                                    types={[ElementType.LOADFLOW_PARAMETERS]}
-                                    title={intl.formatMessage({
-                                        id: 'showSelectParameterDialog',
-                                    })}
-                                    onlyLeaves
-                                    multiSelect={false}
-                                    validationButtonText={intl.formatMessage({
-                                        id: 'validate',
-                                    })}
-                                />
-                            )}
+                                {openSelectParameterDialog && (
+                                    <DirectoryItemSelector
+                                        open={openSelectParameterDialog}
+                                        onClose={handleLoadParameter}
+                                        types={[ElementType.LOADFLOW_PARAMETERS]}
+                                        title={intl.formatMessage({
+                                            id: 'showSelectParameterDialog',
+                                        })}
+                                        onlyLeaves
+                                        multiSelect={false}
+                                        validationButtonText={intl.formatMessage({
+                                            id: 'validate',
+                                        })}
+                                    />
+                                )}
 
-                            {/* Reset Confirmation Dialog */}
-                            {openResetConfirmation && (
-                                <PopupConfirmationDialog
-                                    message="resetParamsConfirmation"
-                                    validateButtonLabel="validate"
-                                    openConfirmationPopup={openResetConfirmation}
-                                    setOpenConfirmationPopup={handleCancelReset}
-                                    handlePopupConfirmation={executeResetAction}
-                                />
-                            )}
-                        </>
-                    ),
-                }}
-            />
+                                {/* Reset Confirmation Dialog */}
+                                {openResetConfirmation && (
+                                    <PopupConfirmationDialog
+                                        message="resetParamsConfirmation"
+                                        validateButtonLabel="validate"
+                                        openConfirmationPopup={openResetConfirmation}
+                                        setOpenConfirmationPopup={handleCancelReset}
+                                        handlePopupConfirmation={executeResetAction}
+                                    />
+                                )}
+                            </>
+                        ),
+                    }}
+                >
+                    <LoadFlowParametersForm loadflowMethods={loadflowMethods} />
+                </ParameterLayout>
+            </CustomFormProvider>
         </LoadFlowProvider>
     );
 }

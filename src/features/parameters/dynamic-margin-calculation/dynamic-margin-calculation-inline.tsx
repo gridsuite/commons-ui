@@ -18,13 +18,16 @@ import {
     toParamsInfos,
     useDynamicMarginCalculationParametersForm,
 } from './use-dynamic-margin-calculation-parameters-form';
-import { ParameterActions, CreateParameterDialog } from '../common';
+import { ParameterLayout, ParameterActions } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
 import { useSnackMessage } from '../../../hooks';
-import { CustomFormProvider } from '../../../components/ui';
+import { useTabs } from '../common/hook/use-tabs';
+import { TabValues } from './dynamic-margin-calculation.type';
+import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 
 type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
@@ -50,8 +53,13 @@ export function DynamicMarginCalculationInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formSchema, formMethods } = dynamicMarginCalculationMethods;
-    const { reset, getValues, formState } = formMethods;
+    const { formMethods } = dynamicMarginCalculationMethods;
+    const { reset, getValues, formState, handleSubmit } = formMethods;
+
+    const { onError } = useTabs({
+        defaultTab: Object.values(TabValues)[0],
+        tabEnum: TabValues,
+    });
 
     const handleResetClick = useCallback(() => {
         setOpenResetConfirmation(true);
@@ -143,12 +151,17 @@ export function DynamicMarginCalculationInline({
     };
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
-            <DynamicMarginCalculationForm
-                dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
-                onSubmit={onSubmit}
-                actions={actions}
-            />
+        <CustomFormProvider validationSchema={dynamicMarginCalculationMethods.formSchema} {...formMethods}>
+            <ParameterLayout
+                title="DynamicMarginCalculation"
+                isLoading={!dynamicMarginCalculationMethods.paramsLoaded}
+                actions={{
+                    ...actions,
+                    validateOnClick: handleSubmit(onSubmit, onError),
+                }}
+            >
+                <DynamicMarginCalculationForm dynamicMarginCalculationMethods={dynamicMarginCalculationMethods} />
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

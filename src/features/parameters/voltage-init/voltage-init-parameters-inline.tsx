@@ -11,7 +11,8 @@ import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
-import { CreateParameterDialog } from '../common';
+import { CreateParameterDialog, ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
@@ -148,5 +149,15 @@ export function VoltageInitParametersInLine({
         ),
     };
 
-    return <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} actions={actions} />;
+    return (
+        <CustomFormProvider
+            validationSchema={voltageInitMethods.formSchema}
+            {...voltageInitMethods.formMethods}
+            removeOptional
+        >
+            <ParameterLayout title="VoltageInit" isLoading={voltageInitMethods.paramsLoading} actions={actions}>
+                <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} showActionsButtons />
+            </ParameterLayout>
+        </CustomFormProvider>
+    );
 }

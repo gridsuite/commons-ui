@@ -14,7 +14,8 @@ import {
     SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
 } from '../../../utils';
-import { ComputingType, CreateParameterDialog } from '../common';
+import { ComputingType, CreateParameterDialog, ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { useSnackMessage } from '../../../hooks';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import {
@@ -67,7 +68,7 @@ export function SensitivityAnalysisParametersInline({
     const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { reset, formState, getValues } = sensitivityAnalysisMethods.formMethods;
+    const { reset, formState, getValues, handleSubmit } = sensitivityAnalysisMethods.formMethods;
 
     const handleSensibilityParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
@@ -168,12 +169,25 @@ export function SensitivityAnalysisParametersInline({
     };
 
     return (
-        <SensitivityAnalysisParametersForm
-            sensitivityAnalysisMethods={sensitivityAnalysisMethods}
-            isDeveloperMode={isDeveloperMode}
-            isRootNode={isRootNode}
-            globalBuildStatus={globalBuildStatus}
-            actions={actions}
-        />
+        <CustomFormProvider
+            validationSchema={sensitivityAnalysisMethods.formSchema}
+            {...sensitivityAnalysisMethods.formMethods}
+        >
+            <ParameterLayout
+                title="SensitivityAnalysis"
+                isLoading={!sensitivityAnalysisMethods.paramsFormInitialized}
+                actions={{
+                    ...actions,
+                    validateOnClick: handleSubmit(sensitivityAnalysisMethods.onSaveInline),
+                }}
+            >
+                <SensitivityAnalysisParametersForm
+                    sensitivityAnalysisMethods={sensitivityAnalysisMethods}
+                    isDeveloperMode={isDeveloperMode}
+                    isRootNode={isRootNode}
+                    globalBuildStatus={globalBuildStatus}
+                />
+            </ParameterLayout>
+        </CustomFormProvider>
     );
 }

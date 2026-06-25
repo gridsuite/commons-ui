@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
+import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip, Theme } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
 import { createContext, useContext, ReactNode, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -43,9 +43,7 @@ export interface ParameterActions {
 interface ParameterLayoutProps {
     children: ReactNode;
     title?: string;
-    header?: ReactNode;
     isLoading?: boolean;
-    contentSx?: any;
     actions?: ParameterActions;
 }
 
@@ -56,60 +54,62 @@ const styles = {
         position: 'relative',
         display: 'flex',
     },
-    header: {
+    title: {
         flexShrink: 0,
+        paddingBottom: 2,
     },
     content: {
         flexGrow: 1,
         overflowY: 'auto',
         overflowX: 'hidden',
         minHeight: 0, // Critical for flex-grow with overflow
-        paddingLeft: 1,
     },
     footer: {
         flexShrink: 0,
         p: 1,
+        borderTop: (theme: Theme) => `1px solid ${theme.palette.divider}`,
     },
 } as const;
 
-export function ParameterLayout({ children, title, header, isLoading, actions }: Readonly<ParameterLayoutProps>) {
+export function ParameterLayout({ children, title, isLoading, actions }: Readonly<ParameterLayoutProps>) {
     const { preFillOnClick, resetOnClick, saveOnClick, validateOnClick } = actions ?? {};
 
     const { isXsScreen } = useParameterLayoutContext();
 
     return (
         <Stack sx={styles.stack}>
-            <Box sx={{ paddingBottom: 2 }}>
-                <Grid container justifyContent="space-between" sx={{ alignItems: 'center' }}>
-                    <Grid item xs={4}>
-                        {title && !isXsScreen && <FormattedMessage id={title} />}
-                    </Grid>
-                    <Grid item xs="auto">
-                        <ButtonGroup>
-                            {preFillOnClick && (
-                                <LabelledButton
-                                    callback={preFillOnClick}
-                                    label="button.prefill"
-                                    data-testid="PrefillButton"
-                                    startIcon={<Upload />}
-                                />
-                            )}
-                            {resetOnClick && (
-                                <Tooltip title={<FormattedMessage id="tooltip.reset" />}>
+            {(title || preFillOnClick || resetOnClick) && (
+                <Box sx={styles.title}>
+                    <Grid container justifyContent="space-between" sx={{ alignItems: 'center' }}>
+                        <Grid item xs={4}>
+                            {title && !isXsScreen && <FormattedMessage id={title} />}
+                        </Grid>
+                        <Grid item xs="auto">
+                            <ButtonGroup>
+                                {preFillOnClick && (
                                     <LabelledButton
-                                        callback={resetOnClick}
-                                        label="button.reset"
-                                        data-testid="ResetButton"
-                                        startIcon={<RestartAlt />}
+                                        callback={preFillOnClick}
+                                        label="button.prefill"
+                                        data-testid="PrefillButton"
+                                        startIcon={<Upload />}
                                     />
-                                </Tooltip>
-                            )}
-                        </ButtonGroup>
+                                )}
+                                {resetOnClick && (
+                                    <Tooltip title={<FormattedMessage id="tooltip.reset" />}>
+                                        <LabelledButton
+                                            callback={resetOnClick}
+                                            label="button.reset"
+                                            data-testid="ResetButton"
+                                            startIcon={<RestartAlt />}
+                                        />
+                                    </Tooltip>
+                                )}
+                            </ButtonGroup>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
-            {header && <Box sx={styles.header}>{header}</Box>}
-            <Box sx={[styles.content]}>{isLoading ? <LinearProgress /> : children}</Box>
+                </Box>
+            )}
+            <Box sx={styles.content}>{isLoading ? <LinearProgress /> : children}</Box>
             <Box sx={styles.footer}>
                 {saveOnClick && <LabelledButton label="save" data-testid="SaveButton" callback={saveOnClick} />}
                 {validateOnClick && (

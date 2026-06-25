@@ -10,7 +10,8 @@ import { useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, ContingencyTableApi, CreateParameterDialog } from '../common';
+import { ComputingType, ContingencyTableApi, CreateParameterDialog, ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
@@ -142,14 +143,24 @@ export function SecurityAnalysisParametersInline({
     };
 
     return (
-        <SecurityAnalysisParametersForm
-            securityAnalysisMethods={securityAnalysisMethods}
-            showContingencyCount
-            fetchContingencyCount={fetchContingencyCount}
-            contingencyTableApiRef={contingencyTableApiRef}
-            isBuiltCurrentNode={isBuiltCurrentNode}
-            isDeveloperMode={isDeveloperMode}
-            actions={actions}
-        />
+        <CustomFormProvider
+            validationSchema={securityAnalysisMethods.formSchema}
+            {...securityAnalysisMethods.formMethods}
+        >
+            <ParameterLayout
+                title="SecurityAnalysis"
+                isLoading={!securityAnalysisMethods.paramsFormInitialized}
+                actions={actions}
+            >
+                <SecurityAnalysisParametersForm
+                    securityAnalysisMethods={securityAnalysisMethods}
+                    showContingencyCount
+                    fetchContingencyCount={fetchContingencyCount}
+                    contingencyTableApiRef={contingencyTableApiRef}
+                    isBuiltCurrentNode={isBuiltCurrentNode}
+                    isDeveloperMode={isDeveloperMode}
+                />
+            </ParameterLayout>
+        </CustomFormProvider>
     );
 }

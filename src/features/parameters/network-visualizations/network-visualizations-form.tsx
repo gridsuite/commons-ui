@@ -5,17 +5,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Tab, Tabs } from '@mui/material';
+import { LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { User } from 'oidc-client-ts';
 import { UseNetworkVisualizationParametersFormReturn } from './use-network-visualizations-parameters-form';
-import { CustomFormProvider } from '../../../components/ui';
 import { NetworkVisualizationTabValues as TabValues } from './constants';
 import { MapParameters } from './map-parameters';
 import { SingleLineDiagramParameters } from './single-line-diagram-parameters';
 import { NetworkAreaDiagramParameters } from './network-area-diagram-parameters';
-import { ParameterLayout, TabPanel, ParameterActions } from '../common';
+import { TabPanel } from '../common';
 import { getAvailableComponentLibraries } from '../../../services';
 
 const useGetAvailableComponentLibraries = (user: User | null) => {
@@ -37,42 +36,38 @@ const useGetAvailableComponentLibraries = (user: User | null) => {
 interface NetworkVisualizationParametersFormProps {
     networkVisuMethods: UseNetworkVisualizationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
     user: User | null;
 }
 
 export function NetworkVisualizationParametersForm({
     networkVisuMethods,
     renderTitleFields,
-    actions,
     user,
 }: Readonly<NetworkVisualizationParametersFormProps>) {
     const componentLibraries = useGetAvailableComponentLibraries(user);
-    const { formMethods, formSchema, selectedTab, handleTabChange, paramsLoading } = networkVisuMethods;
+    const { selectedTab, handleTabChange, paramsLoading } = networkVisuMethods;
+
+    if (paramsLoading) {
+        return <LinearProgress />;
+    }
 
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <ParameterLayout
-                title="NetworkVisualizations"
-                header={renderTitleFields?.()}
-                actions={actions}
-                isLoading={paramsLoading}
-            >
-                <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
-                    <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
-                    <Tab label={<FormattedMessage id="SingleLineDiagram" />} value={TabValues.SINGLE_LINE_DIAGRAM} />
-                    <Tab label={<FormattedMessage id="NetworkAreaDiagram" />} value={TabValues.NETWORK_AREA_DIAGRAM} />
-                </Tabs>
-                <TabPanel value={selectedTab} index={TabValues.MAP}>
-                    <MapParameters />
-                </TabPanel>
-                <TabPanel value={selectedTab} index={TabValues.SINGLE_LINE_DIAGRAM}>
-                    <SingleLineDiagramParameters componentLibraries={componentLibraries} />
-                </TabPanel>
-                <TabPanel value={selectedTab} index={TabValues.NETWORK_AREA_DIAGRAM}>
-                    <NetworkAreaDiagramParameters />
-                </TabPanel>
-            </ParameterLayout>
-        </CustomFormProvider>
+        <>
+            {renderTitleFields?.()}
+            <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
+                <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
+                <Tab label={<FormattedMessage id="SingleLineDiagram" />} value={TabValues.SINGLE_LINE_DIAGRAM} />
+                <Tab label={<FormattedMessage id="NetworkAreaDiagram" />} value={TabValues.NETWORK_AREA_DIAGRAM} />
+            </Tabs>
+            <TabPanel value={selectedTab} index={TabValues.MAP}>
+                <MapParameters />
+            </TabPanel>
+            <TabPanel value={selectedTab} index={TabValues.SINGLE_LINE_DIAGRAM}>
+                <SingleLineDiagramParameters componentLibraries={componentLibraries} />
+            </TabPanel>
+            <TabPanel value={selectedTab} index={TabValues.NETWORK_AREA_DIAGRAM}>
+                <NetworkAreaDiagramParameters />
+            </TabPanel>
+        </>
     );
 }
