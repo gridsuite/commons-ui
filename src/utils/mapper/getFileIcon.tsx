@@ -6,16 +6,17 @@
  */
 import {
     Article as ArticleIcon,
+    AutoGraphRounded as AutoGraphRoundedIcon,
     Calculate as CalculateIcon,
+    Dashboard as DashboardIcon,
     Hub as HubIcon,
+    MiscellaneousServicesRounded as MiscellaneousServicesRoundedIcon,
     NoteAlt as NoteAltIcon,
     OfflineBolt as OfflineBoltIcon,
     Photo as PhotoIcon,
     PhotoLibrary as PhotoLibraryIcon,
     Settings as SettingsIcon,
     TableView as TableViewIcon,
-    Dashboard as DashboardIcon,
-    MiscellaneousServicesRounded as MiscellaneousServicesRoundedIcon,
 } from '@mui/icons-material';
 import { ElementType } from '../types/elementType';
 import type { SxStyle } from '../styles';
@@ -50,6 +51,8 @@ export function getFileIcon(type: ElementType, style: SxStyle) {
             return <DashboardIcon sx={style} />;
         case ElementType.PROCESS_CONFIG:
             return <MiscellaneousServicesRoundedIcon sx={style} />;
+        case ElementType.DYNAMIC_MAPPING:
+            return <AutoGraphRoundedIcon sx={style} />;
         case ElementType.DIRECTORY:
             // to easily use in TreeView we do not give icons for directories
             return undefined;
