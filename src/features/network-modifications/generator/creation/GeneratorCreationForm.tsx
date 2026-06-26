@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import {
@@ -29,8 +29,8 @@ import {
     MVAPowerAdornment,
 } from '../../../../utils';
 import { FloatInput, SelectInput, SwitchInput, TextInput } from '../../../../components';
-import GridItem from '../../../../components/composite/grid/grid-item';
-import GridSection from '../../../../components/composite/grid/grid-section';
+import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
+import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
 
 export interface GeneratorCreationFormProps extends ConnectivityNetworkProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
@@ -175,7 +175,7 @@ export function GeneratorCreationForm({
             <Grid container spacing={2}>
                 <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
                 <GridItem size={4}>{marginalCostField}</GridItem>
-                <Grid container item spacing={2}>
+                <Grid container spacing={2}>
                     <GridItem size={4}>{plannedOutageRateField}</GridItem>
                     <GridItem size={4}>{forcedOutageRateField}</GridItem>
                 </Grid>

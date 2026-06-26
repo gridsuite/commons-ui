@@ -6,3 +6,5 @@
  */
 export * from './grid-item';
 export * from './grid-section';
+export * from './grid2-item';
+export * from './grid2-section';

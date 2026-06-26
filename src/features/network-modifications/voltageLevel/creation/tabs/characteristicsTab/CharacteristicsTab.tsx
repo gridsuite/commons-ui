@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
-import GridSection from '../../../../../../components/composite/grid/grid-section';
+import { Grid2 as Grid } from '@mui/material';
+import { Grid2Section as GridSection } from '../../../../../../components/composite/grid/grid2-section';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../../../utils';
 import { FloatInput } from '../../../../../../components/ui';
 
@@ -18,7 +18,7 @@ export function CharacteristicsTab() {
             <GridSection title="VoltageText" />
             <Grid container spacing={2}>
                 {!watchHideNominalVoltage && (
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <FloatInput
                             name={FieldConstants.NOMINAL_V}
                             label="NominalVoltage"
@@ -26,14 +26,14 @@ export function CharacteristicsTab() {
                         />
                     </Grid>
                 )}
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FieldConstants.LOW_VOLTAGE_LIMIT}
                         label="LowVoltageLimit"
                         adornment={VoltageAdornment}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FieldConstants.HIGH_VOLTAGE_LIMIT}
                         label="HighVoltageLimit"
@@ -44,14 +44,14 @@ export function CharacteristicsTab() {
 
             <GridSection title="ShortCircuit" />
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT}
                         label="LowShortCircuitCurrentLimit"
                         adornment={KiloAmpereAdornment}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT}
                         label="HighShortCircuitCurrentLimit"

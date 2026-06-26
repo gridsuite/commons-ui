@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { Box, Grid, Tabs, Tab } from '@mui/material';
+import { Box, Grid2 as Grid, Tabs, Tab } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TabValues } from './load-flow-parameters-utils';
 import { getTabStyle, parametersStyles } from '../parameters-style';
@@ -36,10 +36,10 @@ function LoadFlowParametersHeader({
                 }}
                 justifyContent="space-between"
             >
-                <Grid item xs={5} sx={parametersStyles.parameterName}>
+                <Grid size={5} sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid item xs="auto" sx={parametersStyles.controlItem}>
+                <Grid size="auto" sx={parametersStyles.controlItem}>
                     <MuiSelectInput
                         data-testid="LfProvider"
                         name={PROVIDER}
@@ -48,7 +48,7 @@ function LoadFlowParametersHeader({
                     />
                 </Grid>
                 <LineSeparator />
-                <Grid item sx={{ width: '100%' }}>
+                <Grid sx={{ width: '100%' }}>
                     <Tabs value={selectedTab} onChange={handleTabChange}>
                         <Tab
                             label={<FormattedMessage id={TabValues.GENERAL} />}

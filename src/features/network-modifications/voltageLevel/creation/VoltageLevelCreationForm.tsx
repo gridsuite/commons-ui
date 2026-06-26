@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid2 as Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
@@ -33,21 +33,21 @@ export function VoltageLevelCreationForm({
 
     return (
         <Grid container direction="column" spacing={2}>
-            <Grid item>
+            <Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <TextInput
                             name={FieldConstants.EQUIPMENT_ID}
                             label="ID"
                             formProps={{ autoFocus: true, ...filledTextField }}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid size={4}>
                         <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <Tabs
                     value={tabIndex}
                     variant="scrollable"
@@ -75,7 +75,7 @@ export function VoltageLevelCreationForm({
                     />
                 </Tabs>
             </Grid>
-            <Grid item>
+            <Grid>
                 <Box hidden={tabIndex !== VoltageLevelTab.SUBSTATION_TAB}>
                     <SubstationTab
                         substationOptions={substationOptions}

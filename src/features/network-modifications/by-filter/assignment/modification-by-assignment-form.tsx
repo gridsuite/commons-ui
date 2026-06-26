@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { ExpandableInput, SelectWithConfirmationInput } from '../../../../components/ui';
 import { FieldConstants, mergeSx } from '../../../../utils';
 import { unscrollableDialogStyles } from '../../../../components/ui/dialogs';
 import { useGetLabelEquipmentTypes } from '../../../../hooks';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
 import AssignmentForm from './assignment/assignment-form';
 import { getAssignmentInitialValue } from './assignment/assignment-utils';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment/assignment-constants';

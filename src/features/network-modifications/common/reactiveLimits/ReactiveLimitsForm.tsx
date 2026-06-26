@@ -6,12 +6,12 @@
  */
 
 import { useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { ReactiveCapabilityCurveTableForm } from './reactiveCapabilityCurve/ReactiveCapabilityCurveTableForm';
 import { MinMaxReactiveLimitsFormInfos, ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
 import { FieldConstants, ReactivePowerAdornment } from '../../../../utils';
 import { FloatInput, RadioInput } from '../../../../components/ui';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
 import { REACTIVE_LIMIT_TYPES } from './reactiveLimits.utils';
 
 const headerIds = ['ActivePowerText', 'MinimumReactivePower', 'MaximumReactivePower'];

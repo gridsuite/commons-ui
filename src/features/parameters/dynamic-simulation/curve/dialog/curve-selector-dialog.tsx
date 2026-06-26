@@ -10,7 +10,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid,
+    Grid2 as Grid,
     IconButton,
     Typography,
     useTheme,
@@ -108,7 +108,7 @@ function CurveSelectorDialog({
                         maxHeight: '100%',
                     })}
                 >
-                    <Grid item container xs={8} spacing={theme.spacing(1)}>
+                    <Grid container size={8} spacing={theme.spacing(1)}>
                         <CurveSelector
                             ref={selectorRef}
                             voltageLevelsFetcher={voltageLevelsFetcher}
@@ -117,8 +117,8 @@ function CurveSelectorDialog({
                             modelsFetcher={modelsFetcher}
                         />
                     </Grid>
-                    <Grid item container direction="column" justifyContent="center" alignItems="center" xs={0.5}>
-                        <Grid item>
+                    <Grid container direction="column" justifyContent="center" alignItems="center" size={0.5}>
+                        <Grid>
                             <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'AddRows',
@@ -135,7 +135,7 @@ function CurveSelectorDialog({
                                 </span>
                             </CustomTooltip>
                         </Grid>
-                        <Grid item>
+                        <Grid>
                             <CustomTooltip
                                 title={intl.formatMessage({
                                     id: 'DeleteRows',
@@ -153,7 +153,7 @@ function CurveSelectorDialog({
                             </CustomTooltip>
                         </Grid>
                     </Grid>
-                    <Grid item container xs direction="column">
+                    <Grid container size="grow" direction="column">
                         <CurvePreview ref={previewRef} />
                     </Grid>
                 </Grid>

@@ -8,7 +8,7 @@
 import { Grid2 as Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
-import GridSection from '../../../../components/composite/grid/grid-section';
+import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
 import { ConnectivityForm } from '../../common/connectivity/ConnectivityForm';
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
@@ -33,17 +33,17 @@ export function BatteryModificationForm({
 
     return (
         <Grid container direction="column" spacing={2}>
-            <Grid item>
+            <Grid>
                 <BatteryDialogHeader batteryToModify={batteryToModify} equipmentId={equipmentId} />
             </Grid>
-            <Grid item>
+            <Grid>
                 <BatteryDialogTabs
                     tabIndex={tabIndex}
                     tabIndexesWithError={tabIndexesWithError}
                     setTabIndex={setTabIndex}
                 />
             </Grid>
-            <Grid item>
+            <Grid>
                 <BatteryDialogTabsContent
                     tabIndex={tabIndex}
                     batteryToModify={batteryToModify}

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { PowerWithValidityForm } from './PowerWithValidityForm';
 import { MeasurementInfo } from './measurement.type';
 import { FieldConstants, FieldType } from '../../../../utils';
@@ -50,7 +50,7 @@ export function PowerMeasurementsForm({
     return (
         <Grid container direction="column" spacing={2}>
             {!reactivePowerOnly && (
-                <Grid item>
+                <Grid>
                     <PowerWithValidityForm
                         id={activePowerId}
                         field={FieldType.ACTIVE_POWER}
@@ -58,7 +58,7 @@ export function PowerMeasurementsForm({
                     />
                 </Grid>
             )}
-            <Grid item>
+            <Grid>
                 <PowerWithValidityForm
                     id={reactivePowerId}
                     field={FieldType.REACTIVE_POWER}

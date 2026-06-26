@@ -21,7 +21,7 @@ import {
     TextInput,
 } from '../../../../../components/ui';
 import { DataType } from './assignment.type';
-import GridItem from '../../../../../components/composite/grid/grid-item';
+import { Grid2Item as GridItem } from '../../../../../components/composite/grid/grid2-item';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './assignment-constants';
 import { EMPTY_FIELD_VALUE } from './assignment-utils';
 

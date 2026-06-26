@@ -20,7 +20,7 @@ import {
     DialogContent,
     DialogTitle,
     Fade,
-    Grid,
+    Grid2 as Grid,
     Stack,
     Theme,
     tooltipClasses,
@@ -194,10 +194,7 @@ function tooltipTypeLabel(type: string) {
 function Module({ type, name, version, gitTag }: GridSuiteModule) {
     return (
         <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
+            size={{ xs: 12, sm: 6, md: 4 }}
             sx={{
                 '.MuiTypography-root': {
                     minWidth: '3em',
@@ -440,7 +437,7 @@ export function AboutDialog({
                         <AccordionDetails>
                             <Grid container sx={{ pl: 2 }} spacing={1}>
                                 {loadingAdditionalModules ? (
-                                    <Grid item xs display="inline-flex" justifyContent="center">
+                                    <Grid size="grow" display="inline-flex" justifyContent="center">
                                         <CircularProgress color="inherit" />
                                     </Grid>
                                 ) : (

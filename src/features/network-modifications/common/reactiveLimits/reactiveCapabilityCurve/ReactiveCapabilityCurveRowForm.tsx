@@ -9,7 +9,7 @@ import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ActivePowerAdornment, FieldConstants, ReactivePowerAdornment } from '../../../../../utils';
 import { FloatInput } from '../../../../../components/ui';
-import GridItem from '../../../../../components/composite/grid/grid-item';
+import { Grid2Item as GridItem } from '../../../../../components/composite/grid/grid2-item';
 
 export interface ReactiveCapabilityCurveRowFormProps {
     id: string;

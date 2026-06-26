@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ValueEditorProps } from 'react-querybuilder';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { RuleValueEditor } from './RuleValueEditor';
 import { CompositeField, CompositeGroup, CompositeRule } from '../../filter/expert/expertFilter.type';

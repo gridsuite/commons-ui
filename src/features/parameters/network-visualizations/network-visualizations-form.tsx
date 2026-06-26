@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
@@ -53,13 +53,13 @@ export function NetworkVisualizationParametersForm({
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
             <Grid container direction="column">
-                <Grid item container direction="column">
+                <Grid container direction="column">
                     {renderTitleFields?.()}
                 </Grid>
                 {paramsLoading ? (
                     <LinearProgress />
                 ) : (
-                    <Grid item container direction="column">
+                    <Grid container direction="column">
                         <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                             <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
                             <Tab
@@ -83,7 +83,6 @@ export function NetworkVisualizationParametersForm({
                     </Grid>
                 )}
                 <Grid
-                    item
                     container
                     direction="column"
                     sx={{

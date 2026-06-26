@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid2 as Grid, Typography, useTheme } from '@mui/material';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -164,14 +164,13 @@ function CurveParameters({
         <>
             <Grid container direction="column" sx={{ height: 600 }}>
                 {/* header toolbar of the aggrid */}
-                <Grid container item sx={{ marginBottom: theme.spacing(1) }}>
-                    <Grid container item xs="auto">
+                <Grid container sx={{ marginBottom: theme.spacing(1) }}>
+                    <Grid container size="auto">
                         <GridSearch key="curve-quick-filter" ref={quickFilterRef} gridRef={gridRef} />
                     </Grid>
                     <Grid
                         container
-                        item
-                        xs="auto"
+                        size="auto"
                         sx={{
                             justifyContent: 'flex-end',
                             alignItems: 'flex-end',
@@ -191,7 +190,7 @@ function CurveParameters({
                     />
                 </Grid>
                 {/* aggrid for configured curves */}
-                <Grid item xs>
+                <Grid size="grow">
                     <Box sx={styles.grid}>
                         <CustomAGGrid
                             ref={gridRef}

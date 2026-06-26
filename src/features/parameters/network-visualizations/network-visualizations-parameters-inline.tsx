@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import type { UserProfile } from 'oidc-client-ts';
@@ -79,7 +79,7 @@ export function NetworkVisualizationParametersInline({
             renderActions={() => {
                 return (
                     <Box>
-                        <Grid container item>
+                        <Grid container>
                             <LabelledButton
                                 callback={() => setOpenSelectParameterDialog(true)}
                                 label="settings.button.chooseSettings"

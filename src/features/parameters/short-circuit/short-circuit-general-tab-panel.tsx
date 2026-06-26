@@ -6,7 +6,7 @@
  */
 
 import { forwardRef, useEffect, useMemo, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
@@ -27,8 +27,8 @@ import {
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
 import { VoltageTable } from './short-circuit-voltage-table';
-import GridItem from '../../../components/composite/grid/grid-item';
-import GridSection from '../../../components/composite/grid/grid-section';
+import { Grid2Item as GridItem } from '../../../components/composite/grid/grid2-item';
+import { Grid2Section as GridSection } from '../../../components/composite/grid/grid2-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../../components/ui';
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS, TabPanel } from '../common';
@@ -136,10 +136,10 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
         // fields definition
         const feederResult = (
             <Grid container alignItems="center" spacing={2} direction="row">
-                <Grid item xs={10}>
+                <Grid size={10}>
                     <FieldLabel label="descWithFeederResult" />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid size={2}>
                     <SwitchInput name={`${COMMON_PARAMETERS}.${SHORT_CIRCUIT_WITH_FEEDER_RESULT}`} />
                 </Grid>
             </Grid>
@@ -215,21 +215,21 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
         return (
             <TabPanel index={ShortCircuitParametersTabValues.GENERAL} ref={ref} {...othersTabPanelProps}>
                 <Grid container spacing={2} paddingLeft={2}>
-                    <Grid container paddingTop={2} xl={6}>
+                    <Grid container paddingTop={2} size={{ xl: 6 }}>
                         <GridItem size={10}>{feederResult}</GridItem>
                     </Grid>
                     <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
-                    <Grid xl={6} container spacing={1} alignItems="center">
+                    <Grid size={{ xl: 6 }} container spacing={1} alignItems="center">
                         <GridItem size={9}>{predefinedParameters}</GridItem>
                         <GridItem size={2}>{statusToShow}</GridItem>
                     </Grid>
                     <GridSection title="ShortCircuitCharacteristics" heading={4} />
                     <Grid container spacing={5}>
-                        <Grid item>
+                        <Grid>
                             <GridItem>{loads}</GridItem>
                             <GridItem>{shuntCompensators}</GridItem>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid size={8}>
                             <GridItem>{vsc}</GridItem>
                             <GridItem>{neutralPosition}</GridItem>
                         </Grid>

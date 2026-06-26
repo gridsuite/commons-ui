@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ReactNode } from 'react';
 
@@ -61,8 +61,7 @@ export function DynamicSecurityAnalysisParametersForm({
                     </Grid>
                     <Grid
                         container
-                        item
-                        xs
+                        size="grow"
                         key="dsaParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
                             paddingTop: 0,

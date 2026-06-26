@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert, Grid } from '@mui/material';
+import { Alert, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { RadioInput } from '../../../components/ui';
 import {
@@ -47,12 +47,12 @@ const initialEquipmentsSelectionType = {
 
 export function EquipmentSelectionParameters() {
     return (
-        <Grid item container direction="column">
+        <Grid container direction="column">
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
             </Alert>
-            <Grid item container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
-                <Grid item xs={5} sx={equipmentsSelectionStyles.choice}>
+            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+                <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={GENERATORS_SELECTION_TYPE}
                         options={Object.values(initialEquipmentsSelectionType)}
@@ -66,8 +66,8 @@ export function EquipmentSelectionParameters() {
                 label="VariableGenerators"
                 hideErrorMessage
             />
-            <Grid item container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
-                <Grid item xs={5} sx={equipmentsSelectionStyles.choice}>
+            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+                <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={TRANSFORMERS_SELECTION_TYPE}
                         options={Object.values(initialEquipmentsSelectionType)}
@@ -81,8 +81,8 @@ export function EquipmentSelectionParameters() {
                 label="VariableTransformers"
                 hideErrorMessage
             />
-            <Grid item container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
-                <Grid item xs={5} sx={equipmentsSelectionStyles.choice}>
+            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+                <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={SHUNT_COMPENSATORS_SELECTION_TYPE}
                         options={Object.values(initialEquipmentsSelectionType)}

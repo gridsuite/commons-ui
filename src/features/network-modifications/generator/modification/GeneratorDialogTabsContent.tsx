@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { GeneratorDialogTab } from './generatorTabs.utils';
@@ -29,8 +29,8 @@ import {
     MVAPowerAdornment,
 } from '../../../../utils';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
-import GridSection from '../../../../components/composite/grid/grid-section';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
 
 export interface GeneratorDialogTabsContentProps extends ConnectivityNetworkProps {
     generatorToModify?: GeneratorFormInfos | null;
@@ -197,7 +197,7 @@ export function GeneratorDialogTabsContent({
                     />
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <h3>
                             <FormattedMessage id="Limits" />
                         </h3>
@@ -212,7 +212,7 @@ export function GeneratorDialogTabsContent({
                     <GridItem size={4}>{ratedNominalPowerField}</GridItem>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <h4>
                             <FormattedMessage id="ReactiveLimits" />
                         </h4>
@@ -232,7 +232,7 @@ export function GeneratorDialogTabsContent({
                 <Grid container spacing={2}>
                     <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
                     <GridItem size={4}>{marginalCostField}</GridItem>
-                    <Grid container item spacing={2}>
+                    <Grid container spacing={2}>
                         <GridItem size={4}>{plannedOutageRateField}</GridItem>
                         <GridItem size={4}>{forcedOutageRateField}</GridItem>
                     </Grid>
