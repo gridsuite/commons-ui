@@ -9,7 +9,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { Grid } from '@mui/material';
-import { ElementType, mergeSx, snackWithFallback, VoltageLevelInfos } from '../../../utils';
+import {
+    ElementType,
+    mapDynamicSimulationParameters,
+    mergeSx,
+    snackWithFallback,
+    VoltageLevelInfos,
+} from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
 
@@ -21,7 +27,7 @@ import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelec
 import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import {
     toFormValues,
-    toParamsInfos,
+    toParamsEnriched,
     useDynamicSimulationParametersForm,
 } from './use-dynamic-simulation-parameters-form';
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
@@ -83,7 +89,7 @@ export function DynamicSimulationInline({
     const onSubmit = useCallback(
         (formData: FieldValues) => {
             // update params after convert form representation to dto representation
-            updateParameters(toParamsInfos(formData, getDefaultParams()));
+            updateParameters(toParamsEnriched(formData, getDefaultParams()));
         },
         [updateParameters, getDefaultParams]
     );
@@ -142,7 +148,9 @@ export function DynamicSimulationInline({
                         open={openCreateParameterDialog}
                         onClose={() => setOpenCreateParameterDialog(false)}
                         parameterValues={getValues}
-                        parameterFormatter={(formData) => toParamsInfos(formData, getDefaultParams())}
+                        parameterFormatter={(formData) =>
+                            mapDynamicSimulationParameters(toParamsEnriched(formData, getDefaultParams()))
+                        }
                         parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
                     />
                 )}
