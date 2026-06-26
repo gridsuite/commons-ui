@@ -7,7 +7,11 @@
 import { FieldValues } from 'react-hook-form';
 import * as yup from 'yup';
 import { UseComputationParametersFormReturn } from '../common/utils';
-import { DynamicSimulationParametersInfos, SolverInfos } from '../../../utils/types/dynamic-simulation.type';
+import {
+    DynamicSimulationParametersEnriched,
+    DynamicSimulationParametersInfos,
+    SolverInfos,
+} from '../../../utils/types/dynamic-simulation.type';
 import { TabValues } from './dynamic-simulation.type';
 import { PROVIDER } from '../common/constants';
 import { timeDelayEmptyFormData, timeDelayFormSchema } from './time-delay/time-delay-parameters-utils';
@@ -40,7 +44,7 @@ const emptyFormData = {
     [TabValues.TAB_CURVE]: curveEmptyFormData,
 };
 
-export const toFormValues = (_params: DynamicSimulationParametersInfos): FieldValues => ({
+export const toFormValues = (_params: DynamicSimulationParametersEnriched): FieldValues => ({
     [ID]: _params.id, // not show in form
     [PROVIDER]: _params.provider,
     [TabValues.TAB_TIME_DELAY]: {
@@ -52,7 +56,9 @@ export const toFormValues = (_params: DynamicSimulationParametersInfos): FieldVa
         [Solver.SOLVERS]: _params.solvers,
     },
     [TabValues.TAB_MAPPING]: {
-        [MAPPING]: _params.mapping,
+        [MAPPING]: _params.mapping
+            ? [_params.mapping]
+            : [] /* array of one element to be compatible with model rhf of DirectoryItemsInput */,
     },
     [TabValues.TAB_NETWORK]: {
         ..._params.network,
@@ -62,10 +68,10 @@ export const toFormValues = (_params: DynamicSimulationParametersInfos): FieldVa
     },
 });
 
-export const toParamsInfos = (
+export const toParamsEnriched = (
     _formData: FieldValues,
-    defaultParams: DynamicSimulationParametersInfos | null
-): DynamicSimulationParametersInfos => ({
+    defaultParams: DynamicSimulationParametersEnriched | null
+): DynamicSimulationParametersEnriched => ({
     provider: _formData[PROVIDER],
     startTime: _formData[TabValues.TAB_TIME_DELAY][TimeDelay.START_TIME],
     stopTime: _formData[TabValues.TAB_TIME_DELAY][TimeDelay.STOP_TIME],
@@ -81,7 +87,7 @@ export const toParamsInfos = (
         ],
         [] as SolverInfos[]
     ),
-    mapping: _formData[TabValues.TAB_MAPPING][MAPPING],
+    mapping: _formData[TabValues.TAB_MAPPING][MAPPING]?.[0] /* array of one element */,
     network: _formData[TabValues.TAB_NETWORK],
     curves: _formData[TabValues.TAB_CURVE][Curve.CURVES],
 });
