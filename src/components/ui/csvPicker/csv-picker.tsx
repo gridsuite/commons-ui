@@ -28,6 +28,13 @@ type CsvPickerCallbacks<TData> =
 export type CsvPickerProps<TData = unknown> = {
     label: string;
     header: string[];
+    /**
+     * When true, the file is accepted as soon as every column it contains belongs to `header`,
+     * tolerating a file that omits some expected columns (e.g. unselected properties or fewer
+     * repeatable columns than the form declares). When false (default), the file header must match
+     * `header` exactly (same columns, any order).
+     */
+    allowMissingColumns?: boolean;
     maxLineNumber?: number;
     disabled?: boolean;
     language: string;
@@ -41,6 +48,7 @@ export type CsvPickerProps<TData = unknown> = {
 export function CsvPicker<TData = unknown>({
     label,
     header,
+    allowMissingColumns = false,
     maxLineNumber,
     disabled = false,
     language,
@@ -62,12 +70,16 @@ export function CsvPicker<TData = unknown>({
 
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
+            const actualHeader = Object.keys((results.data[0] ?? {}) as Record<string, unknown>);
+            const isHeaderValid = allowMissingColumns
+                ? actualHeader.every((column) => header.includes(column))
+                : equalsArrayAnyOrder(header, actualHeader);
             if (results.data.length === 0) {
                 onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }, { filename: acceptedFile.name }));
-            } else if (!equalsArrayAnyOrder(header, Object.keys(results.data[0] as Record<string, unknown>))) {
+            } else if (!isHeaderValid) {
                 console.warn('Wrong CSV headers');
                 console.warn('Expected:', header);
-                console.warn('Actual:', Object.keys(results.data[0] as Record<string, unknown>));
+                console.warn('Actual:', actualHeader);
                 onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }, { filename: acceptedFile.name }));
             } else if (maxLineNumber && results.data.length > maxLineNumber) {
                 onFileError(
@@ -91,7 +103,18 @@ export function CsvPicker<TData = unknown>({
                 }
             }
         },
-        [header, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, getTableData]
+        [
+            allowMissingColumns,
+            header,
+            intl,
+            maxLineNumber,
+            onAppend,
+            onComplete,
+            onFileChange,
+            onFileError,
+            onReplace,
+            getTableData,
+        ]
     );
 
     return (
