@@ -18,7 +18,7 @@ const styles = {
     DialogTitle: { fontSize: '1.5rem' },
     DialogContent: { marginTop: '10px' },
     quotasBox: { marginTop: '60px' },
-    quotasTopography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
+    quotasTypography: { marginTop: '30px', marginBottom: '25px', fontSize: '1.15rem' },
     usedTopography: { marginLeft: '15%' },
 } as const satisfies MuiStyles;
 
@@ -101,7 +101,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                 </Grid>
 
                 <Box mt={3} sx={styles.quotasBox}>
-                    <Typography fontWeight="bold" sx={styles.quotasTopography}>
+                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
                         <FormattedMessage id="user-information-dialog/quotas" />
                     </Typography>
                     <Grid container spacing={2}>
@@ -119,7 +119,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                                 </Box>
                             </Typography>
                         </Grid>
-
+                    </Grid>
+                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
+                        <FormattedMessage id="user-information-dialog/quotas-per-study" />
+                    </Typography>
+                    <Grid container spacing={2}>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
                                 <FormattedMessage id="user-information-dialog/number-of-builds-per-study" />
@@ -127,6 +131,94 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedBuilds}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-loadflow-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedLoadflow}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-security-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedSecurity}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-sensitivity-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedSensitivity}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-shortCircuit-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedShortCircuit}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-voltageInit-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedVoltageInit}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-pccMin-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedPccMin}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-stateEstimation-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedStateEstimation}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedBalanceAdjustement}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedDynamicSimulation}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicSecurity-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedDynamicSecurity}</Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography fontWeight="bold">
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicMargin-per-study" />
+                            </Typography>
+                        </Grid>
+                        <Grid size={6}>
+                            <Typography>{userDetails?.maxAllowedDynamicMargin}</Typography>
                         </Grid>
                     </Grid>
                 </Box>
