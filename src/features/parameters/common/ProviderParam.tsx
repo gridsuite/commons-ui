@@ -26,15 +26,15 @@ const styles = {
 export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
     return (
         <>
-            <Grid container sx={styles.providerParam} paddingRight={1}>
+            <Grid container sx={styles.providerParam} paddingRight={1} size={12}>
                 <Grid size="grow" sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid container size={2} sx={parametersStyles.controlItem}>
+                <Grid container size={2}>
                     <MuiSelectInput name={PROVIDER} size="small" fullWidth options={options} />
                 </Grid>
             </Grid>
-            <Grid container paddingTop={1} paddingRight={1}>
+            <Grid container paddingTop={1} paddingRight={1} size={12}>
                 <LineSeparator />
             </Grid>
         </>
