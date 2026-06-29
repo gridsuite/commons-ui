@@ -21,7 +21,7 @@ export function NetworkVisualizationsParametersEditionDialog({
     description,
     activeDirectory,
     language,
-    user,
+    userProfile,
 }: Readonly<ParametersEditionDialogProps>) {
     const networkVisuMethods = useNetworkVisualizationParametersForm({
         parametersUuid: id,
@@ -56,7 +56,7 @@ export function NetworkVisualizationsParametersEditionDialog({
             }}
         >
             <NetworkVisualizationParametersForm
-                user={user}
+                userProfile={userProfile}
                 networkVisuMethods={networkVisuMethods}
                 renderTitleFields={() => {
                     return (

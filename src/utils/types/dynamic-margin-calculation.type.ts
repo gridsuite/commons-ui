@@ -6,6 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
+import { IdName } from './types';
 
 export enum CalculationType {
     GLOBAL_MARGIN = 'GLOBAL_MARGIN',
@@ -17,11 +18,9 @@ export enum LoadModelsRule {
     TARGETED_LOADS = 'TARGETED_LOADS',
 }
 
-export type IdNameInfos = { id: UUID; name?: string };
-
 export type LoadsVariationInfos = {
     id?: UUID; // persisted id of the info to be modified
-    loadFilters?: IdNameInfos[];
+    loadFilters?: IdName[];
     variation: number;
     active: boolean;
 };
