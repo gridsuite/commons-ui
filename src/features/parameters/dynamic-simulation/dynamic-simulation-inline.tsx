@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { ElementType, snackWithFallback, VoltageLevelInfos } from '../../../utils';
+import { ElementType, mapDynamicSimulationParameters, snackWithFallback, VoltageLevelInfos } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType, ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
@@ -16,7 +16,7 @@ import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import {
     toFormValues,
-    toParamsInfos,
+    toParamsEnriched,
     useDynamicSimulationParametersForm,
 } from './use-dynamic-simulation-parameters-form';
 import { TabValues } from './dynamic-simulation.type';
@@ -67,7 +67,7 @@ export function DynamicSimulationInline({
     const onSubmit = useCallback(
         (formData: FieldValues) => {
             // update params after convert form representation to dto representation
-            updateParameters(toParamsInfos(formData, getDefaultParams()));
+            updateParameters(toParamsEnriched(formData, getDefaultParams()));
         },
         [updateParameters, getDefaultParams]
     );
@@ -103,7 +103,8 @@ export function DynamicSimulationInline({
                 parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
                 createParameter={{
                     studyUuid,
-                    parameterFormatter: (formData) => toParamsInfos(formData, getDefaultParams()),
+                    parameterFormatter: (formData) =>
+                        mapDynamicSimulationParameters(toParamsEnriched(formData, getDefaultParams())),
                     getParameterValues: getValues,
                 }}
                 selectParameterHandler={handleLoadParameter}
