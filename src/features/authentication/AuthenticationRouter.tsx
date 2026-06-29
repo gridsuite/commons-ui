@@ -35,7 +35,12 @@ export function AuthenticationRouter({
         }
     }, [userManager.instance]);
     return (
-        <Grid container alignContent="center" alignItems="center" direction="column">
+        <Grid
+            container
+            alignItems="center"
+            direction="column"
+            sx={{ width: '100%' }}
+        >
             {userManager.error !== null && <h1>Error : Getting userManager; {userManager.error}</h1>}
             {signInCallbackError !== null && (
                 <h1>
