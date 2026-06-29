@@ -5,17 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useCallback, useEffect } from 'react';
 import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../hooks';
-import { CreateParameterDialog, ParameterLayout } from '../common';
+import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
-import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
-import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { ElementType, mapPccMinParameters, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { fromPccMinParametersFormToParamValuesEnriched, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
@@ -37,13 +34,9 @@ export function PccMinParametersInLine({
         parameters: pccMinParameters,
     });
 
-    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const intl = useIntl();
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const { formState, handleSubmit, reset, getValues } = pccMinMethods.formMethods;
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
 
     const resetPccMinParameters = useCallback(() => {
         updatePccMinParameters(studyUuid, null) // null means Reset
@@ -53,17 +46,7 @@ export function PccMinParametersInLine({
                     headerId: 'updatePccMinParametersError',
                 });
             });
-
-        setOpenResetConfirmation(false);
     }, [studyUuid, snackError]);
-
-    const handleResetClick = useCallback(() => {
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleCancelReset = useCallback(() => {
-        setOpenResetConfirmation(false);
-    }, []);
 
     useEffect(() => {
         setHaveDirtyFields(formState.isDirty);
@@ -72,7 +55,6 @@ export function PccMinParametersInLine({
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams?.length) {
-                setOpenSelectParameterDialog(false);
                 const parametersUuid = newParams[0].id;
                 fetchPccMinParameters(parametersUuid)
                     .then((params) => {
@@ -84,62 +66,26 @@ export function PccMinParametersInLine({
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
-            setOpenSelectParameterDialog(false);
         },
         [reset, snackError]
     );
 
-    const actions = {
-        preFillOnClick: () => setOpenSelectParameterDialog(true),
-        saveOnClick: () => setOpenCreateParameterDialog(true),
-        resetOnClick: handleResetClick,
-        validateOnClick: handleSubmit(pccMinMethods.onSaveInline),
-        extra: (
-            <>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={getValues}
-                        parameterFormatter={(params: Record<string, any>) =>
-                            mapPccMinParameters(fromPccMinParametersFormToParamValuesEnriched(params))
-                        }
-                        parameterType={ElementType.PCC_MIN_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameters}
-                        types={[ElementType.PCC_MIN_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={resetPccMinParameters}
-                    />
-                )}
-            </>
-        ),
-    };
-
     return (
         <CustomFormProvider validationSchema={pccMinMethods.formSchema} {...pccMinMethods.formMethods} removeOptional>
-            <ParameterLayout title="PccMin" actions={actions} isLoading={pccMinMethods.paramsLoading}>
+            <ParameterLayout
+                title="PccMin"
+                isLoading={pccMinMethods.paramsLoading}
+                parameterType={ElementType.PCC_MIN_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    getParameterValues: getValues,
+                    parameterFormatter: (params: Record<string, any>) =>
+                        mapPccMinParameters(fromPccMinParametersFormToParamValuesEnriched(params)),
+                }}
+                selectParameterHandler={handleLoadParameters}
+                resetHandler={resetPccMinParameters}
+                validateHandler={handleSubmit(pccMinMethods.onSaveInline)}
+            >
                 <PccMinParametersForm pccMinMethods={pccMinMethods} />
             </ParameterLayout>
         </CustomFormProvider>

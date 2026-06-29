@@ -5,18 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import type { UUID } from 'node:crypto';
-import { useIntl } from 'react-intl';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { ElementType, snackWithFallback, VoltageLevelInfos } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType, CreateParameterDialog, ParameterLayout } from '../common';
+import { ComputingType, ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useTabs } from '../common/hook/use-tabs';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
-import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
-import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import {
     toFormValues,
     toParamsInfos,
@@ -53,16 +50,11 @@ export function DynamicSimulationInline({
         name: null,
         description: null,
     });
-    const intl = useIntl();
     const { snackError } = useSnackMessage();
 
     // since RHF does not support API like getDefaultValues =>
     // manually manage default params (in dto format) to use while merging with the form
     const { getDefaultParams, setDefaultParams } = useDefaultParams(params);
-
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
-    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     const { formMethods } = dynamicSimulationMethods;
     const { reset, getValues, formState, handleSubmit } = formMethods;
@@ -71,18 +63,6 @@ export function DynamicSimulationInline({
         defaultTab: TabValues.TAB_TIME_DELAY,
         tabEnum: TabValues,
     });
-
-    const handleResetClick = useCallback(() => {
-        setOpenResetConfirmation(true);
-    }, []);
-    const handleCancelReset = useCallback(() => {
-        setOpenResetConfirmation(false);
-    }, []);
-
-    const handleReset = useCallback(() => {
-        resetParameters();
-        setOpenResetConfirmation(false);
-    }, [resetParameters]);
 
     const onSubmit = useCallback(
         (formData: FieldValues) => {
@@ -95,7 +75,6 @@ export function DynamicSimulationInline({
     const handleLoadParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams?.length) {
-                setOpenSelectParameterDialog(false);
                 const parametersUuid = newParams[0].id;
                 fetchDynamicSimulationParameters(parametersUuid)
                     .then((_params) => {
@@ -108,7 +87,6 @@ export function DynamicSimulationInline({
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
-            setOpenSelectParameterDialog(false);
         },
         [reset, setDefaultParams, snackError]
     );
@@ -117,58 +95,20 @@ export function DynamicSimulationInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    const actions = {
-        preFillOnClick: () => setOpenSelectParameterDialog(true),
-        saveOnClick: () => setOpenCreateParameterDialog(true),
-        resetOnClick: handleResetClick,
-        validateOnClick: handleSubmit(onSubmit, onError),
-        extra: (
-            <>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={getValues}
-                        parameterFormatter={(formData) => toParamsInfos(formData, getDefaultParams())}
-                        parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameter}
-                        types={[ElementType.DYNAMIC_SIMULATION_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        onlyLeaves
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={handleReset}
-                    />
-                )}
-            </>
-        ),
-    };
-
     return (
         <CustomFormProvider validationSchema={dynamicSimulationMethods.formSchema} {...formMethods}>
             <ParameterLayout
                 title="DynamicSimulation"
                 isLoading={!dynamicSimulationMethods.paramsLoaded}
-                actions={actions}
+                parameterType={ElementType.DYNAMIC_SIMULATION_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    parameterFormatter: (formData) => toParamsInfos(formData, getDefaultParams()),
+                    getParameterValues: getValues,
+                }}
+                selectParameterHandler={handleLoadParameter}
+                resetHandler={resetParameters}
+                validateHandler={handleSubmit(onSubmit, onError)}
             >
                 <DynamicSimulationForm
                     dynamicSimulationMethods={dynamicSimulationMethods}

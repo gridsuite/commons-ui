@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactNode } from 'react';
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ProviderParam, ParameterActions } from '../common';
+import { ProviderParam } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
@@ -20,13 +19,10 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicMarginCalculationFormProps = {
     dynamicMarginCalculationMethods: UseComputationParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
 };
 
 export function DynamicMarginCalculationForm({
     dynamicMarginCalculationMethods,
-    renderTitleFields,
 }: Readonly<DynamicMarginCalculationFormProps>) {
     const { paramsLoaded, formattedProviders } = dynamicMarginCalculationMethods;
 
@@ -41,7 +37,6 @@ export function DynamicMarginCalculationForm({
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
             <ProviderParam options={formattedProviders} />
             <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
                 <Tab

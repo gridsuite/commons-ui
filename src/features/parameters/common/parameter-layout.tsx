@@ -5,12 +5,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip, Theme } from '@mui/material';
+import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
-import { createContext, useContext, ReactNode, useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { ReactNode, useState, useCallback, createContext, useContext, useMemo } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import type { UUID } from 'node:crypto';
+import { FieldValues, UseFormGetValues } from 'react-hook-form';
 import { LabelledButton } from './parameters';
-import { SubmitButton } from '../../../components/ui';
+import {
+    DirectoryItemSelector,
+    PopupConfirmationDialog,
+    SubmitButton,
+    TreeViewFinderNodeProps,
+} from '../../../components/ui';
+import { CreateParameterDialog } from './parameters-creation-dialog';
+import { ElementType } from '../../../utils';
+import { LineSeparator } from './line-separator';
 
 // Context for XS Screen
 interface ParameterLayoutContextValue {
@@ -32,20 +42,22 @@ export function ParameterLayoutProvider({
     return <ParameterLayoutContext.Provider value={isXsScreenMemo}>{children}</ParameterLayoutContext.Provider>;
 }
 
-export interface ParameterActions {
-    preFillOnClick?: React.MouseEventHandler<HTMLButtonElement>;
-    resetOnClick?: React.MouseEventHandler<HTMLButtonElement>;
-    saveOnClick?: React.MouseEventHandler<HTMLButtonElement>;
-    validateOnClick?: React.MouseEventHandler<HTMLButtonElement>;
-    validateDisabled?: boolean;
-    extra?: ReactNode;
-}
+export type CreateParameterDialogConfig<T extends FieldValues> = {
+    studyUuid: UUID | null;
+    getParameterValues: UseFormGetValues<T> | any;
+    parameterFormatter: (params: any) => any;
+};
 
-interface ParameterLayoutProps {
+interface ParameterLayoutProps<T extends FieldValues> {
     children: ReactNode;
     title?: string;
     isLoading?: boolean;
-    actions?: ParameterActions;
+    parameterType: ElementType;
+    createParameter?: CreateParameterDialogConfig<T>;
+    selectParameterHandler?: (nodes: TreeViewFinderNodeProps[]) => void;
+    resetHandler?: () => void;
+    validateHandler?: React.MouseEventHandler<HTMLButtonElement>;
+    validateDisabled?: boolean;
 }
 
 const styles = {
@@ -68,18 +80,44 @@ const styles = {
     footer: {
         flexShrink: 0,
         p: 1,
-        borderTop: (theme: Theme) => `1px solid ${theme.palette.divider}`,
     },
 } as const;
 
-export function ParameterLayout({ children, title, isLoading, actions }: Readonly<ParameterLayoutProps>) {
-    const { preFillOnClick, resetOnClick, saveOnClick, validateOnClick, validateDisabled } = actions ?? {};
-
+export function ParameterLayout<T extends FieldValues>({
+    children,
+    title,
+    isLoading,
+    createParameter,
+    resetHandler,
+    validateHandler,
+    validateDisabled,
+    selectParameterHandler,
+    parameterType,
+}: Readonly<ParameterLayoutProps<T>>) {
     const { isXsScreen } = useParameterLayoutContext();
+    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
+    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
+    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
+
+    const handlePrefillClick = useCallback(() => {
+        setOpenSelectParameterDialog(true);
+    }, []);
+    const handleSaveClick = useCallback(() => {
+        setOpenCreateParameterDialog(true);
+    }, []);
+
+    const handleResetClick = useCallback(() => {
+        setOpenResetConfirmation(true);
+    }, []);
+    const handleCancelReset = useCallback(() => {
+        setOpenResetConfirmation(false);
+    }, []);
+
+    const intl = useIntl();
 
     return (
         <Stack sx={styles.stack}>
-            {(title || preFillOnClick || resetOnClick) && (
+            {(title || selectParameterHandler || resetHandler) && (
                 <Box sx={styles.title}>
                     <Grid container justifyContent="space-between" sx={{ alignItems: 'center' }}>
                         <Grid item xs={4}>
@@ -87,18 +125,18 @@ export function ParameterLayout({ children, title, isLoading, actions }: Readonl
                         </Grid>
                         <Grid item xs="auto">
                             <ButtonGroup>
-                                {preFillOnClick && (
+                                {selectParameterHandler && (
                                     <LabelledButton
-                                        callback={preFillOnClick}
+                                        callback={handlePrefillClick}
                                         label="button.prefill"
                                         data-testid="PrefillButton"
                                         startIcon={<Upload />}
                                     />
                                 )}
-                                {resetOnClick && (
+                                {resetHandler && (
                                     <Tooltip title={<FormattedMessage id="tooltip.reset" />}>
                                         <LabelledButton
-                                            callback={resetOnClick}
+                                            callback={handleResetClick}
                                             label="button.reset"
                                             data-testid="ResetButton"
                                             startIcon={<RestartAlt />}
@@ -112,16 +150,59 @@ export function ParameterLayout({ children, title, isLoading, actions }: Readonl
             )}
             <Box sx={styles.content}>{isLoading ? <LinearProgress /> : children}</Box>
             <Box sx={styles.footer}>
-                {saveOnClick && <LabelledButton label="save" data-testid="SaveButton" callback={saveOnClick} />}
-                {validateOnClick && (
+                <Grid container paddingTop={1} paddingBottom={1}>
+                    <LineSeparator />
+                </Grid>
+                {createParameter && <LabelledButton label="save" data-testid="SaveButton" callback={handleSaveClick} />}
+                {validateHandler && (
                     <SubmitButton
                         variant="contained"
                         data-testid="ValidateButton"
-                        onClick={validateOnClick}
+                        onClick={validateHandler}
                         disabled={validateDisabled}
                     />
                 )}
-                {actions?.extra}
+                {openCreateParameterDialog && createParameter && (
+                    <CreateParameterDialog
+                        studyUuid={createParameter?.studyUuid}
+                        open={openCreateParameterDialog}
+                        onClose={() => setOpenCreateParameterDialog(false)}
+                        parameterValues={createParameter?.getParameterValues}
+                        parameterFormatter={createParameter?.parameterFormatter}
+                        parameterType={parameterType}
+                    />
+                )}
+                {openSelectParameterDialog && selectParameterHandler && (
+                    <DirectoryItemSelector
+                        open={openSelectParameterDialog}
+                        onClose={(nodes) => {
+                            setOpenSelectParameterDialog(false);
+                            selectParameterHandler(nodes);
+                        }}
+                        types={[parameterType]}
+                        title={intl.formatMessage({
+                            id: 'showSelectParameterDialog',
+                        })}
+                        onlyLeaves
+                        multiSelect={false}
+                        validationButtonText={intl.formatMessage({
+                            id: 'validate',
+                        })}
+                    />
+                )}
+                {/* Reset Confirmation Dialog */}
+                {openResetConfirmation && resetHandler && (
+                    <PopupConfirmationDialog
+                        message="resetParamsConfirmation"
+                        validateButtonLabel="validate"
+                        openConfirmationPopup={openResetConfirmation}
+                        setOpenConfirmationPopup={handleCancelReset}
+                        handlePopupConfirmation={() => {
+                            resetHandler();
+                            setOpenResetConfirmation(false);
+                        }}
+                    />
+                )}
             </Box>
         </Stack>
     );

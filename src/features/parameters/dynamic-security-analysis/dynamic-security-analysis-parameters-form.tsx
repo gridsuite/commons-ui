@@ -11,7 +11,7 @@ import { ReactNode } from 'react';
 
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { ProviderParam, TabPanel, ParameterActions } from '../common';
+import { ProviderParam, TabPanel } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabValues } from './dynamic-security-analysis.type';
@@ -20,7 +20,6 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 type DynamicSecurityAnalysisParametersFormProps = {
     dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
 };
 
 export function DynamicSecurityAnalysisParametersForm({

@@ -53,6 +53,7 @@ export function UniqueNameInput({
         fieldState: { error },
     } = useController({
         name,
+        defaultValue: currentName,
     });
 
     const { isValidating } = useUniqueNameValidation({
@@ -80,6 +81,9 @@ export function UniqueNameInput({
             {showOk && <CheckIcon style={{ color: 'green' }} />}
         </InputAdornment>
     );
+
+    console.log('value : ', value);
+    console.log('initial : ', currentName);
 
     return (
         <TextField

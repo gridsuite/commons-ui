@@ -5,20 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useCallback, useEffect, useRef } from 'react';
 
 import type { UUID } from 'node:crypto';
 import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, ContingencyTableApi, CreateParameterDialog, ParameterLayout } from '../common';
+import { ComputingType, ContingencyTableApi, ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
-import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { fetchSecurityAnalysisParameters } from '../../../services/security-analysis';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
-import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { toFormValueSaParameters } from './columns-definitions';
@@ -42,10 +39,6 @@ export function SecurityAnalysisParametersInline({
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, null, null, null);
 
     const { resetParameters } = parametersBackend;
-    const intl = useIntl();
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
-    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
     // to force re-fetch contingency count in ContingencyTable
     const contingencyTableApiRef = useRef<ContingencyTableApi>(null);
@@ -57,21 +50,11 @@ export function SecurityAnalysisParametersInline({
     const executeResetAction = useCallback(() => {
         resetParameters();
         contingencyTableApiRef.current?.resetSimulatedContingencyCount();
-        setOpenResetConfirmation(false);
     }, [resetParameters]);
-
-    const handleResetAllClick = useCallback(() => {
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleCancelReset = useCallback(() => {
-        setOpenResetConfirmation(false);
-    }, []);
 
     const handleLoadParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams && newParams.length > 0) {
-                setOpenSelectParameterDialog(false);
                 fetchSecurityAnalysisParameters(newParams[0].id)
                     .then((parameters: SAParametersEnriched) => {
                         console.info(`loading the following security analysis parameters :  ${parameters.uuid}`);
@@ -84,7 +67,6 @@ export function SecurityAnalysisParametersInline({
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
-            setOpenSelectParameterDialog(false);
         },
         [reset, snackError]
     );
@@ -92,55 +74,6 @@ export function SecurityAnalysisParametersInline({
     useEffect(() => {
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
-
-    const actions = {
-        preFillOnClick: () => setOpenSelectParameterDialog(true),
-        saveOnClick: () => setOpenCreateParameterDialog(true),
-        resetOnClick: handleResetAllClick,
-        validateOnClick: handleSubmit(securityAnalysisMethods.onSaveInline),
-        extra: (
-            <>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={getValues}
-                        parameterFormatter={(newParams) =>
-                            mapSecurityAnalysisParameters(securityAnalysisMethods.formatNewParams(newParams))
-                        }
-                        parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameter}
-                        types={[ElementType.SECURITY_ANALYSIS_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        onlyLeaves
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={executeResetAction}
-                    />
-                )}
-            </>
-        ),
-    };
 
     return (
         <CustomFormProvider
@@ -150,7 +83,16 @@ export function SecurityAnalysisParametersInline({
             <ParameterLayout
                 title="SecurityAnalysis"
                 isLoading={!securityAnalysisMethods.paramsFormInitialized}
-                actions={actions}
+                parameterType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    getParameterValues: getValues,
+                    parameterFormatter: (newParams) =>
+                        mapSecurityAnalysisParameters(securityAnalysisMethods.formatNewParams(newParams)),
+                }}
+                selectParameterHandler={handleLoadParameter}
+                resetHandler={executeResetAction}
+                validateHandler={handleSubmit(securityAnalysisMethods.onSaveInline)}
             >
                 <SecurityAnalysisParametersForm
                     securityAnalysisMethods={securityAnalysisMethods}

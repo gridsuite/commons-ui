@@ -10,13 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { UUID } from 'node:crypto';
 import { MuiSelectInput } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';
-import {
-    CONTINGENCY_LISTS_INFOS,
-    ContingencyTableApi,
-    LineSeparator,
-    PARAM_SA_PROVIDER,
-    ParameterActions,
-} from '../common';
+import { CONTINGENCY_LISTS_INFOS, ContingencyTableApi, LineSeparator, PARAM_SA_PROVIDER } from '../common';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 import { ContingencyTable } from '../common/contingency-table';
@@ -30,7 +24,6 @@ export type SecurityAnalysisParametersFormProps = {
     isBuiltCurrentNode?: boolean;
     renderTitleFields?: () => ReactNode;
     isDeveloperMode: boolean;
-    actions?: ParameterActions;
 };
 
 export function SecurityAnalysisParametersForm({

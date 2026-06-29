@@ -5,16 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useCallback, useEffect } from 'react';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
-import { CreateParameterDialog, ParameterLayout } from '../common';
+import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
-import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
 import { VoltageInitStudyParameters } from './voltage-init.type';
 import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
@@ -23,7 +21,6 @@ import {
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
 import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
-import { PopupConfirmationDialog } from '../../../components/ui/dialogs';
 import { snackWithFallback } from '../../../utils/error';
 
 export function VoltageInitParametersInLine({
@@ -43,18 +40,13 @@ export function VoltageInitParametersInLine({
         parameters: voltageInitParameters,
     });
 
-    const intl = useIntl();
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
-    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const { formState, getValues, handleSubmit, reset, trigger } = voltageInitMethods.formMethods;
+    const { formState, getValues, handleSubmit, reset } = voltageInitMethods.formMethods;
 
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams?.length) {
-                setOpenSelectParameterDialog(false);
                 const parametersUuid = newParams[0].id;
                 getVoltageInitParameters(parametersUuid)
                     .then((params) => {
@@ -66,7 +58,6 @@ export function VoltageInitParametersInLine({
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
-            setOpenSelectParameterDialog(false);
         },
         [reset, snackError]
     );
@@ -78,76 +69,11 @@ export function VoltageInitParametersInLine({
         }).catch((error) => {
             snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
         });
-        setOpenResetConfirmation(false);
     }, [studyUuid, snackError]);
-
-    const handleResetClick = useCallback(() => {
-        setOpenResetConfirmation(true);
-    }, []);
-
-    const handleCancelReset = useCallback(() => {
-        setOpenResetConfirmation(false);
-    }, []);
 
     useEffect(() => {
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
-
-    const handleOpenSaveDialog = useCallback(() => {
-        trigger().then((isValid) => {
-            if (isValid) {
-                setOpenCreateParameterDialog(true);
-            }
-        });
-    }, [trigger]);
-
-    const actions = {
-        preFillOnClick: () => setOpenSelectParameterDialog(true),
-        saveOnClick: handleOpenSaveDialog,
-        resetOnClick: handleResetClick,
-        validateOnClick: handleSubmit(voltageInitMethods.onSaveInline),
-        extra: (
-            <>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={getValues}
-                        parameterFormatter={(params: Record<string, any>) =>
-                            fromVoltageInitParametersFormToParamValues(params).computationParameters
-                        }
-                        parameterType={ElementType.VOLTAGE_INIT_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameters}
-                        types={[ElementType.VOLTAGE_INIT_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={resetVoltageInitParameters}
-                    />
-                )}
-            </>
-        ),
-    };
 
     return (
         <CustomFormProvider
@@ -155,7 +81,20 @@ export function VoltageInitParametersInLine({
             {...voltageInitMethods.formMethods}
             removeOptional
         >
-            <ParameterLayout title="VoltageInit" isLoading={voltageInitMethods.paramsLoading} actions={actions}>
+            <ParameterLayout
+                title="VoltageInit"
+                isLoading={voltageInitMethods.paramsLoading}
+                parameterType={ElementType.SENSITIVITY_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    getParameterValues: getValues,
+                    parameterFormatter: (params: Record<string, any>) =>
+                        fromVoltageInitParametersFormToParamValues(params).computationParameters,
+                }}
+                selectParameterHandler={handleLoadParameters}
+                resetHandler={resetVoltageInitParameters}
+                validateHandler={handleSubmit(voltageInitMethods.onSaveInline)}
+            >
                 <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} showActionsButtons />
             </ParameterLayout>
         </CustomFormProvider>

@@ -7,7 +7,7 @@
 import { ReactNode } from 'react';
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ProviderParam, TabPanel, ParameterActions } from '../common';
+import { ProviderParam, TabPanel } from '../common';
 import { useTabs } from '../common/hook/use-tabs';
 
 import { getTabStyle, parametersStyles } from '../parameters-style';
@@ -24,7 +24,6 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 type DynamicSimulationFormProps = {
     dynamicSimulationMethods: UseComputationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
-    actions?: ParameterActions;
     // fetchers for curve parameters
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;

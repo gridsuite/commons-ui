@@ -5,15 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
+import { useCallback, useEffect } from 'react';
 import type { UUID } from 'node:crypto';
 import type { UserProfile } from 'oidc-client-ts';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { ElementType } from '../../../utils';
-import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
-import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
 import { getNetworkVisualizationsParameters } from '../../../services';
@@ -41,9 +38,6 @@ export function NetworkVisualizationParametersInline({
         parameters,
     });
 
-    const intl = useIntl();
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
     const { snackError } = useSnackMessage();
 
     const { reset, getValues, formState, handleSubmit } = networkVisuMethods.formMethods;
@@ -51,7 +45,6 @@ export function NetworkVisualizationParametersInline({
     const handleLoadParameters = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams && newParams.length > 0) {
-                setOpenSelectParameterDialog(false);
                 getNetworkVisualizationsParameters(newParams[0].id)
                     .then((result) => {
                         reset(result, {
@@ -62,7 +55,6 @@ export function NetworkVisualizationParametersInline({
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
-            setOpenSelectParameterDialog(false);
         },
         [reset, snackError]
     );
@@ -70,40 +62,6 @@ export function NetworkVisualizationParametersInline({
     useEffect(() => {
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
-
-    const actions = {
-        preFillOnClick: () => setOpenSelectParameterDialog(true),
-        saveOnClick: () => setOpenCreateParameterDialog(true),
-        validateOnClick: handleSubmit(networkVisuMethods.onSaveInline),
-        extra: (
-            <>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={() => getValues()}
-                        parameterFormatter={(newParams) => newParams}
-                        parameterType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameters}
-                        types={[ElementType.NETWORK_VISUALIZATIONS_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-            </>
-        ),
-    };
 
     return (
         <CustomFormProvider
@@ -114,7 +72,14 @@ export function NetworkVisualizationParametersInline({
             <ParameterLayout
                 title="NetworkVisualizations"
                 isLoading={networkVisuMethods.paramsLoading}
-                actions={actions}
+                parameterType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    getParameterValues: getValues,
+                    parameterFormatter: (newParams) => newParams,
+                }}
+                selectParameterHandler={handleLoadParameters}
+                validateHandler={handleSubmit(networkVisuMethods.onSaveInline)}
             >
                 <NetworkVisualizationParametersForm userProfile={userProfile} networkVisuMethods={networkVisuMethods} />
             </ParameterLayout>

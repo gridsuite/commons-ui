@@ -6,7 +6,6 @@
  */
 
 import { Grid, LinearProgress } from '@mui/material';
-import { ReactNode } from 'react';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
@@ -14,7 +13,6 @@ import type { MuiStyles } from '../../../utils/styles';
 
 interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
 }
 
 const styles = {
@@ -43,7 +41,7 @@ const styles = {
     }),
 } as const satisfies MuiStyles;
 
-export function LoadFlowParametersForm({ loadflowMethods, renderTitleFields }: Readonly<LoadFlowParametersFormProps>) {
+export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowParametersFormProps>) {
     const {
         selectedTab,
         handleTabChange,
@@ -62,20 +60,23 @@ export function LoadFlowParametersForm({ loadflowMethods, renderTitleFields }: R
 
     return (
         <Grid container sx={styles.content}>
-            {renderTitleFields?.()}
-            <LoadFlowParametersHeader
-                selectedTab={selectedTab}
-                handleTabChange={handleTabChange}
-                tabIndexesWithError={tabIndexesWithError}
-                formattedProviders={formattedProviders}
-            />
-            <LoadFlowParametersContent
-                selectedTab={selectedTab}
-                currentProvider={watchProvider ?? ''}
-                specificParameters={specificParametersDescriptionForProvider}
-                params={params}
-                defaultLimitReductions={defaultLimitReductions}
-            />
+            <Grid item xs={12}>
+                <LoadFlowParametersHeader
+                    selectedTab={selectedTab}
+                    handleTabChange={handleTabChange}
+                    tabIndexesWithError={tabIndexesWithError}
+                    formattedProviders={formattedProviders}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <LoadFlowParametersContent
+                    selectedTab={selectedTab}
+                    currentProvider={watchProvider ?? ''}
+                    specificParameters={specificParametersDescriptionForProvider}
+                    params={params}
+                    defaultLimitReductions={defaultLimitReductions}
+                />
+            </Grid>
         </Grid>
     );
 }
