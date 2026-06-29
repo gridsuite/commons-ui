@@ -12,7 +12,8 @@ export function InputWithPopupConfirmation({
     Input,
     name,
     shouldOpenPopup, // condition to open popup confirmation
-    resetOnConfirmation, // function to reset values in your form on confirmation,
+    resetOnChange, // function applying the changes that must happen on EVERY value change (with or without confirmation)
+    resetOnConfirmation, // complementary function applying the changes that must happen only AFTER confirmation
     message,
     validateButtonLabel,
     ...props
@@ -30,11 +31,13 @@ export function InputWithPopupConfirmation({
             setOpenPopup(true);
             setNewValue(value);
         } else {
+            resetOnChange?.();
             onChange(value);
         }
     };
 
     const handlePopupConfirmation = () => {
+        resetOnChange?.();
         resetOnConfirmation?.();
         onChange(newValue);
         setOpenPopup(false);
