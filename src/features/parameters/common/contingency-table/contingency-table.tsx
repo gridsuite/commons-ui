@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress, Grid } from '@mui/material';
+import { Alert, CircularProgress, Grid2 as Grid } from '@mui/material';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -19,8 +19,8 @@ import { MuiStyles, snackWithFallback, ContingencyListsInfosEnriched } from '../
 import { DndColumn } from '../../../../components';
 
 const styles = {
-    alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
-    error: { color: 'red', paddingTop: 0, paddingBottom: 0 },
+    alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0, width: '100%' },
+    error: { color: 'red', paddingTop: 0, paddingBottom: 0, width: '100%' },
 } satisfies MuiStyles;
 
 type SuccessCountType = {
@@ -275,7 +275,7 @@ function ContingencyTableWithApiRef(
     }, [intl]);
 
     return (
-        <Grid container direction="column">
+        <Grid container sx={{ width: '100%' }}>
             <ParameterTableField
                 name={name}
                 columnsDefinition={columnsDefinition}
