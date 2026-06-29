@@ -36,10 +36,10 @@ function LoadFlowParametersHeader({
                 }}
                 justifyContent="space-between"
             >
-                <Grid size={5} sx={parametersStyles.parameterName}>
+                <Grid size="grow" sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid size="auto" sx={parametersStyles.controlItem}>
+                <Grid container size="auto" sx={{ justifyContent: 'flex-end' }}>
                     <MuiSelectInput
                         data-testid="LfProvider"
                         name={PROVIDER}
@@ -48,7 +48,7 @@ function LoadFlowParametersHeader({
                     />
                 </Grid>
                 <LineSeparator />
-                <Grid sx={{ width: '100%' }}>
+                <Grid size={12}>
                     <Tabs value={selectedTab} onChange={handleTabChange}>
                         <Tab
                             label={<FormattedMessage id={TabValues.GENERAL} />}

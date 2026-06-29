@@ -103,7 +103,7 @@ export function SensitivityAnalysisParametersForm({
                                     </Grid>
                                     <SensitivityAnalysisFields />
                                 </Grid>
-                                <Grid container paddingTop={4} paddingBottom={2}>
+                                <Grid container size={12} paddingTop={4} paddingBottom={2}>
                                     <LineSeparator />
                                 </Grid>
                                 <SensitivityParametersSelector
