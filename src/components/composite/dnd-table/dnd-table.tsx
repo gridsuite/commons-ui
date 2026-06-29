@@ -400,8 +400,8 @@ export function DndTable(props: Readonly<DndTableProps>) {
     }
 
     return (
-        <Grid container spacing={1}>
-            <Grid container>
+        <Grid container spacing={1} size={12}>
+            <Grid container size={12}>
                 <DragDropContext onBeforeDragStart={onBeforeDragStart} onDragEnd={onDragEnd}>
                     <Droppable droppableId="tapTable" isDropDisabled={disabled}>
                         {(provided) => (
@@ -423,7 +423,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                 </DragDropContext>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
             </Grid>
-            <Grid container>
+            <Grid container size={12}>
                 {handleResetButton && handleUploadButton && resetButtonMessageId && uploadButtonMessageId ? (
                     <DndTableBottomLeftButtons
                         withResetButton={withResetButton}
