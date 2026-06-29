@@ -98,7 +98,8 @@ function ContingencyTableWithApiRef(
                 const [contingencyListUuid] = Object.entries(contingencyCount.countByContingencyList)[i];
                 const listName = namesById[contingencyListUuid as UUID];
                 if (listName !== undefined) {
-                    enriched[listName] = contingencyCount.countByContingencyList[contingencyListUuid as UUID];
+                    enriched[`${contingencyListUuid}_${listName}`] =
+                        contingencyCount.countByContingencyList[contingencyListUuid as UUID];
                 }
             }
             return {
@@ -135,7 +136,9 @@ function ContingencyTableWithApiRef(
                     ) {
                         return {
                             success: false,
-                            contingencyListName,
+                            contingencyListName: contingencyListName.includes('_')
+                                ? contingencyListName.slice(contingencyListName.indexOf('_') + 1)
+                                : '',
                             contingencyName,
                         };
                     }
