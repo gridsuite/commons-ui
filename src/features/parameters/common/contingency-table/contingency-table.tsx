@@ -175,7 +175,7 @@ function ContingencyTableWithApiRef(
     }, [intl]);
 
     return (
-        <Grid container direction="column">
+        <Grid container direction="column" size={12}>
             <ParameterTableField
                 name={name}
                 columnsDefinition={columnsDefinition}
