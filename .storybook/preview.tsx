@@ -4,9 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import React from 'react';
 import type { Preview, Decorator } from '@storybook/react';
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, GlobalStyles, ThemeProvider } from '@mui/material';
 import { IntlProvider } from 'react-intl';
 
 // Import all English translations from the library
@@ -39,6 +38,13 @@ const withMuiTheme: Decorator = (Story, context) => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
+            <GlobalStyles
+                styles={{
+                    '.docs-story': {
+                        backgroundColor: theme.palette.background.default,
+                    },
+                }}
+            />
             <IntlProvider locale="en" messages={messages} defaultLocale="en">
                 <Story />
             </IntlProvider>
@@ -50,6 +56,7 @@ const preview: Preview = {
     globalTypes: {
         theme: {
             description: 'MUI color scheme',
+            defaultValue: 'light',
             toolbar: {
                 title: 'Theme',
                 icon: 'circlehollow',
@@ -60,9 +67,6 @@ const preview: Preview = {
                 dynamicTitle: true,
             },
         },
-    },
-    initialGlobals: {
-        theme: 'light',
     },
     decorators: [withMuiTheme],
     parameters: {

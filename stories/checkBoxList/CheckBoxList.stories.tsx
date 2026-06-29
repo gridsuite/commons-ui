@@ -43,4 +43,3 @@ export const Default: Story = {};
 export const WithSecondaryLabels: Story = { args: { getItemLabelSecondary: (item) => item.detail } };
 export const WithDragNDrop: Story = { args: { isDndActive: true } };
 export const WithAllSelection: Story = { args: { addSelectAllCheckbox: true } };
-export const WithDisabledItem: Story = { args: { isDisabled: (item) => item.id === 'south' } }; // TODO: not working ?
