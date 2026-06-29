@@ -15,7 +15,7 @@ type DirectoryItemsInputLineProps = {
     name: string;
     equipmentTypes?: string[];
     elementType: string;
-    hideErrorMessage: boolean;
+    hideErrorMessage?: boolean;
     allowMultiSelect?: boolean;
 };
 

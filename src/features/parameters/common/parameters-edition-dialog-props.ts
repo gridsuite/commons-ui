@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { GsLang } from '../../../utils';
 import { BuildStatus } from '../../node/constant';
 
@@ -20,7 +20,7 @@ export interface ParametersEditionDialogProps {
     activeDirectory: UUID;
     isRootNode?: boolean;
     language?: GsLang;
-    user: User | null;
+    userProfile: UserProfile | null;
     globalBuildStatus?: BuildStatus;
     isDeveloperMode?: boolean;
 }

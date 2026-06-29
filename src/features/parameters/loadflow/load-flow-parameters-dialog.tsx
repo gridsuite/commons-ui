@@ -29,17 +29,23 @@ export function LoadFlowParametersEditionDialog({
     name,
     description,
     activeDirectory,
-    user,
+    userProfile,
     language = LANG_ENGLISH,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
-    const parametersBackend = useParametersBackend(user, id, ComputingType.LOAD_FLOW, OptionalServicesStatus.Up, {
-        backendFetchProviders: getLoadFlowProviders,
-        backendFetchParameters: fetchLoadFlowParameters,
-        backendUpdateParameters: setLoadFlowParameters,
-        backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
-        backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
-    });
+    const parametersBackend = useParametersBackend(
+        userProfile,
+        id,
+        ComputingType.LOAD_FLOW,
+        OptionalServicesStatus.Up,
+        {
+            backendFetchProviders: getLoadFlowProviders,
+            backendFetchParameters: fetchLoadFlowParameters,
+            backendUpdateParameters: setLoadFlowParameters,
+            backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
+            backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
+        }
+    );
 
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 
