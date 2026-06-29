@@ -235,7 +235,7 @@ export const parametersFr = {
     DeleteContingencyList: 'Supprimer',
     getContingencyListError: "Impossible de récupérer les listes d'aléas",
     xContingenciesWillBeSimulated: '{x, plural, =0 {aucun défaut} =1 {1 défaut} other {{x} défauts}} à simuler',
-    contingenciesWillNotBeSimulated: "{contingencyName} dans la liste {contingencyListName} n'est pas un aléa velide",
+    contingenciesWillNotBeSimulated: "{contingencyName} dans la liste {contingencyListName} n'est pas un aléa valide",
     contingencyCountImpossibleOnUnbuiltNode: "Impossible d'estimer le nombre d'aléas sur un noeud non réalisé",
     noContingency: 'Aucun défaut',
 
