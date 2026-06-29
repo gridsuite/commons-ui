@@ -31,6 +31,7 @@ export function DeletableRow({
         <Grid
             container
             spacing={2}
+            size={12}
             alignItems={alignItems}
             onMouseEnter={() => setIsMouseHover(true)}
             onMouseLeave={() => setIsMouseHover(false)}
