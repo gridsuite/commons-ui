@@ -107,11 +107,18 @@ export function CsvPicker<TData = unknown>({
                 onUploadAccepted={handleUploadAccepted}
             >
                 {({ getRootProps }: any) => (
-                    <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0, width: '100%' }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            minWidth: 0,
+                            width: '100%',
+                        }}
+                    >
                         <Tooltip title={selectedFile?.name}>
                             <Box
                                 sx={{
-                                    flexGrow: 1,
                                     marginRight: '10px',
                                     fontWeight: 'bold',
                                     minWidth: 0,
