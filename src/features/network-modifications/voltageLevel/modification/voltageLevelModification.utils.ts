@@ -12,7 +12,14 @@ import {
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
-import { FieldConstants, ModificationType, sanitizeString, toModificationOperation } from '../../../../utils';
+import {
+    FieldConstants,
+    ModificationType,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    sanitizeString,
+    SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    toModificationOperation,
+} from '../../../../utils';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { VoltageLevelModificationDto } from './voltageLevelModification.types';
 import { BbsMeasurementItem } from '../../common';
@@ -23,19 +30,19 @@ export const voltageLevelModificationFormSchema = object()
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.HIDE_SUBSTATION_FIELD]: boolean().required(),
         [FieldConstants.SUBSTATION_ID]: string().nullable(),
-        [FieldConstants.NOMINAL_V]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.NOMINAL_V]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
             .nullable()
-            .min(0, 'mustBeGreaterOrEqualToZero')
+            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .when([FieldConstants.HIGH_VOLTAGE_LIMIT], {
                 is: (highVoltageLimit: number) => highVoltageLimit != null,
                 then: (schema) =>
                     schema.max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
             }),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
             .nullable()
-            .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
+            .min(0, SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .when([FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT], {
                 is: (highShortCircuitCurrentLimit: number) => highShortCircuitCurrentLimit != null,
                 then: (schema) =>
@@ -46,7 +53,7 @@ export const voltageLevelModificationFormSchema = object()
             }),
         [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
             .nullable()
-            .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero'),
+            .min(0, SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
     })
     .concat(modificationPropertiesSchema);
 
