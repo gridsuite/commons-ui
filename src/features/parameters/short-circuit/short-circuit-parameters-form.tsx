@@ -6,20 +6,15 @@
  */
 
 import { Grid, LinearProgress } from '@mui/material';
-import { ReactNode } from 'react';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
 import { parametersStyles } from '../parameters-style';
 
 interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
 }
 
-export function ShortCircuitParametersForm({
-    shortCircuitMethods,
-    renderTitleFields,
-}: Readonly<ShortCircuitParametersFormProps>) {
+export function ShortCircuitParametersForm({ shortCircuitMethods }: Readonly<ShortCircuitParametersFormProps>) {
     const { paramsLoaded } = shortCircuitMethods;
 
     if (!paramsLoaded) {
@@ -28,7 +23,6 @@ export function ShortCircuitParametersForm({
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
             <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
         </Grid>
     );

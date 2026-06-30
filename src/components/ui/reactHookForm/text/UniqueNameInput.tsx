@@ -82,9 +82,6 @@ export function UniqueNameInput({
         </InputAdornment>
     );
 
-    console.log('value : ', value);
-    console.log('initial : ', currentName);
-
     return (
         <TextField
             autoComplete="new-password" // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers

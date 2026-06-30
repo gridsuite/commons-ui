@@ -6,7 +6,6 @@
  */
 
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
-import { ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common';
@@ -18,13 +17,11 @@ import { VoltageLimitsParameters } from './voltage-limits-parameters';
 
 interface VoltageInitParametersFormProps {
     voltageInitMethods: UseVoltageInitParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
     showActionsButtons?: boolean;
 }
 
 export function VoltageInitParametersForm({
     voltageInitMethods,
-    renderTitleFields,
     showActionsButtons,
 }: Readonly<VoltageInitParametersFormProps>) {
     const { selectedTab, handleTabChange, paramsLoading, tabIndexesWithError } = voltageInitMethods;
@@ -35,7 +32,6 @@ export function VoltageInitParametersForm({
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
             <Tabs
                 value={selectedTab}
                 variant="scrollable"

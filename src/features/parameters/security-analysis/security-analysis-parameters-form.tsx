@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid, LinearProgress } from '@mui/material';
-import { ForwardedRef, ReactNode } from 'react';
+import { ForwardedRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { UUID } from 'node:crypto';
 import { MuiSelectInput } from '../../../components/ui';
@@ -22,7 +22,6 @@ export type SecurityAnalysisParametersFormProps = {
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
-    renderTitleFields?: () => ReactNode;
     isDeveloperMode: boolean;
 };
 
@@ -32,7 +31,6 @@ export function SecurityAnalysisParametersForm({
     fetchContingencyCount,
     contingencyTableApiRef,
     isBuiltCurrentNode,
-    renderTitleFields,
     isDeveloperMode,
 }: Readonly<SecurityAnalysisParametersFormProps>) {
     if (!securityAnalysisMethods.paramsFormInitialized) {
@@ -41,7 +39,6 @@ export function SecurityAnalysisParametersForm({
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
             <Grid
                 container
                 spacing={1}

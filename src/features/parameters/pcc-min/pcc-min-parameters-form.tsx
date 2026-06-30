@@ -6,40 +6,17 @@
  */
 
 import { Grid, LinearProgress } from '@mui/material';
-import { ReactNode } from 'react';
 import { ParameterLineDirectoryItemsInput } from '../common/widget/parameter-line-directory-items-input.js';
-import type { MuiStyles } from '../../../utils/styles';
 import { ElementType, EquipmentType } from '../../../utils';
 import { UsePccMinParametersFormReturn } from './use-pcc-min-parameters-form';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { parametersStyles } from '../parameters-style';
 
-export const styles = {
-    gridWithActions: (theme) => ({
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(1),
-        flexGrow: 1,
-    }),
-    gridWithoutActions: (theme) => ({
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(1),
-        flexGrow: 1,
-        maxHeight: '100%',
-    }),
-} as const satisfies MuiStyles;
-
 interface PccMinParametersFormProps {
     pccMinMethods: UsePccMinParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
 }
 
-export function PccMinParametersForm({ pccMinMethods, renderTitleFields }: Readonly<PccMinParametersFormProps>) {
+export function PccMinParametersForm({ pccMinMethods }: Readonly<PccMinParametersFormProps>) {
     const { paramsLoading } = pccMinMethods;
 
     if (paramsLoading) {
@@ -48,8 +25,7 @@ export function PccMinParametersForm({ pccMinMethods, renderTitleFields }: Reado
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
-            <Grid item container direction="column">
+            <Grid item xs={12}>
                 <ParameterLineDirectoryItemsInput
                     name={FILTERS}
                     equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}

@@ -84,7 +84,7 @@ export function VoltageInitParametersInLine({
             <ParameterLayout
                 title="VoltageInit"
                 isLoading={voltageInitMethods.paramsLoading}
-                parameterType={ElementType.SENSITIVITY_PARAMETERS}
+                parameterType={ElementType.VOLTAGE_INIT_PARAMETERS}
                 createParameter={{
                     studyUuid,
                     getParameterValues: getValues,

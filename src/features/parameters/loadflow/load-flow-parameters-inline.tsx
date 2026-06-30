@@ -76,8 +76,8 @@ export function LoadFlowParametersInline({
                     parameterType={ElementType.LOADFLOW_PARAMETERS}
                     createParameter={{
                         studyUuid,
-                        getParameterValues: () => loadflowMethods.formatNewParams(getValues()),
-                        parameterFormatter: (newParams) => newParams,
+                        getParameterValues: getValues,
+                        parameterFormatter: (values) => loadflowMethods.formatNewParams(values),
                     }}
                     selectParameterHandler={handleLoadParameter}
                     resetHandler={resetParameters}

@@ -6,7 +6,7 @@
  */
 
 import { LinearProgress, Tab, Tabs } from '@mui/material';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
 import { UseNetworkVisualizationParametersFormReturn } from './use-network-visualizations-parameters-form';
@@ -35,13 +35,11 @@ const useGetAvailableComponentLibraries = (userProfile: UserProfile | null) => {
 
 interface NetworkVisualizationParametersFormProps {
     networkVisuMethods: UseNetworkVisualizationParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
     userProfile: UserProfile | null;
 }
 
 export function NetworkVisualizationParametersForm({
     networkVisuMethods,
-    renderTitleFields,
     userProfile,
 }: Readonly<NetworkVisualizationParametersFormProps>) {
     const componentLibraries = useGetAvailableComponentLibraries(userProfile);
@@ -53,7 +51,6 @@ export function NetworkVisualizationParametersForm({
 
     return (
         <>
-            {renderTitleFields?.()}
             <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                 <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
                 <Tab label={<FormattedMessage id="SingleLineDiagram" />} value={TabValues.SINGLE_LINE_DIAGRAM} />

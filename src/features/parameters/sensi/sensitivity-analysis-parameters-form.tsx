@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode } from 'react';
 import { Grid, LinearProgress } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
@@ -17,13 +16,11 @@ import { BuildStatus } from '../../node/constant';
 
 export function SensitivityAnalysisParametersForm({
     sensitivityAnalysisMethods,
-    renderTitleFields,
     isDeveloperMode,
     isRootNode,
     globalBuildStatus,
 }: Readonly<{
     sensitivityAnalysisMethods: UseSensitivityAnalysisParametersReturn;
-    renderTitleFields?: () => ReactNode;
     isDeveloperMode: boolean;
     isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
@@ -34,7 +31,6 @@ export function SensitivityAnalysisParametersForm({
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
             <Grid
                 container
                 spacing={1}

@@ -9,37 +9,11 @@ import { Grid, LinearProgress } from '@mui/material';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
-import type { MuiStyles } from '../../../utils/styles';
+import { parametersStyles } from '../parameters-style';
 
 interface LoadFlowParametersFormProps {
     loadflowMethods: UseLoadFlowParametersFormReturn;
 }
-
-const styles = {
-    form: {
-        height: '100%',
-        display: 'flex',
-        position: 'relative',
-        flexDirection: 'column',
-        maxHeight: '100%',
-    },
-    loadflowParameters: {
-        flexGrow: 1,
-        paddingLeft: 1,
-        overflow: 'auto',
-    },
-    actions: {
-        flexGrow: 0,
-    },
-    content: (theme) => ({
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(1),
-        flexGrow: 1,
-    }),
-} as const satisfies MuiStyles;
 
 export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowParametersFormProps>) {
     const {
@@ -59,7 +33,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
     }
 
     return (
-        <Grid container sx={styles.content}>
+        <Grid container sx={parametersStyles.scrollableGrid}>
             <Grid item xs={12}>
                 <LoadFlowParametersHeader
                     selectedTab={selectedTab}

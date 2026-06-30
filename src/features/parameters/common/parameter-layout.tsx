@@ -119,7 +119,7 @@ export function ParameterLayout<T extends FieldValues>({
         <Stack sx={styles.stack}>
             {(title || selectParameterHandler || resetHandler) && (
                 <Box sx={styles.title}>
-                    <Grid container justifyContent="space-between" sx={{ alignItems: 'center' }}>
+                    <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
                         <Grid item xs={4}>
                             {title && !isXsScreen && <FormattedMessage id={title} />}
                         </Grid>
