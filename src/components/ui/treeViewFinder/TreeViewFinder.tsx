@@ -26,6 +26,7 @@ import {
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import type { UUID } from 'node:crypto';
+import { StyledComponent } from '@emotion/styled';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../../utils/styles';
 import { CancelButton } from '../reactHookForm/utils/CancelButton';
 import { ElementAttributes, ElementType } from '../../../utils';
@@ -554,4 +555,5 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
 }
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
-export const TreeViewFinder = styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);
+export const TreeViewFinder: StyledComponent<TreeViewFinderProps> =
+    styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);
