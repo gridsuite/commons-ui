@@ -29,7 +29,7 @@ import { exportFilter } from '../../../../services/study';
 import { EquipmentType } from '../../../../utils/types/equipmentType';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { LANG_SYSTEM, snackWithFallback } from '../../../../utils';
-import { CsvPicker, useCustomFormContext } from '../../../ui';
+import { CsvDownloadButton, CsvPicker, useCustomFormContext } from '../../../ui';
 
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
@@ -235,33 +235,43 @@ export function ExplicitNamingFilterForm({
             padding={1} // because of unscrollableHeader in parent component
             sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
         >
+            <Grid>
+                <InputWithPopupConfirmation
+                    Input={SelectInput}
+                    name={FieldConstants.EQUIPMENT_TYPE}
+                    options={Object.values(FILTER_EQUIPMENTS)}
+                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
+                    label="equipmentType"
+                    shouldOpenPopup={openConfirmationPopup}
+                    resetOnConfirmation={handleResetOnConfirmation}
+                    message="changeTypeMessage"
+                    validateButtonLabel="button.changeType"
+                    sx={{ width: 400, maxWidth: '100%' }}
+                    data-testid="EquipmentTypeSelector"
+                />
+                {sourceFilterForExplicitNamingConversion && (
+                    <ModifyElementSelection
+                        elementType={ElementType.STUDY}
+                        onElementValidated={onStudySelected}
+                        dialogOpeningButtonLabel="selectStudyDialogButton"
+                        dialogTitleLabel="selectStudyDialogTitle"
+                        dialogMessageLabel="selectStudyText"
+                        noElementMessageLabel="noSelectedStudyText"
+                    />
+                )}
+            </Grid>
             <Grid container justifyContent="space-between" alignItems="center">
                 <Grid>
-                    <InputWithPopupConfirmation
-                        Input={SelectInput}
-                        name={FieldConstants.EQUIPMENT_TYPE}
-                        options={Object.values(FILTER_EQUIPMENTS)}
-                        disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
-                        label="equipmentType"
-                        shouldOpenPopup={openConfirmationPopup}
-                        resetOnConfirmation={handleResetOnConfirmation}
-                        message="changeTypeMessage"
-                        validateButtonLabel="button.changeType"
-                        sx={{ width: 400, maxWidth: '100%' }}
-                        data-testid="EquipmentTypeSelector"
+                    <CsvDownloadButton
+                        data={getTemplateData}
+                        fileName={intl.formatMessage({ id: 'filterCsvFileName' })}
+                        language={language}
+                        labelId="GenerateCSV"
+                        variant="contained"
+                        disabled={!watchEquipmentType}
                     />
-                    {sourceFilterForExplicitNamingConversion && (
-                        <ModifyElementSelection
-                            elementType={ElementType.STUDY}
-                            onElementValidated={onStudySelected}
-                            dialogOpeningButtonLabel="selectStudyDialogButton"
-                            dialogTitleLabel="selectStudyDialogTitle"
-                            dialogMessageLabel="selectStudyText"
-                            noElementMessageLabel="noSelectedStudyText"
-                        />
-                    )}
                 </Grid>
-                <Grid>
+                <Grid sx={{ flex: 1, minWidth: 0 }}>
                     <CsvPicker<Record<string, string>>
                         label="UploadCSV"
                         header={csvFileHeaders}
@@ -300,7 +310,6 @@ export function ExplicitNamingFilterForm({
                         csvProps={{
                             fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
                             language,
-                            getTemplateData,
                             getTableData,
                         }}
                     />
