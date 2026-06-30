@@ -111,6 +111,7 @@ export function CsvPicker<TData = unknown>({
                         <Tooltip title={selectedFile?.name}>
                             <Box
                                 sx={{
+                                    flexGrow: 1,
                                     marginRight: '10px',
                                     fontWeight: 'bold',
                                     minWidth: 0,
@@ -122,7 +123,12 @@ export function CsvPicker<TData = unknown>({
                                 {selectedFile ? selectedFile.name : intl.formatMessage({ id: 'uploadMessage' })}
                             </Box>
                         </Tooltip>
-                        <Button {...getRootProps()} variant="outlined" disabled={disabled} sx={{ flexShrink: 0 }}>
+                        <Button
+                            {...getRootProps()}
+                            variant={selectedFile ? 'contained' : 'text'}
+                            disabled={disabled}
+                            sx={{ flexShrink: 0 }}
+                        >
                             <FormattedMessage id={label} />
                         </Button>
                     </Box>
