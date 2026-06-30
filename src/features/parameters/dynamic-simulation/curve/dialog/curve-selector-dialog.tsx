@@ -12,6 +12,7 @@ import {
     DialogTitle,
     Grid2 as Grid,
     IconButton,
+    Stack,
     Typography,
     useTheme,
 } from '@mui/material';
@@ -117,43 +118,45 @@ function CurveSelectorDialog({
                             modelsFetcher={modelsFetcher}
                         />
                     </Grid>
-                    <Grid container direction="column" justifyContent="center" alignItems="center" size={0.5}>
-                        <Grid>
-                            <CustomTooltip
-                                title={intl.formatMessage({
-                                    id: 'AddRows',
-                                })}
-                            >
-                                <span>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={() => handleAddButton()}
-                                        disabled={hasSelectedRow}
-                                    >
-                                        <ArrowCircleRight />
-                                    </IconButton>
-                                </span>
-                            </CustomTooltip>
-                        </Grid>
-                        <Grid>
-                            <CustomTooltip
-                                title={intl.formatMessage({
-                                    id: 'DeleteRows',
-                                })}
-                            >
-                                <span>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={() => handleDeleteButton()}
-                                        disabled={hasSelectedRow}
-                                    >
-                                        <ArrowCircleLeft />
-                                    </IconButton>
-                                </span>
-                            </CustomTooltip>
-                        </Grid>
+                    <Grid size={0.5}>
+                        <Stack justifyContent="center" alignItems="center">
+                            <Grid>
+                                <CustomTooltip
+                                    title={intl.formatMessage({
+                                        id: 'AddRows',
+                                    })}
+                                >
+                                    <span>
+                                        <IconButton
+                                            color="primary"
+                                            onClick={() => handleAddButton()}
+                                            disabled={hasSelectedRow}
+                                        >
+                                            <ArrowCircleRight />
+                                        </IconButton>
+                                    </span>
+                                </CustomTooltip>
+                            </Grid>
+                            <Grid>
+                                <CustomTooltip
+                                    title={intl.formatMessage({
+                                        id: 'DeleteRows',
+                                    })}
+                                >
+                                    <span>
+                                        <IconButton
+                                            color="primary"
+                                            onClick={() => handleDeleteButton()}
+                                            disabled={hasSelectedRow}
+                                        >
+                                            <ArrowCircleLeft />
+                                        </IconButton>
+                                    </span>
+                                </CustomTooltip>
+                            </Grid>
+                        </Stack>
                     </Grid>
-                    <Grid container size="grow" direction="column">
+                    <Grid size="grow">
                         <CurvePreview ref={previewRef} />
                     </Grid>
                 </Grid>

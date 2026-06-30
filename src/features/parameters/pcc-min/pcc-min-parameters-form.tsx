@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress, Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../components/ui';
 import { ParameterLineDirectoryItemsInput } from '../common';
@@ -57,9 +57,7 @@ export function PccMinParametersForm({
                 }}
             >
                 <Grid container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
-                    <Grid container direction="column">
-                        {renderTitleFields?.()}
-                    </Grid>
+                    <Stack>{renderTitleFields?.()}</Stack>
                     {paramsLoading ? (
                         <LinearProgress />
                     ) : (
@@ -69,7 +67,7 @@ export function PccMinParametersForm({
                                 width: '100%',
                             }}
                         >
-                            <Grid container direction="column">
+                            <Stack>
                                 <ParameterLineDirectoryItemsInput
                                     name={FILTERS}
                                     equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
@@ -78,21 +76,19 @@ export function PccMinParametersForm({
                                     hideErrorMessage={false}
                                     allowMultiSelect={false}
                                 />
-                            </Grid>
+                            </Stack>
                         </Box>
                     )}
                 </Grid>
                 {renderActions && (
-                    <Grid
-                        container
-                        direction="column"
+                    <Stack
                         sx={{
                             position: 'fixed',
                             bottom: '15px',
                         }}
                     >
                         {renderActions()}
-                    </Grid>
+                    </Stack>
                 )}
             </Box>
         </CustomFormProvider>

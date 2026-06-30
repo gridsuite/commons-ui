@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ValueEditorProps } from 'react-querybuilder';
-import { Grid2 as Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useCallback } from 'react';
 import { RuleValueEditor } from './RuleValueEditor';
 import { CompositeField, CompositeGroup, CompositeRule } from '../../filter/expert/expertFilter.type';
@@ -43,7 +43,7 @@ export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
     );
 
     return (
-        <Grid container direction="column" sx={styles.group} paddingLeft={1} paddingRight={1} paddingBottom={1}>
+        <Stack sx={styles.group} paddingLeft={1} paddingRight={1} paddingBottom={1}>
             {children &&
                 Object.values(children).map((fieldData) => (
                     <RuleValueEditor
@@ -55,6 +55,6 @@ export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
                         handleOnChangeRule={generateOnChangeRuleHandler(fieldData.name)}
                     />
                 ))}
-        </Grid>
+        </Stack>
     );
 }

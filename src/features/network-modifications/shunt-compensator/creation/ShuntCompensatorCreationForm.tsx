@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { TextInput } from '../../../../components/ui';
 import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
 import { ConnectivityForm } from '../../common/connectivity/ConnectivityForm';
@@ -23,7 +23,7 @@ export function ShuntCompensatorCreationForm({
     PositionDiagramPane,
 }: Readonly<ShuntCompensatorCreationFormProps>) {
     return (
-        <Grid container direction="column" spacing={2}>
+        <Stack spacing={2}>
             <Grid>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -61,6 +61,6 @@ export function ShuntCompensatorCreationForm({
             <Grid>
                 <PropertiesForm networkElementType="shuntCompensator" />
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

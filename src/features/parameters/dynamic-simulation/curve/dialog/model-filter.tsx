@@ -6,7 +6,7 @@
  */
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Box, Grid2 as Grid, Typography } from '@mui/material';
+import { Box, Grid2 as Grid, Typography, Stack } from '@mui/material';
 import CheckboxSelect from '../common/checkbox-select';
 import CheckboxTreeview, { CheckboxTreeviewApi } from '../common/checkbox-treeview';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
@@ -190,7 +190,7 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Variables which found in models used in a mapping */}
-                <Grid sx={styles.variable} container direction="column">
+                <Stack sx={styles.variable}>
                     <Grid width="100%">
                         <Typography sx={styles.modelTitle} variant="subtitle1">
                             <FormattedMessage id="DynamicSimulationCurveVariable" />
@@ -207,7 +207,7 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
                             />
                         </Box>
                     </Grid>
-                </Grid>
+                </Stack>
             </>
         );
     }

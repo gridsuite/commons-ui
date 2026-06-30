@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid2 as Grid, MenuItem, Select, type SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Grid2 as Grid, MenuItem, Select, type SelectChangeEvent, Typography, Stack } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
@@ -289,7 +289,7 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Equipments */}
-                <Grid container sx={styles.equipment} direction="column">
+                <Stack sx={styles.equipment}>
                     <Grid>
                         <Typography sx={styles.equipmentTitle} variant="subtitle1">
                             <FormattedMessage id="DynamicSimulationCurveEquipment" />
@@ -312,7 +312,7 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                             />
                         </Box>
                     </Grid>
-                </Grid>
+                </Stack>
             </>
         );
     }

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, TextField } from '@mui/material';
+import { Grid2 as Grid, TextField, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
 import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
@@ -31,7 +31,7 @@ export function ShuntCompensatorModificationForm({
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
-        <Grid container direction="column" spacing={2}>
+        <Stack spacing={2}>
             <Grid>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -92,6 +92,6 @@ export function ShuntCompensatorModificationForm({
             <Grid>
                 <PropertiesForm networkElementType="shuntCompensator" isModification />
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

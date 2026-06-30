@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useCallback } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import { Login } from './Login';
@@ -35,7 +35,7 @@ export function AuthenticationRouter({
         }
     }, [userManager.instance]);
     return (
-        <Grid container alignItems="center" direction="column" sx={{ width: '100%' }}>
+        <Stack alignItems="center" sx={{ width: '100%' }}>
             {userManager.error !== null && <h1>Error : Getting userManager; {userManager.error}</h1>}
             {signInCallbackError !== null && (
                 <h1>
@@ -84,6 +84,6 @@ export function AuthenticationRouter({
                     errorState={authenticationRouterError}
                 />
             )}
-        </Grid>
+        </Stack>
     );
 }

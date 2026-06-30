@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { LOAD_TAB_FIELDS, LoadDialogTab } from './load.utils';
 import { LoadDialogHeader, LoadDialogHeaderProps } from './LoadDialogHeader';
 import { LoadDialogTabs } from './LoadDialogTabs';
@@ -29,7 +29,7 @@ export function LoadForm({
     );
 
     return (
-        <Grid container direction="column" spacing={2}>
+        <Stack spacing={2}>
             <Grid>
                 <LoadDialogHeader loadToModify={loadToModify} isModification={isModification} />
             </Grid>
@@ -51,6 +51,6 @@ export function LoadForm({
                     PositionDiagramPane={PositionDiagramPane}
                 />
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

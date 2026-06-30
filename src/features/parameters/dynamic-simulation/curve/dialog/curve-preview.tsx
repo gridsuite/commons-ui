@@ -6,7 +6,7 @@
  */
 import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Grid2 as Grid, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { ValueFormatterParams } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { AGGRID_LOCALES } from '../../../../../translations/not-intl/aggrid-locales';
@@ -132,27 +132,23 @@ const CurvePreview = forwardRef<CurvePreviewApi>((props, ref) => {
     );
 
     return (
-        <>
-            <Grid>
-                <Typography sx={styles.h6} variant="h6">
-                    <FormattedMessage id="DynamicSimulationCurveToAdd" />
-                    {` (${selectedRowsLength} / ${rowData.length})`}
-                </Typography>
-            </Grid>
-            <Grid size="grow">
-                <Box sx={styles.grid}>
-                    <CustomAGGrid
-                        ref={gridRef}
-                        rowData={rowData}
-                        columnDefs={columnDefs}
-                        defaultColDef={defaultColDef}
-                        rowSelection="multiple"
-                        onSelectionChanged={onSelectionChanged}
-                        overrideLocales={AGGRID_LOCALES}
-                    />
-                </Box>
-            </Grid>
-        </>
+        <Stack>
+            <Typography sx={styles.h6} variant="h6">
+                <FormattedMessage id="DynamicSimulationCurveToAdd" />
+                {` (${selectedRowsLength} / ${rowData.length})`}
+            </Typography>
+            <Box sx={styles.grid}>
+                <CustomAGGrid
+                    ref={gridRef}
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    defaultColDef={defaultColDef}
+                    rowSelection="multiple"
+                    onSelectionChanged={onSelectionChanged}
+                    overrideLocales={AGGRID_LOCALES}
+                />
+            </Box>
+        </Stack>
     );
 });
 

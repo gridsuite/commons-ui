@@ -8,7 +8,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid2 as Grid, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { Grid2 as Grid, Box, Button, CircularProgress, Typography, Stack } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -322,7 +322,7 @@ export function ElementSaveDialog({
             disabledSave={disableSave}
             formContext={{ ...formMethods, validationSchema: schema }}
         >
-            <Grid container spacing={2} marginTop="auto" direction="column">
+            <Stack spacing={2} marginTop="auto">
                 {!createOnlyMode && (
                     <Grid>
                         <RadioInput
@@ -355,7 +355,7 @@ export function ElementSaveDialog({
                     <DescriptionField />
                 </Grid>
                 {renderChooser()}
-            </Grid>
+            </Stack>
             <DirectoryItemSelector
                 key={isCreateMode ? destinationFolder?.id : selectedItem?.id}
                 open={directorySelectorOpen}

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert, Grid2 as Grid } from '@mui/material';
+import { Alert, Grid2 as Grid, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { RadioInput } from '../../../components/ui';
 import {
@@ -47,7 +47,7 @@ const initialEquipmentsSelectionType = {
 
 export function EquipmentSelectionParameters() {
     return (
-        <Grid container direction="column">
+        <Stack>
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
             </Alert>
@@ -99,6 +99,6 @@ export function EquipmentSelectionParameters() {
                 label="VariableShuntCompensators"
                 hideErrorMessage
             />
-        </Grid>
+        </Stack>
     );
 }

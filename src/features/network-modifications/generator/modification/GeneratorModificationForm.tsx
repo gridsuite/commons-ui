@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { GENERATOR_TAB_FIELDS, GeneratorDialogTab } from './generatorTabs.utils';
 import { GeneratorDialogHeader, GeneratorDialogHeaderProps } from './GeneratorDialogHeader';
@@ -35,7 +35,7 @@ export function GeneratorModificationForm({
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
-        <Grid container direction="column" spacing={2}>
+        <Stack spacing={2}>
             <Grid>
                 <GeneratorDialogHeader generatorToModify={generatorToModify} equipmentId={equipmentId} />
             </Grid>
@@ -57,6 +57,6 @@ export function GeneratorModificationForm({
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
             </Grid>
-        </Grid>
+        </Stack>
     );
 }
