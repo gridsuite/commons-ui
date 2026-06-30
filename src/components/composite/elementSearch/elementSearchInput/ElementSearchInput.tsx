@@ -13,10 +13,11 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
     inputValue: string;
 };
 
-export interface ElementSearchInputProps<T> extends Pick<
-    AutocompleteProps<T, false, boolean, true>,
-    'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable' | 'getOptionDisabled' | 'PaperComponent'
-> {
+export interface ElementSearchInputProps<T>
+    extends Pick<
+        AutocompleteProps<T, false, boolean, true>,
+        'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable' | 'getOptionDisabled' | 'PaperComponent'
+    > {
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
     onSelectionChange: (selection: T) => void;

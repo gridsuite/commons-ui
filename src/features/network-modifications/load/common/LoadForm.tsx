@@ -13,7 +13,8 @@ import { LoadDialogTabsContent, LoadDialogTabsContentProps } from './LoadDialogT
 import { useTabsWithError } from '../../hooks';
 
 interface LoadFormProps
-    extends LoadDialogHeaderProps, Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {}
+    extends LoadDialogHeaderProps,
+        Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {}
 
 export function LoadForm({
     loadToModify,
