@@ -229,7 +229,8 @@ export const parametersEn = {
     getContingencyListError: "Can't fetch contingencies lists",
     xContingenciesWillBeSimulated:
         '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated',
-    contingenciesWillNotBeSimulated: '{contingencyName} in the list {contingencyListName} is not a valid contingency',
+    contingenciesWillNotBeSimulated:
+        '{contingencyName} ({notFoundElements}) in the list {contingencyListName} is not a valid contingency',
     contingencyCountImpossibleOnUnbuiltNode: "Can't estimate contingencies on an unbuilt node",
     noContingency: 'No contingency',
     resultsThreshold: 'Minimum sensitivity threshold',

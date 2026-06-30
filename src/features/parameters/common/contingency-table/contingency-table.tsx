@@ -32,6 +32,7 @@ type FailureCountType = {
     success: false;
     contingencyListName: string;
     contingencyName: string;
+    notFoundElements: string[];
 };
 
 type SimulatedContingencyCountType = SuccessCountType | FailureCountType;
@@ -140,6 +141,7 @@ function ContingencyTableWithApiRef(
                                 ? contingencyListName.slice(contingencyListName.indexOf('_') + 1)
                                 : '',
                             contingencyName,
+                            notFoundElements: contingencyEquipments as unknown as string[],
                         };
                     }
                 }
@@ -258,6 +260,7 @@ function ContingencyTableWithApiRef(
                     values={{
                         contingencyName: simulatedContingencyCount.contingencyName,
                         contingencyListName: simulatedContingencyCount.contingencyListName,
+                        notFoundElements: simulatedContingencyCount.notFoundElements.join(', '),
                     }}
                 />
             </Alert>
