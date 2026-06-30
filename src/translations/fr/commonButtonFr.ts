@@ -7,6 +7,7 @@
 
 export const commonButtonFr = {
     cancel: 'Annuler',
+    close: 'Fermer',
     validate: 'Valider',
     add: 'Ajouter',
     replace: 'Remplacer',
