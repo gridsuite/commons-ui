@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
-import { equalsArrayAnyOrder, getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
+import { getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
 
 type CsvPickerCallbacks<TData> =
@@ -27,14 +27,12 @@ type CsvPickerCallbacks<TData> =
 
 export type CsvPickerProps<TData = unknown> = {
     label: string;
-    header: string[];
     /**
-     * When true, the file is accepted as soon as every column it contains belongs to `header`,
-     * tolerating a file that omits some expected columns (e.g. unselected properties or fewer
-     * repeatable columns than the form declares). When false (default), the file header must match
-     * `header` exactly (same columns, any order).
+     * Columns that must be present in the imported file. The file is accepted as soon as it
+     * contains every column listed here, in any order; any column that matches none of them is
+     * ignored (not rejected). Pass an empty array to accept any header.
      */
-    allowMissingColumns?: boolean;
+    requiredColumns: string[];
     maxLineNumber?: number;
     disabled?: boolean;
     language: string;
@@ -47,8 +45,7 @@ export type CsvPickerProps<TData = unknown> = {
 
 export function CsvPicker<TData = unknown>({
     label,
-    header,
-    allowMissingColumns = false,
+    requiredColumns,
     maxLineNumber,
     disabled = false,
     language,
@@ -71,14 +68,12 @@ export function CsvPicker<TData = unknown>({
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
             const actualHeader = Object.keys((results.data[0] ?? {}) as Record<string, unknown>);
-            const isHeaderValid = allowMissingColumns
-                ? actualHeader.every((column) => header.includes(column))
-                : equalsArrayAnyOrder(header, actualHeader);
+            const isHeaderValid = requiredColumns.every((column) => actualHeader.includes(column));
             if (results.data.length === 0) {
                 onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }, { filename: acceptedFile.name }));
             } else if (!isHeaderValid) {
                 console.warn('Wrong CSV headers');
-                console.warn('Expected:', header);
+                console.warn('Required:', requiredColumns);
                 console.warn('Actual:', actualHeader);
                 onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }, { filename: acceptedFile.name }));
             } else if (maxLineNumber && results.data.length > maxLineNumber) {
@@ -103,18 +98,7 @@ export function CsvPicker<TData = unknown>({
                 }
             }
         },
-        [
-            allowMissingColumns,
-            header,
-            intl,
-            maxLineNumber,
-            onAppend,
-            onComplete,
-            onFileChange,
-            onFileError,
-            onReplace,
-            getTableData,
-        ]
+        [requiredColumns, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, getTableData]
     );
 
     return (
