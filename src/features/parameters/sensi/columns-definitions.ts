@@ -301,13 +301,13 @@ export const COLUMNS_DEFINITIONS_NODES: DndColumn[] = [
 ];
 
 export enum SensiTabValues {
-    'SensitivityBranches' = 0,
-    'SensitivityNodes' = 1,
+    SensitivityBranches = 0,
+    SensitivityNodes = 1,
 }
 
 export enum SensiBranchesTabValues {
-    'SensiInjectionsSet' = 0,
-    'SensiInjection' = 1,
-    'SensiHVDC' = 2,
-    'SensiPST' = 3,
+    SensiInjectionsSet = 0,
+    SensiInjection = 1,
+    SensiHVDC = 2,
+    SensiPST = 3,
 }
