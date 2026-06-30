@@ -106,7 +106,7 @@ export function CsvPicker<TData = unknown>({
                 }}
                 onUploadAccepted={handleUploadAccepted}
             >
-                {({ getRootProps, ProgressBar }: any) => (
+                {({ getRootProps }: any) => (
                     <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0, width: '100%' }}>
                         <Tooltip title={selectedFile?.name}>
                             <Box
@@ -124,15 +124,6 @@ export function CsvPicker<TData = unknown>({
                         </Tooltip>
                         <Button {...getRootProps()} variant="outlined" disabled={disabled} sx={{ flexShrink: 0 }}>
                             <FormattedMessage id={label} />
-                            {/* this bar is bugged, if you click somewhere while loading it will reset (the confirmation dialog prevent this reset and fix the problem) */}
-                            <ProgressBar
-                                style={{
-                                    position: 'absolute',
-                                    inset: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                }}
-                            />
                         </Button>
                     </Box>
                 )}
