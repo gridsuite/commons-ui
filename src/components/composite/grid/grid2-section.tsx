@@ -17,7 +17,7 @@ export interface Grid2SectionProps {
 
 export function Grid2Section({ title, heading = 3, size = 12, customStyle }: Readonly<Grid2SectionProps>) {
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} size={12}>
             <Grid size={size}>
                 <Box sx={customStyle} component={`h${heading}`}>
                     <FormattedMessage id={title} />

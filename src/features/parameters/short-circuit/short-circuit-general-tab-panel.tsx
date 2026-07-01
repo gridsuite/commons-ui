@@ -214,7 +214,7 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
 
         return (
             <TabPanel index={ShortCircuitParametersTabValues.GENERAL} ref={ref} {...othersTabPanelProps}>
-                <Grid container spacing={2} paddingLeft={2}>
+                <Grid container paddingLeft={2}>
                     <Grid container paddingTop={2} size={{ xl: 6 }}>
                         <GridItem size={10}>{feederResult}</GridItem>
                     </Grid>
@@ -224,7 +224,7 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
                         <GridItem size={2}>{statusToShow}</GridItem>
                     </Grid>
                     <GridSection title="ShortCircuitCharacteristics" heading={4} />
-                    <Grid container spacing={5}>
+                    <Grid container spacing={5} size={12}>
                         <Grid>
                             <GridItem>{loads}</GridItem>
                             <GridItem>{shuntCompensators}</GridItem>
