@@ -29,7 +29,7 @@ export function ParameterFloat({
     inputSize,
 }: Readonly<ParameterFloatProps>) {
     const content = (
-        <Grid container direction="row" spacing={1} paddingTop={3}>
+        <Grid container direction="row" spacing={1} paddingTop={3} size={12}>
             <Grid size={labelSize} sx={style}>
                 <FormattedMessage id={label} />
             </Grid>
