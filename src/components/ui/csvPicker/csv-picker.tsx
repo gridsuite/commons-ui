@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
 import { equalsArrayAnyOrder, getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
@@ -106,29 +106,39 @@ export function CsvPicker<TData = unknown>({
                 }}
                 onUploadAccepted={handleUploadAccepted}
             >
-                {({ getRootProps, ProgressBar }: any) => (
-                    <>
-                        <span
-                            style={{
-                                marginRight: '10px',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            {selectedFile ? selectedFile.name : intl.formatMessage({ id: 'uploadMessage' })}
-                        </span>
-                        <Button {...getRootProps()} variant="outlined" disabled={disabled}>
-                            <FormattedMessage id={label} />
-                            {/* this bar is bugged, if you click somewhere while loading it will reset (the confirmation dialog prevent this reset and fix the problem) */}
-                            <ProgressBar
-                                style={{
-                                    position: 'absolute',
-                                    inset: 0,
-                                    width: '100%',
-                                    height: '100%',
+                {({ getRootProps }: any) => (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            minWidth: 0,
+                            width: '100%',
+                        }}
+                    >
+                        <Tooltip title={selectedFile?.name}>
+                            <Box
+                                sx={{
+                                    marginRight: '10px',
+                                    fontWeight: 'bold',
+                                    minWidth: 0,
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    whiteSpace: 'nowrap',
                                 }}
-                            />
+                            >
+                                {selectedFile ? selectedFile.name : intl.formatMessage({ id: 'uploadMessage' })}
+                            </Box>
+                        </Tooltip>
+                        <Button
+                            {...getRootProps()}
+                            variant={selectedFile ? 'contained' : 'text'}
+                            disabled={disabled}
+                            sx={{ flexShrink: 0 }}
+                        >
+                            <FormattedMessage id={label} />
                         </Button>
-                    </>
+                    </Box>
                 )}
             </CSVReader>
             {onAppend && onReplace && (
