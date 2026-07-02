@@ -81,6 +81,22 @@ export function NumericEditor({
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+        // "-" is only valid as the first character of the value, and only once (so "12-3" is rejected)
+        if (event.key === '-' && allowNegativeValues) {
+            const input = event.currentTarget;
+            const selectionStart = input.selectionStart ?? 0;
+            const selectionEnd = input.selectionEnd ?? 0;
+            const atStart = selectionStart === 0;
+            // true when a "-" already in the value would survive this keystroke (i.e. it isn't part of
+            // the selected text about to be replaced) — typing another one would produce a second "-"
+            // -> we don't allow it (it blocks "--5" for instance)
+            const keepsExistingMinus =
+                input.value.includes('-') && !input.value.slice(selectionStart, selectionEnd).includes('-');
+            if (!atStart || keepsExistingMinus) {
+                event.preventDefault();
+            }
+            return;
+        }
         // block single non-numeric characters, let everything else through (navigation, backspace…)
         if (event.key.length === 1 && !isCharNumeric(event.key, allowNegativeValues)) {
             event.preventDefault();
