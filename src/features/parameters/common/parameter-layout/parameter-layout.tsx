@@ -7,40 +7,21 @@
 
 import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
-import { ReactNode, useState, useCallback, createContext, useContext, useMemo } from 'react';
+import { ReactNode, useState, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
-import { LabelledButton } from './parameters';
+import { LabelledButton } from '../parameters';
 import {
     DirectoryItemSelector,
     PopupConfirmationDialog,
     SubmitButton,
     TreeViewFinderNodeProps,
-} from '../../../components/ui';
-import { CreateParameterDialog } from './parameters-creation-dialog';
-import { ElementType } from '../../../utils';
-import { LineSeparator } from './line-separator';
-
-// Context for XS Screen
-interface ParameterLayoutContextValue {
-    isXsScreen: boolean;
-}
-
-const ParameterLayoutContext = createContext<ParameterLayoutContextValue>({ isXsScreen: false });
-
-export const useParameterLayoutContext = () => useContext(ParameterLayoutContext);
-
-export function ParameterLayoutProvider({
-    isXsScreen,
-    children,
-}: Readonly<{
-    isXsScreen: boolean;
-    children: ReactNode;
-}>) {
-    const isXsScreenMemo = useMemo(() => ({ isXsScreen }), [isXsScreen]);
-    return <ParameterLayoutContext.Provider value={isXsScreenMemo}>{children}</ParameterLayoutContext.Provider>;
-}
+} from '../../../../components/ui';
+import { CreateParameterDialog } from '../parameters-creation-dialog';
+import { ElementType } from '../../../../utils';
+import { LineSeparator } from '../line-separator';
+import { useParameterLayoutContext } from './parameter-layout-provider';
 
 export type CreateParameterDialogConfig<T extends FieldValues> = {
     studyUuid: UUID | null;
