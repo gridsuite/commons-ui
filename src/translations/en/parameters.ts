@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { REAL_PERCENTAGE } from '../../utils';
 
 export const parametersEn = {
     descLfVoltageInitMode: 'Voltage initialisation mode',
@@ -51,7 +52,7 @@ export const parametersEn = {
     descLfAllCountries: 'All countries',
     descLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
-    RealPercentage: 'This value must be between 0 and 1',
+    [REAL_PERCENTAGE]: 'This value must be between 0 and 1',
 
     General: 'General',
     LimitReductions: 'Limit reductions',

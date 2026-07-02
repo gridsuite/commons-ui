@@ -7,6 +7,7 @@
 
 import { InferType, number, object, string } from 'yup';
 import {
+    ACTIVE_LIMITS_MIN_MAX_INVALID,
     DeepNullable,
     FieldConstants,
     ModificationType,
@@ -44,7 +45,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.MAXIMUM_ACTIVE_POWER]: number()
             .nullable()
             .required()
-            .test('max-greater-than-min', 'ActiveLimitsMinMaxInvalid', function checkMaxGreaterThanMin(value) {
+            .test('max-greater-than-min', ACTIVE_LIMITS_MIN_MAX_INVALID, function checkMaxGreaterThanMin(value) {
                 const min = this.parent[FieldConstants.MINIMUM_ACTIVE_POWER];
                 if (value != null && min != null) {
                     return value >= min;
@@ -54,7 +55,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.MINIMUM_ACTIVE_POWER]: number()
             .nullable()
             .required()
-            .test('min-less-than-max', 'ActiveLimitsMinMaxInvalid', function checkMinLessThanMax(value) {
+            .test('min-less-than-max', ACTIVE_LIMITS_MIN_MAX_INVALID, function checkMinLessThanMax(value) {
                 const max = this.parent[FieldConstants.MAXIMUM_ACTIVE_POWER];
                 if (value != null && max != null) {
                     return value <= max;

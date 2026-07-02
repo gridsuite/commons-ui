@@ -9,6 +9,7 @@ import { InferType, number, object, ref, string } from 'yup';
 import {
     DeepNullable,
     FieldConstants,
+    MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
     ModificationType,
     sanitizeString,
     toModificationOperation,
@@ -48,7 +49,7 @@ export const batteryModificationFormSchema = object()
                 then: (schema) =>
                     schema.max(
                         ref(FieldConstants.MAXIMUM_ACTIVE_POWER),
-                        'MinActivePowerMustBeLessOrEqualToMaxActivePower'
+                        MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER
                     ),
             }),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),

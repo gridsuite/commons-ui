@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { NAME_EMPTY } from '../../utils';
 
 export const filterEn = {
     OR: 'OR',
@@ -29,7 +30,7 @@ export const filterEn = {
     Hvdc: 'HVDC',
     'filter.expert': 'Criteria based',
     'filter.explicitNaming': 'Explicit naming',
-    nameEmpty: 'The name is empty',
+    [NAME_EMPTY]: 'The name is empty',
     equipmentType: 'Equipment type',
     changeTypeMessage: 'The equipment type will be changed and the current configuration will be erased.',
     PropertyValues: 'Property values',

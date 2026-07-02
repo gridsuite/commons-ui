@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
+import { REAL_PERCENTAGE } from '../../../../utils/constants/translationKeys';
 
 export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
@@ -73,8 +74,8 @@ const getLimitDurationsFormSchema = (nbLimits: number) => {
     for (let i = 0; i < nbLimits; i++) {
         limitDurationsFormSchema[LIMIT_DURATION_FORM + i] = yup
             .number()
-            .min(0, 'RealPercentage')
-            .max(1, 'RealPercentage')
+            .min(0, REAL_PERCENTAGE)
+            .max(1, REAL_PERCENTAGE)
             .nullable()
             .required();
     }
@@ -88,7 +89,7 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
             [LIMIT_REDUCTIONS_FORM]: yup.array().of(
                 yup.object().shape({
                     [VOLTAGE_LEVELS_FORM]: yup.string(),
-                    [IST_FORM]: yup.number().min(0, 'RealPercentage').max(1, 'RealPercentage').nullable().required(),
+                    [IST_FORM]: yup.number().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE).nullable().required(),
                     ...getLimitDurationsFormSchema(nbTemporaryLimits),
                 })
             ),

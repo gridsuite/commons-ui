@@ -6,7 +6,7 @@
  */
 
 import { bool, number, object, string } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, NORMALIZED_PERCENTAGE } from '../../../../utils';
 import { getRegulatingTerminalEmptyFormData } from '../regulatingTerminal';
 
 export const REGULATION_TYPES = {
@@ -33,12 +33,12 @@ export const getVoltageRegulationSchema = (isEquipmentModification = false) => (
 
     [FieldConstants.VOLTAGE_SET_POINT]: number()
         .nullable()
-        .min(0, 'mustBeGreaterOrEqualToZero')
+        .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
         .when([FieldConstants.VOLTAGE_REGULATION], {
             is: (value: string) => !isEquipmentModification && value,
             then: (schema) => schema.required(),
         }),
-    [FieldConstants.Q_PERCENT]: number().nullable().max(100, 'NormalizedPercentage').min(0, 'NormalizedPercentage'),
+    [FieldConstants.Q_PERCENT]: number().nullable().max(100, NORMALIZED_PERCENTAGE).min(0, NORMALIZED_PERCENTAGE),
     [FieldConstants.VOLTAGE_LEVEL]: object()
         .nullable()
         .shape({
