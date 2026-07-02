@@ -7,3 +7,6 @@
 
 export const NAME = 'name';
 export const DESCRIPTION = 'description';
+export const DIRECTORY_ITEM = 'directoryItem';
+export const DIRECTORY_ITEM_ID = 'directoryItemId';
+export const DIRECTORY_ITEM_FULL_PATH = 'directoryItemFullPath';

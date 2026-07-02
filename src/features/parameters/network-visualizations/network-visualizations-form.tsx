@@ -8,7 +8,7 @@
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 import { UseNetworkVisualizationParametersFormReturn } from './use-network-visualizations-parameters-form';
 import { CustomFormProvider } from '../../../components/ui';
 import { NetworkVisualizationTabValues as TabValues } from './constants';
@@ -18,18 +18,18 @@ import { NetworkAreaDiagramParameters } from './network-area-diagram-parameters'
 import { TabPanel } from '../common';
 import { getAvailableComponentLibraries } from '../../../services';
 
-const useGetAvailableComponentLibraries = (user: User | null) => {
+const useGetAvailableComponentLibraries = (userProfile: UserProfile | null) => {
     const [componentLibraries, setComponentLibraries] = useState<string[]>([]);
 
     useEffect(() => {
-        if (user !== null) {
+        if (userProfile !== null) {
             getAvailableComponentLibraries().then((libraries) => {
                 if (libraries != null) {
                     setComponentLibraries(libraries);
                 }
             });
         }
-    }, [user]);
+    }, [userProfile]);
 
     return componentLibraries;
 };
@@ -38,16 +38,16 @@ interface NetworkVisualizationParametersFormProps {
     networkVisuMethods: UseNetworkVisualizationParametersFormReturn;
     renderTitleFields?: () => ReactNode;
     renderActions?: () => ReactNode;
-    user: User | null;
+    userProfile: UserProfile | null;
 }
 
 export function NetworkVisualizationParametersForm({
     networkVisuMethods,
     renderTitleFields,
     renderActions,
-    user,
+    userProfile,
 }: Readonly<NetworkVisualizationParametersFormProps>) {
-    const componentLibraries = useGetAvailableComponentLibraries(user);
+    const componentLibraries = useGetAvailableComponentLibraries(userProfile);
     const { formMethods, formSchema, selectedTab, handleTabChange, paramsLoading } = networkVisuMethods;
 
     return (
