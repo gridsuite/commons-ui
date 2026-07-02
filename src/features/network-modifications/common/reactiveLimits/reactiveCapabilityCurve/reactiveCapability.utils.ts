@@ -7,7 +7,7 @@
 import { array, number, ref, object, TestContext, ValidationError } from 'yup';
 import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import { ReactiveCapabilityCurve } from '../reactiveLimits.type';
-import { FieldConstants, toNumber, validateValueIsANumber } from '../../../../../utils';
+import { FieldConstants, toNumber, validateValueIsANumber, YUP_REQUIRED } from '../../../../../utils';
 import type { GeneratorCreationFormData } from '../../../generator/creation/generatorCreation.utils';
 import type { GeneratorCreationDto } from '../../../generator/creation/generatorCreation.types';
 import type { GeneratorModificationDto } from '../../../generator/modification/generatorModification.types';
@@ -85,7 +85,7 @@ function ifOneFieldThenAllFields(values: ReactiveCapabilityCurve, context: TestC
                 errors.push(
                     context.createError({
                         path: `${FieldConstants.REACTIVE_LIMITS}.${FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE}[${index}].${field}`,
-                        message: 'YupRequired',
+                        message: YUP_REQUIRED,
                     })
                 );
             }
