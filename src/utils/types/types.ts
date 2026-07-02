@@ -58,6 +58,17 @@ export type UserDetail = {
     maxAllowedCases: number;
     numberCasesUsed: number;
     maxAllowedBuilds: number;
+    maxAllowedLoadflow?: number;
+    maxAllowedSecurity?: number;
+    maxAllowedSensitivity?: number;
+    maxAllowedShortCircuit?: number;
+    maxAllowedVoltageInit?: number;
+    maxAllowedPccMin?: number;
+    maxAllowedStateEstimation?: number;
+    maxAllowedBalanceAdjustement?: number;
+    maxAllowedDynamicSimulation?: number;
+    maxAllowedDynamicSecurity?: number;
+    maxAllowedDynamicMargin?: number;
 };
 
 export enum AnnouncementSeverity {
