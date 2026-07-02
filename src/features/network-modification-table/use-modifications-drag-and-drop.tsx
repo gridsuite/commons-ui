@@ -23,7 +23,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { changeCompositeSubModificationOrder, changeNetworkModificationOrder } from '../../services';
+import { moveModification } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -156,52 +156,6 @@ export const useModificationsDragAndDrop = ({
         [containerRef, isDropForbidden, rows]
     );
 
-    const handleDragEndComposite = useCallback(
-        (
-            sourceRow: Row<ComposedModificationMetadata>,
-            targetRow: Row<ComposedModificationMetadata>,
-            droppingIntoExpandedComposite: boolean,
-            isDraggingDown: boolean
-        ) => {
-            const movingUuid = sourceRow.original.uuid;
-            const sourceCompositeUuid = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
-
-            const targetCompositeUuid: UUID | null = getTargetCompositeUuid(droppingIntoExpandedComposite, targetRow);
-
-            const targetSiblings = getTargetSiblings(targetCompositeUuid, rows);
-
-            let beforeUuid: UUID | null;
-            if (droppingIntoExpandedComposite) {
-                // Landing on an expanded composite header: enter it at first position
-                beforeUuid = targetSiblings[0]?.original.uuid ?? null;
-            } else {
-                const landingIndexInSiblings = targetSiblings.findIndex(
-                    (r) => r.original.uuid === targetRow.original.uuid
-                );
-                const beforeSiblingIndex = isDraggingDown ? landingIndexInSiblings + 1 : landingIndexInSiblings;
-                beforeUuid = targetSiblings[beforeSiblingIndex]?.original.uuid ?? null;
-            }
-
-            const previousComposed = composedModifications;
-            setComposedModifications((prev) =>
-                moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
-            );
-
-            changeCompositeSubModificationOrder(
-                studyUuid,
-                currentNodeUuid,
-                movingUuid,
-                sourceCompositeUuid,
-                targetCompositeUuid,
-                beforeUuid
-            ).catch((error: any) => {
-                snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
-                setComposedModifications(previousComposed);
-            });
-        },
-        [rows, studyUuid, currentNodeUuid, snackError, composedModifications, setComposedModifications]
-    );
-
     const handleDragEnd = useCallback(
         (result: DropResult) => {
             clearRowDragIndicators(containerRef.current);
@@ -219,45 +173,67 @@ export const useModificationsDragAndDrop = ({
                 return;
             }
 
-            const isSubRowInvolved = sourceRow.depth > 0 || targetRow.depth > 0;
+            const movingUuid = sourceRow.original.uuid;
+            const sourceCompositeUuid = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
 
             const isDraggingDown = destination.index > source.index;
             const droppingIntoExpandedComposite = isDraggingDown && targetRow.getIsExpanded();
+            const isSubRowInvolved = sourceRow.depth > 0 || targetRow.depth > 0;
 
-            if (isSubRowInvolved || droppingIntoExpandedComposite) {
-                handleDragEndComposite(sourceRow, targetRow, droppingIntoExpandedComposite, isDraggingDown);
+            const targetCompositeUuid: UUID | null = getTargetCompositeUuid(droppingIntoExpandedComposite, targetRow);
+            const sourceContainerId = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
+            const targetContainerId = targetCompositeUuid;
+
+            const previousModifications = [...composedModifications];
+
+            let beforeUuid: UUID | null;
+            if (droppingIntoExpandedComposite || isSubRowInvolved) {
+                const targetSiblings = getTargetSiblings(targetCompositeUuid, rows);
+                if (droppingIntoExpandedComposite) {
+                    // Landing on an expanded composite header: enter it at first position
+                    beforeUuid = targetSiblings[0]?.original.uuid ?? null;
+                } else {
+                    const landingIndexInSiblings = targetSiblings.findIndex(
+                        (r) => r.original.uuid === targetRow.original.uuid
+                    );
+                    const beforeSiblingIndex = isDraggingDown ? landingIndexInSiblings + 1 : landingIndexInSiblings;
+                    beforeUuid = targetSiblings[beforeSiblingIndex]?.original.uuid ?? null;
+                }
+                setComposedModifications((prev) =>
+                    moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
+                );
             } else {
-                const sourceDepth0Uuid = sourceRow.original.uuid;
-                const targetDepth0Uuid = targetRow.original.uuid;
-
-                const oldPosition = composedModifications.findIndex((m) => m.uuid === sourceDepth0Uuid);
-                const newPosition = composedModifications.findIndex((m) => m.uuid === targetDepth0Uuid);
+                const oldPosition = composedModifications.findIndex((m) => m.uuid === sourceRow.original.uuid);
+                const newPosition = composedModifications.findIndex((m) => m.uuid === targetRow.original.uuid);
 
                 if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition || !currentNodeUuid) {
                     return;
                 }
 
-                // Optimistic update of the flat modifications list
-                const previousModifications = [...composedModifications];
                 const updatedModifications = [...composedModifications];
                 const [movedItem] = updatedModifications.splice(oldPosition, 1);
                 updatedModifications.splice(newPosition, 0, movedItem);
+                beforeUuid = updatedModifications[newPosition + 1]?.uuid ?? null;
                 setComposedModifications(updatedModifications);
-
-                const before: UUID | null = updatedModifications[newPosition + 1]?.uuid ?? null;
-
-                changeNetworkModificationOrder(studyUuid, currentNodeUuid, movedItem.uuid, before).catch((error) => {
-                    snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
-                    setComposedModifications(previousModifications);
-                });
             }
+
+            moveModification(
+                studyUuid,
+                currentNodeUuid,
+                movingUuid,
+                sourceContainerId,
+                targetContainerId,
+                beforeUuid
+            ).catch((error) => {
+                snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
+                setComposedModifications(previousModifications);
+            });
         },
         [
             containerRef,
             onDragEnd,
             rows,
             isDropForbidden,
-            handleDragEndComposite,
             composedModifications,
             currentNodeUuid,
             setComposedModifications,
