@@ -6,8 +6,12 @@
  */
 import { isNumber } from 'mathjs';
 import { countDecimalPlaces, countDecimalPlacesFromString } from '../../../../../utils/rounding';
-import { FilterDataTypes, FilterNumberComparators } from '../../../../../utils';
-import { FilterConfig, UndisplayedFilterNumberComparators } from '../../custom-aggrid-types';
+import {
+    FilterConfig,
+    FilterDataTypes,
+    FilterNumberComparators,
+    UndisplayedFilterNumberComparators,
+} from '../../custom-aggrid-types';
 
 /**
  * Compute the tolerance that should be applied when comparing filter values to database values

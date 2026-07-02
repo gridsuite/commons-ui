@@ -8,8 +8,8 @@ import React, { ComponentType, MouseEvent, useMemo, useState } from 'react';
 import { Popover } from '@mui/material';
 import { CustomFilterIcon } from './custom-filter-icon';
 import { CustomAggridAutocompleteFilterParams } from './custom-aggrid-autocomplete-filter';
-import { FilterTextComparators, MuiStyles } from '../../../../utils';
-import { CustomAggridFilterParams } from '../custom-aggrid-types';
+import { MuiStyles } from '../../../../utils';
+import { CustomAggridFilterParams, FilterTextComparators } from '../custom-aggrid-types';
 import { useCustomAggridColumnFilter } from './hooks/use-custom-aggrid-column-filter';
 
 const styles = {

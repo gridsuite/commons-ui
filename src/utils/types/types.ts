@@ -116,37 +116,3 @@ export interface IdName {
     id: UUID;
     name?: string;
 }
-
-export enum TableType {
-    Loadflow = 'Loadflow',
-    SecurityAnalysis = 'SecurityAnalysis',
-    SensitivityAnalysis = 'SensitivityAnalysis',
-    ShortcircuitAnalysis = 'ShortcircuitAnalysis',
-    DynamicSimulation = 'DynamicSimulation',
-    Spreadsheet = 'Spreadsheet',
-    Logs = 'Logs',
-    StateEstimation = 'StateEstimation',
-    PccMin = 'PccMin',
-    VoltageInit = 'VoltageInit',
-}
-
-export enum FilterDataTypes {
-    TEXT = 'text',
-    NUMBER = 'number',
-    BOOLEAN = 'boolean',
-}
-
-export enum FilterTextComparators {
-    EQUALS = 'equals',
-    CONTAINS = 'contains',
-    STARTS_WITH = 'startsWith',
-    IS_EMPTY = 'blank',
-    IS_NOT_EMPTY = 'notBlank',
-}
-
-export enum FilterNumberComparators {
-    EQUALS = 'equals',
-    NOT_EQUAL = 'notEqual',
-    LESS_THAN_OR_EQUAL = 'lessThanOrEqual',
-    GREATER_THAN_OR_EQUAL = 'greaterThanOrEqual',
-}

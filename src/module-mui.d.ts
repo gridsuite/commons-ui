@@ -26,5 +26,8 @@ declare module '@mui/material/styles' {
         selectedRow: {
             background: string;
         };
+        severityChip: {
+            disabledColor: string;
+        };
     }
 }

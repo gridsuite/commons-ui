@@ -6,7 +6,7 @@
  */
 import * as React from 'react';
 import { ReactNode, useCallback, useMemo } from 'react';
-import { Box, Stack, styled, Typography, useTheme } from '@mui/material';
+import { Box, Stack, styled, Theme, Typography, useTheme } from '@mui/material';
 import { type RowComponentProps } from 'react-window';
 import { ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material';
 import { mergeSx, MuiStyles } from '../../../../utils';
@@ -25,28 +25,28 @@ export interface ReportItem {
 }
 
 const styles = {
-    content: (theme: any) => ({
+    content: (theme: Theme) => ({
         color: theme.palette.text.secondary,
         borderRadius: theme.spacing(2),
         width: 'fit-content',
         paddingRight: theme.spacing(1),
         fontWeight: theme.typography.fontWeightMedium,
     }),
-    labelText: (theme: any) => ({
+    labelText: (theme: Theme) => ({
         fontWeight: 'inherit',
         marginRight: theme.spacing(2),
     }),
-    labelRoot: (theme: any) => ({
+    labelRoot: (theme: Theme) => ({
         display: 'flex',
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
     }),
-    root: (theme: any) => ({
+    root: (theme: Theme) => ({
         '&:hover': {
             backgroundColor: theme.palette.action.hover,
         },
     }),
-    highlighted: (theme: any) => ({
+    highlighted: (theme: Theme) => ({
         backgroundColor: theme.palette.action.hover,
     }),
 } as const satisfies MuiStyles;
@@ -123,6 +123,7 @@ export function TreeviewItem({
                     const isCurrentOccurrence = searchResults[currentResultIndex] === index;
                     return (
                         <span
+                            // FIXME: remove this comment when another way to build key has been implemented
                             /* eslint-disable-next-line react/no-array-index-key */
                             key={`${part}-${partIndex}`}
                             style={{

@@ -93,6 +93,7 @@ export function sortSeverityList(severityList: SeverityLevel[]): SeverityLevel[]
 }
 
 export function getContainerDefaultSeverityList(): string[] {
+    // return name list like ['WARN', 'INFO']
     return Object.values(REPORT_SEVERITY)
         .filter((s) => s.displayedByDefaultForReportContainer)
         .map((s) => s.name);

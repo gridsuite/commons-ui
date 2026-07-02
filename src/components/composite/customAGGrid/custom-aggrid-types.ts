@@ -6,7 +6,6 @@
  */
 import { ColDef, ComponentType, GridApi, IFilterOptionDef } from 'ag-grid-community';
 import { UUID } from 'crypto';
-import { TableType } from '../../../utils';
 import {
     DYNAMIC_SIMULATION_RESULT_SORT_STORE,
     LOADFLOW_RESULT_SORT_STORE,
@@ -17,6 +16,40 @@ import {
     SPREADSHEET_SORT_STORE,
     STATEESTIMATION_RESULT_SORT_STORE,
 } from '../../../utils/store-sort-filter-fields';
+
+export enum TableType {
+    Loadflow = 'Loadflow',
+    SecurityAnalysis = 'SecurityAnalysis',
+    SensitivityAnalysis = 'SensitivityAnalysis',
+    ShortcircuitAnalysis = 'ShortcircuitAnalysis',
+    DynamicSimulation = 'DynamicSimulation',
+    Spreadsheet = 'Spreadsheet',
+    Logs = 'Logs',
+    StateEstimation = 'StateEstimation',
+    PccMin = 'PccMin',
+    VoltageInit = 'VoltageInit',
+}
+
+export enum FilterDataTypes {
+    TEXT = 'text',
+    NUMBER = 'number',
+    BOOLEAN = 'boolean',
+}
+
+export enum FilterTextComparators {
+    EQUALS = 'equals',
+    CONTAINS = 'contains',
+    STARTS_WITH = 'startsWith',
+    IS_EMPTY = 'blank',
+    IS_NOT_EMPTY = 'notBlank',
+}
+
+export enum FilterNumberComparators {
+    EQUALS = 'equals',
+    NOT_EQUAL = 'notEqual',
+    LESS_THAN_OR_EQUAL = 'lessThanOrEqual',
+    GREATER_THAN_OR_EQUAL = 'greaterThanOrEqual',
+}
 
 export type FilterParams = {
     type: TableType;
@@ -118,8 +151,10 @@ export interface ValidationError {
 }
 export type CustomAggridValue = boolean | string | number | CustomCellType | ValidationError;
 
-export interface CustomColDef<TData = any, F extends CustomAggridFilterParams = CustomAggridFilterParams>
-    extends ColDef<TData, CustomAggridValue> {
+export interface CustomColDef<
+    TData = any,
+    F extends CustomAggridFilterParams = CustomAggridFilterParams,
+> extends ColDef<TData, CustomAggridValue> {
     colId: string;
     context?: ColumnContext<F>;
 }

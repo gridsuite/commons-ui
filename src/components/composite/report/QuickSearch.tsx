@@ -37,7 +37,7 @@ export function QuickSearch({
     placeholder,
     inputRef,
     sx,
-}: QuickSearchProps) {
+}: Readonly<QuickSearchProps>) {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [resultsCountDisplay, setResultsCountDisplay] = useState(false);
     const intl = useIntl();

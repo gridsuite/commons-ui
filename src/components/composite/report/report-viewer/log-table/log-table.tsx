@@ -6,7 +6,7 @@
  */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { alpha, Box, Chip, TablePagination, Theme, useTheme } from '@mui/material';
+import { alpha, Box, Chip, Theme, useTheme } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import {
     GridApi as GridApiType,
@@ -24,19 +24,20 @@ import { QuickSearch } from '../../QuickSearch';
 import { ComputingAndNetworkModificationType, Log, SelectedReportLog, SeverityLevel } from '../../report.type';
 import { reportStyles } from '../../report.styles';
 import { useReportFetcherContext, useReportFilterContext } from '../context/report-viewer-context';
+import { MuiStyles, SxStyle } from '../../../../../utils';
 import {
+    CustomAGGrid,
     FilterDataTypes,
     FilterTextComparators,
-    LANG_ENGLISH,
-    LANG_FRENCH,
-    MuiStyles,
-    SxStyle,
+    MessageLogCellRenderer,
     TableType,
-} from '../../../../../utils';
-import { AgGridLocales, CustomAGGrid, MessageLogCellRenderer } from '../../../customAGGrid';
+} from '../../../customAGGrid';
 import { CustomAggridComparatorFilter } from '../../../customAGGrid/custom-aggrid-filters/custom-aggrid-comparator-filter';
 import { makeAgGridCustomHeaderColumn } from '../../../customAGGrid/utils/custom-aggrid-header-utils';
 import { FilterConfig } from '../../../customAGGrid/custom-aggrid-types';
+import { AGGRID_LOCALES } from '../../../../../translations/not-intl/aggrid-locales';
+import { useStableComputedArray } from '../../../../../hooks/use-stable-computed-array';
+import { CustomTablePagination } from '../../../../ui';
 
 const getColumnFilterValue = (array: FilterConfig[] | undefined, columnName: string): any =>
     array?.find((item) => item.column === columnName)?.value ?? null;
@@ -58,11 +59,11 @@ const applyFiltersToGrid = (api: GridApiType, filters: FilterConfig[] | undefine
     api.onFilterChanged();
 };
 
-const chipStyle = (severity: string, severityFilter: string[], theme: Theme): SxStyle =>
+const chipStyle = (severity: string, severityFilter: string[], theme: Theme) =>
     ({
         backgroundColor: severityFilter.includes(severity)
             ? REPORT_SEVERITY[severity as keyof typeof REPORT_SEVERITY].colorHexCode
-            : ((theme as any).severityChip?.disabledColor ?? theme.palette.action.disabledBackground),
+            : (theme.severityChip?.disabledColor ?? theme.palette.action.disabledBackground),
         cursor: 'pointer',
         border: `1px solid ${theme.palette.divider}`,
         '&:hover': {
@@ -76,15 +77,15 @@ const chipStyle = (severity: string, severityFilter: string[], theme: Theme): Sx
             color: theme.palette.text.primary,
         },
         padding: 0.5,
-    }) as const;
+    }) as const satisfies SxStyle;
 
 const styles = {
-    chipContainer: (theme: any) => ({
+    chipContainer: (theme: Theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
         gap: theme.spacing(1),
     }),
-    toolContainer: (theme: any) => ({
+    toolContainer: (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         gap: theme.spacing(1),
@@ -102,8 +103,6 @@ export type LogTableProps = {
     onRowClick: (data: Log | undefined) => void;
     onFiltersChanged: () => void;
     resetFilters?: boolean;
-    /** Optional extra column definitions to inject (e.g. custom header with filter). */
-    extraColumnDefs?: ColDef<Log>[];
 };
 
 function LogTable({
@@ -113,13 +112,12 @@ function LogTable({
     onRowClick,
     onFiltersChanged,
     resetFilters = false,
-    extraColumnDefs,
-}: LogTableProps) {
+}: Readonly<LogTableProps>) {
     const intl = useIntl();
     const theme = useTheme<Theme>();
 
     const { fetchLogs, fetchLogMatches } = useReportFetcherContext();
-    const { filters, onFiltersUpdate, pagination, onPaginationChange } = useReportFilterContext();
+    const { filters, updateFilters, pagination, changePagination } = useReportFilterContext();
 
     const { page, rowsPerPage } = pagination;
 
@@ -135,27 +133,12 @@ function LogTable({
 
     const gridRef = useRef<AgGridReact>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const pendingScrollRef = useRef<number | null>(null);
 
-    // AGGRID_LOCALES duplicated from gridstudy-app/src/translations/not-intl/aggrid-locales.ts
-    const AGGRID_LOCALES = {
-        [LANG_FRENCH]: {
-            noRowsToShow: 'Aucune Donnée',
-        },
-        [LANG_ENGLISH]: {
-            noRowsToShow: 'No data',
-        },
-    } as const satisfies AgGridLocales;
-
-    const severityFilterRef = useRef<string[]>([]);
-    const severityFilter = useMemo(() => {
-        const next = getColumnFilterValue(filters, 'severity') ?? [];
-        const prev = severityFilterRef.current;
-        const changed = next.length !== prev.length || (next as string[]).some((v: string, i: number) => v !== prev[i]);
-        if (changed) {
-            severityFilterRef.current = next;
-        }
-        return severityFilterRef.current;
-    }, [filters]);
+    const severityFilter = useStableComputedArray<string>(
+        () => getColumnFilterValue(filters, 'severity') ?? [],
+        [filters]
+    );
 
     const messageFilter = useMemo(() => getColumnFilterValue(filters, 'message'), [filters]);
 
@@ -179,7 +162,7 @@ function LogTable({
             (pagedLogs) => {
                 const { content, totalElements, totalPages } = pagedLogs;
                 if (totalPages - 1 < page) {
-                    onPaginationChange({ page: 0, rowsPerPage });
+                    changePagination({ page: 0, rowsPerPage });
                 }
                 setCount(totalElements);
                 setSelectedRowIndex(-1);
@@ -194,11 +177,15 @@ function LogTable({
         messageFilter,
         page,
         rowsPerPage,
-        onPaginationChange,
+        changePagination,
     ]);
 
     useEffect(() => {
         if (severities && severities.length > 0) {
+            // Reset filters will trigger initialization regardless of current filter state
+            // Otherwise, only initialize if not already done and no filters present, or if not already done
+            // and severity not already in current filter state
+            // This is to avoid overwriting filters when user unchecks all severities manually
             const severityNotAlreadyInFilter = severities.some((severity) => !severityFilter.includes(severity));
             const needsInitialization =
                 resetFilters ||
@@ -206,18 +193,18 @@ function LogTable({
                 (!filtersInitialized && severityNotAlreadyInFilter);
 
             if (needsInitialization) {
-                onFiltersUpdate([
+                updateFilters([
                     {
                         column: 'severity',
-                        dataType: 'text',
-                        type: 'equals',
+                        dataType: FilterDataTypes.TEXT,
+                        type: FilterTextComparators.EQUALS,
                         value: getDefaultSeverityFilter(severities),
                     },
                 ]);
                 setFiltersInitialized(true);
             }
         }
-    }, [severities, resetFilters, filtersInitialized, severityFilter, onFiltersUpdate]);
+    }, [severities, resetFilters, filtersInitialized, severityFilter, updateFilters]);
 
     useEffect(() => {
         if (selectedReport.id && selectedReport.type) {
@@ -235,47 +222,46 @@ function LogTable({
     }, [filters, isGridReady, onFiltersChanged]);
 
     const COLUMNS_DEFINITIONS = useMemo(
-        () =>
-            extraColumnDefs ?? [
-                makeAgGridCustomHeaderColumn({
-                    headerName: intl.formatMessage({ id: 'report_viewer/severity' }),
-                    width: SEVERITY_COLUMN_FIXED_WIDTH,
-                    colId: 'severity',
-                    field: 'severity',
-                    cellStyle: (params: CellClassParams<Log>) => ({
-                        backgroundColor: params.data?.backgroundColor ?? theme.palette.background.default,
-                        textAlign: 'center',
-                    }),
+        () => [
+            makeAgGridCustomHeaderColumn({
+                headerName: intl.formatMessage({ id: 'report_viewer/severity' }),
+                width: SEVERITY_COLUMN_FIXED_WIDTH,
+                colId: 'severity',
+                field: 'severity',
+                cellStyle: (params: CellClassParams<Log>) => ({
+                    backgroundColor: params.data?.backgroundColor ?? theme.palette.background.default,
+                    textAlign: 'center',
                 }),
-                makeAgGridCustomHeaderColumn({
-                    headerName: intl.formatMessage({ id: 'report_viewer/message' }),
-                    colId: 'message',
-                    field: 'message',
-                    context: {
-                        filterComponent: CustomAggridComparatorFilter,
-                        filterComponentParams: {
-                            filterParams: {
-                                type: TableType.Logs,
-                                tab: reportType,
-                                dataType: FilterDataTypes.TEXT,
-                                comparators: [FilterTextComparators.CONTAINS],
-                            },
+            }),
+            makeAgGridCustomHeaderColumn({
+                headerName: intl.formatMessage({ id: 'report_viewer/message' }),
+                colId: 'message',
+                field: 'message',
+                context: {
+                    filterComponent: CustomAggridComparatorFilter,
+                    filterComponentParams: {
+                        filterParams: {
+                            type: TableType.Logs,
+                            tab: reportType,
+                            dataType: FilterDataTypes.TEXT,
+                            comparators: [FilterTextComparators.CONTAINS],
                         },
-                        forceDisplayFilterIcon: true,
                     },
-                    flex: 1,
-                    cellRenderer: (param: ICellRendererParams<Log>) =>
-                        MessageLogCellRenderer({
-                            param,
-                            highlightColor: theme.searchedText.highlightColor,
-                            currentHighlightColor: theme.searchedText.currentHighlightColor,
-                            searchTerm,
-                            currentResultIndex,
-                            searchResults,
-                        }),
-                }),
-            ],
-        [extraColumnDefs, intl, theme, searchTerm, currentResultIndex, searchResults, reportType]
+                    forceDisplayFilterIcon: true,
+                },
+                flex: 1,
+                cellRenderer: (param: ICellRendererParams<Log>) =>
+                    MessageLogCellRenderer({
+                        param,
+                        highlightColor: theme.searchedText.highlightColor,
+                        currentHighlightColor: theme.searchedText.currentHighlightColor,
+                        searchTerm,
+                        currentResultIndex,
+                        searchResults,
+                    }),
+            }),
+        ],
+        [intl, theme, searchTerm, currentResultIndex, searchResults, reportType]
     );
 
     const handleRowClick = useCallback(
@@ -343,7 +329,7 @@ function LogTable({
                 setSearchMatches(matchesPositions);
                 const matches = matchesPositions.map((m) => m.rowIndex);
                 if (matches.length > 0) {
-                    onPaginationChange({ page: matchesPositions[0].page, rowsPerPage });
+                    changePagination({ page: matchesPositions[0].page, rowsPerPage });
                 }
                 handleSearchResults(matches);
             });
@@ -356,7 +342,7 @@ function LogTable({
             rowsPerPage,
             selectedReport.id,
             selectedReport.type,
-            onPaginationChange,
+            changePagination,
             severityFilter,
         ]
     );
@@ -371,12 +357,22 @@ function LogTable({
                     ? (currentResultIndex + 1) % searchResults.length
                     : (currentResultIndex - 1 + searchResults.length) % searchResults.length;
 
-            onPaginationChange({ page: searchMatches[newIndex].page, rowsPerPage });
+            pendingScrollRef.current = searchResults[newIndex];
+            changePagination({ page: searchMatches[newIndex].page, rowsPerPage });
             setCurrentResultIndex(newIndex);
             highlightAndScrollToMatch(newIndex, searchResults);
         },
-        [searchResults, onPaginationChange, searchMatches, rowsPerPage, highlightAndScrollToMatch, currentResultIndex]
+        [searchResults, changePagination, searchMatches, rowsPerPage, highlightAndScrollToMatch, currentResultIndex]
     );
+
+    const handleRowDataUpdated = useCallback(() => {
+        if (pendingScrollRef.current === null || !gridRef.current) {
+            return;
+        }
+        const rowIndex = pendingScrollRef.current;
+        pendingScrollRef.current = null;
+        gridRef.current.api?.ensureIndexVisible(rowIndex, 'middle');
+    }, []);
 
     const handleChipClick = useCallback(
         (severity: string) => {
@@ -384,40 +380,41 @@ function LogTable({
                 ? severityFilter.filter((s) => s !== severity)
                 : [...severityFilter, severity];
 
-            onFiltersUpdate([
+            updateFilters([
                 {
                     column: 'severity',
-                    dataType: 'text',
-                    type: 'equals',
+                    dataType: FilterDataTypes.TEXT,
+                    type: FilterTextComparators.EQUALS,
                     value: updatedFilter,
                 },
                 {
                     column: 'message',
-                    dataType: 'text',
-                    type: 'contains',
+                    dataType: FilterDataTypes.TEXT,
+                    type: FilterTextComparators.CONTAINS,
                     value: messageFilter,
                 },
             ]);
         },
-        [onFiltersUpdate, severityFilter, messageFilter]
+        [updateFilters, severityFilter, messageFilter]
     );
 
     const handleChangePage = useCallback(
         (_: unknown, newPage: number) => {
-            onPaginationChange({ page: newPage, rowsPerPage });
+            changePagination({ page: newPage, rowsPerPage });
             const firstMatchIndex = searchMatches.findIndex((match) => match.page === newPage);
             setCurrentResultIndex(firstMatchIndex);
         },
-        [searchMatches, rowsPerPage, onPaginationChange]
+        [searchMatches, rowsPerPage, changePagination]
     );
 
     const handleChangeRowsPerPage = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            onPaginationChange({ page: 0, rowsPerPage: parseInt(event.target.value, 10) });
+            changePagination({ page: 0, rowsPerPage: parseInt(event.target.value, 10) });
         },
-        [onPaginationChange]
+        [changePagination]
     );
 
+    // This effect enables to recompute the research when selected node, filters or page size change for example
     useEffect(() => {
         handleSearch(searchTerm);
         // We don't want to trigger on searchTerm change — that is handled by QuickSearch
@@ -457,11 +454,12 @@ function LogTable({
                     onCellClicked={handleRowClick}
                     getRowStyle={rowStyleFormat}
                     onGridReady={onGridReady}
+                    onRowDataUpdated={handleRowDataUpdated}
                     defaultColDef={defaultColumnDefinition}
                     overrideLocales={AGGRID_LOCALES}
                 />
             </Box>
-            <TablePagination
+            <CustomTablePagination
                 component="div"
                 rowsPerPageOptions={PAGE_OPTIONS}
                 count={count}

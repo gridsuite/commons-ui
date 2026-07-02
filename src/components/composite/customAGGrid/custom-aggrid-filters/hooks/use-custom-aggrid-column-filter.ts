@@ -6,8 +6,13 @@
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { debounce } from '@mui/material';
-import { FilterDataTypes, FilterTextComparators } from '../../../../../utils';
-import { FilterConfig, FilterData, FilterParams } from '../../custom-aggrid-types';
+import {
+    FilterConfig,
+    FilterData,
+    FilterDataTypes,
+    FilterParams,
+    FilterTextComparators,
+} from '../../custom-aggrid-types';
 import { useCustomAggridFilterContext } from '../../context/custom-aggrid-context';
 import { computeTolerance } from '../utils/filter-tolerance-utils';
 

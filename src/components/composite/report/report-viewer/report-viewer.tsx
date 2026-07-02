@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ImperativePanelGroupHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { DragIndicator as DragIndicatorIcon } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Box, Theme } from '@mui/material';
 import LogTable from './log-table/log-table';
 import { mapReportsTree } from '../report-treeview/report-tree.mapper';
 import { VirtualizedTreeview } from '../report-treeview/virtualized-treeview';
@@ -25,7 +25,7 @@ import { GLOBAL_REPORT_NODE_LABEL } from '../report.constant';
 import { MuiStyles } from '../../../../utils';
 
 const styles = {
-    panelHandlerContainer: (theme: any) => ({
+    panelHandlerContainer: (theme: Theme) => ({
         display: 'flex',
         alignItems: 'center',
         borderRight: `1px solid ${theme.palette.divider}`,
@@ -111,8 +111,10 @@ export function ReportViewer({
         [reportTreeMap]
     );
 
+    // Ref for resizing
     const panelGroupRef = useRef<ImperativePanelGroupHandle>(null);
 
+    // sizes in percent
     const LEFT_PANEL_MIN_SIZE = 15;
     const LEFT_PANEL_DEFAULT_SIZE = 25;
     const RIGHT_PANEL_MIN_SIZE = 50;

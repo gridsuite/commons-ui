@@ -4,10 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { Theme } from '@mui/material';
 import { MuiStyles } from '../../../utils';
 
 export const reportStyles = {
-    mainContainer: (theme: any) => ({
+    mainContainer: (theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         height: '100%',

@@ -40,9 +40,9 @@ export const useReportFetcherContext = (): ReportFetcherContextValue => {
 
 export interface ReportFilterContextValue {
     filters: FilterConfig[] | undefined;
-    onFiltersUpdate: (filters: FilterConfig[]) => void;
+    updateFilters: (filters: FilterConfig[]) => void;
     pagination: LogsPaginationConfig;
-    onPaginationChange: (config: LogsPaginationConfig) => void;
+    changePagination: (config: LogsPaginationConfig) => void;
 }
 
 export const ReportFilterContext = createContext<ReportFilterContextValue | null>(null);

@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { List, useListRef } from 'react-window';
 import { Label } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Box, Theme } from '@mui/material';
 import { ReportItem, TreeviewItem } from './treeview-item';
 import { ReportTree } from '../report.type';
 import { useTreeViewScroll } from './hooks/use-treeview-scroll';
@@ -20,7 +20,7 @@ const styles = {
         whiteSpace: 'nowrap',
         minHeight: '100%',
     },
-    labelIcon: (theme: any) => ({
+    labelIcon: (theme: Theme) => ({
         marginRight: theme.spacing(1),
     }),
     listContainer: {

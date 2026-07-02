@@ -40,7 +40,7 @@ export const useCustomAggridSort = (colId: string, sortParams?: SortParams, api?
         if (sortParams && sortParams.persistSort && updatedSortConfig?.[0] && api) {
             sortParams.persistSort(api, updatedSortConfig[0]).catch((error) => snackWithFallback(snackError, error));
         }
-        setSortConfig(sortParams, updatedSortConfig, api);
+        setSortConfig(sortParams, updatedSortConfig);
     }, [sortParams, sortConfig, isColumnSorted, columnSort?.sort, colId, api, setSortConfig, snackError]);
 
     return { columnSort, handleSortChange };
