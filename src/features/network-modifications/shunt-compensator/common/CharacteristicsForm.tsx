@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
@@ -196,37 +196,21 @@ export function CharacteristicsForm({ previousValues, isModification = false }: 
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={4}>
-                {maximumSectionCountField}
-            </Grid>
-            <Grid item xs={4}>
-                {sectionCountField}
-            </Grid>
-            <Grid item xs={12}>
-                {characteristicsChoiceField}
-            </Grid>
+            <Grid size={4}>{maximumSectionCountField}</Grid>
+            <Grid size={4}>{sectionCountField}</Grid>
+            <Grid size={12}>{characteristicsChoiceField}</Grid>
             {characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id && (
-                <Grid item container spacing={2}>
-                    <Grid item xs={4}>
-                        {maxSusceptanceField}
-                    </Grid>
-                    <Grid item xs={4}>
-                        {switchedOnSusceptanceField}
-                    </Grid>
+                <Grid container spacing={2}>
+                    <Grid size={4}>{maxSusceptanceField}</Grid>
+                    <Grid size={4}>{switchedOnSusceptanceField}</Grid>
                 </Grid>
             )}
             {characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id && (
-                <Grid item container spacing={2}>
-                    <Grid item xs={4}>
-                        {shuntCompensatorTypeField}
-                    </Grid>
+                <Grid container spacing={2}>
+                    <Grid size={4}>{shuntCompensatorTypeField}</Grid>
                     <Box sx={{ width: '100%' }} />
-                    <Grid item xs={4}>
-                        {maxQAtNominalVField}
-                    </Grid>
-                    <Grid item xs={4}>
-                        {switchedOnMaxQAtNominalVField}
-                    </Grid>
+                    <Grid size={4}>{maxQAtNominalVField}</Grid>
+                    <Grid size={4}>{switchedOnMaxQAtNominalVField}</Grid>
                 </Grid>
             )}
         </Grid>

@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress, Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import { CustomFormProvider } from '../../../components/ui';
 import { ParameterLineDirectoryItemsInput } from '../common';
@@ -56,10 +56,8 @@ export function PccMinParametersForm({
                     position: 'relative',
                 }}
             >
-                <Grid item container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
-                    <Grid item container direction="column">
-                        {renderTitleFields?.()}
-                    </Grid>
+                <Grid container sx={renderActions ? styles.gridWithActions : styles.gridWithoutActions}>
+                    <Stack>{renderTitleFields?.()}</Stack>
                     {paramsLoading ? (
                         <LinearProgress />
                     ) : (
@@ -69,7 +67,7 @@ export function PccMinParametersForm({
                                 width: '100%',
                             }}
                         >
-                            <Grid item container direction="column">
+                            <Stack>
                                 <ParameterLineDirectoryItemsInput
                                     name={FILTERS}
                                     equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
@@ -78,22 +76,19 @@ export function PccMinParametersForm({
                                     hideErrorMessage={false}
                                     allowMultiSelect={false}
                                 />
-                            </Grid>
+                            </Stack>
                         </Box>
                     )}
                 </Grid>
                 {renderActions && (
-                    <Grid
-                        item
-                        container
-                        direction="column"
+                    <Stack
                         sx={{
                             position: 'fixed',
                             bottom: '15px',
                         }}
                     >
                         {renderActions()}
-                    </Grid>
+                    </Stack>
                 )}
             </Box>
         </CustomFormProvider>

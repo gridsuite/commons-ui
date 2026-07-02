@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, LinearProgress, Tab, Tabs, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ReactNode } from 'react';
 
@@ -41,7 +41,7 @@ export function DynamicSecurityAnalysisParametersForm({
         <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
-                <Grid container sx={{ height: '100%' }} direction="column">
+                <Stack sx={{ height: '100%' }}>
                     <Grid container>
                         <ProviderParam options={formattedProviders} />
                     </Grid>
@@ -61,8 +61,7 @@ export function DynamicSecurityAnalysisParametersForm({
                     </Grid>
                     <Grid
                         container
-                        item
-                        xs
+                        size="grow"
                         key="dsaParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
                             paddingTop: 0,
@@ -77,7 +76,7 @@ export function DynamicSecurityAnalysisParametersForm({
                         </TabPanel>
                     </Grid>
                     {renderActions?.(onError)}
-                </Grid>
+                </Stack>
             ) : (
                 <LinearProgress />
             )}

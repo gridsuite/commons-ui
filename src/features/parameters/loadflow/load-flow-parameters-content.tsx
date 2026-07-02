@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { TabValues } from './load-flow-parameters-utils';
 import LoadFlowGeneralParameters from './load-flow-general-parameters';
 import { LimitReductionsTableForm } from '../common';
@@ -57,7 +57,7 @@ function LoadFlowParametersContent({
     return (
         <Box sx={styles.wrapper}>
             <Grid container sx={styles.container}>
-                <Grid item sx={styles.maxWidth}>
+                <Grid sx={styles.maxWidth}>
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
                         <LoadFlowGeneralParameters provider={currentProvider} specificParams={specificParameters} />
                     </TabPanel>

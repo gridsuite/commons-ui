@@ -10,8 +10,9 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid,
+    Grid2 as Grid,
     IconButton,
+    Stack,
     Typography,
     useTheme,
 } from '@mui/material';
@@ -108,7 +109,7 @@ function CurveSelectorDialog({
                         maxHeight: '100%',
                     })}
                 >
-                    <Grid item container xs={8} spacing={theme.spacing(1)}>
+                    <Grid container size={8} spacing={theme.spacing(1)}>
                         <CurveSelector
                             ref={selectorRef}
                             voltageLevelsFetcher={voltageLevelsFetcher}
@@ -117,43 +118,45 @@ function CurveSelectorDialog({
                             modelsFetcher={modelsFetcher}
                         />
                     </Grid>
-                    <Grid item container direction="column" justifyContent="center" alignItems="center" xs={0.5}>
-                        <Grid item>
-                            <CustomTooltip
-                                title={intl.formatMessage({
-                                    id: 'AddRows',
-                                })}
-                            >
-                                <span>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={() => handleAddButton()}
-                                        disabled={hasSelectedRow}
-                                    >
-                                        <ArrowCircleRight />
-                                    </IconButton>
-                                </span>
-                            </CustomTooltip>
-                        </Grid>
-                        <Grid item>
-                            <CustomTooltip
-                                title={intl.formatMessage({
-                                    id: 'DeleteRows',
-                                })}
-                            >
-                                <span>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={() => handleDeleteButton()}
-                                        disabled={hasSelectedRow}
-                                    >
-                                        <ArrowCircleLeft />
-                                    </IconButton>
-                                </span>
-                            </CustomTooltip>
-                        </Grid>
+                    <Grid size={0.5}>
+                        <Stack justifyContent="center" alignItems="center">
+                            <Grid>
+                                <CustomTooltip
+                                    title={intl.formatMessage({
+                                        id: 'AddRows',
+                                    })}
+                                >
+                                    <span>
+                                        <IconButton
+                                            color="primary"
+                                            onClick={() => handleAddButton()}
+                                            disabled={hasSelectedRow}
+                                        >
+                                            <ArrowCircleRight />
+                                        </IconButton>
+                                    </span>
+                                </CustomTooltip>
+                            </Grid>
+                            <Grid>
+                                <CustomTooltip
+                                    title={intl.formatMessage({
+                                        id: 'DeleteRows',
+                                    })}
+                                >
+                                    <span>
+                                        <IconButton
+                                            color="primary"
+                                            onClick={() => handleDeleteButton()}
+                                            disabled={hasSelectedRow}
+                                        >
+                                            <ArrowCircleLeft />
+                                        </IconButton>
+                                    </span>
+                                </CustomTooltip>
+                            </Grid>
+                        </Stack>
                     </Grid>
-                    <Grid item container xs direction="column">
+                    <Grid size="grow">
                         <CurvePreview ref={previewRef} />
                     </Grid>
                 </Grid>
