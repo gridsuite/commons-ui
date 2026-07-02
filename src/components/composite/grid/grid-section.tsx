@@ -15,6 +15,10 @@ export interface GridSectionProps {
     customStyle?: SxStyle;
 }
 
+/**
+ * @deprecated Use the Grid2Section component instead.
+ * Warning : there is a different implementation in gridstudy
+ */
 export default function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
     return (
         <Grid container spacing={2}>

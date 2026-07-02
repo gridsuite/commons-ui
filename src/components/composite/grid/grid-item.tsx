@@ -14,6 +14,9 @@ export interface GridItemProps extends PropsWithChildren {
     tooltip?: ReactNode;
 }
 
+/**
+ * Warning : there is a different implementation in gridstudy
+ */
 export default function GridItem({ children, size = 6, alignItem = 'flex-start', tooltip }: Readonly<GridItemProps>) {
     return (
         <Grid item xs={size} alignItems={alignItem}>
