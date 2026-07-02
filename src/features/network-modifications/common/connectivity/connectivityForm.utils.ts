@@ -39,7 +39,10 @@ const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
         });
 };
 
-export const getConnectivityPropertiesValidationSchema = (isEquipmentModification = false, displayConnectivity = true) => {
+export const getConnectivityPropertiesValidationSchema = (
+    isEquipmentModification = false,
+    displayConnectivity = true
+) => {
     return {
         [FieldConstants.VOLTAGE_LEVEL]: getVoltageLevelAndBusOrBusBarSectionFieldsSchema(
             isEquipmentModification,
@@ -75,7 +78,10 @@ export const getConnectivityWithPositionValidationSchema = (
     [id]: getConnectivityWithPositionSchema(isEquipmentModification),
 });
 
-export const getBranchConnectivityWithPositionSchema = (isEquipmentModification: boolean, displayConnectivity: boolean) =>
+export const getBranchConnectivityWithPositionSchema = (
+    isEquipmentModification: boolean,
+    displayConnectivity: boolean
+) =>
     object().shape({
         [FieldConstants.CONNECTIVITY_1]: getConnectivityWithPositionSchema(
             isEquipmentModification,
@@ -85,7 +91,7 @@ export const getBranchConnectivityWithPositionSchema = (isEquipmentModification:
             isEquipmentModification,
             displayConnectivity
         ),
-    });;
+    });
 
 export const getCon1andCon2WithPositionValidationSchema = (
     isEquipmentModification = false,

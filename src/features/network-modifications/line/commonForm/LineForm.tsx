@@ -13,8 +13,7 @@ import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogT
 import { useTabsWithError } from '../../hooks';
 
 interface LineFormProps
-    extends LineDialogHeaderProps,
-        Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
+    extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
 
 export function LineForm({
     lineToModify,
