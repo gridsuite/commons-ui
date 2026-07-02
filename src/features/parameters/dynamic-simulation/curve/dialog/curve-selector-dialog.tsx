@@ -118,42 +118,38 @@ function CurveSelectorDialog({
                             modelsFetcher={modelsFetcher}
                         />
                     </Grid>
-                    <Grid size={0.5}>
-                        <Stack justifyContent="center" alignItems="center">
-                            <Grid>
-                                <CustomTooltip
-                                    title={intl.formatMessage({
-                                        id: 'AddRows',
-                                    })}
-                                >
-                                    <span>
-                                        <IconButton
-                                            color="primary"
-                                            onClick={() => handleAddButton()}
-                                            disabled={hasSelectedRow}
-                                        >
-                                            <ArrowCircleRight />
-                                        </IconButton>
-                                    </span>
-                                </CustomTooltip>
-                            </Grid>
-                            <Grid>
-                                <CustomTooltip
-                                    title={intl.formatMessage({
-                                        id: 'DeleteRows',
-                                    })}
-                                >
-                                    <span>
-                                        <IconButton
-                                            color="primary"
-                                            onClick={() => handleDeleteButton()}
-                                            disabled={hasSelectedRow}
-                                        >
-                                            <ArrowCircleLeft />
-                                        </IconButton>
-                                    </span>
-                                </CustomTooltip>
-                            </Grid>
+                    <Grid size={0.5} display="flex" justifyContent="center" alignItems="center">
+                        <Stack>
+                            <CustomTooltip
+                                title={intl.formatMessage({
+                                    id: 'AddRows',
+                                })}
+                            >
+                                <span>
+                                    <IconButton
+                                        color="primary"
+                                        onClick={() => handleAddButton()}
+                                        disabled={hasSelectedRow}
+                                    >
+                                        <ArrowCircleRight />
+                                    </IconButton>
+                                </span>
+                            </CustomTooltip>
+                            <CustomTooltip
+                                title={intl.formatMessage({
+                                    id: 'DeleteRows',
+                                })}
+                            >
+                                <span>
+                                    <IconButton
+                                        color="primary"
+                                        onClick={() => handleDeleteButton()}
+                                        disabled={hasSelectedRow}
+                                    >
+                                        <ArrowCircleLeft />
+                                    </IconButton>
+                                </span>
+                            </CustomTooltip>
                         </Stack>
                     </Grid>
                     <Grid size="grow">
