@@ -132,12 +132,12 @@ const CurvePreview = forwardRef<CurvePreviewApi>((props, ref) => {
     );
 
     return (
-        <Stack>
+        <Stack sx={{ height: '100%', minHeight: 0 }}>
             <Typography sx={styles.h6} variant="h6">
                 <FormattedMessage id="DynamicSimulationCurveToAdd" />
                 {` (${selectedRowsLength} / ${rowData.length})`}
             </Typography>
-            <Box sx={styles.grid}>
+            <Box sx={[styles.grid, { flexGrow: 1, minHeight: 0 }]}>
                 <CustomAGGrid
                     ref={gridRef}
                     rowData={rowData}
