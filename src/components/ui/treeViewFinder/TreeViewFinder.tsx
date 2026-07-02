@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {
     Button,
@@ -26,7 +26,6 @@ import {
     ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import type { UUID } from 'node:crypto';
-import { StyledComponent } from '@emotion/styled';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../../utils/styles';
 import { CancelButton } from '../reactHookForm/utils/CancelButton';
 import { ElementAttributes, ElementType } from '../../../utils';
@@ -555,5 +554,5 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
 }
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
-export const TreeViewFinder: StyledComponent<TreeViewFinderProps> =
+export const TreeViewFinder: FunctionComponent<TreeViewFinderProps> =
     styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);

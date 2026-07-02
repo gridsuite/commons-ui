@@ -4,10 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { FunctionComponent, ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Box, type BoxProps, styled } from '@mui/material';
 import { Style } from 'node:util';
-import { StyledComponent } from '@emotion/styled';
 import { CustomTooltip } from '../tooltip/CustomTooltip';
 import { mergeSx, MuiStyles, SxStyle } from '../../../utils';
 
@@ -41,7 +40,7 @@ export interface OverflowableTextProps extends BoxProps {
     tooltipSx?: SxStyle;
 }
 
-export const OverflowableText: StyledComponent<OverflowableTextProps> = styled(
+export const OverflowableText: FunctionComponent<OverflowableTextProps> = styled(
     ({
         text,
         maxLineCount, // overflowable text can be displayed on several lines if this is set to a number > 1 tooltipStyle,
