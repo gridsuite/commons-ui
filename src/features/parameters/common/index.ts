@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+export * from './parameter-layout';
 export * from './computing-type';
 export * from './constants';
 export * from './parameters-edition-dialog-props';

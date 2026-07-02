@@ -5,13 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactNode } from 'react';
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { FieldErrors } from 'react-hook-form';
-import { mergeSx } from '../../../utils';
-import { ProviderParam } from '../common';
-import { useTabs } from '../common/hook/use-tabs';
+import { ProviderParam, UseTabsReturn } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
 import TimeDelayParameters from './time-delay-parameters';
@@ -22,64 +18,47 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicMarginCalculationFormProps = {
     dynamicMarginCalculationMethods: UseComputationParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
-    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
+    useTabsReturn: UseTabsReturn<TabValues>;
 };
 
 export function DynamicMarginCalculationForm({
     dynamicMarginCalculationMethods,
-    renderTitleFields,
-    renderActions,
+    useTabsReturn,
 }: Readonly<DynamicMarginCalculationFormProps>) {
     const { paramsLoaded, formattedProviders } = dynamicMarginCalculationMethods;
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
-    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
-        defaultTab: Object.values(TabValues)[0],
-        tabEnum: TabValues,
-    });
+    if (!paramsLoaded) {
+        return <LinearProgress />;
+    }
+
     return (
-        <>
-            {renderTitleFields?.()}
-            {paramsLoaded ? (
-                <Grid container sx={{ height: '100%' }} direction="column">
-                    <Grid container>
-                        <ProviderParam options={formattedProviders} />
-                    </Grid>
-                    <Grid>
-                        <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
-                            <Tab
-                                label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
-                                value={TabValues.TAB_TIME_DELAY}
-                                sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
-                            />
-                            <Tab
-                                label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
-                                value={TabValues.TAB_LOADS_VARIATIONS}
-                                sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
-                            />
-                        </Tabs>
-                    </Grid>
-                    <Grid
-                        container
-                        xs
-                        key="dmcParameters"
-                        sx={mergeSx(parametersStyles.scrollableGrid, {
-                            paddingTop: 0,
-                            width: '100%',
-                        })}
-                    >
-                        <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
-                            <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
-                        </TabPanel>
-                        <TabPanel value={selectedTab} index={TabValues.TAB_LOADS_VARIATIONS}>
-                            <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
-                        </TabPanel>
-                    </Grid>
-                    {renderActions?.(onError)}
-                </Grid>
-            ) : (
-                <LinearProgress />
-            )}
-        </>
+        <Grid container direction="column" sx={parametersStyles.scrollableGrid}>
+            <Grid item xs={12}>
+                <ProviderParam options={formattedProviders} />
+            </Grid>
+            <Grid item xs={12}>
+                <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                    <Tab
+                        label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
+                        value={TabValues.TAB_TIME_DELAY}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
+                        value={TabValues.TAB_LOADS_VARIATIONS}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
+                    />
+                </Tabs>
+            </Grid>
+            <Grid container item xs={12} key="dmcParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+                <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
+                    <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
+                </TabPanel>
+                <TabPanel value={selectedTab} index={TabValues.TAB_LOADS_VARIATIONS}>
+                    <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
+                </TabPanel>
+            </Grid>
+        </Grid>
     );
 }

@@ -53,6 +53,7 @@ export function UniqueNameInput({
         fieldState: { error },
     } = useController({
         name,
+        defaultValue: currentName,
     });
 
     const { isValidating } = useUniqueNameValidation({

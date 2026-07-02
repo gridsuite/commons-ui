@@ -6,68 +6,55 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid } from '@mui/material';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldErrors, FieldValues } from 'react-hook-form';
+import { useCallback, useEffect } from 'react';
+import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
+import { ElementType, snackWithFallback } from '../../../utils';
 import { DynamicMarginCalculationForm } from './dynamic-margin-calculation-form';
 import {
     toFormValues,
     toParamsInfos,
     useDynamicMarginCalculationParametersForm,
 } from './use-dynamic-margin-calculation-parameters-form';
-import { LabelledButton } from '../common/parameters';
-import { SubmitButton } from '../../../components/ui/reactHookForm/utils/SubmitButton';
-import { PopupConfirmationDialog } from '../../../components/ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
-import { parametersStyles } from '../parameters-style';
-import { CreateParameterDialog } from '../common';
-import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
+import { ParameterLayout } from '../common';
+import { CustomFormProvider } from '../../../components/ui';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
 import { useSnackMessage } from '../../../hooks';
-import { CustomFormProvider } from '../../../components/ui';
+import { useTabs } from '../common/hook/use-tabs';
+import { TabValues } from './dynamic-margin-calculation.type';
 
 type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.DYNAMIC_MARGIN_CALCULATION>;
     setHaveDirtyFields: (isDirty: boolean) => void;
 };
+
 export function DynamicMarginCalculationInline({
     studyUuid,
     parametersBackend,
     setHaveDirtyFields,
 }: Readonly<DynamicMarginCalculationInlineProps>) {
     const { providers, params, updateParameters, resetParameters } = parametersBackend;
+
     const dynamicMarginCalculationMethods = useDynamicMarginCalculationParametersForm({
         providers,
         params,
         name: null,
         description: null,
     });
-    const intl = useIntl();
+
     const { snackError } = useSnackMessage();
 
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openSelectParameterDialog, setOpenSelectParameterDialog] = useState(false);
-    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
+    const { formMethods } = dynamicMarginCalculationMethods;
+    const { reset, getValues, formState, handleSubmit } = formMethods;
 
-    const { formSchema, formMethods } = dynamicMarginCalculationMethods;
-    const { reset, handleSubmit, getValues, formState } = formMethods;
-
-    const handleResetClick = useCallback(() => {
-        setOpenResetConfirmation(true);
-    }, []);
-    const handleCancelReset = useCallback(() => {
-        setOpenResetConfirmation(false);
-    }, []);
-
-    const handleReset = useCallback(() => {
-        resetParameters();
-        setOpenResetConfirmation(false);
-    }, [resetParameters]);
+    const useTabsReturn = useTabs({
+        defaultTab: Object.values(TabValues)[0],
+        tabEnum: TabValues,
+        errors: formState.errors,
+    });
 
     const onSubmit = useCallback(
         (formData: FieldValues) => {
@@ -80,7 +67,6 @@ export function DynamicMarginCalculationInline({
     const handleLoadParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
             if (newParams?.length) {
-                setOpenSelectParameterDialog(false);
                 const parametersUuid = newParams[0].id;
                 fetchDynamicMarginCalculationParameters(parametersUuid)
                     .then((_params) => {
@@ -92,7 +78,6 @@ export function DynamicMarginCalculationInline({
                         snackWithFallback(snackError, error, { headerId: 'paramsRetrievingError' });
                     });
             }
-            setOpenSelectParameterDialog(false);
         },
         [reset, snackError]
     );
@@ -101,73 +86,26 @@ export function DynamicMarginCalculationInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
-        return (
-            <>
-                <Grid container item>
-                    <Grid
-                        sx={mergeSx(parametersStyles.controlParametersItem, {
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            paddingLeft: 0,
-                        })}
-                    >
-                        <LabelledButton
-                            disabled
-                            callback={() => setOpenSelectParameterDialog(true)}
-                            label="settings.button.chooseSettings"
-                        />
-                        <LabelledButton disabled callback={() => setOpenCreateParameterDialog(true)} label="save" />
-                        <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
-                            <FormattedMessage id="validate" />
-                        </SubmitButton>
-                    </Grid>
-                </Grid>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={getValues}
-                        parameterFormatter={toParamsInfos}
-                        parameterType={ElementType.DYNAMIC_MARGIN_CALCULATION_PARAMETERS}
-                    />
-                )}
-                {openSelectParameterDialog && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={handleLoadParameter}
-                        types={[ElementType.DYNAMIC_MARGIN_CALCULATION_PARAMETERS]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        onlyLeaves
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={handleReset}
-                    />
-                )}
-            </>
-        );
-    };
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
-            <DynamicMarginCalculationForm
-                dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
-                renderActions={renderActions}
-            />
+        <CustomFormProvider validationSchema={dynamicMarginCalculationMethods.formSchema} {...formMethods}>
+            <ParameterLayout
+                title="DynamicMarginCalculation"
+                isLoading={!dynamicMarginCalculationMethods.paramsLoaded}
+                parameterType={ElementType.DYNAMIC_MARGIN_CALCULATION_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    parameterFormatter: toParamsInfos,
+                    getParameterValues: getValues,
+                }}
+                selectParameterHandler={handleLoadParameter}
+                resetHandler={resetParameters}
+                validateHandler={handleSubmit(onSubmit, useTabsReturn.onError)}
+            >
+                <DynamicMarginCalculationForm
+                    dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
+                    useTabsReturn={useTabsReturn}
+                />
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

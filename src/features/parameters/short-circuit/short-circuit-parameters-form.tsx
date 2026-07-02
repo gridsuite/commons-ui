@@ -5,60 +5,25 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress } from '@mui/material';
-import { ReactNode } from 'react';
-import { CustomFormProvider } from '../../../components/ui';
-import { parametersStyles } from '../parameters-style';
+import { Grid, LinearProgress } from '@mui/material';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
-import { MuiStyles } from '../../../utils';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
-
-const styles = {
-    shortCircuitParameters: {
-        height: '100%',
-        display: 'flex',
-        position: 'relative',
-        flexDirection: 'column',
-    },
-} as const satisfies MuiStyles;
+import { parametersStyles } from '../parameters-style';
 
 interface ShortCircuitParametersFormProps {
     shortCircuitMethods: UseShortCircuitParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
-    renderActions?: () => ReactNode;
 }
 
-export function ShortCircuitParametersForm({
-    shortCircuitMethods,
-    renderTitleFields,
-    renderActions,
-}: Readonly<ShortCircuitParametersFormProps>) {
-    const { formMethods, formSchema, paramsLoaded } = shortCircuitMethods;
+export function ShortCircuitParametersForm({ shortCircuitMethods }: Readonly<ShortCircuitParametersFormProps>) {
+    const { paramsLoaded } = shortCircuitMethods;
+
+    if (!paramsLoaded) {
+        return <LinearProgress />;
+    }
+
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <Box sx={styles.shortCircuitParameters}>
-                <Grid item container direction="column">
-                    {renderTitleFields?.()}
-                </Grid>
-                {paramsLoaded ? (
-                    <Grid sx={parametersStyles.scrollableGrid}>
-                        <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
-                    </Grid>
-                ) : (
-                    <LinearProgress />
-                )}
-                <Grid
-                    item
-                    container
-                    direction="column"
-                    sx={{
-                        position: 'absolute',
-                        bottom: '15px',
-                    }}
-                >
-                    {renderActions?.()}
-                </Grid>
-            </Box>
-        </CustomFormProvider>
+        <Grid container sx={parametersStyles.scrollableGrid}>
+            <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
+        </Grid>
     );
 }

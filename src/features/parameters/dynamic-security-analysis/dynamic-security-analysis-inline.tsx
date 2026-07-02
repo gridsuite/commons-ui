@@ -6,24 +6,20 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { useCallback, useEffect, useState } from 'react';
-import { FieldErrors, FieldValues } from 'react-hook-form';
+import { useCallback, useEffect } from 'react';
+import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx } from '../../../utils';
+import { ElementType } from '../../../utils';
 import {
     toParamsInfos,
     useDynamicSecurityAnalysisParametersForm,
 } from './use-dynamic-security-analysis-parameters-form';
-import { LabelledButton } from '../common/parameters';
-import { SubmitButton } from '../../../components/ui/reactHookForm/utils/SubmitButton';
-import { PopupConfirmationDialog } from '../../../components/ui/dialogs/popupConfirmationDialog/PopupConfirmationDialog';
-import { parametersStyles } from '../parameters-style';
-import { CreateParameterDialog } from '../common';
-import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
+import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
+import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
+import { useTabs } from '../common/hook/use-tabs';
+import { TabValues } from './dynamic-security-analysis.type';
 
 type DynamicSecurityAnalysisInlineProps = {
     studyUuid: UUID | null;
@@ -43,23 +39,15 @@ export function DynamicSecurityAnalysisInline({
         name: null,
         description: null,
     });
-    const [openCreateParameterDialog, setOpenCreateParameterDialog] = useState(false);
-    const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
-    const { formSchema, formMethods } = dynamicSecurityAnalysisMethods;
-    const { handleSubmit, getValues, formState } = formMethods;
+    const { formMethods } = dynamicSecurityAnalysisMethods;
+    const { getValues, formState, handleSubmit } = formMethods;
 
-    const handleResetClick = useCallback(() => {
-        setOpenResetConfirmation(true);
-    }, []);
-    const handleCancelReset = useCallback(() => {
-        setOpenResetConfirmation(false);
-    }, []);
-
-    const handleReset = useCallback(() => {
-        resetParameters();
-        setOpenResetConfirmation(false);
-    }, [resetParameters]);
+    const useTabsReturn = useTabs({
+        defaultTab: TabValues.SCENARIO,
+        tabEnum: TabValues,
+        errors: formState.errors,
+    });
 
     const onSubmit = useCallback(
         (formData: FieldValues) => {
@@ -73,52 +61,25 @@ export function DynamicSecurityAnalysisInline({
         setHaveDirtyFields(formState.isDirty);
     }, [formState, setHaveDirtyFields]);
 
-    const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
-        return (
-            <>
-                <Grid container item>
-                    <Grid
-                        sx={mergeSx(parametersStyles.controlParametersItem, {
-                            paddingTop: 1,
-                            paddingBottom: 2,
-                            paddingLeft: 0,
-                        })}
-                    >
-                        <LabelledButton callback={handleResetClick} label="resetToDefault" />
-                        <SubmitButton variant="outlined" onClick={handleSubmit(onSubmit, onSubmitError)}>
-                            <FormattedMessage id="validate" />
-                        </SubmitButton>
-                    </Grid>
-                </Grid>
-                {openCreateParameterDialog && (
-                    <CreateParameterDialog
-                        studyUuid={studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={getValues}
-                        parameterFormatter={toParamsInfos}
-                        parameterType={ElementType.DYNAMIC_SECURITY_ANALYSIS_PARAMETERS}
-                    />
-                )}
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={handleReset}
-                    />
-                )}
-            </>
-        );
-    };
     return (
-        <CustomFormProvider validationSchema={formSchema} {...formMethods}>
-            <DynamicSecurityAnalysisParametersForm
-                dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
-                renderActions={renderActions}
-            />
+        <CustomFormProvider validationSchema={dynamicSecurityAnalysisMethods.formSchema} {...formMethods}>
+            <ParameterLayout
+                title="DynamicSecurityAnalysis"
+                isLoading={!dynamicSecurityAnalysisMethods.paramsLoaded}
+                parameterType={ElementType.DYNAMIC_SECURITY_ANALYSIS_PARAMETERS}
+                createParameter={{
+                    studyUuid,
+                    getParameterValues: getValues,
+                    parameterFormatter: toParamsInfos,
+                }}
+                resetHandler={resetParameters}
+                validateHandler={handleSubmit(onSubmit, useTabsReturn.onError)}
+            >
+                <DynamicSecurityAnalysisParametersForm
+                    dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
+                    useTabsReturn={useTabsReturn}
+                />
+            </ParameterLayout>
         </CustomFormProvider>
     );
 }

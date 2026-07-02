@@ -5,6 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ComputingType, ParametersEditionDialogProps } from '../common';
 import {
@@ -70,19 +71,14 @@ export function LoadFlowParametersEditionDialog({
             disabledSave={disableSave}
         >
             <LoadFlowProvider>
-                <LoadFlowParametersForm
-                    loadflowMethods={loadflowMethods}
-                    language={language}
-                    renderTitleFields={() => {
-                        return (
-                            <NameElementEditorForm
-                                initialElementName={name}
-                                activeDirectory={activeDirectory}
-                                elementType={ElementType.LOADFLOW_PARAMETERS}
-                            />
-                        );
-                    }}
-                />
+                <Grid container sx={{ width: '100%' }}>
+                    <NameElementEditorForm
+                        initialElementName={name}
+                        activeDirectory={activeDirectory}
+                        elementType={ElementType.LOADFLOW_PARAMETERS}
+                    />
+                </Grid>
+                <LoadFlowParametersForm loadflowMethods={loadflowMethods} />
             </LoadFlowProvider>
         </CustomMuiDialog>
     );
