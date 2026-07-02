@@ -43,20 +43,21 @@ import {
 } from '../../common/measurements';
 import { convertToLineSegmentInfos, convertToLineSegmentsFormData, LineSegmentsInfoSchema } from '../lineTypesCatalog';
 
-export const lineCreationFormSchema = object()
-    .shape({
-        [FieldConstants.EQUIPMENT_ID]: string().required(),
-        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-        [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false),
-        [FieldConstants.CHARACTERISTICS]: getLineCharacteristicsValidationSchemaProps(false),
-        [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
-        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
-        [FieldConstants.LINE_SEGMENTS]: LineSegmentsInfoSchema,
-    })
-    .concat(creationPropertiesSchema)
-    .required();
+export const lineCreationFormSchema = (displayConnectivity: boolean) =>
+    object()
+        .shape({
+            [FieldConstants.EQUIPMENT_ID]: string().required(),
+            [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+            [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false, displayConnectivity),
+            [FieldConstants.CHARACTERISTICS]: getLineCharacteristicsValidationSchemaProps(false),
+            [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
+            [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
+            [FieldConstants.LINE_SEGMENTS]: LineSegmentsInfoSchema,
+        })
+        .concat(creationPropertiesSchema)
+        .required();
 
-export type LineCreationFormData = InferType<typeof lineCreationFormSchema>;
+export type LineCreationFormData = InferType<ReturnType<typeof lineCreationFormSchema>>;
 
 export const lineCreationEmptyFormData: DeepNullable<LineCreationFormData> = {
     [FieldConstants.EQUIPMENT_ID]: '',
