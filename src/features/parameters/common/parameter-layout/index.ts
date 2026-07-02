@@ -6,3 +6,4 @@
  */
 
 export * from './parameter-layout';
+export * from './parameter-layout-provider';
