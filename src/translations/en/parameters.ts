@@ -227,11 +227,12 @@ export const parametersEn = {
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',
     getContingencyListError: "Can't fetch contingencies lists",
-    xContingenciesWillBeSimulatedAndYNotFound:
-        '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated {y, plural, =0 {} other {and {y} not found}}',
+    xContingenciesWillBeSimulated:
+        '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated',
+    contingenciesWillNotBeSimulated:
+        '{contingencyName} ({notFoundElements}) in the list {contingencyListName} is not a valid contingency',
     contingencyCountImpossibleOnUnbuiltNode: "Can't estimate contingencies on an unbuilt node",
     noContingency: 'No contingency',
-
     resultsThreshold: 'Minimum sensitivity threshold',
     SensitivityBranches: 'Branches',
     SensitivityInjectionsSet: 'Relatively to injections set :',
