@@ -6,6 +6,7 @@
  */
 import type { UUID } from 'node:crypto';
 import { EquipmentType } from './equipmentType';
+import { IdName } from './types';
 
 export enum SolverType {
     IDA = 'IDA',
@@ -83,21 +84,32 @@ type CurveInfos = {
 
 export type SolverInfos = IdaSolverInfos | SimSolverInfos;
 
-export type MappingInfos = {
-    name: string;
-};
-
 export type DynamicSimulationParametersInfos = {
     id?: UUID;
     provider?: string;
     startTime?: number;
     stopTime?: number;
-    mapping?: string;
+    mappingId?: UUID;
     solver: SolverType;
     solvers?: SolverInfos[];
     network?: NetworkInfos;
     curves?: CurveInfos[] | null;
 };
+
+export type DynamicSimulationParametersEnriched = Omit<DynamicSimulationParametersInfos, 'mappingId'> & {
+    mapping?: IdName;
+};
+
+export function mapDynamicSimulationParameters(
+    parameters: DynamicSimulationParametersEnriched
+): DynamicSimulationParametersInfos {
+    const { mapping, ...rest } = parameters;
+    const newParameters = {
+        ...rest,
+        mappingId: parameters.mapping?.id,
+    };
+    return newParameters;
+}
 
 // --- Types related to model/variables --- //
 

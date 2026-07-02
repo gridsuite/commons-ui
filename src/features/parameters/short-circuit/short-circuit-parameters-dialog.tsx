@@ -26,14 +26,20 @@ export function ShortCircuitParametersEditionDialog({
     name,
     description,
     activeDirectory,
-    user,
+    userProfile,
     language,
 }: Readonly<ParametersEditionDialogProps>) {
-    const parametersBackend = useParametersBackend(user, id, ComputingType.SHORT_CIRCUIT, OptionalServicesStatus.Up, {
-        backendFetchParameters: fetchShortCircuitParameters,
-        backendUpdateParameters: updateShortCircuitParameters,
-        backendFetchSpecificParametersDescription: getShortCircuitSpecificParametersDescription,
-    });
+    const parametersBackend = useParametersBackend(
+        userProfile,
+        id,
+        ComputingType.SHORT_CIRCUIT,
+        OptionalServicesStatus.Up,
+        {
+            backendFetchParameters: fetchShortCircuitParameters,
+            backendUpdateParameters: updateShortCircuitParameters,
+            backendFetchSpecificParametersDescription: getShortCircuitSpecificParametersDescription,
+        }
+    );
 
     const shortCircuitMethods = useShortCircuitParametersForm({
         parametersBackend,
