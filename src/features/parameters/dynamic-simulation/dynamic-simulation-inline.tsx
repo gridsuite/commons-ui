@@ -57,11 +57,12 @@ export function DynamicSimulationInline({
     const { getDefaultParams, setDefaultParams } = useDefaultParams(params);
 
     const { formMethods } = dynamicSimulationMethods;
-    const { reset, getValues, formState, handleSubmit } = formMethods;
+    const { control, reset, getValues, formState, handleSubmit } = formMethods;
 
     const { onError } = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
         tabEnum: TabValues,
+        control,
     });
 
     const onSubmit = useCallback(

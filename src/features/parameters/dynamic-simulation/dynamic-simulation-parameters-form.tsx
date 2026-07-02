@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ReactNode } from 'react';
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ProviderParam, TabPanel } from '../common';
@@ -23,7 +22,6 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSimulationFormProps = {
     dynamicSimulationMethods: UseComputationParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
     // fetchers for curve parameters
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;
@@ -32,7 +30,6 @@ type DynamicSimulationFormProps = {
 
 export function DynamicSimulationForm({
     dynamicSimulationMethods,
-    renderTitleFields,
     // fetchers for curve parameters
     voltageLevelsFetcher,
     countriesFetcher,
@@ -50,37 +47,40 @@ export function DynamicSimulationForm({
     }
 
     return (
-        <Grid container sx={parametersStyles.scrollableGrid}>
-            {renderTitleFields?.()}
-            <ProviderParam options={formattedProviders} />
-            <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
-                <Tab
-                    label={<FormattedMessage id="DynamicSimulationTimeDelay" />}
-                    value={TabValues.TAB_TIME_DELAY}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
-                />
-                <Tab
-                    label={<FormattedMessage id="DynamicSimulationSolver" />}
-                    value={TabValues.TAB_SOLVER}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_SOLVER)}
-                />
-                <Tab
-                    label={<FormattedMessage id="DynamicSimulationMapping" />}
-                    value={TabValues.TAB_MAPPING}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_MAPPING)}
-                />
-                <Tab
-                    label={<FormattedMessage id="DynamicSimulationNetwork" />}
-                    value={TabValues.TAB_NETWORK}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_NETWORK)}
-                />
-                <Tab
-                    label={<FormattedMessage id="DynamicSimulationCurve" />}
-                    value={TabValues.TAB_CURVE}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_CURVE)}
-                />
-            </Tabs>
-            <Grid container item xs key="dsParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+        <Grid container sx={parametersStyles.scrollableGrid} direction="column">
+            <Grid item xs={12}>
+                <ProviderParam options={formattedProviders} />
+            </Grid>
+            <Grid item xs={12}>
+                <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                    <Tab
+                        label={<FormattedMessage id="DynamicSimulationTimeDelay" />}
+                        value={TabValues.TAB_TIME_DELAY}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicSimulationSolver" />}
+                        value={TabValues.TAB_SOLVER}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_SOLVER)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicSimulationMapping" />}
+                        value={TabValues.TAB_MAPPING}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_MAPPING)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicSimulationNetwork" />}
+                        value={TabValues.TAB_NETWORK}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_NETWORK)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicSimulationCurve" />}
+                        value={TabValues.TAB_CURVE}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_CURVE)}
+                    />
+                </Tabs>
+            </Grid>
+            <Grid container item xs={12} key="dsParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
                 <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
                     <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
                 </TabPanel>

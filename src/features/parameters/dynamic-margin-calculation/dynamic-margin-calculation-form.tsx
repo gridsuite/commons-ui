@@ -36,21 +36,25 @@ export function DynamicMarginCalculationForm({
     }
 
     return (
-        <Grid container sx={parametersStyles.scrollableGrid}>
-            <ProviderParam options={formattedProviders} />
-            <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
-                <Tab
-                    label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
-                    value={TabValues.TAB_TIME_DELAY}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
-                />
-                <Tab
-                    label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
-                    value={TabValues.TAB_LOADS_VARIATIONS}
-                    sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
-                />
-            </Tabs>
-            <Grid container xs key="dmcParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+        <Grid container direction="column" sx={parametersStyles.scrollableGrid}>
+            <Grid item xs={12}>
+                <ProviderParam options={formattedProviders} />
+            </Grid>
+            <Grid item xs={12}>
+                <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                    <Tab
+                        label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
+                        value={TabValues.TAB_TIME_DELAY}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_TIME_DELAY)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicMarginCalculationLoadsVariationsTab" />}
+                        value={TabValues.TAB_LOADS_VARIATIONS}
+                        sx={getTabStyle(tabsWithError, TabValues.TAB_LOADS_VARIATIONS)}
+                    />
+                </Tabs>
+            </Grid>
+            <Grid container item xs={12} key="dmcParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
                 <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
                     <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
                 </TabPanel>

@@ -48,11 +48,12 @@ export function DynamicMarginCalculationInline({
     const { snackError } = useSnackMessage();
 
     const { formMethods } = dynamicMarginCalculationMethods;
-    const { reset, getValues, formState, handleSubmit } = formMethods;
+    const { control, reset, getValues, formState, handleSubmit } = formMethods;
 
     const { onError } = useTabs({
         defaultTab: Object.values(TabValues)[0],
         tabEnum: TabValues,
+        control,
     });
 
     const onSubmit = useCallback(

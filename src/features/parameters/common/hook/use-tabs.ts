@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SyntheticEvent, useCallback, useState } from 'react';
-import { FieldErrors, useFormState } from 'react-hook-form';
+import { Control, FieldErrors, FieldValues, useFormState } from 'react-hook-form';
 import { isObjectEmpty } from '../../../../utils/functions';
 
 export type UseTabs<TTabValue extends string> = {
@@ -18,13 +18,15 @@ export type UseTabs<TTabValue extends string> = {
 export type UseTabsProps<TTabValue extends string> = {
     defaultTab: TTabValue;
     tabEnum: Record<string, TTabValue>;
+    control?: Control<FieldValues>;
 };
 
 export function useTabs<TTabValue extends string>({
     defaultTab,
     tabEnum,
+    control,
 }: Readonly<UseTabsProps<TTabValue>>): UseTabs<TTabValue> {
-    const { errors } = useFormState();
+    const { errors } = useFormState({ control });
     const [selectedTab, setSelectedTab] = useState<TTabValue>(defaultTab);
     const [tabsWithError, setTabsWithError] = useState<TTabValue[]>([]);
 

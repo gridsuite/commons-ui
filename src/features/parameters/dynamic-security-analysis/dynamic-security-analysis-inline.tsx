@@ -41,11 +41,12 @@ export function DynamicSecurityAnalysisInline({
     });
 
     const { formMethods } = dynamicSecurityAnalysisMethods;
-    const { getValues, formState, handleSubmit } = formMethods;
+    const { control, getValues, formState, handleSubmit } = formMethods;
 
     const { onError } = useTabs({
         defaultTab: TabValues.SCENARIO,
         tabEnum: TabValues,
+        control,
     });
 
     const onSubmit = useCallback(
