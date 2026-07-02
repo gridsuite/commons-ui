@@ -8,7 +8,7 @@ import React, { MouseEventHandler } from 'react';
 import { Badge, Grid, IconButton } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 import { isNonEmptyStringOrArray, MuiStyles } from '../../../../utils';
-import {FilterTextComparators} from "../custom-aggrid-types";
+import { FilterTextComparators } from '../custom-aggrid-types';
 
 const styles = {
     iconSize: { fontSize: '1rem' },
