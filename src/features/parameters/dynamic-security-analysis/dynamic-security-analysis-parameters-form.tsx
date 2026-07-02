@@ -10,25 +10,22 @@ import { FormattedMessage } from 'react-intl';
 
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { ProviderParam, TabPanel } from '../common';
-import { useTabs } from '../common/hook/use-tabs';
+import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabValues } from './dynamic-security-analysis.type';
 import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSecurityAnalysisParametersFormProps = {
     dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;
+    useTabsReturn: UseTabsReturn<TabValues>;
 };
 
 export function DynamicSecurityAnalysisParametersForm({
     dynamicSecurityAnalysisMethods,
+    useTabsReturn,
 }: Readonly<DynamicSecurityAnalysisParametersFormProps>) {
     const { paramsLoaded, formattedProviders } = dynamicSecurityAnalysisMethods;
-
-    const { selectedTab, tabsWithError, onTabChange } = useTabs({
-        defaultTab: TabValues.SCENARIO,
-        tabEnum: TabValues,
-    });
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     if (!paramsLoaded) {
         return <LinearProgress />;

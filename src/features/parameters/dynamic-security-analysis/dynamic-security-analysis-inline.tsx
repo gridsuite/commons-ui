@@ -41,12 +41,12 @@ export function DynamicSecurityAnalysisInline({
     });
 
     const { formMethods } = dynamicSecurityAnalysisMethods;
-    const { control, getValues, formState, handleSubmit } = formMethods;
+    const { getValues, formState, handleSubmit } = formMethods;
 
-    const { onError } = useTabs({
+    const useTabsReturn = useTabs({
         defaultTab: TabValues.SCENARIO,
         tabEnum: TabValues,
-        control,
+        errors: formState.errors,
     });
 
     const onSubmit = useCallback(
@@ -73,10 +73,11 @@ export function DynamicSecurityAnalysisInline({
                     parameterFormatter: toParamsInfos,
                 }}
                 resetHandler={resetParameters}
-                validateHandler={handleSubmit(onSubmit, onError)}
+                validateHandler={handleSubmit(onSubmit, useTabsReturn.onError)}
             >
                 <DynamicSecurityAnalysisParametersForm
                     dynamicSecurityAnalysisMethods={dynamicSecurityAnalysisMethods}
+                    useTabsReturn={useTabsReturn}
                 />
             </ParameterLayout>
         </CustomFormProvider>

@@ -48,12 +48,12 @@ export function DynamicMarginCalculationInline({
     const { snackError } = useSnackMessage();
 
     const { formMethods } = dynamicMarginCalculationMethods;
-    const { control, reset, getValues, formState, handleSubmit } = formMethods;
+    const { reset, getValues, formState, handleSubmit } = formMethods;
 
-    const { onError } = useTabs({
+    const useTabsReturn = useTabs({
         defaultTab: Object.values(TabValues)[0],
         tabEnum: TabValues,
-        control,
+        errors: formState.errors,
     });
 
     const onSubmit = useCallback(
@@ -99,9 +99,12 @@ export function DynamicMarginCalculationInline({
                 }}
                 selectParameterHandler={handleLoadParameter}
                 resetHandler={resetParameters}
-                validateHandler={handleSubmit(onSubmit, onError)}
+                validateHandler={handleSubmit(onSubmit, useTabsReturn.onError)}
             >
-                <DynamicMarginCalculationForm dynamicMarginCalculationMethods={dynamicMarginCalculationMethods} />
+                <DynamicMarginCalculationForm
+                    dynamicMarginCalculationMethods={dynamicMarginCalculationMethods}
+                    useTabsReturn={useTabsReturn}
+                />
             </ParameterLayout>
         </CustomFormProvider>
     );

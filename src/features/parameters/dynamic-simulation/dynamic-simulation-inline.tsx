@@ -57,12 +57,12 @@ export function DynamicSimulationInline({
     const { getDefaultParams, setDefaultParams } = useDefaultParams(params);
 
     const { formMethods } = dynamicSimulationMethods;
-    const { control, reset, getValues, formState, handleSubmit } = formMethods;
+    const { reset, getValues, formState, handleSubmit } = formMethods;
 
-    const { onError } = useTabs({
+    const useTabsReturn = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
         tabEnum: TabValues,
-        control,
+        errors: formState.errors,
     });
 
     const onSubmit = useCallback(
@@ -110,10 +110,11 @@ export function DynamicSimulationInline({
                 }}
                 selectParameterHandler={handleLoadParameter}
                 resetHandler={resetParameters}
-                validateHandler={handleSubmit(onSubmit, onError)}
+                validateHandler={handleSubmit(onSubmit, useTabsReturn.onError)}
             >
                 <DynamicSimulationForm
                     dynamicSimulationMethods={dynamicSimulationMethods}
+                    useTabsReturn={useTabsReturn}
                     voltageLevelsFetcher={voltageLevelsFetcher}
                     countriesFetcher={countriesFetcher}
                     evaluateFilterFetcher={evaluateFilterFetcher}

@@ -6,8 +6,7 @@
  */
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ProviderParam, TabPanel } from '../common';
-import { useTabs } from '../common/hook/use-tabs';
+import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
 
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { VoltageLevelInfos } from '../../../utils/types/equipmentType';
@@ -22,6 +21,7 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSimulationFormProps = {
     dynamicSimulationMethods: UseComputationParametersFormReturn;
+    useTabsReturn: UseTabsReturn<TabValues>;
     // fetchers for curve parameters
     voltageLevelsFetcher?: () => Promise<VoltageLevelInfos[]>;
     countriesFetcher?: () => Promise<string[]>;
@@ -30,17 +30,14 @@ type DynamicSimulationFormProps = {
 
 export function DynamicSimulationForm({
     dynamicSimulationMethods,
+    useTabsReturn,
     // fetchers for curve parameters
     voltageLevelsFetcher,
     countriesFetcher,
     evaluateFilterFetcher,
 }: Readonly<DynamicSimulationFormProps>) {
     const { paramsLoaded, formattedProviders } = dynamicSimulationMethods;
-
-    const { selectedTab, tabsWithError, onTabChange } = useTabs({
-        defaultTab: TabValues.TAB_TIME_DELAY,
-        tabEnum: TabValues,
-    });
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     if (!paramsLoaded) {
         return <LinearProgress />;

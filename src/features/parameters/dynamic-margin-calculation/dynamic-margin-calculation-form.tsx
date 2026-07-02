@@ -7,8 +7,7 @@
 
 import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ProviderParam } from '../common';
-import { useTabs } from '../common/hook/use-tabs';
+import { ProviderParam, UseTabsReturn } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
 import TimeDelayParameters from './time-delay-parameters';
@@ -19,17 +18,15 @@ import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicMarginCalculationFormProps = {
     dynamicMarginCalculationMethods: UseComputationParametersFormReturn;
+    useTabsReturn: UseTabsReturn<TabValues>;
 };
 
 export function DynamicMarginCalculationForm({
     dynamicMarginCalculationMethods,
+    useTabsReturn,
 }: Readonly<DynamicMarginCalculationFormProps>) {
     const { paramsLoaded, formattedProviders } = dynamicMarginCalculationMethods;
-
-    const { selectedTab, tabsWithError, onTabChange } = useTabs({
-        defaultTab: Object.values(TabValues)[0],
-        tabEnum: TabValues,
-    });
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     if (!paramsLoaded) {
         return <LinearProgress />;
