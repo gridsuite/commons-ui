@@ -61,18 +61,17 @@ const StyledPopper = styled(Popper)({
     },
 });
 
-interface CheckboxAutocompleteProps<Value>
-    extends Omit<
-        AutocompleteProps<Value, true, false, false>,
-        | 'limitTags'
-        | 'multiple'
-        | 'ListboxComponent'
-        | 'renderInput'
-        | 'renderOption'
-        | 'inputValue'
-        | 'onChange'
-        | 'onBlur'
-    > {
+interface CheckboxAutocompleteProps<Value> extends Omit<
+    AutocompleteProps<Value, true, false, false>,
+    | 'limitTags'
+    | 'multiple'
+    | 'ListboxComponent'
+    | 'renderInput'
+    | 'renderOption'
+    | 'inputValue'
+    | 'onChange'
+    | 'onBlur'
+> {
     id?: string;
     virtualize?: boolean;
     maxSelection?: number;

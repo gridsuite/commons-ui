@@ -26,13 +26,13 @@ export function SensitivityAnalysisParametersDialog({
     description,
     activeDirectory,
     language,
-    user,
+    userProfile,
     globalBuildStatus,
     isRootNode = false,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
-        user,
+        userProfile,
         id,
         ComputingType.SENSITIVITY_ANALYSIS,
         OptionalServicesStatus.Up,

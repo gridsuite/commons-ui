@@ -101,10 +101,7 @@ export interface ConnectivityResult {
 
 export type SecurityAnalysisNmkResult = {
     content?: (
-        | ContingenciesFromConstraintItem[]
-        | ConstraintsFromContingencyItem[]
-        | CutOffPowerFromConstraintsItem[]
-        | null
+        ContingenciesFromConstraintItem[] | ConstraintsFromContingencyItem[] | CutOffPowerFromConstraintsItem[] | null
     )[];
     [key: string]: unknown;
 };
