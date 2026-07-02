@@ -8,14 +8,14 @@ import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { SxStyle } from '../../../utils/styles';
 
-export interface Grid2SectionProps {
+export interface GridSectionProps {
     title: string;
     heading?: 1 | 2 | 3 | 4 | 5 | 6;
     size?: number;
     customStyle?: SxStyle;
 }
 
-export function Grid2Section({ title, heading = 3, size = 12, customStyle }: Readonly<Grid2SectionProps>) {
+export function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
     return (
         <Grid container spacing={2} size={12}>
             <Grid size={size}>

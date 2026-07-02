@@ -6,7 +6,7 @@
  */
 
 import { Grid2 as Grid } from '@mui/material';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { ActivePowerAdornment, FieldConstants, ReactivePowerAdornment } from '../../../../utils';
 import { FloatInput } from '../../../../components/ui';
 

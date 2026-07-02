@@ -18,8 +18,8 @@ import {
 } from '../../common';
 import { ActivePowerAdornment, FieldConstants } from '../../../../utils';
 import { FloatInput, TextInput } from '../../../../components/ui';
-import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 
 export interface BatteryCreationFormProps extends ConnectivityNetworkProps {}
 

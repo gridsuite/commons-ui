@@ -8,8 +8,8 @@
 import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { BatteryDialogTab } from './batteryTabs.utils';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
-import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { BatteryFormInfos } from '../batteryDialog.type';
 import {
     ActivePowerControlForm,

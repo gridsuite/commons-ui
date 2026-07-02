@@ -29,8 +29,8 @@ import {
     MVAPowerAdornment,
 } from '../../../../utils';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
-import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 
 export interface GeneratorDialogTabsContentProps extends ConnectivityNetworkProps {
     generatorToModify?: GeneratorFormInfos | null;

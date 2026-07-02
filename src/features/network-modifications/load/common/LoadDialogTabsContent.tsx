@@ -9,7 +9,7 @@ import { Box } from '@mui/material';
 import { LoadDialogTab } from './load.utils';
 import { PowerMeasurementsForm } from '../../common/measurements/PowerMeasurementsForm';
 import { LoadFormInfos } from './load.types';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { ConnectivityForm } from '../../common/connectivity/ConnectivityForm';
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';

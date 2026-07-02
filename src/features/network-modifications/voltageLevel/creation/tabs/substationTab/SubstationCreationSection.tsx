@@ -9,7 +9,7 @@ import { Grid2 as Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import { CustomTooltip } from '../../../../../../components/ui/tooltip/CustomTooltip';
 import { CountrySelectionInput, TextInput } from '../../../../../../components/ui';
-import { Grid2Section as GridSection } from '../../../../../../components/composite/grid/grid2-section';
+import { GridSection } from '../../../../../../components/composite/grid/grid-section';
 import { FieldConstants } from '../../../../../../utils';
 import { PropertiesForm } from '../../../../common';
 

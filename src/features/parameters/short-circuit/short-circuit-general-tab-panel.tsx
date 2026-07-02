@@ -27,8 +27,8 @@ import {
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
 import { VoltageTable } from './short-circuit-voltage-table';
-import { Grid2Item as GridItem } from '../../../components/composite/grid/grid2-item';
-import { Grid2Section as GridSection } from '../../../components/composite/grid/grid2-section';
+import { GridItem } from '../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../components/composite/grid/grid-section';
 import { CheckboxInput, FieldLabel, MuiSelectInput, RadioInput, SwitchInput } from '../../../components/ui';
 import type { SxStyle } from '../../../utils/styles';
 import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS, TabPanel } from '../common';

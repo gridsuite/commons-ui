@@ -7,7 +7,7 @@
 
 import { BranchActiveReactivePowerMeasurementsFormProps } from './measurement.type';
 import { PowerMeasurementsForm } from './PowerMeasurementsForm';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 
 export function BranchActiveReactivePowerMeasurementsForm({
     equipmentToModify,

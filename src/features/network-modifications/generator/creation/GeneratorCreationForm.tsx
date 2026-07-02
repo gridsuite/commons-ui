@@ -29,8 +29,8 @@ import {
     MVAPowerAdornment,
 } from '../../../../utils';
 import { FloatInput, SelectInput, SwitchInput, TextInput } from '../../../../components';
-import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 
 export interface GeneratorCreationFormProps extends ConnectivityNetworkProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;

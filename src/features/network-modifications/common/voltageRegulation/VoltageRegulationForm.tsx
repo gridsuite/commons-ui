@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FloatInput, SelectInput } from '../../../../components/ui';
-import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { PercentageAdornment, VoltageAdornment } from '../../../../utils/constants/adornments';
 import { RegulatingTerminalForm } from '../regulatingTerminal';

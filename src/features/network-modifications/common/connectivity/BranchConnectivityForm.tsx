@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { FieldConstants } from '../../../../utils';
 import { ConnectivityNetworkProps } from './connectivity.type';
 import { ConnectivityForm } from './ConnectivityForm';

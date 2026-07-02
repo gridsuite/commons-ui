@@ -11,7 +11,7 @@ import { ReactiveCapabilityCurveTableForm } from './reactiveCapabilityCurve/Reac
 import { MinMaxReactiveLimitsFormInfos, ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
 import { FieldConstants, ReactivePowerAdornment } from '../../../../utils';
 import { FloatInput, RadioInput } from '../../../../components/ui';
-import { Grid2Item as GridItem } from '../../../../components/composite/grid/grid2-item';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { REACTIVE_LIMIT_TYPES } from './reactiveLimits.utils';
 
 const headerIds = ['ActivePowerText', 'MinimumReactivePower', 'MaximumReactivePower'];

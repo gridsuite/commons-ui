@@ -17,8 +17,8 @@ import {
     RadioInput,
 } from '../../../components/ui';
 import { ActivePowerAdornment, ElementType, EquipmentType } from '../../../utils';
-import { Grid2Section as GridSection } from '../../../components/composite/grid/grid2-section';
-import { Grid2Item as GridItem } from '../../../components/composite/grid/grid2-item';
+import { GridSection } from '../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../components/composite/grid/grid-item';
 import {
     NODE_CLUSTER_FILTER_IDS,
     onlyStartedGeneratorsOptions,

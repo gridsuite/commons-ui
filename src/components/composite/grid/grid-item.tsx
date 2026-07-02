@@ -9,14 +9,14 @@ import { Grid2 as Grid, Grid2Props } from '@mui/material';
 import { CustomTooltip } from '../../ui/tooltip';
 import { mergeSx } from '../../../utils';
 
-export interface Grid2ItemProps extends PropsWithChildren {
+export interface GridItemProps extends PropsWithChildren {
     size?: Grid2Props['size'];
     alignItem?: string;
     tooltip?: ReactNode;
     sx?: Grid2Props['sx'];
 }
 
-export function Grid2Item({ children, size = 6, alignItem = 'flex-start', tooltip, sx }: Readonly<Grid2ItemProps>) {
+export function GridItem({ children, size = 6, alignItem = 'flex-start', tooltip, sx }: Readonly<GridItemProps>) {
     return (
         <Grid size={size} sx={mergeSx({ alignItems: alignItem }, sx)}>
             {children &&

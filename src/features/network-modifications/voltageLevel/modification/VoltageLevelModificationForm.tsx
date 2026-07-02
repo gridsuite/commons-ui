@@ -18,7 +18,7 @@ import {
     BusbarSectionVoltageMeasurementsForm,
 } from '../../common/measurements/BusbarSectionVoltageMeasurementsForm';
 import { AutocompleteInput, FloatInput, TextInput } from '../../../../components';
-import { Grid2Section as GridSection } from '../../../../components/composite/grid/grid2-section';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 
 enum VoltageLevelModificationTab {
     CHARACTERISTICS_TAB = 0,

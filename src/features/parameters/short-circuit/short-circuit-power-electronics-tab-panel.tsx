@@ -11,8 +11,8 @@ import { TabPanelProps } from '@mui/lab';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';
 import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
 import { FieldLabel, SwitchInput } from '../../../components/ui';
-import { Grid2Section as GridSection } from '../../../components/composite/grid/grid2-section';
-import { Grid2Item as GridItem } from '../../../components/composite/grid/grid2-item';
+import { GridSection } from '../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../components/composite/grid/grid-item';
 import {
     SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
