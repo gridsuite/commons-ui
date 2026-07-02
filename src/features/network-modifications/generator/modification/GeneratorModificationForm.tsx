@@ -15,8 +15,7 @@ import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { useTabsWithError } from '../../hooks';
 
 interface GeneratorModificationFormProps
-    extends GeneratorDialogHeaderProps,
-        Omit<GeneratorDialogTabsContentProps, 'tabIndex'> {
+    extends GeneratorDialogHeaderProps, Omit<GeneratorDialogTabsContentProps, 'tabIndex'> {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
 }
 
