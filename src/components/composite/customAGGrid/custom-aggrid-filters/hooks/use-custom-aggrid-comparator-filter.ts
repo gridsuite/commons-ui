@@ -52,7 +52,7 @@ export const useCustomAggridComparatorFilter = (colId: string, filterParams: Fil
     const decimalAfterDot = useMemo(() => {
         if (isNumberInput) {
             const countDecimalAfterDot: number = countDecimalPlacesFromString(String(selectedFilterData));
-            if (decimalAfterDot >= 13) {
+            if (countDecimalAfterDot >= 13) {
                 snackWarning({
                     headerId: 'filter.warnRounding',
                 });
