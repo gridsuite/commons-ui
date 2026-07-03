@@ -11,8 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
+import { ComputingType, ElementType, mergeSx, snackWithFallback } from '../../../utils';
 import { DynamicMarginCalculationForm } from './dynamic-margin-calculation-form';
 import {
     toFormValues,

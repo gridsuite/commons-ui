@@ -6,11 +6,11 @@
  */
 
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
-import { ElementType } from '../../../utils';
+import { ComputingType, ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
-import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
     fetchShortCircuitParameters,
