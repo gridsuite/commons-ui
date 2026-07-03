@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
 import { parametersStyles } from '../parameters-style';

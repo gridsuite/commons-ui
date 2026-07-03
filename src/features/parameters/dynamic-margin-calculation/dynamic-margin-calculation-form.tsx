@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ProviderParam, UseTabsReturn } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
@@ -29,11 +29,11 @@ export function DynamicMarginCalculationForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Grid container direction="column" sx={parametersStyles.scrollableGrid}>
-            <Grid item xs={12}>
+        <Stack sx={parametersStyles.scrollableGrid}>
+            <Grid size={12}>
                 <ProviderParam options={formattedProviders} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
                     <Tab
                         label={<FormattedMessage id="DynamicMarginCalculationTimeDelayTab" />}
@@ -47,7 +47,7 @@ export function DynamicMarginCalculationForm({
                     />
                 </Tabs>
             </Grid>
-            <Grid container item xs={12} key="dmcParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+            <Grid container size={12} key="dmcParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
                 <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
                     <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
                 </TabPanel>
@@ -55,6 +55,6 @@ export function DynamicMarginCalculationForm({
                     <LoadsVariationsParameters path={TabValues.TAB_LOADS_VARIATIONS} />
                 </TabPanel>
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

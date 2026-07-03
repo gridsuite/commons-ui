@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
@@ -29,7 +29,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <LoadFlowParametersHeader
                     selectedTab={selectedTab}
                     handleTabChange={handleTabChange}
@@ -37,7 +37,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
                     formattedProviders={formattedProviders}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <LoadFlowParametersContent
                     selectedTab={selectedTab}
                     currentProvider={watchProvider ?? ''}

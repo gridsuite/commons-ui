@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
 
@@ -40,11 +40,11 @@ export function DynamicSimulationForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Grid container sx={parametersStyles.scrollableGrid} direction="column">
-            <Grid item xs={12}>
+        <Stack sx={parametersStyles.scrollableGrid}>
+            <Grid size={12}>
                 <ProviderParam options={formattedProviders} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
                     <Tab
                         label={<FormattedMessage id="DynamicSimulationTimeDelay" />}
@@ -73,7 +73,7 @@ export function DynamicSimulationForm({
                     />
                 </Tabs>
             </Grid>
-            <Grid container item xs={12} key="dsParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+            <Grid container size={12} key="dsParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
                 <TabPanel value={selectedTab} index={TabValues.TAB_TIME_DELAY}>
                     <TimeDelayParameters path={TabValues.TAB_TIME_DELAY} />
                 </TabPanel>
@@ -96,6 +96,6 @@ export function DynamicSimulationForm({
                     />
                 </TabPanel>
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

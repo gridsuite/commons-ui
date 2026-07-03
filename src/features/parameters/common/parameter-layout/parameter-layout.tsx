@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
 import { ReactNode, useState, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -92,10 +92,8 @@ export function ParameterLayout<T extends FieldValues>({
             {(title || selectParameterHandler || resetHandler) && (
                 <Box sx={styles.title}>
                     <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Grid item xs={4}>
-                            {title && !isXsScreen && <FormattedMessage id={title} />}
-                        </Grid>
-                        <Grid item xs="auto">
+                        <Grid size={4}>{title && !isXsScreen && <FormattedMessage id={title} />}</Grid>
+                        <Grid size="auto">
                             <ButtonGroup>
                                 {selectParameterHandler && (
                                     <LabelledButton
@@ -125,12 +123,12 @@ export function ParameterLayout<T extends FieldValues>({
                 <LineSeparator />
                 <Grid container spacing={1}>
                     {createParameter && (
-                        <Grid item>
+                        <Grid>
                             <LabelledButton label="save" data-testid="SaveButton" callback={handleSaveClick} />
                         </Grid>
                     )}
                     {validateHandler && (
-                        <Grid item>
+                        <Grid>
                             <SubmitButton
                                 variant="contained"
                                 data-testid="ValidateButton"

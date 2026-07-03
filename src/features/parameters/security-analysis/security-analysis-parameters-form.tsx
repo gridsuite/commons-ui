@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { ForwardedRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { UUID } from 'node:crypto';
@@ -45,10 +45,10 @@ export function SecurityAnalysisParametersForm({
                 }}
                 justifyContent="space-between"
             >
-                <Grid item xs="auto" sx={parametersStyles.parameterName}>
+                <Grid size="auto" sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid item xs="auto" sx={parametersStyles.controlItem}>
+                <Grid container size="auto" sx={parametersStyles.controlItem}>
                     <MuiSelectInput
                         name={PARAM_SA_PROVIDER}
                         size="small"

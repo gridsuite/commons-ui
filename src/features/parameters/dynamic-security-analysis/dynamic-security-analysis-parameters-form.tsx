@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 
 import ScenarioParameters from './scenario-parameters';
@@ -28,11 +28,11 @@ export function DynamicSecurityAnalysisParametersForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Grid container sx={parametersStyles.scrollableGrid} direction="column">
-            <Grid item xs={12}>
+        <Stack sx={parametersStyles.scrollableGrid}>
+            <Grid size={12}>
                 <ProviderParam options={formattedProviders} />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
                     <Tab
                         label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
@@ -46,7 +46,7 @@ export function DynamicSecurityAnalysisParametersForm({
                     />
                 </Tabs>
             </Grid>
-            <Grid container item xs={12} key="dsaParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+            <Grid container size={12} key="dsaParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
                 <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
                     <ScenarioParameters path={TabValues.SCENARIO} />
                 </TabPanel>
@@ -54,6 +54,6 @@ export function DynamicSecurityAnalysisParametersForm({
                     <ContingencyParameters path={TabValues.CONTINGENCY} />
                 </TabPanel>
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

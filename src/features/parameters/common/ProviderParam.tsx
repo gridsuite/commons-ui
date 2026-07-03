@@ -27,10 +27,10 @@ export function ProviderParam({ options }: Readonly<ProviderParamProps>) {
     return (
         <>
             <Grid container sx={styles.providerParam} paddingRight={1}>
-                <Grid size={5} sx={parametersStyles.parameterName}>
+                <Grid size="grow" sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid size="auto" sx={parametersStyles.controlItem}>
+                <Grid size={2} sx={parametersStyles.controlItem}>
                     <MuiSelectInput name={PROVIDER} size="small" options={options} />
                 </Grid>
             </Grid>

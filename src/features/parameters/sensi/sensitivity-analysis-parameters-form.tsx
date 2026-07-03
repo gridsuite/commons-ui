@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
@@ -37,10 +37,10 @@ export function SensitivityAnalysisParametersForm({
                 }}
                 justifyContent="space-between"
             >
-                <Grid item xs={8} xl={4} sx={parametersStyles.parameterName}>
+                <Grid size={{ xs: 8, xl: 4 }} sx={parametersStyles.parameterName}>
                     <FormattedMessage id="Provider" />
                 </Grid>
-                <Grid item xs={4} xl={2} sx={parametersStyles.controlItem}>
+                <Grid size={{ xs: 4, xl: 2 }} sx={parametersStyles.controlItem}>
                     <MuiSelectInput
                         name={PROVIDER}
                         size="small"
@@ -49,13 +49,13 @@ export function SensitivityAnalysisParametersForm({
                 </Grid>
             </Grid>
             <Grid container key="sensitivityAnalysisParameters">
-                <Grid xl={6}>
+                <Grid size={{ xl: 6 }}>
                     <Grid container paddingTop={1} paddingBottom={1}>
                         <LineSeparator />
                     </Grid>
                     <SensitivityAnalysisFields />
                 </Grid>
-                <Grid container paddingTop={4} paddingBottom={2}>
+                <Grid container size={12} paddingTop={4} paddingBottom={2}>
                     <LineSeparator />
                 </Grid>
                 <SensitivityParametersSelector

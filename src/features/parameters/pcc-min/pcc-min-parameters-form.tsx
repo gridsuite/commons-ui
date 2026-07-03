@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { ParameterLineDirectoryItemsInput } from '../common/widget/parameter-line-directory-items-input.js';
 import { ElementType, EquipmentType } from '../../../utils';
 import { FILTERS } from '../../../utils/constants/filterConstant';
@@ -14,7 +14,7 @@ import { parametersStyles } from '../parameters-style';
 export function PccMinParametersForm() {
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <ParameterLineDirectoryItemsInput
                     name={FILTERS}
                     equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
