@@ -15,7 +15,7 @@ import {
     CssBaseline,
     FormControlLabel,
     FormGroup,
-    Grid,
+    Grid2 as Grid,
     IconButton,
     styled,
     StyledEngineProvider,
@@ -24,6 +24,7 @@ import {
     TextField,
     ThemeProvider,
     Typography,
+    Stack,
 } from '@mui/material';
 import { enUS, frFR } from '@mui/material/locale';
 import { Comment as CommentIcon } from '@mui/icons-material';
@@ -470,14 +471,14 @@ function AppContent({ language, onLanguageClick }) {
 
     function testIcons() {
         return (
-            <Grid container direction="column">
+            <Stack>
                 {Object.keys(ElementType).map((type) => (
-                    <Grid container item key={type}>
-                        <Grid item>{getFileIcon(type)}</Grid>
-                        <Grid item>{type}</Grid>
+                    <Grid container key={type}>
+                        <Grid>{getFileIcon(type)}</Grid>
+                        <Grid>{type}</Grid>
                     </Grid>
                 ))}
-            </Grid>
+            </Stack>
         );
     }
 

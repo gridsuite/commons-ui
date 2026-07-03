@@ -6,7 +6,15 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { Autocomplete, FormControl, Grid, MenuItem, Select, type SelectChangeEvent, TextField } from '@mui/material';
+import {
+    Autocomplete,
+    FormControl,
+    Grid2 as Grid,
+    MenuItem,
+    Select,
+    type SelectChangeEvent,
+    TextField,
+} from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';
@@ -71,8 +79,8 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     );
 
     return (
-        <Grid container spacing={1} item>
-            <Grid item xs={4}>
+        <Grid container spacing={1}>
+            <Grid size={4}>
                 <Autocomplete
                     value={propertyName ?? ''}
                     options={predefinedNames}
@@ -87,7 +95,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
                     filterOptions={createCustomFilterOptions}
                 />
             </Grid>
-            <Grid item xs="auto">
+            <Grid size="auto">
                 <FormControl variant="standard" sx={{ mt: 1, minWidth: 160 }}>
                     <Select
                         value={propertyOperator ?? PROPERTY_VALUE_OPERATORS[0].customName}
@@ -108,7 +116,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
             </Grid>
             {valueEditorProps?.value?.propertyOperator !== OPERATOR_OPTIONS.EXISTS.customName &&
                 valueEditorProps?.value?.propertyOperator !== OPERATOR_OPTIONS.NOT_EXISTS.customName && (
-                    <Grid item xs>
+                    <Grid size="grow">
                         <Autocomplete
                             value={propertyValues ?? []}
                             options={predefinedValues ?? []}

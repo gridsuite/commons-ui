@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Button, DialogActions, Grid } from '@mui/material';
+import { Button, DialogActions, Grid2 as Grid } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
@@ -129,7 +129,7 @@ export function SensitivityAnalysisParametersInline({
             renderActions={() => {
                 return (
                     <>
-                        <Grid item container>
+                        <Grid container>
                             <DialogActions
                                 sx={mergeSx(parametersStyles.controlParametersItem, {
                                     paddingLeft: 0,
