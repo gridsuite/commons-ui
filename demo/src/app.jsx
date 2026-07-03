@@ -15,7 +15,7 @@ import {
     CssBaseline,
     FormControlLabel,
     FormGroup,
-    Grid,
+    Grid2 as Grid,
     IconButton,
     styled,
     StyledEngineProvider,
@@ -473,9 +473,9 @@ function AppContent({ language, onLanguageClick }) {
         return (
             <Stack>
                 {Object.keys(ElementType).map((type) => (
-                    <Grid container item key={type}>
-                        <Grid item>{getFileIcon(type)}</Grid>
-                        <Grid item>{type}</Grid>
+                    <Grid container key={type}>
+                        <Grid>{getFileIcon(type)}</Grid>
+                        <Grid>{type}</Grid>
                     </Grid>
                 ))}
             </Stack>
