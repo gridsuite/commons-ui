@@ -19,7 +19,6 @@ import {
 import { LoadFlowParametersInfos } from './load-flow-parameters-type';
 import {
     COMMON_PARAMETERS,
-    ComputingType,
     PROVIDER,
     SPECIFIC_PARAMETERS,
     toFormValuesLimitReductions,
@@ -33,7 +32,7 @@ import {
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { updateParameter } from '../../../services';
-import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
+import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { useSnackMessage } from '../../../hooks';
 import {

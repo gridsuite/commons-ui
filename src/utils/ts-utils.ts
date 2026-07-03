@@ -68,3 +68,10 @@ export function getIdOrValue(value: any) {
 export function getLabelOrValue(value: any) {
     return typeof value !== 'string' ? (value?.label ?? null) : value;
 }
+
+export const isNonEmptyStringOrArray = (value: unknown): value is string | unknown[] => {
+    if (typeof value === 'string' && value.length > 0) {
+        return true;
+    }
+    return Array.isArray(value) && value.length > 0;
+};
