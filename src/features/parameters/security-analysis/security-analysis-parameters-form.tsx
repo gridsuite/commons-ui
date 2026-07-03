@@ -96,7 +96,7 @@ export function SecurityAnalysisParametersForm({
                                     <Grid size="auto" sx={parametersStyles.parameterName}>
                                         <FormattedMessage id="Provider" />
                                     </Grid>
-                                    <Grid container size="auto" sx={{ justifyContent: 'flex-end' }}>
+                                    <Grid container size="auto" sx={parametersStyles.controlItem}>
                                         <MuiSelectInput
                                             name={PARAM_SA_PROVIDER}
                                             size="small"
