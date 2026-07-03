@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useCallback } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AutocompleteInput, DirectoryItemsInput } from '../../../../components/ui';
@@ -27,7 +27,7 @@ export function ByFilterDeletionForm() {
 
     return (
         <Grid container spacing={2} pt={1}>
-            <Grid item xs>
+            <Grid size="grow">
                 <AutocompleteInput
                     isOptionEqualToValue={richTypeEquals}
                     name={FieldConstants.TYPE}
@@ -38,7 +38,7 @@ export function ByFilterDeletionForm() {
                     size="small"
                 />
             </Grid>
-            <Grid item xs>
+            <Grid size="grow">
                 <DirectoryItemsInput
                     key={equipmentType}
                     name={FieldConstants.FILTERS}

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { CONNECTION_DIRECTIONS, FieldConstants, getConnectionDirectionLabel } from '../../../../utils';
@@ -71,7 +71,7 @@ export function ConnectivityForm({
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={8}>
+            <Grid size={8}>
                 <VoltageLevelConnectivityForm
                     id={id}
                     voltageLevelSelectLabel={voltageLevelSelectLabel}
@@ -82,7 +82,7 @@ export function ConnectivityForm({
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 {isEquipmentModification ? (
                     <CheckboxNullableInput
                         name={`${id}.${FieldConstants.CONNECTED}`}
@@ -93,7 +93,7 @@ export function ConnectivityForm({
                     <SwitchInput name={`${id}.${FieldConstants.CONNECTED}`} label="connected" />
                 )}
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <TextInput
                     name={`${id}.${FieldConstants.CONNECTION_NAME}`}
                     label="ConnectionName"
@@ -104,7 +104,7 @@ export function ConnectivityForm({
                     }
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <SelectInput
                     name={`${id}.${FieldConstants.CONNECTION_DIRECTION}`}
                     label="ConnectionDirection"
@@ -120,7 +120,7 @@ export function ConnectivityForm({
                     size="small"
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <PositionForm
                     id={id}
                     PositionDiagramPane={PositionDiagramPane}

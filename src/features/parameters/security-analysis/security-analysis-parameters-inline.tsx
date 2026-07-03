@@ -6,12 +6,12 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
-import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
+import { ComputingType, ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
+import { ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { SubmitButton } from '../../../components/ui';
@@ -110,7 +110,6 @@ export function SecurityAnalysisParametersInline({
                             <LineSeparator />
                             <Grid
                                 container
-                                item
                                 sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
                                     paddingBottom: 0,
                                 })}

@@ -6,7 +6,7 @@
  */
 import { PropsWithChildren, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, RestoreFromTrash as RestoreFromTrashIcon } from '@mui/icons-material';
 import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 
@@ -31,13 +31,13 @@ export function DeletableRow({
         <Grid
             container
             spacing={2}
-            item
+            size={12}
             alignItems={alignItems}
             onMouseEnter={() => setIsMouseHover(true)}
             onMouseLeave={() => setIsMouseHover(false)}
         >
             {children}
-            <Grid item xs={1}>
+            <Grid size={1}>
                 {isMouseHover && !disabledDeletion && (
                     <CustomTooltip
                         title={intl.formatMessage({

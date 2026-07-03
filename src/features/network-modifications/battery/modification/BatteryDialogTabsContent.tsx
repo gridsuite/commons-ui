@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { BatteryDialogTab } from './batteryTabs.utils';
-import GridSection from '../../../../components/composite/grid/grid-section';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { BatteryFormInfos } from '../batteryDialog.type';
 import {
     ActivePowerControlForm,
@@ -85,7 +85,7 @@ export function BatteryDialogTabsContent({
                     />
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <h3>
                             <FormattedMessage id="Limits" />
                         </h3>
@@ -115,7 +115,7 @@ export function BatteryDialogTabsContent({
                     </GridItem>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <h4>
                             <FormattedMessage id="ReactiveLimits" />
                         </h4>

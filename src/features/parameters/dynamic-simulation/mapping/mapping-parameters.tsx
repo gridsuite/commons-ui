@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { MAPPING } from './mapping-parameters-constants';
 import { ElementType } from '../../../../utils';
 import { ParameterLineDirectoryItemsInput } from '../../common';

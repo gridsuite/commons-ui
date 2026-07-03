@@ -12,7 +12,7 @@ import { useIntl } from 'react-intl';
 import { FieldConstants } from '../../../../../../../utils';
 import { CreateSwitchesFormData, SwitchKind, SwitchKindFormData } from '../../../voltageLevelCreation.types';
 import { EnumInput } from '../../../../../../../components/ui';
-import GridSection from '../../../../../../../components/composite/grid/grid-section';
+import { GridSection } from '../../../../../../../components/composite/grid/grid-section';
 import { SWITCH_TYPE } from '../../../voltageLevelCreation.utils';
 import { MAX_SECTIONS_COUNT } from '../../../voltageLevel.constants';
 

@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { LinearProgress, Stack, Tab, Tabs } from '@mui/material';
 import { ReactNode, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
@@ -52,14 +52,12 @@ export function NetworkVisualizationParametersForm({
 
     return (
         <CustomFormProvider validationSchema={formSchema} {...formMethods} removeOptional>
-            <Grid container direction="column">
-                <Grid item container direction="column">
-                    {renderTitleFields?.()}
-                </Grid>
+            <Stack>
+                <Stack>{renderTitleFields?.()}</Stack>
                 {paramsLoading ? (
                     <LinearProgress />
                 ) : (
-                    <Grid item container direction="column">
+                    <Stack>
                         <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                             <Tab label={<FormattedMessage id="Map" />} value={TabValues.MAP} />
                             <Tab
@@ -80,20 +78,17 @@ export function NetworkVisualizationParametersForm({
                         <TabPanel value={selectedTab} index={TabValues.NETWORK_AREA_DIAGRAM}>
                             <NetworkAreaDiagramParameters />
                         </TabPanel>
-                    </Grid>
+                    </Stack>
                 )}
-                <Grid
-                    item
-                    container
-                    direction="column"
+                <Stack
                     sx={{
                         position: 'absolute',
                         bottom: '30px',
                     }}
                 >
                     {renderActions?.()}
-                </Grid>
-            </Grid>
+                </Stack>
+            </Stack>
         </CustomFormProvider>
     );
 }
