@@ -51,9 +51,8 @@ export function EquipmentSelectionParameters() {
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
             </Alert>
-            <Grid container sx={equipmentsSelectionStyles.choiceContainer}>
-                <Grid size={7} />
-                <Grid size="auto" sx={equipmentsSelectionStyles.choice}>
+            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+                <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={GENERATORS_SELECTION_TYPE}
                         options={Object.values(initialEquipmentsSelectionType)}
@@ -67,9 +66,8 @@ export function EquipmentSelectionParameters() {
                 label="VariableGenerators"
                 hideErrorMessage
             />
-            <Grid container sx={equipmentsSelectionStyles.choiceContainer}>
-                <Grid size={7} />
-                <Grid size="auto" sx={equipmentsSelectionStyles.choice}>
+            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+                <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={TRANSFORMERS_SELECTION_TYPE}
                         options={Object.values(initialEquipmentsSelectionType)}
@@ -83,9 +81,8 @@ export function EquipmentSelectionParameters() {
                 label="VariableTransformers"
                 hideErrorMessage
             />
-            <Grid container sx={equipmentsSelectionStyles.choiceContainer}>
-                <Grid size={7} />
-                <Grid size="auto" sx={equipmentsSelectionStyles.choice}>
+            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+                <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={SHUNT_COMPENSATORS_SELECTION_TYPE}
                         options={Object.values(initialEquipmentsSelectionType)}
