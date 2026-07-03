@@ -498,5 +498,5 @@ export const parametersFr = {
     ROOT_NODE: 'Nœud racine',
 
     // Tooltips
-    'tooltip.reset': 'Paramètre par défaut du profil utilisateur',
+    'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
 };
