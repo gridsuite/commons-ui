@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert, Grid } from '@mui/material';
+import { Alert, Grid2 as Grid } from '@mui/material';
 import React from 'react';
 
 export interface FieldErrorAlertProps {
@@ -16,7 +16,7 @@ export interface FieldErrorAlertProps {
 // this component needs to be isolated to avoid too many rerenders
 export function FieldErrorAlert({ message }: Readonly<FieldErrorAlertProps>) {
     return (
-        <Grid item xs={12}>
+        <Grid size={12}>
             <Alert severity="error">{message}</Alert>
         </Grid>
     );

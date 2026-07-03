@@ -8,8 +8,9 @@ import type { UUID } from 'node:crypto';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import {
+    ComputingType,
     ElementType,
     mapDynamicSimulationParameters,
     mergeSx,
@@ -17,7 +18,7 @@ import {
     VoltageLevelInfos,
 } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
+import { CreateParameterDialog, LabelledButton } from '../common';
 
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
@@ -122,7 +123,7 @@ export function DynamicSimulationInline({
     const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
         return (
             <>
-                <Grid container item>
+                <Grid container>
                     <Grid
                         sx={mergeSx(parametersStyles.controlParametersItem, {
                             paddingTop: 1,

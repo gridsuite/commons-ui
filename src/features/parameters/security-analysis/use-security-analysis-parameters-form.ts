@@ -9,9 +9,13 @@ import { ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ContingencyListsInfosEnriched, ElementType, UseParametersBackendReturnProps } from '../../../utils';
 import {
     ComputingType,
+    ContingencyListsInfosEnriched,
+    ElementType,
+    UseParametersBackendReturnProps,
+} from '../../../utils';
+import {
     CONTINGENCY_LISTS,
     CONTINGENCY_LISTS_INFOS,
     ILimitReductionsByVoltageLevel,

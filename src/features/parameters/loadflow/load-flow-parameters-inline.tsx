@@ -6,18 +6,17 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { parametersStyles } from '../parameters-style';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType } from '../common/computing-type';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../../components/ui';
 import { LabelledButton } from '../common/parameters';
-import { ElementType, GsLang, mergeSx } from '../../../utils';
+import { ComputingType, ElementType, GsLang, mergeSx } from '../../../utils';
 import { LineSeparator } from '../common';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { fetchLoadFlowParameters } from '../../../services/loadflow';
@@ -99,7 +98,6 @@ export function LoadFlowParametersInline({
                             <LineSeparator />
                             <Grid
                                 container
-                                item
                                 sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
                                     paddingBottom: 0,
                                 })}

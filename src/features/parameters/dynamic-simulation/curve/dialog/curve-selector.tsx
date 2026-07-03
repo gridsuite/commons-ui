@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, Typography } from '@mui/material';
+import { Grid2 as Grid, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { getReferencedEquipmentTypeForModel } from './curve-selector-utils';
@@ -69,44 +69,32 @@ const CurveSelector = forwardRef<CurveSelectorApi, Readonly<CurveSelectorProps>>
 
         return (
             <>
-                <Grid
-                    item
-                    container
-                    xs={6}
-                    direction="column"
-                    alignItems="flex-start"
-                    justifyContent="flex-start"
-                    spacing={1}
-                >
-                    <Typography sx={styles.h6} variant="h6">
-                        <FormattedMessage id="DynamicSimulationCurveEquipmentFilter" />
-                    </Typography>
-                    <EquipmentFilter
-                        ref={equipmentFilterRef}
-                        equipmentType={equipmentType}
-                        onChangeEquipmentType={handleChangeEquipmentType}
-                        voltageLevelsFetcher={voltageLevelsFetcher}
-                        countriesFetcher={countriesFetcher}
-                        evaluateFilterFetcher={evaluateFilterFetcher}
-                    />
+                <Grid size={6}>
+                    <Stack alignItems="flex-start" justifyContent="flex-start" spacing={1} sx={{ height: '100%' }}>
+                        <Typography sx={styles.h6} variant="h6">
+                            <FormattedMessage id="DynamicSimulationCurveEquipmentFilter" />
+                        </Typography>
+                        <EquipmentFilter
+                            ref={equipmentFilterRef}
+                            equipmentType={equipmentType}
+                            onChangeEquipmentType={handleChangeEquipmentType}
+                            voltageLevelsFetcher={voltageLevelsFetcher}
+                            countriesFetcher={countriesFetcher}
+                            evaluateFilterFetcher={evaluateFilterFetcher}
+                        />
+                    </Stack>
                 </Grid>
-                <Grid
-                    item
-                    container
-                    xs={6}
-                    direction="column"
-                    alignItems="flex-start"
-                    justifyContent="flex-start"
-                    spacing={1}
-                >
-                    <Typography sx={styles.h6} variant="h6">
-                        <FormattedMessage id="DynamicSimulationCurveCurveFilter" />
-                    </Typography>
-                    <ModelFilter
-                        ref={modelFilterRef}
-                        equipmentType={getReferencedEquipmentTypeForModel(equipmentType)}
-                        modelsFetcher={modelsFetcher}
-                    />
+                <Grid size={6}>
+                    <Stack alignItems="flex-start" justifyContent="flex-start" spacing={1} sx={{ height: '100%' }}>
+                        <Typography sx={styles.h6} variant="h6">
+                            <FormattedMessage id="DynamicSimulationCurveCurveFilter" />
+                        </Typography>
+                        <ModelFilter
+                            ref={modelFilterRef}
+                            equipmentType={getReferencedEquipmentTypeForModel(equipmentType)}
+                            modelsFetcher={modelsFetcher}
+                        />
+                    </Stack>
                 </Grid>
             </>
         );
