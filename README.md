@@ -31,7 +31,6 @@ This ensures all developers use the project's local tools version from `node_mod
 - **`npm run type-check`** - Runs TypeScript type checking without emitting files on the whole sources. Run this to check that your current dev is mainly correct.
 
 - **`npm run type-check:build`** - Runs TypeScript type checking with emitting files and only on the exported sources. This is what is executed by the CI, so you can use it before committing.
-- 
 - **`npm run build`** - Builds the library. Note: This automatically runs `npm run prebuild` first.
 
 - **`npm run prebuild`** - Runs linting and type checking before the build (`npm run lint && npm run type-check:build`). This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
