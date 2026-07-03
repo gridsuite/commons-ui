@@ -10,13 +10,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import {
+    ComputingType,
     ElementType,
     mapSensitivityAnalysisParameters,
     mergeSx,
     SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
 } from '../../../utils';
-import { ComputingType, CreateParameterDialog } from '../common';
+import { CreateParameterDialog } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';

@@ -11,8 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx } from '../../../utils';
+import { ComputingType, ElementType, mergeSx } from '../../../utils';
 import {
     toParamsInfos,
     useDynamicSecurityAnalysisParametersForm,
