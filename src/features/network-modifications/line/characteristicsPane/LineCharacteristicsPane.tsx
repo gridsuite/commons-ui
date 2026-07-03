@@ -5,14 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FieldConstants, MicroSusceptanceAdornment, OhmAdornment } from '../../../../utils/constants';
 import { FloatInput } from '../../../../components';
 import { convertInputValue, FieldType } from '../../../../utils';
 import { BranchInfos } from '../commonForm/line.types';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';
-import GridSection from '../../../../components/composite/grid/grid-section';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 
 interface LineCharacteristicsPaneProps {
     id?: string;

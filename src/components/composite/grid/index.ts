@@ -6,4 +6,3 @@
  */
 export * from './grid-item';
 export * from './grid-section';
-export * from './Grid2Section';

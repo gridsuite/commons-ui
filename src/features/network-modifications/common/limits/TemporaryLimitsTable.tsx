@@ -7,7 +7,17 @@
 
 import { useState, MouseEvent, useCallback } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import { Box, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+    Box,
+    Grid2 as Grid,
+    IconButton,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+} from '@mui/material';
 import { AddCircle as AddCircleIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { MuiStyles } from '../../../../utils';
 import {
@@ -175,8 +185,8 @@ export function TemporaryLimitsTable({
     }
 
     return (
-        <Grid item container spacing={1}>
-            <Grid item container>
+        <Grid container spacing={1}>
+            <Grid container size={12}>
                 <TableContainer>
                     <Table stickyHeader size="small" padding="none">
                         {renderTableHead()}

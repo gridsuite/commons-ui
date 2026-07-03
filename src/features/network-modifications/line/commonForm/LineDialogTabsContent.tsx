@@ -6,7 +6,6 @@
  */
 
 import { Box } from '@mui/material';
-import GridSection from '../../../../components/composite/grid/grid-section';
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
 import { LineDialogOptions, LineDialogTab } from './line.utils';
 import { BranchConnectivityForm } from '../../common/connectivity/BranchConnectivityForm';
@@ -14,6 +13,7 @@ import { BranchActiveReactivePowerMeasurementsForm } from '../../common/measurem
 import { LineCharacteristicsPane } from '../characteristicsPane';
 import { BranchInfos } from './line.types';
 import { LimitsPane } from '../../common/limits/LimitsPane';
+import { GridSection } from '../../../../components';
 
 export interface LineDialogTabsContentProps extends ConnectivityNetworkProps, LineDialogOptions {
     lineToModify?: BranchInfos | null;

@@ -5,13 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, TextField } from '@mui/material';
+import { Grid2 as Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { filledTextField } from '../../common';
 import { TextInput } from '../../../../components/ui';
 import { FieldConstants } from '../../../../utils';
 import { BranchInfos } from './line.types';
 import { LineDialogOptions } from './line.utils';
+import { GridItem } from '../../../../components';
 
 export interface LineDialogHeaderProps extends LineDialogOptions {
     lineToModify?: BranchInfos | null;
@@ -47,13 +48,9 @@ export function LineDialogHeader({ lineToModify, isModification = false }: Reado
     );
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={4}>
-                {lineIdField}
-            </Grid>
-            <Grid item xs={4}>
-                {lineNameField}
-            </Grid>
+        <Grid container spacing={2} size={12}>
+            <GridItem size={4}>{lineIdField}</GridItem>
+            <GridItem size={4}>{lineNameField}</GridItem>
         </Grid>
     );
 }

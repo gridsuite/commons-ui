@@ -17,7 +17,7 @@ import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.type
 import { generateEmptyOperationalLimitsGroup, generateUniqueId } from './operationalLimitsGroups.utils';
 import { FieldConstants, type MuiStyles } from '../../../../utils';
 import { APPLICABILITY, CurrentLimits, CurrentLimitsData } from './limits.types';
-import { Grid2Section as GridSection, InputWithPopupConfirmation, SwitchInput } from '../../../../components';
+import { GridSection, InputWithPopupConfirmation, SwitchInput } from '../../../../components';
 import { BranchInfos } from '../../line/commonForm/line.types';
 
 const limitsStyles = {
