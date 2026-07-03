@@ -7,9 +7,15 @@
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
-import { ElementType, mapDynamicSimulationParameters, snackWithFallback, VoltageLevelInfos } from '../../../utils';
+import {
+    ComputingType,
+    ElementType,
+    mapDynamicSimulationParameters,
+    snackWithFallback,
+    VoltageLevelInfos,
+} from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType, ParameterLayout } from '../common';
+import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useTabs } from '../common/hook/use-tabs';
 import { useSnackMessage } from '../../../hooks';

@@ -9,8 +9,7 @@ import type { UUID } from 'node:crypto';
 import { useCallback, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType } from '../common/computing-type';
-import { ElementType, snackWithFallback } from '../../../utils';
+import { ComputingType, ElementType, snackWithFallback } from '../../../utils';
 import { DynamicMarginCalculationForm } from './dynamic-margin-calculation-form';
 import {
     toFormValues,

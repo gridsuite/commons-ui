@@ -8,8 +8,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import type { UUID } from 'node:crypto';
-import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, ContingencyTableApi, ParameterLayout } from '../common';
+import { ComputingType, ElementType, UseParametersBackendReturnProps } from '../../../utils';
+import { ContingencyTableApi, ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';

@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { Mark } from '@mui/material/Slider/useSlider.types'; // eslint-disable-line no-restricted-imports
 import { parametersStyles } from '../../parameters-style';
@@ -43,10 +43,10 @@ export function ParameterLineSlider({
 }: Readonly<SliderParameterLineProps>) {
     return (
         <Grid container sx={styles.container}>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <SliderInput
                     name={name}
                     min={minValue}

@@ -9,8 +9,7 @@ import type { UUID } from 'node:crypto';
 import { useCallback, useEffect } from 'react';
 import { FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType } from '../common/computing-type';
-import { ElementType } from '../../../utils';
+import { ComputingType, ElementType } from '../../../utils';
 import {
     toParamsInfos,
     useDynamicSecurityAnalysisParametersForm,

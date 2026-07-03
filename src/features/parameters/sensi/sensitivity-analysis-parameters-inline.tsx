@@ -8,12 +8,13 @@
 import { useCallback, useEffect } from 'react';
 import type { UUID } from 'node:crypto';
 import {
+    ComputingType,
     ElementType,
     mapSensitivityAnalysisParameters,
     SensitivityAnalysisParametersInfosEnriched,
     UseParametersBackendReturnProps,
 } from '../../../utils';
-import { ComputingType, ParameterLayout } from '../common';
+import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useSnackMessage } from '../../../hooks';
 import {

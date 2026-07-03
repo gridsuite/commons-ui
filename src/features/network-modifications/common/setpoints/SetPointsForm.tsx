@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
-import GridSection from '../../../../components/composite/grid/grid-section';
+import { Grid2 as Grid } from '@mui/material';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { ActivePowerAdornment, FieldConstants, ReactivePowerAdornment } from '../../../../utils';
 import { FloatInput } from '../../../../components/ui';
 
@@ -20,7 +20,7 @@ export function SetPointsForm({ previousValues, isModification = false }: Readon
         <>
             <GridSection title="Setpoints" />
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FieldConstants.ACTIVE_POWER_SET_POINT}
                         label="ActivePowerText"
@@ -29,7 +29,7 @@ export function SetPointsForm({ previousValues, isModification = false }: Readon
                         clearable={isModification}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FieldConstants.REACTIVE_POWER_SET_POINT}
                         label="ReactivePowerText"

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, SxProps, TooltipProps, Typography } from '@mui/material';
+import { Grid2 as Grid, SxProps, TooltipProps, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { Info as InfoIcon } from '@mui/icons-material';
@@ -85,7 +85,7 @@ export function ParameterTableField({
     );
 
     return (
-        <Grid container sx={sxContainerProps}>
+        <Grid container sx={sxContainerProps} size={12}>
             {label && (
                 <Grid container alignItems="center" paddingBottom={2} paddingTop={2}>
                     <Typography component="span" variant="h6">

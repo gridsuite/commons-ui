@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {
     Button,
@@ -554,4 +554,5 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
 }
 
 const nestedGlobalSelectorsStyles = toNestedGlobalSelectors(defaultStyles, generateTreeViewFinderClass);
-export const TreeViewFinder = styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);
+export const TreeViewFinder: FunctionComponent<TreeViewFinderProps> =
+    styled(TreeViewFinderComponant)(nestedGlobalSelectorsStyles);
