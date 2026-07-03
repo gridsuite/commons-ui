@@ -28,7 +28,6 @@ export type EquipmentFilterApi = {
 const styles = {
     grid: {
         width: '100%',
-        height: '100%',
         flex: 1,
     },
     criteria: {
