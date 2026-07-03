@@ -44,9 +44,6 @@ interface ParameterLayoutProps<T extends FieldValues> {
 const styles = {
     stack: {
         height: '100%',
-        overflow: 'hidden',
-        position: 'relative',
-        display: 'flex',
     },
     title: {
         paddingBottom: 2,
