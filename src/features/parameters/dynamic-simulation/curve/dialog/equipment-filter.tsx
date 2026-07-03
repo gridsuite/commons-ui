@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid2 as Grid, MenuItem, Select, type SelectChangeEvent, Typography, Stack } from '@mui/material';
+import { Box, Grid2 as Grid, MenuItem, Select, type SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
@@ -28,7 +28,7 @@ export type EquipmentFilterApi = {
 const styles = {
     grid: {
         width: '100%',
-        height: '100%',
+        flex: 1,
     },
     criteria: {
         width: '100%',
@@ -36,7 +36,7 @@ const styles = {
     },
     equipment: {
         width: '100%',
-        flexGrow: 1,
+        flex: 1,
     },
     equipmentTitle: (theme) => ({
         marginBottom: theme.spacing(1),
@@ -290,28 +290,24 @@ const EquipmentFilter = forwardRef<EquipmentFilterApi, EquipmentFilterProps>(
                 </Grid>
                 {/* Equipments */}
                 <Stack sx={styles.equipment}>
-                    <Grid>
-                        <Typography sx={styles.equipmentTitle} variant="subtitle1">
-                            <FormattedMessage id="DynamicSimulationCurveEquipment" />
-                            {` (${selectedRowsLength} / ${equipmentRowData?.length ?? 0})`}
-                        </Typography>
-                    </Grid>
-                    <Grid size="grow">
-                        <Box sx={styles.grid}>
-                            <CustomAGGrid
-                                ref={equipmentsRef}
-                                rowData={equipmentRowData}
-                                columnDefs={columnDefs}
-                                defaultColDef={defaultColDef}
-                                rowSelection="multiple"
-                                onGridReady={onGridReady}
-                                onSelectionChanged={handleEquipmentSelectionChanged}
-                                loading={isFetching}
-                                overlayLoadingTemplate={intl.formatMessage({ id: 'LoadingRemoteData' })}
-                                overrideLocales={AGGRID_LOCALES}
-                            />
-                        </Box>
-                    </Grid>
+                    <Typography sx={styles.equipmentTitle} variant="subtitle1">
+                        <FormattedMessage id="DynamicSimulationCurveEquipment" />
+                        {` (${selectedRowsLength} / ${equipmentRowData?.length ?? 0})`}
+                    </Typography>
+                    <Box sx={styles.grid}>
+                        <CustomAGGrid
+                            ref={equipmentsRef}
+                            rowData={equipmentRowData}
+                            columnDefs={columnDefs}
+                            defaultColDef={defaultColDef}
+                            rowSelection="multiple"
+                            onGridReady={onGridReady}
+                            onSelectionChanged={handleEquipmentSelectionChanged}
+                            loading={isFetching}
+                            overlayLoadingTemplate={intl.formatMessage({ id: 'LoadingRemoteData' })}
+                            overrideLocales={AGGRID_LOCALES}
+                        />
+                    </Box>
                 </Stack>
             </>
         );

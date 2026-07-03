@@ -6,7 +6,7 @@
  */
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Box, Grid2 as Grid, Typography, Stack } from '@mui/material';
+import { Box, Grid2 as Grid, Stack, Typography } from '@mui/material';
 import CheckboxSelect from '../common/checkbox-select';
 import CheckboxTreeview, { CheckboxTreeviewApi } from '../common/checkbox-treeview';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
@@ -54,6 +54,7 @@ const styles = {
         borderWidth: '.5px',
         borderColor: theme.palette.divider,
         overflow: 'auto',
+        flex: 1,
     }),
     model: {
         width: '100%',
@@ -63,7 +64,7 @@ const styles = {
     }),
     variable: {
         width: '100%',
-        flexGrow: 1,
+        flex: 1,
     },
     variableTree: {
         maxHeight: '440px',
@@ -191,22 +192,18 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
                 </Grid>
                 {/* Variables which found in models used in a mapping */}
                 <Stack sx={styles.variable}>
-                    <Grid width="100%">
-                        <Typography sx={styles.modelTitle} variant="subtitle1">
-                            <FormattedMessage id="DynamicSimulationCurveVariable" />
-                        </Typography>
-                    </Grid>
-                    <Grid width="100%" size="grow">
-                        <Box sx={styles.tree}>
-                            <CheckboxTreeview
-                                ref={variablesRef}
-                                data={filteredVariables}
-                                getLabel={getVariableLabel}
-                                checkAll
-                                sx={styles.variableTree}
-                            />
-                        </Box>
-                    </Grid>
+                    <Typography sx={styles.modelTitle} variant="subtitle1">
+                        <FormattedMessage id="DynamicSimulationCurveVariable" />
+                    </Typography>
+                    <Box sx={styles.tree}>
+                        <CheckboxTreeview
+                            ref={variablesRef}
+                            data={filteredVariables}
+                            getLabel={getVariableLabel}
+                            checkAll
+                            sx={styles.variableTree}
+                        />
+                    </Box>
                 </Stack>
             </>
         );
