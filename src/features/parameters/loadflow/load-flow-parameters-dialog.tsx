@@ -6,7 +6,7 @@
  */
 
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
-import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,
     getLoadFlowDefaultLimitReductions,
@@ -15,7 +15,7 @@ import {
     setLoadFlowParameters,
 } from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
-import { ElementType, LANG_ENGLISH } from '../../../utils';
+import { ComputingType, ElementType, LANG_ENGLISH } from '../../../utils';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
