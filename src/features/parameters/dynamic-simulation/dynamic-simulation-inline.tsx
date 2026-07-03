@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import {
+    ComputingType,
     ElementType,
     mapDynamicSimulationParameters,
     mergeSx,
@@ -17,7 +18,7 @@ import {
     VoltageLevelInfos,
 } from '../../../utils';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType, CreateParameterDialog, LabelledButton } from '../common';
+import { CreateParameterDialog, LabelledButton } from '../common';
 
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';

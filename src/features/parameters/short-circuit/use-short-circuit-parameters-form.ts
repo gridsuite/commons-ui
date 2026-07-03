@@ -29,10 +29,10 @@ import {
 } from './constants';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
+import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import { COMMON_PARAMETERS, ComputingType, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
+import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import {
     formatShortCircuitSpecificParameters,
     getCommonShortCircuitParametersFormSchema,

@@ -1,3 +1,6 @@
+import { NETWORK_MODIFICATION } from './report.constant';
+import { ComputingType } from '../../../utils';
+
 /**
  * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -6,7 +9,7 @@
  */
 export type SeverityLevel = 'UNKNOWN' | 'TRACE' | 'DEBUG' | 'DETAIL' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
 
-export type ComputingAndNetworkModificationType = string;
+export type ComputingAndNetworkModificationType = ComputingType | typeof NETWORK_MODIFICATION;
 
 export type ReportSeverity = {
     name: SeverityLevel;
