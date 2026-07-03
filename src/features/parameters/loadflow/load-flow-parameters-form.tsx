@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import { UseLoadFlowParametersFormReturn } from './use-load-flow-parameters-form';
 import LoadFlowParametersHeader from './load-flow-parameters-header';
 import LoadFlowParametersContent from './load-flow-parameters-content';
@@ -25,12 +25,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
         params,
         watchProvider,
         defaultLimitReductions,
-        paramsLoaded,
     } = loadflowMethods;
-
-    if (!paramsLoaded) {
-        return <LinearProgress />;
-    }
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>

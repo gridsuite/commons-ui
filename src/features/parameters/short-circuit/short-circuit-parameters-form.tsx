@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import { UseShortCircuitParametersFormReturn } from './use-short-circuit-parameters-form';
 import ShortCircuitParametersContent from './short-circuit-parameters-content';
 import { parametersStyles } from '../parameters-style';
@@ -15,12 +15,6 @@ interface ShortCircuitParametersFormProps {
 }
 
 export function ShortCircuitParametersForm({ shortCircuitMethods }: Readonly<ShortCircuitParametersFormProps>) {
-    const { paramsLoaded } = shortCircuitMethods;
-
-    if (!paramsLoaded) {
-        return <LinearProgress />;
-    }
-
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
             <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />

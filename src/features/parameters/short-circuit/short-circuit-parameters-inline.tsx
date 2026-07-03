@@ -75,8 +75,8 @@ export function ShortCircuitParametersInLine({
                 parameterType={ElementType.SHORT_CIRCUIT_PARAMETERS}
                 createParameter={{
                     studyUuid,
-                    getParameterValues: () => shortCircuitMethods.formatNewParams(getValues()),
-                    parameterFormatter: (newParams) => newParams,
+                    getParameterValues: () => getValues(),
+                    parameterFormatter: (params) => shortCircuitMethods.formatNewParams(params),
                 }}
                 selectParameterHandler={handleLoadParameters}
                 resetHandler={resetParameters}

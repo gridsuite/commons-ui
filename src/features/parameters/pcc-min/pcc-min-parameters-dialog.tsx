@@ -62,7 +62,7 @@ export function PccMinParametersEditionDialog({
                     elementType={ElementType.PCC_MIN_PARAMETERS}
                 />
             </Grid>
-            <PccMinParametersForm pccMinMethods={pccMinMethods} />
+            <PccMinParametersForm />
         </CustomMuiDialog>
     );
 }

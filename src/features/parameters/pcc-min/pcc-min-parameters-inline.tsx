@@ -86,7 +86,7 @@ export function PccMinParametersInLine({
                 resetHandler={resetPccMinParameters}
                 validateHandler={handleSubmit(pccMinMethods.onSaveInline)}
             >
-                <PccMinParametersForm pccMinMethods={pccMinMethods} />
+                <PccMinParametersForm />
             </ParameterLayout>
         </CustomFormProvider>
     );

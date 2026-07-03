@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 
 import ScenarioParameters from './scenario-parameters';
@@ -24,12 +24,8 @@ export function DynamicSecurityAnalysisParametersForm({
     dynamicSecurityAnalysisMethods,
     useTabsReturn,
 }: Readonly<DynamicSecurityAnalysisParametersFormProps>) {
-    const { paramsLoaded, formattedProviders } = dynamicSecurityAnalysisMethods;
+    const { formattedProviders } = dynamicSecurityAnalysisMethods;
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
-
-    if (!paramsLoaded) {
-        return <LinearProgress />;
-    }
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid} direction="column">

@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common';
@@ -24,11 +24,7 @@ export function VoltageInitParametersForm({
     voltageInitMethods,
     showActionsButtons,
 }: Readonly<VoltageInitParametersFormProps>) {
-    const { selectedTab, handleTabChange, paramsLoading, tabIndexesWithError } = voltageInitMethods;
-
-    if (paramsLoading) {
-        return <LinearProgress />;
-    }
+    const { selectedTab, handleTabChange, tabIndexesWithError } = voltageInitMethods;
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>

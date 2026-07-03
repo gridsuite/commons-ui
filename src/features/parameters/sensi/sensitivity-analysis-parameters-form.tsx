@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
@@ -25,10 +25,6 @@ export function SensitivityAnalysisParametersForm({
     isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
 }>) {
-    if (!sensitivityAnalysisMethods.paramsFormInitialized) {
-        return <LinearProgress />;
-    }
-
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
             <Grid

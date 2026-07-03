@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
 
@@ -36,12 +36,8 @@ export function DynamicSimulationForm({
     countriesFetcher,
     evaluateFilterFetcher,
 }: Readonly<DynamicSimulationFormProps>) {
-    const { paramsLoaded, formattedProviders } = dynamicSimulationMethods;
+    const { formattedProviders } = dynamicSimulationMethods;
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
-
-    if (!paramsLoaded) {
-        return <LinearProgress />;
-    }
 
     return (
         <Grid container sx={parametersStyles.scrollableGrid} direction="column">

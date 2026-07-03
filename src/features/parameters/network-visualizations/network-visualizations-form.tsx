@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { LinearProgress, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
@@ -43,11 +43,7 @@ export function NetworkVisualizationParametersForm({
     userProfile,
 }: Readonly<NetworkVisualizationParametersFormProps>) {
     const componentLibraries = useGetAvailableComponentLibraries(userProfile);
-    const { selectedTab, handleTabChange, paramsLoading } = networkVisuMethods;
-
-    if (paramsLoading) {
-        return <LinearProgress />;
-    }
+    const { selectedTab, handleTabChange } = networkVisuMethods;
 
     return (
         <>

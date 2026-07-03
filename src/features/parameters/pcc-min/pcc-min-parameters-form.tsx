@@ -5,24 +5,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import { ParameterLineDirectoryItemsInput } from '../common/widget/parameter-line-directory-items-input.js';
 import { ElementType, EquipmentType } from '../../../utils';
-import { UsePccMinParametersFormReturn } from './use-pcc-min-parameters-form';
 import { FILTERS } from '../../../utils/constants/filterConstant';
 import { parametersStyles } from '../parameters-style';
 
-interface PccMinParametersFormProps {
-    pccMinMethods: UsePccMinParametersFormReturn;
-}
-
-export function PccMinParametersForm({ pccMinMethods }: Readonly<PccMinParametersFormProps>) {
-    const { paramsLoading } = pccMinMethods;
-
-    if (paramsLoading) {
-        return <LinearProgress />;
-    }
-
+export function PccMinParametersForm() {
     return (
         <Grid container sx={parametersStyles.scrollableGrid}>
             <Grid item xs={12}>
