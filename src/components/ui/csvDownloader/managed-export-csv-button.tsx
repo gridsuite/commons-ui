@@ -22,7 +22,7 @@ export function ManagedExportCsvButton({
     resetKey,
     onSuccess,
     onError,
-}: ManagedExportCsvButtonProps) {
+}: Readonly<ManagedExportCsvButtonProps>) {
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccessful, setIsSuccessful] = useState(false);
 
