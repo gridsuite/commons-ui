@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { AddCircle, Delete } from '@mui/icons-material';
 import { useCallback } from 'react';
 import { useIntl } from 'react-intl';
@@ -28,8 +28,8 @@ export function GridButtons({ onAddButton, onDeleteButton, disabledAdd, disabled
     }, [onDeleteButton]);
 
     return (
-        <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-            <Grid item>
+        <Grid container size="grow" spacing={1} sx={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+            <Grid>
                 <CustomTooltip
                     title={intl.formatMessage({
                         id: 'AddRows',
@@ -42,7 +42,7 @@ export function GridButtons({ onAddButton, onDeleteButton, disabledAdd, disabled
                     </span>
                 </CustomTooltip>
             </Grid>
-            <Grid item>
+            <Grid>
                 <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DeleteRows',

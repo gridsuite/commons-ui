@@ -8,15 +8,23 @@ import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { type CustomCellEditorProps } from 'ag-grid-react';
 import { KeyCode, type SuppressKeyboardEventParams } from 'ag-grid-community';
 
-const isCharNumeric = (charStr: string | null | undefined) => !!charStr && /\d|,|\./.test(charStr);
+type NumericEditorProps = {
+    allowNegativeValues?: boolean;
+};
+
+const isCharNumeric = (charStr: string | null | undefined, allowNegativeValues = false) =>
+    !!charStr && (allowNegativeValues ? /^[\d,.-]$/.test(charStr) : /^[\d,.]$/.test(charStr));
 
 /**
  * `suppressKeyboardEvent` callback to put on any column using {@link NumericEditor}.
  * Prevents ag-grid from starting an edit when a non-numeric printable key is pressed on a focused cell.
- * Numeric keys still start editing; keys pressed while already editing are left to the input's own onKeyDown handling.
+ * Numeric keys and decimal separators still start editing; if `allowNegativeValues` is true, the minus sign does too.
+ * Keys pressed while already editing are left to the input's own onKeyDown handling.
  */
-export const suppressNonNumericKeyboardEvent = (params: SuppressKeyboardEventParams) =>
-    !params.editing && params.event.key.length === 1 && !isCharNumeric(params.event.key);
+export const suppressNonNumericKeyboardEvent = (params: SuppressKeyboardEventParams) => {
+    const allowNegativeValues = params.colDef.cellEditorParams?.allowNegativeValues === true;
+    return !params.editing && params.event.key.length === 1 && !isCharNumeric(params.event.key, allowNegativeValues);
+};
 
 // commit the value as a number, accepting "," as a decimal separator (null when empty/invalid)
 const toNumber = (text: string) => {
@@ -28,7 +36,8 @@ const toNumber = (text: string) => {
  * Custom numeric cell editor (see ag-grid custom cell editor docs:
  * https://www.ag-grid.com/react-data-grid/cell-editors/#custom-components).
  * Restricts typing to digits and decimal separators while keeping the raw text in the input,
- * and commits the value as a number (or null) via onValueChange.
+ * and commits the value as a number (or null) via onValueChange. The minus sign is accepted when
+ * `allowNegativeValues` is true.
  *
  * NB: the `eventKey`-driven logic below (seeding the initial value from the triggering key in the
  * useState/useEffect) only matters when editing is started by typing a character on a focused cell,
@@ -38,7 +47,12 @@ const toNumber = (text: string) => {
  * Columns using this editor should also set `suppressKeyboardEvent: suppressNonNumericKeyboardEvent`
  * so that a non-numeric key on a focused cell doesn't start an edit.
  */
-export function NumericEditor({ value, onValueChange, eventKey }: CustomCellEditorProps) {
+export function NumericEditor({
+    value,
+    onValueChange,
+    eventKey,
+    allowNegativeValues = false,
+}: CustomCellEditorProps & NumericEditorProps) {
     const refInput = useRef<HTMLInputElement>(null);
 
     // raw text shown in the input (kept as a string so "," and partial decimals stay typeable)
@@ -46,7 +60,7 @@ export function NumericEditor({ value, onValueChange, eventKey }: CustomCellEdit
         if (eventKey === KeyCode.BACKSPACE) {
             return '';
         }
-        if (eventKey?.length === 1 && isCharNumeric(eventKey)) {
+        if (eventKey?.length === 1 && isCharNumeric(eventKey, allowNegativeValues)) {
             return eventKey;
         }
         return value == null ? '' : String(value);
@@ -67,8 +81,24 @@ export function NumericEditor({ value, onValueChange, eventKey }: CustomCellEdit
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+        // "-" is only valid as the first character of the value, and only once (so "12-3" is rejected)
+        if (event.key === '-' && allowNegativeValues) {
+            const input = event.currentTarget;
+            const selectionStart = input.selectionStart ?? 0;
+            const selectionEnd = input.selectionEnd ?? 0;
+            const atStart = selectionStart === 0;
+            // true when a "-" already in the value would survive this keystroke (i.e. it isn't part of
+            // the selected text about to be replaced) — typing another one would produce a second "-"
+            // -> we don't allow it (it blocks "--5" for instance)
+            const keepsExistingMinus =
+                input.value.includes('-') && !input.value.slice(selectionStart, selectionEnd).includes('-');
+            if (!atStart || keepsExistingMinus) {
+                event.preventDefault();
+            }
+            return;
+        }
         // block single non-numeric characters, let everything else through (navigation, backspace…)
-        if (event.key.length === 1 && !isCharNumeric(event.key)) {
+        if (event.key.length === 1 && !isCharNumeric(event.key, allowNegativeValues)) {
             event.preventDefault();
         }
     };

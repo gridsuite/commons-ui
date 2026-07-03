@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import {
     ActivePowerControlForm,
     ConnectivityForm,
@@ -18,8 +18,8 @@ import {
 } from '../../common';
 import { ActivePowerAdornment, FieldConstants } from '../../../../utils';
 import { FloatInput, TextInput } from '../../../../components/ui';
-import GridItem from '../../../../components/composite/grid/grid-item';
-import GridSection from '../../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 
 export interface BatteryCreationFormProps extends ConnectivityNetworkProps {}
 

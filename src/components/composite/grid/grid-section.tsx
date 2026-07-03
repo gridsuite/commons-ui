@@ -1,10 +1,10 @@
 /**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { SxStyle } from '../../../utils/styles';
 
@@ -15,14 +15,10 @@ export interface GridSectionProps {
     customStyle?: SxStyle;
 }
 
-/**
- * @deprecated Use the Grid2Section component instead.
- * Warning : there is a different implementation in gridstudy
- */
-export default function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
+export function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={size}>
+        <Grid container spacing={2} size={12}>
+            <Grid size={size}>
                 <Box sx={customStyle} component={`h${heading}`}>
                     <FormattedMessage id={title} />
                 </Box>

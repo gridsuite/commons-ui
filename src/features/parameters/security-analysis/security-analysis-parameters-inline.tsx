@@ -6,7 +6,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
@@ -110,7 +110,6 @@ export function SecurityAnalysisParametersInline({
                             <LineSeparator />
                             <Grid
                                 container
-                                item
                                 sx={mergeSx(parametersStyles.controlParametersItem, parametersStyles.marginTopButton, {
                                     paddingBottom: 0,
                                 })}
