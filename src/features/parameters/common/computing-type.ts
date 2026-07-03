@@ -4,20 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-export enum ComputingType {
-    LOAD_FLOW = 'LOAD_FLOW',
-    SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
-    SENSITIVITY_ANALYSIS = 'SENSITIVITY_ANALYSIS',
-    SHORT_CIRCUIT = 'SHORT_CIRCUIT',
-    SHORT_CIRCUIT_ONE_BUS = 'SHORT_CIRCUIT_ONE_BUS',
-    DYNAMIC_SIMULATION = 'DYNAMIC_SIMULATION',
-    DYNAMIC_SECURITY_ANALYSIS = 'DYNAMIC_SECURITY_ANALYSIS',
-    DYNAMIC_MARGIN_CALCULATION = 'DYNAMIC_MARGIN_CALCULATION',
-    VOLTAGE_INITIALIZATION = 'VOLTAGE_INITIALIZATION',
-    STATE_ESTIMATION = 'STATE_ESTIMATION',
-    PCC_MIN = 'PCC_MIN',
-}
+import { ComputingType } from '../../../utils';
 
 export const isValidComputingType = (value: string | undefined): boolean => {
     return Object.values(ComputingType).includes(value as ComputingType);

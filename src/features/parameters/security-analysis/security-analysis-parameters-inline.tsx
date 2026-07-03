@@ -10,8 +10,8 @@ import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
-import { ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
+import { ComputingType, ElementType, mergeSx, UseParametersBackendReturnProps } from '../../../utils';
+import { ContingencyTableApi, CreateParameterDialog, LabelledButton, LineSeparator } from '../common';
 import { useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { SubmitButton } from '../../../components/ui';
