@@ -49,18 +49,12 @@ const styles = {
         display: 'flex',
     },
     title: {
-        flexShrink: 0,
         paddingBottom: 2,
     },
     content: {
         flexGrow: 1,
         overflowY: 'auto',
         overflowX: 'hidden',
-        minHeight: 0, // Critical for flex-grow with overflow
-    },
-    footer: {
-        flexShrink: 0,
-        p: 1,
     },
 } as const;
 
@@ -130,61 +124,67 @@ export function ParameterLayout<T extends FieldValues>({
                 </Box>
             )}
             <Box sx={styles.content}>{isLoading ? <LinearProgress /> : children}</Box>
-            <Box sx={styles.footer}>
-                <Grid container paddingTop={1} paddingBottom={1}>
-                    <LineSeparator />
+            <Stack spacing={1}>
+                <LineSeparator />
+                <Grid container spacing={1}>
+                    {createParameter && (
+                        <Grid item>
+                            <LabelledButton label="save" data-testid="SaveButton" callback={handleSaveClick} />
+                        </Grid>
+                    )}
+                    {validateHandler && (
+                        <Grid item>
+                            <SubmitButton
+                                variant="contained"
+                                data-testid="ValidateButton"
+                                onClick={validateHandler}
+                                disabled={validateDisabled}
+                            />
+                        </Grid>
+                    )}
                 </Grid>
-                {createParameter && <LabelledButton label="save" data-testid="SaveButton" callback={handleSaveClick} />}
-                {validateHandler && (
-                    <SubmitButton
-                        variant="contained"
-                        data-testid="ValidateButton"
-                        onClick={validateHandler}
-                        disabled={validateDisabled}
-                    />
-                )}
-                {openCreateParameterDialog && createParameter && (
-                    <CreateParameterDialog
-                        studyUuid={createParameter?.studyUuid}
-                        open={openCreateParameterDialog}
-                        onClose={() => setOpenCreateParameterDialog(false)}
-                        parameterValues={createParameter?.getParameterValues}
-                        parameterFormatter={createParameter?.parameterFormatter}
-                        parameterType={parameterType}
-                    />
-                )}
-                {openSelectParameterDialog && selectParameterHandler && (
-                    <DirectoryItemSelector
-                        open={openSelectParameterDialog}
-                        onClose={(nodes) => {
-                            setOpenSelectParameterDialog(false);
-                            selectParameterHandler(nodes);
-                        }}
-                        types={[parameterType]}
-                        title={intl.formatMessage({
-                            id: 'showSelectParameterDialog',
-                        })}
-                        onlyLeaves
-                        multiSelect={false}
-                        validationButtonText={intl.formatMessage({
-                            id: 'validate',
-                        })}
-                    />
-                )}
-                {/* Reset Confirmation Dialog */}
-                {openResetConfirmation && resetHandler && (
-                    <PopupConfirmationDialog
-                        message="resetParamsConfirmation"
-                        validateButtonLabel="validate"
-                        openConfirmationPopup={openResetConfirmation}
-                        setOpenConfirmationPopup={handleCancelReset}
-                        handlePopupConfirmation={() => {
-                            resetHandler();
-                            setOpenResetConfirmation(false);
-                        }}
-                    />
-                )}
-            </Box>
+            </Stack>
+            {openCreateParameterDialog && createParameter && (
+                <CreateParameterDialog
+                    studyUuid={createParameter?.studyUuid}
+                    open={openCreateParameterDialog}
+                    onClose={() => setOpenCreateParameterDialog(false)}
+                    parameterValues={createParameter?.getParameterValues}
+                    parameterFormatter={createParameter?.parameterFormatter}
+                    parameterType={parameterType}
+                />
+            )}
+            {openSelectParameterDialog && selectParameterHandler && (
+                <DirectoryItemSelector
+                    open={openSelectParameterDialog}
+                    onClose={(nodes) => {
+                        setOpenSelectParameterDialog(false);
+                        selectParameterHandler(nodes);
+                    }}
+                    types={[parameterType]}
+                    title={intl.formatMessage({
+                        id: 'showSelectParameterDialog',
+                    })}
+                    onlyLeaves
+                    multiSelect={false}
+                    validationButtonText={intl.formatMessage({
+                        id: 'validate',
+                    })}
+                />
+            )}
+            {/* Reset Confirmation Dialog */}
+            {openResetConfirmation && resetHandler && (
+                <PopupConfirmationDialog
+                    message="resetParamsConfirmation"
+                    validateButtonLabel="validate"
+                    openConfirmationPopup={openResetConfirmation}
+                    setOpenConfirmationPopup={handleCancelReset}
+                    handlePopupConfirmation={() => {
+                        resetHandler();
+                        setOpenResetConfirmation(false);
+                    }}
+                />
+            )}
         </Stack>
     );
 }
