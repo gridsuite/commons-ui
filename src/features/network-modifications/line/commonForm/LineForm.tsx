@@ -30,11 +30,11 @@ export function LineForm({
     );
 
     return (
-        <Grid container direction="column" spacing={2}>
-            <Grid item>
+        <Grid container direction="column" wrap="nowrap" sx={{ height: '100%', gap: 2 }}>
+            <Grid item sx={{ flexShrink: 0 }}>
                 <LineDialogHeader lineToModify={lineToModify} isModification={isModification} />
             </Grid>
-            <Grid item>
+            <Grid item sx={{ flexShrink: 0 }}>
                 <LineDialogTabs
                     tabIndex={tabIndex}
                     tabIndexesWithError={tabIndexesWithError}
@@ -43,7 +43,7 @@ export function LineForm({
                     withConnectivity={withConnectivity}
                 />
             </Grid>
-            <Grid item>
+            <Grid item sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
                 <LineDialogTabsContent
                     tabIndex={tabIndex}
                     lineToModify={lineToModify}
