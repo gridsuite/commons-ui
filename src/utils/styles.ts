@@ -27,7 +27,7 @@ const isSxProps = (sx: SxProps<Theme> | undefined): sx is SxProps => {
 // https://mui.com/system/getting-started/the-sx-prop/#passing-the-sx-prop
 // You cannot spread or concat directly because `SxProps` (typeof sx) can be an array. */
 // same as [{}, ...(Array.isArray(sx) ? sx : [sx])]
-export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]) => allSx.filter(isSxProps).flat();
+export const mergeSx = (...allSx: (SxProps<Theme> | undefined)[]): SxProps<Theme> => allSx.filter(isSxProps).flat();
 
 export type SxStyle = SxProps<Theme>;
 export type MuiStyles = Record<string, SxStyle>;

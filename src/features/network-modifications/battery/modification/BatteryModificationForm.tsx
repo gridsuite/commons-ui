@@ -15,8 +15,7 @@ import { FieldConstants } from '../../../../utils';
 import { useTabsWithError } from '../../hooks';
 
 interface BatteryModificationFormProps
-    extends BatteryDialogHeaderProps,
-        Omit<BatteryDialogTabsContentProps, 'tabIndex'> {}
+    extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {}
 
 export function BatteryModificationForm({
     batteryToModify,
