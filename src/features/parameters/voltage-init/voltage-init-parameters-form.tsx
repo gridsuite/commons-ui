@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { getTabIndicatorStyle, getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common';
@@ -27,7 +27,7 @@ export function VoltageInitParametersForm({
     const { selectedTab, handleTabChange, tabIndexesWithError } = voltageInitMethods;
 
     return (
-        <Grid container sx={parametersStyles.scrollableGrid}>
+        <Stack sx={parametersStyles.scrollableGrid}>
             <Tabs
                 value={selectedTab}
                 variant="scrollable"
@@ -63,6 +63,6 @@ export function VoltageInitParametersForm({
                     <EquipmentSelectionParameters />
                 </TabPanel>
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

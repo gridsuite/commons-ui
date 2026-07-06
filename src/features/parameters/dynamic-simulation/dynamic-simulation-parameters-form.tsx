@@ -42,7 +42,7 @@ export function DynamicSimulationForm({
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
             <Grid size={12}>
-                <ProviderParam options={formattedProviders} />
+                <ProviderParam options={formattedProviders} id="Ds" />
             </Grid>
             <Grid size={12}>
                 <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">

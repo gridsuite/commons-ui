@@ -31,7 +31,7 @@ export function DynamicMarginCalculationForm({
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
             <Grid size={12}>
-                <ProviderParam options={formattedProviders} />
+                <ProviderParam options={formattedProviders} id="Dmc" />
             </Grid>
             <Grid size={12}>
                 <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">

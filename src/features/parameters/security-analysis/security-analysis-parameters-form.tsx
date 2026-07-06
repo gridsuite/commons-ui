@@ -4,13 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { ForwardedRef } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { UUID } from 'node:crypto';
-import { MuiSelectInput } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';
-import { CONTINGENCY_LISTS_INFOS, ContingencyTableApi, LineSeparator, PARAM_SA_PROVIDER } from '../common';
+import { CONTINGENCY_LISTS_INFOS, ContingencyTableApi, LineSeparator, ProviderParam } from '../common';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 import { ContingencyTable } from '../common/contingency-table';
@@ -34,29 +32,8 @@ export function SecurityAnalysisParametersForm({
     isDeveloperMode,
 }: Readonly<SecurityAnalysisParametersFormProps>) {
     return (
-        <Grid container sx={parametersStyles.scrollableGrid}>
-            <Grid
-                container
-                spacing={1}
-                sx={{
-                    padding: 0,
-                    paddingBottom: 2,
-                    height: 'fit-content',
-                }}
-                justifyContent="space-between"
-            >
-                <Grid size="auto" sx={parametersStyles.parameterName}>
-                    <FormattedMessage id="Provider" />
-                </Grid>
-                <Grid container size="auto" sx={parametersStyles.controlItem}>
-                    <MuiSelectInput
-                        name={PARAM_SA_PROVIDER}
-                        size="small"
-                        options={Object.values(securityAnalysisMethods.formattedProviders)}
-                    />
-                </Grid>
-                <LineSeparator />
-            </Grid>
+        <Stack sx={parametersStyles.scrollableGrid}>
+            <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" sx={{ paddingBottom: 1 }} />
             <Grid
                 container
                 key="securityAnalysisParameters"
@@ -81,6 +58,6 @@ export function SecurityAnalysisParametersForm({
                     defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                 />
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

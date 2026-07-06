@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid, LinearProgress, Stack, ButtonGroup, Tooltip } from '@mui/material';
+import { Box, ButtonGroup, Grid2 as Grid, LinearProgress, Stack, Tooltip } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
-import { ReactNode, useState, useCallback } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
@@ -46,7 +46,7 @@ const styles = {
         height: '100%',
     },
     title: {
-        paddingBottom: 2,
+        paddingBottom: 0,
     },
     content: {
         flexGrow: 1,

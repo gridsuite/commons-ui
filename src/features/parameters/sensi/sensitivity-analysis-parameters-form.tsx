@@ -4,12 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
+import { Grid2 as Grid, Stack } from '@mui/material';
+import React from 'react';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
-import { MuiSelectInput } from '../../../components/ui';
-import { LineSeparator, PROVIDER } from '../common';
+import { LineSeparator, ProviderParam } from '../common';
 import { SensitivityAnalysisFields } from './sensitivity-parameters-fields';
 import SensitivityParametersSelector from './sensitivity-parameters-selector';
 import { BuildStatus } from '../../node/constant';
@@ -26,36 +25,15 @@ export function SensitivityAnalysisParametersForm({
     globalBuildStatus?: BuildStatus;
 }>) {
     return (
-        <Grid container sx={parametersStyles.scrollableGrid}>
-            <Grid
-                container
-                spacing={1}
-                sx={{
-                    padding: 0,
-                    paddingBottom: 2,
-                    height: 'fit-content',
-                }}
-                justifyContent="space-between"
-            >
-                <Grid size={{ xs: 8, xl: 4 }} sx={parametersStyles.parameterName}>
-                    <FormattedMessage id="Provider" />
-                </Grid>
-                <Grid size={{ xs: 4, xl: 2 }} sx={parametersStyles.controlItem}>
-                    <MuiSelectInput
-                        name={PROVIDER}
-                        size="small"
-                        options={Object.values(sensitivityAnalysisMethods.formattedProviders)}
-                    />
-                </Grid>
-            </Grid>
-            <Grid container key="sensitivityAnalysisParameters">
-                <Grid size={{ xl: 6 }}>
-                    <Grid container paddingTop={1} paddingBottom={1}>
-                        <LineSeparator />
-                    </Grid>
-                    <SensitivityAnalysisFields />
-                </Grid>
-                <Grid container size={12} paddingTop={4} paddingBottom={2}>
+        <Stack sx={parametersStyles.scrollableGrid}>
+            <ProviderParam
+                options={sensitivityAnalysisMethods.formattedProviders}
+                id="Sensi"
+                sx={{ paddingBottom: 1 }}
+            />
+            <Stack>
+                <SensitivityAnalysisFields />
+                <Grid container size={12} paddingTop={1} paddingBottom={1}>
                     <LineSeparator />
                 </Grid>
                 <SensitivityParametersSelector
@@ -67,7 +45,7 @@ export function SensitivityAnalysisParametersForm({
                     isRootNode={isRootNode}
                     globalBuildStatus={globalBuildStatus}
                 />
-            </Grid>
-        </Grid>
+            </Stack>
+        </Stack>
     );
 }
