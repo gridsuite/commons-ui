@@ -32,7 +32,7 @@ export function ParameterGroup({
     const [mouseHover, setMouseHover] = useState(false);
 
     return (
-        <Grid sx={{ ...parametersStyles.subgroupParameters, width: '100%' }}>
+        <Grid size={12} sx={parametersStyles.subgroupParameters}>
             <Accordion
                 sx={parametersStyles.subgroupParametersAccordion}
                 expanded={state}

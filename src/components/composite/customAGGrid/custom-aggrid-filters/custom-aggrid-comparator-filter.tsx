@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { CustomAggridComparatorSelector } from './custom-aggrid-comparator-selector';
 import { CustomAggridTextFilter } from './custom-aggrid-text-filter';

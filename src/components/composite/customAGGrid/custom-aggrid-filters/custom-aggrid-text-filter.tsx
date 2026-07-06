@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useMemo } from 'react';
-import { Grid, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Grid2 as Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { mergeSx, MuiStyles } from '../../../../utils';
@@ -48,7 +48,7 @@ export function CustomAggridTextFilter({
 
     return (
         <Grid container direction="column" gap={0.2}>
-            <Grid item>
+            <Grid>
                 <TextField
                     size="small"
                     fullWidth
@@ -74,7 +74,7 @@ export function CustomAggridTextFilter({
                 />
             </Grid>
             {isRoundingDisplayed && (
-                <Grid item>
+                <Grid>
                     <DisplayRounding decimalAfterDot={decimalAfterDot} />
                 </Grid>
             )}
