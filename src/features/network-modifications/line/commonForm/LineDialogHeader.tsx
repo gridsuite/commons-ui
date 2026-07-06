@@ -50,7 +50,7 @@ export function LineDialogHeader({ lineToModify, isModification = false }: Reado
     );
 
     return (
-        <Grid container spacing={2} size={12}>
+        <Grid container spacing={2} sx={{ width: '100%' }}>
             <GridItem size={4}>{lineIdField}</GridItem>
             <GridItem size={4}>{lineNameField}</GridItem>
         </Grid>
