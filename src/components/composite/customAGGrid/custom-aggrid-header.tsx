@@ -19,13 +19,18 @@ import { CustomAggridFilter } from './custom-aggrid-filters/custom-aggrid-filter
 
 const styles = {
     displayName: {
+        minWidth: 0,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
     },
     invalidIcon: {
         display: 'flex',
         alignItems: 'center',
         ml: 0.5,
+    },
+    titleContainer: {
+        minWidth: 0,
     },
     actions: {
         flex: '0 0 auto',
@@ -77,19 +82,21 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
 
     return (
         <Grid container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} sx={{ width: '100%' }}>
-            <Grid container alignItems={'center'} wrap={'nowrap'} sx={{ width: '100%' }}>
-                {/* We tweak flexBasis to stick the column filter and custom menu either next the column name or on the far right of the header */}
+            <Grid container alignItems="center" wrap="nowrap" sx={{ width: '100%' }}>
                 <Grid
                     container
                     sx={{
                         cursor: isSortable ? 'pointer' : 'default',
+                        ...styles.titleContainer,
+                        flex: forceDisplayFilterIcon ? '0 1 auto' : undefined,
                     }}
-                    flexBasis={forceDisplayFilterIcon ? '0%' : '100%'}
+                    flexBasis={forceDisplayFilterIcon ? 'auto' : '100%'}
                 >
                     <Grid
                         container
                         sx={{
                             overflow: 'hidden',
+                            minWidth: 0,
                         }}
                         onClick={handleClickHeader}
                     >
@@ -112,7 +119,7 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid container sx={styles.actions}>
+                <Grid container flex="1" wrap="nowrap" sx={styles.actions}>
                     {filterComponent && (
                         <CustomAggridFilter
                             filterComponent={filterComponent}
