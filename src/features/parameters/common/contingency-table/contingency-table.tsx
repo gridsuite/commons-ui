@@ -26,6 +26,7 @@ const styles = {
 type SuccessCountType = {
     success: true;
     nbContingencies: number;
+    notFoundElements: number;
 };
 
 type FailureCountType = {
@@ -93,7 +94,6 @@ function ContingencyTableWithApiRef(
                 });
             });
             const enriched: Record<string, ContingencyCountByContingencyList> = {};
-
             for (let i = 0; i < Object.entries(contingencyCount.countByContingencyList).length; i++) {
                 const [contingencyListUuid] = Object.entries(contingencyCount.countByContingencyList)[i];
                 const listName = namesById[contingencyListUuid as UUID];
@@ -111,10 +111,12 @@ function ContingencyTableWithApiRef(
             contingencyCount: ContingencyCountEnriched | null
         ): SimulatedContingencyCountType {
             let total = 0;
+            let totalNotFound = 0;
             if (contingencyCount === null) {
                 return {
                     success: true,
                     nbContingencies: 0,
+                    notFoundElements: 0,
                 };
             }
 
@@ -136,11 +138,16 @@ function ContingencyTableWithApiRef(
                         invalidContingencyErrorMessage: errorMessage,
                     };
                 }
+
+                if (countByContingencyList.notFoundElements !== null) {
+                    totalNotFound += Object.entries(countByContingencyList.notFoundElements).length;
+                }
             }
 
             return {
                 success: true,
                 nbContingencies: total,
+                notFoundElements: totalNotFound,
             };
         }
 
@@ -238,9 +245,10 @@ function ContingencyTableWithApiRef(
         return simulatedContingencyCount.success ? (
             <Alert variant="standard" icon={false} severity="info" sx={styles.alert}>
                 <FormattedMessage
-                    id="xContingenciesWillBeSimulated"
+                    id="xContingenciesWillBeSimulatedAndYNotFound"
                     values={{
-                        x: simulatedContingencyCount.nbContingencies,
+                        x: simulatedContingencyCount?.nbContingencies ?? '...',
+                        y: simulatedContingencyCount?.notFoundElements ?? '...',
                     }}
                 />
             </Alert>
