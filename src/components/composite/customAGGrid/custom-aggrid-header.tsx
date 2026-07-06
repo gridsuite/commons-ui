@@ -100,7 +100,7 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                         }}
                         onClick={handleClickHeader}
                     >
-                        <Grid container sx={styles.displayName} alignItems={'center'} wrap="nowrap">
+                        <Grid container sx={styles.displayName} alignItems="center" wrap="nowrap">
                             <Grid>{displayName}</Grid>
                             {isInvalid && (
                                 <Grid sx={styles.invalidIcon}>
@@ -119,7 +119,7 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid container flex="1" wrap="nowrap" sx={styles.actions}>
+                <Grid container sx={styles.actions}>
                     {filterComponent && (
                         <CustomAggridFilter
                             filterComponent={filterComponent}
