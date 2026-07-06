@@ -27,6 +27,11 @@ const styles = {
         alignItems: 'center',
         ml: 0.5,
     },
+    actions: {
+        flex: '0 0 auto',
+        flexWrap: 'nowrap',
+        alignItems: 'center',
+    },
 } as const satisfies MuiStyles;
 
 interface CustomHeaderComponentProps<F extends CustomAggridFilterParams, T> extends CustomHeaderProps {
@@ -71,8 +76,8 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
     }, []);
 
     return (
-        <Grid container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <Grid container alignItems="center" wrap="nowrap">
+        <Grid container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} sx={{ width: '100%' }}>
+            <Grid container alignItems={'center'} wrap={'nowrap'} sx={{ width: '100%' }}>
                 {/* We tweak flexBasis to stick the column filter and custom menu either next the column name or on the far right of the header */}
                 <Grid
                     container
@@ -88,7 +93,7 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                         }}
                         onClick={handleClickHeader}
                     >
-                        <Grid container sx={styles.displayName} alignItems="center" wrap="nowrap">
+                        <Grid container sx={styles.displayName} alignItems={'center'} wrap="nowrap">
                             <Grid>{displayName}</Grid>
                             {isInvalid && (
                                 <Grid sx={styles.invalidIcon}>
@@ -107,7 +112,7 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid container flex="1" wrap="nowrap">
+                <Grid container sx={styles.actions}>
                     {filterComponent && (
                         <CustomAggridFilter
                             filterComponent={filterComponent}
