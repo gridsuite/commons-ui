@@ -497,4 +497,7 @@ export const parametersFr = {
     NODE_BUILT: 'Nœud réalisé',
     NODE_NOT_BUILT: 'Nœud non réalisé',
     ROOT_NODE: 'Nœud racine',
+
+    // Tooltips
+    'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
 };
