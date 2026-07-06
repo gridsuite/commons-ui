@@ -7,7 +7,7 @@
 
 import { Box, ButtonGroup, Grid2 as Grid, LinearProgress, Stack, Tooltip } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
-import { ReactNode, useCallback, useState } from 'react';
+import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { FieldValues, UseFormGetValues } from 'react-hook-form';
@@ -25,8 +25,8 @@ import { useParameterLayoutContext } from './parameter-layout-provider';
 
 export type CreateParameterDialogConfig<T extends FieldValues> = {
     studyUuid: UUID | null;
-    getParameterValues: UseFormGetValues<T> | any;
-    parameterFormatter: (params: any) => any;
+    getParameterValues: UseFormGetValues<T>;
+    parameterFormatter: (params: FieldValues) => any;
 };
 
 interface ParameterLayoutProps<T extends FieldValues> {
@@ -37,7 +37,7 @@ interface ParameterLayoutProps<T extends FieldValues> {
     createParameter?: CreateParameterDialogConfig<T>;
     selectParameterHandler?: (nodes: TreeViewFinderNodeProps[]) => void;
     resetHandler?: () => void;
-    validateHandler?: React.MouseEventHandler<HTMLButtonElement>;
+    validateHandler?: MouseEventHandler<HTMLButtonElement>;
     validateDisabled?: boolean;
 }
 
