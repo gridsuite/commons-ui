@@ -16,7 +16,7 @@ export interface FieldErrorAlertProps {
 // this component needs to be isolated to avoid too many rerenders
 export function FieldErrorAlert({ message }: Readonly<FieldErrorAlertProps>) {
     return (
-        <Grid size={12}>
+        <Grid sx={{ width: '100%' }}>
             <Alert severity="error">{message}</Alert>
         </Grid>
     );

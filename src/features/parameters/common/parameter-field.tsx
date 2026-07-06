@@ -86,7 +86,7 @@ function ParameterField({ id, name, type, label, description, possibleValues, sx
     };
 
     return (
-        <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between" size={12}>
+        <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between" sx={{ width: '100%' }}>
             <Grid size={8}>
                 <CustomTooltip title={description} key={name}>
                     <Typography sx={parametersStyles.parameterName}>
