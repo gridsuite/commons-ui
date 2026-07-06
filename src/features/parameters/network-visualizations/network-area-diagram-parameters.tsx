@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import {
     NAD_POSITIONS_GENERATION_MODE_LABEL,
@@ -25,10 +25,10 @@ export function NetworkAreaDiagramParameters() {
             marginTop={-3}
             justifyContent="space-between"
         >
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={NAD_POSITIONS_GENERATION_MODE_LABEL} />
             </Grid>
-            <Grid item container xs={4} sx={parametersStyles.controlItem}>
+            <Grid container size={4} sx={parametersStyles.controlItem}>
                 <MuiSelectInput
                     fullWidth
                     name={`${TabValues.NETWORK_AREA_DIAGRAM}.${PARAM_NAD_POSITIONS_GENERATION_MODE}`}

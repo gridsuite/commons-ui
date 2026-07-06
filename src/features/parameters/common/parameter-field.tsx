@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Chip, Grid, SxProps, Typography } from '@mui/material';
+import { Chip, Grid2 as Grid, SxProps, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
@@ -86,15 +86,15 @@ function ParameterField({ id, name, type, label, description, possibleValues, sx
     };
 
     return (
-        <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between">
-            <Grid item xs={8}>
+        <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between" size={12}>
+            <Grid size={8}>
                 <CustomTooltip title={description} key={name}>
                     <Typography sx={parametersStyles.parameterName}>
                         {label ? <FormattedMessage id={label} /> : name}
                     </Typography>
                 </CustomTooltip>
             </Grid>
-            <Grid item container xs={4} sx={parametersStyles.controlItem}>
+            <Grid container size={4} sx={parametersStyles.controlItem}>
                 {renderField()}
             </Grid>
             <LineSeparator />

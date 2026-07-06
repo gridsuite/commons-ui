@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ReactNode } from 'react';
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, LinearProgress, Tab, Tabs, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FieldErrors } from 'react-hook-form';
 import { ProviderParam, TabPanel } from '../common';
@@ -53,7 +53,7 @@ export function DynamicSimulationForm({
         <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
-                <Grid container sx={{ height: '100%' }} direction="column">
+                <Stack sx={{ height: '100%' }}>
                     <Grid container>
                         <ProviderParam options={formattedProviders} />
                     </Grid>
@@ -88,8 +88,7 @@ export function DynamicSimulationForm({
                     </Grid>
                     <Grid
                         container
-                        item
-                        xs
+                        size="grow"
                         key="dsParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
                             paddingTop: 0,
@@ -119,7 +118,7 @@ export function DynamicSimulationForm({
                         </TabPanel>
                     </Grid>
                     {renderActions?.(onError)}
-                </Grid>
+                </Stack>
             ) : (
                 <LinearProgress />
             )}

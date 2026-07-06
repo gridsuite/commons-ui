@@ -6,13 +6,12 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldErrors, FieldValues } from 'react-hook-form';
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
-import { ComputingType } from '../common/computing-type';
-import { ElementType, mergeSx, snackWithFallback } from '../../../utils';
+import { ComputingType, ElementType, mergeSx, snackWithFallback } from '../../../utils';
 import { DynamicMarginCalculationForm } from './dynamic-margin-calculation-form';
 import {
     toFormValues,
@@ -104,7 +103,7 @@ export function DynamicMarginCalculationInline({
     const renderActions = (onSubmitError: (errors: FieldErrors) => void) => {
         return (
             <>
-                <Grid container item>
+                <Grid container>
                     <Grid
                         sx={mergeSx(parametersStyles.controlParametersItem, {
                             paddingTop: 1,

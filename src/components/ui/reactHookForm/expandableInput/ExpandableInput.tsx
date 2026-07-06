@@ -6,7 +6,7 @@
  */
 
 import { useFieldArray } from 'react-hook-form';
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { forwardRef, useImperativeHandle } from 'react';
 import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
@@ -72,8 +72,8 @@ export const ExpandableInput = forwardRef(
         );
 
         return (
-            <Grid item container spacing={2}>
-                <Grid item xs={12}>
+            <Grid container spacing={2}>
+                <Grid size={12}>
                     <ErrorInput name={name} InputField={MidFormError} />
                 </Grid>
                 {watchProps &&
@@ -94,7 +94,7 @@ export const ExpandableInput = forwardRef(
                         </DeletableRow>
                     ))}
                 {addButtonLabel && (
-                    <Grid item>
+                    <Grid>
                         <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
                     </Grid>
                 )}

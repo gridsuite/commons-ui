@@ -6,14 +6,14 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
 import { SubmitButton } from '../../../components/ui';
-import { ElementType, UseParametersBackendReturnProps } from '../../../utils';
-import { ComputingType, LabelledButton } from '../common';
+import { ComputingType, ElementType, UseParametersBackendReturnProps } from '../../../utils';
+import { LabelledButton } from '../common';
 import { DirectoryItemSelector } from '../../../components/ui/directoryItemSelector';
 import { CreateParameterDialog } from '../common/parameters-creation-dialog';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
@@ -99,7 +99,7 @@ export function ShortCircuitParametersInLine({
             renderActions={() => {
                 return (
                     <Box>
-                        <Grid container item>
+                        <Grid container>
                             <LabelledButton
                                 callback={() => setOpenSelectParameterDialog(true)}
                                 label="settings.button.chooseSettings"
