@@ -5,6 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid2 as Grid } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ComputingType, ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
@@ -69,18 +70,14 @@ export function ShortCircuitParametersEditionDialog({
             disabledSave={disableSave}
             maxWidth="lg"
         >
-            <ShortCircuitParametersForm
-                shortCircuitMethods={shortCircuitMethods}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
-                        />
-                    );
-                }}
-            />
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
+                />
+            </Grid>
+            <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} />
         </CustomMuiDialog>
     );
 }

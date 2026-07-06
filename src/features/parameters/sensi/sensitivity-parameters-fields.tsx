@@ -14,16 +14,12 @@ import {
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
 } from './constants';
 import { FloatInput } from '../../../components/ui';
+import { parametersStyles } from '../parameters-style';
 
 export function SensitivityAnalysisFields() {
     return (
-        <Grid container>
-            <Grid
-                sx={{
-                    fontWeight: 'bold',
-                    marginBottom: '10px',
-                }}
-            >
+        <Grid container spacing={1} paddingTop={1}>
+            <Grid sx={parametersStyles.parameterName}>
                 <FormattedMessage id="flowSensitivityValue" />
             </Grid>
             <Grid container spacing={1}>
