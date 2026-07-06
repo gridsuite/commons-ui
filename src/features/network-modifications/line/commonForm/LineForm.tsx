@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { LINE_TAB_FIELDS, LineDialogTab } from './line.utils';
 import { LineDialogHeader, LineDialogHeaderProps } from './LineDialogHeader';
 import { LineDialogTabs } from './LineDialogTabs';
@@ -31,10 +31,10 @@ export function LineForm({
 
     return (
         <Grid container direction="column" wrap="nowrap" sx={{ height: '100%', gap: 2 }}>
-            <Grid item sx={{ flexShrink: 0 }}>
+            <Grid sx={{ flexShrink: 0 }}>
                 <LineDialogHeader lineToModify={lineToModify} isModification={isModification} />
             </Grid>
-            <Grid item sx={{ flexShrink: 0 }}>
+            <Grid sx={{ flexShrink: 0 }}>
                 <LineDialogTabs
                     tabIndex={tabIndex}
                     tabIndexesWithError={tabIndexesWithError}
@@ -43,7 +43,7 @@ export function LineForm({
                     withConnectivity={withConnectivity}
                 />
             </Grid>
-            <Grid item sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
+            <Grid sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden' }}>
                 <LineDialogTabsContent
                     tabIndex={tabIndex}
                     lineToModify={lineToModify}
