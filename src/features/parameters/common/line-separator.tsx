@@ -8,7 +8,7 @@ import { Divider, Grid2 as Grid } from '@mui/material';
 
 export function LineSeparator() {
     return (
-        <Grid sx={{ width: '100%' }}>
+        <Grid size={12}>
             <Divider />
         </Grid>
     );
