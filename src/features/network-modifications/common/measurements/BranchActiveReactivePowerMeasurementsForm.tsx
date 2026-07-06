@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Box } from '@mui/material';
 import { BranchActiveReactivePowerMeasurementsFormProps } from './measurement.type';
 import { PowerMeasurementsForm } from './PowerMeasurementsForm';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
-import { Box } from "@mui/material";
 
 export function BranchActiveReactivePowerMeasurementsForm({
     equipmentToModify,
@@ -18,15 +18,15 @@ export function BranchActiveReactivePowerMeasurementsForm({
             <GridSection title="MeasurementsSection" />
             <GridSection title="Side1" heading={4} />
             <PowerMeasurementsForm
-                    side={1}
-                    activePowerMeasurement={equipmentToModify?.measurementP1}
-                    reactivePowerMeasurement={equipmentToModify?.measurementQ1}
+                side={1}
+                activePowerMeasurement={equipmentToModify?.measurementP1}
+                reactivePowerMeasurement={equipmentToModify?.measurementQ1}
             />
             <GridSection title="Side2" heading={4} />
             <PowerMeasurementsForm
-                    side={2}
-                    activePowerMeasurement={equipmentToModify?.measurementP2}
-                    reactivePowerMeasurement={equipmentToModify?.measurementQ2}
+                side={2}
+                activePowerMeasurement={equipmentToModify?.measurementP2}
+                reactivePowerMeasurement={equipmentToModify?.measurementQ2}
             />
         </Box>
     );
