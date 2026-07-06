@@ -17,7 +17,7 @@ export interface GridSectionProps {
 
 export function GridSection({ title, heading = 3, size = 12, customStyle }: Readonly<GridSectionProps>) {
     return (
-        <Grid container spacing={2} size={12}>
+        <Grid container spacing={2} sx={{ width: '100%' }}>
             <Grid size={size}>
                 <Box sx={customStyle} component={`h${heading}`}>
                     <FormattedMessage id={title} />
