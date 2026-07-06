@@ -8,7 +8,8 @@ import { UUID } from 'node:crypto';
 
 export interface ContingencyCountByContingencyList {
     nbContingencies: number;
-    notFoundElements: Record<string, Set<string>>;
+    notFoundElements: Record<string, Set<string>> | null;
+    invalidContingencyErrorMessage: string | null;
 }
 
 export interface ContingencyCount {

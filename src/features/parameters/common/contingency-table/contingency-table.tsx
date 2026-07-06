@@ -19,8 +19,8 @@ import { MuiStyles, snackWithFallback, ContingencyListsInfosEnriched } from '../
 import { DndColumn } from '../../../../components';
 
 const styles = {
-    alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0, width: '100%' },
-    error: { color: 'red', paddingTop: 0, paddingBottom: 0, width: '100%' },
+    alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
+    error: { color: 'error.main', paddingTop: 0, paddingBottom: 0 },
 } satisfies MuiStyles;
 
 type SuccessCountType = {
@@ -30,9 +30,7 @@ type SuccessCountType = {
 
 type FailureCountType = {
     success: false;
-    contingencyListName: string;
-    contingencyName: string;
-    notFoundElements: string[];
+    invalidContingencyErrorMessage: string;
 };
 
 type SimulatedContingencyCountType = SuccessCountType | FailureCountType;
@@ -95,6 +93,7 @@ function ContingencyTableWithApiRef(
                 });
             });
             const enriched: Record<string, ContingencyCountByContingencyList> = {};
+
             for (let i = 0; i < Object.entries(contingencyCount.countByContingencyList).length; i++) {
                 const [contingencyListUuid] = Object.entries(contingencyCount.countByContingencyList)[i];
                 const listName = namesById[contingencyListUuid as UUID];
@@ -126,24 +125,16 @@ function ContingencyTableWithApiRef(
 
                 total += countByContingencyList.nbContingencies;
 
-                for (let j = 0; j < Object.entries(countByContingencyList.notFoundElements).length; j++) {
-                    const [contingencyName, contingencyEquipments] = Object.entries(
-                        countByContingencyList.notFoundElements
-                    )[j];
-
-                    if (
-                        contingencyEquipments !== undefined &&
-                        (contingencyEquipments as unknown as string[]).length > 0
-                    ) {
-                        return {
-                            success: false,
-                            contingencyListName: contingencyListName.includes('_')
-                                ? contingencyListName.slice(contingencyListName.indexOf('_') + 1)
-                                : '',
-                            contingencyName,
-                            notFoundElements: contingencyEquipments as unknown as string[],
-                        };
+                if (countByContingencyList.invalidContingencyErrorMessage !== null) {
+                    let errorMessage: string = countByContingencyList.invalidContingencyErrorMessage;
+                    if (contingencyListName.includes('_')) {
+                        const lname = contingencyListName.slice(contingencyListName.indexOf('_') + 1);
+                        errorMessage = `${errorMessage} in the list ${lname}`;
                     }
+                    return {
+                        success: false,
+                        invalidContingencyErrorMessage: errorMessage,
+                    };
                 }
             }
 
@@ -258,9 +249,7 @@ function ContingencyTableWithApiRef(
                 <FormattedMessage
                     id="contingenciesWillNotBeSimulated"
                     values={{
-                        contingencyName: simulatedContingencyCount.contingencyName,
-                        contingencyListName: simulatedContingencyCount.contingencyListName,
-                        notFoundElements: simulatedContingencyCount.notFoundElements.join(', '),
+                        invalidContingencyErrorMessage: simulatedContingencyCount.invalidContingencyErrorMessage,
                     }}
                 />
             </Alert>
