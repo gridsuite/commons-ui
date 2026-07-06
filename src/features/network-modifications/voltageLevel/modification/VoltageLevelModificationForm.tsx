@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Box, Grid2 as Grid, Tab, Tabs, TextField } from '@mui/material';
+import { Box, Grid2 as Grid, Tab, Tabs, TextField, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
@@ -18,7 +18,7 @@ import {
     BusbarSectionVoltageMeasurementsForm,
 } from '../../common/measurements/BusbarSectionVoltageMeasurementsForm';
 import { AutocompleteInput, FloatInput, TextInput } from '../../../../components';
-import GridSection from '../../../../components/composite/grid/grid-section';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
 
 enum VoltageLevelModificationTab {
     CHARACTERISTICS_TAB = 0,
@@ -39,7 +39,7 @@ export function VoltageLevelModificationForm({
     const [tabIndex, setTabIndex] = useState(VoltageLevelModificationTab.CHARACTERISTICS_TAB);
 
     return (
-        <Grid container direction="column" spacing={2}>
+        <Stack spacing={2}>
             <Grid>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -166,6 +166,6 @@ export function VoltageLevelModificationForm({
                     <BusbarSectionVoltageMeasurementsForm busbarSections={busbarSections} />
                 </Box>
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

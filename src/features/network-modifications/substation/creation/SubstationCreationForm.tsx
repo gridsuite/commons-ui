@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { TextInput } from '../../../../components/ui';
 import { CountrySelectionInput } from '../../../../components/ui/reactHookForm/CountrySelectionInput';
 import { FieldConstants } from '../../../../utils';
@@ -14,16 +14,16 @@ import { filledTextField } from '../../common';
 
 export function SubstationCreationForm() {
     return (
-        <Grid container direction="column" spacing={2}>
-            <Grid item>
+        <Stack spacing={2}>
+            <Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={filledTextField} />
                     </Grid>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={filledTextField} />
                     </Grid>
-                    <Grid item xs>
+                    <Grid size="grow">
                         <CountrySelectionInput
                             name={FieldConstants.COUNTRY}
                             label="Country"
@@ -33,9 +33,9 @@ export function SubstationCreationForm() {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item>
+            <Grid>
                 <PropertiesForm networkElementType="substation" />
             </Grid>
-        </Grid>
+        </Stack>
     );
 }

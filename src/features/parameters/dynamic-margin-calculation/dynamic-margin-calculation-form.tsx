@@ -6,7 +6,7 @@
  */
 
 import { ReactNode } from 'react';
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, LinearProgress, Tab, Tabs, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FieldErrors } from 'react-hook-form';
 import { mergeSx } from '../../../utils';
@@ -41,7 +41,7 @@ export function DynamicMarginCalculationForm({
         <>
             {renderTitleFields?.()}
             {paramsLoaded ? (
-                <Grid container sx={{ height: '100%' }} direction="column">
+                <Stack sx={{ height: '100%' }}>
                     <Grid container>
                         <ProviderParam options={formattedProviders} />
                     </Grid>
@@ -61,7 +61,7 @@ export function DynamicMarginCalculationForm({
                     </Grid>
                     <Grid
                         container
-                        xs
+                        size="grow"
                         key="dmcParameters"
                         sx={mergeSx(parametersStyles.scrollableGrid, {
                             paddingTop: 0,
@@ -76,7 +76,7 @@ export function DynamicMarginCalculationForm({
                         </TabPanel>
                     </Grid>
                     {renderActions?.(onError)}
-                </Grid>
+                </Stack>
             ) : (
                 <LinearProgress />
             )}
