@@ -34,7 +34,8 @@ export const parametersEn = {
     descLfWriteSlackBus: 'Write slack bus in the network',
     descLfDC: 'Run a DC power flow',
     descLfConnectedComponentMode: 'Select connected component for calculation',
-    descLfConnectedComponentModeMain: 'Main connected component',
+    descLfConnectedComponentModeMainSync: 'Main synchronous component',
+    descLfConnectedComponentModeMainConnected: 'Main connected component',
     descLfConnectedComponentModeAll: 'All connected components',
     descLfHvdcAcEmulation: 'Enable AC emulation on HVDC lines',
     descLfDistributedSlack: 'Enable balancing',
@@ -473,4 +474,7 @@ export const parametersEn = {
     NODE_BUILT: 'Node built',
     NODE_NOT_BUILT: 'Node not built',
     ROOT_NODE: 'Root node',
+
+    // Tooltips
+    'tooltip.reset': 'User default parameters',
 };
