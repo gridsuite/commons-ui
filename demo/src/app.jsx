@@ -628,95 +628,100 @@ function AppContent({ language, onLanguageClick }) {
             </IconButton>
         );
     const defaultTab = (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Box mt={3}>
                 <Typography variant="h3" color="textPrimary" align="center">
                     Connected
                 </Typography>
             </Box>
-            <hr />
-            <hr />
+            <hr style={{ width: '100%' }} />
             {testIcons()}
-            <LeftPanelOpenIcon fontSize="large" color="secondary" />
-            <EditNoteIcon fontSize="large" />
-            <EditNoteIcon fontSize="large" empty />
-            <hr />
+            <div>
+                <LeftPanelOpenIcon fontSize="large" color="secondary" />
+                <EditNoteIcon fontSize="large" />
+                <EditNoteIcon fontSize="large" empty />
+            </div>
+            <hr style={{ width: '100%' }} />
+            <div>
+                <PermanentSnackButton />
+                <SnackErrorButton />
+                <SnackWarningButton />
+                <SnackInfoButton />
+                <SnackSuccessButton />
+            </div>
+            <hr style={{ width: '100%' }} />
+            <div>
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() => setOpenMultiChoiceDialog(true)}
+                >
+                    Checkbox list
+                </Button>
+                <MultipleSelectionDialog
+                    items={checkBoxListOption}
+                    selectedItems={[]}
+                    open={openMultiChoiceDialog}
+                    getItemLabel={(o) => o.label}
+                    getItemLabelSecondary={(o) => o.labelSecondary}
+                    getItemId={(o) => o.id}
+                    handleClose={() => setOpenMultiChoiceDialog(false)}
+                    handleValidate={() => setOpenMultiChoiceDialog(false)}
+                    titleId="Checkbox list"
+                    divider
+                    secondaryAction={secondaryAction}
+                    addSelectAllCheckbox
+                    onItemClick={(item) => console.log('clicked', item)}
+                    isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
+                />
 
-            <PermanentSnackButton />
-            <SnackErrorButton />
-            <SnackWarningButton />
-            <SnackInfoButton />
-            <SnackSuccessButton />
-
-            <Button
-                variant="contained"
-                style={{
-                    float: 'left',
-                    margin: '5px',
-                }}
-                onClick={() => setOpenMultiChoiceDialog(true)}
-            >
-                Checkbox list
-            </Button>
-            <MultipleSelectionDialog
-                items={checkBoxListOption}
-                selectedItems={[]}
-                open={openMultiChoiceDialog}
-                getItemLabel={(o) => o.label}
-                getItemLabelSecondary={(o) => o.labelSecondary}
-                getItemId={(o) => o.id}
-                handleClose={() => setOpenMultiChoiceDialog(false)}
-                handleValidate={() => setOpenMultiChoiceDialog(false)}
-                titleId="Checkbox list"
-                divider
-                secondaryAction={secondaryAction}
-                addSelectAllCheckbox
-                onItemClick={(item) => console.log('clicked', item)}
-                isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
-            />
-
-            <Button
-                variant="contained"
-                style={{
-                    float: 'left',
-                    margin: '5px',
-                }}
-                onClick={() => setOpenDraggableMultiChoiceDialog(true)}
-            >
-                Draggable checkbox list
-            </Button>
-            <MultipleSelectionDialog
-                items={checkBoxListOption}
-                selectedItems={[]}
-                open={openDraggableMultiChoiceDialog}
-                getItemLabel={(o) => o.label}
-                getItemLabelSecondary={(o) => o.labelSecondary}
-                getItemId={(o) => o.id}
-                handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
-                handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
-                titleId="Draggable checkbox list"
-                divider
-                secondaryAction={secondaryAction}
-                isDndActive
-                onDragEnd={({ source, destination }) => {
-                    if (destination !== null && source.index !== destination.index) {
-                        const res = [...checkBoxListOption];
-                        const [item] = res.splice(source.index, 1);
-                        res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
-                        setCheckBoxListOption(res);
-                    }
-                }}
-                addSelectAllCheckbox
-                onItemClick={(item) => console.log('clicked', item)}
-                isItemClickable={(item) => item.id.indexOf('i') >= 0}
-                sx={{
-                    items: (item) => ({
-                        label: {
-                            color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
-                        },
-                    }),
-                }}
-            />
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() => setOpenDraggableMultiChoiceDialog(true)}
+                >
+                    Draggable checkbox list
+                </Button>
+                <MultipleSelectionDialog
+                    items={checkBoxListOption}
+                    selectedItems={[]}
+                    open={openDraggableMultiChoiceDialog}
+                    getItemLabel={(o) => o.label}
+                    getItemLabelSecondary={(o) => o.labelSecondary}
+                    getItemId={(o) => o.id}
+                    handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
+                    handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
+                    titleId="Draggable checkbox list"
+                    divider
+                    secondaryAction={secondaryAction}
+                    isDndActive
+                    onDragEnd={({ source, destination }) => {
+                        if (destination !== null && source.index !== destination.index) {
+                            const res = [...checkBoxListOption];
+                            const [item] = res.splice(source.index, 1);
+                            res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
+                            setCheckBoxListOption(res);
+                        }
+                    }}
+                    addSelectAllCheckbox
+                    onItemClick={(item) => console.log('clicked', item)}
+                    isItemClickable={(item) => item.id.indexOf('i') >= 0}
+                    sx={{
+                        items: (item) => ({
+                            label: {
+                                color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
+                            },
+                        }),
+                    }}
+                />
+            </div>
+            <hr style={{ width: '100%' }} />
             <div
                 style={{
                     display: 'flex',
@@ -809,6 +814,7 @@ function AppContent({ language, onLanguageClick }) {
                     validationButtonText="Move To this location"
                 />
             </div>
+            <hr style={{ width: '100%' }} />
             <div
                 style={{
                     margin: '10px 0px 0px 0px',
