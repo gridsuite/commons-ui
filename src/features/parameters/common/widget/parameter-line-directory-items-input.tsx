@@ -28,7 +28,7 @@ export function ParameterLineDirectoryItemsInput({
     allowMultiSelect = true,
 }: Readonly<DirectoryItemsInputLineProps>) {
     return (
-        <Grid container spacing={1} paddingTop={1} paddingBottom={1} size={12}>
+        <Grid container spacing={1} paddingTop={1} paddingBottom={1} sx={{ width: '100%' }}>
             <Grid size={7} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useRef, useState } from 'react';
-import { Badge, Grid, IconButton } from '@mui/material';
+import { Badge, Grid2 as Grid, IconButton } from '@mui/material';
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 import { MuiStyles } from '../../../utils';
 

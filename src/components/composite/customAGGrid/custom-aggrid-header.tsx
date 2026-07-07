@@ -7,7 +7,7 @@
 
 import React, { ComponentType, useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Grid, Tooltip } from '@mui/material';
+import { Grid2 as Grid, Tooltip } from '@mui/material';
 import { WarningAmber } from '@mui/icons-material';
 import { CustomHeaderProps } from 'ag-grid-react';
 import { CustomAggridSort } from './custom-aggrid-sort';
@@ -19,13 +19,23 @@ import { CustomAggridFilter } from './custom-aggrid-filters/custom-aggrid-filter
 
 const styles = {
     displayName: {
+        minWidth: 0,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
     },
     invalidIcon: {
         display: 'flex',
         alignItems: 'center',
         ml: 0.5,
+    },
+    titleContainer: {
+        minWidth: 0,
+    },
+    actions: {
+        flex: '0 0 auto',
+        flexWrap: 'nowrap',
+        alignItems: 'center',
     },
 } as const satisfies MuiStyles;
 
@@ -71,27 +81,29 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
     }, []);
 
     return (
-        <Grid container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <Grid container alignItems="center" wrap="nowrap">
-                {/* We tweak flexBasis to stick the column filter and custom menu either next the column name or on the far right of the header */}
+        <Grid container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} sx={{ width: '100%' }}>
+            <Grid container alignItems="center" wrap="nowrap" sx={{ width: '100%' }}>
                 <Grid
                     container
                     sx={{
                         cursor: isSortable ? 'pointer' : 'default',
+                        ...styles.titleContainer,
+                        flex: forceDisplayFilterIcon ? '0 1 auto' : undefined,
                     }}
-                    flexBasis={forceDisplayFilterIcon ? '0%' : '100%'}
+                    flexBasis={forceDisplayFilterIcon ? 'auto' : '100%'}
                 >
                     <Grid
                         container
                         sx={{
                             overflow: 'hidden',
+                            minWidth: 0,
                         }}
                         onClick={handleClickHeader}
                     >
                         <Grid container sx={styles.displayName} alignItems="center" wrap="nowrap">
-                            <Grid item>{displayName}</Grid>
+                            <Grid>{displayName}</Grid>
                             {isInvalid && (
-                                <Grid item sx={styles.invalidIcon}>
+                                <Grid sx={styles.invalidIcon}>
                                     <Tooltip
                                         title={<FormattedMessage id="spreadsheet/column/invalid-without-loadflow" />}
                                     >
@@ -100,14 +112,14 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                                 </Grid>
                             )}
                             {sortParams && (
-                                <Grid item>
+                                <Grid>
                                     <CustomAggridSort colId={column.getId()} sortParams={sortParams} />
                                 </Grid>
                             )}
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid container flex="1" wrap="nowrap">
+                <Grid container sx={styles.actions}>
                     {filterComponent && (
                         <CustomAggridFilter
                             filterComponent={filterComponent}
