@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ParametersEditionDialogProps } from '../common';
 import {
@@ -78,7 +78,11 @@ export function LoadFlowParametersEditionDialog({
                         elementType={ElementType.LOADFLOW_PARAMETERS}
                     />
                 </Grid>
-                <LoadFlowParametersForm loadflowMethods={loadflowMethods} />
+                {loadflowMethods.paramsLoaded ? (
+                    <LoadFlowParametersForm loadflowMethods={loadflowMethods} />
+                ) : (
+                    <LinearProgress />
+                )}
             </LoadFlowProvider>
         </CustomMuiDialog>
     );
