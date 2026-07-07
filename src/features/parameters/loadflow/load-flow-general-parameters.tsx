@@ -67,7 +67,7 @@ const basicParams: SpecificParameterInfos[] = [
             },
             {
                 id: 'MAIN_CONNECTED',
-                label: 'descLfConnectedComponentModeMain',
+                label: 'descLfConnectedComponentModeMainConnected',
             },
             {
                 id: 'ALL_CONNECTED',

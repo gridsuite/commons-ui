@@ -35,7 +35,7 @@ export const parametersEn = {
     descLfDC: 'Run a DC power flow',
     descLfConnectedComponentMode: 'Select connected component for calculation',
     descLfConnectedComponentModeMainSync: 'Main synchronous component',
-    descLfConnectedComponentModeMain: 'Main connected component',
+    descLfConnectedComponentModeMainConnected: 'Main connected component',
     descLfConnectedComponentModeAll: 'All connected components',
     descLfHvdcAcEmulation: 'Enable AC emulation on HVDC lines',
     descLfDistributedSlack: 'Enable balancing',
