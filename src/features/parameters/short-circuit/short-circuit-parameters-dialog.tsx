@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ComputingType, ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
@@ -77,7 +77,11 @@ export function ShortCircuitParametersEditionDialog({
                     elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
                 />
             </Grid>
-            <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} />
+            {shortCircuitMethods.paramsLoaded ? (
+                <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} />
+            ) : (
+                <LinearProgress />
+            )}
         </CustomMuiDialog>
     );
 }
