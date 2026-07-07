@@ -11,13 +11,15 @@ import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import {
+    getAdvancedLoadFlowParametersFormSchema,
     getCommonLoadFlowParametersFormSchema,
     mapLimitReductions,
     setLimitReductions,
     TabValues,
 } from './load-flow-parameters-utils';
-import { LoadFlowParametersInfos } from './load-flow-parameters-type';
+import { LoadFlowParametersInfos, ParameterValue } from './load-flow-parameters-type';
 import {
+    ADVANCED_PARAMETERS,
     COMMON_PARAMETERS,
     PROVIDER,
     SPECIFIC_PARAMETERS,
@@ -43,6 +45,7 @@ import {
     setSpecificParameters,
 } from '../common/utils';
 import { snackWithFallback } from '../../../utils/error';
+import { advancedParams } from './load-flow-advanced-parameters';
 
 export interface UseLoadFlowParametersFormReturn {
     formMethods: UseFormReturn;
@@ -98,11 +101,14 @@ export const useLoadFlowParametersForm = (
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,
+                ...getAdvancedLoadFlowParametersFormSchema().fields,
                 ...getLimitReductionsFormSchema(limitReductionNumber).fields,
                 ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
     }, [name, limitReductionNumber, specificParametersDescriptionForProvider]);
+
+    const { advancedParameters, commonParameters } = useMemo(() => splitCommonParameters(params?.commonParameters), [params?.commonParameters]);
 
     const formMethods = useForm({
         defaultValues: {
@@ -110,7 +116,10 @@ export const useLoadFlowParametersForm = (
             [PROVIDER]: params?.provider,
             [PARAM_LIMIT_REDUCTION]: null,
             [COMMON_PARAMETERS]: {
-                ...params?.commonParameters,
+                ...commonParameters,
+            },
+            [ADVANCED_PARAMETERS]: {
+                ...advancedParameters
             },
             [SPECIFIC_PARAMETERS]: {
                 ...specificParametersDefaultValues,
@@ -160,6 +169,7 @@ export const useLoadFlowParametersForm = (
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
+                    ...formData[ADVANCED_PARAMETERS]
                 },
                 specificParametersPerProvider: specificParametersDefaultValues
                     ? {
@@ -176,16 +186,52 @@ export const useLoadFlowParametersForm = (
         [specificParametersDefaultValues, toLimitReductions]
     );
 
+    function splitCommonParameters(commonParameters?: Record<string, ParameterValue>): {
+        advancedParameters: Record<string, ParameterValue>;
+        commonParameters: Record<string, ParameterValue>;
+    } {
+        if(!commonParameters) {
+            return {
+                advancedParameters:{},
+                commonParameters: {}
+            }
+        }
+        const advancedParamNames = new Set(advancedParams.map((param) => param.name));
+
+        return Object.entries(commonParameters).reduce(
+            (acc, [key, value]) => {
+                if (advancedParamNames.has(key)) {
+                    acc.advancedParameters[key] = value;
+                } else {
+                    acc.commonParameters[key] = value;
+                }
+
+                return acc;
+            },
+            {
+                advancedParameters: {},
+                commonParameters: {},
+            } as {
+                advancedParameters: Record<string, ParameterValue>;
+                commonParameters: Record<string, ParameterValue>;
+            }
+        );
+    }
+
     const toLoadFlowFormValues = useCallback(
         (_params: LoadFlowParametersInfos) => {
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[_params.provider];
             const specificParametersForLoadedProvider = specificParamsDescription?.[_params.provider] ?? [];
+            const { advancedParameters, commonParameters } = splitCommonParameters(_params.commonParameters);
 
             return {
                 [PROVIDER]: _params.provider,
                 [PARAM_LIMIT_REDUCTION]: _params.limitReduction,
                 [COMMON_PARAMETERS]: {
-                    ..._params.commonParameters,
+                    ...commonParameters,
+                },
+                [ADVANCED_PARAMETERS]: {
+                    ...advancedParameters
                 },
                 [SPECIFIC_PARAMETERS]: {
                     ...formatSpecificParameters(
@@ -214,14 +260,18 @@ export const useLoadFlowParametersForm = (
     const onValidationError = useCallback(
         (errors: FieldErrors) => {
             const tabsInError = [];
+            console.log("ERRORS", errors);
             if (errors?.[LIMIT_REDUCTIONS_FORM] && TabValues.LIMIT_REDUCTIONS !== selectedTab) {
                 tabsInError.push(TabValues.LIMIT_REDUCTIONS);
             }
-            if (
-                (errors?.[SPECIFIC_PARAMETERS] || errors?.[COMMON_PARAMETERS] || errors?.[PROVIDER]) &&
-                TabValues.GENERAL !== selectedTab
-            ) {
+            if (errors?.[COMMON_PARAMETERS] && TabValues.GENERAL !== selectedTab) {
                 tabsInError.push(TabValues.GENERAL);
+            }
+            if (errors?.[SPECIFIC_PARAMETERS] && TabValues.PROVIDER_SPECIFIC !== selectedTab) {
+                tabsInError.push(TabValues.PROVIDER_SPECIFIC);
+            }
+            if (errors?.[ADVANCED_PARAMETERS] && TabValues.ADVANCED !== selectedTab) {
+                tabsInError.push(TabValues.ADVANCED);
             }
             setTabIndexesWithError(tabsInError);
         },

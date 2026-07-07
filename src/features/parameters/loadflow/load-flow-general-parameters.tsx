@@ -12,22 +12,11 @@ import {
     CONNECTED_MODE,
     COUNTRIES_TO_BALANCE,
     DC,
-    DC_POWER_FACTOR,
-    DC_USE_TRANSFORMER_RATIO,
-    DISTRIBUTED_SLACK,
     HVDC_AC_EMULATION,
     PHASE_SHIFTER_REGULATION_ON,
-    READ_SLACK_BUS,
-    SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON,
-    TWT_SPLIT_SHUNT_ADMITTANCE,
-    USE_REACTIVE_LIMITS,
-    VOLTAGE_INIT_MODE,
-    WRITE_SLACK_BUS,
 } from './constants';
-import { useLoadFlowContext } from './use-load-flow-context';
 import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
-import { ParameterGroup } from '../common/widget';
-import { COMMON_PARAMETERS, SPECIFIC_PARAMETERS } from '../common';
+import { COMMON_PARAMETERS } from '../common';
 
 const basicParams: SpecificParameterInfos[] = [
     {
@@ -82,101 +71,12 @@ const basicParams: SpecificParameterInfos[] = [
     },
 ];
 
-const advancedParams: SpecificParameterInfos[] = [
-    {
-        name: VOLTAGE_INIT_MODE,
-        type: ParameterType.STRING,
-        label: 'descLfVoltageInitMode',
-        possibleValues: [
-            {
-                id: 'UNIFORM_VALUES',
-                label: 'descLfUniformValues',
-            },
-            {
-                id: 'PREVIOUS_VALUES',
-                label: 'descLfPreviousValues',
-            },
-            {
-                id: 'DC_VALUES',
-                label: 'descLfDcValues',
-            },
-        ],
-    },
-    {
-        name: USE_REACTIVE_LIMITS,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfUseReactiveLimits',
-    },
-    {
-        name: TWT_SPLIT_SHUNT_ADMITTANCE,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfTwtSplitShuntAdmittance',
-    },
-    {
-        name: READ_SLACK_BUS,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfReadSlackBus',
-    },
-    {
-        name: WRITE_SLACK_BUS,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfWriteSlackBus',
-    },
-    {
-        name: DISTRIBUTED_SLACK,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfDistributedSlack',
-    },
-    {
-        name: SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfShuntCompensatorVoltageControlOn',
-    },
-    {
-        name: DC_USE_TRANSFORMER_RATIO,
-        type: ParameterType.BOOLEAN,
-        label: 'descLfDcUseTransformerRatio',
-    },
-    {
-        name: DC_POWER_FACTOR,
-        type: ParameterType.DOUBLE,
-        label: 'descLfDcPowerFactor',
-    },
-];
-
-interface LoadFlowGeneralParametersProps {
-    provider: string;
-    specificParams: SpecificParameterInfos[];
-}
-
-function LoadFlowGeneralParameters({ provider, specificParams }: Readonly<LoadFlowGeneralParametersProps>) {
-    const { showAdvancedLfParams, setShowAdvancedLfParams, showSpecificLfParams, setShowSpecificLfParams } =
-        useLoadFlowContext();
+function LoadFlowGeneralParameters() {
     return (
         <>
             {basicParams.map((item) => (
                 <ParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />
             ))}
-            <ParameterGroup
-                label="showAdvancedParameters"
-                state={showAdvancedLfParams}
-                onClick={setShowAdvancedLfParams}
-            >
-                {showAdvancedLfParams &&
-                    advancedParams.map((item) => <ParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />)}
-            </ParameterGroup>
-            <ParameterGroup
-                label="showSpecificParameters"
-                state={showSpecificLfParams}
-                onClick={setShowSpecificLfParams}
-                infoText={provider ?? ''}
-                disabled={!provider || !specificParams}
-            >
-                {showSpecificLfParams &&
-                    specificParams?.map((item) => (
-                        <ParameterField id={SPECIFIC_PARAMETERS} {...item} key={item.name} />
-                    ))}
-            </ParameterGroup>
         </>
     );
 }

@@ -8,6 +8,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import {
+    ADVANCED_PARAMETERS,
     COMMON_PARAMETERS,
     ILimitReductionsByVoltageLevel,
     IST_FORM,
@@ -38,6 +39,8 @@ import {
 
 export enum TabValues {
     GENERAL = 'General',
+    ADVANCED = 'Advanced',
+    PROVIDER_SPECIFIC = 'ProviderSpecific',
     LIMIT_REDUCTIONS = 'LimitReductions',
 }
 
@@ -52,7 +55,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
     });
 };
 
-export const getAdvancedLoadFlowParametersFormSchema = () => {
+export const getAdvancedLoadFlowParametersFormSchemaFields = () => {
     return yup.object().shape({
         [VOLTAGE_INIT_MODE]: yup.string().required(),
         [USE_REACTIVE_LIMITS]: yup.boolean().required(),
@@ -74,7 +77,14 @@ export const getCommonLoadFlowParametersFormSchema = () => {
     return yup.object().shape({
         [COMMON_PARAMETERS]: yup.object().shape({
             ...getBasicLoadFlowParametersFormSchema().fields,
-            ...getAdvancedLoadFlowParametersFormSchema().fields,
+        }),
+    });
+};
+
+export const getAdvancedLoadFlowParametersFormSchema = () => {
+    return yup.object().shape({
+        [ADVANCED_PARAMETERS]: yup.object().shape({
+            ...getAdvancedLoadFlowParametersFormSchemaFields().fields,
         }),
     });
 };
