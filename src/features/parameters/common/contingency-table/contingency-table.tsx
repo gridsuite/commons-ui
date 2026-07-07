@@ -96,9 +96,7 @@ function ContingencyTableWithApiRef(
             const enriched: Record<string, ContingencyCountByContingencyListEnriched> = {};
             Object.entries(contingencyCount.countByContingencyList).forEach(([uuid, countByList]) => {
                 const listName = namesById[uuid];
-                if (listName !== undefined) {
-                    enriched[uuid] = { ...countByList, name: listName };
-                }
+                enriched[uuid] = { ...countByList, name: listName ?? uuid };
             });
 
             return {
