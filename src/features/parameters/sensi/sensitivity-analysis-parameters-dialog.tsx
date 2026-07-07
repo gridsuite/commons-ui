@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { Grid2 as Grid } from '@mui/material';
+import { ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
     fetchSensitivityAnalysisParameters,
@@ -13,7 +14,7 @@ import {
 } from '../../../services/sensitivity-analysis';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { NameElementEditorForm } from '../common/name-element-editor';
-import { ElementType } from '../../../utils';
+import { ComputingType, ElementType } from '../../../utils';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
 
@@ -73,20 +74,18 @@ export function SensitivityAnalysisParametersDialog({
             titleId={titleId}
             disabledSave={disableSave}
         >
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.SENSITIVITY_PARAMETERS}
+                />
+            </Grid>
             <SensitivityAnalysisParametersForm
                 sensitivityAnalysisMethods={sensitivityAnalysisMethods}
                 isDeveloperMode={isDeveloperMode}
                 isRootNode={isRootNode}
                 globalBuildStatus={globalBuildStatus}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.SENSITIVITY_PARAMETERS}
-                        />
-                    );
-                }}
             />
         </CustomMuiDialog>
     );

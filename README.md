@@ -25,11 +25,15 @@ The `npm start` command install the library's dependencies then launches the dem
 
 ##### Development Scripts
 
-- **`npm run type-check`** - Runs TypeScript type checking without emitting files. This ensures all developers use the project's local TypeScript version from `node_modules` rather than a potentially different globally-installed version. Run this to verify your code has no type errors before committing.
+Developers can use these scripts to perform check actions instead of executing local tsc, eslint, etc...
+This ensures all developers use the project's local tools version from `node_modules` rather than a potentially different globally-installed version.
 
+- **`npm run type-check`** - Runs TypeScript type checking without emitting files on the whole sources. Run this to check that your current dev is mainly correct.
+
+- **`npm run type-check:build`** - Runs TypeScript type checking with emitting files and only on the exported sources. This is what is executed by the CI, so you can use it before committing.
 - **`npm run build`** - Builds the library. Note: This automatically runs `npm run prebuild` first.
 
-- **`npm run prebuild`** - Runs linting and type checking before the build. This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
+- **`npm run prebuild`** - Runs linting and type checking before the build (`npm run lint && npm run type-check:build`). This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
 
 - **`npm run storybook`** - Starts the Storybook development server. Changes to components and stories are reflected automatically during development.
 

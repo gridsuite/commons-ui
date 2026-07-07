@@ -46,11 +46,7 @@ export default defineConfig((_config) => ({
         svgr(), // works on every import with the pattern "**/*.svg?react"
         libInjectCss(),
         dts({
-            include: ['src'],
-            exclude: ['**/*.test.{ts,tsx}', '**/*.stories.{ts,tsx}'],
-            compilerOptions: {
-                noCheck: true, // skip type checking for faster builds
-            },
+            tsconfigPath: './tsconfig.build.json',
         }),
     ],
     build: {

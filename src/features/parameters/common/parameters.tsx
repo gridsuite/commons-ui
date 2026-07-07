@@ -7,7 +7,7 @@
 
 import { PropsWithChildren } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Button, ButtonProps, Grid, Switch, Typography, TypographyProps } from '@mui/material';
+import { Box, Button, ButtonProps, Grid2 as Grid, Switch, Typography, TypographyProps } from '@mui/material';
 import { parametersStyles } from '../parameters-style';
 
 interface LabelledButtonProps extends ButtonProps {
@@ -32,10 +32,10 @@ interface SwitchWithLabelProps {
 export function SwitchWithLabel({ value, label, callback }: Readonly<SwitchWithLabelProps>) {
     return (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item container xs={4} sx={parametersStyles.controlItem}>
+            <Grid container size={4} sx={parametersStyles.controlItem}>
                 <Switch
                     checked={value}
                     onChange={callback}

@@ -6,7 +6,7 @@
  */
 
 import { useFieldArray } from 'react-hook-form';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, Stack } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { BbsMeasurementItem, MeasurementInfo } from './measurement.type';
@@ -36,7 +36,7 @@ export function BusbarSectionVoltageMeasurementsForm({
         .sort((a, b) => a.busbarSectionId.localeCompare(b.busbarSectionId));
 
     return (
-        <Grid container direction="column" spacing={1}>
+        <Stack spacing={1}>
             {fields.length === 0 && (
                 <Grid>
                     <FormattedMessage id="NoBusbarSectionFound" />
@@ -76,6 +76,6 @@ export function BusbarSectionVoltageMeasurementsForm({
                     </Grid>
                 );
             })}
-        </Grid>
+        </Stack>
     );
 }

@@ -4,9 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { Grid2 as Grid } from '@mui/material';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
-import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { ParametersEditionDialogProps } from '../common';
 import {
     fetchSecurityAnalysisParameters,
     fetchSecurityAnalysisProviders,
@@ -15,7 +16,7 @@ import {
 } from '../../../services/security-analysis';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
 import { NameElementEditorForm } from '../common/name-element-editor';
-import { ElementType } from '../../../utils';
+import { ComputingType, ElementType } from '../../../utils';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 
 export function SecurityAnalysisParametersDialog({
@@ -68,19 +69,17 @@ export function SecurityAnalysisParametersDialog({
                 },
             }}
         >
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.LOADFLOW_PARAMETERS}
+                />
+            </Grid>
             <SecurityAnalysisParametersForm
                 securityAnalysisMethods={securityAnalysisMethods}
                 showContingencyCount={false}
                 isDeveloperMode={isDeveloperMode}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.LOADFLOW_PARAMETERS}
-                        />
-                    );
-                }}
             />
         </CustomMuiDialog>
     );

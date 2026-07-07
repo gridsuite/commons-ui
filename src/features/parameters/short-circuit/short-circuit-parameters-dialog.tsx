@@ -5,12 +5,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid2 as Grid } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
-import { ElementType } from '../../../utils';
+import { ComputingType, ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
-import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
     fetchShortCircuitParameters,
@@ -69,18 +70,14 @@ export function ShortCircuitParametersEditionDialog({
             disabledSave={disableSave}
             maxWidth="lg"
         >
-            <ShortCircuitParametersForm
-                shortCircuitMethods={shortCircuitMethods}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
-                        />
-                    );
-                }}
-            />
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.SHORT_CIRCUIT_PARAMETERS}
+                />
+            </Grid>
+            <ShortCircuitParametersForm shortCircuitMethods={shortCircuitMethods} />
         </CustomMuiDialog>
     );
 }
