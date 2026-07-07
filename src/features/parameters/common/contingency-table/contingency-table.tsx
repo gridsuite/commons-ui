@@ -11,7 +11,7 @@ import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
-import { ContingencyCount, ContingencyCountByContingencyList, ContingencyCountEnriched } from './types';
+import { ContingencyCount, ContingencyCountByContingencyListEnriched, ContingencyCountEnriched } from './types';
 import { useSnackMessage } from '../../../../hooks';
 import { CONTINGENCY_LISTS } from '../constants';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
@@ -87,21 +87,20 @@ function ContingencyTableWithApiRef(
             contingencyCount: ContingencyCount,
             contingencyListsInfos: ContingencyListsInfosEnriched[]
         ): ContingencyCountEnriched {
-            const namesById: Record<UUID, string | undefined> = {};
+            const namesById: Record<string, string | undefined> = {};
             contingencyListsInfos.forEach((info) => {
                 info.contingencyLists.forEach((idName) => {
                     namesById[idName.id] = idName.name;
                 });
             });
-            const enriched: Record<string, ContingencyCountByContingencyList> = {};
-            for (let i = 0; i < Object.entries(contingencyCount.countByContingencyList).length; i++) {
-                const [contingencyListUuid] = Object.entries(contingencyCount.countByContingencyList)[i];
-                const listName = namesById[contingencyListUuid as UUID];
+            const enriched: Record<string, ContingencyCountByContingencyListEnriched> = {};
+            Object.entries(contingencyCount.countByContingencyList).forEach(([uuid, countByList]) => {
+                const listName = namesById[uuid];
                 if (listName !== undefined) {
-                    enriched[`${contingencyListUuid}_${listName}`] =
-                        contingencyCount.countByContingencyList[contingencyListUuid as UUID];
+                    enriched[uuid] = { ...countByList, name: listName };
                 }
-            }
+            });
+
             return {
                 countByContingencyList: enriched,
             };
@@ -120,27 +119,18 @@ function ContingencyTableWithApiRef(
                 };
             }
 
-            for (let i = 0; i < Object.entries(contingencyCount.countByContingencyList).length; i++) {
-                const [contingencyListName, countByContingencyList] = Object.entries(
-                    contingencyCount.countByContingencyList
-                )[i];
+            // eslint-disable-next-line no-restricted-syntax
+            for (const [, countByList] of Object.entries(contingencyCount.countByContingencyList)) {
+                total += countByList.nbContingencies;
 
-                total += countByContingencyList.nbContingencies;
-
-                if (countByContingencyList.invalidContingencyErrorMessage !== null) {
-                    let errorMessage: string = countByContingencyList.invalidContingencyErrorMessage;
-                    if (contingencyListName.includes('_')) {
-                        const lname = contingencyListName.slice(contingencyListName.indexOf('_') + 1);
-                        errorMessage = `${errorMessage} in the list ${lname}`;
-                    }
+                if (countByList.invalidContingencyErrorMessage !== null && countByList.name !== undefined) {
                     return {
                         success: false,
-                        invalidContingencyErrorMessage: errorMessage,
+                        invalidContingencyErrorMessage: `${countByList.invalidContingencyErrorMessage} in the list ${countByList.name}`,
                     };
                 }
-
-                if (countByContingencyList.notFoundElements !== null) {
-                    totalNotFound += Object.entries(countByContingencyList.notFoundElements).length;
+                if (countByList.notFoundElements !== null) {
+                    totalNotFound += Object.entries(countByList.notFoundElements).length;
                 }
             }
 
