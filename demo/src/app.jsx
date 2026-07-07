@@ -413,7 +413,7 @@ function AppContent({ language, onLanguageClick }) {
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
-            setUserProfile(e.user?.profile);
+            setUserProfile(e.user?.profile ?? null);
         } else if (
             e.type === 'UNAUTHORIZED_USER_INFO' ||
             e.type === 'USER_VALIDATION_ERROR' ||
