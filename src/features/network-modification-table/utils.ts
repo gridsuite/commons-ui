@@ -19,7 +19,11 @@ export const formatToComposedModification = (
 };
 
 export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
-    return modification?.messageType === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
+    return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
+}
+
+export function isSharedModification(modification: ComposedModificationMetadata | undefined) {
+    return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
 // returns the depth of the modification with the given uuid in the given mods tree
