@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
@@ -81,12 +81,16 @@ export function SensitivityAnalysisParametersDialog({
                     elementType={ElementType.SENSITIVITY_PARAMETERS}
                 />
             </Grid>
-            <SensitivityAnalysisParametersForm
-                sensitivityAnalysisMethods={sensitivityAnalysisMethods}
-                isDeveloperMode={isDeveloperMode}
-                isRootNode={isRootNode}
-                globalBuildStatus={globalBuildStatus}
-            />
+            {sensitivityAnalysisMethods.paramsFormInitialized ? (
+                <SensitivityAnalysisParametersForm
+                    sensitivityAnalysisMethods={sensitivityAnalysisMethods}
+                    isDeveloperMode={isDeveloperMode}
+                    isRootNode={isRootNode}
+                    globalBuildStatus={globalBuildStatus}
+                />
+            ) : (
+                <LinearProgress />
+            )}
         </CustomMuiDialog>
     );
 }
