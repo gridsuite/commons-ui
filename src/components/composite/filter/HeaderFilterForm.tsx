@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { DESCRIPTION_LIMIT_ERROR, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION, NAME_EMPTY } from '../../../utils';
@@ -41,7 +41,7 @@ export interface HeaderFilterFormProps {
 export function HeaderFilterForm({ creation, activeDirectory }: Readonly<HeaderFilterFormProps>) {
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <UniqueNameInput
                     name={FieldConstants.NAME}
                     label="nameProperty"
@@ -52,7 +52,7 @@ export function HeaderFilterForm({ creation, activeDirectory }: Readonly<HeaderF
                     fullWidth={false}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
                 <DescriptionField expandingTextSx={filterStyles.description} />
             </Grid>
         </Grid>

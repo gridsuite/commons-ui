@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../../parameters-style';
 import { DirectoryItemsInput } from '../../../../components/ui';
@@ -28,11 +28,11 @@ export function ParameterLineDirectoryItemsInput({
     allowMultiSelect = true,
 }: Readonly<DirectoryItemsInputLineProps>) {
     return (
-        <Grid item container spacing={1} paddingTop={1} paddingBottom={1}>
-            <Grid item xs={7} sx={parametersStyles.parameterName}>
+        <Grid container spacing={1} paddingTop={1} paddingBottom={1} sx={{ width: '100%' }}>
+            <Grid size={7} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item xs={5} sx={parametersStyles.controlItem}>
+            <Grid size={5} sx={parametersStyles.controlItem}>
                 <DirectoryItemsInput
                     name={name}
                     equipmentTypes={equipmentTypes}

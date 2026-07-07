@@ -5,82 +5,55 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, LinearProgress, Tab, Tabs } from '@mui/material';
+import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ReactNode } from 'react';
 
-import { FieldErrors } from 'react-hook-form';
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { ProviderParam, TabPanel } from '../common';
-import { useTabs } from '../common/hook/use-tabs';
+import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
-import { mergeSx } from '../../../utils';
 import { TabValues } from './dynamic-security-analysis.type';
 import { UseComputationParametersFormReturn } from '../common/utils';
 
 type DynamicSecurityAnalysisParametersFormProps = {
     dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;
-    renderTitleFields?: () => ReactNode;
-    renderActions?: (onSubmitError: (errors: FieldErrors) => void) => ReactNode;
+    useTabsReturn: UseTabsReturn<TabValues>;
 };
 
 export function DynamicSecurityAnalysisParametersForm({
     dynamicSecurityAnalysisMethods,
-    renderTitleFields,
-    renderActions,
+    useTabsReturn,
 }: Readonly<DynamicSecurityAnalysisParametersFormProps>) {
-    const { paramsLoaded, formattedProviders } = dynamicSecurityAnalysisMethods;
-
-    const { selectedTab, tabsWithError, onTabChange, onError } = useTabs({
-        defaultTab: TabValues.SCENARIO,
-        tabEnum: TabValues,
-    });
+    const { formattedProviders } = dynamicSecurityAnalysisMethods;
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <>
-            {renderTitleFields?.()}
-            {paramsLoaded ? (
-                <Grid container sx={{ height: '100%' }} direction="column">
-                    <Grid container>
-                        <ProviderParam options={formattedProviders} />
-                    </Grid>
-                    <Grid>
-                        <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
-                            <Tab
-                                label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
-                                value={TabValues.SCENARIO}
-                                sx={getTabStyle(tabsWithError, TabValues.SCENARIO)}
-                            />
-                            <Tab
-                                label={<FormattedMessage id="DynamicSecurityAnalysisContingency" />}
-                                value={TabValues.CONTINGENCY}
-                                sx={getTabStyle(tabsWithError, TabValues.CONTINGENCY)}
-                            />
-                        </Tabs>
-                    </Grid>
-                    <Grid
-                        container
-                        item
-                        xs
-                        key="dsaParameters"
-                        sx={mergeSx(parametersStyles.scrollableGrid, {
-                            paddingTop: 0,
-                            width: '100%',
-                        })}
-                    >
-                        <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
-                            <ScenarioParameters path={TabValues.SCENARIO} />
-                        </TabPanel>
-                        <TabPanel value={selectedTab} index={TabValues.CONTINGENCY}>
-                            <ContingencyParameters path={TabValues.CONTINGENCY} />
-                        </TabPanel>
-                    </Grid>
-                    {renderActions?.(onError)}
-                </Grid>
-            ) : (
-                <LinearProgress />
-            )}
-        </>
+        <Stack sx={parametersStyles.scrollableGrid}>
+            <Grid size={12}>
+                <ProviderParam options={formattedProviders} id="Dsa" />
+            </Grid>
+            <Grid size={12}>
+                <Tabs value={selectedTab} variant="scrollable" onChange={onTabChange} aria-label="parameters">
+                    <Tab
+                        label={<FormattedMessage id="DynamicSecurityAnalysisScenario" />}
+                        value={TabValues.SCENARIO}
+                        sx={getTabStyle(tabsWithError, TabValues.SCENARIO)}
+                    />
+                    <Tab
+                        label={<FormattedMessage id="DynamicSecurityAnalysisContingency" />}
+                        value={TabValues.CONTINGENCY}
+                        sx={getTabStyle(tabsWithError, TabValues.CONTINGENCY)}
+                    />
+                </Tabs>
+            </Grid>
+            <Grid container size={12} key="dsaParameters" sx={{ paddingTop: 0, width: '100%', maxHeight: '100%' }}>
+                <TabPanel value={selectedTab} index={TabValues.SCENARIO}>
+                    <ScenarioParameters path={TabValues.SCENARIO} />
+                </TabPanel>
+                <TabPanel value={selectedTab} index={TabValues.CONTINGENCY}>
+                    <ContingencyParameters path={TabValues.CONTINGENCY} />
+                </TabPanel>
+            </Grid>
+        </Stack>
     );
 }
