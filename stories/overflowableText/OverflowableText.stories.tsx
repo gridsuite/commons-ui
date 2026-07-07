@@ -24,7 +24,7 @@ export const Truncated: Story = {
 };
 export const Multiline: Story = {
     args: {
-        text: 'A long description displayed on three lines before it is truncated for compact layouts.',
-        maxLineCount: 3,
+        text: 'A long description displayed on two lines before it is truncated for compact layouts.',
+        maxLineCount: 2,
     },
 };
