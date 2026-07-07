@@ -57,6 +57,29 @@ To fix this, run this command from the app **after** running "npm install"
 
 - rm -Rf node_modules/.cache
 
+#### Pull request review process
+
+To keep the library consistent and stable, `commons-ui` uses a **repository
+owners** model. A group of owners must approve a pull request before it can be
+merged. Owners are automatically added as reviewers on every pull request.
+
+Owner reviews are not necessarily full functional reviews: for small changes or
+when there is high confidence in the author/reviewer, an owner may simply give a
+formal approval. For larger contributions (new components, API changes,
+architectural decisions), the review may be more thorough.
+
+The lifecycle of a pull request is as follows:
+
+1. **Author** — when your PR is ready for review, add the **`waiting-for-review`**
+   label. This is the signal that it is ready to be picked up by an owner.
+2. **Owner assignment** — an owner picks up the PR, **removes** the
+   `waiting-for-review` label, and **assigns themselves** to it.
+3. **Approvals** — the PR needs two approvals to be mergeable:
+  - one from **another developer**, and
+  - one from the **owner**.
+4. **Merge** — once both approvals are in, the **author (developer) can merge**
+   the pull request.
+
 #### For integrators
 
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
