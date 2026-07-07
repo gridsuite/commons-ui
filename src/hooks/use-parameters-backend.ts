@@ -8,10 +8,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { UUID } from 'node:crypto';
-import type { User } from 'oidc-client-ts';
+import type { UserProfile } from 'oidc-client-ts';
 
 import { useSnackMessage } from './useSnackMessage';
-import { ComputingType, formatComputingTypeLabel } from '../features/parameters/common/computing-type';
+import { formatComputingTypeLabel } from '../features/parameters/common/computing-type';
 import type { ILimitReductionsByVoltageLevel } from '../features/parameters/common/limitreductions/columns-definitions';
 import type {
     BackendFunctions,
@@ -20,6 +20,7 @@ import type {
     UseParametersBackendReturnProps,
 } from '../utils/types/parameters.type';
 import { snackWithFallback } from '../utils/error';
+import { ComputingType } from '../utils';
 
 export enum OptionalServicesStatus {
     Up = 'UP',
@@ -28,7 +29,7 @@ export enum OptionalServicesStatus {
 }
 
 export const useParametersBackend = <T extends ComputingType>(
-    user: User | null,
+    userProfile: UserProfile | null,
     studyUuid: UUID | null,
     type: T,
     optionalServiceStatus: OptionalServicesStatus | undefined,
@@ -74,10 +75,10 @@ export const useParametersBackend = <T extends ComputingType>(
     // We need to fetch available providers when optionalServiceStatus changes
     // other dependencies don't change this much
     useEffect(() => {
-        if (user !== null && optionalServiceStatus === OptionalServicesStatus.Up) {
+        if (userProfile !== null && optionalServiceStatus === OptionalServicesStatus.Up) {
             fetchAvailableProviders();
         }
-    }, [fetchAvailableProviders, optionalServiceStatus, user]);
+    }, [fetchAvailableProviders, optionalServiceStatus, userProfile]);
 
     // SPECIFIC PARAMETERS DESCRIPTION
     const fetchSpecificParametersDescription = useCallback(() => {

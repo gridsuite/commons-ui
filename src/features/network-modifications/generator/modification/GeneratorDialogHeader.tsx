@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, TextField } from '@mui/material';
+import { Grid2 as Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { GeneratorFormInfos } from '../generatorDialog.type';
 import { ENERGY_SOURCES, FieldConstants, getEnergySourceLabel } from '../../../../utils';
@@ -65,15 +65,9 @@ export function GeneratorDialogHeader({ generatorToModify, equipmentId }: Readon
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs>
-                {generatorIdField}
-            </Grid>
-            <Grid item xs>
-                {generatorNameField}
-            </Grid>
-            <Grid item xs>
-                {energySourceField}
-            </Grid>
+            <Grid size="grow">{generatorIdField}</Grid>
+            <Grid size="grow">{generatorNameField}</Grid>
+            <Grid size="grow">{energySourceField}</Grid>
         </Grid>
     );
 }
