@@ -335,7 +335,7 @@ function AppContent({ language, onLanguageClick }) {
         instance: null,
         error: null,
     });
-    const [user, setUser] = useState(null);
+    const [userProfile, setUserProfile] = useState(null);
     const [authenticationRouterError, setAuthenticationRouterError] = useState(null);
     const [showAuthenticationRouterLoginState, setShowAuthenticationRouterLoginState] = useState(false);
 
@@ -413,7 +413,7 @@ function AppContent({ language, onLanguageClick }) {
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
-            setUser(e.user);
+            setUserProfile(e.user?.profile);
         } else if (
             e.type === 'UNAUTHORIZED_USER_INFO' ||
             e.type === 'USER_VALIDATION_ERROR' ||
@@ -914,7 +914,7 @@ function AppContent({ language, onLanguageClick }) {
                             )}
                             onLanguageClick={onLanguageClick}
                             language={language}
-                            user={user}
+                            userProfile={userProfile}
                             appsAndUrls={apps}
                             dense
                         >
@@ -933,7 +933,7 @@ function AppContent({ language, onLanguageClick }) {
                             <div style={{ alignSelf: 'center' }}>baz</div>
                         </TopBar>
                         <CardErrorBoundary>
-                            {user !== null ? (
+                            {userProfile !== null ? (
                                 <div>
                                     <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />
