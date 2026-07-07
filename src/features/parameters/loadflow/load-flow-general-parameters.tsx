@@ -62,6 +62,10 @@ const basicParams: SpecificParameterInfos[] = [
         label: 'descLfConnectedComponentMode',
         possibleValues: [
             {
+                id: 'MAIN_SYNCHRONOUS',
+                label: 'descLfConnectedComponentModeMainSync',
+            },
+            {
                 id: 'MAIN_CONNECTED',
                 label: 'descLfConnectedComponentModeMain',
             },

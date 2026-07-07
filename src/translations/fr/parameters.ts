@@ -35,6 +35,7 @@ export const parametersFr = {
     descLfWriteSlackBus: 'Écrire le nœud bilan calculé automatiquement dans le réseau',
     descLfDC: 'Lancer le calcul en actif seul',
     descLfConnectedComponentMode: 'Choix de la composante connexe de calcul',
+    descLfConnectedComponentModeMainSync: 'Composante synchrone principale',
     descLfConnectedComponentModeMain: 'Composante connexe principale',
     descLfConnectedComponentModeAll: 'Toutes les composantes connexes',
     descLfHvdcAcEmulation: "Permettre l'émulation AC des HVDC",
