@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
@@ -62,7 +62,7 @@ export function PccMinParametersEditionDialog({
                     elementType={ElementType.PCC_MIN_PARAMETERS}
                 />
             </Grid>
-            <PccMinParametersForm />
+            {pccMinMethods.paramsLoading ? <LinearProgress /> : <PccMinParametersForm />}
         </CustomMuiDialog>
     );
 }
