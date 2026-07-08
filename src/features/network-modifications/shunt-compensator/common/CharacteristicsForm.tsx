@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
@@ -209,12 +209,8 @@ export function CharacteristicsForm({ previousValues, isModification = false }: 
                 <Grid container spacing={2} size={12}>
                     <Grid size={4}>{shuntCompensatorTypeField}</Grid>
                     <Grid container size={12}>
-                        <Grid size={4}>
-                            {maxQAtNominalVField}
-                        </Grid>
-                        <Grid size={4}>
-                            {switchedOnMaxQAtNominalVField}
-                        </Grid>
+                        <Grid size={4}>{maxQAtNominalVField}</Grid>
+                        <Grid size={4}>{switchedOnMaxQAtNominalVField}</Grid>
                     </Grid>
                 </Grid>
             )}
