@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.types';
+import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroupsTabs/operationalLimitsGroups.types';
 import { APPLICABILITY } from './limits.types';
 import { AutocompleteInput } from '../../../../components';
 

@@ -11,7 +11,7 @@ import { useController, useFormContext } from 'react-hook-form';
 import { TemporaryLimitsTable } from './TemporaryLimitsTable';
 import { LimitsChart } from './limitsChart';
 import { LimitsPropertiesSideStack } from './LimitsPropertiesSideStack';
-import { APPLICABILITY, TEMPORARY_LIMIT_MODIFICATION_TYPE, TemporaryLimitsData } from './limits.types';
+import { APPLICABILITY, TEMPORARY_LIMIT_MODIFICATION_TYPE, TemporaryLimitsData } from '../limits.types';
 import {
     ColumnNumeric,
     ColumnText,
@@ -23,8 +23,8 @@ import {
     SelectInput,
     TextInput,
     useCustomFormContext,
-} from '../../../../components';
-import { AmpereAdornment, FieldConstants } from '../../../../utils';
+} from '../../../../../components';
+import { AmpereAdornment, FieldConstants } from '../../../../../utils';
 
 export interface LimitsSidePaneProps {
     name?: string;

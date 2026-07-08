@@ -11,8 +11,8 @@ import { ContentCopy, Delete } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { useCallback, Dispatch, SetStateAction } from 'react';
 import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.types';
-import { APPLICABILITY, CurrentLimitsData } from './limits.types';
-import { FieldConstants } from '../../../../utils';
+import { APPLICABILITY, CurrentLimitsData } from '../limits.types';
+import { FieldConstants } from '../../../../../utils';
 
 export interface ContextMenuCoordinates {
     x: null | number;

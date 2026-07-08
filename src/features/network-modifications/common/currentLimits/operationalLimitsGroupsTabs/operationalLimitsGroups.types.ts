@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { AttributeModification, FieldConstants } from '../../../../utils';
-import { CurrentLimits, LimitsProperty } from './limits.types';
+import { AttributeModification, FieldConstants } from '../../../../../utils';
+import { CurrentLimits, LimitsProperty } from '../limits.types';
 
 // Determines how all the operational limits groups will be modified as a group
 export const OPERATIONAL_LIMITS_GROUPS_MODIFICATION_TYPE = {

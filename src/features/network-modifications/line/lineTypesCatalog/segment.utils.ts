@@ -7,11 +7,11 @@
 
 import { InferType, array, number, object, string } from 'yup';
 import { CurrentLimitsInfo } from './lineCatalog.type';
-import { APPLICABILITY } from '../../common/limits/limits.types';
+import { APPLICABILITY } from '../../common/currentLimits/limits.types';
 import {
     OperationalLimitsGroupFormSchema,
     TemporaryLimitFormSchema,
-} from '../../common/limits/operationalLimitsGroups.types';
+} from '../../common/currentLimits/operationalLimitsGroupsTabs/operationalLimitsGroups.types';
 import { LineSegmentInfos } from '../creation/lineCreation.types';
 import { FieldConstants } from '../../../../utils';
 

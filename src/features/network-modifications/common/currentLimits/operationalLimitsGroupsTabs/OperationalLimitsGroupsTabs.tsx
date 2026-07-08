@@ -12,8 +12,8 @@ import { ContextMenuCoordinates, LimitsGroupsContextualMenu } from './LimitsGrou
 import { OperationalLimitsGroupTabLabel } from './OperationalLimitsGroupTabLabel';
 import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.types';
 import { limitsStyles } from './operationalLimitsGroupsStyles';
-import { CurrentLimitsData } from './limits.types';
-import { FieldConstants } from '../../../../utils';
+import { CurrentLimitsData } from '../limits.types';
+import { FieldConstants } from '../../../../../utils';
 
 export interface OperationalLimitsGroupsTabsProps {
     parentFormName: string;

@@ -9,7 +9,7 @@ import { BarChart, AxisValueFormatterContext, BarSeriesType } from '@mui/x-chart
 import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { TemporaryLimitsData } from './limits.types';
+import { TemporaryLimitsData } from '../limits.types';
 
 export interface LimitsGraphProps {
     limitsGroupFormName: string;

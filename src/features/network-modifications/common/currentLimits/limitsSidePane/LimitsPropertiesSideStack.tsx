@@ -9,10 +9,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { Delete } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { useFieldArray } from 'react-hook-form';
-import { LimitsTagChip } from './LimitsTagChip';
-import { LimitsProperty } from './limits.types';
-import { usePredefinedProperties } from '../../../../hooks';
-import { AddButton } from '../../../../components';
+import { LimitsTagChip } from '../LimitsTagChip';
+import { LimitsProperty } from '../limits.types';
+import { usePredefinedProperties } from '../../../../../hooks';
+import { AddButton } from '../../../../../components';
 
 export interface LimitsPropertiesSideStackProps {
     name: string;

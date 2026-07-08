@@ -19,7 +19,7 @@ import {
     TableRow,
 } from '@mui/material';
 import { AddCircle as AddCircleIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { MuiStyles } from '../../../../utils';
+import { MuiStyles } from '../../../../../utils';
 import {
     ColumnNumeric,
     ColumnText,
@@ -29,8 +29,8 @@ import {
     SELECTED,
     TableNumericalInput,
     TableTextInput,
-} from '../../../../components';
-import { TemporaryLimitsData } from './limits.types';
+} from '../../../../../components';
+import { TemporaryLimitsData } from '../limits.types';
 
 const styles = {
     columnsStyle: {

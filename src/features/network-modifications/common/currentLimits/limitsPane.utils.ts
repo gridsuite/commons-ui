@@ -12,7 +12,7 @@ import {
     OperationalLimitsGroupFormSchema,
     OperationalLimitsGroupModificationInfos,
     TemporaryLimitFormSchema,
-} from './operationalLimitsGroups.types';
+} from './operationalLimitsGroupsTabs/operationalLimitsGroups.types';
 import {
     areArrayElementsUnique,
     AttributeModification,
@@ -397,3 +397,43 @@ export const addModificationTypeToOpLimitsGroups = (
         };
     });
 };
+
+function generateEmptyTemporaryLimitArray(): TemporaryLimitFormSchema[] {
+    return [
+        {
+            [FieldConstants.TEMPORARY_LIMIT_NAME]: '',
+            [FieldConstants.TEMPORARY_LIMIT_DURATION]: null,
+            [FieldConstants.TEMPORARY_LIMIT_VALUE]: null,
+        },
+    ];
+}
+
+export function generateEmptyOperationalLimitsGroup(name: string): OperationalLimitsGroupFormSchema {
+    return {
+        [FieldConstants.ID]: crypto.randomUUID(),
+        [FieldConstants.NAME]: name,
+        [FieldConstants.APPLICABILITY_FIELD]: APPLICABILITY.EQUIPMENT.id,
+        [FieldConstants.LIMITS_PROPERTIES]: [],
+        [FieldConstants.CURRENT_LIMITS]: {
+            [FieldConstants.TEMPORARY_LIMITS]: generateEmptyTemporaryLimitArray(),
+            [FieldConstants.PERMANENT_LIMIT]: null as unknown as number,
+        },
+    };
+}
+
+export function generateUniqueId(baseName: string, names: string[]): string {
+    let finalId = baseName;
+    let found = false;
+    let increment = 1;
+    let suffix = '';
+    do {
+        found = names.includes(baseName + suffix, 0);
+        if (found) {
+            increment += 1;
+            suffix = `(${increment})`;
+            finalId = baseName + suffix;
+        }
+    } while (found);
+
+    return finalId;
+}

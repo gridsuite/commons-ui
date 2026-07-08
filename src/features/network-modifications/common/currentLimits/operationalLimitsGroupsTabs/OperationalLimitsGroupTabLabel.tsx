@@ -12,8 +12,8 @@ import { useFormState } from 'react-hook-form';
 import { ErrorOutlineOutlined as ErrorOutlineOutlinedIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import { LimitsFormSchema, OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.types';
 import { LimitsPropertiesStack } from './LimitsPropertiesStack';
-import { APPLICABILITY } from './limits.types';
-import { FieldConstants } from '../../../../utils';
+import { APPLICABILITY } from '../limits.types';
+import { FieldConstants } from '../../../../../utils';
 
 interface OperationalLimitsGroupTabLabelProps {
     operationalLimitsGroup: OperationalLimitsGroupFormSchema;

@@ -7,8 +7,8 @@
 
 import { Avatar, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { LimitsTagChip } from './LimitsTagChip';
-import { LimitsProperty } from './limits.types';
+import { LimitsTagChip } from '../LimitsTagChip';
+import { LimitsProperty } from '../limits.types';
 
 const MAX_PROPERTIES_TO_RENDER: number = 2;
 

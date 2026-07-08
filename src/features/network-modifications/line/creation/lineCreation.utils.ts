@@ -36,7 +36,7 @@ import {
     getLimitsEmptyFormDataProps,
     getLimitsValidationSchemaProps,
     sanitizeLimitsGroups,
-} from '../../common/limits/limitsPane.utils';
+} from '../../common/currentLimits/limitsPane.utils';
 import {
     getBranchActiveReactivePowerEmptyFormDataProperties,
     getBranchActiveReactivePowerValidationSchemaObject,

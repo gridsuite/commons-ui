@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ConnectablePositionInfos } from '../../common/connectivity/connectivity.type';
-import { CurrentLimitsData } from '../../common/limits/limits.types';
+import { CurrentLimitsData } from '../../common/currentLimits/limits.types';
 import { EquipmentWithProperties } from '../../common/properties/propertyUtils';
 
 export type BranchInfos = EquipmentWithProperties & {

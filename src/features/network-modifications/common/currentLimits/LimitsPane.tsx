@@ -9,12 +9,15 @@ import { Box, Grid2 as Grid, IconButton, lighten } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
-import { OperationalLimitsGroupsTabs } from './OperationalLimitsGroupsTabs';
+import { OperationalLimitsGroupsTabs } from './operationalLimitsGroupsTabs/OperationalLimitsGroupsTabs';
 import { SelectedOperationalLimitGroup } from './SelectedOperationalLimitGroup';
-import { LimitsSidePane } from './LimitsSidePane';
-import { mapServerLimitsGroupsToFormInfos } from './limitsPane.utils';
-import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups.types';
-import { generateEmptyOperationalLimitsGroup, generateUniqueId } from './operationalLimitsGroups.utils';
+import { LimitsSidePane } from './limitsSidePane/LimitsSidePane';
+import {
+    generateEmptyOperationalLimitsGroup,
+    generateUniqueId,
+    mapServerLimitsGroupsToFormInfos,
+} from './limitsPane.utils';
+import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroupsTabs/operationalLimitsGroups.types';
 import { FieldConstants, type MuiStyles } from '../../../../utils';
 import { APPLICABILITY, CurrentLimits, CurrentLimitsData } from './limits.types';
 import { GridSection, InputWithPopupConfirmation, SwitchInput } from '../../../../components';

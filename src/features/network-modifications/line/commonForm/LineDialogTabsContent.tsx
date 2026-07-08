@@ -12,7 +12,7 @@ import { BranchConnectivityForm } from '../../common/connectivity/BranchConnecti
 import { BranchActiveReactivePowerMeasurementsForm } from '../../common/measurements/BranchActiveReactivePowerMeasurementsForm';
 import { LineCharacteristicsPane } from '../characteristicsPane';
 import { BranchInfos } from './line.types';
-import { LimitsPane } from '../../common/limits/LimitsPane';
+import { LimitsPane } from '../../common/currentLimits/LimitsPane';
 import { GridSection } from '../../../../components';
 
 export interface LineDialogTabsContentProps extends ConnectivityNetworkProps, LineDialogOptions {

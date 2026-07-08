@@ -6,7 +6,7 @@
  */
 
 import { blue } from '@mui/material/colors';
-import { MuiStyles } from '../../../../utils';
+import { MuiStyles } from '../../../../../utils';
 
 export const limitsStyles = {
     tabs: () => ({
