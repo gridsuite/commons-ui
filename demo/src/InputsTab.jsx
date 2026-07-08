@@ -8,7 +8,7 @@
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { useState } from 'react';
 import {
     AutocompleteInput,
@@ -122,7 +122,7 @@ function InputsTab() {
                 }}
             >
                 <Grid container spacing={4}>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <AutocompleteInput
                             name={AUTOCOMPLETE_INPUT}
                             options={basicOptions}
@@ -130,10 +130,10 @@ function InputsTab() {
                             isOptionEqualToValue={areIdsEqual}
                         />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <TextInput name={TEXT_INPUT} label="inputs/text" />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <ExpandingTextField
                             name={DESCRIPTION_INPUT}
                             label="inputs/description"
@@ -142,13 +142,13 @@ function InputsTab() {
                             rows={4}
                         />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <SliderInput name={SLIDER_INPUT} label="inputs/slider" min={0.0} max={100.0} step={0.1} />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <SelectInput name={SELECT_INPUT} label="inputs/select" options={options} />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <SelectClearable
                             value={selectValue}
                             onChange={setSelectValue}
@@ -156,22 +156,22 @@ function InputsTab() {
                             options={options}
                         />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <RadioInput name={RADIO_INPUT} label="inputs/radio" options={options} />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <IntegerInput name={INTEGER_INPUT} label="inputs/integer" />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <FloatInput name={FLOAT_INPUT} label="inputs/float" />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <CheckboxInput name={CHECKBOX_INPUT} label="inputs/checkbox" />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <SwitchInput name={SWITCH_INPUT} label="inputs/switch" />
                     </Grid>
-                    <Grid item xs={gridSize}>
+                    <Grid size={gridSize}>
                         <DirectoryItemsInput
                             name={DIRECTORY_ITEMS_INPUT}
                             label="inputs/directory-items"

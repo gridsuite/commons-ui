@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
-import { Alert, Grid2 as Grid } from '@mui/material';
+import { Alert, Grid2 as Grid, Stack } from '@mui/material';
 import { ColDef, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
@@ -228,9 +228,7 @@ export function ExplicitNamingFilterForm({
     };
 
     return (
-        <Grid
-            container
-            direction="column"
+        <Stack
             spacing={2}
             padding={1} // because of unscrollableHeader in parent component
             sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
@@ -315,6 +313,6 @@ export function ExplicitNamingFilterForm({
                     />
                 </Grid>
             )}
-        </Grid>
+        </Stack>
     );
 }

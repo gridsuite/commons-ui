@@ -46,11 +46,7 @@ export default defineConfig((_config) => ({
         svgr(), // works on every import with the pattern "**/*.svg?react"
         libInjectCss(),
         dts({
-            include: ['src'],
-            exclude: '**/*.test.{ts,tsx}',
-            compilerOptions: {
-                noCheck: true, // skip type checking for faster builds
-            },
+            tsconfigPath: './tsconfig.build.json',
         }),
     ],
     build: {
@@ -64,7 +60,11 @@ export default defineConfig((_config) => ({
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
                 globSync('src/**/*.{js,jsx,ts,tsx}', {
-                    ignore: ['src/vite-env.d.ts', 'src/**/*.test.{js,jsx,ts,tsx}'],
+                    ignore: [
+                        'src/vite-env.d.ts',
+                        'src/**/*.test.{js,jsx,ts,tsx}',
+                        'stories/**/*.stories.{js,jsx,ts,tsx}',
+                    ],
                 }).map((file) => [
                     // This remove `src/` as well as the file extension from each
                     // file, so e.g. src/nested/foo.js becomes nested/foo

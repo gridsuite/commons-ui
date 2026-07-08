@@ -11,7 +11,7 @@ import { UUID } from 'node:crypto';
 import type { UserProfile } from 'oidc-client-ts';
 
 import { useSnackMessage } from './useSnackMessage';
-import { ComputingType, formatComputingTypeLabel } from '../features/parameters/common/computing-type';
+import { formatComputingTypeLabel } from '../features/parameters/common/computing-type';
 import type { ILimitReductionsByVoltageLevel } from '../features/parameters/common/limitreductions/columns-definitions';
 import type {
     BackendFunctions,
@@ -20,6 +20,7 @@ import type {
     UseParametersBackendReturnProps,
 } from '../utils/types/parameters.type';
 import { snackWithFallback } from '../utils/error';
+import { ComputingType } from '../utils';
 
 export enum OptionalServicesStatus {
     Up = 'UP',

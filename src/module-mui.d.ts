@@ -19,8 +19,15 @@ declare module '@mui/material/styles' {
                 background: string;
             };
         };
+        searchedText: {
+            highlightColor: string;
+            currentHighlightColor: string;
+        };
         selectedRow: {
             background: string;
+        };
+        severityChip: {
+            disabledColor: string;
         };
     }
 }
