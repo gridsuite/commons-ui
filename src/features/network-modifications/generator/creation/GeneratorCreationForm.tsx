@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid2 as Grid, Stack} from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import {
@@ -172,14 +172,16 @@ export function GeneratorCreationForm({
 
             {/* Cost of start part */}
             <GridSection title="GenerationDispatch" />
-            <Grid container spacing={2}>
-                <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
-                <GridItem size={4}>{marginalCostField}</GridItem>
+            <Stack spacing={2}>
+                <Grid container spacing={2}>
+                    <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
+                    <GridItem size={4}>{marginalCostField}</GridItem>
+                </Grid>
                 <Grid container spacing={2}>
                     <GridItem size={4}>{plannedOutageRateField}</GridItem>
                     <GridItem size={4}>{forcedOutageRateField}</GridItem>
                 </Grid>
-            </Grid>
+            </Stack>
             <PropertiesForm networkElementType="generator" />
         </>
     );
