@@ -15,11 +15,3 @@ export interface ContingencyCountByContingencyList {
 export interface ContingencyCount {
     countByContingencyList: Record<UUID, ContingencyCountByContingencyList>;
 }
-
-export interface ContingencyCountByContingencyListEnriched extends ContingencyCountByContingencyList {
-    name: string;
-}
-
-export interface ContingencyCountEnriched {
-    countByContingencyList: Record<UUID, ContingencyCountByContingencyListEnriched>;
-}

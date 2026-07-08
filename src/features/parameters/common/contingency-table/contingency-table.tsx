@@ -4,37 +4,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress, Grid2 as Grid, Stack } from '@mui/material';
+import { Alert, CircularProgress, Grid2 as Grid } from '@mui/material';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
-import { ContingencyCount, ContingencyCountByContingencyListEnriched, ContingencyCountEnriched } from './types';
+import { ContingencyCount } from './types';
 import { useSnackMessage } from '../../../../hooks';
 import { CONTINGENCY_LISTS } from '../constants';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback, ContingencyListsInfosEnriched } from '../../../../utils';
 import { DndColumn } from '../../../../components';
+import { mapSimulatedContingencyList, SimulatedContingencyCountType } from './utils';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
     error: { color: 'error.main', paddingTop: 0, paddingBottom: 0 },
 } satisfies MuiStyles;
-
-type SuccessCountType = {
-    success: true;
-    nbContingencies: number;
-    notFoundElements: number;
-};
-
-type FailureCountType = {
-    success: false;
-    invalidContingencyErrorMessage: string;
-};
-
-type SimulatedContingencyCountType = SuccessCountType | FailureCountType;
 
 export type ContingencyTableApi = {
     resetSimulatedContingencyCount: () => void;
@@ -83,62 +71,6 @@ function ContingencyTableWithApiRef(
     }, []);
 
     useEffect(() => {
-        function enrichContingencyCount(
-            contingencyCount: ContingencyCount,
-            contingencyListsInfos: ContingencyListsInfosEnriched[]
-        ): ContingencyCountEnriched {
-            const namesById: Record<string, string | undefined> = {};
-            contingencyListsInfos.forEach((info) => {
-                info.contingencyLists.forEach((idName) => {
-                    namesById[idName.id] = idName.name;
-                });
-            });
-            const enriched: Record<string, ContingencyCountByContingencyListEnriched> = {};
-            Object.entries(contingencyCount.countByContingencyList).forEach(([uuid, countByList]) => {
-                const listName = namesById[uuid];
-                enriched[uuid] = { ...countByList, name: listName ?? uuid };
-            });
-
-            return {
-                countByContingencyList: enriched,
-            };
-        }
-
-        function analyzeContingencies(
-            contingencyCount: ContingencyCountEnriched | null
-        ): SimulatedContingencyCountType {
-            let total = 0;
-            let totalNotFound = 0;
-            if (contingencyCount === null) {
-                return {
-                    success: true,
-                    nbContingencies: 0,
-                    notFoundElements: 0,
-                };
-            }
-
-            // eslint-disable-next-line no-restricted-syntax
-            for (const [, countByList] of Object.entries(contingencyCount.countByContingencyList)) {
-                total += countByList.nbContingencies;
-
-                if (countByList.invalidContingencyErrorMessage !== null && countByList.name !== undefined) {
-                    return {
-                        success: false,
-                        invalidContingencyErrorMessage: `${countByList.invalidContingencyErrorMessage} in the list ${countByList.name}`,
-                    };
-                }
-                if (countByList.notFoundElements !== null) {
-                    totalNotFound += Object.entries(countByList.notFoundElements).length;
-                }
-            }
-
-            return {
-                success: true,
-                nbContingencies: total,
-                notFoundElements: totalNotFound,
-            };
-        }
-
         if (!showContingencyCount || !isBuiltCurrentNode) {
             setIsLoading(false);
             setSimulatedContingencyCount(null);
@@ -176,11 +108,7 @@ function ContingencyTableWithApiRef(
             abortSignal
         )
             .then((contingencyCount) => {
-                const enrichedContingencyCount: ContingencyCountEnriched = enrichContingencyCount(
-                    contingencyCount,
-                    contingencyListsInfos
-                );
-                setSimulatedContingencyCount(analyzeContingencies(enrichedContingencyCount));
+                setSimulatedContingencyCount(mapSimulatedContingencyList(contingencyCount, contingencyListsInfos));
                 loadingTimeoutId = setTimeout(() => {
                     setIsLoading(false);
                 }, 500);
@@ -264,16 +192,14 @@ function ContingencyTableWithApiRef(
 
     return (
         <Grid size={12}>
-            <Stack>
-                <ParameterTableField
-                    name={name}
-                    columnsDefinition={columnsDefinition}
-                    tableHeight={270}
-                    onChange={handleOnChange}
-                    isValidRow={isValidContingencyRow}
-                />
-                {showContingencyCount && renderContingencyCount()}
-            </Stack>
+            <ParameterTableField
+                name={name}
+                columnsDefinition={columnsDefinition}
+                tableHeight={270}
+                onChange={handleOnChange}
+                isValidRow={isValidContingencyRow}
+            />
+            {showContingencyCount && renderContingencyCount()}
         </Grid>
     );
 }
