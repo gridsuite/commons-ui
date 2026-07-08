@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Button, Tooltip } from '@mui/material';
+import { Button, Grid2 as Grid, Tooltip, Typography } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
 import { equalsArrayAnyOrder, getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
@@ -107,38 +107,24 @@ export function CsvPicker<TData = unknown>({
                 onUploadAccepted={handleUploadAccepted}
             >
                 {({ getRootProps }: any) => (
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'flex-end',
-                            minWidth: 0,
-                            width: '100%',
-                        }}
-                    >
-                        <Tooltip title={selectedFile?.name}>
-                            <Box
-                                sx={{
-                                    marginRight: '10px',
-                                    fontWeight: 'bold',
-                                    minWidth: 0,
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                }}
+                    <Grid container spacing={1} alignItems="center" justifyContent="right">
+                        <Grid>
+                            <Tooltip title={selectedFile?.name}>
+                                <Typography noWrap sx={{ fontWeight: 'bold' }}>
+                                    {selectedFile ? selectedFile.name : <FormattedMessage id="uploadMessage" />}
+                                </Typography>
+                            </Tooltip>
+                        </Grid>
+                        <Grid size="auto">
+                            <Button
+                                {...getRootProps()}
+                                variant={selectedFile ? 'contained' : 'text'}
+                                disabled={disabled}
                             >
-                                {selectedFile ? selectedFile.name : intl.formatMessage({ id: 'uploadMessage' })}
-                            </Box>
-                        </Tooltip>
-                        <Button
-                            {...getRootProps()}
-                            variant={selectedFile ? 'contained' : 'text'}
-                            disabled={disabled}
-                            sx={{ flexShrink: 0 }}
-                        >
-                            <FormattedMessage id={label} />
-                        </Button>
-                    </Box>
+                                <FormattedMessage id={label} />
+                            </Button>
+                        </Grid>
+                    </Grid>
                 )}
             </CSVReader>
             {onAppend && onReplace && (
