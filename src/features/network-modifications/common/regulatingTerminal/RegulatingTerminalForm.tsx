@@ -86,7 +86,7 @@ export function RegulatingTerminalForm({
 
     return (
         <Grid container direction={direction ?? 'row'} spacing={1}>
-            <Grid size={itemSize} sx={{ align: 'start' }}>
+            <Grid size={itemSize}>
                 <AutocompleteInput
                     name={`${id}.${FieldConstants.VOLTAGE_LEVEL}`}
                     label="VOLTAGE_LEVEL"
@@ -123,7 +123,7 @@ export function RegulatingTerminalForm({
                     allowNewValue
                 />
             </Grid>
-            <Grid size={itemSize} sx={{ align: 'start' }}>
+            <Grid size={itemSize}>
                 <AutocompleteInput
                     name={`${id}.${FieldConstants.EQUIPMENT}`}
                     // setting null programmatically when allowNewValue is enabled (i.e. freeSolo) does not

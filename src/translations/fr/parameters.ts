@@ -35,7 +35,8 @@ export const parametersFr = {
     descLfWriteSlackBus: 'Écrire le nœud bilan calculé automatiquement dans le réseau',
     descLfDC: 'Lancer le calcul en actif seul',
     descLfConnectedComponentMode: 'Choix de la composante connexe de calcul',
-    descLfConnectedComponentModeMain: 'Composante connexe principale',
+    descLfConnectedComponentModeMainSync: 'Composante synchrone principale',
+    descLfConnectedComponentModeMainConnected: 'Composante connexe principale',
     descLfConnectedComponentModeAll: 'Toutes les composantes connexes',
     descLfHvdcAcEmulation: "Permettre l'émulation AC des HVDC",
     descLfDistributedSlack: 'Activer la compensation',
@@ -496,4 +497,7 @@ export const parametersFr = {
     NODE_BUILT: 'Nœud réalisé',
     NODE_NOT_BUILT: 'Nœud non réalisé',
     ROOT_NODE: 'Nœud racine',
+
+    // Tooltips
+    'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
 };

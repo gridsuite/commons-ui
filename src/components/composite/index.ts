@@ -14,3 +14,4 @@ export * from './muiTable';
 export * from './reactQueryBuilder';
 export * from './agGridTable';
 export * from './customAGGrid';
+export * from './report';

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { AutocompleteInput, useCustomFormContext } from '../../../../components/ui';
@@ -113,7 +113,7 @@ export function VoltageLevelConnectivityForm({
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs>
+            <Grid size="grow">
                 <AutocompleteInput
                     isOptionEqualToValue={areIdsEqual}
                     outputTransform={(value) => {
@@ -135,7 +135,7 @@ export function VoltageLevelConnectivityForm({
                     size="small"
                 />
             </Grid>
-            <Grid item xs>
+            <Grid size="grow">
                 <AutocompleteInput
                     allowNewValue
                     forcePopupIcon

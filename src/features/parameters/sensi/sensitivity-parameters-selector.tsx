@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Box, Card, CardContent, Grid, Tab, Tabs } from '@mui/material';
+import { Box, Card, CardContent, Grid2 as Grid, Tab, Tabs } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
 import {

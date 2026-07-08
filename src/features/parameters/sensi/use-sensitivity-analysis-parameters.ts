@@ -9,8 +9,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import { ComputingType } from '../common/computing-type';
 import {
+    ComputingType,
     ElementType,
     FactorsCount,
     FieldConstants,
