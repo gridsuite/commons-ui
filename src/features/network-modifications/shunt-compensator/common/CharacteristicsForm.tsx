@@ -206,11 +206,16 @@ export function CharacteristicsForm({ previousValues, isModification = false }: 
                 </Grid>
             )}
             {characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id && (
-                <Grid container spacing={2}>
+                <Grid container spacing={2} size={12}>
                     <Grid size={4}>{shuntCompensatorTypeField}</Grid>
-                    <Box sx={{ width: '100%' }} />
-                    <Grid size={4}>{maxQAtNominalVField}</Grid>
-                    <Grid size={4}>{switchedOnMaxQAtNominalVField}</Grid>
+                    <Grid container size={12}>
+                        <Grid size={4}>
+                            {maxQAtNominalVField}
+                        </Grid>
+                        <Grid size={4}>
+                            {switchedOnMaxQAtNominalVField}
+                        </Grid>
+                    </Grid>
                 </Grid>
             )}
         </Grid>

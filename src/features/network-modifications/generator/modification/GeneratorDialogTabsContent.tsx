@@ -182,7 +182,6 @@ export function GeneratorDialogTabsContent({
                     isModification
                 />
                 <Grid container spacing={2} paddingTop={2}>
-                    <Box sx={{ width: '100%' }} />
                     <GridItem
                         tooltip={watchVoltageRegulation === null ? <FormattedMessage id="NoModification" /> : ''}
                         size={4}
@@ -190,7 +189,6 @@ export function GeneratorDialogTabsContent({
                         {voltageRegulationField}
                     </GridItem>
                     {voltageRegulationFields}
-                    <Box sx={{ width: '100%' }} />
                     <ActivePowerControlForm
                         isEquipmentModification
                         previousValues={generatorToModify?.activePowerControl}

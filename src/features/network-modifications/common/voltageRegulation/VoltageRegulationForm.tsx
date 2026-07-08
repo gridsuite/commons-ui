@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -90,35 +90,34 @@ export function VoltageRegulationForm({
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
                 />
             </GridItem>
-            <Box sx={{ width: '100%' }} />
-            <Grid size={4} justifySelf="end" />
-            <Box sx={{ width: '100%' }} />
             {isDistantRegulation && (
-                <>
-                    <Grid size={4} justifySelf="end">
-                        <FormattedMessage id="RegulatingTerminalGenerator" />
+                <Grid size={12}>
+                    <Grid container spacing={2}>
+                        <Grid size={4} justifySelf="end">
+                            <FormattedMessage id="RegulatingTerminalGenerator" />
+                        </Grid>
+                        <GridItem size={8}>
+                            <RegulatingTerminalForm
+                                id=""
+                                voltageLevelOptions={voltageLevelOptions}
+                                equipmentSectionTypeDefaultValue=""
+                                fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+                                regulatingTerminalVlId={previousValues?.regulatingTerminalVlId ?? undefined}
+                                equipmentSectionType={previousEquipmentSectionType}
+                            />
+                        </GridItem>
+                        <Grid size={4} justifySelf="end" />
+                        <GridItem size={4}>
+                            <FloatInput
+                                name={FieldConstants.Q_PERCENT}
+                                label="QPercentText"
+                                adornment={PercentageAdornment}
+                                previousValue={previousQPercent}
+                                clearable
+                            />
+                        </GridItem>
                     </Grid>
-                    <GridItem size={8}>
-                        <RegulatingTerminalForm
-                            id=""
-                            voltageLevelOptions={voltageLevelOptions}
-                            equipmentSectionTypeDefaultValue=""
-                            fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
-                            regulatingTerminalVlId={previousValues?.regulatingTerminalVlId ?? undefined}
-                            equipmentSectionType={previousEquipmentSectionType}
-                        />
-                    </GridItem>
-                    <Grid size={4} justifySelf="end" />
-                    <GridItem size={4}>
-                        <FloatInput
-                            name={FieldConstants.Q_PERCENT}
-                            label="QPercentText"
-                            adornment={PercentageAdornment}
-                            previousValue={previousQPercent}
-                            clearable
-                        />
-                    </GridItem>
-                </>
+                </Grid>
             )}
         </>
     );
