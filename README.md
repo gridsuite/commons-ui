@@ -35,6 +35,10 @@ This ensures all developers use the project's local tools version from `node_mod
 
 - **`npm run prebuild`** - Runs linting and type checking before the build (`npm run lint && npm run type-check:build`). This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
 
+- **`npm run storybook`** - Starts the Storybook development server. Changes to components and stories are reflected automatically during development.
+
+- **`npm run build-storybook`** - Builds the static Storybook site. This is useful for verifying the production build or publishing the component documentation. This script is used when storybook.yml action is run.
+
 ##### Local Testing
 
 If you want to test your library integration with a consumer application my-app you have first
