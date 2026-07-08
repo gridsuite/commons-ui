@@ -63,8 +63,7 @@ To keep the library consistent and stable, `commons-ui` uses a **repository
 owners** model. A group of owners must approve a pull request before it can be
 merged. Owners are automatically added as reviewers on every pull request.
 
-Owner reviews are not necessarily full functional reviews: for small changes or
-when there is high confidence in the author/reviewer, an owner may simply give a
+Owner reviews are not necessarily full functional reviews: for small changes an owner may simply give a
 formal approval. For larger contributions (new components, API changes,
 architectural decisions), the review may be more thorough.
 
