@@ -200,7 +200,7 @@ export function CharacteristicsForm({ previousValues, isModification = false }: 
             <Grid size={4}>{sectionCountField}</Grid>
             <Grid size={12}>{characteristicsChoiceField}</Grid>
             {characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id && (
-                <Grid container spacing={2}>
+                <Grid container spacing={2} size={12}>
                     <Grid size={4}>{maxSusceptanceField}</Grid>
                     <Grid size={4}>{switchedOnSusceptanceField}</Grid>
                 </Grid>
