@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { ParametersEditionDialogProps } from '../common';
@@ -68,20 +69,22 @@ export function SecurityAnalysisParametersDialog({
                 },
             }}
         >
-            <SecurityAnalysisParametersForm
-                securityAnalysisMethods={securityAnalysisMethods}
-                showContingencyCount={false}
-                isDeveloperMode={isDeveloperMode}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.LOADFLOW_PARAMETERS}
-                        />
-                    );
-                }}
-            />
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.LOADFLOW_PARAMETERS}
+                />
+            </Grid>
+            {securityAnalysisMethods.paramsFormInitialized ? (
+                <SecurityAnalysisParametersForm
+                    securityAnalysisMethods={securityAnalysisMethods}
+                    showContingencyCount={false}
+                    isDeveloperMode={isDeveloperMode}
+                />
+            ) : (
+                <LinearProgress />
+            )}
         </CustomMuiDialog>
     );
 }

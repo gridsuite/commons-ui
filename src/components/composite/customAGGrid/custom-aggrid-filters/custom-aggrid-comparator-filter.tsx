@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid, IconButton } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { CustomAggridComparatorSelector } from './custom-aggrid-comparator-selector';
 import { CustomAggridTextFilter } from './custom-aggrid-text-filter';
@@ -31,7 +31,7 @@ export function CustomAggridComparatorFilter({ colId, filterParams }: CustomAggr
         selectedFilterComparator === FilterTextComparators.IS_NOT_EMPTY;
 
     return (
-        <Grid container direction="column" gap={0.8} sx={{ padding: '8px' }}>
+        <Stack gap={0.8} sx={{ padding: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <div style={{ flex: 1 }}>
                     <CustomAggridComparatorSelector
@@ -56,6 +56,6 @@ export function CustomAggridComparatorFilter({ colId, filterParams }: CustomAggr
                     decimalAfterDot={decimalAfterDot}
                 />
             )}
-        </Grid>
+        </Stack>
     );
 }

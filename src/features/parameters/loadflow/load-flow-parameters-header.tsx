@@ -6,12 +6,11 @@
  */
 
 import React from 'react';
-import { Box, Grid2 as Grid, Tabs, Tab } from '@mui/material';
+import { Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TabValues } from './load-flow-parameters-utils';
-import { getTabStyle, parametersStyles } from '../parameters-style';
-import { MuiSelectInput } from '../../../components/ui';
-import { PROVIDER, LineSeparator } from '../common';
+import { getTabStyle } from '../parameters-style';
+import { ProviderParam } from '../common';
 
 function LoadFlowParametersHeader({
     selectedTab,
@@ -25,47 +24,23 @@ function LoadFlowParametersHeader({
     formattedProviders: { id: string; label: string }[];
 }>) {
     return (
-        <Box sx={{ flexGrow: 0, paddingLeft: 1, paddingTop: 1 }}>
-            <Grid
-                container
-                spacing={1}
-                sx={{
-                    padding: 0,
-                    paddingBottom: 0,
-                    height: 'fit-content',
-                }}
-                justifyContent="space-between"
-            >
-                <Grid size="grow" sx={parametersStyles.parameterName}>
-                    <FormattedMessage id="Provider" />
-                </Grid>
-                <Grid container size="auto" sx={{ justifyContent: 'flex-end' }}>
-                    <MuiSelectInput
-                        data-testid="LfProvider"
-                        name={PROVIDER}
-                        size="small"
-                        options={Object.values(formattedProviders)}
-                    />
-                </Grid>
-                <LineSeparator />
-                <Grid size={12}>
-                    <Tabs value={selectedTab} onChange={handleTabChange}>
-                        <Tab
-                            label={<FormattedMessage id={TabValues.GENERAL} />}
-                            value={TabValues.GENERAL}
-                            sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
-                            data-testid="LfGeneralTab"
-                        />
-                        <Tab
-                            label={<FormattedMessage id={TabValues.LIMIT_REDUCTIONS} />}
-                            value={TabValues.LIMIT_REDUCTIONS}
-                            sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS)}
-                            data-testid="LfLimitReductionsTab"
-                        />
-                    </Tabs>
-                </Grid>
-            </Grid>
-        </Box>
+        <Stack>
+            <ProviderParam options={formattedProviders} id="Lf" />
+            <Tabs value={selectedTab} onChange={handleTabChange}>
+                <Tab
+                    label={<FormattedMessage id={TabValues.GENERAL} />}
+                    value={TabValues.GENERAL}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
+                    data-testid="LfGeneralTab"
+                />
+                <Tab
+                    label={<FormattedMessage id={TabValues.LIMIT_REDUCTIONS} />}
+                    value={TabValues.LIMIT_REDUCTIONS}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS)}
+                    data-testid="LfLimitReductionsTab"
+                />
+            </Tabs>
+        </Stack>
     );
 }
 

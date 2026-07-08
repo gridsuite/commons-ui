@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { Box } from '@mui/material';
 import { BranchActiveReactivePowerMeasurementsFormProps } from './measurement.type';
 import { PowerMeasurementsForm } from './PowerMeasurementsForm';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
@@ -13,7 +14,7 @@ export function BranchActiveReactivePowerMeasurementsForm({
     equipmentToModify,
 }: Readonly<BranchActiveReactivePowerMeasurementsFormProps>) {
     return (
-        <>
+        <Box sx={{ width: '100%' }}>
             <GridSection title="MeasurementsSection" />
             <GridSection title="Side1" heading={4} />
             <PowerMeasurementsForm
@@ -27,6 +28,6 @@ export function BranchActiveReactivePowerMeasurementsForm({
                 activePowerMeasurement={equipmentToModify?.measurementP2}
                 reactivePowerMeasurement={equipmentToModify?.measurementQ2}
             />
-        </>
+        </Box>
     );
 }
