@@ -91,32 +91,29 @@ export function VoltageRegulationForm({
                 />
             </GridItem>
             {isDistantRegulation && (
-                <Grid size={12}>
-                    <Grid container spacing={2}>
-                        <Grid size={4} justifySelf="end">
-                            <FormattedMessage id="RegulatingTerminalGenerator" />
-                        </Grid>
-                        <GridItem size={8}>
-                            <RegulatingTerminalForm
-                                id=""
-                                voltageLevelOptions={voltageLevelOptions}
-                                equipmentSectionTypeDefaultValue=""
-                                fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
-                                regulatingTerminalVlId={previousValues?.regulatingTerminalVlId ?? undefined}
-                                equipmentSectionType={previousEquipmentSectionType}
-                            />
-                        </GridItem>
-                        <Grid size={4} justifySelf="end" />
-                        <GridItem size={4}>
-                            <FloatInput
-                                name={FieldConstants.Q_PERCENT}
-                                label="QPercentText"
-                                adornment={PercentageAdornment}
-                                previousValue={previousQPercent}
-                                clearable
-                            />
-                        </GridItem>
+                <Grid container size={12} spacing={2}>
+                    <Grid size={4} justifySelf="end">
+                        <FormattedMessage id="RegulatingTerminalGenerator" />
                     </Grid>
+                    <GridItem size={8}>
+                        <RegulatingTerminalForm
+                            id=""
+                            voltageLevelOptions={voltageLevelOptions}
+                            equipmentSectionTypeDefaultValue=""
+                            fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+                            regulatingTerminalVlId={previousValues?.regulatingTerminalVlId ?? undefined}
+                            equipmentSectionType={previousEquipmentSectionType}
+                        />
+                    </GridItem>
+                    <GridItem size={4} offset={4}>
+                        <FloatInput
+                            name={FieldConstants.Q_PERCENT}
+                            label="QPercentText"
+                            adornment={PercentageAdornment}
+                            previousValue={previousQPercent}
+                            clearable
+                        />
+                    </GridItem>
                 </Grid>
             )}
         </>
