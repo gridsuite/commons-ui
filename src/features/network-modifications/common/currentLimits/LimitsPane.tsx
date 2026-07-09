@@ -21,7 +21,7 @@ import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroupsTabs/
 import { FieldConstants, type MuiStyles } from '../../../../utils';
 import { APPLICABILITY, CurrentLimits, CurrentLimitsData } from './limits.types';
 import { GridSection, InputWithPopupConfirmation, SwitchInput } from '../../../../components';
-import { BranchInfos } from '../../line/commonForm/line.types';
+import { BranchInfos } from '../../line/common/line.types';
 
 const limitsStyles = {
     parametersBox: (theme) => ({

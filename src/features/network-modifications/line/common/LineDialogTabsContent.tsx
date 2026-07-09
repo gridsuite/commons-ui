@@ -10,7 +10,7 @@ import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity
 import { LineDialogOptions, LineDialogTab } from './line.utils';
 import { BranchConnectivityForm } from '../../common/connectivity/BranchConnectivityForm';
 import { BranchActiveReactivePowerMeasurementsForm } from '../../common/measurements/BranchActiveReactivePowerMeasurementsForm';
-import { LineCharacteristicsPane } from '../characteristicsPane';
+import { LineCharacteristicsPane } from '../characteristics';
 import { BranchInfos } from './line.types';
 import { LimitsPane } from '../../common/currentLimits/LimitsPane';
 import { GridSection } from '../../../../components';

@@ -9,7 +9,7 @@ import { Grid2 as Grid } from '@mui/material';
 import { FieldConstants, MicroSusceptanceAdornment, OhmAdornment } from '../../../../utils/constants';
 import { FloatInput } from '../../../../components';
 import { convertInputValue, FieldType } from '../../../../utils';
-import { BranchInfos } from '../commonForm/line.types';
+import { BranchInfos } from '../common/line.types';
 import { PropertiesForm } from '../../common/properties/PropertiesForm';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { GridItem } from '../../../../components/composite/grid/grid-item';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './characteristicsPane';
-export * from './lineTypesCatalog';
-export * from './commonForm';
+export * from './characteristics';
+export * from './catalog';
+export * from './common';
 export * from './creation';

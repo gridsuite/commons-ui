@@ -30,7 +30,7 @@ import { LineCreationDto } from './lineCreation.types';
 import {
     getLineCharacteristicsEmptyFormData,
     getLineCharacteristicsValidationSchemaProps,
-} from '../characteristicsPane';
+} from '../characteristics';
 import {
     getAllLimitsFormDataProperties,
     getLimitsEmptyFormDataProps,
@@ -41,7 +41,7 @@ import {
     getBranchActiveReactivePowerEmptyFormDataProperties,
     getBranchActiveReactivePowerValidationSchemaObject,
 } from '../../common/measurements';
-import { convertToLineSegmentInfos, convertToLineSegmentsFormData, LineSegmentsInfoSchema } from '../lineTypesCatalog';
+import { convertToLineSegmentInfos, convertToLineSegmentsFormData, LineSegmentsInfoSchema } from '../catalog';
 
 export const lineCreationFormSchema = (displayConnectivity: boolean) =>
     object()
