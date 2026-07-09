@@ -11,12 +11,13 @@ import { FieldConstants } from '../../../../utils';
 
 const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
     isEquipmentModification: boolean,
-    relatedFieldName: string
+    relatedFieldName: string,
+    displayConnectivity = true
 ) => {
     return object()
         .nullable()
         .when({
-            is: () => !isEquipmentModification,
+            is: () => !isEquipmentModification && displayConnectivity,
             then: (schema) => schema.required(),
         })
         .shape({
@@ -38,20 +39,25 @@ const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
         });
 };
 
-export const getConnectivityPropertiesValidationSchema = (isEquipmentModification = false) => {
+export const getConnectivityPropertiesValidationSchema = (
+    isEquipmentModification = false,
+    displayConnectivity = true
+) => {
     return {
         [FieldConstants.VOLTAGE_LEVEL]: getVoltageLevelAndBusOrBusBarSectionFieldsSchema(
             isEquipmentModification,
-            FieldConstants.BUS_OR_BUSBAR_SECTION
+            FieldConstants.BUS_OR_BUSBAR_SECTION,
+            displayConnectivity
         ),
         [FieldConstants.BUS_OR_BUSBAR_SECTION]: getVoltageLevelAndBusOrBusBarSectionFieldsSchema(
             isEquipmentModification,
-            FieldConstants.VOLTAGE_LEVEL
+            FieldConstants.VOLTAGE_LEVEL,
+            displayConnectivity
         ),
     };
 };
 
-export const getConnectivityWithPositionSchema = (isEquipmentModification = false) =>
+export const getConnectivityWithPositionSchema = (isEquipmentModification = false, displayConnectivity = true) =>
     object().shape({
         [FieldConstants.CONNECTION_DIRECTION]: string().nullable(),
         [FieldConstants.CONNECTION_NAME]: string(),
@@ -59,10 +65,10 @@ export const getConnectivityWithPositionSchema = (isEquipmentModification = fals
         [FieldConstants.CONNECTED]: bool()
             .nullable()
             .when([], {
-                is: () => !isEquipmentModification,
+                is: () => !isEquipmentModification && displayConnectivity,
                 then: (schema) => schema.required(),
             }),
-        ...getConnectivityPropertiesValidationSchema(isEquipmentModification),
+        ...getConnectivityPropertiesValidationSchema(isEquipmentModification, displayConnectivity),
     });
 
 export const getConnectivityWithPositionValidationSchema = (
@@ -71,6 +77,21 @@ export const getConnectivityWithPositionValidationSchema = (
 ) => ({
     [id]: getConnectivityWithPositionSchema(isEquipmentModification),
 });
+
+export const getBranchConnectivityWithPositionSchema = (
+    isEquipmentModification: boolean,
+    displayConnectivity: boolean
+) =>
+    object().shape({
+        [FieldConstants.CONNECTIVITY_1]: getConnectivityWithPositionSchema(
+            isEquipmentModification,
+            displayConnectivity
+        ),
+        [FieldConstants.CONNECTIVITY_2]: getConnectivityWithPositionSchema(
+            isEquipmentModification,
+            displayConnectivity
+        ),
+    });
 
 export const getCon1andCon2WithPositionValidationSchema = (
     isEquipmentModification = false,
@@ -101,6 +122,11 @@ export const getConnectivityWithPositionEmptyFormDataProps = (isEquipmentModific
     [FieldConstants.CONNECTION_DIRECTION]: null,
     [FieldConstants.CONNECTION_NAME]: '',
     [FieldConstants.CONNECTION_POSITION]: null,
+});
+
+export const getBranchConnectivityWithPositionEmptyFormDataProps = (isEquipmentModification = false) => ({
+    [FieldConstants.CONNECTIVITY_1]: getConnectivityWithPositionEmptyFormDataProps(isEquipmentModification),
+    [FieldConstants.CONNECTIVITY_2]: getConnectivityWithPositionEmptyFormDataProps(isEquipmentModification),
 });
 
 export const getConnectivityWithPositionEmptyFormData = (
