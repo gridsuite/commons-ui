@@ -6,8 +6,8 @@
  */
 import { Property } from '../../common/properties/properties.type';
 import { AttributeModification, ModificationType } from '../../../../utils';
-import { OperationalLimitsGroup } from '../../common/limits/operationalLimitsGroups.types';
-import { LineSegmentInfos } from '../commonForm/line.types';
+import { OperationalLimitsGroup } from '../../common/currentLimits/operationalLimitsGroups/operationalLimitsGroups.types';
+import { LineSegmentInfos } from '../common/line.types';
 
 export interface LineModificationDto {
     type: ModificationType;

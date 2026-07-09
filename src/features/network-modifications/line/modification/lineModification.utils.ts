@@ -28,10 +28,7 @@ import {
     toModificationProperties,
 } from '../../common/properties';
 import { LineModificationDto } from './lineModification.types';
-import {
-    getLineCharacteristicsEmptyFormData,
-    getLineCharacteristicsValidationSchemaProps,
-} from '../characteristicsPane';
+import { getLineCharacteristicsEmptyFormData, getLineCharacteristicsValidationSchemaProps } from '../characteristics';
 import {
     addModificationTypeToOpLimitsGroups,
     addOperationTypeToSelectedOpLG,
@@ -46,7 +43,7 @@ import {
     getBranchActiveReactivePowerEmptyFormDataProperties,
     getBranchActiveReactivePowerValidationSchemaObject,
 } from '../../common/measurements';
-import { convertToLineSegmentInfos, LineSegmentsInfoSchema } from '../lineTypesCatalog';
+import { convertToLineSegmentInfos, LineSegmentsInfoSchema } from '../catalog';
 import { OPERATIONAL_LIMITS_GROUPS_MODIFICATION_TYPE } from '../../common';
 
 export const lineModificationFormSchema = object()
