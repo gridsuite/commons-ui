@@ -4,8 +4,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { UUID } from 'node:crypto';
+
+export interface ContingencyCountByContingencyList {
+    nbContingencies: number;
+    notFoundElements: Record<string, Set<string>> | null;
+    invalidContingencyErrorMessage: string | null;
+}
 
 export interface ContingencyCount {
-    contingencies: number;
-    notFoundElements: number;
+    countByContingencyList: Record<UUID, ContingencyCountByContingencyList>;
 }
