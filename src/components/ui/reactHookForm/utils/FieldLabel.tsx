@@ -16,7 +16,7 @@ export function FieldLabel({ label, optional = false, values = undefined }: Fiel
     return (
         <>
             <FormattedMessage id={label} values={values} />
-            {optional && <FormattedMessage id="inputs/optional" />}
+            {optional && <FormattedMessage id="Optional" />}
         </>
     );
 }
