@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress, Grid2 as Grid } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -191,7 +191,7 @@ function ContingencyTableWithApiRef(
     }, [intl]);
 
     return (
-        <Grid size={12}>
+        <>
             <ParameterTableField
                 name={name}
                 columnsDefinition={columnsDefinition}
@@ -200,7 +200,7 @@ function ContingencyTableWithApiRef(
                 isValidRow={isValidContingencyRow}
             />
             {showContingencyCount && renderContingencyCount()}
-        </Grid>
+        </>
     );
 }
 
