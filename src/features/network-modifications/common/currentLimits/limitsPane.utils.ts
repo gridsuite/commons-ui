@@ -12,7 +12,7 @@ import {
     OperationalLimitsGroupFormSchema,
     OperationalLimitsGroupModificationInfos,
     TemporaryLimitFormSchema,
-} from './operationalLimitsGroupsTabs/operationalLimitsGroups.types';
+} from './operationalLimitsGroups/operationalLimitsGroups.types';
 import {
     areArrayElementsUnique,
     AttributeModification,

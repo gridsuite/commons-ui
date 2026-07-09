@@ -6,7 +6,7 @@
  */
 import { ModificationType } from '../../../../utils';
 import { Property } from '../../common/properties/properties.type';
-import { OperationalLimitsGroupFormSchema } from '../../common/currentLimits/operationalLimitsGroupsTabs/operationalLimitsGroups.types';
+import { OperationalLimitsGroupFormSchema } from '../../common/currentLimits/operationalLimitsGroups/operationalLimitsGroups.types';
 
 export interface LineSegmentInfos {
     segmentTypeId: string; // used to fetch LineTypeInfo

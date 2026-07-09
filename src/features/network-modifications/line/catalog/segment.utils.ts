@@ -11,7 +11,7 @@ import { APPLICABILITY } from '../../common/currentLimits/limits.types';
 import {
     OperationalLimitsGroupFormSchema,
     TemporaryLimitFormSchema,
-} from '../../common/currentLimits/operationalLimitsGroupsTabs/operationalLimitsGroups.types';
+} from '../../common/currentLimits/operationalLimitsGroups/operationalLimitsGroups.types';
 import { LineSegmentInfos } from '../creation/lineCreation.types';
 import { FieldConstants } from '../../../../utils';
 

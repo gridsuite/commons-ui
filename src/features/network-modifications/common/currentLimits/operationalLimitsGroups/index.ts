@@ -8,5 +8,5 @@
 export * from './operationalLimitsGroups.types';
 export * from './LimitsGroupsContextualMenu';
 export * from './LimitsPropertiesStack';
-export * from './OperationalLimitsGroupsTabs';
+export * from './OperationalLimitsGroups';
 export * from './OperationalLimitsGroupTabLabel';

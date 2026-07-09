@@ -9,15 +9,15 @@ import { Box, Grid2 as Grid, IconButton, lighten } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
-import { OperationalLimitsGroupsTabs } from './operationalLimitsGroupsTabs/OperationalLimitsGroupsTabs';
+import { OperationalLimitsGroups } from './operationalLimitsGroups/OperationalLimitsGroups';
 import { SelectedOperationalLimitGroup } from './SelectedOperationalLimitGroup';
-import { LimitsSidePane } from './limitsSidePane/LimitsSidePane';
+import { LimitsEditor } from './limitsEditor/LimitsEditor';
 import {
     generateEmptyOperationalLimitsGroup,
     generateUniqueId,
     mapServerLimitsGroupsToFormInfos,
 } from './limitsPane.utils';
-import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroupsTabs/operationalLimitsGroups.types';
+import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups/operationalLimitsGroups.types';
 import { FieldConstants, type MuiStyles } from '../../../../utils';
 import { APPLICABILITY, CurrentLimits, CurrentLimitsData } from './limits.types';
 import { GridSection, InputWithPopupConfirmation, SwitchInput } from '../../../../components';
@@ -192,7 +192,7 @@ export function LimitsPane({
                             <AddIcon />
                         </IconButton>
                     </Box>
-                    <OperationalLimitsGroupsTabs
+                    <OperationalLimitsGroups
                         parentFormName={id}
                         appendToLimitsGroups={appendToLimitsGroups}
                         removeLimitsGroups={removeLimitsGroups}
@@ -207,7 +207,7 @@ export function LimitsPane({
                         operationalLimitsGroups.map(
                             (operationalLimitsGroup: OperationalLimitsGroupFormSchema, index: number) =>
                                 index === indexSelectedLimitSet && (
-                                    <LimitsSidePane
+                                    <LimitsEditor
                                         key={operationalLimitsGroup.id}
                                         name={`${id}.${FieldConstants.OPERATIONAL_LIMITS_GROUPS}[${index}]`}
                                         clearableFields={clearableFields}

@@ -7,5 +7,5 @@
 
 export * from './limitsChart';
 export * from './LimitsPropertiesSideStack';
-export * from './LimitsSidePane';
+export * from './LimitsEditor';
 export * from './TemporaryLimitsTable';

@@ -15,7 +15,7 @@ import { limitsStyles } from './operationalLimitsGroupsStyles';
 import { CurrentLimitsData } from '../limits.types';
 import { FieldConstants } from '../../../../../utils';
 
-export interface OperationalLimitsGroupsTabsProps {
+export interface OperationalLimitsGroupsProps {
     parentFormName: string;
     indexSelectedLimitSet: number | null;
     setIndexSelectedLimitSet: React.Dispatch<React.SetStateAction<number | null>>;
@@ -30,7 +30,7 @@ export interface OperationalLimitsGroupsTabsProps {
     removeLimitsGroups: () => void;
 }
 
-export function OperationalLimitsGroupsTabs({
+export function OperationalLimitsGroups({
     parentFormName,
     setIndexSelectedLimitSet,
     indexSelectedLimitSet,
@@ -38,7 +38,7 @@ export function OperationalLimitsGroupsTabs({
     appendToLimitsGroups,
     removeLimitsGroups,
     currentLimitsToModify,
-}: Readonly<OperationalLimitsGroupsTabsProps>) {
+}: Readonly<OperationalLimitsGroupsProps>) {
     const [hoveredRowIndex, setHoveredRowIndex] = useState(-1);
     const [contextMenuCoordinates, setContextMenuCoordinates] = useState<ContextMenuCoordinates>({
         x: null,

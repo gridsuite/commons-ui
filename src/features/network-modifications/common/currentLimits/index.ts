@@ -9,5 +9,5 @@ export * from './limits.types';
 export * from './LimitsTagChip';
 export * from './LimitsPane';
 export * from './limitsPane.utils';
-export * from './limitsSidePane';
-export * from './operationalLimitsGroupsTabs';
+export * from './limitsEditor';
+export * from './operationalLimitsGroups';

@@ -26,7 +26,7 @@ import {
 } from '../../../../../components';
 import { AmpereAdornment, FieldConstants } from '../../../../../utils';
 
-export interface LimitsSidePaneProps {
+export interface LimitsEditorProps {
     name?: string;
     permanentCurrentLimitPreviousValue: number | null | undefined;
     temporaryLimitsPreviousValues: TemporaryLimitsData[];
@@ -35,14 +35,14 @@ export interface LimitsSidePaneProps {
     disabled: boolean;
 }
 
-export function LimitsSidePane({
+export function LimitsEditor({
     name,
     permanentCurrentLimitPreviousValue,
     temporaryLimitsPreviousValues,
     applicabilityPreviousValue,
     clearableFields,
     disabled,
-}: Readonly<LimitsSidePaneProps>) {
+}: Readonly<LimitsEditorProps>) {
     const intl = useIntl();
     const { getValues, subscribe, trigger } = useFormContext();
     const { isNodeBuilt } = useCustomFormContext();
