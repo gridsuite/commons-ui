@@ -27,10 +27,7 @@ import {
     toModificationProperties,
 } from '../../common/properties';
 import { LineCreationDto } from './lineCreation.types';
-import {
-    getLineCharacteristicsEmptyFormData,
-    getLineCharacteristicsValidationSchemaProps,
-} from '../characteristics';
+import { getLineCharacteristicsEmptyFormData, getLineCharacteristicsValidationSchemaProps } from '../characteristics';
 import {
     getAllLimitsFormDataProperties,
     getLimitsEmptyFormDataProps,
