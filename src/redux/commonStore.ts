@@ -5,10 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { User } from 'oidc-client';
+import type { User } from 'oidc-client-ts';
+
+export type CommonStoreState = {
+    user: User | null;
+};
 
 interface CommonStore {
-    getState: () => { user: User };
+    getState(): CommonStoreState;
+    subscribe(listener: () => void): () => void;
 }
 
 let commonStore: CommonStore | undefined;
@@ -22,6 +27,13 @@ export function setCommonStore(store: CommonStore): void {
     commonStore = store;
 }
 
+export function getUser(): User | null {
+    return commonStore?.getState().user ?? null;
+}
 export function getUserToken() {
-    return commonStore?.getState().user.id_token;
+    return commonStore?.getState().user?.id_token;
+}
+
+export function subscribeToUserState(listener: () => void): () => void {
+    return commonStore?.subscribe(listener) ?? (() => {});
 }

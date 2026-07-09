@@ -1,0 +1,41 @@
+/**
+ * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import { ComputingType } from '../../../utils';
+
+export const isValidComputingType = (value: string | undefined): boolean => {
+    return Object.values(ComputingType).includes(value as ComputingType);
+};
+
+export const formatComputingTypeLabel = (type: ComputingType): string | undefined => {
+    switch (type) {
+        case ComputingType.LOAD_FLOW:
+            return 'LoadFlow';
+        case ComputingType.SECURITY_ANALYSIS:
+            return 'SecurityAnalysis';
+        case ComputingType.SENSITIVITY_ANALYSIS:
+            return 'SensitivityAnalysis';
+        case ComputingType.SHORT_CIRCUIT:
+            return 'ShortCircuit';
+        case ComputingType.SHORT_CIRCUIT_ONE_BUS:
+            return 'OneBusShortCircuitAnalysis';
+        case ComputingType.VOLTAGE_INITIALIZATION:
+            return 'VoltageInit';
+        case ComputingType.DYNAMIC_SIMULATION:
+            return 'DynamicSimulation';
+        case ComputingType.DYNAMIC_SECURITY_ANALYSIS:
+            return 'DynamicSecurityAnalysis';
+        case ComputingType.DYNAMIC_MARGIN_CALCULATION:
+            return 'DynamicMarginCalculation';
+        case ComputingType.STATE_ESTIMATION:
+            return 'StateEstimation';
+        case ComputingType.PCC_MIN:
+            return 'PccMin';
+        default:
+            console.warn(`Unrecognized computing type while formatting its label : ${type}`);
+            return undefined;
+    }
+};

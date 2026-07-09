@@ -1,0 +1,480 @@
+/**
+ * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+export const parametersEn = {
+    descLfVoltageInitMode: 'Voltage initialisation mode',
+    descLfUseReactiveLimits: 'Take the reactive limits of generators into account',
+    descLfPhaseShifterRegulationOn: 'Enable automatic power flow control with phase shifting transformers',
+    descLfTwtSplitShuntAdmittance: 'Split shunt admittance of two winding transformers',
+    descLfShuntCompensatorVoltageControlOn: 'Enable voltage control by shunt compensators',
+    descLfUniformValues: 'Uniform values',
+    descLfPreviousValues: 'Previous values',
+    descLfDcValues: 'DC Values',
+    resetToDefault: 'Reset All',
+    resetParamsConfirmation: 'Do you really want to reset these parameters ?',
+    showAdvancedParameters: 'Advanced settings',
+    showSpecificParameters: 'Specific settings',
+    save: 'Save',
+    saveParameters: 'Save parameters',
+    'settings.button.chooseSettings': 'Choose parameters',
+    showSelectDirectoryDialog: 'Choose folder',
+    showSelectDirectoryItemDialog: 'Choose',
+    showSelectParameterDialog: 'Choose parameters',
+    createParameterLabel: 'Create new parameters',
+    updateParameterLabel: 'Replace existing parameters',
+    nameAlreadyUsed: 'This name is already used',
+    tagAlreadyUsed: 'This tag is already used',
+    studyDirectoryFetchingError: 'An error occurred while fetching study directory',
+    AddDescription: 'Add a description (optional)',
+    descLfReadSlackBus: 'Read slack bus in the network',
+    descLfWriteSlackBus: 'Write slack bus in the network',
+    descLfDC: 'Run a DC power flow',
+    descLfConnectedComponentMode: 'Select connected component for calculation',
+    descLfConnectedComponentModeMainSync: 'Main synchronous component',
+    descLfConnectedComponentModeMainConnected: 'Main connected component',
+    descLfConnectedComponentModeAll: 'All connected components',
+    descLfHvdcAcEmulation: 'Enable AC emulation on HVDC lines',
+    descLfDistributedSlack: 'Enable balancing',
+    descLfDcUseTransformerRatio: 'Use transformation ratio in DC mode',
+    descLfDcPowerFactor: 'DC power factor (cos phi): ',
+    dcPowerFactorGreaterThan0: 'Power factor must be greater than 0',
+    dcPowerFactorLessOrEqualThan1: 'Power factor must be less or equal to 1',
+    descLfBalanceType: 'Balance type proportional to',
+    descLfBalanceTypeGenP: 'generation P',
+    descLfBalanceTypeGenPMax: 'generation P max',
+    descLfBalanceTypeLoad: 'load',
+    descLfBalanceTypeConformLoad: 'conform load',
+    descLfCountries: 'Countries',
+    descLfAllCountries: 'All countries',
+    descLfCountriesToBalance: 'Countries participating in balancing',
+    editParameters: 'Edit parameters',
+    RealPercentage: 'This value must be between 0 and 1',
+
+    General: 'General',
+    LimitReductions: 'Limit reductions',
+    StudyArea: 'Study area',
+    PowerElectronics: 'Power electronics',
+    IST: 'PATL',
+    LimitVoltageInterval: 'Between TATL{lowBound} and TATL{highBound}',
+    LimitVoltageAfterIST: 'Between PATL and TATL{highBound}',
+    LimitDurationInterval: 'Duration {lowerBoundClosed}{lowBound}, {highBound}{higherBoundClosed}',
+    voltageRange: 'Voltage range',
+    VoltageRangeInterval: 'Voltage interval ({lowBound} kV, {highBound} kV]',
+    leftOpenBracket: '(',
+    rightOpenBracket: ')',
+
+    Provider: 'Provider',
+    LimitReduction: 'Limit reduction',
+    Default: 'Default',
+    OpenLoadFlow: 'Open Load Flow',
+    Hades2: 'Hades 2',
+    DynaFlow: 'Dyna Flow',
+
+    Map: 'Map',
+    SingleLineDiagram: 'Single line diagram',
+    NetworkAreaDiagram: 'Network area diagram',
+    lineFullPath: 'Line full path',
+    lineParallelPath: 'Spread overlapping lines',
+    LineFlowMode: 'Line flow mode',
+    StaticArrows: 'Static arrows',
+    AnimatedArrows: 'Animated arrows',
+    Feeders: 'Feeder',
+    MapManualRefresh: 'Manual update of geographical view',
+    MapBaseMap: 'Basemap',
+    Mapbox: 'Mapbox',
+    diagonalLabel: 'Display name diagonally',
+    centerLabel: 'Center name',
+    SubstationLayout: 'Substation diagram layout',
+    HorizontalSubstationLayout: 'Horizontal',
+    VerticalSubstationLayout: 'Vertical',
+    ComponentLibrary: 'Component library selection',
+    CustomRealTimeStateEstimation: 'State estimation',
+    nadPositionsGenerationModeLabel: 'Initialization of the positions',
+    NadGeoPositionsModeLabel: 'Geographical',
+    NadAutoPositionsModeLabel: 'Automatic',
+    NadConfiguredPositionsModeLabel: 'Configured',
+    GridSuiteAndConvergence: 'GridSuite_And_Convergence',
+    Convergence: 'Convergence',
+    FlatDesign: 'Flat_Design',
+    Carto: 'Carto',
+    CartoNoLabel: 'Carto without labels',
+    Etalab: 'Etalab',
+    getNetworkVisualizationsParametersError: 'An error occurred while reading the network visualizations parameters',
+    updateNetworkVisualizationsParametersError:
+        'An error occurred while updating the network visualizations parameters',
+    paramsChangingError: 'An error occurred when changing the parameters',
+    paramsChangingDenied: 'The requested changes have been rejected',
+    paramsRetrievingError: 'An error occurred while retrieving the parameters',
+    paramsCreatingError: 'An error occurred while creating the parameters',
+    paramsUpdateError: 'An error occurred while updating the parameters {item}',
+    paramsCreationMsg: 'Parameters created in {directory}',
+    paramsUpdateMsg: 'Parameters {item} updated',
+    optionalServicesRetrievingError: 'An error occurred while retrieving the status of optional services',
+    defaultSensiResultsThresholdRetrievingError:
+        'An error occurred while retrieving the sensitivity analysis results default threshold',
+    fetchDefaultLimitReductionsError: 'An error occurred while fetching the default limit reductions',
+
+    descWithFeederResult: 'With feeder results',
+    ShortCircuitPredefinedParameters: 'Preset parameters',
+    ShortCircuitCharacteristics: 'Features considered',
+    ShortCircuitVoltageProfileMode: 'Initial voltage profile',
+    ShortCircuitStartedGeneratorsMode: 'Generators started',
+    ShortCircuitInClusterFilter: 'In cluster filters',
+    ShortCircuitInCluster: 'In cluster',
+    ShortCircuitOutCluster: 'Out cluster',
+    startedGeneratorsInCalculationClusterThreshold: 'Threshold',
+    startedGeneratorsOutsideCalculationClusterThreshold: 'Threshold',
+    ShortCircuitPowerElectronicsSection: 'Modeling of power electronics connected equipment',
+    ShortCircuitModelPowerElectronics: 'Consider following Icc characteristics',
+    ShortCircuitIccActive: 'Activate',
+    ShortCircuitIccMaterialActiveTooltip: 'Activate or deactivate this material characteristic',
+    ShortCircuitIccMaterialType: 'Material',
+    ShortCircuitIccMaterialTypeTooltip: 'Type of power electronics equipment',
+    ShortCircuitPowerElectronicsMaterialsParamParsingError:
+        'An error occurred while parsing the power electronics materials parameters',
+    ShortCircuitIccClusterActiveTooltip: 'Activate or deactivate this cluster characteristic',
+    ShortCircuitIccClusterFilters: 'Filters',
+    ShortCircuitIccClusterFiltersTooltip: 'Select the filters to be included in this cluster',
+    ShortCircuitIccClusterType: 'Cluster type',
+    ShortCircuitIccClusterTypeTooltip: 'Select type of production in this cluster',
+    ShortCircuitIccClusterTypeListsSelection: 'Type',
+    ShortCircuitPowerElectronicsClustersParamParsingError:
+        'An error occurred while parsing the power electronics clusters parameters',
+    ShortCircuitIccAlpha: 'Alpha',
+    ShortCircuitIccAlphaTooltip: 'Exponent of the voltage dependency of the Icc',
+    ShortCircuitIccUsmin: 'Usmin (%)',
+    ShortCircuitIccUsminTooltip: 'Minimum voltage for the Icc calculation',
+    ShortCircuitIccUsmax: 'Usmax (%)',
+    ShortCircuitIccUsmaxTooltip: 'Maximum voltage for the Icc calculation',
+    ShortCircuitIccU0: 'U0 (%)',
+    ShortCircuitIccU0Tooltip: 'Voltage level at which the Icc is nominal',
+    ShortCircuitStartedLabel: 'Started',
+    ShortCircuitAllLabel: 'All',
+    shortCircuitLoads: 'Loads',
+    shortCircuitHvdc: 'HVDC (VSC)',
+    shortCircuitShuntCompensators: 'Shunt compensators',
+    shortCircuitNeutralPosition: 'Tap position of ratio tap changers',
+    shortCircuitNominalVoltage: 'Nominal voltage (kV)',
+    shortCircuitInitialVoltage: 'Initial voltage (kV)',
+    iccMawWithNominalVoltageMapPredefinedParams: 'ISC max with nominal voltage profile',
+    iccMaxWithCEIPredefinedParams: 'ISC max with standard IEC 909',
+    iscMinWithNominalVoltageMapPredefinedParams: 'ISC min with nominal voltage profile',
+    nominalInitialVoltageProfileMode: 'Nominal',
+    cei909InitialVoltageProfileMode: 'IEC 909',
+    Or: 'or',
+
+    updateVoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
+    VoltageInitParametersGeneralTabLabel: 'General',
+    VoltageInitParametersGeneralApplyModificationsLabel: 'Automatically apply voltage init modification',
+    VoltageInitParametersGeneralSaveInfo:
+        "This option won't be saved and will be set back to its default value when choosing settings from GridExplore",
+    VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Update bus voltage',
+    VoltageInitParametersEquipmentsSelectionAlert:
+        'Static var compensators and VSC converter stations are always considered variable',
+    VoltageLimits: 'Voltage limits',
+    VoltageLevelFilter: 'Voltage level filter',
+    LowVoltageLimitDefault: 'Low voltage limit default value',
+    HighVoltageLimitDefault: 'High voltage limit default value',
+    LowVoltageLimitAdjustment: 'Low voltage limit adjustment',
+    HighVoltageLimitAdjustment: 'High voltage limit adjustment',
+    VoltageLevelFilterTooltip:
+        'User entries are applied one after another starting at the top of the list. If a voltage level is included in more than one filter, an entry can therefore be replaced by a subsequent entry',
+    UniqueFilterInputError: 'You must select one filter',
+    EquipmentSelection: 'Equipment selection',
+    ReactiveSlacksThreshold: 'Alert threshold on reactive slacks',
+    ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'The threshold must be greater or equal to 0',
+    ShuntCompensatorActivationThreshold: 'Alert threshold on shunt compensator activation',
+    ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero: 'The threshold must be greater or equal to 0',
+    ShuntCompensatorActivationThresholdDescription:
+        'Threshold (in Mvar) above which the difference between discretized and optimal value for shunt compensator activation is considered significant (and will thus be recorded in the functional logs)',
+    VoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
+    AdjustExistingLimits: 'Adjust existing limits',
+    AdjustExistingLimitsInfo:
+        'Please enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
+    SetDefaultLimits: 'Default values to fill missing limits',
+    allExcept: 'All except',
+    noneExcept: 'None except',
+    FiltersListsSelection: 'Filters lists selection',
+    VariableGenerators: 'Generators with variable reactive power',
+    VariableTransformers: 'Variable transformers',
+    VariableShuntCompensators: 'Variable shunt compensators',
+
+    'securityAnalysis.violationsHiding': 'Post-contingency violations hiding',
+    'securityAnalysis.current': 'Current',
+    'securityAnalysis.lowVoltage': 'Low voltage',
+    'securityAnalysis.highVoltage': 'High voltage',
+    'securityAnalysis.toolTip.violationsHiding':
+        'This section configures thresholds to determine which violations that already exist in the pre-contingency state are redisplayed in the post-contingency state as aggravated violations.',
+    'securityAnalysis.toolTip.current':
+        'For current violations, the value can only be proportional. For example, if the proportional value corresponds to 10 A, a 1000 A current preexisting violation will be displayed in the post-contingency state only if the new value is above 1010 A.',
+    'securityAnalysis.toolTip.lowVoltage':
+        'For low voltage violations, the value of the threshold can be either proportional or absolute. If both values are defined, the smallest value is used. For example, if the proportional value corresponds to 1 kV and the absolute value is 2 kV, a 200 kV low voltage preexisting violation will be displayed in the post-contingency state only if the new value is below 199 kV.',
+    'securityAnalysis.toolTip.highVoltage':
+        'For high voltage violations, the value of the threshold can be either proportional or absolute. If both values are defined, the smallest value is used. For example, if the proportional value corresponds to 1 kV and the absolute value is 2 kV, a 250 kV high voltage preexisting violation will be displayed in the post-contingency state only if the new value is above 251 kV.',
+
+    SupervisedBranches: 'Supervised branches',
+    flowSensitivityValue: 'Sensitivity value threshold',
+    flowFlowSensitivityValueThreshold: 'ΔMW ou ΔA / MW',
+    angleFlowSensitivityValueThreshold: 'ΔMW ou ΔA / Δ°',
+    flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
+
+    ContingencyListsSelection: 'Contingency lists selection',
+    contingencyLists: 'Contingency lists',
+    Execute: 'Execute',
+    AddContingencyList: 'Add',
+    DeleteContingencyList: 'Delete',
+    getContingencyListError: "Can't fetch contingencies lists",
+    xContingenciesWillBeSimulatedAndYNotFound:
+        '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated {y, plural, =0 {} other {and {y} not found}}',
+    contingenciesWillNotBeSimulated: '{invalidContingencyErrorMessage}',
+    contingencyCountImpossibleOnUnbuiltNode: "Can't estimate contingencies on an unbuilt node",
+    noContingency: 'No contingency',
+    resultsThreshold: 'Minimum sensitivity threshold',
+    SensitivityBranches: 'Branches',
+    SensitivityInjectionsSet: 'Relatively to injections set :',
+    SensitivityInjection: 'Relatively to each injection :',
+    SensitivityHVDC: 'Relatively to each HVDC :',
+    SensitivityPST: 'Relatively to each PST :',
+    SensitivityNodes: 'Nodes',
+    SensiInjectionsSet: 'Set Injections',
+    SensiInjection: 'Injection',
+    SensiHVDC: 'Hvdc',
+    SensiPST: 'PST',
+    Proportional: 'Proportional',
+    ProportionalMaxP: 'Proportional to maxP',
+    Regular: 'Regular distribution',
+    Ventilation: 'Ventilation',
+    DistributionType: 'Distribution type',
+    SensitivityType: 'Sensitivity type',
+    DeltaMW: '\u0394 MW',
+    DeltaA: '\u0394 A',
+    ContingencyLists: 'Contingencies lists',
+    Injections: 'Injections',
+    MonitoredVoltageLevels: 'Supervised voltage levels',
+    EquipmentsInVoltageRegulation: 'Equipments in voltage regulation',
+    PSTS: 'PSTs',
+    Active: 'Active',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, select, null {- result} 0 {0 result} 1 {1 result} other {{count}{suffix} results}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, select, null {- variable} 0 {0 variable} 1 {1 variable} other {{count}{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
+    'sensitivityAnalysis.separator': '  |  ',
+    loadingComputing: 'Calculation in progress...',
+
+    AddRows: 'Add',
+    Optional: ' (optional)',
+
+    // Computed translations used in the snackbars
+    // LoadFlow
+    fetchDefaultLoadFlowProviderError: 'An error occured when fetching default load flow provider',
+    fetchLoadFlowParametersError: 'An error occured when fetching the load flow parameters',
+    fetchLoadFlowProviderError: 'An error occured when fetching the load flow provider',
+    fetchLoadFlowProvidersError: 'An error occurred while fetching the load flow providers',
+    fetchLoadFlowSpecificParametersError: 'An error occured when fetching the load flow specific parameters',
+    updateLoadFlowParametersError: 'An error occurred while updating the load flow parameters',
+    // SecurityAnalysis
+    fetchSecurityAnalysisParametersError: 'An error occured when fetching the security analysis parameters',
+    fetchSecurityAnalysisProvidersError: 'An error occured when fetching security analysis provider list',
+    updateSecurityAnalysisParametersError: 'An error occurred while updating the security analysis parameters',
+    getSecurityAnalysisContingenciesCountError:
+        'An error occurred while estimating security analysis contingencies count',
+    // SensitivityAnalysis
+    fetchSensitivityAnalysisParametersError: 'An error occured when fetching the sensitivity analysis parameters',
+    fetchSensitivityAnalysisProvidersError: 'An error occured when fetching sensitivity analysis provider list',
+    updateSensitivityAnalysisParametersError: 'An error occurred while updating the sensitivity analysis parameters',
+    getSensitivityAnalysisFactorsCountError: 'An error occured while estimating sensitivity analysis computations',
+    // Other
+    resetLoadFlowParametersWarning:
+        'Impossible to retrieve the load flow parameters defined in the user profile (default values are used)',
+    // pccMin
+    PccMinParametersError: 'An error occurred while updating the pcc min parameters',
+    updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
+    pccMinParamFilter: 'Definition of contingencies on voltage levels',
+
+    Dynawo: 'Dynawo',
+    // DynamicSimulation
+    // DS Parameters tabs
+    DynamicSimulationTimeDelay: 'Time delay',
+    DynamicSimulationSolver: 'Solver',
+    DynamicSimulationMapping: 'Mapping',
+    DynamicSimulationNetwork: 'Network',
+    DynamicSimulationCurve: 'Curves',
+
+    // Time delay tab
+    DynamicSimulationStartTime: 'Start time',
+    DynamicSimulationStopTime: 'Stop time',
+    DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime:
+        'Stop time must be greater than or equal to start time',
+
+    // Solver tab
+    DynamicSimulationSolverType: 'Solver type',
+    DynamicSimulationSolverIDA: 'IDA Solver',
+    DynamicSimulationSolverSIM: 'Simplified Solver',
+
+    DynamicSimulationIDASolverOrder: 'Order (1 or 2)',
+    DynamicSimulationIDASolverInitStep: 'Initial time step',
+    DynamicSimulationIDASolverMinStep: 'Minimum time step',
+    DynamicSimulationIDASolverMaxStep: 'Maximum time step',
+    DynamicSimulationIDASolverAbsAccuracy: 'Absolute accuracy',
+    DynamicSimulationIDASolverRelAccuracy: 'Relative accuracy',
+    DynamicSimulationIDASolverOrderMustBeOneOfValues: 'Order must be 1 or 2',
+
+    DynamicSimulationSimplifiedSolverHMin: 'Minimum time step',
+    DynamicSimulationSimplifiedSolverHMax: 'Maximum time step',
+    DynamicSimulationSimplifiedSolverKReduceStep: 'Time step reduction factor',
+    DynamicSimulationSimplifiedSolverMaxNewtonTry: 'Maximum Newton resolutions number for one step',
+    DynamicSimulationSimplifiedSolverLinearSolverName: 'Chosen linear solver',
+    DynamicSimulationSimplifiedSolverFNormTol: 'Stopping tolerance on L2-norm of residual function',
+    DynamicSimulationSimplifiedSolverInitialAddTol: 'Stopping tolerance on initialization',
+    DynamicSimulationSimplifiedSolverScStepTol: 'Scaled step length tolerance',
+    DynamicSimulationSimplifiedSolverMxNewTStep: 'Maximum allowable scaled step length',
+    DynamicSimulationSimplifiedSolverMsbset:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine',
+    DynamicSimulationSimplifiedSolverMxIter: 'Maximum number of nonlinear iterations',
+    DynamicSimulationSimplifiedSolverPrintFl: 'Level of verbosity of output',
+    DynamicSimulationSimplifiedSolverOptimizeAlgebraicResidualsEvaluations:
+        'Enable the optimizations of algebraic residuals evaluations',
+    DynamicSimulationSimplifiedSolverSkipNRIfInitialGuessOK:
+        'Enable the possibility to skip next iterations if the simulation is stable',
+    DynamicSimulationSimplifiedSolverEnableSilentZ:
+        'Enable the analysis of the discrete variables scope to minimize the number of zero-crossing evaluations',
+    DynamicSimulationSimplifiedSolverOptimizeReInitAlgebraicResidualsEvaluations:
+        'Enable the optimizations of algebraic residuals evaluations during algebraic restoration',
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestoration:
+        'Specify the minimum mode change type for which an algebraic restoration is done (ALGEBRAIC or ALGEBRAIC_J_UPDATE)',
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestorationInit:
+        'Specify the minimum mode change type for which an algebraic restoration is done at init (ALGEBRAIC or ALGEBRAIC_J_UPDATE)',
+
+    DynamicSimulationSolverFNormTolAlg: 'Stopping tolerance on L2-norm of residual function for algebraic restoration',
+    DynamicSimulationSolverInitialAddTolAlg: 'Stopping tolerance on initialization for algebraic restoration',
+    DynamicSimulationSolverScStepTolAlg: 'Scaled step length tolerance for algebraic restoration',
+    DynamicSimulationSolverMxNewTStepAlg: 'Maximum allowable scaled step length for algebraic restoration',
+    DynamicSimulationSolverMsbsetAlg:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine for algebraic restoration',
+    DynamicSimulationSolverMxIterAlg: 'Maximum number of nonlinear iterations for algebraic restoration',
+    DynamicSimulationSolverPrintFlAlg: 'Level of verbosity of output for algebraic restoration',
+    DynamicSimulationSolverFNormTolAlgJ:
+        'Stopping tolerance on L2-norm of residual function for algebraic restoration (with J update)',
+    DynamicSimulationSolverInitialAddTolAlgJ:
+        'Stopping tolerance on initialization for algebraic restoration (with J update)',
+    DynamicSimulationSolverScStepTolAlgJ: 'Scaled step length tolerance for algebraic restoration (with J update)',
+    DynamicSimulationSolverMxNewTStepAlgJ:
+        'Maximum allowable scaled step length for algebraic restoration (with J update)',
+    DynamicSimulationSolverMsbsetAlgJ:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine for algebraic restoration (with J update)',
+    DynamicSimulationSolverMxIterAlgJ:
+        'Maximum number of nonlinear iterations for algebraic restoration (with J update)',
+    DynamicSimulationSolverPrintFlAlgJ: 'Level of verbosity of output for algebraic restoration (with J update)',
+    DynamicSimulationSolverFNormTolAlgInit:
+        'Stopping tolerance on L2-norm of residual function for algebraic restoration (for Init update)',
+    DynamicSimulationSolverInitialAddTolAlgInit:
+        'Stopping tolerance on initialization for algebraic restoration (for Init update)',
+    DynamicSimulationSolverScStepTolAlgInit: 'Scaled step length tolerance for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMxNewTStepAlgInit:
+        'Maximum allowable scaled step length for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMsbsetAlgInit:
+        'Maximum number of nonlinear iterations that may be performed between calls to the linear solver setup routine for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMxIterAlgInit:
+        'Maximum number of nonlinear iterations for algebraic restoration (for Init update)',
+    DynamicSimulationSolverPrintFlAlgInit: 'Level of verbosity of output for algebraic restoration (for Init update)',
+    DynamicSimulationSolverMaximumNumberSlowStepIncrease:
+        'Maximum number of consecutive steps with a too small time step',
+    DynamicSimulationSolverMinimalAcceptableStep: 'Minimal acceptable value for a time step',
+
+    // Network tab
+    DynamicSimulationNetworkCapacitorNoReclosingDelay: 'Time lag before reclosing in s (capacitor)',
+    DynamicSimulationNetworkReactanceNoReclosingDelay: 'Time lag before reclosing in s (reactance)',
+    DynamicSimulationNetworkBoundaryLineCurrentLimitMaxTimeOperation:
+        'Time threshold over which current limiter should not operate in s',
+    DynamicSimulationNetworkLineCurrentLimitMaxTimeOperation: 'Line current limit Max Time Operation',
+    DynamicSimulationNetworkLoadTp: 'Time constant for integration of active power setpoint change, in s',
+    DynamicSimulationNetworkLoadTq: 'Time constant for integration of reactive power setpoint change, in s',
+    DynamicSimulationNetworkLoadAlpha: 'Active load exponential sensitivity to voltage',
+    DynamicSimulationNetworkLoadAlphaLong: 'Active load exponential sensitivity to voltage (long term behaviour)',
+    DynamicSimulationNetworkLoadBeta: 'Reactive load exponential sensitivity to voltage',
+    DynamicSimulationNetworkLoadBetaLong: 'Reactive load exponential sensitivity to voltage (long term behaviour)',
+    DynamicSimulationNetworkLoadIsControllable: 'Load is controllable if checked (ie P/Q could be changed)',
+    DynamicSimulationNetworkLoadIsRestorative: 'Load is restorative if checked (P=Pc and Q=Qc even if voltage change)',
+    DynamicSimulationNetworkLoadZPMax: 'Max speed of active power variation in pu/s',
+    DynamicSimulationNetworkLoadZQMax: 'Max speed of reactive power variation in pu/s',
+    DynamicSimulationNetworkTransformerCurrentLimitMaxTimeOperation:
+        'Time threshold over which current limiter should not operate, in s',
+    DynamicSimulationNetworkTransformerT1StHT: 'Time delay before changing tap for the first time (HV voltage) in s',
+    DynamicSimulationNetworkTransformerT1StTHT: 'Time delay before changing tap for the first time (VHV voltage) in s',
+    DynamicSimulationNetworkTransformerTNextHT: 'Time delay before changing tap (HV voltage) in s',
+    DynamicSimulationNetworkTransformerTNextTHT: 'Time delay before changing tap (VHV voltage) in s',
+    DynamicSimulationNetworkTransformerTolV: 'Voltage regulation tolerance (half deadband of the tap changer) in pu',
+
+    // Curve tab
+    DynamicSimulationModelsFetcherError: 'An error occurred while fetching the models list',
+    DynamicSimulationCurveSelectedNumber: 'Selected',
+    DynamicSimulationCurveDynamicModelHeader: 'Network object name',
+    DynamicSimulationCurveVariableHeader: 'Variable',
+    DynamicSimulationCurveSelectorDialogTitle: 'Edit curves list to trace',
+    DynamicSimulationCurveToAdd: 'Curve to add',
+    DynamicSimulationCurveEquipmentType: 'Equipement type',
+    DynamicSimulationCurvePost: 'Voltage levels',
+    DynamicSimulationCurveCountry: 'Country',
+    DynamicSimulationCurveTension: 'Nominal voltage',
+    DynamicSimulationCurveEquipmentFilter: 'Equipment filter',
+    DynamicSimulationCurveCurveFilter: 'Curve filter',
+    DynamicSimulationCurveEquipment: 'Equipments',
+    DynamicSimulationCurveModel: 'Associated model',
+    DynamicSimulationCurveVariable: 'Variables',
+    DynamicSimulationAdd: 'Add',
+    DynamicSimulationClose: 'Close',
+
+    // DynamicSecurityAnalysis
+    // DSA Parameters tabs
+    DynamicSecurityAnalysisScenario: 'Scenario',
+    DynamicSecurityAnalysisContingency: 'Contingency',
+
+    // Scenario tab
+    DynamicSecurityAnalysisScenarioDuration: 'Scenario duration',
+
+    // Contingency tab
+    DynamicSecurityAnalysisContingenciesStartTime: 'Contingencies start time',
+
+    // DynamicMarginCalculation
+    // DMC Parameters tabs
+    DynamicMarginCalculationTimeDelayTab: 'Time delay',
+    DynamicMarginCalculationLoadsVariationsTab: 'Load variations',
+
+    // Time delay tab
+    DynamicMarginCalculationStartTime: 'Start time',
+    DynamicMarginCalculationStopTime: 'Stop time',
+    DynamicMarginCalculationMarginCalculationStartTime: 'Margin calculation start time',
+    DynamicMarginCalculationLoadIncreaseStartTime: 'Load increase start time',
+    DynamicMarginCalculationLoadIncreaseStopTime: 'Load increase stop time',
+
+    // Loads variations tab
+    DynamicMarginCalculationCalculationType: 'Calculation type',
+    DynamicMarginCalculationAccuracy: 'Accuracy',
+    DynamicMarginCalculationLoadModelsRule: 'Load models rule',
+    DynamicMarginCalculationLoadsVariations: 'Load variations',
+    DynamicMarginCalculationCalculationTypeGlobalMargin: 'Global margin',
+    DynamicMarginCalculationCalculationTypeLocalMargin: 'Local margin',
+    DynamicMarginCalculationLoadModelsRuleAllLoads: 'All loads',
+    DynamicMarginCalculationLoadModelsRuleTargetedLoads: 'Targeted loads',
+    DynamicMarginCalculationLoadsFilter: 'Loads filter',
+    DynamicMarginCalculationLoadsVariation: 'Load variation',
+    DynamicMarginCalculationLoadsActive: 'Active',
+
+    // Node states
+    BUILT: 'Built',
+    BUILT_WITH_WARNING: 'Warnings',
+    BUILT_WITH_ERROR: 'Errors',
+    NOT_BUILT: 'Not built',
+    BUILDING: 'Building',
+    NODE_BUILT: 'Node built',
+    NODE_NOT_BUILT: 'Node not built',
+    ROOT_NODE: 'Root node',
+
+    // Tooltips
+    'tooltip.reset': 'User default parameters',
+};

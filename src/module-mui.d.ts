@@ -5,9 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import '@mui/material'; // dunno why we need to import like that for module augmentation to work
+
 // used to customize mui theme
 // https://mui.com/material-ui/customization/theming/#typescript
-declare module '@mui/material/styles/createTheme' {
+declare module '@mui/material/styles' {
     interface Theme {
         aggrid: {
             theme: string;
@@ -16,6 +18,16 @@ declare module '@mui/material/styles/createTheme' {
             overlay: {
                 background: string;
             };
+        };
+        searchedText: {
+            highlightColor: string;
+            currentHighlightColor: string;
+        };
+        selectedRow: {
+            background: string;
+        };
+        severityChip: {
+            disabledColor: string;
         };
     }
 }

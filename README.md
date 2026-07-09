@@ -2,44 +2,77 @@
 
 Library for sharing GridSuite apps commons components
 
+#### Frontend components organization
+
+Components are organized as follows:
+
+- `src/components/ui`  
+  - Simple, generic, low-level UI components.
+  - Highly reusable and not tied to any business logic.
+
+- `src/components/composite`  
+  - Richer, higher-level reusable components.
+  - Composed of multiple UI components, but still independent from business logic.
+
+- `src/features`  
+  - Feature- or domain-oriented components.
+  - Tied to specific application use cases and business logic.
+
 #### For developers
 
 The commons-ui library have a demo app in which you can call your components to test them.
 The `npm start` command install the library's dependencies then launches the demo app.
 
+##### Development Scripts
+
+Developers can use these scripts to perform check actions instead of executing local tsc, eslint, etc...
+This ensures all developers use the project's local tools version from `node_modules` rather than a potentially different globally-installed version.
+
+- **`npm run type-check`** - Runs TypeScript type checking without emitting files on the whole sources. Run this to check that your current dev is mainly correct.
+
+- **`npm run type-check:build`** - Runs TypeScript type checking with emitting files and only on the exported sources. This is what is executed by the CI, so you can use it before committing.
+- **`npm run build`** - Builds the library. Note: This automatically runs `npm run prebuild` first.
+
+- **`npm run prebuild`** - Runs linting and type checking before the build (`npm run lint && npm run type-check:build`). This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
+
+- **`npm run storybook`** - Starts the Storybook development server. Changes to components and stories are reflected automatically during development.
+
+- **`npm run build-storybook`** - Builds the static Storybook site. This is useful for verifying the production build or publishing the component documentation. This script is used when storybook.yml action is run.
+
+##### Local Testing
+
 If you want to test your library integration with a consumer application my-app you have first
-to build commons-ui via 
+to build commons-ui via
+
 - `npm install` (if not already done to get `tsc`)
 - `npm run build:pack`
 
 Then in the my-app project :
-- Change the commons-ui dependency in my-app's package.json from    
-`@gridsuite/commons-ui:"^x.x.x"`    
-to     
-`@gridsuite/commons-ui:"file:{PATH_TO_LIBRARY}/gridsuite-commons-ui-{LIBRARY_VERSION}.tgz"` 
+
+- Change the commons-ui dependency in my-app's package.json from  
+  `@gridsuite/commons-ui:"^x.x.x"`  
+  to  
+  `@gridsuite/commons-ui:"file:{PATH_TO_LIBRARY}/gridsuite-commons-ui-{LIBRARY_VERSION}.tgz"`
 - `npm install`
 - `npm start`
 
-*Warning* : with Create React App, we realised the library was not updating correctly if you try to install the library multiple times.
+_Warning_ : with Create React App, we realised the library was not updating correctly if you try to install the library multiple times.
 To fix this, run this command from the app **after** running "npm install"
+
 - rm -Rf node_modules/.cache
- 
 
 #### For integrators
 
 If you want to deploy a new version of commons-ui in the [NPM package registry](https://www.npmjs.com/package/@gridsuite/commons-ui),
-you need to follow the steps below:
+first you need **some permissions**. You need to be a member of the *gridsuite* organization and a member of the *'developers'* team.
+Only in this case, you need to follow the steps below:
 
--   Update to the new version in [package.json](https://github.com/gridsuite/commons-ui/blob/main/package.json) (example `0.6.0`)
--   Build it: `npm install`
--   Commit the package.json and package-lock.json files, push to a branch, make a PR, have it reviewed and merged to main.
--   Pull and checkout main on your last commit.
--   [Tag your last commit](https://semver.org/) : `git tag <tag>` (example: `v0.6.0`)
--   Push tag : `git push origin <tag>`
--   Checkout the tag in a fresh repo copy : `cd $(mktemp -d) && git clone https://github.com/gridsuite/commons-ui.git` then `cd commons-ui && git checkout <tag>`
--   [Test your package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#testing-your-package): `npm install`
--   [Login on the command line to the npm registry](https://docs.npmjs.com/logging-in-to-an-npm-enterprise-registry-from-the-command-line): `npm login`
--   [Publish the package](https://docs.npmjs.com/creating-and-publishing-scoped-public-packages#publishing-scoped-public-packages): `npm publish`
+- [Make a release action](https://github.com/gridsuite/commons-ui/actions/workflows/release.yml)
+- In the 'run workflow' combobox select, let the branch on main
+- Enter the type of evolution (major | minor | patch)
+- Click 'run workflow'
+
+Otherwise ask someone who has the permission.
 
 #### License Headers and dependencies checking
 
@@ -49,6 +82,7 @@ To check dependencies license compatibility with this project one locally, pleas
 npm run licenses-check
 ```
 
-Notes : 
-* Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
-If you need to update this list, please inform organization's owners.
+Notes :
+
+- Check [license-checker-config.json](license-checker-config.json) for license white list and exclusion.
+  If you need to update this list, please inform organization's owners.

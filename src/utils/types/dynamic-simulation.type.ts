@@ -1,0 +1,131 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import type { UUID } from 'node:crypto';
+import { EquipmentType } from './equipmentType';
+import { IdName } from './types';
+
+export enum SolverType {
+    IDA = 'IDA',
+    SIM = 'SIM',
+}
+
+type CommonSolverInfos = {
+    id: UUID;
+    type: SolverType;
+    fNormTolAlg: number;
+    initialAddTolAlg: number;
+    scStepTolAlg: number;
+    mxNewTStepAlg: number;
+    msbsetAlg: number;
+    mxIterAlg: number;
+    printFlAlg: number;
+    fNormTolAlgJ: number;
+    initialAddTolAlgJ: number;
+    scStepTolAlgJ: number;
+    mxNewTStepAlgJ: number;
+    msbsetAlgJ: number;
+    mxIterAlgJ: number;
+    printFlAlgJ: number;
+    fNormTolAlgInit: number;
+    initialAddTolAlgInit: number;
+    scStepTolAlgInit: number;
+    mxNewTStepAlgInit: number;
+    msbsetAlgInit: number;
+    mxIterAlgInit: number;
+    printFlAlgInit: number;
+    maximumNumberSlowStepIncrease: number;
+    minimalAcceptableStep: number;
+};
+
+type IdaSolverInfos = CommonSolverInfos & {
+    type: SolverType.IDA;
+    order: number;
+    initStep: number;
+    minStep: number;
+    maxStep: number;
+    absAccuracy: number;
+    relAccuracy: number;
+};
+
+type SimSolverInfos = CommonSolverInfos & {
+    type: SolverType.SIM;
+    hMin: number;
+    hMax: number;
+    kReduceStep: number;
+    maxNewtonTry: number;
+    linearSolverName: string;
+    fNormTol: number;
+    initialAddTol: number;
+    scStepTol: number;
+    mxNewTStep: number;
+    msbset: number;
+    mxIter: number;
+    printFl: number;
+    optimizeAlgebraicResidualsEvaluations: boolean;
+    skipNRIfInitialGuessOK: boolean;
+    enableSilentZ: boolean;
+    optimizeReInitAlgebraicResidualsEvaluations: boolean;
+    minimumModeChangeTypeForAlgebraicRestoration: string;
+    minimumModeChangeTypeForAlgebraicRestorationInit: string;
+};
+
+type NetworkInfos = Record<string, UUID | number | string | boolean>;
+
+type CurveInfos = {
+    id?: UUID;
+    equipmentType?: string;
+    equipmentId: string;
+    variableId: string;
+};
+
+export type SolverInfos = IdaSolverInfos | SimSolverInfos;
+
+export type DynamicSimulationParametersInfos = {
+    id?: UUID;
+    provider?: string;
+    startTime?: number;
+    stopTime?: number;
+    mappingId?: UUID;
+    solver: SolverType;
+    solvers?: SolverInfos[];
+    network?: NetworkInfos;
+    curves?: CurveInfos[] | null;
+};
+
+export type DynamicSimulationParametersEnriched = Omit<DynamicSimulationParametersInfos, 'mappingId'> & {
+    mapping?: IdName;
+};
+
+export function mapDynamicSimulationParameters(
+    parameters: DynamicSimulationParametersEnriched
+): DynamicSimulationParametersInfos {
+    const { mapping, ...rest } = parameters;
+    const newParameters = {
+        ...rest,
+        mappingId: parameters.mapping?.id,
+    };
+    return newParameters;
+}
+
+// --- Types related to model/variables --- //
+
+export type ModelVariableDefinitionInfos = {
+    name: string;
+    unit: string;
+};
+
+export type VariablesSetInfos = {
+    name: string;
+    variableDefinitions: ModelVariableDefinitionInfos[];
+};
+
+export type DynamicSimulationModelInfos = {
+    modelName: string;
+    equipmentType: EquipmentType;
+    variableDefinitions: ModelVariableDefinitionInfos[];
+    variablesSets: VariablesSetInfos[];
+};

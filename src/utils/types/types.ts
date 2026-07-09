@@ -1,0 +1,118 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import { UUID } from 'node:crypto';
+import { MessageDescriptor, PrimitiveType } from 'react-intl';
+import { ElementType } from './elementType';
+
+export type Input = string | number;
+
+export type ElementAttributes = {
+    elementUuid: UUID;
+    elementName: string;
+    description: string;
+    type: ElementType;
+    accessRights: {
+        isPrivate: boolean;
+    };
+    owner: string; // id
+    ownerLabel?: string; // enrich with user identity server
+    subdirectoriesCount: number;
+    creationDate: string;
+    lastModificationDate: string;
+    lastModifiedBy: string; // id
+    lastModifiedByLabel?: string; // enrich with user identity server
+    children: ElementAttributes[];
+    parentUuid: null | UUID;
+    specificMetadata: {
+        type: string;
+        equipmentType: string;
+        sheetType?: string;
+        format?: string;
+    };
+    uploading?: boolean;
+    hasMetadata?: boolean;
+    subtype?: string;
+    // only uploading element have this field
+    id?: string;
+};
+
+export type Option =
+    | {
+          id: string;
+          label: string;
+      }
+    | string;
+
+export type PredefinedProperties = {
+    [propertyName: string]: string[];
+};
+
+export type UserDetail = {
+    sub: string;
+    isAdmin: boolean;
+    profileName?: string;
+    maxAllowedCases: number;
+    numberCasesUsed: number;
+    maxAllowedBuilds: number;
+    maxAllowedLoadflow?: number;
+    maxAllowedSecurity?: number;
+    maxAllowedSensitivity?: number;
+    maxAllowedShortCircuit?: number;
+    maxAllowedVoltageInit?: number;
+    maxAllowedPccMin?: number;
+    maxAllowedStateEstimation?: number;
+    maxAllowedBalanceAdjustement?: number;
+    maxAllowedDynamicSimulation?: number;
+    maxAllowedDynamicSecurity?: number;
+    maxAllowedDynamicMargin?: number;
+};
+
+export enum AnnouncementSeverity {
+    INFO = 'INFO',
+    WARN = 'WARN',
+}
+
+export type AnnouncementDto = {
+    id: UUID;
+    startDate: Date;
+    endDate: Date;
+    message: string;
+    severity: AnnouncementSeverity;
+    remainingDuration: number;
+};
+
+export enum ArrayAction {
+    ADD = 'ADD',
+    REMOVE = 'REMOVE',
+}
+
+export type FormatValues = Record<string, PrimitiveType>;
+
+export type ErrorMessageDescriptor = {
+    descriptor: MessageDescriptor;
+    values?: FormatValues;
+};
+
+/**
+ * Represent an item/object in directories.
+ */
+export type ItemSelectionForCopy = {
+    sourceItemUuid: UUID | null;
+    typeItem: string | null;
+    nameItem: string | null;
+    descriptionItem: string | null;
+    parentDirectoryUuid: UUID | null;
+    specificTypeItem: string | null;
+};
+
+/**
+ * A directory element uuid but enriched with the corresponding name.
+ */
+export interface IdName {
+    id: UUID;
+    name?: string;
+}

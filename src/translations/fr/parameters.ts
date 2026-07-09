@@ -1,0 +1,503 @@
+/**
+ * Copyright (c) 2025, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+export const parametersFr = {
+    descLfVoltageInitMode: "Mode d'initialisation du plan de tension",
+    descLfUseReactiveLimits: 'Prise en compte des limites de réactif des groupes',
+    descLfPhaseShifterRegulationOn: 'Activer les régulations des transformateurs déphaseurs',
+    descLfTwtSplitShuntAdmittance:
+        'Répartir la susceptance des transformateurs à deux enroulements entre primaire et secondaire',
+    descLfShuntCompensatorVoltageControlOn: 'Activer la régulation de tension des bancs de compensation',
+    descLfUniformValues: 'Uniforme',
+    descLfPreviousValues: 'Précédentes',
+    descLfDcValues: 'DC',
+    resetToDefault: 'Tout réinitialiser ',
+    resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
+    showAdvancedParameters: 'Paramètres avancés',
+    showSpecificParameters: 'Paramètres spécifiques',
+    save: 'Enregistrer',
+    saveParameters: 'Enregistrer des paramètres',
+    'settings.button.chooseSettings': 'Sélectionner',
+    showSelectDirectoryDialog: 'Modifier dossier',
+    showSelectDirectoryItemDialog: 'Sélectionner',
+    showSelectParameterDialog: 'Choisir paramètres',
+    createParameterLabel: 'Créer des nouveaux paramètres',
+    updateParameterLabel: 'Remplacer des paramètres existants',
+    nameAlreadyUsed: 'Ce nom est déjà utilisé',
+    tagAlreadyUsed: 'Cette balise est déjà utilisée',
+    studyDirectoryFetchingError: "Une erreur est survenue lors de la lecture du dossier de l'étude",
+    AddDescription: 'Ajouter une description (optionnel)',
+    descLfReadSlackBus: 'Utiliser le nœud bilan défini dans le réseau',
+    descLfWriteSlackBus: 'Écrire le nœud bilan calculé automatiquement dans le réseau',
+    descLfDC: 'Lancer le calcul en actif seul',
+    descLfConnectedComponentMode: 'Choix de la composante connexe de calcul',
+    descLfConnectedComponentModeMainSync: 'Composante synchrone principale',
+    descLfConnectedComponentModeMainConnected: 'Composante connexe principale',
+    descLfConnectedComponentModeAll: 'Toutes les composantes connexes',
+    descLfHvdcAcEmulation: "Permettre l'émulation AC des HVDC",
+    descLfDistributedSlack: 'Activer la compensation',
+    descLfDcUseTransformerRatio:
+        "Prise en compte de la valeur des rapports de transformation dans l'équation de transit en actif seul",
+    descLfDcPowerFactor: 'Facteur de puissance en actif seul (cos phi)',
+    dcPowerFactorGreaterThan0: 'Le facteur de puissance doit être supérieur à 0',
+    dcPowerFactorLessOrEqualThan1: 'Le facteur de puissance doit être inférieur ou égal à 1',
+    descLfBalanceType: 'Mode de compensation proportionnel à',
+    descLfBalanceTypeGenP: 'puissance de consigne des groupes',
+    descLfBalanceTypeGenPMax: 'puissance maximale des groupes',
+    descLfBalanceTypeLoad: 'consommation',
+    descLfBalanceTypeConformLoad: 'part variable de la consommation',
+    descLfCountries: 'Pays',
+    descLfAllCountries: 'Tous les pays',
+    descLfCountriesToBalance: 'Pays participant à la compensation',
+    editParameters: 'Éditer les paramètres',
+    RealPercentage: 'Cette valeur doit être comprise entre 0 et 1',
+
+    General: 'Général',
+    LimitReductions: 'Abattements',
+    StudyArea: "Zone d'étude",
+    PowerElectronics: 'Electronique de puissance',
+    IST: 'IST',
+    LimitVoltageInterval: 'Entre IT{lowBound} et IT{highBound}',
+    LimitVoltageAfterIST: 'Entre IST et IT{highBound}',
+    LimitDurationInterval: 'Tempo {lowerBoundClosed}{lowBound}; {highBound}{higherBoundClosed}',
+    voltageRange: 'Niveau de tension',
+    VoltageRangeInterval: 'Plage de tension ]{lowBound} kV; {highBound} kV]',
+    leftOpenBracket: ']',
+    rightOpenBracket: '[',
+
+    Provider: 'Simulateur',
+    LimitReduction: 'Abattement des seuils',
+    Default: 'Défaut',
+    OpenLoadFlow: 'Open Load Flow',
+    Hades2: 'Hades 2',
+    DynaFlow: 'Dyna Flow',
+
+    Map: 'Carte',
+    SingleLineDiagram: 'Schéma unifilaire',
+    NetworkAreaDiagram: 'Image nodale de zone',
+    lineFullPath: 'Afficher le chemin complet des lignes',
+    lineParallelPath: 'Écarter les lignes superposées',
+    LineFlowMode: 'Mode de représentation des flux sur les lignes',
+    StaticArrows: 'Flèches statiques',
+    AnimatedArrows: 'Flèches animées',
+    Feeders: 'Départs',
+    MapManualRefresh: "Mise à jour manuelle de l'image réseau géographique",
+    MapBaseMap: 'Fond de plan',
+    Mapbox: 'Mapbox',
+    diagonalLabel: "Afficher les noms d'ouvrages en diagonale",
+    centerLabel: "Centrer les noms d'ouvrages",
+    SubstationLayout: 'Disposition des images de sites',
+    HorizontalSubstationLayout: 'Horizontal',
+    VerticalSubstationLayout: 'Vertical',
+    ComponentLibrary: 'Sélection de la bibliothèque de composants',
+    CustomRealTimeStateEstimation: "Estimation d'état",
+    nadPositionsGenerationModeLabel: 'Initialisation des positions',
+    NadGeoPositionsModeLabel: 'Géographique',
+    NadAutoPositionsModeLabel: 'Automatique',
+    NadConfiguredPositionsModeLabel: 'Configurée',
+    GridSuiteAndConvergence: 'GridSuite_And_Convergence',
+    Convergence: 'Convergence',
+    FlatDesign: 'Flat_Design',
+    Carto: 'Carto',
+    CartoNoLabel: 'Carto sans labels',
+    Etalab: 'Etalab',
+    getNetworkVisualizationsParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres des images réseau',
+    updateNetworkVisualizationsParametersError:
+        'Une erreur est survenue lors de la mise a jour des paramètres des images réseau',
+    paramsChangingError: 'Une erreur est survenue lors de la modification des paramètres',
+    paramsChangingDenied: 'Les changements demandés ont été rejetés',
+    paramsRetrievingError: 'Une erreur est survenue lors de la récupération des paramètres',
+    paramsCreatingError: 'Une erreur est survenue lors de la création des paramètres',
+    paramsUpdateError: 'Une erreur est survenue lors de la mise à jour des paramètres {item}',
+    paramsCreationMsg: 'Création de paramètres dans {directory}',
+    paramsUpdateMsg: 'Mise à jour des paramètres {item}',
+    optionalServicesRetrievingError:
+        "Une erreur est survenue lors de la récupération de l'état des services optionnels",
+    defaultSensiResultsThresholdRetrievingError:
+        "Une erreur est survenue lors de la récupération du seuil par défaut des résultats de l'analyse de sensibilité",
+    fetchDefaultLimitReductionsError: 'Une erreur est survenue lors de la récupération des abattements par défaut',
+
+    descWithFeederResult: 'Avec apports',
+    ShortCircuitPredefinedParameters: 'Paramètres prédéfinis',
+    ShortCircuitCharacteristics: 'Caractéristiques prises en compte',
+    ShortCircuitVoltageProfileMode: 'Plan de tension initial',
+    ShortCircuitStartedGeneratorsMode: 'Démarrage des groupes',
+    ShortCircuitInClusterFilter: 'Regroupements de la zone intérieure',
+    ShortCircuitInCluster: 'Zone intérieure',
+    ShortCircuitOutCluster: 'Zone extérieure',
+    startedGeneratorsInCalculationClusterThreshold: 'Seuil',
+    startedGeneratorsOutsideCalculationClusterThreshold: 'Seuil',
+    ShortCircuitPowerElectronicsSection: "Modélisation des équipements raccordés par de l'électronique de puissance",
+    ShortCircuitModelPowerElectronics: "Prise en compte des caractéristiques d'Icc suivantes",
+    ShortCircuitIccActive: 'Actif',
+    ShortCircuitIccMaterialActiveTooltip:
+        "Activer la modélisation des équipements raccordés par de l'électronique de puissance",
+    ShortCircuitIccMaterialType: 'Matériel',
+    ShortCircuitIccMaterialTypeTooltip: "Type d'équipement raccordé par de l'électronique de puissance",
+    ShortCircuitPowerElectronicsMaterialsParamParsingError:
+        "Une erreur est survenue lors de l'analyse des paramètres des matériaux d'électronique de puissance",
+    ShortCircuitIccClusterActiveTooltip: "Activer la modélisation des clusters d'électronique de puissance",
+    ShortCircuitIccClusterFilters: 'Filtres',
+    ShortCircuitIccClusterFiltersTooltip: 'Filtres de sélection des clusters',
+    ShortCircuitIccClusterType: 'Type de cluster',
+    ShortCircuitIccClusterTypeTooltip: 'Sélectionner le type de production dans ce cluster',
+    ShortCircuitIccClusterTypeListsSelection: 'Type',
+    ShortCircuitPowerElectronicsClustersParamParsingError:
+        "Une erreur est survenue lors de l'analyse des paramètres des clusters d'électronique de puissance",
+    ShortCircuitIccAlpha: 'Alpha',
+    ShortCircuitIccAlphaTooltip: 'Coefficient de pente de la caractéristique Icc',
+    ShortCircuitIccUsmin: 'Usmin (%)',
+    ShortCircuitIccUsminTooltip: 'Tension minimale pour le calcul de Icc',
+    ShortCircuitIccUsmax: 'Usmax (%)',
+    ShortCircuitIccUsmaxTooltip: 'Tension maximale pour le calcul de Icc',
+    ShortCircuitIccU0: 'U0 (%)',
+    ShortCircuitIccU0Tooltip: 'Tension de référence pour le calcul de Icc',
+    ShortCircuitStartedLabel: 'Démarrés',
+    ShortCircuitAllLabel: 'Tous',
+    shortCircuitLoads: 'Charges',
+    shortCircuitHvdc: 'HVDC (VSC)',
+    shortCircuitShuntCompensators: 'MCS',
+    shortCircuitNeutralPosition: 'Prises courantes des régleurs en charge',
+    shortCircuitNominalVoltage: 'Tension nominale (kV)',
+    shortCircuitInitialVoltage: 'Tension initiale (kV)',
+    iccMawWithNominalVoltageMapPredefinedParams: 'ICC max avec plan de tension normalisé',
+    iccMaxWithCEIPredefinedParams: 'ICC max avec norme CEI 909',
+    iscMinWithNominalVoltageMapPredefinedParams: 'Pcc min à tension normalisée',
+    nominalInitialVoltageProfileMode: 'Normalisé',
+    cei909InitialVoltageProfileMode: 'CEI 909',
+    Or: 'ou',
+
+    updateVoltageInitParametersError:
+        "Une erreur est survenue lors de la mise a jour des paramètres de l'initialisation du plan de tension",
+    VoltageInitParametersGeneralTabLabel: 'Général',
+    VoltageInitParametersGeneralApplyModificationsLabel: 'Appliquer automatiquement la modification du plan de tension',
+    VoltageInitParametersGeneralSaveInfo:
+        "Cette option ne sera pas enregistrée et sera mise à la valeur par défaut en cas d'insertion de paramètres depuis GridExplore",
+    VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Mettre à jour tension des nœuds électriques',
+    VoltageInitParametersEquipmentsSelectionAlert:
+        'Les consignes des CSPR et des stations VSC sont toujours considérées comme variables',
+    VoltageLimits: 'Limites de tension',
+    VoltageLevelFilter: 'Filtre poste',
+    LowVoltageLimitDefault: 'Valeur par défaut limite basse',
+    HighVoltageLimitDefault: 'Valeur par défaut limite haute',
+    LowVoltageLimitAdjustment: 'Modification limite basse',
+    HighVoltageLimitAdjustment: 'Modification limite haute',
+    VoltageLevelFilterTooltip:
+        "Les saisies sont appliquées dans l'ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un poste est inclus dans plusieurs filtres)",
+    UniqueFilterInputError: 'Vous devez sélectionner un filtre',
+    EquipmentSelection: 'Sélection des ouvrages',
+    ReactiveSlacksThreshold: "Seuil d'alerte sur les investissements réactifs",
+    ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
+    ShuntCompensatorActivationThreshold: "Seuil d'alerte sur l'enclenchement des MCS",
+    ShuntCompensatorActivationThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
+    ShuntCompensatorActivationThresholdDescription:
+        "Seuil (en Mvar) au-dessus duquel on considère qu'il y a un écart significatif (et donc tracé dans les logs fonctionnels) entre valeur arrondie et valeur théorique pour l'enclenchement d'un MCS",
+    VoltageInitParametersError: "Erreur lors de la mise à jour des paramètres d'initialisation du plan de tension",
+    voltageInitCancelError: "L'initialisation du plan de tension n'a pas pu être annulée",
+    AdjustExistingLimits: 'Modifier les limites existantes',
+    AdjustExistingLimitsInfo:
+        'Merci de saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
+    SetDefaultLimits: 'Valeurs par défaut pour compléter les limites manquantes',
+    allExcept: 'Tous sauf',
+    noneExcept: 'Aucun sauf',
+    FiltersListsSelection: 'Sélection des listes de filtres',
+    VariableGenerators: 'Groupes à puissance réactive variable',
+    VariableTransformers: 'Transformateurs variables',
+    VariableShuntCompensators: 'MCS variables',
+
+    'securityAnalysis.violationsHiding': 'Masquage des contraintes en N-k',
+    'securityAnalysis.current': 'Intensité',
+    'securityAnalysis.lowVoltage': 'Tension basse',
+    'securityAnalysis.highVoltage': 'Tension haute',
+    'securityAnalysis.toolTip.violationsHiding':
+        "Cette section permet de paramétrer le niveau d'aggravation à partir duquel les contraintes calculées en N réapparaissent en N-k.",
+    'securityAnalysis.toolTip.current':
+        "L'aggravation de contrainte en intensité est déterminée uniquement en pourcentage de la valeur calculée en N pour les ouvrages en contrainte. Par exemple, si l'aggravation en pourcentage correspond à 10 A alors la contrainte en N réapparaitra en N-k pour une augmentation d'intensité de plus de 10 A par rapport à la valeur calculée en N.",
+    'securityAnalysis.toolTip.lowVoltage':
+        "L'aggravation de contrainte en tension basse peut être calculée en pourcentage ou en définie en valeur absolue par rapport à la valeur calculée en N. La valeur prise en compte sera la plus conservative des deux. Par exemple, si l'aggravation en pourcentage correspond à 1 kV et celle renseignée en absolu est de 2 kV, alors la contrainte en tension basse réapparaitra en N-k pour une chute de tension de plus de 1 kV par rapport à la valeur calculée en N.",
+    'securityAnalysis.toolTip.highVoltage':
+        "L'aggravation de contrainte en tension haute peut être calculée en pourcentage ou en définie en valeur absolue par rapport à la valeur calculée en N. La valeur prise en compte sera la plus conservative des deux. Par exemple, si l'aggravation en pourcentage correspond à 1 kV et celle renseignée en absolu est de 2 kV, alors la contrainte en tension haute réapparaitra en N-k pour une élévation de tension de plus de 1 kV par rapport à la valeur calculée en N.",
+
+    SupervisedBranches: 'Quadripôles surveillés',
+    flowSensitivityValue: 'Valeur du seuil de sensibilité',
+    flowFlowSensitivityValueThreshold: 'ΔMW ou ΔA / MW',
+    angleFlowSensitivityValueThreshold: 'ΔMW ou ΔA / Δ°',
+    flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
+
+    ContingencyListsSelection: "Sélection des listes d'aléas",
+    contingencyLists: "Listes d'aléas",
+    Execute: 'Exécuter',
+    AddContingencyList: 'Ajouter',
+    DeleteContingencyList: 'Supprimer',
+    getContingencyListError: "Impossible de récupérer les listes d'aléas",
+    xContingenciesWillBeSimulatedAndYNotFound:
+        '{x, plural, =0 {aucun défaut} =1 {1 défaut} other {{x} défauts}} à simuler {y, plural, =0 {} =1 {et 1 non trouvé} other {et {y} non trouvés}}',
+    contingenciesWillNotBeSimulated: '{invalidContingencyErrorMessage}',
+    contingencyCountImpossibleOnUnbuiltNode: "Impossible d'estimer le nombre d'aléas sur un noeud non réalisé",
+    noContingency: 'Aucun défaut',
+    resultsThreshold: 'Seuil minimal de sensibilité',
+    SensitivityBranches: 'Quadripôles',
+    SensitivityInjectionsSet: "Par rapport à un ensemble d'injections :",
+    SensitivityInjection: 'Par rapport à chaque injection :',
+    SensitivityHVDC: 'Par rapport à chaque HVDC :',
+    SensitivityPST: 'Par rapport à chaque TD :',
+    SensitivityNodes: 'Nœuds',
+    SensiInjectionsSet: 'Set injections',
+    SensiInjection: 'Injection',
+    SensiHVDC: 'Hvdc',
+    SensiPST: 'TD',
+    Proportional: 'Proportionnel',
+    ProportionalMaxP: 'Proportionnel à Pmax',
+    Regular: 'Équirépartition',
+    Ventilation: 'Ventilation',
+    DistributionType: 'Type de répartition',
+    SensitivityType: 'Type de sensibilité',
+    DeltaMW: '\u0394 MW',
+    DeltaA: '\u0394 A',
+    ContingencyLists: "Listes d'aléas",
+    Injections: 'Injections',
+    MonitoredVoltageLevels: 'Postes surveillés',
+    EquipmentsInVoltageRegulation: 'Ouvrages en réglage tension',
+    PSTS: 'TDs',
+    Active: 'Actif',
+    'sensitivityAnalysis.simulatedResults':
+        '{count, select, null {- résultat} 0 {0 résultat} 1 {1 résultat} other {{count}{suffix} résultats}}',
+    'sensitivityAnalysis.simulatedVariables':
+        '{count, select, null {- variable} 0 {0 variable} 1 {1 variable} other {{count}{suffix} variables}}',
+    'sensitivityAnalysis.maximumFactorsCount': '{maxFactorsCount} max',
+    'sensitivityAnalysis.separator': '  |  ',
+    loadingComputing: 'Evaluation en cours...',
+
+    AddRows: 'Ajouter',
+    Optional: ' (optionnel)',
+
+    // Computed translations used in the snackbars
+    // LoadFlow
+    fetchLoadFlowParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres de calcul de répartition',
+    fetchLoadFlowProviderError:
+        'Une erreur est survenue lors de la récupération du fournisseur de calcul de répartition',
+    fetchLoadFlowProvidersError:
+        'Une erreur est survenue lors de la récupération des fournisseurs de calcul de répartition',
+    fetchLoadFlowSpecificParametersError:
+        'Une erreur est survenue lors de la récupération des paramètres spécifiques de calcul de répartition',
+    updateLoadFlowParametersError:
+        'Une erreur est survenue lors de la mise à jour des paramètres de calcul de répartition',
+    // SecurityAnalysis
+    fetchSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sécurité",
+    fetchSecurityAnalysisProvidersError:
+        "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
+    updateSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    getSecurityAnalysisContingenciesCountError:
+        "Une erreur est survenue lors de l'estimation du nombre d'aléas de l'analyse de sécurité",
+    // SensitivityAnalysis
+    fetchSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sensibilité",
+    fetchSensitivityAnalysisProvidersError:
+        "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sensibilité",
+    updateSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sensibilité",
+    getSensitivityAnalysisFactorsCountError: "Une erreur est survenue lors de l'estimation du nombre de calculs",
+    // Other
+    resetLoadFlowParametersWarning:
+        'Impossible de récupérer les paramètres de calcul de répartition définis dans le profil utilisateur (les valeurs par défaut sont appliquées)',
+    PccMinParametersError: 'Erreur lors de la mise à jour des paramètres de pcc du min',
+    updatePccMinParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres de pcc min',
+    pccMinParamFilter: 'Définition des postes en défaut',
+
+    Dynawo: 'Dynawo',
+    // DynamicSimulation
+    // DS Parameters tabs
+    DynamicSimulationTimeDelay: 'Temporisation',
+    DynamicSimulationSolver: 'Solveur',
+    DynamicSimulationMapping: 'Mappage',
+    DynamicSimulationNetwork: 'Réseau',
+    DynamicSimulationCurve: 'Courbes',
+
+    // Time delay tab
+    DynamicSimulationStartTime: 'Temps de début',
+    DynamicSimulationStopTime: "Temps d'arrêt",
+    DynamicSimulationStopTimeMustBeGreaterThanOrEqualToStartTime:
+        "Temps d'arrêt doit être supérieur ou égal au temps de début",
+
+    // Solver tab
+    DynamicSimulationSolverType: 'Type de solveur',
+    DynamicSimulationSolverIDA: 'Solveur IDA',
+    DynamicSimulationSolverSIM: 'Solveur simplifié',
+
+    DynamicSimulationIDASolverOrder: 'Ordre (1 ou 2)',
+    DynamicSimulationIDASolverInitStep: 'Pas de temps initial',
+    DynamicSimulationIDASolverMinStep: 'Pas de temps minimum',
+    DynamicSimulationIDASolverMaxStep: 'Pas de temps maximum',
+    DynamicSimulationIDASolverAbsAccuracy: 'Précision absolue',
+    DynamicSimulationIDASolverRelAccuracy: 'Précision relative',
+    DynamicSimulationIDASolverOrderMustBeOneOfValues: 'Ordre devrait être 1 ou 2',
+
+    DynamicSimulationSimplifiedSolverHMin: 'Pas de temps minimum',
+    DynamicSimulationSimplifiedSolverHMax: 'Pas de temps maximum',
+    DynamicSimulationSimplifiedSolverKReduceStep: 'Facteur de réduction du pas de temps',
+    DynamicSimulationSimplifiedSolverMaxNewtonTry: 'Nombre maximum de résolutions de Newton pour un pas de calcul',
+    DynamicSimulationSimplifiedSolverLinearSolverName: 'Solveur linéaire choisi',
+    DynamicSimulationSimplifiedSolverFNormTol: "Critère d'arrêt sur la norme L2 des résidus",
+    DynamicSimulationSimplifiedSolverInitialAddTol: "Critère d'arrêt à l'initialisation",
+    DynamicSimulationSimplifiedSolverScStepTol: "Critère d'arrêt sur la variation à l'itération courante",
+    DynamicSimulationSimplifiedSolverMxNewTStep: 'Variation maximale pour une itération',
+    DynamicSimulationSimplifiedSolverMsbset: "Nombre maximal d'itérations sans recalcul du Jacobien",
+    DynamicSimulationSimplifiedSolverMxIter: "Nombre maximal d'itérations",
+    DynamicSimulationSimplifiedSolverPrintFl: 'Niveau de détail du log de sortie',
+    DynamicSimulationSimplifiedSolverOptimizeAlgebraicResidualsEvaluations:
+        "Active l'optimisation du nombre d'évaluations des résidus algébrique",
+    DynamicSimulationSimplifiedSolverSkipNRIfInitialGuessOK:
+        'Active la possibilité de passer les itérations suivantes si la simulation est stable',
+    DynamicSimulationSimplifiedSolverEnableSilentZ:
+        "Active la possibilité de minimiser le nombre d'évaluations des racines en analysant la portée des variables discrètes",
+    DynamicSimulationSimplifiedSolverOptimizeReInitAlgebraicResidualsEvaluations:
+        "Active l'optimisation du nombre d'évaluations des résidus algébriques durant la restauration algébrique",
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestoration:
+        'Précise le type de changement de mode minimal pour lequel une restauration algébrique est nécéssaire (ALGEBRAIC ou ALGEBRAIC_J_UPDATE)',
+    DynamicSimulationSimplifiedSolverMinimumModeChangeTypeForAlgebraicRestorationInit:
+        "Précise le type de changement de mode minimal pour lequel une restauration algébrique est nécéssaire pendant l'init (ALGEBRAIC ou ALGEBRAIC_J_UPDATE)",
+
+    DynamicSimulationSolverFNormTolAlg: "Critère d'arrêt sur la norme L2 des résidus pour la restauration algébrique",
+    DynamicSimulationSolverInitialAddTolAlg: "Critère d'arrêt à l'initialisation pour la restauration algébrique",
+    DynamicSimulationSolverScStepTolAlg:
+        "Critère d'arrêt sur la variation à l'itération courante pour la restauration algébrique",
+    DynamicSimulationSolverMxNewTStepAlg: 'Variation maximale pour une itération pour la restauration algébrique',
+    DynamicSimulationSolverMsbsetAlg:
+        "Nombre maximal d'itérations sans recalcul du Jacobien pour la restauration algébrique",
+    DynamicSimulationSolverMxIterAlg: "Nombre maximal d'itérations pour la restauration algébrique",
+    DynamicSimulationSolverPrintFlAlg: 'Niveau de détail du log de sortie pour la restauration algébrique',
+    DynamicSimulationSolverFNormTolAlgJ:
+        "Critère d'arrêt sur la norme L2 des résidus pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverInitialAddTolAlgJ:
+        "Critère d'arrêt à l'initialisation pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverScStepTolAlgJ:
+        "Critère d'arrêt sur la variation à l'itération courante pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverMxNewTStepAlgJ:
+        'Variation maximale pour une itération pour la restauration algébrique (avec recalcul du Jacobien)',
+    DynamicSimulationSolverMsbsetAlgJ:
+        "Nombre maximal d'itérations sans recalcul du Jacobien pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverMxIterAlgJ:
+        "Nombre maximal d'itérations pour la restauration algébrique (avec recalcul du Jacobien)",
+    DynamicSimulationSolverPrintFlAlgJ:
+        'Niveau de détail du log de sortie pour la restauration algébrique (avec recalcul du Jacobien)',
+    DynamicSimulationSolverFNormTolAlgInit:
+        "Critère d'arrêt sur la norme L2 des résidus pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverInitialAddTolAlgInit:
+        "Critère d'arrêt à l'initialisation pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverScStepTolAlgInit:
+        "Critère d'arrêt sur la variation à l'itération courante pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMxNewTStepAlgInit:
+        "Variation maximale pour une itération pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMsbsetAlgInit:
+        "Nombre maximal d'itérations sans recalcul du Initacobien pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMxIterAlgInit: "Nombre maximal d'itérations pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverPrintFlAlgInit:
+        "Niveau de détail du log de sortie pour la restauration algébrique (à l'Init)",
+    DynamicSimulationSolverMaximumNumberSlowStepIncrease: "Nombre maximum d'itérations avec un pas de temps trop petit",
+    DynamicSimulationSolverMinimalAcceptableStep: 'Pas de temps minimum acceptable',
+
+    // Network tab
+    DynamicSimulationNetworkCapacitorNoReclosingDelay:
+        'Temporisation avant la possibilité de réenclencher le MCS en s (capacité)',
+    DynamicSimulationNetworkReactanceNoReclosingDelay:
+        'Temporisation avant la possibilité de réenclencher le MCS en s (réactance)',
+    DynamicSimulationNetworkBoundaryLineCurrentLimitMaxTimeOperation:
+        'Seuil de temps au delà duquel les limiteurs de courant ne doivent pas agir en s',
+    DynamicSimulationNetworkLineCurrentLimitMaxTimeOperation:
+        'Seuil de temps au-delà duquel les limiteurs de courant ne doivent pas agir en s',
+    DynamicSimulationNetworkLoadTp: 'Constante de temps pour intégration du changement de consigne active, en s',
+    DynamicSimulationNetworkLoadTq: 'Constante de temps pour intégration du changement de consigne réactive, en s',
+    DynamicSimulationNetworkLoadAlpha: 'Sensibilité exponentielle de la consommation active à la tension',
+    DynamicSimulationNetworkLoadAlphaLong:
+        'Sensibilité exponentielle de la consommation active à la tension (comportement long terme)',
+    DynamicSimulationNetworkLoadBeta: 'Sensibilité exponentielle de la consommation réactive à la tension',
+    DynamicSimulationNetworkLoadBetaLong:
+        'Sensibilité exponentielle de la consommation réactive à la tension (comportement long terme)',
+    DynamicSimulationNetworkLoadIsControllable: 'Modification possible de P/Q ?',
+    DynamicSimulationNetworkLoadIsRestorative: 'Charge restaurative ?',
+    DynamicSimulationNetworkLoadZPMax: 'Vitesse max de variation de la puissance active en pu/s',
+    DynamicSimulationNetworkLoadZQMax: 'Vitesse max de variation de la puissance réactive en pu/s',
+    DynamicSimulationNetworkTransformerCurrentLimitMaxTimeOperation:
+        'Seuil de temps au delà duquel les limiteurs de courant ne doivent pas agir, en s',
+    DynamicSimulationNetworkTransformerT1StHT: 'Délai avant changement de prise pour la 1ère fois (HT) en s',
+    DynamicSimulationNetworkTransformerT1StTHT: 'Délai avant changement de prise pour la 1ère fois (THT) en s',
+    DynamicSimulationNetworkTransformerTNextHT: 'Délai avant changement de prise (HT) en s',
+    DynamicSimulationNetworkTransformerTNextTHT: 'Délai avant changement de prise (THT) en s',
+    DynamicSimulationNetworkTransformerTolV: 'Bande morte pour la régulation de tension (demi bande) en pu',
+
+    // Curve tab
+    DynamicSimulationModelsFetcherError: 'Une erreur est survenue lors de la récupération des modèles disponibles',
+    DynamicSimulationCurveSelectedNumber: 'Sélectionné',
+    DynamicSimulationCurveDynamicModelHeader: 'Nom objet réseau',
+    DynamicSimulationCurveVariableHeader: 'Variable',
+    DynamicSimulationCurveSelectorDialogTitle: 'Éditer la liste des courbes à tracer',
+    DynamicSimulationCurveToAdd: 'Courbes à ajouter',
+    DynamicSimulationCurveEquipmentType: "Type d'ouvrage",
+    DynamicSimulationCurvePost: 'Postes',
+    DynamicSimulationCurveCountry: 'Pays',
+    DynamicSimulationCurveTension: 'Tension nominale',
+    DynamicSimulationCurveEquipmentFilter: 'Filtrer les ouvrages',
+    DynamicSimulationCurveCurveFilter: 'Filtrer les courbes',
+    DynamicSimulationCurveEquipment: 'Ouvrages',
+    DynamicSimulationCurveModel: 'Association modèle',
+    DynamicSimulationCurveVariable: 'Variables',
+    DynamicSimulationAdd: 'Ajouter',
+    DynamicSimulationClose: 'Fermer',
+
+    // DynamicSecurityAnalysis
+    // DSA Parameters tabs
+    DynamicSecurityAnalysisScenario: 'Scénario',
+    DynamicSecurityAnalysisContingency: 'Aléas',
+
+    // Scenario tab
+    DynamicSecurityAnalysisScenarioDuration: 'Durée du scenario',
+
+    // Contingency tab
+    DynamicSecurityAnalysisContingenciesStartTime: 'Temps de début des aléas',
+
+    // DynamicMarginCalculation
+    // DMC Parameters tabs
+    DynamicMarginCalculationTimeDelayTab: 'Temporisation',
+    DynamicMarginCalculationLoadsVariationsTab: 'Variations de charge',
+
+    // Time delay tab
+    DynamicMarginCalculationStartTime: 'Temps de début',
+    DynamicMarginCalculationStopTime: "Temps d'arrêt",
+    DynamicMarginCalculationMarginCalculationStartTime: 'Temps de début de du calcul de marge',
+    DynamicMarginCalculationLoadIncreaseStartTime: "Temps de début de l'augmentation de charge",
+    DynamicMarginCalculationLoadIncreaseStopTime: "Temps d'arrêt de l'augmentation de charge",
+
+    // Loads variations tab
+    DynamicMarginCalculationCalculationType: 'Type de calcul',
+    DynamicMarginCalculationAccuracy: 'Précision',
+    DynamicMarginCalculationLoadModelsRule: 'Règle des modèles de charge',
+    DynamicMarginCalculationLoadsVariations: 'Variations de charge',
+    DynamicMarginCalculationCalculationTypeGlobalMargin: 'Margin global',
+    DynamicMarginCalculationCalculationTypeLocalMargin: 'Margin local',
+    DynamicMarginCalculationLoadModelsRuleAllLoads: 'Tous les charges',
+    DynamicMarginCalculationLoadModelsRuleTargetedLoads: 'Charges ciblées',
+    DynamicMarginCalculationLoadsFilter: 'Regroupement de charges',
+    DynamicMarginCalculationLoadsVariation: 'Variation de charge',
+    DynamicMarginCalculationLoadsActive: 'Actif',
+
+    // Node states
+    BUILT: 'Réalisé',
+    BUILT_WITH_WARNING: 'Alertes',
+    BUILT_WITH_ERROR: 'Erreurs',
+    NOT_BUILT: 'Non réalisé',
+    BUILDING: 'En cours de réalisation',
+    NODE_BUILT: 'Nœud réalisé',
+    NODE_NOT_BUILT: 'Nœud non réalisé',
+    ROOT_NODE: 'Nœud racine',
+
+    // Tooltips
+    'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
+};

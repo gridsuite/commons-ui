@@ -17,9 +17,9 @@ const demo_inputs_en = {
     'inputs/slider': 'Slider',
     'inputs/text': 'Text',
     'inputs/autocomplete': 'Autocomplete',
-    'inputs/boolean': 'Boolean',
-    'inputs/checkbox': 'Checkbox',
     'inputs/switch': 'Switch',
+    'inputs/description': 'Description',
+    'inputs/directory-items': 'Directory items',
 };
 
 export default demo_inputs_en;

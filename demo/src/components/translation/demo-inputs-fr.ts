@@ -17,9 +17,9 @@ const demo_inputs_fr = {
     'inputs/slider': 'Slider',
     'inputs/text': 'Text',
     'inputs/autocomplete': 'Autocomplete',
-    'inputs/boolean': 'Boolean',
-    'inputs/checkbox': 'Checkbox',
     'inputs/switch': 'Switch',
+    'inputs/description': 'Description',
+    'inputs/directory-items': 'Éléments du répertoire',
 };
 
 export default demo_inputs_fr;

@@ -1,0 +1,76 @@
+/**
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import type { UUID } from 'node:crypto';
+import { LoadFlowParametersInfos } from './loadflow.type';
+import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
+import type { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
+import { DynamicSimulationParametersEnriched } from './dynamic-simulation.type';
+import { SensitivityAnalysisParametersInfosEnriched } from './sensitivity-analysis.type';
+import { type ShortCircuitParametersInfos } from '../../features/parameters/short-circuit/short-circuit-parameters.type';
+import { SAParametersEnriched } from './security-analysis.type';
+import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
+
+import { ComputingType } from './computing-type';
+
+export enum ParameterType {
+    BOOLEAN = 'BOOLEAN',
+    STRING = 'STRING',
+    STRING_LIST = 'STRING_LIST',
+    DOUBLE = 'DOUBLE',
+    INTEGER = 'INTEGER',
+    COUNTRIES = 'COUNTRIES',
+}
+
+export type SpecificParameterInfos = {
+    name: string;
+    type: ParameterType;
+    names?: string[];
+    defaultValue?: any;
+    possibleValues?: any[];
+    categoryKey?: string;
+    description?: string;
+    label?: string;
+};
+
+export type SpecificParametersDescription = Record<string, SpecificParameterInfos[]>;
+export type SpecificParametersValues = Record<string, any>;
+export type SpecificParametersPerProvider = Record<string, SpecificParametersValues>;
+
+export type ParametersInfos<T extends ComputingType> = T extends ComputingType.SENSITIVITY_ANALYSIS
+    ? SensitivityAnalysisParametersInfosEnriched
+    : T extends ComputingType.SECURITY_ANALYSIS
+      ? SAParametersEnriched
+      : T extends ComputingType.LOAD_FLOW
+        ? LoadFlowParametersInfos
+        : T extends ComputingType.DYNAMIC_SIMULATION
+          ? DynamicSimulationParametersEnriched
+          : T extends ComputingType.DYNAMIC_SECURITY_ANALYSIS
+            ? DynamicSecurityAnalysisParametersFetchReturn
+            : T extends ComputingType.DYNAMIC_MARGIN_CALCULATION
+              ? DynamicMarginCalculationParametersInfos
+              : T extends ComputingType.SHORT_CIRCUIT
+                ? ShortCircuitParametersInfos
+                : Record<string, any>;
+
+export type BackendFunctions<T extends ComputingType> = {
+    backendFetchProviders?: (() => Promise<string[]>) | null;
+    backendFetchParameters: (paramsUuidOrStudyUuid: UUID) => Promise<ParametersInfos<T>>;
+    backendUpdateParameters?: (paramsUuidOrStudyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>;
+    backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>;
+    backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>;
+};
+
+export type UseParametersBackendReturnProps<T extends ComputingType> = {
+    providers: Record<string, string>;
+    params: ParametersInfos<T> | null;
+    fetchParameters: (paramsUuidOrStudyUuid: UUID) => void;
+    updateParameters: (newParams: ParametersInfos<T>) => void;
+    resetParameters: () => void;
+    specificParamsDescription: SpecificParametersDescription | null;
+    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+};

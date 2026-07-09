@@ -5,28 +5,66 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { UUID } from 'crypto';
-import { backendFetchJson } from './utils';
+import type { UUID } from 'node:crypto';
+import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
+import { NetworkVisualizationParameters } from '../features/parameters/network-visualizations/network-visualizations.types';
+import { type ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
+import { VoltageInitStudyParameters } from '../features/parameters/voltage-init/voltage-init.type';
 
-const PREFIX_STUDY_QUERIES = import.meta.env.VITE_API_GATEWAY + '/study';
+const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
-export function exportFilter(
-    studyUuid: UUID,
-    filterUuid?: UUID,
-    token?: string
-) {
+const getStudyUrl = (studyUuid: UUID | null) =>
+    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+
+export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
     return backendFetchJson(
-        PREFIX_STUDY_QUERIES +
-            '/v1/studies/' +
-            studyUuid +
-            '/filters/' +
-            filterUuid +
-            '/elements',
+        `${getStudyUrl(studyUuid)}/filters/${filterUuid}/elements`,
         {
             method: 'get',
             headers: { 'Content-Type': 'application/json' },
         },
         token
     );
+}
+
+export function getAvailableComponentLibraries(): Promise<string[]> {
+    console.info('get available component libraries for diagrams');
+    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/svg-component-libraries`);
+}
+
+export function getStudyNetworkVisualizationsParameters(studyUuid: UUID): Promise<NetworkVisualizationParameters> {
+    console.info('get study network visualization parameters');
+    return backendFetchJson(`${getStudyUrl(studyUuid)}/network-visualizations/parameters`);
+}
+
+export function setStudyNetworkVisualizationParameters(studyUuid: UUID, newParams: Record<string, any>) {
+    console.info('set study network visualization parameters');
+    return backendFetch(`${getStudyUrl(studyUuid)}/network-visualizations/parameters`, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newParams),
+    });
+}
+
+export function getStudyShortCircuitParameters(studyUuid: UUID): Promise<ShortCircuitParametersInfos> {
+    console.info('get study short-circuit parameters');
+    return backendFetchJson(`${getStudyUrl(studyUuid)}/short-circuit-analysis/parameters`);
+}
+
+export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: VoltageInitStudyParameters) {
+    console.info('set study voltage init parameters');
+    const url = `${getStudyUrl(studyUuid)}/voltage-init/parameters`;
+    console.debug(url);
+    return backendFetch(url, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newParams),
+    });
 }
