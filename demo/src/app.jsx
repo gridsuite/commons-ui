@@ -77,8 +77,6 @@ import {
     generateTreeViewFinderClass,
     getFileIcon,
     initializeAuthenticationDev,
-    inputsEn,
-    inputsFr,
     LANG_ENGLISH,
     LANG_FRENCH,
     LANG_SYSTEM,
@@ -114,6 +112,8 @@ import {
     EditNoteIcon,
 } from '../../src';
 
+import { demoInputsEn, demoInputsFr } from './components/translation';
+
 const messages = {
     en: {
         ...reportViewerEn,
@@ -133,9 +133,9 @@ const messages = {
         ...multipleSelectionDialogEn,
         ...commonButtonEn,
         ...networkModificationsEn,
-        ...inputsEn,
         ...parametersEn,
         ...processConfigEn,
+        ...demoInputsEn,
         ...translations.en,
     },
     fr: {
@@ -156,9 +156,9 @@ const messages = {
         ...commonButtonFr,
         ...networkModificationsFr,
         ...multipleSelectionDialogFr,
-        ...inputsFr,
         ...parametersFr,
         ...processConfigFr,
+        ...demoInputsFr,
         ...translations.fr,
     },
 };
