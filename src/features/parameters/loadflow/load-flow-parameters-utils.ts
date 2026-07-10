@@ -36,6 +36,8 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
+import { ParameterValue } from './load-flow-parameters-type';
+import { advancedParams } from './load-flow-advanced-parameters';
 
 export enum TabValues {
     GENERAL = 'General',
@@ -124,3 +126,35 @@ export const mapLimitReductions = (
     });
     return vlLNewLimits;
 };
+
+export function splitCommonParameters(commonParameters?: Record<string, ParameterValue>): {
+    advancedParameters: Record<string, ParameterValue>;
+    commonParameters: Record<string, ParameterValue>;
+} {
+    if (!commonParameters) {
+        return {
+            advancedParameters: {},
+            commonParameters: {},
+        };
+    }
+    const advancedParamNames = new Set(advancedParams.map((param) => param.name));
+
+    return Object.entries(commonParameters).reduce(
+        (acc, [key, value]) => {
+            if (advancedParamNames.has(key)) {
+                acc.advancedParameters[key] = value;
+            } else {
+                acc.commonParameters[key] = value;
+            }
+
+            return acc;
+        },
+        {
+            advancedParameters: {},
+            commonParameters: {},
+        } as {
+            advancedParameters: Record<string, ParameterValue>;
+            commonParameters: Record<string, ParameterValue>;
+        }
+    );
+}

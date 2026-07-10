@@ -34,7 +34,16 @@ interface ParameterFieldProps {
     sx?: SxProps;
 }
 
-function ParameterField({ id, name, type, label, inputLabel, description, possibleValues, sx }: Readonly<ParameterFieldProps>) {
+function ParameterField({
+    id,
+    name,
+    type,
+    label,
+    inputLabel,
+    description,
+    possibleValues,
+    sx,
+}: Readonly<ParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:
@@ -44,7 +53,7 @@ function ParameterField({ id, name, type, label, inputLabel, description, possib
                         options={possibleValues}
                         size="small"
                         data-testid={`${id}.${name}`}
-                        sx={mergeSx(sx, {overflow: "hidden"})}
+                        sx={mergeSx(sx, { overflow: 'hidden' })}
                     />
                 ) : (
                     <TextInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />

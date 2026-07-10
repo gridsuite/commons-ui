@@ -7,7 +7,7 @@
 
 import { memo } from 'react';
 import ParameterField from '../common/parameter-field';
-import { SpecificParameterInfos } from '../../../utils/types/parameters.type';
+import { SpecificParameterInfos } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from '../common';
 
 interface LoadFlowProviderSpecificParametersProps {

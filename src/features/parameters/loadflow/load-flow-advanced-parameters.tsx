@@ -19,7 +19,7 @@ import {
     WRITE_SLACK_BUS,
 } from './constants';
 import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
-import { ADVANCED_PARAMETERS, COMMON_PARAMETERS } from '../common';
+import { ADVANCED_PARAMETERS } from '../common';
 
 export const advancedParams: SpecificParameterInfos[] = [
     {
