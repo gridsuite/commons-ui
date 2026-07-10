@@ -258,60 +258,60 @@ export function ExplicitNamingFilterForm({
                     />
                 )}
             </Grid>
-            <Grid container justifyContent="space-between" alignItems="center">
-                <Grid>
-                    <CsvDownloadButton
-                        data={getTemplateData}
-                        fileName={intl.formatMessage({ id: 'filterCsvFileName' })}
-                        language={language}
-                        labelId="GenerateCSV"
-                        variant="contained"
-                        disabled={!watchEquipmentType}
-                    />
-                </Grid>
-                <Grid sx={{ flex: 1, minWidth: 0 }}>
-                    <CsvPicker<Record<string, string>>
-                        label="UploadCSV"
-                        header={csvFileHeaders}
-                        language={language ?? LANG_SYSTEM}
-                        disabled={!watchEquipmentType}
-                        selectedFile={selectedFile}
-                        onFileChange={setSelectedFile}
-                        onFileError={setFileErrorMessage}
-                        getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
-                        onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
-                        onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
-                    />
-                </Grid>
-            </Grid>
-            {fileErrorMessage && (
-                <Grid>
-                    <Alert severity="error">{fileErrorMessage}</Alert>
-                </Grid>
-            )}
             {watchEquipmentType && (
-                <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-                    <CustomAgGridTable
-                        ref={tableRef}
-                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                        columnDefs={columnDefs}
-                        defaultColDef={defaultColDef}
-                        makeDefaultRowData={makeDefaultRowData}
-                        pagination
-                        rowSelection={{
-                            mode: 'multiRow',
-                            enableClickSelection: false,
-                            checkboxes: true,
-                            headerCheckbox: true,
-                        }}
-                        alwaysShowVerticalScroll
-                        csvProps={{
-                            fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
-                            language,
-                            getTableData,
-                        }}
-                    />
-                </Grid>
+                <>
+                    <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+                        <Grid>
+                            <CsvDownloadButton
+                                data={getTemplateData}
+                                fileName={intl.formatMessage({ id: 'filterCsvFileName' })}
+                                language={language}
+                                labelId="GenerateCSV"
+                                variant="contained"
+                            />
+                        </Grid>
+                        <Grid sx={{ flex: 1, minWidth: 0 }}>
+                            <CsvPicker<Record<string, string>>
+                                label="UploadCSV"
+                                header={csvFileHeaders}
+                                language={language ?? LANG_SYSTEM}
+                                selectedFile={selectedFile}
+                                onFileChange={setSelectedFile}
+                                onFileError={setFileErrorMessage}
+                                getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
+                                onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
+                                onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
+                            />
+                        </Grid>
+                    </Grid>
+                    {fileErrorMessage && (
+                        <Grid>
+                            <Alert severity="error">{fileErrorMessage}</Alert>
+                        </Grid>
+                    )}
+                    <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+                        <CustomAgGridTable
+                            ref={tableRef}
+                            name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                            columnDefs={columnDefs}
+                            defaultColDef={defaultColDef}
+                            makeDefaultRowData={makeDefaultRowData}
+                            pagination
+                            rowSelection={{
+                                mode: 'multiRow',
+                                enableClickSelection: false,
+                                checkboxes: true,
+                                headerCheckbox: true,
+                            }}
+                            alwaysShowVerticalScroll
+                            csvProps={{
+                                fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
+                                language,
+                                getTableData,
+                            }}
+                        />
+                    </Grid>
+                </>
             )}
         </Stack>
     );
