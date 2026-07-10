@@ -21,18 +21,20 @@ import {
     TextInput,
 } from '../../../components/ui';
 import { LineSeparator } from './index';
+import { mergeSx } from '../../../utils';
 
 interface ParameterFieldProps {
     id: string;
     name: string;
     type: string;
     label?: string;
+    inputLabel?: string;
     description?: string;
     possibleValues?: { id: string; label: string }[] | string[];
     sx?: SxProps;
 }
 
-function ParameterField({ id, name, type, label, description, possibleValues, sx }: Readonly<ParameterFieldProps>) {
+function ParameterField({ id, name, type, label, inputLabel, description, possibleValues, sx }: Readonly<ParameterFieldProps>) {
     const renderField = () => {
         switch (type) {
             case ParameterType.STRING:
@@ -42,7 +44,7 @@ function ParameterField({ id, name, type, label, description, possibleValues, sx
                         options={possibleValues}
                         size="small"
                         data-testid={`${id}.${name}`}
-                        sx={sx}
+                        sx={mergeSx(sx, {overflow: "hidden"})}
                     />
                 ) : (
                     <TextInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />
@@ -50,7 +52,13 @@ function ParameterField({ id, name, type, label, description, possibleValues, sx
             case ParameterType.BOOLEAN:
                 return <SwitchInput name={`${id}.${name}`} data-testid={`${id}.${name}`} />;
             case ParameterType.COUNTRIES:
-                return <CountriesInput name={`${id}.${name}`} label="descLfCountries" dataTestId={`${id}.${name}`} />;
+                return (
+                    <CountriesInput
+                        name={`${id}.${name}`}
+                        label={inputLabel ?? 'descLfCountries'}
+                        dataTestId={`${id}.${name}`}
+                    />
+                );
             case ParameterType.DOUBLE:
                 return <FloatInput name={`${id}.${name}`} dataTestId={`${id}.${name}`} />;
             case ParameterType.STRING_LIST:
@@ -58,7 +66,7 @@ function ParameterField({ id, name, type, label, description, possibleValues, sx
                     <AutocompleteInput
                         data-testid={`${id}.${name}`}
                         name={`${id}.${name}`}
-                        label={label}
+                        label={inputLabel}
                         options={possibleValues}
                         fullWidth
                         multiple
@@ -85,16 +93,19 @@ function ParameterField({ id, name, type, label, description, possibleValues, sx
         }
     };
 
+    const LABEL_COLUMN_COUNT = type !== ParameterType.COUNTRIES ? 8 : 3;
+    const INPUT_COLUMN_COUNT = 12 - LABEL_COLUMN_COUNT;
+
     return (
         <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between" sx={{ width: '100%' }}>
-            <Grid size={8}>
+            <Grid size={LABEL_COLUMN_COUNT}>
                 <CustomTooltip title={description} key={name}>
                     <Typography sx={parametersStyles.parameterName}>
                         {label ? <FormattedMessage id={label} /> : name}
                     </Typography>
                 </CustomTooltip>
             </Grid>
-            <Grid container size={4} sx={parametersStyles.controlItem}>
+            <Grid container size={INPUT_COLUMN_COUNT} sx={parametersStyles.controlItem}>
                 {renderField()}
             </Grid>
             <LineSeparator />

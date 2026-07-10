@@ -51,7 +51,8 @@ export const parametersFr = {
     descLfBalanceTypeConformLoad: 'part variable de la consommation',
     descLfCountries: 'Pays',
     descLfAllCountries: 'Tous les pays',
-    descLfCountriesToBalance: 'Pays participant à la compensation',
+    descLfCountriesToBalance: 'Pays réglant',
+    inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
     RealPercentage: 'Cette valeur doit être comprise entre 0 et 1',
 

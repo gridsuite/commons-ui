@@ -49,7 +49,8 @@ export const parametersEn = {
     descLfBalanceTypeConformLoad: 'conform load',
     descLfCountries: 'Countries',
     descLfAllCountries: 'All countries',
-    descLfCountriesToBalance: 'Countries participating in balancing',
+    descLfCountriesToBalance: 'Balancing countries',
+    inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
     RealPercentage: 'This value must be between 0 and 1',
 

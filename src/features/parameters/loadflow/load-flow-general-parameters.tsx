@@ -43,6 +43,7 @@ const basicParams: SpecificParameterInfos[] = [
     {
         name: COUNTRIES_TO_BALANCE,
         type: ParameterType.COUNTRIES,
+        inputLabel: "inputLabelLfCountriesToBalance",
         label: 'descLfCountriesToBalance',
     },
     {
