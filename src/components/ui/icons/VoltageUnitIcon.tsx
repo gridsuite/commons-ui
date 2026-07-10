@@ -6,8 +6,8 @@
  */
 
 import { SvgIcon, type SvgIconProps } from '@mui/material';
-import VoltageLevel from '../../../images/voltage-level.svg?react';
+import VoltageUnit from '../../../images/voltage-unit.svg?react';
 
-export function NominalVoltageIcon(props: SvgIconProps) {
-    return <SvgIcon component={VoltageLevel} inheritViewBox {...props} />;
+export function VoltageUnitIcon(props: SvgIconProps) {
+    return <SvgIcon component={VoltageUnit} inheritViewBox {...props} />;
 }

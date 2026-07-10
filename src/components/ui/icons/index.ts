@@ -9,4 +9,4 @@ export { ArrowsOutputIcon } from './ArrowsOutputIcon';
 export { ArrowsInputIcon } from './ArrowsInputIcon';
 export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
 export { EditNoteIcon } from './EditNoteIcon';
-export { NominalVoltageIcon } from './NominalVoltageIcon';
+export { VoltageUnitIcon } from './VoltageUnitIcon';
