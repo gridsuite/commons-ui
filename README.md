@@ -20,8 +20,12 @@ Components are organized as follows:
 
 #### For developers
 
-The commons-ui library have a demo app in which you can call your components to test them.
-The `npm start` command install the library's dependencies then launches the demo app.
+The commons-ui library has a demo app in which you can call your components to test them.
+The `npm start` command installs the library's dependencies then launches the demo app.
+
+The commons-ui Storybook is also available at https://www.gridsuite.org/commons-ui/.
+It is the reference place to document and preview reusable UI components from `src/components/ui`.
+When you add a new component under `src/components/ui`, also add the corresponding story so it is available in Storybook.
 
 ##### Development Scripts
 
