@@ -67,7 +67,7 @@ export function CsvPicker<TData = unknown>({
 
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
-            const actualHeader = Object.keys((results.data[0] ?? {}) as Record<string, unknown>);
+            const actualHeader = Object.keys(results.data[0] ?? {});
             const isHeaderValid = requiredColumns.every((column) => actualHeader.includes(column));
             if (results.data.length === 0) {
                 onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }, { filename: acceptedFile.name }));
