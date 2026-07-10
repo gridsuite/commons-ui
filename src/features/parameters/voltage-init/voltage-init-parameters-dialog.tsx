@@ -5,6 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NameElementEditorForm } from '../common/name-element-editor';
@@ -54,18 +55,18 @@ export function VoltageInitParametersEditionDialog({
                 },
             }}
         >
-            <VoltageInitParametersForm
-                voltageInitMethods={voltageInitMethods}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.VOLTAGE_INIT_PARAMETERS}
-                        />
-                    );
-                }}
-            />
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.VOLTAGE_INIT_PARAMETERS}
+                />
+            </Grid>
+            {voltageInitMethods.paramsLoading ? (
+                <LinearProgress />
+            ) : (
+                <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} />
+            )}
         </CustomMuiDialog>
     );
 }

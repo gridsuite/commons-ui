@@ -4,10 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import GridSection from '../../../../../../components/composite/grid/grid-section';
+import { GridSection } from '../../../../../../components/composite/grid/grid-section';
 import { IntegerInput } from '../../../../../../components/ui';
 import { FieldConstants } from '../../../../../../utils';
 import { SwitchesBetweenSections } from './switchesBetweenSections';
@@ -28,10 +28,10 @@ export function StructureTab() {
         <>
             <GridSection title="BusBarSections" />
             <Grid container spacing={2}>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <IntegerInput name={FieldConstants.BUS_BAR_COUNT} label="BusBarCount" />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <IntegerInput name={FieldConstants.SECTION_COUNT} label="numberOfSections" />
                 </Grid>
             </Grid>

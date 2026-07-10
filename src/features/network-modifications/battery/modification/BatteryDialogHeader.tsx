@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, TextField } from '@mui/material';
+import { Grid2 as Grid, TextField } from '@mui/material';
 import { BatteryFormInfos } from '../batteryDialog.type';
 import { filledTextField } from '../../common';
 import { TextInput } from '../../../../components';
@@ -19,7 +19,7 @@ export interface BatteryDialogHeaderProps {
 export function BatteryDialogHeader({ batteryToModify, equipmentId }: Readonly<BatteryDialogHeaderProps>) {
     return (
         <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <TextField
                     size="small"
                     fullWidth
@@ -32,7 +32,7 @@ export function BatteryDialogHeader({ batteryToModify, equipmentId }: Readonly<B
                     {...filledTextField}
                 />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 <TextInput
                     name={FieldConstants.EQUIPMENT_NAME}
                     label="Name"

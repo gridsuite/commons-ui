@@ -6,7 +6,7 @@
  */
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid2 as Grid, Stack, Typography } from '@mui/material';
 import CheckboxSelect from '../common/checkbox-select';
 import CheckboxTreeview, { CheckboxTreeviewApi } from '../common/checkbox-treeview';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';
@@ -54,6 +54,7 @@ const styles = {
         borderWidth: '.5px',
         borderColor: theme.palette.divider,
         overflow: 'auto',
+        flex: 1,
     }),
     model: {
         width: '100%',
@@ -63,7 +64,7 @@ const styles = {
     }),
     variable: {
         width: '100%',
-        flexGrow: 1,
+        flex: 1,
     },
     variableTree: {
         maxHeight: '440px',
@@ -173,13 +174,13 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
         return (
             <>
                 {/* Models used in a mapping */}
-                <Grid item container sx={styles.model}>
-                    <Grid item xs={6}>
+                <Grid container sx={styles.model}>
+                    <Grid size={6}>
                         <Typography>
                             <FormattedMessage id="DynamicSimulationCurveModel" />
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                         <CheckboxSelect
                             options={initialSelectedModels}
                             getOptionLabel={getModelLabel}
@@ -190,24 +191,20 @@ const ModelFilter = forwardRef<ModelFilterApi, ModelFilterProps>(
                     </Grid>
                 </Grid>
                 {/* Variables which found in models used in a mapping */}
-                <Grid item sx={styles.variable} container direction="column">
-                    <Grid item width="100%">
-                        <Typography sx={styles.modelTitle} variant="subtitle1">
-                            <FormattedMessage id="DynamicSimulationCurveVariable" />
-                        </Typography>
-                    </Grid>
-                    <Grid item width="100%" xs>
-                        <Box sx={styles.tree}>
-                            <CheckboxTreeview
-                                ref={variablesRef}
-                                data={filteredVariables}
-                                getLabel={getVariableLabel}
-                                checkAll
-                                sx={styles.variableTree}
-                            />
-                        </Box>
-                    </Grid>
-                </Grid>
+                <Stack sx={styles.variable}>
+                    <Typography sx={styles.modelTitle} variant="subtitle1">
+                        <FormattedMessage id="DynamicSimulationCurveVariable" />
+                    </Typography>
+                    <Box sx={styles.tree}>
+                        <CheckboxTreeview
+                            ref={variablesRef}
+                            data={filteredVariables}
+                            getLabel={getVariableLabel}
+                            checkAll
+                            sx={styles.variableTree}
+                        />
+                    </Box>
+                </Stack>
             </>
         );
     }

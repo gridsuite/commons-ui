@@ -6,7 +6,6 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { ComputingType } from '../../features/parameters/common/computing-type';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
 import type { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
@@ -15,6 +14,8 @@ import { SensitivityAnalysisParametersInfosEnriched } from './sensitivity-analys
 import { type ShortCircuitParametersInfos } from '../../features/parameters/short-circuit/short-circuit-parameters.type';
 import { SAParametersEnriched } from './security-analysis.type';
 import { DynamicMarginCalculationParametersInfos } from './dynamic-margin-calculation.type';
+
+import { ComputingType } from './computing-type';
 
 export enum ParameterType {
     BOOLEAN = 'BOOLEAN',

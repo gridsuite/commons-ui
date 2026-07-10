@@ -35,10 +35,14 @@ export const getBranchActiveReactivePowerValidationSchemaProperties = () => ({
     ...getPowerWithValidityValidationSchema(FieldConstants.MEASUREMENT_P2),
     ...getPowerWithValidityValidationSchema(FieldConstants.MEASUREMENT_Q2),
 });
-export const getBranchActiveReactivePowerValidationSchema = (id: string) => ({
-    [id]: object().shape({
+
+export const getBranchActiveReactivePowerValidationSchemaObject = () =>
+    object().shape({
         ...getBranchActiveReactivePowerValidationSchemaProperties(),
-    }),
+    });
+
+export const getBranchActiveReactivePowerValidationSchema = (id: string) => ({
+    [id]: getBranchActiveReactivePowerValidationSchemaObject(),
 });
 
 export function getBranchActiveReactivePowerEditDataProperties(branchData: any) {
