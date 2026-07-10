@@ -107,10 +107,12 @@ export function CsvPicker<TData = unknown>({
                 onUploadAccepted={handleUploadAccepted}
             >
                 {({ getRootProps }: any) => (
-                    <Grid container spacing={1} alignItems="center" justifyContent="right">
+                    <Grid container spacing={1} alignItems="center" justifyContent="right" wrap="nowrap">
                         <Grid>
                             <Tooltip title={selectedFile?.name}>
-                                <Typography noWrap sx={{ fontWeight: 'bold' }}>
+                                <Typography
+                                    sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                                >
                                     {selectedFile ? selectedFile.name : <FormattedMessage id="uploadMessage" />}
                                 </Typography>
                             </Tooltip>
