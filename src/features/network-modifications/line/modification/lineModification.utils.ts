@@ -70,7 +70,7 @@ export const lineModificationEmptyFormData: DeepNullable<LineModificationFormDat
     [FieldConstants.LIMITS]: getLimitsEmptyFormDataProps(true),
     [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(),
     [FieldConstants.LINE_SEGMENTS]: [],
-    [FieldConstants.APPLY_SEGMENTS_LIMITS]: true,
+    [FieldConstants.APPLY_SEGMENTS_LIMITS]: false,
     AdditionalProperties: [],
 };
 
