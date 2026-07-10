@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -90,11 +90,8 @@ export function VoltageRegulationForm({
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
                 />
             </GridItem>
-            <Box sx={{ width: '100%' }} />
-            <Grid size={4} justifySelf="end" />
-            <Box sx={{ width: '100%' }} />
             {isDistantRegulation && (
-                <>
+                <Grid container size={12} spacing={2}>
                     <Grid size={4} justifySelf="end">
                         <FormattedMessage id="RegulatingTerminalGenerator" />
                     </Grid>
@@ -108,8 +105,7 @@ export function VoltageRegulationForm({
                             equipmentSectionType={previousEquipmentSectionType}
                         />
                     </GridItem>
-                    <Grid size={4} justifySelf="end" />
-                    <GridItem size={4}>
+                    <GridItem size={4} offset={4}>
                         <FloatInput
                             name={FieldConstants.Q_PERCENT}
                             label="QPercentText"
@@ -118,7 +114,7 @@ export function VoltageRegulationForm({
                             clearable
                         />
                     </GridItem>
-                </>
+                </Grid>
             )}
         </>
     );
