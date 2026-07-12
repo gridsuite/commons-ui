@@ -51,8 +51,14 @@ export function ModificationRow({
         [handleCellClick, row.original]
     );
 
+    const isChildOfReference = row.original.isSharedChild === true;
+
     return (
-        <Draggable draggableId={row.id} index={virtualRow.index} isDragDisabled={isRowDragDisabled}>
+        <Draggable
+            draggableId={row.id}
+            index={virtualRow.index}
+            isDragDisabled={isRowDragDisabled || isChildOfReference}
+        >
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
                 const { style, ...draggablePropsWithoutStyle } = provided.draggableProps;
                 return (

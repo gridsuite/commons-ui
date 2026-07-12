@@ -293,7 +293,6 @@ export function fetchSubModificationsForExpandedRows(
         const mod = findModificationInTree(id, mods);
         return isCompositeModification(mod) && (force || mod?.subModifications.length === 0);
     });
-    console.log('composites to fetch =', compositeUuidsToFetch);
 
     if (compositeUuidsToFetch.length > 0) {
         getNetworkModificationsFromComposite(compositeUuidsToFetch).then((subModsByUuid) => {

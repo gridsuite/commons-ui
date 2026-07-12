@@ -49,7 +49,7 @@ import { ModificationRow } from './row';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
-    handleCellClick: (modification: NetworkModificationMetadata) => void;
+    handleCellClick: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
