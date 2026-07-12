@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { forwardRef } from 'react';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { useFormContext } from 'react-hook-form';
 import { SPECIFIC_PARAMETERS, TabPanel } from '../common';
@@ -17,8 +17,8 @@ import {
     RadioInput,
 } from '../../../components/ui';
 import { ActivePowerAdornment, ElementType, EquipmentType } from '../../../utils';
-import GridSection from '../../../components/composite/grid/grid-section';
-import GridItem from '../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../components/composite/grid/grid-item';
 import {
     NODE_CLUSTER_FILTER_IDS,
     onlyStartedGeneratorsOptions,
@@ -100,7 +100,7 @@ export const ShortCircuitStudyAreaTabPanel = forwardRef<HTMLSpanElement, Readonl
         return (
             <TabPanel index={ShortCircuitParametersTabValues.STUDY_AREA} ref={ref} {...othersTabPanelProps}>
                 <GridSection title="ShortCircuitInClusterFilter" heading={4} />
-                <Grid item xs sx={{ paddingBottom: 4 }}>
+                <Grid size="grow" sx={{ paddingBottom: 4 }}>
                     <DirectoryItemsInput
                         titleId="FiltersListsSelection"
                         label="Filters"

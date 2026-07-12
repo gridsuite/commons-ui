@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
-import { Alert, Grid2 as Grid } from '@mui/material';
+import { Alert, Grid2 as Grid, Stack } from '@mui/material';
 import { ColDef, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
@@ -128,6 +128,8 @@ export function ExplicitNamingFilterForm({
                     id: FieldConstants.EQUIPMENT_ID,
                 }),
                 field: FieldConstants.EQUIPMENT_ID,
+                // force the data type instead of letting AG Grid infer it from the (CSV) cell values
+                cellDataType: 'text',
                 editable: true,
                 singleClickEdit: true,
                 flex: 1,
@@ -138,6 +140,8 @@ export function ExplicitNamingFilterForm({
             newColumnDefs.push({
                 headerName: intl.formatMessage({ id: DISTRIBUTION_KEY }),
                 field: DISTRIBUTION_KEY,
+                // force the data type instead of letting AG Grid infer it from the (CSV) cell values
+                cellDataType: 'number',
                 editable: true,
                 singleClickEdit: true,
                 cellEditor: NumericEditor,
@@ -224,9 +228,7 @@ export function ExplicitNamingFilterForm({
     };
 
     return (
-        <Grid
-            container
-            direction="column"
+        <Stack
             spacing={2}
             padding={1} // because of unscrollableHeader in parent component
             sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
@@ -260,7 +262,7 @@ export function ExplicitNamingFilterForm({
                 <Grid>
                     <CsvPicker<Record<string, string>>
                         label="UploadCSV"
-                        header={csvFileHeaders}
+                        requiredColumns={csvFileHeaders}
                         language={language ?? LANG_SYSTEM}
                         disabled={!watchEquipmentType}
                         selectedFile={selectedFile}
@@ -302,6 +304,6 @@ export function ExplicitNamingFilterForm({
                     />
                 </Grid>
             )}
-        </Grid>
+        </Stack>
     );
 }

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { LineSeparator } from '../common';
@@ -43,20 +43,20 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
 
     const labelPosition = (name: string, label: string) => (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid item container xs={4} sx={parametersStyles.controlItem}>
+            <Grid container size={4} sx={parametersStyles.controlItem}>
                 <SwitchInput name={`${TabValues.SINGLE_LINE_DIAGRAM}.${name}`} />
             </Grid>
         </>
     );
     const substationLineDropDown = (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={SUBSTATION_LAYOUT} />
             </Grid>
-            <Grid item xs={4} sx={parametersStyles.controlItem}>
+            <Grid size={4} sx={parametersStyles.controlItem}>
                 <MuiSelectInput
                     fullWidth
                     name={`${TabValues.SINGLE_LINE_DIAGRAM}.${PARAM_SUBSTATION_LAYOUT}`}
@@ -68,10 +68,10 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
     );
     const componentLineDropDown = (
         <>
-            <Grid item xs={8} sx={parametersStyles.parameterName}>
+            <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={COMPONENT_LIBRARY} />
             </Grid>
-            <Grid item xs={4} sx={parametersStyles.controlItem}>
+            <Grid size={4} sx={parametersStyles.controlItem}>
                 <MuiSelectInput
                     fullWidth
                     name={`${TabValues.SINGLE_LINE_DIAGRAM}.${PARAM_COMPONENT_LIBRARY}`}

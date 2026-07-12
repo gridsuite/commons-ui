@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 
 import { FormattedMessage } from 'react-intl';
 import {
@@ -14,33 +14,28 @@ import {
     FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD,
 } from './constants';
 import { FloatInput } from '../../../components/ui';
+import { parametersStyles } from '../parameters-style';
 
 export function SensitivityAnalysisFields() {
     return (
-        <Grid container>
-            <Grid
-                item
-                sx={{
-                    fontWeight: 'bold',
-                    marginBottom: '10px',
-                }}
-            >
+        <Grid container spacing={1} paddingTop={1}>
+            <Grid sx={parametersStyles.parameterName}>
                 <FormattedMessage id="flowSensitivityValue" />
             </Grid>
             <Grid container spacing={1}>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FLOW_FLOW_SENSITIVITY_VALUE_THRESHOLD}
                         label="flowFlowSensitivityValueThreshold"
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={ANGLE_FLOW_SENSITIVITY_VALUE_THRESHOLD}
                         label="angleFlowSensitivityValueThreshold"
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid size={4}>
                     <FloatInput
                         name={FLOW_VOLTAGE_SENSITIVITY_VALUE_THRESHOLD}
                         label="flowVoltageSensitivityValueThreshold"
