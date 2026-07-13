@@ -5,6 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
@@ -21,7 +22,7 @@ export function NetworkVisualizationsParametersEditionDialog({
     description,
     activeDirectory,
     language,
-    user,
+    userProfile,
 }: Readonly<ParametersEditionDialogProps>) {
     const networkVisuMethods = useNetworkVisualizationParametersForm({
         parametersUuid: id,
@@ -55,19 +56,18 @@ export function NetworkVisualizationsParametersEditionDialog({
                 },
             }}
         >
-            <NetworkVisualizationParametersForm
-                user={user}
-                networkVisuMethods={networkVisuMethods}
-                renderTitleFields={() => {
-                    return (
-                        <NameElementEditorForm
-                            initialElementName={name}
-                            activeDirectory={activeDirectory}
-                            elementType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
-                        />
-                    );
-                }}
-            />
+            <Grid container sx={{ width: '100%' }}>
+                <NameElementEditorForm
+                    initialElementName={name}
+                    activeDirectory={activeDirectory}
+                    elementType={ElementType.NETWORK_VISUALIZATIONS_PARAMETERS}
+                />
+            </Grid>
+            {networkVisuMethods.paramsLoading ? (
+                <LinearProgress />
+            ) : (
+                <NetworkVisualizationParametersForm userProfile={userProfile} networkVisuMethods={networkVisuMethods} />
+            )}
         </CustomMuiDialog>
     );
 }

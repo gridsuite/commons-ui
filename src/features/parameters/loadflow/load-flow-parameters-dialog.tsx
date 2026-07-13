@@ -5,8 +5,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
-import { ComputingType, ParametersEditionDialogProps } from '../common';
+import { ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,
     getLoadFlowDefaultLimitReductions,
@@ -15,7 +16,7 @@ import {
     setLoadFlowParameters,
 } from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
-import { ElementType, LANG_ENGLISH } from '../../../utils';
+import { ComputingType, ElementType, LANG_ENGLISH } from '../../../utils';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
@@ -29,17 +30,23 @@ export function LoadFlowParametersEditionDialog({
     name,
     description,
     activeDirectory,
-    user,
+    userProfile,
     language = LANG_ENGLISH,
     isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
-    const parametersBackend = useParametersBackend(user, id, ComputingType.LOAD_FLOW, OptionalServicesStatus.Up, {
-        backendFetchProviders: getLoadFlowProviders,
-        backendFetchParameters: fetchLoadFlowParameters,
-        backendUpdateParameters: setLoadFlowParameters,
-        backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
-        backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
-    });
+    const parametersBackend = useParametersBackend(
+        userProfile,
+        id,
+        ComputingType.LOAD_FLOW,
+        OptionalServicesStatus.Up,
+        {
+            backendFetchProviders: getLoadFlowProviders,
+            backendFetchParameters: fetchLoadFlowParameters,
+            backendUpdateParameters: setLoadFlowParameters,
+            backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
+            backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
+        }
+    );
 
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 
@@ -64,19 +71,18 @@ export function LoadFlowParametersEditionDialog({
             disabledSave={disableSave}
         >
             <LoadFlowProvider>
-                <LoadFlowParametersForm
-                    loadflowMethods={loadflowMethods}
-                    language={language}
-                    renderTitleFields={() => {
-                        return (
-                            <NameElementEditorForm
-                                initialElementName={name}
-                                activeDirectory={activeDirectory}
-                                elementType={ElementType.LOADFLOW_PARAMETERS}
-                            />
-                        );
-                    }}
-                />
+                <Grid container sx={{ width: '100%' }}>
+                    <NameElementEditorForm
+                        initialElementName={name}
+                        activeDirectory={activeDirectory}
+                        elementType={ElementType.LOADFLOW_PARAMETERS}
+                    />
+                </Grid>
+                {loadflowMethods.paramsLoaded ? (
+                    <LoadFlowParametersForm loadflowMethods={loadflowMethods} />
+                ) : (
+                    <LinearProgress />
+                )}
             </LoadFlowProvider>
         </CustomMuiDialog>
     );

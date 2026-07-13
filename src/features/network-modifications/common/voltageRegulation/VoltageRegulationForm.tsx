@@ -5,12 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FloatInput, SelectInput } from '../../../../components/ui';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { PercentageAdornment, VoltageAdornment } from '../../../../utils/constants/adornments';
 import { RegulatingTerminalForm } from '../regulatingTerminal';
@@ -90,12 +90,9 @@ export function VoltageRegulationForm({
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
                 />
             </GridItem>
-            <Box sx={{ width: '100%' }} />
-            <Grid item xs={4} justifySelf="end" />
-            <Box sx={{ width: '100%' }} />
             {isDistantRegulation && (
-                <>
-                    <Grid item xs={4} justifySelf="end">
+                <Grid container size={12} spacing={2}>
+                    <Grid size={4} justifySelf="end">
                         <FormattedMessage id="RegulatingTerminalGenerator" />
                     </Grid>
                     <GridItem size={8}>
@@ -108,8 +105,7 @@ export function VoltageRegulationForm({
                             equipmentSectionType={previousEquipmentSectionType}
                         />
                     </GridItem>
-                    <Grid item xs={4} justifySelf="end" />
-                    <GridItem size={4}>
+                    <GridItem size={4} offset={4}>
                         <FloatInput
                             name={FieldConstants.Q_PERCENT}
                             label="QPercentText"
@@ -118,7 +114,7 @@ export function VoltageRegulationForm({
                             clearable
                         />
                     </GridItem>
-                </>
+                </Grid>
             )}
         </>
     );

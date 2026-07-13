@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid2 as Grid } from '@mui/material';
 import { AuthenticationRouterErrorState, AuthenticationRouterProps, UserManagerState } from './authenticationType';
 import { Logout } from './Logout';
 import { logout } from './utils';
@@ -20,10 +20,10 @@ type AuthenticationRouterErrorDisplayProps = {
 function AuthenticationRouterErrorDisplay({ errorState, instance, dispatch }: AuthenticationRouterErrorDisplayProps) {
     return (
         <>
-            <Grid item>
+            <Grid>
                 <Logout disabled={instance === null} onLogoutClick={() => logout(dispatch, instance)} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid size={4}>
                 {errorState.logoutError && (
                     <ErrorInLogoutAlert userName={errorState.userName} message={errorState.logoutError.error.message} />
                 )}
