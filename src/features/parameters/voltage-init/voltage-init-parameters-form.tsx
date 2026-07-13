@@ -7,7 +7,7 @@
 
 import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { getTabIndicatorStyle, getTabStyle, parametersStyles } from '../parameters-style';
+import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common';
 import { UseVoltageInitParametersFormReturn } from './use-voltage-init-parameters-form';
 import { VoltageInitTabValues as TabValues } from './constants';
@@ -28,28 +28,21 @@ export function VoltageInitParametersForm({
 
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
-            <Tabs
-                value={selectedTab}
-                variant="scrollable"
-                onChange={handleTabChange}
-                TabIndicatorProps={{
-                    sx: getTabIndicatorStyle(tabIndexesWithError, selectedTab),
-                }}
-            >
+            <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                 <Tab
                     label={<FormattedMessage id="VoltageInitParametersGeneralTabLabel" />}
                     value={TabValues.GENERAL}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL, selectedTab)}
                 />
                 <Tab
                     label={<FormattedMessage id="VoltageLimits" />}
                     value={TabValues.VOLTAGE_LIMITS}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.VOLTAGE_LIMITS)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.VOLTAGE_LIMITS, selectedTab)}
                 />
                 <Tab
                     label={<FormattedMessage id="EquipmentSelection" />}
                     value={TabValues.EQUIPMENTS_SELECTION}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION, selectedTab)}
                 />
             </Tabs>
             <Grid container>

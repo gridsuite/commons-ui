@@ -49,6 +49,10 @@ export function SecurityAnalysisParametersForm({
                 currentProvider={securityAnalysisMethods.watchProvider?.trim()}
                 isDeveloperMode={isDeveloperMode}
                 defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
+                selectedTab={securityAnalysisMethods.selectedTab}
+                setSelectedTab={securityAnalysisMethods.setSelectedTab}
+                handleTabChange={securityAnalysisMethods.handleTabChange}
+                tabIndexesWithError={securityAnalysisMethods.tabIndexesWithError}
             />
         </Stack>
     );

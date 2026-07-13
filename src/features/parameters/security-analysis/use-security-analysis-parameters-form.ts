@@ -4,9 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -28,6 +28,7 @@ import {
     PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     PARAM_SA_PROVIDER,
+    TabValues,
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
@@ -41,6 +42,9 @@ import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-fiel
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
+    selectedTab: TabValues;
+    setSelectedTab: (tab: TabValues) => void;
+    handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     formattedProviders: { id: string; label: string }[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
     toFormValueSaParameters: (_params: SAParametersEnriched) => any;
@@ -50,6 +54,8 @@ export interface UseSecurityAnalysisParametersFormReturn {
     paramsFormInitialized: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
+    tabIndexesWithError: TabValues[];
+    onValidationError: (errors: FieldErrors) => void;
 }
 
 export const useSecurityAnalysisParametersForm = (
@@ -61,6 +67,13 @@ export const useSecurityAnalysisParametersForm = (
     const { providers, params, updateParameters, defaultLimitReductions } = parametersBackend;
     const previousWatchProviderRef = useRef<string | undefined>(undefined);
     const { snackError } = useSnackMessage();
+
+    const [selectedTab, setSelectedTab] = useState(TabValues.General);
+    const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
+
+    const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
+        setSelectedTab(newValue);
+    }, []);
 
     // TODO: remove this when DynaFlow is supported
     // DynaFlow is not supported at the moment for security analysis
@@ -155,9 +168,27 @@ export const useSecurityAnalysisParametersForm = (
         [toContingencyListsInfos, toLimitReductions]
     );
 
+    const onValidationError = useCallback((errors: FieldErrors) => {
+        const tabsInError = [];
+        if (errors?.[LIMIT_REDUCTIONS_FORM]) {
+            tabsInError.push(TabValues.LimitReductions);
+        }
+        if (
+            errors?.[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] ||
+            errors?.[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] ||
+            errors?.[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD] ||
+            errors?.[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] ||
+            errors?.[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]
+        ) {
+            tabsInError.push(TabValues.General);
+        }
+        setTabIndexesWithError(tabsInError);
+    }, []);
+
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
             updateParameters(formatNewParams(formData));
+            console.log('FORM DATA: ', formData);
         },
         [updateParameters, formatNewParams]
     );
@@ -205,6 +236,9 @@ export const useSecurityAnalysisParametersForm = (
     return {
         formMethods,
         formSchema,
+        selectedTab,
+        setSelectedTab,
+        handleTabChange,
         formattedProviders,
         defaultLimitReductions,
         toFormValueSaParameters,
@@ -214,5 +248,7 @@ export const useSecurityAnalysisParametersForm = (
         paramsFormInitialized,
         onSaveInline,
         onSaveDialog,
+        tabIndexesWithError,
+        onValidationError,
     };
 };

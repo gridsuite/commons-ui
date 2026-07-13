@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
@@ -14,32 +14,36 @@ import { ILimitReductionsByVoltageLevel, LimitReductionsTableForm, TAB_INFO, Tab
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
 import { SAParametersEnriched } from '../../../utils/types';
+import { getTabStyle } from '../parameters-style';
 
 export function SecurityAnalysisParametersSelector({
     params,
     currentProvider,
     isDeveloperMode,
     defaultLimitReductions,
+    selectedTab,
+    setSelectedTab,
+    handleTabChange,
+    tabIndexesWithError,
 }: Readonly<{
     params: SAParametersEnriched | null;
     currentProvider?: string;
     isDeveloperMode: boolean;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    selectedTab: TabValues;
+    setSelectedTab: (tab: TabValues) => void;
+    handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
+    tabIndexesWithError: TabValues[];
 }>) {
-    const [tabSelected, setTabSelected] = useState(TabValues.General);
-    const handleTabChange = useCallback((event: SyntheticEvent, newValue: number) => {
-        setTabSelected(newValue);
-    }, []);
-
     const tabValue = useMemo(() => {
-        return tabSelected === TabValues.LimitReductions && !params?.limitReductions ? TabValues.General : tabSelected;
-    }, [params, tabSelected]);
+        return selectedTab === TabValues.LimitReductions && !params?.limitReductions ? TabValues.General : selectedTab;
+    }, [params, selectedTab]);
 
     useEffect(() => {
         if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW) {
-            setTabSelected(TabValues.General);
+            setSelectedTab(TabValues.General);
         }
-    }, [currentProvider]);
+    }, [currentProvider, setSelectedTab]);
 
     return (
         <Grid sx={{ width: '100%' }}>
@@ -52,10 +56,7 @@ export function SecurityAnalysisParametersSelector({
                                 key={tab.label}
                                 label={<FormattedMessage id={tab.label} />}
                                 value={index}
-                                sx={{
-                                    fontSize: 17,
-                                    fontWeight: 'bold',
-                                }}
+                                sx={getTabStyle(tabIndexesWithError, index, tabValue)}
                             />
                         )
                 )}

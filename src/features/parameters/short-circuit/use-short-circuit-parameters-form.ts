@@ -16,6 +16,7 @@ import {
     NODE_CLUSTER_FILTER_IDS,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
+    SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
@@ -26,6 +27,8 @@ import {
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
+    STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD,
+    STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD,
 } from './constants';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
@@ -240,33 +243,33 @@ export const useShortCircuitParametersForm = ({
         [provider, snackError, specificParametersDescriptionForProvider]
     );
 
-    const onValidationError = useCallback(
-        (_errors: FieldErrors) => {
-            console.error('onValidationError: ', _errors);
-            const tabsInError = [];
-            if (
-                (_errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] ||
-                    _errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]) &&
-                ShortCircuitParametersTabValues.POWER_ELECTRONICS !== selectedTab
-            ) {
-                tabsInError.push(ShortCircuitParametersTabValues.POWER_ELECTRONICS);
-            }
-            if (
-                (_errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER] ||
-                    _errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER] ||
-                    _errors?.[NODE_CLUSTER_FILTER_IDS]) &&
-                ShortCircuitParametersTabValues.STUDY_AREA !== selectedTab
-            ) {
-                tabsInError.push(ShortCircuitParametersTabValues.STUDY_AREA);
-            }
-            setTabIndexesWithError(tabsInError);
-        },
-        [selectedTab]
-    );
+    const onValidationError = useCallback((_errors: FieldErrors<ShortCircuitParametersInfos>) => {
+        console.error('onValidationError: ', _errors);
+        const tabsInError = [];
+        if (
+            _errors?.[SPECIFIC_PARAMETERS]?.[SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS] ||
+            _errors?.[SPECIFIC_PARAMETERS]?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] ||
+            _errors?.[SPECIFIC_PARAMETERS]?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]
+        ) {
+            tabsInError.push(ShortCircuitParametersTabValues.POWER_ELECTRONICS);
+        }
+        if (
+            _errors?.[SPECIFIC_PARAMETERS]?.[NODE_CLUSTER_FILTER_IDS] ||
+            _errors?.[SPECIFIC_PARAMETERS]?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER] ||
+            _errors?.[SPECIFIC_PARAMETERS]?.[STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD] ||
+            _errors?.[SPECIFIC_PARAMETERS]?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER] ||
+            _errors?.[SPECIFIC_PARAMETERS]?.[STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD]
+        ) {
+            tabsInError.push(ShortCircuitParametersTabValues.STUDY_AREA);
+        }
+        setTabIndexesWithError(tabsInError);
+    }, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
             const data = formatNewParams(formData);
+            console.log('DATA: ', data);
+            console.log('FORM DATA: ', formData);
             updateParameters(data);
         },
         [updateParameters, formatNewParams]

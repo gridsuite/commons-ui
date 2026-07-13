@@ -61,14 +61,22 @@ function ShortCircuitParametersContent({ shortCircuitMethods }: Readonly<ShortCi
                         <Tab
                             label={<FormattedMessage id={ShortCircuitParametersTabValues.STUDY_AREA} />}
                             value={ShortCircuitParametersTabValues.STUDY_AREA}
-                            sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.STUDY_AREA)}
+                            sx={getTabStyle(
+                                tabIndexesWithError,
+                                ShortCircuitParametersTabValues.STUDY_AREA,
+                                selectedTab
+                            )}
                         />
                     )}
                     {isThereSpecificParameters && (
                         <Tab
                             label={<FormattedMessage id={ShortCircuitParametersTabValues.POWER_ELECTRONICS} />}
                             value={ShortCircuitParametersTabValues.POWER_ELECTRONICS}
-                            sx={getTabStyle(tabIndexesWithError, ShortCircuitParametersTabValues.POWER_ELECTRONICS)}
+                            sx={getTabStyle(
+                                tabIndexesWithError,
+                                ShortCircuitParametersTabValues.POWER_ELECTRONICS,
+                                selectedTab
+                            )}
                         />
                     )}
                 </Tabs>

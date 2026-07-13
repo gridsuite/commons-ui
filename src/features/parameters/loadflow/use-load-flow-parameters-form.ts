@@ -211,22 +211,16 @@ export const useLoadFlowParametersForm = (
             }));
     }, [providers, isDeveloperMode]);
 
-    const onValidationError = useCallback(
-        (errors: FieldErrors) => {
-            const tabsInError = [];
-            if (errors?.[LIMIT_REDUCTIONS_FORM] && TabValues.LIMIT_REDUCTIONS !== selectedTab) {
-                tabsInError.push(TabValues.LIMIT_REDUCTIONS);
-            }
-            if (
-                (errors?.[SPECIFIC_PARAMETERS] || errors?.[COMMON_PARAMETERS] || errors?.[PROVIDER]) &&
-                TabValues.GENERAL !== selectedTab
-            ) {
-                tabsInError.push(TabValues.GENERAL);
-            }
-            setTabIndexesWithError(tabsInError);
-        },
-        [selectedTab]
-    );
+    const onValidationError = useCallback((errors: FieldErrors) => {
+        const tabsInError = [];
+        if (errors?.[LIMIT_REDUCTIONS_FORM] && TabValues.LIMIT_REDUCTIONS) {
+            tabsInError.push(TabValues.LIMIT_REDUCTIONS);
+        }
+        if (errors?.[SPECIFIC_PARAMETERS] || errors?.[COMMON_PARAMETERS] || errors?.[PROVIDER]) {
+            tabsInError.push(TabValues.GENERAL);
+        }
+        setTabIndexesWithError(tabsInError);
+    }, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {

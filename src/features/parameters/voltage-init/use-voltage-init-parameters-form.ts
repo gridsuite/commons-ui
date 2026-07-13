@@ -199,17 +199,26 @@ export const useVoltageInitParametersForm = ({
 
     const { reset } = formMethods;
 
-    const onValidationError = useCallback(
-        (errors: FieldErrors) => {
-            const tabsInError = [];
-            if (errors?.[GENERAL] && TabValues.GENERAL !== selectedTab) {
-                tabsInError.push(TabValues.GENERAL);
-            }
-            // TODO: this system cannot work for other tabs, because formSchema keys does not match tab values
-            setTabIndexesWithError(tabsInError);
-        },
-        [selectedTab]
-    );
+    const onValidationError = useCallback((errors: FieldErrors) => {
+        console.log('ERRORS:', errors);
+        const tabsInError = [];
+        if (errors?.[GENERAL]) {
+            tabsInError.push(TabValues.GENERAL);
+        }
+        if (errors?.[VOLTAGE_LIMITS_MODIFICATION] || errors?.[VOLTAGE_LIMITS_DEFAULT]) {
+            tabsInError.push(TabValues.VOLTAGE_LIMITS);
+        }
+        if (
+            errors?.[TRANSFORMERS_SELECTION_TYPE] ||
+            errors?.[VARIABLE_TRANSFORMERS] ||
+            errors?.[SHUNT_COMPENSATORS_SELECTION_TYPE] ||
+            errors?.[VARIABLE_SHUNT_COMPENSATORS]
+        ) {
+            tabsInError.push(TabValues.EQUIPMENTS_SELECTION);
+        }
+        setTabIndexesWithError(tabsInError);
+        console.log(tabsInError);
+    }, []);
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {

@@ -92,7 +92,10 @@ export function SecurityAnalysisParametersInline({
                 }}
                 selectParameterHandler={handleLoadParameter}
                 resetHandler={executeResetAction}
-                validateHandler={handleSubmit(securityAnalysisMethods.onSaveInline)}
+                validateHandler={handleSubmit(
+                    securityAnalysisMethods.onSaveInline,
+                    securityAnalysisMethods.onValidationError
+                )}
             >
                 <SecurityAnalysisParametersForm
                     securityAnalysisMethods={securityAnalysisMethods}

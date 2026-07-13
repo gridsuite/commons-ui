@@ -30,13 +30,13 @@ function LoadFlowParametersHeader({
                 <Tab
                     label={<FormattedMessage id={TabValues.GENERAL} />}
                     value={TabValues.GENERAL}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL, selectedTab)}
                     data-testid="LfGeneralTab"
                 />
                 <Tab
                     label={<FormattedMessage id={TabValues.LIMIT_REDUCTIONS} />}
                     value={TabValues.LIMIT_REDUCTIONS}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS, selectedTab)}
                     data-testid="LfLimitReductionsTab"
                 />
             </Tabs>
