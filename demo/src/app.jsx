@@ -15,7 +15,7 @@ import {
     CssBaseline,
     FormControlLabel,
     FormGroup,
-    Grid,
+    Grid2 as Grid,
     IconButton,
     styled,
     StyledEngineProvider,
@@ -24,6 +24,7 @@ import {
     TextField,
     ThemeProvider,
     Typography,
+    Stack,
 } from '@mui/material';
 import { enUS, frFR } from '@mui/material/locale';
 import { Comment as CommentIcon } from '@mui/icons-material';
@@ -76,8 +77,6 @@ import {
     generateTreeViewFinderClass,
     getFileIcon,
     initializeAuthenticationDev,
-    inputsEn,
-    inputsFr,
     LANG_ENGLISH,
     LANG_FRENCH,
     LANG_SYSTEM,
@@ -113,6 +112,8 @@ import {
     EditNoteIcon,
 } from '../../src';
 
+import { demoInputsEn, demoInputsFr } from './components/translation';
+
 const messages = {
     en: {
         ...reportViewerEn,
@@ -132,9 +133,9 @@ const messages = {
         ...multipleSelectionDialogEn,
         ...commonButtonEn,
         ...networkModificationsEn,
-        ...inputsEn,
         ...parametersEn,
         ...processConfigEn,
+        ...demoInputsEn,
         ...translations.en,
     },
     fr: {
@@ -155,9 +156,9 @@ const messages = {
         ...commonButtonFr,
         ...networkModificationsFr,
         ...multipleSelectionDialogFr,
-        ...inputsFr,
         ...parametersFr,
         ...processConfigFr,
+        ...demoInputsFr,
         ...translations.fr,
     },
 };
@@ -334,7 +335,7 @@ function AppContent({ language, onLanguageClick }) {
         instance: null,
         error: null,
     });
-    const [user, setUser] = useState(null);
+    const [userProfile, setUserProfile] = useState(null);
     const [authenticationRouterError, setAuthenticationRouterError] = useState(null);
     const [showAuthenticationRouterLoginState, setShowAuthenticationRouterLoginState] = useState(false);
 
@@ -412,7 +413,7 @@ function AppContent({ language, onLanguageClick }) {
 
     const dispatch = (e) => {
         if (e.type === 'USER') {
-            setUser(e.user);
+            setUserProfile(e.user?.profile ?? null);
         } else if (
             e.type === 'UNAUTHORIZED_USER_INFO' ||
             e.type === 'USER_VALIDATION_ERROR' ||
@@ -470,14 +471,14 @@ function AppContent({ language, onLanguageClick }) {
 
     function testIcons() {
         return (
-            <Grid container direction="column">
+            <Stack>
                 {Object.keys(ElementType).map((type) => (
-                    <Grid container item key={type}>
-                        <Grid item>{getFileIcon(type)}</Grid>
-                        <Grid item>{type}</Grid>
+                    <Grid container key={type}>
+                        <Grid>{getFileIcon(type)}</Grid>
+                        <Grid>{type}</Grid>
                     </Grid>
                 ))}
-            </Grid>
+            </Stack>
         );
     }
 
@@ -627,95 +628,100 @@ function AppContent({ language, onLanguageClick }) {
             </IconButton>
         );
     const defaultTab = (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Box mt={3}>
                 <Typography variant="h3" color="textPrimary" align="center">
                     Connected
                 </Typography>
             </Box>
-            <hr />
-            <hr />
+            <hr style={{ width: '100%' }} />
             {testIcons()}
-            <LeftPanelOpenIcon fontSize="large" color="secondary" />
-            <EditNoteIcon fontSize="large" />
-            <EditNoteIcon fontSize="large" empty />
-            <hr />
+            <div>
+                <LeftPanelOpenIcon fontSize="large" color="secondary" />
+                <EditNoteIcon fontSize="large" />
+                <EditNoteIcon fontSize="large" empty />
+            </div>
+            <hr style={{ width: '100%' }} />
+            <div>
+                <PermanentSnackButton />
+                <SnackErrorButton />
+                <SnackWarningButton />
+                <SnackInfoButton />
+                <SnackSuccessButton />
+            </div>
+            <hr style={{ width: '100%' }} />
+            <div>
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() => setOpenMultiChoiceDialog(true)}
+                >
+                    Checkbox list
+                </Button>
+                <MultipleSelectionDialog
+                    items={checkBoxListOption}
+                    selectedItems={[]}
+                    open={openMultiChoiceDialog}
+                    getItemLabel={(o) => o.label}
+                    getItemLabelSecondary={(o) => o.labelSecondary}
+                    getItemId={(o) => o.id}
+                    handleClose={() => setOpenMultiChoiceDialog(false)}
+                    handleValidate={() => setOpenMultiChoiceDialog(false)}
+                    titleId="Checkbox list"
+                    divider
+                    secondaryAction={secondaryAction}
+                    addSelectAllCheckbox
+                    onItemClick={(item) => console.log('clicked', item)}
+                    isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
+                />
 
-            <PermanentSnackButton />
-            <SnackErrorButton />
-            <SnackWarningButton />
-            <SnackInfoButton />
-            <SnackSuccessButton />
-
-            <Button
-                variant="contained"
-                style={{
-                    float: 'left',
-                    margin: '5px',
-                }}
-                onClick={() => setOpenMultiChoiceDialog(true)}
-            >
-                Checkbox list
-            </Button>
-            <MultipleSelectionDialog
-                items={checkBoxListOption}
-                selectedItems={[]}
-                open={openMultiChoiceDialog}
-                getItemLabel={(o) => o.label}
-                getItemLabelSecondary={(o) => o.labelSecondary}
-                getItemId={(o) => o.id}
-                handleClose={() => setOpenMultiChoiceDialog(false)}
-                handleValidate={() => setOpenMultiChoiceDialog(false)}
-                titleId="Checkbox list"
-                divider
-                secondaryAction={secondaryAction}
-                addSelectAllCheckbox
-                onItemClick={(item) => console.log('clicked', item)}
-                isItemClickable={(item) => item.id === 'ney' || item.id === 'john'}
-            />
-
-            <Button
-                variant="contained"
-                style={{
-                    float: 'left',
-                    margin: '5px',
-                }}
-                onClick={() => setOpenDraggableMultiChoiceDialog(true)}
-            >
-                Draggable checkbox list
-            </Button>
-            <MultipleSelectionDialog
-                items={checkBoxListOption}
-                selectedItems={[]}
-                open={openDraggableMultiChoiceDialog}
-                getItemLabel={(o) => o.label}
-                getItemLabelSecondary={(o) => o.labelSecondary}
-                getItemId={(o) => o.id}
-                handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
-                handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
-                titleId="Draggable checkbox list"
-                divider
-                secondaryAction={secondaryAction}
-                isDndActive
-                onDragEnd={({ source, destination }) => {
-                    if (destination !== null && source.index !== destination.index) {
-                        const res = [...checkBoxListOption];
-                        const [item] = res.splice(source.index, 1);
-                        res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
-                        setCheckBoxListOption(res);
-                    }
-                }}
-                addSelectAllCheckbox
-                onItemClick={(item) => console.log('clicked', item)}
-                isItemClickable={(item) => item.id.indexOf('i') >= 0}
-                sx={{
-                    items: (item) => ({
-                        label: {
-                            color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
-                        },
-                    }),
-                }}
-            />
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() => setOpenDraggableMultiChoiceDialog(true)}
+                >
+                    Draggable checkbox list
+                </Button>
+                <MultipleSelectionDialog
+                    items={checkBoxListOption}
+                    selectedItems={[]}
+                    open={openDraggableMultiChoiceDialog}
+                    getItemLabel={(o) => o.label}
+                    getItemLabelSecondary={(o) => o.labelSecondary}
+                    getItemId={(o) => o.id}
+                    handleClose={() => setOpenDraggableMultiChoiceDialog(false)}
+                    handleValidate={() => setOpenDraggableMultiChoiceDialog(false)}
+                    titleId="Draggable checkbox list"
+                    divider
+                    secondaryAction={secondaryAction}
+                    isDndActive
+                    onDragEnd={({ source, destination }) => {
+                        if (destination !== null && source.index !== destination.index) {
+                            const res = [...checkBoxListOption];
+                            const [item] = res.splice(source.index, 1);
+                            res.splice(destination ? destination.index : checkBoxListOption.length, 0, item);
+                            setCheckBoxListOption(res);
+                        }
+                    }}
+                    addSelectAllCheckbox
+                    onItemClick={(item) => console.log('clicked', item)}
+                    isItemClickable={(item) => item.id.indexOf('i') >= 0}
+                    sx={{
+                        items: (item) => ({
+                            label: {
+                                color: item.id.indexOf('i') >= 0 ? 'blue' : 'red',
+                            },
+                        }),
+                    }}
+                />
+            </div>
+            <hr style={{ width: '100%' }} />
             <div
                 style={{
                     display: 'flex',
@@ -808,6 +814,7 @@ function AppContent({ language, onLanguageClick }) {
                     validationButtonText="Move To this location"
                 />
             </div>
+            <hr style={{ width: '100%' }} />
             <div
                 style={{
                     margin: '10px 0px 0px 0px',
@@ -913,7 +920,7 @@ function AppContent({ language, onLanguageClick }) {
                             )}
                             onLanguageClick={onLanguageClick}
                             language={language}
-                            user={user}
+                            userProfile={userProfile}
                             appsAndUrls={apps}
                             dense
                         >
@@ -932,7 +939,7 @@ function AppContent({ language, onLanguageClick }) {
                             <div style={{ alignSelf: 'center' }}>baz</div>
                         </TopBar>
                         <CardErrorBoundary>
-                            {user !== null ? (
+                            {userProfile !== null ? (
                                 <div>
                                     <Tabs value={tabIndex} onChange={(event, newTabIndex) => setTabIndex(newTabIndex)}>
                                         <Tab label="others" />

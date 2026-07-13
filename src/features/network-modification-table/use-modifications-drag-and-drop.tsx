@@ -19,6 +19,7 @@ import {
 import {
     findModificationInTree,
     isCompositeModification,
+    isSharedModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
@@ -123,6 +124,9 @@ export const useModificationsDragAndDrop = ({
                     )
                 );
             }
+            // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
+            if (isSharedModification(sourceRow.original)) return true;
+
             return false;
         },
         [computeTargetDepth]

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, IconButton } from '@mui/material';
+import { Grid2 as Grid, IconButton } from '@mui/material';
 import {
     AddCircle as AddCircleIcon,
     ArrowDownward as ArrowDownwardIcon,
@@ -49,8 +49,8 @@ export function DndTableBottomRightButtons({
     const lastRowSelected = noRowsSelected ? undefined : currentRows[currentRows.length - 1]?.[SELECTED];
 
     return (
-        <Grid container item xs spacing={1} sx={{ justifyContent: 'flex-end' }}>
-            <Grid item>
+        <Grid container size="grow" spacing={1} sx={{ justifyContent: 'flex-end' }}>
+            <Grid>
                 <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DndAddRows',
@@ -67,7 +67,7 @@ export function DndTableBottomRightButtons({
                     </span>
                 </CustomTooltip>
             </Grid>
-            <Grid item>
+            <Grid>
                 <CustomTooltip
                     title={intl.formatMessage({
                         id: 'DndDeleteRows',
@@ -86,7 +86,7 @@ export function DndTableBottomRightButtons({
             </Grid>
             {showMoveArrow && (
                 <>
-                    <Grid item>
+                    <Grid>
                         <CustomTooltip
                             title={intl.formatMessage({
                                 id: 'MoveUpRows',
@@ -103,7 +103,7 @@ export function DndTableBottomRightButtons({
                             </span>
                         </CustomTooltip>
                     </Grid>
-                    <Grid item>
+                    <Grid>
                         <CustomTooltip
                             title={intl.formatMessage({
                                 id: 'MoveDownRows',

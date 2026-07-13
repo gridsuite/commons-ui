@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid } from '@mui/material';
+import { Box, Grid2 as Grid, Stack } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { GeneratorDialogTab } from './generatorTabs.utils';
@@ -29,8 +29,8 @@ import {
     MVAPowerAdornment,
 } from '../../../../utils';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
-import GridSection from '../../../../components/composite/grid/grid-section';
-import GridItem from '../../../../components/composite/grid/grid-item';
+import { GridSection } from '../../../../components/composite/grid/grid-section';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
 
 export interface GeneratorDialogTabsContentProps extends ConnectivityNetworkProps {
     generatorToModify?: GeneratorFormInfos | null;
@@ -182,7 +182,6 @@ export function GeneratorDialogTabsContent({
                     isModification
                 />
                 <Grid container spacing={2} paddingTop={2}>
-                    <Box sx={{ width: '100%' }} />
                     <GridItem
                         tooltip={watchVoltageRegulation === null ? <FormattedMessage id="NoModification" /> : ''}
                         size={4}
@@ -190,14 +189,13 @@ export function GeneratorDialogTabsContent({
                         {voltageRegulationField}
                     </GridItem>
                     {voltageRegulationFields}
-                    <Box sx={{ width: '100%' }} />
                     <ActivePowerControlForm
                         isEquipmentModification
                         previousValues={generatorToModify?.activePowerControl}
                     />
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <h3>
                             <FormattedMessage id="Limits" />
                         </h3>
@@ -212,7 +210,7 @@ export function GeneratorDialogTabsContent({
                     <GridItem size={4}>{ratedNominalPowerField}</GridItem>
                 </Grid>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <h4>
                             <FormattedMessage id="ReactiveLimits" />
                         </h4>
@@ -229,14 +227,16 @@ export function GeneratorDialogTabsContent({
                 <GridSection title="ShortCircuit" />
                 <ShortCircuitForm previousValues={generatorToModify?.generatorShortCircuit} />
                 <GridSection title="GenerationDispatch" />
-                <Grid container spacing={2}>
-                    <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
-                    <GridItem size={4}>{marginalCostField}</GridItem>
-                    <Grid container item spacing={2}>
+                <Stack spacing={2}>
+                    <Grid container spacing={2}>
+                        <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
+                        <GridItem size={4}>{marginalCostField}</GridItem>
+                    </Grid>
+                    <Grid container spacing={2}>
                         <GridItem size={4}>{plannedOutageRateField}</GridItem>
                         <GridItem size={4}>{forcedOutageRateField}</GridItem>
                     </Grid>
-                </Grid>
+                </Stack>
                 <GridSection title="MeasurementsSection" />
                 <PowerMeasurementsForm
                     activePowerMeasurement={generatorToModify?.measurementP}

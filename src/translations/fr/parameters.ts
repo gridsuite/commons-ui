@@ -35,7 +35,8 @@ export const parametersFr = {
     descLfWriteSlackBus: 'Écrire le nœud bilan calculé automatiquement dans le réseau',
     descLfDC: 'Lancer le calcul en actif seul',
     descLfConnectedComponentMode: 'Choix de la composante connexe de calcul',
-    descLfConnectedComponentModeMain: 'Composante connexe principale',
+    descLfConnectedComponentModeMainSync: 'Composante synchrone principale',
+    descLfConnectedComponentModeMainConnected: 'Composante connexe principale',
     descLfConnectedComponentModeAll: 'Toutes les composantes connexes',
     descLfHvdcAcEmulation: "Permettre l'émulation AC des HVDC",
     descLfDistributedSlack: 'Activer la compensation',
@@ -236,9 +237,9 @@ export const parametersFr = {
     getContingencyListError: "Impossible de récupérer les listes d'aléas",
     xContingenciesWillBeSimulatedAndYNotFound:
         '{x, plural, =0 {aucun défaut} =1 {1 défaut} other {{x} défauts}} à simuler {y, plural, =0 {} =1 {et 1 non trouvé} other {et {y} non trouvés}}',
+    contingenciesWillNotBeSimulated: '{invalidContingencyErrorMessage}',
     contingencyCountImpossibleOnUnbuiltNode: "Impossible d'estimer le nombre d'aléas sur un noeud non réalisé",
     noContingency: 'Aucun défaut',
-
     resultsThreshold: 'Seuil minimal de sensibilité',
     SensitivityBranches: 'Quadripôles',
     SensitivityInjectionsSet: "Par rapport à un ensemble d'injections :",
@@ -496,4 +497,7 @@ export const parametersFr = {
     NODE_BUILT: 'Nœud réalisé',
     NODE_NOT_BUILT: 'Nœud non réalisé',
     ROOT_NODE: 'Nœud racine',
+
+    // Tooltips
+    'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
 };
