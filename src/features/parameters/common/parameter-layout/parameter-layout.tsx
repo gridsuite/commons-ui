@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, ButtonGroup, Grid2 as Grid, LinearProgress, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, ButtonGroup, Grid, LinearProgress, Stack, Tooltip, Typography } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
 import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';

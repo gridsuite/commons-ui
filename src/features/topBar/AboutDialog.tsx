@@ -20,7 +20,7 @@ import {
     DialogContent,
     DialogTitle,
     Fade,
-    Grid2 as Grid,
+    Grid,
     Stack,
     Theme,
     tooltipClasses,

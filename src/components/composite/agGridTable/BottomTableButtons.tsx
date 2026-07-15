@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Button, Grid2 as Grid, IconButton, styled } from '@mui/material';
+import { Box, Button, Grid, IconButton, styled } from '@mui/material';
 import { ArrowCircleDown, ArrowCircleUp, ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { useCSVDownloader } from 'react-papaparse';

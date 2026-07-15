@@ -7,7 +7,7 @@
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { useMemo } from 'react';
-import { FormControl, Grid2 as Grid, InputLabel } from '@mui/material';
+import { FormControl, Grid, InputLabel } from '@mui/material';
 import * as yup from 'yup';
 import { FloatInput } from './FloatInput';
 import { MuiSelectInput } from '../selectInputs/MuiSelectInput';

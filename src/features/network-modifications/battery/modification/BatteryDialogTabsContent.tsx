@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { BatteryDialogTab } from './batteryTabs.utils';
 import { GridSection } from '../../../../components/composite/grid/grid-section';

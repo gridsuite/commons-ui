@@ -7,7 +7,7 @@
 
 import { PropsWithChildren } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Button, ButtonProps, Grid2 as Grid, Switch, Typography, TypographyProps } from '@mui/material';
+import { Box, Button, ButtonProps, Grid, Switch, Typography, TypographyProps } from '@mui/material';
 import { parametersStyles } from '../parameters-style';
 
 interface LabelledButtonProps extends ButtonProps {

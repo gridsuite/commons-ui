@@ -354,11 +354,11 @@ export function FlatParameters({
                             getOptionLabel={(option) => getTranslatedValue(param.name, option)}
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={fieldValue}
-                            renderTags={(values, getTagProps) => {
+                            renderValue={(values, getItemProps) => {
                                 return values.map((value, index) => (
                                     <Chip
                                         label={getTranslatedValue(param.name, value)}
-                                        {...getTagProps({ index })}
+                                        {...getItemProps({ index })}
                                         key={`chip_${value}`}
                                     />
                                 ));
@@ -378,13 +378,13 @@ export function FlatParameters({
                         size="small"
                         onChange={(e, value) => onFieldChange(value, param)}
                         value={fieldValue}
-                        renderTags={(values, getTagProps) => {
+                        renderValue={(values, getItemProps) => {
                             return values.map((value, index) => (
                                 <Chip
                                     id={`chip_${value}`}
                                     size="small"
                                     label={value}
-                                    {...getTagProps({ index })}
+                                    {...getItemProps({ index })}
                                     key={`chip_${value}`}
                                 />
                             ));

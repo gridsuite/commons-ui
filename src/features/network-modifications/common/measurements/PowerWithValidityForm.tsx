@@ -7,7 +7,7 @@
 
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { MeasurementProps } from './measurement.type';
 import { CheckboxNullableInput } from '../../../../components/ui/reactHookForm/CheckboxNullableInput';
 import { FloatInput } from '../../../../components/ui';

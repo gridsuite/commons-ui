@@ -7,7 +7,7 @@
 
 import { useMemo } from 'react';
 import { Info as InfoIcon } from '@mui/icons-material';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import {

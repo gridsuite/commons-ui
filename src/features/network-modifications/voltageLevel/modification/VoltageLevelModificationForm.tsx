@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Box, Grid2 as Grid, Tab, Tabs, TextField, Stack } from '@mui/material';
+import { Box, Grid, Tab, Tabs, TextField, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
