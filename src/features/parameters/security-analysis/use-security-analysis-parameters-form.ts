@@ -188,7 +188,6 @@ export const useSecurityAnalysisParametersForm = (
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
             updateParameters(formatNewParams(formData));
-            console.log('FORM DATA: ', formData);
         },
         [updateParameters, formatNewParams]
     );

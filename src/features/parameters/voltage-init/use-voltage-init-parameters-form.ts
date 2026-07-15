@@ -200,7 +200,6 @@ export const useVoltageInitParametersForm = ({
     const { reset } = formMethods;
 
     const onValidationError = useCallback((errors: FieldErrors) => {
-        console.log('ERRORS:', errors);
         const tabsInError = [];
         if (errors?.[GENERAL]) {
             tabsInError.push(TabValues.GENERAL);
@@ -217,7 +216,6 @@ export const useVoltageInitParametersForm = ({
             tabsInError.push(TabValues.EQUIPMENTS_SELECTION);
         }
         setTabIndexesWithError(tabsInError);
-        console.log(tabsInError);
     }, []);
 
     const onSaveInline = useCallback(

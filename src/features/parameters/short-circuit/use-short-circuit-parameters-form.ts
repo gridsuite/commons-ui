@@ -268,8 +268,6 @@ export const useShortCircuitParametersForm = ({
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
             const data = formatNewParams(formData);
-            console.log('DATA: ', data);
-            console.log('FORM DATA: ', formData);
             updateParameters(data);
         },
         [updateParameters, formatNewParams]
