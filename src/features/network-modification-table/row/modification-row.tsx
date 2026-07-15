@@ -51,7 +51,7 @@ export function ModificationRow({
         [handleCellClick, row.original]
     );
 
-    const isChildOfReference = row.original.isSharedChild === true;
+    const isChildOfReference = row.original.childFromShared === true;
 
     return (
         <Draggable

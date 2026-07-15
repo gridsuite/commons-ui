@@ -76,12 +76,12 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
     );
 }
 
-export function ShareCellRenderer({ row, table }: CCtx) {
+export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
-    // A shared-modification (reference) row shows a "copy link" action instead of the description note.
+    // A reference to a shared-modification row shows a "copy link" action
     if (isSharedModification(row.original)) {
-        return <ReferenceLinkCell data={row.original} isDisabled={meta?.status.isDisabled} />;
+        return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
     }
 }
 export function SwitchCellRenderer({ row, table }: CCtx) {

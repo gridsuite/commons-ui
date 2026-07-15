@@ -9,18 +9,18 @@ import { IconButton, ListItemIcon, ListItemText, Menu, Tooltip } from '@mui/mate
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { useSnackMessage } from '../../../hooks';
-import { fetchAppsMetadata, fetchNetworkModification } from '../../../services';
-import { ComposedModificationMetadata, ExploreMetadata, Metadata, snackWithFallback } from '../../../utils';
+import { fetchAppsMetadata, fetchNetworkModification, isExploreMetadata } from '../../../services';
+import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { CustomMenuItem } from '../../../components';
 import { ReferenceModificationInfos } from '../utils';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
 export interface ReferenceLinkCellProps {
     data: ComposedModificationMetadata;
-    isDisabled?: boolean;
+    disabled?: boolean;
 }
 
-export function ReferenceLinkCell({ data, isDisabled = false }: Readonly<ReferenceLinkCellProps>) {
+export function ReferenceLinkCell({ data, disabled = false }: Readonly<ReferenceLinkCellProps>) {
     const intl = useIntl();
     const { snackInfo, snackError } = useSnackMessage();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -33,7 +33,6 @@ export function ReferenceLinkCell({ data, isDisabled = false }: Readonly<Referen
         setAnchorEl(event.currentTarget);
     }, []);
 
-    // For MUI Menu's onClose (event is typed as {} + a reason) — no event methods used here.
     const handleMenuClose = useCallback(() => {
         setAnchorEl(null);
     }, []);
@@ -50,11 +49,9 @@ export function ReferenceLinkCell({ data, isDisabled = false }: Readonly<Referen
                 fetchNetworkModification(data.uuid).then((res) => res.json()) as Promise<ReferenceModificationInfos>,
                 fetchAppsMetadata(),
             ])
-                .then(([detail, metadata]) => {
-                    const referenceId = detail?.referenceId;
-                    const exploreUrl = metadata?.find(
-                        (app: Metadata): app is ExploreMetadata => app.name === 'Explore'
-                    )?.url;
+                .then(([referenceInfos, metadata]) => {
+                    const referenceId = referenceInfos?.referenceId;
+                    const exploreUrl = metadata?.find(isExploreMetadata)?.url;
                     const link = `${exploreUrl}/elements/${referenceId}`;
                     return navigator.clipboard.writeText(link).then(() => snackInfo({ headerId: 'linkCopied' }));
                 })
@@ -68,7 +65,7 @@ export function ReferenceLinkCell({ data, isDisabled = false }: Readonly<Referen
         <>
             <Tooltip title={<FormattedMessage id="copyLink" />} arrow enterDelay={250}>
                 <span>
-                    <IconButton size="small" disabled={isDisabled || isLoading} onClick={handleOpen}>
+                    <IconButton size="small" disabled={disabled || isLoading} onClick={handleOpen}>
                         <DatasetLinkedIcon />
                     </IconButton>
                 </span>
@@ -80,7 +77,6 @@ export function ReferenceLinkCell({ data, isDisabled = false }: Readonly<Referen
                 slotProps={{
                     paper: {
                         sx: {
-                            minWidth: 0,
                             maxWidth: 220,
                         },
                     },
@@ -94,9 +90,7 @@ export function ReferenceLinkCell({ data, isDisabled = false }: Readonly<Referen
                     <ListItemIcon sx={{ minWidth: 24 }}>
                         <LinkRoundedIcon sx={{ fontSize: 18, transform: 'rotate(-50deg)' }} />
                     </ListItemIcon>
-                    <ListItemText slotProps={{ primary: { variant: 'caption' } }}>
-                        {intl.formatMessage({ id: 'copyLink' })}
-                    </ListItemText>
+                    <ListItemText primary={intl.formatMessage({ id: 'copyLink' })} />
                 </CustomMenuItem>
             </Menu>
         </>

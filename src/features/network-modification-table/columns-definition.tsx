@@ -36,7 +36,7 @@ export const BASE_MODIFICATION_TABLE_COLUMNS = {
         id: 'switch',
         autoExtensible: false,
     },
-    SHARE: {
+    SHARED: {
         id: 'shared',
         autoExtensible: false,
     },

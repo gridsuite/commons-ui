@@ -84,7 +84,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const { snackError } = useSnackMessage();
     const modificationUuid = data.uuid;
 
-    const isSharedModification = data.type === ModificationType.MODIFICATION_REFERENCE || data.isSharedChild;
+    const isSharedModification = data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
 
     const isModificationActivated = useMemo(() => {
         if (rootNetwork.isCreating) {

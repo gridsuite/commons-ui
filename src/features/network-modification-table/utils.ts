@@ -19,7 +19,7 @@ interface ReferencedCompositeModifications extends NetworkModificationMetadata {
 export interface ReferenceModificationInfos extends NetworkModificationMetadata {
     referenceId?: UUID;
     referenceType?: string;
-    referenceInfos?: NetworkModificationMetadata;
+    referenceInfos?: ComposedModificationMetadata;
 }
 
 export const formatToComposedModification = (
@@ -299,11 +299,11 @@ export function fetchSubModificationsForExpandedRows(
             setMods((prev) =>
                 Object.entries(subModsByUuid).reduce((tree, [uuid, subMods]) => {
                     const existingMod = findModificationInTree(uuid, tree);
-                    // A composite nested inside a reference is itself flagged isSharedChild;
+                    // A composite nested inside a reference is itself flagged childFromShared;
                     // propagate the flag to its children so they stay non-clickable as well.
-                    const inheritsReference = existingMod?.isSharedChild === true;
+                    const inheritsReference = existingMod?.childFromShared === true;
                     const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map(
-                        (m) => (inheritsReference ? { ...m, isSharedChild: true } : m)
+                        (m) => (inheritsReference ? { ...m, childFromShared: true } : m)
                     );
                     // Preserve already-loaded children of any nested composites within the new sub-list
 
@@ -332,7 +332,7 @@ export function fetchSubModificationsForExpandedRows(
                 // keep them non-clickable, just like the reference row itself.
                 const liveModifications = formatToComposedModification(children).map((m) => ({
                     ...m,
-                    isSharedChild: true,
+                    childFromShared: true,
                 }));
                 setMods((prev) => {
                     const existingMod = findModificationInTree(id, prev);
