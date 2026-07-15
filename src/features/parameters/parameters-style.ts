@@ -69,7 +69,7 @@ export const parametersStyles = {
         overflowY: 'auto',
         overflowX: 'hidden',
         paddingRight: theme.spacing(2),
-        paddingTop: theme.spacing(2),
+        paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(1),
         flexGrow: 1,
     }),

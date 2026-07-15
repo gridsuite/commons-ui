@@ -262,7 +262,7 @@ export function ExplicitNamingFilterForm({
                 <Grid>
                     <CsvPicker<Record<string, string>>
                         label="UploadCSV"
-                        header={csvFileHeaders}
+                        requiredColumns={csvFileHeaders}
                         language={language ?? LANG_SYSTEM}
                         disabled={!watchEquipmentType}
                         selectedFile={selectedFile}

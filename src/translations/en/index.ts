@@ -21,7 +21,6 @@ export * from './errorsEn';
 export * from './filterEn';
 export * from './filterExpertEn';
 export * from './flatParametersEn';
-export * from './inputsEn';
 export * from './loginEn';
 export * from './multipleSelectionDialogEn';
 export * from './reportViewerEn';
