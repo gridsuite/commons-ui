@@ -8,4 +8,5 @@
 export * from './csv-export';
 export * from './csv-export.type';
 export * from './export-csv-button';
+export * from './managed-export-csv-button';
 export * from './use-csv-export';

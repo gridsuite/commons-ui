@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { ForwardedRef } from 'react';
 import { UUID } from 'node:crypto';
 import { parametersStyles } from '../parameters-style';
@@ -34,30 +34,22 @@ export function SecurityAnalysisParametersForm({
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
             <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" sx={{ paddingBottom: 1 }} />
-            <Grid
-                container
-                key="securityAnalysisParameters"
-                sx={{
-                    maxHeight: '100%',
-                }}
-            >
-                <ContingencyTable
-                    name={CONTINGENCY_LISTS_INFOS}
-                    showContingencyCount={showContingencyCount}
-                    fetchContingencyCount={fetchContingencyCount}
-                    isBuiltCurrentNode={isBuiltCurrentNode}
-                    ref={contingencyTableApiRef}
-                />
-                <Grid container paddingTop={4} paddingBottom={2}>
-                    <LineSeparator />
-                </Grid>
-                <SecurityAnalysisParametersSelector
-                    params={securityAnalysisMethods.params}
-                    currentProvider={securityAnalysisMethods.watchProvider?.trim()}
-                    isDeveloperMode={isDeveloperMode}
-                    defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
-                />
-            </Grid>
+            <ContingencyTable
+                name={CONTINGENCY_LISTS_INFOS}
+                showContingencyCount={showContingencyCount}
+                fetchContingencyCount={fetchContingencyCount}
+                isBuiltCurrentNode={isBuiltCurrentNode}
+                ref={contingencyTableApiRef}
+            />
+            <Box paddingTop={4} paddingBottom={2}>
+                <LineSeparator />
+            </Box>
+            <SecurityAnalysisParametersSelector
+                params={securityAnalysisMethods.params}
+                currentProvider={securityAnalysisMethods.watchProvider?.trim()}
+                isDeveloperMode={isDeveloperMode}
+                defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
+            />
         </Stack>
     );
 }
