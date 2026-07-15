@@ -15,3 +15,4 @@ export * from './by-filter';
 export * from './generator';
 export * from './battery';
 export * from './shunt-compensator';
+export * from './line';

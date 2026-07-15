@@ -273,7 +273,7 @@ export function ExplicitNamingFilterForm({
                         <Grid sx={{ flex: 1, minWidth: 0 }}>
                             <CsvPicker<Record<string, string>>
                                 label="UploadCSV"
-                                header={csvFileHeaders}
+                                requiredColumns={csvFileHeaders}
                                 language={language ?? LANG_SYSTEM}
                                 selectedFile={selectedFile}
                                 onFileChange={setSelectedFile}
