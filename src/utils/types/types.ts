@@ -25,6 +25,7 @@ export type ElementAttributes = {
     lastModificationDate: string;
     lastModifiedBy: string; // id
     lastModifiedByLabel?: string; // enrich with user identity server
+    status: string;
     children: ElementAttributes[];
     parentUuid: null | UUID;
     specificMetadata: {
