@@ -179,10 +179,6 @@ export function ExplicitNamingFilterForm({
     const [fileErrorMessage, setFileErrorMessage] = useState<string | undefined>();
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
 
-    const resetFileStateOnTypeChange = () => {
-        setSelectedFile(undefined);
-        setFileErrorMessage(undefined);
-    };
     const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
 
     const getTableData = useCallback(() => {
@@ -203,7 +199,9 @@ export function ExplicitNamingFilterForm({
         );
     };
 
-    const handleResetOnConfirmation = () => {
+    const handleResetOnTypeChange = () => {
+        setSelectedFile(undefined);
+        setFileErrorMessage(undefined);
         setValue(FILTER_EQUIPMENTS_ATTRIBUTES, makeDefaultTableRows());
     };
 
@@ -241,8 +239,7 @@ export function ExplicitNamingFilterForm({
                         disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
                         label="equipmentType"
                         shouldOpenPopup={openConfirmationPopup}
-                        resetOnChange={resetFileStateOnTypeChange}
-                        resetOnConfirmation={handleResetOnConfirmation}
+                        onValueChange={handleResetOnTypeChange}
                         message="changeTypeMessage"
                         validateButtonLabel="button.changeType"
                         sx={{ width: 400, maxWidth: '100%' }}
