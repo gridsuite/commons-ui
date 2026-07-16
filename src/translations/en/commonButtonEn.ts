@@ -7,6 +7,7 @@
 
 export const commonButtonEn = {
     cancel: 'Cancel',
+    close: 'Close',
     validate: 'Validate',
     add: 'Add',
     replace: 'Replace',

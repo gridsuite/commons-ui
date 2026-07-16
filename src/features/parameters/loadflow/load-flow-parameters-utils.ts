@@ -8,6 +8,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import * as yup from 'yup';
 import {
+    ADVANCED_PARAMETERS,
     COMMON_PARAMETERS,
     ILimitReductionsByVoltageLevel,
     IST_FORM,
@@ -35,9 +36,13 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
+import { ParameterValue } from './load-flow-parameters-type';
+import { advancedParams } from './load-flow-advanced-parameters';
 
 export enum TabValues {
     GENERAL = 'General',
+    ADVANCED = 'Advanced',
+    PROVIDER_SPECIFIC = 'ProviderSpecific',
     LIMIT_REDUCTIONS = 'LimitReductions',
 }
 
@@ -52,7 +57,7 @@ export const getBasicLoadFlowParametersFormSchema = () => {
     });
 };
 
-export const getAdvancedLoadFlowParametersFormSchema = () => {
+export const getAdvancedLoadFlowParametersFormSchemaFields = () => {
     return yup.object().shape({
         [VOLTAGE_INIT_MODE]: yup.string().required(),
         [USE_REACTIVE_LIMITS]: yup.boolean().required(),
@@ -74,7 +79,14 @@ export const getCommonLoadFlowParametersFormSchema = () => {
     return yup.object().shape({
         [COMMON_PARAMETERS]: yup.object().shape({
             ...getBasicLoadFlowParametersFormSchema().fields,
-            ...getAdvancedLoadFlowParametersFormSchema().fields,
+        }),
+    });
+};
+
+export const getAdvancedLoadFlowParametersFormSchema = () => {
+    return yup.object().shape({
+        [ADVANCED_PARAMETERS]: yup.object().shape({
+            ...getAdvancedLoadFlowParametersFormSchemaFields().fields,
         }),
     });
 };
@@ -114,3 +126,35 @@ export const mapLimitReductions = (
     });
     return vlLNewLimits;
 };
+
+export function splitCommonParameters(commonParameters?: Record<string, ParameterValue>): {
+    advancedParameters: Record<string, ParameterValue>;
+    commonParameters: Record<string, ParameterValue>;
+} {
+    if (!commonParameters) {
+        return {
+            advancedParameters: {},
+            commonParameters: {},
+        };
+    }
+    const advancedParamNames = new Set(advancedParams.map((param) => param.name));
+
+    return Object.entries(commonParameters).reduce(
+        (acc, [key, value]) => {
+            if (advancedParamNames.has(key)) {
+                acc.advancedParameters[key] = value;
+            } else {
+                acc.commonParameters[key] = value;
+            }
+
+            return acc;
+        },
+        {
+            advancedParameters: {},
+            commonParameters: {},
+        } as {
+            advancedParameters: Record<string, ParameterValue>;
+            commonParameters: Record<string, ParameterValue>;
+        }
+    );
+}
