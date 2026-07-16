@@ -6,8 +6,9 @@
  */
 import { type ChangeEvent, type SyntheticEvent, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Switch } from '@mui/material';
+import { Alert, Box, Dialog, DialogActions, DialogContent, DialogTitle, Switch } from '@mui/material';
 import type { MuiStyles } from '../../utils/styles';
+import { CloseButton } from '../../components/ui/reactHookForm/utils/CloseButton';
 
 const styles = {
     parameterName: (theme) => ({
@@ -70,9 +71,7 @@ function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperMod
                 )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} variant="outlined">
-                    <FormattedMessage id="user-settings-dialog/close" />
-                </Button>
+                <CloseButton color="primary" onClick={handleClose} autoFocus />
             </DialogActions>
         </Dialog>
     );
