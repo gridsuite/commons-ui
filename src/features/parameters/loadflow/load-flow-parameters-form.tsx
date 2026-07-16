@@ -35,6 +35,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
                     handleTabChange={handleTabChange}
                     tabIndexesWithError={tabIndexesWithError}
                     formattedProviders={formattedProviders}
+                    disableSpecificProviderParams={!watchProvider || !specificParametersDescriptionForProvider}
                 />
             </Grid>
             <Grid size={12}>
