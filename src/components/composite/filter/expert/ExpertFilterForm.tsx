@@ -88,7 +88,7 @@ export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>)
         );
     }, [getValues]);
 
-    const handleResetOnChange = useCallback(() => {
+    const resetOnTypeChange = useCallback(() => {
         setValue(EXPERT_FILTER_QUERY, defaultQuery);
     }, [setValue]);
 
@@ -115,7 +115,7 @@ export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>)
                     options={Object.values(EXPERT_FILTER_EQUIPMENTS)}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
-                    onValueChange={handleResetOnChange}
+                    onValueChange={resetOnTypeChange}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={filterStyles.textField}

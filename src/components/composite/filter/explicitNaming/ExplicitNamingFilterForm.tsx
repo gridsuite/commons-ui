@@ -199,7 +199,7 @@ export function ExplicitNamingFilterForm({
         );
     };
 
-    const handleResetOnTypeChange = () => {
+    const resetOnTypeChange = () => {
         setSelectedFile(undefined);
         setFileErrorMessage(undefined);
         setValue(FILTER_EQUIPMENTS_ATTRIBUTES, makeDefaultTableRows());
@@ -238,7 +238,7 @@ export function ExplicitNamingFilterForm({
                     disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
-                    onValueChange={handleResetOnTypeChange}
+                    onValueChange={resetOnTypeChange}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={{ width: 400, maxWidth: '100%' }}
