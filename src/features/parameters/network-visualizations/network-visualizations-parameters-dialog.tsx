@@ -32,11 +32,6 @@ export function NetworkVisualizationsParametersEditionDialog({
         parameters: null,
     });
 
-    const {
-        formState: { errors, dirtyFields },
-    } = networkVisuMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
-
     return (
         <CustomMuiDialog
             open={open}
@@ -49,7 +44,6 @@ export function NetworkVisualizationsParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
             PaperProps={{
                 sx: {
                     height: '65vh', // we want the dialog height to be fixed even when switching tabs

@@ -5,39 +5,36 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SyntheticEvent, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
 import { Grid2 as Grid, Tab, Tabs } from '@mui/material';
-import { ILimitReductionsByVoltageLevel, LimitReductionsTableForm, TAB_INFO, TabPanel, TabValues } from '../common';
+import { LimitReductionsTableForm, TAB_INFO, TabPanel, TabValues } from '../common';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
-import { SAParametersEnriched } from '../../../utils/types';
 import { getTabStyle } from '../parameters-style';
+import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 
 export function SecurityAnalysisParametersSelector({
-    params,
-    currentProvider,
+    securityAnalysisMethods,
     isDeveloperMode,
-    defaultLimitReductions,
-    selectedTab,
-    setSelectedTab,
-    handleTabChange,
-    tabIndexesWithError,
 }: Readonly<{
-    params: SAParametersEnriched | null;
-    currentProvider?: string;
+    securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     isDeveloperMode: boolean;
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
-    selectedTab: TabValues;
-    setSelectedTab: (tab: TabValues) => void;
-    handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
-    tabIndexesWithError: TabValues[];
 }>) {
-    const tabValue = useMemo(() => {
-        return selectedTab === TabValues.LimitReductions && !params?.limitReductions ? TabValues.General : selectedTab;
-    }, [params, selectedTab]);
+    const {
+        params,
+        watchProvider,
+        defaultLimitReductions,
+        selectedTab,
+        handleTabChange,
+        setSelectedTab,
+        tabIndexesWithError,
+    } = securityAnalysisMethods;
+    const currentProvider = watchProvider?.trim();
+
+    const isLimitReductionsTabAvailable = currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions;
 
     useEffect(() => {
         if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW) {
@@ -45,33 +42,35 @@ export function SecurityAnalysisParametersSelector({
         }
     }, [currentProvider, setSelectedTab]);
 
+    const availableTabs = useMemo(
+        () => TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly),
+        [isDeveloperMode]
+    );
+
     return (
         <Grid sx={{ width: '100%' }}>
-            <Tabs value={tabValue} onChange={handleTabChange}>
-                {TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly).map(
-                    (tab, index) =>
-                        (tab.label !== TabValues[TabValues.LimitReductions] ||
-                            (currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions)) && (
+            <Tabs value={selectedTab} onChange={handleTabChange}>
+                {availableTabs.map(
+                    (tab) =>
+                        (tab.label !== TabValues.LimitReductions || isLimitReductionsTabAvailable) && (
                             <Tab
                                 key={tab.label}
                                 label={<FormattedMessage id={tab.label} />}
-                                value={index}
-                                sx={getTabStyle(tabIndexesWithError, index, tabValue)}
+                                value={tab.label}
+                                sx={getTabStyle(tabIndexesWithError, tab.label)}
                             />
                         )
                 )}
             </Tabs>
 
-            {TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly).map((tab, index) => (
-                <TabPanel key={tab.label} value={tabValue} index={index}>
-                    {tabValue === TabValues.General && <ViolationsHidingParameters />}
-                    {tabValue === TabValues.LimitReductions &&
-                        currentProvider === PARAM_PROVIDER_OPENLOADFLOW &&
-                        params?.limitReductions && (
-                            <Grid sx={{ width: '100%' }}>
-                                <LimitReductionsTableForm limits={params?.limitReductions ?? defaultLimitReductions} />
-                            </Grid>
-                        )}
+            {availableTabs.map((tab) => (
+                <TabPanel key={tab.label} value={selectedTab} index={tab.label}>
+                    {selectedTab === TabValues.General && <ViolationsHidingParameters />}
+                    {selectedTab === TabValues.LimitReductions && isLimitReductionsTabAvailable && (
+                        <Grid sx={{ width: '100%' }}>
+                            <LimitReductionsTableForm limits={params?.limitReductions ?? defaultLimitReductions} />
+                        </Grid>
+                    )}
                 </TabPanel>
             ))}
         </Grid>

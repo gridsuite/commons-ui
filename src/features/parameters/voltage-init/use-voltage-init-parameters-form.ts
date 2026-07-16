@@ -16,7 +16,6 @@ import {
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,
     DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     DEFAULT_UPDATE_BUS_VOLTAGE,
-    GENERAL,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
@@ -46,6 +45,7 @@ import {
 import { SELECTED } from '../../../components/composite/dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
+import { useTabs } from '../common';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -83,14 +83,8 @@ export const useVoltageInitParametersForm = ({
     studyUuid,
     parameters,
 }: UseVoltageInitParametersFormProps): UseVoltageInitParametersFormReturn => {
-    const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [paramsLoading, setParamsLoading] = useState<boolean>(false);
-    const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
     const { snackError } = useSnackMessage();
-
-    const handleTabChange = useCallback((_event: SyntheticEvent, newValue: TabValues) => {
-        setSelectedTab(newValue);
-    }, []);
 
     const formSchema = useMemo(() => {
         return yup
@@ -199,24 +193,26 @@ export const useVoltageInitParametersForm = ({
 
     const { reset } = formMethods;
 
-    const onValidationError = useCallback((errors: FieldErrors) => {
-        const tabsInError = [];
-        if (errors?.[GENERAL]) {
-            tabsInError.push(TabValues.GENERAL);
-        }
-        if (errors?.[VOLTAGE_LIMITS_MODIFICATION] || errors?.[VOLTAGE_LIMITS_DEFAULT]) {
-            tabsInError.push(TabValues.VOLTAGE_LIMITS);
-        }
-        if (
-            errors?.[TRANSFORMERS_SELECTION_TYPE] ||
-            errors?.[VARIABLE_TRANSFORMERS] ||
-            errors?.[SHUNT_COMPENSATORS_SELECTION_TYPE] ||
-            errors?.[VARIABLE_SHUNT_COMPENSATORS]
-        ) {
-            tabsInError.push(TabValues.EQUIPMENTS_SELECTION);
-        }
-        setTabIndexesWithError(tabsInError);
-    }, []);
+    const {
+        selectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: TabValues.GENERAL,
+        tabEnum: TabValues,
+        errors: formMethods.formState.errors,
+        tabFields: {
+            [TabValues.GENERAL]: [TabValues.GENERAL],
+            [TabValues.VOLTAGE_LIMITS]: [VOLTAGE_LIMITS_MODIFICATION, VOLTAGE_LIMITS_DEFAULT],
+            [TabValues.EQUIPMENTS_SELECTION]: [
+                TRANSFORMERS_SELECTION_TYPE,
+                VARIABLE_TRANSFORMERS,
+                SHUNT_COMPENSATORS_SELECTION_TYPE,
+                VARIABLE_SHUNT_COMPENSATORS,
+            ],
+        },
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {

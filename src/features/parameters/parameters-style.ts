@@ -148,6 +148,6 @@ export function getTabIndicatorStyle<T extends number | string>(tabIndexesWithEr
     return tabIndexesWithError.includes(index) ? parametersStyles.tabWithErrorIndicator : undefined;
 }
 
-export function getTabStyle<T extends number | string>(tabIndexesWithError: T[], index: T, selectedIndex?: T) {
-    return tabIndexesWithError.includes(index) && index !== selectedIndex ? parametersStyles.tabWithError : undefined;
+export function getTabStyle<T extends number | string>(tabIndexesWithError: T[], index: T) {
+    return tabIndexesWithError.includes(index) ? parametersStyles.tabWithError : undefined;
 }

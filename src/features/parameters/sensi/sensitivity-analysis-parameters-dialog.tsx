@@ -55,10 +55,6 @@ export function SensitivityAnalysisParametersDialog({
         globalBuildStatus,
         isRootNode,
     });
-    const {
-        formState: { errors, dirtyFields },
-    } = sensitivityAnalysisMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
@@ -72,7 +68,6 @@ export function SensitivityAnalysisParametersDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
         >
             <Grid container sx={{ width: '100%' }}>
                 <NameElementEditorForm

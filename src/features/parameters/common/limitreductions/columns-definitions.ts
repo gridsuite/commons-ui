@@ -36,13 +36,13 @@ export interface ILimitReductionsByVoltageLevel {
 }
 
 export enum TabValues {
-    General = 0,
-    LimitReductions = 1,
+    General = 'General',
+    LimitReductions = 'LimitReductions',
 }
 
 export const TAB_INFO = [
-    { label: TabValues[TabValues.General], developerModeOnly: false },
-    { label: TabValues[TabValues.LimitReductions], developerModeOnly: false },
+    { label: TabValues.General, developerModeOnly: false },
+    { label: TabValues.LimitReductions, developerModeOnly: false },
 ];
 
 export interface LimitReductionIColumnsDef {

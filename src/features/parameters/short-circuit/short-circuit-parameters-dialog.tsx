@@ -49,11 +49,6 @@ export function ShortCircuitParametersEditionDialog({
         description,
     });
 
-    const {
-        formState: { errors, dirtyFields },
-    } = shortCircuitMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
-
     return (
         <CustomMuiDialog
             open={open}
@@ -67,7 +62,6 @@ export function ShortCircuitParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
             maxWidth="lg"
         >
             <Grid container sx={{ width: '100%' }}>

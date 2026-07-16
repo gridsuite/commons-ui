@@ -49,10 +49,16 @@ export function DynamicMarginCalculationInline({
     const { formMethods } = dynamicMarginCalculationMethods;
     const { reset, getValues, formState, handleSubmit } = formMethods;
 
+    const tabFields = Object.fromEntries(Object.values(TabValues).map((tab) => [tab, [tab]])) as Record<
+        TabValues,
+        string[]
+    >;
+
     const useTabsReturn = useTabs({
         defaultTab: Object.values(TabValues)[0],
         tabEnum: TabValues,
         errors: formState.errors,
+        tabFields,
     });
 
     const onSubmit = useCallback(

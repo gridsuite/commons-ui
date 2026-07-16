@@ -32,17 +32,17 @@ export function VoltageInitParametersForm({
                 <Tab
                     label={<FormattedMessage id="VoltageInitParametersGeneralTabLabel" />}
                     value={TabValues.GENERAL}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL, selectedTab)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.GENERAL)}
                 />
                 <Tab
                     label={<FormattedMessage id="VoltageLimits" />}
                     value={TabValues.VOLTAGE_LIMITS}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.VOLTAGE_LIMITS, selectedTab)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.VOLTAGE_LIMITS)}
                 />
                 <Tab
                     label={<FormattedMessage id="EquipmentSelection" />}
                     value={TabValues.EQUIPMENTS_SELECTION}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION, selectedTab)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION)}
                 />
             </Tabs>
             <Grid container>

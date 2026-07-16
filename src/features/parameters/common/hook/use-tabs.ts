@@ -10,6 +10,7 @@ import { isObjectEmpty } from '../../../../utils/functions';
 
 export type UseTabsReturn<TTabValue extends string> = {
     selectedTab: TTabValue;
+    setSelectedTab: (selectedTab: TTabValue) => void;
     tabsWithError: TTabValue[];
     onTabChange: (event: SyntheticEvent, newValue: TTabValue) => void;
     onError: (errors: FieldErrors) => void;
@@ -19,15 +20,30 @@ export type UseTabsProps<TTabValue extends string> = {
     defaultTab: TTabValue;
     tabEnum: Record<string, TTabValue>;
     errors: FieldErrors;
+    tabFields: Record<TTabValue, string[]>;
 };
 
 export function useTabs<TTabValue extends string>({
     defaultTab,
     tabEnum,
     errors,
+    tabFields,
 }: Readonly<UseTabsProps<TTabValue>>): UseTabsReturn<TTabValue> {
     const [selectedTab, setSelectedTab] = useState<TTabValue>(defaultTab);
     const [tabsWithError, setTabsWithError] = useState<TTabValue[]>([]);
+
+    const getTabsWithError = useCallback(
+        (_errors: FieldErrors) => {
+            const tabsHasError: TTabValue[] = [];
+            Object.values(tabEnum).forEach((tabValue) => {
+                if (tabFields[tabValue]?.some((field) => _errors?.[field])) {
+                    tabsHasError.push(tabValue);
+                }
+            });
+            return tabsHasError;
+        },
+        [tabEnum, tabFields]
+    );
 
     const onTabChange = useCallback(
         (event: SyntheticEvent<Element, Event>, newSelectedTab: TTabValue) => {
@@ -36,12 +52,7 @@ export function useTabs<TTabValue extends string>({
             if (!errors || isObjectEmpty(errors)) {
                 return;
             }
-            const tabsHasError: TTabValue[] = [];
-            Object.values(tabEnum).forEach((tabValue) => {
-                if (errors?.[tabValue]) {
-                    tabsHasError.push(tabValue);
-                }
-            });
+            const tabsHasError: TTabValue[] = getTabsWithError(errors);
             if (tabsHasError.includes(newSelectedTab)) {
                 // error in current tab => remove current tab in error list
                 setTabsWithError(tabsHasError.filter((errorTab) => errorTab !== newSelectedTab));
@@ -49,7 +60,7 @@ export function useTabs<TTabValue extends string>({
                 setTabsWithError(tabsHasError);
             }
         },
-        [errors, tabEnum]
+        [errors, getTabsWithError]
     );
 
     const onError = useCallback(
@@ -58,12 +69,7 @@ export function useTabs<TTabValue extends string>({
                 return;
             }
 
-            const tabsHasError: TTabValue[] = [];
-            Object.values(tabEnum).forEach((tabValue) => {
-                if (_errors?.[tabValue]) {
-                    tabsHasError.push(tabValue);
-                }
-            });
+            const tabsHasError: TTabValue[] = getTabsWithError(_errors);
             if (tabsHasError.includes(selectedTab)) {
                 // error in current tab => do not change tab systematically but remove current tab in error list
                 setTabsWithError(tabsHasError.filter((errorTab) => errorTab !== selectedTab));
@@ -73,11 +79,12 @@ export function useTabs<TTabValue extends string>({
                 setTabsWithError(tabsHasError.filter((errorTab, index, arr) => errorTab !== arr[0]));
             }
         },
-        [selectedTab, tabEnum]
+        [getTabsWithError, selectedTab]
     );
 
     return {
         selectedTab,
+        setSelectedTab,
         tabsWithError,
         onTabChange,
         onError,

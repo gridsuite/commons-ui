@@ -42,10 +42,16 @@ export function DynamicSecurityAnalysisInline({
     const { formMethods } = dynamicSecurityAnalysisMethods;
     const { getValues, formState, handleSubmit } = formMethods;
 
+    const tabFields = Object.fromEntries(Object.values(TabValues).map((tab) => [tab, [tab]])) as Record<
+        TabValues,
+        string[]
+    >;
+
     const useTabsReturn = useTabs({
         defaultTab: TabValues.SCENARIO,
         tabEnum: TabValues,
         errors: formState.errors,
+        tabFields,
     });
 
     const onSubmit = useCallback(

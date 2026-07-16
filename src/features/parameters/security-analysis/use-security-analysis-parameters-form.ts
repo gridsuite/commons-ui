@@ -30,6 +30,7 @@ import {
     PARAM_SA_PROVIDER,
     TabValues,
     toFormValuesLimitReductions,
+    useTabs,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
@@ -43,7 +44,7 @@ export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
     selectedTab: TabValues;
-    setSelectedTab: (tab: TabValues) => void;
+    setSelectedTab: (selectedTab: TabValues) => void;
     handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     formattedProviders: { id: string; label: string }[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
@@ -67,13 +68,6 @@ export const useSecurityAnalysisParametersForm = (
     const { providers, params, updateParameters, defaultLimitReductions } = parametersBackend;
     const previousWatchProviderRef = useRef<string | undefined>(undefined);
     const { snackError } = useSnackMessage();
-
-    const [selectedTab, setSelectedTab] = useState(TabValues.General);
-    const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
-
-    const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
-        setSelectedTab(newValue);
-    }, []);
 
     // TODO: remove this when DynaFlow is supported
     // DynaFlow is not supported at the moment for security analysis
@@ -168,22 +162,27 @@ export const useSecurityAnalysisParametersForm = (
         [toContingencyListsInfos, toLimitReductions]
     );
 
-    const onValidationError = useCallback((errors: FieldErrors) => {
-        const tabsInError = [];
-        if (errors?.[LIMIT_REDUCTIONS_FORM]) {
-            tabsInError.push(TabValues.LimitReductions);
-        }
-        if (
-            errors?.[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] ||
-            errors?.[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] ||
-            errors?.[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD] ||
-            errors?.[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] ||
-            errors?.[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]
-        ) {
-            tabsInError.push(TabValues.General);
-        }
-        setTabIndexesWithError(tabsInError);
-    }, []);
+    const {
+        selectedTab,
+        setSelectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: TabValues.General,
+        tabEnum: TabValues,
+        errors: formMethods.formState.errors,
+        tabFields: {
+            [TabValues.General]: [
+                PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
+                PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
+                PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
+                PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
+                PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+            ],
+            [TabValues.LimitReductions]: [LIMIT_REDUCTIONS_FORM],
+        },
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
