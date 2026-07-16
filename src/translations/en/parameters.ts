@@ -67,6 +67,8 @@ export const parametersEn = {
     leftOpenBracket: '(',
     rightOpenBracket: ')',
 
+    Advanced: 'Advanced',
+
     Provider: 'Provider',
     LimitReduction: 'Limit reduction',
     Default: 'Default',

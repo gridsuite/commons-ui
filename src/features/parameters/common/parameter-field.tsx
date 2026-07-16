@@ -102,19 +102,19 @@ function ParameterField({
         }
     };
 
-    const LABEL_COLUMN_COUNT = type !== ParameterType.COUNTRIES ? 8 : 3;
-    const INPUT_COLUMN_COUNT = 12 - LABEL_COLUMN_COUNT;
+    const LABEL_GRID_SIZE = type !== ParameterType.COUNTRIES ? 8 : 3;
+    const INPUT_GRID_SIZE = 12 - LABEL_GRID_SIZE;
 
     return (
         <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between" sx={{ width: '100%' }}>
-            <Grid size={LABEL_COLUMN_COUNT}>
+            <Grid size={LABEL_GRID_SIZE}>
                 <CustomTooltip title={description} key={name}>
                     <Typography sx={parametersStyles.parameterName}>
                         {label ? <FormattedMessage id={label} /> : name}
                     </Typography>
                 </CustomTooltip>
             </Grid>
-            <Grid container size={INPUT_COLUMN_COUNT} sx={parametersStyles.controlItem}>
+            <Grid container size={INPUT_GRID_SIZE} sx={parametersStyles.controlItem}>
                 {renderField()}
             </Grid>
             <LineSeparator />

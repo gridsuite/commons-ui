@@ -69,6 +69,8 @@ export const parametersFr = {
     leftOpenBracket: ']',
     rightOpenBracket: '[',
 
+    Advanced: 'Avancés',
+
     Provider: 'Simulateur',
     LimitReduction: 'Abattement des seuils',
     Default: 'Défaut',
