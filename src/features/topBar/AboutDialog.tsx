@@ -12,7 +12,6 @@ import {
     AccordionSummary,
     Alert,
     Box,
-    Button,
     CircularProgress,
     Collapse,
     Dialog,
@@ -35,6 +34,7 @@ import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../components/ui/tooltip/CustomTooltip';
 import { LogoText } from './GridLogo';
 import { mergeSx, type MuiStyles } from '../../utils/styles';
+import { CloseButton } from '../../components/ui/reactHookForm/utils/CloseButton';
 
 const styles = {
     general: {
@@ -469,9 +469,7 @@ export function AboutDialog({
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} autoFocus>
-                    <FormattedMessage id="close" />
-                </Button>
+                <CloseButton color="primary" onClick={handleClose} autoFocus />
             </DialogActions>
         </Dialog>
     );
