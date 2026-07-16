@@ -5,12 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { ReactNode } from 'react';
+import { SvgIcon, type SvgIconProps } from '@mui/material';
+import VoltageUnit from '../../../images/voltage-unit.svg?react';
 
-export interface CsvProps {
-    fileName: string;
-    language?: string;
-    getTableData?: () => unknown[];
-    extraButtons?: ReactNode;
-    hasTableData?: boolean;
+export function VoltageUnitIcon(props: SvgIconProps) {
+    return <SvgIcon component={VoltageUnit} inheritViewBox {...props} />;
 }
