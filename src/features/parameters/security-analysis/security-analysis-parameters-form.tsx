@@ -6,7 +6,7 @@
  */
 import { Stack } from '@mui/material';
 import { ForwardedRef } from 'react';
-import { UUID } from 'node:crypto';
+import type { UUID } from 'node:crypto';
 import { parametersStyles } from '../parameters-style';
 import { ContingencyTableApi, ProviderParam } from '../common';
 import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
@@ -33,7 +33,6 @@ export function SecurityAnalysisParametersForm({
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
             <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" sx={{ paddingBottom: 1 }} />
-
             <SecurityAnalysisParametersSelector
                 params={securityAnalysisMethods.params}
                 currentProvider={securityAnalysisMethods.watchProvider?.trim()}
