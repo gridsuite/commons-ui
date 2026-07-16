@@ -29,7 +29,7 @@ import { exportFilter } from '../../../../services/study';
 import { EquipmentType } from '../../../../utils/types/equipmentType';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { LANG_SYSTEM, snackWithFallback } from '../../../../utils';
-import { CsvPicker, useCustomFormContext } from '../../../ui';
+import { CsvDownloadButton, CsvPicker, useCustomFormContext } from '../../../ui';
 
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
@@ -233,76 +233,85 @@ export function ExplicitNamingFilterForm({
             padding={1} // because of unscrollableHeader in parent component
             sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
         >
-            <Grid container justifyContent="space-between" alignItems="center">
-                <Grid>
-                    <InputWithPopupConfirmation
-                        Input={SelectInput}
-                        name={FieldConstants.EQUIPMENT_TYPE}
-                        options={Object.values(FILTER_EQUIPMENTS)}
-                        disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
-                        label="equipmentType"
-                        shouldOpenPopup={openConfirmationPopup}
-                        resetOnConfirmation={handleResetOnConfirmation}
-                        message="changeTypeMessage"
-                        validateButtonLabel="button.changeType"
-                        sx={{ width: 400, maxWidth: '100%' }}
-                        data-testid="EquipmentTypeSelector"
+            <Grid>
+                <InputWithPopupConfirmation
+                    Input={SelectInput}
+                    name={FieldConstants.EQUIPMENT_TYPE}
+                    options={Object.values(FILTER_EQUIPMENTS)}
+                    disabled={!!sourceFilterForExplicitNamingConversion || (isEditing && !isDeveloperMode)}
+                    label="equipmentType"
+                    shouldOpenPopup={openConfirmationPopup}
+                    resetOnConfirmation={handleResetOnConfirmation}
+                    message="changeTypeMessage"
+                    validateButtonLabel="button.changeType"
+                    sx={{ width: 400, maxWidth: '100%' }}
+                    data-testid="EquipmentTypeSelector"
+                />
+                {sourceFilterForExplicitNamingConversion && (
+                    <ModifyElementSelection
+                        elementType={ElementType.STUDY}
+                        onElementValidated={onStudySelected}
+                        dialogOpeningButtonLabel="selectStudyDialogButton"
+                        dialogTitleLabel="selectStudyDialogTitle"
+                        dialogMessageLabel="selectStudyText"
+                        noElementMessageLabel="noSelectedStudyText"
                     />
-                    {sourceFilterForExplicitNamingConversion && (
-                        <ModifyElementSelection
-                            elementType={ElementType.STUDY}
-                            onElementValidated={onStudySelected}
-                            dialogOpeningButtonLabel="selectStudyDialogButton"
-                            dialogTitleLabel="selectStudyDialogTitle"
-                            dialogMessageLabel="selectStudyText"
-                            noElementMessageLabel="noSelectedStudyText"
-                        />
-                    )}
-                </Grid>
-                <Grid>
-                    <CsvPicker<Record<string, string>>
-                        label="UploadCSV"
-                        header={csvFileHeaders}
-                        language={language ?? LANG_SYSTEM}
-                        disabled={!watchEquipmentType}
-                        selectedFile={selectedFile}
-                        onFileChange={setSelectedFile}
-                        onFileError={setFileErrorMessage}
-                        getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
-                        onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
-                        onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
-                    />
-                </Grid>
+                )}
             </Grid>
-            {fileErrorMessage && (
-                <Grid>
-                    <Alert severity="error">{fileErrorMessage}</Alert>
-                </Grid>
-            )}
             {watchEquipmentType && (
-                <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-                    <CustomAgGridTable
-                        ref={tableRef}
-                        name={FILTER_EQUIPMENTS_ATTRIBUTES}
-                        columnDefs={columnDefs}
-                        defaultColDef={defaultColDef}
-                        makeDefaultRowData={makeDefaultRowData}
-                        pagination
-                        rowSelection={{
-                            mode: 'multiRow',
-                            enableClickSelection: false,
-                            checkboxes: true,
-                            headerCheckbox: true,
-                        }}
-                        alwaysShowVerticalScroll
-                        csvProps={{
-                            fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
-                            language,
-                            getTemplateData,
-                            getTableData,
-                        }}
-                    />
-                </Grid>
+                <>
+                    <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+                        <Grid>
+                            <CsvDownloadButton
+                                data={getTemplateData}
+                                fileName={intl.formatMessage({ id: 'filterCsvFileName' })}
+                                language={language}
+                                labelId="GenerateCSV"
+                                variant="contained"
+                            />
+                        </Grid>
+                        <Grid sx={{ flex: 1, minWidth: 0 }}>
+                            <CsvPicker<Record<string, string>>
+                                label="UploadCSV"
+                                requiredColumns={csvFileHeaders}
+                                language={language ?? LANG_SYSTEM}
+                                selectedFile={selectedFile}
+                                onFileChange={setSelectedFile}
+                                onFileError={setFileErrorMessage}
+                                getTableData={() => getValues(FILTER_EQUIPMENTS_ATTRIBUTES)}
+                                onAppend={(results) => tableRef.current?.append(getDataFromCsvFile(results.data))}
+                                onReplace={(results) => tableRef.current?.replace(getDataFromCsvFile(results.data))}
+                            />
+                        </Grid>
+                    </Grid>
+                    {fileErrorMessage && (
+                        <Grid>
+                            <Alert severity="error">{fileErrorMessage}</Alert>
+                        </Grid>
+                    )}
+                    <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+                        <CustomAgGridTable
+                            ref={tableRef}
+                            name={FILTER_EQUIPMENTS_ATTRIBUTES}
+                            columnDefs={columnDefs}
+                            defaultColDef={defaultColDef}
+                            makeDefaultRowData={makeDefaultRowData}
+                            pagination
+                            rowSelection={{
+                                mode: 'multiRow',
+                                enableClickSelection: false,
+                                checkboxes: true,
+                                headerCheckbox: true,
+                            }}
+                            alwaysShowVerticalScroll
+                            csvProps={{
+                                fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
+                                language,
+                                getTableData,
+                            }}
+                        />
+                    </Grid>
+                </>
             )}
         </Stack>
     );
