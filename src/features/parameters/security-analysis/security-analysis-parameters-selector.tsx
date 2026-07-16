@@ -10,7 +10,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState, ForwardedRef
 import { FormattedMessage } from 'react-intl';
 
 import { Grid2 as Grid, Tab, Tabs } from '@mui/material';
-import { UUID } from 'node:crypto';
+import type { UUID } from 'node:crypto';
 import {
     ILimitReductionsByVoltageLevel,
     LimitReductionsTableForm,
@@ -45,7 +45,6 @@ export function SecurityAnalysisParametersSelector({
     contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
 }>) {
-    // Default to the first tab: Contingencies
     const [tabSelected, setTabSelected] = useState(TabValues.Contingencies);
 
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: number) => {
@@ -53,17 +52,14 @@ export function SecurityAnalysisParametersSelector({
     }, []);
 
     const tabValue = useMemo(() => {
-        // Keep the LimitReductions guard logic
-        if (tabSelected === TabValues.LimitReductions && !params?.limitReductions) {
-            return TabValues.General;
-        }
-        return tabSelected;
+        return tabSelected === TabValues.LimitReductions && !params?.limitReductions
+            ? TabValues.Contingencies
+            : tabSelected;
     }, [params, tabSelected]);
 
     useEffect(() => {
         if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW && tabSelected === TabValues.LimitReductions) {
-            // If provider changes and LimitReductions is not available, go back to General
-            setTabSelected(TabValues.General);
+            setTabSelected(TabValues.Contingencies);
         }
     }, [currentProvider, tabSelected]);
 
@@ -92,18 +88,16 @@ export function SecurityAnalysisParametersSelector({
             {visibleTabs.map((tab, index) => (
                 <TabPanel key={tab.label} value={tabValue} index={index}>
                     {tabValue === TabValues.Contingencies && (
-                        <Grid sx={{ width: '100%' }}>
-                            <ContingencyTable
-                                name={CONTINGENCY_LISTS_INFOS}
-                                showContingencyCount={showContingencyCount}
-                                fetchContingencyCount={fetchContingencyCount}
-                                isBuiltCurrentNode={isBuiltCurrentNode}
-                                ref={contingencyTableApiRef}
-                            />
-                        </Grid>
+                        <ContingencyTable
+                            name={CONTINGENCY_LISTS_INFOS}
+                            showContingencyCount={showContingencyCount}
+                            fetchContingencyCount={fetchContingencyCount}
+                            isBuiltCurrentNode={isBuiltCurrentNode}
+                            ref={contingencyTableApiRef}
+                        />
                     )}
 
-                    {tabValue === TabValues.General && <ViolationsHidingParameters />}
+                    {tabValue === TabValues.Aggravation && <ViolationsHidingParameters />}
 
                     {tabValue === TabValues.LimitReductions &&
                         currentProvider === PARAM_PROVIDER_OPENLOADFLOW &&
