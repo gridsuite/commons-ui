@@ -36,11 +36,13 @@ export interface ILimitReductionsByVoltageLevel {
 }
 
 export enum TabValues {
-    General = 0,
-    LimitReductions = 1,
+    Contingencies = 0,
+    General = 1,
+    LimitReductions = 2,
 }
 
 export const TAB_INFO = [
+    { label: TabValues[TabValues.Contingencies], developerModeOnly: false },
     { label: TabValues[TabValues.General], developerModeOnly: false },
     { label: TabValues[TabValues.LimitReductions], developerModeOnly: false },
 ];

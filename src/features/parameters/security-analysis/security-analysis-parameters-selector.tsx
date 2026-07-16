@@ -5,12 +5,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState, ForwardedRef } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
 import { Grid2 as Grid, Tab, Tabs } from '@mui/material';
-import { ILimitReductionsByVoltageLevel, LimitReductionsTableForm, TAB_INFO, TabPanel, TabValues } from '../common';
+import { UUID } from 'node:crypto';
+import {
+    ILimitReductionsByVoltageLevel,
+    LimitReductionsTableForm,
+    TAB_INFO,
+    TabPanel,
+    TabValues,
+    CONTINGENCY_LISTS_INFOS,
+    ContingencyTableApi,
+} from '../common';
+import { ContingencyTable } from '../common/contingency-table';
+import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
 import { SAParametersEnriched } from '../../../utils/types';
@@ -20,31 +31,48 @@ export function SecurityAnalysisParametersSelector({
     currentProvider,
     isDeveloperMode,
     defaultLimitReductions,
+    showContingencyCount,
+    fetchContingencyCount,
+    contingencyTableApiRef,
+    isBuiltCurrentNode,
 }: Readonly<{
     params: SAParametersEnriched | null;
     currentProvider?: string;
     isDeveloperMode: boolean;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    showContingencyCount: boolean;
+    fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
+    contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
+    isBuiltCurrentNode?: boolean;
 }>) {
-    const [tabSelected, setTabSelected] = useState(TabValues.General);
+    // Default to the first tab: Contingencies
+    const [tabSelected, setTabSelected] = useState(TabValues.Contingencies);
+
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: number) => {
         setTabSelected(newValue);
     }, []);
 
     const tabValue = useMemo(() => {
-        return tabSelected === TabValues.LimitReductions && !params?.limitReductions ? TabValues.General : tabSelected;
+        // Keep the LimitReductions guard logic
+        if (tabSelected === TabValues.LimitReductions && !params?.limitReductions) {
+            return TabValues.General;
+        }
+        return tabSelected;
     }, [params, tabSelected]);
 
     useEffect(() => {
-        if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW) {
+        if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW && tabSelected === TabValues.LimitReductions) {
+            // If provider changes and LimitReductions is not available, go back to General
             setTabSelected(TabValues.General);
         }
-    }, [currentProvider]);
+    }, [currentProvider, tabSelected]);
+
+    const visibleTabs = TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly);
 
     return (
         <Grid sx={{ width: '100%' }}>
             <Tabs value={tabValue} onChange={handleTabChange}>
-                {TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly).map(
+                {visibleTabs.map(
                     (tab, index) =>
                         (tab.label !== TabValues[TabValues.LimitReductions] ||
                             (currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions)) && (
@@ -61,9 +89,22 @@ export function SecurityAnalysisParametersSelector({
                 )}
             </Tabs>
 
-            {TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly).map((tab, index) => (
+            {visibleTabs.map((tab, index) => (
                 <TabPanel key={tab.label} value={tabValue} index={index}>
+                    {tabValue === TabValues.Contingencies && (
+                        <Grid sx={{ width: '100%' }}>
+                            <ContingencyTable
+                                name={CONTINGENCY_LISTS_INFOS}
+                                showContingencyCount={showContingencyCount}
+                                fetchContingencyCount={fetchContingencyCount}
+                                isBuiltCurrentNode={isBuiltCurrentNode}
+                                ref={contingencyTableApiRef}
+                            />
+                        </Grid>
+                    )}
+
                     {tabValue === TabValues.General && <ViolationsHidingParameters />}
+
                     {tabValue === TabValues.LimitReductions &&
                         currentProvider === PARAM_PROVIDER_OPENLOADFLOW &&
                         params?.limitReductions && (
