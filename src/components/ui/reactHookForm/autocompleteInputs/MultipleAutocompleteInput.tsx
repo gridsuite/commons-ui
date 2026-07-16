@@ -44,7 +44,7 @@ export function MultipleAutocompleteInput({ name, ...props }: any) {
             onBlur={handleOnBlur}
             blurOnSelect={false}
             multiple
-            ChipProps={{ size: 'small' }}
+            slotProps={{ chip: { size: 'small' } }}
             {...props}
         />
     );

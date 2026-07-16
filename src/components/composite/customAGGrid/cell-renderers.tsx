@@ -142,7 +142,7 @@ export function NetworkModificationNameCellRenderer({ value }: Readonly<CustomCe
                 disableFocusListener
                 disableTouchListener
                 title={value}
-                componentsProps={{
+                slotProps={{
                     tooltip: {
                         sx: {
                             maxWidth: 'none',

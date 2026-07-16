@@ -50,9 +50,11 @@ export function NetworkVisualizationsParametersEditionDialog({
             }}
             titleId={titleId}
             disabledSave={disableSave}
-            PaperProps={{
-                sx: {
-                    height: '65vh', // we want the dialog height to be fixed even when switching tabs
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '65vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

@@ -105,17 +105,19 @@ export function TextInput({
             value={transformedValue ?? ''}
             onChange={handleValueChanged}
             disabled={disabled}
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        {clearable && transformedValue !== undefined && transformedValue !== '' && (
-                            <IconButton onClick={handleClearValue} size="small">
-                                <ClearIcon fontSize="small" />
-                            </IconButton>
-                        )}
-                        {customAdornment && { ...customAdornment }}
-                    </InputAdornment>
-                ),
+            slotProps={{
+                input: {
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            {clearable && transformedValue !== undefined && transformedValue !== '' && (
+                                <IconButton onClick={handleClearValue} size="small">
+                                    <ClearIcon fontSize="small" />
+                                </IconButton>
+                            )}
+                            {customAdornment && { ...customAdornment }}
+                        </InputAdornment>
+                    ),
+                },
             }}
             inputRef={ref}
             {...(clearable &&

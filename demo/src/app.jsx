@@ -18,6 +18,7 @@ import {
     Grid,
     IconButton,
     styled,
+    StyledEngineProvider,
     Tab,
     Tabs,
     TextField,
@@ -25,7 +26,6 @@ import {
     Typography,
     Stack,
 } from '@mui/material';
-import { StyledEngineProvider } from '@mui/material/styles';
 import { enUS, frFR } from '@mui/material/locale';
 import { Comment as CommentIcon } from '@mui/icons-material';
 import { BrowserRouter, useLocation, useMatch, useNavigate } from 'react-router';
