@@ -93,16 +93,17 @@ export function LimitsPane({
         return null;
     };
 
-    const handlePopupConfirmation = () => {
-        const resetOLGs: OperationalLimitsGroupFormSchema[] = mapServerLimitsGroupsToFormInfos(
+    const resetOLGs = () => {
+        const networkOLGs: OperationalLimitsGroupFormSchema[] = mapServerLimitsGroupsToFormInfos(
             equipmentToModify?.currentLimits ?? []
         );
         const currentValues = getValues();
         reset(
             {
                 ...currentValues,
-                [FieldConstants.LIMITS]: {
-                    [FieldConstants.OPERATIONAL_LIMITS_GROUPS]: resetOLGs,
+                [id]: {
+                    ...currentValues[id],
+                    [FieldConstants.OPERATIONAL_LIMITS_GROUPS]: networkOLGs,
                     [FieldConstants.ENABLE_OLG_MODIFICATION]: false,
                 },
             },
@@ -150,7 +151,7 @@ export function LimitsPane({
                             name={`${id}.${FieldConstants.ENABLE_OLG_MODIFICATION}`}
                             label={olgEditable ? 'Edit' : 'View'}
                             shouldOpenPopup={() => olgEditable}
-                            resetOnConfirmation={handlePopupConfirmation}
+                            onValueChange={resetOLGs}
                             message="disableOLGedition"
                             validateButtonLabel="validate"
                         />

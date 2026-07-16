@@ -12,7 +12,7 @@ export function InputWithPopupConfirmation({
     Input,
     name,
     shouldOpenPopup, // condition to open popup confirmation
-    resetOnConfirmation, // function to reset values in your form on confirmation,
+    onValueChange, // function applying the changes on EVERY value change, be it confirmed through the popup or not
     message,
     validateButtonLabel,
     ...props
@@ -30,12 +30,13 @@ export function InputWithPopupConfirmation({
             setOpenPopup(true);
             setNewValue(value);
         } else {
+            onValueChange?.();
             onChange(value);
         }
     };
 
     const handlePopupConfirmation = () => {
-        resetOnConfirmation?.();
+        onValueChange?.();
         onChange(newValue);
         setOpenPopup(false);
     };
