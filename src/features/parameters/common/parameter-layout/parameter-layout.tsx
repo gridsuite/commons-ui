@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, ButtonGroup, Grid2 as Grid, LinearProgress, Stack, Tooltip } from '@mui/material';
+import { Box, ButtonGroup, Grid2 as Grid, LinearProgress, Stack, Tooltip, Typography } from '@mui/material';
 import { RestartAlt, Upload } from '@mui/icons-material';
 import { MouseEventHandler, ReactNode, useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -90,9 +90,15 @@ export function ParameterLayout<T extends FieldValues>({
     return (
         <Stack sx={styles.stack}>
             {(title || selectParameterHandler || resetHandler) && (
-                <Box sx={styles.title}>
-                    <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Grid size={4}>{title && !isXsScreen && <FormattedMessage id={title} />}</Grid>
+                <Stack sx={styles.title}>
+                    <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }} paddingBottom={1}>
+                        <Grid size="auto">
+                            {title && !isXsScreen && (
+                                <Typography variant="h6">
+                                    <FormattedMessage id={title} />
+                                </Typography>
+                            )}
+                        </Grid>
                         <Grid size="auto">
                             <ButtonGroup>
                                 {selectParameterHandler && (
@@ -116,7 +122,8 @@ export function ParameterLayout<T extends FieldValues>({
                             </ButtonGroup>
                         </Grid>
                     </Grid>
-                </Box>
+                    <LineSeparator />
+                </Stack>
             )}
             <Box sx={styles.content}>{isLoading ? <LinearProgress /> : children}</Box>
             <Stack spacing={1}>
