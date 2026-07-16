@@ -4,13 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Button, Grid2 as Grid, IconButton, styled } from '@mui/material';
+import { Box, Grid2 as Grid, IconButton, styled } from '@mui/material';
 import { ArrowCircleDown, ArrowCircleUp, ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
-import { FormattedMessage } from 'react-intl';
-import { useCSVDownloader } from 'react-papaparse';
 import { ErrorInput } from '../../ui/reactHookForm/errorManagement/ErrorInput';
 import { FieldErrorAlert } from '../../ui/reactHookForm/errorManagement/FieldErrorAlert';
-import { getCsvDelimiter } from '../../../utils';
+import { CsvDownloadButton } from '../../ui/csvDownloader';
 import type { CsvProps } from './agGridTable-utils';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
@@ -18,36 +16,6 @@ const InnerColoredButton = styled(IconButton)(({ theme }) => {
         color: theme.palette.primary.main,
     };
 });
-
-interface CsvDownloadButtonProps {
-    data: () => unknown[];
-    fileName: string;
-    delimiter: string;
-    labelId: string;
-    disabled?: boolean;
-}
-
-// Renders a button that downloads a CSV. When disabled, the CSVDownloader wrapper is dropped
-// (a disabled MUI Button still lets the wrapper catch the click and trigger the download).
-function CsvDownloadButton({ data, fileName, delimiter, labelId, disabled }: CsvDownloadButtonProps) {
-    const { CSVDownloader } = useCSVDownloader();
-
-    if (disabled) {
-        return (
-            <Button variant="outlined" disabled>
-                <FormattedMessage id={labelId} />
-            </Button>
-        );
-    }
-
-    return (
-        <CSVDownloader data={data} filename={fileName} config={{ delimiter }}>
-            <Button variant="outlined">
-                <FormattedMessage id={labelId} />
-            </Button>
-        </CSVDownloader>
-    );
-}
 
 export interface BottomTableButtonsProps {
     name: string;
@@ -74,25 +42,16 @@ export function BottomTableButtons({
 }: BottomTableButtonsProps) {
     return (
         <>
-            <Grid container paddingTop={1} alignItems="center" spacing={1}>
-                {csvProps?.getTemplateData && (
-                    <Grid>
-                        <CsvDownloadButton
-                            data={csvProps.getTemplateData}
-                            fileName={csvProps.fileName}
-                            delimiter={getCsvDelimiter(csvProps.language)}
-                            labelId="GenerateCSV"
-                        />
-                    </Grid>
-                )}
+            <Grid container paddingTop={1} paddingLeft={1} alignItems="center" spacing={1}>
                 {csvProps?.getTableData && (
                     <Grid>
                         <CsvDownloadButton
                             data={csvProps.getTableData}
                             fileName={csvProps.fileName}
-                            delimiter={getCsvDelimiter(csvProps.language)}
+                            language={csvProps.language}
                             labelId="DownloadCSV"
                             disabled={!csvProps.hasTableData}
+                            withExportButton
                         />
                     </Grid>
                 )}
