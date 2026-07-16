@@ -48,11 +48,13 @@ export function VoltageLevelModificationForm({
                             fullWidth
                             label="ID"
                             value={equipmentId ?? ''}
-                            InputProps={{
-                                readOnly: true,
-                            }}
                             disabled
                             {...filledTextField}
+                            slotProps={{
+                                input: {
+                                    readOnly: true,
+                                },
+                            }}
                         />
                     </Grid>
                     <Grid size={4}>
@@ -90,8 +92,10 @@ export function VoltageLevelModificationForm({
                     value={tabIndex}
                     variant="scrollable"
                     onChange={(_event, newValue: number) => setTabIndex(newValue)}
-                    TabIndicatorProps={{
-                        sx: getTabIndicatorStyle([], tabIndex),
+                    slotProps={{
+                        indicator: {
+                            sx: getTabIndicatorStyle([], tabIndex),
+                        },
                     }}
                 >
                     <Tab

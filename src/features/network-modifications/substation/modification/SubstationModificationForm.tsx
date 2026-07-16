@@ -35,11 +35,13 @@ export function SubstationModificationForm({ substationToModify }: Readonly<Subs
                             fullWidth
                             label="ID"
                             value={equipmentId ?? ''}
-                            InputProps={{
-                                readOnly: true,
-                            }}
                             disabled
                             {...filledTextField}
+                            slotProps={{
+                                input: {
+                                    readOnly: true,
+                                },
+                            }}
                         />
                     </Grid>
                     <Grid size="grow">

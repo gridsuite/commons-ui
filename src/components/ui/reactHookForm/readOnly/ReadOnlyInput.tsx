@@ -22,21 +22,23 @@ export function ReadOnlyInput({ name, isNumerical = false }: Readonly<ReadOnlyIn
 
     return (
         <TextField
-            InputProps={{
-                readOnly: true,
-                disableUnderline: true,
-                sx: isNumerical
-                    ? {
-                          '& input': {
-                              textAlign: 'right',
-                          },
-                      }
-                    : {},
-            }}
             fullWidth
             value={value}
             variant="standard"
             {...genHelperError(error?.message)}
+            slotProps={{
+                input: {
+                    readOnly: true,
+                    disableUnderline: true,
+                    sx: isNumerical
+                        ? {
+                              '& input': {
+                                  textAlign: 'right',
+                              },
+                          }
+                        : {},
+                },
+            }}
         />
     );
 }

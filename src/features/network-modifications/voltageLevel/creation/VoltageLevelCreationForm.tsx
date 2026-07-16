@@ -52,8 +52,10 @@ export function VoltageLevelCreationForm({
                     value={tabIndex}
                     variant="scrollable"
                     onChange={(_, newValue) => setTabIndex(newValue)}
-                    TabIndicatorProps={{
-                        sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                    slotProps={{
+                        indicator: {
+                            sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                        },
                     }}
                 >
                     <Tab

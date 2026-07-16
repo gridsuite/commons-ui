@@ -274,7 +274,6 @@ export function FlatParameters({
                     <TextField
                         size="small"
                         sx={{ width: '50%' }}
-                        inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -286,6 +285,9 @@ export function FlatParameters({
                         }}
                         error={err}
                         variant={variant}
+                        slotProps={{
+                            htmlInput: { style: { textAlign: 'right' } },
+                        }}
                     />
                 );
             }
@@ -294,7 +296,6 @@ export function FlatParameters({
                     <TextField
                         size="small"
                         sx={{ width: '50%' }}
-                        inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -305,6 +306,9 @@ export function FlatParameters({
                             }
                         }}
                         variant={variant}
+                        slotProps={{
+                            htmlInput: { style: { textAlign: 'right' } },
+                        }}
                     />
                 );
             case 'STRING_LIST':
@@ -319,13 +323,15 @@ export function FlatParameters({
                                     value={getStringListValue(allOptions, fieldValue)}
                                     size="small"
                                     variant={variant}
-                                    InputProps={{
-                                        readOnly: true,
-                                        endAdornment: (
-                                            <IconButton onClick={() => setOpenSelector(true)}>
-                                                <TuneIcon />
-                                            </IconButton>
-                                        ),
+                                    slotProps={{
+                                        input: {
+                                            readOnly: true,
+                                            endAdornment: (
+                                                <IconButton onClick={() => setOpenSelector(true)}>
+                                                    <TuneIcon />
+                                                </IconButton>
+                                            ),
+                                        },
                                     }}
                                 />
                                 <MultipleSelectionDialog

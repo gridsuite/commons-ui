@@ -25,11 +25,13 @@ export function BatteryDialogHeader({ batteryToModify, equipmentId }: Readonly<B
                     fullWidth
                     label="ID"
                     value={equipmentId ?? ''}
-                    InputProps={{
-                        readOnly: true,
-                    }}
                     disabled
                     {...filledTextField}
+                    slotProps={{
+                        input: {
+                            readOnly: true,
+                        },
+                    }}
                 />
             </Grid>
             <Grid size={4}>

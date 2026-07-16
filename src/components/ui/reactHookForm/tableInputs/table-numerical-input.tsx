@@ -96,40 +96,42 @@ export function TableNumericalInput({
             size="small"
             fullWidth
             inputRef={ref}
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        {transformedValue && adornment?.text}
-                        {clearable && (
-                            <IconButton
-                                onClick={handleClearValue}
-                                style={{
-                                    visibility: clearable ? 'visible' : 'hidden',
-                                }}
-                            >
-                                <ClearIcon />
-                            </IconButton>
-                        )}
-                    </InputAdornment>
-                ),
-                disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
-                inputProps: {
-                    style: {
-                        fontSize: 'small',
-                        color:
-                            previousValue !== undefined && previousValue === parseFloat(value) && !valueModified
-                                ? 'grey'
-                                : undefined, // grey out the value if it is the same as the previous one
-                        textAlign: style?.textAlign ?? 'left',
-                    },
-                    inputMode: 'numeric',
-                    pattern: '[0-9]*',
-                    lang: 'en-US', // to have '.' as decimal separator
-                    ...inputProps,
-                },
-            }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...props}
+            slotProps={{
+                input: {
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            {transformedValue && adornment?.text}
+                            {clearable && (
+                                <IconButton
+                                    onClick={handleClearValue}
+                                    style={{
+                                        visibility: clearable ? 'visible' : 'hidden',
+                                    }}
+                                >
+                                    <ClearIcon />
+                                </IconButton>
+                            )}
+                        </InputAdornment>
+                    ),
+                    disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
+                    inputProps: {
+                        style: {
+                            fontSize: 'small',
+                            color:
+                                previousValue !== undefined && previousValue === parseFloat(value) && !valueModified
+                                    ? 'grey'
+                                    : undefined, // grey out the value if it is the same as the previous one
+                            textAlign: style?.textAlign ?? 'left',
+                        },
+                        inputMode: 'numeric',
+                        pattern: '[0-9]*',
+                        lang: 'en-US', // to have '.' as decimal separator
+                        ...inputProps,
+                    },
+                },
+            }}
         />
     );
 }

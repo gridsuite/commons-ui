@@ -65,15 +65,17 @@ export const GridSearch = forwardRef(({ gridRef, disabled }: GridSearchProps, re
             onChange={handleChangeFilter}
             inputRef={inputRef}
             fullWidth
-            InputProps={{
-                sx: {
-                    input: styles.searchSection,
+            slotProps={{
+                input: {
+                    sx: {
+                        input: styles.searchSection,
+                    },
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <Search color={disabled ? 'disabled' : 'inherit'} />
+                        </InputAdornment>
+                    ),
                 },
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <Search color={disabled ? 'disabled' : 'inherit'} />
-                    </InputAdornment>
-                ),
             }}
         />
     );

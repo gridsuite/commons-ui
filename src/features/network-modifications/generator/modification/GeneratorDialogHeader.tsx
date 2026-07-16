@@ -33,11 +33,13 @@ export function GeneratorDialogHeader({ generatorToModify, equipmentId }: Readon
             fullWidth
             label="ID"
             value={equipmentId ?? ''}
-            InputProps={{
-                readOnly: true,
-            }}
             disabled
             {...filledTextField}
+            slotProps={{
+                input: {
+                    readOnly: true,
+                },
+            }}
         />
     );
 

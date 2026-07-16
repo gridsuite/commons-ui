@@ -25,36 +25,38 @@ export function ButtonReadOnlyInput({ name, isNumerical = false, children }: Rea
 
     return (
         <TextField
-            InputProps={{
-                readOnly: true,
-                sx: isNumerical
-                    ? {
-                          '& input': {
-                              textAlign: 'right',
-                          },
-                      }
-                    : {},
-                endAdornment: (
-                    <InputAdornment
-                        sx={{
-                            '& button': {
-                                borderRadius: 0,
-                                borderLeft: '1px solid',
-                                borderColor: theme.palette.action.disabled,
-                                marginRight: '-14px',
-                                marginLeft: '-8px',
-                            },
-                        }}
-                        position="end"
-                    >
-                        {children}
-                    </InputAdornment>
-                ),
-            }}
             size="small"
             fullWidth
             value={value}
             {...genHelperError(error?.message)}
+            slotProps={{
+                input: {
+                    readOnly: true,
+                    sx: isNumerical
+                        ? {
+                              '& input': {
+                                  textAlign: 'right',
+                              },
+                          }
+                        : {},
+                    endAdornment: (
+                        <InputAdornment
+                            sx={{
+                                '& button': {
+                                    borderRadius: 0,
+                                    borderLeft: '1px solid',
+                                    borderColor: theme.palette.action.disabled,
+                                    marginRight: '-14px',
+                                    marginLeft: '-8px',
+                                },
+                            }}
+                            position="end"
+                        >
+                            {children}
+                        </InputAdornment>
+                    ),
+                },
+            }}
         />
     );
 }

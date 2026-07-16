@@ -130,18 +130,20 @@ export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipI
 
                 <TextField
                     variant="standard"
-                    InputProps={{
-                        disableUnderline: true,
-                        style: {
-                            marginTop: '5px',
-                            height: '30px',
-                            marginLeft: '10px',
-                        },
-                    }}
                     value={textEntered}
                     onKeyDown={keyPress}
                     onChange={handleChange}
                     onBlur={onBlur}
+                    slotProps={{
+                        input: {
+                            disableUnderline: true,
+                            style: {
+                                marginTop: '5px',
+                                height: '30px',
+                                marginLeft: '10px',
+                            },
+                        },
+                    }}
                 />
             </FormControl>
             {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}

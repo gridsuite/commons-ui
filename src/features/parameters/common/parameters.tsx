@@ -40,7 +40,9 @@ export function SwitchWithLabel({ value, label, callback }: Readonly<SwitchWithL
                     checked={value}
                     onChange={callback}
                     value={value}
-                    inputProps={{ 'aria-label': 'primary checkbox' }}
+                    slotProps={{
+                        input: { 'aria-label': 'primary checkbox' },
+                    }}
                 />
             </Grid>
         </>

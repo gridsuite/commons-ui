@@ -32,8 +32,10 @@ export function VoltageInitParametersForm({
                 value={selectedTab}
                 variant="scrollable"
                 onChange={handleTabChange}
-                TabIndicatorProps={{
-                    sx: getTabIndicatorStyle(tabIndexesWithError, selectedTab),
+                slotProps={{
+                    indicator: {
+                        sx: getTabIndicatorStyle(tabIndexesWithError, selectedTab),
+                    },
                 }}
             >
                 <Tab
