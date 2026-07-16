@@ -35,6 +35,7 @@ export type SpecificParameterInfos = {
     categoryKey?: string;
     description?: string;
     label?: string;
+    inputLabel?: string;
 };
 
 export type SpecificParametersDescription = Record<string, SpecificParameterInfos[]>;
