@@ -97,7 +97,7 @@ export function SecurityAnalysisParametersSelector({
                         />
                     )}
 
-                    {tabValue === TabValues.General && <ViolationsHidingParameters />}
+                    {tabValue === TabValues.Aggravation && <ViolationsHidingParameters />}
 
                     {tabValue === TabValues.LimitReductions &&
                         currentProvider === PARAM_PROVIDER_OPENLOADFLOW &&
