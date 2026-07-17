@@ -41,9 +41,9 @@ import { advancedParams } from './load-flow-advanced-parameters';
 
 export enum TabValues {
     GENERAL = 'General',
+    LIMIT_REDUCTIONS = 'LimitReductions',
     ADVANCED = 'Advanced',
     PROVIDER_SPECIFIC = 'ProviderSpecific',
-    LIMIT_REDUCTIONS = 'LimitReductions',
 }
 
 export const getBasicLoadFlowParametersFormSchema = () => {

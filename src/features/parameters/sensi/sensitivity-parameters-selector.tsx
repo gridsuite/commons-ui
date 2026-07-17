@@ -35,6 +35,7 @@ import { isValidSensiParameterRow } from './utils';
 import { BuildStatus, BuildStatusChip } from '../../node';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn } from '../../../components/composite/dnd-table';
+import { parametersStyles } from '../parameters-style';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -273,10 +274,8 @@ function SensitivityParametersSelector({
                                             fontWeight: 'bold',
                                             textTransform: 'capitalize',
                                             ...(subTabHasError[subIndex] &&
-                                                subIndex !== subTabValue && {
-                                                    color: 'error.main',
-                                                    '&.Mui-selected': { color: 'error.main' },
-                                                }),
+                                                subIndex !== subTabValue &&
+                                                parametersStyles.tabWithError),
                                         }}
                                         label={<FormattedMessage id={subTab.label} />}
                                     />

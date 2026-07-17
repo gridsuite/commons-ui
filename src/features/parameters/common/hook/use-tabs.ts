@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { SyntheticEvent, useCallback, useState } from 'react';
-import { FieldErrors } from 'react-hook-form';
+import { FieldErrors, get } from 'react-hook-form';
 import { isObjectEmpty } from '../../../../utils/functions';
 
 export type UseTabsReturn<TTabValue extends string> = {
@@ -36,7 +36,7 @@ export function useTabs<TTabValue extends string>({
         (_errors: FieldErrors) => {
             const tabsHasError: TTabValue[] = [];
             Object.values(tabEnum).forEach((tabValue) => {
-                if (tabFields[tabValue]?.some((field) => _errors?.[field])) {
+                if (tabFields[tabValue]?.some((field) => get(_errors, field))) {
                     tabsHasError.push(tabValue);
                 }
             });
