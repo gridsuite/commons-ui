@@ -210,6 +210,8 @@ export const useVoltageInitParametersForm = ({
                 VARIABLE_TRANSFORMERS,
                 SHUNT_COMPENSATORS_SELECTION_TYPE,
                 VARIABLE_SHUNT_COMPENSATORS,
+                GENERATORS_SELECTION_TYPE,
+                VARIABLE_Q_GENERATORS,
             ],
         },
     });
