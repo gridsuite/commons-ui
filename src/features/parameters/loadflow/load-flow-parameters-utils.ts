@@ -14,6 +14,7 @@ import {
     IST_FORM,
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
+    SPECIFIC_PARAMETERS,
     toFormValuesLimitReductions,
 } from '../common';
 import {
@@ -45,6 +46,13 @@ export enum TabValues {
     ADVANCED = 'Advanced',
     PROVIDER_SPECIFIC = 'ProviderSpecific',
 }
+
+export const TAB_FIELDS: Record<TabValues, string[]> = {
+    [TabValues.GENERAL]: [COMMON_PARAMETERS],
+    [TabValues.PROVIDER_SPECIFIC]: [SPECIFIC_PARAMETERS],
+    [TabValues.ADVANCED]: [ADVANCED_PARAMETERS],
+    [TabValues.LIMIT_REDUCTIONS]: [LIMIT_REDUCTIONS_FORM],
+};
 
 export const getBasicLoadFlowParametersFormSchema = () => {
     return yup.object().shape({

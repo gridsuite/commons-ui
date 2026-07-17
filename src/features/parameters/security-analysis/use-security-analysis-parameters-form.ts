@@ -39,6 +39,7 @@ import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
+import { TAB_FIELDS } from './security-analysis-parameters-utils';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -172,16 +173,7 @@ export const useSecurityAnalysisParametersForm = (
         defaultTab: TabValues.General,
         tabEnum: TabValues,
         errors: formMethods.formState.errors,
-        tabFields: {
-            [TabValues.General]: [
-                PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-                PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-                PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-                PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-                PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-            ],
-            [TabValues.LimitReductions]: [LIMIT_REDUCTIONS_FORM],
-        },
+        tabFields: TAB_FIELDS,
     });
 
     const onSaveInline = useCallback(

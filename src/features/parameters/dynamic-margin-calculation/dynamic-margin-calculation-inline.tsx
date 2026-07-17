@@ -23,6 +23,7 @@ import { fetchDynamicMarginCalculationParameters } from '../../../services/dynam
 import { useSnackMessage } from '../../../hooks';
 import { useTabs } from '../common/hook/use-tabs';
 import { TabValues } from './dynamic-margin-calculation.type';
+import { TAB_FIELDS } from './dynamic-margin-calculation.utils';
 
 type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
@@ -49,16 +50,11 @@ export function DynamicMarginCalculationInline({
     const { formMethods } = dynamicMarginCalculationMethods;
     const { reset, getValues, formState, handleSubmit } = formMethods;
 
-    const tabFields = Object.fromEntries(Object.values(TabValues).map((tab) => [tab, [tab]])) as Record<
-        TabValues,
-        string[]
-    >;
-
     const useTabsReturn = useTabs({
         defaultTab: Object.values(TabValues)[0],
         tabEnum: TabValues,
         errors: formState.errors,
-        tabFields,
+        tabFields: TAB_FIELDS,
     });
 
     const onSubmit = useCallback(

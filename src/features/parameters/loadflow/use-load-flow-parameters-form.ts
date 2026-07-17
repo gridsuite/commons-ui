@@ -16,6 +16,7 @@ import {
     mapLimitReductions,
     setLimitReductions,
     splitCommonParameters,
+    TAB_FIELDS,
     TabValues,
 } from './load-flow-parameters-utils';
 import { LoadFlowParametersInfos } from './load-flow-parameters-type';
@@ -234,12 +235,7 @@ export const useLoadFlowParametersForm = (
         defaultTab: TabValues.GENERAL,
         tabEnum: TabValues,
         errors: formMethods.formState.errors,
-        tabFields: {
-            [TabValues.GENERAL]: [COMMON_PARAMETERS],
-            [TabValues.PROVIDER_SPECIFIC]: [SPECIFIC_PARAMETERS],
-            [TabValues.ADVANCED]: [ADVANCED_PARAMETERS],
-            [TabValues.LIMIT_REDUCTIONS]: [LIMIT_REDUCTIONS_FORM],
-        },
+        tabFields: TAB_FIELDS,
     });
 
     const onSaveInline = useCallback(

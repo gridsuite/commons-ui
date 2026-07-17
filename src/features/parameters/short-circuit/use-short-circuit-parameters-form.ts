@@ -13,22 +13,16 @@ import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     InitialVoltage,
-    NODE_CLUSTER_FILTER_IDS,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
-    SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_LOADS,
     SHORT_CIRCUIT_WITH_NEUTRAL_POSITION,
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
-    STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD,
-    STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD,
 } from './constants';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
@@ -43,6 +37,7 @@ import {
     getShortCircuitSpecificParametersValues,
     getSpecificShortCircuitParametersFormSchema,
     ShortCircuitParametersTabValues,
+    TAB_FIELDS,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
@@ -245,21 +240,7 @@ export const useShortCircuitParametersForm = ({
         defaultTab: ShortCircuitParametersTabValues.GENERAL,
         tabEnum: ShortCircuitParametersTabValues,
         errors: formMethods.formState.errors,
-        tabFields: {
-            [ShortCircuitParametersTabValues.GENERAL]: [PROVIDER, SHORT_CIRCUIT_PREDEFINED_PARAMS, COMMON_PARAMETERS],
-            [ShortCircuitParametersTabValues.STUDY_AREA]: [
-                `${SPECIFIC_PARAMETERS}.${NODE_CLUSTER_FILTER_IDS}`,
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER}`,
-                `${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_IN_CALCULATION_CLUSTER_THRESHOLD}`,
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER}`,
-                `${SPECIFIC_PARAMETERS}.${STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER_THRESHOLD}`,
-            ],
-            [ShortCircuitParametersTabValues.POWER_ELECTRONICS]: [
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_MODEL_POWER_ELECTRONICS}`,
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS}`,
-                `${SPECIFIC_PARAMETERS}.${SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS}`,
-            ],
-        },
+        tabFields: TAB_FIELDS,
     });
 
     const onSaveInline = useCallback(

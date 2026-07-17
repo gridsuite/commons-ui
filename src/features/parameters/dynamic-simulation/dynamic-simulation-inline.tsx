@@ -30,6 +30,7 @@ import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
 import { fetchDynamicSimulationParameters } from '../../../services/dynamic-simulation';
 import { ExpertFilter, IdentifiableAttributes } from '../../../components/composite/filter';
 import useDefaultParams from './hook/use-default-params';
+import { TAB_FIELDS } from './dynamic-simulation.utils';
 
 type DynamicSimulationInlineProps = {
     studyUuid: UUID | null;
@@ -65,16 +66,11 @@ export function DynamicSimulationInline({
     const { formMethods } = dynamicSimulationMethods;
     const { reset, getValues, formState, handleSubmit } = formMethods;
 
-    const tabFields = Object.fromEntries(Object.values(TabValues).map((tab) => [tab, [tab]])) as Record<
-        TabValues,
-        string[]
-    >;
-
     const useTabsReturn = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
         tabEnum: TabValues,
         errors: formState.errors,
-        tabFields,
+        tabFields: TAB_FIELDS,
     });
 
     const onSubmit = useCallback(

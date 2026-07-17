@@ -41,6 +41,7 @@ import {
     fromStudyVoltageInitParamsDataToFormValues,
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
+    TAB_FIELDS,
 } from './voltage-init-form-utils';
 import { SELECTED } from '../../../components/composite/dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
@@ -202,18 +203,7 @@ export const useVoltageInitParametersForm = ({
         defaultTab: TabValues.GENERAL,
         tabEnum: TabValues,
         errors: formMethods.formState.errors,
-        tabFields: {
-            [TabValues.GENERAL]: [TabValues.GENERAL],
-            [TabValues.VOLTAGE_LIMITS]: [VOLTAGE_LIMITS_MODIFICATION, VOLTAGE_LIMITS_DEFAULT],
-            [TabValues.EQUIPMENTS_SELECTION]: [
-                TRANSFORMERS_SELECTION_TYPE,
-                VARIABLE_TRANSFORMERS,
-                SHUNT_COMPENSATORS_SELECTION_TYPE,
-                VARIABLE_SHUNT_COMPENSATORS,
-                GENERATORS_SELECTION_TYPE,
-                VARIABLE_Q_GENERATORS,
-            ],
-        },
+        tabFields: TAB_FIELDS,
     });
 
     const onSaveInline = useCallback(
