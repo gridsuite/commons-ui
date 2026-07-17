@@ -23,7 +23,15 @@ import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
 import { SAParametersEnriched } from '../../../utils/types';
-import { TAB_INFO, TabValues } from './columns-definitions';
+import { TabValues } from './columns-definitions';
+import type { MuiStyles } from '../../../utils/styles';
+
+const styles = {
+    tab: {
+        fontSize: 17,
+        fontWeight: 'bold',
+    },
+} as const satisfies MuiStyles;
 
 export function SecurityAnalysisParametersContent({
     params,
@@ -63,20 +71,22 @@ export function SecurityAnalysisParametersContent({
     return (
         <Grid sx={{ width: '100%' }}>
             <Tabs value={tabValue} onChange={handleTabChange}>
-                {TAB_INFO.map(
-                    (tab, index) =>
-                        (tab.label !== TabValues[TabValues.LimitReductions] ||
-                            (currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions)) && (
-                            <Tab
-                                key={tab.label}
-                                label={<FormattedMessage id={tab.label} />}
-                                value={index}
-                                sx={{
-                                    fontSize: 17,
-                                    fontWeight: 'bold',
-                                }}
-                            />
-                        )
+                <Tab
+                    label={<FormattedMessage id={TabValues[TabValues.Contingencies]} />}
+                    value={TabValues.Contingencies}
+                    sx={styles.tab}
+                />
+                <Tab
+                    label={<FormattedMessage id={TabValues[TabValues.Aggravation]} />}
+                    value={TabValues.Aggravation}
+                    sx={styles.tab}
+                />
+                {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
+                    <Tab
+                        label={<FormattedMessage id={TabValues[TabValues.LimitReductions]} />}
+                        value={TabValues.LimitReductions}
+                        sx={styles.tab}
+                    />
                 )}
             </Tabs>
 
@@ -89,7 +99,7 @@ export function SecurityAnalysisParametersContent({
                     ref={contingencyTableApiRef}
                 />
             </TabPanel>
-            <TabPanel value={tabValue} index={TabValues.Aggravation}>
+            <TabPanel value={tabValue} index={TabValues.General}>
                 <ViolationsHidingParameters />
             </TabPanel>
             <TabPanel value={tabValue} index={TabValues.LimitReductions}>
