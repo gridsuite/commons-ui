@@ -52,6 +52,13 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
                 .then(([referenceInfos, metadata]) => {
                     const referenceId = referenceInfos?.referenceId;
                     const exploreUrl = metadata?.find(isExploreMetadata)?.url;
+
+                    if (!referenceId || !exploreUrl) {
+                        throw new Error(
+                            `Cannot build reference link: ${!referenceId ? 'referenceId' : 'exploreUrl'} is missing`
+                        );
+                    }
+
                     const link = `${exploreUrl}/elements/${referenceId}`;
                     return navigator.clipboard.writeText(link).then(() => snackInfo({ headerId: 'linkCopied' }));
                 })
@@ -63,7 +70,7 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
 
     return (
         <>
-            <Tooltip title={<FormattedMessage id="copyLink" />} arrow enterDelay={250}>
+            <Tooltip title={<FormattedMessage id="importComposites.shared" />} arrow enterDelay={250}>
                 <span>
                     <IconButton size="small" disabled={disabled || isLoading} onClick={handleOpen}>
                         <DatasetLinkedIcon />
