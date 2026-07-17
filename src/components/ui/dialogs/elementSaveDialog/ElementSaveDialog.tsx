@@ -16,7 +16,13 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../../ui/reactHookForm';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
-import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../../utils';
+import {
+    DESCRIPTION_LIMIT_ERROR,
+    ElementAttributes,
+    ElementType,
+    FieldConstants,
+    MAX_CHAR_DESCRIPTION,
+} from '../../../../utils';
 import { useSnackMessage } from '../../../../hooks';
 import { DirectoryInitConfig, initializeDirectory } from './utils';
 
@@ -94,7 +100,7 @@ const schema = yup
     .object()
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
         [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
     })
     .required();

@@ -5,7 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import {
+    ACTIVE_LIMITS_MIN_MAX_INVALID,
+    CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID,
     DUPLICATED_PROPS_ERROR,
+    MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE,
+    MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    NORMALIZED_PERCENTAGE,
+    REACTIVE_LIMITS_MIN_MAX_INVALID,
+    SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
+    SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
     YUP_DEFAULT,
     YUP_NOT_NULL,
     YUP_NOT_TYPE_DEFAULT,
@@ -135,11 +145,11 @@ export const networkModificationsEn = {
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Number of busbars must be greater than or equal to 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Number of sections must be greater than or equal to 1',
     SectionCountMustBeLessThanOrEqualToTwenty: 'Number of sections must be less than or equal to 20',
-    mustBeGreaterOrEqualToZero: 'Must be greater than or equal to 0',
+    [MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'Must be greater than or equal to 0',
     CreateCouplingDeviceIdenticalBusBar: 'Bus bar section / bus 1 and 2 must be different',
-    CreateSubstationInVoltageLevelIdenticalId: 'Voltage Level ID can not match Substation ID',
+    [CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID]: 'Voltage Level ID can not match Substation ID',
     voltageLevelNominalVoltageMaxValueError: 'Low voltage limit must be inferior to high voltage limit',
-    ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero:
+    [SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]:
         'Short-circuit current limit must be greater than or equal to 0',
     ShortCircuitCurrentLimitMinMaxError: 'Low short-circuit current limit must be less than or equal to high limit',
     [DUPLICATED_PROPS_ERROR]: 'Duplicated properties: each property must be unique',
@@ -162,10 +172,11 @@ export const networkModificationsEn = {
     SusceptanceLabel: 'Susceptance (S)',
     SwitchedOnMaxQAtNominalV: 'Switch-on Q at nominal voltage',
     SwitchedOnMaxSusceptance: 'Switch-on susceptance',
-    ShuntCompensatorErrorQAtNominalVoltageLessThanZero:
+    [SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO]:
         'Q at nominal voltage value should be greater than or equal to 0',
-    MaximumSectionCountMustBeGreaterOrEqualToOne: 'Maximum section count must be greater than or equal to 1',
-    SectionCountMustBeBetweenZeroAndMaximumSectionCount: 'Section count must be between 0 and Maximum section count',
+    [MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE]: 'Maximum section count must be greater than or equal to 1',
+    [SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT]:
+        'Section count must be between 0 and Maximum section count',
     VOLTAGE_LEVEL: 'Voltage Level',
     BusBarBus: 'Bus bar section / bus',
     ConnectionName: 'Connection name',
@@ -254,13 +265,13 @@ export const networkModificationsEn = {
     Connectivity: 'Connectivity',
     ActiveLimits: 'Active limits',
     ReactiveLimits: 'Reactive limits',
-    NormalizedPercentage: 'This percentage must be between 0 and 100',
+    [NORMALIZED_PERCENTAGE]: 'This percentage must be between 0 and 100',
     On: 'On',
     Off: 'Off',
     FrequencyRegulation: 'Active power regulation',
     Droop: 'Droop',
     Limits: 'Limits',
-    MinActivePowerMustBeLessOrEqualToMaxActivePower:
+    [MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER]:
         'Minimum active power value must be less than or equal to maximum active power value',
     activePowerControlTooltip:
         'Slack bus active power repartition key: maxP/droop, default droop = 4 (used if balanceType is PROPORTIONAL_TO_GENERATION_P_MAX)',
@@ -269,8 +280,8 @@ export const networkModificationsEn = {
     ReactiveLimitsKindCurve: 'By diagram',
     MinimumReactivePower: 'Minimum reactive power',
     MaximumReactivePower: 'Maximum reactive power',
-    ActiveLimitsMinMaxInvalid: 'Maximum active power must be greater than minimum active power',
-    ReactiveLimitsMinMaxInvalid: 'Maximum reactive power must be greater than minimum reactive power',
+    [ACTIVE_LIMITS_MIN_MAX_INVALID]: 'Maximum active power must be greater than minimum active power',
+    [REACTIVE_LIMITS_MIN_MAX_INVALID]: 'Maximum reactive power must be greater than minimum reactive power',
     MinReactivePowerRequired: 'Minimum reactive power is required if maximum is defined',
     MaxReactivePowerRequired: 'Maximum reactive power is required if minimum is defined',
     ReactiveCapabilityCurveCreationErrorMissingPoints:

@@ -35,7 +35,7 @@ import {
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType, isBlankOrEmpty, YUP_REQUIRED } from '../../../utils';
+import { ElementType, isBlankOrEmpty, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, YUP_REQUIRED } from '../../../utils';
 import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
@@ -137,14 +137,14 @@ export const useVoltageInitParametersForm = ({
                             .min(1, YUP_REQUIRED),
                         [LOW_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0, 'mustBeGreaterOrEqualToZero')
+                            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[HIGH_VOLTAGE_LIMIT]);
                             }),
                         [HIGH_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0, 'mustBeGreaterOrEqualToZero')
+                            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);

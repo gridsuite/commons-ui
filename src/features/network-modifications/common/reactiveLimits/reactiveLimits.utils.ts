@@ -11,7 +11,7 @@ import {
     getRowEmptyFormData,
 } from './reactiveCapabilityCurve/reactiveCapability.utils';
 import { ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, REACTIVE_LIMITS_MIN_MAX_INVALID } from '../../../../utils';
 
 export const REACTIVE_LIMIT_TYPES = [
     { id: 'MINMAX', label: 'ReactiveLimitsKindMinMax' },
@@ -94,7 +94,7 @@ export const getReactiveLimitsValidationSchema = (
                     return true;
                 }
             )
-            .test('min-less-than-max', 'ReactiveLimitsMinMaxInvalid', function checkMinLessThanMax(value) {
+            .test('min-less-than-max', REACTIVE_LIMITS_MIN_MAX_INVALID, function checkMinLessThanMax(value) {
                 const { reactiveCapabilityCurveChoice, maximumReactivePower } = this.parent;
                 if (reactiveCapabilityCurveChoice === 'MINMAX' && value != null && maximumReactivePower != null) {
                     return value <= maximumReactivePower;
@@ -119,7 +119,7 @@ export const getReactiveLimitsValidationSchema = (
                     return true;
                 }
             )
-            .test('max-greater-than-min', 'ReactiveLimitsMinMaxInvalid', function checkMaxGreaterThanMin(value) {
+            .test('max-greater-than-min', REACTIVE_LIMITS_MIN_MAX_INVALID, function checkMaxGreaterThanMin(value) {
                 const { reactiveCapabilityCurveChoice, minimumReactivePower } = this.parent;
                 if (reactiveCapabilityCurveChoice === 'MINMAX' && value != null && minimumReactivePower != null) {
                     return value >= minimumReactivePower;

@@ -4,6 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { REAL_PERCENTAGE } from '../../utils';
 
 export const parametersFr = {
     descLfVoltageInitMode: "Mode d'initialisation du plan de tension",
@@ -54,7 +55,7 @@ export const parametersFr = {
     descLfCountriesToBalance: 'Pays réglant',
     inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
-    RealPercentage: 'Cette valeur doit être comprise entre 0 et 1',
+    [REAL_PERCENTAGE]: 'Cette valeur doit être comprise entre 0 et 1',
 
     General: 'Général',
     LimitReductions: 'Abattements',

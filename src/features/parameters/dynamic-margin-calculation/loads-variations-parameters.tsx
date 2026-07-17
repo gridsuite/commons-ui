@@ -23,6 +23,7 @@ import {
     EquipmentType,
     ID,
     LoadModelsRule,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     ParameterType,
     SpecificParameterInfos,
     YUP_REQUIRED,
@@ -48,7 +49,7 @@ export const formSchema = yup.object().shape({
                     })
                 )
                 .min(1, YUP_REQUIRED),
-            [VARIATION]: yup.number().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            [VARIATION]: yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
             [ACTIVE]: yup.boolean().nullable().notRequired(),
         })
     ),

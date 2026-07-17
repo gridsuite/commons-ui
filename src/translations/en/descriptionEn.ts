@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { DESCRIPTION_LIMIT_ERROR } from '../../utils';
 
 export const descriptionEn = {
     description: 'Description',
     descriptionProperty: 'Description',
     descriptionModificationError: 'An error occurred while editing the description',
-    descriptionLimitError: 'Description exceeds character limit',
+    [DESCRIPTION_LIMIT_ERROR]: 'Description exceeds character limit',
     AddDescription: 'Add a description',
 };

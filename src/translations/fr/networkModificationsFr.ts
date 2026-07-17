@@ -5,7 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import {
+    ACTIVE_LIMITS_MIN_MAX_INVALID,
+    CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID,
     DUPLICATED_PROPS_ERROR,
+    MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE,
+    MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    NORMALIZED_PERCENTAGE,
+    REACTIVE_LIMITS_MIN_MAX_INVALID,
+    SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
+    SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
     YUP_DEFAULT,
     YUP_NOT_NULL,
     YUP_NOT_TYPE_DEFAULT,
@@ -139,11 +149,12 @@ export const networkModificationsFr = {
     BusBarCountMustBeGreaterThanOrEqualToOne: 'Un nombre de barres doit être supérieur ou égal à 1',
     SectionCountMustBeGreaterThanOrEqualToOne: 'Un nombre de sections doit être supérieur ou égal à 1',
     SectionCountMustBeLessThanOrEqualToTwenty: 'Un nombre de sections doit être inférieur ou égal à 20',
-    mustBeGreaterOrEqualToZero: 'Cette valeur doit être supérieure ou égale à 0',
+    [MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'Cette valeur doit être supérieure ou égale à 0',
     CreateCouplingDeviceIdenticalBusBar: 'Les SJB / Nœuds 1 et 2 doivent être différents',
-    CreateSubstationInVoltageLevelIdenticalId: "L'ID du poste doit être différent de celui du site",
+    [CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID]: "L'ID du poste doit être différent de celui du site",
     voltageLevelNominalVoltageMaxValueError: 'La limite de tension basse doit être inférieure à celle de tension haute',
-    ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero: "Une limite d'ICC doit être supérieure ou égale à 0",
+    [SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]:
+        "Une limite d'ICC doit être supérieure ou égale à 0",
     ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
     [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
     [YUP_REQUIRED]: 'Obligatoire',
@@ -166,9 +177,10 @@ export const networkModificationsFr = {
     SusceptanceLabel: 'Susceptance (S)',
     SwitchedOnMaxQAtNominalV: 'Q enclenchée à tension nominale',
     SwitchedOnMaxSusceptance: 'Susceptance enclenchée',
-    ShuntCompensatorErrorQAtNominalVoltageLessThanZero: 'La valeur de Q à Unom doit être supérieure ou égale à 0',
-    MaximumSectionCountMustBeGreaterOrEqualToOne: 'Le nombre de gradins doit être supérieur ou égal à 1',
-    SectionCountMustBeBetweenZeroAndMaximumSectionCount:
+    [SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO]:
+        'La valeur de Q à Unom doit être supérieure ou égale à 0',
+    [MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE]: 'Le nombre de gradins doit être supérieur ou égal à 1',
+    [SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT]:
         'La valeur de la prise courante doit être comprise entre 0 et le nombre de gradins',
     VOLTAGE_LEVEL: 'Poste',
     BusBarBus: 'SJB / nœud',
@@ -258,13 +270,13 @@ export const networkModificationsFr = {
     Connectivity: 'Connectivité',
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
-    NormalizedPercentage: 'Ce pourcentage doit être compris entre 0 et 100',
+    [NORMALIZED_PERCENTAGE]: 'Ce pourcentage doit être compris entre 0 et 100',
     On: 'Activé',
     Off: 'Désactivé',
     FrequencyRegulation: 'Compensation',
     Droop: 'Statisme',
     Limits: 'Limites',
-    MinActivePowerMustBeLessOrEqualToMaxActivePower:
+    [MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER]:
         'La valeur de la puissance active min doit être inférieure ou égale à la valeur de la puissance active max',
     activePowerControlTooltip:
         'Clé de distribution de la puissance au nœud bilan : maxP/Statisme, statisme par défaut = 4 (valable pour le mode compensation proportionnel à la puissance maximale des groupes)',
@@ -273,8 +285,9 @@ export const networkModificationsFr = {
     ReactiveLimitsKindCurve: 'Par diagramme',
     MinimumReactivePower: 'Puissance réactive minimale',
     MaximumReactivePower: 'Puissance réactive maximale',
-    ActiveLimitsMinMaxInvalid: 'La puissance active maximale doit être supérieure à la puissance active minimale',
-    ReactiveLimitsMinMaxInvalid: 'La puissance réactive maximale doit être supérieure à la puissance réactive minimale',
+    [ACTIVE_LIMITS_MIN_MAX_INVALID]: 'La puissance active maximale doit être supérieure à la puissance active minimale',
+    [REACTIVE_LIMITS_MIN_MAX_INVALID]:
+        'La puissance réactive maximale doit être supérieure à la puissance réactive minimale',
     MinReactivePowerRequired: 'La puissance réactive minimale est requise si la maximale est définie',
     MaxReactivePowerRequired: 'La puissance réactive maximale est requise si la minimale est définie',
     ReactiveCapabilityCurveCreationErrorMissingPoints:
