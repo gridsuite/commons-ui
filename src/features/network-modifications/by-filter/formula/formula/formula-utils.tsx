@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -137,10 +137,10 @@ export type EquipmentTypeOptionType = keyof typeof EQUIPMENTS_FIELDS;
 
 function isValueInEquipmentFields(context: TestContext<AnyObject>, value: string) {
     // this will return the highest level parent, so we can get the equipment type
-    const parent = context.from?.[context.from.length - 1];
+    const parent = context.from?.at(-1);
     const equipmentType = parent?.value?.[FieldConstants.EQUIPMENT_TYPE];
     return parent
-        ? // @ts-expect-error TODO: missing type in context
+        ? // @ts-expect-error missing type in context
           EQUIPMENTS_FIELDS[equipmentType!]?.some((field: { id: string; label: string }) => field.id === value)
         : false;
 }
