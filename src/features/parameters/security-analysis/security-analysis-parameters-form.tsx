@@ -9,7 +9,7 @@ import { ForwardedRef } from 'react';
 import type { UUID } from 'node:crypto';
 import { parametersStyles } from '../parameters-style';
 import { ContingencyTableApi, ProviderParam } from '../common';
-import { SecurityAnalysisParametersSelector } from './security-analysis-parameters-selector';
+import { SecurityAnalysisParametersContent } from './security-analysis-parameters-content';
 import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
 import { ContingencyCount } from '../common/contingency-table/types';
 
@@ -19,7 +19,6 @@ export type SecurityAnalysisParametersFormProps = {
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
-    isDeveloperMode: boolean;
 };
 
 export function SecurityAnalysisParametersForm({
@@ -28,15 +27,13 @@ export function SecurityAnalysisParametersForm({
     fetchContingencyCount,
     contingencyTableApiRef,
     isBuiltCurrentNode,
-    isDeveloperMode,
 }: Readonly<SecurityAnalysisParametersFormProps>) {
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
             <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" sx={{ paddingBottom: 1 }} />
-            <SecurityAnalysisParametersSelector
+            <SecurityAnalysisParametersContent
                 params={securityAnalysisMethods.params}
                 currentProvider={securityAnalysisMethods.watchProvider?.trim()}
-                isDeveloperMode={isDeveloperMode}
                 defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
                 showContingencyCount={showContingencyCount}
                 fetchContingencyCount={fetchContingencyCount}

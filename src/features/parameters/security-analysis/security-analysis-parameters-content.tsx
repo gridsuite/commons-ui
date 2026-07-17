@@ -9,14 +9,12 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState, ForwardedRef
 
 import { FormattedMessage } from 'react-intl';
 
-import { Grid2 as Grid, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import {
     ILimitReductionsByVoltageLevel,
     LimitReductionsTableForm,
-    TAB_INFO,
     TabPanel,
-    TabValues,
     CONTINGENCY_LISTS_INFOS,
     ContingencyTableApi,
 } from '../common';
@@ -25,11 +23,19 @@ import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
 import { SAParametersEnriched } from '../../../utils/types';
+import { TabValues } from './constants';
+import type { MuiStyles } from '../../../utils/styles';
 
-export function SecurityAnalysisParametersSelector({
+const styles = {
+    tab: {
+        fontSize: 17,
+        fontWeight: 'bold',
+    },
+} as const satisfies MuiStyles;
+
+export function SecurityAnalysisParametersContent({
     params,
     currentProvider,
-    isDeveloperMode,
     defaultLimitReductions,
     showContingencyCount,
     fetchContingencyCount,
@@ -38,7 +44,6 @@ export function SecurityAnalysisParametersSelector({
 }: Readonly<{
     params: SAParametersEnriched | null;
     currentProvider?: string;
-    isDeveloperMode: boolean;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
@@ -63,51 +68,45 @@ export function SecurityAnalysisParametersSelector({
         }
     }, [currentProvider, tabSelected]);
 
-    const visibleTabs = TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly);
-
     return (
-        <Grid sx={{ width: '100%' }}>
+        <>
             <Tabs value={tabValue} onChange={handleTabChange}>
-                {visibleTabs.map(
-                    (tab, index) =>
-                        (tab.label !== TabValues[TabValues.LimitReductions] ||
-                            (currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions)) && (
-                            <Tab
-                                key={tab.label}
-                                label={<FormattedMessage id={tab.label} />}
-                                value={index}
-                                sx={{
-                                    fontSize: 17,
-                                    fontWeight: 'bold',
-                                }}
-                            />
-                        )
+                <Tab
+                    label={<FormattedMessage id={TabValues[TabValues.Contingencies]} />}
+                    value={TabValues.Contingencies}
+                    sx={styles.tab}
+                />
+                <Tab
+                    label={<FormattedMessage id={TabValues[TabValues.Aggravation]} />}
+                    value={TabValues.Aggravation}
+                    sx={styles.tab}
+                />
+                {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
+                    <Tab
+                        label={<FormattedMessage id={TabValues[TabValues.LimitReductions]} />}
+                        value={TabValues.LimitReductions}
+                        sx={styles.tab}
+                    />
                 )}
             </Tabs>
 
-            {visibleTabs.map((tab, index) => (
-                <TabPanel key={tab.label} value={tabValue} index={index} keepState={index === TabValues.Contingencies}>
-                    {index === TabValues.Contingencies && (
-                        <ContingencyTable
-                            name={CONTINGENCY_LISTS_INFOS}
-                            showContingencyCount={showContingencyCount}
-                            fetchContingencyCount={fetchContingencyCount}
-                            isBuiltCurrentNode={isBuiltCurrentNode}
-                            ref={contingencyTableApiRef}
-                        />
-                    )}
-
-                    {tabValue === TabValues.Aggravation && <ViolationsHidingParameters />}
-
-                    {tabValue === TabValues.LimitReductions &&
-                        currentProvider === PARAM_PROVIDER_OPENLOADFLOW &&
-                        params?.limitReductions && (
-                            <Grid sx={{ width: '100%' }}>
-                                <LimitReductionsTableForm limits={params?.limitReductions ?? defaultLimitReductions} />
-                            </Grid>
-                        )}
-                </TabPanel>
-            ))}
-        </Grid>
+            <TabPanel value={tabValue} index={TabValues.Contingencies} keepState>
+                <ContingencyTable
+                    name={CONTINGENCY_LISTS_INFOS}
+                    showContingencyCount={showContingencyCount}
+                    fetchContingencyCount={fetchContingencyCount}
+                    isBuiltCurrentNode={isBuiltCurrentNode}
+                    ref={contingencyTableApiRef}
+                />
+            </TabPanel>
+            <TabPanel value={tabValue} index={TabValues.Aggravation}>
+                <ViolationsHidingParameters />
+            </TabPanel>
+            <TabPanel value={tabValue} index={TabValues.LimitReductions}>
+                {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
+                    <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
+                )}
+            </TabPanel>
+        </>
     );
 }
