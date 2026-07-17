@@ -8,27 +8,23 @@ import * as yup from 'yup';
 import {
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
-    PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_PROVIDER,
+    PROVIDER,
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 import { SAParametersEnriched } from '../../../utils';
-
-export enum TabValues {
-    Contingencies = 0,
-    Aggravation = 1,
-    LimitReductions = 2,
-}
+import {
+    FLOW_PROPORTIONAL_THRESHOLD,
+    HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+    HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
+    LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
+    LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
+} from './constants';
 
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
-        [PARAM_SA_PROVIDER]: yup.string().required(),
+        [PROVIDER]: yup.string().required(),
     });
 
     const contingencyListsInfosSchema = getContingencyListsInfosFormSchema();
@@ -38,23 +34,23 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
     );
 
     const thresholdsSchema = yup.object().shape({
-        [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: yup
+        [FLOW_PROPORTIONAL_THRESHOLD]: yup
             .number()
             .min(0, 'NormalizedPercentage')
             .max(100, 'NormalizedPercentage')
             .required(),
-        [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
+        [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
             .min(0, 'NormalizedPercentage')
             .max(100, 'NormalizedPercentage')
             .required(),
-        [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
-        [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
+        [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
             .min(0, 'NormalizedPercentage')
             .max(100, 'NormalizedPercentage')
             .required(),
-        [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
+        [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
     });
 
     return yup
@@ -69,13 +65,13 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
 };
 
 export const toFormValueSaParameters = (params: SAParametersEnriched) => ({
-    [PARAM_SA_PROVIDER]: params.provider,
+    [PROVIDER]: params.provider,
     ...toFormValuesContingencyListsInfos(params?.contingencyListsInfos ?? []),
     ...toFormValuesLimitReductions(params?.limitReductions),
     // SA specific form values
-    [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: params.flowProportionalThreshold * 100,
-    [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.lowVoltageProportionalThreshold * 100,
-    [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params.lowVoltageAbsoluteThreshold,
-    [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.highVoltageProportionalThreshold * 100,
-    [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params.highVoltageAbsoluteThreshold,
+    [FLOW_PROPORTIONAL_THRESHOLD]: params.flowProportionalThreshold * 100,
+    [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.lowVoltageProportionalThreshold * 100,
+    [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: params.lowVoltageAbsoluteThreshold,
+    [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.highVoltageProportionalThreshold * 100,
+    [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: params.highVoltageAbsoluteThreshold,
 });

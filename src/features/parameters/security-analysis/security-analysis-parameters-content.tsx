@@ -23,7 +23,7 @@ import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
 import { SAParametersEnriched } from '../../../utils/types';
-import { TabValues } from './columns-definitions';
+import { TabValues } from './constants';
 import type { MuiStyles } from '../../../utils/styles';
 
 const styles = {
