@@ -14,9 +14,7 @@ import type { UUID } from 'node:crypto';
 import {
     ILimitReductionsByVoltageLevel,
     LimitReductionsTableForm,
-    TAB_INFO,
     TabPanel,
-    TabValues,
     CONTINGENCY_LISTS_INFOS,
     ContingencyTableApi,
 } from '../common';
@@ -25,11 +23,11 @@ import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
 import { SAParametersEnriched } from '../../../utils/types';
+import { TAB_INFO, TabValues } from './columns-definitions';
 
-export function SecurityAnalysisParametersSelector({
+export function SecurityAnalysisParametersContent({
     params,
     currentProvider,
-    isDeveloperMode,
     defaultLimitReductions,
     showContingencyCount,
     fetchContingencyCount,
@@ -38,7 +36,6 @@ export function SecurityAnalysisParametersSelector({
 }: Readonly<{
     params: SAParametersEnriched | null;
     currentProvider?: string;
-    isDeveloperMode: boolean;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
@@ -63,12 +60,10 @@ export function SecurityAnalysisParametersSelector({
         }
     }, [currentProvider, tabSelected]);
 
-    const visibleTabs = TAB_INFO.filter((t) => isDeveloperMode || !t.developerModeOnly);
-
     return (
         <Grid sx={{ width: '100%' }}>
             <Tabs value={tabValue} onChange={handleTabChange}>
-                {visibleTabs.map(
+                {TAB_INFO.map(
                     (tab, index) =>
                         (tab.label !== TabValues[TabValues.LimitReductions] ||
                             (currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions)) && (
@@ -85,29 +80,25 @@ export function SecurityAnalysisParametersSelector({
                 )}
             </Tabs>
 
-            {visibleTabs.map((tab, index) => (
-                <TabPanel key={tab.label} value={tabValue} index={index} keepState={index === TabValues.Contingencies}>
-                    {index === TabValues.Contingencies && (
-                        <ContingencyTable
-                            name={CONTINGENCY_LISTS_INFOS}
-                            showContingencyCount={showContingencyCount}
-                            fetchContingencyCount={fetchContingencyCount}
-                            isBuiltCurrentNode={isBuiltCurrentNode}
-                            ref={contingencyTableApiRef}
-                        />
-                    )}
-
-                    {tabValue === TabValues.Aggravation && <ViolationsHidingParameters />}
-
-                    {tabValue === TabValues.LimitReductions &&
-                        currentProvider === PARAM_PROVIDER_OPENLOADFLOW &&
-                        params?.limitReductions && (
-                            <Grid sx={{ width: '100%' }}>
-                                <LimitReductionsTableForm limits={params?.limitReductions ?? defaultLimitReductions} />
-                            </Grid>
-                        )}
-                </TabPanel>
-            ))}
+            <TabPanel value={tabValue} index={TabValues.Contingencies} keepState>
+                <ContingencyTable
+                    name={CONTINGENCY_LISTS_INFOS}
+                    showContingencyCount={showContingencyCount}
+                    fetchContingencyCount={fetchContingencyCount}
+                    isBuiltCurrentNode={isBuiltCurrentNode}
+                    ref={contingencyTableApiRef}
+                />
+            </TabPanel>
+            <TabPanel value={tabValue} index={TabValues.Aggravation}>
+                <ViolationsHidingParameters />
+            </TabPanel>
+            <TabPanel value={tabValue} index={TabValues.LimitReductions}>
+                {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
+                    <Grid sx={{ width: '100%' }}>
+                        <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
+                    </Grid>
+                )}
+            </TabPanel>
         </Grid>
     );
 }

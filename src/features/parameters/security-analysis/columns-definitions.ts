@@ -20,6 +20,18 @@ import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 import { SAParametersEnriched } from '../../../utils';
 
+export enum TabValues {
+    Contingencies = 0,
+    General = 1,
+    LimitReductions = 2,
+}
+
+export const TAB_INFO = [
+    { label: TabValues[TabValues.Contingencies] },
+    { label: TabValues[TabValues.General] },
+    { label: TabValues[TabValues.LimitReductions] },
+];
+
 export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
         [PARAM_SA_PROVIDER]: yup.string().required(),
