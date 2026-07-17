@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Box, Grid2 as Grid } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 import {
     ActivePowerControlForm,
     ConnectivityForm,
@@ -15,19 +16,28 @@ import {
     ReactiveLimitsForm,
     SetPointsForm,
     ShortCircuitForm,
+    VoltageRegulationForm,
 } from '../../common';
-import { ActivePowerAdornment, FieldConstants } from '../../../../utils';
-import { FloatInput, TextInput } from '../../../../components/ui';
+import { ActivePowerAdornment, EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
+import { FloatInput, SwitchInput, TextInput } from '../../../../components/ui';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
+import { useWatch } from 'react-hook-form';
 
-export interface BatteryCreationFormProps extends ConnectivityNetworkProps {}
+export interface BatteryCreationFormProps extends ConnectivityNetworkProps {
+    fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+}
 
 export function BatteryCreationForm({
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
+    fetchVoltageLevelEquipments,
 }: Readonly<BatteryCreationFormProps>) {
+    const watchVoltageRegulation = useWatch({
+        name: FieldConstants.VOLTAGE_REGULATION,
+    });
+
     const batteryIdField = (
         <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
     );
@@ -60,6 +70,19 @@ export function BatteryCreationForm({
         />
     );
 
+    const voltageRegulationField = (
+        <Box>
+            <SwitchInput name={FieldConstants.VOLTAGE_REGULATION} label="VoltageRegulationText" />
+        </Box>
+    );
+
+    const voltageRegulationFields = (
+        <VoltageRegulationForm
+            voltageLevelOptions={voltageLevelOptions}
+            fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+        />
+    );
+
     return (
         <>
             <Grid container spacing={2}>
@@ -89,6 +112,13 @@ export function BatteryCreationForm({
 
             {/* Active power control part */}
             <Grid container spacing={2} paddingTop={2}>
+                <GridItem
+                    tooltip={watchVoltageRegulation !== null ? '' : <FormattedMessage id="NoModification" />}
+                    size={4}
+                >
+                    {voltageRegulationField}
+                </GridItem>
+                {voltageRegulationFields}
                 <ActivePowerControlForm />
             </Grid>
 
