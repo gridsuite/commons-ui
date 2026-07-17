@@ -9,7 +9,7 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useState, ForwardedRef
 
 import { FormattedMessage } from 'react-intl';
 
-import { Grid2 as Grid, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import {
     ILimitReductionsByVoltageLevel,
@@ -104,7 +104,7 @@ export function SecurityAnalysisParametersContent({
             </TabPanel>
             <TabPanel value={tabValue} index={TabValues.LimitReductions}>
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
-                        <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
+                    <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
                 )}
             </TabPanel>
         </>
