@@ -69,7 +69,7 @@ export function SecurityAnalysisParametersContent({
     }, [currentProvider, tabSelected]);
 
     return (
-        <Grid sx={{ width: '100%' }}>
+        <>
             <Tabs value={tabValue} onChange={handleTabChange}>
                 <Tab
                     label={<FormattedMessage id={TabValues[TabValues.Contingencies]} />}
@@ -104,11 +104,9 @@ export function SecurityAnalysisParametersContent({
             </TabPanel>
             <TabPanel value={tabValue} index={TabValues.LimitReductions}>
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
-                    <Grid sx={{ width: '100%' }}>
                         <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
-                    </Grid>
                 )}
             </TabPanel>
-        </Grid>
+        </>
     );
 }
