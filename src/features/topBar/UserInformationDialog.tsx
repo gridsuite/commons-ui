@@ -9,10 +9,10 @@ import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Grid2 as Grid, 
 import { FormattedMessage } from 'react-intl';
 import type { UserProfile } from 'oidc-client-ts';
 import { Fragment, useEffect, useState } from 'react';
-import { CancelButton } from '../../components/ui/reactHookForm/utils/CancelButton';
 import { fetchUserDetails } from '../../services/userAdmin';
 import { UserDetail } from '../../utils/types/types';
 import type { MuiStyles } from '../../utils/styles';
+import { CloseButton } from '../../components/ui/reactHookForm/utils/CloseButton';
 
 const styles = {
     DialogTitle: { fontSize: '1.5rem' },
@@ -225,7 +225,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
             </DialogContent>
 
             <DialogActions>
-                <CancelButton color="primary" onClick={onClose} />
+                <CloseButton color="primary" onClick={onClose} autoFocus />
             </DialogActions>
         </Dialog>
     );

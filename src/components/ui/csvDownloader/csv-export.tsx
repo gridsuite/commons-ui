@@ -8,7 +8,7 @@
 import { JSX, useCallback } from 'react';
 import { CsvExportProps } from './csv-export.type';
 import { useCsvExport } from './use-csv-export';
-import { ExportCsvButton } from './export-csv-button';
+import { ManagedExportCsvButton } from './managed-export-csv-button';
 
 export function CsvExport({
     columns,
@@ -19,10 +19,12 @@ export function CsvExport({
     skipPinnedBottom = false,
     language,
     getData,
+    resetKey,
 }: CsvExportProps): JSX.Element {
     const csvExport = useCsvExport();
-    const download = useCallback(() => {
-        csvExport.getData({
+
+    const exportCsv = useCallback(async () => {
+        await csvExport.getData({
             columns,
             tableName,
             tableNamePrefix,
@@ -32,6 +34,5 @@ export function CsvExport({
             getData,
         });
     }, [columns, csvExport, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, getData]);
-
-    return <ExportCsvButton disabled={disabled} onClick={download} />;
+    return <ManagedExportCsvButton disabled={disabled} exportCsv={exportCsv} resetKey={resetKey} />;
 }

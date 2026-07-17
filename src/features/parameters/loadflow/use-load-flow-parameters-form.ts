@@ -11,13 +11,16 @@ import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import {
+    getAdvancedLoadFlowParametersFormSchema,
     getCommonLoadFlowParametersFormSchema,
     mapLimitReductions,
     setLimitReductions,
+    splitCommonParameters,
     TabValues,
 } from './load-flow-parameters-utils';
 import { LoadFlowParametersInfos } from './load-flow-parameters-type';
 import {
+    ADVANCED_PARAMETERS,
     COMMON_PARAMETERS,
     PROVIDER,
     SPECIFIC_PARAMETERS,
@@ -37,9 +40,9 @@ import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '.
 import { useSnackMessage } from '../../../hooks';
 import {
     formatSpecificParameters,
+    getAllSpecificParametersValues,
     getDefaultSpecificParamsValues,
     getSpecificParametersFormSchema,
-    getAllSpecificParametersValues,
     setSpecificParameters,
 } from '../common/utils';
 import { snackWithFallback } from '../../../utils/error';
@@ -72,7 +75,6 @@ export const useLoadFlowParametersForm = (
 ): UseLoadFlowParametersFormReturn => {
     const { providers, params, updateParameters, specificParamsDescription, defaultLimitReductions } =
         parametersBackend;
-
     const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [limitReductionNumber, setLimitReductionNumber] = useState(0);
     const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
@@ -82,6 +84,7 @@ export const useLoadFlowParametersForm = (
         return params?.provider && specificParamsDescription ? specificParamsDescription[params.provider] : [];
     });
     const { snackError } = useSnackMessage();
+
     const previousWatchProviderRef = useRef<string | undefined>(undefined);
 
     const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
@@ -98,11 +101,17 @@ export const useLoadFlowParametersForm = (
                 [PROVIDER]: yup.string().required(),
                 [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,
+                ...getAdvancedLoadFlowParametersFormSchema().fields,
                 ...getLimitReductionsFormSchema(limitReductionNumber).fields,
                 ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
     }, [name, limitReductionNumber, specificParametersDescriptionForProvider]);
+
+    const { advancedParameters, commonParameters } = useMemo(
+        () => splitCommonParameters(params?.commonParameters),
+        [params?.commonParameters]
+    );
 
     const formMethods = useForm({
         defaultValues: {
@@ -110,7 +119,10 @@ export const useLoadFlowParametersForm = (
             [PROVIDER]: params?.provider,
             [PARAM_LIMIT_REDUCTION]: null,
             [COMMON_PARAMETERS]: {
-                ...params?.commonParameters,
+                ...commonParameters,
+            },
+            [ADVANCED_PARAMETERS]: {
+                ...advancedParameters,
             },
             [SPECIFIC_PARAMETERS]: {
                 ...specificParametersDefaultValues,
@@ -119,8 +131,8 @@ export const useLoadFlowParametersForm = (
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
     });
-
     const { watch, reset } = formMethods;
+
     const watchProvider = watch(PROVIDER);
 
     useEffect(() => {
@@ -160,6 +172,7 @@ export const useLoadFlowParametersForm = (
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
+                    ...formData[ADVANCED_PARAMETERS],
                 },
                 specificParametersPerProvider: specificParametersDefaultValues
                     ? {
@@ -180,12 +193,18 @@ export const useLoadFlowParametersForm = (
         (_params: LoadFlowParametersInfos) => {
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[_params.provider];
             const specificParametersForLoadedProvider = specificParamsDescription?.[_params.provider] ?? [];
+            const { advancedParameters: advancedParams, commonParameters: commonParams } = splitCommonParameters(
+                _params.commonParameters
+            );
 
             return {
                 [PROVIDER]: _params.provider,
                 [PARAM_LIMIT_REDUCTION]: _params.limitReduction,
                 [COMMON_PARAMETERS]: {
-                    ..._params.commonParameters,
+                    ...commonParams,
+                },
+                [ADVANCED_PARAMETERS]: {
+                    ...advancedParams,
                 },
                 [SPECIFIC_PARAMETERS]: {
                     ...formatSpecificParameters(
@@ -214,14 +233,18 @@ export const useLoadFlowParametersForm = (
     const onValidationError = useCallback(
         (errors: FieldErrors) => {
             const tabsInError = [];
+            console.log('ERRORS', errors);
             if (errors?.[LIMIT_REDUCTIONS_FORM] && TabValues.LIMIT_REDUCTIONS !== selectedTab) {
                 tabsInError.push(TabValues.LIMIT_REDUCTIONS);
             }
-            if (
-                (errors?.[SPECIFIC_PARAMETERS] || errors?.[COMMON_PARAMETERS] || errors?.[PROVIDER]) &&
-                TabValues.GENERAL !== selectedTab
-            ) {
+            if (errors?.[COMMON_PARAMETERS] && TabValues.GENERAL !== selectedTab) {
                 tabsInError.push(TabValues.GENERAL);
+            }
+            if (errors?.[SPECIFIC_PARAMETERS] && TabValues.PROVIDER_SPECIFIC !== selectedTab) {
+                tabsInError.push(TabValues.PROVIDER_SPECIFIC);
+            }
+            if (errors?.[ADVANCED_PARAMETERS] && TabValues.ADVANCED !== selectedTab) {
+                tabsInError.push(TabValues.ADVANCED);
             }
             setTabIndexesWithError(tabsInError);
         },
