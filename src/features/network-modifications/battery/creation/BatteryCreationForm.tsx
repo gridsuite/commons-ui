@@ -7,6 +7,7 @@
 
 import { Box, Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useWatch } from 'react-hook-form';
 import {
     ActivePowerControlForm,
     ConnectivityForm,
@@ -22,7 +23,6 @@ import { ActivePowerAdornment, EquipmentType, FieldConstants, Identifiable } fro
 import { FloatInput, SwitchInput, TextInput } from '../../../../components/ui';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
-import { useWatch } from 'react-hook-form';
 
 export interface BatteryCreationFormProps extends ConnectivityNetworkProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
