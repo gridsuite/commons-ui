@@ -86,8 +86,8 @@ export function SecurityAnalysisParametersSelector({
             </Tabs>
 
             {visibleTabs.map((tab, index) => (
-                <TabPanel key={tab.label} value={tabValue} index={index}>
-                    {tabValue === TabValues.Contingencies && (
+                <TabPanel key={tab.label} value={tabValue} index={index} keepState={index === TabValues.Contingencies}>
+                    {index === TabValues.Contingencies && (
                         <ContingencyTable
                             name={CONTINGENCY_LISTS_INFOS}
                             showContingencyCount={showContingencyCount}
