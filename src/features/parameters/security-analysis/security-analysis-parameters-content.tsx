@@ -99,7 +99,7 @@ export function SecurityAnalysisParametersContent({
                     ref={contingencyTableApiRef}
                 />
             </TabPanel>
-            <TabPanel value={tabValue} index={TabValues.General}>
+            <TabPanel value={tabValue} index={TabValues.Aggravation}>
                 <ViolationsHidingParameters />
             </TabPanel>
             <TabPanel value={tabValue} index={TabValues.LimitReductions}>
