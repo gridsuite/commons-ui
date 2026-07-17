@@ -22,12 +22,7 @@ import {
     IST_FORM,
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
-    PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_PROVIDER,
+    PROVIDER,
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
@@ -37,6 +32,13 @@ import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
+import {
+    FLOW_PROPORTIONAL_THRESHOLD,
+    HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+    HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
+    LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
+    LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
+} from './constants';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
@@ -80,20 +82,20 @@ export const useSecurityAnalysisParametersForm = (
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
-            [PARAM_SA_PROVIDER]: params?.provider,
+            [PROVIDER]: params?.provider,
             [CONTINGENCY_LISTS_INFOS]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
-            [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,
-            [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
-            [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
-            [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
-            [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
+            [FLOW_PROPORTIONAL_THRESHOLD]: null,
+            [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
+            [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
+            [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
+            [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
         },
         resolver: yupResolver(formSchema),
     });
 
     const { reset, watch } = formMethods;
-    const watchProvider = watch(PARAM_SA_PROVIDER) as string | undefined;
+    const watchProvider = watch(PROVIDER) as string | undefined;
 
     const paramsLoaded = useMemo(() => !!params && !!watchProvider, [watchProvider, params]);
     const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
@@ -140,14 +142,12 @@ export const useSecurityAnalysisParametersForm = (
     const formatNewParams = useCallback(
         (formData: Record<string, any>) => {
             return {
-                [PARAM_SA_PROVIDER]: formData[PARAM_SA_PROVIDER],
-                [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: formData[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] / 100,
-                [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]:
-                    formData[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
-                [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
-                [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]:
-                    formData[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
-                [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+                [PROVIDER]: formData[PROVIDER],
+                [FLOW_PROPORTIONAL_THRESHOLD]: formData[FLOW_PROPORTIONAL_THRESHOLD] / 100,
+                [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: formData[LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
+                [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
+                [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: formData[HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
+                [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
                 [CONTINGENCY_LISTS_INFOS]: toContingencyListsInfos(formData[CONTINGENCY_LISTS_INFOS]),
                 limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
             };
