@@ -83,15 +83,11 @@ function getContainerShadow(forbidden: boolean, isMovingDown: boolean) {
     return isMovingDown ? DROP_INDICATOR_BOTTOM : DROP_INDICATOR_TOP;
 }
 
-function isTargetReference(targetRow: Row<ComposedModificationMetadata>): boolean {
-    if (isSharedModification(targetRow.original)) {
-        return true;
-    }
+function isTargetChildOfReference(targetRow: Row<ComposedModificationMetadata>): boolean {
     if (targetRow.original.childFromShared === true) {
         return true;
     }
-    const parentRow = targetRow.depth > 0 ? targetRow.getParentRow() : undefined;
-    return !!parentRow && isSharedModification(parentRow.original);
+    return false;
 }
 
 export const useModificationsDragAndDrop = ({
@@ -127,9 +123,6 @@ export const useModificationsDragAndDrop = ({
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
             // Nothing can ever be dropped into a referenced (shared) composite, regardless
             // of what is being dragged. This check comes first and short-circuits the rest.
-            if (isTargetReference(targetRow)) {
-                return true;
-            }
 
             if (isCompositeModification(sourceRow.original)) {
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
@@ -140,6 +133,9 @@ export const useModificationsDragAndDrop = ({
                         findModificationInTree(targetRow.original.uuid, [sourceRow.original])
                     )
                 );
+            }
+            if (isTargetChildOfReference(targetRow)) {
+                return true;
             }
             // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
             if (isSharedModification(sourceRow.original)) return true;

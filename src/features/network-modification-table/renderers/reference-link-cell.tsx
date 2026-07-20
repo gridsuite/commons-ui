@@ -74,7 +74,7 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
         <>
             <Tooltip title={<FormattedMessage id="importComposites.shared" />} arrow enterDelay={250}>
                 <span>
-                    <IconButton size="small" disabled={disabled || isLoading} onClick={handleOpen}>
+                    <IconButton disabled={disabled || isLoading} onClick={handleOpen}>
                         <DatasetLinkedIcon />
                     </IconButton>
                 </span>
