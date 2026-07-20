@@ -61,6 +61,23 @@ const customTranslations = {
     combinators: { title: '' },
 };
 
+const dnd = { ...ReactDnD, ...ReactDndHtml5Backend };
+const controlElements = {
+    addRuleAction: RuleAddButton,
+    addGroupAction: GroupAddButton,
+    combinatorSelector: CombinatorSelector,
+    removeRuleAction: RemoveButton,
+    removeGroupAction: RemoveButton,
+    valueEditor: ValueEditor,
+    operatorSelector: OperatorSelector,
+    fieldSelector: FieldSelector,
+    valueSourceSelector: ValueSelector,
+};
+const accessibleDescriptionGenerator = () => '';
+const controlClassnames = {
+    queryBuilder: 'queryBuilder-branches',
+};
+
 export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
     const {
@@ -73,33 +90,7 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
 
     const query = watch(name);
 
-    const dnd = useMemo(() => ({ ...ReactDnD, ...ReactDndHtml5Backend }), []);
-
-    const controlElements = useMemo(
-        () => ({
-            addRuleAction: RuleAddButton,
-            addGroupAction: GroupAddButton,
-            combinatorSelector: CombinatorSelector,
-            removeRuleAction: RemoveButton,
-            removeGroupAction: RemoveButton,
-            valueEditor: ValueEditor,
-            operatorSelector: OperatorSelector,
-            fieldSelector: FieldSelector,
-            valueSourceSelector: ValueSelector,
-        }),
-        []
-    );
-
     const getOperatorsMemo = useCallback((fieldName: string) => getOperators(fieldName, intl), [intl]);
-
-    const accessibleDescriptionGenerator = useCallback(() => '', []);
-
-    const controlClassnames = useMemo(
-        () => ({
-            queryBuilder: 'queryBuilder-branches',
-        }),
-        []
-    );
 
     // Ideally we should "clean" the empty groups after DnD as we do for the remove button
     // But it's the only callback we have access to in this case,
