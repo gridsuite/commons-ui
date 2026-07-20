@@ -35,16 +35,6 @@ export interface ILimitReductionsByVoltageLevel {
     temporaryLimitReductions: ITemporaryLimitReduction[];
 }
 
-export enum TabValues {
-    General = 'General',
-    LimitReductions = 'LimitReductions',
-}
-
-export const TAB_INFO = [
-    { label: TabValues.General, developerModeOnly: false },
-    { label: TabValues.LimitReductions, developerModeOnly: false },
-];
-
 export interface LimitReductionIColumnsDef {
     label: React.ReactNode;
     dataKey: string;

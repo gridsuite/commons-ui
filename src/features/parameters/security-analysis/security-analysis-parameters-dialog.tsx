@@ -29,7 +29,6 @@ export function SecurityAnalysisParametersDialog({
     activeDirectory,
     language,
     userProfile,
-    isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const parametersBackend = useParametersBackend(
         userProfile,
@@ -76,7 +75,6 @@ export function SecurityAnalysisParametersDialog({
                 <SecurityAnalysisParametersForm
                     securityAnalysisMethods={securityAnalysisMethods}
                     showContingencyCount={false}
-                    isDeveloperMode={isDeveloperMode}
                 />
             ) : (
                 <LinearProgress />
