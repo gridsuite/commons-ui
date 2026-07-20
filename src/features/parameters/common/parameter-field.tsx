@@ -80,14 +80,14 @@ function ParameterField({
                         fullWidth
                         multiple
                         size="small"
-                        renderValue={(val: any[], getTagsProps) =>
+                        renderValue={(val: any, getItemProps) =>
                             val.map((code: string, index: number) => (
                                 <Chip
                                     data-testid={`${id}.${name}.${code}`}
                                     key={code}
                                     size="small"
                                     label={code}
-                                    {...getTagsProps({ index })}
+                                    {...getItemProps({ index })}
                                 />
                             ))
                         }
