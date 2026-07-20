@@ -61,13 +61,13 @@ export function SecurityAnalysisParametersContent({
                 <Tab
                     label={<FormattedMessage id={TabValues.Aggravation} />}
                     value={TabValues.Aggravation}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.Contingencies)}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.Aggravation)}
                 />
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
                     <Tab
                         label={<FormattedMessage id={TabValues.LimitReductions} />}
                         value={TabValues.LimitReductions}
-                        sx={getTabStyle(tabIndexesWithError, TabValues.Contingencies)}
+                        sx={getTabStyle(tabIndexesWithError, TabValues.LimitReductions)}
                     />
                 )}
             </Tabs>
