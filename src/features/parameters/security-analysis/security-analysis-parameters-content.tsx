@@ -54,18 +54,18 @@ export function SecurityAnalysisParametersContent({
         <>
             <Tabs value={selectedTab} onChange={handleTabChange}>
                 <Tab
-                    label={<FormattedMessage id={TabValues[TabValues.Contingencies]} />}
+                    label={<FormattedMessage id={TabValues.Contingencies} />}
                     value={TabValues.Contingencies}
                     sx={getTabStyle(tabIndexesWithError, TabValues.Contingencies)}
                 />
                 <Tab
-                    label={<FormattedMessage id={TabValues[TabValues.Aggravation]} />}
+                    label={<FormattedMessage id={TabValues.Aggravation} />}
                     value={TabValues.Aggravation}
                     sx={getTabStyle(tabIndexesWithError, TabValues.Contingencies)}
                 />
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
                     <Tab
-                        label={<FormattedMessage id={TabValues[TabValues.LimitReductions]} />}
+                        label={<FormattedMessage id={TabValues.LimitReductions} />}
                         value={TabValues.LimitReductions}
                         sx={getTabStyle(tabIndexesWithError, TabValues.Contingencies)}
                     />
