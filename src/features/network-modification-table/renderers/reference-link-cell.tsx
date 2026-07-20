@@ -60,9 +60,11 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
                     }
 
                     const link = `${exploreUrl}/elements/${referenceId}`;
-                    return navigator.clipboard.writeText(link).then(() => snackInfo({ headerId: 'linkCopied' }));
+                    return navigator.clipboard
+                        .writeText(link)
+                        .then(() => snackInfo({ headerId: 'modification/linkCopied' }));
                 })
-                .catch((error) => snackWithFallback(snackError, error, { headerId: 'linkCopyError' }))
+                .catch((error) => snackWithFallback(snackError, error, { headerId: 'modification/linkCopyError' }))
                 .finally(() => setIsLoading(false));
         },
         [data.uuid, snackInfo, snackError]
@@ -97,7 +99,7 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
                     <ListItemIcon sx={{ minWidth: 24 }}>
                         <LinkRoundedIcon sx={{ fontSize: 18, transform: 'rotate(-50deg)' }} />
                     </ListItemIcon>
-                    <ListItemText primary={intl.formatMessage({ id: 'copyLink' })} />
+                    <ListItemText primary={intl.formatMessage({ id: 'modification/copyLink' })} />
                 </CustomMenuItem>
             </Menu>
         </>
