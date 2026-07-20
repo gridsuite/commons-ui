@@ -83,6 +83,7 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     if (isSharedModification(row.original)) {
         return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
     }
+    return null;
 }
 export function SwitchCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
