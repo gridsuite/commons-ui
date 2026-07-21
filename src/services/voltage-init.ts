@@ -7,9 +7,10 @@
 import type { UUID } from 'node:crypto';
 import { backendFetchJson } from './utils';
 import { VoltageInitParameters } from '../features/parameters/voltage-init/voltage-init.type';
+import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
 
 export function getVoltageInitUrl() {
-    return `${import.meta.env.VITE_API_GATEWAY}/voltage-init/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/voltage-init/`;
 }
 
 export function getVoltageInitParameters(parameterUuid: UUID): Promise<VoltageInitParameters> {

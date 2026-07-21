@@ -7,11 +7,10 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { DynamicSimulationParametersInfos } from '../utils/types/dynamic-simulation.type';
-
-const PREFIX_DYNAMIC_SIMULATION_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-simulation`;
+import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
 
 function getDynamicSimulationUrl() {
-    return `${PREFIX_DYNAMIC_SIMULATION_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/dynamic-simulation/`;
 }
 
 export function fetchDynamicSimulationProviders() {

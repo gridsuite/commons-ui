@@ -7,9 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils';
-
-const PREFIX_DYNAMIC_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-security-analysis`;
-const PREFIX_DIRECTORY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/directory`;
+import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
 
 export function fetchContingencyAndFiltersLists(listIds: UUID[]): Promise<ElementAttributes[]> {
     console.info('Fetching contingency and filters lists');
@@ -23,13 +21,13 @@ export function fetchContingencyAndFiltersLists(listIds: UUID[]): Promise<Elemen
 
     urlSearchParams.append('strictMode', 'false');
 
-    const url = `${PREFIX_DIRECTORY_SERVER_QUERIES}/v1/elements?${urlSearchParams}`;
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/directory/elements?${urlSearchParams}`;
     console.debug(url);
     return backendFetchJson(url);
 }
 
 function getDynamicSecurityAnalysisUrl() {
-    return `${PREFIX_DYNAMIC_SECURITY_ANALYSIS_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/dynamic-security-analysis/`;
 }
 
 export function fetchDynamicSecurityAnalysisProviders() {

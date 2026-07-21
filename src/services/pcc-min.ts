@@ -10,11 +10,10 @@ import { getStudyUrl } from './security-analysis';
 import { FilterIdentifier, FILTERS, PccMinParameters, PccMinParametersEnriched } from '../utils';
 import { mapPccMinParameters } from '../utils/types/pcc-min.type';
 import { fetchElementNames } from './directory';
-
-const PREFIX_PCC_MIN_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/pcc-min`;
+import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
 
 function getPccMinUrl() {
-    return `${PREFIX_PCC_MIN_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/pcc-min/`;
 }
 
 function collectAllElementIds(params: PccMinParameters): Set<string> {

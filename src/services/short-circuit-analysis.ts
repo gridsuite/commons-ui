@@ -8,11 +8,10 @@
 import { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
-
-const PREFIX_SHORT_CIRCUIT_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/shortcircuit`;
+import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
 
 function getShortCircuitUrl() {
-    return `${PREFIX_SHORT_CIRCUIT_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/shortcircuit/`;
 }
 
 export function getShortCircuitSpecificParametersDescription() {
