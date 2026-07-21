@@ -7,13 +7,13 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
-import { PREFIX_STUDY_QUERIES, PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
 export const getBaseNetworkModificationUrl = () => `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modification`;
 
 export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | undefined) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 function getUrl() {
     return `${getBaseNetworkModificationUrl()}/network-modifications`;
@@ -148,7 +148,7 @@ const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
     nodeUuid: string | null | undefined,
     rootNetworkUuid: string | undefined | null
 ) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
         rootNetworkUuid
     )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 

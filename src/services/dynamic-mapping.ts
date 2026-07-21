@@ -6,7 +6,7 @@
  */
 import { backendFetchJson } from './utils';
 import { DynamicSimulationModelInfos, IdName } from '../utils';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 function getDynamicMappingUrl() {
     return `${PREFIX_STUDY_SERVER_QUERIES}/v1/dynamic-mapping/`;

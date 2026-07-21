@@ -13,19 +13,19 @@ import {
     SensitivityAnalysisParametersInfos,
     SensitivityAnalysisParametersInfosEnriched,
 } from '../utils';
-import { PREFIX_STUDY_QUERIES, PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { fetchElementNames } from './directory';
 
 const GET_PARAMETERS_PREFIX = `${PREFIX_STUDY_SERVER_QUERIES}/v1/sensitivity-analysis/parameters`;
 const getStudyUrl = (studyUuid: UUID | null) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
 export const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
     studyUuid: string | null | undefined,
     nodeUuid: string | undefined,
     rootNetworkUuid: string | undefined | null
 ) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
         rootNetworkUuid
     )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 

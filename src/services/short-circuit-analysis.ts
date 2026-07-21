@@ -8,7 +8,7 @@
 import { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 function getShortCircuitUrl() {
     return `${PREFIX_STUDY_SERVER_QUERIES}/v1/shortcircuit/`;

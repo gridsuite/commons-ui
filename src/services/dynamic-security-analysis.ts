@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 export function fetchContingencyAndFiltersLists(listIds: UUID[]): Promise<ElementAttributes[]> {
     console.info('Fetching contingency and filters lists');

@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetchJson } from './utils';
 import { VoltageInitParameters } from '../features/parameters/voltage-init/voltage-init.type';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 export function getVoltageInitUrl() {
     return `${PREFIX_STUDY_SERVER_QUERIES}/v1/voltage-init/`;

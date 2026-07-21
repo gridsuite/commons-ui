@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { DynamicSimulationParametersInfos } from '../utils/types/dynamic-simulation.type';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 function getDynamicSimulationUrl() {
     return `${PREFIX_STUDY_SERVER_QUERIES}/v1/dynamic-simulation/`;

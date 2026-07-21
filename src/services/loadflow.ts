@@ -6,9 +6,7 @@
  */
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
-
-export const PREFIX_STUDY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
-export const PREFIX_STUDY_QUERIES = PREFIX_STUDY_SERVER_QUERIES;
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 export function getLoadFlowUrl() {
     return `${PREFIX_STUDY_SERVER_QUERIES}/v1/loadflow/`;

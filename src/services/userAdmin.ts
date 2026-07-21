@@ -6,7 +6,7 @@
  */
 
 import { type AnnouncementDto, type UserDetail } from '../utils/types/types';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { backendFetchJson } from './utils';
 
 export function fetchUserDetails(user: string): Promise<UserDetail> {

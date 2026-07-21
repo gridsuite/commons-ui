@@ -10,7 +10,7 @@ import { getStudyUrl } from './security-analysis';
 import { FilterIdentifier, FILTERS, PccMinParameters, PccMinParametersEnriched } from '../utils';
 import { mapPccMinParameters } from '../utils/types/pcc-min.type';
 import { fetchElementNames } from './directory';
-import { PREFIX_STUDY_SERVER_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 function getPccMinUrl() {
     return `${PREFIX_STUDY_SERVER_QUERIES}/v1/pcc-min/`;
