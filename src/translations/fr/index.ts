@@ -34,4 +34,3 @@ export * from './componentsFr';
 export * from './parameters';
 export * from './use-unique-name-validation-fr';
 export * from './processConfigFr';
-export * from './modificationFr';
