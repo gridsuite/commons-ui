@@ -13,9 +13,14 @@ export enum ProcessType {
 }
 
 // Backend types
+export interface ModificationInfo {
+    modificationUuid: UUID;
+    description: string | null;
+    active: boolean;
+}
 export interface ProcessConfigBaseBackend {
     processType: ProcessType;
-    modificationUuids: UUID[];
+    modifications: ModificationInfo[];
 }
 
 export interface SecurityAnalysisProcessConfigBackend extends ProcessConfigBaseBackend {
@@ -34,7 +39,7 @@ export type PersistedProcessConfigBackend = {
 // Form types
 export type SecurityAnalysisProcessConfig = Omit<
     SecurityAnalysisProcessConfigBackend,
-    'securityAnalysisParametersUuid' | 'loadflowParametersUuid' | 'modificationUuids'
+    'securityAnalysisParametersUuid' | 'loadflowParametersUuid' | 'modifications'
 > & {
     modifications: (IdName & {
         enabled: boolean;
