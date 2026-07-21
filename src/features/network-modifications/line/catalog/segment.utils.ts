@@ -12,7 +12,7 @@ import {
     OperationalLimitsGroupFormSchema,
     TemporaryLimitFormSchema,
 } from '../../common/currentLimits/operationalLimitsGroups/operationalLimitsGroups.types';
-import { LineSegmentInfos } from '../creation/lineCreation.types';
+import { LineSegmentInfos } from '../common/line.types';
 import { FieldConstants } from '../../../../utils';
 
 export const SegmentTemporaryLimitSchema = object().shape({
@@ -56,7 +56,6 @@ export const SegmentSchema = object()
 
 export type SegmentFormData = InferType<typeof SegmentSchema>;
 
-// TODO should be an infered type from schema (LineModification case)
 export interface SegmentsFormData {
     [FieldConstants.LINE_SEGMENTS]: LineSegmentsFormData;
     [FieldConstants.APPLY_SEGMENTS_LIMITS]?: boolean;
