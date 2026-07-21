@@ -44,10 +44,10 @@ export function LineDialogTabsContent({
                     />
                 </Box>
             )}
-            <Box hidden={tabIndex !== LineDialogTab.CHARACTERISTICS_TAB} p={1}>
+            <Box hidden={tabIndex !== LineDialogTab.CHARACTERISTICS_TAB}>
                 <LineCharacteristicsPane lineToModify={lineToModify} isModification={isModification} />
             </Box>
-            <Box hidden={tabIndex !== LineDialogTab.LIMITS_TAB} p={1}>
+            <Box hidden={tabIndex !== LineDialogTab.LIMITS_TAB}>
                 <LimitsPane equipmentToModify={lineToModify} clearableFields={clearableFields} />
             </Box>
             {isModification && (
