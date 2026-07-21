@@ -20,7 +20,8 @@ export type UseTabsProps<TTabValue extends string> = {
     defaultTab: TTabValue;
     tabEnum: Record<string, TTabValue>;
     errors: FieldErrors;
-    tabFields: Record<TTabValue, string[]>;
+    // Optional: if omitted, each tab uses its value as the field path when checking for errors
+    tabFields?: Record<TTabValue, string[]>;
 };
 
 export function useTabs<TTabValue extends string>({
@@ -36,7 +37,8 @@ export function useTabs<TTabValue extends string>({
         (_errors: FieldErrors) => {
             const tabsHasError: TTabValue[] = [];
             Object.values(tabEnum).forEach((tabValue) => {
-                if (tabFields[tabValue]?.some((field) => get(_errors, field))) {
+                const fields = tabFields?.[tabValue] ?? [tabValue];
+                if (fields.some((field) => get(_errors, field))) {
                     tabsHasError.push(tabValue);
                 }
             });

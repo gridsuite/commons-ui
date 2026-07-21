@@ -23,7 +23,6 @@ import { fetchDynamicMarginCalculationParameters } from '../../../services/dynam
 import { useSnackMessage } from '../../../hooks';
 import { useTabs } from '../common/hook/use-tabs';
 import { TabValues } from './dynamic-margin-calculation.type';
-import { TAB_FIELDS } from './dynamic-margin-calculation.utils';
 
 type DynamicMarginCalculationInlineProps = {
     studyUuid: UUID | null;
@@ -54,7 +53,6 @@ export function DynamicMarginCalculationInline({
         defaultTab: Object.values(TabValues)[0],
         tabEnum: TabValues,
         errors: formState.errors,
-        tabFields: TAB_FIELDS,
     });
 
     const onSubmit = useCallback(

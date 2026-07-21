@@ -19,7 +19,6 @@ import { CustomFormProvider } from '../../../components/ui';
 import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
 import { useTabs } from '../common/hook/use-tabs';
 import { TabValues } from './dynamic-security-analysis.type';
-import { TAB_FIELDS } from './dynamic-security-analysis.utils';
 
 type DynamicSecurityAnalysisInlineProps = {
     studyUuid: UUID | null;
@@ -47,7 +46,6 @@ export function DynamicSecurityAnalysisInline({
         defaultTab: TabValues.SCENARIO,
         tabEnum: TabValues,
         errors: formState.errors,
-        tabFields: TAB_FIELDS,
     });
 
     const onSubmit = useCallback(
