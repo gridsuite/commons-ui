@@ -10,19 +10,19 @@ import { UUID } from 'node:crypto';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LinearProgress } from '@mui/material';
-import { UpdateSAProcessConfig } from './update-sa-process-config';
-import {
-    getSAProcessConfigFormDataFromFetchedElement,
-    getSAProcessConfigBackendFromFormData,
-    updateSAProcessConfigFormSchema,
-    UpdateSAProcessConfigFormData,
-    toSAProcessConfig,
-} from './update-sa-process-configs-utils';
 import { PersistedProcessConfigBackend, ProcessConfigBackend } from '../process-configs.type';
 import { CustomMuiDialog } from '../../../components';
 import { FieldConstants } from '../../../utils';
+import { UpdateLFProcessConfig } from './update-lf-process-config';
+import {
+    getLFProcessConfigBackendFromFormData,
+    getLFProcessConfigFormDataFromFetchedElement,
+    toLFProcessConfig,
+    UpdateLFProcessConfigFormData,
+    updateLFProcessConfigFormSchema,
+} from './update-lf-process-configs-utils';
 
-interface UpdateSAProcessConfigDialogProps {
+interface UpdateLFProcessConfigDialogProps {
     open: boolean;
     onClose: () => void;
     processConfigId: UUID;
@@ -38,7 +38,7 @@ interface UpdateSAProcessConfigDialogProps {
     ) => Promise<void>;
 }
 
-export function UpdateSAProcessConfigDialog({
+export function UpdateLFProcessConfigDialog({
     onClose,
     open,
     processConfigId,
@@ -47,20 +47,19 @@ export function UpdateSAProcessConfigDialog({
     directory,
     fetchProcessConfig,
     updateProcessConfig,
-}: Readonly<UpdateSAProcessConfigDialogProps>) {
+}: Readonly<UpdateLFProcessConfigDialogProps>) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const emptyFormData: UpdateSAProcessConfigFormData = {
+    const emptyFormData: UpdateLFProcessConfigFormData = {
         name,
         description: description ?? '',
         modifications: [],
         loadflowParameters: [],
-        securityAnalysisParameters: [],
     };
 
-    const methods = useForm<UpdateSAProcessConfigFormData>({
+    const methods = useForm<UpdateLFProcessConfigFormData>({
         defaultValues: emptyFormData,
-        resolver: yupResolver<UpdateSAProcessConfigFormData>(updateSAProcessConfigFormSchema),
+        resolver: yupResolver<UpdateLFProcessConfigFormData>(updateLFProcessConfigFormSchema),
     });
 
     const {
@@ -68,27 +67,27 @@ export function UpdateSAProcessConfigDialog({
         formState: { errors },
     } = methods;
 
-    const fetchSAProcessConfigData = useCallback(async () => {
+    const fetchLFProcessConfigData = useCallback(async () => {
         const persistedProcessConfig = await fetchProcessConfig(processConfigId);
         if (persistedProcessConfig) {
-            const processConfigData = await toSAProcessConfig(persistedProcessConfig);
-            const formData = getSAProcessConfigFormDataFromFetchedElement(processConfigData, name, description);
+            const processConfigData = await toLFProcessConfig(persistedProcessConfig);
+            const formData = getLFProcessConfigFormDataFromFetchedElement(processConfigData, name, description);
             reset({ ...formData });
         }
     }, [description, fetchProcessConfig, name, processConfigId, reset]);
 
     useEffect(() => {
         setIsLoading(true);
-        fetchSAProcessConfigData().finally(() => setIsLoading(false));
-    }, [fetchSAProcessConfigData]);
+        fetchLFProcessConfigData().finally(() => setIsLoading(false));
+    }, [fetchLFProcessConfigData]);
 
     const handleUpdateProcessConfig = useCallback(
-        (processConfigFormData: UpdateSAProcessConfigFormData) => {
+        (processConfigFormData: UpdateLFProcessConfigFormData) => {
             updateProcessConfig(
                 processConfigId,
                 processConfigFormData.name,
                 processConfigFormData.description ?? '',
-                getSAProcessConfigBackendFromFormData(processConfigFormData)
+                getLFProcessConfigBackendFromFormData(processConfigFormData)
             ).then(() => onClose());
         },
         [processConfigId, onClose, updateProcessConfig]
@@ -99,10 +98,10 @@ export function UpdateSAProcessConfigDialog({
 
     return (
         <CustomMuiDialog
-            titleId="process_config/editSAProcessConfigTitle"
+            titleId="process_config/editLFProcessConfigTitle"
             formContext={{
                 ...methods,
-                validationSchema: updateSAProcessConfigFormSchema,
+                validationSchema: updateLFProcessConfigFormSchema,
                 removeOptional: true,
             }}
             open={open}
@@ -110,7 +109,7 @@ export function UpdateSAProcessConfigDialog({
             onSave={handleUpdateProcessConfig}
             disabledSave={Boolean(nameError || isValidating)}
         >
-            {!isLoading && <UpdateSAProcessConfig directory={directory} processConfigName={name} />}
+            {!isLoading && <UpdateLFProcessConfig directory={directory} processConfigName={name} />}
             {isLoading && <LinearProgress />}
         </CustomMuiDialog>
     );

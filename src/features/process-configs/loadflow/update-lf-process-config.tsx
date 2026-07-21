@@ -12,12 +12,12 @@ import { FieldConstants, ElementType } from '../../../utils';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
 import { NameElementEditorForm } from '../../parameters/common/name-element-editor';
 
-interface UpdateSAProcessConfigProps {
+interface UpdateLFProcessConfigProps {
     directory: UUID;
     processConfigName: string;
 }
 
-export function UpdateSAProcessConfig({ directory, processConfigName }: Readonly<UpdateSAProcessConfigProps>) {
+export function UpdateLFProcessConfig({ directory, processConfigName }: Readonly<UpdateLFProcessConfigProps>) {
     return (
         <>
             <NameElementEditorForm
@@ -36,13 +36,6 @@ export function UpdateSAProcessConfig({ directory, processConfigName }: Readonly
                 label="process_config/loadflow"
                 elementType={ElementType.LOADFLOW_PARAMETERS}
                 name={FieldConstants.LOADFLOW_PARAMETERS}
-                allowMultiSelect={false}
-                hideErrorMessage={false}
-            />
-            <ParameterLineDirectoryItemsInput
-                label="process_config/securityAnalysis"
-                elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
-                name={FieldConstants.SECURITY_ANALYSIS_PARAMETERS}
                 allowMultiSelect={false}
                 hideErrorMessage={false}
             />

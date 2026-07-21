@@ -9,7 +9,7 @@ import { IdName } from '../../utils';
 
 export enum ProcessType {
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
-    LOADFLOW = 'LOADFLOW', // not used yet, will be once modification dialog is implemented
+    LOADFLOW = 'LOADFLOW',
 }
 
 // Backend types
@@ -24,7 +24,12 @@ export interface SecurityAnalysisProcessConfigBackend extends ProcessConfigBaseB
     loadflowParametersUuid: UUID;
 }
 
-export type ProcessConfigBackend = SecurityAnalysisProcessConfigBackend; // will be union between all ProcessConfig types
+export interface LoadflowProcessConfigBackend extends ProcessConfigBaseBackend {
+    processType: ProcessType.SECURITY_ANALYSIS;
+    loadflowParametersUuid: UUID;
+}
+
+export type ProcessConfigBackend = SecurityAnalysisProcessConfigBackend | LoadflowProcessConfigBackend;
 
 export type PersistedProcessConfigBackend = {
     id: UUID;
@@ -42,4 +47,15 @@ export type SecurityAnalysisProcessConfig = Omit<
     })[];
     loadflowParameters: IdName;
     securityAnalysisParameters: IdName;
+};
+
+export type LoadflowProcessConfig = Omit<
+    LoadflowProcessConfigBackend,
+    'loadflowParametersUuid' | 'modificationUuids'
+> & {
+    modifications: (IdName & {
+        enabled: boolean;
+        description?: string;
+    })[];
+    loadflowParameters: IdName;
 };
