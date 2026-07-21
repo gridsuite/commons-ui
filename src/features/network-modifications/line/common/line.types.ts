@@ -8,6 +8,14 @@ import { ConnectablePositionInfos } from '../../common/connectivity/connectivity
 import { CurrentLimitsData } from '../../common/currentLimits/limits.types';
 import { EquipmentWithProperties } from '../../common/properties/propertyUtils';
 
+export interface LineSegmentInfos {
+    segmentTypeId: string; // used to fetch LineTypeInfo
+    segmentDistanceValue: number;
+    area: string | null;
+    temperature: string;
+    shapeFactor: number | null;
+}
+
 export type BranchInfos = EquipmentWithProperties & {
     name: string;
     voltageLevelId1: string;
