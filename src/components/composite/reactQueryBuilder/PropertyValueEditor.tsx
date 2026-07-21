@@ -79,7 +79,7 @@ export function PropertyValueEditor(props: ExpertFilterPropertyProps) {
     );
 
     return (
-        <Grid container spacing={1}>
+        <Grid container spacing={1} width="100%" alignItems="center">
             <Grid size={4}>
                 <Autocomplete
                     value={propertyName ?? ''}

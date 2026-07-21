@@ -49,10 +49,3 @@ export function getInjectionActiveReactivePowerEditDataProperties(injectionData:
         }),
     };
 }
-export function getInjectionActiveReactivePowerEditData(id: string, injectionData: any) {
-    return {
-        [id]: {
-            ...getInjectionActiveReactivePowerEditDataProperties(injectionData),
-        },
-    };
-}
