@@ -8,15 +8,7 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Grid2 as Grid, SxProps } from '@mui/material';
 import * as yup from 'yup';
-import {
-    ACCURACY,
-    ACTIVE,
-    CALCULATION_TYPE,
-    LOAD_FILTERS,
-    LOAD_MODELS_RULE,
-    LOADS_VARIATIONS,
-    VARIATION,
-} from './constants';
+import { ACCURACY, CALCULATION_TYPE, LOAD_FILTERS, LOAD_MODELS_RULE, LOADS_VARIATIONS, VARIATION } from './constants';
 import {
     CalculationType,
     ElementType,
@@ -28,7 +20,7 @@ import {
     YUP_REQUIRED,
 } from '../../../utils';
 import ParameterField from '../common/parameter-field';
-import { NAME } from '../../../components/ui';
+import { ACTIVE, NAME } from '../../../components/ui';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn, DndColumnType } from '../../../components/composite/dnd-table';
 
