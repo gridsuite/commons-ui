@@ -61,6 +61,23 @@ const customTranslations = {
     combinators: { title: '' },
 };
 
+const dnd = { ...ReactDnD, ...ReactDndHtml5Backend };
+const controlElements = {
+    addRuleAction: RuleAddButton,
+    addGroupAction: GroupAddButton,
+    combinatorSelector: CombinatorSelector,
+    removeRuleAction: RemoveButton,
+    removeGroupAction: RemoveButton,
+    valueEditor: ValueEditor,
+    operatorSelector: OperatorSelector,
+    fieldSelector: FieldSelector,
+    valueSourceSelector: ValueSelector,
+};
+const accessibleDescriptionGenerator = () => '';
+const controlClassnames = {
+    queryBuilder: 'queryBuilder-branches',
+};
+
 export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderProps>) {
     const { name, fields } = props;
     const {
@@ -72,6 +89,8 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
     const intl = useIntl();
 
     const query = watch(name);
+
+    const getOperatorsMemo = useCallback((fieldName: string) => getOperators(fieldName, intl), [intl]);
 
     // Ideally we should "clean" the empty groups after DnD as we do for the remove button
     // But it's the only callback we have access to in this case,
@@ -100,31 +119,19 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
     return (
         <>
             <QueryBuilderMaterial>
-                <QueryBuilderDnD dnd={{ ...ReactDnD, ...ReactDndHtml5Backend }}>
+                <QueryBuilderDnD dnd={dnd}>
                     <QueryBuilder
                         fields={fields}
                         query={query}
                         addRuleToNewGroups
                         combinators={combinators}
                         onQueryChange={handleQueryChange}
-                        getOperators={(fieldName) => getOperators(fieldName, intl)}
+                        getOperators={getOperatorsMemo}
                         validator={queryValidator}
-                        controlClassnames={{
-                            queryBuilder: 'queryBuilder-branches',
-                        }}
-                        controlElements={{
-                            addRuleAction: RuleAddButton,
-                            addGroupAction: GroupAddButton,
-                            combinatorSelector: CombinatorSelector,
-                            removeRuleAction: RemoveButton,
-                            removeGroupAction: RemoveButton,
-                            valueEditor: ValueEditor,
-                            operatorSelector: OperatorSelector,
-                            fieldSelector: FieldSelector,
-                            valueSourceSelector: ValueSelector,
-                        }}
+                        controlClassnames={controlClassnames}
+                        controlElements={controlElements}
                         listsAsArrays
-                        accessibleDescriptionGenerator={() => ''} // tooltip for querybuilder container and subgroups
+                        accessibleDescriptionGenerator={accessibleDescriptionGenerator} // tooltip for querybuilder container and subgroups
                         translations={customTranslations}
                     />
                 </QueryBuilderDnD>
