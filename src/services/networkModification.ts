@@ -21,6 +21,16 @@ function getUrl() {
     return `${PREFIX_NETWORK_MODIFICATION_QUERIES}/v1/network-modifications`;
 }
 
+export enum ModificationContainerType {
+    GROUP = 'GROUP',
+    COMPOSITE = 'COMPOSITE',
+}
+
+export type ModificationContainer = {
+    id: UUID | null;
+    type: ModificationContainerType | null;
+};
+
 export function fetchNetworkModification(modificationUuid: UUID) {
     const modificationFetchUrl = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
@@ -102,18 +112,18 @@ export function moveModification(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
     modificationUuid: UUID,
-    sourceContainerId: UUID | null,
-    targetContainerId: UUID | null,
+    sourceContainer: ModificationContainer,
+    targetContainer: ModificationContainer,
     beforeUuid: UUID | null
 ) {
     console.info(`move modification ${modificationUuid} in node ${nodeUuid}`);
-    const params = new URLSearchParams();
-    if (sourceContainerId) params.set('sourceContainerId', sourceContainerId);
-    if (targetContainerId) params.set('targetContainerId', targetContainerId);
-    if (beforeUuid) params.set('beforeUuid', beforeUuid);
-    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${modificationUuid}?${params.toString()}`;
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${modificationUuid}`;
     console.debug(url);
-    return backendFetch(url, { method: 'put' });
+    return backendFetch(url, {
+        method: 'put',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: sourceContainer, target: targetContainer, beforeUuid }),
+    });
 }
 
 const getStudyUrlWithNodeUuidAndRootNetworkUuid = (

@@ -24,7 +24,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { moveModification } from '../../services';
+import { ModificationContainerType, moveModification } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -225,8 +225,14 @@ export const useModificationsDragAndDrop = ({
                 studyUuid,
                 currentNodeUuid,
                 movingUuid,
-                sourceContainerId,
-                targetContainerId,
+                {
+                    id: sourceContainerId,
+                    type: sourceRow.depth === 0 ? ModificationContainerType.GROUP : ModificationContainerType.COMPOSITE,
+                },
+                {
+                    id: targetContainerId,
+                    type: targetRow.depth === 0 ? ModificationContainerType.GROUP : ModificationContainerType.COMPOSITE,
+                },
                 beforeUuid
             ).catch((error) => {
                 snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
