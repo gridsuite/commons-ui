@@ -45,6 +45,7 @@ export const getBranchActiveReactivePowerValidationSchema = (id: string) => ({
     [id]: getBranchActiveReactivePowerValidationSchemaObject(),
 });
 
+// TODO: once 2wt uses proper schema and infered type, we could change this any below
 export function getBranchActiveReactivePowerEditDataProperties(branchData: any) {
     return {
         ...getPowerWithValidityEditData(FieldConstants.MEASUREMENT_P1, {
