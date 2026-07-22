@@ -42,6 +42,7 @@ export function NetworkVisualizationsParametersEditionDialog({
             open={open}
             onClose={onClose}
             onSave={networkVisuMethods.onSaveDialog}
+            onValidationError={networkVisuMethods.onValidationError}
             formContext={{
                 ...networkVisuMethods.formMethods,
                 validationSchema: networkVisuMethods.formSchema,

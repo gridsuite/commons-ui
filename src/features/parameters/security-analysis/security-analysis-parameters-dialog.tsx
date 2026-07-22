@@ -48,12 +48,12 @@ export function SecurityAnalysisParametersDialog({
         formState: { errors, dirtyFields },
     } = securityAnalysisMethods.formMethods;
     const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
-
     return (
         <CustomMuiDialog
             open={open}
             onClose={onClose}
             onSave={securityAnalysisMethods.onSaveDialog}
+            onValidationError={securityAnalysisMethods.onValidationError}
             formContext={{
                 ...securityAnalysisMethods.formMethods,
                 validationSchema: securityAnalysisMethods.formSchema,
@@ -72,7 +72,7 @@ export function SecurityAnalysisParametersDialog({
                 <NameElementEditorForm
                     initialElementName={name}
                     activeDirectory={activeDirectory}
-                    elementType={ElementType.LOADFLOW_PARAMETERS}
+                    elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
                 />
             </Grid>
             {securityAnalysisMethods.paramsFormInitialized ? (
