@@ -7,7 +7,15 @@
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { DESCRIPTION, ACTIVE, DirectoryItemsInput, DndColumn, DndColumnType, DndTable } from '../../components';
+import {
+    DESCRIPTION,
+    ACTIVE,
+    DirectoryItemsInput,
+    DndColumn,
+    DndColumnType,
+    DndTable,
+    getDefaultRowData,
+} from '../../components';
 import { ElementType } from '../../utils';
 
 export function UpdateProcessConfigModifications({ name }: Readonly<{ name: string }>) {
@@ -59,7 +67,10 @@ export function UpdateProcessConfigModifications({ name }: Readonly<{ name: stri
         ];
     }, [modificationSelector, name, intl]);
 
-    const createModification = () => [{ modification: [] }];
+    const createModification = useCallback(
+        () => [{ ...getDefaultRowData(columnsDefinition), modification: [] }],
+        [columnsDefinition]
+    );
 
     return (
         <DndTable
