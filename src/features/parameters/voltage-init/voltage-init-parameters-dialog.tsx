@@ -31,6 +31,11 @@ export function VoltageInitParametersEditionDialog({
         parameters: null,
     });
 
+    const {
+        formState: { errors, dirtyFields },
+    } = voltageInitMethods.formMethods;
+    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
+
     return (
         <CustomMuiDialog
             open={open}
@@ -44,6 +49,7 @@ export function VoltageInitParametersEditionDialog({
                 removeOptional: true,
                 language,
             }}
+            disabledSave={disableSave}
             PaperProps={{
                 sx: {
                     height: '90vh', // we want the dialog height to be fixed even when switching tabs

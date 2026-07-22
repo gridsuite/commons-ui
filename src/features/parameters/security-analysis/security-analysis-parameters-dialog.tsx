@@ -44,7 +44,10 @@ export function SecurityAnalysisParametersDialog({
     );
 
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, id, name, description);
-
+    const {
+        formState: { errors, dirtyFields },
+    } = securityAnalysisMethods.formMethods;
+    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
     return (
         <CustomMuiDialog
             open={open}
@@ -58,6 +61,7 @@ export function SecurityAnalysisParametersDialog({
                 language,
             }}
             titleId={titleId}
+            disabledSave={disableSave}
             PaperProps={{
                 sx: {
                     height: '90vh', // we want the dialog height to be fixed even when switching tabs
@@ -68,7 +72,7 @@ export function SecurityAnalysisParametersDialog({
                 <NameElementEditorForm
                     initialElementName={name}
                     activeDirectory={activeDirectory}
-                    elementType={ElementType.LOADFLOW_PARAMETERS}
+                    elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
                 />
             </Grid>
             {securityAnalysisMethods.paramsFormInitialized ? (

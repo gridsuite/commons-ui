@@ -50,6 +50,11 @@ export function LoadFlowParametersEditionDialog({
 
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 
+    const {
+        formState: { errors, dirtyFields },
+    } = loadflowMethods.formMethods;
+    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
+
     return (
         <CustomMuiDialog
             open={open}
@@ -63,6 +68,7 @@ export function LoadFlowParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
+            disabledSave={disableSave}
         >
             <LoadFlowProvider>
                 <Grid container sx={{ width: '100%' }}>
