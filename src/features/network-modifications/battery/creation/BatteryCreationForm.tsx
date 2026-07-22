@@ -80,6 +80,7 @@ export function BatteryCreationForm({
         <VoltageRegulationForm
             voltageLevelOptions={voltageLevelOptions}
             fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+            isGenerator={false}
         />
     );
 
