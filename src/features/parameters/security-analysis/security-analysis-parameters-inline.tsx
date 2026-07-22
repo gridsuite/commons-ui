@@ -27,7 +27,6 @@ export function SecurityAnalysisParametersInline({
     fetchContingencyCount,
     isBuiltCurrentNode,
     setHaveDirtyFields,
-    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
@@ -100,7 +99,6 @@ export function SecurityAnalysisParametersInline({
                     fetchContingencyCount={fetchContingencyCount}
                     contingencyTableApiRef={contingencyTableApiRef}
                     isBuiltCurrentNode={isBuiltCurrentNode}
-                    isDeveloperMode={isDeveloperMode}
                 />
             </ParameterLayout>
         </CustomFormProvider>
