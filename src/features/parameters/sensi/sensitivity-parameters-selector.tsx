@@ -30,7 +30,7 @@ import {
     PARAMETER_SENSI_NODES,
     PARAMETER_SENSI_PST,
 } from './constants';
-import { FactorsCount, MuiStyles } from '../../../utils';
+import { FactorsCount, mergeSx, MuiStyles } from '../../../utils';
 import { isValidSensiParameterRow } from './utils';
 import { BuildStatus, BuildStatusChip } from '../../node';
 import { ParameterTableField } from '../common/parameter-table-field';
@@ -270,15 +270,15 @@ function SensitivityParametersSelector({
                                     <Tab
                                         key={subTab.label}
                                         value={subIndex}
-                                        sx={[
+                                        sx={mergeSx(
                                             {
                                                 fontWeight: 'bold',
                                                 textTransform: 'capitalize',
                                             },
-                                            subTabHasError[subIndex] &&
-                                                subIndex !== subTabValue &&
-                                                parametersStyles.tabWithError,
-                                        ]}
+                                            subTabHasError[subIndex] && subIndex !== subTabValue
+                                                ? parametersStyles.tabWithError
+                                                : undefined
+                                        )}
                                         label={<FormattedMessage id={subTab.label} />}
                                     />
                                 ))}
