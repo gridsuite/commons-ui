@@ -270,13 +270,15 @@ function SensitivityParametersSelector({
                                     <Tab
                                         key={subTab.label}
                                         value={subIndex}
-                                        sx={{
-                                            fontWeight: 'bold',
-                                            textTransform: 'capitalize',
-                                            ...(subTabHasError[subIndex] &&
+                                        sx={[
+                                            {
+                                                fontWeight: 'bold',
+                                                textTransform: 'capitalize',
+                                            },
+                                            subTabHasError[subIndex] &&
                                                 subIndex !== subTabValue &&
-                                                parametersStyles.tabWithError),
-                                        }}
+                                                parametersStyles.tabWithError,
+                                        ]}
                                         label={<FormattedMessage id={subTab.label} />}
                                     />
                                 ))}
