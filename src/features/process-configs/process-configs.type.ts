@@ -25,7 +25,7 @@ export interface SecurityAnalysisProcessConfigBackend extends ProcessConfigBaseB
 }
 
 export interface LoadflowProcessConfigBackend extends ProcessConfigBaseBackend {
-    processType: ProcessType.SECURITY_ANALYSIS;
+    processType: ProcessType.LOADFLOW;
     loadflowParametersUuid: UUID;
 }
 

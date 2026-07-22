@@ -34,7 +34,7 @@ export function getLFProcessConfigBackendFromFormData(
     formData: UpdateLFProcessConfigFormData
 ): LoadflowProcessConfigBackend {
     return {
-        processType: ProcessType.SECURITY_ANALYSIS,
+        processType: ProcessType.LOADFLOW,
         loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
         modificationUuids: formData.modifications.map((modification) => modification.modification[0].id as UUID),
     };
@@ -72,23 +72,25 @@ export const updateLFProcessConfigFormSchema = yup.object().shape({
 
 export type UpdateLFProcessConfigFormData = yup.InferType<typeof updateLFProcessConfigFormSchema>;
 
-export async function toLFProcessConfig(persistedProcessConfig: PersistedProcessConfigBackend<ProcessType.LOADFLOW>) {
+export async function toLFProcessConfig(persistedProcessConfig: PersistedProcessConfigBackend) {
     const { processConfig } = persistedProcessConfig;
-    const allUuids = new Set<string>([...processConfig.modificationUuids, processConfig.loadflowParametersUuid]);
+    const lfProcessConfig = processConfig as LoadflowProcessConfigBackend;
+
+    const allUuids = new Set<string>([...lfProcessConfig.modificationUuids, lfProcessConfig.loadflowParametersUuid]);
 
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        processType: processConfig.processType,
-        modifications: processConfig.modificationUuids.map((uuid) => ({
+        processType: lfProcessConfig.processType,
+        modifications: lfProcessConfig.modificationUuids.map((uuid) => ({
             id: uuid,
             name: elementNamesByUuid[uuid],
             enabled: true,
             description: undefined,
         })),
         loadflowParameters: {
-            id: processConfig.loadflowParametersUuid,
-            name: elementNamesByUuid[processConfig.loadflowParametersUuid],
+            id: lfProcessConfig.loadflowParametersUuid,
+            name: elementNamesByUuid[lfProcessConfig.loadflowParametersUuid],
         },
     } satisfies LoadflowProcessConfig;
 }

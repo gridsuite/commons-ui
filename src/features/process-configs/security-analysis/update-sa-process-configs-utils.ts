@@ -79,33 +79,33 @@ export const updateSAProcessConfigFormSchema = yup.object().shape({
 
 export type UpdateSAProcessConfigFormData = yup.InferType<typeof updateSAProcessConfigFormSchema>;
 
-export async function toSAProcessConfig(
-    persistedProcessConfig: PersistedProcessConfigBackend<ProcessType.SECURITY_ANALYSIS>
-) {
+export async function toSAProcessConfig(persistedProcessConfig: PersistedProcessConfigBackend) {
     const { processConfig } = persistedProcessConfig;
+    const saProcessConfig = processConfig as SecurityAnalysisProcessConfigBackend;
+
     const allUuids = new Set<string>([
-        ...processConfig.modificationUuids,
-        processConfig.securityAnalysisParametersUuid,
-        processConfig.loadflowParametersUuid,
+        ...saProcessConfig.modificationUuids,
+        saProcessConfig.securityAnalysisParametersUuid,
+        saProcessConfig.loadflowParametersUuid,
     ]);
 
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        processType: processConfig.processType,
-        modifications: processConfig.modificationUuids.map((uuid) => ({
+        processType: saProcessConfig.processType,
+        modifications: saProcessConfig.modificationUuids.map((uuid) => ({
             id: uuid,
             name: elementNamesByUuid[uuid],
             enabled: true,
             description: undefined,
         })),
         securityAnalysisParameters: {
-            id: processConfig.securityAnalysisParametersUuid,
-            name: elementNamesByUuid[processConfig.securityAnalysisParametersUuid],
+            id: saProcessConfig.securityAnalysisParametersUuid,
+            name: elementNamesByUuid[saProcessConfig.securityAnalysisParametersUuid],
         },
         loadflowParameters: {
-            id: processConfig.loadflowParametersUuid,
-            name: elementNamesByUuid[processConfig.loadflowParametersUuid],
+            id: saProcessConfig.loadflowParametersUuid,
+            name: elementNamesByUuid[saProcessConfig.loadflowParametersUuid],
         },
     } satisfies SecurityAnalysisProcessConfig;
 }

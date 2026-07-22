@@ -22,7 +22,7 @@ export function UpdateProcessConfigModifications({ name }: Readonly<{ name: stri
                 name={`${name}[${rowIndex}].modification`}
                 allowMultiSelect={false}
                 elementType={ElementType.MODIFICATION}
-                titleId="modifications"
+                titleId="process_config/modifications"
                 label={undefined}
             />
         ),

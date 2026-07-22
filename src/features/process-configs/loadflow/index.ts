@@ -5,7 +5,5 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-export * from './security-analysis';
-export * from './loadflow';
-export * from './process-configs.type';
-export * from './process-configs.utils';
+export * from './update-lf-process-config-dialog';
+export * from './update-lf-process-configs-utils';
