@@ -6,17 +6,11 @@
  */
 
 import { Box } from '@mui/material';
-import { QueryBuilderDnD } from '@react-querybuilder/dnd';
+import { createReactDnDAdapter, QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
-import {
-    ActionWithRulesAndAddersProps,
-    defaultTranslations,
-    Field,
-    QueryBuilder,
-    RuleGroupTypeAny,
-} from 'react-querybuilder';
+import { ActionProps, defaultTranslations, Field, QueryBuilder, RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -39,11 +33,11 @@ export interface CustomReactQueryBuilderProps {
     fields: Field[];
 }
 
-function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
+function RuleAddButton(props: Readonly<ActionProps>) {
     return <AddButton {...props} label="rule" />;
 }
 
-function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
+function GroupAddButton(props: Readonly<ActionProps>) {
     return <AddButton {...props} label="subGroup" />;
 }
 
@@ -61,7 +55,7 @@ const customTranslations = {
     combinators: { title: '' },
 };
 
-const dnd = { ...ReactDnD, ...ReactDndHtml5Backend };
+const dnd = createReactDnDAdapter({ ...ReactDnD, ...ReactDndHtml5Backend });
 const controlElements = {
     addRuleAction: RuleAddButton,
     addGroupAction: GroupAddButton,
@@ -98,8 +92,7 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
     const handleQueryChange = useCallback(
         (newQuery: RuleGroupTypeAny) => {
             const oldQuery = getValues(name);
-            const hasQueryChanged =
-                formatQuery(oldQuery, 'json_without_ids') !== formatQuery(newQuery, 'json_without_ids');
+            const hasQueryChanged = formatQuery(oldQuery) !== formatQuery(newQuery);
             const hasAddedRules = countRules(newQuery) > countRules(oldQuery);
             setValue(name, newQuery, {
                 shouldDirty: hasQueryChanged,
