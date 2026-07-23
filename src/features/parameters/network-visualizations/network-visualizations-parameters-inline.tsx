@@ -79,7 +79,7 @@ export function NetworkVisualizationParametersInline({
                     parameterFormatter: (newParams) => newParams,
                 }}
                 selectParameterHandler={handleLoadParameters}
-                validateHandler={handleSubmit(networkVisuMethods.onSaveInline)}
+                validateHandler={handleSubmit(networkVisuMethods.onSaveInline, networkVisuMethods.onValidationError)}
             >
                 <NetworkVisualizationParametersForm userProfile={userProfile} networkVisuMethods={networkVisuMethods} />
             </ParameterLayout>

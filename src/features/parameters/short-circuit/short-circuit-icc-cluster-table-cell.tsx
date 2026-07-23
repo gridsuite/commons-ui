@@ -25,7 +25,7 @@ export function ShortCircuitIccClusterTableCell({
     inputsDisabled?: boolean;
 }>) {
     return (
-        <TableCell align="center" sx={{ fontWeight: 'bold' }}>
+        <TableCell>
             {column.dataKey === SHORT_CIRCUIT_ICC_CLUSTER_ACTIVE && (
                 <SwitchInput formProps={{ size: 'small' }} name={`${formName}[${rowIndex}].${column.dataKey}`} />
             )}
