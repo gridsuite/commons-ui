@@ -42,7 +42,7 @@ export type SecurityAnalysisProcessConfig = Omit<
     'securityAnalysisParametersUuid' | 'loadflowParametersUuid' | 'modifications'
 > & {
     modifications: (IdName & {
-        enabled: boolean;
+        active: boolean;
         description?: string;
     })[];
     loadflowParameters: IdName;

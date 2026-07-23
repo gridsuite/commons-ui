@@ -26,7 +26,7 @@ export function getSAProcessConfigFormDataFromFetchedElement(
         modifications: processConfig.modifications.map((modification) => ({
             modification: [{ id: modification.id, name: modification.name }],
             description: modification.description ?? '',
-            active: modification.enabled,
+            active: modification.active,
         })),
         securityAnalysisParameters: [processConfig.securityAnalysisParameters],
         loadflowParameters: [processConfig.loadflowParameters],
@@ -102,7 +102,7 @@ export async function toSAProcessConfig(persistedProcessConfig: PersistedProcess
         modifications: processConfig.modifications.map((modification) => ({
             id: modification.modificationUuid,
             name: elementNamesByUuid[modification.modificationUuid],
-            enabled: modification.active,
+            active: modification.active,
             description: modification.description ?? undefined,
         })),
         securityAnalysisParameters: {
