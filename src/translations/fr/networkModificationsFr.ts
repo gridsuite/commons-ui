@@ -350,29 +350,12 @@ export const networkModificationsFr = {
     AdditionalInformationTab: 'Compléments',
     StateEstimationTab: "Estimation d'état",
 
-    // Voltage level section creation
-    CreateVoltageLevelSection: 'Ajouter un tronçon ou une section',
-    CreateCouplingDeviceDiagramButton: 'Voir le poste',
-    builtNodeTooltipForDiagram: 'Diagramme courant prenant en compte toutes les modifications réalisées',
-    notValidVoltageLevel: "Poste invalide pour l'ajout de section/tronçon. Veuillez re-créer le poste.",
-    SectionPosition: 'Position',
-    Switch: 'Organes de coupure',
-
     // Voltage level topology creation
     CreateVoltageLevelTopology: 'Ajouter un jeu de barre',
     CreateVoltageLevelTopologyError: "Erreur lors de la création d'une topologie de poste",
+    CreateCouplingDeviceDiagramButton: 'Voir le poste',
+    builtNodeTooltipForDiagram: 'Diagramme courant prenant en compte toutes les modifications réalisées',
     AtLeastOneSectionAdded: 'Il faut ajouter au moins une section de jeu de barre',
     SectionCount: 'Nombre de sections',
-    Busbar: 'Jeu de barres',
-    BusBarSectionsReference: 'Section de jeu de barres de référence',
-    isAfterBusBarSectionId: 'Côté de la nouvelle section',
-    switchesBeforeSections: 'OC avant',
-    switchesAfterSections: 'OC après',
-    areSwitchesClosed: 'Fermés',
-    areSwitchesOpen: 'Ouverts',
-    newSection: 'Nouvelle section',
-    allBusbarSections: 'Tous',
-    allOptionHelperText: 'Tous les jeux de barres n\'ont pas les memes sections (index et nombre)',
     VoltageLevelId: 'ID Poste',
-    VoltageLevelSectionCreationError: "Erreur lors de la création d'une section",
 };

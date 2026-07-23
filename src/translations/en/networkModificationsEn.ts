@@ -345,29 +345,12 @@ export const networkModificationsEn = {
     AdditionalInformationTab: 'Additional information',
     StateEstimationTab: 'State estimation',
 
-    // Voltage level section creation
-    CreateVoltageLevelSection: 'Add busbar section',
-    CreateCouplingDeviceDiagramButton: 'Show voltage level',
-    builtNodeTooltipForDiagram: 'Current diagram taking into account all applied modifications',
-    notValidVoltageLevel: 'Invalid voltage level to add busbar section. Please re-create the voltage level.',
-    SectionPosition: 'Position',
-    Switch: 'Switch',
-
     // Voltage level topology creation
     CreateVoltageLevelTopology: 'Adding a busbar',
     CreateVoltageLevelTopologyError: 'Error while creating a voltage level topology',
+    CreateCouplingDeviceDiagramButton: 'Show voltage level',
+    builtNodeTooltipForDiagram: 'Current diagram taking into account all applied modifications',
     AtLeastOneSectionAdded: 'At least one busbar section must be added',
     SectionCount: 'Section count',
-    Busbar: 'Busbar',
-    BusBarSectionsReference: 'Busbar reference section',
-    isAfterBusBarSectionId: 'New section side',
-    switchesBeforeSections: 'Switch before',
-    switchesAfterSections: 'Switch after',
-    areSwitchesClosed: 'Closed',
-    areSwitchesOpen: 'Open',
-    newSection: 'New section',
-    allBusbarSections: 'All',
-    allOptionHelperText: 'Busbars have different sections (number or index)',
     VoltageLevelId: 'Voltage level ID',
-    VoltageLevelSectionCreationError: 'Error while creating a section',
 };
