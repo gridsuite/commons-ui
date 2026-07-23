@@ -12,7 +12,7 @@ export const HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD = 'highVoltageProportionalThres
 export const HIGH_VOLTAGE_ABSOLUTE_THRESHOLD = 'highVoltageAbsoluteThreshold';
 
 export enum TabValues {
-    Contingencies = 0,
-    Aggravation = 1,
-    LimitReductions = 2,
+    Contingencies = 'Contingencies',
+    Aggravation = 'Aggravation',
+    LimitReductions = 'LimitReductions',
 }

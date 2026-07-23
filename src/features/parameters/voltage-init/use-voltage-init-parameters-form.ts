@@ -16,7 +16,6 @@ import {
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,
     DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     DEFAULT_UPDATE_BUS_VOLTAGE,
-    GENERAL,
     GENERAL_APPLY_MODIFICATIONS,
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
@@ -42,10 +41,12 @@ import {
     fromStudyVoltageInitParamsDataToFormValues,
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
+    TAB_FIELDS,
 } from './voltage-init-form-utils';
 import { SELECTED } from '../../../components/composite/dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
+import { useTabs } from '../common';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -83,14 +84,8 @@ export const useVoltageInitParametersForm = ({
     studyUuid,
     parameters,
 }: UseVoltageInitParametersFormProps): UseVoltageInitParametersFormReturn => {
-    const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [paramsLoading, setParamsLoading] = useState<boolean>(false);
-    const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
     const { snackError } = useSnackMessage();
-
-    const handleTabChange = useCallback((_event: SyntheticEvent, newValue: TabValues) => {
-        setSelectedTab(newValue);
-    }, []);
 
     const formSchema = useMemo(() => {
         return yup
@@ -199,17 +194,17 @@ export const useVoltageInitParametersForm = ({
 
     const { reset } = formMethods;
 
-    const onValidationError = useCallback(
-        (errors: FieldErrors) => {
-            const tabsInError = [];
-            if (errors?.[GENERAL] && TabValues.GENERAL !== selectedTab) {
-                tabsInError.push(TabValues.GENERAL);
-            }
-            // TODO: this system cannot work for other tabs, because formSchema keys does not match tab values
-            setTabIndexesWithError(tabsInError);
-        },
-        [selectedTab]
-    );
+    const {
+        selectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: TabValues.GENERAL,
+        tabEnum: TabValues,
+        errors: formMethods.formState.errors,
+        tabFields: TAB_FIELDS,
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
