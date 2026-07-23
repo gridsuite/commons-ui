@@ -42,7 +42,7 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
         <CustomVoltageLevelTable
             formName={LIMIT_REDUCTIONS_FORM}
             columnsDefinition={columnsDefinition}
-            tableHeight={450}
+            tableMinWidth={600}
             limits={limits}
         />
     );

@@ -17,15 +17,25 @@ import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
 interface LimitReductionsTableProps {
     columnsDefinition: LimitReductionIColumnsDef[];
-    tableHeight: number;
+    tableHeight?: number;
+    tableMinWidth?: number;
     formName: string;
     limits?: ILimitReductionsByVoltageLevel[];
 }
+
+const stickyFirstColSx = {
+    position: 'sticky',
+    left: 0,
+    zIndex: 3,
+    backgroundColor: 'background.paper',
+    textAlign: 'center',
+};
 
 export function CustomVoltageLevelTable({
     formName,
     columnsDefinition,
     tableHeight,
+    tableMinWidth,
     limits,
 }: Readonly<LimitReductionsTableProps>) {
     const { fields: rows } = useFieldArray({
@@ -35,21 +45,24 @@ export function CustomVoltageLevelTable({
     return (
         <TableContainer
             sx={{
-                height: tableHeight,
+                ...(tableHeight ? { height: tableHeight } : {}),
                 width: 'inherit',
+                overflowX: 'auto',
                 border: 'solid 0px rgba(0,0,0,0.1)',
             }}
         >
-            <Table stickyHeader size="small" sx={{ tableLayout: 'fixed' }}>
+            <Table
+                stickyHeader
+                size="small"
+                sx={{ tableLayout: 'fixed', ...(tableMinWidth ? { minWidth: tableMinWidth } : {}) }}
+            >
                 <TableHead>
                     <TableRow>
-                        {columnsDefinition.map((column) => (
+                        {columnsDefinition.map((column, index) => (
                             <CustomTooltip title={column.tooltip}>
                                 <TableCell
                                     key={column.dataKey}
-                                    sx={{
-                                        textAlign: 'center',
-                                    }}
+                                    sx={index === 0 ? stickyFirstColSx : { textAlign: 'center' }}
                                 >
                                     {column.label}
                                 </TableCell>

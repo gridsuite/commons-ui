@@ -16,6 +16,13 @@ import {
 } from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../../components/ui';
 
+const stickyFirstColBodySx = {
+    position: 'sticky',
+    left: 0,
+    zIndex: 1,
+    backgroundColor: 'background.paper',
+};
+
 export function LimitReductionTableCell({
     rowIndex,
     column,
@@ -25,7 +32,9 @@ export function LimitReductionTableCell({
     column: LimitReductionIColumnsDef;
     limits: ILimitReductionsByVoltageLevel[];
 }>) {
-    return column.dataKey === VOLTAGE_LEVELS_FORM && limits[rowIndex] ? (
+    const isVoltageCol = column.dataKey === VOLTAGE_LEVELS_FORM;
+
+    return isVoltageCol && limits[rowIndex] ? (
         <CustomTooltip
             title={
                 <FormattedMessage
@@ -37,16 +46,28 @@ export function LimitReductionTableCell({
                 />
             }
         >
-            <TableCell sx={{ fontWeight: 'bold' }}>
+            <TableCell sx={{ fontWeight: 'bold', ...stickyFirstColBodySx }}>
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             </TableCell>
         </CustomTooltip>
     ) : (
-        <TableCell sx={{ fontWeight: 'bold' }}>
-            {column.dataKey === VOLTAGE_LEVELS_FORM ? (
+        <TableCell sx={{ fontWeight: 'bold', p: 0.75, ...(isVoltageCol ? stickyFirstColBodySx : {}) }}>
+            {isVoltageCol ? (
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             ) : (
-                <FloatInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
+                <FloatInput
+                    formProps={{
+                        sx: {
+                            '& .MuiInputBase-root': {
+                                padding: 0,
+                            },
+                            '& .MuiInputBase-input': {
+                                textAlign: 'right',
+                            },
+                        },
+                    }}
+                    name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`}
+                />
             )}
         </TableCell>
     );
