@@ -357,6 +357,12 @@ export const networkModificationsFr = {
     notValidVoltageLevel: "Poste invalide pour l'ajout de section/tronçon. Veuillez re-créer le poste.",
     SectionPosition: 'Position',
     Switch: 'Organes de coupure',
+
+    // Voltage level topology creation
+    CreateVoltageLevelTopology: 'Ajouter un jeu de barre',
+    CreateVoltageLevelTopologyError: "Erreur lors de la création d'une topologie de poste",
+    AtLeastOneSectionAdded: 'Il faut ajouter au moins une section de jeu de barre',
+    SectionCount: 'Nombre de sections',
     Busbar: 'Jeu de barres',
     BusBarSectionsReference: 'Section de jeu de barres de référence',
     isAfterBusBarSectionId: 'Côté de la nouvelle section',

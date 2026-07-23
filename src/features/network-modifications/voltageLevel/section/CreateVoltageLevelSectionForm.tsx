@@ -73,7 +73,7 @@ export function CreateVoltageLevelSectionForm({
             size="small"
             fullWidth
             label={intl.formatMessage({ id: 'VoltageLevelId' })}
-            value={voltageLevelId}
+            value={voltageLevelId ?? ''}
             InputProps={{
                 readOnly: true,
             }}

@@ -352,6 +352,12 @@ export const networkModificationsEn = {
     notValidVoltageLevel: 'Invalid voltage level to add busbar section. Please re-create the voltage level.',
     SectionPosition: 'Position',
     Switch: 'Switch',
+
+    // Voltage level topology creation
+    CreateVoltageLevelTopology: 'Adding a busbar',
+    CreateVoltageLevelTopologyError: 'Error while creating a voltage level topology',
+    AtLeastOneSectionAdded: 'At least one busbar section must be added',
+    SectionCount: 'Section count',
     Busbar: 'Busbar',
     BusBarSectionsReference: 'Busbar reference section',
     isAfterBusBarSectionId: 'New section side',
