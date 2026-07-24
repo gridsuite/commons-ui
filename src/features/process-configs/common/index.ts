@@ -4,8 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-export * from './common';
 export * from './process-config.type';
 export * from './process-config.utils';
-export * from './update-lf-process-config-dialog';
-export * from './update-sa-process-config-dialog';
+export * from './update-process-config-modifications';

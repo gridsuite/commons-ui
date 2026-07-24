@@ -6,6 +6,7 @@
  */
 
 export const processConfigEn = {
+    'process_config/editLFProcessConfigTitle': 'Edit a loadflow process config',
     'process_config/editSAProcessConfigTitle': 'Edit a security analysis with contingency process config',
     'process_config/modifications': 'Modifications',
     'process_config/providersParameters': 'Providers parameters',
