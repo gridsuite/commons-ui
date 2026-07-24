@@ -25,6 +25,8 @@ export function getSAProcessConfigFormDataFromFetchedElement(
         description: description ?? undefined,
         modifications: processConfig.modifications.map((modification) => ({
             modification: [{ id: modification.id, name: modification.name }],
+            description: modification.description ?? '',
+            active: modification.active,
         })),
         securityAnalysisParameters: [processConfig.securityAnalysisParameters],
         loadflowParameters: [processConfig.loadflowParameters],
@@ -38,7 +40,11 @@ export function getSAProcessConfigBackendFromFormData(
         processType: ProcessType.SECURITY_ANALYSIS,
         loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
         securityAnalysisParametersUuid: formData.securityAnalysisParameters[0].id as UUID,
-        modificationUuids: formData.modifications.map((modification) => modification.modification[0].id as UUID),
+        modifications: formData.modifications.map((row) => ({
+            modificationUuid: row.modification[0].id as UUID,
+            description: row.description ?? null,
+            active: row.active,
+        })),
     };
 }
 
@@ -63,6 +69,8 @@ export const updateSAProcessConfigFormSchema = yup.object().shape({
                             .required()
                     )
                     .length(1, YUP_REQUIRED),
+                description: yup.string().nullable(),
+                active: yup.boolean().required(),
             })
         ),
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
@@ -82,7 +90,7 @@ export type UpdateSAProcessConfigFormData = yup.InferType<typeof updateSAProcess
 export async function toSAProcessConfig(persistedProcessConfig: PersistedProcessConfigBackend) {
     const { processConfig } = persistedProcessConfig;
     const allUuids = new Set<string>([
-        ...processConfig.modificationUuids,
+        ...processConfig.modifications.map((modification) => modification.modificationUuid),
         processConfig.securityAnalysisParametersUuid,
         processConfig.loadflowParametersUuid,
     ]);
@@ -91,11 +99,11 @@ export async function toSAProcessConfig(persistedProcessConfig: PersistedProcess
 
     return {
         processType: processConfig.processType,
-        modifications: processConfig.modificationUuids.map((uuid) => ({
-            id: uuid,
-            name: elementNamesByUuid[uuid],
-            enabled: true,
-            description: undefined,
+        modifications: processConfig.modifications.map((modification) => ({
+            id: modification.modificationUuid,
+            name: elementNamesByUuid[modification.modificationUuid],
+            active: modification.active,
+            description: modification.description ?? undefined,
         })),
         securityAnalysisParameters: {
             id: processConfig.securityAnalysisParametersUuid,
