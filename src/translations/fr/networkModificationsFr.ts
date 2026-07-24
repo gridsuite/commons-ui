@@ -316,6 +316,8 @@ export const networkModificationsFr = {
     NoBusbarSectionFound: 'Aucun jeu de barres trouvé pour ce poste',
     CreateLine: 'Créer une ligne',
     LineCreationError: "Erreur lors de la création d'une ligne",
+    ModifyLine: 'Modifier une ligne',
+    LineModificationError: "Erreur lors de la modification d'une ligne",
     SelectedOperationalLimitGroups: 'Jeux de limites actifs',
     LimitSets: 'Jeux de limites',
     DeleteFromMenu: 'Supprimer',

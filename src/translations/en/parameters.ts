@@ -67,6 +67,8 @@ export const parametersEn = {
     leftOpenBracket: '(',
     rightOpenBracket: ')',
 
+    Aggravation: 'Aggravation',
+    Contingencies: 'Contingencies',
     Advanced: 'Advanced',
 
     Provider: 'Provider',
