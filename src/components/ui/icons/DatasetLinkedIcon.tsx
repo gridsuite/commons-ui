@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import DatasetLinked from '@material-symbols/svg-400/outlined/dataset_linked.svg?react';
+import DatasetLinked from '@material-symbols/svg-400/outlined/dataset_linked-fill.svg?react';
 import { SvgIcon, type SvgIconProps } from '@mui/material';
 
 export function DatasetLinkedIcon(props: SvgIconProps) {
