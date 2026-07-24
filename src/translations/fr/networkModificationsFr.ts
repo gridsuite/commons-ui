@@ -349,4 +349,13 @@ export const networkModificationsFr = {
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Compléments',
     StateEstimationTab: "Estimation d'état",
+
+    // Voltage level topology creation
+    CreateVoltageLevelTopology: 'Ajouter un jeu de barre',
+    CreateVoltageLevelTopologyError: "Erreur lors de la création d'une topologie de poste",
+    CreateCouplingDeviceDiagramButton: 'Voir le poste',
+    builtNodeTooltipForDiagram: 'Diagramme courant prenant en compte toutes les modifications réalisées',
+    AtLeastOneSectionAdded: 'Il faut ajouter au moins une section de jeu de barre',
+    SectionCount: 'Nombre de sections',
+    VoltageLevelId: 'ID Poste',
 };
