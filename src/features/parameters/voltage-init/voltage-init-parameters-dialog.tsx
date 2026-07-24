@@ -41,6 +41,7 @@ export function VoltageInitParametersEditionDialog({
             open={open}
             onClose={onClose}
             onSave={voltageInitMethods.onSaveDialog}
+            onValidationError={voltageInitMethods.onValidationError}
             titleId={titleId}
             formContext={{
                 ...voltageInitMethods.formMethods,
