@@ -14,7 +14,7 @@ import { ActionProps, defaultTranslations, Field, QueryBuilder, RuleGroupTypeAny
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { CombinatorSelector } from './CombinatorSelector';
 import { AddButton } from './AddButton';
 import { ValueEditor } from './ValueEditor';
@@ -55,7 +55,6 @@ const customTranslations = {
     combinators: { title: '' },
 };
 
-const dnd = createReactDnDAdapter({ ...ReactDnD, ...ReactDndHtml5Backend });
 const controlElements = {
     addRuleAction: RuleAddButton,
     addGroupAction: GroupAddButton,
@@ -92,7 +91,8 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
     const handleQueryChange = useCallback(
         (newQuery: RuleGroupTypeAny) => {
             const oldQuery = getValues(name);
-            const hasQueryChanged = formatQuery(oldQuery) !== formatQuery(newQuery);
+            const hasQueryChanged =
+                formatQuery(oldQuery, 'json_without_ids') !== formatQuery(newQuery, 'json_without_ids');
             const hasAddedRules = countRules(newQuery) > countRules(oldQuery);
             setValue(name, newQuery, {
                 shouldDirty: hasQueryChanged,
@@ -102,17 +102,22 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
         [getValues, setValue, isSubmitted, name]
     );
 
+    // ugly way to reset Drag N Drop
+    const [dnd, setDnd] = useState(() => createReactDnDAdapter({ ...ReactDnD, ...ReactDndHtml5Backend }));
+    const resetDnd = useCallback(() => {
+        setDnd(createReactDnDAdapter({ ...ReactDnD, ...ReactDndHtml5Backend }));
+    }, [setDnd]);
+
     const combinators = useMemo(() => {
         return Object.values(COMBINATOR_OPTIONS).map((c: any) => ({
             name: c.name,
             label: intl.formatMessage({ id: c.label }),
         }));
     }, [intl]);
-
     return (
         <>
             <QueryBuilderMaterial>
-                <QueryBuilderDnD dnd={dnd}>
+                <QueryBuilderDnD dnd={dnd} onRuleDrop={resetDnd}>
                     <QueryBuilder
                         fields={fields}
                         query={query}
