@@ -7,7 +7,15 @@
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { DirectoryItemsInput, DndColumn, DndColumnType, DndTable } from '../../components';
+import {
+    DESCRIPTION,
+    ACTIVE,
+    DirectoryItemsInput,
+    DndColumn,
+    DndColumnType,
+    DndTable,
+    getDefaultRowData,
+} from '../../components';
 import { ElementType } from '../../utils';
 
 export function UpdateProcessConfigModifications({ name }: Readonly<{ name: string }>) {
@@ -22,7 +30,7 @@ export function UpdateProcessConfigModifications({ name }: Readonly<{ name: stri
                 name={`${name}[${rowIndex}].modification`}
                 allowMultiSelect={false}
                 elementType={ElementType.MODIFICATION}
-                titleId="modifications"
+                titleId="process_config/modifications"
                 label={undefined}
             />
         ),
@@ -38,10 +46,31 @@ export function UpdateProcessConfigModifications({ name }: Readonly<{ name: stri
                 label: intl.formatMessage({ id: 'process_config/modifications' }),
                 component: modificationSelector,
             },
+            {
+                label: intl.formatMessage({ id: 'description' }),
+                sxHeader: { textAlign: 'center' },
+                dataKey: DESCRIPTION,
+                initialValue: '',
+                editable: true,
+                width: '8rem',
+                type: DndColumnType.DESCRIPTIONS,
+            },
+            {
+                label: intl.formatMessage({ id: 'Active' }),
+                sxHeader: { textAlign: 'center' },
+                dataKey: ACTIVE,
+                initialValue: true,
+                editable: true,
+                width: '4rem',
+                type: DndColumnType.SWITCH,
+            },
         ];
     }, [modificationSelector, name, intl]);
 
-    const createModification = () => [{ modification: [] }];
+    const createModification = useCallback(
+        () => [{ ...getDefaultRowData(columnsDefinition), modification: [] }],
+        [columnsDefinition]
+    );
 
     return (
         <DndTable
