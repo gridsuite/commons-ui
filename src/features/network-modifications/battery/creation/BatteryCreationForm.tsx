@@ -76,7 +76,7 @@ export function BatteryCreationForm({
         </Box>
     );
 
-    const voltageRegulationFields = (
+    const voltageRegulationForm = (
         <VoltageRegulationForm
             voltageLevelOptions={voltageLevelOptions}
             fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
@@ -113,13 +113,10 @@ export function BatteryCreationForm({
 
             {/* Active power control part */}
             <Grid container spacing={2} paddingTop={2}>
-                <GridItem
-                    tooltip={watchVoltageRegulation !== null ? '' : <FormattedMessage id="NoModification" />}
-                    size={4}
-                >
+                <GridItem size={4}>
                     {voltageRegulationField}
                 </GridItem>
-                {voltageRegulationFields}
+                {voltageRegulationForm}
                 <ActivePowerControlForm />
             </Grid>
 
