@@ -168,8 +168,7 @@ export const getSpecificShortCircuitParametersFormSchema = (
 
     // try to extract existing SPECIFIC_PARAMETERS fields from defaultSchema (if present)
     const existingSpecificSchema = (defaultSchema as any).fields?.[SPECIFIC_PARAMETERS] as
-        | yup.ObjectSchema<any>
-        | undefined;
+        yup.ObjectSchema<any> | undefined;
     const existingSpecificFields = existingSpecificSchema ? (existingSpecificSchema as any).fields || {} : {};
 
     const mergedSpecificShape: { [key: string]: yup.AnySchema } = {
