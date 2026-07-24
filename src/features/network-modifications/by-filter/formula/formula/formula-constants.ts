@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-export * from './deletion';
-export * from './assignment';
-export * from './formula';
+export const FORMULAS = 'formulas';
+export const OPERATOR = 'operator';
+export const REFERENCE_FIELD_OR_VALUE_1 = 'referenceFieldOrValue1';
+export const REFERENCE_FIELD_OR_VALUE_2 = 'referenceFieldOrValue2';
