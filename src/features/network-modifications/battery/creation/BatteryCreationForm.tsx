@@ -34,9 +34,6 @@ export function BatteryCreationForm({
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
 }: Readonly<BatteryCreationFormProps>) {
-    const watchVoltageRegulation = useWatch({
-        name: FieldConstants.VOLTAGE_REGULATION,
-    });
 
     const batteryIdField = (
         <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
