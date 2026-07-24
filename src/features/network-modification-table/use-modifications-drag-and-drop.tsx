@@ -114,6 +114,20 @@ export const useModificationsDragAndDrop = ({
 
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
+            // Without the write permission, nothing can be dragged out of, into or within a shared modification.
+            const { lockedNestedModificationUuids, readOnlySharedModificationUuids } =
+                table.options.meta?.permissions ?? {};
+            if (
+                lockedNestedModificationUuids?.has(sourceRow.original.uuid) ||
+                lockedNestedModificationUuids?.has(targetRow.original.uuid)
+            ) {
+                return true;
+            }
+            // Landing on an expanded shared modification means entering it, which is a write into its content.
+            if (readOnlySharedModificationUuids?.has(targetRow.original.uuid) && targetRow.getIsExpanded()) {
+                return true;
+            }
+
             if (isCompositeModification(sourceRow.original)) {
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
                 return (
@@ -129,7 +143,7 @@ export const useModificationsDragAndDrop = ({
 
             return false;
         },
-        [computeTargetDepth]
+        [computeTargetDepth, table]
     );
 
     const handleDragUpdate = useCallback(

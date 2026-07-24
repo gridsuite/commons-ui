@@ -17,6 +17,8 @@ export interface NetworkModificationMetadata {
     description: string;
     messageType: string;
     messageValues: string;
+    // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
+    referenceId?: UUID;
 }
 
 export interface ComposedModificationMetadata extends NetworkModificationMetadata {

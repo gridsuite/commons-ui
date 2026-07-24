@@ -18,12 +18,58 @@ export const formatToComposedModification = (
     return modifications.map((modification) => ({ ...modification, subModifications: [] }));
 };
 
-export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
+export function isCompositeModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
-export function isSharedModification(modification: ComposedModificationMetadata | undefined) {
+export function isSharedModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
+}
+
+/**
+ * Tells whether a modification can't be edited because of the permissions on a shared modification: either it
+ * is a shared modification the user can't write into, or it sits inside one.
+ */
+export function isModificationEditLocked(
+    uuid: UUID,
+    readOnlySharedModificationUuids: Set<UUID> | undefined,
+    lockedNestedModificationUuids: Set<UUID> | undefined
+): boolean {
+    return !!readOnlySharedModificationUuids?.has(uuid) || !!lockedNestedModificationUuids?.has(uuid);
+}
+
+/**
+ * Collects the uuids of everything nested inside the given shared modifications, at any depth.
+ *
+ * Those are the modifications the user isn't allowed to touch when he has no write permission on the shared
+ * modification holding them. The shared modifications themselves are deliberately left out: acting on one as
+ * a whole (moving it, deleting it, assembling it into a composite) stays allowed.
+ *
+ * @param readOnlySharedModificationUuids uuids of the shared modifications the user can't write into
+ * @param mods all the modifications of the tree
+ */
+export function collectLockedNestedModificationUuids(
+    readOnlySharedModificationUuids: Set<UUID>,
+    mods: ComposedModificationMetadata[]
+): Set<UUID> {
+    const locked = new Set<UUID>();
+
+    const collectAll = (mod: ComposedModificationMetadata) => {
+        locked.add(mod.uuid);
+        mod.subModifications?.forEach(collectAll);
+    };
+    const visit = (currentMods: ComposedModificationMetadata[], insideReadOnlyShared: boolean) => {
+        currentMods.forEach((mod) => {
+            if (insideReadOnlyShared) {
+                collectAll(mod);
+            } else {
+                visit(mod.subModifications ?? [], readOnlySharedModificationUuids.has(mod.uuid));
+            }
+        });
+    };
+    visit(mods, false);
+
+    return locked;
 }
 
 // returns the depth of the modification with the given uuid in the given mods tree

@@ -20,10 +20,12 @@ export interface DescriptionCellProps {
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     isDisabled?: boolean;
+    // the dialog stays reachable, only its validation is denied
+    isSaveDisabled?: boolean;
 }
 
 export function DescriptionCell(props: DescriptionCellProps) {
-    const { data, studyUuid, currentNodeId, isDisabled = false } = props;
+    const { data, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
@@ -60,6 +62,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
+                    disabledSave={isSaveDisabled}
                 />
             )}
             <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>

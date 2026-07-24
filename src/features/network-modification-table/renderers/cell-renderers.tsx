@@ -18,6 +18,7 @@ import { DescriptionCell } from './description-cell';
 import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../network-modification-table-styles';
+import { isModificationEditLocked } from '../utils';
 import { ComposedModificationMetadata } from '../../../utils';
 
 /**
@@ -32,6 +33,16 @@ import { ComposedModificationMetadata } from '../../../utils';
 
 type CCtx = CellContext<ComposedModificationMetadata, unknown>;
 type HCtx = HeaderContext<ComposedModificationMetadata, unknown>;
+
+/** True when the row can't be edited because of the permissions on the shared modification holding it. */
+function isRowEditLocked({ row, table }: CCtx): boolean {
+    const permissions = table.options.meta?.permissions;
+    return isModificationEditLocked(
+        row.original.uuid,
+        permissions?.readOnlySharedModificationUuids,
+        permissions?.lockedNestedModificationUuids
+    );
+}
 
 export function DragHandleRenderer({ table }: CCtx) {
     return <DragHandleCell isRowDragDisabled={table.options.meta?.interaction.isRowDragDisabled ?? false} />;
@@ -58,11 +69,20 @@ export function NameHeaderRenderer({ table }: HCtx) {
     );
 }
 
-export function NameCellRenderer({ row, table, column }: CCtx) {
-    return <NameCell row={row} table={table} onChange={column.columnDef.meta?.onChange} />;
+export function NameCellRenderer(context: CCtx) {
+    const { row, table, column } = context;
+    return (
+        <NameCell
+            row={row}
+            table={table}
+            onChange={column.columnDef.meta?.onChange}
+            isRenameDisabled={isRowEditLocked(context)}
+        />
+    );
 }
 
-export function DescriptionCellRenderer({ row, table }: CCtx) {
+export function DescriptionCellRenderer(context: CCtx) {
+    const { row, table } = context;
     const { meta } = table.options;
     return (
         <DescriptionCell
@@ -70,18 +90,20 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
             studyUuid={meta?.context.studyUuid ?? null}
             currentNodeId={meta?.context.currentNodeId}
             isDisabled={meta?.status.isDisabled}
+            isSaveDisabled={isRowEditLocked(context)}
         />
     );
 }
 
-export function SwitchCellRenderer({ row, table }: CCtx) {
+export function SwitchCellRenderer(context: CCtx) {
+    const { row, table } = context;
     const { meta } = table.options;
     return (
         <SwitchCell
             data={row.original}
             studyUuid={meta?.context.studyUuid ?? null}
             currentNodeId={meta?.context.currentNodeId}
-            isDisabled={meta?.status.isDisabled}
+            isDisabled={meta?.status.isDisabled || isRowEditLocked(context)}
         />
     );
 }
@@ -108,7 +130,8 @@ export function RootNetworkHeaderRenderer({ column, table }: HCtx) {
     );
 }
 
-export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
+export function RootNetworkCellRenderer(context: CCtx) {
+    const { row, column, table } = context;
     const { meta } = table.options;
     // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
     const rootNetwork = meta?.context.rootNetworks?.find((r) => r.rootNetworkUuid === column.id);
@@ -124,7 +147,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
                 rootNetwork={rootNetwork}
                 modificationsToExclude={meta.modifications.toExclude}
                 setModificationsToExclude={meta.modifications.setToExclude}
-                isDisabled={meta?.status.isDisabled}
+                isDisabled={meta?.status.isDisabled || isRowEditLocked(context)}
             />
         </Box>
     );
