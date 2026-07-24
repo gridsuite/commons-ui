@@ -40,6 +40,7 @@ import {
     findDepth,
     formatToComposedModification,
     isCompositeModification,
+    isSharedModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
     removeUuidsFromTree,
@@ -48,7 +49,7 @@ import { ModificationRow } from './row';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
-    handleCellClick: (modification: NetworkModificationMetadata) => void;
+    handleCellClick: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
@@ -239,7 +240,7 @@ export function NetworkModificationsTable({
         getExpandedRowModel: getExpandedRowModel(),
         getSubRows: (row) => row.subModifications,
         getRowId: (row) => row.uuid,
-        getRowCanExpand: (row) => isCompositeModification(row.original),
+        getRowCanExpand: (row) => isCompositeModification(row.original) || isSharedModification(row.original),
         enableRowSelection: true,
         enableSubRowSelection: true,
         enableExpanding: true,

@@ -13,6 +13,7 @@ import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
     ExcludedNetworkModifications,
+    ModificationType,
     RootNetworkRowInfo,
     snackWithFallback,
 } from '../../../utils';
@@ -83,6 +84,8 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const { snackError } = useSnackMessage();
     const modificationUuid = data.uuid;
 
+    const isSharedModification = data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
+
     const isModificationActivated = useMemo(() => {
         if (rootNetwork.isCreating) {
             return true;
@@ -148,7 +151,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
             isActivated={isModificationActivated}
-            isDisabled={isLoading || isDisabled}
+            isDisabled={isLoading || isDisabled || isSharedModification}
             onClick={handleModificationActivationByRootNetwork}
         />
     );
