@@ -6,8 +6,6 @@
  */
 
 import { Box, Grid2 as Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { useWatch } from 'react-hook-form';
 import {
     ActivePowerControlForm,
     ConnectivityForm,
@@ -34,7 +32,6 @@ export function BatteryCreationForm({
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
 }: Readonly<BatteryCreationFormProps>) {
-
     const batteryIdField = (
         <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
     );
@@ -110,9 +107,7 @@ export function BatteryCreationForm({
 
             {/* Active power control part */}
             <Grid container spacing={2} paddingTop={2}>
-                <GridItem size={4}>
-                    {voltageRegulationField}
-                </GridItem>
+                <GridItem size={4}>{voltageRegulationField}</GridItem>
                 {voltageRegulationForm}
                 <ActivePowerControlForm />
             </Grid>
