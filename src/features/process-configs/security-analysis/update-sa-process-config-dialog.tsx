@@ -10,6 +10,7 @@ import { LinearProgress } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { UpdateSAProcessConfig } from './update-sa-process-config';
+// eslint-disable-next-line import-x/no-cycle
 import {
     getSAProcessConfigBackendFromFormData,
     updateSAProcessConfigFormSchema,
@@ -17,8 +18,7 @@ import {
     toSAProcessConfig,
 } from './update-sa-process-configs-utils';
 import { CustomMuiDialog } from '../../../components';
-import { useProcessConfigs } from '../common/use-process-configs';
-import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType } from '../common/process-config.type';
+import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType, useProcessConfigs } from '../common';
 
 interface UpdateSAProcessConfigDialogProps {
     open: boolean;

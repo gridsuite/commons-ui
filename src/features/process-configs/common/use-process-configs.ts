@@ -5,14 +5,21 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { FieldValues, SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { SubmitHandler, UseFormReturn } from 'react-hook-form';
 import { UUID } from 'node:crypto';
 import { FieldConstants } from '../../../utils';
+// eslint-disable-next-line import-x/no-cycle
 import { getProcessConfigFormData } from './process-config.utils';
-import { PersistedProcessConfigBackend, ProcessConfig, ProcessConfigBackend, ProcessType } from './process-config.type';
+import {
+    PersistedProcessConfigBackend,
+    ProcessConfig,
+    ProcessConfigBackend,
+    ProcessConfigFormData,
+    ProcessType,
+} from './process-config.type';
 
-export interface UseProcessConfigsReturn {
-    handleUpdateProcessConfig: SubmitHandler<FieldValues>;
+export interface UseProcessConfigsReturn<TProcessType extends ProcessType> {
+    handleUpdateProcessConfig: SubmitHandler<ProcessConfigFormData<TProcessType>>;
     disabledSave: boolean;
     isLoading: boolean;
 }
@@ -21,7 +28,7 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
     name: string,
     description: string | null,
     processConfigUuid: UUID,
-    methods: UseFormReturn<FieldValues>,
+    methods: UseFormReturn<ProcessConfigFormData<TProcessType>>,
     fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend<TProcessType>>,
     toProcessConfig: (processConfig: ProcessConfigBackend<TProcessType>) => Promise<ProcessConfig<TProcessType>>,
     updateProcessConfig: (
@@ -30,9 +37,11 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
         description: string,
         processConfig: ProcessConfigBackend<TProcessType>
     ) => Promise<void>,
-    getProcessConfigBackendFromFormData: (formData: FieldValues) => ProcessConfigBackend<TProcessType>,
+    getProcessConfigBackendFromFormData: (
+        formData: ProcessConfigFormData<TProcessType>
+    ) => ProcessConfigBackend<TProcessType>,
     onClose: () => void
-): UseProcessConfigsReturn => {
+): UseProcessConfigsReturn<TProcessType> => {
     const [isLoading, setIsLoading] = useState(false);
 
     const {
@@ -55,7 +64,7 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
     }, [fetchProcessConfigData]);
 
     const handleUpdateProcessConfig = useCallback(
-        (processConfigFormData: FieldValues) => {
+        (processConfigFormData: ProcessConfigFormData<TProcessType>) => {
             updateProcessConfig(
                 processConfigUuid,
                 processConfigFormData[FieldConstants.NAME],

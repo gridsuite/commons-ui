@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
-import { FieldValues } from 'react-hook-form';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-import { ProcessConfig, ProcessType } from './process-config.type';
+// eslint-disable-next-line import-x/no-cycle
+import { ProcessConfig, ProcessConfigFormData, ProcessType } from './process-config.type';
 
 export const processConfigBaseFormShape = {
     [FieldConstants.NAME]: yup.string().required(),
@@ -38,7 +38,7 @@ export function getProcessConfigFormData<TProcessType extends ProcessType>(
     processConfig: ProcessConfig<TProcessType>,
     name: string,
     description: string | null
-): FieldValues {
+): ProcessConfigFormData<TProcessType> {
     // ici c'est faiblement typé -> pas top
     const { processType, ...processConfigData } = processConfig;
 

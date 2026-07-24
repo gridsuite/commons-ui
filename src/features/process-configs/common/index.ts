@@ -6,5 +6,6 @@
  */
 
 // eslint-disable-next-line import-x/no-cycle
-export * from './update-sa-process-config-dialog';
-export * from './update-sa-process-configs-utils';
+export * from './process-config.type';
+export * from './use-process-configs';
+export * from './process-config.utils';

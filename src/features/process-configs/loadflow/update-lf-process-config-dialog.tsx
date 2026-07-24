@@ -11,14 +11,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components';
 import { UpdateLFProcessConfig } from './update-lf-process-config';
+// eslint-disable-next-line import-x/no-cycle
 import {
     getLFProcessConfigBackendFromFormData,
     toLFProcessConfig,
     UpdateLFProcessConfigFormData,
     updateLFProcessConfigFormSchema,
 } from './update-lf-process-configs-utils';
-import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType } from '../common/process-config.type';
-import { useProcessConfigs } from '../common/use-process-configs';
+import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType, useProcessConfigs } from '../common';
 
 interface UpdateLFProcessConfigDialogProps {
     open: boolean;

@@ -9,12 +9,13 @@ import { UUID } from 'node:crypto';
 
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
+// eslint-disable-next-line import-x/no-cycle
 import {
+    processConfigBaseFormShape,
     ProcessType,
     SecurityAnalysisProcessConfig,
     SecurityAnalysisProcessConfigBackend,
-} from '../common/process-config.type';
-import { processConfigBaseFormShape } from '../common/process-config.utils';
+} from '../common';
 
 export function getSAProcessConfigBackendFromFormData(
     formData: UpdateSAProcessConfigFormData

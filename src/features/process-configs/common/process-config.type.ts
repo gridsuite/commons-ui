@@ -6,6 +6,9 @@
  */
 import { UUID } from 'node:crypto';
 import { IdName } from '../../../utils';
+// eslint-disable-next-line import-x/no-cycle
+import { UpdateLFProcessConfigFormData } from '../loadflow';
+import { UpdateSAProcessConfigFormData } from '../security-analysis';
 
 export enum ProcessType {
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
@@ -75,7 +78,6 @@ type ProcessConfigByProcessType = {
 
 export type ProcessConfig<T extends keyof ProcessConfigByProcessType> = ProcessConfigByProcessType[T];
 
-/*
 // Form schemas
 type ProcessConfigFormDataByProcessType = {
     [ProcessType.SECURITY_ANALYSIS]: UpdateSAProcessConfigFormData;
@@ -83,4 +85,3 @@ type ProcessConfigFormDataByProcessType = {
 };
 export type ProcessConfigFormData<T extends keyof ProcessConfigFormDataByProcessType> =
     ProcessConfigFormDataByProcessType[T];
-*/

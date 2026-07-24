@@ -8,8 +8,13 @@ import * as yup from 'yup';
 import { UUID } from 'node:crypto';
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-import { LoadflowProcessConfig, LoadflowProcessConfigBackend, ProcessType } from '../common/process-config.type';
-import { processConfigBaseFormShape } from '../common/process-config.utils';
+// eslint-disable-next-line import-x/no-cycle
+import {
+    LoadflowProcessConfig,
+    LoadflowProcessConfigBackend,
+    processConfigBaseFormShape,
+    ProcessType,
+} from '../common';
 
 export function getLFProcessConfigBackendFromFormData(
     formData: UpdateLFProcessConfigFormData
