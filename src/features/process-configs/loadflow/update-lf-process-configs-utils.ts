@@ -21,8 +21,12 @@ export function getLFProcessConfigBackendFromFormData(
 ): LoadflowProcessConfigBackend {
     return {
         processType: ProcessType.LOADFLOW,
+        modifications: formData.modifications.map((row) => ({
+            modificationUuid: row.modification[0].id as UUID,
+            description: row.description ?? null,
+            active: row.active,
+        })),
         loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
-        modificationUuids: formData.modifications.map((modification) => modification.modification[0].id as UUID),
     };
 }
 
@@ -49,15 +53,23 @@ export type LFProcessConfigFormData = yup.InferType<typeof lfProcessConfigFormSc
 export type NamedLFProcessConfigFormData = yup.InferType<typeof namedLFProcessConfigFormSchema>;
 
 export async function toLFProcessConfig(processConfig: LoadflowProcessConfigBackend) {
-    const allUuids = new Set<string>([...processConfig.modificationUuids, processConfig.loadflowParametersUuid]);
+    const allUuids = new Set<string>([
+        ...processConfig.modifications.map((modification) => modification.modificationUuid),
+        processConfig.loadflowParametersUuid,
+    ]);
 
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        modifications: processConfig.modificationUuids.map((uuid) => ({
-            modification: [{ id: uuid, name: elementNamesByUuid[uuid] }],
-            enabled: true,
-            description: undefined,
+        modifications: processConfig.modifications.map((modification) => ({
+            modification: [
+                {
+                    id: modification.modificationUuid,
+                    name: elementNamesByUuid[modification.modificationUuid],
+                },
+            ],
+            active: modification.active,
+            description: modification.description ?? undefined,
         })),
         loadflowParameters: [
             {

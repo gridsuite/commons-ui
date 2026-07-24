@@ -34,7 +34,7 @@ export const processConfigModificationsFormShape = {
                     )
                     .length(1, YUP_REQUIRED),
                 description: yup.string().nullable(),
-                enabled: yup.boolean().required(),
+                active: yup.boolean().required(),
             })
         ),
 };
