@@ -88,9 +88,11 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
             {...otherProps} // TODO move at the end like other inputs ?
             variant={variant}
             value={value}
-            InputProps={adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText()}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            slotProps={{
+                input: adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText(),
+            }}
         />
     );
 }

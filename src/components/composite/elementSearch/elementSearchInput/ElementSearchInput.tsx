@@ -126,8 +126,10 @@ export function ElementSearchInput<T>(props: Readonly<ElementSearchInputProps<T>
                 return option === value;
             }}
             disabled={searchTermDisabled}
-            PaperComponent={PaperComponent}
             filterOptions={filterOptions}
+            slots={{
+                paper: PaperComponent,
+            }}
         />
     );
 }

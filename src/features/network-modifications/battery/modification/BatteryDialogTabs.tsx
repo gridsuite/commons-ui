@@ -23,8 +23,10 @@ export function BatteryDialogTabs({ tabIndex, tabIndexesWithError, setTabIndex }
             value={tabIndex}
             variant="scrollable"
             onChange={(_event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
-            TabIndicatorProps={{
-                sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+            slotProps={{
+                indicator: {
+                    sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                },
             }}
         >
             <Tab

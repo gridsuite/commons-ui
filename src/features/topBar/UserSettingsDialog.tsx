@@ -60,7 +60,9 @@ function UserSettingsDialog({ openDialog, onClose, developerMode, onDeveloperMod
                             checked={developerMode ?? false}
                             disabled={handleDeveloperModeClick === undefined}
                             onChange={handleDeveloperModeClick}
-                            inputProps={{ 'aria-label': 'developer mode checkbox' }}
+                            slotProps={{
+                                input: { 'aria-label': 'developer mode checkbox' },
+                            }}
                         />
                     </Box>
                 </Box>

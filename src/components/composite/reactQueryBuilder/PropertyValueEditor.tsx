@@ -6,15 +6,7 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import {
-    Autocomplete,
-    FormControl,
-    Grid2 as Grid,
-    MenuItem,
-    Select,
-    type SelectChangeEvent,
-    TextField,
-} from '@mui/material';
+import { Autocomplete, FormControl, Grid, MenuItem, Select, type SelectChangeEvent, TextField } from '@mui/material';
 import { ValueEditorProps } from 'react-querybuilder';
 import { useIntl } from 'react-intl';
 import { useValid } from './hooks/useValid';

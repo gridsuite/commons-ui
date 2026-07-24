@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, TextField, Stack } from '@mui/material';
+import { Grid, TextField, Stack } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
@@ -35,11 +35,13 @@ export function SubstationModificationForm({ substationToModify }: Readonly<Subs
                             fullWidth
                             label="ID"
                             value={equipmentId ?? ''}
-                            InputProps={{
-                                readOnly: true,
-                            }}
                             disabled
                             {...filledTextField}
+                            slotProps={{
+                                input: {
+                                    readOnly: true,
+                                },
+                            }}
                         />
                     </Grid>
                     <Grid size="grow">

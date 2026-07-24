@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid, Tab, Tabs, Stack } from '@mui/material';
+import { Box, Grid, Tab, Tabs, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
@@ -52,8 +52,10 @@ export function VoltageLevelCreationForm({
                     value={tabIndex}
                     variant="scrollable"
                     onChange={(_, newValue) => setTabIndex(newValue)}
-                    TabIndicatorProps={{
-                        sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                    slotProps={{
+                        indicator: {
+                            sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                        },
                     }}
                 >
                     <Tab

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { ParametersEditionDialogProps } from '../common';
@@ -62,9 +62,11 @@ export function SecurityAnalysisParametersDialog({
             }}
             titleId={titleId}
             disabledSave={disableSave}
-            PaperProps={{
-                sx: {
-                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '90vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

@@ -15,7 +15,7 @@ import {
     CssBaseline,
     FormControlLabel,
     FormGroup,
-    Grid2 as Grid,
+    Grid,
     IconButton,
     styled,
     StyledEngineProvider,

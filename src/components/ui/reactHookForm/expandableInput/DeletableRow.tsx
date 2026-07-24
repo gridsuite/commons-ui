@@ -6,7 +6,7 @@
  */
 import { PropsWithChildren, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid2 as Grid, IconButton } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, RestoreFromTrash as RestoreFromTrashIcon } from '@mui/icons-material';
 import { CustomTooltip } from '../../../ui/tooltip/CustomTooltip';
 

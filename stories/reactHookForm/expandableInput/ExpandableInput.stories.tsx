@@ -15,7 +15,7 @@ import { CustomFormProvider, ExpandableInput } from '../../../src';
 function Row({ name, index }: { name: string; index: number }) {
     const { field } = useController({ name: `${name}.${index}.label` });
     return (
-        <Grid item xs={10}>
+        <Grid size={10}>
             <TextField {...field} size="small" fullWidth />
         </Grid>
     );

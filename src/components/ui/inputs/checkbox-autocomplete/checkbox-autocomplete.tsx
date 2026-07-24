@@ -12,7 +12,6 @@ import {
     AutocompleteProps,
     AutocompleteRenderInputParams,
     AutocompleteRenderOptionState,
-    lighten,
     Popper,
     styled,
     TextField,
@@ -36,7 +35,7 @@ const styles = {
             width: 'inherit',
             height: 'inherit',
             zIndex: 20, // jump up to avoid input zone pushed down below component
-            backgroundColor: lighten(theme.palette.background.default, 0.16),
+            backgroundColor: theme.lighten(theme.palette.background.default, 0.16),
         },
         '&.Mui-focused': {
             '.MuiInputLabel-root': {
@@ -161,7 +160,6 @@ export function CheckboxAutocomplete<Value>({
             disableCloseOnSelect
             size="small"
             disableListWrap
-            PopperComponent={StyledPopper}
             options={options}
             noOptionsText={intl.formatMessage({ id: 'noOption' })}
             getOptionLabel={getOptionLabel}
@@ -169,12 +167,15 @@ export function CheckboxAutocomplete<Value>({
             // props should not be overridden
             limitTags={1}
             multiple
-            ListboxComponent={virtualize ? VirtualizedList : undefined}
             renderInput={renderInput}
             renderOption={renderOption}
             inputValue={inputValue}
             onChange={handleChange}
             onBlur={handleBlur}
+            slots={{ popper: StyledPopper }}
+            slotProps={{
+                listbox: { component: virtualize ? VirtualizedList : undefined },
+            }}
         />
     );
 }

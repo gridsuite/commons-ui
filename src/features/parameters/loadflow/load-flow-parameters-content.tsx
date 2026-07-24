@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { TabValues } from './load-flow-parameters-utils';
 import LoadFlowAdvancedParameters from './load-flow-advanced-parameters';
 import LoadFlowGeneralParameters from './load-flow-general-parameters';

@@ -12,7 +12,6 @@ import {
     Box,
     Button,
     ClickAwayListener,
-    darken,
     IconButton,
     ListItemIcon,
     ListItemText,
@@ -75,7 +74,7 @@ const getStyles = (dense: boolean = false) => {
             color: 'inherit',
         },
         name: (theme) => ({
-            backgroundColor: darken(theme.palette.background.paper, 0.1),
+            backgroundColor: theme.darken(theme.palette.background.paper, 0.1),
             paddingTop: theme.spacing(dense ? 0.625 : 1.25),
             borderRadius: '100%',
             fontWeight: '400',

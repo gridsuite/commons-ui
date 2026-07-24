@@ -12,7 +12,7 @@ import {
     Box,
     Checkbox,
     CheckboxProps,
-    Grid2 as Grid,
+    Grid,
     IconButton,
     Table,
     TableBody,

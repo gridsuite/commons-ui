@@ -19,7 +19,7 @@ import {
     DialogContent,
     DialogTitle,
     Fade,
-    Grid2 as Grid,
+    Grid,
     Stack,
     Theme,
     tooltipClasses,
@@ -202,7 +202,7 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
             }}
         >
             <CustomTooltip
-                TransitionComponent={Zoom}
+                slots={{ transition: Zoom }}
                 enterNextDelay={350}
                 leaveDelay={200}
                 sx={moduleStyles.tooltip}
@@ -337,10 +337,12 @@ export function AboutDialog({
             sx={styles.general}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
-            TransitionProps={{
-                onExited: () => {
-                    setModules(null);
-                    setActualGlobalVersion(null);
+            slotProps={{
+                transition: {
+                    onExited: () => {
+                        setModules(null);
+                        setActualGlobalVersion(null);
+                    },
                 },
             }}
         >
@@ -429,7 +431,13 @@ export function AboutDialog({
                         <AccordionDetails>license app summary text</AccordionDetails>
                     </Accordion>
 
-                    <Accordion disableGutters variant="outlined" TransitionProps={{ unmountOnExit: true }}>
+                    <Accordion
+                        disableGutters
+                        variant="outlined"
+                        slotProps={{
+                            transition: { unmountOnExit: true },
+                        }}
+                    >
                         <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel2-content" id="panel2-header">
                             <Apps fontSize="small" />
                             <FormattedMessage id="about-dialog/modules-section" />

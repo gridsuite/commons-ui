@@ -37,17 +37,19 @@ export function TableTextInput({ name, hideErrorMessage, inputProps, ...props }:
             size="small"
             fullWidth
             inputRef={ref}
-            InputProps={{
-                disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
-                inputProps: {
-                    style: {
-                        fontSize: 'small',
-                    },
-                    ...inputProps,
-                },
-            }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...props}
+            slotProps={{
+                input: {
+                    disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
+                    inputProps: {
+                        style: {
+                            fontSize: 'small',
+                        },
+                        ...inputProps,
+                    },
+                },
+            }}
         />
     );
 }

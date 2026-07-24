@@ -6,7 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
-import { Box, Grid2 as Grid, Tab, Tabs } from '@mui/material';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { ShortCircuitParametersTabValues } from './short-circuit-parameters-utils';

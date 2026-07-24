@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ValueEditorProps } from 'react-querybuilder';
-import { Grid2 as Grid, MenuItem, Select, Typography } from '@mui/material';
+import { Grid, MenuItem, Select, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { CompositeRule, OperatorOption } from '../../filter/expert/expertFilter.type';
 import type { MuiStyles } from '../../../../utils/styles';
