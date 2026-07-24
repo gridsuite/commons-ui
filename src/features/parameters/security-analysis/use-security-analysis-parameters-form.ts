@@ -4,9 +4,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -22,13 +22,9 @@ import {
     IST_FORM,
     LIMIT_DURATION_FORM,
     LIMIT_REDUCTIONS_FORM,
-    PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_PROVIDER,
+    PROVIDER,
     toFormValuesLimitReductions,
+    useTabs,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
 import { updateParameter } from '../../../services';
@@ -37,10 +33,22 @@ import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
+import { TAB_FIELDS } from './security-analysis-parameters-utils';
+import {
+    FLOW_PROPORTIONAL_THRESHOLD,
+    HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+    HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
+    LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
+    LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
+    TabValues,
+} from './constants';
 
 export interface UseSecurityAnalysisParametersFormReturn {
     formMethods: UseFormReturn;
     formSchema: ObjectSchema<any>;
+    selectedTab: TabValues;
+    setSelectedTab: (selectedTab: TabValues) => void;
+    handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     formattedProviders: { id: string; label: string }[];
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
     toFormValueSaParameters: (_params: SAParametersEnriched) => any;
@@ -50,6 +58,8 @@ export interface UseSecurityAnalysisParametersFormReturn {
     paramsFormInitialized: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
+    tabIndexesWithError: TabValues[];
+    onValidationError: (errors: FieldErrors) => void;
 }
 
 export const useSecurityAnalysisParametersForm = (
@@ -80,20 +90,20 @@ export const useSecurityAnalysisParametersForm = (
     const formMethods = useForm({
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
-            [PARAM_SA_PROVIDER]: params?.provider,
+            [PROVIDER]: params?.provider,
             [CONTINGENCY_LISTS_INFOS]: [],
             [LIMIT_REDUCTIONS_FORM]: [],
-            [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: null,
-            [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
-            [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
-            [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
-            [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
+            [FLOW_PROPORTIONAL_THRESHOLD]: null,
+            [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
+            [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
+            [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
+            [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
         },
         resolver: yupResolver(formSchema),
     });
 
     const { reset, watch } = formMethods;
-    const watchProvider = watch(PARAM_SA_PROVIDER) as string | undefined;
+    const watchProvider = watch(PROVIDER) as string | undefined;
 
     const paramsLoaded = useMemo(() => !!params && !!watchProvider, [watchProvider, params]);
     const [paramsFormInitialized, setParamsFormInitialized] = useState(false);
@@ -140,20 +150,31 @@ export const useSecurityAnalysisParametersForm = (
     const formatNewParams = useCallback(
         (formData: Record<string, any>) => {
             return {
-                [PARAM_SA_PROVIDER]: formData[PARAM_SA_PROVIDER],
-                [PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD]: formData[PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD] / 100,
-                [PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]:
-                    formData[PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
-                [PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
-                [PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]:
-                    formData[PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
-                [PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
+                [PROVIDER]: formData[PROVIDER],
+                [FLOW_PROPORTIONAL_THRESHOLD]: formData[FLOW_PROPORTIONAL_THRESHOLD] / 100,
+                [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: formData[LOW_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
+                [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[LOW_VOLTAGE_ABSOLUTE_THRESHOLD],
+                [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: formData[HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
+                [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
                 [CONTINGENCY_LISTS_INFOS]: toContingencyListsInfos(formData[CONTINGENCY_LISTS_INFOS]),
                 limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
             };
         },
         [toContingencyListsInfos, toLimitReductions]
     );
+
+    const {
+        selectedTab,
+        setSelectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: TabValues.Contingencies,
+        tabEnum: TabValues,
+        errors: formMethods.formState.errors,
+        tabFields: TAB_FIELDS,
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
@@ -205,6 +226,9 @@ export const useSecurityAnalysisParametersForm = (
     return {
         formMethods,
         formSchema,
+        selectedTab,
+        setSelectedTab,
+        handleTabChange,
         formattedProviders,
         defaultLimitReductions,
         toFormValueSaParameters,
@@ -214,5 +238,7 @@ export const useSecurityAnalysisParametersForm = (
         paramsFormInitialized,
         onSaveInline,
         onSaveDialog,
+        tabIndexesWithError,
+        onValidationError,
     };
 };
