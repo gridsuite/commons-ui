@@ -117,7 +117,6 @@ function ParameterField({
             <Grid container size={INPUT_GRID_SIZE} sx={parametersStyles.controlItem}>
                 {renderField()}
             </Grid>
-            <LineSeparator />
         </Grid>
     );
 }
