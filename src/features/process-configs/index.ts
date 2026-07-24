@@ -7,5 +7,4 @@
 
 export * from './security-analysis';
 export * from './loadflow';
-export * from './process-configs.type';
 export * from './process-configs.utils';

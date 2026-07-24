@@ -7,8 +7,8 @@
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { DirectoryItemsInput, DndColumn, DndColumnType, DndTable } from '../../components';
-import { ElementType } from '../../utils';
+import { DirectoryItemsInput, DndColumn, DndColumnType, DndTable } from '../../../components';
+import { ElementType } from '../../../utils';
 
 export function UpdateProcessConfigModifications({ name }: Readonly<{ name: string }>) {
     const intl = useIntl();

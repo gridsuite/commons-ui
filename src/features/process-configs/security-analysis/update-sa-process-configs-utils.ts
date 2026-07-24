@@ -6,30 +6,15 @@
  */
 import * as yup from 'yup';
 import { UUID } from 'node:crypto';
+
+import { fetchElementNames } from '../../../services';
+import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 import {
-    PersistedProcessConfigBackend,
     ProcessType,
     SecurityAnalysisProcessConfig,
     SecurityAnalysisProcessConfigBackend,
-} from '../process-configs.type';
-import { fetchElementNames } from '../../../services';
-import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-
-export function getSAProcessConfigFormDataFromFetchedElement(
-    processConfig: SecurityAnalysisProcessConfig,
-    name: string,
-    description: string | null
-) {
-    return {
-        name,
-        description: description ?? undefined,
-        modifications: processConfig.modifications.map((modification) => ({
-            modification: [{ id: modification.id, name: modification.name }],
-        })),
-        securityAnalysisParameters: [processConfig.securityAnalysisParameters],
-        loadflowParameters: [processConfig.loadflowParameters],
-    };
-}
+} from '../common/process-config.type';
+import { processConfigBaseFormShape } from '../common/process-config.utils';
 
 export function getSAProcessConfigBackendFromFormData(
     formData: UpdateSAProcessConfigFormData
@@ -43,69 +28,50 @@ export function getSAProcessConfigBackendFromFormData(
 }
 
 export const updateSAProcessConfigFormSchema = yup.object().shape({
-    [FieldConstants.NAME]: yup.string().required(),
-    [FieldConstants.DESCRIPTION]: yup.string(),
-    [FieldConstants.MODIFICATIONS]: yup
-        .array()
-        .required()
-        .of(
-            yup.object().shape({
-                modification: yup
-                    .array()
-                    .required()
-                    .of(
-                        yup
-                            .object()
-                            .shape({
-                                id: yup.string().required(),
-                                name: yup.string().required(),
-                            })
-                            .required()
-                    )
-                    .length(1, YUP_REQUIRED),
-            })
-        ),
+    ...processConfigBaseFormShape,
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
-        .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
+        .of(yup.object().shape({ id: yup.string().required(), name: yup.string() }))
         .length(1, YUP_REQUIRED),
     [FieldConstants.SECURITY_ANALYSIS_PARAMETERS]: yup
         .array()
         .required()
-        .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
+        .of(yup.object().shape({ id: yup.string().required(), name: yup.string() }))
         .length(1, YUP_REQUIRED),
 });
 
 export type UpdateSAProcessConfigFormData = yup.InferType<typeof updateSAProcessConfigFormSchema>;
 
-export async function toSAProcessConfig(persistedProcessConfig: PersistedProcessConfigBackend) {
-    const { processConfig } = persistedProcessConfig;
-    const saProcessConfig = processConfig as SecurityAnalysisProcessConfigBackend;
-
+export async function toSAProcessConfig(
+    processConfig: SecurityAnalysisProcessConfigBackend
+): Promise<SecurityAnalysisProcessConfig> {
     const allUuids = new Set<string>([
-        ...saProcessConfig.modificationUuids,
-        saProcessConfig.securityAnalysisParametersUuid,
-        saProcessConfig.loadflowParametersUuid,
+        ...processConfig.modificationUuids,
+        processConfig.securityAnalysisParametersUuid,
+        processConfig.loadflowParametersUuid,
     ]);
 
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        processType: saProcessConfig.processType,
-        modifications: saProcessConfig.modificationUuids.map((uuid) => ({
-            id: uuid,
-            name: elementNamesByUuid[uuid],
+        processType: processConfig.processType,
+        modifications: processConfig.modificationUuids.map((uuid) => ({
+            modification: [{ id: uuid, name: elementNamesByUuid[uuid] }],
             enabled: true,
             description: undefined,
         })),
-        securityAnalysisParameters: {
-            id: saProcessConfig.securityAnalysisParametersUuid,
-            name: elementNamesByUuid[saProcessConfig.securityAnalysisParametersUuid],
-        },
-        loadflowParameters: {
-            id: saProcessConfig.loadflowParametersUuid,
-            name: elementNamesByUuid[saProcessConfig.loadflowParametersUuid],
-        },
+        securityAnalysisParameters: [
+            {
+                id: processConfig.securityAnalysisParametersUuid,
+                name: elementNamesByUuid[processConfig.securityAnalysisParametersUuid],
+            },
+        ],
+        loadflowParameters: [
+            {
+                id: processConfig.loadflowParametersUuid,
+                name: elementNamesByUuid[processConfig.loadflowParametersUuid],
+            },
+        ],
     } satisfies SecurityAnalysisProcessConfig;
 }

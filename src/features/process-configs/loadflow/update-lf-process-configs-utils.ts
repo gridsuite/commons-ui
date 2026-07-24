@@ -6,29 +6,10 @@
  */
 import * as yup from 'yup';
 import { UUID } from 'node:crypto';
-import {
-    LoadflowProcessConfig,
-    LoadflowProcessConfigBackend,
-    PersistedProcessConfigBackend,
-    ProcessType,
-} from '../process-configs.type';
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-
-export function getLFProcessConfigFormDataFromFetchedElement(
-    processConfig: LoadflowProcessConfig,
-    name: string,
-    description: string | null
-) {
-    return {
-        name,
-        description: description ?? undefined,
-        modifications: processConfig.modifications.map((modification) => ({
-            modification: [{ id: modification.id, name: modification.name }],
-        })),
-        loadflowParameters: [processConfig.loadflowParameters],
-    };
-}
+import { LoadflowProcessConfig, LoadflowProcessConfigBackend, ProcessType } from '../common/process-config.type';
+import { processConfigBaseFormShape } from '../common/process-config.utils';
 
 export function getLFProcessConfigBackendFromFormData(
     formData: UpdateLFProcessConfigFormData
@@ -41,56 +22,33 @@ export function getLFProcessConfigBackendFromFormData(
 }
 
 export const updateLFProcessConfigFormSchema = yup.object().shape({
-    [FieldConstants.NAME]: yup.string().required(),
-    [FieldConstants.DESCRIPTION]: yup.string(),
-    [FieldConstants.MODIFICATIONS]: yup
-        .array()
-        .required()
-        .of(
-            yup.object().shape({
-                modification: yup
-                    .array()
-                    .required()
-                    .of(
-                        yup
-                            .object()
-                            .shape({
-                                id: yup.string().required(),
-                                name: yup.string().required(),
-                            })
-                            .required()
-                    )
-                    .length(1, YUP_REQUIRED),
-            })
-        ),
+    ...processConfigBaseFormShape,
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
-        .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
+        .of(yup.object().shape({ id: yup.string().required(), name: yup.string() }))
         .length(1, YUP_REQUIRED),
 });
 
 export type UpdateLFProcessConfigFormData = yup.InferType<typeof updateLFProcessConfigFormSchema>;
 
-export async function toLFProcessConfig(persistedProcessConfig: PersistedProcessConfigBackend) {
-    const { processConfig } = persistedProcessConfig;
-    const lfProcessConfig = processConfig as LoadflowProcessConfigBackend;
-
-    const allUuids = new Set<string>([...lfProcessConfig.modificationUuids, lfProcessConfig.loadflowParametersUuid]);
+export async function toLFProcessConfig(processConfig: LoadflowProcessConfigBackend) {
+    const allUuids = new Set<string>([...processConfig.modificationUuids, processConfig.loadflowParametersUuid]);
 
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        processType: lfProcessConfig.processType,
-        modifications: lfProcessConfig.modificationUuids.map((uuid) => ({
-            id: uuid,
-            name: elementNamesByUuid[uuid],
+        processType: processConfig.processType,
+        modifications: processConfig.modificationUuids.map((uuid) => ({
+            modification: [{ id: uuid, name: elementNamesByUuid[uuid] }],
             enabled: true,
             description: undefined,
         })),
-        loadflowParameters: {
-            id: lfProcessConfig.loadflowParametersUuid,
-            name: elementNamesByUuid[lfProcessConfig.loadflowParametersUuid],
-        },
+        loadflowParameters: [
+            {
+                id: processConfig.loadflowParametersUuid,
+                name: elementNamesByUuid[processConfig.loadflowParametersUuid],
+            },
+        ],
     } satisfies LoadflowProcessConfig;
 }

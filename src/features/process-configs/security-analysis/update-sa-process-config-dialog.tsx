@@ -5,22 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
 import { UUID } from 'node:crypto';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { LinearProgress } from '@mui/material';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import { UpdateSAProcessConfig } from './update-sa-process-config';
 import {
-    getSAProcessConfigFormDataFromFetchedElement,
     getSAProcessConfigBackendFromFormData,
     updateSAProcessConfigFormSchema,
     UpdateSAProcessConfigFormData,
     toSAProcessConfig,
 } from './update-sa-process-configs-utils';
-import { PersistedProcessConfigBackend, ProcessConfigBackend } from '../process-configs.type';
 import { CustomMuiDialog } from '../../../components';
-import { FieldConstants } from '../../../utils';
+import { useProcessConfigs } from '../common/use-process-configs';
+import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType } from '../common/process-config.type';
 
 interface UpdateSAProcessConfigDialogProps {
     open: boolean;
@@ -29,12 +27,14 @@ interface UpdateSAProcessConfigDialogProps {
     name: string;
     description: string | null;
     directory: UUID;
-    fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend>;
+    fetchProcessConfig: (
+        processConfigUuid: UUID
+    ) => Promise<PersistedProcessConfigBackend<ProcessType.SECURITY_ANALYSIS>>;
     updateProcessConfig: (
         processConfigUuid: UUID,
         name: string,
         description: string,
-        processConfig: ProcessConfigBackend
+        processConfig: ProcessConfigBackend<ProcessType.SECURITY_ANALYSIS>
     ) => Promise<void>;
 }
 
@@ -48,8 +48,6 @@ export function UpdateSAProcessConfigDialog({
     fetchProcessConfig,
     updateProcessConfig,
 }: Readonly<UpdateSAProcessConfigDialogProps>) {
-    const [isLoading, setIsLoading] = useState(false);
-
     const emptyFormData: UpdateSAProcessConfigFormData = {
         name,
         description: description ?? '',
@@ -63,39 +61,17 @@ export function UpdateSAProcessConfigDialog({
         resolver: yupResolver<UpdateSAProcessConfigFormData>(updateSAProcessConfigFormSchema),
     });
 
-    const {
-        reset,
-        formState: { errors },
-    } = methods;
-
-    const fetchSAProcessConfigData = useCallback(async () => {
-        const persistedProcessConfig = await fetchProcessConfig(processConfigId);
-        if (persistedProcessConfig) {
-            const processConfigData = await toSAProcessConfig(persistedProcessConfig);
-            const formData = getSAProcessConfigFormDataFromFetchedElement(processConfigData, name, description);
-            reset({ ...formData });
-        }
-    }, [description, fetchProcessConfig, name, processConfigId, reset]);
-
-    useEffect(() => {
-        setIsLoading(true);
-        fetchSAProcessConfigData().finally(() => setIsLoading(false));
-    }, [fetchSAProcessConfigData]);
-
-    const handleUpdateProcessConfig = useCallback(
-        (processConfigFormData: UpdateSAProcessConfigFormData) => {
-            updateProcessConfig(
-                processConfigId,
-                processConfigFormData.name,
-                processConfigFormData.description ?? '',
-                getSAProcessConfigBackendFromFormData(processConfigFormData)
-            ).then(() => onClose());
-        },
-        [processConfigId, onClose, updateProcessConfig]
+    const { handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigs<ProcessType.SECURITY_ANALYSIS>(
+        name,
+        description,
+        processConfigId,
+        methods,
+        fetchProcessConfig,
+        toSAProcessConfig,
+        updateProcessConfig,
+        getSAProcessConfigBackendFromFormData,
+        onClose
     );
-
-    const nameError = errors[FieldConstants.NAME];
-    const isValidating = errors.root?.isValidating;
 
     return (
         <CustomMuiDialog
@@ -108,7 +84,7 @@ export function UpdateSAProcessConfigDialog({
             open={open}
             onClose={onClose}
             onSave={handleUpdateProcessConfig}
-            disabledSave={Boolean(nameError || isValidating)}
+            disabledSave={disabledSave}
         >
             {!isLoading && <UpdateSAProcessConfig directory={directory} processConfigName={name} />}
             {isLoading && <LinearProgress />}

@@ -5,22 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useState } from 'react';
 import { UUID } from 'node:crypto';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LinearProgress } from '@mui/material';
-import { PersistedProcessConfigBackend, ProcessConfigBackend } from '../process-configs.type';
 import { CustomMuiDialog } from '../../../components';
-import { FieldConstants } from '../../../utils';
 import { UpdateLFProcessConfig } from './update-lf-process-config';
 import {
     getLFProcessConfigBackendFromFormData,
-    getLFProcessConfigFormDataFromFetchedElement,
     toLFProcessConfig,
     UpdateLFProcessConfigFormData,
     updateLFProcessConfigFormSchema,
 } from './update-lf-process-configs-utils';
+import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType } from '../common/process-config.type';
+import { useProcessConfigs } from '../common/use-process-configs';
 
 interface UpdateLFProcessConfigDialogProps {
     open: boolean;
@@ -29,12 +27,12 @@ interface UpdateLFProcessConfigDialogProps {
     name: string;
     description: string | null;
     directory: UUID;
-    fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend>;
+    fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend<ProcessType.LOADFLOW>>;
     updateProcessConfig: (
         processConfigUuid: UUID,
         name: string,
         description: string,
-        processConfig: ProcessConfigBackend
+        processConfig: ProcessConfigBackend<ProcessType.LOADFLOW>
     ) => Promise<void>;
 }
 
@@ -48,8 +46,6 @@ export function UpdateLFProcessConfigDialog({
     fetchProcessConfig,
     updateProcessConfig,
 }: Readonly<UpdateLFProcessConfigDialogProps>) {
-    const [isLoading, setIsLoading] = useState(false);
-
     const emptyFormData: UpdateLFProcessConfigFormData = {
         name,
         description: description ?? '',
@@ -62,39 +58,17 @@ export function UpdateLFProcessConfigDialog({
         resolver: yupResolver<UpdateLFProcessConfigFormData>(updateLFProcessConfigFormSchema),
     });
 
-    const {
-        reset,
-        formState: { errors },
-    } = methods;
-
-    const fetchLFProcessConfigData = useCallback(async () => {
-        const persistedProcessConfig = await fetchProcessConfig(processConfigId);
-        if (persistedProcessConfig) {
-            const processConfigData = await toLFProcessConfig(persistedProcessConfig);
-            const formData = getLFProcessConfigFormDataFromFetchedElement(processConfigData, name, description);
-            reset({ ...formData });
-        }
-    }, [description, fetchProcessConfig, name, processConfigId, reset]);
-
-    useEffect(() => {
-        setIsLoading(true);
-        fetchLFProcessConfigData().finally(() => setIsLoading(false));
-    }, [fetchLFProcessConfigData]);
-
-    const handleUpdateProcessConfig = useCallback(
-        (processConfigFormData: UpdateLFProcessConfigFormData) => {
-            updateProcessConfig(
-                processConfigId,
-                processConfigFormData.name,
-                processConfigFormData.description ?? '',
-                getLFProcessConfigBackendFromFormData(processConfigFormData)
-            ).then(() => onClose());
-        },
-        [processConfigId, onClose, updateProcessConfig]
+    const { handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigs<ProcessType.LOADFLOW>(
+        name,
+        description,
+        processConfigId,
+        methods,
+        fetchProcessConfig,
+        toLFProcessConfig,
+        updateProcessConfig,
+        getLFProcessConfigBackendFromFormData,
+        onClose
     );
-
-    const nameError = errors[FieldConstants.NAME];
-    const isValidating = errors.root?.isValidating;
 
     return (
         <CustomMuiDialog
@@ -107,7 +81,7 @@ export function UpdateLFProcessConfigDialog({
             open={open}
             onClose={onClose}
             onSave={handleUpdateProcessConfig}
-            disabledSave={Boolean(nameError || isValidating)}
+            disabledSave={disabledSave}
         >
             {!isLoading && <UpdateLFProcessConfig directory={directory} processConfigName={name} />}
             {isLoading && <LinearProgress />}
