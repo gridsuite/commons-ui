@@ -7,30 +7,19 @@
 import { UUID } from 'node:crypto';
 import { IdName } from '../../../utils';
 // eslint-disable-next-line import-x/no-cycle
-import { UpdateLFProcessConfigFormData } from '../loadflow';
-import { UpdateSAProcessConfigFormData } from '../security-analysis';
+import { LFProcessConfigFormData, NamedLFProcessConfigFormData } from '../loadflow';
+import { NamedSAProcessConfigFormData, SAProcessConfigFormData } from '../security-analysis';
 
 export enum ProcessType {
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
     LOADFLOW = 'LOADFLOW',
 }
 
-export interface LoadflowProcessConfigBackend extends ProcessConfigBaseBackend {
-    processType: ProcessType.LOADFLOW;
-    loadflowParametersUuid: UUID;
+// Backend types
+export interface ProcessConfigBaseBackend {
+    processType: ProcessType;
+    modificationUuids: UUID[];
 }
-
-export type LoadflowProcessConfig = Omit<
-    LoadflowProcessConfigBackend,
-    'loadflowParametersUuid' | 'modificationUuids'
-> & {
-    modifications: {
-        modification: IdName[];
-        enabled: boolean;
-        description?: string;
-    }[];
-    loadflowParameters: IdName[];
-};
 
 export interface SecurityAnalysisProcessConfigBackend extends ProcessConfigBaseBackend {
     processType: ProcessType.SECURITY_ANALYSIS;
@@ -38,24 +27,9 @@ export interface SecurityAnalysisProcessConfigBackend extends ProcessConfigBaseB
     loadflowParametersUuid: UUID;
 }
 
-// Form types
-export type SecurityAnalysisProcessConfig = Omit<
-    SecurityAnalysisProcessConfigBackend,
-    'securityAnalysisParametersUuid' | 'loadflowParametersUuid' | 'modificationUuids'
-> & {
-    modifications: {
-        modification: IdName[];
-        enabled: boolean;
-        description?: string;
-    }[];
-    loadflowParameters: IdName[];
-    securityAnalysisParameters: IdName[];
-};
-
-// Backend types
-export interface ProcessConfigBaseBackend {
-    processType: ProcessType;
-    modificationUuids: UUID[];
+export interface LoadflowProcessConfigBackend extends ProcessConfigBaseBackend {
+    processType: ProcessType.LOADFLOW;
+    loadflowParametersUuid: UUID;
 }
 
 type ProcessConfigBackendByProcessType = {
@@ -71,17 +45,51 @@ export type PersistedProcessConfigBackend<TProcessType extends ProcessType> = {
     processConfig: ProcessConfigBackend<TProcessType>;
 };
 
-type ProcessConfigByProcessType = {
-    [ProcessType.SECURITY_ANALYSIS]: SecurityAnalysisProcessConfig;
-    [ProcessType.LOADFLOW]: LoadflowProcessConfig;
+// Form types
+export type SecurityAnalysisProcessConfig = Omit<
+    SecurityAnalysisProcessConfigBackend,
+    'processType' | 'securityAnalysisParametersUuid' | 'loadflowParametersUuid' | 'modificationUuids'
+> & {
+    modifications: {
+        modification: IdName[];
+        enabled: boolean;
+        description: string | undefined;
+    }[];
+    loadflowParameters: IdName[];
+    securityAnalysisParameters: IdName[];
 };
 
-export type ProcessConfig<T extends keyof ProcessConfigByProcessType> = ProcessConfigByProcessType[T];
+export type LoadflowProcessConfig = Omit<
+    LoadflowProcessConfigBackend,
+    'processType' | 'loadflowParametersUuid' | 'modificationUuids'
+> & {
+    modifications: {
+        modification: IdName[];
+        enabled: boolean;
+        description: string | undefined;
+    }[];
+    loadflowParameters: IdName[];
+};
 
-// Form schemas
 type ProcessConfigFormDataByProcessType = {
-    [ProcessType.SECURITY_ANALYSIS]: UpdateSAProcessConfigFormData;
-    [ProcessType.LOADFLOW]: UpdateLFProcessConfigFormData;
+    [ProcessType.SECURITY_ANALYSIS]: SAProcessConfigFormData;
+    [ProcessType.LOADFLOW]: LFProcessConfigFormData;
 };
+
 export type ProcessConfigFormData<T extends keyof ProcessConfigFormDataByProcessType> =
     ProcessConfigFormDataByProcessType[T];
+
+type NamedProcessConfigFormDataByProcessType = {
+    [ProcessType.SECURITY_ANALYSIS]: NamedSAProcessConfigFormData;
+    [ProcessType.LOADFLOW]: NamedLFProcessConfigFormData;
+};
+
+export type NamedProcessConfigFormData<T extends keyof ProcessConfigFormDataByProcessType> =
+    NamedProcessConfigFormDataByProcessType[T];
+
+/*
+export type NamedProcessConfigFormData<T extends keyof ProcessConfigFormDataByProcessType> = {
+    name: string;
+    description?: string;
+} & ProcessConfigFormData<T>;
+*/

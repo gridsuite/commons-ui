@@ -10,14 +10,14 @@ import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 // eslint-disable-next-line import-x/no-cycle
 import {
-    LoadflowProcessConfig,
     LoadflowProcessConfigBackend,
-    processConfigBaseFormShape,
+    namedFormShape,
+    processConfigModificationsFormShape,
     ProcessType,
 } from '../common';
 
 export function getLFProcessConfigBackendFromFormData(
-    formData: UpdateLFProcessConfigFormData
+    formData: NamedLFProcessConfigFormData
 ): LoadflowProcessConfigBackend {
     return {
         processType: ProcessType.LOADFLOW,
@@ -26,16 +26,27 @@ export function getLFProcessConfigBackendFromFormData(
     };
 }
 
-export const updateLFProcessConfigFormSchema = yup.object().shape({
-    ...processConfigBaseFormShape,
+export const lfProcessConfigSpecificFormShape = {
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string() }))
         .length(1, YUP_REQUIRED),
+};
+
+export const lfProcessConfigFormSchema = yup.object().shape({
+    ...processConfigModificationsFormShape,
+    ...lfProcessConfigSpecificFormShape,
 });
 
-export type UpdateLFProcessConfigFormData = yup.InferType<typeof updateLFProcessConfigFormSchema>;
+export const namedLFProcessConfigFormSchema = yup.object().shape({
+    ...namedFormShape,
+    ...processConfigModificationsFormShape,
+    ...lfProcessConfigSpecificFormShape,
+});
+
+export type LFProcessConfigFormData = yup.InferType<typeof lfProcessConfigFormSchema>;
+export type NamedLFProcessConfigFormData = yup.InferType<typeof namedLFProcessConfigFormSchema>;
 
 export async function toLFProcessConfig(processConfig: LoadflowProcessConfigBackend) {
     const allUuids = new Set<string>([...processConfig.modificationUuids, processConfig.loadflowParametersUuid]);
@@ -43,7 +54,6 @@ export async function toLFProcessConfig(processConfig: LoadflowProcessConfigBack
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        processType: processConfig.processType,
         modifications: processConfig.modificationUuids.map((uuid) => ({
             modification: [{ id: uuid, name: elementNamesByUuid[uuid] }],
             enabled: true,
@@ -55,5 +65,5 @@ export async function toLFProcessConfig(processConfig: LoadflowProcessConfigBack
                 name: elementNamesByUuid[processConfig.loadflowParametersUuid],
             },
         ],
-    } satisfies LoadflowProcessConfig;
+    } satisfies LFProcessConfigFormData;
 }

@@ -13,8 +13,8 @@ import { UpdateSAProcessConfig } from './update-sa-process-config';
 // eslint-disable-next-line import-x/no-cycle
 import {
     getSAProcessConfigBackendFromFormData,
-    updateSAProcessConfigFormSchema,
-    UpdateSAProcessConfigFormData,
+    NamedSAProcessConfigFormSchema,
+    NamedSAProcessConfigFormData,
     toSAProcessConfig,
 } from './update-sa-process-configs-utils';
 import { CustomMuiDialog } from '../../../components';
@@ -48,7 +48,7 @@ export function UpdateSAProcessConfigDialog({
     fetchProcessConfig,
     updateProcessConfig,
 }: Readonly<UpdateSAProcessConfigDialogProps>) {
-    const emptyFormData: UpdateSAProcessConfigFormData = {
+    const emptyFormData: NamedSAProcessConfigFormData = {
         name,
         description: description ?? '',
         modifications: [],
@@ -56,9 +56,9 @@ export function UpdateSAProcessConfigDialog({
         securityAnalysisParameters: [],
     };
 
-    const methods = useForm<UpdateSAProcessConfigFormData>({
+    const methods = useForm<NamedSAProcessConfigFormData>({
         defaultValues: emptyFormData,
-        resolver: yupResolver<UpdateSAProcessConfigFormData>(updateSAProcessConfigFormSchema),
+        resolver: yupResolver<NamedSAProcessConfigFormData>(NamedSAProcessConfigFormSchema),
     });
 
     const { handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigs<ProcessType.SECURITY_ANALYSIS>(
@@ -78,7 +78,7 @@ export function UpdateSAProcessConfigDialog({
             titleId="process_config/editSAProcessConfigTitle"
             formContext={{
                 ...methods,
-                validationSchema: updateSAProcessConfigFormSchema,
+                validationSchema: NamedSAProcessConfigFormSchema,
                 removeOptional: true,
             }}
             open={open}

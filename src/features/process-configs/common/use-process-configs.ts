@@ -12,14 +12,14 @@ import { FieldConstants } from '../../../utils';
 import { getProcessConfigFormData } from './process-config.utils';
 import {
     PersistedProcessConfigBackend,
-    ProcessConfig,
-    ProcessConfigBackend,
     ProcessConfigFormData,
+    ProcessConfigBackend,
+    NamedProcessConfigFormData,
     ProcessType,
 } from './process-config.type';
 
 export interface UseProcessConfigsReturn<TProcessType extends ProcessType> {
-    handleUpdateProcessConfig: SubmitHandler<ProcessConfigFormData<TProcessType>>;
+    handleUpdateProcessConfig: SubmitHandler<NamedProcessConfigFormData<TProcessType>>;
     disabledSave: boolean;
     isLoading: boolean;
 }
@@ -28,9 +28,11 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
     name: string,
     description: string | null,
     processConfigUuid: UUID,
-    methods: UseFormReturn<ProcessConfigFormData<TProcessType>>,
+    methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>,
     fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend<TProcessType>>,
-    toProcessConfig: (processConfig: ProcessConfigBackend<TProcessType>) => Promise<ProcessConfig<TProcessType>>,
+    toProcessConfig: (
+        processConfig: ProcessConfigBackend<TProcessType>
+    ) => Promise<ProcessConfigFormData<TProcessType>>,
     updateProcessConfig: (
         processConfigUuid: UUID,
         name: string,
@@ -38,7 +40,7 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
         processConfig: ProcessConfigBackend<TProcessType>
     ) => Promise<void>,
     getProcessConfigBackendFromFormData: (
-        formData: ProcessConfigFormData<TProcessType>
+        formData: NamedProcessConfigFormData<TProcessType>
     ) => ProcessConfigBackend<TProcessType>,
     onClose: () => void
 ): UseProcessConfigsReturn<TProcessType> => {
@@ -64,7 +66,7 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
     }, [fetchProcessConfigData]);
 
     const handleUpdateProcessConfig = useCallback(
-        (processConfigFormData: ProcessConfigFormData<TProcessType>) => {
+        (processConfigFormData: NamedProcessConfigFormData<TProcessType>) => {
             updateProcessConfig(
                 processConfigUuid,
                 processConfigFormData[FieldConstants.NAME],
@@ -76,6 +78,8 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
     );
 
     const disabledSave = Boolean(errors.name || errors.root?.isValidating);
+
+    console.log('ERRORS: ', errors);
 
     return { handleUpdateProcessConfig, disabledSave, isLoading };
 };

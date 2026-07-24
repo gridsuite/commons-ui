@@ -11,14 +11,15 @@ import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 // eslint-disable-next-line import-x/no-cycle
 import {
-    processConfigBaseFormShape,
+    namedFormShape,
+    processConfigModificationsFormShape,
     ProcessType,
     SecurityAnalysisProcessConfig,
     SecurityAnalysisProcessConfigBackend,
 } from '../common';
 
 export function getSAProcessConfigBackendFromFormData(
-    formData: UpdateSAProcessConfigFormData
+    formData: NamedSAProcessConfigFormData
 ): SecurityAnalysisProcessConfigBackend {
     return {
         processType: ProcessType.SECURITY_ANALYSIS,
@@ -28,8 +29,7 @@ export function getSAProcessConfigBackendFromFormData(
     };
 }
 
-export const updateSAProcessConfigFormSchema = yup.object().shape({
-    ...processConfigBaseFormShape,
+export const SAProcessConfigSpecificFormShape = {
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
@@ -40,9 +40,21 @@ export const updateSAProcessConfigFormSchema = yup.object().shape({
         .required()
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string() }))
         .length(1, YUP_REQUIRED),
+};
+export const SAProcessConfigFormSchema = yup.object().shape({
+    ...processConfigModificationsFormShape,
+    ...SAProcessConfigSpecificFormShape,
 });
 
-export type UpdateSAProcessConfigFormData = yup.InferType<typeof updateSAProcessConfigFormSchema>;
+export const NamedSAProcessConfigFormSchema = yup.object().shape({
+    ...namedFormShape,
+    ...processConfigModificationsFormShape,
+    ...SAProcessConfigSpecificFormShape,
+});
+
+export type SAProcessConfigFormData = yup.InferType<typeof SAProcessConfigFormSchema>;
+
+export type NamedSAProcessConfigFormData = yup.InferType<typeof NamedSAProcessConfigFormSchema>;
 
 export async function toSAProcessConfig(
     processConfig: SecurityAnalysisProcessConfigBackend
@@ -56,7 +68,6 @@ export async function toSAProcessConfig(
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        processType: processConfig.processType,
         modifications: processConfig.modificationUuids.map((uuid) => ({
             modification: [{ id: uuid, name: elementNamesByUuid[uuid] }],
             enabled: true,

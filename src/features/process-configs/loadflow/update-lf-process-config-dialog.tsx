@@ -15,8 +15,8 @@ import { UpdateLFProcessConfig } from './update-lf-process-config';
 import {
     getLFProcessConfigBackendFromFormData,
     toLFProcessConfig,
-    UpdateLFProcessConfigFormData,
-    updateLFProcessConfigFormSchema,
+    NamedLFProcessConfigFormData,
+    namedLFProcessConfigFormSchema,
 } from './update-lf-process-configs-utils';
 import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType, useProcessConfigs } from '../common';
 
@@ -46,16 +46,16 @@ export function UpdateLFProcessConfigDialog({
     fetchProcessConfig,
     updateProcessConfig,
 }: Readonly<UpdateLFProcessConfigDialogProps>) {
-    const emptyFormData: UpdateLFProcessConfigFormData = {
+    const emptyFormData: NamedLFProcessConfigFormData = {
         name,
         description: description ?? '',
         modifications: [],
         loadflowParameters: [],
     };
 
-    const methods = useForm<UpdateLFProcessConfigFormData>({
+    const methods = useForm<NamedLFProcessConfigFormData>({
         defaultValues: emptyFormData,
-        resolver: yupResolver<UpdateLFProcessConfigFormData>(updateLFProcessConfigFormSchema),
+        resolver: yupResolver<NamedLFProcessConfigFormData>(namedLFProcessConfigFormSchema),
     });
 
     const { handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigs<ProcessType.LOADFLOW>(
@@ -75,7 +75,7 @@ export function UpdateLFProcessConfigDialog({
             titleId="process_config/editLFProcessConfigTitle"
             formContext={{
                 ...methods,
-                validationSchema: updateLFProcessConfigFormSchema,
+                validationSchema: namedLFProcessConfigFormSchema,
                 removeOptional: true,
             }}
             open={open}
