@@ -20,7 +20,6 @@ import {
     SwitchInput,
     TextInput,
 } from '../../../components/ui';
-import { LineSeparator } from './index';
 import { mergeSx } from '../../../utils';
 
 interface ParameterFieldProps {
@@ -117,7 +116,6 @@ function ParameterField({
             <Grid container size={INPUT_GRID_SIZE} sx={parametersStyles.controlItem}>
                 {renderField()}
             </Grid>
-            <LineSeparator />
         </Grid>
     );
 }
