@@ -37,9 +37,10 @@ interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
     table: Table<ComposedModificationMetadata>;
     onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
+    isRenameDisabled?: boolean;
 }
 
-export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
+export function NameCell({ row, table, onChange, isRenameDisabled = false }: Readonly<NameCellProps>) {
     const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
@@ -49,6 +50,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
+    const isRenamable = isComposite && !isRenameDisabled;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -156,13 +158,13 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     // triggers composite name editing from outside the component
     useEffect(() => {
         const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
-        if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
+        if (isRenamable && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
             beginEditingName(defaultCompositeName);
             if (meta) {
                 meta.interaction.modificationToEditLabel.current = null;
             }
         }
-    }, [meta, defaultCompositeName, isComposite, row.original.uuid, beginEditingName]);
+    }, [meta, defaultCompositeName, isRenamable, row.original.uuid, beginEditingName]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
@@ -195,7 +197,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const compositeReadModeProps = isComposite
+    const renamableModeProps = isRenamable
         ? {
               ref: labelRef,
               onClick: handleLabelClick,
@@ -272,11 +274,11 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
                             <Box
-                                {...compositeReadModeProps}
+                                {...renamableModeProps}
                                 sx={mergeSx(
                                     networkModificationTableStyles.modificationLabel,
                                     createModificationNameCellStyle(row.original.activated),
-                                    compositeReadModeProps.sx
+                                    renamableModeProps.sx
                                 )}
                             >
                                 {label}

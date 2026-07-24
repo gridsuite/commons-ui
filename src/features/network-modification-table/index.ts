@@ -9,6 +9,7 @@ export * from './network-modification-table-styles';
 export * from './columns-definition';
 export * from './network-modifications-table';
 export * from './use-modifications-drag-and-drop';
+export * from './use-shared-modifications-permissions';
 export * from './renderers';
 export * from './row';
 export * from './utils';
