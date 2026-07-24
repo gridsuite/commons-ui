@@ -9,13 +9,8 @@ import { UUID } from 'node:crypto';
 
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-// eslint-disable-next-line import-x/no-cycle
-import {
-    namedFormShape,
-    processConfigModificationsFormShape,
-    ProcessType,
-    SecurityAnalysisProcessConfigBackend,
-} from '../common';
+import { namedFormShape, processConfigModificationsFormShape, ProcessType } from '../common';
+import { SecurityAnalysisProcessConfigBackend } from './sa-process-config.type';
 
 export function getSAProcessConfigBackendFromFormData(
     formData: NamedSAProcessConfigFormData
@@ -32,7 +27,7 @@ export function getSAProcessConfigBackendFromFormData(
     };
 }
 
-export const SAProcessConfigSpecificFormShape = {
+export const saProcessConfigSpecificFormShape = {
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
@@ -44,22 +39,22 @@ export const SAProcessConfigSpecificFormShape = {
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
         .length(1, YUP_REQUIRED),
 };
-export const SAProcessConfigFormSchema = yup.object().shape({
+export const saProcessConfigFormSchema = yup.object().shape({
     ...processConfigModificationsFormShape,
-    ...SAProcessConfigSpecificFormShape,
+    ...saProcessConfigSpecificFormShape,
 });
 
-export const NamedSAProcessConfigFormSchema = yup.object().shape({
+export const namedSAProcessConfigFormSchema = yup.object().shape({
     ...namedFormShape,
     ...processConfigModificationsFormShape,
-    ...SAProcessConfigSpecificFormShape,
+    ...saProcessConfigSpecificFormShape,
 });
 
-export type SAProcessConfigFormData = yup.InferType<typeof SAProcessConfigFormSchema>;
+export type SAProcessConfigFormData = yup.InferType<typeof saProcessConfigFormSchema>;
 
-export type NamedSAProcessConfigFormData = yup.InferType<typeof NamedSAProcessConfigFormSchema>;
+export type NamedSAProcessConfigFormData = yup.InferType<typeof namedSAProcessConfigFormSchema>;
 
-export async function toSAProcessConfig(
+export async function getSAProcessConfigFormData(
     processConfig: SecurityAnalysisProcessConfigBackend
 ): Promise<SAProcessConfigFormData> {
     const allUuids = new Set<string>([

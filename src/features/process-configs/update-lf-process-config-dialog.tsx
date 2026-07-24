@@ -4,21 +4,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import { UUID } from 'node:crypto';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LinearProgress } from '@mui/material';
-import { CustomMuiDialog } from '../../../components';
-import { UpdateLFProcessConfig } from './update-lf-process-config';
-// eslint-disable-next-line import-x/no-cycle
+import { CustomMuiDialog } from '../../components';
 import {
     getLFProcessConfigBackendFromFormData,
-    toLFProcessConfig,
+    getLFProcessConfigFormData,
     NamedLFProcessConfigFormData,
     namedLFProcessConfigFormSchema,
-} from './update-lf-process-configs-utils';
-import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType, useProcessConfigs } from '../common';
+    UpdateLFProcessConfig,
+} from './loadflow';
+import { ProcessType } from './common';
+import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
+import { useUpdateProcessConfigs } from './use-update-process-configs';
 
 interface UpdateLFProcessConfigDialogProps {
     open: boolean;
@@ -51,22 +50,20 @@ export function UpdateLFProcessConfigDialog({
         description: description ?? '',
         modifications: [],
         loadflowParameters: [],
-    };
+    }; // moyen d'avoir un truc par défaut défini dans le columnDefinition ou équivalent ?
 
-    const methods = useForm<NamedLFProcessConfigFormData>({
-        defaultValues: emptyFormData,
-        resolver: yupResolver<NamedLFProcessConfigFormData>(namedLFProcessConfigFormSchema),
-    });
+    const resolver = yupResolver<NamedLFProcessConfigFormData>(namedLFProcessConfigFormSchema);
 
-    const { handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigs<ProcessType.LOADFLOW>(
+    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useUpdateProcessConfigs(
         name,
         description,
         processConfigId,
-        methods,
+        emptyFormData,
+        resolver,
         fetchProcessConfig,
-        toLFProcessConfig,
-        updateProcessConfig,
+        getLFProcessConfigFormData,
         getLFProcessConfigBackendFromFormData,
+        updateProcessConfig,
         onClose
     );
 

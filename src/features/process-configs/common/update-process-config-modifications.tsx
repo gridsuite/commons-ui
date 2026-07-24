@@ -11,6 +11,7 @@ import {
     DESCRIPTION,
     ACTIVE,
     DirectoryItemsInput,
+    DndColumn,
     DndColumnType,
     DndTable,
     getDefaultRowData,

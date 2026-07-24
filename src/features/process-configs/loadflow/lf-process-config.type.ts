@@ -4,8 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ProcessType } from './common/process-config.type';
+import { UUID } from 'node:crypto';
+import { ProcessConfigBaseBackend, ProcessType } from '../common';
 
-export function isProcessType(type: string): type is ProcessType {
-    return Object.values(ProcessType).includes(type as ProcessType);
+export interface LoadflowProcessConfigBackend extends ProcessConfigBaseBackend {
+    processType: ProcessType.LOADFLOW;
+    loadflowParametersUuid: UUID;
 }

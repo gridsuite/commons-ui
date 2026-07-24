@@ -4,21 +4,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 import { UUID } from 'node:crypto';
 import { LinearProgress } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { UpdateSAProcessConfig } from './update-sa-process-config';
-// eslint-disable-next-line import-x/no-cycle
 import {
     getSAProcessConfigBackendFromFormData,
-    NamedSAProcessConfigFormSchema,
+    getSAProcessConfigFormData,
     NamedSAProcessConfigFormData,
-    toSAProcessConfig,
-} from './update-sa-process-configs-utils';
-import { CustomMuiDialog } from '../../../components';
-import { PersistedProcessConfigBackend, ProcessConfigBackend, ProcessType, useProcessConfigs } from '../common';
+    namedSAProcessConfigFormSchema,
+    UpdateSAProcessConfig,
+} from './security-analysis';
+import { CustomMuiDialog } from '../../components';
+import { ProcessType } from './common';
+import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
+import { useUpdateProcessConfigs } from './use-update-process-configs';
 
 interface UpdateSAProcessConfigDialogProps {
     open: boolean;
@@ -56,20 +55,18 @@ export function UpdateSAProcessConfigDialog({
         securityAnalysisParameters: [],
     };
 
-    const methods = useForm<NamedSAProcessConfigFormData>({
-        defaultValues: emptyFormData,
-        resolver: yupResolver<NamedSAProcessConfigFormData>(NamedSAProcessConfigFormSchema),
-    });
+    const resolver = yupResolver<NamedSAProcessConfigFormData>(namedSAProcessConfigFormSchema);
 
-    const { handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigs<ProcessType.SECURITY_ANALYSIS>(
+    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useUpdateProcessConfigs(
         name,
         description,
         processConfigId,
-        methods,
+        emptyFormData,
+        resolver,
         fetchProcessConfig,
-        toSAProcessConfig,
-        updateProcessConfig,
+        getSAProcessConfigFormData,
         getSAProcessConfigBackendFromFormData,
+        updateProcessConfig,
         onClose
     );
 
@@ -78,7 +75,7 @@ export function UpdateSAProcessConfigDialog({
             titleId="process_config/editSAProcessConfigTitle"
             formContext={{
                 ...methods,
-                validationSchema: NamedSAProcessConfigFormSchema,
+                validationSchema: namedSAProcessConfigFormSchema,
                 removeOptional: true,
             }}
             open={open}

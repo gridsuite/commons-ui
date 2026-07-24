@@ -6,8 +6,6 @@
  */
 import * as yup from 'yup';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-// eslint-disable-next-line import-x/no-cycle
-import { ProcessConfigFormData, NamedProcessConfigFormData, ProcessType } from './process-config.type';
 
 export const namedFormShape = {
     [FieldConstants.NAME]: yup.string().required(),
@@ -38,15 +36,3 @@ export const processConfigModificationsFormShape = {
             })
         ),
 };
-
-export function getProcessConfigFormData<TProcessType extends ProcessType>(
-    processConfig: ProcessConfigFormData<TProcessType>,
-    name: string,
-    description: string | null
-): NamedProcessConfigFormData<TProcessType> {
-    return {
-        name,
-        description: description ?? undefined,
-        ...processConfig,
-    } as NamedProcessConfigFormData<TProcessType>;
-}

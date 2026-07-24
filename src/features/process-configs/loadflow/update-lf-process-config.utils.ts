@@ -8,13 +8,8 @@ import * as yup from 'yup';
 import { UUID } from 'node:crypto';
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-// eslint-disable-next-line import-x/no-cycle
-import {
-    LoadflowProcessConfigBackend,
-    namedFormShape,
-    processConfigModificationsFormShape,
-    ProcessType,
-} from '../common';
+import { namedFormShape, processConfigModificationsFormShape, ProcessType } from '../common';
+import { LoadflowProcessConfigBackend } from './lf-process-config.type';
 
 export function getLFProcessConfigBackendFromFormData(
     formData: NamedLFProcessConfigFormData
@@ -52,7 +47,7 @@ export const namedLFProcessConfigFormSchema = yup.object().shape({
 export type LFProcessConfigFormData = yup.InferType<typeof lfProcessConfigFormSchema>;
 export type NamedLFProcessConfigFormData = yup.InferType<typeof namedLFProcessConfigFormSchema>;
 
-export async function toLFProcessConfig(processConfig: LoadflowProcessConfigBackend) {
+export async function getLFProcessConfigFormData(processConfig: LoadflowProcessConfigBackend) {
     const allUuids = new Set<string>([
         ...processConfig.modifications.map((modification) => modification.modificationUuid),
         processConfig.loadflowParametersUuid,

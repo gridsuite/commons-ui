@@ -4,8 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-
-// eslint-disable-next-line import-x/no-cycle
 export * from './process-config.type';
-export * from './use-process-configs';
 export * from './process-config.utils';
+export * from './update-process-config-modifications';

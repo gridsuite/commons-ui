@@ -7,7 +7,7 @@
 import { Box } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { FormattedMessage } from 'react-intl';
-import { UpdateProcessConfigModifications } from '../common/update-process-config-modifications';
+import { UpdateProcessConfigModifications } from '../common';
 import { FieldConstants, ElementType } from '../../../utils';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
 import { NameElementEditorForm } from '../../parameters/common/name-element-editor';

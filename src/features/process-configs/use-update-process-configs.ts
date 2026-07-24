@@ -5,73 +5,79 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { SubmitHandler, UseFormReturn } from 'react-hook-form';
+import { DefaultValues, Resolver, SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { FieldConstants } from '../../../utils';
-// eslint-disable-next-line import-x/no-cycle
-import { getProcessConfigFormData } from './process-config.utils';
+import { FieldConstants } from '../../utils';
+import { ProcessType } from './common';
 import {
-    PersistedProcessConfigBackend,
-    ProcessConfigFormData,
-    ProcessConfigBackend,
     NamedProcessConfigFormData,
-    ProcessType,
+    PersistedProcessConfigBackend,
+    ProcessConfigBackend,
+    ProcessConfigFormData,
 } from './process-config.type';
+import { getNamedProcessConfigFormData } from './update-process-config.utils';
 
 export interface UseProcessConfigsReturn<TProcessType extends ProcessType> {
+    methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>;
     handleUpdateProcessConfig: SubmitHandler<NamedProcessConfigFormData<TProcessType>>;
     disabledSave: boolean;
     isLoading: boolean;
 }
 
-export const useProcessConfigs = <TProcessType extends ProcessType>(
+export const useUpdateProcessConfigs = <TProcessType extends ProcessType>(
     name: string,
     description: string | null,
     processConfigUuid: UUID,
-    methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>,
+    emptyFormData: DefaultValues<NamedProcessConfigFormData<TProcessType>>,
+    resolver: Resolver<NamedProcessConfigFormData<TProcessType>>,
     fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend<TProcessType>>,
-    toProcessConfig: (
+    getProcessConfigFormData: (
         processConfig: ProcessConfigBackend<TProcessType>
     ) => Promise<ProcessConfigFormData<TProcessType>>,
+    getProcessConfigBackendFromFormData: (
+        formData: NamedProcessConfigFormData<TProcessType>
+    ) => ProcessConfigBackend<TProcessType>,
     updateProcessConfig: (
         processConfigUuid: UUID,
         name: string,
         description: string,
         processConfig: ProcessConfigBackend<TProcessType>
     ) => Promise<void>,
-    getProcessConfigBackendFromFormData: (
-        formData: NamedProcessConfigFormData<TProcessType>
-    ) => ProcessConfigBackend<TProcessType>,
     onClose: () => void
 ): UseProcessConfigsReturn<TProcessType> => {
     const [isLoading, setIsLoading] = useState(false);
+
+    const methods = useForm<NamedProcessConfigFormData<TProcessType>>({
+        defaultValues: emptyFormData,
+        resolver,
+    });
 
     const {
         reset,
         formState: { errors },
     } = methods;
 
-    const fetchProcessConfigData = useCallback(async () => {
+    const fetchFormData = useCallback(async () => {
         const persitedProcessConfig = await fetchProcessConfig(processConfigUuid);
         if (persitedProcessConfig) {
-            const processConfigData = await toProcessConfig(persitedProcessConfig.processConfig);
-            const formData = getProcessConfigFormData<TProcessType>(processConfigData, name, description);
-            reset({ ...formData });
+            const formData = await getProcessConfigFormData(persitedProcessConfig.processConfig);
+            const namedFormData = getNamedProcessConfigFormData<TProcessType>(formData, name, description);
+            reset({ ...namedFormData });
         }
-    }, [description, fetchProcessConfig, name, processConfigUuid, reset, toProcessConfig]);
+    }, [description, fetchProcessConfig, name, processConfigUuid, reset, getProcessConfigFormData]);
 
     useEffect(() => {
         setIsLoading(true);
-        fetchProcessConfigData().finally(() => setIsLoading(false));
-    }, [fetchProcessConfigData]);
+        fetchFormData().finally(() => setIsLoading(false));
+    }, [fetchFormData]);
 
     const handleUpdateProcessConfig = useCallback(
-        (processConfigFormData: NamedProcessConfigFormData<TProcessType>) => {
+        (formData: NamedProcessConfigFormData<TProcessType>) => {
             updateProcessConfig(
                 processConfigUuid,
-                processConfigFormData[FieldConstants.NAME],
-                processConfigFormData[FieldConstants.DESCRIPTION] ?? '',
-                getProcessConfigBackendFromFormData(processConfigFormData)
+                formData[FieldConstants.NAME],
+                formData[FieldConstants.DESCRIPTION] ?? '',
+                getProcessConfigBackendFromFormData(formData)
             ).then(() => onClose());
         },
         [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, onClose]
@@ -79,7 +85,5 @@ export const useProcessConfigs = <TProcessType extends ProcessType>(
 
     const disabledSave = Boolean(errors.name || errors.root?.isValidating);
 
-    console.log('ERRORS: ', errors);
-
-    return { handleUpdateProcessConfig, disabledSave, isLoading };
+    return { methods, handleUpdateProcessConfig, disabledSave, isLoading };
 };
