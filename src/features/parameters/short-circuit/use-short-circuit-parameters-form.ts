@@ -272,6 +272,7 @@ export const useShortCircuitParametersForm = ({
         if (!params || !provider || !specificParamsDescription) {
             return;
         }
+        console.log('reset', params);
         reset(toShortCircuitFormValues(params));
         // Now that we have params, provider and specific parameters description we can init
         // form Schema and default values. this paramsLoaded State is used to determine
