@@ -93,7 +93,7 @@ export function VoltageInitParametersInLine({
                 }}
                 selectParameterHandler={handleLoadParameters}
                 resetHandler={resetVoltageInitParameters}
-                validateHandler={handleSubmit(voltageInitMethods.onSaveInline)}
+                validateHandler={handleSubmit(voltageInitMethods.onSaveInline, voltageInitMethods.onValidationError)}
             >
                 <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} showActionsButtons />
             </ParameterLayout>

@@ -33,6 +33,19 @@ import { NAME } from '../../../components/ui';
 import { SELECTED } from '../../../components/composite/dnd-table';
 import { FILTER_ID, FILTER_NAME, FILTERS, ID } from '../../../utils/constants/filterConstant';
 
+export const TAB_FIELDS: Record<TabValues, string[]> = {
+    [TabValues.GENERAL]: [TabValues.GENERAL],
+    [TabValues.VOLTAGE_LIMITS]: [VOLTAGE_LIMITS_MODIFICATION, VOLTAGE_LIMITS_DEFAULT],
+    [TabValues.EQUIPMENTS_SELECTION]: [
+        TRANSFORMERS_SELECTION_TYPE,
+        VARIABLE_TRANSFORMERS,
+        SHUNT_COMPENSATORS_SELECTION_TYPE,
+        VARIABLE_SHUNT_COMPENSATORS,
+        GENERATORS_SELECTION_TYPE,
+        VARIABLE_Q_GENERATORS,
+    ],
+};
+
 export const fromVoltageInitParametersFormToParamValues = (
     newParams: Record<string, any>
 ): VoltageInitStudyParameters => {
