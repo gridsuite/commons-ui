@@ -7,17 +7,15 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils';
-import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { IdName, mapSecurityAnalysisParameters, SAParameters, SAParametersEnriched } from '../utils';
 import { fetchElementNames } from './directory';
 
-const PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/security-analysis`;
-
 export const getStudyUrl = (studyUuid: UUID | null) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
 function getSecurityAnalysisUrl() {
-    return `${PREFIX_SECURITY_ANALYSIS_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/security-analysis/`;
 }
 
 export function fetchSecurityAnalysisProviders() {

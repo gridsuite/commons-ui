@@ -7,18 +7,16 @@
 
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
-import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
-const PREFIX_NETWORK_MODIFICATION_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/network-modification`;
-
-export const getBaseNetworkModificationUrl = () => `${PREFIX_NETWORK_MODIFICATION_QUERIES}/v1`;
+export const getBaseNetworkModificationUrl = () => `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modification`;
 
 export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | undefined) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 function getUrl() {
-    return `${PREFIX_NETWORK_MODIFICATION_QUERIES}/v1/network-modifications`;
+    return `${getBaseNetworkModificationUrl()}/network-modifications`;
 }
 
 export function fetchNetworkModification(modificationUuid: UUID) {
@@ -43,7 +41,7 @@ export function fetchBusBarSectionsForNewCoupler(
     });
 
     const url =
-        `${PREFIX_NETWORK_MODIFICATION_QUERIES}/v1/network-modifications/busbar-sections-for-new-coupler` +
+        `${getBaseNetworkModificationUrl()}/network-modifications/busbar-sections-for-new-coupler` +
         `?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
@@ -150,7 +148,7 @@ const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
     nodeUuid: string | null | undefined,
     rootNetworkUuid: string | undefined | null
 ) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
         rootNetworkUuid
     )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 

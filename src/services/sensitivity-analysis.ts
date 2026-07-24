@@ -13,25 +13,24 @@ import {
     SensitivityAnalysisParametersInfos,
     SensitivityAnalysisParametersInfosEnriched,
 } from '../utils';
-import { PREFIX_STUDY_QUERIES } from './loadflow';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { fetchElementNames } from './directory';
 
-const GET_PARAMETERS_PREFIX = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis/v1/parameters`;
-const PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/sensitivity-analysis`;
+const GET_PARAMETERS_PREFIX = `${PREFIX_STUDY_SERVER_QUERIES}/v1/sensitivity-analysis/parameters`;
 const getStudyUrl = (studyUuid: UUID | null) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
 export const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
     studyUuid: string | null | undefined,
     nodeUuid: string | undefined,
     rootNetworkUuid: string | undefined | null
 ) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/root-networks/${safeEncodeURIComponent(
         rootNetworkUuid
     )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 export function getSensiUrl() {
-    return `${PREFIX_SENSITIVITY_ANALYSIS_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/sensitivity-analysis/`;
 }
 
 export function fetchSensitivityAnalysisProviders(): Promise<string[]> {

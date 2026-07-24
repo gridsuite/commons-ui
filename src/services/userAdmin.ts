@@ -6,13 +6,12 @@
  */
 
 import { type AnnouncementDto, type UserDetail } from '../utils/types/types';
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { backendFetchJson } from './utils';
-
-const PREFIX_USER_ADMIN_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/user-admin/v1`;
 
 export function fetchUserDetails(user: string): Promise<UserDetail> {
     console.info('get user details');
-    return backendFetchJson(`${PREFIX_USER_ADMIN_QUERIES}/users/${user}/detail`, {
+    return backendFetchJson(`${PREFIX_STUDY_SERVER_QUERIES}/v1/user-admin/users/${user}/detail`, {
         method: 'get',
         headers: { 'Content-Type': 'application/json' },
     });
@@ -20,7 +19,7 @@ export function fetchUserDetails(user: string): Promise<UserDetail> {
 
 export function fetchCurrentAnnouncement(): Promise<AnnouncementDto | null> {
     console.info(`Fetching current announcement ...`);
-    const url = `${PREFIX_USER_ADMIN_QUERIES}/announcements/current`;
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/user-admin/announcements/current`;
     return backendFetchJson(url, {
         method: 'get',
     });
