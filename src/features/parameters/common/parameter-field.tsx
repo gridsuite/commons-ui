@@ -20,7 +20,6 @@ import {
     SwitchInput,
     TextInput,
 } from '../../../components/ui';
-import { LineSeparator } from './index';
 import { mergeSx } from '../../../utils';
 
 interface ParameterFieldProps {
