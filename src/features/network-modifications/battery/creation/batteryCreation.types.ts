@@ -17,6 +17,11 @@ export interface BatteryCreationDto {
     reactiveCapabilityCurve?: boolean | null;
     targetP: number;
     targetQ: number;
+    targetV: number | null;
+    voltageRegulationOn: boolean | null;
+    regulatingTerminalId: string | null;
+    regulatingTerminalType: string | null;
+    regulatingTerminalVlId: string | null;
     voltageLevelId: string | null;
     busOrBusbarSectionId: string | null;
     reactiveCapabilityCurvePoints: ReactiveCapabilityCurvePoints[] | null;

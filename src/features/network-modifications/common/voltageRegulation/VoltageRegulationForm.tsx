@@ -29,6 +29,7 @@ export interface VoltageRegulationFormProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     previousValues?: VoltageRegulationFormPreviousValues;
     isEquipmentModification?: boolean;
+    isGenerator?: boolean;
 }
 
 export function VoltageRegulationForm({
@@ -36,6 +37,7 @@ export function VoltageRegulationForm({
     fetchVoltageLevelEquipments,
     previousValues,
     isEquipmentModification,
+    isGenerator = true,
 }: Readonly<VoltageRegulationFormProps>) {
     const intl = useIntl();
 
@@ -105,15 +107,17 @@ export function VoltageRegulationForm({
                             equipmentSectionType={previousEquipmentSectionType}
                         />
                     </GridItem>
-                    <GridItem size={4} offset={4}>
-                        <FloatInput
-                            name={FieldConstants.Q_PERCENT}
-                            label="QPercentText"
-                            adornment={PercentageAdornment}
-                            previousValue={previousQPercent}
-                            clearable
-                        />
-                    </GridItem>
+                    {isGenerator && (
+                        <GridItem size={4} offset={4}>
+                            <FloatInput
+                                name={FieldConstants.Q_PERCENT}
+                                label="QPercentText"
+                                adornment={PercentageAdornment}
+                                previousValue={previousQPercent}
+                                clearable
+                            />
+                        </GridItem>
+                    )}
                 </Grid>
             )}
         </>

@@ -30,11 +30,16 @@ import {
     getReactiveLimitsEmptyFormDataProps,
     getReactiveLimitsFormDataProps,
     getReactiveLimitsValidationSchema,
+    getRegulatingTerminalEquipmentData,
+    getRegulatingTerminalVoltageLevelData,
     getSetPointsEmptyFormData,
     getSetPointsSchema,
     getShortCircuitEmptyFormData,
     getShortCircuitFormData,
     getShortCircuitFormSchema,
+    getVoltageRegulationEmptyFormData,
+    getVoltageRegulationSchema,
+    REGULATION_TYPES,
 } from '../../common';
 
 export const batteryCreationFormSchema = object()
@@ -64,6 +69,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(),
         ...getSetPointsSchema(),
+        ...getVoltageRegulationSchema(),
         ...getActivePowerControlSchema(),
         ...getShortCircuitFormSchema(),
     })
@@ -81,6 +87,7 @@ export const batteryCreationEmptyFormData: DeepNullable<BatteryCreationFormData>
     reactiveLimits: getReactiveLimitsEmptyFormDataProps(),
     AdditionalProperties: [],
     ...getSetPointsEmptyFormData(),
+    ...getVoltageRegulationEmptyFormData(),
     ...getActivePowerControlEmptyFormData(),
     ...getShortCircuitEmptyFormData(),
 };
@@ -109,6 +116,16 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
             maximumReactivePower: dto?.maxQ,
             reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurve ? dto?.reactiveCapabilityCurvePoints : null,
         }),
+        voltageLevel: getRegulatingTerminalVoltageLevelData({
+            voltageLevelId: dto.regulatingTerminalVlId,
+        }),
+        equipment: getRegulatingTerminalEquipmentData({
+            equipmentId: dto.regulatingTerminalId,
+            equipmentType: dto.regulatingTerminalType ?? undefined,
+        }),
+        voltageRegulationType: dto?.regulatingTerminalId ? REGULATION_TYPES.DISTANT.id : REGULATION_TYPES.LOCAL.id,
+        voltageRegulation: dto.voltageRegulationOn,
+        voltageSetpoint: dto.targetV,
         AdditionalProperties: getFilledPropertiesFromModification(dto.properties),
         ...getShortCircuitFormData({
             directTransX: dto.directTransX,
@@ -119,6 +136,7 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
 
 export const batteryCreationFormToDto = (form: BatteryCreationFormData): BatteryCreationDto => {
     const isReactiveCapabilityCurveOn = form.reactiveLimits.reactiveCapabilityCurveChoice === 'CURVE';
+    const isDistantRegulation = form[FieldConstants.VOLTAGE_REGULATION_TYPE] === REGULATION_TYPES.DISTANT.id;
     return {
         type: ModificationType.BATTERY_CREATION,
         equipmentId: form.equipmentID,
@@ -140,9 +158,14 @@ export const batteryCreationFormToDto = (form: BatteryCreationFormData): Battery
             : null,
         targetP: form.activePowerSetpoint ?? 0,
         targetQ: form.reactivePowerSetpoint ?? 0,
+        targetV: form.voltageSetpoint ?? null,
+        voltageRegulationOn: form.voltageRegulation ?? null,
         participate: form.frequencyRegulation ?? null,
         droop: form.droop ?? null,
         directTransX: form.directTransX ?? null,
         stepUpTransformerX: form.transformerReactance ?? null,
+        regulatingTerminalId: isDistantRegulation ? (form.equipment?.id ?? null) : null,
+        regulatingTerminalType: isDistantRegulation ? (form.equipment?.type ?? null) : null,
+        regulatingTerminalVlId: isDistantRegulation ? (form.voltageLevel?.id ?? null) : null,
     };
 };
