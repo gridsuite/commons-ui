@@ -96,8 +96,6 @@ export function TableNumericalInput({
             size="small"
             fullWidth
             inputRef={ref}
-            {...(hideErrorMessage ? {} : genHelperError(error?.message))}
-            {...props}
             slotProps={{
                 input: {
                     endAdornment: (
@@ -132,6 +130,8 @@ export function TableNumericalInput({
                     },
                 },
             }}
+            {...(hideErrorMessage ? {} : genHelperError(error?.message))}
+            {...props}
         />
     );
 }

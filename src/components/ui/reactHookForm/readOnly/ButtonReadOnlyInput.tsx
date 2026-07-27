@@ -28,7 +28,6 @@ export function ButtonReadOnlyInput({ name, isNumerical = false, children }: Rea
             size="small"
             fullWidth
             value={value}
-            {...genHelperError(error?.message)}
             slotProps={{
                 input: {
                     readOnly: true,
@@ -57,6 +56,7 @@ export function ButtonReadOnlyInput({ name, isNumerical = false, children }: Rea
                     ),
                 },
             }}
+            {...genHelperError(error?.message)}
         />
     );
 }

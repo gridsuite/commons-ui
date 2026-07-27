@@ -216,6 +216,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             )}
         >
             {renderDepthBox()}
+
             <Box sx={networkModificationTableStyles.nameCellInnerRow}>
                 {isComposite && (
                     <Box sx={networkModificationTableStyles.nameCellTogglerBox}>

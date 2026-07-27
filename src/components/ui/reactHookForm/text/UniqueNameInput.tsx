@@ -98,7 +98,6 @@ export function UniqueNameInput({
             fullWidth={fullWidth}
             error={!!error}
             helperText={translatedError}
-            {...formProps}
             slotProps={{
                 input: {
                     endAdornment,
@@ -107,6 +106,7 @@ export function UniqueNameInput({
                     },
                 },
             }}
+            {...formProps}
         />
     );
 }

@@ -28,13 +28,13 @@ export function LoadDialogHeader({ loadToModify, isModification = false }: Reado
             fullWidth
             label="ID"
             value={equipmentId ?? ''}
-            disabled
-            {...filledTextField}
             slotProps={{
                 input: {
                     readOnly: true,
                 },
             }}
+            disabled
+            {...filledTextField}
         />
     ) : (
         <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />

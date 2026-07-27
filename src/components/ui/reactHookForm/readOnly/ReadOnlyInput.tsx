@@ -25,7 +25,6 @@ export function ReadOnlyInput({ name, isNumerical = false }: Readonly<ReadOnlyIn
             fullWidth
             value={value}
             variant="standard"
-            {...genHelperError(error?.message)}
             slotProps={{
                 input: {
                     readOnly: true,
@@ -39,6 +38,7 @@ export function ReadOnlyInput({ name, isNumerical = false }: Readonly<ReadOnlyIn
                         : {},
                 },
             }}
+            {...genHelperError(error?.message)}
         />
     );
 }

@@ -48,13 +48,13 @@ export function VoltageLevelModificationForm({
                             fullWidth
                             label="ID"
                             value={equipmentId ?? ''}
-                            disabled
-                            {...filledTextField}
                             slotProps={{
                                 input: {
                                     readOnly: true,
                                 },
                             }}
+                            disabled
+                            {...filledTextField}
                         />
                     </Grid>
                     <Grid size={4}>
