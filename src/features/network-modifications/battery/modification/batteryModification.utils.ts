@@ -36,7 +36,6 @@ import {
     getVoltageRegulationEmptyFormData,
     getVoltageRegulationSchema,
     modificationPropertiesSchema,
-    REGULATION_TYPES,
     toModificationProperties,
 } from '../../common';
 import { BatteryModificationDto } from './batteryModification.types';
