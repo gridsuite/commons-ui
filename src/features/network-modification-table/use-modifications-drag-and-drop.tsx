@@ -221,17 +221,18 @@ export const useModificationsDragAndDrop = ({
                 setComposedModifications(updatedModifications);
             }
 
+            // Group id is filled in the study server, by convention if we send null data it will be resolved as a group operation
             moveModification(
                 studyUuid,
                 currentNodeUuid,
                 movingUuid,
                 {
                     id: sourceContainerId,
-                    type: sourceRow.depth === 0 ? ModificationContainerType.GROUP : ModificationContainerType.COMPOSITE,
+                    type: sourceContainerId ? ModificationContainerType.COMPOSITE : ModificationContainerType.GROUP,
                 },
                 {
                     id: targetContainerId,
-                    type: targetRow.depth === 0 ? ModificationContainerType.GROUP : ModificationContainerType.COMPOSITE,
+                    type: targetContainerId ? ModificationContainerType.COMPOSITE : ModificationContainerType.GROUP,
                 },
                 beforeUuid
             ).catch((error) => {
