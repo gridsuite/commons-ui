@@ -8,6 +8,7 @@
 import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import React from 'react';
+import type { SliderProps } from '@mui/material/Slider'; // eslint-disable-line no-restricted-imports
 import { parametersStyles } from '../../parameters-style';
 import { SliderInput } from '../../../../components/ui';
 import type { MuiStyles } from '../../../../utils/styles';
@@ -16,16 +17,11 @@ export function sanitizePercentageValue(value: number) {
     return Math.round(value * 10) / 10;
 }
 
-type SliderMark = {
-    value: number;
-    label?: React.ReactNode;
-};
-
 type SliderParameterLineProps = {
     name: string;
     disabled?: boolean;
     label: string;
-    marks: boolean | SliderMark[];
+    marks: NonNullable<SliderProps['marks']>;
     minValue?: number; // default = 0;
     maxValue?: number; // default = 100;
 };
