@@ -239,7 +239,7 @@ export function NetworkModificationsTable({
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
         getSubRows: (row) => row.subModifications,
-        getRowId: (row) => row.uuid,
+        getRowId: (row, index, parent) => (parent ? `${parent.id}.${row.uuid}` : row.uuid),
         getRowCanExpand: (row) => isCompositeModification(row.original) || isSharedModification(row.original),
         enableRowSelection: true,
         enableSubRowSelection: true,

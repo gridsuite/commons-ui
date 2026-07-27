@@ -9,6 +9,10 @@ import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Row, RowSelectionState, Updater } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../../utils';
 
+function childRowId(parentRowId: string, uuid: string): string {
+    return parentRowId ? `${parentRowId}.${uuid}` : uuid;
+}
+
 /**
  * Ensures all subrows of a composite are selected if the composite also is, otherwise deselected the composite
  */
@@ -17,24 +21,24 @@ function normalizeCompositeSelection(
     roots: ComposedModificationMetadata[]
 ): RowSelectionState {
     const next: RowSelectionState = { ...rawSelection };
-
-    const visit = (node: ComposedModificationMetadata): boolean => {
+    const visit = (node: ComposedModificationMetadata, parentRowId: string): boolean => {
+        const rowId = childRowId(parentRowId, node.uuid);
         const children = node.subModifications;
         if (!children || children.length === 0) {
-            return next[node.uuid];
+            return next[rowId];
         }
         // Recurse first so nested composites are resolved bottom-up.
-        const everyChildSelected = children.map((child) => visit(child)).every(Boolean);
+        const everyChildSelected = children.map((child) => visit(child, rowId)).every(Boolean);
         if (everyChildSelected) {
-            next[node.uuid] = true;
+            next[rowId] = true;
         } else {
             // Some or none of the children are selected: the composite must not be marked as fully selected.
-            delete next[node.uuid];
+            delete next[rowId];
         }
         return everyChildSelected;
     };
 
-    roots.forEach((root) => visit(root));
+    roots.forEach((root) => visit(root, ''));
     return next;
 }
 
@@ -72,19 +76,20 @@ function propagateSelectionToLoadedDescendants(
     let next: RowSelectionState = selection;
     let mutated = false;
 
-    const visit = (node: ComposedModificationMetadata, ancestorSelected: boolean) => {
-        const effectiveSelected = ancestorSelected || next[node.uuid];
-        if (effectiveSelected && !next[node.uuid]) {
+    const visit = (node: ComposedModificationMetadata, parentRowId: string, ancestorSelected: boolean) => {
+        const rowId = childRowId(parentRowId, node.uuid);
+        const effectiveSelected = ancestorSelected || next[rowId];
+        if (effectiveSelected && !next[rowId]) {
             if (!mutated) {
                 next = { ...selection };
                 mutated = true;
             }
-            next[node.uuid] = true;
+            next[rowId] = true;
         }
-        node.subModifications?.forEach((child) => visit(child, effectiveSelected));
+        node.subModifications?.forEach((child) => visit(child, rowId, effectiveSelected));
     };
 
-    roots.forEach((root) => visit(root, false));
+    roots.forEach((root) => visit(root, '', false));
     return mutated ? next : selection;
 }
 
@@ -93,12 +98,13 @@ function propagateSelectionToLoadedDescendants(
  */
 function collectAllUuids(mods: ComposedModificationMetadata[]): Set<string> {
     const uuids = new Set<string>();
-    const visit = (nodes: ComposedModificationMetadata[]) =>
+    const visit = (nodes: ComposedModificationMetadata[], parentRowId: string) =>
         nodes.forEach((m) => {
-            uuids.add(m.uuid);
-            visit(m.subModifications);
+            const rowId = childRowId(parentRowId, m.uuid);
+            uuids.add(rowId);
+            visit(m.subModifications, rowId);
         });
-    visit(mods);
+    visit(mods, '');
     return uuids;
 }
 

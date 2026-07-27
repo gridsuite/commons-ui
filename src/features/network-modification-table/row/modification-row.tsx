@@ -19,7 +19,7 @@ import {
     createRowSx,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
-import { isCompositeModification } from '../utils';
+import { isCompositeModification, isSharedModification } from '../utils';
 import { ComposedModificationMetadata, mergeSx } from '../../../utils';
 
 interface ModificationRowProps {
@@ -74,7 +74,7 @@ export function ModificationRow({
                                 snapshot.isDragging,
                                 virtualRow,
                                 row.depth,
-                                isCompositeModification(row.original)
+                                isCompositeModification(row.original) || isSharedModification(row.original)
                             )
                         )}
                     >
