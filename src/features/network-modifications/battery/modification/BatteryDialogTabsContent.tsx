@@ -41,7 +41,6 @@ export function BatteryDialogTabsContent({
     fetchBusesOrBusbarSections,
     fetchVoltageLevelEquipments,
 }: Readonly<BatteryDialogTabsContentProps>) {
-
     const voltageRegulationField = (
         <Box>
             <SwitchInput name={FieldConstants.VOLTAGE_REGULATION} label="VoltageRegulationText" />

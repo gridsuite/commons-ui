@@ -133,7 +133,6 @@ export const batteryModificationDtoToForm = (
 
 export const batteryModificationFormToDto = (form: BatteryModificationFormData): BatteryModificationDto => {
     const isReactiveCapabilityCurveOn = form.reactiveLimits?.reactiveCapabilityCurveChoice === 'CURVE';
-    const isDistantRegulation = form[FieldConstants.VOLTAGE_REGULATION_TYPE] === REGULATION_TYPES.DISTANT.id;
     return {
         type: ModificationType.BATTERY_MODIFICATION,
         equipmentId: form.equipmentID ?? '',
