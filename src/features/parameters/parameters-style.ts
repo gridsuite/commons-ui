@@ -18,7 +18,6 @@ export const parametersStyles = {
         minWidth: theme.spacing(20),
     }),
     parameterName: (theme) => ({
-        fontWeight: 'bold',
         marginTop: theme.spacing(1),
     }),
     controlItem: {
