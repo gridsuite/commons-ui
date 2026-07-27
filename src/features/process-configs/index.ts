@@ -7,5 +7,5 @@
 export * from './common';
 export * from './process-config.type';
 export * from './process-config.utils';
-export * from './update-lf-process-config-dialog';
-export * from './update-sa-process-config-dialog';
+export * from './lf-process-config-edition-dialog';
+export * from './sa-process-config-edition-dialog';

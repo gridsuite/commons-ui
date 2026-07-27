@@ -15,16 +15,16 @@ import {
     ProcessConfigBackend,
     ProcessConfigFormData,
 } from './process-config.type';
-import { getNamedProcessConfigFormData } from './update-process-config.utils';
+import { getNamedProcessConfigFormData } from './process-config-edition.utils';
 
-export interface UseProcessConfigsReturn<TProcessType extends ProcessType> {
+export interface UseProcessConfigEditionReturn<TProcessType extends ProcessType> {
     methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>;
     handleUpdateProcessConfig: SubmitHandler<NamedProcessConfigFormData<TProcessType>>;
     disabledSave: boolean;
     isLoading: boolean;
 }
 
-export const useUpdateProcessConfigs = <TProcessType extends ProcessType>(
+export const useProcessConfigEdition = <TProcessType extends ProcessType>(
     name: string,
     description: string | null,
     processConfigUuid: UUID,
@@ -44,7 +44,7 @@ export const useUpdateProcessConfigs = <TProcessType extends ProcessType>(
         processConfig: ProcessConfigBackend<TProcessType>
     ) => Promise<void>,
     onClose: () => void
-): UseProcessConfigsReturn<TProcessType> => {
+): UseProcessConfigEditionReturn<TProcessType> => {
     const [isLoading, setIsLoading] = useState(false);
 
     const methods = useForm<NamedProcessConfigFormData<TProcessType>>({

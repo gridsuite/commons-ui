@@ -13,11 +13,11 @@ import {
     getLFProcessConfigFormData,
     NamedLFProcessConfigFormData,
     namedLFProcessConfigFormSchema,
-    UpdateLFProcessConfig,
+    LFProcessConfigEdition,
 } from './loadflow';
 import { ProcessType } from './common';
 import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
-import { useUpdateProcessConfigs } from './use-update-process-configs';
+import { useProcessConfigEdition } from './use-process-config-edition';
 
 interface UpdateLFProcessConfigDialogProps {
     open: boolean;
@@ -35,7 +35,7 @@ interface UpdateLFProcessConfigDialogProps {
     ) => Promise<void>;
 }
 
-export function UpdateLFProcessConfigDialog({
+export function LFProcessConfigEditionDialog({
     onClose,
     open,
     processConfigId,
@@ -54,7 +54,7 @@ export function UpdateLFProcessConfigDialog({
 
     const resolver = yupResolver<NamedLFProcessConfigFormData>(namedLFProcessConfigFormSchema);
 
-    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useUpdateProcessConfigs(
+    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigEdition(
         name,
         description,
         processConfigId,
@@ -80,7 +80,7 @@ export function UpdateLFProcessConfigDialog({
             onSave={handleUpdateProcessConfig}
             disabledSave={disabledSave}
         >
-            {!isLoading && <UpdateLFProcessConfig directory={directory} processConfigName={name} />}
+            {!isLoading && <LFProcessConfigEdition directory={directory} processConfigName={name} />}
             {isLoading && <LinearProgress />}
         </CustomMuiDialog>
     );

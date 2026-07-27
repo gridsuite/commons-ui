@@ -12,14 +12,14 @@ import {
     getSAProcessConfigFormData,
     NamedSAProcessConfigFormData,
     namedSAProcessConfigFormSchema,
-    UpdateSAProcessConfig,
+    SAProcessConfigEdition,
 } from './security-analysis';
 import { CustomMuiDialog } from '../../components';
 import { ProcessType } from './common';
 import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
-import { useUpdateProcessConfigs } from './use-update-process-configs';
+import { useProcessConfigEdition } from './use-process-config-edition';
 
-interface UpdateSAProcessConfigDialogProps {
+interface SAProcessConfigEditionDialogProps {
     open: boolean;
     onClose: () => void;
     processConfigId: UUID;
@@ -37,7 +37,7 @@ interface UpdateSAProcessConfigDialogProps {
     ) => Promise<void>;
 }
 
-export function UpdateSAProcessConfigDialog({
+export function SAProcessConfigEditionDialog({
     onClose,
     open,
     processConfigId,
@@ -46,7 +46,7 @@ export function UpdateSAProcessConfigDialog({
     directory,
     fetchProcessConfig,
     updateProcessConfig,
-}: Readonly<UpdateSAProcessConfigDialogProps>) {
+}: Readonly<SAProcessConfigEditionDialogProps>) {
     const emptyFormData: NamedSAProcessConfigFormData = {
         name,
         description: description ?? '',
@@ -57,7 +57,7 @@ export function UpdateSAProcessConfigDialog({
 
     const resolver = yupResolver<NamedSAProcessConfigFormData>(namedSAProcessConfigFormSchema);
 
-    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useUpdateProcessConfigs(
+    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigEdition(
         name,
         description,
         processConfigId,
@@ -83,7 +83,7 @@ export function UpdateSAProcessConfigDialog({
             onSave={handleUpdateProcessConfig}
             disabledSave={disabledSave}
         >
-            {!isLoading && <UpdateSAProcessConfig directory={directory} processConfigName={name} />}
+            {!isLoading && <SAProcessConfigEdition directory={directory} processConfigName={name} />}
             {isLoading && <LinearProgress />}
         </CustomMuiDialog>
     );

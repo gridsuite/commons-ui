@@ -5,5 +5,5 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 export * from './sa-process-config.type';
-export * from './update-sa-process-config';
-export * from './update-sa-process-config.utils';
+export * from './sa-process-config-edition';
+export * from './sa-process-config-edition.utils';

@@ -12,22 +12,8 @@ import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 import { namedFormShape, processConfigModificationsFormShape, ProcessType } from '../common';
 import { SecurityAnalysisProcessConfigBackend } from './sa-process-config.type';
 
-export function getSAProcessConfigBackendFromFormData(
-    formData: NamedSAProcessConfigFormData
-): SecurityAnalysisProcessConfigBackend {
-    return {
-        processType: ProcessType.SECURITY_ANALYSIS,
-        modifications: formData.modifications.map((row) => ({
-            modificationUuid: row.modification[0].id as UUID,
-            description: row.description ?? null,
-            active: row.active,
-        })),
-        securityAnalysisParametersUuid: formData.securityAnalysisParameters[0].id as UUID,
-        loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
-    };
-}
-
 export const saProcessConfigSpecificFormShape = {
+    ...processConfigModificationsFormShape,
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
         .required()
@@ -39,19 +25,16 @@ export const saProcessConfigSpecificFormShape = {
         .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
         .length(1, YUP_REQUIRED),
 };
+
 export const saProcessConfigFormSchema = yup.object().shape({
-    ...processConfigModificationsFormShape,
     ...saProcessConfigSpecificFormShape,
 });
+export type SAProcessConfigFormData = yup.InferType<typeof saProcessConfigFormSchema>;
 
 export const namedSAProcessConfigFormSchema = yup.object().shape({
     ...namedFormShape,
-    ...processConfigModificationsFormShape,
     ...saProcessConfigSpecificFormShape,
 });
-
-export type SAProcessConfigFormData = yup.InferType<typeof saProcessConfigFormSchema>;
-
 export type NamedSAProcessConfigFormData = yup.InferType<typeof namedSAProcessConfigFormSchema>;
 
 export async function getSAProcessConfigFormData(
@@ -89,4 +72,19 @@ export async function getSAProcessConfigFormData(
             },
         ],
     } satisfies SAProcessConfigFormData;
+}
+
+export function getSAProcessConfigBackendFromFormData(
+    formData: SAProcessConfigFormData
+): SecurityAnalysisProcessConfigBackend {
+    return {
+        processType: ProcessType.SECURITY_ANALYSIS,
+        modifications: formData.modifications.map((row) => ({
+            modificationUuid: row.modification[0].id as UUID,
+            description: row.description ?? null,
+            active: row.active,
+        })),
+        securityAnalysisParametersUuid: formData.securityAnalysisParameters[0].id as UUID,
+        loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
+    };
 }

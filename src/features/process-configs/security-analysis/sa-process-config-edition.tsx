@@ -7,17 +7,17 @@
 import { Box } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { FormattedMessage } from 'react-intl';
-import { UpdateProcessConfigModifications } from '../common';
+import { ProcessConfigModificationsEdition } from '../common';
 import { FieldConstants, ElementType } from '../../../utils';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
 import { NameElementEditorForm } from '../../parameters/common/name-element-editor';
 
-interface UpdateLFProcessConfigProps {
+interface SAProcessConfigEditionProps {
     directory: UUID;
     processConfigName: string;
 }
 
-export function UpdateLFProcessConfig({ directory, processConfigName }: Readonly<UpdateLFProcessConfigProps>) {
+export function SAProcessConfigEdition({ directory, processConfigName }: Readonly<SAProcessConfigEditionProps>) {
     return (
         <>
             <NameElementEditorForm
@@ -28,7 +28,7 @@ export function UpdateLFProcessConfig({ directory, processConfigName }: Readonly
             <Box component="h3">
                 <FormattedMessage id="process_config/modifications" />
             </Box>
-            <UpdateProcessConfigModifications name={FieldConstants.MODIFICATIONS} />
+            <ProcessConfigModificationsEdition name={FieldConstants.MODIFICATIONS} />
             <Box component="h3">
                 <FormattedMessage id="process_config/providersParameters" />
             </Box>
@@ -36,6 +36,13 @@ export function UpdateLFProcessConfig({ directory, processConfigName }: Readonly
                 label="process_config/loadflow"
                 elementType={ElementType.LOADFLOW_PARAMETERS}
                 name={FieldConstants.LOADFLOW_PARAMETERS}
+                allowMultiSelect={false}
+                hideErrorMessage={false}
+            />
+            <ParameterLineDirectoryItemsInput
+                label="process_config/securityAnalysis"
+                elementType={ElementType.SECURITY_ANALYSIS_PARAMETERS}
+                name={FieldConstants.SECURITY_ANALYSIS_PARAMETERS}
                 allowMultiSelect={false}
                 hideErrorMessage={false}
             />
