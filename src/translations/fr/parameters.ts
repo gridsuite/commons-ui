@@ -69,6 +69,8 @@ export const parametersFr = {
     leftOpenBracket: ']',
     rightOpenBracket: '[',
 
+    Aggravation: 'Aggravation',
+    Contingencies: 'Aléas',
     Advanced: 'Avancés',
 
     Provider: 'Simulateur',

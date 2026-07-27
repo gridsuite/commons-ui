@@ -152,7 +152,7 @@ export const getLimitsValidationSchemaProps = (isEquipmentModification = false) 
             : array(limitsGroupValidationSchema).required(),
         [FieldConstants.SELECTED_OPERATIONAL_LIMITS_GROUP_ID1]: string().nullable(),
         [FieldConstants.SELECTED_OPERATIONAL_LIMITS_GROUP_ID2]: string().nullable(),
-        [FieldConstants.ENABLE_OLG_MODIFICATION]: boolean(),
+        [FieldConstants.ENABLE_OLG_MODIFICATION]: boolean().required(),
     });
 
 export type LimitsSchemaType = InferType<
