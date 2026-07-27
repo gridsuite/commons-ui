@@ -25,6 +25,7 @@ import { FilterEditionProps } from '../filter.type';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { snackWithFallback } from '../../../../utils/error';
+import { isDisabledValidationButton } from '../../../../utils/form-utils';
 
 const formSchema = yup
     .object()
@@ -64,8 +65,6 @@ export function ExplicitNamingFilterEditionDialog({
         formState: { errors },
     } = formMethods;
 
-    const nameError = errors[FieldConstants.NAME];
-    const isValidating = errors.root?.isValidating;
     // Fetch the filter data from back-end if necessary and fill the form with it
     useEffect(() => {
         if (id && open) {
@@ -127,7 +126,7 @@ export function ExplicitNamingFilterEditionDialog({
                 isDeveloperMode,
             }}
             titleId={titleId}
-            disabledSave={!!nameError || !!isValidating}
+            disabledSave={isDisabledValidationButton(errors)}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             unscrollableFullHeight
         >
