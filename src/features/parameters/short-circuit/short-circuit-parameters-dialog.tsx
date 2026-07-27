@@ -18,6 +18,7 @@ import {
     getShortCircuitSpecificParametersDescription,
     updateShortCircuitParameters,
 } from '../../../services/short-circuit-analysis';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function ShortCircuitParametersEditionDialog({
     id,
@@ -52,7 +53,6 @@ export function ShortCircuitParametersEditionDialog({
     const {
         formState: { errors },
     } = shortCircuitMethods.formMethods;
-    const disableSave = Boolean(errors.name || errors.root?.isValidating);
 
     return (
         <CustomMuiDialog
@@ -67,7 +67,7 @@ export function ShortCircuitParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
             maxWidth="lg"
         >
             <Grid container sx={{ width: '100%' }}>

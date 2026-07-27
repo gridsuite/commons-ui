@@ -12,6 +12,7 @@ import { NameElementEditorForm } from '../common/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function VoltageInitParametersEditionDialog({
     id,
@@ -34,7 +35,6 @@ export function VoltageInitParametersEditionDialog({
     const {
         formState: { errors },
     } = voltageInitMethods.formMethods;
-    const disableSave = Boolean(errors.name || errors.root?.isValidating);
 
     return (
         <CustomMuiDialog
@@ -49,7 +49,7 @@ export function VoltageInitParametersEditionDialog({
                 removeOptional: true,
                 language,
             }}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
             PaperProps={{
                 sx: {
                     height: '90vh', // we want the dialog height to be fixed even when switching tabs
