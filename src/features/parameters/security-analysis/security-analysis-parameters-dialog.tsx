@@ -45,9 +45,9 @@ export function SecurityAnalysisParametersDialog({
 
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, id, name, description);
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = securityAnalysisMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
+    const disableSave = Boolean(errors.name || errors.root?.isValidating);
     return (
         <CustomMuiDialog
             open={open}

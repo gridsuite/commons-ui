@@ -51,9 +51,9 @@ export function LoadFlowParametersEditionDialog({
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = loadflowMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
+    const disableSave = Boolean(errors.name || errors.root?.isValidating);
 
     return (
         <CustomMuiDialog
