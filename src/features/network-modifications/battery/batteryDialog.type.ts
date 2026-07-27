@@ -35,4 +35,10 @@ export interface BatteryFormInfos {
     measurementP: MeasurementInfo | undefined;
     measurementQ: MeasurementInfo | undefined;
     properties: Record<string, string> | undefined;
+    regulatingTerminalId: string;
+    regulatingTerminalVlId: string;
+    regulatingTerminalConnectableId: string;
+    regulatingTerminalConnectableType: string;
+    voltageRegulatorOn: boolean;
+    targetV: number;
 }
