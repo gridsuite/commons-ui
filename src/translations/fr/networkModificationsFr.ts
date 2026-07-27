@@ -4,26 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import {
-    ACTIVE_LIMITS_MIN_MAX_INVALID,
-    CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID,
-    DUPLICATED_PROPS_ERROR,
-    MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE,
-    MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
-    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
-    NORMALIZED_PERCENTAGE,
-    REACTIVE_LIMITS_MIN_MAX_INVALID,
-    SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
-    SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
-    SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
-    YUP_DEFAULT,
-    YUP_NOT_NULL,
-    YUP_NOT_TYPE_DEFAULT,
-    YUP_NOT_TYPE_NUMBER,
-    YUP_POSITIVE,
-    YUP_REQUIRED,
-} from '../../utils';
-
 export const networkModificationsFr = {
     'network_modifications.modificationsCount':
         '{hide, select, false {{count, plural, =0 {aucune modification} =1 {# modification} other {# modifications}}} other {...}}',
@@ -146,23 +126,6 @@ export const networkModificationsFr = {
     BREAKER: 'Disjoncteur',
     DISCONNECTOR: 'Sectionneur',
     Disconnector: 'Sectionneur',
-    BusBarCountMustBeGreaterThanOrEqualToOne: 'Un nombre de barres doit être supérieur ou égal à 1',
-    SectionCountMustBeGreaterThanOrEqualToOne: 'Un nombre de sections doit être supérieur ou égal à 1',
-    SectionCountMustBeLessThanOrEqualToTwenty: 'Un nombre de sections doit être inférieur ou égal à 20',
-    [MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'Cette valeur doit être supérieure ou égale à 0',
-    CreateCouplingDeviceIdenticalBusBar: 'Les SJB / Nœuds 1 et 2 doivent être différents',
-    [CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID]: "L'ID du poste doit être différent de celui du site",
-    voltageLevelNominalVoltageMaxValueError: 'La limite de tension basse doit être inférieure à celle de tension haute',
-    [SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]:
-        "Une limite d'ICC doit être supérieure ou égale à 0",
-    ShortCircuitCurrentLimitMinMaxError: 'La limite ICC min doit être inférieure ou égale à la limite ICC max',
-    [DUPLICATED_PROPS_ERROR]: 'Propriétés dupliquées : chaque propriété doit être unique',
-    [YUP_REQUIRED]: 'Obligatoire',
-    [YUP_NOT_NULL]: 'Ne peut pas être vide',
-    [YUP_DEFAULT]: 'Ce champ est invalide',
-    [YUP_POSITIVE]: 'Doit être un nombre positif',
-    [YUP_NOT_TYPE_NUMBER]: "Ce champ n'accepte que des valeurs numériques",
-    [YUP_NOT_TYPE_DEFAULT]: "La valeur du champ n'est pas au bon format",
     CreateLoad: 'Créer une consommation',
     loadType: 'Type',
     CreateShuntCompensator: 'Créer un moyen de compensation statique (Linéaire)',
@@ -177,11 +140,6 @@ export const networkModificationsFr = {
     SusceptanceLabel: 'Susceptance (S)',
     SwitchedOnMaxQAtNominalV: 'Q enclenchée à tension nominale',
     SwitchedOnMaxSusceptance: 'Susceptance enclenchée',
-    [SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO]:
-        'La valeur de Q à Unom doit être supérieure ou égale à 0',
-    [MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE]: 'Le nombre de gradins doit être supérieur ou égal à 1',
-    [SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT]:
-        'La valeur de la prise courante doit être comprise entre 0 et le nombre de gradins',
     VOLTAGE_LEVEL: 'Poste',
     BusBarBus: 'SJB / nœud',
     ConnectionName: 'Nom départ',
@@ -258,7 +216,6 @@ export const networkModificationsFr = {
     operationalLimitsGroup2WithProperties: 'Jeu de limites actif côté 2 ayant la propriété',
     Value: 'Valeur',
     EmptyField: 'Vider le champ',
-    NumericValueOrEmptyField: 'Valeur numérique ou Vider le champ',
     ValueOrEmptyField: 'Valeur ou Vider le champ',
     addNewAssignment: 'Modifier un autre champ',
     changeTypeConfirmation: 'Le type va être modifié. Toutes les valeurs des champs seront effacées.',
@@ -270,14 +227,11 @@ export const networkModificationsFr = {
     Connectivity: 'Connectivité',
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
-    [NORMALIZED_PERCENTAGE]: 'Ce pourcentage doit être compris entre 0 et 100',
     On: 'Activé',
     Off: 'Désactivé',
     FrequencyRegulation: 'Compensation',
     Droop: 'Statisme',
     Limits: 'Limites',
-    [MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER]:
-        'La valeur de la puissance active min doit être inférieure ou égale à la valeur de la puissance active max',
     activePowerControlTooltip:
         'Clé de distribution de la puissance au nœud bilan : maxP/Statisme, statisme par défaut = 4 (valable pour le mode compensation proportionnel à la puissance maximale des groupes)',
     NoModification: 'Pas de modification',
@@ -285,9 +239,6 @@ export const networkModificationsFr = {
     ReactiveLimitsKindCurve: 'Par diagramme',
     MinimumReactivePower: 'Puissance réactive minimale',
     MaximumReactivePower: 'Puissance réactive maximale',
-    [ACTIVE_LIMITS_MIN_MAX_INVALID]: 'La puissance active maximale doit être supérieure à la puissance active minimale',
-    [REACTIVE_LIMITS_MIN_MAX_INVALID]:
-        'La puissance réactive maximale doit être supérieure à la puissance réactive minimale',
     MinReactivePowerRequired: 'La puissance réactive minimale est requise si la maximale est définie',
     MaxReactivePowerRequired: 'La puissance réactive maximale est requise si la minimale est définie',
     ReactiveCapabilityCurveCreationErrorMissingPoints:
@@ -343,12 +294,6 @@ export const networkModificationsFr = {
     disableOLGedition: 'Les données saisies pour les jeux de limites ne seront pas conservées. Voulez-vous continuer ?',
     Edit: 'Édition',
     View: 'Visualisation',
-    TemporaryLimitNameUnicityError: 'Les noms des limites temporaires doivent être uniques dans la table',
-    TemporaryLimitDurationUnicityError: 'Les tempos des limites temporaires doivent être uniques dans la table',
-    LimitSetApplicabilityError: "2 jeux de limites de même nom doivent s'appliquer sur des côtés différents.",
-    permanentCurrentLimitMustBeGreaterThanZero: 'La valeur IST doit être supérieure à 0',
-    UniqueName: 'Le nom doit être unique',
-    FieldNotEmpty: 'le champs ne doit pas être vide',
     TemporaryCurrentLimitsText: "Limites d'intensité temporaires",
     SelectedOperationalLimitGroup: 'Jeu de limites actif',
 

@@ -28,6 +28,7 @@ export * from './tableFr';
 export * from './topBarFr';
 export * from './treeviewFinderFr';
 export * from './networkModificationsFr';
+export * from './network-modification-validationFr';
 export * from './external/exportParamsFr';
 export * from './external/importParamsFr';
 export * from './componentsFr';

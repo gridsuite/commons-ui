@@ -14,7 +14,6 @@ import {
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 import { NORMALIZED_PERCENTAGE, SAParametersEnriched } from '../../../utils';
-import { SAParametersEnriched } from '../../../utils';
 import {
     FLOW_PROPORTIONAL_THRESHOLD,
     HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,

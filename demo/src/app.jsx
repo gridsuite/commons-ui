@@ -110,9 +110,13 @@ import {
     useSnackMessage,
     LeftPanelOpenIcon,
     EditNoteIcon,
+    networkModificationValidationEn,
+    networkModificationValidationFr,
 } from '../../src';
 
 import { demoInputsEn, demoInputsFr } from './components/translation';
+import { genericValidationEn } from '../../src/translations/en/generic-validationEn.ts';
+import { genericValidationFr } from '../../src/translations/fr/generic-validationFr.ts';
 
 const messages = {
     en: {
@@ -137,6 +141,8 @@ const messages = {
         ...processConfigEn,
         ...demoInputsEn,
         ...translations.en,
+        ...networkModificationValidationEn,
+        ...genericValidationEn,
     },
     fr: {
         ...reportViewerFr,
@@ -160,6 +166,8 @@ const messages = {
         ...processConfigFr,
         ...demoInputsFr,
         ...translations.fr,
+        ...networkModificationValidationFr,
+        ...genericValidationFr,
     },
 };
 
