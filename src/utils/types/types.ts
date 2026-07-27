@@ -10,7 +10,10 @@ import { ElementType } from './elementType';
 
 export type Input = string | number;
 
-export type ElementStatus = 'ACTIVE' | 'DELETING';
+export enum ElementStatus {
+    ACTIVE = 'ACTIVE',
+    DELETING = 'DELETING',
+}
 
 export type ElementAttributes = {
     elementUuid: UUID;
