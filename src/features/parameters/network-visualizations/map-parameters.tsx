@@ -20,7 +20,6 @@ import {
     PARAM_MAP_BASEMAP,
     PARAM_MAP_MANUAL_REFRESH,
 } from './constants';
-import { LineSeparator } from '../common';
 import { parametersStyles } from '../parameters-style';
 import { MuiSelectInput, SwitchInput } from '../../../components/ui';
 import { fetchStudyMetadata } from '../../../services';
@@ -101,13 +100,9 @@ export function MapParameters() {
             justifyContent="space-between"
         >
             {lineSwitch(PARAM_LINE_FULL_PATH, PARAM_LINE_FULL_PATH)}
-            <LineSeparator />
             {lineSwitch(PARAM_LINE_PARALLEL_PATH, PARAM_LINE_PARALLEL_PATH)}
-            <LineSeparator />
             {lineFlow(PARAM_LINE_FLOW_MODE, LINE_FLOW_MODE, INTL_LINE_FLOW_MODE_OPTIONS)}
-            <LineSeparator />
             {lineSwitch(PARAM_MAP_MANUAL_REFRESH, MAP_MANUAL_REFRESH)}
-            <LineSeparator />
             {mapBaseMap}
         </Grid>
     );
