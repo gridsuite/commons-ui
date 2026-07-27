@@ -17,11 +17,13 @@ function LoadFlowParametersHeader({
     handleTabChange,
     tabIndexesWithError,
     formattedProviders,
+    disableSpecificProviderParams,
 }: Readonly<{
     selectedTab: string;
     handleTabChange: (event: React.SyntheticEvent, newValue: TabValues) => void;
     tabIndexesWithError: TabValues[];
     formattedProviders: { id: string; label: string }[];
+    disableSpecificProviderParams: boolean;
 }>) {
     return (
         <Stack>
@@ -38,6 +40,19 @@ function LoadFlowParametersHeader({
                     value={TabValues.LIMIT_REDUCTIONS}
                     sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS)}
                     data-testid="LfLimitReductionsTab"
+                />
+                <Tab
+                    label={<FormattedMessage id={TabValues.ADVANCED} />}
+                    value={TabValues.ADVANCED}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.ADVANCED)}
+                    data-testid="LfAdvancedTab"
+                />
+                <Tab
+                    label={<FormattedMessage id={TabValues.PROVIDER_SPECIFIC} />}
+                    value={TabValues.PROVIDER_SPECIFIC}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.PROVIDER_SPECIFIC)}
+                    data-testid="LfProviderSpecificTab"
+                    disabled={disableSpecificProviderParams}
                 />
             </Tabs>
         </Stack>

@@ -12,12 +12,12 @@ import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
 import { FloatInput } from '../../../components/ui';
 import {
-    PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
-    PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
-} from '../common';
+    FLOW_PROPORTIONAL_THRESHOLD,
+    HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+    HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
+    LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
+    LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
+} from './constants';
 
 interface FieldToShow {
     label: string;
@@ -76,7 +76,7 @@ const fieldsToShow: FieldToShow[] = [
     {
         label: 'securityAnalysis.current',
         firstField: {
-            name: PARAM_SA_FLOW_PROPORTIONAL_THRESHOLD,
+            name: FLOW_PROPORTIONAL_THRESHOLD,
             label: '%',
         },
         tooltipInfoId: 'securityAnalysis.toolTip.current',
@@ -85,24 +85,24 @@ const fieldsToShow: FieldToShow[] = [
     {
         label: 'securityAnalysis.lowVoltage',
         firstField: {
-            name: PARAM_SA_LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
+            name: LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
             label: '%',
         },
         secondField: {
             label: 'kV',
-            name: PARAM_SA_LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
+            name: LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
         },
         tooltipInfoId: 'securityAnalysis.toolTip.lowVoltage',
     },
     {
         label: 'securityAnalysis.highVoltage',
         firstField: {
-            name: PARAM_SA_HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
+            name: HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
             label: '%',
         },
         secondField: {
             label: 'kV',
-            name: PARAM_SA_HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
+            name: HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
         },
         tooltipInfoId: 'securityAnalysis.toolTip.highVoltage',
     },

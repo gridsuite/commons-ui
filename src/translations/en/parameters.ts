@@ -16,8 +16,7 @@ export const parametersEn = {
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
     resetParamsConfirmation: 'Do you really want to reset these parameters ?',
-    showAdvancedParameters: 'Advanced settings',
-    showSpecificParameters: 'Specific settings',
+    ProviderSpecific: 'Provider specific',
     save: 'Save',
     saveParameters: 'Save parameters',
     'settings.button.chooseSettings': 'Choose parameters',
@@ -50,7 +49,8 @@ export const parametersEn = {
     descLfBalanceTypeConformLoad: 'conform load',
     descLfCountries: 'Countries',
     descLfAllCountries: 'All countries',
-    descLfCountriesToBalance: 'Countries participating in balancing',
+    descLfCountriesToBalance: 'Balancing countries',
+    inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
     RealPercentage: 'This value must be between 0 and 1',
 
@@ -66,6 +66,10 @@ export const parametersEn = {
     VoltageRangeInterval: 'Voltage interval ({lowBound} kV, {highBound} kV]',
     leftOpenBracket: '(',
     rightOpenBracket: ')',
+
+    Aggravation: 'Aggravation',
+    Contingencies: 'Contingencies',
+    Advanced: 'Advanced',
 
     Provider: 'Provider',
     LimitReduction: 'Limit reduction',

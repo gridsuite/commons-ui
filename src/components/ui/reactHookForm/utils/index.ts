@@ -6,6 +6,7 @@
  */
 
 export * from './CancelButton';
+export * from './CloseButton';
 export * from './FieldLabel';
 export * from './SubmitButton';
 export * from './TextFieldWithAdornment';

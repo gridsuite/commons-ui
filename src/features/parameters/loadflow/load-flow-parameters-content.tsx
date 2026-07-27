@@ -7,7 +7,9 @@
 
 import { Box, Grid2 as Grid } from '@mui/material';
 import { TabValues } from './load-flow-parameters-utils';
+import LoadFlowAdvancedParameters from './load-flow-advanced-parameters';
 import LoadFlowGeneralParameters from './load-flow-general-parameters';
+import LoadFlowProviderSpecificParameters from './load-flow-provider-specific-parameters';
 import { LimitReductionsTableForm } from '../common';
 import {
     alertThresholdMarks,
@@ -27,7 +29,7 @@ import type { MuiStyles } from '../../../utils/styles';
 type LoadFlowParametersContentProps = {
     selectedTab: TabValues;
     currentProvider: string;
-    specificParameters: SpecificParameterInfos[];
+    specificParameters?: SpecificParameterInfos[];
     params: LoadFlowParametersInfos | null;
     defaultLimitReductions: ILimitReductionsByVoltageLevel[];
 };
@@ -59,7 +61,7 @@ function LoadFlowParametersContent({
             <Grid container sx={styles.container}>
                 <Grid sx={styles.maxWidth}>
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
-                        <LoadFlowGeneralParameters provider={currentProvider} specificParams={specificParameters} />
+                        <LoadFlowGeneralParameters />
                     </TabPanel>
                     <TabPanel value={selectedTab} index={TabValues.LIMIT_REDUCTIONS}>
                         <Grid container sx={{ width: '100%' }}>
@@ -75,6 +77,12 @@ function LoadFlowParametersContent({
                                 />
                             )}
                         </Grid>
+                    </TabPanel>
+                    <TabPanel value={selectedTab} index={TabValues.ADVANCED}>
+                        <LoadFlowAdvancedParameters />
+                    </TabPanel>
+                    <TabPanel value={selectedTab} index={TabValues.PROVIDER_SPECIFIC}>
+                        <LoadFlowProviderSpecificParameters specificParameters={specificParameters} />
                     </TabPanel>
                 </Grid>
             </Grid>

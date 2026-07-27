@@ -17,8 +17,7 @@ export const parametersFr = {
     descLfDcValues: 'DC',
     resetToDefault: 'Tout réinitialiser ',
     resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
-    showAdvancedParameters: 'Paramètres avancés',
-    showSpecificParameters: 'Paramètres spécifiques',
+    ProviderSpecific: 'Spécifique au simulateur',
     save: 'Enregistrer',
     saveParameters: 'Enregistrer des paramètres',
     'settings.button.chooseSettings': 'Sélectionner',
@@ -52,7 +51,8 @@ export const parametersFr = {
     descLfBalanceTypeConformLoad: 'part variable de la consommation',
     descLfCountries: 'Pays',
     descLfAllCountries: 'Tous les pays',
-    descLfCountriesToBalance: 'Pays participant à la compensation',
+    descLfCountriesToBalance: 'Pays réglant',
+    inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
     RealPercentage: 'Cette valeur doit être comprise entre 0 et 1',
 
@@ -68,6 +68,10 @@ export const parametersFr = {
     VoltageRangeInterval: 'Plage de tension ]{lowBound} kV; {highBound} kV]',
     leftOpenBracket: ']',
     rightOpenBracket: '[',
+
+    Aggravation: 'Aggravation',
+    Contingencies: 'Aléas',
+    Advanced: 'Avancés',
 
     Provider: 'Simulateur',
     LimitReduction: 'Abattement des seuils',
