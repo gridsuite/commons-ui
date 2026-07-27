@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress, Grid2 as Grid, Stack } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
@@ -16,10 +16,12 @@ import { useSnackMessage } from '../../../../hooks';
 import { CONTINGENCY_LISTS } from '../constants';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback, ContingencyListsInfosEnriched } from '../../../../utils';
-import { DndColumn } from '../../../../components/composite/dnd-table';
+import { DndColumn } from '../../../../components';
+import { mapSimulatedContingencyList, SimulatedContingencyCountType } from './utils';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
+    error: { color: 'error.main', paddingTop: 0, paddingBottom: 0 },
 } satisfies MuiStyles;
 
 export type ContingencyTableApi = {
@@ -44,7 +46,9 @@ function ContingencyTableWithApiRef(
     const [isLoading, setIsLoading] = useState(false);
 
     // states to store and control the simulated contingency count
-    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<ContingencyCount | null>(null);
+    const [simulatedContingencyCount, setSimulatedContingencyCount] = useState<SimulatedContingencyCountType | null>(
+        null
+    );
     const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
 
     // expose an API to trigger a refresh of the contingency count from outside the component
@@ -61,7 +65,7 @@ function ContingencyTableWithApiRef(
         []
     );
 
-    // callback which allows triggering a refresh of the contingency count from a child component
+    // callback that allows triggering a refresh of the contingency count from a child component
     const handleOnChange = useCallback(() => {
         setContingencyCountRefreshTrigger((prevValue) => prevValue + 1);
     }, []);
@@ -104,14 +108,13 @@ function ContingencyTableWithApiRef(
             abortSignal
         )
             .then((contingencyCount) => {
-                setSimulatedContingencyCount(contingencyCount);
+                setSimulatedContingencyCount(mapSimulatedContingencyList(contingencyCount, contingencyListsInfos));
                 loadingTimeoutId = setTimeout(() => {
                     setIsLoading(false);
                 }, 500);
             })
             .catch((error) => {
                 setSimulatedContingencyCount(null);
-
                 if (abortSignal.aborted && abortSignal.reason?.message === IGNORE_SIGNAL) {
                     return;
                 }
@@ -144,20 +147,33 @@ function ContingencyTableWithApiRef(
         if (isLoading) {
             return <Alert variant="standard" icon={<CircularProgress size={22} />} severity="info" sx={styles.alert} />;
         }
-        if (simulatedContingencyCount?.contingencies === 0 && simulatedContingencyCount.notFoundElements === 0) {
+        if (
+            simulatedContingencyCount === null ||
+            (simulatedContingencyCount.success && simulatedContingencyCount.nbContingencies === 0)
+        ) {
             return (
                 <Alert variant="standard" severity="error" sx={styles.alert}>
                     <FormattedMessage id="noContingency" />
                 </Alert>
             );
         }
-        return (
+
+        return simulatedContingencyCount.success ? (
             <Alert variant="standard" icon={false} severity="info" sx={styles.alert}>
                 <FormattedMessage
                     id="xContingenciesWillBeSimulatedAndYNotFound"
                     values={{
-                        x: simulatedContingencyCount?.contingencies ?? '...',
+                        x: simulatedContingencyCount?.nbContingencies ?? '...',
                         y: simulatedContingencyCount?.notFoundElements ?? '...',
+                    }}
+                />
+            </Alert>
+        ) : (
+            <Alert variant="standard" severity="error" sx={styles.error}>
+                <FormattedMessage
+                    id="contingenciesWillNotBeSimulated"
+                    values={{
+                        invalidContingencyErrorMessage: simulatedContingencyCount.invalidContingencyErrorMessage,
                     }}
                 />
             </Alert>
@@ -175,18 +191,16 @@ function ContingencyTableWithApiRef(
     }, [intl]);
 
     return (
-        <Grid size={12}>
-            <Stack>
-                <ParameterTableField
-                    name={name}
-                    columnsDefinition={columnsDefinition}
-                    tableHeight={270}
-                    onChange={handleOnChange}
-                    isValidRow={isValidContingencyRow}
-                />
-                {showContingencyCount && renderContingencyCount()}
-            </Stack>
-        </Grid>
+        <>
+            <ParameterTableField
+                name={name}
+                columnsDefinition={columnsDefinition}
+                tableHeight={270}
+                onChange={handleOnChange}
+                isValidRow={isValidContingencyRow}
+            />
+            {showContingencyCount && renderContingencyCount()}
+        </>
     );
 }
 

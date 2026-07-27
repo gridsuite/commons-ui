@@ -7,10 +7,10 @@
 
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button } from '@mui/material';
+import { Button, Grid2 as Grid, Tooltip, Typography } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
-import { equalsArrayAnyOrder, getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
+import { getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
 
 type CsvPickerCallbacks<TData> =
@@ -27,7 +27,12 @@ type CsvPickerCallbacks<TData> =
 
 export type CsvPickerProps<TData = unknown> = {
     label: string;
-    header: string[];
+    /**
+     * Columns that must be present in the imported file. The file is accepted as soon as it
+     * contains every column listed here, in any order; any column that matches none of them is
+     * ignored (not rejected). Pass an empty array to accept any header.
+     */
+    requiredColumns: string[];
     maxLineNumber?: number;
     disabled?: boolean;
     language: string;
@@ -40,7 +45,7 @@ export type CsvPickerProps<TData = unknown> = {
 
 export function CsvPicker<TData = unknown>({
     label,
-    header,
+    requiredColumns,
     maxLineNumber,
     disabled = false,
     language,
@@ -62,12 +67,14 @@ export function CsvPicker<TData = unknown>({
 
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
+            const actualHeader = Object.keys(results.data[0] ?? {});
+            const isHeaderValid = requiredColumns.every((column) => actualHeader.includes(column));
             if (results.data.length === 0) {
                 onFileError(intl.formatMessage({ id: 'noDataInCsvFile' }, { filename: acceptedFile.name }));
-            } else if (!equalsArrayAnyOrder(header, Object.keys(results.data[0] as Record<string, unknown>))) {
+            } else if (!isHeaderValid) {
                 console.warn('Wrong CSV headers');
-                console.warn('Expected:', header);
-                console.warn('Actual:', Object.keys(results.data[0] as Record<string, unknown>));
+                console.warn('Required:', requiredColumns);
+                console.warn('Actual:', actualHeader);
                 onFileError(intl.formatMessage({ id: 'wrongCsvHeadersError' }, { filename: acceptedFile.name }));
             } else if (maxLineNumber && results.data.length > maxLineNumber) {
                 onFileError(
@@ -91,7 +98,7 @@ export function CsvPicker<TData = unknown>({
                 }
             }
         },
-        [header, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, getTableData]
+        [requiredColumns, intl, maxLineNumber, onAppend, onComplete, onFileChange, onFileError, onReplace, getTableData]
     );
 
     return (
@@ -106,29 +113,25 @@ export function CsvPicker<TData = unknown>({
                 }}
                 onUploadAccepted={handleUploadAccepted}
             >
-                {({ getRootProps, ProgressBar }: any) => (
-                    <>
-                        <span
-                            style={{
-                                marginRight: '10px',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            {selectedFile ? selectedFile.name : intl.formatMessage({ id: 'uploadMessage' })}
-                        </span>
-                        <Button {...getRootProps()} variant="outlined" disabled={disabled}>
-                            <FormattedMessage id={label} />
-                            {/* this bar is bugged, if you click somewhere while loading it will reset (the confirmation dialog prevent this reset and fix the problem) */}
-                            <ProgressBar
-                                style={{
-                                    position: 'absolute',
-                                    inset: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                }}
-                            />
-                        </Button>
-                    </>
+                {({ getRootProps }: any) => (
+                    <Grid container spacing={1} alignItems="center" justifyContent="right" wrap="nowrap">
+                        <Grid>
+                            <Tooltip title={selectedFile?.name}>
+                                <Typography sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                    {selectedFile ? selectedFile.name : <FormattedMessage id="uploadMessage" />}
+                                </Typography>
+                            </Tooltip>
+                        </Grid>
+                        <Grid size="auto">
+                            <Button
+                                {...getRootProps()}
+                                variant={selectedFile ? 'contained' : 'text'}
+                                disabled={disabled}
+                            >
+                                <FormattedMessage id={label} />
+                            </Button>
+                        </Grid>
+                    </Grid>
                 )}
             </CSVReader>
             {onAppend && onReplace && (

@@ -10,7 +10,6 @@ import type { ReactNode } from 'react';
 export interface CsvProps {
     fileName: string;
     language?: string;
-    getTemplateData?: () => unknown[];
     getTableData?: () => unknown[];
     extraButtons?: ReactNode;
     hasTableData?: boolean;

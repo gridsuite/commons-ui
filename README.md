@@ -20,8 +20,12 @@ Components are organized as follows:
 
 #### For developers
 
-The commons-ui library have a demo app in which you can call your components to test them.
-The `npm start` command install the library's dependencies then launches the demo app.
+The commons-ui library has a demo app in which you can call your components to test them.
+The `npm start` command installs the library's dependencies then launches the demo app.
+
+The commons-ui Storybook is also available at https://www.gridsuite.org/commons-ui/.
+It is the reference place to document and preview reusable UI components from `src/components/ui`.
+When you add a new component under `src/components/ui`, also add the corresponding story so it is available in Storybook.
 
 ##### Development Scripts
 
@@ -34,6 +38,10 @@ This ensures all developers use the project's local tools version from `node_mod
 - **`npm run build`** - Builds the library. Note: This automatically runs `npm run prebuild` first.
 
 - **`npm run prebuild`** - Runs linting and type checking before the build (`npm run lint && npm run type-check:build`). This script is executed automatically by npm before `npm run build` and ensures that the build is not executed if linting or type checking fails. You don't need to call this manually unless you want to verify code quality without building.
+
+- **`npm run storybook`** - Starts the Storybook development server. Changes to components and stories are reflected automatically during development.
+
+- **`npm run build-storybook`** - Builds the static Storybook site. This is useful for verifying the production build or publishing the component documentation. This script is used when storybook.yml action is run.
 
 ##### Local Testing
 

@@ -27,7 +27,6 @@ export function SecurityAnalysisParametersInline({
     fetchContingencyCount,
     isBuiltCurrentNode,
     setHaveDirtyFields,
-    isDeveloperMode,
 }: Readonly<{
     studyUuid: UUID | null;
     parametersBackend: UseParametersBackendReturnProps<ComputingType.SECURITY_ANALYSIS>;
@@ -92,7 +91,10 @@ export function SecurityAnalysisParametersInline({
                 }}
                 selectParameterHandler={handleLoadParameter}
                 resetHandler={executeResetAction}
-                validateHandler={handleSubmit(securityAnalysisMethods.onSaveInline)}
+                validateHandler={handleSubmit(
+                    securityAnalysisMethods.onSaveInline,
+                    securityAnalysisMethods.onValidationError
+                )}
             >
                 <SecurityAnalysisParametersForm
                     securityAnalysisMethods={securityAnalysisMethods}
@@ -100,7 +102,6 @@ export function SecurityAnalysisParametersInline({
                     fetchContingencyCount={fetchContingencyCount}
                     contingencyTableApiRef={contingencyTableApiRef}
                     isBuiltCurrentNode={isBuiltCurrentNode}
-                    isDeveloperMode={isDeveloperMode}
                 />
             </ParameterLayout>
         </CustomFormProvider>

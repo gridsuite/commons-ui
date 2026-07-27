@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid2 as Grid, Stack } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { GeneratorDialogTab } from './generatorTabs.utils';
@@ -182,7 +182,6 @@ export function GeneratorDialogTabsContent({
                     isModification
                 />
                 <Grid container spacing={2} paddingTop={2}>
-                    <Box sx={{ width: '100%' }} />
                     <GridItem
                         tooltip={watchVoltageRegulation === null ? <FormattedMessage id="NoModification" /> : ''}
                         size={4}
@@ -190,7 +189,6 @@ export function GeneratorDialogTabsContent({
                         {voltageRegulationField}
                     </GridItem>
                     {voltageRegulationFields}
-                    <Box sx={{ width: '100%' }} />
                     <ActivePowerControlForm
                         isEquipmentModification
                         previousValues={generatorToModify?.activePowerControl}
@@ -229,14 +227,16 @@ export function GeneratorDialogTabsContent({
                 <GridSection title="ShortCircuit" />
                 <ShortCircuitForm previousValues={generatorToModify?.generatorShortCircuit} />
                 <GridSection title="GenerationDispatch" />
-                <Grid container spacing={2}>
-                    <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
-                    <GridItem size={4}>{marginalCostField}</GridItem>
+                <Stack spacing={2}>
+                    <Grid container spacing={2}>
+                        <GridItem size={4}>{plannedActivePowerSetPointField}</GridItem>
+                        <GridItem size={4}>{marginalCostField}</GridItem>
+                    </Grid>
                     <Grid container spacing={2}>
                         <GridItem size={4}>{plannedOutageRateField}</GridItem>
                         <GridItem size={4}>{forcedOutageRateField}</GridItem>
                     </Grid>
-                </Grid>
+                </Stack>
                 <GridSection title="MeasurementsSection" />
                 <PowerMeasurementsForm
                     activePowerMeasurement={generatorToModify?.measurementP}

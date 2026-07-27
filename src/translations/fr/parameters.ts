@@ -18,8 +18,7 @@ export const parametersFr = {
     descLfDcValues: 'DC',
     resetToDefault: 'Tout réinitialiser ',
     resetParamsConfirmation: 'Souhaitez vous réellement réinitialiser ces paramètres ?',
-    showAdvancedParameters: 'Paramètres avancés',
-    showSpecificParameters: 'Paramètres spécifiques',
+    ProviderSpecific: 'Spécifique au simulateur',
     save: 'Enregistrer',
     saveParameters: 'Enregistrer des paramètres',
     'settings.button.chooseSettings': 'Sélectionner',
@@ -53,7 +52,8 @@ export const parametersFr = {
     descLfBalanceTypeConformLoad: 'part variable de la consommation',
     descLfCountries: 'Pays',
     descLfAllCountries: 'Tous les pays',
-    descLfCountriesToBalance: 'Pays participant à la compensation',
+    descLfCountriesToBalance: 'Pays réglant',
+    inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
     [REAL_PERCENTAGE]: 'Cette valeur doit être comprise entre 0 et 1',
 
@@ -69,6 +69,10 @@ export const parametersFr = {
     VoltageRangeInterval: 'Plage de tension ]{lowBound} kV; {highBound} kV]',
     leftOpenBracket: ']',
     rightOpenBracket: '[',
+
+    Aggravation: 'Aggravation',
+    Contingencies: 'Aléas',
+    Advanced: 'Avancés',
 
     Provider: 'Simulateur',
     LimitReduction: 'Abattement des seuils',
@@ -238,9 +242,9 @@ export const parametersFr = {
     getContingencyListError: "Impossible de récupérer les listes d'aléas",
     xContingenciesWillBeSimulatedAndYNotFound:
         '{x, plural, =0 {aucun défaut} =1 {1 défaut} other {{x} défauts}} à simuler {y, plural, =0 {} =1 {et 1 non trouvé} other {et {y} non trouvés}}',
+    contingenciesWillNotBeSimulated: '{invalidContingencyErrorMessage}',
     contingencyCountImpossibleOnUnbuiltNode: "Impossible d'estimer le nombre d'aléas sur un noeud non réalisé",
     noContingency: 'Aucun défaut',
-
     resultsThreshold: 'Seuil minimal de sensibilité',
     SensitivityBranches: 'Quadripôles',
     SensitivityInjectionsSet: "Par rapport à un ensemble d'injections :",

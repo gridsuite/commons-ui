@@ -41,6 +41,7 @@ export const businessErrorsEn = {
     'study.tooManyNadConfigs': 'Maximum number of NAD configuration exceeded.',
     'study.tooManyMapCards': 'Maximum number of cards exceeded.',
     'study.elementAlreadyExists': 'An element with the name {fileName} already exists',
+    'study.maxOperationTypeExceeded': 'Max number of operation reached : {currentComputation}/{maxComputation}',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',

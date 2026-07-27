@@ -9,11 +9,13 @@ import type { UUID } from 'node:crypto';
 import { ILimitReductionsByVoltageLevel } from '../common';
 import { SpecificParametersPerProvider } from '../../../utils';
 
+export type ParameterValue = boolean | string | string[] | number;
+
 export interface LoadFlowParametersInfos {
     uuid?: UUID;
     provider: string;
     limitReduction: number;
-    commonParameters: Record<string, boolean | string | string[] | number>;
+    commonParameters: Record<string, ParameterValue>;
     specificParametersPerProvider: SpecificParametersPerProvider;
     limitReductions: ILimitReductionsByVoltageLevel[];
 }

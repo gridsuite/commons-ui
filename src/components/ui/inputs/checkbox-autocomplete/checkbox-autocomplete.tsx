@@ -61,7 +61,7 @@ const StyledPopper = styled(Popper)({
     },
 });
 
-interface CheckboxAutocompleteProps<Value> extends Omit<
+export interface CheckboxAutocompleteProps<Value> extends Omit<
     AutocompleteProps<Value, true, false, false>,
     | 'limitTags'
     | 'multiple'

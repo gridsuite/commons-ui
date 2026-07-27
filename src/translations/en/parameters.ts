@@ -17,8 +17,7 @@ export const parametersEn = {
     descLfDcValues: 'DC Values',
     resetToDefault: 'Reset All',
     resetParamsConfirmation: 'Do you really want to reset these parameters ?',
-    showAdvancedParameters: 'Advanced settings',
-    showSpecificParameters: 'Specific settings',
+    ProviderSpecific: 'Provider specific',
     save: 'Save',
     saveParameters: 'Save parameters',
     'settings.button.chooseSettings': 'Choose parameters',
@@ -51,7 +50,8 @@ export const parametersEn = {
     descLfBalanceTypeConformLoad: 'conform load',
     descLfCountries: 'Countries',
     descLfAllCountries: 'All countries',
-    descLfCountriesToBalance: 'Countries participating in balancing',
+    descLfCountriesToBalance: 'Balancing countries',
+    inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
     [REAL_PERCENTAGE]: 'This value must be between 0 and 1',
 
@@ -67,6 +67,10 @@ export const parametersEn = {
     VoltageRangeInterval: 'Voltage interval ({lowBound} kV, {highBound} kV]',
     leftOpenBracket: '(',
     rightOpenBracket: ')',
+
+    Aggravation: 'Aggravation',
+    Contingencies: 'Contingencies',
+    Advanced: 'Advanced',
 
     Provider: 'Provider',
     LimitReduction: 'Limit reduction',
@@ -231,9 +235,9 @@ export const parametersEn = {
     getContingencyListError: "Can't fetch contingencies lists",
     xContingenciesWillBeSimulatedAndYNotFound:
         '{x, plural, =0 {no contingency} =1 {1 contingency} other {{x} contingencies}} to be simulated {y, plural, =0 {} other {and {y} not found}}',
+    contingenciesWillNotBeSimulated: '{invalidContingencyErrorMessage}',
     contingencyCountImpossibleOnUnbuiltNode: "Can't estimate contingencies on an unbuilt node",
     noContingency: 'No contingency',
-
     resultsThreshold: 'Minimum sensitivity threshold',
     SensitivityBranches: 'Branches',
     SensitivityInjectionsSet: 'Relatively to injections set :',

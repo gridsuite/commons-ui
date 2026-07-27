@@ -10,13 +10,15 @@ import { FormattedMessage } from 'react-intl';
 import { GetApp as GetAppIcon, Check as CheckIcon } from '@mui/icons-material';
 
 export interface ExportButtonProps {
+    labelId?: string;
     disabled?: boolean;
-    onClick: () => void;
+    onClick?: () => void;
     isDownloadLoading?: boolean; // used mostly for previous Edge versions where download from backend file takes some time to begin
     isDownloadSuccessful?: boolean;
 }
 
 export function ExportCsvButton({
+    labelId = 'MuiVirtualizedTable/exportCSV',
     onClick,
     disabled = false,
     isDownloadLoading: isCsvLoading = false,
@@ -24,7 +26,7 @@ export function ExportCsvButton({
 }: Readonly<ExportButtonProps>) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <FormattedMessage id="MuiVirtualizedTable/exportCSV" />
+            <FormattedMessage id={labelId} />
             <Box sx={{ position: 'relative' }}>
                 <IconButton disabled={disabled} aria-label="exportCSVButton" onClick={onClick}>
                     {isDownloadSuccessful ? <CheckIcon /> : <GetAppIcon />}

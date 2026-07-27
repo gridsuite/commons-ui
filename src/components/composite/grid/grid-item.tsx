@@ -11,14 +11,22 @@ import { mergeSx } from '../../../utils';
 
 export interface GridItemProps extends PropsWithChildren {
     size?: Grid2Props['size'];
+    offset?: Grid2Props['offset'];
     alignItem?: string;
     tooltip?: ReactNode;
     sx?: Grid2Props['sx'];
 }
 
-export function GridItem({ children, size = 6, alignItem = 'flex-start', tooltip, sx }: Readonly<GridItemProps>) {
+export function GridItem({
+    children,
+    size = 6,
+    offset,
+    alignItem = 'flex-start',
+    tooltip,
+    sx,
+}: Readonly<GridItemProps>) {
     return (
-        <Grid size={size} sx={mergeSx({ alignItems: alignItem }, sx)}>
+        <Grid size={size} offset={offset} sx={mergeSx({ alignItems: alignItem }, sx)}>
             {children &&
                 (tooltip ? (
                     <CustomTooltip title={tooltip}>

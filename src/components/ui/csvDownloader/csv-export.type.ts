@@ -6,6 +6,7 @@
  */
 
 import { ColDef, CsvExportParams } from 'ag-grid-community';
+import { Key } from 'react';
 import { GsLangUser } from '../../../utils';
 
 export type CsvDownloadProps = {
@@ -17,6 +18,7 @@ export type CsvDownloadProps = {
     language: GsLangUser;
     getData: (params?: CsvExportParams) => string | undefined | void;
     isCopyCsv?: boolean;
+    resetKey?: Key;
 };
 
 export type CsvExportProps = CsvDownloadProps & {
