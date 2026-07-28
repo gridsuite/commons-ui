@@ -273,14 +273,20 @@ export function moveSubModificationInTree(
     return result;
 }
 
+function resolveUuidFromRowId(rowId: string): string {
+    const segments = rowId.split('.');
+    return segments[segments.length - 1];
+}
+
 export async function fetchSubModificationsForExpandedRows(
     expandedIds: string[],
     mods: ComposedModificationMetadata[],
     setMods: Dispatch<SetStateAction<ComposedModificationMetadata[]>>,
     force = false
 ): Promise<void> {
-    const compositeUuidsToFetch = expandedIds.filter((id) => {
-        const mod = findModificationInTree(id, mods);
+    const uuidsToCheck = expandedIds.map(resolveUuidFromRowId);
+    const compositeUuidsToFetch = uuidsToCheck.filter((uuid) => {
+        const mod = findModificationInTree(uuid, mods);
         return isCompositeModification(mod) && (force || mod?.subModifications.length === 0);
     });
 
@@ -307,15 +313,15 @@ export async function fetchSubModificationsForExpandedRows(
         );
     }
 
-    const referenceUuidsToFetch = expandedIds.filter((id) => {
-        const mod = findModificationInTree(id, mods);
+    const referenceUuidsToFetch = uuidsToCheck.filter((uuid) => {
+        const mod = findModificationInTree(uuid, mods);
         return isSharedModification(mod) && (force || mod?.subModifications.length === 0);
     });
 
     await Promise.all(
-        referenceUuidsToFetch.map(async (id) => {
+        referenceUuidsToFetch.map(async (uuid) => {
             try {
-                const res = await fetchNetworkModification(id as UUID);
+                const res = await fetchNetworkModification(uuid as UUID);
                 const detail: ReferenceModificationInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
@@ -324,9 +330,9 @@ export async function fetchSubModificationsForExpandedRows(
                     childFromShared: true,
                 }));
 
-                setMods((prev) => updateSubModificationsOfACompositeInTree(id, liveModifications, prev));
+                setMods((prev) => updateSubModificationsOfACompositeInTree(uuid, liveModifications, prev));
             } catch (error) {
-                console.error(`Failed to load reference children for ${id}`, error);
+                console.error(`Failed to load reference children for ${uuid}`, error);
             }
         })
     );
